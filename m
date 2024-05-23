@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-45843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD2F8CD429
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9547C8CD42D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DA60B22A78
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4852E2852AC
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2D314B06E;
-	Thu, 23 May 2024 13:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C0B14BF90;
+	Thu, 23 May 2024 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DiIk+qm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aelEZ4Y0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3831F13C3D8;
-	Thu, 23 May 2024 13:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070F314B084;
+	Thu, 23 May 2024 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470521; cv=none; b=VNd50DoXktzlfFfFe4dyrpTvmTKTnV8+35qA2j98UAOSXZTehSoRn+ujEFyoEvMFk/a3ZLQUX8yoIXlzS4jVvQLxm1JXsN+y4TY0KP9fi997O/7omgpTG/AsXRcRuv+gFVYot4Iv632LH/C1ZfTVft87tjdKd4F9il3ya1ee4Ho=
+	t=1716470527; cv=none; b=AEtOLkF5sOzGsRFItLbzkJW/RbYvtFu2Sq0Og2abA6AwqyQzFK/5jakXiQRmW2UjXSbhsXynXHLDF8qAE+kVtcddGm9p+PVAjE/pd8kaQEvrZJygReFyrw+uVyP6HvGSgQE09GDeNysWMFVvJtPIxLPB+v5yH7mD1Vk1xtEQlSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470521; c=relaxed/simple;
-	bh=Kj9mnkguZksjRUd8X+oukDSd1TeuQkq1vL8/hhgSwrA=;
+	s=arc-20240116; t=1716470527; c=relaxed/simple;
+	bh=AetxclBOhchGfSe/iLDSdYpt7sNp5/kqVmL9oBtbpN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2CyzgcLtLJiTbbP/w3Uzyxz6vps5dkXPS295IRzEbTAfuuciZ5GxfYww0F8Xj5WRKOUu/Sg5CE6f5jV2/TnyHMU8R24HeIi9wjjwpHM8bJ3FPhfatm7tlZim90+i0fODyf72Sb2TREy21vaXhX5HsqDL74ZjZmcltUJ6kbasSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DiIk+qm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B766DC32781;
-	Thu, 23 May 2024 13:22:00 +0000 (UTC)
+	 MIME-Version; b=ZnuoPur3cEclmmBy6+uJQmY4Kdoh1c7yZK1kZFztKOmgiMzYXJwNk+jsskq0o+PmoMP5w9aIyaiTSJbEAO2slQz7bSvRkH19EG2+tr8KfHAQ14WzweMyNzwXkHaD1d0D2PLzhtyeDv0jm4ghqlgrO7qa5wBmmqR9mH0NrHNzppA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aelEZ4Y0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829E6C2BD10;
+	Thu, 23 May 2024 13:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470521;
-	bh=Kj9mnkguZksjRUd8X+oukDSd1TeuQkq1vL8/hhgSwrA=;
+	s=korg; t=1716470526;
+	bh=AetxclBOhchGfSe/iLDSdYpt7sNp5/kqVmL9oBtbpN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DiIk+qmOR3OVhWQfuRbIJ7qVRMEgDKneLJS9VNPU6J8YXiWx+ZlSiH6IUv2gTyfN
-	 26rLoP7xG7YzZkIXG5VW8mT2dWelfxbvS5BR1pfU8PXWeuSEQtWJFjKrR3QHh3+nC7
-	 2+ys4bKD56/bR8lOWx+S1pmGseF1BsXqaV6oY4bw=
+	b=aelEZ4Y0uZ0uN83B/Sfo+X1CpJSCsHNH1Mq7NXZg/h9Acvv+uvIVHORGxF3/o/cJJ
+	 NxgCB9EKDra+5Kq0wJ+hYpKZcxykGuhO67Wpa+DsmyuNfLDj8Tojmxs7KCK8ITEULY
+	 I5doWQY77i5OBsRKFZcvtbvU4rzpT+oswCt6Cbgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@raritan.com>
-Subject: [PATCH 6.8 02/23] net: ks8851: Fix another TX stall caused by wrong ISR flag handling
-Date: Thu, 23 May 2024 15:13:29 +0200
-Message-ID: <20240523130329.840598598@linuxfoundation.org>
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.8 03/23] ice: pass VSI pointer into ice_vc_isvalid_q_id
+Date: Thu, 23 May 2024 15:13:30 +0200
+Message-ID: <20240523130329.878315595@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
 References: <20240523130329.745905823@linuxfoundation.org>
@@ -70,109 +67,128 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit 317a215d493230da361028ea8a4675de334bfa1a upstream.
+commit a21605993dd5dfd15edfa7f06705ede17b519026 upstream.
 
-Under some circumstances it may happen that the ks8851 Ethernet driver
-stops sending data.
+The ice_vc_isvalid_q_id() function takes a VSI index and a queue ID. It
+looks up the VSI from its index, and then validates that the queue number
+is valid for that VSI.
 
-Currently the interrupt handler resets the interrupt status flags in the
-hardware after handling TX. With this approach we may lose interrupts in
-the time window between handling the TX interrupt and resetting the TX
-interrupt status bit.
+The VSI ID passed is typically a VSI index from the VF. This VSI number is
+validated by the PF to ensure that it matches the VSI associated with the
+VF already.
 
-When all of the three following conditions are true then transmitting
-data stops:
+In every flow where ice_vc_isvalid_q_id() is called, the PF driver already
+has a pointer to the VSI associated with the VF. This pointer is obtained
+using ice_get_vf_vsi(), rather than looking up the VSI using the index sent
+by the VF.
 
-  - TX queue is stopped to wait for room in the hardware TX buffer
-  - no queued SKBs in the driver (txq) that wait for being written to hw
-  - hardware TX buffer is empty and the last TX interrupt was lost
+Since we already know which VSI to operate on, we can modify
+ice_vc_isvalid_q_id() to take a VSI pointer instead of a VSI index. Pass
+the VSI we found from ice_get_vf_vsi() instead of re-doing the lookup. This
+removes some unnecessary computation and scanning of the VSI list.
 
-This is because reenabling the TX queue happens when handling the TX
-interrupt status but if the TX status bit has already been cleared then
-this interrupt will never come.
+It also removes the last place where the driver directly used the VSI
+number from the VF. This will pave the way for refactoring to communicate
+relative VSI numbers to the VF instead of absolute numbers from the PF
+space.
 
-With this commit the interrupt status flags will be cleared before they
-are handled. That way we stop losing interrupts.
-
-The wrong handling of the ISR flags was there from the beginning but
-with commit 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX
-buffer overrun") the issue becomes apparent.
-
-Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/micrel/ks8851_common.c |   18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |   22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -328,7 +328,6 @@ static irqreturn_t ks8851_irq(int irq, v
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -550,17 +550,15 @@ bool ice_vc_isvalid_vsi_id(struct ice_vf
+ 
+ /**
+  * ice_vc_isvalid_q_id
+- * @vf: pointer to the VF info
+- * @vsi_id: VSI ID
++ * @vsi: VSI to check queue ID against
+  * @qid: VSI relative queue ID
+  *
+  * check for the valid queue ID
+  */
+-static bool ice_vc_isvalid_q_id(struct ice_vf *vf, u16 vsi_id, u8 qid)
++static bool ice_vc_isvalid_q_id(struct ice_vsi *vsi, u8 qid)
  {
- 	struct ks8851_net *ks = _ks;
- 	struct sk_buff_head rxq;
--	unsigned handled = 0;
- 	unsigned long flags;
- 	unsigned int status;
- 	struct sk_buff *skb;
-@@ -336,24 +335,17 @@ static irqreturn_t ks8851_irq(int irq, v
- 	ks8851_lock(ks, &flags);
+-	struct ice_vsi *vsi = ice_find_vsi(vf->pf, vsi_id);
+ 	/* allocated Tx and Rx queues should be always equal for VF VSI */
+-	return (vsi && (qid < vsi->alloc_txq));
++	return qid < vsi->alloc_txq;
+ }
  
- 	status = ks8851_rdreg16(ks, KS_ISR);
-+	ks8851_wrreg16(ks, KS_ISR, status);
+ /**
+@@ -1318,7 +1316,7 @@ static int ice_vc_ena_qs_msg(struct ice_
+ 	 */
+ 	q_map = vqs->rx_queues;
+ 	for_each_set_bit(vf_q_id, &q_map, ICE_MAX_RSS_QS_PER_VF) {
+-		if (!ice_vc_isvalid_q_id(vf, vqs->vsi_id, vf_q_id)) {
++		if (!ice_vc_isvalid_q_id(vsi, vf_q_id)) {
+ 			v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+ 			goto error_param;
+ 		}
+@@ -1340,7 +1338,7 @@ static int ice_vc_ena_qs_msg(struct ice_
  
- 	netif_dbg(ks, intr, ks->netdev,
- 		  "%s: status 0x%04x\n", __func__, status);
+ 	q_map = vqs->tx_queues;
+ 	for_each_set_bit(vf_q_id, &q_map, ICE_MAX_RSS_QS_PER_VF) {
+-		if (!ice_vc_isvalid_q_id(vf, vqs->vsi_id, vf_q_id)) {
++		if (!ice_vc_isvalid_q_id(vsi, vf_q_id)) {
+ 			v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+ 			goto error_param;
+ 		}
+@@ -1445,7 +1443,7 @@ static int ice_vc_dis_qs_msg(struct ice_
+ 		q_map = vqs->tx_queues;
  
--	if (status & IRQ_LCI)
--		handled |= IRQ_LCI;
--
- 	if (status & IRQ_LDI) {
- 		u16 pmecr = ks8851_rdreg16(ks, KS_PMECR);
- 		pmecr &= ~PMECR_WKEVT_MASK;
- 		ks8851_wrreg16(ks, KS_PMECR, pmecr | PMECR_WKEVT_LINK);
--
--		handled |= IRQ_LDI;
- 	}
+ 		for_each_set_bit(vf_q_id, &q_map, ICE_MAX_RSS_QS_PER_VF) {
+-			if (!ice_vc_isvalid_q_id(vf, vqs->vsi_id, vf_q_id)) {
++			if (!ice_vc_isvalid_q_id(vsi, vf_q_id)) {
+ 				v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+ 				goto error_param;
+ 			}
+@@ -1471,7 +1469,7 @@ static int ice_vc_dis_qs_msg(struct ice_
+ 		bitmap_zero(vf->rxq_ena, ICE_MAX_RSS_QS_PER_VF);
+ 	} else if (q_map) {
+ 		for_each_set_bit(vf_q_id, &q_map, ICE_MAX_RSS_QS_PER_VF) {
+-			if (!ice_vc_isvalid_q_id(vf, vqs->vsi_id, vf_q_id)) {
++			if (!ice_vc_isvalid_q_id(vsi, vf_q_id)) {
+ 				v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+ 				goto error_param;
+ 			}
+@@ -1527,7 +1525,7 @@ ice_cfg_interrupt(struct ice_vf *vf, str
+ 	for_each_set_bit(vsi_q_id_idx, &qmap, ICE_MAX_RSS_QS_PER_VF) {
+ 		vsi_q_id = vsi_q_id_idx;
  
--	if (status & IRQ_RXPSI)
--		handled |= IRQ_RXPSI;
--
- 	if (status & IRQ_TXI) {
- 		unsigned short tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+-		if (!ice_vc_isvalid_q_id(vf, vsi->vsi_num, vsi_q_id))
++		if (!ice_vc_isvalid_q_id(vsi, vsi_q_id))
+ 			return VIRTCHNL_STATUS_ERR_PARAM;
  
-@@ -365,20 +357,12 @@ static irqreturn_t ks8851_irq(int irq, v
- 		if (netif_queue_stopped(ks->netdev))
- 			netif_wake_queue(ks->netdev);
- 		spin_unlock(&ks->statelock);
--
--		handled |= IRQ_TXI;
- 	}
+ 		q_vector->num_ring_rx++;
+@@ -1541,7 +1539,7 @@ ice_cfg_interrupt(struct ice_vf *vf, str
+ 	for_each_set_bit(vsi_q_id_idx, &qmap, ICE_MAX_RSS_QS_PER_VF) {
+ 		vsi_q_id = vsi_q_id_idx;
  
--	if (status & IRQ_RXI)
--		handled |= IRQ_RXI;
--
- 	if (status & IRQ_SPIBEI) {
- 		netdev_err(ks->netdev, "%s: spi bus error\n", __func__);
--		handled |= IRQ_SPIBEI;
- 	}
+-		if (!ice_vc_isvalid_q_id(vf, vsi->vsi_num, vsi_q_id))
++		if (!ice_vc_isvalid_q_id(vsi, vsi_q_id))
+ 			return VIRTCHNL_STATUS_ERR_PARAM;
  
--	ks8851_wrreg16(ks, KS_ISR, handled);
--
- 	if (status & IRQ_RXI) {
- 		/* the datasheet says to disable the rx interrupt during
- 		 * packet read-out, however we're masking the interrupt
+ 		q_vector->num_ring_tx++;
+@@ -1698,7 +1696,7 @@ static int ice_vc_cfg_qs_msg(struct ice_
+ 		    qpi->txq.headwb_enabled ||
+ 		    !ice_vc_isvalid_ring_len(qpi->txq.ring_len) ||
+ 		    !ice_vc_isvalid_ring_len(qpi->rxq.ring_len) ||
+-		    !ice_vc_isvalid_q_id(vf, qci->vsi_id, qpi->txq.queue_id)) {
++		    !ice_vc_isvalid_q_id(vsi, qpi->txq.queue_id)) {
+ 			goto error_param;
+ 		}
+ 
 
 
 
