@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536938CD39E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6F38CD3AB
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCDD6B22B2D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80B071F24FBE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC1D14AD35;
-	Thu, 23 May 2024 13:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DAF14B943;
+	Thu, 23 May 2024 13:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s68ScNy1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zb/DUvoq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ED114AD1A;
-	Thu, 23 May 2024 13:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FC014B09F;
+	Thu, 23 May 2024 13:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470208; cv=none; b=EjyQeZykbia7IEScrF6fC+HhkuCn5QLJeHp403doFk17EZPckHDbnoZNgrI1w13/e6A0J3JwTpojt0ztBHpHOdvWBpcV6j20O0n3D1nFUHHKsXgpKIVtJbMcR8qxQEzBI7Ds3V3YQ4+w9jETcyKgQUjwjaUdKQMsIt3rzJ5LSQw=
+	t=1716470240; cv=none; b=j9+ADkao5ilEYoJxQSVLGqj+eKir5vmcxK5kgfWukYncwxcnfFfeXYjDtNbatw1dHdcdd58TkARcvQq1Wp60q2dFi81/UmS5BELRuDjkHNu2hE1ra+W3bfqmHvKuXdZvsHHPQAqp0c2gAYQys5Et+XBURDjA04nqb097dq0txoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470208; c=relaxed/simple;
-	bh=GA3yAKUjZ1wAUpWILx8kp3nY6/HyLdlwVvA2nHeFazo=;
+	s=arc-20240116; t=1716470240; c=relaxed/simple;
+	bh=K9t6j6LWERPDOtWj7sP3e9wGbf0XQfOyzbsKfvnrZ/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qf0d0g1yGqWrlfTIVr4BGATnUjjJtKHMHoQXHFgMZ1V+A65hYYLvrdgNDsfQl7tNdokyoUvAXFaAXtt7cDFHg1FrsBZYynTzH11upaNnYbvyl+JUGb1HfqH1nTYYkE/wV84T2KY20MKRKzUbICFpW/Shf9BzGycYfn4qdV3xOSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s68ScNy1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08408C3277B;
-	Thu, 23 May 2024 13:16:47 +0000 (UTC)
+	 MIME-Version; b=MVRIYPkfeirKPEB3kyjMNgZt3oSKnqXJG7E+AuN9lcZtiJ5hCFp8sNl1OJ0C7ZHo0eygDmuah58QUIJwskeh94dIQSaHvBYN+Mb+d/oX53KLjN1Xf3zGxHPDM332PUfnXraHq6Izds5RZnbC8bAGvea85AzOIF5vdaDjR/SY9sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zb/DUvoq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35ABC3277B;
+	Thu, 23 May 2024 13:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470208;
-	bh=GA3yAKUjZ1wAUpWILx8kp3nY6/HyLdlwVvA2nHeFazo=;
+	s=korg; t=1716470240;
+	bh=K9t6j6LWERPDOtWj7sP3e9wGbf0XQfOyzbsKfvnrZ/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s68ScNy1nb5XgRKqN6YNrZ8SboUeylIMoJWHX8Jk5/c/YWrbUX7qk6IogwzDisN5h
-	 gcqjXskrDwnxAIsOLiq3d+wMGYKUkKi3TrAkJcVHYIZa7LIyJ6aTs3nRPX2H7FQeJb
-	 icpKSTE/lAzrG12vyZcVVYm4s3Fw6numelUF5jQs=
+	b=zb/DUvoqrmuUVAFX51biaQt5JCMg6aTvJKxh7jiE7NuTlwxHC+3aYRR5+24iVcO3O
+	 Sqen3A7efe/W7E05cDWBBk6BVfWFp3dHFfqOqPhrhExauYFU4qpJeVJ4yPtl44JNeV
+	 Ip2C9tw1qK+IinEF2yt3OetTxR7u9Stv60JLCfr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>
-Subject: [PATCH 5.10 09/15] firmware: arm_scmi: Harden accesses to the reset domains
+	Charlemagne Lasse <charlemagnelasse@gmail.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.9 06/25] x86/percpu: Use __force to cast from __percpu address space
 Date: Thu, 23 May 2024 15:12:51 +0200
-Message-ID: <20240523130326.807080092@linuxfoundation.org>
+Message-ID: <20240523130330.627500316@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
-References: <20240523130326.451548488@linuxfoundation.org>
+In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+References: <20240523130330.386580714@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-commit e9076ffbcaed5da6c182b144ef9f6e24554af268 upstream.
+commit a55c1fdad5f61b4bfe42319694b23671a758cb28 upstream.
 
-Accessing reset domains descriptors by the index upon the SCMI drivers
-requests through the SCMI reset operations interface can potentially
-lead to out-of-bound violations if the SCMI driver misbehave.
+Fix Sparse warning when casting from __percpu address space by using
+__force in the cast. x86 named address spaces are not considered to
+be subspaces of the generic (flat) address space, so explicit casts
+are required to convert pointers between these address spaces and the
+generic address space (the application should cast to uintptr_t and
+apply the segment base offset). The cast to uintptr_t removes
+__percpu address space tag and Sparse reports:
 
-Add an internal consistency check before any such domains descriptors
-accesses.
+  warning: cast removes address space '__percpu' of expression
 
-Link: https://lore.kernel.org/r/20220817172731.1185305-5-cristian.marussi@arm.com
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Use __force to inform Sparse that the cast is intentional.
+
+Fixes: 9a462b9eafa6 ("x86/percpu: Use compiler segment prefix qualifier")
+Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240402175058.52649-1-ubizjak@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/firmware/arm_scmi/reset.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/arm_scmi/reset.c
-+++ b/drivers/firmware/arm_scmi/reset.c
-@@ -149,8 +149,12 @@ static int scmi_domain_reset(const struc
- 	struct scmi_xfer *t;
- 	struct scmi_msg_reset_domain_reset *dom;
- 	struct scmi_reset_info *pi = handle->reset_priv;
--	struct reset_dom_info *rdom = pi->dom_info + domain;
-+	struct reset_dom_info *rdom;
+Closes: https://lore.kernel.org/lkml/CAFGhKbzev7W4aHwhFPWwMZQEHenVgZUj7=aunFieVqZg3mt14A@mail.gmail.com/
+---
+ arch/x86/include/asm/percpu.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -70,7 +70,7 @@
+ 	unsigned long tcp_ptr__;				\
+ 	tcp_ptr__ = __raw_cpu_read(, this_cpu_off);		\
+ 								\
+-	tcp_ptr__ += (unsigned long)(ptr);			\
++	tcp_ptr__ += (__force unsigned long)(ptr);		\
+ 	(typeof(*(ptr)) __kernel __force *)tcp_ptr__;		\
+ })
+ #else /* CONFIG_USE_X86_SEG_SUPPORT */
+@@ -102,8 +102,8 @@
+ #endif /* CONFIG_SMP */
  
-+	if (domain >= pi->num_domains)
-+		return -EINVAL;
-+
-+	rdom = pi->dom_info + domain;
- 	if (rdom->async_reset)
- 		flags |= ASYNCHRONOUS_RESET;
+ #define __my_cpu_type(var)	typeof(var) __percpu_seg_override
+-#define __my_cpu_ptr(ptr)	(__my_cpu_type(*ptr) *)(uintptr_t)(ptr)
+-#define __my_cpu_var(var)	(*__my_cpu_ptr(&var))
++#define __my_cpu_ptr(ptr)	(__my_cpu_type(*ptr)*)(__force uintptr_t)(ptr)
++#define __my_cpu_var(var)	(*__my_cpu_ptr(&(var)))
+ #define __percpu_arg(x)		__percpu_prefix "%" #x
+ #define __force_percpu_arg(x)	__force_percpu_prefix "%" #x
  
 
 
