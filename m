@@ -1,154 +1,133 @@
-Return-Path: <stable+bounces-46006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFF68CDBF3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 23:25:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D008CDC10
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 23:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE9AB281B77
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 21:25:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D72CB1C23152
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 21:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426E6128393;
-	Thu, 23 May 2024 21:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5791D12AAC5;
+	Thu, 23 May 2024 21:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M5i0IpY3"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="MprRWTDA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551F7127E04;
-	Thu, 23 May 2024 21:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D329128829
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 21:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716499512; cv=none; b=pHIYm5jEYHOf+u2H634vmYlG7vnUCKkvGHkMi9waqgkbNRDKLQks57RjIQG07FCTwpHoVQaNvCYjVUhg4cgPaLAD439ZvcQlqZJyeSRW2WUIZ/XKO628oVewo1aQzBCsZJLF9aPh0/F+gAkatBfpkadD+JuCIRFfTlknFkVSohc=
+	t=1716499550; cv=none; b=GKw1aceKvOcSLIzYBUMfxQxh+zDrx2xHoM7UyB2ZIhr0iltq+bsGv4RtHBK28T6ivRNcCzFr2MzAaKkE+AQ4qA+5mBLEQUTUcosBBN9wE6kGC+Jiel/vQZ/R2xzVut/PMyNdE0KZ7RfX42uGYWucdUPwFwOmmcKLL+NhN9M2UqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716499512; c=relaxed/simple;
-	bh=O2/sXGTtESOtbSq7nRlWfIJXUquoXPpq1fCAs0u7NWM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oIxFRFfeSX9xqhkZi2WtCp3R5KxffwyqqQco0fjBKB0K5Xe6lCgCKumfewCjBzsPmzdMh878ccDs9jQtYNfge6DOgTcNZ23pJ7n9Rx4AFf8x8NcVqP+pFWcMuTA7qeBT0TkrJBrpO58We8lsAC89v9GCNx5GAFTKt2NEA7+hzLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M5i0IpY3; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42101a2ac2cso12899005e9.0;
-        Thu, 23 May 2024 14:25:10 -0700 (PDT)
+	s=arc-20240116; t=1716499550; c=relaxed/simple;
+	bh=mA56a74E5OZmSdOaOCgWbEvISew1H7eTgdBTvcFAbwA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aWhH3GSh1Y8tslzkCSBAIh8bz40I8fzn71GxOfyPso0a65f08aPaX1Z0xoXgRFtrWFyIf/np9Q8ZVsW8oFoUHK/SZS1+EEIpkaV9AFQ6IGdT0hx4DAKjI6e/J86le+rIrKG9AmLKug1KK5jFWFZZfjOek0/YI1elMLfbeI2Y+vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=MprRWTDA; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-65c5a29f7f0so3438058a12.1
+        for <stable@vger.kernel.org>; Thu, 23 May 2024 14:25:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716499508; x=1717104308; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2XrUpXca9802sFKQT7AfZ7CKYtJZmtjejh5XLUo9IF0=;
-        b=M5i0IpY3yJTFQC00XVuvjEcpN2thROoCJ7K177uCD6RVFynYHIcxWwwz8BkuNHYWe3
-         vZNkN0aAin1SVhLRgWbsCq9bTgAdhOYCFV9ZWSCUWudvDyZSHDNQ55ZcXyfGEZQomMtI
-         UvZe1Q4HHbw30B9Aw7EChpHuaZ0my1e2RLUBI9xXpplUtJ0poXULFFp4UldTDyfJl61R
-         GXOP/zNbM0ScHJJ5M+LspkFWxKFFEUcy3za0V7fbFlUkRRg+Wfw/Ngl/ItS3dISSLZdG
-         6udRTdhcLar0B0VQmCbvySkk9dPF6CPGttjjlQMQjm7a8jVwW7VzEV5R0NUIxNiTOVUB
-         dxpw==
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1716499548; x=1717104348; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kjzBFWQGRJlE51441adpXea9AFvlQa7Gmc9nBZzhGfo=;
+        b=MprRWTDAPXYNnFxpDmxH/vINTQVVX/huSxwQJrYdhOkevbf0ctkBeplveKsfmxeuNL
+         ltqerCBZqkto+jZtQUBDSr9yYPweINnMYabgdgSlzDyjLP+FReuospCgScsJK27Lwb1P
+         aiwtxs9urZZ2IWKVPrPUQHS7EJUxS8eybbBxCYmpvJxueHgMqUe+Gsag5H85927XJoQA
+         E+aXzZ3Lk1Ae4fLlZMP8RAnofIEIWeR3M2WGubmdfbaKfZGFRzXcrKzi48s6raRZxCuz
+         yL37z8Vd6wr0eddG5iyI5Z0DYTwAr2mlVnJ5htRaLdvXaGqEIF/nE5PduNE0Y98Dnska
+         wIgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716499508; x=1717104308;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1716499548; x=1717104348;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2XrUpXca9802sFKQT7AfZ7CKYtJZmtjejh5XLUo9IF0=;
-        b=KlQvW136KS5EqBDgoUhsKaCC7k1ldu16ydQZr9Srbu59zOInEICOQG+MbxnciTWmpW
-         aRYX8r7G8Ljhvudl+YlDa+3PAi4RLAxKjI8uDXVwBn6JBmCvoRWerKdwfl2L3JqPS+aF
-         p//wNz3IxnOf7sd681db2ppQrXkzawCEToQALv82nJ93xL4236sOKARNmyFYW6QgrEnu
-         nEPNGlhx4whNV6fOLd8YNY/UWZhWOzMo7RDJKNwm4OyvvgrvR1wZzNmgDZYb1G936vZf
-         7rrFXUSPkreuuJw6hJ0SxFUjxzWxKx6jtPfMtQU6kLim9FNH1tNgVYEg/EvITpVitPHW
-         k9ng==
-X-Forwarded-Encrypted: i=1; AJvYcCXQ0dHRfIzxZNCufSD+oCWahD4TSSEknM2eXIUZGUrEFArvAttKCtqMdzfpIZQBWeFqIXWAB+G/ZZzD/riCUsbbBSvql2Aa/RL/0TR02j7aN+E7epFS7AUGAyyVxVF3z+eselIK61fQFONg3AJz68+YrMW4jfKxq/Mf25syIt8=
-X-Gm-Message-State: AOJu0YwFDrH52VrvY3tcS6QPR28MaJBQDBEHiv2NijyMRWG+VT1DHwgA
-	AAQT5Pt7bmGpCoWmLRWkr2CxCctpyuhh4JzrwB9zxbXJgsml73Q3BtZ4nM1OcfI=
-X-Google-Smtp-Source: AGHT+IE4ZF7YwPw/mWOay+kpzwUrwzKsb6QybtrfGC+O2j+H3UcZuYd1WN7BSIQJtxcLnjxWBzuU0w==
-X-Received: by 2002:a05:600c:19cf:b0:416:88f9:f5ea with SMTP id 5b1f17b1804b1-42108a0b891mr2885885e9.34.1716499508043;
-        Thu, 23 May 2024 14:25:08 -0700 (PDT)
-Received: from [127.0.1.1] (84-115-212-250.cable.dynamic.surfer.at. [84.115.212.250])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421089ae976sm2522955e9.38.2024.05.23.14.25.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 May 2024 14:25:07 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 23 May 2024 23:24:59 +0200
-Subject: [PATCH 1/2] cpufreq: qcom-nvmem: fix memory leaks in probe error
- paths
+        bh=kjzBFWQGRJlE51441adpXea9AFvlQa7Gmc9nBZzhGfo=;
+        b=lDZU1cbBPRh3Y14+BnLsbOenL6bX5TppfWQHnm/ICbaBc32LOC0IhcI7ic7/TlDnGr
+         ijyT3UyTE6FKHJUv7bx/GbBGA1gqLvuaUihkZGz7pUgssKuFyCVQP2O4pQyD0Fkdyqm0
+         QNvurtWKmEerTeI9ZCd6QBXj7YM8w/qyld840t9qsbv2l4QFTluSUIjepkxP/CwNjxqS
+         S8RYK4vzqMmbR6PmfePA3s58QDmXSWwlWr1P7CZ/M4BKZGT79WohOeYdo1tynRpCQ55A
+         9QQ1Pcs2ucZK7/PJcNaYX9MYWL4QNLockZdUJYQd2kubhacH7UrNrq4JJCm/chaLslN0
+         U4Ag==
+X-Gm-Message-State: AOJu0YwUtCS6mX7h+Heg3kF5qvZa6HTPW2yIO69i9jeSCDUaDqP5uejB
+	TqtpqLos6SyBIDuAC5YCu3OxtmrN3JYhtrxcdNwauvljARBqXc03Lr5V227k7uv1By1Hywm8tph
+	iUqthw5o/3M1WEJyM5PDsrONfeFbyvmItm1AZCw==
+X-Google-Smtp-Source: AGHT+IEX+DzZqu1f51+157hrrpiCAPisWutwsfM8ZJUQxeRwW/N02+rxbBX6wwe/PUiCT1AAM7TddJlgzw8uQAoAlu8=
+X-Received: by 2002:a17:90a:fa92:b0:2bd:efad:88d with SMTP id
+ 98e67ed59e1d1-2bf5f1077d8mr352514a91.28.1716499547473; Thu, 23 May 2024
+ 14:25:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240523-qcom-cpufreq-nvmem_memleak-v1-1-e57795c7afa7@gmail.com>
-References: <20240523-qcom-cpufreq-nvmem_memleak-v1-0-e57795c7afa7@gmail.com>
-In-Reply-To: <20240523-qcom-cpufreq-nvmem_memleak-v1-0-e57795c7afa7@gmail.com>
-To: Ilia Lin <ilia.lin@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716499505; l=1662;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=O2/sXGTtESOtbSq7nRlWfIJXUquoXPpq1fCAs0u7NWM=;
- b=hDXfjlz34asjTGVR3glrM/1HXdLbwypLizTciKHHFWKpI2h6eO4bLt/MURAaJw3ZInhw0nxXn
- h9HLcnCN6PqB1VB7gSJwJib40hc+bEr9Yzu0qewfbFqYyHaqIDJpaTK
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Fri, 24 May 2024 06:25:35 +0900
+Message-ID: <CAKL4bV6ip-D-5rOuiZoWPS1w1Oi-Y48TfMtO+qGiVgnu612r9g@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/102] 6.6.32-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The code refactoring added new error paths between the np device node
-allocation and the call to of_node_put(), which leads to memory leaks if
-any of those errors occur.
+Hi Greg
 
-Add the missing of_node_put() in the error paths that require it.
+On Thu, May 23, 2024 at 10:23=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.32 release.
+> There are 102 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.32-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Cc: stable@vger.kernel.org
-Fixes: 57f2f8b4aa0c ("cpufreq: qcom: Refactor the driver to make it easier to extend")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/cpufreq/qcom-cpufreq-nvmem.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+6.6.32-rc1 tested.
 
-diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-index ea05d9d67490..5004e1dbc752 100644
---- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
-+++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-@@ -480,23 +480,30 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
- 
- 	drv = devm_kzalloc(&pdev->dev, struct_size(drv, cpus, num_possible_cpus()),
- 		           GFP_KERNEL);
--	if (!drv)
-+	if (!drv) {
-+		of_node_put(np);
- 		return -ENOMEM;
-+	}
- 
- 	match = pdev->dev.platform_data;
- 	drv->data = match->data;
--	if (!drv->data)
-+	if (!drv->data) {
-+		of_node_put(np);
- 		return -ENODEV;
-+	}
- 
- 	if (drv->data->get_version) {
- 		speedbin_nvmem = of_nvmem_cell_get(np, NULL);
--		if (IS_ERR(speedbin_nvmem))
-+		if (IS_ERR(speedbin_nvmem)) {
-+			of_node_put(np);
- 			return dev_err_probe(cpu_dev, PTR_ERR(speedbin_nvmem),
- 					     "Could not get nvmem cell\n");
-+		}
- 
- 		ret = drv->data->get_version(cpu_dev,
- 							speedbin_nvmem, &pvs_name, drv);
- 		if (ret) {
-+			of_node_put(np);
- 			nvmem_cell_put(speedbin_nvmem);
- 			return ret;
- 		}
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
--- 
-2.40.1
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
+[    0.000000] Linux version 6.6.32-rc1rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.1.1 20240522, GNU ld (GNU
+Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Fri May 24 05:32:27 JST 2024
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
