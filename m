@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-45840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5A78CD425
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043AB8CD49E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17F1C2831BD
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DDC7B22F4D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B59814A605;
-	Thu, 23 May 2024 13:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6D913BAE2;
+	Thu, 23 May 2024 13:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3Jt3ULZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dArYzWm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED64813C3D8;
-	Thu, 23 May 2024 13:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83CC14830E;
+	Thu, 23 May 2024 13:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470513; cv=none; b=YxAvVnAaMjNAxwW0SCo5Y499nSTyx4l4dbLeO4CRx4hJSMzt/dc7ys23f247oFa6YGw9oWU9jJSi4z+dBSN6ZMSD4Iim+8UuWRaWx0CVVAB9/NSH2Bfv837yb4mSGtZkDViO1lvDozuX3HFs2N6LzsLOdDVDFxJsk02C4IqB5M0=
+	t=1716470769; cv=none; b=nDZOjRe5SLSQVPczRcq0DFkx2Dst0qoWrQyrnJVriXhrxz9CfkkvszpZggJuKWHi0Y6Ohg/DmWcOeWxLM0wRmxgTOndrhzRbUHWuOHyaXXeYCtcahxgHnuQXyDwcV1FiEzYAl7PdMSLXm827LjfTp5XRXa8GzBUERCxxTYEIFqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470513; c=relaxed/simple;
-	bh=Oz3OXM7xvNIFQoFhY816PqPSXq60bGYVycG/Mi00SWY=;
+	s=arc-20240116; t=1716470769; c=relaxed/simple;
+	bh=DYJPnitqFkwL8ZIlAMs7u3V8/rg9YrdHl//hA+CNg6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiJilEX/4hw22C4fhFONgF+3ueQ7XHiEx7j57zLPNT1b2nyW8pOsDjptIRb8aJvA2CIOk3/DQ0XHwFccARBJAlCqIQO55bPiQtJ+Kcv63RtbKk0W+yd535YNPfYW7sO3QSERR7Q9CBqAydBtcmozwiI3mkyz1qIzfH5hriAOHDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3Jt3ULZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FDDC4AF08;
-	Thu, 23 May 2024 13:21:51 +0000 (UTC)
+	 MIME-Version; b=nt6GY5jFXSbdjDCUDj/ccQCqblhRVEDzd1o0Wf23mYdc22XpaPp16j5YX6Qcy+N/Mg3JCOolj9CRHHWDNJ12j/kR9/oO2Z63sbA+FBhUnff268hxY7I299QFSh40iqaZHokDK/JbvIjQQGk1r69KxMDtVRIn7cyr3GWOIsRqfgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dArYzWm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29426C2BD10;
+	Thu, 23 May 2024 13:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470512;
-	bh=Oz3OXM7xvNIFQoFhY816PqPSXq60bGYVycG/Mi00SWY=;
+	s=korg; t=1716470769;
+	bh=DYJPnitqFkwL8ZIlAMs7u3V8/rg9YrdHl//hA+CNg6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3Jt3ULZ8n3V3WjMYG2WDPfUAeQLWFeWDDFK6z+xDarTrhIln4KzsBczRfGe5vCfi
-	 z6qv0g/G0XAgfO/I38FJ8NvsdkUFSybX62PPCaZfO8ceIO99dLhjnUorZrjTJPVcex
-	 Nkq025tUkxan/Us6iiCmKtDjsV2Y86ua873RGdDE=
+	b=2dArYzWmXo7qscFXBWty7yqY51r+tWAHkqiw4IUYvbxyAWsL35w6dDOJd2usb1b4n
+	 /L3KnItliLUN3HbZXavoMAvBCtXdYFJR6aHEHAklkOA6vWcyDUZY1xADODdFq0awTT
+	 gldJmpTxn88L90ggzExOt1lzCDVHrGC5mgSpTRcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.8 17/23] remoteproc: mediatek: Make sure IPI buffer fits in L2TCM
-Date: Thu, 23 May 2024 15:13:44 +0200
-Message-ID: <20240523130330.403157162@linuxfoundation.org>
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.6 080/102] ice: remove unnecessary duplicate checks for VF VSI ID
+Date: Thu, 23 May 2024 15:13:45 +0200
+Message-ID: <20240523130345.484792007@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
-References: <20240523130329.745905823@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit 331f91d86f71d0bb89a44217cc0b2a22810bbd42 upstream.
+commit 363f689600dd010703ce6391bcfc729a97d21840 upstream.
 
-The IPI buffer location is read from the firmware that we load to the
-System Companion Processor, and it's not granted that both the SRAM
-(L2TCM) size that is defined in the devicetree node is large enough
-for that, and while this is especially true for multi-core SCP, it's
-still useful to check on single-core variants as well.
+The ice_vc_fdir_param_check() function validates that the VSI ID of the
+virtchnl flow director command matches the VSI number of the VF. This is
+already checked by the call to ice_vc_isvalid_vsi_id() immediately
+following this.
 
-Failing to perform this check may make this driver perform R/W
-operations out of the L2TCM boundary, resulting (at best) in a
-kernel panic.
+This check is unnecessary since ice_vc_isvalid_vsi_id() already confirms
+this by checking that the VSI ID can locate the VSI associated with the VF
+structure.
 
-To fix that, check that the IPI buffer fits, otherwise return a
-failure and refuse to boot the relevant SCP core (or the SCP at
-all, if this is single core).
+Furthermore, a following change is going to refactor the ice driver to
+report VSI IDs using a relative index for each VF instead of reporting the
+PF VSI number. This additional check would break that logic since it
+enforces that the VSI ID matches the VSI number.
 
-Fixes: 3efa0ea743b7 ("remoteproc/mediatek: read IPI buffer offset from FW")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240321084614.45253-2-angelogioacchino.delregno@collabora.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Since this check duplicates  the logic in ice_vc_isvalid_vsi_id() and gets
+in the way of refactoring that logic, remove it.
+
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/mtk_scp.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -132,7 +132,7 @@ static int scp_elf_read_ipi_buf_addr(str
- static int scp_ipi_init(struct mtk_scp *scp, const struct firmware *fw)
- {
- 	int ret;
--	size_t offset;
-+	size_t buf_sz, offset;
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+@@ -107,9 +107,6 @@ ice_vc_fdir_param_check(struct ice_vf *v
+ 	if (!(vf->driver_caps & VIRTCHNL_VF_OFFLOAD_FDIR_PF))
+ 		return -EINVAL;
  
- 	/* read the ipi buf addr from FW itself first */
- 	ret = scp_elf_read_ipi_buf_addr(scp, fw, &offset);
-@@ -144,6 +144,14 @@ static int scp_ipi_init(struct mtk_scp *
- 	}
- 	dev_info(scp->dev, "IPI buf addr %#010zx\n", offset);
+-	if (vsi_id != vf->lan_vsi_num)
+-		return -EINVAL;
+-
+ 	if (!ice_vc_isvalid_vsi_id(vf, vsi_id))
+ 		return -EINVAL;
  
-+	/* Make sure IPI buffer fits in the L2TCM range assigned to this core */
-+	buf_sz = sizeof(*scp->recv_buf) + sizeof(*scp->send_buf);
-+
-+	if (scp->sram_size < buf_sz + offset) {
-+		dev_err(scp->dev, "IPI buffer does not fit in SRAM.\n");
-+		return -EOVERFLOW;
-+	}
-+
- 	scp->recv_buf = (struct mtk_share_obj __iomem *)
- 			(scp->sram_base + offset);
- 	scp->send_buf = (struct mtk_share_obj __iomem *)
 
 
 
