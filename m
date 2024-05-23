@@ -1,128 +1,130 @@
-Return-Path: <stable+bounces-45649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591898CD120
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD5D8CD135
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90A7281C52
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:19:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 074AD1C21760
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D240E146A9C;
-	Thu, 23 May 2024 11:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41731474BC;
+	Thu, 23 May 2024 11:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iGI13gXl"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="VWUdpLN2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oXhXplw+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from wfout1-smtp.messagingengine.com (wfout1-smtp.messagingengine.com [64.147.123.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A182746F
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 11:19:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCE513C91D;
+	Thu, 23 May 2024 11:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716463167; cv=none; b=AgDV8pQtbDk/F6B1De6GOh9FPHyuyDlPSDk0QhYA5c//JBDxGHo0wdCHh7GzSZwZ8KZIN4oCbLcpl/ydWmYG9WSaSBR5cRj4z9S+HW/ranKrMhB6qtQLHZ7iwJS6oVtiGfbUOQ3rjGor+DLDm6qTnu5y9PaOjJktLEjgrmb8Uxk=
+	t=1716463699; cv=none; b=tqXTUoycrad0Q5YDYnZY4tkbzAQjkOTT917O2YtQj66Rhx9WjWVRyC2OV9JG9YFEBYeA1AMQGXuDL5nOuAXJyPLB4PDBXnRBqWUWxNS8rA3rDn2+ZpJIbUsSMNPyJ8guOduG/A7wgXxFkXHf8xk4Kd9UC+fMk9uzeA0zhrp1l6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716463167; c=relaxed/simple;
-	bh=2RcYa+PV3eSUEx+GeItUnyJGuzG4rfyK0nh7prZKLdQ=;
+	s=arc-20240116; t=1716463699; c=relaxed/simple;
+	bh=98af4TZTxoNtCMAu0GpqxIFWTOMAVwBIl44PAzZ2++s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NsFCd4CNC6pbAoa3MIYJqu7c690opSwGCvOXA8nL8S3Rg/HGjtfs6TDEoDajP3Jj1wIPmNoynIHN8uIHydmaJIwpfzoeKy5PwnNWsDAqm+CBdv0Sj+bmkOhIGuTy6XUWL7Rsx+yB5mYvKfCuyvVS87V4x6M2p+FhPYWPnlTUPSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iGI13gXl; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716463166; x=1747999166;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=2RcYa+PV3eSUEx+GeItUnyJGuzG4rfyK0nh7prZKLdQ=;
-  b=iGI13gXlm4XXXg5VBrspSX+E1Qt2+SbZvAHkj7apav3u+isegyykYJHA
-   Dv5IDvxBgDB85Z9TP2sZX3azKNMUIuJh8zoDcMw0JZ7uOLvYztSJ4VYr4
-   OTITEXprG14BEd5JM/fa+1wyClDYMHZVBHRZoG0jIamniZ6v6nWLJ6t4N
-   EzO0xJyV+x8F9uZhhxFpLZ8s5bqNj8aElQte+2NUPhW0dCvueGS82LbN5
-   NQH2pqT3Sw6z/BGrZdmzo07iguBsSJiyA1uRaFetAXzl/OBWmJV2WJnTd
-   YRZZKmpCBS6TD6gzT6IiX2keotrwjETafImwtCs/NX5U7DygvjLSXS3lF
-   w==;
-X-CSE-ConnectionGUID: f8kfb8NrTcyoow+/y+c9uQ==
-X-CSE-MsgGUID: TEolCAhZS0CkQrK9A5Blmw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="13002342"
-X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
-   d="scan'208";a="13002342"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 04:19:22 -0700
-X-CSE-ConnectionGUID: hpQhgGQoRpeU8kBQ+I4HQQ==
-X-CSE-MsgGUID: /Y4MFKwuTF2jBvyDrZpmnA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
-   d="scan'208";a="33613999"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 23 May 2024 04:19:16 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Thu, 23 May 2024 14:19:15 +0300
-Date: Thu, 23 May 2024 14:19:15 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: Vidya Srinivas <vidya.srinivas@intel.com>,
-	intel-gfx@lists.freedesktop.org, shawn.c.lee@intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/dpt: Make DPT object unshrinkable
-Message-ID: <Zk8mM0bh5QMGcSGL@intel.com>
-References: <20240520165634.1162470-1-vidya.srinivas@intel.com>
- <20240522152916.1702614-1-vidya.srinivas@intel.com>
- <5e5660ac-e14b-4759-a6f6-38cc55d37246@ursulin.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=BhTLVVtpw5S5xPsQrRkCyBfvL85CW3dj3xv5bKzBxDRU3JEsyOE6XPXTN0dvDpRq95mK6pHjDyN1U/029vyRS0CRnR+5haR6Ov3OYOycNvgibrQRnLflrynUBAN9QU6tvUO9+mj0KCaJB/2sxxQ14Cgju0JhlnFFPXsqGavYIeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=VWUdpLN2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oXhXplw+; arc=none smtp.client-ip=64.147.123.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.west.internal (Postfix) with ESMTP id BC46C1C001DE;
+	Thu, 23 May 2024 07:28:15 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Thu, 23 May 2024 07:28:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1716463695; x=1716550095; bh=if5e5WwkzJ
+	eIoOCzGj7W+4ffr1RWsZHFOpu3DQ7P8u8=; b=VWUdpLN2a8RsBDIf+rC1CIxc2g
+	mVsXBBruEuC0bqMUUP0T+xTp3vR2BS/SNGcEETCnv2Ifxj+etUKDu13EMVJuZ2EP
+	xWtggkkA6jkGcfsy3/omIPPCvtW4fjaWzN6BoMf2WL1wfR9ohoVK3rNCHolFP1Sk
+	H0+Fp5661//u+Ymqz3T6H/7z457lc6L/aDVuWpDQG+W4k8dvtGy8QWaULEqERuhe
+	hU/G3fEclOgwXF62255tomnwim2ErSKe8+bN+hDK0ZWmX4aW+n+D3ocvnxJxAAOt
+	3Rxzubp1f1/+RZSrYyyqdDXW0xcmL39RNyhWyIED451PTG9aW/MXg9RvzkwQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1716463695; x=1716550095; bh=if5e5WwkzJeIoOCzGj7W+4ffr1RW
+	sZHFOpu3DQ7P8u8=; b=oXhXplw+/HmJEAscFsdO5pb1D1C9as6Rvi3qlyQe6mnT
+	d87YfTHZcpTWMb4Je7IuJe+qDsBji+v3IIb75f+Nn6OvzJ5wsxJAW9jg69oYYu7v
+	pF8CV7DLyN907NI6diN0/6rJMkjeJwXgRBhC9ej+gXZ+0TqUOW/ePQ9JzVRHmXsK
+	o8DS6JiVyCo0SIoInElOkRu+84lism8uJru6Az6RPTy5MGpKwdTAggII7w1fTeLQ
+	M8zVO4k0OAW8ioXbnl87yG119OY8w9jBkXTAU4LiYhF0e5dGdJewExiQcJK6KXsP
+	acv58S8opmE05SsLLNaixlvp5Vl0KqumlXnjISXg6g==
+X-ME-Sender: <xms:TyhPZjVwgqpUNUJJ7oVmfiYEgJJs68sCeZCSjG9t6GldNpcQbgoPQQ>
+    <xme:TyhPZrmAK3kfMIK-V2bGdDhKhW5BbUlTWZ4F94aLj9YyHZQ7DWAcp5qFafwfpOGSN
+    E5Yh-zx1uviJw>
+X-ME-Received: <xmr:TyhPZvZcGL2-h8KWLmhzfsZPMVBC5kWbwtvQLNXGcwbS0Tcf8tIDCRuzyyReQ8P70iR2kai5XaCqQUp62lpx80S8HCc8wiNRbVYX7A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeiiedggedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:TyhPZuUEkLI2nCjDUFJlx4000_ffEMpr7MR-1XqNR_Jy1BsXCftn0g>
+    <xmx:TyhPZtmXF8FFpbQhgH-uvYrx2B3ens5Wkq0tLUyPnIB5vLVc_qY_Lg>
+    <xmx:TyhPZrc5axTrFTajOVnfhRHfQlX_dEjCGqsAY1db5w2TxHFsjC9SYA>
+    <xmx:TyhPZnGO02CXTelJD2VDrDtVczcdc2c5twWV99ov0MLm582bZe04yA>
+    <xmx:TyhPZscJOFBfrKh3kFp6ezJF_hSni6Qe0qW_QNpsHY9V2ZKHldLB61rM>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 23 May 2024 07:28:14 -0400 (EDT)
+Date: Thu, 23 May 2024 13:28:12 +0200
+From: Greg KH <greg@kroah.com>
+To: Edward Liaw <edliaw@google.com>
+Cc: stable@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	kernel-team@android.com, Mark Brown <broonie@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND 6.6.y] kselftest: Add a ksft_perror() helper
+Message-ID: <2024052305-unmapped-renewably-b3fc@gregkh>
+References: <20240520175629.162697-1-edliaw@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5e5660ac-e14b-4759-a6f6-38cc55d37246@ursulin.net>
-X-Patchwork-Hint: comment
+In-Reply-To: <20240520175629.162697-1-edliaw@google.com>
 
-On Thu, May 23, 2024 at 09:25:45AM +0100, Tvrtko Ursulin wrote:
+On Mon, May 20, 2024 at 05:56:28PM +0000, Edward Liaw wrote:
+> From: Mark Brown <broonie@kernel.org>
 > 
-> On 22/05/2024 16:29, Vidya Srinivas wrote:
-> > In some scenarios, the DPT object gets shrunk but
-> > the actual framebuffer did not and thus its still
-> > there on the DPT's vm->bound_list. Then it tries to
-> > rewrite the PTEs via a stale CPU mapping. This causes panic.
-> > 
-> > Suggested-by: Ville Syrjala <ville.syrjala@linux.intel.com>
-> > Cc: stable@vger.kernel.org
-> > Fixes: 0dc987b699ce ("drm/i915/display: Add smem fallback allocation for dpt")
-> > Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
-> > ---
-> >   drivers/gpu/drm/i915/gem/i915_gem_object.h | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/gpu/drm/i915/gem/i915_gem_object.h b/drivers/gpu/drm/i915/gem/i915_gem_object.h
-> > index 3560a062d287..e6b485fc54d4 100644
-> > --- a/drivers/gpu/drm/i915/gem/i915_gem_object.h
-> > +++ b/drivers/gpu/drm/i915/gem/i915_gem_object.h
-> > @@ -284,7 +284,8 @@ bool i915_gem_object_has_iomem(const struct drm_i915_gem_object *obj);
-> >   static inline bool
-> >   i915_gem_object_is_shrinkable(const struct drm_i915_gem_object *obj)
-> >   {
-> > -	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE);
-> > +	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE) &&
-> > +		!obj->is_dpt;
+> [ Upstream commit 907f33028871fa7c9a3db1efd467b78ef82cce20 ]
 > 
-> Is there a reason i915_gem_object_make_unshrinkable() cannot be used to 
-> mark the object at a suitable place?
+> The standard library perror() function provides a convenient way to print
+> an error message based on the current errno but this doesn't play nicely
+> with KTAP output. Provide a helper which does an equivalent thing in a KTAP
+> compatible format.
+> 
+> nolibc doesn't have a strerror() and adding the table of strings required
+> doesn't seem like a good fit for what it's trying to do so when we're using
+> that only print the errno.
+> 
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+> Stable-dep-of: 071af0c9e582 ("selftests: timers: Convert posix_timers test to generate KTAP output")
+> Signed-off-by: Edward Liaw <edliaw@google.com>
+> ---
+>  tools/testing/selftests/kselftest.h | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
 
-Do you have a suitable place in mind?
-i915_gem_object_make_unshrinkable() contains some magic
-ingredients so doesn't look like it can be called willy
-nilly.
+Now queued up, thanks.
 
-Anyways, looks like I forgot to reply that I already pushed this
-with this extra comment added:
-/* TODO: make DPT shrinkable when it has no bound vmas */
-
--- 
-Ville Syrjälä
-Intel
+greg k-h
 
