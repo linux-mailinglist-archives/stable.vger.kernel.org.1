@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1EC8CD465
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B65128CD3E1
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5FDAB2198F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E81F81C20ACC
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38DA14B96C;
-	Thu, 23 May 2024 13:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4428514B09F;
+	Thu, 23 May 2024 13:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMgk6gBl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LejzDSny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B0614A632;
-	Thu, 23 May 2024 13:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE1314B083;
+	Thu, 23 May 2024 13:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470642; cv=none; b=ond+XwkMNPjFxC0C3YsDSB1uVAQeNafnbkHeAmNkz8LeaQmAAPoTf+mtaesycT9wRE2yggiZoLEo6ZY7RPzmtGAdcqhQYqgBGaPOI1vUlplcuHdx5LE5dJYoou2txGcwAC4+/otdcJ8xLyGm854nYouEzgSDwiOtgFKs93DvziE=
+	t=1716470366; cv=none; b=K1KXV9Uvfz68y91HWsbTVs1sHdZ45nTZ2CirYpEwJQ84vJZDpHwYU6+bMoj9JfnhhdC8sSk6GCAxWkUMpRCzicwzTX0W8v4oXuRlkibXzXq5hbJo6ybKJkIo//NtmzXiOLmtD7+qeGGfUZkTxKsvTUM45FwE6bMG1YNnOYMQCGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470642; c=relaxed/simple;
-	bh=1SwK/Pf9m5NbgwGq3XxstDS6INia0n606YKpJdLuarI=;
+	s=arc-20240116; t=1716470366; c=relaxed/simple;
+	bh=fA7GE2YgYqxPyxAffHyTxrtobWl7Kju5olgp0JaIzq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUxvOVrLxl70xrIdYLjCL1uFfHDcNqif5upmAvNBHeSGQVe5PTqI/K78W3TCgyVe9EnyOO4lTKQ84O7xLy//y7gG0mj+RtyJnaW84wYZPlTKcYxmvVEUir8ctqGv1YsLFQdC1hzpOt148wnqtdcrEgxP62CVWaZVs9+jetx4yWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMgk6gBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191DFC32781;
-	Thu, 23 May 2024 13:24:01 +0000 (UTC)
+	 MIME-Version; b=uXfAzP1DjboJOoIz1SAh8+0VcLDSx5h8mm0BQSLZUB0+e0HeaA4/0koeS64RxLvfTvny7Gh5bwe6pilvu9GYR2pakcJ1CLbK8DMAyDtqc7+Q+0rq2lNKPb3ekv+BQ6/+kSWaAK4u2yTaLs3dnQqmMQ1ELcdfPD96XGxU8MBMsFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LejzDSny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC8EC2BD10;
+	Thu, 23 May 2024 13:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470642;
-	bh=1SwK/Pf9m5NbgwGq3XxstDS6INia0n606YKpJdLuarI=;
+	s=korg; t=1716470365;
+	bh=fA7GE2YgYqxPyxAffHyTxrtobWl7Kju5olgp0JaIzq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YMgk6gBlCk8ERGXoeOxrPnyKU1HUWtYSy/PhBq8tv/Hf2nAFI3lf8KXk2izEloUaF
-	 C8VBcMrkRoRgAP5mVocWvWIO6hApBNEMlwr284oq+/D+Gf+/j67nNb98S4d8ijWQZW
-	 W438bPUMp7tq4M5GKtPqGdx+CL6fdM2gAMTUFSBQ=
+	b=LejzDSnymYChlkv1MuGTXhMbCAn9hHeuhC9HEayG0OOKS1mPS58GT6K7sbs2PxOsr
+	 K3y+3XQSmPy2pJzxFbm7QnfkV+fOUYjXuTVcaovgghY/YdXQUXrtrrt6KrdelsFtbV
+	 cOWQINE/Whc+PEyVTW6Kktj0eMYTAUC1DlOn13YU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/102] cifs: update the same create_guid on replay
-Date: Thu, 23 May 2024 15:13:02 +0200
-Message-ID: <20240523130343.864572440@linuxfoundation.org>
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 12/45] xfs: use byte ranges for write cleanup ranges
+Date: Thu, 23 May 2024 15:13:03 +0200
+Message-ID: <20240523130332.958919497@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,136 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit 79520587fe42cd4988aff8695d60621e689109cb ]
+[ Upstream commit b71f889c18ada210a97aa3eb5e00c0de552234c6 ]
 
-File open requests made to the server contain a
-CreateGuid, which is used by the server to identify
-the open request. If the same request needs to be
-replayed, it needs to be sent with the same CreateGuid
-in the durable handle v2 context.
+xfs_buffered_write_iomap_end() currently converts the byte ranges
+passed to it to filesystem blocks to pass them to the bmap code to
+punch out delalloc blocks, but then has to convert filesytem
+blocks back to byte ranges for page cache truncate.
 
-Without doing so, we could end up leaking handles on
-the server when:
-1. multichannel is used AND
-2. connection goes down, but not for all channels
+We're about to make the page cache truncate go away and replace it
+with a page cache walk, so having to convert everything to/from/to
+filesystem blocks is messy and error-prone. It is much easier to
+pass around byte ranges and convert to page indexes and/or
+filesystem blocks only where those units are needed.
 
-This is because the replayed open request would have a
-new CreateGuid and the server will treat this as a new
-request and open a new handle.
+In preparation for the page cache walk being added, add a helper
+that converts byte ranges to filesystem blocks and calls
+xfs_bmap_punch_delalloc_range() and convert
+xfs_buffered_write_iomap_end() to calculate limits in byte ranges.
 
-This change fixes this by reusing the existing create_guid
-stored in the cached fid struct.
-
-REF: MS-SMB2 4.9 Replay Create Request on an Alternate Channel
-
-Fixes: 4f1fffa23769 ("cifs: commands that are retried should have replay flag set")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cached_dir.c |  1 +
- fs/smb/client/cifsglob.h   |  1 +
- fs/smb/client/smb2ops.c    |  4 ++++
- fs/smb/client/smb2pdu.c    | 10 ++++++++--
- 4 files changed, 14 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_iomap.c |   40 +++++++++++++++++++++++++---------------
+ 1 file changed, 25 insertions(+), 15 deletions(-)
 
-diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
-index ca0fd25236ef4..0ff2491c311d8 100644
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -243,6 +243,7 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
- 				   FILE_READ_EA,
- 		.disposition = FILE_OPEN,
- 		.fid = pfid,
-+		.replay = !!(retries),
- 	};
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -1121,6 +1121,20 @@ out_unlock:
+ }
  
- 	rc = SMB2_open_init(tcon, server,
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 8fbdb781d70a6..181e9d5b10f92 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1382,6 +1382,7 @@ struct cifs_open_parms {
- 	struct cifs_fid *fid;
- 	umode_t mode;
- 	bool reconnect:1;
-+	bool replay:1; /* indicates that this open is for a replay */
- };
- 
- struct cifs_fid {
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 06735c5685bf6..23cf6e92fd54c 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -1204,6 +1204,7 @@ smb2_set_ea(const unsigned int xid, struct cifs_tcon *tcon,
- 		.disposition = FILE_OPEN,
- 		.create_options = cifs_create_options(cifs_sb, 0),
- 		.fid = &fid,
-+		.replay = !!(retries),
- 	};
- 
- 	rc = SMB2_open_init(tcon, server,
-@@ -1570,6 +1571,7 @@ smb2_ioctl_query_info(const unsigned int xid,
- 		.disposition = FILE_OPEN,
- 		.create_options = cifs_create_options(cifs_sb, create_options),
- 		.fid = &fid,
-+		.replay = !!(retries),
- 	};
- 
- 	if (qi.flags & PASSTHRU_FSCTL) {
-@@ -2296,6 +2298,7 @@ smb2_query_dir_first(const unsigned int xid, struct cifs_tcon *tcon,
- 		.disposition = FILE_OPEN,
- 		.create_options = cifs_create_options(cifs_sb, 0),
- 		.fid = fid,
-+		.replay = !!(retries),
- 	};
- 
- 	rc = SMB2_open_init(tcon, server,
-@@ -2684,6 +2687,7 @@ smb2_query_info_compound(const unsigned int xid, struct cifs_tcon *tcon,
- 		.disposition = FILE_OPEN,
- 		.create_options = cifs_create_options(cifs_sb, 0),
- 		.fid = &fid,
-+		.replay = !!(retries),
- 	};
- 
- 	rc = SMB2_open_init(tcon, server,
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index c73a621a8b83e..60793143e24c6 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2421,8 +2421,13 @@ create_durable_v2_buf(struct cifs_open_parms *oparms)
- 	 */
- 	buf->dcontext.Timeout = cpu_to_le32(oparms->tcon->handle_timeout);
- 	buf->dcontext.Flags = cpu_to_le32(SMB2_DHANDLE_FLAG_PERSISTENT);
--	generate_random_uuid(buf->dcontext.CreateGuid);
--	memcpy(pfid->create_guid, buf->dcontext.CreateGuid, 16);
+ static int
++xfs_buffered_write_delalloc_punch(
++	struct inode		*inode,
++	loff_t			start_byte,
++	loff_t			end_byte)
++{
++	struct xfs_mount	*mp = XFS_M(inode->i_sb);
++	xfs_fileoff_t		start_fsb = XFS_B_TO_FSBT(mp, start_byte);
++	xfs_fileoff_t		end_fsb = XFS_B_TO_FSB(mp, end_byte);
 +
-+	/* for replay, we should not overwrite the existing create guid */
-+	if (!oparms->replay) {
-+		generate_random_uuid(buf->dcontext.CreateGuid);
-+		memcpy(pfid->create_guid, buf->dcontext.CreateGuid, 16);
-+	} else
-+		memcpy(buf->dcontext.CreateGuid, pfid->create_guid, 16);
++	return xfs_bmap_punch_delalloc_range(XFS_I(inode), start_fsb,
++				end_fsb - start_fsb);
++}
++
++static int
+ xfs_buffered_write_iomap_end(
+ 	struct inode		*inode,
+ 	loff_t			offset,
+@@ -1129,10 +1143,9 @@ xfs_buffered_write_iomap_end(
+ 	unsigned		flags,
+ 	struct iomap		*iomap)
+ {
+-	struct xfs_inode	*ip = XFS_I(inode);
+-	struct xfs_mount	*mp = ip->i_mount;
+-	xfs_fileoff_t		start_fsb;
+-	xfs_fileoff_t		end_fsb;
++	struct xfs_mount	*mp = XFS_M(inode->i_sb);
++	loff_t			start_byte;
++	loff_t			end_byte;
+ 	int			error = 0;
  
- 	/* SMB2_CREATE_DURABLE_HANDLE_REQUEST is "DH2Q" */
- 	buf->Name[0] = 'D';
-@@ -3159,6 +3164,7 @@ SMB2_open(const unsigned int xid, struct cifs_open_parms *oparms, __le16 *path,
- 	/* reinitialize for possible replay */
- 	flags = 0;
- 	server = cifs_pick_channel(ses);
-+	oparms->replay = !!(retries);
+ 	if (iomap->type != IOMAP_DELALLOC)
+@@ -1157,13 +1170,13 @@ xfs_buffered_write_iomap_end(
+ 	 * the range.
+ 	 */
+ 	if (unlikely(!written))
+-		start_fsb = XFS_B_TO_FSBT(mp, offset);
++		start_byte = round_down(offset, mp->m_sb.sb_blocksize);
+ 	else
+-		start_fsb = XFS_B_TO_FSB(mp, offset + written);
+-	end_fsb = XFS_B_TO_FSB(mp, offset + length);
++		start_byte = round_up(offset + written, mp->m_sb.sb_blocksize);
++	end_byte = round_up(offset + length, mp->m_sb.sb_blocksize);
  
- 	cifs_dbg(FYI, "create/open\n");
- 	if (!ses || !server)
--- 
-2.43.0
-
+ 	/* Nothing to do if we've written the entire delalloc extent */
+-	if (start_fsb >= end_fsb)
++	if (start_byte >= end_byte)
+ 		return 0;
+ 
+ 	/*
+@@ -1173,15 +1186,12 @@ xfs_buffered_write_iomap_end(
+ 	 * leave dirty pages with no space reservation in the cache.
+ 	 */
+ 	filemap_invalidate_lock(inode->i_mapping);
+-	truncate_pagecache_range(VFS_I(ip), XFS_FSB_TO_B(mp, start_fsb),
+-				 XFS_FSB_TO_B(mp, end_fsb) - 1);
+-
+-	error = xfs_bmap_punch_delalloc_range(ip, start_fsb,
+-				       end_fsb - start_fsb);
++	truncate_pagecache_range(inode, start_byte, end_byte - 1);
++	error = xfs_buffered_write_delalloc_punch(inode, start_byte, end_byte);
+ 	filemap_invalidate_unlock(inode->i_mapping);
+ 	if (error && !xfs_is_shutdown(mp)) {
+-		xfs_alert(mp, "%s: unable to clean up ino %lld",
+-			__func__, ip->i_ino);
++		xfs_alert(mp, "%s: unable to clean up ino 0x%llx",
++			__func__, XFS_I(inode)->i_ino);
+ 		return error;
+ 	}
+ 	return 0;
 
 
 
