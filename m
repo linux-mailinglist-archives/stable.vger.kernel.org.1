@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B93E8CD454
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE8B8CD38A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E13DB214D6
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDDAE1C20D9D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489E114830E;
-	Thu, 23 May 2024 13:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BB314A60C;
+	Thu, 23 May 2024 13:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+vqihPB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rij0uOE/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081401E497;
-	Thu, 23 May 2024 13:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6369D13BC38;
+	Thu, 23 May 2024 13:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470614; cv=none; b=BEzrMs/bGbi1nq94/VQy/4Vq+yCrSy13n2q0KFqgiuKt4haQuLdUZgMT4dSIxfUQT/2lB59Uwvy5i+eCnmxxUCFe68QuDZF0WJKzGQIR+FUfQ467+I0rZCXp11W3c2sk+/YVBaAOIDvWjGx90lYArlxgHau0das0xC2Ra4nmSog=
+	t=1716470174; cv=none; b=bH5EiTljQ8c0mF6jTFtbkN0xh56EMPlrMl6NilIQV4pIOM1ZvmRDpEqfGKzLFwAa6ml8ETaAVG9IugDibAPAJRH0Vc7QvCXgNFGHtTeLf5dktNvEhIoWOiK3dGYJ/J8dy0TiImex1TVAWh0df0AYBM5gVH/G0wjGho2Z16kz+lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470614; c=relaxed/simple;
-	bh=nsrZ0InUB23PC2zXl/I1xvHGOMG7fDwlJUprFddflhc=;
+	s=arc-20240116; t=1716470174; c=relaxed/simple;
+	bh=R1NvdflBn+znU0HAU3EcWFUPbkXI69rhxt+bnF7Lf0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gd//KE/29eUp+gQxhdepdHxCLSDt/54k29mjhc2v+XE6ItcjiMDfqrOOD3XqMxa9dOhrG6dfqoIPAvVxqYvh/WKJbN94iPPZYXuL0OadRqpywr3fZ2n2162EvRSghSrwGAzWJ/9+e82B5p5a0s1tUOn5QKGTJbJgmf7aK+6LGPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+vqihPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379EFC2BD10;
-	Thu, 23 May 2024 13:23:33 +0000 (UTC)
+	 MIME-Version; b=tl3YZJnFSMoeFz/mloD91bbfg/3ZKlAUmNltblwwMuNl/03qfh44/mqMruT7TvdL0wEOWpcBSOUg72IkFtVnYVzAJbJH5je72x8wHyVM2q9NOWLv9exfkUJFy3z704QR0Ekm8f3p6U8AIp2VtspnaALyq7eXg6lDZAGA4JXo3QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rij0uOE/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D515FC2BD10;
+	Thu, 23 May 2024 13:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470613;
-	bh=nsrZ0InUB23PC2zXl/I1xvHGOMG7fDwlJUprFddflhc=;
+	s=korg; t=1716470174;
+	bh=R1NvdflBn+znU0HAU3EcWFUPbkXI69rhxt+bnF7Lf0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+vqihPBrcl1MDeF5Xc4Zu4ORNDMBrIf+UXV7sgsa8LMez9Bq96p8IVPfpjbw4CC5
-	 jLshjHUIMdzSgZsBnZM64/k/oQotngCFYwTGee32zeme2xxznJ/S9TC8e65O0DcMls
-	 CtVIH1/To0HyxNOixy7Cyx+o4dr6jasrtRse/64k=
+	b=Rij0uOE/kpe231I0u9KzUjyHBiWvtUtxXih1xSLVgNLYHUR1c7+viwIlpM8+KwJ/k
+	 pxOzcMztFBTdJ4S/xUL2VRbHsAZS1V9vZeV1ri5FZ1y4a6uUGT/6K9HdUOGKNGZ/sh
+	 81cPag4JXUYwDLa7PK2HTUwRQFj37GK6ZByLRe+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/102] cifs: pick channel for tcon and tdis
+	Pavel Machek <pavel@denx.de>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 11/15] btrfs: add missing mutex_unlock in btrfs_relocate_sys_chunks()
 Date: Thu, 23 May 2024 15:12:53 +0200
-Message-ID: <20240523130343.524174586@linuxfoundation.org>
+Message-ID: <20240523130326.882403497@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
+References: <20240523130326.451548488@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-[ Upstream commit 268b8b5797becb242013fcd63173eb28c007c8ae ]
+commit 9af503d91298c3f2945e73703f0e00995be08c30 upstream.
 
-Today, the tree connect and disconnect requests are
-sent on the primary channel only. However, the new
-multichannel logic allows the session to remain active
-even if one of the channels are alive. So a tree connect
-can now be triggered during a reconnect on any of
-its channels.
+The previous patch that replaced BUG_ON by error handling forgot to
+unlock the mutex in the error path.
 
-This change changes tcon and tdis calls to pick an
-active channel instead of the first one.
-
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
+Reported-by: Pavel Machek <pavel@denx.de>
+Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
+CC: stable@vger.kernel.org
+Reviewed-by: Pavel Machek <pavel@denx.de>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ fs/btrfs/volumes.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 3f9448b5ada9b..95b5b4bdb4b7f 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2019,10 +2019,7 @@ SMB2_tcon(const unsigned int xid, struct cifs_ses *ses, const char *tree,
- 	__le16 *unc_path = NULL;
- 	int flags = 0;
- 	unsigned int total_len;
--	struct TCP_Server_Info *server;
--
--	/* always use master channel */
--	server = ses->server;
-+	struct TCP_Server_Info *server = cifs_pick_channel(ses);
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3194,6 +3194,7 @@ again:
+ 			 * alignment and size).
+ 			 */
+ 			ret = -EUCLEAN;
++			mutex_unlock(&fs_info->delete_unused_bgs_mutex);
+ 			goto error;
+ 		}
  
- 	cifs_dbg(FYI, "TCON\n");
- 
-@@ -2155,6 +2152,7 @@ SMB2_tdis(const unsigned int xid, struct cifs_tcon *tcon)
- 	struct smb2_tree_disconnect_req *req; /* response is trivial */
- 	int rc = 0;
- 	struct cifs_ses *ses = tcon->ses;
-+	struct TCP_Server_Info *server = cifs_pick_channel(ses);
- 	int flags = 0;
- 	unsigned int total_len;
- 	struct kvec iov[1];
-@@ -2177,7 +2175,7 @@ SMB2_tdis(const unsigned int xid, struct cifs_tcon *tcon)
- 
- 	invalidate_all_cached_dirs(tcon);
- 
--	rc = smb2_plain_req_init(SMB2_TREE_DISCONNECT, tcon, ses->server,
-+	rc = smb2_plain_req_init(SMB2_TREE_DISCONNECT, tcon, server,
- 				 (void **) &req,
- 				 &total_len);
- 	if (rc)
-@@ -2195,7 +2193,7 @@ SMB2_tdis(const unsigned int xid, struct cifs_tcon *tcon)
- 	rqst.rq_iov = iov;
- 	rqst.rq_nvec = 1;
- 
--	rc = cifs_send_recv(xid, ses, ses->server,
-+	rc = cifs_send_recv(xid, ses, server,
- 			    &rqst, &resp_buf_type, flags, &rsp_iov);
- 	cifs_small_buf_release(req);
- 	if (rc) {
--- 
-2.43.0
-
 
 
 
