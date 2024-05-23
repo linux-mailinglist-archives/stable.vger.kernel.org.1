@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-45754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C908CD3B6
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E76D8CD3E0
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89339B229DE
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9041E1C213DF
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FB714B084;
-	Thu, 23 May 2024 13:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0C714B095;
+	Thu, 23 May 2024 13:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eK/DJXTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDf3fHAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AB414B077;
-	Thu, 23 May 2024 13:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A23014B083;
+	Thu, 23 May 2024 13:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470266; cv=none; b=Y3R8fb47kDfR6fKj8URatPsP82xS/pbCuoOUcOmorsEIymICYptMPav6bggLMjZD0TUlJas1Syow8Iwt/uwD82q2bA2YpfGtFZAhWYNc3BRf2s0ula08glGcq17flt+JYvCSOV6STLFQ+AsHR2kONLCQdk5AGwOrj2Jl8jC2Yhw=
+	t=1716470363; cv=none; b=a7hvrTDwhPgHzD0QWtC5ElcU6FUwaHDpcpXA/B2x7Ip1ZZSiV/fZUJRuiHdL4tzEgXTahJXc8GNOtiShEsmF9yTgPqnjqphTL1LDlQyEEk5hoVAA9PNXN8EPPz2jU4897oljr7+bcmNRvPiyf5/Z9Oj3Oq6Noz4y026E8FcJ8xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470266; c=relaxed/simple;
-	bh=yptMw5g5clDmkmEplPv+JAgYganX9VoNt78uNU31m98=;
+	s=arc-20240116; t=1716470363; c=relaxed/simple;
+	bh=jR9+/HQ4+ERE8HNKtBzs/zUM9SThxIkXnU8FGg5wRrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lASRxcG28poeCuKAbSF2VhfN0NV4r/DS3uvaf3zvuJ4qDKtbmw+AL8MlzqVSaMkuVhLmGmgsEyppV1ej+kNV2SSSbBAAVQIgTEaA1EfkAPFWMmEk7AU3EudKkQ2X6Gl6Bsr8+P236CFlXSyJMZRELSOtiOV0m6TR+ErAn/JKprI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eK/DJXTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBDCC2BD10;
-	Thu, 23 May 2024 13:17:45 +0000 (UTC)
+	 MIME-Version; b=QtnHYsOJO583u7HnZusT5gp8zp7tuMNCdvGn2flydPddRQQtat3FkEcuTt0n+Ko5QKlfLVVSLisv1DpJJY5V61lycIelhUHb3jufmLuaupmbxBfCHqPCDQ/vI9JhHJrmOpTGkhiuh3aCP+KkMpQo+hx2JKYRpUPXrIITKYTYDos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDf3fHAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E24AC32781;
+	Thu, 23 May 2024 13:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470265;
-	bh=yptMw5g5clDmkmEplPv+JAgYganX9VoNt78uNU31m98=;
+	s=korg; t=1716470362;
+	bh=jR9+/HQ4+ERE8HNKtBzs/zUM9SThxIkXnU8FGg5wRrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eK/DJXTwxE4Ei+w1ydT6IB+10MIGIqAhCWaAjxEWFyXsNIjhL9qnoHXYC9zJAx2wH
-	 6RaR0WkyXGh9LcYon5ll/xzXku83Hup0DSdTUPegx/YXOaparljrSAgoBxAe2iTZHx
-	 bgyZ3N7XiP15w27XQ0dVWUY5kGnFhq1KwzN9Saic=
+	b=DDf3fHAsjs7+blAn88cwKT8Vq/GByPDbQJ/gxi0Ifh6Bf1BbzwoxOGBkC/zM/6EoC
+	 kPlB58VU52fCYRwA8B85BoCx4TsoiJ90Qci9YogWKNY7DbOVn7s1B/yoyBZb4EX54Q
+	 KBqsFdtHl3IEQDqIn9kpdVqpTORLTLn5amEJTQFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.9 17/25] remoteproc: mediatek: Make sure IPI buffer fits in L2TCM
+	Dave Chinner <dchinner@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 11/45] xfs: punching delalloc extents on write failure is racy
 Date: Thu, 23 May 2024 15:13:02 +0200
-Message-ID: <20240523130331.035116956@linuxfoundation.org>
+Message-ID: <20240523130332.921321869@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-commit 331f91d86f71d0bb89a44217cc0b2a22810bbd42 upstream.
+[ Upstream commit 198dd8aedee6a7d2de0dfa739f9a008a938f6848 ]
 
-The IPI buffer location is read from the firmware that we load to the
-System Companion Processor, and it's not granted that both the SRAM
-(L2TCM) size that is defined in the devicetree node is large enough
-for that, and while this is especially true for multi-core SCP, it's
-still useful to check on single-core variants as well.
+xfs_buffered_write_iomap_end() has a comment about the safety of
+punching delalloc extents based holding the IOLOCK_EXCL. This
+comment is wrong, and punching delalloc extents is not race free.
 
-Failing to perform this check may make this driver perform R/W
-operations out of the L2TCM boundary, resulting (at best) in a
-kernel panic.
+When we punch out a delalloc extent after a write failure in
+xfs_buffered_write_iomap_end(), we punch out the page cache with
+truncate_pagecache_range() before we punch out the delalloc extents.
+At this point, we only hold the IOLOCK_EXCL, so there is nothing
+stopping mmap() write faults racing with this cleanup operation,
+reinstantiating a folio over the range we are about to punch and
+hence requiring the delalloc extent to be kept.
 
-To fix that, check that the IPI buffer fits, otherwise return a
-failure and refuse to boot the relevant SCP core (or the SCP at
-all, if this is single core).
+If this race condition is hit, we can end up with a dirty page in
+the page cache that has no delalloc extent or space reservation
+backing it. This leads to bad things happening at writeback time.
 
-Fixes: 3efa0ea743b7 ("remoteproc/mediatek: read IPI buffer offset from FW")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240321084614.45253-2-angelogioacchino.delregno@collabora.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+To avoid this race condition, we need the page cache truncation to
+be atomic w.r.t. the extent manipulation. We can do this by holding
+the mapping->invalidate_lock exclusively across this operation -
+this will prevent new pages from being inserted into the page cache
+whilst we are removing the pages and the backing extent and space
+reservation.
+
+Taking the mapping->invalidate_lock exclusively in the buffered
+write IO path is safe - it naturally nests inside the IOLOCK (see
+truncate and fallocate paths). iomap_zero_range() can be called from
+under the mapping->invalidate_lock (from the truncate path via
+either xfs_zero_eof() or xfs_truncate_page(), but iomap_zero_iter()
+will not instantiate new delalloc pages (because it skips holes) and
+hence will not ever need to punch out delalloc extents on failure.
+
+Fix the locking issue, and clean up the code logic a little to avoid
+unnecessary work if we didn't allocate the delalloc extent or wrote
+the entire region we allocated.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/mtk_scp.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_iomap.c |   41 +++++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
 
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -132,7 +132,7 @@ static int scp_elf_read_ipi_buf_addr(str
- static int scp_ipi_init(struct mtk_scp *scp, const struct firmware *fw)
- {
- 	int ret;
--	size_t offset;
-+	size_t buf_sz, offset;
- 
- 	/* read the ipi buf addr from FW itself first */
- 	ret = scp_elf_read_ipi_buf_addr(scp, fw, &offset);
-@@ -144,6 +144,14 @@ static int scp_ipi_init(struct mtk_scp *
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -1147,6 +1147,10 @@ xfs_buffered_write_iomap_end(
+ 		written = 0;
  	}
- 	dev_info(scp->dev, "IPI buf addr %#010zx\n", offset);
  
-+	/* Make sure IPI buffer fits in the L2TCM range assigned to this core */
-+	buf_sz = sizeof(*scp->recv_buf) + sizeof(*scp->send_buf);
++	/* If we didn't reserve the blocks, we're not allowed to punch them. */
++	if (!(iomap->flags & IOMAP_F_NEW))
++		return 0;
 +
-+	if (scp->sram_size < buf_sz + offset) {
-+		dev_err(scp->dev, "IPI buffer does not fit in SRAM.\n");
-+		return -EOVERFLOW;
+ 	/*
+ 	 * start_fsb refers to the first unused block after a short write. If
+ 	 * nothing was written, round offset down to point at the first block in
+@@ -1158,27 +1162,28 @@ xfs_buffered_write_iomap_end(
+ 		start_fsb = XFS_B_TO_FSB(mp, offset + written);
+ 	end_fsb = XFS_B_TO_FSB(mp, offset + length);
+ 
++	/* Nothing to do if we've written the entire delalloc extent */
++	if (start_fsb >= end_fsb)
++		return 0;
++
+ 	/*
+-	 * Trim delalloc blocks if they were allocated by this write and we
+-	 * didn't manage to write the whole range.
+-	 *
+-	 * We don't need to care about racing delalloc as we hold i_mutex
+-	 * across the reserve/allocate/unreserve calls. If there are delalloc
+-	 * blocks in the range, they are ours.
++	 * Lock the mapping to avoid races with page faults re-instantiating
++	 * folios and dirtying them via ->page_mkwrite between the page cache
++	 * truncation and the delalloc extent removal. Failing to do this can
++	 * leave dirty pages with no space reservation in the cache.
+ 	 */
+-	if ((iomap->flags & IOMAP_F_NEW) && start_fsb < end_fsb) {
+-		truncate_pagecache_range(VFS_I(ip), XFS_FSB_TO_B(mp, start_fsb),
+-					 XFS_FSB_TO_B(mp, end_fsb) - 1);
+-
+-		error = xfs_bmap_punch_delalloc_range(ip, start_fsb,
+-					       end_fsb - start_fsb);
+-		if (error && !xfs_is_shutdown(mp)) {
+-			xfs_alert(mp, "%s: unable to clean up ino %lld",
+-				__func__, ip->i_ino);
+-			return error;
+-		}
+-	}
++	filemap_invalidate_lock(inode->i_mapping);
++	truncate_pagecache_range(VFS_I(ip), XFS_FSB_TO_B(mp, start_fsb),
++				 XFS_FSB_TO_B(mp, end_fsb) - 1);
+ 
++	error = xfs_bmap_punch_delalloc_range(ip, start_fsb,
++				       end_fsb - start_fsb);
++	filemap_invalidate_unlock(inode->i_mapping);
++	if (error && !xfs_is_shutdown(mp)) {
++		xfs_alert(mp, "%s: unable to clean up ino %lld",
++			__func__, ip->i_ino);
++		return error;
 +	}
-+
- 	scp->recv_buf = (struct mtk_share_obj __iomem *)
- 			(scp->sram_base + offset);
- 	scp->send_buf = (struct mtk_share_obj __iomem *)
+ 	return 0;
+ }
+ 
 
 
 
