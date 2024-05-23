@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592128CD3B3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B567B8CD46E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B81E1B2292C
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70172281039
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F6F14B955;
-	Thu, 23 May 2024 13:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E70114A4E9;
+	Thu, 23 May 2024 13:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ex9AwQZx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcRNbzQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5551F14AD36;
-	Thu, 23 May 2024 13:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F3A13B7AE;
+	Thu, 23 May 2024 13:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470257; cv=none; b=YmvTVoSN8OLT62SEYnPHWhO5Z7+l8/5M4j9GV1xh0MPMO0rjlPCYLGCTOZpfkqFM+hlGgeb+fm8oK0yvM2FIfupGki3dJhDC6gJtltp6oGzHEj2FjUrenze3caq22aZNEn/Oj4RNKES3Pregz5Lyz+Mhus0u1ksvqX5LcMMHUI8=
+	t=1716470662; cv=none; b=aCsNTHkgLdKpaRLzvt8oq31UxzdhK26BxINTqdov4i5ZKFqrs3XznFUd0ieEmOxq3VS+BirNFzREKz7LqM0BRDmSlKI8SdI8jK66tNtcREQMpqTKV9rIhPAbhFrtYlx6Mp5CxuS5cTKxICRKR0sHVRxATkK4sTmiKj76uPu2/PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470257; c=relaxed/simple;
-	bh=xE2WAf7ghI2rSeEjHiR+uhnZFCk7gb6IiENd0xZDotw=;
+	s=arc-20240116; t=1716470662; c=relaxed/simple;
+	bh=fBQTXv/2V5fuBrKrYoE2bD3dnNnlzFgOMYzoDWzuuzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSnDFZTdKlQp67qvvj6kolHQVuQNmW5H5zrpQBY855/U1DzpXeyD/QP0kfuS7RXZL+17JAuVsXXCOjWeJmYOFHWuCs7ZPX/ra9+s5jcuGWMXX8u93hYVv4XMrKaiU/3eLaPIxzkypinuhoaATl6uNunbwkljm3iQ/vMNbrl0TG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ex9AwQZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01B3C2BD10;
-	Thu, 23 May 2024 13:17:36 +0000 (UTC)
+	 MIME-Version; b=rwBiw/dJSjJXEc4l54QhNGTnelgcZbwXyk9VYu3w4/mzSukvyzvP93DjLkCGG2K3kqmyCg2V5b/NtmvYB9WnUIY9ApIsYTwZ4RcGDKRIGtnG3quRw1PruLemqvtekUm79nELVN5M8++0ecZLlBorskp3TALp2yJzPxGkg+VOt+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcRNbzQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE3BC32781;
+	Thu, 23 May 2024 13:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470257;
-	bh=xE2WAf7ghI2rSeEjHiR+uhnZFCk7gb6IiENd0xZDotw=;
+	s=korg; t=1716470662;
+	bh=fBQTXv/2V5fuBrKrYoE2bD3dnNnlzFgOMYzoDWzuuzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ex9AwQZxwVqxzUYIC77Ae/ldOs2VMvH1xDnHFJIeMso2dBd9OiuTVelrYcqX8o/qE
-	 ymdISogd6Ij2GokNZgn+Mh7UB/BsiGC+dEKrmFKjZwMxMPMeCmY90vmHazoOJTmrZV
-	 QYwqhbewlcMnrX7IQOHOk6xWuj2sRPj48SZf0MgY=
+	b=WcRNbzQQRRUV5YnOAPPQNFZdck1kT07pDiSCdrHFK5jS0uS/xqKzuIF32wOEhrRqT
+	 C0j7n9d7a4ddvCfwQo4bJDEk0WVLNvKqsFc9+KsRZWftHIhu5Ht+NEwwjxBgvpD11K
+	 bPkXzAv3PSt7EPGpeaWH3OZmxN0RL+rs+Sm3jS1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.9 24/25] block: add a disk_has_partscan helper
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 044/102] smb: client: retry compound request without reusing lease
 Date: Thu, 23 May 2024 15:13:09 +0200
-Message-ID: <20240523130331.292645865@linuxfoundation.org>
+Message-ID: <20240523130344.127635533@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Meetakshi Setiya <msetiya@microsoft.com>
 
-commit 140ce28dd3bee8e53acc27f123ae474d69ef66f0 upstream.
+[ Upstream commit 71f15c90e785d1de4bcd65a279e7256684c25c0d ]
 
-Add a helper to check if partition scanning is enabled instead of
-open coding the check in a few places.  This now always checks for
-the hidden flag even if all but one of the callers are never reachable
-for hidden gendisks.
+There is a shortcoming in the current implementation of the file
+lease mechanism exposed when the lease keys were attempted to be
+reused for unlink, rename and set_path_size operations for a client. As
+per MS-SMB2, lease keys are associated with the file name. Linux smb
+client maintains lease keys with the inode. If the file has any hardlinks,
+it is possible that the lease for a file be wrongly reused for an
+operation on the hardlink or vice versa. In these cases, the mentioned
+compound operations fail with STATUS_INVALID_PARAMETER.
+This patch adds a fallback to the old mechanism of not sending any
+lease with these compound operations if the request with lease key fails
+with STATUS_INVALID_PARAMETER.
+Resending the same request without lease key should not hurt any
+functionality, but might impact performance especially in cases where
+the error is not because of the usage of wrong lease key and we might
+end up doing an extra roundtrip.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240502130033.1958492-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/genhd.c           |    7 ++-----
- block/partitions/core.c |    5 +----
- include/linux/blkdev.h  |   13 +++++++++++++
- 3 files changed, 16 insertions(+), 9 deletions(-)
+ fs/smb/client/smb2inode.c | 41 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 38 insertions(+), 3 deletions(-)
 
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -345,9 +345,7 @@ int disk_scan_partitions(struct gendisk
- 	struct file *file;
- 	int ret = 0;
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 0b7b083352919..add90eb8fc165 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -154,6 +154,17 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 	}
  
--	if (disk->flags & (GENHD_FL_NO_PART | GENHD_FL_HIDDEN))
--		return -EINVAL;
--	if (test_bit(GD_SUPPRESS_PART_SCAN, &disk->state))
-+	if (!disk_has_partscan(disk))
- 		return -EINVAL;
- 	if (disk->open_partitions)
- 		return -EBUSY;
-@@ -503,8 +501,7 @@ int __must_check device_add_disk(struct
- 			goto out_unregister_bdi;
- 
- 		/* Make sure the first partition scan will be proceed */
--		if (get_capacity(disk) && !(disk->flags & GENHD_FL_NO_PART) &&
--		    !test_bit(GD_SUPPRESS_PART_SCAN, &disk->state))
-+		if (get_capacity(disk) && disk_has_partscan(disk))
- 			set_bit(GD_NEED_PART_SCAN, &disk->state);
- 
- 		bdev_add(disk->part0, ddev->devt);
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -573,10 +573,7 @@ static int blk_add_partitions(struct gen
- 	struct parsed_partitions *state;
- 	int ret = -EAGAIN, p;
- 
--	if (disk->flags & GENHD_FL_NO_PART)
--		return 0;
--
--	if (test_bit(GD_SUPPRESS_PART_SCAN, &disk->state))
-+	if (!disk_has_partscan(disk))
- 		return 0;
- 
- 	state = check_partition(disk);
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -233,6 +233,19 @@ static inline unsigned int disk_openers(
- 	return atomic_read(&disk->part0->bd_openers);
+ 	/* if there is an existing lease, reuse it */
++
++	/*
++	 * note: files with hardlinks cause unexpected behaviour. As per MS-SMB2,
++	 * lease keys are associated with the filepath. We are maintaining lease keys
++	 * with the inode on the client. If the file has hardlinks, it is possible
++	 * that the lease for a file be reused for an operation on its hardlink or
++	 * vice versa.
++	 * As a workaround, send request using an existing lease key and if the server
++	 * returns STATUS_INVALID_PARAMETER, which maps to EINVAL, send the request
++	 * again without the lease.
++	 */
+ 	if (dentry) {
+ 		inode = d_inode(dentry);
+ 		if (CIFS_I(inode)->lease_granted && server->ops->get_lease_key) {
+@@ -874,11 +885,20 @@ int
+ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
+ 	    struct cifs_sb_info *cifs_sb, struct dentry *dentry)
+ {
+-	return smb2_compound_op(xid, tcon, cifs_sb, name, DELETE, FILE_OPEN,
++	int rc = smb2_compound_op(xid, tcon, cifs_sb, name, DELETE, FILE_OPEN,
+ 				CREATE_DELETE_ON_CLOSE | OPEN_REPARSE_POINT,
+ 				ACL_NO_MODE, NULL,
+ 				&(int){SMB2_OP_DELETE}, 1,
+ 				NULL, NULL, NULL, dentry);
++	if (rc == -EINVAL) {
++		cifs_dbg(FYI, "invalid lease key, resending request without lease");
++		rc = smb2_compound_op(xid, tcon, cifs_sb, name, DELETE, FILE_OPEN,
++				CREATE_DELETE_ON_CLOSE | OPEN_REPARSE_POINT,
++				ACL_NO_MODE, NULL,
++				&(int){SMB2_OP_DELETE}, 1,
++				NULL, NULL, NULL, NULL);
++	}
++	return rc;
  }
  
-+/**
-+ * disk_has_partscan - return %true if partition scanning is enabled on a disk
-+ * @disk: disk to check
-+ *
-+ * Returns %true if partitions scanning is enabled for @disk, or %false if
-+ * partition scanning is disabled either permanently or temporarily.
-+ */
-+static inline bool disk_has_partscan(struct gendisk *disk)
-+{
-+	return !(disk->flags & (GENHD_FL_NO_PART | GENHD_FL_HIDDEN)) &&
-+		!test_bit(GD_SUPPRESS_PART_SCAN, &disk->state);
-+}
-+
- /*
-  * The gendisk is refcounted by the part0 block_device, and the bd_device
-  * therein is also used for device model presentation in sysfs.
+ static int smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
+@@ -919,8 +939,14 @@ int smb2_rename_path(const unsigned int xid,
+ 	drop_cached_dir_by_name(xid, tcon, from_name, cifs_sb);
+ 	cifs_get_writable_path(tcon, from_name, FIND_WR_WITH_DELETE, &cfile);
+ 
+-	return smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
++	int rc = smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
+ 				  co, DELETE, SMB2_OP_RENAME, cfile, source_dentry);
++	if (rc == -EINVAL) {
++		cifs_dbg(FYI, "invalid lease key, resending request without lease");
++		rc = smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
++				  co, DELETE, SMB2_OP_RENAME, cfile, NULL);
++	}
++	return rc;
+ }
+ 
+ int smb2_create_hardlink(const unsigned int xid,
+@@ -949,11 +975,20 @@ smb2_set_path_size(const unsigned int xid, struct cifs_tcon *tcon,
+ 	in_iov.iov_base = &eof;
+ 	in_iov.iov_len = sizeof(eof);
+ 	cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
+-	return smb2_compound_op(xid, tcon, cifs_sb, full_path,
++	int rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+ 				FILE_WRITE_DATA, FILE_OPEN,
+ 				0, ACL_NO_MODE, &in_iov,
+ 				&(int){SMB2_OP_SET_EOF}, 1,
+ 				cfile, NULL, NULL, dentry);
++	if (rc == -EINVAL) {
++		cifs_dbg(FYI, "invalid lease key, resending request without lease");
++		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
++				FILE_WRITE_DATA, FILE_OPEN,
++				0, ACL_NO_MODE, &in_iov,
++				&(int){SMB2_OP_SET_EOF}, 1,
++				cfile, NULL, NULL, NULL);
++	}
++	return rc;
+ }
+ 
+ int
+-- 
+2.43.0
+
 
 
 
