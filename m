@@ -1,116 +1,120 @@
-Return-Path: <stable+bounces-45996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DAC8CDB7D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 22:39:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFFA8CDB7A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 22:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0245285E36
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 20:39:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0831F1C21D6E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 20:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040B384DFC;
-	Thu, 23 May 2024 20:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92CC84DFA;
+	Thu, 23 May 2024 20:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0jBxOxD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FJ16b9mq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33407AD2C;
-	Thu, 23 May 2024 20:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461F384DF4;
+	Thu, 23 May 2024 20:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716496790; cv=none; b=hP8UT9ET/mBCX3v5fFogLr58fgFbHx4ZrjiGI/r2C0srHR3rL9easV31sueJoHnV4b6wwE51r9wLc4FmUjciVUVf4oBXX60dAp4H2xF8lcqCA60VN2aXFtsGBiu2YGes4B4dKpjITZusHKEHBke8vVa80XVI5DW++IJeoVLGTRw=
+	t=1716496773; cv=none; b=A28JI8VIB3z7RdJF87qhyhf3mphW2Q5KsvS/5oUyJsym4rEIBRhVuZclh9roXqj9E7ctFuRY0R7iitw2rMROm/4dNEQdfqACpBQYPMTEyI0nyegaZEJUNntcg5/hZZi3aDUoM/oItIDgB6ngMnlrLUL+XD9TtwVhO+5WkRNFCxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716496790; c=relaxed/simple;
-	bh=/eIiTFxPhrmmpK0I7WDgZJ2Q1utDSw0zsfw43UuSIVs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tWhmCxRuXflnlVDiAFEEvZIL6eZveObGeHx1dR5qXgq2P03/LrZo8jHGx73BXAsOlqr+DDDJ9iTycs9e8mijiouhJ2rWfTKGxW+P2qfoD5zx5j5mOwkULoftgK1dVUCyMhBYNmikk7Uu5XAc5RqdPTvara4t0URGKI1v1OWtkDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0jBxOxD; arc=none smtp.client-ip=209.85.221.50
+	s=arc-20240116; t=1716496773; c=relaxed/simple;
+	bh=mgn9h28+Vwf/nN4w7oj/4mZLrW6UjJJC0ePuhv5zS0k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZdNQpq5eoMaRFcUlxzcmvOGQd6p36FRo0na06skdUhofSYXcQHe9jyVS4/KSvB7w4/aEh9LyxUS/X0ve5irh30YfZnjLoo9zmnBucE8hX7LxIjIVb9GXsbcZDFnqnO/4tZq2x6yDlsCqBXxm3qGIreBNgi0/JrAuAAnCVAXtwLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FJ16b9mq; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-354f89a59b8so239027f8f.0;
-        Thu, 23 May 2024 13:39:48 -0700 (PDT)
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2bded353d17so756132a91.0;
+        Thu, 23 May 2024 13:39:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716496787; x=1717101587; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uPpD/TWpKnOWsvVms0onhLIVHSe3gvae5ALvO/NecjA=;
-        b=Z0jBxOxDh81EL14C1aaWZG0z0aG91drp/hD3xfuWFBgSWxM2LrUoDlTYVEn6CrttbT
-         y1KYOv7JytJV5/hJi9spyFns/9o47b3rZ+meVZRVygbuToB2qHpjsmc2KSTZshlMZdvH
-         fRQqWe7XYrZfScr0d6CKos+ozUj0cq4opzh9/dLKe3Yj4ucQkXg+COUlt9xxj1aLzNSS
-         DaytQ8nZVSycIsqPuPwzl0vrkCCMj4gbWywQnptbfBiVx2Ktrpn2kjJNi4GyUK6lPwbE
-         hm55OOMgQYWT9AturKwZ5v0CbKKHyuwrzulJkP8b2QAmI8c24MMgCPOqwPpWu9nhENbn
-         UDoQ==
+        d=gmail.com; s=20230601; t=1716496771; x=1717101571; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N2zukG9AHwYGlaUsr6ubbjF9W1PHQWW61Xya5qRT0JU=;
+        b=FJ16b9mquC2QxmWZSSk2o88q9ol+1g3OapuwpYTHWCoUHrQN+oXWTom2Vvbdu1zaFK
+         1VTat/vUfSle3gMbD4YzATy9GjM07L4N2Dduup/XTD1zk53re4iPf1Q7ohxOYPYUFG2Z
+         mSewp6p6xDWQNioVJndcMEGU9IqevLAbQqqlo2EyqMzxrheELsr8suOeNhQ7qsrjSW0B
+         RAEcNTNlfOQbRSW7ZWYgVhjBveeQTBKUtReC0N3si082NBR/SWLb9H4kBS2hqKr/aTDK
+         BaxmyMUfQP+8Xs1iqyA0nwXrY8FD+RMBVG0F3Wru7lmFcKD+Db97bJkm4aXmUcXQ7YBL
+         bAVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716496787; x=1717101587;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uPpD/TWpKnOWsvVms0onhLIVHSe3gvae5ALvO/NecjA=;
-        b=kYl8iOJnW3jEROmN2PCQyMHgA2CND1eieVTopAjUZywFhwQqME+fqB4OgUzhtE9zHz
-         DwlseklHuuvPkGUU59Lzw5sTKVKTjuESm+ed3yBNXjCNrXVnPWRK0DeAnfFxYSbkqlls
-         nM13C0Ywz5gItVOFiKEWAUcS8O4mUdaQXh+hM1+4vXbgeCLd7TOHrwfGC0FlJ9pd84lK
-         ZzAP4VCKI/zZpA6ATT86ZuYlYRJggM1j1dRtCh4vOxcYJl+Nz4h22I/nJoV7f+OsA/Qc
-         pnIJgFKisNZhTKZFxZ8xd4pOAgq+mjMM8bKDdOFL0Dpxbjnxo+1FMVq0qp2c2y5+d5Rg
-         bThQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVX0i7xb9+I+C86FVcUyowFtHH4SsM6SupFY6q0pAtX1fpbZNrJlMaK7p9+HIvsjx1NF83bM2s/eZ/hu0B4EwObCnlY4COb
-X-Gm-Message-State: AOJu0YxN8zrBo6k6vM15Lzh+v3Y0LPDtjZgr0JKJ+YgFB7/KOWB+29uY
-	EYl7xJeeGOJ7v58RxtU1FXbZI8411VN7jMWz/2xyrYHIkvUzBH/iYy0xf93m
-X-Google-Smtp-Source: AGHT+IGb2JSGrieNkPORles9mfVVAFxu9Ji0Nsde9QMrZ1XDfmIGNsS8HTwcpJYQ9oNFfoGYvtapdA==
-X-Received: by 2002:a05:600c:1c1c:b0:41a:bb50:92bb with SMTP id 5b1f17b1804b1-4210897a179mr2075095e9.0.1716496786522;
-        Thu, 23 May 2024 13:39:46 -0700 (PDT)
-Received: from amezin-laptop.home.arpa ([2a01:5a8:441:c1bb:3be:e18a:7acf:52e4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42100fadcabsm34153795e9.35.2024.05.23.13.39.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 May 2024 13:39:46 -0700 (PDT)
-From: Aleksandr Mezin <mezin.alexander@gmail.com>
-To: linux-hwmon@vger.kernel.org
-Cc: Aleksandr Mezin <mezin.alexander@gmail.com>,
-	stable@vger.kernel.org,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH] hwmon: (nzxt-smart2) add another USB ID
-Date: Thu, 23 May 2024 23:31:03 +0300
-Message-ID: <20240523203130.75681-1-mezin.alexander@gmail.com>
-X-Mailer: git-send-email 2.45.1
+        d=1e100.net; s=20230601; t=1716496771; x=1717101571;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N2zukG9AHwYGlaUsr6ubbjF9W1PHQWW61Xya5qRT0JU=;
+        b=nH5dLkxUSRJbxO3CepxIHXNZeO3J0+RZ+1ilcivrEy4+o35VoPayRwV02CQvlvCSjx
+         zs8igLT7R5tC9WoZGbuBvonIcS9hrisoD/SnQbeUchOTnz6h+SkF9M7L23JySAaqr+su
+         Lxm8NLvl5KYnyyXMLvyWYmACyGj1YEMyFauZ/MWlnPhVMj253z8hXs01kgijscnzLts7
+         WbshEKDsRfO1VyqF4A+1ys+WeasFy51WTO37zsROPFnS9KfeUZ7S1hW6dYQeRyrXzBFL
+         3JoJr1043dp1f1lGaB13VVda1eElc2+krembtlaovpp6VdTiwCZoKBq2hgstY7dEKnHu
+         1+Fg==
+X-Forwarded-Encrypted: i=1; AJvYcCW/dHneRu8S/bwov8N3IenXQ4mTLqfuM8K7MsaqkX+pQi3gJTwnJCkr5YazLHh1XGJjXyWWVoVdX1lx3r+obGLmZpO5668odd3T+8YfB8INyPrS0Q7UKuZjsL6+vznkh11k99JC
+X-Gm-Message-State: AOJu0Yx/hDoccSFAyH7j/LaIUY+0lKU81GY7zwUJ/ZjeVF4vqa8XWJQ2
+	r5hJAvfl5A2vcXP7w09QebZs1U5/ckNklVPpAiXxIiYUJdy14L01
+X-Google-Smtp-Source: AGHT+IEQGxnRZXZ0Qz9mZFnPzonGw8RgyMWgzKQck1ITAFDNLFtt2hC/kadqF+cH5aMwhgtwtMCbqA==
+X-Received: by 2002:a17:90a:d801:b0:2bd:d2f9:c22a with SMTP id 98e67ed59e1d1-2bf5e660254mr289152a91.29.1716496771389;
+        Thu, 23 May 2024 13:39:31 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2bd9cf52fc2sm2315494a91.0.2024.05.23.13.39.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 May 2024 13:39:30 -0700 (PDT)
+Message-ID: <7009aac4-2187-4c21-8272-ca9074edc4ab@gmail.com>
+Date: Thu, 23 May 2024 13:39:29 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/102] 6.6.32-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240523130342.462912131@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Fan speed control reported to be working with existing userspace (hidraw)
-software, so I assume it's compatible. Fan channel count is the same. No known
-differences from already supported devices, at least regarding fan speed
-control and initialization.
+On 5/23/24 06:12, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.32 release.
+> There are 102 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.32-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Discovered in liquidctl project:
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-https://github.com/liquidctl/liquidctl/pull/702
-
-Signed-off-by: Aleksandr Mezin <mezin.alexander@gmail.com>
-Cc: stable@vger.kernel.org  # v6.1+
----
- drivers/hwmon/nzxt-smart2.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/hwmon/nzxt-smart2.c b/drivers/hwmon/nzxt-smart2.c
-index 7aa586eb74be..df6fa72a6b59 100644
---- a/drivers/hwmon/nzxt-smart2.c
-+++ b/drivers/hwmon/nzxt-smart2.c
-@@ -799,6 +799,7 @@ static const struct hid_device_id nzxt_smart2_hid_id_table[] = {
- 	{ HID_USB_DEVICE(0x1e71, 0x2010) }, /* NZXT RGB & Fan Controller */
- 	{ HID_USB_DEVICE(0x1e71, 0x2011) }, /* NZXT RGB & Fan Controller (6 RGB) */
- 	{ HID_USB_DEVICE(0x1e71, 0x2019) }, /* NZXT RGB & Fan Controller (6 RGB) */
-+	{ HID_USB_DEVICE(0x1e71, 0x2020) }, /* NZXT RGB & Fan Controller (6 RGB) */
- 	{},
- };
- 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.45.1
+Florian
 
 
