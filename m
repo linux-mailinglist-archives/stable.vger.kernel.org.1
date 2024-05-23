@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642398CD49C
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A53B8CD3FC
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FCCB28627D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A38231F26B72
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCA514A4E9;
-	Thu, 23 May 2024 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5650714B96C;
+	Thu, 23 May 2024 13:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI9PIMYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdwFL1fh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691D814532F;
-	Thu, 23 May 2024 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1203414A4F0;
+	Thu, 23 May 2024 13:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470775; cv=none; b=XtOOU6OYYrzI6Se2wjGI7r8RkHW9ytHUjS2GpauHhf8cc0OE6kFth+Ic6e8vrQiWZEQp+y28vht1K/tk4yq6c3oDS0zj/xdYDuqEFrPz3UJFigAc+zh0NePGSX/pF4qbGj8kKNZgRlCmp6vnTNsXbAX45VDnOsbG4e4uk/8uFLg=
+	t=1716470412; cv=none; b=R8Ah/4QOa0bpbJTerApQsGzm4ql1ZH15I/kJPy9WQNXdDb2gCAiMDGezNnWgnF2DjwPyrUx0f3shU1/W1/Z+PRYuHY+xi2ksPuewNMxfeB5WPAITnMxQBGdOprZ9gJugDpOZ7r9/9MB2o0rWl7ISHpN5X/uhVy3rbSu+bxIUWto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470775; c=relaxed/simple;
-	bh=yr7mGFKKZmUqj4O8InPltfkbiWnfMg3BPXIXpOqKgV4=;
+	s=arc-20240116; t=1716470412; c=relaxed/simple;
+	bh=XCowPjSTRuZNVOIKL3wIuVoRHjyQfm0hq4mLf6iBsKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rpg1LwUQhMJDM8Q7mk8/MgZjSsCMkdCd5rOigDPRqi3ltY61mkDIN48GFUcTaaUq4O/u08qhC5kw9RZyIWOWZ964rll2deD9sh1t9IjVZs2mpKubjVuGquhFC9HaB5bM1G6uOUip2BpkKLO+A3FKG9a7Iy6wiAuQ9RGO8fYvaNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI9PIMYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7177C2BD10;
-	Thu, 23 May 2024 13:26:14 +0000 (UTC)
+	 MIME-Version; b=AgGHp9Dz44CLPWUiG7VGtgcQ7teoaRTWHOc1QSSqZCyskEHfi4opJxb+k8KAxPwjj7CBNPN7XKTxC6za4NpYAByJzDoiH0fKNfWp/AOTT+1M2oLWZUw5VtxLb+6/c0dWmPWHSKAV3u/JM0C2Nj2Xclnt1SBXRPCpdHYPNJJCXls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdwFL1fh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF37C32786;
+	Thu, 23 May 2024 13:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470775;
-	bh=yr7mGFKKZmUqj4O8InPltfkbiWnfMg3BPXIXpOqKgV4=;
+	s=korg; t=1716470411;
+	bh=XCowPjSTRuZNVOIKL3wIuVoRHjyQfm0hq4mLf6iBsKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vI9PIMYdt9ziJegWrROvVYBeN9Ysutn1F6ra+uqukBA51hYTit5u86CPOoTY8UaK6
-	 ap80EX7L94yG2FUcuU/uN5Skj+qH+dli+u6cG7Pjcy3rab3Zqaef4oLESEeF7C0J6U
-	 fMMDBOuveIAXjv5JkE3tBYtqpsqrav6OlJ3VCRNU=
+	b=ZdwFL1fhhsFOWONBFoyCB4+C0/37TbVHTMmgxmL+iQzufs0SbjhOc5RBtwHErrT/g
+	 nL+HemHHCTZYQQ7eaXaYH8+BFladGPllbgT1oYrDLYLTA5+HuWv0ElUVAwOZADFMCH
+	 5FESO1OOJdAsmgpberPEBIXg8a2o1AClcg2NSt3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/102] smb: client: set correct d_type for reparse DFS/DFSR and mount point
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Xiao Yang <yangx.jy@fujitsu.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 27/45] xfs: hoist refcount record merge predicates
 Date: Thu, 23 May 2024 15:13:18 +0200
-Message-ID: <20240523130344.465297334@linuxfoundation.org>
+Message-ID: <20240523130333.520491656@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 8bd25b61c5a55bc769c6608e9ce95860759acdcb ]
+[ Upstream commit 9d720a5a658f5135861773f26e927449bef93d61 ]
 
-Set correct dirent->d_type for IO_REPARSE_TAG_DFS{,R} and
-IO_REPARSE_TAG_MOUNT_POINT reparse points.
+Hoist these multiline conditionals into separate static inline helpers
+to improve readability and set the stage for corruption fixes that will
+be introduced in the next patch.
 
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Xiao Yang <yangx.jy@fujitsu.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/reparse.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fs/xfs/libxfs/xfs_refcount.c |  129 +++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 113 insertions(+), 16 deletions(-)
 
-diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
-index 29a47f20643b1..a0ffbda907331 100644
---- a/fs/smb/client/reparse.c
-+++ b/fs/smb/client/reparse.c
-@@ -482,34 +482,35 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
- 		switch (le64_to_cpu(buf->InodeType)) {
- 		case NFS_SPECFILE_CHR:
- 			fattr->cf_mode |= S_IFCHR;
--			fattr->cf_dtype = DT_CHR;
- 			fattr->cf_rdev = reparse_nfs_mkdev(buf);
- 			break;
- 		case NFS_SPECFILE_BLK:
- 			fattr->cf_mode |= S_IFBLK;
--			fattr->cf_dtype = DT_BLK;
- 			fattr->cf_rdev = reparse_nfs_mkdev(buf);
- 			break;
- 		case NFS_SPECFILE_FIFO:
- 			fattr->cf_mode |= S_IFIFO;
--			fattr->cf_dtype = DT_FIFO;
- 			break;
- 		case NFS_SPECFILE_SOCK:
- 			fattr->cf_mode |= S_IFSOCK;
--			fattr->cf_dtype = DT_SOCK;
- 			break;
- 		case NFS_SPECFILE_LNK:
- 			fattr->cf_mode |= S_IFLNK;
--			fattr->cf_dtype = DT_LNK;
- 			break;
- 		default:
- 			WARN_ON_ONCE(1);
- 			return false;
- 		}
--		return true;
-+		goto out;
+--- a/fs/xfs/libxfs/xfs_refcount.c
++++ b/fs/xfs/libxfs/xfs_refcount.c
+@@ -815,11 +815,119 @@ out_error:
+ /* Is this extent valid? */
+ static inline bool
+ xfs_refc_valid(
+-	struct xfs_refcount_irec	*rc)
++	const struct xfs_refcount_irec	*rc)
+ {
+ 	return rc->rc_startblock != NULLAGBLOCK;
+ }
+ 
++static inline bool
++xfs_refc_want_merge_center(
++	const struct xfs_refcount_irec	*left,
++	const struct xfs_refcount_irec	*cleft,
++	const struct xfs_refcount_irec	*cright,
++	const struct xfs_refcount_irec	*right,
++	bool				cleft_is_cright,
++	enum xfs_refc_adjust_op		adjust,
++	unsigned long long		*ulenp)
++{
++	unsigned long long		ulen = left->rc_blockcount;
++
++	/*
++	 * To merge with a center record, both shoulder records must be
++	 * adjacent to the record we want to adjust.  This is only true if
++	 * find_left and find_right made all four records valid.
++	 */
++	if (!xfs_refc_valid(left)  || !xfs_refc_valid(right) ||
++	    !xfs_refc_valid(cleft) || !xfs_refc_valid(cright))
++		return false;
++
++	/* There must only be one record for the entire range. */
++	if (!cleft_is_cright)
++		return false;
++
++	/* The shoulder record refcounts must match the new refcount. */
++	if (left->rc_refcount != cleft->rc_refcount + adjust)
++		return false;
++	if (right->rc_refcount != cleft->rc_refcount + adjust)
++		return false;
++
++	/*
++	 * The new record cannot exceed the max length.  ulen is a ULL as the
++	 * individual record block counts can be up to (u32 - 1) in length
++	 * hence we need to catch u32 addition overflows here.
++	 */
++	ulen += cleft->rc_blockcount + right->rc_blockcount;
++	if (ulen >= MAXREFCEXTLEN)
++		return false;
++
++	*ulenp = ulen;
++	return true;
++}
++
++static inline bool
++xfs_refc_want_merge_left(
++	const struct xfs_refcount_irec	*left,
++	const struct xfs_refcount_irec	*cleft,
++	enum xfs_refc_adjust_op		adjust)
++{
++	unsigned long long		ulen = left->rc_blockcount;
++
++	/*
++	 * For a left merge, the left shoulder record must be adjacent to the
++	 * start of the range.  If this is true, find_left made left and cleft
++	 * contain valid contents.
++	 */
++	if (!xfs_refc_valid(left) || !xfs_refc_valid(cleft))
++		return false;
++
++	/* Left shoulder record refcount must match the new refcount. */
++	if (left->rc_refcount != cleft->rc_refcount + adjust)
++		return false;
++
++	/*
++	 * The new record cannot exceed the max length.  ulen is a ULL as the
++	 * individual record block counts can be up to (u32 - 1) in length
++	 * hence we need to catch u32 addition overflows here.
++	 */
++	ulen += cleft->rc_blockcount;
++	if (ulen >= MAXREFCEXTLEN)
++		return false;
++
++	return true;
++}
++
++static inline bool
++xfs_refc_want_merge_right(
++	const struct xfs_refcount_irec	*cright,
++	const struct xfs_refcount_irec	*right,
++	enum xfs_refc_adjust_op		adjust)
++{
++	unsigned long long		ulen = right->rc_blockcount;
++
++	/*
++	 * For a right merge, the right shoulder record must be adjacent to the
++	 * end of the range.  If this is true, find_right made cright and right
++	 * contain valid contents.
++	 */
++	if (!xfs_refc_valid(right) || !xfs_refc_valid(cright))
++		return false;
++
++	/* Right shoulder record refcount must match the new refcount. */
++	if (right->rc_refcount != cright->rc_refcount + adjust)
++		return false;
++
++	/*
++	 * The new record cannot exceed the max length.  ulen is a ULL as the
++	 * individual record block counts can be up to (u32 - 1) in length
++	 * hence we need to catch u32 addition overflows here.
++	 */
++	ulen += cright->rc_blockcount;
++	if (ulen >= MAXREFCEXTLEN)
++		return false;
++
++	return true;
++}
++
+ /*
+  * Try to merge with any extents on the boundaries of the adjustment range.
+  */
+@@ -861,23 +969,15 @@ xfs_refcount_merge_extents(
+ 		 (cleft.rc_blockcount == cright.rc_blockcount);
+ 
+ 	/* Try to merge left, cleft, and right.  cleft must == cright. */
+-	ulen = (unsigned long long)left.rc_blockcount + cleft.rc_blockcount +
+-			right.rc_blockcount;
+-	if (xfs_refc_valid(&left) && xfs_refc_valid(&right) &&
+-	    xfs_refc_valid(&cleft) && xfs_refc_valid(&cright) && cequal &&
+-	    left.rc_refcount == cleft.rc_refcount + adjust &&
+-	    right.rc_refcount == cleft.rc_refcount + adjust &&
+-	    ulen < MAXREFCEXTLEN) {
++	if (xfs_refc_want_merge_center(&left, &cleft, &cright, &right, cequal,
++				adjust, &ulen)) {
+ 		*shape_changed = true;
+ 		return xfs_refcount_merge_center_extents(cur, &left, &cleft,
+ 				&right, ulen, aglen);
  	}
  
- 	switch (tag) {
-+	case IO_REPARSE_TAG_DFS:
-+	case IO_REPARSE_TAG_DFSR:
-+	case IO_REPARSE_TAG_MOUNT_POINT:
-+		/* See cifs_create_junction_fattr() */
-+		fattr->cf_mode = S_IFDIR | 0711;
-+		break;
- 	case IO_REPARSE_TAG_LX_SYMLINK:
- 	case IO_REPARSE_TAG_LX_FIFO:
- 	case IO_REPARSE_TAG_AF_UNIX:
-@@ -521,10 +522,11 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
- 	case IO_REPARSE_TAG_SYMLINK:
- 	case IO_REPARSE_TAG_NFS:
- 		fattr->cf_mode |= S_IFLNK;
--		fattr->cf_dtype = DT_LNK;
- 		break;
- 	default:
- 		return false;
+ 	/* Try to merge left and cleft. */
+-	ulen = (unsigned long long)left.rc_blockcount + cleft.rc_blockcount;
+-	if (xfs_refc_valid(&left) && xfs_refc_valid(&cleft) &&
+-	    left.rc_refcount == cleft.rc_refcount + adjust &&
+-	    ulen < MAXREFCEXTLEN) {
++	if (xfs_refc_want_merge_left(&left, &cleft, adjust)) {
+ 		*shape_changed = true;
+ 		error = xfs_refcount_merge_left_extent(cur, &left, &cleft,
+ 				agbno, aglen);
+@@ -893,10 +993,7 @@ xfs_refcount_merge_extents(
  	}
-+out:
-+	fattr->cf_dtype = S_DT(fattr->cf_mode);
- 	return true;
- }
--- 
-2.43.0
-
+ 
+ 	/* Try to merge cright and right. */
+-	ulen = (unsigned long long)right.rc_blockcount + cright.rc_blockcount;
+-	if (xfs_refc_valid(&right) && xfs_refc_valid(&cright) &&
+-	    right.rc_refcount == cright.rc_refcount + adjust &&
+-	    ulen < MAXREFCEXTLEN) {
++	if (xfs_refc_want_merge_right(&cright, &right, adjust)) {
+ 		*shape_changed = true;
+ 		return xfs_refcount_merge_right_extent(cur, &right, &cright,
+ 				aglen);
 
 
 
