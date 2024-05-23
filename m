@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-45786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6010B8CD3DB
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AC48CD38B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 149531F25F59
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53E91B20D67
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9506614AD17;
-	Thu, 23 May 2024 13:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F064F13BAE2;
+	Thu, 23 May 2024 13:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbPCVwM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBGRwWYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5150B14A62A;
-	Thu, 23 May 2024 13:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFA51E497;
+	Thu, 23 May 2024 13:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470357; cv=none; b=Ixe5TnBpQiPTHC8rh1G1/x8McPei10pVnv7zONqlDn/So/bz+/Uv92p533momlJobcn4noIVyRTfxza0rxb2h+zQZQivuCyOjh9MowKm9DWtmUgKYjUe6DoXbpkYv8p2y8eaRSnFjH1ypyticmB5N1I/8agbxH7pJ6EVzIzR/Qg=
+	t=1716470171; cv=none; b=Z5pWqWpjL3yeTUoIfQY5pt7qh+/9xXL5QDcjOJcsaLp5vH/ta7dfqA1h07RbixXeLYN+q631okmm2HmcSRSv9RdZXLaTZz05op1WkTNMAPVEmPi9ah4OkrIUVHCPmL0dtDihr6xvzY0CWomwboTkYvYCZ4GJvlj7AChsLrJqkiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470357; c=relaxed/simple;
-	bh=RxpPfmWBlGwfRXC6pbkd24ssjJajTUI4oIjG1RynDG8=;
+	s=arc-20240116; t=1716470171; c=relaxed/simple;
+	bh=J8Pfgzxju6XLK7MGuHfjl9gphxaxOIF6dnHWq4FBTSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZ2CnZwvIbxXJMAL1AERjcn827bl+hfotjKGdq3UfPcxUb+fhZaMk3mJMaltryGOOsBzIhfEtnaBHY0zchL7bqp4NcLWUMJN0DfL4HaVrXeINW3+gR1Q5cQskkspL4udaYFOhv/o1K9Xf85IdKOqsgY8DLVL6YZ6nnybmyvMHKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbPCVwM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9B9C32781;
-	Thu, 23 May 2024 13:19:16 +0000 (UTC)
+	 MIME-Version; b=WFaUuFsyryLKC7jYPRdr/Wd84i0Id8eHB6Aieyi2hjaVeS6VcpsNR4a7KOz2hqKvxlIrj+nAINyTUt6kEcIGN0HTRSR1GGFLzxUA5F6+RAMKpoOUWRVRz3nQ1cbl6jUQY9e/1F74JUyQjkuG4jcWlmdoOlu3dQ2X2OK40z+MA5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBGRwWYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012BFC3277B;
+	Thu, 23 May 2024 13:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470357;
-	bh=RxpPfmWBlGwfRXC6pbkd24ssjJajTUI4oIjG1RynDG8=;
+	s=korg; t=1716470171;
+	bh=J8Pfgzxju6XLK7MGuHfjl9gphxaxOIF6dnHWq4FBTSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CbPCVwM8Hkr1N0Zh8CM5ICHI4Qw9s5Zl3IggpnPf6HfG0Jp2882pxU3aRqluHfazo
-	 ddHmtvFZxsQYVfEPtmrOOHRog93eTZUkeBRiu5xmVzQCui4LyHrIrHbL3IiKvxCpYS
-	 97bgLSRGUpVSRqp2lEw9nQPAo6wg97nGtlaKE8/c=
+	b=kBGRwWYyGwxQcIrI7xZq2LYHXr2IIsWxWkpUZHZ+Qpkilyc7/9c3V1KQ2AbL5eTeh
+	 5ki/384Q4ywu86afO05H7LuembNj90qNa9xi6wS+dxFxvsF4jSDK1IDPI4qvymgBw2
+	 +048AZZFYzSaQQTO2M9J4XUIeMGPsIxaVNGM01uU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Jose Fernandez <josef@netflix.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Limonciello, Mario" <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 01/45] drm/amd/display: Fix division by zero in setup_dsc_config
+	Christoph Paasch <cpaasch@apple.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 10/15] mptcp: ensure snd_nxt is properly initialized on connect
 Date: Thu, 23 May 2024 15:12:52 +0200
-Message-ID: <20240523130332.553105805@linuxfoundation.org>
+Message-ID: <20240523130326.844436591@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
+References: <20240523130326.451548488@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Fernandez <josef@netflix.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 130afc8a886183a94cf6eab7d24f300014ff87ba upstream.
+commit fb7a0d334894206ae35f023a82cad5a290fd7386 upstream.
 
-When slice_height is 0, the division by slice_height in the calculation
-of the number of slices will cause a division by zero driver crash. This
-leaves the kernel in a state that requires a reboot. This patch adds a
-check to avoid the division by zero.
+Christoph reported a splat hinting at a corrupted snd_una:
 
-The stack trace below is for the 6.8.4 Kernel. I reproduced the issue on
-a Z16 Gen 2 Lenovo Thinkpad with a Apple Studio Display monitor
-connected via Thunderbolt. The amdgpu driver crashed with this exception
-when I rebooted the system with the monitor connected.
+  WARNING: CPU: 1 PID: 38 at net/mptcp/protocol.c:1005 __mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
+  Modules linked in:
+  CPU: 1 PID: 38 Comm: kworker/1:1 Not tainted 6.9.0-rc1-gbbeac67456c9 #59
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
+  Workqueue: events mptcp_worker
+  RIP: 0010:__mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
+  Code: be 06 01 00 00 bf 06 01 00 00 e8 a8 12 e7 fe e9 00 fe ff ff e8
+  	8e 1a e7 fe 0f b7 ab 3e 02 00 00 e9 d3 fd ff ff e8 7d 1a e7 fe
+  	<0f> 0b 4c 8b bb e0 05 00 00 e9 74 fc ff ff e8 6a 1a e7 fe 0f 0b e9
+  RSP: 0018:ffffc9000013fd48 EFLAGS: 00010293
+  RAX: 0000000000000000 RBX: ffff8881029bd280 RCX: ffffffff82382fe4
+  RDX: ffff8881003cbd00 RSI: ffffffff823833c3 RDI: 0000000000000001
+  RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+  R10: 0000000000000000 R11: fefefefefefefeff R12: ffff888138ba8000
+  R13: 0000000000000106 R14: ffff8881029bd908 R15: ffff888126560000
+  FS:  0000000000000000(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f604a5dae38 CR3: 0000000101dac002 CR4: 0000000000170ef0
+  Call Trace:
+   <TASK>
+   __mptcp_clean_una_wakeup net/mptcp/protocol.c:1055 [inline]
+   mptcp_clean_una_wakeup net/mptcp/protocol.c:1062 [inline]
+   __mptcp_retrans+0x7f/0x7e0 net/mptcp/protocol.c:2615
+   mptcp_worker+0x434/0x740 net/mptcp/protocol.c:2767
+   process_one_work+0x1e0/0x560 kernel/workqueue.c:3254
+   process_scheduled_works kernel/workqueue.c:3335 [inline]
+   worker_thread+0x3c7/0x640 kernel/workqueue.c:3416
+   kthread+0x121/0x170 kernel/kthread.c:388
+   ret_from_fork+0x44/0x50 arch/x86/kernel/process.c:147
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:243
+   </TASK>
 
-kernel: ? die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434 arch/x86/kernel/dumpstack.c:447)
-kernel: ? do_trap (arch/x86/kernel/traps.c:113 arch/x86/kernel/traps.c:154)
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: ? do_error_trap (./arch/x86/include/asm/traps.h:58 arch/x86/kernel/traps.c:175)
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: ? exc_divide_error (arch/x86/kernel/traps.c:194 (discriminator 2))
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: ? asm_exc_divide_error (./arch/x86/include/asm/idtentry.h:548)
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: dc_dsc_compute_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1109) amdgpu
+When fallback to TCP happens early on a client socket, snd_nxt
+is not yet initialized and any incoming ack will copy such value
+into snd_una. If the mptcp worker (dumbly) tries mptcp-level
+re-injection after such ack, that would unconditionally trigger a send
+buffer cleanup using 'bad' snd_una values.
 
-After applying this patch, the driver no longer crashes when the monitor
-is connected and the system is rebooted. I believe this is the same
-issue reported for 3113.
+We could easily disable re-injection for fallback sockets, but such
+dumb behavior already helped catching a few subtle issues and a very
+low to zero impact in practice.
 
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Jose Fernandez <josef@netflix.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3113
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: "Limonciello, Mario" <mario.limonciello@amd.com>
+Instead address the issue always initializing snd_nxt (and write_seq,
+for consistency) at connect time.
+
+Fixes: 8fd738049ac3 ("mptcp: fallback in case of simultaneous connect")
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/485
+Tested-by: Christoph Paasch <cpaasch@apple.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240429-upstream-net-20240429-mptcp-snd_nxt-init-connect-v1-1-59ceac0a7dcb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ snd_nxt field is not available in v5.10.y: before, only write_seq was
+  used, see commit eaa2ffabfc35 ("mptcp: introduce MPTCP snd_nxt") for
+  more details about that. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-@@ -924,7 +924,12 @@ static bool setup_dsc_config(
- 	if (!is_dsc_possible)
- 		goto done;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2645,6 +2645,8 @@ static int mptcp_stream_connect(struct s
+ 	if (subflow->request_mptcp && mptcp_token_new_connect(ssock->sk))
+ 		mptcp_subflow_early_fallback(msk, subflow);
  
--	dsc_cfg->num_slices_v = pic_height/slice_height;
-+	if (slice_height > 0) {
-+		dsc_cfg->num_slices_v = pic_height / slice_height;
-+	} else {
-+		is_dsc_possible = false;
-+		goto done;
-+	}
- 
- 	if (target_bandwidth_kbps > 0) {
- 		is_dsc_possible = decide_dsc_target_bpp_x16(
++	WRITE_ONCE(msk->write_seq, subflow->idsn);
++
+ do_connect:
+ 	err = ssock->ops->connect(ssock, uaddr, addr_len, flags);
+ 	sock->state = ssock->state;
 
 
 
