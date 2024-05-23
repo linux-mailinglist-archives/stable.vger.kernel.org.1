@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26C68CD416
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91158CD488
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68BAE1F26B21
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5801F22B9D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB4E14B095;
-	Thu, 23 May 2024 13:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D8F14A60D;
+	Thu, 23 May 2024 13:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUWRIp6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5d1QWdm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B6913BAC3;
-	Thu, 23 May 2024 13:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7431D545;
+	Thu, 23 May 2024 13:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470478; cv=none; b=B9FP19dJynJVpBK4NW7sRa0r67ZT7WIjOZa0MgC3XKkOGu7oI/G8rbfMtcP0npjFpcrWBcHWfJVhl9Sewg5IzHpmbeqFGjKksOTaPFryQ7LXBOpeQxrWRtBGO/Uujx8GKBvqu+pWTF23+6VfLfobQcipCoeVxkgdoYyRQIHt8TE=
+	t=1716470729; cv=none; b=J2+xE3LrUG8nBVb7yqmATGBpj8M6/dCLpx0eu42au5hwZihcFXai4NNHmhkZymD/sVEbF4pm+SZ4tAmyY/db8Pcz8cC6w8fhA0TF03AXoJp/zFRieCSK1xCsqNWJQNEkNus8wsHxwJsb6wpOPiibKNGyV8In1de9Y/iA8YB5qEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470478; c=relaxed/simple;
-	bh=3PBH3Te2H4UweF2+97kwFtyMDBrq8ovwPMaBqEeqyMs=;
+	s=arc-20240116; t=1716470729; c=relaxed/simple;
+	bh=Ss9CPhF93q5yItXdI02jU9lHvW7OMFO4/kS+Bt74Rhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjciG7nD9gr3OuYyKveyVAjNqQN0ONw/ldudATD2VBFVuh34vpgnnRjgSI2p8lQoOKMDhLied6GvAlrGf/TbR/l4WbUhtWZMxwgkLXPa8V2pEhx3LBXpWFUYrIEd764hd6c5ipz0kCda/vap5/39HH/+BxN6QgMtknvxqDYHc50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUWRIp6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D29C3277B;
-	Thu, 23 May 2024 13:21:17 +0000 (UTC)
+	 MIME-Version; b=BuibMNPQWnrdHHlaf2QXYnz+BYnE/8ilM3sib8xjQijyo1goEJX488gQ9anP/6d1VTYU+bYcah0BEjpLQzns/FEkT9mmDQJT38nGqwcoZXIuHGiIXFjns+Z/z+ts76Y7dUzH5hqaY34r5OODDKzVCjpy/8+UUE51D6oVCI4SAKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5d1QWdm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B99C32781;
+	Thu, 23 May 2024 13:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470478;
-	bh=3PBH3Te2H4UweF2+97kwFtyMDBrq8ovwPMaBqEeqyMs=;
+	s=korg; t=1716470729;
+	bh=Ss9CPhF93q5yItXdI02jU9lHvW7OMFO4/kS+Bt74Rhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pUWRIp6PG/uBSbPhEHTnDU7JGCASumbtnM+qc0ZTey5SwAgXjfQOxVvgAXHL+Go8N
-	 oNhAl7t7VhyTvHdbTRoc7PKl7ZDfS6TpQHTcisAeShEBwtb2iNp/Yg8iT4mQ1xSoXz
-	 Qqw8D5n5BDP5viVGRGnrkL4hprhLUTL0uSSiyd10=
+	b=g5d1QWdmrLT742Yc3lsezjopgL6XGVnEkpUykw+lsfsfTHKINeW7lL2HiMygt8UkN
+	 fZ2lIVfxdpQSQjozDI/aKltPNKPEJ9q6ejKxp2NRDZz8Pcf/4WiheeezHfzSNIYTRy
+	 wmAb3RoaLcG7adAn3KEN/gUcgsX5FdBBVPQSAHcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liuye <liu.yeC@h3c.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 6.1 41/45] serial: kgdboc: Fix NMI-safety problems from keyboard reset code
-Date: Thu, 23 May 2024 15:13:32 +0200
-Message-ID: <20240523130334.037747688@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 068/102] cifs: Move some extern decls from .c files to .h
+Date: Thu, 23 May 2024 15:13:33 +0200
+Message-ID: <20240523130345.034131795@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit b2aba15ad6f908d1a620fd97f6af5620c3639742 upstream.
+[ Upstream commit 5b142b37c70b1fa6936fa2d0babb0b8c16767d3a ]
 
-Currently, when kdb is compiled with keyboard support, then we will use
-schedule_work() to provoke reset of the keyboard status.  Unfortunately
-schedule_work() gets called from the kgdboc post-debug-exception
-handler.  That risks deadlock since schedule_work() is not NMI-safe and,
-even on platforms where the NMI is not directly used for debugging, the
-debug trap can have NMI-like behaviour depending on where breakpoints
-are placed.
+Move the following:
 
-Fix this by using the irq work system, which is NMI-safe, to defer the
-call to schedule_work() to a point when it is safe to call.
+        extern mempool_t *cifs_sm_req_poolp;
+        extern mempool_t *cifs_req_poolp;
+        extern mempool_t *cifs_mid_poolp;
+        extern bool disable_legacy_dialects;
 
-Reported-by: Liuye <liu.yeC@h3c.com>
-Closes: https://lore.kernel.org/all/20240228025602.3087748-1-liu.yeC@h3c.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240424-kgdboc_fix_schedule_work-v2-1-50f5a490aec5@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+from various .c files to cifsglob.h.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/kgdboc.c |   30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ fs/smb/client/cifsfs.c   | 4 ----
+ fs/smb/client/cifsglob.h | 2 ++
+ fs/smb/client/connect.c  | 3 ---
+ fs/smb/client/misc.c     | 3 ---
+ 4 files changed, 2 insertions(+), 10 deletions(-)
 
---- a/drivers/tty/serial/kgdboc.c
-+++ b/drivers/tty/serial/kgdboc.c
-@@ -19,6 +19,7 @@
- #include <linux/console.h>
- #include <linux/vt_kern.h>
- #include <linux/input.h>
-+#include <linux/irq_work.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/serial_core.h>
-@@ -48,6 +49,25 @@ static struct kgdb_io		kgdboc_earlycon_i
- static int                      (*earlycon_orig_exit)(struct console *con);
- #endif /* IS_BUILTIN(CONFIG_KGDB_SERIAL_CONSOLE) */
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 30bf754c9fc93..539ac9774de1b 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -150,10 +150,6 @@ MODULE_PARM_DESC(disable_legacy_dialects, "To improve security it may be "
+ 				  "vers=1.0 (CIFS/SMB1) and vers=2.0 are weaker"
+ 				  " and less secure. Default: n/N/0");
  
-+/*
-+ * When we leave the debug trap handler we need to reset the keyboard status
-+ * (since the original keyboard state gets partially clobbered by kdb use of
-+ * the keyboard).
-+ *
-+ * The path to deliver the reset is somewhat circuitous.
-+ *
-+ * To deliver the reset we register an input handler, reset the keyboard and
-+ * then deregister the input handler. However, to get this done right, we do
-+ * have to carefully manage the calling context because we can only register
-+ * input handlers from task context.
-+ *
-+ * In particular we need to trigger the action from the debug trap handler with
-+ * all its NMI and/or NMI-like oddities. To solve this the kgdboc trap exit code
-+ * (the "post_exception" callback) uses irq_work_queue(), which is NMI-safe, to
-+ * schedule a callback from a hardirq context. From there we have to defer the
-+ * work again, this time using schedule_work(), to get a callback using the
-+ * system workqueue, which runs in task context.
-+ */
- #ifdef CONFIG_KDB_KEYBOARD
- static int kgdboc_reset_connect(struct input_handler *handler,
- 				struct input_dev *dev,
-@@ -99,10 +119,17 @@ static void kgdboc_restore_input_helper(
+-extern mempool_t *cifs_sm_req_poolp;
+-extern mempool_t *cifs_req_poolp;
+-extern mempool_t *cifs_mid_poolp;
+-
+ struct workqueue_struct	*cifsiod_wq;
+ struct workqueue_struct	*decrypt_wq;
+ struct workqueue_struct	*fileinfo_put_wq;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 70a12584375de..9597887280ff3 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -2112,6 +2112,8 @@ extern struct workqueue_struct *deferredclose_wq;
+ extern struct workqueue_struct *serverclose_wq;
+ extern __u32 cifs_lock_secret;
  
- static DECLARE_WORK(kgdboc_restore_input_work, kgdboc_restore_input_helper);
++extern mempool_t *cifs_sm_req_poolp;
++extern mempool_t *cifs_req_poolp;
+ extern mempool_t *cifs_mid_poolp;
  
-+static void kgdboc_queue_restore_input_helper(struct irq_work *unused)
-+{
-+	schedule_work(&kgdboc_restore_input_work);
-+}
-+
-+static DEFINE_IRQ_WORK(kgdboc_restore_input_irq_work, kgdboc_queue_restore_input_helper);
-+
- static void kgdboc_restore_input(void)
- {
- 	if (likely(system_state == SYSTEM_RUNNING))
--		schedule_work(&kgdboc_restore_input_work);
-+		irq_work_queue(&kgdboc_restore_input_irq_work);
- }
+ /* Operations for different SMB versions */
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 5acfd2057ca04..4e35970681bf0 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -52,9 +52,6 @@
+ #include "fs_context.h"
+ #include "cifs_swn.h"
  
- static int kgdboc_register_kbd(char **cptr)
-@@ -133,6 +160,7 @@ static void kgdboc_unregister_kbd(void)
- 			i--;
- 		}
- 	}
-+	irq_work_sync(&kgdboc_restore_input_irq_work);
- 	flush_work(&kgdboc_restore_input_work);
- }
- #else /* ! CONFIG_KDB_KEYBOARD */
+-extern mempool_t *cifs_req_poolp;
+-extern bool disable_legacy_dialects;
+-
+ /* FIXME: should these be tunable? */
+ #define TLINK_ERROR_EXPIRE	(1 * HZ)
+ #define TLINK_IDLE_EXPIRE	(600 * HZ)
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index 669d27b4d414a..ad44f8d66b377 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -27,9 +27,6 @@
+ #include "fs_context.h"
+ #include "cached_dir.h"
+ 
+-extern mempool_t *cifs_sm_req_poolp;
+-extern mempool_t *cifs_req_poolp;
+-
+ /* The xid serves as a useful identifier for each incoming vfs request,
+    in a similar way to the mid which is useful to track each sent smb,
+    and CurrentXid can also provide a running counter (although it
+-- 
+2.43.0
+
 
 
 
