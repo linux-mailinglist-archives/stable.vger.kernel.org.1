@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-45908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2721C8CD481
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A288CD40E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D742B281D51
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 119561C21C37
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5131C14AD3E;
-	Thu, 23 May 2024 13:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44FF14D282;
+	Thu, 23 May 2024 13:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXVRwu58"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBaJU++A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5B114A4D9;
-	Thu, 23 May 2024 13:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEA114AD35;
+	Thu, 23 May 2024 13:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470709; cv=none; b=oJ0EZq6Jk3dMng5hHkUqyPmVmFBMSpXfmciUXNU7IdyjllVHZKq5YbgFQvPp/sexKBKfko3EIFsjfLwAWmYCh4/Nvw1G/uw3a12V5k1Fid1rZynCiqkfI/KG6Fsf2pLH/ImZniojL9ZG/mfkA/bb0KGT5YPB2Cyp8Gylv5Nr3P4=
+	t=1716470455; cv=none; b=FbRzy5P6hpQgdn3/Tf2ZSbxZ1si0T5thUlVD3gJ0dYc7Yd1d417n0PHQR7v51Pinu8x/4RATc6JJiXIXvWPkr6cGnzxJLFUGxCXQ07g0bptP8m2ild8psPUSKgZUeAid7ic7duwKTfjb/Z5roaJASxQpH+w448BsvlPvU078lGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470709; c=relaxed/simple;
-	bh=fFXLQlzxdlgCBaswqY4f+/HQbUzVEwIMMzCFO10OQgE=;
+	s=arc-20240116; t=1716470455; c=relaxed/simple;
+	bh=GhkzrMJGnTqGMmC5YeR1C2oUT6L0cSshbBs35Im1M90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdkHDTe5f1wTyYCDVNKUhz/VZC0WRVfncjs+QIu5+u+taZofgjl60Q89hAC9fkDKx4PBT6HROCyWnHpbz+Z/vX7cW5miiRZ0JzMLlcKNuAMiY5YdakuzOljAyRLm4LQBMj/WNkQTYnCaDtaMDQYsxSkWAwc+immZOqdDTMHvphU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXVRwu58; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A4EC4AF08;
-	Thu, 23 May 2024 13:25:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EUVPADsB4sPFi2+62ywpv2hrtoa7vhoFLqBb7iNoSzVmV60wZ0ZRZakBFILqDzbawraRNamiZKIIMrY+ISlkltnqVbtk7rhyJVo+Kwp0QeBa4l9DMks6o/4rdeyKoULXZsTDCEMMfioDQ6LYSj3+w14aFrnNoHtfe63ScMp5GNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBaJU++A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D6CC3277B;
+	Thu, 23 May 2024 13:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470708;
-	bh=fFXLQlzxdlgCBaswqY4f+/HQbUzVEwIMMzCFO10OQgE=;
+	s=korg; t=1716470455;
+	bh=GhkzrMJGnTqGMmC5YeR1C2oUT6L0cSshbBs35Im1M90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXVRwu58E3LO+ypD9jhkRyg1AvT3ZNkSxq8bF4Q2lfsZ28cs/Q0o5tXxMUApks2Qm
-	 cGhiLwxDvTs/X/IMD7xbPTn+J8fEXZwx+2myw+ET8FT6ub88UpTp+qGn4VD18qID2f
-	 RrH/nlC+iExcj3bMFc7dYe5T1jDUOgAv25b73ULA=
+	b=QBaJU++Ax3lS+TbpNxgm0UOLJeprFQfDBkEiWlm8o/oMWG18iam/4YGmeQLQh3+5v
+	 n4dFxCAhYoU16BQ0vnqd+yomC4dmBxjtMRLGZUdkFhcYIsqzi5zWuiqPew1Tgslrnn
+	 h765/wTDQ8MRxlWxk8Y4zuMZqc+7aFo+JCavslVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/102] cifs: defer close file handles having RH lease
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>
+Subject: [PATCH 6.1 35/45] drm/amdgpu: Fix possible NULL dereference in amdgpu_ras_query_error_status_helper()
 Date: Thu, 23 May 2024 15:13:26 +0200
-Message-ID: <20240523130344.771840678@linuxfoundation.org>
+Message-ID: <20240523130333.822945036@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit dc528770edb138e26a533f8a77de5c4db18ea7f3 ]
+commit b8d55a90fd55b767c25687747e2b24abd1ef8680 upstream.
 
-Previously we only deferred closing file handles with RHW
-lease. To enhance performance benefits from deferred closes,
-we now include handles with RH leases as well.
+Return invalid error code -EINVAL for invalid block id.
 
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes the below:
+
+drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c:1183 amdgpu_ras_query_error_status_helper() error: we previously assumed 'info' could be null (see line 1176)
+
+Suggested-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Tao Zhou <tao.zhou1@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Ajay: applied AMDGPU_RAS_BLOCK_COUNT condition to amdgpu_ras_query_error_status()
+       as amdgpu_ras_query_error_status_helper() not present in v6.6, v6.1
+       amdgpu_ras_query_error_status_helper() was introduced in 8cc0f5669eb6]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/file.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 8eaf195ef5604..6dc2e8db9c8ed 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -1152,6 +1152,19 @@ void smb2_deferred_work_close(struct work_struct *work)
- 	_cifsFileInfo_put(cfile, true, false);
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -974,6 +974,9 @@ int amdgpu_ras_query_error_status(struct
+ 	if (!obj)
+ 		return -EINVAL;
  
-+static bool
-+smb2_can_defer_close(struct inode *inode, struct cifs_deferred_close *dclose)
-+{
-+	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
-+	struct cifsInodeInfo *cinode = CIFS_I(inode);
++	if (!info || info->head.block == AMDGPU_RAS_BLOCK_COUNT)
++		return -EINVAL;
 +
-+	return (cifs_sb->ctx->closetimeo && cinode->lease_granted && dclose &&
-+			(cinode->oplock == CIFS_CACHE_RHW_FLG ||
-+			 cinode->oplock == CIFS_CACHE_RH_FLG) &&
-+			!test_bit(CIFS_INO_CLOSE_ON_LOCK, &cinode->flags));
-+
-+}
-+
- int cifs_close(struct inode *inode, struct file *file)
- {
- 	struct cifsFileInfo *cfile;
-@@ -1165,10 +1178,8 @@ int cifs_close(struct inode *inode, struct file *file)
- 		cfile = file->private_data;
- 		file->private_data = NULL;
- 		dclose = kmalloc(sizeof(struct cifs_deferred_close), GFP_KERNEL);
--		if ((cifs_sb->ctx->closetimeo && cinode->oplock == CIFS_CACHE_RHW_FLG)
--		    && cinode->lease_granted &&
--		    !test_bit(CIFS_INO_CLOSE_ON_LOCK, &cinode->flags) &&
--		    dclose && !(cfile->status_file_deleted)) {
-+		if ((cfile->status_file_deleted == false) &&
-+		    (smb2_can_defer_close(inode, dclose))) {
- 			if (test_and_clear_bit(CIFS_INO_MODIFIED_ATTR, &cinode->flags)) {
- 				inode_set_mtime_to_ts(inode,
- 						      inode_set_ctime_current(inode));
--- 
-2.43.0
-
+ 	if (info->head.block == AMDGPU_RAS_BLOCK__UMC) {
+ 		amdgpu_ras_get_ecc_info(adev, &err_data);
+ 	} else {
 
 
 
