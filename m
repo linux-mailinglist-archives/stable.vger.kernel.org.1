@@ -1,114 +1,214 @@
-Return-Path: <stable+bounces-45820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A288CD40E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB87D8CD433
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 119561C21C37
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEBD61C2211D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44FF14D282;
-	Thu, 23 May 2024 13:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DDC14AD0D;
+	Thu, 23 May 2024 13:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBaJU++A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG2+xg8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEA114AD35;
-	Thu, 23 May 2024 13:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835D41E497;
+	Thu, 23 May 2024 13:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470455; cv=none; b=FbRzy5P6hpQgdn3/Tf2ZSbxZ1si0T5thUlVD3gJ0dYc7Yd1d417n0PHQR7v51Pinu8x/4RATc6JJiXIXvWPkr6cGnzxJLFUGxCXQ07g0bptP8m2ild8psPUSKgZUeAid7ic7duwKTfjb/Z5roaJASxQpH+w448BsvlPvU078lGI=
+	t=1716470547; cv=none; b=aaVL6FpKs0MnzG9JESbJaWmzPnON4BAE9cH+tMDk2uu+Ipmi9enT1mVTKk0IJFgDatWzRi+z4T6OPPRXoJX/Dlro13u31DRfgUtVQuL90X/RXIfhkF9dgTbJIfK5tbm1JoKzOkIQesNnKysHHqiJIpyEV6c6I+0mNWDQzHxkahs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470455; c=relaxed/simple;
-	bh=GhkzrMJGnTqGMmC5YeR1C2oUT6L0cSshbBs35Im1M90=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EUVPADsB4sPFi2+62ywpv2hrtoa7vhoFLqBb7iNoSzVmV60wZ0ZRZakBFILqDzbawraRNamiZKIIMrY+ISlkltnqVbtk7rhyJVo+Kwp0QeBa4l9DMks6o/4rdeyKoULXZsTDCEMMfioDQ6LYSj3+w14aFrnNoHtfe63ScMp5GNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBaJU++A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D6CC3277B;
-	Thu, 23 May 2024 13:20:54 +0000 (UTC)
+	s=arc-20240116; t=1716470547; c=relaxed/simple;
+	bh=cAMqcshjNY7oZ9DZf6rf0+n+26VChVTtA6o+CUumKfU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GH79jmQIgjdvCSWRdFOkoeJ43aw5Rq8mThmjiI+GJCPSGtAXCujlx/SLsWUmuyzTxvk16W3WCxhtSFoabBs7rc5jrR+jm4ftZgOaOZzdNNRTLFm0mcIQvZ+aGA6WF/5+6kLCcholRmv1iSblBkUn48GJmqeKz3OEOKlP0s6SlJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG2+xg8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD395C3277B;
+	Thu, 23 May 2024 13:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470455;
-	bh=GhkzrMJGnTqGMmC5YeR1C2oUT6L0cSshbBs35Im1M90=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QBaJU++Ax3lS+TbpNxgm0UOLJeprFQfDBkEiWlm8o/oMWG18iam/4YGmeQLQh3+5v
-	 n4dFxCAhYoU16BQ0vnqd+yomC4dmBxjtMRLGZUdkFhcYIsqzi5zWuiqPew1Tgslrnn
-	 h765/wTDQ8MRxlWxk8Y4zuMZqc+7aFo+JCavslVU=
+	s=korg; t=1716470547;
+	bh=cAMqcshjNY7oZ9DZf6rf0+n+26VChVTtA6o+CUumKfU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WG2+xg8z0tKbQBMIbvIaZrKyc0jfVSfwwUGLyu+MJnR6PJJpcn02jZbAvukxh33gi
+	 DNGRVPr1C03ajhy3YlUeh4esjC0XYK+0SeQE9wTmynOlj2vQc5UJuNPiE26H2vaeIJ
+	 SeUIVEyfd08MqzSFI4UTBlMI/XRnFHVgqLeI3IYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>
-Subject: [PATCH 6.1 35/45] drm/amdgpu: Fix possible NULL dereference in amdgpu_ras_query_error_status_helper()
-Date: Thu, 23 May 2024 15:13:26 +0200
-Message-ID: <20240523130333.822945036@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.8 00/23] 6.8.11-rc1 review
+Date: Thu, 23 May 2024 15:13:27 +0200
+Message-ID: <20240523130329.745905823@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.11-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.8.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.8.11-rc1
+X-KernelTest-Deadline: 2024-05-25T13:03+00:00
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.8.11 release.
+There are 23 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
+Anything received after that time might be too late.
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.11-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+and the diffstat can be found below.
 
-commit b8d55a90fd55b767c25687747e2b24abd1ef8680 upstream.
+thanks,
 
-Return invalid error code -EINVAL for invalid block id.
+greg k-h
 
-Fixes the below:
+-------------
+Pseudo-Shortlog of commits:
 
-drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c:1183 amdgpu_ras_query_error_status_helper() error: we previously assumed 'info' could be null (see line 1176)
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.8.11-rc1
 
-Suggested-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Cc: Tao Zhou <tao.zhou1@amd.com>
-Cc: Hawking Zhang <Hawking.Zhang@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[Ajay: applied AMDGPU_RAS_BLOCK_COUNT condition to amdgpu_ras_query_error_status()
-       as amdgpu_ras_query_error_status_helper() not present in v6.6, v6.1
-       amdgpu_ras_query_error_status_helper() was introduced in 8cc0f5669eb6]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c |    3 +++
- 1 file changed, 3 insertions(+)
+Christoph Hellwig <hch@lst.de>
+    block: add a partscan sysfs attribute for disks
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -974,6 +974,9 @@ int amdgpu_ras_query_error_status(struct
- 	if (!obj)
- 		return -EINVAL;
- 
-+	if (!info || info->head.block == AMDGPU_RAS_BLOCK_COUNT)
-+		return -EINVAL;
-+
- 	if (info->head.block == AMDGPU_RAS_BLOCK__UMC) {
- 		amdgpu_ras_get_ecc_info(adev, &err_data);
- 	} else {
+Christoph Hellwig <hch@lst.de>
+    block: add a disk_has_partscan helper
+
+SeongJae Park <sj@kernel.org>
+    Docs/admin-guide/mm/damon/usage: fix wrong example of DAMOS filter matching sysfs file
+
+Akira Yokosawa <akiyks@gmail.com>
+    docs: kernel_include.py: Cope with docutils 0.21
+
+Thomas Weißschuh <linux@weissschuh.net>
+    admin-guide/hw-vuln/core-scheduling: fix return type of PR_SCHED_CORE_GET
+
+Jarkko Sakkinen <jarkko@kernel.org>
+    KEYS: trusted: Do not use WARN when encode fails
+
+AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+    remoteproc: mediatek: Make sure IPI buffer fits in L2TCM
+
+Daniel Thompson <daniel.thompson@linaro.org>
+    serial: kgdboc: Fix NMI-safety problems from keyboard reset code
+
+Javier Carrasco <javier.carrasco@wolfvision.net>
+    usb: typec: tipd: fix event checking for tps6598x
+
+Javier Carrasco <javier.carrasco@wolfvision.net>
+    usb: typec: tipd: fix event checking for tps25750
+
+Heikki Krogerus <heikki.krogerus@linux.intel.com>
+    usb: typec: ucsi: displayport: Fix potential deadlock
+
+Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+    net: usb: ax88179_178a: fix link status when link is set to down/up
+
+Prashanth K <quic_prashk@quicinc.com>
+    usb: dwc3: Wait unconditionally after issuing EndXfer command
+
+Carlos Llamas <cmllamas@google.com>
+    binder: fix max_thread type inconsistency
+
+Christian Brauner <brauner@kernel.org>
+    erofs: reliably distinguish block based and fscache mode
+
+Baokun Li <libaokun1@huawei.com>
+    erofs: get rid of erofs_fs_context
+
+Jarkko Sakkinen <jarkko@kernel.org>
+    KEYS: trusted: Fix memory leak in tpm2_key_encode()
+
+Sungwoo Kim <iam@sung-woo.kim>
+    Bluetooth: L2CAP: Fix div-by-zero in l2cap_le_flowctl_init()
+
+Sungwoo Kim <iam@sung-woo.kim>
+    Bluetooth: L2CAP: Fix slab-use-after-free in l2cap_connect()
+
+Jacob Keller <jacob.e.keller@intel.com>
+    ice: remove unnecessary duplicate checks for VF VSI ID
+
+Jacob Keller <jacob.e.keller@intel.com>
+    ice: pass VSI pointer into ice_vc_isvalid_q_id
+
+Ronald Wahl <ronald.wahl@raritan.com>
+    net: ks8851: Fix another TX stall caused by wrong ISR flag handling
+
+Jose Fernandez <josef@netflix.com>
+    drm/amd/display: Fix division by zero in setup_dsc_config
+
+
+-------------
+
+Diffstat:
+
+ Documentation/ABI/stable/sysfs-block               |  10 ++
+ .../admin-guide/hw-vuln/core-scheduling.rst        |   4 +-
+ Documentation/admin-guide/mm/damon/usage.rst       |   2 +-
+ Documentation/sphinx/kernel_include.py             |   1 -
+ Makefile                                           |   4 +-
+ block/genhd.c                                      |  15 ++-
+ block/partitions/core.c                            |   5 +-
+ drivers/android/binder.c                           |   2 +-
+ drivers/android/binder_internal.h                  |   2 +-
+ drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c        |   7 +-
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c      |  22 ++--
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |   3 -
+ drivers/net/ethernet/micrel/ks8851_common.c        |  18 +--
+ drivers/net/usb/ax88179_178a.c                     |  37 ++++--
+ drivers/remoteproc/mtk_scp.c                       |  10 +-
+ drivers/tty/serial/kgdboc.c                        |  30 ++++-
+ drivers/usb/dwc3/gadget.c                          |   4 +-
+ drivers/usb/typec/tipd/core.c                      |  51 ++++++---
+ drivers/usb/typec/tipd/tps6598x.h                  |  11 ++
+ drivers/usb/typec/ucsi/displayport.c               |   4 -
+ fs/erofs/internal.h                                |   7 --
+ fs/erofs/super.c                                   | 124 +++++++++------------
+ include/linux/blkdev.h                             |  13 +++
+ include/net/bluetooth/hci.h                        |   9 ++
+ include/net/bluetooth/hci_core.h                   |   1 +
+ net/bluetooth/hci_conn.c                           |  71 ++++++++----
+ net/bluetooth/hci_event.c                          |  31 ++++--
+ net/bluetooth/iso.c                                |   2 +-
+ net/bluetooth/l2cap_core.c                         |  38 +++----
+ net/bluetooth/sco.c                                |   6 +-
+ security/keys/trusted-keys/trusted_tpm2.c          |  25 ++++-
+ 31 files changed, 339 insertions(+), 230 deletions(-)
 
 
 
