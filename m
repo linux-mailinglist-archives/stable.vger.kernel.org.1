@@ -1,193 +1,87 @@
-Return-Path: <stable+bounces-45635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484758CCCB0
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 09:05:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BAF8CCCC3
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 09:08:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A7B2B22236
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 07:05:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D98831C220E2
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 07:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F74713C9B0;
-	Thu, 23 May 2024 07:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA9713C9C6;
+	Thu, 23 May 2024 07:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvjbpfUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aa3Mp2oR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6C913AA24
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 07:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFA413C9BE;
+	Thu, 23 May 2024 07:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716447938; cv=none; b=k2kMEhuG3G4v1qrhA4fdWRkb5Z78v/9Rx2RU1aghlL+qtGe9RftQFMA2PhVN0o/zqzI1ZAuUGy7jR+sablaDN8SC8zdLf9y8LDVxWwyZv6xKKLcL4jUlKfw/dFvxpn8+5yAGKspTnp/IbWyIy84ngkf8hy/H8GSqh3MtqOxcW5E=
+	t=1716448122; cv=none; b=g6SSdxz1KP/IsSrNsu4d6qAQPJCjrWchvhOBIsDnpB3/cmFu530ULNuWD3oaCxsHlt7xK/Ehklkr+YyvBBjrgJa3bNK/xLNO+QVeJQ3EjB0MJwuJI+GI06EYCsnLskMbCWmkKFY7BSmbOzBsO9oG8NwASojaIQfLctWgaUrv7eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716447938; c=relaxed/simple;
-	bh=OBJTcmcZyzH8TPDL1AlAxlAlWdiVX4soaeaYtz8Ioi0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BaRgNWzJD/595Z4qLrXcGlzZGUg/e7X/SzDQLGwVV12a1QVQQQcIjrwY/FcL0OTDZbRDM2S1OZR0YHGAzwVmaGVffB+T88d8uMjkqxlbZGtSiXeRmNuJmjqdCJt4oBLX/BuF/OIGgQhV9RNMk9uoNiITfrJAXqGednfpQCMl3Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvjbpfUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA41BC2BD10;
-	Thu, 23 May 2024 07:05:37 +0000 (UTC)
+	s=arc-20240116; t=1716448122; c=relaxed/simple;
+	bh=rgHNG8A/UW39eLcCHIvH1tJHdR7hEkUA+zLqGB7RWus=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ri2zB6BFpC36ZgR/BAJOShUtkWqrm90sSY50iChxOFlLEy60Vrx7KdQzr0BV26qfzS3YRGmOa12aBURH34TH9Ztj70KnlMvTtr6+wLGm3UuC0Wa4fpf1KNY7ixODmPfc9wbbhWuSYOFW+Au+9hMUGV4NM+O7esJEPZ5vCx21nEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aa3Mp2oR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47619C32789;
+	Thu, 23 May 2024 07:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716447938;
-	bh=OBJTcmcZyzH8TPDL1AlAxlAlWdiVX4soaeaYtz8Ioi0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ZvjbpfUpSPACfXZ38KryOfcrClq/ojSD8QESRBkp7jWpwOW/fwj0PGTkqrE1DZw44
-	 omyCsv6RgPEw1RXkMYEUzktXbeyr+dfZgiNF2puF9zWPjuWHDtOeHqZXnN5b57qROk
-	 Ia5hqa6cbG5KFpY0uC5TkrlFaDaCnschjfDNXNb4=
-Subject: FAILED: patch "[PATCH] Bluetooth: L2CAP: Fix slab-use-after-free in l2cap_connect()" failed to apply to 4.19-stable tree
-To: iam@sung-woo.kim,luiz.von.dentz@intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 May 2024 09:05:27 +0200
-Message-ID: <2024052327-heap-jumble-2f4f@gregkh>
+	s=korg; t=1716448121;
+	bh=rgHNG8A/UW39eLcCHIvH1tJHdR7hEkUA+zLqGB7RWus=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aa3Mp2oRo59Qoo/HCtrmJ3v3jto/vmsH57eewipmCSxAwHM7LV+KytubCKZoc5AXU
+	 nL5+RXiOXk7w0YiiuPOCV9xjCph0MkWT7dpBnzKF6HbFEIo8KFu1/3fvYIqBa4G67J
+	 LNWjkCBuIITL0fVCd3ntW7EYAMU1Cpz0iZaDvFLY=
+Date: Thu, 23 May 2024 09:08:38 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Leah Rumancik <leah.rumancik@gmail.com>
+Cc: Amir Goldstein <amir73il@gmail.com>, stable@vger.kernel.org,
+	linux-xfs@vger.kernel.org, chandan.babu@oracle.com,
+	fred@cloudflare.com, Dave Chinner <dchinner@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J . Wong" <djwong@kernel.org>
+Subject: Re: [PATCH 6.1 01/24] xfs: write page faults in iomap are not
+ buffered writes
+Message-ID: <2024052317-payday-overlabor-1931@gregkh>
+References: <20240501184112.3799035-1-leah.rumancik@gmail.com>
+ <2024050436-conceded-idealness-d2c5@gregkh>
+ <CAOQ4uxhcFSPhnAfDxm-GQ8i-NmDonzLAq5npMh84EZxxr=qhjQ@mail.gmail.com>
+ <CACzhbgSNe5amnMPEz8AYu3Z=qZRyKLFDvOtA_9wFGW9Bh-jg+g@mail.gmail.com>
+ <2024052207-curve-revered-b879@gregkh>
+ <CACzhbgQzrmKHX-VAzt8VKsxRT8YZN1nVdnd5Tq4bc4THtp5Lxg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACzhbgQzrmKHX-VAzt8VKsxRT8YZN1nVdnd5Tq4bc4THtp5Lxg@mail.gmail.com>
 
+On Wed, May 22, 2024 at 02:55:18PM -0700, Leah Rumancik wrote:
+> On Wed, May 22, 2024 at 7:11 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Mon, May 06, 2024 at 10:52:16AM -0700, Leah Rumancik wrote:
+> > > Ah my bad, I'll make sure to explicitly mention its been ACK'd by
+> > > linux-xfs in the future.
+> > >
+> > > Will send out a MAINTAINERS file patch as well.
+> >
+> > Did that happen?
+> 
+> Yep, https://lore.kernel.org/all/Zj9xj1wIzlTK8VCm@sashalap/
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Great, that's why it's not in my review queue anymore :)
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 4d7b41c0e43995b0e992b9f8903109275744b658
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052327-heap-jumble-2f4f@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-4d7b41c0e439 ("Bluetooth: L2CAP: Fix slab-use-after-free in l2cap_connect()")
-
-thanks,
+thanks for confirming.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 4d7b41c0e43995b0e992b9f8903109275744b658 Mon Sep 17 00:00:00 2001
-From: Sungwoo Kim <iam@sung-woo.kim>
-Date: Tue, 30 Apr 2024 02:32:10 -0400
-Subject: [PATCH] Bluetooth: L2CAP: Fix slab-use-after-free in l2cap_connect()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Extend a critical section to prevent chan from early freeing.
-Also make the l2cap_connect() return type void. Nothing is using the
-returned value but it is ugly to return a potentially freed pointer.
-Making it void will help with backports because earlier kernels did use
-the return value. Now the compile will break for kernels where this
-patch is not a complete fix.
-
-Call stack summary:
-
-[use]
-l2cap_bredr_sig_cmd
-  l2cap_connect
-  ┌ mutex_lock(&conn->chan_lock);
-  │ chan = pchan->ops->new_connection(pchan); <- alloc chan
-  │ __l2cap_chan_add(conn, chan);
-  │   l2cap_chan_hold(chan);
-  │   list_add(&chan->list, &conn->chan_l);   ... (1)
-  └ mutex_unlock(&conn->chan_lock);
-    chan->conf_state              ... (4) <- use after free
-
-[free]
-l2cap_conn_del
-┌ mutex_lock(&conn->chan_lock);
-│ foreach chan in conn->chan_l:            ... (2)
-│   l2cap_chan_put(chan);
-│     l2cap_chan_destroy
-│       kfree(chan)               ... (3) <- chan freed
-└ mutex_unlock(&conn->chan_lock);
-
-==================================================================
-BUG: KASAN: slab-use-after-free in instrument_atomic_read
-include/linux/instrumented.h:68 [inline]
-BUG: KASAN: slab-use-after-free in _test_bit
-include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-BUG: KASAN: slab-use-after-free in l2cap_connect+0xa67/0x11a0
-net/bluetooth/l2cap_core.c:4260
-Read of size 8 at addr ffff88810bf040a0 by task kworker/u3:1/311
-
-Fixes: 73ffa904b782 ("Bluetooth: Move conf_{req,rsp} stuff to struct l2cap_chan")
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 84fc70862d78..868a370a16aa 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -3902,13 +3902,12 @@ static inline int l2cap_command_rej(struct l2cap_conn *conn,
- 	return 0;
- }
- 
--static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
--					struct l2cap_cmd_hdr *cmd,
--					u8 *data, u8 rsp_code, u8 amp_id)
-+static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
-+			  u8 *data, u8 rsp_code, u8 amp_id)
- {
- 	struct l2cap_conn_req *req = (struct l2cap_conn_req *) data;
- 	struct l2cap_conn_rsp rsp;
--	struct l2cap_chan *chan = NULL, *pchan;
-+	struct l2cap_chan *chan = NULL, *pchan = NULL;
- 	int result, status = L2CAP_CS_NO_INFO;
- 
- 	u16 dcid = 0, scid = __le16_to_cpu(req->scid);
-@@ -3921,7 +3920,7 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
- 					 &conn->hcon->dst, ACL_LINK);
- 	if (!pchan) {
- 		result = L2CAP_CR_BAD_PSM;
--		goto sendresp;
-+		goto response;
- 	}
- 
- 	mutex_lock(&conn->chan_lock);
-@@ -4008,17 +4007,15 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
- 	}
- 
- response:
--	l2cap_chan_unlock(pchan);
--	mutex_unlock(&conn->chan_lock);
--	l2cap_chan_put(pchan);
--
--sendresp:
- 	rsp.scid   = cpu_to_le16(scid);
- 	rsp.dcid   = cpu_to_le16(dcid);
- 	rsp.result = cpu_to_le16(result);
- 	rsp.status = cpu_to_le16(status);
- 	l2cap_send_cmd(conn, cmd->ident, rsp_code, sizeof(rsp), &rsp);
- 
-+	if (!pchan)
-+		return;
-+
- 	if (result == L2CAP_CR_PEND && status == L2CAP_CS_NO_INFO) {
- 		struct l2cap_info_req info;
- 		info.type = cpu_to_le16(L2CAP_IT_FEAT_MASK);
-@@ -4041,7 +4038,9 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
- 		chan->num_conf_req++;
- 	}
- 
--	return chan;
-+	l2cap_chan_unlock(pchan);
-+	mutex_unlock(&conn->chan_lock);
-+	l2cap_chan_put(pchan);
- }
- 
- static int l2cap_connect_req(struct l2cap_conn *conn,
-
 
