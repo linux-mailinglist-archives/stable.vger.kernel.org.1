@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-45686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A498CD358
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:14:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4203E8CD43A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CB2A1F2105D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73DF21C21214
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C21614A4DD;
-	Thu, 23 May 2024 13:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1626814AD35;
+	Thu, 23 May 2024 13:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoW9wU2I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzVRoD8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B6D13D2BD;
-	Thu, 23 May 2024 13:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C940D1D545;
+	Thu, 23 May 2024 13:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470073; cv=none; b=r97JwlFPZ3HHzXkFp/Y25qfL1SocjsAZqgodyfEyQqY3BH8Kjmt175LKr6uPDu93dhvLc4ir2RNWaEQHX9X77mSCV88wYY1D52bL/UUOHjjK4aJQnwDE/5fVYyItlZcLKXkUBmLlIpeGEXZ/VcI4gjW5UZ/hqS9UCqVA1fVNQn0=
+	t=1716470561; cv=none; b=PC7Kdxw/48b777zNdKsNxWVicLGRdDZjuQuf690kREGQVcalBfeYgtPI5gHEDxx5Iz9DL6CRHNDhKaFK0M4SAyWZL/4EhIV0/3UZteeQdZZW+To/SDDC4ROi862spOfMlOi6Y+/SPkW0XuAil+iOqTrtJQetevQvb71Gp0MMWK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470073; c=relaxed/simple;
-	bh=X1YWvJJ1O2G9nqCBd0rwPvoVVE0LYnf7Ru8EAEK2hJA=;
+	s=arc-20240116; t=1716470561; c=relaxed/simple;
+	bh=JyGcRD1qXDzdztnKIxg597ahw1c+Gtdc14xaMBLrXXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbwDU7YLMMbtvM0503Yd8VR9Wu0f7LDPrXXb2VlTWvgYTzBkmEj5892MB4bZeKAX4Sf+2o/f26JKSdNiuZbD4u3STHEmO3lm1HR3y9RLEKrFcgaYKubJPIzvBunfIqfj3Uog+P0aynR9e50fR7yareOL/5kSvc8PhWvczsJxO0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoW9wU2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E82FC2BD10;
-	Thu, 23 May 2024 13:14:32 +0000 (UTC)
+	 MIME-Version; b=CfFOsco3ohMJIAXpA0HioUjgpUFXOX7jte0hUcimYILOthRlRrGRjAAqb010a69vWya3LEv+3+ehvN3P0enxC7yfT0zm4RBNO87EQhAEexfqV5RYY/NDuIoffsHKW1rIpgJq6jR6JC2sTvUwhnWMvVdCLmQ+jfPPgbeMa4Sc/6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzVRoD8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511DBC32781;
+	Thu, 23 May 2024 13:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470072;
-	bh=X1YWvJJ1O2G9nqCBd0rwPvoVVE0LYnf7Ru8EAEK2hJA=;
+	s=korg; t=1716470561;
+	bh=JyGcRD1qXDzdztnKIxg597ahw1c+Gtdc14xaMBLrXXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MoW9wU2ILX6ZXs0Mm7eY5+H2kWS1JCHqQ4s1LmemMFPYFSqkSz40Bzve9e6W7BHVX
-	 HragR1SD09DmalsGHchPidT6H0W5rm9Biazy1LLw8lS65XxftMJbDrBsN+LoIn8ZNt
-	 g1SYq9v9RIMO84iYqQS5rM5GUxgnvu+hjbH5kRo0=
+	b=LzVRoD8xBq9glk0MKtbhFg+k9KLGKS7aLFMT3YkJ+knlOf1gqEio4hObX6YyjGqRM
+	 rqOA57ds4DmsB6zjZQ8fF95vh1AzvHuQeqguIozL2xqQkCtBIvWixauhA85PpwuvC1
+	 JilCZSpuHR6GFk0TR5sE2Rq6y7kD1hIc7JSvEV74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <zanussi@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19 12/18] tracing: Have the historgram use the result of str_has_prefix() for len of prefix
+	Ritvik Budhiraja <rbudhiraja@microsoft.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 010/102] cifs: fix use after free for iface while disabling secondary channels
 Date: Thu, 23 May 2024 15:12:35 +0200
-Message-ID: <20240523130326.203755609@linuxfoundation.org>
+Message-ID: <20240523130342.853784193@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
-References: <20240523130325.727602650@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+From: Ritvik Budhiraja <rbudhiraja@microsoft.com>
 
-commit 036876fa56204ae0fa59045bd6bbb2691a060633 upstream.
+[ Upstream commit a15ccef82d3de9a37dc25898c60a394209368dc8 ]
 
-As str_has_prefix() returns the length on match, we can use that for the
-updating of the string pointer instead of recalculating the prefix size.
+We were deferencing iface after it has been released. Fix is to
+release after all dereference instances have been encountered.
 
-Cc: Tom Zanussi  <zanussi@kernel.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ritvik Budhiraja <rbudhiraja@microsoft.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202311110815.UJaeU3Tt-lkp@intel.com/
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/smb/client/sess.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -4410,12 +4410,13 @@ static int parse_actions(struct hist_tri
- 	unsigned int i;
- 	int ret = 0;
- 	char *str;
-+	int len;
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 09bb30610a901..f3d25395d0d3c 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -337,10 +337,10 @@ cifs_disable_secondary_channels(struct cifs_ses *ses)
  
- 	for (i = 0; i < hist_data->attrs->n_actions; i++) {
- 		str = hist_data->attrs->action_str[i];
+ 		if (iface) {
+ 			spin_lock(&ses->iface_lock);
+-			kref_put(&iface->refcount, release_iface);
+ 			iface->num_channels--;
+ 			if (iface->weight_fulfilled)
+ 				iface->weight_fulfilled--;
++			kref_put(&iface->refcount, release_iface);
+ 			spin_unlock(&ses->iface_lock);
+ 		}
  
--		if (str_has_prefix(str, "onmatch(")) {
--			char *action_str = str + sizeof("onmatch(") - 1;
-+		if ((len = str_has_prefix(str, "onmatch("))) {
-+			char *action_str = str + len;
- 
- 			data = onmatch_parse(tr, action_str);
- 			if (IS_ERR(data)) {
-@@ -4423,8 +4424,8 @@ static int parse_actions(struct hist_tri
- 				break;
- 			}
- 			data->fn = action_trace;
--		} else if (str_has_prefix(str, "onmax(")) {
--			char *action_str = str + sizeof("onmax(") - 1;
-+		} else if ((len = str_has_prefix(str, "onmax("))) {
-+			char *action_str = str + len;
- 
- 			data = onmax_parse(action_str);
- 			if (IS_ERR(data)) {
+-- 
+2.43.0
+
 
 
 
