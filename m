@@ -1,102 +1,225 @@
-Return-Path: <stable+bounces-45719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECBA8CD388
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:16:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B45498CD3AF
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED012829AC
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:16:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D832B1C20A36
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5440B14A4F4;
-	Thu, 23 May 2024 13:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3758C14AD17;
+	Thu, 23 May 2024 13:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sX6VuqwC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVJU7Nmr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118761E497;
-	Thu, 23 May 2024 13:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62CC14A62D;
+	Thu, 23 May 2024 13:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470166; cv=none; b=n+AovbL78U3DPILckUPPegKBN8eRtb2TG/qsrbjMi58LRPxfGfFK0O6Y3ErVEL07Erw1muH1cTPvVewNLKKJChwzgeyu3uTVxye6gf+RTsAXylOrbA290Hx++xTsX2541IDCbqOVmSObHVbgH7/tbuiyZDt8aZ9tSTu1a84BnBY=
+	t=1716470252; cv=none; b=GDKb1H0j3T7l86619y9FvulhtgGa7xMCAEwa8IgNFr0JVYh7PmXy13yH0TUnkJi/bIAazRHw92Uo48cLSCfw3hT/88hTI7VlfCLJfBeHeAZF3IfODK2P1Yek+ggxVPl1N8wUXaxPxEEqsHtcPeDyfp26Q0r9FcRFwFU1UELtGiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470166; c=relaxed/simple;
-	bh=1pHtBVXv7BLKyMSdc/KM94DsTKG/7tLuWFPAsFd8rU4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bh9m4KQdbKNQEkmsu1OcX6fjqbmoVxIqE1Xs3wi3taQ7YlnPAVDEmhDFf8iPMBi6PqT6+OoeFw8208f9lUNdU7lV3OL7e+b5YtNnvgctSPNRAZhIocaTsYWdUuWtyvVspgANqoyCtHHqJ0X4hEX+TJVDpW/lIbHl3ym31FqWnLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sX6VuqwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44060C3277B;
-	Thu, 23 May 2024 13:16:05 +0000 (UTC)
+	s=arc-20240116; t=1716470252; c=relaxed/simple;
+	bh=/4a/xj7cfRIZDCnPtNaV7cN+oIvMYqd0ViXOU/2Moz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IVXN+XCEX5oIcfkX6Fe5Yy+P5ksYJ7H6O3KcL+p3VEOLByQvYc9Zrc3LPpbFskeqt9wqXabs+vwNOdGZ6UVwyl9jUO39/VOltl5blpkST88/wsQOz9XTvN287ao1MbId4Z+mFv+6RsNXu0J/8Ao6qpRXao0zLGuRYY+0R2R4zpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVJU7Nmr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F06C2BD10;
+	Thu, 23 May 2024 13:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470165;
-	bh=1pHtBVXv7BLKyMSdc/KM94DsTKG/7tLuWFPAsFd8rU4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sX6VuqwCi+hisMO+ljYIn/88KB5zyzuqJ4EOS0YtVqqyHnIEXe1XxJGKgrmqa3B+i
-	 WTHkOvS31+3a5lKljheyzi1RLIlXfqCe3Ng0unT2mgD15UV03lsE0vliAOzwPajLnZ
-	 PEqgyphMPtW9o5UhEbQEopxofd7zskSPB3e+4w/A=
+	s=korg; t=1716470251;
+	bh=/4a/xj7cfRIZDCnPtNaV7cN+oIvMYqd0ViXOU/2Moz4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QVJU7NmrrdI6MAaUJzDIiO8XRmKm+T4mMIvoj6UTrJHXfh6dfpQIjcvRlZQy5xZCT
+	 Y7FNDfTtOum7zzevN7ATi4TQnYH9Xx3TNOl9OuKXpggLXiXN5B9+SUNbB/lnNcn4ht
+	 N4LWp5mAioQ9ejDUKoWxPtH0UxSMzZ8QAPZMkIEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Machek <pavel@denx.de>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 12/16] btrfs: add missing mutex_unlock in btrfs_relocate_sys_chunks()
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.9 00/25] 6.9.2-rc1 review
 Date: Thu, 23 May 2024 15:12:45 +0200
-Message-ID: <20240523130326.211485861@linuxfoundation.org>
+Message-ID: <20240523130330.386580714@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.743454852@linuxfoundation.org>
-References: <20240523130325.743454852@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.2-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.9.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.9.2-rc1
+X-KernelTest-Deadline: 2024-05-25T13:03+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.9.2 release.
+There are 25 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
+Anything received after that time might be too late.
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.2-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+and the diffstat can be found below.
 
-commit 9af503d91298c3f2945e73703f0e00995be08c30 upstream.
+thanks,
 
-The previous patch that replaced BUG_ON by error handling forgot to
-unlock the mutex in the error path.
+greg k-h
 
-Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
-Reported-by: Pavel Machek <pavel@denx.de>
-Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
-CC: stable@vger.kernel.org
-Reviewed-by: Pavel Machek <pavel@denx.de>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/btrfs/volumes.c |    1 +
- 1 file changed, 1 insertion(+)
+-------------
+Pseudo-Shortlog of commits:
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3277,6 +3277,7 @@ again:
- 			 * alignment and size).
- 			 */
- 			ret = -EUCLEAN;
-+			mutex_unlock(&fs_info->delete_unused_bgs_mutex);
- 			goto error;
- 		}
- 
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.9.2-rc1
+
+Christoph Hellwig <hch@lst.de>
+    block: add a partscan sysfs attribute for disks
+
+Christoph Hellwig <hch@lst.de>
+    block: add a disk_has_partscan helper
+
+SeongJae Park <sj@kernel.org>
+    Docs/admin-guide/mm/damon/usage: fix wrong schemes effective quota update command
+
+SeongJae Park <sj@kernel.org>
+    Docs/admin-guide/mm/damon/usage: fix wrong example of DAMOS filter matching sysfs file
+
+Akira Yokosawa <akiyks@gmail.com>
+    docs: kernel_include.py: Cope with docutils 0.21
+
+Thomas Weißschuh <linux@weissschuh.net>
+    admin-guide/hw-vuln/core-scheduling: fix return type of PR_SCHED_CORE_GET
+
+Jarkko Sakkinen <jarkko@kernel.org>
+    KEYS: trusted: Do not use WARN when encode fails
+
+Hans Verkuil <hverkuil-cisco@xs4all.nl>
+    Revert "media: v4l2-ctrls: show all owned controls in log_status"
+
+AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+    remoteproc: mediatek: Make sure IPI buffer fits in L2TCM
+
+Daniel Thompson <daniel.thompson@linaro.org>
+    serial: kgdboc: Fix NMI-safety problems from keyboard reset code
+
+Javier Carrasco <javier.carrasco@wolfvision.net>
+    usb: typec: tipd: fix event checking for tps6598x
+
+Javier Carrasco <javier.carrasco@wolfvision.net>
+    usb: typec: tipd: fix event checking for tps25750
+
+Heikki Krogerus <heikki.krogerus@linux.intel.com>
+    usb: typec: ucsi: displayport: Fix potential deadlock
+
+Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+    net: usb: ax88179_178a: fix link status when link is set to down/up
+
+Prashanth K <quic_prashk@quicinc.com>
+    usb: dwc3: Wait unconditionally after issuing EndXfer command
+
+Carlos Llamas <cmllamas@google.com>
+    binder: fix max_thread type inconsistency
+
+Bard Liao <yung-chuan.liao@linux.intel.com>
+    ASoC: Intel: sof_sdw: use generic rtd_init function for Realtek SDW DMICs
+
+Jarkko Sakkinen <jarkko@kernel.org>
+    KEYS: trusted: Fix memory leak in tpm2_key_encode()
+
+Sungwoo Kim <iam@sung-woo.kim>
+    Bluetooth: L2CAP: Fix div-by-zero in l2cap_le_flowctl_init()
+
+Uros Bizjak <ubizjak@gmail.com>
+    x86/percpu: Use __force to cast from __percpu address space
+
+Ronald Wahl <ronald.wahl@raritan.com>
+    net: ks8851: Fix another TX stall caused by wrong ISR flag handling
+
+Jose Fernandez <josef@netflix.com>
+    drm/amd/display: Fix division by zero in setup_dsc_config
+
+Perry Yuan <perry.yuan@amd.com>
+    cpufreq: amd-pstate: fix the highest frequency issue which limits performance
+
+Ben Greear <greearb@candelatech.com>
+    wifi: iwlwifi: Use request_module_nowait
+
+Peter Tsao <peter.tsao@mediatek.com>
+    Bluetooth: btusb: Fix the patch for MT7920 the affected to MT7921
+
+
+-------------
+
+Diffstat:
+
+ Documentation/ABI/stable/sysfs-block               | 10 +++
+ .../admin-guide/hw-vuln/core-scheduling.rst        |  4 +-
+ Documentation/admin-guide/mm/damon/usage.rst       |  6 +-
+ Documentation/sphinx/kernel_include.py             |  1 -
+ Makefile                                           |  4 +-
+ arch/x86/include/asm/percpu.h                      |  6 +-
+ block/genhd.c                                      | 15 +++--
+ block/partitions/core.c                            |  5 +-
+ drivers/android/binder.c                           |  2 +-
+ drivers/android/binder_internal.h                  |  2 +-
+ drivers/bluetooth/btusb.c                          |  1 +
+ drivers/cpufreq/amd-pstate.c                       | 22 ++++++-
+ drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c        |  7 +-
+ drivers/media/v4l2-core/v4l2-ctrls-core.c          | 18 ++----
+ drivers/net/ethernet/micrel/ks8851_common.c        | 18 +-----
+ drivers/net/usb/ax88179_178a.c                     | 37 +++++++----
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c       | 10 +--
+ drivers/remoteproc/mtk_scp.c                       | 10 ++-
+ drivers/tty/serial/kgdboc.c                        | 30 ++++++++-
+ drivers/usb/dwc3/gadget.c                          |  4 +-
+ drivers/usb/typec/tipd/core.c                      | 51 ++++++++++-----
+ drivers/usb/typec/tipd/tps6598x.h                  | 11 ++++
+ drivers/usb/typec/ucsi/displayport.c               |  4 --
+ include/linux/blkdev.h                             | 13 ++++
+ include/net/bluetooth/hci.h                        |  9 +++
+ include/net/bluetooth/hci_core.h                   |  1 +
+ net/bluetooth/hci_conn.c                           | 75 +++++++++++++++-------
+ net/bluetooth/hci_event.c                          | 31 +++++----
+ net/bluetooth/iso.c                                |  2 +-
+ net/bluetooth/l2cap_core.c                         | 17 +----
+ net/bluetooth/sco.c                                |  6 +-
+ security/keys/trusted-keys/trusted_tpm2.c          | 25 ++++++--
+ sound/soc/intel/boards/Makefile                    |  1 +
+ sound/soc/intel/boards/sof_sdw.c                   | 12 ++--
+ sound/soc/intel/boards/sof_sdw_common.h            |  1 +
+ sound/soc/intel/boards/sof_sdw_rt_dmic.c           | 52 +++++++++++++++
+ 36 files changed, 357 insertions(+), 166 deletions(-)
 
 
 
