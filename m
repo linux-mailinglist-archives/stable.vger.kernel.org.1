@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-45851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E5C8CD434
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CAF8CD48F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32887B22F02
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB6D1B236E1
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06FA14A62A;
-	Thu, 23 May 2024 13:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C31414AD25;
+	Thu, 23 May 2024 13:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xucmw8nB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGqHrUy6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2D214A633;
-	Thu, 23 May 2024 13:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE1414AD36;
+	Thu, 23 May 2024 13:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470544; cv=none; b=kGtVwkcKrPhBOvJFhijF0xFNCZoy/DZ1pZjWF8DG+iFAAWJh+E+8lUayWGroKIUwfdzkxhgIxNg485hF6waCLmasfXZ7gtFd5ch7z85MLlaRIJHgqIvONHWV769jrLc8pEa3CmtPrLV8Z9CABKKhS2L5uV8qgJU65qJwIJ4C9vs=
+	t=1716470740; cv=none; b=p0VNlKuae/lRK8bPmTWQZAjAs9O/HODwcm+XRjzu3eW2lUWwWwpAwtJeiROtQVRI/qkVLYbWCpDf/zfLghNYzxFf8D0CnoKMFr7ldXdctpZQg21jQZMMt4Q9hlZOvMhYde1VGJMVyNhynSken2IXgHPZimU0+D2P50PmAnU8sTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470544; c=relaxed/simple;
-	bh=HUaurkJiVusfUHbo+rjAA8T1xryVytzZ5sUAwbGsif4=;
+	s=arc-20240116; t=1716470740; c=relaxed/simple;
+	bh=ARW6wELzP0214cYmOPUbV/TDv/VEcXbVYGPGeLiTV4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNkUyFbQUzuaE2+jNL+pzj1AeBovM+hyagl0erTTIgGA0+gU4Z5uETNxFqlY1X2w7AfGCBI3lpjEuvQ3XdDLhYg74fsFCfcpyVYs7I/0+P8I3bhBreBHwBlLRBzsQiWAITXtRmAHIq3yO9Z3dSKb+BgXz6yc54qyzYFivvbF6Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xucmw8nB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274B6C3277B;
-	Thu, 23 May 2024 13:22:23 +0000 (UTC)
+	 MIME-Version; b=Ymjr0B0xBgLu9OUbzXkc1ZVz27EOFgY5zx0hutttrUMq/xgKSaO/d1NrzaHUGtmWOgCplv/BvE3KXnlMyfvqCLsOukb89aGo0THJ16NGBz/aSpCVn78n29hCT541HCuvhtyZS928bzOfvH3s5OBJ9ztALItHO3BLht/NmiSvtAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGqHrUy6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E188C3277B;
+	Thu, 23 May 2024 13:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470544;
-	bh=HUaurkJiVusfUHbo+rjAA8T1xryVytzZ5sUAwbGsif4=;
+	s=korg; t=1716470740;
+	bh=ARW6wELzP0214cYmOPUbV/TDv/VEcXbVYGPGeLiTV4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xucmw8nB8KegvW0kjGT7CMJZaYqv0482PGb1bbZZqbVSV1EnE3s0CSg8j3Y5cUKbe
-	 VsVoV3+Vzci0snC6eVGF1or9Q+8522ihi6RqDgrkhedQBnJLj7T5/WVOGGJ14kl+5Q
-	 J5yjid7ANbNv+TsUDoXh5UhXE0L5IGp+nEfDoRAg=
+	b=MGqHrUy6e/kfRhQaR87HED8oF/zj5hAXeRy8EpLGUWrANGQxnMNLuZIHdTZivntza
+	 gckYyi3F4kkZK8u88oBsfh4Tl4z8D7bMshPnbV6HYYEx/55KT83hLznZURcXWwtmAv
+	 vUx054ynUXlGB6/euKvmvus6GCKv97zOUKgEiPY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>
-Subject: [PATCH 6.8 09/23] erofs: reliably distinguish block based and fscache mode
+	Bharath SM <bharathsm@microsoft.com>,
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 071/102] smb3: add trace event for mknod
 Date: Thu, 23 May 2024 15:13:36 +0200
-Message-ID: <20240523130330.099973146@linuxfoundation.org>
+Message-ID: <20240523130345.146284211@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
-References: <20240523130329.745905823@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit 7af2ae1b1531feab5d38ec9c8f472dc6cceb4606 upstream.
+[ Upstream commit e9e9fbeb83f65d3d487e0a0838c0867292c99fb2 ]
 
-When erofs_kill_sb() is called in block dev based mode, s_bdev may not
-have been initialised yet, and if CONFIG_EROFS_FS_ONDEMAND is enabled,
-it will be mistaken for fscache mode, and then attempt to free an anon_dev
-that has never been allocated, triggering the following warning:
+Add trace points to help debug mknod and mkfifo:
 
-============================================
-ida_free called for id=0 which is not allocated.
-WARNING: CPU: 14 PID: 926 at lib/idr.c:525 ida_free+0x134/0x140
-Modules linked in:
-CPU: 14 PID: 926 Comm: mount Not tainted 6.9.0-rc3-dirty #630
-RIP: 0010:ida_free+0x134/0x140
-Call Trace:
- <TASK>
- erofs_kill_sb+0x81/0x90
- deactivate_locked_super+0x35/0x80
- get_tree_bdev+0x136/0x1e0
- vfs_get_tree+0x2c/0xf0
- do_new_mount+0x190/0x2f0
- [...]
-============================================
+   smb3_mknod_done
+   smb3_mknod_enter
+   smb3_mknod_err
 
-Now when erofs_kill_sb() is called, erofs_sb_info must have been
-initialised, so use sbi->fsid to distinguish between the two modes.
+Example output:
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20240419123611.947084-3-libaokun1@huawei.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+      TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+         | |         |   |||||     |         |
+    mkfifo-6163    [003] .....   960.425558: smb3_mknod_enter: xid=12 sid=0xb55130f6 tid=0x46e6241c path=\fifo1
+    mkfifo-6163    [003] .....   960.432719: smb3_mknod_done: xid=12 sid=0xb55130f6 tid=0x46e6241c
+
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Meetakshi Setiya <msetiya@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/super.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ fs/smb/client/dir.c   | 7 +++++++
+ fs/smb/client/trace.h | 4 +++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -790,17 +790,13 @@ static int erofs_init_fs_context(struct
+diff --git a/fs/smb/client/dir.c b/fs/smb/client/dir.c
+index 37897b919dd5a..864b194dbaa0a 100644
+--- a/fs/smb/client/dir.c
++++ b/fs/smb/client/dir.c
+@@ -627,11 +627,18 @@ int cifs_mknod(struct mnt_idmap *idmap, struct inode *inode,
+ 		goto mknod_out;
+ 	}
  
- static void erofs_kill_sb(struct super_block *sb)
- {
--	struct erofs_sb_info *sbi;
-+	struct erofs_sb_info *sbi = EROFS_SB(sb);
++	trace_smb3_mknod_enter(xid, tcon->ses->Suid, tcon->tid, full_path);
++
+ 	rc = tcon->ses->server->ops->make_node(xid, inode, direntry, tcon,
+ 					       full_path, mode,
+ 					       device_number);
  
--	if (erofs_is_fscache_mode(sb))
-+	if (IS_ENABLED(CONFIG_EROFS_FS_ONDEMAND) && sbi->fsid)
- 		kill_anon_super(sb);
- 	else
- 		kill_block_super(sb);
+ mknod_out:
++	if (rc)
++		trace_smb3_mknod_err(xid,  tcon->ses->Suid, tcon->tid, rc);
++	else
++		trace_smb3_mknod_done(xid, tcon->ses->Suid, tcon->tid);
++
+ 	free_dentry_path(page);
+ 	free_xid(xid);
+ 	cifs_put_tlink(tlink);
+diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+index f9c1fd32d0b8c..5e83cb9da9028 100644
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -375,6 +375,7 @@ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(get_reparse_compound_enter);
+ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(delete_enter);
+ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(mkdir_enter);
+ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(tdis_enter);
++DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(mknod_enter);
  
--	sbi = EROFS_SB(sb);
--	if (!sbi)
--		return;
+ DECLARE_EVENT_CLASS(smb3_inf_compound_done_class,
+ 	TP_PROTO(unsigned int xid,
+@@ -415,7 +416,7 @@ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(query_wsl_ea_compound_done);
+ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(delete_done);
+ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(mkdir_done);
+ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(tdis_done);
 -
- 	erofs_free_dev_context(sbi->devs);
- 	fs_put_dax(sbi->dax_dev, NULL);
- 	erofs_fscache_unregister_fs(sb);
++DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(mknod_done);
+ 
+ DECLARE_EVENT_CLASS(smb3_inf_compound_err_class,
+ 	TP_PROTO(unsigned int xid,
+@@ -461,6 +462,7 @@ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(query_wsl_ea_compound_err);
+ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(mkdir_err);
+ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(delete_err);
+ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(tdis_err);
++DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(mknod_err);
+ 
+ /*
+  * For logging SMB3 Status code and Command for responses which return errors
+-- 
+2.43.0
+
 
 
 
