@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-45768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796738CD3C6
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C148CD3F4
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3429928524F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF4F51C21AE9
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BFC14AD2C;
-	Thu, 23 May 2024 13:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51BC14D701;
+	Thu, 23 May 2024 13:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMhNmfj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QenQAXjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E531E497;
-	Thu, 23 May 2024 13:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A133314B07E;
+	Thu, 23 May 2024 13:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470306; cv=none; b=ZdafoHr8N7Knv/xwRxxmiiTALHXIg9+kDWnpW0yPXuTZIg+AKuNOrAnLs737Z9k7chPkYyt1FuddQj9fkUrPl29+7drYX1xlPI9+33IxqQf8FiSGiGcln9eqTisLtlTboTqYWQd646So1UbmeLHdyLiQI/08HDCSVikO3hM6GBE=
+	t=1716470391; cv=none; b=kzRTCya+623PjPDYalhwdZMtZr4XJavYZSj9hwI0+XLKCJYv/2MdhXF9lGzY6+9gAY18CW+fKuKAElmHKCLo3NdP/Dw0L9+OJnjjsQAgzzQrQaCLiom0I2MVNSDQlYZ6XLC+nl3V2frOMbPN4ER3W9M2mZyQjHSqsbKngvTN4dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470306; c=relaxed/simple;
-	bh=H/oTNvUOuTom9PqPFlMT+xn9MeTCP1pIQF7mJOX9WIY=;
+	s=arc-20240116; t=1716470391; c=relaxed/simple;
+	bh=gaORDWgCy6XpMMEfLVCQF97Ke5hqb4zdPuNfLR2C6FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Si7HdPf61PPZB1NoilWmfs3h9hRJ7XFsHPDpxggbBN85+kSAu5PtmRhVhk4+bzi4DW5QZ84iZg+/9WPTYnxjQApB4C9CCHOMav9Enoq6tYVwPjUFdF8mNKDlkilnwhl5sSE7CDbIVMppPlXRK+yl3maTHuKeJKRsHF9P8u3gcd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMhNmfj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB60C3277B;
-	Thu, 23 May 2024 13:18:25 +0000 (UTC)
+	 MIME-Version; b=FlfFqF4ddxBW8ldmsox7j4tKbNF3BUI1Lmh4uvjv4k7jVL0VurWA9y2t3YjiJoumiKLi8E3fO760444dCsdsre59aF6Vhax+M4Xv0cmV281GhPqJrzPx3aDUdB/gaU2qGEwC0IYKFiQAc3nVcLks0AYddLKtsWMZYIGP5Fu6k2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QenQAXjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F1AC4AF0A;
+	Thu, 23 May 2024 13:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470305;
-	bh=H/oTNvUOuTom9PqPFlMT+xn9MeTCP1pIQF7mJOX9WIY=;
+	s=korg; t=1716470391;
+	bh=gaORDWgCy6XpMMEfLVCQF97Ke5hqb4zdPuNfLR2C6FE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMhNmfj3ziXEcXHLJO1ewiMpTST3jCpxx0RG9lOCFbG+UiT7m5gNtqOqUmveZNZa8
-	 Dto+h28tRsFi+TOkfqbErpnwGGKTi7JyqoHKHWrVMCQhp0RmfCdqTV+hsusABojr8/
-	 L+Kk1+eFDPMfJtia9C6WMQ+kui63IQ47nWzL/Rec=
+	b=QenQAXjNakrMOSbbtYxhEDk3FKb+wHj6N/4ksPrsqgDz2nnB5SiUHP1UE4BC3TdDe
+	 sdvGbpoVq0EfsFGD27QThRiZG9WxmOnInA0GiTPbvxxfLqwknTiCxtIx5QBt+Y+Uf6
+	 uHuoswWtVLaMoTOxvTCyPmGmiQS5TrgMrvFJTxdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>
-Subject: [PATCH 5.15 15/23] KVM: x86: Clear "has_error_code", not "error_code", for RM exception injection
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Andrey Albershteyn <aalbersh@redhat.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 20/45] xfs: fix incorrect error-out in xfs_remove
 Date: Thu, 23 May 2024 15:13:11 +0200
-Message-ID: <20240523130328.529955317@linuxfoundation.org>
+Message-ID: <20240523130333.255434214@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 6c41468c7c12d74843bb414fc00307ea8a6318c3 upstream.
+[ Upstream commit 2653d53345bda90604f673bb211dd060a5a5c232 ]
 
-When injecting an exception into a vCPU in Real Mode, suppress the error
-code by clearing the flag that tracks whether the error code is valid, not
-by clearing the error code itself.  The "typo" was introduced by recent
-fix for SVM's funky Paged Real Mode.
+Clean up resources if resetting the dotdot entry doesn't succeed.
+Observed through code inspection.
 
-Opportunistically hoist the logic above the tracepoint so that the trace
-is coherent with respect to what is actually injected (this was also the
-behavior prior to the buggy commit).
-
-Fixes: b97f07458373 ("KVM: x86: determine if an exception has an error code only when injecting it.")
-Cc: stable@vger.kernel.org
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20230322143300.2209476-2-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[nsaenz: backport to 5.15.y]
-Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Fixes: 5838d0356bb3 ("xfs: reset child dir '..' entry when unlinking child")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Andrey Albershteyn <aalbersh@redhat.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9134,13 +9134,20 @@ int kvm_check_nested_events(struct kvm_v
- 
- static void kvm_inject_exception(struct kvm_vcpu *vcpu)
- {
-+	/*
-+	 * Suppress the error code if the vCPU is in Real Mode, as Real Mode
-+	 * exceptions don't report error codes.  The presence of an error code
-+	 * is carried with the exception and only stripped when the exception
-+	 * is injected as intercepted #PF VM-Exits for AMD's Paged Real Mode do
-+	 * report an error code despite the CPU being in Real Mode.
-+	 */
-+	vcpu->arch.exception.has_error_code &= is_protmode(vcpu);
-+
- 	trace_kvm_inj_exception(vcpu->arch.exception.nr,
- 				vcpu->arch.exception.has_error_code,
- 				vcpu->arch.exception.error_code,
- 				vcpu->arch.exception.injected);
- 
--	if (vcpu->arch.exception.error_code && !is_protmode(vcpu))
--		vcpu->arch.exception.error_code = false;
- 	static_call(kvm_x86_queue_exception)(vcpu);
- }
- 
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -2479,7 +2479,7 @@ xfs_remove(
+ 			error = xfs_dir_replace(tp, ip, &xfs_name_dotdot,
+ 					tp->t_mountp->m_sb.sb_rootino, 0);
+ 			if (error)
+-				return error;
++				goto out_trans_cancel;
+ 		}
+ 	} else {
+ 		/*
 
 
 
