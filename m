@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-46011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF4D8CDC56
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 23:50:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CE18CDC5B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 23:52:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBA921F213CD
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 21:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 359BB2888C2
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 21:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55299127E32;
-	Thu, 23 May 2024 21:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039EB127E38;
+	Thu, 23 May 2024 21:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WIzkQ0oV"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WU8UJoG1"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.207])
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFE0AD2C;
-	Thu, 23 May 2024 21:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3311B127E24;
+	Thu, 23 May 2024 21:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716501045; cv=none; b=SGeRRlMw/1OFOxPvTHQJkUk1O5xMYHUBKhsi/8wxdvcT141YxqoCPhGweKp/T46oRG2cKu/3awthuaDn4guoPNL3PFSnzBmPUDq5udIxRKYmcG5bQWNNqVKHrsjFvfeiH/orCcEYNeO5OPLdHyvellFtcjaChvgVklAI2ibrb0E=
+	t=1716501168; cv=none; b=FSBjYcdm3A4XbsJn7DSExS8UCktMnGrvVKELqynNtRyz1Kc1mSibqWp3AbIVeEAOtwMQszmGRpz67XqlrY5XE2KzyDMZ0/gROj9790fRopfcUK0ar7G6hR1lHsV0GMvJAwlv9KuSzWhYT2J9vfZA5OnkA/KqN5BZrOFpg2MVfzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716501045; c=relaxed/simple;
-	bh=QY5gAbZY+4cKbXsw0bbAcrIJOcFMAssBPba5NZSvh8M=;
+	s=arc-20240116; t=1716501168; c=relaxed/simple;
+	bh=oWnhsug1KPrnDsWdPoYY+FNbjOohNgY6+NVxfxmpMjs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LeXbYYY+vRjcCwd44eVYJFoczZW9JaGn0rmouL2Vbwu4QUjXqW+9p6M0BFuZEYwbc+NiBlvCTRXhn8capHcxpihOtIFO3eZAscVi75tRloKd65R37qV2Zw9wBQUQViFnS1Ubt1uOi81lhvgucL/HujBls3+iDXrPhKC8rt0t6fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WIzkQ0oV; arc=none smtp.client-ip=192.19.144.207
+	 MIME-Version; b=uG4XCoUGdoIFaAWEMbLsuJMb1U3ZqviAh9clcHxSxjW+ImepCMURMxr8z34rXPQ7l0J+CL1cVaApwNonzrb0CZ5PJyrLGHCZmHkC0x4DHfQGsdjdn48Gp+9ofdENu0eB7MBINoFD35hF2FRwTQDyqqDusKsrU09roMhI3T6BYaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WU8UJoG1; arc=none smtp.client-ip=192.19.144.209
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id A0AF4C0000D4;
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id CC460C0000EA;
 	Thu, 23 May 2024 14:45:28 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com A0AF4C0000D4
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com CC460C0000EA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
 	s=dkimrelay; t=1716500728;
-	bh=QY5gAbZY+4cKbXsw0bbAcrIJOcFMAssBPba5NZSvh8M=;
+	bh=oWnhsug1KPrnDsWdPoYY+FNbjOohNgY6+NVxfxmpMjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIzkQ0oV+HCEkZwGQp1hF/3DIzIgPL+r4Fwo1mTbB/vXHY/1aGny5pH1of350/urs
-	 8snlxB6oALA8zr+L3QwbgMyljHZe4rb99Pa5BtdupsMvBzTfUxDIRk0dNo7LmrImLl
-	 l23JQ/xg7gJcB2fQu0Huw+y6ZBqOA4QMNcfoCgFc=
+	b=WU8UJoG1asvtJVWiO+RLoX/CpLPbkL3aYHmI7seK+UCS4cGvf3Kj7cONEkZfxN+A9
+	 cTigyb45yi5p4t5/kFhWaM5uzHlEZB6TX8BCwGT7aghF6ctQ6S0aW43PFLnoCvZQfY
+	 KuMiRRBVHTVPjJ1IUg0m6RrrbbVq7oNLI0oa8aL4=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPSA id A039418041CAC4;
+	by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPSA id C330A18041CAC6;
 	Thu, 23 May 2024 14:45:26 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: stable@vger.kernel.org
@@ -58,9 +58,9 @@ Cc: Jorge Ramirez-Ortiz <jorge@foundries.io>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	linux-mmc@vger.kernel.org (open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND...),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH stable 6.1] mmc: core: Do not force a retune before RPMB switch
-Date: Thu, 23 May 2024 14:45:24 -0700
-Message-Id: <20240523214525.200347-5-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 6.6] mmc: core: Do not force a retune before RPMB switch
+Date: Thu, 23 May 2024 14:45:25 -0700
+Message-Id: <20240523214525.200347-6-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240523214525.200347-1-florian.fainelli@broadcom.com>
 References: <20240523214525.200347-1-florian.fainelli@broadcom.com>
@@ -116,7 +116,7 @@ Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
-index 25c152ef5d60..67230d486c28 100644
+index 2f51db4df1a8..cf396e8f34e9 100644
 --- a/drivers/mmc/core/host.c
 +++ b/drivers/mmc/core/host.c
 @@ -119,13 +119,12 @@ void mmc_retune_enable(struct mmc_host *host)
