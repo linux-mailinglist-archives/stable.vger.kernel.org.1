@@ -1,141 +1,290 @@
-Return-Path: <stable+bounces-45964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C9C8CD793
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 17:47:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B710A8CD7FD
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 18:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ACC71F224F3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:47:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C101282E84
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 16:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62348171CC;
-	Thu, 23 May 2024 15:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0923912B7F;
+	Thu, 23 May 2024 15:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cuVmT/KV"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="M5lX2l1z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8274012B89;
-	Thu, 23 May 2024 15:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219F71170F
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 15:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716479256; cv=none; b=QFcMt09v0aS9IiJgX+Lrs62RPiQPdeHLBoYhkJpAJBcG5b6DQ31ZMYGTHZWig9HzRnPPKCE/XfWz3JswfWq7ASu63HGz0QlKhO/GYSXouwdO9qcqKxRiNS3NyRR92+z1l3x88jBbSyRx33LgI0xjI3uyH5XJQiE3Lq0J/ohWZKg=
+	t=1716479990; cv=none; b=TvZTUWf2IGsDD09dtDZG8/NM/TQ1Evy+jSOz1gvjqtGgpkJf+PPgQpk59HInaFrFJpoROR/4BA80X6o99YONa0Y8nr0Z+9VvPRfAGbTsHDnD0CCzOgNlSIoEtQ4i0lPN3jugN5WcwcMkX5tnLX8ns1SMv9/GhnnHetz8WQODhJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716479256; c=relaxed/simple;
-	bh=9hWCfjhhVw3iKm2K8ZqqBvjv4a6eCuEbOteQFItL/So=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=R3MiuON/NR11eKjT4DEQxizPKkKdhAr2W8w+B5YPIEemwlWQPJqt2mdBejxNAMwFIDRvWCaoTOyPliK2TNCTE+7p/DaAKMGe1A5zkEIj6kEE3+y6XbzsApiCbWXT4AOUPw6PAEbispuN9C5zcT6PuVDxycEZBtLLGyRJuktIJng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cuVmT/KV; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2e538a264e0so108862031fa.1;
-        Thu, 23 May 2024 08:47:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716479252; x=1717084052; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l9FQyjhPHmXpcdMO6VzbCHP+i07w7eEawaXliufyJqc=;
-        b=cuVmT/KV2WeCiMH6xcRrAlmCO5RrkFkUtiK6sTQWtJL1ESx1VXVqyJdKW1SIP042IN
-         +Py+4BstuNmsOZlgQnAHUKlZkQOnpQN+3bhpA+QxhgAGfs1UuZMBE9nBqIVSiL9exTEv
-         ELYO5mS9mE6w5xuArYKnG80bIVndQhEpUXcBfl7syfqbvM1hMT6CElg7VDbhtIZ5lQhi
-         aa8Q7uiRQORf9SzAwSz1OZcT35puaU9pu1KKeark5RxJ/PsEVug8cAzMM6vOAE18qqJs
-         ZCWTleCXWKLiVbu1zjufUsk/wt07/TekhTmXuHaCwgrQ2Bv5ltl+3Z9pQhvNnNvXAamW
-         Y09w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716479252; x=1717084052;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l9FQyjhPHmXpcdMO6VzbCHP+i07w7eEawaXliufyJqc=;
-        b=Jqmvlx/eq0+EqBSHW8m1YA6Px8G7N5+ZmjFJaqelMXNon2hp3cC+i7q0KrXY6VOM1Z
-         YCalN6mAOLUH8JBzLzm5qGkEMeEbADEKfB1YVROrcnPnMEsmCID40F8ugPAKtYFxvP17
-         4f7ZnMXHcnNoOREcBH9VbzzlA6LUpmboZDDjsIiOIJJ60IVrxd5Uj6P+IBFe2Um9PWSP
-         rTrVnbIK0S51no2CWQhfs2n6w+jxcJzDRVTWEDAAbCmycs6SOiA9Cwtqh8eLacoBnAov
-         yTq14S9jhVTPUKYR8MtXa9Kv8+3KqGaUZAWvDwGxCyNBZW1JhZdH7RHet8pW0ip2XJL1
-         iGCw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/eNMcsgdsNZM40WyWYIykS6T5au9xhqg9cDs/Xt4SBJfeDvmtGRznrEudHI+dvVigCqT+kEvjnhDKgp4nqVy5sTJ3U5jcZ8fmEIUEKIFBYfFBvsbS6KvFAVsSZfmwyKcTP3CnZk1wQ/dxMFgO2qkFsFoFazStCGBl+FXN1Jtpn6c=
-X-Gm-Message-State: AOJu0Yxmvndc/atbq1prwPO9kmOVsfteIBved6aGM1ibjO+mrpGQsZWX
-	jq8zZW8VpTMMHzmnVrLvk2oRe0zHBiYzSg04gQPOqgdqTLf/WcR9QOOwSlRnxL4=
-X-Google-Smtp-Source: AGHT+IHOPon9/wAOsXX5ACXesmOWEvoSUCdGumsqH6LYPpDZhTFoVRQ0woENgeiNb4K33Fij75kDcg==
-X-Received: by 2002:a2e:96c3:0:b0:2e9:555f:54e with SMTP id 38308e7fff4ca-2e9555f08bdmr16396651fa.18.1716479252157;
-        Thu, 23 May 2024 08:47:32 -0700 (PDT)
-Received: from [127.0.1.1] (84-115-212-250.cable.dynamic.surfer.at. [84.115.212.250])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42100f5a576sm28569725e9.22.2024.05.23.08.47.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 May 2024 08:47:31 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 23 May 2024 17:47:14 +0200
-Subject: [PATCH v2 1/3] hwmon: (ltc2992) Fix memory leak in
- ltc2992_parse_dt()
+	s=arc-20240116; t=1716479990; c=relaxed/simple;
+	bh=vKPo3BL68sywUJaQsMD4Z3T9Wvd9v6eYp203LTavIQs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kMsC1HGoCcRR2d7vlx5obdSTCgQV+qhO4/YCEKsQ026NsDsTtNEASBfF0vvtOorHdCt4PSyjz0qkUuihoqxuGA4H+s2lmlRJo5VYg8cVm30wW0qYL5sPrQRv97PkUHHsBsRZL9uSJTwu+myRdkwdTmdDyBCm+v6kCOLY0Wmjn0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=M5lX2l1z; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1716479980; x=1717084780; i=w_armin@gmx.de;
+	bh=5HlhaVisKVamffaEv++/huqUeNpWkHnMVrAo9Vu5FM4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=M5lX2l1zdQ0DVY4ZX3AYBb7/XGrnLWCkWD++L+5Mh364U+dAwszes5rBWAHhb0LU
+	 hh8iqZuoX4RQwFOBLADau9g4MtofAlxBYwTI5wVmHD2WEPfUvYSmqLRoryxhBRfvp
+	 ZJvkPFEyOFUh9/RSobysd7vZNP53MFvmVXmxMOVHhrt8CmEGKMsjEjZw5YsQKFFiw
+	 +dmYdHqmCCSGDGqFhnjq5u/q+nmhe6/jghzIoTtMocr+hl9JIqt+mX+CccpohqHbA
+	 qkPq5GVtxmIT3xLMQVgCvbzDfThXmbWbdc0aoaQTR6s2bQsz2l7ljvwmbnowKIJNM
+	 Qa3Y9nVPA+QTP2SB4A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M26r3-1s7hsQ434b-002WSG; Thu, 23
+ May 2024 17:59:40 +0200
+Message-ID: <7ec6faf8-d9c1-436b-98c8-473e7ff395b3@gmx.de>
+Date: Thu, 23 May 2024 17:59:39 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240523-fwnode_for_each_available_child_node_scoped-v2-1-701f3a03f2fb@gmail.com>
-References: <20240523-fwnode_for_each_available_child_node_scoped-v2-0-701f3a03f2fb@gmail.com>
-In-Reply-To: <20240523-fwnode_for_each_available_child_node_scoped-v2-0-701f3a03f2fb@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Daniel Scally <djrscally@gmail.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Antoniu Miclaus <antoniu.miclaus@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716479248; l=1134;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=9hWCfjhhVw3iKm2K8ZqqBvjv4a6eCuEbOteQFItL/So=;
- b=cUt3FVuACsgdaeqMx1ewYFxQ1Ie/fOsFuDfGfBu4aZmqq7BgBJhE2eksmLuECMRRrmBO9Cbkw
- ef60GlkHglgATzTHOWTG5DXQSnJI0IerCpJFdKAKFpw6J307tB7kbTw
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+User-Agent: Mozilla Thunderbird
+Subject: Re: Kernel 5.15.150 black screen with AMD Raven/Picasso GPU
+To: Barry Kauler <bkauler@gmail.com>
+Cc: Alex Deucher <alexdeucher@gmail.com>, Yifan Zhang <yifan1.zhang@amd.com>,
+ Prike Liang <Prike.Liang@amd.com>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
+References: <CABWT5yiejGABNXicsS7u-daKnBBjK6YTDVgaQOqwGYn8P20D8Q@mail.gmail.com>
+ <6580c2d4-b084-470f-80a0-aa09f1ab880d@gmx.de>
+ <CABWT5yiD110qmJcRsoGVMevULAVmYpyiW4w9MtmNjp7E0rDQ8A@mail.gmail.com>
+ <CABWT5yg5jG7eMiDp7QN2yhFj6983qF9zN7eHOprH4eEjwQJLBQ@mail.gmail.com>
+ <c3205455-7ad2-487e-8954-52102754e154@gmx.de>
+ <CADnq5_PM_FuBE4913Z4bxiMTDYtRS+VJgLW6gfDU1qnQQ=FDzA@mail.gmail.com>
+ <d04105ea-0f8a-4f0b-b4f2-bc8407d37c73@gmx.de>
+ <CABWT5yibc52CTUWeCWxYQb4ooi4dsbvBWxJAJCDrG+8405RPTg@mail.gmail.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <CABWT5yibc52CTUWeCWxYQb4ooi4dsbvBWxJAJCDrG+8405RPTg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:CVQLpDXT0By1e1CKa7ZKRSdTDbToVGPsmA1swDIrsMgbDvIgOnm
+ A8IorigLyklbt88BuOCoEUW44dXLQsEj8Q7WdnQEs2oT+Joq7xFk+z7169OAlqkSnkZj1v5
+ hu8Uy3uIgleKNiwF+mX7vVLn9EvAQLLakcvs3fp9gZtgJkXkj3N4Yv/+S/xmxDTDfm3Wvp5
+ McLAPWg3QLQoKaYeRmCrQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:LyOt50Zb6uE=;Y0lrtnAFTLe7AUTa5lDL3W/j1q3
+ mfdL9yhqEDHyrUhmnsCYERnAKW51ZY/wR3qX3a9rP7ab5MoQGuY3stPuHs/7mTalTwUmKhmXm
+ hRR93mb1Z/ckWsUHzc1vxDrVs8ySbgBGSDDOZal1+8Uo9uaZHztkh07YF9NKiwr5lKBxd1rI8
+ te3735+nKLugtUFxpveTLVoM9Wh2IzKU+g9TI0iyi1I63s2ngw2EOLFQ9K3JMt/k5TA3waSmc
+ 8n6vzOVxs0u7mZ7kuvbVmusj9W9AoOVMBpZkyo7ayEa33Vt/aIUSdDPwIO/tjiaL2mvp5DL8r
+ G7+g/gY/Dj+3wkxhMMY3/XOk0JUjBL+WajYYc0VbVvfF0VzLSecZKpRbyzRqdxBGAYhsfDd4+
+ HxIby+76l7QjyAW7aca9MBvnOvAt/rnOyeawdV3FxHfqva3v730F0cg3p0Hd+sTH/53fU9PsQ
+ YJVUDHgamFB1NJMcS3UXN23r4x0vsWUv3pFX0HfNLO6mgRAdu+8vksRQ54kAPwGfKUbz+fRiE
+ hLaL/nHbMMAmthPKzx7oVPkxbmuXiXA15EEsmyyc0C/u438Di/0zW9c0PAcrpfQnFsm5foKw0
+ hbJProOvIpIXpyeGkMiUedtnLkVib6px8D5I7QY5zNDpAgfJ1hNW+l0bU4pZu0CKkAh9VqhEE
+ TKS9QQIUpTYo0MlCsiITqt6NwORlWB7fwKmGn9Lr6drqZcNnHNEHsX1S8yKgTqvOLTwVw604x
+ JLrvmtmr0S79J9yIO29K8AKfhVD5D/yJhMlFXRA6Yj2E+pTLmhQi7gxk8Rawk/TJqn2tjfCj5
+ J+qII7Q5fQ4DoBnKK/hIYxoO5tGF2P0ur+3cGq01bq9d8=
 
-A new error path was added to the fwnode_for_each_available_node() loop
-in ltc2992_parse_dt(), which leads to an early return that requires a
-call to fwnode_handle_put() to avoid a memory leak in that case.
+Am 23.05.24 um 15:13 schrieb Barry Kauler:
 
-Add the missing fwnode_handle_put() in the error path from a zero value
-shunt resistor.
+> On Wed, May 22, 2024 at 12:58=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
+te:
+>> Am 20.05.24 um 18:22 schrieb Alex Deucher:
+>>
+>>> On Sat, May 18, 2024 at 8:17=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wr=
+ote:
+>>>> Am 17.05.24 um 03:30 schrieb Barry Kauler:
+>>>>
+>>>>> Armin, Yifan, Prike,
+>>>>> I will top-post, so you don't have to scroll down.
+>>>>> After identifying the commit that causes black screen with my gpu, I
+>>>>> posted the result to you guys, on May 9.
+>>>>> It is now May 17 and no reply.
+>>>>> OK, I have now created a patch that reverts Yifan's commit, compiled
+>>>>> 5.15.158, and my gpu now works.
+>>>>> Note, the radeon module is not loaded, so it is not a factor.
+>>>>> I'm not a kernel developer. I have identified the culprit and it is =
+up
+>>>>> to you guys to fix it, Yifan especially, as you are the person who h=
+as
+>>>>> created the regression.
+>>>>> I will attach my patch.
+>>>>> Regards,
+>>>>> Barry Kauler
+>>>> Hi,
+>>>>
+>>>> sorry for not responding to your findings. I normally do not work wit=
+h GPU drivers,
+>>>> so i hoped one of the amdgpu developers would handle this.
+>>>>
+>>>> I CCeddri-devel@lists.freedesktop.org  and amd-gfx@lists.freedesktop.=
+org so that other
+>>>> amdgpu developers hear from this issue.
+>>>>
+>>>> Thanks you for you persistence in finding the offending commit.
+>>> Likely this patch should not have been ported to 5.15 in the first
+>>> place.  The IOMMU requirements have been dropped from the driver for
+>>> the last few kernel versions so it is no longer relevant on newer
+>>> kernels.
+>>>
+>>> Alex
+>> Barry, can you verify that the latest upstream kernel works on you devi=
+ce?
+>> If yes, then the commit itself is ok and just the backporting itself wa=
+s wrong.
+>>
+>> Thanks,
+>> Armin Wolf
+> Armin,
+> The unmodified 6.8.1 kernel works ok.
+> I presume that patch was applied long before 6.8.1 got released and
+> only got backported to 5.15.x recently.
+>
+> Regards,
+> Barry
+>
+Great to hear, that means we only have to revert commit 56b522f46681 ("drm=
+/amdgpu: init iommu after amdkfd device init")
+from the 5.15.y series.
 
-Cc: stable@vger.kernel.org
-Fixes: 10b029020487 ("hwmon: (ltc2992) Avoid division by zero")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/hwmon/ltc2992.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I CCed the stable mailing list so that they can revert the offending commi=
+t.
 
-diff --git a/drivers/hwmon/ltc2992.c b/drivers/hwmon/ltc2992.c
-index 229aed15d5ca..d4a93223cd3b 100644
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -876,9 +876,11 @@ static int ltc2992_parse_dt(struct ltc2992_state *st)
- 
- 		ret = fwnode_property_read_u32(child, "shunt-resistor-micro-ohms", &val);
- 		if (!ret) {
--			if (!val)
-+			if (!val) {
-+				fwnode_handle_put(child);
- 				return dev_err_probe(&st->client->dev, -EINVAL,
- 						     "shunt resistor value cannot be zero\n");
-+			}
- 			st->r_sense_uohm[addr] = val;
- 		}
- 	}
+Thanks,
+Armin Wolf
 
--- 
-2.40.1
-
+>>>> Armin Wolf
+>>>>
+>>>>> On Thu, May 9, 2024 at 4:08=E2=80=AFPM Barry Kauler <bkauler@gmail.c=
+om> wrote:
+>>>>>> On Fri, May 3, 2024 at 9:03=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> =
+wrote:
+>>>>>>>> ...
+>>>>>>>> # lspci | grep VGA
+>>>>>>>> 05:00.0 VGA compatible controller: Advanced Micro Devices, Inc.
+>>>>>>>> [AMD/ATI] Picasso/Raven 2 [Radeon Vega Series / Radeon Vega Mobil=
+e
+>>>>>>>> Series] (rev c2)
+>>>>>>>> 05:00.7 Non-VGA unclassified device: Advanced Micro Devices, Inc.
+>>>>>>>> [AMD] Raven/Raven2/Renoir Non-Sensor Fusion Hub KMDF driver
+>>>>>>>>
+>>>>>>>> # lspci -n -k
+>>>>>>>> ...
+>>>>>>>> 05:00.0 0300: 1002:15d8 (rev c2)
+>>>>>>>> Subsystem: 1025:1456
+>>>>>>>> Kernel driver in use: amdgpu
+>>>>>>>> Kernel modules: amdgpu
+>>>>>>>> ...
+>>>>>>> thanks for informing us of this regression. Since there are four c=
+ommits affecting
+>>>>>>> amdgpu in 5.15.150, i suggest that you use "git bisect" to find th=
+e faulty commits,
+>>>>>>> see https://docs.kernel.org/admin-guide/bug-bisect.html for detail=
+s.
+>>>>>>>
+>>>>>>> I think you can speed up the bisecting process by limiting yoursel=
+f to the AMD DRM
+>>>>>>> driver directory with "git bisect start -- drivers/gpu/drm/amd", t=
+ake a look at the
+>>>>>>> man page of "git bisect" for details.
+>>>>>>>
+>>>>>>> Thanks,
+>>>>>>> Armin Wolf
+>>>>>> Armin,
+>>>>>> Thanks for the advice. I am unfamiliar with git on the commandline.
+>>>>>> Previously only used SmartGit gui.
+>>>>>> EasyOS requires aufs patch, and for a few days tried to figure out =
+how
+>>>>>> to use that with git bisect, then gave up. Changed to testing with =
+my
+>>>>>> "QV" distro, which is more conventional, doesn't need any kernel
+>>>>>> patches. Managed to get it down to one commit. Here are the steps I
+>>>>>> followed:
+>>>>>>
+>>>>>> # git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/li=
+nux-stable.git
+>>>>>> # cd linux-stable
+>>>>>> # git tag -l | grep '5\.15\.150'
+>>>>>> v5.15.150
+>>>>>> # git checkout -b my5.15.150 v5.15.150
+>>>>>> Updating files: 100% (65776/65776), done.
+>>>>>> Switched to a new branch 'my5.15.150'
+>>>>>>
+>>>>>> Copied in my .config then...
+>>>>>>
+>>>>>> # make menuconfig
+>>>>>> # git bisect start -- drivers/gpu/drm/amd
+>>>>>> # git bisect bad
+>>>>>> # git bisect good v5.15.149
+>>>>>> Bisecting: 1 revision left to test after this (roughly 1 step)
+>>>>>> [b9a61ee2bb2704e42516e3da962f99dfa98f3b20] drm/amdgpu: reset gpu fo=
+r
+>>>>>> s3 suspend abort case
+>>>>>> # make
+>>>>>> # rm -rf /boot2
+>>>>>> # mkdir -p /boot2/lib/modules
+>>>>>> # make INSTALL_MOD_STRIP=3D1 INSTALL_MOD_PATH=3D/boot2 modules_inst=
+all
+>>>>>> # cp arch/x86/boot/bzImage /boot2/vmlinuz
+>>>>>> # sync
+>>>>>> ...QV on Acer laptop, with amdgpu, works!
+>>>>>> # git bisect good
+>>>>>> Bisecting: 0 revisions left to test after this (roughly 0 steps)
+>>>>>> [56b522f4668167096a50c39446d6263c96219f5f] drm/amdgpu: init iommu
+>>>>>> after amdkfd device init
+>>>>>> # make
+>>>>>> # mkdir -p /boot2/lib/modules
+>>>>>> # make INSTALL_MOD_STRIP=3D1 INSTALL_MOD_PATH=3D/boot2 modules_inst=
+all
+>>>>>> # cp arch/x86/boot/bzImage /boot2/vmlinuz
+>>>>>> # sync
+>>>>>> ...QV on Acer laptop, black screen!
+>>>>>>
+>>>>>> # git bisect bad
+>>>>>> 56b522f4668167096a50c39446d6263c96219f5f is the first bad commit
+>>>>>> commit 56b522f4668167096a50c39446d6263c96219f5f
+>>>>>> Author: Yifan Zhang <yifan1.zhang@amd.com>
+>>>>>> Date:   Tue Sep 28 15:42:35 2021 +0800
+>>>>>>
+>>>>>>        drm/amdgpu: init iommu after amdkfd device init
+>>>>>>
+>>>>>>        [ Upstream commit 286826d7d976e7646b09149d9bc2899d74ff962b ]
+>>>>>>
+>>>>>>        This patch is to fix clinfo failure in Raven/Picasso:
+>>>>>>
+>>>>>>        Number of platforms: 1
+>>>>>>          Platform Profile: FULL_PROFILE
+>>>>>>          Platform Version: OpenCL 2.2 AMD-APP (3364.0)
+>>>>>>          Platform Name: AMD Accelerated Parallel Processing
+>>>>>>          Platform Vendor: Advanced Micro Devices, Inc.
+>>>>>>          Platform Extensions: cl_khr_icd cl_amd_event_callback
+>>>>>>
+>>>>>>          Platform Name: AMD Accelerated Parallel Processing Number =
+of devices: 0
+>>>>>>
+>>>>>>        Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+>>>>>>        Reviewed-by: James Zhu <James.Zhu@amd.com>
+>>>>>>        Tested-by: James Zhu <James.Zhu@amd.com>
+>>>>>>        Acked-by: Felix Kuehling <Felix.Kuehling@amd.com>
+>>>>>>        Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>>>>>>        Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>>>>>
+>>>>>>     drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 8 ++++----
+>>>>>>     1 file changed, 4 insertions(+), 4 deletions(-)
+>>>>>>
+>>>>>> Anything else I should do, to identify what in this commit is the
+>>>>>> likely culprit?
+>>>>>> Regards,
+>>>>>> Barry Kauler
 
