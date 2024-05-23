@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-45796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86878CD3F3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF298CD3C7
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 440F5B22BFF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:20:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20660B21640
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B0D14AD3D;
-	Thu, 23 May 2024 13:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9219C14AD24;
+	Thu, 23 May 2024 13:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b12/LBbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKa1Yi+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CAE14A605;
-	Thu, 23 May 2024 13:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8241E497;
+	Thu, 23 May 2024 13:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470386; cv=none; b=sTBGLdn9Nc6Hn0rdqjrfjx3xf5ehOe2nQPaJrSXBTyxCeUIyOl0q+Yqw/7zFev6+A5rplZCQK2mhv4mVUzPw+cujiqh4i6J3uPKxHpRw/nPqbfPF3MT+rPleryHAirkOF3lnjv278aWU16xgq1oqH6NTVUnQyOzBGgkRYcZzGME=
+	t=1716470303; cv=none; b=qMMmQY9o3dtYKZXShUoUFXzG9y+wNDHguoAO42AMoWclI557GaROl3TFl4+r3qfEjE3VPsRySkj63eBAORLbYKkFnGCxv8OJeLZMBHK3Mr74Q6cAsBtpH93vRIhqCQl7KvdP24g3b2R/ES5Vk+nS2E2tGC9cR2etzKaIlLFgHhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470386; c=relaxed/simple;
-	bh=pHvGTNU4EH9gMrUROsTYfztxnLvggJpWH1pguCmMBLo=;
+	s=arc-20240116; t=1716470303; c=relaxed/simple;
+	bh=z0AOapHuaWe1GggyBxwjP1nJe5/dMvNQGb8EQhL4IcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnvyeBPJ3JkeCb6tMxscy9NBoYf8GGWGRmm8Vml6jiBQ7W1ELG15Xcw/iuY5ymgW+Xj67lAGdxRfXReLIa9yuAVtaZ5hwISA9/WtxJcgveNKX3mGj9uCJJQjTBUDzbB9ndvvuAgTntVBS6kZLesI6d8HLX/TT525ek3i6ZK4/wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b12/LBbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E35C2BD10;
-	Thu, 23 May 2024 13:19:45 +0000 (UTC)
+	 MIME-Version; b=LjiGKtqyb8mLftnGCh3310folyiYtCujxEQppBo6b9P3heUNkqLbz++Xa8bj+pY5CTEEnkoUPdDGgu8fPfQjhQpHPcu4CHTtn6K5FA+ncBGdWRbZmx3L78jjRLfXz5Akq07ZU1GTaZNp7UQecPxS+0FSm9o9MPI+uRIr19aNw+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKa1Yi+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8E2C2BD10;
+	Thu, 23 May 2024 13:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470385;
-	bh=pHvGTNU4EH9gMrUROsTYfztxnLvggJpWH1pguCmMBLo=;
+	s=korg; t=1716470303;
+	bh=z0AOapHuaWe1GggyBxwjP1nJe5/dMvNQGb8EQhL4IcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b12/LBbn5YZuuOJBshtze2irRqPma2Fu/RV/B34dZ1450bpK1LSRY+NIOOJYlJPKf
-	 sXe0OHWgIozVYfAvHv0ReMzPdWu+m3VHSIyqW1GAl3CuZsDO+1SxmkCv0VTwEs77mR
-	 V6I6Na/iTeYlRAormJ2ovtievK8b2SJ/RtN4qv8Q=
+	b=RKa1Yi+D9x4HPm/HLJ/Fi5XYIsZsEjr3PQed2flEFxNaOcVVao4LiqBaULC23+ouE
+	 8lkJlDGFTd9fzHANHu1Ht6g6sTIoywklCfrWokxzBbszYhCVCwMga1A1txzyu3H6Gv
+	 zve1GbQRwFW0Pk9/ZW9qZ6yeksvzTOtURngX1my4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengfei Xu <pengfei.xu@intel.com>,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Brian Foster <bfoster@redhat.com>
-Subject: [PATCH 6.1 19/45] xfs: fix off-by-one-block in xfs_discard_folio()
+	Eric Dumazet <edumazet@google.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"yenchia.chen" <yenchia.chen@mediatek.com>
+Subject: [PATCH 5.15 14/23] netlink: annotate data-races around sk->sk_err
 Date: Thu, 23 May 2024 15:13:10 +0200
-Message-ID: <20240523130333.217647647@linuxfoundation.org>
+Message-ID: <20240523130328.493219114@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8ac5b996bf5199f15b7687ceae989f8b2a410dda ]
+commit d0f95894fda7d4f895b29c1097f92d7fee278cb2 upstream.
 
-The recent writeback corruption fixes changed the code in
-xfs_discard_folio() to calculate a byte range to for punching
-delalloc extents. A mistake was made in using round_up(pos) for the
-end offset, because when pos points at the first byte of a block, it
-does not get rounded up to point to the end byte of the block. hence
-the punch range is short, and this leads to unexpected behaviour in
-certain cases in xfs_bmap_punch_delalloc_range.
+syzbot caught another data-race in netlink when
+setting sk->sk_err.
 
-e.g. pos = 0 means we call xfs_bmap_punch_delalloc_range(0,0), so
-there is no previous extent and it rounds up the punch to the end of
-the delalloc extent it found at offset 0, not the end of the range
-given to xfs_bmap_punch_delalloc_range().
+Annotate all of them for good measure.
 
-Fix this by handling the zero block offset case correctly.
+BUG: KCSAN: data-race in netlink_recvmsg / netlink_recvmsg
 
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=217030
-Link: https://lore.kernel.org/linux-xfs/Y+vOfaxIWX1c%2Fyy9@bfoster/
-Fixes: 7348b322332d ("xfs: xfs_bmap_punch_delalloc_range() should take a byte range")
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Found-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+write to 0xffff8881613bb220 of 4 bytes by task 28147 on cpu 0:
+netlink_recvmsg+0x448/0x780 net/netlink/af_netlink.c:1994
+sock_recvmsg_nosec net/socket.c:1027 [inline]
+sock_recvmsg net/socket.c:1049 [inline]
+__sys_recvfrom+0x1f4/0x2e0 net/socket.c:2229
+__do_sys_recvfrom net/socket.c:2247 [inline]
+__se_sys_recvfrom net/socket.c:2243 [inline]
+__x64_sys_recvfrom+0x78/0x90 net/socket.c:2243
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+write to 0xffff8881613bb220 of 4 bytes by task 28146 on cpu 1:
+netlink_recvmsg+0x448/0x780 net/netlink/af_netlink.c:1994
+sock_recvmsg_nosec net/socket.c:1027 [inline]
+sock_recvmsg net/socket.c:1049 [inline]
+__sys_recvfrom+0x1f4/0x2e0 net/socket.c:2229
+__do_sys_recvfrom net/socket.c:2247 [inline]
+__se_sys_recvfrom net/socket.c:2243 [inline]
+__x64_sys_recvfrom+0x78/0x90 net/socket.c:2243
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x00000000 -> 0x00000016
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 28146 Comm: syz-executor.0 Not tainted 6.6.0-rc3-syzkaller-00055-g9ed22ae6be81 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231003183455.3410550-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: yenchia.chen <yenchia.chen@mediatek.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_aops.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ net/netlink/af_netlink.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/xfs/xfs_aops.c
-+++ b/fs/xfs/xfs_aops.c
-@@ -439,15 +439,17 @@ xfs_prepare_ioend(
- }
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -352,7 +352,7 @@ static void netlink_overrun(struct sock
+ 	if (!(nlk->flags & NETLINK_F_RECV_NO_ENOBUFS)) {
+ 		if (!test_and_set_bit(NETLINK_S_CONGESTED,
+ 				      &nlk_sk(sk)->state)) {
+-			sk->sk_err = ENOBUFS;
++			WRITE_ONCE(sk->sk_err, ENOBUFS);
+ 			sk_error_report(sk);
+ 		}
+ 	}
+@@ -1591,7 +1591,7 @@ static int do_one_set_err(struct sock *s
+ 		goto out;
+ 	}
  
- /*
-- * If the page has delalloc blocks on it, we need to punch them out before we
-- * invalidate the page.  If we don't, we leave a stale delalloc mapping on the
-- * inode that can trip up a later direct I/O read operation on the same region.
-+ * If the folio has delalloc blocks on it, the caller is asking us to punch them
-+ * out. If we don't, we can leave a stale delalloc mapping covered by a clean
-+ * page that needs to be dirtied again before the delalloc mapping can be
-+ * converted. This stale delalloc mapping can trip up a later direct I/O read
-+ * operation on the same region.
-  *
-- * We prevent this by truncating away the delalloc regions on the page.  Because
-+ * We prevent this by truncating away the delalloc regions on the folio. Because
-  * they are delalloc, we can do this without needing a transaction. Indeed - if
-  * we get ENOSPC errors, we have to be able to do this truncation without a
-- * transaction as there is no space left for block reservation (typically why we
-- * see a ENOSPC in writeback).
-+ * transaction as there is no space left for block reservation (typically why
-+ * we see a ENOSPC in writeback).
-  */
- static void
- xfs_discard_folio(
-@@ -465,8 +467,13 @@ xfs_discard_folio(
- 		"page discard on page "PTR_FMT", inode 0x%llx, pos %llu.",
- 			folio, ip->i_ino, pos);
+-	sk->sk_err = p->code;
++	WRITE_ONCE(sk->sk_err, p->code);
+ 	sk_error_report(sk);
+ out:
+ 	return ret;
+@@ -2006,7 +2006,7 @@ static int netlink_recvmsg(struct socket
+ 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
+ 		ret = netlink_dump(sk);
+ 		if (ret) {
+-			sk->sk_err = -ret;
++			WRITE_ONCE(sk->sk_err, -ret);
+ 			sk_error_report(sk);
+ 		}
+ 	}
+@@ -2442,7 +2442,7 @@ void netlink_ack(struct sk_buff *in_skb,
  
-+	/*
-+	 * The end of the punch range is always the offset of the the first
-+	 * byte of the next folio. Hence the end offset is only dependent on the
-+	 * folio itself and not the start offset that is passed in.
-+	 */
- 	error = xfs_bmap_punch_delalloc_range(ip, pos,
--			round_up(pos, folio_size(folio)));
-+				folio_pos(folio) + folio_size(folio));
- 
- 	if (error && !xfs_is_shutdown(mp))
- 		xfs_alert(mp, "page discard unable to remove delalloc mapping.");
+ 	skb = nlmsg_new(payload + tlvlen, GFP_KERNEL);
+ 	if (!skb) {
+-		NETLINK_CB(in_skb).sk->sk_err = ENOBUFS;
++		WRITE_ONCE(NETLINK_CB(in_skb).sk->sk_err, ENOBUFS);
+ 		sk_error_report(NETLINK_CB(in_skb).sk);
+ 		return;
+ 	}
 
 
 
