@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-45855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171EF8CD437
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 089738CD436
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490DC1C20B6A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39A891C20F35
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F40D14AD0E;
-	Thu, 23 May 2024 13:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E9714BFB4;
+	Thu, 23 May 2024 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+HTWUlk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mR40ZFQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6F314A604;
-	Thu, 23 May 2024 13:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC4514B950;
+	Thu, 23 May 2024 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470556; cv=none; b=BvokTQp8xjWepnj/DX7TnuE4sWKeHriv8kuSvZjMeV1e0foG6/CITiVFhR6X8559D92OxJoD/XL8N7V6I2PxIBJecqVCNQZ32z9yBbN21tPtJCVv0QBFJZAlXTsVSpejtx5AWaCg1U9Y+vkPgRretYRuRmi5xg8LPGTDoorBCQw=
+	t=1716470550; cv=none; b=qizfZvemPTk5m+2FAOqpwjwXdpDrApFg/kGz4ugBqnCmSW/UHHn3gnnyESA/YbkZPWPdXS7BHWZbOhwRDfr8/MdJOPZLCmoTORpnYCdotfz9lySaVQkNd5WJVPZy+fuRxhBLg8GF8VKvuJaP/lOmESpuuvG5iuKTeQ26CpttUME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470556; c=relaxed/simple;
-	bh=I3R7vARVYB5kqTBQPVvE32O0tYXyoX2CLAGlQ2IACWA=;
+	s=arc-20240116; t=1716470550; c=relaxed/simple;
+	bh=/eX/OjUCZzFP9fLRXekoLokrxJyQUrAbYz9L08Oas9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HcZmo53Y6HsU9oCswVKE6KFy2sJgbwK7UoWn+9IJJCiO237Ec+8WJCL/FGCoyNMxmmjFTJPWWCDBgF3Qd/HDu1KhwFWnAcAfChEP3CDN7kPIPqnKO1dtqjtk0fbjRZYHqWJMQc0gCiGj/I0fODSAvcOg7zjHgjcs+VQkLgGtMms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+HTWUlk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B46FC2BD10;
-	Thu, 23 May 2024 13:22:35 +0000 (UTC)
+	 MIME-Version; b=albfz5+I7ISvKH7FE9A2kPu1uEIANuco4CD+e8XSq9VM7J6bGcRIpfaZO25NSxIc+0mSVx6XtOiWjrYkdI+/OOswvF0i8tEoXL9yvuLRSkLQRJkTNaxYWEUTJ22QFxoycB38P7XhvLYPUgle7dR005xOY5GZhvEVjdL3aRkJFbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mR40ZFQb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE20CC3277B;
+	Thu, 23 May 2024 13:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470555;
-	bh=I3R7vARVYB5kqTBQPVvE32O0tYXyoX2CLAGlQ2IACWA=;
+	s=korg; t=1716470550;
+	bh=/eX/OjUCZzFP9fLRXekoLokrxJyQUrAbYz9L08Oas9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+HTWUlkBQOXUMfDxkXoVtO7f1XWUHbyFDWJKeN7S6YH3x/v50yVpX6/AW6DrPlCs
-	 zRu9b8V++KDeg77dzVCk7FdqJaGKJWQshGA81tI77GswAl2ZQE8PEgmOJ5lcmcNN8B
-	 3WNDAydN+d2e9pTQ4OzHy9m9yXleWSEo/DtMqByQ=
+	b=mR40ZFQbBjH1zY5yOJROACJR3KoZ2zGsUZHqYTGDKR+ErZnXL2XctkJZLQfdgnkDX
+	 BNjlIcyS4xFIIOr65rD1PPpsugS55oSpX9xITvIH8L0TOJfL36/Ir6+9tveYrGbbmS
+	 t4IPoGa2QbvmQCAGVsovcHmVQVTMSz1SIxKOuzAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 21/23] Docs/admin-guide/mm/damon/usage: fix wrong example of DAMOS filter matching sysfs file
-Date: Thu, 23 May 2024 15:13:48 +0200
-Message-ID: <20240523130330.550688541@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.8 22/23] block: add a disk_has_partscan helper
+Date: Thu, 23 May 2024 15:13:49 +0200
+Message-ID: <20240523130330.588688366@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
 References: <20240523130329.745905823@linuxfoundation.org>
@@ -67,40 +65,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Christoph Hellwig <hch@lst.de>
 
-commit da2a061888883e067e8e649d086df35c92c760a7 upstream.
+commit 140ce28dd3bee8e53acc27f123ae474d69ef66f0 upstream.
 
-The example usage of DAMOS filter sysfs files, specifically the part of
-'matching' file writing for memcg type filter, is wrong.  The intention is
-to exclude pages of a memcg that already getting enough care from a given
-scheme, but the example is setting the filter to apply the scheme to only
-the pages of the memcg.  Fix it.
+Add a helper to check if partition scanning is enabled instead of
+open coding the check in a few places.  This now always checks for
+the hidden flag even if all but one of the callers are never reachable
+for hidden gendisks.
 
-Link: https://lkml.kernel.org/r/20240503180318.72798-7-sj@kernel.org
-Fixes: 9b7f9322a530 ("Docs/admin-guide/mm/damon/usage: document DAMOS filters of sysfs")
-Closes: https://lore.kernel.org/r/20240317191358.97578-1-sj@kernel.org
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.3.x]
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240502130033.1958492-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/genhd.c           |    7 ++-----
+ block/partitions/core.c |    5 +----
+ include/linux/blkdev.h  |   13 +++++++++++++
+ 3 files changed, 16 insertions(+), 9 deletions(-)
 
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -450,7 +450,7 @@ pages of all memory cgroups except ``/ha
-     # # further filter out all cgroups except one at '/having_care_already'
-     echo memcg > 1/type
-     echo /having_care_already > 1/memcg_path
--    echo N > 1/matching
-+    echo Y > 1/matching
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -345,9 +345,7 @@ int disk_scan_partitions(struct gendisk
+ 	struct bdev_handle *handle;
+ 	int ret = 0;
  
- Note that ``anon`` and ``memcg`` filters are currently supported only when
- ``paddr`` :ref:`implementation <sysfs_context>` is being used.
+-	if (disk->flags & (GENHD_FL_NO_PART | GENHD_FL_HIDDEN))
+-		return -EINVAL;
+-	if (test_bit(GD_SUPPRESS_PART_SCAN, &disk->state))
++	if (!disk_has_partscan(disk))
+ 		return -EINVAL;
+ 	if (disk->open_partitions)
+ 		return -EBUSY;
+@@ -503,8 +501,7 @@ int __must_check device_add_disk(struct
+ 			goto out_unregister_bdi;
+ 
+ 		/* Make sure the first partition scan will be proceed */
+-		if (get_capacity(disk) && !(disk->flags & GENHD_FL_NO_PART) &&
+-		    !test_bit(GD_SUPPRESS_PART_SCAN, &disk->state))
++		if (get_capacity(disk) && disk_has_partscan(disk))
+ 			set_bit(GD_NEED_PART_SCAN, &disk->state);
+ 
+ 		bdev_add(disk->part0, ddev->devt);
+--- a/block/partitions/core.c
++++ b/block/partitions/core.c
+@@ -584,10 +584,7 @@ static int blk_add_partitions(struct gen
+ 	struct parsed_partitions *state;
+ 	int ret = -EAGAIN, p;
+ 
+-	if (disk->flags & GENHD_FL_NO_PART)
+-		return 0;
+-
+-	if (test_bit(GD_SUPPRESS_PART_SCAN, &disk->state))
++	if (!disk_has_partscan(disk))
+ 		return 0;
+ 
+ 	state = check_partition(disk);
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -233,6 +233,19 @@ static inline unsigned int disk_openers(
+ 	return atomic_read(&disk->part0->bd_openers);
+ }
+ 
++/**
++ * disk_has_partscan - return %true if partition scanning is enabled on a disk
++ * @disk: disk to check
++ *
++ * Returns %true if partitions scanning is enabled for @disk, or %false if
++ * partition scanning is disabled either permanently or temporarily.
++ */
++static inline bool disk_has_partscan(struct gendisk *disk)
++{
++	return !(disk->flags & (GENHD_FL_NO_PART | GENHD_FL_HIDDEN)) &&
++		!test_bit(GD_SUPPRESS_PART_SCAN, &disk->state);
++}
++
+ /*
+  * The gendisk is refcounted by the part0 block_device, and the bd_device
+  * therein is also used for device model presentation in sysfs.
 
 
 
