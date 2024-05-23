@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB52A8CD450
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6010B8CD3DB
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E1B31F2239F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 149531F25F59
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8946414AD3A;
-	Thu, 23 May 2024 13:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9506614AD17;
+	Thu, 23 May 2024 13:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBwRIIwC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbPCVwM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C15714AD35;
-	Thu, 23 May 2024 13:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5150B14A62A;
+	Thu, 23 May 2024 13:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470608; cv=none; b=UiooFJZcRb329LgVZQBcVeMGqtaf3IeJR3s9RcsLcpL12tNb5ZKqgV6e/CrJQOa9VpIfxLd4S8BVlrFi+hqMU8pQ+1+EPtYxqpYJPv90KEo27hLxKsP0bkQJY9/s+AtQSjsLtsW/831/44OTNUvIX7FPxQVxWCuFZIucTj/nGrQ=
+	t=1716470357; cv=none; b=Ixe5TnBpQiPTHC8rh1G1/x8McPei10pVnv7zONqlDn/So/bz+/Uv92p533momlJobcn4noIVyRTfxza0rxb2h+zQZQivuCyOjh9MowKm9DWtmUgKYjUe6DoXbpkYv8p2y8eaRSnFjH1ypyticmB5N1I/8agbxH7pJ6EVzIzR/Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470608; c=relaxed/simple;
-	bh=KIHJdVIrbMiN0CALy7fiE+C73CROxUNKKOc2u9NiC+U=;
+	s=arc-20240116; t=1716470357; c=relaxed/simple;
+	bh=RxpPfmWBlGwfRXC6pbkd24ssjJajTUI4oIjG1RynDG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ul7X0Ljm8C4SXZcUdGeaiqekRHTGmANNvqR9JEyOPh4ET3xlSRlHfEqgSPxtB197XomI2kpFAWBRr8kkuHwYv2kHqmKKW9I0KF0N9XtOBvwTNEkNYo/6N1UctbaBv7/b0Ko7h8mzhlqx0KsnvPHHH+Y1iJt7vlvhmOFSZgGWhFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBwRIIwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7792CC2BD10;
-	Thu, 23 May 2024 13:23:27 +0000 (UTC)
+	 MIME-Version; b=GZ2CnZwvIbxXJMAL1AERjcn827bl+hfotjKGdq3UfPcxUb+fhZaMk3mJMaltryGOOsBzIhfEtnaBHY0zchL7bqp4NcLWUMJN0DfL4HaVrXeINW3+gR1Q5cQskkspL4udaYFOhv/o1K9Xf85IdKOqsgY8DLVL6YZ6nnybmyvMHKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbPCVwM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9B9C32781;
+	Thu, 23 May 2024 13:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470607;
-	bh=KIHJdVIrbMiN0CALy7fiE+C73CROxUNKKOc2u9NiC+U=;
+	s=korg; t=1716470357;
+	bh=RxpPfmWBlGwfRXC6pbkd24ssjJajTUI4oIjG1RynDG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBwRIIwCBBgHHZ37BMeJAJJQwPSTJ5EdPBcjOTDHkRa1p/BCVACr2XOH+u2idnTau
-	 JjWn4icS4cjfQAybn549Qx8MpvXz/fjeyoGBgWzu2HojCp/I6xJFNhlj33/y/qBZ2M
-	 uIea2wOppZbRyybXYjCn2aBuf6cRs4F5po1wGcyk=
+	b=CbPCVwM8Hkr1N0Zh8CM5ICHI4Qw9s5Zl3IggpnPf6HfG0Jp2882pxU3aRqluHfazo
+	 ddHmtvFZxsQYVfEPtmrOOHRog93eTZUkeBRiu5xmVzQCui4LyHrIrHbL3IiKvxCpYS
+	 97bgLSRGUpVSRqp2lEw9nQPAo6wg97nGtlaKE8/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/102] cifs: remove redundant variable tcon_exist
-Date: Thu, 23 May 2024 15:12:51 +0200
-Message-ID: <20240523130343.450212904@linuxfoundation.org>
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Jose Fernandez <josef@netflix.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Limonciello, Mario" <mario.limonciello@amd.com>
+Subject: [PATCH 6.1 01/45] drm/amd/display: Fix division by zero in setup_dsc_config
+Date: Thu, 23 May 2024 15:12:52 +0200
+Message-ID: <20240523130332.553105805@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Jose Fernandez <josef@netflix.com>
 
-[ Upstream commit 8ca5d2641be217a78a891d4dbe2a46232d1d8eb9 ]
+commit 130afc8a886183a94cf6eab7d24f300014ff87ba upstream.
 
-The variable tcon_exist is being assigned however it is never read, the
-variable is redundant and can be removed.
+When slice_height is 0, the division by slice_height in the calculation
+of the number of slices will cause a division by zero driver crash. This
+leaves the kernel in a state that requires a reboot. This patch adds a
+check to avoid the division by zero.
 
-Cleans up clang scan build warning:
-warning: Although the value stored to 'tcon_exist' is used in
-the enclosing expression, the value is never actually readfrom
-'tcon_exist' [deadcode.DeadStores]
+The stack trace below is for the 6.8.4 Kernel. I reproduced the issue on
+a Z16 Gen 2 Lenovo Thinkpad with a Apple Studio Display monitor
+connected via Thunderbolt. The amdgpu driver crashed with this exception
+when I rebooted the system with the monitor connected.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kernel: ? die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434 arch/x86/kernel/dumpstack.c:447)
+kernel: ? do_trap (arch/x86/kernel/traps.c:113 arch/x86/kernel/traps.c:154)
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: ? do_error_trap (./arch/x86/include/asm/traps.h:58 arch/x86/kernel/traps.c:175)
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: ? exc_divide_error (arch/x86/kernel/traps.c:194 (discriminator 2))
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: ? asm_exc_divide_error (./arch/x86/include/asm/idtentry.h:548)
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: dc_dsc_compute_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1109) amdgpu
+
+After applying this patch, the driver no longer crashes when the monitor
+is connected and the system is rebooted. I believe this is the same
+issue reported for 3113.
+
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Jose Fernandez <josef@netflix.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3113
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Limonciello, Mario" <mario.limonciello@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 51ff9a967c503..3f9448b5ada9b 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -3979,7 +3979,7 @@ void smb2_reconnect_server(struct work_struct *work)
- 	struct cifs_ses *ses, *ses2;
- 	struct cifs_tcon *tcon, *tcon2;
- 	struct list_head tmp_list, tmp_ses_list;
--	bool tcon_exist = false, ses_exist = false;
-+	bool ses_exist = false;
- 	bool tcon_selected = false;
- 	int rc;
- 	bool resched = false;
-@@ -4025,7 +4025,7 @@ void smb2_reconnect_server(struct work_struct *work)
- 			if (tcon->need_reconnect || tcon->need_reopen_files) {
- 				tcon->tc_count++;
- 				list_add_tail(&tcon->rlist, &tmp_list);
--				tcon_selected = tcon_exist = true;
-+				tcon_selected = true;
- 			}
- 		}
- 		/*
-@@ -4034,7 +4034,7 @@ void smb2_reconnect_server(struct work_struct *work)
- 		 */
- 		if (ses->tcon_ipc && ses->tcon_ipc->need_reconnect) {
- 			list_add_tail(&ses->tcon_ipc->rlist, &tmp_list);
--			tcon_selected = tcon_exist = true;
-+			tcon_selected = true;
- 			cifs_smb_ses_inc_refcount(ses);
- 		}
- 		/*
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
++++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
+@@ -924,7 +924,12 @@ static bool setup_dsc_config(
+ 	if (!is_dsc_possible)
+ 		goto done;
+ 
+-	dsc_cfg->num_slices_v = pic_height/slice_height;
++	if (slice_height > 0) {
++		dsc_cfg->num_slices_v = pic_height / slice_height;
++	} else {
++		is_dsc_possible = false;
++		goto done;
++	}
+ 
+ 	if (target_bandwidth_kbps > 0) {
+ 		is_dsc_possible = decide_dsc_target_bpp_x16(
 
 
 
