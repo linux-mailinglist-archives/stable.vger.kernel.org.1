@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50468CD3BD
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2EA8CD46A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 235261C20752
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539421F21735
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E618F14A4C1;
-	Thu, 23 May 2024 13:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939A414A4F1;
+	Thu, 23 May 2024 13:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJs7UXqF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CE+/DwcJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E671E4B0;
-	Thu, 23 May 2024 13:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5046D1E497;
+	Thu, 23 May 2024 13:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470277; cv=none; b=FaHbeExCgB29MDEhSsKZQRWUR0JR3Tu+5n2ED26vyMghGB5+pdoFslze305pnSwn1RGMSbhRYSKiWG0Y7H8DR6Zlo8GJIL50OtamN/SJG3EdyMWRbVOy6Vz8n+rMOG1rjyF8wbScfKfBE/flRl8eW5pT11J9TQ2z5QwofSdKAms=
+	t=1716470654; cv=none; b=ea8qZdE2bbGrg+swlJ1Sdgh4b5WKIl//I8HuavV279egRiqymp01XGBKgdU8OdFEUp591Oyly6FzbNSqTBQEE9yJ198l4fsO127ffeJ0Zd6o52gN7xgkzihHvaarb3x1VPFQjo4b3h53QLHCTILouaZdmfaxpN9Q8j7MbP9w2Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470277; c=relaxed/simple;
-	bh=4P5Hw5xB5drnBhUCt4X2i9Nh79QgX8ueynN2WuswB6k=;
+	s=arc-20240116; t=1716470654; c=relaxed/simple;
+	bh=XMYMEKkNuvgzDZSH7hgey4JLAZTZubP28YwI1EImEjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pW3f3j3D+IgomrmcnoeIrNDEiKGTUq3CnplTEroUJ/NtKXjJx0bqto1TSKes9r/aRxA1pKi/f6HjxcDfqHtB5rUtiJwv41aJ0HIHn/lv+E3CKZ1inl0R2mF1MobvpPgXmjaytWjCtYYIrViARQw2RzIQaRYF0jlX/U63NMB/8Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJs7UXqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52BDC2BD10;
-	Thu, 23 May 2024 13:17:56 +0000 (UTC)
+	 MIME-Version; b=ngRxwXqFh76dBJnKAphnLrCs0DbgbWJN8omXXpadAjC3ZyDn4d1PaAtXq2jhd7ISdNSI6maQhZIIprXFNWbSV/8gvgu+aaG1G41ApwLW35TDYmchkC4A00ib49ie1sFgSzUuAncGjoD9HlKj69TiPYJ4K2vgCWHzcuzrs+ILyPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CE+/DwcJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C28C2BD10;
+	Thu, 23 May 2024 13:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470277;
-	bh=4P5Hw5xB5drnBhUCt4X2i9Nh79QgX8ueynN2WuswB6k=;
+	s=korg; t=1716470653;
+	bh=XMYMEKkNuvgzDZSH7hgey4JLAZTZubP28YwI1EImEjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJs7UXqFiXQFJoDHSIWlh5wrG5p285fzb2sFDjS+x4R0z+09FgOhmH6547xaql2A2
-	 akCCRAzu28Qf9jZyCQAkHttwToUNZDVWXnQ7GZ/itdbIgOeAXxiGTL/Uauyf83Lrwn
-	 EZDHyNnJfLMH5gKyb6rkk6nkWcCV9tmI+N5ekTGk=
+	b=CE+/DwcJcaB8SkRwluJV+9Jnc3adDn/DYq9Yh/4f97PkuQaZ9gl/cTylmg6K8dRqr
+	 diAIbnvjubsNX9fPxABgOuPrRcdvyo+Yg3cQ1Hais8auFtLgckIFxGNyu3o5rhKfuX
+	 AzaRGoBTfLSPP08g3LxofmgjB3oH4YMuiN0cwXYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 6.9 21/25] docs: kernel_include.py: Cope with docutils 0.21
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 041/102] smb: client: get rid of smb311_posix_query_path_info()
 Date: Thu, 23 May 2024 15:13:06 +0200
-Message-ID: <20240523130331.181542601@linuxfoundation.org>
+Message-ID: <20240523130344.014795261@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akira Yokosawa <akiyks@gmail.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit d43ddd5c91802a46354fa4c4381416ef760676e2 upstream.
+[ Upstream commit f83709b9e0eb7048d74ba4515f268c6eacbce9c9 ]
 
-Running "make htmldocs" on a newly installed Sphinx 7.3.7 ends up in
-a build error:
+Merge smb311_posix_query_path_info into ->query_path_info() to get rid
+of duplicate code.
 
-    Sphinx parallel build error:
-    AttributeError: module 'docutils.nodes' has no attribute 'reprunicode'
-
-docutils 0.21 has removed nodes.reprunicode, quote from release note [1]:
-
-  * Removed objects:
-
-    docutils.nodes.reprunicode, docutils.nodes.ensure_str()
-        Python 2 compatibility hacks
-
-Sphinx 7.3.0 supports docutils 0.21 [2]:
-
-kernel_include.py, whose origin is misc.py of docutils, uses reprunicode.
-
-Upstream docutils removed the offending line from the corresponding file
-(docutils/docutils/parsers/rst/directives/misc.py) in January 2022.
-Quoting the changelog [3]:
-
-    Deprecate `nodes.reprunicode` and `nodes.ensure_str()`.
-
-    Drop uses of the deprecated constructs (not required with Python 3).
-
-Do the same for kernel_include.py.
-
-Tested against:
-  - Sphinx 2.4.5 (docutils 0.17.1)
-  - Sphinx 3.4.3 (docutils 0.17.1)
-  - Sphinx 5.3.0 (docutils 0.18.1)
-  - Sphinx 6.2.1 (docutils 0.19)
-  - Sphinx 7.2.6 (docutils 0.20.1)
-  - Sphinx 7.3.7 (docutils 0.21.2)
-
-Link: http://www.docutils.org/RELEASE-NOTES.html#release-0-21-2024-04-09 [1]
-Link: https://www.sphinx-doc.org/en/master/changes.html#release-7-3-0-released-apr-16-2024 [2]
-Link: https://github.com/docutils/docutils/commit/c8471ce47a24 [3]
-Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/faf5fa45-2a9d-4573-9d2e-3930bdc1ed65@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/sphinx/kernel_include.py |    1 -
- 1 file changed, 1 deletion(-)
+ fs/smb/client/inode.c     |   4 +-
+ fs/smb/client/smb2inode.c | 115 +++++++++++---------------------------
+ 2 files changed, 36 insertions(+), 83 deletions(-)
 
---- a/Documentation/sphinx/kernel_include.py
-+++ b/Documentation/sphinx/kernel_include.py
-@@ -97,7 +97,6 @@ class KernelInclude(Include):
-         # HINT: this is the only line I had to change / commented out:
-         #path = utils.relative_path(None, path)
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 0110589acb853..d7e3da8489a0b 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1313,6 +1313,7 @@ static int smb311_posix_get_fattr(struct cifs_open_info_data *data,
+ 				  const unsigned int xid)
+ {
+ 	struct cifs_open_info_data tmp_data = {};
++	struct TCP_Server_Info *server;
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+ 	struct cifs_tcon *tcon;
+ 	struct tcon_link *tlink;
+@@ -1323,12 +1324,13 @@ static int smb311_posix_get_fattr(struct cifs_open_info_data *data,
+ 	if (IS_ERR(tlink))
+ 		return PTR_ERR(tlink);
+ 	tcon = tlink_tcon(tlink);
++	server = tcon->ses->server;
  
--        path = nodes.reprunicode(path)
-         encoding = self.options.get(
-             'encoding', self.state.document.settings.input_encoding)
-         e_handler=self.state.document.settings.input_encoding_error_handler
+ 	/*
+ 	 * 1. Fetch file metadata if not provided (data)
+ 	 */
+ 	if (!data) {
+-		rc = smb311_posix_query_path_info(xid, tcon, cifs_sb,
++		rc = server->ops->query_path_info(xid, tcon, cifs_sb,
+ 						  full_path, &tmp_data);
+ 		data = &tmp_data;
+ 	}
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 4cd4b8a63316d..dfa4e5362213f 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -699,7 +699,7 @@ int smb2_query_path_info(const unsigned int xid,
+ 	struct smb2_hdr *hdr;
+ 	struct kvec in_iov[2], out_iov[3] = {};
+ 	int out_buftype[3] = {};
+-	int cmds[2] = { SMB2_OP_QUERY_INFO,  };
++	int cmds[2];
+ 	bool islink;
+ 	int i, num_cmds;
+ 	int rc, rc2;
+@@ -707,20 +707,36 @@ int smb2_query_path_info(const unsigned int xid,
+ 	data->adjust_tz = false;
+ 	data->reparse_point = false;
+ 
+-	if (strcmp(full_path, ""))
+-		rc = -ENOENT;
+-	else
+-		rc = open_cached_dir(xid, tcon, full_path, cifs_sb, false, &cfid);
+-	/* If it is a root and its handle is cached then use it */
+-	if (!rc) {
+-		if (cfid->file_all_info_is_valid) {
+-			memcpy(&data->fi, &cfid->file_all_info, sizeof(data->fi));
++	/*
++	 * BB TODO: Add support for using cached root handle in SMB3.1.1 POSIX.
++	 * Create SMB2_query_posix_info worker function to do non-compounded
++	 * query when we already have an open file handle for this. For now this
++	 * is fast enough (always using the compounded version).
++	 */
++	if (!tcon->posix_extensions) {
++		if (*full_path) {
++			rc = -ENOENT;
+ 		} else {
+-			rc = SMB2_query_info(xid, tcon, cfid->fid.persistent_fid,
+-					     cfid->fid.volatile_fid, &data->fi);
++			rc = open_cached_dir(xid, tcon, full_path,
++					     cifs_sb, false, &cfid);
+ 		}
+-		close_cached_dir(cfid);
+-		return rc;
++		/* If it is a root and its handle is cached then use it */
++		if (!rc) {
++			if (cfid->file_all_info_is_valid) {
++				memcpy(&data->fi, &cfid->file_all_info,
++				       sizeof(data->fi));
++			} else {
++				rc = SMB2_query_info(xid, tcon,
++						     cfid->fid.persistent_fid,
++						     cfid->fid.volatile_fid,
++						     &data->fi);
++			}
++			close_cached_dir(cfid);
++			return rc;
++		}
++		cmds[0] = SMB2_OP_QUERY_INFO;
++	} else {
++		cmds[0] = SMB2_OP_POSIX_QUERY_INFO;
+ 	}
+ 
+ 	in_iov[0].iov_base = data;
+@@ -743,6 +759,10 @@ int smb2_query_path_info(const unsigned int xid,
+ 	switch (rc) {
+ 	case 0:
+ 	case -EOPNOTSUPP:
++		/*
++		 * BB TODO: When support for special files added to Samba
++		 * re-verify this path.
++		 */
+ 		rc = parse_create_response(data, cifs_sb, &out_iov[0]);
+ 		if (rc || !data->reparse_point)
+ 			goto out;
+@@ -782,75 +802,6 @@ int smb2_query_path_info(const unsigned int xid,
+ 	return rc;
+ }
+ 
+-int smb311_posix_query_path_info(const unsigned int xid,
+-				 struct cifs_tcon *tcon,
+-				 struct cifs_sb_info *cifs_sb,
+-				 const char *full_path,
+-				 struct cifs_open_info_data *data)
+-{
+-	int rc;
+-	__u32 create_options = 0;
+-	struct cifsFileInfo *cfile;
+-	struct kvec in_iov[2], out_iov[3] = {};
+-	int out_buftype[3] = {};
+-	int cmds[2] = { SMB2_OP_POSIX_QUERY_INFO,  };
+-	int i, num_cmds;
+-
+-	data->adjust_tz = false;
+-	data->reparse_point = false;
+-
+-	/*
+-	 * BB TODO: Add support for using the cached root handle.
+-	 * Create SMB2_query_posix_info worker function to do non-compounded query
+-	 * when we already have an open file handle for this. For now this is fast enough
+-	 * (always using the compounded version).
+-	 */
+-	in_iov[0].iov_base = data;
+-	in_iov[0].iov_len = sizeof(*data);
+-	in_iov[1] = in_iov[0];
+-
+-	cifs_get_readable_path(tcon, full_path, &cfile);
+-	rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+-			      FILE_READ_ATTRIBUTES, FILE_OPEN,
+-			      create_options, ACL_NO_MODE, in_iov,
+-			      cmds, 1, cfile, out_iov, out_buftype);
+-	/*
+-	 * If first iov is unset, then SMB session was dropped or we've got a
+-	 * cached open file (@cfile).
+-	 */
+-	if (!out_iov[0].iov_base || out_buftype[0] == CIFS_NO_BUFFER)
+-		goto out;
+-
+-	switch (rc) {
+-	case 0:
+-	case -EOPNOTSUPP:
+-		/* BB TODO: When support for special files added to Samba re-verify this path */
+-		rc = parse_create_response(data, cifs_sb, &out_iov[0]);
+-		if (rc || !data->reparse_point)
+-			goto out;
+-
+-		if (data->reparse.tag == IO_REPARSE_TAG_SYMLINK) {
+-			/* symlink already parsed in create response */
+-			num_cmds = 1;
+-		} else {
+-			cmds[1] = SMB2_OP_GET_REPARSE;
+-			num_cmds = 2;
+-		}
+-		create_options |= OPEN_REPARSE_POINT;
+-		cifs_get_readable_path(tcon, full_path, &cfile);
+-		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+-				      FILE_READ_ATTRIBUTES, FILE_OPEN,
+-				      create_options, ACL_NO_MODE, in_iov,
+-				      cmds, num_cmds, cfile, NULL, NULL);
+-		break;
+-	}
+-
+-out:
+-	for (i = 0; i < ARRAY_SIZE(out_buftype); i++)
+-		free_rsp_buf(out_buftype[i], out_iov[i].iov_base);
+-	return rc;
+-}
+-
+ int
+ smb2_mkdir(const unsigned int xid, struct inode *parent_inode, umode_t mode,
+ 	   struct cifs_tcon *tcon, const char *name,
+-- 
+2.43.0
+
 
 
 
