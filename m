@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65EF18CD3C0
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C46568CD462
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20FEA28147E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8057428194E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DE114A633;
-	Thu, 23 May 2024 13:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1776B14D299;
+	Thu, 23 May 2024 13:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYpS3zon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yr3VYUXO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382EB2AE94;
-	Thu, 23 May 2024 13:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3C814B95C;
+	Thu, 23 May 2024 13:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470286; cv=none; b=jTco4V30pC5DY3kcGFth1erb70yZEvMQu1Bk2XoboGkBzED81MkWVg/vy0NeNzWcRbjX8OtKtF3kcul0EzshFVlNZu2wIyu0I6fZyOrv1Pn74XDUBQ2IBluY0bwCdpNNLuFpWEvs3SEEMoS1cYcW1LpAz8bPsUGzSby7fhpaPP8=
+	t=1716470636; cv=none; b=NZcqz5Qc6l+Ynt33tUhMU2zSivGuZq3amewDYPW7HDDeF19b3oBdsFLh6RaJXwbv6RZZuksWUsK6xixtHil0rPVjGmnCBCgUBrkB2l/NuSrfLl+5bFbX4BU1TgvSjMl6fI2CjFpZjzmqY7yduaF4GTplUQ0PV8dTAglRg+C3Yio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470286; c=relaxed/simple;
-	bh=j502eUQRyRQ0rmk0zHZYhHd61TEqrO+miE+N3yBgp/8=;
+	s=arc-20240116; t=1716470636; c=relaxed/simple;
+	bh=UXZ+pdienlmRZQx1ZOWaLjH6SP2ycljH4kQJuhSh5tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQuGzmuPkJy47TLlONKlahHpfEqc8Co3tHqam1BWD5yqFsPaAV12TjjmT5yXZn/hKF+uNWFv7Pe5eNFcRlBS7B3r5lJIzvWrpBQ7aIZBDacI6OqMBDX8kBqh4dlwlFd5U2nCMLlPXoQ47FKjzpyz3zetraSpi0Nk/TzTbzaA9XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYpS3zon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DACC2BD10;
-	Thu, 23 May 2024 13:18:05 +0000 (UTC)
+	 MIME-Version; b=F1TEJbyygzcuhLwPvpFNWgdIwL54kdM5pflZA/c2P2L5A6BtM+hvbXRyJgHwambs3HXpKmkw0UQv+kVyfQ81x6+EXozc9ybiN/mNrLIFbYY39Q+D2MwC6CQfex9FALCUsxsVPYvQrDYum/xKX5dIloYYqhNV1hHcLSzA1wvXolE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yr3VYUXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289C9C2BD10;
+	Thu, 23 May 2024 13:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470285;
-	bh=j502eUQRyRQ0rmk0zHZYhHd61TEqrO+miE+N3yBgp/8=;
+	s=korg; t=1716470636;
+	bh=UXZ+pdienlmRZQx1ZOWaLjH6SP2ycljH4kQJuhSh5tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WYpS3zonHE88My8V+t33OY2BMWxQ2tj0OxZsmobpg4MC6kFCbP5/8F+Pg/qZWXJPR
-	 9hhnCV+Tg5OF1HF0LROto/l/d72BxoQPt8qU+vn1MTfXZIihM/rnkqDLMd8ztVl9Fj
-	 gMFyXv3D+lB4GWAuM/fsHwgfLnjLubQv1VjVUFg4=
+	b=yr3VYUXO2xaqLGk+tsTS74oxMgtMAEfh/MLnBkV+VC90ckgeygyt1XeW1teES0mkq
+	 +zSueefCDH6y0pVseJ4krSFkB0P1OJXAnSPdRP29HVW5ML5rdj9qAAJ4w5LQmsq8fa
+	 8kAszKnNxmVpXXOljaDGQ3eiTB68pzH7PpnPzt5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Javier Carrasco <javier.carrasco@wolfvision.net>
-Subject: [PATCH 6.9 14/25] usb: typec: tipd: fix event checking for tps25750
-Date: Thu, 23 May 2024 15:12:59 +0200
-Message-ID: <20240523130330.927059534@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 035/102] cifs: set replay flag for retries of write command
+Date: Thu, 23 May 2024 15:13:00 +0200
+Message-ID: <20240523130343.788482941@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco@wolfvision.net>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit d64adb0f41e62f91fcfdf0e0d9d5bfa714db0d23 upstream.
+[ Upstream commit 4cdad80261862c8cdcbb5fd232aa713d0bdefe24 ]
 
-In its current form, the interrupt service routine of the tps25750
-checks the event flags in the lowest 64 bits of the interrupt event
-register (event[0]), but also in the upper part (event[1]).
+Similar to the rest of the commands, this is a change
+to add replay flags on retry. This one does not add a
+back-off, considering that we may want to flush a write
+ASAP to the server. Considering that this will be a
+flush of cached pages, the retrans value is also not
+honoured.
 
-Given that all flags are defined as BIT() or BIT_ULL(), they are
-restricted to the first 64 bits of the INT_EVENT1 register. Including
-the upper part of the register can lead to false positives e.g. if the
-event 64 bits above the one being checked is set, but the one being
-checked is not.
-
-Restrict the flag checking to the first 64 bits of the INT_EVENT1
-register.
-
-Fixes: 7e7a3c815d22 ("USB: typec: tps6598x: Add TPS25750 support")
-Cc: stable@vger.kernel.org
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
-Link: https://lore.kernel.org/r/20240429-tps6598x_fix_event_handling-v3-1-4e8e58dce489@wolfvision.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tipd/core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/client/cifsglob.h | 1 +
+ fs/smb/client/file.c     | 1 +
+ fs/smb/client/smb2pdu.c  | 4 +++-
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -604,11 +604,11 @@ static irqreturn_t tps25750_interrupt(in
- 	if (!tps6598x_read_status(tps, &status))
- 		goto err_clear_ints;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 479bf0d9ad589..8fbdb781d70a6 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1515,6 +1515,7 @@ struct cifs_writedata {
+ 	struct smbd_mr			*mr;
+ #endif
+ 	struct cifs_credits		credits;
++	bool				replay;
+ };
  
--	if ((event[0] | event[1]) & TPS_REG_INT_POWER_STATUS_UPDATE)
-+	if (event[0] & TPS_REG_INT_POWER_STATUS_UPDATE)
- 		if (!tps6598x_read_power_status(tps))
- 			goto err_clear_ints;
+ /*
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index f41804245fca1..6d44991e1ccdc 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -3413,6 +3413,7 @@ cifs_resend_wdata(struct cifs_writedata *wdata, struct list_head *wdata_list,
+ 			if (wdata->cfile->invalidHandle)
+ 				rc = -EAGAIN;
+ 			else {
++				wdata->replay = true;
+ #ifdef CONFIG_CIFS_SMB_DIRECT
+ 				if (wdata->mr) {
+ 					wdata->mr->need_invalidate = true;
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 6a5d478b3cef6..c73a621a8b83e 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4801,7 +4801,7 @@ smb2_async_writev(struct cifs_writedata *wdata,
+ 	struct cifs_io_parms *io_parms = NULL;
+ 	int credit_request;
  
--	if ((event[0] | event[1]) & TPS_REG_INT_DATA_STATUS_UPDATE)
-+	if (event[0] & TPS_REG_INT_DATA_STATUS_UPDATE)
- 		if (!tps6598x_read_data_status(tps))
- 			goto err_clear_ints;
+-	if (!wdata->server)
++	if (!wdata->server || wdata->replay)
+ 		server = wdata->server = cifs_pick_channel(tcon->ses);
  
-@@ -617,7 +617,7 @@ static irqreturn_t tps25750_interrupt(in
- 	 * a plug event. Therefore, we need to check
- 	 * for pr/dr status change to set TypeC dr/pr accordingly.
- 	 */
--	if ((event[0] | event[1]) & TPS_REG_INT_PLUG_EVENT ||
-+	if (event[0] & TPS_REG_INT_PLUG_EVENT ||
- 	    tps6598x_has_role_changed(tps, status))
- 		tps6598x_handle_plug_event(tps, status);
- 
+ 	/*
+@@ -4886,6 +4886,8 @@ smb2_async_writev(struct cifs_writedata *wdata,
+ 	rqst.rq_nvec = 1;
+ 	rqst.rq_iter = wdata->iter;
+ 	rqst.rq_iter_size = iov_iter_count(&rqst.rq_iter);
++	if (wdata->replay)
++		smb2_set_replay(server, &rqst);
+ #ifdef CONFIG_CIFS_SMB_DIRECT
+ 	if (wdata->mr)
+ 		iov[0].iov_len += sizeof(struct smbd_buffer_descriptor_v1);
+-- 
+2.43.0
+
 
 
 
