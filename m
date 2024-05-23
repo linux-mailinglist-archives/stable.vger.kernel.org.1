@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E3A8CD3F6
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F76C8CD3D3
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB2151C21A2E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04CDF285391
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227CD14B090;
-	Thu, 23 May 2024 13:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC40914B948;
+	Thu, 23 May 2024 13:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJkejf0N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7Td1n+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBC814A633;
-	Thu, 23 May 2024 13:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9961714B941;
+	Thu, 23 May 2024 13:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470397; cv=none; b=YyQcA/onpnvNABwm4MDYvlbWSGujU5ndICoQ5vvcT6pP9maEmBJ3V/j1JpKEYm1PG4TT2j12Gm1tiWqH/xWkYDaeZwBS0dYYdvFRFnllUiT0TwBIW4bw0RSsYphnWu8GV7Lpx1GA5NFFyxCH/8d6dXoK/pcZQ190cBEw+FJJVP8=
+	t=1716470334; cv=none; b=nux1nrTrf4etJtDlrUQCjQd5Zlk6boRNu2nfiH3VYt4M+S/640NiWnPm42FuZIwT6fyhBPh2rZchK0v5clzWMb53UJLnnXtwkvde2vzL/Cwl9opLQOZRt7IyoYkveddRiV7aQdZHY1tlxqgEKFIlVakj50Xce+J6mPFtr4X7uH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470397; c=relaxed/simple;
-	bh=4+/GpNoM+ATqIdmj45tF2O3A2LfNs1ZUxy/c6LNJCG4=;
+	s=arc-20240116; t=1716470334; c=relaxed/simple;
+	bh=RLvW8RwL+BCmIph3FBbHaNhCgzvqb+9LZ8KJWqCljgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJxMnjvBc4uZGZpql+/hWAW1YIvQ6J/wTP5RB1Y6dmGXD3RH7plFe/sShocIXbZuqB6IKwDsY7qAXdA3KSXIilUUqz09JiG2l6MGIT2TXy3p0JW8jngy0vA3CW3gLRpnt9G66WvuId6pc054GtZ2XcQxzSUciBzp5KiPztYbUoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJkejf0N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3DDC32782;
-	Thu, 23 May 2024 13:19:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aC/Bz0eHhoAFRfdXkgy6l9ifoZ410FRKavJt7kZFWtVSUO1fTrm7/Gf3pNnEHHfcUjfSaUL8MngjT1mE/IQHjwTwVD27/lHDWCczUQkhXInAhHMoQreIp6WCcC+Yi0+qXghRpwi8NJ738PsjCrw6ig2HWGW6+pFEGjzfJjmAWqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7Td1n+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D04C3277B;
+	Thu, 23 May 2024 13:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470397;
-	bh=4+/GpNoM+ATqIdmj45tF2O3A2LfNs1ZUxy/c6LNJCG4=;
+	s=korg; t=1716470334;
+	bh=RLvW8RwL+BCmIph3FBbHaNhCgzvqb+9LZ8KJWqCljgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJkejf0Ng3t/xqKk2bN+QLiAZj0wHynRmAzoXD2bFqzIQ8R8O2z2JyfucPWHgs+u6
-	 6Xv70idvbTwHOXaHJqFoIZwESiG1dW7O0tbi1oBpR7m133W6jUSrmVHZEV9gd76kDR
-	 5y8cPm9VN4FjV324LNHG3o+atCnteBvWnwGvTnEU=
+	b=G7Td1n+KBDV1i0kf90qGW1WOrmYJKi5gALIkF9lXzPpTn48HJMBycc4K5IxQvVSSl
+	 XFW3pNYbmau4AeXYb9fJlBjTGWgV3YB2IpVpwr7aRvdS8a368w2fTNRSTkyrk+EFDW
+	 trKjTGGlOBLjCyI3Juwgvud9qtXQrLgDyNQfHHHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 22/45] xfs: fix incorrect i_nlink caused by inode racing
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 5.15 17/23] binder: fix max_thread type inconsistency
 Date: Thu, 23 May 2024 15:13:13 +0200
-Message-ID: <20240523130333.331467544@linuxfoundation.org>
+Message-ID: <20240523130328.603045855@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 28b4b0596343d19d140da059eee0e5c2b5328731 ]
+commit 42316941335644a98335f209daafa4c122f28983 upstream.
 
-The following error occurred during the fsstress test:
+The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
+size_t to __u32 in order to avoid incompatibility issues between 32 and
+64-bit kernels. However, the internal types used to copy from user and
+store the value were never updated. Use u32 to fix the inconsistency.
 
-XFS: Assertion failed: VFS_I(ip)->i_nlink >= 2, file: fs/xfs/xfs_inode.c, line: 2452
-
-The problem was that inode race condition causes incorrect i_nlink to be
-written to disk, and then it is read into memory. Consider the following
-call graph, inodes that are marked as both XFS_IFLUSHING and
-XFS_IRECLAIMABLE, i_nlink will be reset to 1 and then restored to original
-value in xfs_reinit_inode(). Therefore, the i_nlink of directory on disk
-may be set to 1.
-
-  xfsaild
-      xfs_inode_item_push
-          xfs_iflush_cluster
-              xfs_iflush
-                  xfs_inode_to_disk
-
-  xfs_iget
-      xfs_iget_cache_hit
-          xfs_iget_recycle
-              xfs_reinit_inode
-                  inode_init_always
-
-xfs_reinit_inode() needs to hold the ILOCK_EXCL as it is changing internal
-inode state and can race with other RCU protected inode lookups. On the
-read side, xfs_iflush_cluster() grabs the ILOCK_SHARED while under rcu +
-ip->i_flags_lock, and so xfs_iflush/xfs_inode_to_disk() are protected from
-racing inode updates (during transactions) by that lock.
-
-Fixes: ff7bebeb91f8 ("xfs: refactor the inode recycling code") # goes further back than this
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS declaration")
+Reported-by: Arve Hjønnevåg <arve@android.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20240421173750.3117808-1-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_icache.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/android/binder.c          |    2 +-
+ drivers/android/binder_internal.h |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_icache.c
-+++ b/fs/xfs/xfs_icache.c
-@@ -342,6 +342,9 @@ xfs_iget_recycle(
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -5165,7 +5165,7 @@ static long binder_ioctl(struct file *fi
+ 			goto err;
+ 		break;
+ 	case BINDER_SET_MAX_THREADS: {
+-		int max_threads;
++		u32 max_threads;
  
- 	trace_xfs_iget_recycle(ip);
- 
-+	if (!xfs_ilock_nowait(ip, XFS_ILOCK_EXCL))
-+		return -EAGAIN;
-+
- 	/*
- 	 * We need to make it look like the inode is being reclaimed to prevent
- 	 * the actual reclaim workers from stomping over us while we recycle
-@@ -355,6 +358,7 @@ xfs_iget_recycle(
- 
- 	ASSERT(!rwsem_is_locked(&inode->i_rwsem));
- 	error = xfs_reinit_inode(mp, inode);
-+	xfs_iunlock(ip, XFS_ILOCK_EXCL);
- 	if (error) {
- 		/*
- 		 * Re-initializing the inode failed, and we are in deep
-@@ -523,6 +527,8 @@ xfs_iget_cache_hit(
- 	if (ip->i_flags & XFS_IRECLAIMABLE) {
- 		/* Drops i_flags_lock and RCU read lock. */
- 		error = xfs_iget_recycle(pag, ip);
-+		if (error == -EAGAIN)
-+			goto out_skip;
- 		if (error)
- 			return error;
- 	} else {
+ 		if (copy_from_user(&max_threads, ubuf,
+ 				   sizeof(max_threads))) {
+--- a/drivers/android/binder_internal.h
++++ b/drivers/android/binder_internal.h
+@@ -420,7 +420,7 @@ struct binder_proc {
+ 	struct list_head todo;
+ 	struct binder_stats stats;
+ 	struct list_head delivered_death;
+-	int max_threads;
++	u32 max_threads;
+ 	int requested_threads;
+ 	int requested_threads_started;
+ 	int tmp_ref;
 
 
 
