@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-45788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E76D8CD3E0
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1EC8CD465
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9041E1C213DF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5FDAB2198F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0C714B095;
-	Thu, 23 May 2024 13:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38DA14B96C;
+	Thu, 23 May 2024 13:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDf3fHAs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMgk6gBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A23014B083;
-	Thu, 23 May 2024 13:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B0614A632;
+	Thu, 23 May 2024 13:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470363; cv=none; b=a7hvrTDwhPgHzD0QWtC5ElcU6FUwaHDpcpXA/B2x7Ip1ZZSiV/fZUJRuiHdL4tzEgXTahJXc8GNOtiShEsmF9yTgPqnjqphTL1LDlQyEEk5hoVAA9PNXN8EPPz2jU4897oljr7+bcmNRvPiyf5/Z9Oj3Oq6Noz4y026E8FcJ8xk=
+	t=1716470642; cv=none; b=ond+XwkMNPjFxC0C3YsDSB1uVAQeNafnbkHeAmNkz8LeaQmAAPoTf+mtaesycT9wRE2yggiZoLEo6ZY7RPzmtGAdcqhQYqgBGaPOI1vUlplcuHdx5LE5dJYoou2txGcwAC4+/otdcJ8xLyGm854nYouEzgSDwiOtgFKs93DvziE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470363; c=relaxed/simple;
-	bh=jR9+/HQ4+ERE8HNKtBzs/zUM9SThxIkXnU8FGg5wRrA=;
+	s=arc-20240116; t=1716470642; c=relaxed/simple;
+	bh=1SwK/Pf9m5NbgwGq3XxstDS6INia0n606YKpJdLuarI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtnHYsOJO583u7HnZusT5gp8zp7tuMNCdvGn2flydPddRQQtat3FkEcuTt0n+Ko5QKlfLVVSLisv1DpJJY5V61lycIelhUHb3jufmLuaupmbxBfCHqPCDQ/vI9JhHJrmOpTGkhiuh3aCP+KkMpQo+hx2JKYRpUPXrIITKYTYDos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDf3fHAs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E24AC32781;
-	Thu, 23 May 2024 13:19:22 +0000 (UTC)
+	 MIME-Version; b=jUxvOVrLxl70xrIdYLjCL1uFfHDcNqif5upmAvNBHeSGQVe5PTqI/K78W3TCgyVe9EnyOO4lTKQ84O7xLy//y7gG0mj+RtyJnaW84wYZPlTKcYxmvVEUir8ctqGv1YsLFQdC1hzpOt148wnqtdcrEgxP62CVWaZVs9+jetx4yWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMgk6gBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191DFC32781;
+	Thu, 23 May 2024 13:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470362;
-	bh=jR9+/HQ4+ERE8HNKtBzs/zUM9SThxIkXnU8FGg5wRrA=;
+	s=korg; t=1716470642;
+	bh=1SwK/Pf9m5NbgwGq3XxstDS6INia0n606YKpJdLuarI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDf3fHAsjs7+blAn88cwKT8Vq/GByPDbQJ/gxi0Ifh6Bf1BbzwoxOGBkC/zM/6EoC
-	 kPlB58VU52fCYRwA8B85BoCx4TsoiJ90Qci9YogWKNY7DbOVn7s1B/yoyBZb4EX54Q
-	 KBqsFdtHl3IEQDqIn9kpdVqpTORLTLn5amEJTQFA=
+	b=YMgk6gBlCk8ERGXoeOxrPnyKU1HUWtYSy/PhBq8tv/Hf2nAFI3lf8KXk2izEloUaF
+	 C8VBcMrkRoRgAP5mVocWvWIO6hApBNEMlwr284oq+/D+Gf+/j67nNb98S4d8ijWQZW
+	 W438bPUMp7tq4M5GKtPqGdx+CL6fdM2gAMTUFSBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 11/45] xfs: punching delalloc extents on write failure is racy
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 037/102] cifs: update the same create_guid on replay
 Date: Thu, 23 May 2024 15:13:02 +0200
-Message-ID: <20240523130332.921321869@linuxfoundation.org>
+Message-ID: <20240523130343.864572440@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 198dd8aedee6a7d2de0dfa739f9a008a938f6848 ]
+[ Upstream commit 79520587fe42cd4988aff8695d60621e689109cb ]
 
-xfs_buffered_write_iomap_end() has a comment about the safety of
-punching delalloc extents based holding the IOLOCK_EXCL. This
-comment is wrong, and punching delalloc extents is not race free.
+File open requests made to the server contain a
+CreateGuid, which is used by the server to identify
+the open request. If the same request needs to be
+replayed, it needs to be sent with the same CreateGuid
+in the durable handle v2 context.
 
-When we punch out a delalloc extent after a write failure in
-xfs_buffered_write_iomap_end(), we punch out the page cache with
-truncate_pagecache_range() before we punch out the delalloc extents.
-At this point, we only hold the IOLOCK_EXCL, so there is nothing
-stopping mmap() write faults racing with this cleanup operation,
-reinstantiating a folio over the range we are about to punch and
-hence requiring the delalloc extent to be kept.
+Without doing so, we could end up leaking handles on
+the server when:
+1. multichannel is used AND
+2. connection goes down, but not for all channels
 
-If this race condition is hit, we can end up with a dirty page in
-the page cache that has no delalloc extent or space reservation
-backing it. This leads to bad things happening at writeback time.
+This is because the replayed open request would have a
+new CreateGuid and the server will treat this as a new
+request and open a new handle.
 
-To avoid this race condition, we need the page cache truncation to
-be atomic w.r.t. the extent manipulation. We can do this by holding
-the mapping->invalidate_lock exclusively across this operation -
-this will prevent new pages from being inserted into the page cache
-whilst we are removing the pages and the backing extent and space
-reservation.
+This change fixes this by reusing the existing create_guid
+stored in the cached fid struct.
 
-Taking the mapping->invalidate_lock exclusively in the buffered
-write IO path is safe - it naturally nests inside the IOLOCK (see
-truncate and fallocate paths). iomap_zero_range() can be called from
-under the mapping->invalidate_lock (from the truncate path via
-either xfs_zero_eof() or xfs_truncate_page(), but iomap_zero_iter()
-will not instantiate new delalloc pages (because it skips holes) and
-hence will not ever need to punch out delalloc extents on failure.
+REF: MS-SMB2 4.9 Replay Create Request on an Alternate Channel
 
-Fix the locking issue, and clean up the code logic a little to avoid
-unnecessary work if we didn't allocate the delalloc extent or wrote
-the entire region we allocated.
-
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4f1fffa23769 ("cifs: commands that are retried should have replay flag set")
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_iomap.c |   41 +++++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+ fs/smb/client/cached_dir.c |  1 +
+ fs/smb/client/cifsglob.h   |  1 +
+ fs/smb/client/smb2ops.c    |  4 ++++
+ fs/smb/client/smb2pdu.c    | 10 ++++++++--
+ 4 files changed, 14 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -1147,6 +1147,10 @@ xfs_buffered_write_iomap_end(
- 		written = 0;
- 	}
+diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+index ca0fd25236ef4..0ff2491c311d8 100644
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -243,6 +243,7 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 				   FILE_READ_EA,
+ 		.disposition = FILE_OPEN,
+ 		.fid = pfid,
++		.replay = !!(retries),
+ 	};
  
-+	/* If we didn't reserve the blocks, we're not allowed to punch them. */
-+	if (!(iomap->flags & IOMAP_F_NEW))
-+		return 0;
-+
- 	/*
- 	 * start_fsb refers to the first unused block after a short write. If
- 	 * nothing was written, round offset down to point at the first block in
-@@ -1158,27 +1162,28 @@ xfs_buffered_write_iomap_end(
- 		start_fsb = XFS_B_TO_FSB(mp, offset + written);
- 	end_fsb = XFS_B_TO_FSB(mp, offset + length);
+ 	rc = SMB2_open_init(tcon, server,
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 8fbdb781d70a6..181e9d5b10f92 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1382,6 +1382,7 @@ struct cifs_open_parms {
+ 	struct cifs_fid *fid;
+ 	umode_t mode;
+ 	bool reconnect:1;
++	bool replay:1; /* indicates that this open is for a replay */
+ };
  
-+	/* Nothing to do if we've written the entire delalloc extent */
-+	if (start_fsb >= end_fsb)
-+		return 0;
-+
- 	/*
--	 * Trim delalloc blocks if they were allocated by this write and we
--	 * didn't manage to write the whole range.
--	 *
--	 * We don't need to care about racing delalloc as we hold i_mutex
--	 * across the reserve/allocate/unreserve calls. If there are delalloc
--	 * blocks in the range, they are ours.
-+	 * Lock the mapping to avoid races with page faults re-instantiating
-+	 * folios and dirtying them via ->page_mkwrite between the page cache
-+	 * truncation and the delalloc extent removal. Failing to do this can
-+	 * leave dirty pages with no space reservation in the cache.
+ struct cifs_fid {
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 06735c5685bf6..23cf6e92fd54c 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -1204,6 +1204,7 @@ smb2_set_ea(const unsigned int xid, struct cifs_tcon *tcon,
+ 		.disposition = FILE_OPEN,
+ 		.create_options = cifs_create_options(cifs_sb, 0),
+ 		.fid = &fid,
++		.replay = !!(retries),
+ 	};
+ 
+ 	rc = SMB2_open_init(tcon, server,
+@@ -1570,6 +1571,7 @@ smb2_ioctl_query_info(const unsigned int xid,
+ 		.disposition = FILE_OPEN,
+ 		.create_options = cifs_create_options(cifs_sb, create_options),
+ 		.fid = &fid,
++		.replay = !!(retries),
+ 	};
+ 
+ 	if (qi.flags & PASSTHRU_FSCTL) {
+@@ -2296,6 +2298,7 @@ smb2_query_dir_first(const unsigned int xid, struct cifs_tcon *tcon,
+ 		.disposition = FILE_OPEN,
+ 		.create_options = cifs_create_options(cifs_sb, 0),
+ 		.fid = fid,
++		.replay = !!(retries),
+ 	};
+ 
+ 	rc = SMB2_open_init(tcon, server,
+@@ -2684,6 +2687,7 @@ smb2_query_info_compound(const unsigned int xid, struct cifs_tcon *tcon,
+ 		.disposition = FILE_OPEN,
+ 		.create_options = cifs_create_options(cifs_sb, 0),
+ 		.fid = &fid,
++		.replay = !!(retries),
+ 	};
+ 
+ 	rc = SMB2_open_init(tcon, server,
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index c73a621a8b83e..60793143e24c6 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -2421,8 +2421,13 @@ create_durable_v2_buf(struct cifs_open_parms *oparms)
  	 */
--	if ((iomap->flags & IOMAP_F_NEW) && start_fsb < end_fsb) {
--		truncate_pagecache_range(VFS_I(ip), XFS_FSB_TO_B(mp, start_fsb),
--					 XFS_FSB_TO_B(mp, end_fsb) - 1);
--
--		error = xfs_bmap_punch_delalloc_range(ip, start_fsb,
--					       end_fsb - start_fsb);
--		if (error && !xfs_is_shutdown(mp)) {
--			xfs_alert(mp, "%s: unable to clean up ino %lld",
--				__func__, ip->i_ino);
--			return error;
--		}
--	}
-+	filemap_invalidate_lock(inode->i_mapping);
-+	truncate_pagecache_range(VFS_I(ip), XFS_FSB_TO_B(mp, start_fsb),
-+				 XFS_FSB_TO_B(mp, end_fsb) - 1);
+ 	buf->dcontext.Timeout = cpu_to_le32(oparms->tcon->handle_timeout);
+ 	buf->dcontext.Flags = cpu_to_le32(SMB2_DHANDLE_FLAG_PERSISTENT);
+-	generate_random_uuid(buf->dcontext.CreateGuid);
+-	memcpy(pfid->create_guid, buf->dcontext.CreateGuid, 16);
++
++	/* for replay, we should not overwrite the existing create guid */
++	if (!oparms->replay) {
++		generate_random_uuid(buf->dcontext.CreateGuid);
++		memcpy(pfid->create_guid, buf->dcontext.CreateGuid, 16);
++	} else
++		memcpy(buf->dcontext.CreateGuid, pfid->create_guid, 16);
  
-+	error = xfs_bmap_punch_delalloc_range(ip, start_fsb,
-+				       end_fsb - start_fsb);
-+	filemap_invalidate_unlock(inode->i_mapping);
-+	if (error && !xfs_is_shutdown(mp)) {
-+		xfs_alert(mp, "%s: unable to clean up ino %lld",
-+			__func__, ip->i_ino);
-+		return error;
-+	}
- 	return 0;
- }
+ 	/* SMB2_CREATE_DURABLE_HANDLE_REQUEST is "DH2Q" */
+ 	buf->Name[0] = 'D';
+@@ -3159,6 +3164,7 @@ SMB2_open(const unsigned int xid, struct cifs_open_parms *oparms, __le16 *path,
+ 	/* reinitialize for possible replay */
+ 	flags = 0;
+ 	server = cifs_pick_channel(ses);
++	oparms->replay = !!(retries);
  
+ 	cifs_dbg(FYI, "create/open\n");
+ 	if (!ses || !server)
+-- 
+2.43.0
+
 
 
 
