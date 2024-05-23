@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-45702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6EF8CD374
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 376508CD43E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30E42B22145
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B1B31C21279
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E4914A4EC;
-	Thu, 23 May 2024 13:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B549714B086;
+	Thu, 23 May 2024 13:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXmcNEAG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPOX+aBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C366A1E504;
-	Thu, 23 May 2024 13:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7473914A634;
+	Thu, 23 May 2024 13:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470116; cv=none; b=L9NxrBmXjJPfN2R7c858tOijsr7BXJwMGMcfQPXpJ3YOsYilksyYqHVxP18ZfKfkFSUsIFpqYjlr1PzXRYodf7ACeL1GJEZEKWUL3+TTwfSRCrpkRiT7oioT/FA4cYQuhQ+b4XHWuks724SmVDg/9EprEZj6oo1HuqA5CBpQyMA=
+	t=1716470573; cv=none; b=Z+90EBAlO1//9D85eidH2AbdC0Vlv367KNFEA6DTu3Vkkf8aHb0H70cUzOpYCCQqtqQDriPLlARlm6vBkhX2d/Ju62LM0yHJXQj1N3gHcjGqLlHVhdk5r3RgPIICbTK0meBOukTQok6n08kGN1FvNgmEstVXgiHKhHSV1q7GUas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470116; c=relaxed/simple;
-	bh=bfOTqECI+WRDBBG9cy1vni/lTn9XmkLtVCP5WzzFaxY=;
+	s=arc-20240116; t=1716470573; c=relaxed/simple;
+	bh=FV3CNeEncGxDPAPhc7Kt/ghJrCK258TtUXWAzB4B1Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxFxocjF/LSTFs+gLgofsvBpkSly5oTEbZARXsaB+DUonTBbWtaaAeDBCENcVBDEf9XYlZTO7N/7eIb1mrx8S1a74/65anN5oQ8iwdCVBkTyUm7QkR4sP7+QkC+dykJldi9aUr9WFjxGxHlIb3LNLz+ruEPsDFeNZJLLonbFm6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXmcNEAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADDEC2BD10;
-	Thu, 23 May 2024 13:15:16 +0000 (UTC)
+	 MIME-Version; b=KKpspQQ+lu9biUTiuZRanHiR/jkfLYlwNXyAB0s+AJrMu53YOlllR5IUV0BfKW0P8q2zInBQwi/d/J2duswOvfDMybQq0aZwjtBekOKXiwRQjEQcmZ5KE/QTd6WmmCOiHkzSqWA8IDWHJypyGLTyJOZB93HTZ+3Vc3ndDEeMwGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPOX+aBw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08F8C32781;
+	Thu, 23 May 2024 13:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470116;
-	bh=bfOTqECI+WRDBBG9cy1vni/lTn9XmkLtVCP5WzzFaxY=;
+	s=korg; t=1716470573;
+	bh=FV3CNeEncGxDPAPhc7Kt/ghJrCK258TtUXWAzB4B1Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QXmcNEAGjh1aTyFJgCXMvVa0nDkcjTRjw+uZHvNGXqxeUfhpj5AT0o6wa/KvtR9sF
-	 a4afG/3yE4BOeLrbtodrsAyZ/w9D2edemwJfLlVbk7CxUKNYAstP3df7bpsnmSPfGj
-	 xDS6LivnzmMab2ImFmUXiWuxinDO56cyeP+/5zOc=
+	b=qPOX+aBw7ooujo6mX2K3Af3F96Om4QIyAVO0nGuHf8qdiy2beiRer5VAbbMKM9xO8
+	 PZ9+UJqNYenHYuJEx4YxZeCGKjZNAddXfKVUxEeDLGXgiLiSaecMIJndZv1IRtXz7l
+	 DfOJEIwLzOCdtEj1MiH2d/dR+wbm4h8nZdf7+/SI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"stable@vger.kernel.org, George Guo" <guodongtai@kylinos.cn>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	Tom Zanussi <tom.zanussi@linux.intel.com>,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19 16/18] tracing: Remove unnecessary var_ref destroy in track_data_destroy()
+	kernel test robot <lkp@intel.com>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 014/102] smb: client: allow creating special files via reparse points
 Date: Thu, 23 May 2024 15:12:39 +0200
-Message-ID: <20240523130326.355822129@linuxfoundation.org>
+Message-ID: <20240523130343.002982940@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
-References: <20240523130325.727602650@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,621 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Zanussi <tom.zanussi@linux.intel.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit ff9d31d0d46672e201fc9ff59c42f1eef5f00c77 upstream.
+[ Upstream commit 102466f303ffcd5cff207b3c122557f73f1041e6 ]
 
-Commit 656fe2ba85e8 (tracing: Use hist trigger's var_ref array to
-destroy var_refs) centralized the destruction of all the var_refs
-in one place so that other code didn't have to do it.
+Add support for creating special files (e.g. char/block devices,
+sockets, fifos) via NFS reparse points on SMB2+, which are fully
+supported by most SMB servers and documented in MS-FSCC.
 
-The track_data_destroy() added later ignored that and also destroyed
-the track_data var_ref, causing a double-free error flagged by KASAN.
+smb2_get_reparse_inode() creates the file with a corresponding reparse
+point buffer set in @iov through a single roundtrip to the server.
 
-==================================================================
-BUG: KASAN: use-after-free in destroy_hist_field+0x30/0x70
-Read of size 8 at addr ffff888086df2210 by task bash/1694
-
-CPU: 6 PID: 1694 Comm: bash Not tainted 5.1.0-rc1-test+ #15
-Hardware name: Hewlett-Packard HP Compaq Pro 6300 SFF/339A, BIOS K01 v03.03
-07/14/2016
-Call Trace:
- dump_stack+0x71/0xa0
- ? destroy_hist_field+0x30/0x70
- print_address_description.cold.3+0x9/0x1fb
- ? destroy_hist_field+0x30/0x70
- ? destroy_hist_field+0x30/0x70
- kasan_report.cold.4+0x1a/0x33
- ? __kasan_slab_free+0x100/0x150
- ? destroy_hist_field+0x30/0x70
- destroy_hist_field+0x30/0x70
- track_data_destroy+0x55/0xe0
- destroy_hist_data+0x1f0/0x350
- hist_unreg_all+0x203/0x220
- event_trigger_open+0xbb/0x130
- do_dentry_open+0x296/0x700
- ? stacktrace_count_trigger+0x30/0x30
- ? generic_permission+0x56/0x200
- ? __x64_sys_fchdir+0xd0/0xd0
- ? inode_permission+0x55/0x200
- ? security_inode_permission+0x18/0x60
- path_openat+0x633/0x22b0
- ? path_lookupat.isra.50+0x420/0x420
- ? __kasan_kmalloc.constprop.12+0xc1/0xd0
- ? kmem_cache_alloc+0xe5/0x260
- ? getname_flags+0x6c/0x2a0
- ? do_sys_open+0x149/0x2b0
- ? do_syscall_64+0x73/0x1b0
- ? entry_SYSCALL_64_after_hwframe+0x44/0xa9
- ? _raw_write_lock_bh+0xe0/0xe0
- ? __kernel_text_address+0xe/0x30
- ? unwind_get_return_address+0x2f/0x50
- ? __list_add_valid+0x2d/0x70
- ? deactivate_slab.isra.62+0x1f4/0x5a0
- ? getname_flags+0x6c/0x2a0
- ? set_track+0x76/0x120
- do_filp_open+0x11a/0x1a0
- ? may_open_dev+0x50/0x50
- ? _raw_spin_lock+0x7a/0xd0
- ? _raw_write_lock_bh+0xe0/0xe0
- ? __alloc_fd+0x10f/0x200
- do_sys_open+0x1db/0x2b0
- ? filp_open+0x50/0x50
- do_syscall_64+0x73/0x1b0
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x7fa7b24a4ca2
-Code: 25 00 00 41 00 3d 00 00 41 00 74 4c 48 8d 05 85 7a 0d 00 8b 00 85 c0
-75 6d 89 f2 b8 01 01 00 00 48 89 fe bf 9c ff ff ff 0f 05 <48> 3d 00 f0 ff ff
-0f 87 a2 00 00 00 48 8b 4c 24 28 64 48 33 0c 25
-RSP: 002b:00007fffbafb3af0 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 000055d3648ade30 RCX: 00007fa7b24a4ca2
-RDX: 0000000000000241 RSI: 000055d364a55240 RDI: 00000000ffffff9c
-RBP: 00007fffbafb3bf0 R08: 0000000000000020 R09: 0000000000000002
-R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000003 R14: 0000000000000001 R15: 000055d364a55240
-==================================================================
-
-So remove the track_data_destroy() destroy_hist_field() call for that
-var_ref.
-
-Link: http://lkml.kernel.org/r/1deffec420f6a16d11dd8647318d34a66d1989a9.camel@linux.intel.com
-
-Fixes: 466f4528fbc69 ("tracing: Generalize hist trigger onmax and save action")
-Reported-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311260746.HOJ039BV-lkp@intel.com/
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/smb/client/cifsproto.h |  8 +++-
+ fs/smb/client/dir.c       |  7 +--
+ fs/smb/client/file.c      | 10 +++--
+ fs/smb/client/inode.c     | 76 ++++++++++++++++++++-----------
+ fs/smb/client/link.c      | 10 +++--
+ fs/smb/client/smb2glob.h  | 25 ++++++-----
+ fs/smb/client/smb2inode.c | 75 +++++++++++++++++++++++++++++++
+ fs/smb/client/smb2ops.c   | 94 +++++++++++++++++++++++++++++++++++----
+ fs/smb/client/smb2proto.h |  7 +++
+ fs/smb/client/trace.h     |  4 +-
+ 10 files changed, 256 insertions(+), 60 deletions(-)
 
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -3587,7 +3587,6 @@ static void track_data_destroy(struct hi
- 			       struct action_data *data)
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index 9480cdb9588d5..49de2545f34ce 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -213,8 +213,12 @@ int cifs_get_inode_info(struct inode **inode, const char *full_path,
+ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 				 struct cifs_fattr *fattr,
+ 				 struct cifs_open_info_data *data);
+-extern int smb311_posix_get_inode_info(struct inode **pinode, const char *search_path,
+-			struct super_block *sb, unsigned int xid);
++
++extern int smb311_posix_get_inode_info(struct inode **inode,
++				       const char *full_path,
++				       struct cifs_open_info_data *data,
++				       struct super_block *sb,
++				       const unsigned int xid);
+ extern int cifs_get_inode_info_unix(struct inode **pinode,
+ 			const unsigned char *search_path,
+ 			struct super_block *sb, unsigned int xid);
+diff --git a/fs/smb/client/dir.c b/fs/smb/client/dir.c
+index 855468a32904e..37897b919dd5a 100644
+--- a/fs/smb/client/dir.c
++++ b/fs/smb/client/dir.c
+@@ -695,9 +695,10 @@ cifs_lookup(struct inode *parent_dir_inode, struct dentry *direntry,
+ 		 full_path, d_inode(direntry));
+ 
+ again:
+-	if (pTcon->posix_extensions)
+-		rc = smb311_posix_get_inode_info(&newInode, full_path, parent_dir_inode->i_sb, xid);
+-	else if (pTcon->unix_ext) {
++	if (pTcon->posix_extensions) {
++		rc = smb311_posix_get_inode_info(&newInode, full_path, NULL,
++						 parent_dir_inode->i_sb, xid);
++	} else if (pTcon->unix_ext) {
+ 		rc = cifs_get_inode_info_unix(&newInode, full_path,
+ 					      parent_dir_inode->i_sb, xid);
+ 	} else {
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 53a8c633221b9..f41804245fca1 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -1102,14 +1102,16 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
+ 		if (!is_interrupt_error(rc))
+ 			mapping_set_error(inode->i_mapping, rc);
+ 
+-		if (tcon->posix_extensions)
+-			rc = smb311_posix_get_inode_info(&inode, full_path, inode->i_sb, xid);
+-		else if (tcon->unix_ext)
++		if (tcon->posix_extensions) {
++			rc = smb311_posix_get_inode_info(&inode, full_path,
++							 NULL, inode->i_sb, xid);
++		} else if (tcon->unix_ext) {
+ 			rc = cifs_get_inode_info_unix(&inode, full_path,
+ 						      inode->i_sb, xid);
+-		else
++		} else {
+ 			rc = cifs_get_inode_info(&inode, full_path, NULL,
+ 						 inode->i_sb, xid, NULL);
++		}
+ 	}
+ 	/*
+ 	 * Else we are writing out data to server already and could deadlock if
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index fa6330d586e89..391839feb29d5 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1063,7 +1063,9 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 				 const unsigned int xid,
+ 				 struct cifs_tcon *tcon,
+ 				 const char *full_path,
+-				 struct cifs_fattr *fattr)
++				 struct cifs_fattr *fattr,
++				 struct cifs_sid *owner,
++				 struct cifs_sid *group)
  {
- 	destroy_hist_field(data->track_data.track_var, 0);
--	destroy_hist_field(data->track_data.var_ref, 0);
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+@@ -1094,7 +1096,8 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 		rc = 0;
+ 		goto out;
+ 	default:
+-		if (data->symlink_target) {
++		/* Check for cached reparse point data */
++		if (data->symlink_target || data->reparse.buf) {
+ 			rc = 0;
+ 		} else if (server->ops->parse_reparse_point) {
+ 			rc = server->ops->parse_reparse_point(cifs_sb,
+@@ -1103,7 +1106,10 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 		break;
+ 	}
  
- 	kfree(data->track_data.var_str);
+-	cifs_open_info_to_fattr(fattr, data, sb);
++	if (tcon->posix_extensions)
++		smb311_posix_info_to_fattr(fattr, data, owner, group, sb);
++	else
++		cifs_open_info_to_fattr(fattr, data, sb);
+ out:
+ 	fattr->cf_cifstag = data->reparse.tag;
+ 	free_rsp_buf(rsp_buftype, rsp_iov.iov_base);
+@@ -1155,7 +1161,8 @@ static int cifs_get_fattr(struct cifs_open_info_data *data,
+ 		 */
+ 		if (cifs_open_data_reparse(data)) {
+ 			rc = reparse_info_to_fattr(data, sb, xid, tcon,
+-						   full_path, fattr);
++						   full_path, fattr,
++						   NULL, NULL);
+ 		} else {
+ 			cifs_open_info_to_fattr(fattr, data, sb);
+ 		}
+@@ -1293,18 +1300,19 @@ int cifs_get_inode_info(struct inode **inode,
+ 	return rc;
+ }
  
+-static int smb311_posix_get_fattr(struct cifs_fattr *fattr,
++static int smb311_posix_get_fattr(struct cifs_open_info_data *data,
++				  struct cifs_fattr *fattr,
+ 				  const char *full_path,
+ 				  struct super_block *sb,
+ 				  const unsigned int xid)
+ {
+-	struct cifs_open_info_data data = {};
++	struct cifs_open_info_data tmp_data = {};
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+ 	struct cifs_tcon *tcon;
+ 	struct tcon_link *tlink;
+ 	struct cifs_sid owner, group;
+ 	int tmprc;
+-	int rc;
++	int rc = 0;
+ 
+ 	tlink = cifs_sb_tlink(cifs_sb);
+ 	if (IS_ERR(tlink))
+@@ -1312,12 +1320,14 @@ static int smb311_posix_get_fattr(struct cifs_fattr *fattr,
+ 	tcon = tlink_tcon(tlink);
+ 
+ 	/*
+-	 * 1. Fetch file metadata
++	 * 1. Fetch file metadata if not provided (data)
+ 	 */
+-
+-	rc = smb311_posix_query_path_info(xid, tcon, cifs_sb,
+-					  full_path, &data,
+-					  &owner, &group);
++	if (!data) {
++		rc = smb311_posix_query_path_info(xid, tcon, cifs_sb,
++						  full_path, &tmp_data,
++						  &owner, &group);
++		data = &tmp_data;
++	}
+ 
+ 	/*
+ 	 * 2. Convert it to internal cifs metadata (fattr)
+@@ -1325,7 +1335,14 @@ static int smb311_posix_get_fattr(struct cifs_fattr *fattr,
+ 
+ 	switch (rc) {
+ 	case 0:
+-		smb311_posix_info_to_fattr(fattr, &data, &owner, &group, sb);
++		if (cifs_open_data_reparse(data)) {
++			rc = reparse_info_to_fattr(data, sb, xid, tcon,
++						   full_path, fattr,
++						   &owner, &group);
++		} else {
++			smb311_posix_info_to_fattr(fattr, data,
++						   &owner, &group, sb);
++		}
+ 		break;
+ 	case -EREMOTE:
+ 		/* DFS link, no metadata available on this server */
+@@ -1356,12 +1373,15 @@ static int smb311_posix_get_fattr(struct cifs_fattr *fattr,
+ 
+ out:
+ 	cifs_put_tlink(tlink);
+-	cifs_free_open_info(&data);
++	cifs_free_open_info(data);
+ 	return rc;
+ }
+ 
+-int smb311_posix_get_inode_info(struct inode **inode, const char *full_path,
+-				struct super_block *sb, const unsigned int xid)
++int smb311_posix_get_inode_info(struct inode **inode,
++				const char *full_path,
++				struct cifs_open_info_data *data,
++				struct super_block *sb,
++				const unsigned int xid)
+ {
+ 	struct cifs_fattr fattr = {};
+ 	int rc;
+@@ -1371,7 +1391,7 @@ int smb311_posix_get_inode_info(struct inode **inode, const char *full_path,
+ 		return 0;
+ 	}
+ 
+-	rc = smb311_posix_get_fattr(&fattr, full_path, sb, xid);
++	rc = smb311_posix_get_fattr(data, &fattr, full_path, sb, xid);
+ 	if (rc)
+ 		goto out;
+ 
+@@ -1521,7 +1541,7 @@ struct inode *cifs_root_iget(struct super_block *sb)
+ 
+ 	convert_delimiter(path, CIFS_DIR_SEP(cifs_sb));
+ 	if (tcon->posix_extensions)
+-		rc = smb311_posix_get_fattr(&fattr, path, sb, xid);
++		rc = smb311_posix_get_fattr(NULL, &fattr, path, sb, xid);
+ 	else
+ 		rc = cifs_get_fattr(NULL, sb, xid, NULL, &fattr, &inode, path);
+ 
+@@ -1894,16 +1914,18 @@ cifs_mkdir_qinfo(struct inode *parent, struct dentry *dentry, umode_t mode,
+ 	int rc = 0;
+ 	struct inode *inode = NULL;
+ 
+-	if (tcon->posix_extensions)
+-		rc = smb311_posix_get_inode_info(&inode, full_path, parent->i_sb, xid);
++	if (tcon->posix_extensions) {
++		rc = smb311_posix_get_inode_info(&inode, full_path,
++						 NULL, parent->i_sb, xid);
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+-	else if (tcon->unix_ext)
++	} else if (tcon->unix_ext) {
+ 		rc = cifs_get_inode_info_unix(&inode, full_path, parent->i_sb,
+ 					      xid);
+ #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+-	else
++	} else {
+ 		rc = cifs_get_inode_info(&inode, full_path, NULL, parent->i_sb,
+ 					 xid, NULL);
++	}
+ 
+ 	if (rc)
+ 		return rc;
+@@ -2585,13 +2607,15 @@ int cifs_revalidate_dentry_attr(struct dentry *dentry)
+ 		 dentry, cifs_get_time(dentry), jiffies);
+ 
+ again:
+-	if (cifs_sb_master_tcon(CIFS_SB(sb))->posix_extensions)
+-		rc = smb311_posix_get_inode_info(&inode, full_path, sb, xid);
+-	else if (cifs_sb_master_tcon(CIFS_SB(sb))->unix_ext)
++	if (cifs_sb_master_tcon(CIFS_SB(sb))->posix_extensions) {
++		rc = smb311_posix_get_inode_info(&inode, full_path,
++						 NULL, sb, xid);
++	} else if (cifs_sb_master_tcon(CIFS_SB(sb))->unix_ext) {
+ 		rc = cifs_get_inode_info_unix(&inode, full_path, sb, xid);
+-	else
++	} else {
+ 		rc = cifs_get_inode_info(&inode, full_path, NULL, sb,
+ 					 xid, NULL);
++	}
+ 	if (rc == -EAGAIN && count++ < 10)
+ 		goto again;
+ out:
+diff --git a/fs/smb/client/link.c b/fs/smb/client/link.c
+index 3ef34218a790d..691f43a1ec2bc 100644
+--- a/fs/smb/client/link.c
++++ b/fs/smb/client/link.c
+@@ -614,14 +614,16 @@ cifs_symlink(struct mnt_idmap *idmap, struct inode *inode,
+ 					cifs_sb_target->local_nls); */
+ 
+ 	if (rc == 0) {
+-		if (pTcon->posix_extensions)
+-			rc = smb311_posix_get_inode_info(&newinode, full_path, inode->i_sb, xid);
+-		else if (pTcon->unix_ext)
++		if (pTcon->posix_extensions) {
++			rc = smb311_posix_get_inode_info(&newinode, full_path,
++							 NULL, inode->i_sb, xid);
++		} else if (pTcon->unix_ext) {
+ 			rc = cifs_get_inode_info_unix(&newinode, full_path,
+ 						      inode->i_sb, xid);
+-		else
++		} else {
+ 			rc = cifs_get_inode_info(&newinode, full_path, NULL,
+ 						 inode->i_sb, xid, NULL);
++		}
+ 
+ 		if (rc != 0) {
+ 			cifs_dbg(FYI, "Create symlink ok, getinodeinfo fail rc = %d\n",
+diff --git a/fs/smb/client/smb2glob.h b/fs/smb/client/smb2glob.h
+index 82e916ad167c0..ca87a0011c337 100644
+--- a/fs/smb/client/smb2glob.h
++++ b/fs/smb/client/smb2glob.h
+@@ -23,17 +23,20 @@
+  * Identifiers for functions that use the open, operation, close pattern
+  * in smb2inode.c:smb2_compound_op()
+  */
+-#define SMB2_OP_SET_DELETE 1
+-#define SMB2_OP_SET_INFO 2
+-#define SMB2_OP_QUERY_INFO 3
+-#define SMB2_OP_QUERY_DIR 4
+-#define SMB2_OP_MKDIR 5
+-#define SMB2_OP_RENAME 6
+-#define SMB2_OP_DELETE 7
+-#define SMB2_OP_HARDLINK 8
+-#define SMB2_OP_SET_EOF 9
+-#define SMB2_OP_RMDIR 10
+-#define SMB2_OP_POSIX_QUERY_INFO 11
++enum smb2_compound_ops {
++	SMB2_OP_SET_DELETE = 1,
++	SMB2_OP_SET_INFO,
++	SMB2_OP_QUERY_INFO,
++	SMB2_OP_QUERY_DIR,
++	SMB2_OP_MKDIR,
++	SMB2_OP_RENAME,
++	SMB2_OP_DELETE,
++	SMB2_OP_HARDLINK,
++	SMB2_OP_SET_EOF,
++	SMB2_OP_RMDIR,
++	SMB2_OP_POSIX_QUERY_INFO,
++	SMB2_OP_SET_REPARSE
++};
+ 
+ /* Used when constructing chained read requests. */
+ #define CHAINED_REQUEST 1
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 4c66187eccdd2..e74d3a1e49dfa 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -359,6 +359,22 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 			smb2_set_related(&rqst[num_rqst++]);
+ 			trace_smb3_hardlink_enter(xid, ses->Suid, tcon->tid, full_path);
+ 			break;
++		case SMB2_OP_SET_REPARSE:
++			rqst[num_rqst].rq_iov = vars->io_iov;
++			rqst[num_rqst].rq_nvec = ARRAY_SIZE(vars->io_iov);
++
++			rc = SMB2_ioctl_init(tcon, server, &rqst[num_rqst],
++					     COMPOUND_FID, COMPOUND_FID,
++					     FSCTL_SET_REPARSE_POINT,
++					     in_iov[i].iov_base,
++					     in_iov[i].iov_len, 0);
++			if (rc)
++				goto finished;
++			smb2_set_next_command(tcon, &rqst[num_rqst]);
++			smb2_set_related(&rqst[num_rqst++]);
++			trace_smb3_set_reparse_compound_enter(xid, ses->Suid,
++							      tcon->tid, full_path);
++			break;
+ 		default:
+ 			cifs_dbg(VFS, "Invalid command\n");
+ 			rc = -EINVAL;
+@@ -515,6 +531,16 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 								  tcon->tid);
+ 			SMB2_set_info_free(&rqst[num_rqst++]);
+ 			break;
++		case SMB2_OP_SET_REPARSE:
++			if (rc) {
++				trace_smb3_set_reparse_compound_err(xid,  ses->Suid,
++								    tcon->tid, rc);
++			} else {
++				trace_smb3_set_reparse_compound_done(xid, ses->Suid,
++								     tcon->tid);
++			}
++			SMB2_ioctl_free(&rqst[num_rqst++]);
++			break;
+ 		}
+ 	}
+ 	SMB2_close_free(&rqst[num_rqst]);
+@@ -905,3 +931,52 @@ smb2_set_file_info(struct inode *inode, const char *full_path,
+ 	cifs_put_tlink(tlink);
+ 	return rc;
+ }
++
++struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
++				     struct super_block *sb,
++				     const unsigned int xid,
++				     struct cifs_tcon *tcon,
++				     const char *full_path,
++				     struct kvec *iov)
++{
++	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
++	struct cifsFileInfo *cfile;
++	struct inode *new = NULL;
++	struct kvec in_iov[2];
++	int cmds[2];
++	int da, co, cd;
++	int rc;
++
++	da = SYNCHRONIZE | DELETE |
++		FILE_READ_ATTRIBUTES |
++		FILE_WRITE_ATTRIBUTES;
++	co = CREATE_NOT_DIR | OPEN_REPARSE_POINT;
++	cd = FILE_CREATE;
++	cmds[0] = SMB2_OP_SET_REPARSE;
++	in_iov[0] = *iov;
++	in_iov[1].iov_base = data;
++	in_iov[1].iov_len = sizeof(*data);
++
++	if (tcon->posix_extensions) {
++		cmds[1] = SMB2_OP_POSIX_QUERY_INFO;
++		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
++		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
++				      da, cd, co, ACL_NO_MODE, in_iov,
++				      cmds, 2, cfile, NULL, NULL, NULL, NULL);
++		if (!rc) {
++			rc = smb311_posix_get_inode_info(&new, full_path,
++							 data, sb, xid);
++		}
++	} else {
++		cmds[1] = SMB2_OP_QUERY_INFO;
++		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
++		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
++				      da, cd, co, ACL_NO_MODE, in_iov,
++				      cmds, 2, cfile, NULL, NULL, NULL, NULL);
++		if (!rc) {
++			rc = cifs_get_inode_info(&new, full_path,
++						 data, sb, xid, NULL);
++		}
++	}
++	return rc ? ERR_PTR(rc) : new;
++}
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 2b892a736e5f9..4fed19d5a81d4 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -5170,11 +5170,88 @@ int cifs_sfu_make_node(unsigned int xid, struct inode *inode,
+ 	return rc;
+ }
+ 
++static inline u64 mode_nfs_type(mode_t mode)
++{
++	switch (mode & S_IFMT) {
++	case S_IFBLK: return NFS_SPECFILE_BLK;
++	case S_IFCHR: return NFS_SPECFILE_CHR;
++	case S_IFIFO: return NFS_SPECFILE_FIFO;
++	case S_IFSOCK: return NFS_SPECFILE_SOCK;
++	}
++	return 0;
++}
++
++static int nfs_set_reparse_buf(struct reparse_posix_data *buf,
++			       mode_t mode, dev_t dev,
++			       struct kvec *iov)
++{
++	u64 type;
++	u16 len, dlen;
++
++	len = sizeof(*buf);
++
++	switch ((type = mode_nfs_type(mode))) {
++	case NFS_SPECFILE_BLK:
++	case NFS_SPECFILE_CHR:
++		dlen = sizeof(__le64);
++		break;
++	case NFS_SPECFILE_FIFO:
++	case NFS_SPECFILE_SOCK:
++		dlen = 0;
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	buf->ReparseTag = cpu_to_le32(IO_REPARSE_TAG_NFS);
++	buf->Reserved = 0;
++	buf->InodeType = cpu_to_le64(type);
++	buf->ReparseDataLength = cpu_to_le16(len + dlen -
++					     sizeof(struct reparse_data_buffer));
++	*(__le64 *)buf->DataBuffer = cpu_to_le64(((u64)MAJOR(dev) << 32) |
++						 MINOR(dev));
++	iov->iov_base = buf;
++	iov->iov_len = len + dlen;
++	return 0;
++}
++
++static int nfs_make_node(unsigned int xid, struct inode *inode,
++			 struct dentry *dentry, struct cifs_tcon *tcon,
++			 const char *full_path, umode_t mode, dev_t dev)
++{
++	struct cifs_open_info_data data;
++	struct reparse_posix_data *p;
++	struct inode *new;
++	struct kvec iov;
++	__u8 buf[sizeof(*p) + sizeof(__le64)];
++	int rc;
++
++	p = (struct reparse_posix_data *)buf;
++	rc = nfs_set_reparse_buf(p, mode, dev, &iov);
++	if (rc)
++		return rc;
++
++	data = (struct cifs_open_info_data) {
++		.reparse_point = true,
++		.reparse = { .tag = IO_REPARSE_TAG_NFS, .posix = p, },
++	};
++
++	new = smb2_get_reparse_inode(&data, inode->i_sb, xid,
++				     tcon, full_path, &iov);
++	if (!IS_ERR(new))
++		d_instantiate(dentry, new);
++	else
++		rc = PTR_ERR(new);
++	cifs_free_open_info(&data);
++	return rc;
++}
++
+ static int smb2_make_node(unsigned int xid, struct inode *inode,
+ 			  struct dentry *dentry, struct cifs_tcon *tcon,
+ 			  const char *full_path, umode_t mode, dev_t dev)
+ {
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
++	int rc;
+ 
+ 	/*
+ 	 * Check if mounted with mount parm 'sfu' mount parm.
+@@ -5182,15 +5259,14 @@ static int smb2_make_node(unsigned int xid, struct inode *inode,
+ 	 * supports block and char device (no socket & fifo),
+ 	 * and was used by default in earlier versions of Windows
+ 	 */
+-	if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL))
+-		return -EPERM;
+-	/*
+-	 * TODO: Add ability to create instead via reparse point. Windows (e.g.
+-	 * their current NFS server) uses this approach to expose special files
+-	 * over SMB2/SMB3 and Samba will do this with SMB3.1.1 POSIX Extensions
+-	 */
+-	return cifs_sfu_make_node(xid, inode, dentry, tcon,
+-				  full_path, mode, dev);
++	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL) {
++		rc = cifs_sfu_make_node(xid, inode, dentry, tcon,
++					full_path, mode, dev);
++	} else {
++		rc = nfs_make_node(xid, inode, dentry, tcon,
++				   full_path, mode, dev);
++	}
++	return rc;
+ }
+ 
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+diff --git a/fs/smb/client/smb2proto.h b/fs/smb/client/smb2proto.h
+index a8084ce7fcbd2..efa2f8fe23449 100644
+--- a/fs/smb/client/smb2proto.h
++++ b/fs/smb/client/smb2proto.h
+@@ -56,6 +56,12 @@ extern int smb3_handle_read_data(struct TCP_Server_Info *server,
+ extern int smb2_query_reparse_tag(const unsigned int xid, struct cifs_tcon *tcon,
+ 				struct cifs_sb_info *cifs_sb, const char *path,
+ 				__u32 *reparse_tag);
++struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
++				     struct super_block *sb,
++				     const unsigned int xid,
++				     struct cifs_tcon *tcon,
++				     const char *full_path,
++				     struct kvec *iov);
+ int smb2_query_path_info(const unsigned int xid,
+ 			 struct cifs_tcon *tcon,
+ 			 struct cifs_sb_info *cifs_sb,
+@@ -293,4 +299,5 @@ int smb311_posix_query_path_info(const unsigned int xid,
+ int posix_info_parse(const void *beg, const void *end,
+ 		     struct smb2_posix_info_parsed *out);
+ int posix_info_sid_size(const void *beg, const void *end);
++
+ #endif			/* _SMB2PROTO_H */
+diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+index de199ec9f7263..34f507584274b 100644
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -370,11 +370,11 @@ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(rename_enter);
+ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(rmdir_enter);
+ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(set_eof_enter);
+ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(set_info_compound_enter);
++DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(set_reparse_compound_enter);
+ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(delete_enter);
+ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(mkdir_enter);
+ DEFINE_SMB3_INF_COMPOUND_ENTER_EVENT(tdis_enter);
+ 
+-
+ DECLARE_EVENT_CLASS(smb3_inf_compound_done_class,
+ 	TP_PROTO(unsigned int xid,
+ 		__u32	tid,
+@@ -408,6 +408,7 @@ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(rename_done);
+ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(rmdir_done);
+ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(set_eof_done);
+ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(set_info_compound_done);
++DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(set_reparse_compound_done);
+ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(delete_done);
+ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(mkdir_done);
+ DEFINE_SMB3_INF_COMPOUND_DONE_EVENT(tdis_done);
+@@ -451,6 +452,7 @@ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(rename_err);
+ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(rmdir_err);
+ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(set_eof_err);
+ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(set_info_compound_err);
++DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(set_reparse_compound_err);
+ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(mkdir_err);
+ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(delete_err);
+ DEFINE_SMB3_INF_COMPOUND_ERR_EVENT(tdis_err);
+-- 
+2.43.0
+
 
 
 
