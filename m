@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-45932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9A88CD49F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429028CD3FD
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2675A28624A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFC862856EC
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9589714A4F0;
-	Thu, 23 May 2024 13:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFFE14A4E9;
+	Thu, 23 May 2024 13:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMlUiLWt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfIUwuC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526B813A897;
-	Thu, 23 May 2024 13:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DF113A897;
+	Thu, 23 May 2024 13:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470778; cv=none; b=pXCd68BImxjGdWWEEQ7uf87+qmpy5eoXH+qQ0KzIR3Jwc7BmdLkPgeKBoJp1XxoXa32fEHTNCnSwN1pCqR0vMQ8bDEntkzfL82QrhOMoZ3zpEvBVPSt09GmW1Ox3QQ+TDVul1QsfIQG0qS5ikf4/ViD77F40kq5WR0q3OdBNRtU=
+	t=1716470417; cv=none; b=BU5F+J6FI1FWeRwZOta8Xj1CPeitlmE+2dJgCTqeiM7TfQ4Lkfcn+fvXytIoTmfqugBzF4ePTVcNyJ25ajVkHY/6v4px89R59/h+XBC8u/+1V8HtB/maQRuc2LpcOSl9Bt4WWUU7KqzwNxCAyqj+GIkg7pJDyXfrtGX2Js07ttc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470778; c=relaxed/simple;
-	bh=N2X4gLyO5oopsbNW0rsekWgW05fJBPqVM1oyuq0GpTk=;
+	s=arc-20240116; t=1716470417; c=relaxed/simple;
+	bh=9lcSinglYTzq53su3TxoQOlN+SZoOeREb+OsguBMm24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6l9phmQ4f19i8diV5BAGCeEhQMqVduyImCkyc8x/BA0GdommEVqcd+aO8UfsFKijpSDFkSU+Im5JhpDNOUJYIxQhcrXzorS3p/RVhKpkxRHlrvFE8gOS811JVn7KSe+BfeuuwB5IDY88kd+pe+XW8p0QR2h/cUWHeZ6OIgCUR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMlUiLWt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEFFC3277B;
-	Thu, 23 May 2024 13:26:17 +0000 (UTC)
+	 MIME-Version; b=qrOFa3nu/h/3BoGOglK7n80nHqHFR9DWHbamgo0gTUyKjeycvIopACUNZGbwrbloUlA9HbFoZr70irYI6muBekAvbilL1LQDJpQW/i9PuH2yVi6TAa4poLQZa6Uv7SBdQW5dYQ2g/KbIO8EQO6JowWr/4a0jj5gu8M8l5JmRn+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfIUwuC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FFEC32781;
+	Thu, 23 May 2024 13:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470778;
-	bh=N2X4gLyO5oopsbNW0rsekWgW05fJBPqVM1oyuq0GpTk=;
+	s=korg; t=1716470417;
+	bh=9lcSinglYTzq53su3TxoQOlN+SZoOeREb+OsguBMm24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMlUiLWtPc7bOF2oozd+xcjHSkoNi0rGDqkfLvLGxJMxnCRrL047PlADgcO0btf0A
-	 4FDqfy3E6TpOXDBwSWAk694JKCflFIm29nc+j8q5XtOHSYpCL5umnyj9oYpudoVeX7
-	 gp7r6OhSiaGP0uNWtmtFOPkvoayRqYhYqZvEdlco=
+	b=gfIUwuC0bDYg7a34QyESMiCue3Jk1uq79saCFyMDHHICyZ8caZff1N5fopmcAlWnz
+	 nuDUeWW1KJCiCQrLB3IcVzdaXvI4F2yPvO/44Ai2WipudrabIl76uCvkk2SZMOWx19
+	 6XJkmfvmiS+5M9spp09+OP/4f/jXfsaWrHt7oir8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/102] smb: client: return reparse type in /proc/mounts
-Date: Thu, 23 May 2024 15:13:19 +0200
-Message-ID: <20240523130344.502869322@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 29/45] xfs: invalidate xfs_bufs when allocating cow extents
+Date: Thu, 23 May 2024 15:13:20 +0200
+Message-ID: <20240523130333.595567861@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 1e5f4240714bb238d2d17c7e14e5fb45c9140665 ]
+[ Upstream commit ddfdd530e43fcb3f7a0a69966e5f6c33497b4ae3 ]
 
-Add support for returning reparse mount option in /proc/mounts.
+While investigating test failures in xfs/17[1-3] in alwayscow mode, I
+noticed through code inspection that xfs_bmap_alloc_userdata isn't
+setting XFS_ALLOC_USERDATA when allocating extents for a file's CoW
+fork.  COW staging extents should be flagged as USERDATA, since user
+data are persisted to these blocks before being remapped into a file.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402262152.YZOwDlCM-lkp@intel.com/
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This mis-classification has a few impacts on the behavior of the system.
+First, the filestreams allocator is supposed to keep allocating from a
+chosen AG until it runs out of space in that AG.  However, it only does
+that for USERDATA allocations, which means that COW allocations aren't
+tied to the filestreams AG.  Fortunately, few people use filestreams, so
+nobody's noticed.
+
+A more serious problem is that xfs_alloc_ag_vextent_small looks for a
+buffer to invalidate *if* the USERDATA flag is set and the AG is so full
+that the allocation had to come from the AGFL because the cntbt is
+empty.  The consequences of not invalidating the buffer are severe --
+if the AIL incorrectly checkpoints a buffer that is now being used to
+store user data, that action will clobber the user's written data.
+
+Fix filestreams and yet another data corruption vector by flagging COW
+allocations as USERDATA.
+
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsfs.c   |  2 ++
- fs/smb/client/cifsglob.h | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
+ fs/xfs/libxfs/xfs_bmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 6d9d2174ee691..30bf754c9fc93 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -674,6 +674,8 @@ cifs_show_options(struct seq_file *s, struct dentry *root)
- 		seq_printf(s, ",backupgid=%u",
- 			   from_kgid_munged(&init_user_ns,
- 					    cifs_sb->ctx->backupgid));
-+	seq_show_option(s, "reparse",
-+			cifs_reparse_type_str(cifs_sb->ctx->reparse_type));
- 
- 	seq_printf(s, ",rsize=%u", cifs_sb->ctx->rsize);
- 	seq_printf(s, ",wsize=%u", cifs_sb->ctx->wsize);
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index ddb64af50a45d..053556ca6f011 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -159,6 +159,18 @@ enum cifs_reparse_type {
- 	CIFS_REPARSE_TYPE_DEFAULT = CIFS_REPARSE_TYPE_NFS,
- };
- 
-+static inline const char *cifs_reparse_type_str(enum cifs_reparse_type type)
-+{
-+	switch (type) {
-+	case CIFS_REPARSE_TYPE_NFS:
-+		return "nfs";
-+	case CIFS_REPARSE_TYPE_WSL:
-+		return "wsl";
-+	default:
-+		return "unknown";
-+	}
-+}
-+
- struct session_key {
- 	unsigned int len;
- 	char *response;
--- 
-2.43.0
-
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -4058,7 +4058,7 @@ xfs_bmap_alloc_userdata(
+ 	 * the busy list.
+ 	 */
+ 	bma->datatype = XFS_ALLOC_NOBUSY;
+-	if (whichfork == XFS_DATA_FORK) {
++	if (whichfork == XFS_DATA_FORK || whichfork == XFS_COW_FORK) {
+ 		bma->datatype |= XFS_ALLOC_USERDATA;
+ 		if (bma->offset == 0)
+ 			bma->datatype |= XFS_ALLOC_INITIAL_USER_DATA;
 
 
 
