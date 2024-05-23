@@ -1,256 +1,230 @@
-Return-Path: <stable+bounces-45637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E118CCD57
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 09:53:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16958CCE25
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 10:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 548801C20F2B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 07:53:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A7961F2134E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 08:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72D613CF89;
-	Thu, 23 May 2024 07:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C93E13CABF;
+	Thu, 23 May 2024 08:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ic5sU1BF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ApMKsh+c"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E5C13BAC6
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 07:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716450775; cv=none; b=JpArFZEx+iwLhcI9VRI5DamKt1kN+RDiQhOW/FPzXP5SFwSFAp9K9fsUgPA2Cucj5aSOOOljspfJPDUV3TaSvBXBj85VYtaYkpRrVNvHKl+MFURrF2w3Gm0RF/V4eNvDxC37xqB7FagaZpZRs6NwUdUNoRiJ9CnBFpQwLYMeXuA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716450775; c=relaxed/simple;
-	bh=bLX4kzxrFGZHQiWmD9NNZxR00UUlvn3yUWnR4d0/nLU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cYQ0XksoQ+NvXGWxtOxhrurWuTy7m6iw3tpTl4KezhEadQThm2GOf6rPaOIAJlnGIFNS4Vohq4a9s1yKHN2zaklcjx03PhUvDSqI173WDKeo1peReCPnKEYIE2on3GwMGMD+RV9IWH4gJ68vr7367NSnh8b3K3vNiId0aO9zgrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ic5sU1BF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716450772;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jfUml5xcQaIZ5iYf7eZB8yPQBcGlGRP0fYnYVl9vols=;
-	b=ic5sU1BF1IL8sB3+j9+o1YrIohBPE2O0W5dna/08h+QqHmUDgl+dYR5ppjnBeivoCD1sCi
-	OUjgn2NBPSod9gdlXQzyTEYc62kOw9Ro7GItOlSTLcLZDzI3/qGzSWgteZCCA53N6p+e2Y
-	dVv97M2EjGA+hPvYl0J+c3t/eUHvtv4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-VwvTLHoSMOiTq6J4UNLD_Q-1; Thu, 23 May 2024 03:52:51 -0400
-X-MC-Unique: VwvTLHoSMOiTq6J4UNLD_Q-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-354d4404a76so309930f8f.2
-        for <stable@vger.kernel.org>; Thu, 23 May 2024 00:52:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716450768; x=1717055568;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jfUml5xcQaIZ5iYf7eZB8yPQBcGlGRP0fYnYVl9vols=;
-        b=Wp9WiBbdYemuji4sFvDQcw1rB+SGCDRr032owSXelnO4z5OFhsIDIlQYf+DyetcV2+
-         ke6zxnfEKUxGmCFNfGe3RIaV8T4SjBtak9a93Tpw6s90JPrJCfgYzck981+3TtMK19Pv
-         LR0kpRd8CFNLU3a+Ty3zeyv2mNw+Nd06ICJv1FJsxQ7O67czwcHyR3z4umA4dCRBZwfC
-         phLnJu7IYLqWOIJCXkrBvlRJ1818d2vf4csURlz1xFf798+zIEU9jTpcS/z09FWQBibG
-         8/eBxRiP2MrK7hRjtLiGUIdGDpUYfz/MG8/+FFg2Dnd4RVaSsV7p1mbXSpgd22M1Ahr3
-         xSAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRp6Ui/HzYI38+jqklazTsG4WfWjm0Liq3L0B661p1rcE/0vwQjS06ie5Hzj+oS/pBkARwLM7/czdoC1qxCNbdK4s1zaiq
-X-Gm-Message-State: AOJu0YwOZcL9Qsk5/FeLaiilXiEe34Gc46miV29acjoWAczJx61rWS+d
-	4MsDzieZs0A3TSq4RZYa1wippTSVNWGTQ5ySYGckosu+2HJjWgyKfs1vczk5Wtp5VFQ5vYVo1aB
-	3mxQCIfG0M65l9c3OQjg/cenAVH8WwXFg1V4F6ZhM7BtPsPFk4exsYw==
-X-Received: by 2002:a05:6000:707:b0:34d:b5d6:fe4b with SMTP id ffacd0b85a97d-354d8db8103mr3637659f8f.4.1716450767865;
-        Thu, 23 May 2024 00:52:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEOezpAuDnzTSwr7aUgCeLnph2ngObjaT/PPgOctfTwjGglWH20lXf1q7t4KFZ5W8MM4AjJTg==
-X-Received: by 2002:a05:6000:707:b0:34d:b5d6:fe4b with SMTP id ffacd0b85a97d-354d8db8103mr3637625f8f.4.1716450767391;
-        Thu, 23 May 2024 00:52:47 -0700 (PDT)
-Received: from gerbillo.redhat.com ([2a0d:3341:b094:ab10:29ae:cdc:4db4:a22a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502baad058sm35873297f8f.66.2024.05.23.00.52.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 May 2024 00:52:46 -0700 (PDT)
-Message-ID: <58032b8049696566704e1941f909159a2f6c9af8.camel@redhat.com>
-Subject: Re: [PATCH net] sock_map: avoid race between sock_map_close and
- sk_psock_put
-From: Paolo Abeni <pabeni@redhat.com>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
-	netdev@vger.kernel.org
-Cc: Cong Wang <cong.wang@bytedance.com>, Jakub Sitnicki
- <jakub@cloudflare.com>,  Eric Dumazet <edumazet@google.com>, Daniel
- Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>, bpf@vger.kernel.org, 
- kernel-dev@igalia.com,
- syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com, 
- stable@vger.kernel.org
-Date: Thu, 23 May 2024 09:52:45 +0200
-In-Reply-To: <13b77d180c2bad74d6749a6c34190a10134bd6fa.camel@redhat.com>
-References: <20240520214153.847619-1-cascardo@igalia.com>
-	 <13b77d180c2bad74d6749a6c34190a10134bd6fa.camel@redhat.com>
-Autocrypt: addr=pabeni@redhat.com; prefer-encrypt=mutual; keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559EC51016
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 08:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716452681; cv=fail; b=dDz3/TKS00DJXXVsAmo9vklWb5HriSi8CdULi1WeAFbCMXdLSAUKsMwNrXXrj9h8AFHfTi9GjA+aaeZ53aX/6IEyxrMBxtRUfTw7ICRR8IQd/weh8gtPhjNJqcdvJtLnw+IozuGdmjdBW3brofgRt6x9mvOJMedxSOzhdWFsLv8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716452681; c=relaxed/simple;
+	bh=1GCF53pMln03iAGjiI1Bn42n2dRR3UBqzZb11OaUNwM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lxbiE9W0yf1PTrlwQ2KJerugQyLLScgteXLx06BR+KWL+uDgAmXEbtqNztlknNukZK0hxw/vUQEf9QnOqEe89IY1+SaAJma524BG7iBMFqdOzzh3Os4Sy1cSZIqPQIFHWs5bqRzNktgiB9HYfxN5yOMFwLAEB9o61O5npuQ0NR4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ApMKsh+c; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716452680; x=1747988680;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=1GCF53pMln03iAGjiI1Bn42n2dRR3UBqzZb11OaUNwM=;
+  b=ApMKsh+cry7rr90NILWrbN7QB6HJjUmKrRJtws6e+cFHEY1qYX2VGzxe
+   se77BxFuc80cgiF3Gms719KIUrm1WCbVvS2ekbjXOmdT4vxpxtMHNfxfl
+   uVNYFlDZRLmdlivYDFY+A2aj+aa0vQ8WSdf+duNXSVSVNVBXrryXz1lOf
+   dFWF1R7zaFCCQ79khly7nA9HexlNSjOjoQtgKlb48DzcBpukhdrIeF2aE
+   GtsVC3M+0ZIwK4d102i91vHvGUVSC3AMhgU0Lan63OC1djJjXOKQCXA3I
+   4YYlfrrGIw6AXP2M+dFaOLIBwo5h1ETxDRmLfzPuWiryXRLePSNDs/rU1
+   A==;
+X-CSE-ConnectionGUID: UOtGPdJQTkWNemV2jlDZeA==
+X-CSE-MsgGUID: OtuLz6N6SnWbCnuCSig2Qw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="35264757"
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
+   d="scan'208";a="35264757"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 01:24:38 -0700
+X-CSE-ConnectionGUID: sckBQaj6QGmrA5EUes6erA==
+X-CSE-MsgGUID: 0zCY1eNGQX2NPTCdsE/ZVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
+   d="scan'208";a="38367718"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 May 2024 01:24:35 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 23 May 2024 01:24:34 -0700
+Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 23 May 2024 01:24:34 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 23 May 2024 01:24:34 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.41) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 23 May 2024 01:24:34 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MsNZ0boagil9vYWWla5Td/FSyt6Jv5PAYDGLQW4J6sw1q/DscXDXL/JrKkoVlmG1d/fUlTXTE821OY8evgCNoRu7zG0bj+vcbP+tE1mhYoHFTXUtT5Y0GQ+Y1CMRRcLwCEVqCcUbvJrdMRSrDB+TEvwpTXBQFDeJ33vSrzoPzN4x2M2pWw71DV3EpCNArVQBc7mqdHrTw3ELZZ4LuBYxZYDBR0grE4tCvI+/PsqEAFmAqXXDS/vHwHC7i6B36L4NHaVoNoflYO9z9tPdsjKPYx5cTs5xFXHBZD9maFH45P3dia+/7MKXVLPNChsEFWhv8I9p8UgHM0/sPEjyQhp1/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ydxzvR+oPqK1HmNSrq+gVjnR1hTU7Qw3j7y/AtYI8ac=;
+ b=JgxsuHrIzUkZP9OPwz2eEhsVi5rWf6X3lwDHRLv8nLQs3RjsV9Pd2VzOJnjsNKpKkMsWUMR/sJ/Zv7D9BbRQCS/iSLNahIgm1W5W54yYv4dcJYS1tthIUoykaxoM5HI4yItzkMCQn9/U5/n7Jl83AMFfVOpwzytnJNgsTtOhxCwaEh5C4cJvBK8T+wE6ZoiP5NCtpcfhqLpJvbuXXxRpmsHL4g5Ckfvae5cz+hCbccCgu0/u54Kam982TzKSosy16h96atIIqcvFyyldtt9ZvSGX6cRMKdX1MtStijCIll+gB+VhLJHjMZsPWK+N1MDBXoOaWsxeteYNV7sbbbSElA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB8393.namprd11.prod.outlook.com (2603:10b6:806:373::21)
+ by CYXPR11MB8711.namprd11.prod.outlook.com (2603:10b6:930:d7::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.22; Thu, 23 May
+ 2024 08:24:31 +0000
+Received: from SA1PR11MB8393.namprd11.prod.outlook.com
+ ([fe80::1835:328e:6bb5:3a45]) by SA1PR11MB8393.namprd11.prod.outlook.com
+ ([fe80::1835:328e:6bb5:3a45%6]) with mapi id 15.20.7611.016; Thu, 23 May 2024
+ 08:24:31 +0000
+Date: Thu, 23 May 2024 16:16:12 +0800
+From: Yujie Liu <yujie.liu@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+CC: kernel test robot <lkp@intel.com>, Gautam Menghani <gautam@linux.ibm.com>,
+	<stable@vger.kernel.org>, <oe-kbuild-all@lists.linux.dev>
+Subject: Re: [PATCH] arch/powerpc/kvm: Fix doorbell emulation by adding DPDES
+ support
+Message-ID: <Zk77TDyJ1nqlnZ+B@yujie-X299>
+References: <Zk2tjEcFtINQhCag@9ce27862b6d0>
+ <87msoh2shc.fsf@mail.lhotse>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <87msoh2shc.fsf@mail.lhotse>
+X-ClientProxiedBy: SGBP274CA0020.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::32)
+ To SA1PR11MB8393.namprd11.prod.outlook.com (2603:10b6:806:373::21)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB8393:EE_|CYXPR11MB8711:EE_
+X-MS-Office365-Filtering-Correlation-Id: b0b87ac9-4e0b-4e79-4307-08dc7b01c572
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|366007|376005;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?fy3fHdLTGpivVSZMmKWzVhPr+8N02OmInQFlFzI1cxXj7iGz9anGS9m0iR+v?=
+ =?us-ascii?Q?QZmpB44Zv5lGcPycZCt6SKqU9oL1ak/JdLb8dofvl/dEbizuUq0vVndwdVKh?=
+ =?us-ascii?Q?hhX/bGTAzwsYDLM4HV25kJv0hEdlRRR5akoFMVzUzRZC9BZTN8b29r8q0y1y?=
+ =?us-ascii?Q?AT2bxpjXPFWKX2utdItIvmYYv5SCqINq0/uH2TTZ1OM1PGLhAxIH3DogXCFY?=
+ =?us-ascii?Q?8F+GO3wUd3hoeQWei0bzxJK76UIocuFdVVgVkx6XuJdlgIi9BMmxOUilvIcl?=
+ =?us-ascii?Q?YjVKPO5PWLRV1Xyy6wVrVidYtijs6QbTX42PN50qWEW4JREVHDZcYW1SnsdP?=
+ =?us-ascii?Q?QMI+VF10nPIAP10LXVEsZ+2oh0n5qBUguxI3EgRJQW/XS7gR+zY3/lIc6vLV?=
+ =?us-ascii?Q?/XQRyoHlOg6NvDnq7yJ5CYyNyFsQ8B9WUeiAJYfXcdZWLtsz+/V9ql2Kd2sj?=
+ =?us-ascii?Q?S6/LGE8tfxdeoPXFw+qlYT1/nN3H1DT9WPf5/lhlHC6zfP+RWE1kPosl3+uz?=
+ =?us-ascii?Q?Um53/J61Tk12rbO7XWPC2zfeoHGzdom25Q4mS0SnCvJd+5c+ietkleDgOry5?=
+ =?us-ascii?Q?TKdCzGrJbyA7agLCIbPGe01l3uh/79HxxodGGuD0Cc38r0K438K1AEqQTU3C?=
+ =?us-ascii?Q?UWYt7KDFtQhCseBn091gnGqeo8CA+EXpfiZXFvLxhw9RDmlXYk/mSekZ3ZIv?=
+ =?us-ascii?Q?qdxrPD6TGyVpOJzbdWn7XjYmvX9BRygueRwHHEpqbuaGXuItSYP0qYxNwnhW?=
+ =?us-ascii?Q?ts13sLnIEHxoz0xu3iJOknOTYwQOJGsGhMF4hSeGYYsh9y0wJZ6JqgYKDdS7?=
+ =?us-ascii?Q?LzbZzlRDlICiVCRkEIYkbUILPGYZlkQbDgLYWl2Ejc3u90o1w9lYixRA/f0g?=
+ =?us-ascii?Q?W4nXDbKpfLIR+lZkfeSAo4UXt7ZPXmPaJ5yqOfNCI7UbLqSw7imkHC5tte2h?=
+ =?us-ascii?Q?I8Cu/iFuPGZy6RypcXZAoO3BxUQFOeQRS5oF7eh0BrsIBhWhWVskQQeMyffl?=
+ =?us-ascii?Q?l8q0aN2zfT6MFTy43dmqjDJ1mXIJVYP6LXGABQW/f7hvXGcAs11/52XFscqO?=
+ =?us-ascii?Q?1ZAVO1RubBmVz5A2CG9gR+47G3D2XAq1DR7Tioqgj0yi0FidR9DAGXDct6On?=
+ =?us-ascii?Q?oseuTS5/6nZaPcEPPFznNociuF3nloVPSOrdluyRhuLQZUQ8YgSkdJNDsRUC?=
+ =?us-ascii?Q?QUTBZW5vHkhLR30AdL2vGKamjNXAamcgSo+g52DlG9mhWqbfYUF03FBQapk?=
+ =?us-ascii?Q?=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB8393.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rySNFiPdOMdGNCp84Zp/HXQv69Ug7Ofcp0dDL0qOjjZwg8jjS2uvb8ZHiAlU?=
+ =?us-ascii?Q?lwGUFAox5/mt8N0t2LI7M6VaTsl/KAeJeM/ybS8UsjhXHK+X/GhFOtc8NwAf?=
+ =?us-ascii?Q?ydX93Wfivqo5Vngm9DkdRHheaShCK9zYMRulcgyCfIZzkB8OXxIZv5K9isWK?=
+ =?us-ascii?Q?dqe//o6e3QEDa/DQDaSffipp2usGNGXM+vda8CdVOMAUiYwjPO5UTJzae/A6?=
+ =?us-ascii?Q?uvi3ERjIVykJ5NQmUsxa8xOMBufwiutxv4kdSijyTVpFj/ZTVvm4oC3076dh?=
+ =?us-ascii?Q?6A5zpOsJ8+3P776OSIj59OtPqAIp6YHoK848uTYvo3lJ17hdzlsE3Q1qB1Bd?=
+ =?us-ascii?Q?k9yNrddH7Mzk6tTXAHS9x+uC0hpImSgmziWHFs5IcIT7zCBMGPxfVbOxcy22?=
+ =?us-ascii?Q?HJCMhYIUh3br8W0MDs9xm8n/Uqv02MxF21wwYxmxmFazsjccST4lMdbmhONv?=
+ =?us-ascii?Q?gkJByxWqyjI7OaYoEIwXUSHbxwusfjEbLePtgzB1KM5H0lfWvv9q4psnKNfV?=
+ =?us-ascii?Q?qJymxdse4PqE1WIxfseVo6O95Z59gkzP5iWqHD6o6bLlaDqIj+/D2OvsJrgC?=
+ =?us-ascii?Q?tRPdWC+vu8G6OCcpX39Dn3lqrrZtDu54tNBp+SuaNy+eS2GR1vkGJzYVTOjP?=
+ =?us-ascii?Q?LbSUMhk7sK00qfwSlmEEU0ayvP8njzylU4hg8vfLGL5KprxA7myVAUbI9wJs?=
+ =?us-ascii?Q?AX3r6rMQxc0/Or/0Rbme3Mbsp83pHEweCNa5P3In+NtD9tKbHeUnGWJLvoKH?=
+ =?us-ascii?Q?BsfTnbqeBf+Vry5WNMXY59wetkTT1XmNrYMLwdmJ4CFvCpHorOy7sGOAxbwo?=
+ =?us-ascii?Q?Rq9x02CmfBJiDje1VDQ6/JS76UQIOojaVNfLtiMHH/WsLOlOTS/PpHP+XjfU?=
+ =?us-ascii?Q?63nI9UIVhfohc3/7tcV2FAcHreoHb55GhnwlfNedaM32HqnuZFP2uFcGtUbL?=
+ =?us-ascii?Q?Vsl/d717ankhK3NdLNVpp0JnR7GnsmiYnJCjouyN1WBOmkRhIQvYQl7c2OBh?=
+ =?us-ascii?Q?UWyvQjwvh7vJdF3+xROJ57DE6C+r5hO0beDX4nHNFX9D1eqS8ykfgT3nJL/9?=
+ =?us-ascii?Q?7MzSFS//X0kH0LWKrSpMSZm4FzNzapHoQg6NJedOTumYEb1DvYSY+lYy4Pp4?=
+ =?us-ascii?Q?YeA0Gr/kep0qq2jYXoZBzT1Pa5oDpnxZxXZ7NcTtYVGm0W2YuDjZI773CJYe?=
+ =?us-ascii?Q?mJPDOFPH5Vtw/guqGTQbckOdkS8o+BvoO2REavVFGr1EnIWnnZNd++f9xwV0?=
+ =?us-ascii?Q?zBMSMgnzNtoKpyGb1jWtoc+/NU7+jKsOIoi4StGV1gQoJOrqgOog3GlRUU6s?=
+ =?us-ascii?Q?fF0xGUR1GuRPV8ENhK+4T5+C3eO4cD7SK8Usm9Iag47doVnQW7eOew6ZYQmv?=
+ =?us-ascii?Q?uQyXC7S4/fMxVqSuBZ6VHxkg2gFpoGaR9XH6E+pJJB23G6uIGHJOoc/5ioyi?=
+ =?us-ascii?Q?vsM+tDPaWh2TEvUl2Ie/Hl0+amYHgmMZ+Lt1iBWGHdrcxy63x/Y8ezvwJod3?=
+ =?us-ascii?Q?SIYEYei8tYcuDATotJTwIK3gYpwl3tIoYq5clN/muCfkscLVdo1sZhdzAgrX?=
+ =?us-ascii?Q?OwWjrPWKJpuFT6YBbrrrz8Ge4fEMEd7psxfiK8bK?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b0b87ac9-4e0b-4e79-4307-08dc7b01c572
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB8393.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2024 08:24:31.8767
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JmwALeavFRVcwfQ8+D5e0g6NXxNH/d4xMxzn4LZh6jpOYDQp1r2hNn2wlhtX+8kXGomLfvek1nDQtdmmK8obCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR11MB8711
+X-OriginatorOrg: intel.com
 
-On Wed, 2024-05-22 at 14:08 +0200, Paolo Abeni wrote:
-> On Mon, 2024-05-20 at 18:41 -0300, Thadeu Lima de Souza Cascardo wrote:
-> > sk_psock_get will return NULL if the refcount of psock has gone to 0, w=
-hich
-> > will happen when the last call of sk_psock_put is done. However,
-> > sk_psock_drop may not have finished yet, so the close callback will sti=
-ll
-> > point to sock_map_close despite psock being NULL.
-> >=20
-> > This can be reproduced with a thread deleting an element from the sock =
-map,
-> > while the second one creates a socket, adds it to the map and closes it=
-.
-> >=20
-> > That will trigger the WARN_ON_ONCE:
-> >=20
-> > ------------[ cut here ]------------
-> > WARNING: CPU: 1 PID: 7220 at net/core/sock_map.c:1701 sock_map_close+0x=
-2a2/0x2d0 net/core/sock_map.c:1701
-> > Modules linked in:
-> > CPU: 1 PID: 7220 Comm: syz-executor380 Not tainted 6.9.0-syzkaller-0772=
-6-g3c999d1ae3c7 #0
-> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS=
- Google 04/02/2024
-> > RIP: 0010:sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-> > Code: df e8 92 29 88 f8 48 8b 1b 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74=
- 08 48 89 df e8 79 29 88 f8 4c 8b 23 eb 89 e8 4f 15 23 f8 90 <0f> 0b 90 48 =
-83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d e9 13 26 3d 02
-> > RSP: 0018:ffffc9000441fda8 EFLAGS: 00010293
-> > RAX: ffffffff89731ae1 RBX: ffffffff94b87540 RCX: ffff888029470000
-> > RDX: 0000000000000000 RSI: ffffffff8bcab5c0 RDI: ffffffff8c1faba0
-> > RBP: 0000000000000000 R08: ffffffff92f9b61f R09: 1ffffffff25f36c3
-> > R10: dffffc0000000000 R11: fffffbfff25f36c4 R12: ffffffff89731840
-> > R13: ffff88804b587000 R14: ffff88804b587000 R15: ffffffff89731870
-> > FS:  000055555e080380(0000) GS:ffff8880b9500000(0000) knlGS:00000000000=
-00000
-> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > CR2: 0000000000000000 CR3: 00000000207d4000 CR4: 0000000000350ef0
-> > Call Trace:
-> >  <TASK>
-> >  unix_release+0x87/0xc0 net/unix/af_unix.c:1048
-> >  __sock_release net/socket.c:659 [inline]
-> >  sock_close+0xbe/0x240 net/socket.c:1421
-> >  __fput+0x42b/0x8a0 fs/file_table.c:422
-> >  __do_sys_close fs/open.c:1556 [inline]
-> >  __se_sys_close fs/open.c:1541 [inline]
-> >  __x64_sys_close+0x7f/0x110 fs/open.c:1541
-> >  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-> >  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
-> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> > RIP: 0033:0x7fb37d618070
-> > Code: 00 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff eb d4 e8=
- 10 2c 00 00 80 3d 31 f0 07 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 =
-ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
-> > RSP: 002b:00007ffcd4a525d8 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-> > RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fb37d618070
-> > RDX: 0000000000000010 RSI: 00000000200001c0 RDI: 0000000000000004
-> > RBP: 0000000000000000 R08: 0000000100000000 R09: 0000000100000000
-> > R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-> > R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-> >  </TASK>
-> >=20
-> > Use sk_psock, which will only check that the pointer is not been set to
-> > NULL yet, which should only happen after the callbacks are restored. If=
-,
-> > then, a reference can still be gotten, we may call sk_psock_stop and ca=
-ncel
-> > psock->work.
-> >=20
-> > After that change, the reproducer does not trigger the WARN_ON_ONCE
-> > anymore.
-> >=20
-> > Reported-by: syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=3D07a2e4a1a57118ef7355
-> > Fixes: aadb2bb83ff7 ("sock_map: Fix a potential use-after-free in sock_=
-map_close()")
-> > Fixes: 5b4a79ba65a1 ("bpf, sockmap: Don't let sock_map_{close,destroy,u=
-nhash} call itself")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> > ---
-> >  net/core/sock_map.c | 14 +++++++++-----
-> >  1 file changed, 9 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-> > index 9402889840bf..13267e667a4c 100644
-> > --- a/net/core/sock_map.c
-> > +++ b/net/core/sock_map.c
-> > @@ -1680,19 +1680,23 @@ void sock_map_close(struct sock *sk, long timeo=
-ut)
-> > =20
-> >  	lock_sock(sk);
-> >  	rcu_read_lock();
-> > -	psock =3D sk_psock_get(sk);
-> > +	psock =3D sk_psock(sk);
-> >  	if (unlikely(!psock)) {
-> > +		saved_close =3D READ_ONCE(sk->sk_prot)->close;
-> >  		rcu_read_unlock();
-> >  		release_sock(sk);
-> > -		saved_close =3D READ_ONCE(sk->sk_prot)->close;
-> >  	} else {
-> >  		saved_close =3D psock->saved_close;
-> >  		sock_map_remove_links(sk, psock);
-> > +		psock =3D sk_psock_get(sk);
-> >  		rcu_read_unlock();
-> > -		sk_psock_stop(psock);
-> > +		if (psock)
-> > +			sk_psock_stop(psock);
-> >  		release_sock(sk);
-> > -		cancel_delayed_work_sync(&psock->work);
-> > -		sk_psock_put(sk, psock);
-> > +		if (psock) {
-> > +			cancel_delayed_work_sync(&psock->work);
-> > +			sk_psock_put(sk, psock);
-> > +		}
-> >  	}
-> > =20
-> >  	/* Make sure we do not recurse. This is a bug.
->=20
-> As a personal opinion I think the code will become simple reordering
-> the condition, something alike:
->=20
-> 	if (psock) {
-> 		saved_close =3D psock->saved_close;
->  		sock_map_remove_links(sk, psock);
-> 		psock =3D sk_psock_get(sk);
-> 		if (!psock)
-> 			goto no_psock;
->  		rcu_read_unlock();
-> 		sk_psock_stop(psock);
->  		release_sock(sk);
-> 		cancel_delayed_work_sync(&psock->work);
-> 		sk_psock_put(sk, psock);
-> 	} else {
-> no_psock:
-> 		saved_close =3D READ_ONCE(sk->sk_prot)->close;
+On Thu, May 23, 2024 at 12:05:03PM +1000, Michael Ellerman wrote:
+> kernel test robot <lkp@intel.com> writes:
+> > Hi,
+> >
+> > Thanks for your patch.
+> 
+> I found this report confusing.
+> 
+> It seems like it's saying a patch with "Fixes: ..." *must* include a
+> "Cc: stable" tag, but that is wrong, it's up to the developer to decide.
 
-FTR, the above is wrong, should be:
+We actually wish to notify that to have a patch automatically picked up
+for stable inclusion, it should add a "CC: stable" tag, regardless of
+whether it is a "Fixes:" patch or not.
 
-		saved_close =3D READ_ONCE(sk->sk_prot)->close;
-no_psock:
+Sorry for any confusion. We will consider improving the wording.
 
->  		rcu_read_unlock();
->  		release_sock(sk);
-> 	}
+Thanks,
+Yujie
 
-/P
-
+> 
+> What it's trying to say is that the patch was Cc'ed via mail to
+> stable@vger.kernel.org and that is not the correct way to request stable
+> inclusion.
+> 
+> So can I suggest the report begins with something like:
+> 
+>   Your patch was Cc'ed via mail to stable@vger.kernel.org but that is
+>   not the correct way to requestion stable inclusion, the correct method
+>   is ....
+> 
+> > FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> >
+> > The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+> >
+> > Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+> > Subject: [PATCH] arch/powerpc/kvm: Fix doorbell emulation by adding DPDES support
+> > Link: https://lore.kernel.org/stable/20240522082838.121769-1-gautam%40linux.ibm.com
+> 
+> 
+> cheers
+> 
 
