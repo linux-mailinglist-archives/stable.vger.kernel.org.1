@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-45765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AA78CD3C4
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76DF18CD46D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAEC21F25947
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA0C1C2139D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54AF14AD0D;
-	Thu, 23 May 2024 13:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F32F13BAE2;
+	Thu, 23 May 2024 13:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZatVEcGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pp7Ma2VX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BE82AE94;
-	Thu, 23 May 2024 13:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09BC1E497;
+	Thu, 23 May 2024 13:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470297; cv=none; b=Lx4Cs6VJWRn7FuEd6dA6DNFVkoLESYfY3Oi1k19rMemBGWv/qgrDWsWq/wIFulbh0HYy+M2W3fNxKfc6dPakawRLwPxJUCxwid3DNnW7lLzcafVsedJFV0yDcji6jFgBLvO2KMO4NTBSQhUMvjw9AizsUKAPKsONb2l26VjHAfE=
+	t=1716470660; cv=none; b=M2IwTSV2G9xz3U8WyTQo+a1ldVZdOa96MV/sijrPKBtwY6kymA1gSMJN0zCeKfQdC/Nfkli/j96NhS1QZNzQX9hvvw9bd9nnwtkVCZGsvwoTZhJsDgLtDpVtdHf238XNvJtAihDUnGH83kJhoSexq1O48LlAgGGuJDwMyMBULvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470297; c=relaxed/simple;
-	bh=9Wewl6hkz2i23EI/shFjVXCt+PeBPa/8rOD7usPn1yU=;
+	s=arc-20240116; t=1716470660; c=relaxed/simple;
+	bh=Dge6HeSmbvBjJwuG8LE8ACOwXSRuks8niBRloYIOPqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxwrF2IQGBFXNSJdPdkMKuxdeGQ6dQFQyl/b1wOBO1Kp1pMGcN72IJ3BFdABuhy6SU8q6tODCGIIBxPNsbExk8WnoonMrnnDc1Vqg+dUoqkhEJcBsACTSHbcg99dOFf0iSXLGSwa8sN1Igm4ksu2Nk/aMoEQ4W4tI7Shab8I85o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZatVEcGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0CCC32781;
-	Thu, 23 May 2024 13:18:16 +0000 (UTC)
+	 MIME-Version; b=C3xFLJKPZUv5h9FdjHSSewa1aO333vipWk+OuqAZpaBHkhQDyRYpgKbCC5yI0Ef3689quBZTpEynL3PLBzBTv4p2jswMP3IhLeCSdwBuPsDg5epniGSXHWuIIzMLi6HgUBAl9BjxvHiJPJsCJlEU1tK2IuVxrn6v184sZB+1JAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pp7Ma2VX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32827C2BD10;
+	Thu, 23 May 2024 13:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470297;
-	bh=9Wewl6hkz2i23EI/shFjVXCt+PeBPa/8rOD7usPn1yU=;
+	s=korg; t=1716470659;
+	bh=Dge6HeSmbvBjJwuG8LE8ACOwXSRuks8niBRloYIOPqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZatVEcGu7zxxN5lQTht8hDUXv3nyNCLlt+rU8d0VO0ujJVYZvmbW2t4LFZxByDNp7
-	 BUqzZS+3mr2ovQgDm0Br+GGl8bY7MmshDwqjz1wRfnCnE4MXAJEa8ptGd0WZOPZq6W
-	 G/dHXHdeG0pcs+7xQi64iG8ZvICacUPvu3zV+vAc=
+	b=pp7Ma2VXVWAlfEltWJx6KQ/j8bveP4U9JzKuqcY4/6+PDlzlVHl31ft+73V2PnWum
+	 zmx5G1X/Z2DeDwztMJ7Qc0Ifdwikhs2mZQnWk78Gdfv/zc1ykcwJo3UWaMuMoJut99
+	 kLTZ8okRu/YJQYITe7Fi11u+QDTWPxh/B5Ir9CIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Shaoying Xu <shaoyi@amazon.com>
-Subject: [PATCH 5.15 12/23] net: tls: handle backlogging of crypto requests
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 043/102] smb: client: do not defer close open handles to deleted files
 Date: Thu, 23 May 2024 15:13:08 +0200
-Message-ID: <20240523130328.418565055@linuxfoundation.org>
+Message-ID: <20240523130344.090689692@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +62,259 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit 8590541473188741055d27b955db0777569438e3 upstream.
+[ Upstream commit ffceb7640cbfe6ea60e7769e107451d63a2fe3d3 ]
 
-Since we're setting the CRYPTO_TFM_REQ_MAY_BACKLOG flag on our
-requests to the crypto API, crypto_aead_{encrypt,decrypt} can return
- -EBUSY instead of -EINPROGRESS in valid situations. For example, when
-the cryptd queue for AESNI is full (easy to trigger with an
-artificially low cryptd.cryptd_max_cpu_qlen), requests will be enqueued
-to the backlog but still processed. In that case, the async callback
-will also be called twice: first with err == -EINPROGRESS, which it
-seems we can just ignore, then with err == 0.
+When a file/dentry has been deleted before closing all its open
+handles, currently, closing them can add them to the deferred
+close list. This can lead to problems in creating file with the
+same name when the file is re-created before the deferred close
+completes. This issue was seen while reusing a client's already
+existing lease on a file for compound operations and xfstest 591
+failed because of the deferred close handle that remained valid
+even after the file was deleted and was being reused to create a
+file with the same name. The server in this case returns an error
+on open with STATUS_DELETE_PENDING. Recreating the file would
+fail till the deferred handles are closed (duration specified in
+closetimeo).
 
-Compared to Sabrina's original patch this version uses the new
-tls_*crypt_async_wait() helpers and converts the EBUSY to
-EINPROGRESS to avoid having to modify all the error handling
-paths. The handling is identical.
+This patch fixes the issue by flagging all open handles for the
+deleted file (file path to be precise) by setting
+status_file_deleted to true in the cifsFileInfo structure. As per
+the information classes specified in MS-FSCC, SMB2 query info
+response from the server has a DeletePending field, set to true
+to indicate that deletion has been requested on that file. If
+this is the case, flag the open handles for this file too.
 
-Fixes: a54667f6728c ("tls: Add support for encryption using async offload accelerator")
-Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
-Co-developed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/netdev/9681d1febfec295449a62300938ed2ae66983f28.1694018970.git.sd@queasysnail.net/
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[v5.15: fixed contextual merge-conflicts in tls_decrypt_done and tls_encrypt_done]
-Cc: <stable@vger.kernel.org> # 5.15
-Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When doing close in cifs_close for each of these handles, check the
+value of this boolean field and do not defer close these handles
+if the corresponding filepath has been deleted.
+
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ fs/smb/client/cifsglob.h  |  1 +
+ fs/smb/client/cifsproto.h |  4 ++++
+ fs/smb/client/file.c      |  3 ++-
+ fs/smb/client/inode.c     | 28 +++++++++++++++++++++++++---
+ fs/smb/client/misc.c      | 34 ++++++++++++++++++++++++++++++++++
+ fs/smb/client/smb2inode.c |  9 ++++++++-
+ 6 files changed, 74 insertions(+), 5 deletions(-)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -175,6 +175,17 @@ static void tls_decrypt_done(struct cryp
- 	struct sk_buff *skb;
- 	unsigned int pages;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index a149579910add..fdadda4024f46 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1427,6 +1427,7 @@ struct cifsFileInfo {
+ 	bool invalidHandle:1;	/* file closed via session abend */
+ 	bool swapfile:1;
+ 	bool oplock_break_cancelled:1;
++	bool status_file_deleted:1; /* file has been deleted */
+ 	bool offload:1; /* offload final part of _put to a wq */
+ 	unsigned int oplock_epoch; /* epoch from the lease break */
+ 	__u32 oplock_level; /* oplock/lease level from the lease break */
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index e9b38b279a6c5..50040990e70b9 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -298,6 +298,10 @@ extern void cifs_close_all_deferred_files(struct cifs_tcon *cifs_tcon);
  
-+	/* If requests get too backlogged crypto API returns -EBUSY and calls
-+	 * ->complete(-EINPROGRESS) immediately followed by ->complete(0)
-+	 * to make waiting for backlog to flush with crypto_wait_req() easier.
-+	 * First wait converts -EBUSY -> -EINPROGRESS, and the second one
-+	 * -EINPROGRESS -> 0.
-+	 * We have a single struct crypto_async_request per direction, this
-+	 * scheme doesn't help us, so just ignore the first ->complete().
+ extern void cifs_close_deferred_file_under_dentry(struct cifs_tcon *cifs_tcon,
+ 				const char *path);
++
++extern void cifs_mark_open_handles_for_deleted_file(struct inode *inode,
++				const char *path);
++
+ extern struct TCP_Server_Info *
+ cifs_get_tcp_session(struct smb3_fs_context *ctx,
+ 		     struct TCP_Server_Info *primary_server);
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 751ae89cefe36..8eaf195ef5604 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -501,6 +501,7 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
+ 	cfile->uid = current_fsuid();
+ 	cfile->dentry = dget(dentry);
+ 	cfile->f_flags = file->f_flags;
++	cfile->status_file_deleted = false;
+ 	cfile->invalidHandle = false;
+ 	cfile->deferred_close_scheduled = false;
+ 	cfile->tlink = cifs_get_tlink(tlink);
+@@ -1167,7 +1168,7 @@ int cifs_close(struct inode *inode, struct file *file)
+ 		if ((cifs_sb->ctx->closetimeo && cinode->oplock == CIFS_CACHE_RHW_FLG)
+ 		    && cinode->lease_granted &&
+ 		    !test_bit(CIFS_INO_CLOSE_ON_LOCK, &cinode->flags) &&
+-		    dclose) {
++		    dclose && !(cfile->status_file_deleted)) {
+ 			if (test_and_clear_bit(CIFS_INO_MODIFIED_ATTR, &cinode->flags)) {
+ 				inode_set_mtime_to_ts(inode,
+ 						      inode_set_ctime_current(inode));
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 156713186b3c9..2739cb8390804 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -894,6 +894,9 @@ cifs_get_file_info(struct file *filp)
+ 	struct cifsFileInfo *cfile = filp->private_data;
+ 	struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
+ 	struct TCP_Server_Info *server = tcon->ses->server;
++	struct dentry *dentry = filp->f_path.dentry;
++	void *page = alloc_dentry_path();
++	const unsigned char *path;
+ 
+ 	if (!server->ops->query_file_info)
+ 		return -ENOSYS;
+@@ -908,7 +911,14 @@ cifs_get_file_info(struct file *filp)
+ 			data.symlink = true;
+ 			data.reparse.tag = IO_REPARSE_TAG_SYMLINK;
+ 		}
++		path = build_path_from_dentry(dentry, page);
++		if (IS_ERR(path)) {
++			free_dentry_path(page);
++			return PTR_ERR(path);
++		}
+ 		cifs_open_info_to_fattr(&fattr, &data, inode->i_sb);
++		if (fattr.cf_flags & CIFS_FATTR_DELETE_PENDING)
++			cifs_mark_open_handles_for_deleted_file(inode, path);
+ 		break;
+ 	case -EREMOTE:
+ 		cifs_create_junction_fattr(&fattr, inode->i_sb);
+@@ -938,6 +948,7 @@ cifs_get_file_info(struct file *filp)
+ 	rc = cifs_fattr_to_inode(inode, &fattr, false);
+ cgfi_exit:
+ 	cifs_free_open_info(&data);
++	free_dentry_path(page);
+ 	free_xid(xid);
+ 	return rc;
+ }
+@@ -1076,6 +1087,7 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 	struct kvec rsp_iov, *iov = NULL;
+ 	int rsp_buftype = CIFS_NO_BUFFER;
+ 	u32 tag = data->reparse.tag;
++	struct inode *inode = NULL;
+ 	int rc = 0;
+ 
+ 	if (!tag && server->ops->query_reparse_point) {
+@@ -1115,8 +1127,12 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 
+ 	if (tcon->posix_extensions)
+ 		smb311_posix_info_to_fattr(fattr, data, sb);
+-	else
++	else {
+ 		cifs_open_info_to_fattr(fattr, data, sb);
++		inode = cifs_iget(sb, fattr);
++		if (inode && fattr->cf_flags & CIFS_FATTR_DELETE_PENDING)
++			cifs_mark_open_handles_for_deleted_file(inode, full_path);
++	}
+ out:
+ 	fattr->cf_cifstag = data->reparse.tag;
+ 	free_rsp_buf(rsp_buftype, rsp_iov.iov_base);
+@@ -1171,6 +1187,8 @@ static int cifs_get_fattr(struct cifs_open_info_data *data,
+ 						   full_path, fattr);
+ 		} else {
+ 			cifs_open_info_to_fattr(fattr, data, sb);
++			if (fattr->cf_flags & CIFS_FATTR_DELETE_PENDING)
++				cifs_mark_open_handles_for_deleted_file(*inode, full_path);
+ 		}
+ 		break;
+ 	case -EREMOTE:
+@@ -1853,16 +1871,20 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
+ 
+ psx_del_no_retry:
+ 	if (!rc) {
+-		if (inode)
++		if (inode) {
++			cifs_mark_open_handles_for_deleted_file(inode, full_path);
+ 			cifs_drop_nlink(inode);
++		}
+ 	} else if (rc == -ENOENT) {
+ 		d_drop(dentry);
+ 	} else if (rc == -EBUSY) {
+ 		if (server->ops->rename_pending_delete) {
+ 			rc = server->ops->rename_pending_delete(full_path,
+ 								dentry, xid);
+-			if (rc == 0)
++			if (rc == 0) {
++				cifs_mark_open_handles_for_deleted_file(inode, full_path);
+ 				cifs_drop_nlink(inode);
++			}
+ 		}
+ 	} else if ((rc == -EACCES) && (dosattr == 0) && inode) {
+ 		attrs = kzalloc(sizeof(*attrs), GFP_KERNEL);
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index d56959d02e36d..669d27b4d414a 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -853,6 +853,40 @@ cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon, const char *path)
+ 	free_dentry_path(page);
+ }
+ 
++/*
++ * If a dentry has been deleted, all corresponding open handles should know that
++ * so that we do not defer close them.
++ */
++void cifs_mark_open_handles_for_deleted_file(struct inode *inode,
++					     const char *path)
++{
++	struct cifsFileInfo *cfile;
++	void *page;
++	const char *full_path;
++	struct cifsInodeInfo *cinode = CIFS_I(inode);
++
++	page = alloc_dentry_path();
++	spin_lock(&cinode->open_file_lock);
++
++	/*
++	 * note: we need to construct path from dentry and compare only if the
++	 * inode has any hardlinks. When number of hardlinks is 1, we can just
++	 * mark all open handles since they are going to be from the same file.
 +	 */
-+	if (err == -EINPROGRESS)
-+		return;
-+
- 	skb = (struct sk_buff *)req->data;
- 	tls_ctx = tls_get_ctx(skb->sk);
- 	ctx = tls_sw_ctx_rx(tls_ctx);
-@@ -273,6 +284,10 @@ static int tls_do_decryption(struct sock
- 	}
- 
- 	ret = crypto_aead_decrypt(aead_req);
-+	if (ret == -EBUSY) {
-+		ret = tls_decrypt_async_wait(ctx);
-+		ret = ret ?: -EINPROGRESS;
++	if (inode->i_nlink > 1) {
++		list_for_each_entry(cfile, &cinode->openFileList, flist) {
++			full_path = build_path_from_dentry(cfile->dentry, page);
++			if (!IS_ERR(full_path) && strcmp(full_path, path) == 0)
++				cfile->status_file_deleted = true;
++		}
++	} else {
++		list_for_each_entry(cfile, &cinode->openFileList, flist)
++			cfile->status_file_deleted = true;
 +	}
- 	if (ret == -EINPROGRESS) {
- 		if (darg->async)
- 			return 0;
-@@ -455,6 +470,9 @@ static void tls_encrypt_done(struct cryp
- 	struct tls_rec *rec;
- 	bool ready = false;
- 
-+	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
-+		return;
++	spin_unlock(&cinode->open_file_lock);
++	free_dentry_path(page);
++}
 +
- 	rec = container_of(aead_req, struct tls_rec, aead_req);
- 	msg_en = &rec->msg_encrypted;
- 
-@@ -551,6 +569,10 @@ static int tls_do_encryption(struct sock
- 	atomic_inc(&ctx->encrypt_pending);
- 
- 	rc = crypto_aead_encrypt(aead_req);
-+	if (rc == -EBUSY) {
-+		rc = tls_encrypt_async_wait(ctx);
-+		rc = rc ?: -EINPROGRESS;
-+	}
- 	if (!rc || rc != -EINPROGRESS) {
- 		atomic_dec(&ctx->encrypt_pending);
- 		sge->offset -= prot->prepend_size;
+ /* parses DFS referral V3 structure
+  * caller is responsible for freeing target_nodes
+  * returns:
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index e452c59c13e2d..0b7b083352919 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -561,8 +561,15 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 		case SMB2_OP_DELETE:
+ 			if (rc)
+ 				trace_smb3_delete_err(xid,  ses->Suid, tcon->tid, rc);
+-			else
++			else {
++				/*
++				 * If dentry (hence, inode) is NULL, lease break is going to
++				 * take care of degrading leases on handles for deleted files.
++				 */
++				if (inode)
++					cifs_mark_open_handles_for_deleted_file(inode, full_path);
+ 				trace_smb3_delete_done(xid, ses->Suid, tcon->tid);
++			}
+ 			break;
+ 		case SMB2_OP_MKDIR:
+ 			if (rc)
+-- 
+2.43.0
+
 
 
 
