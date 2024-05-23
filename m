@@ -1,290 +1,98 @@
-Return-Path: <stable+bounces-45965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B710A8CD7FD
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 18:00:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E7C8CD858
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 18:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C101282E84
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 16:00:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1F5D2819BE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 16:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0923912B7F;
-	Thu, 23 May 2024 15:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35569179A3;
+	Thu, 23 May 2024 16:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="M5lX2l1z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUA7l/Z4"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219F71170F
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 15:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEDD17C77;
+	Thu, 23 May 2024 16:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716479990; cv=none; b=TvZTUWf2IGsDD09dtDZG8/NM/TQ1Evy+jSOz1gvjqtGgpkJf+PPgQpk59HInaFrFJpoROR/4BA80X6o99YONa0Y8nr0Z+9VvPRfAGbTsHDnD0CCzOgNlSIoEtQ4i0lPN3jugN5WcwcMkX5tnLX8ns1SMv9/GhnnHetz8WQODhJM=
+	t=1716481367; cv=none; b=hZgO31Iq2FzJIG6qD2VBQsjdAn4MbUS63e5ZLrGE9J4edpMON0AJzwFBh0esoTUGshF9R8eOwrt+iv2pHeSwjAQaWGiSN2F9wqLnY9MrtigTlCk52R+GGh454YwPNrWdtEFV5+QcRoZllhWE2jymravw4+jrmWGx8+MyAoatd68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716479990; c=relaxed/simple;
-	bh=vKPo3BL68sywUJaQsMD4Z3T9Wvd9v6eYp203LTavIQs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kMsC1HGoCcRR2d7vlx5obdSTCgQV+qhO4/YCEKsQ026NsDsTtNEASBfF0vvtOorHdCt4PSyjz0qkUuihoqxuGA4H+s2lmlRJo5VYg8cVm30wW0qYL5sPrQRv97PkUHHsBsRZL9uSJTwu+myRdkwdTmdDyBCm+v6kCOLY0Wmjn0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=M5lX2l1z; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1716479980; x=1717084780; i=w_armin@gmx.de;
-	bh=5HlhaVisKVamffaEv++/huqUeNpWkHnMVrAo9Vu5FM4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=M5lX2l1zdQ0DVY4ZX3AYBb7/XGrnLWCkWD++L+5Mh364U+dAwszes5rBWAHhb0LU
-	 hh8iqZuoX4RQwFOBLADau9g4MtofAlxBYwTI5wVmHD2WEPfUvYSmqLRoryxhBRfvp
-	 ZJvkPFEyOFUh9/RSobysd7vZNP53MFvmVXmxMOVHhrt8CmEGKMsjEjZw5YsQKFFiw
-	 +dmYdHqmCCSGDGqFhnjq5u/q+nmhe6/jghzIoTtMocr+hl9JIqt+mX+CccpohqHbA
-	 qkPq5GVtxmIT3xLMQVgCvbzDfThXmbWbdc0aoaQTR6s2bQsz2l7ljvwmbnowKIJNM
-	 Qa3Y9nVPA+QTP2SB4A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M26r3-1s7hsQ434b-002WSG; Thu, 23
- May 2024 17:59:40 +0200
-Message-ID: <7ec6faf8-d9c1-436b-98c8-473e7ff395b3@gmx.de>
-Date: Thu, 23 May 2024 17:59:39 +0200
+	s=arc-20240116; t=1716481367; c=relaxed/simple;
+	bh=bEqsYoTZmKvk/obsauDZCGPuVstpPNMLuVJ46NiUL6E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b4Ivw3hhyNXYfkmXnnVf+8xLSnCVm5fd4NbqwehNPgCDXyF0WDkLbcW+4P7JB3ZUEZFwA+oSZNMf0wbSo/NSM1BofUm5PfKcuBmF+d7DhH+86B0XVH1f+8W6X8zUW9ObDnohI73JAPmFu62cwL0BaYfPOZToUg393sYaG1mk+l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUA7l/Z4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94FEC2BD10;
+	Thu, 23 May 2024 16:22:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716481366;
+	bh=bEqsYoTZmKvk/obsauDZCGPuVstpPNMLuVJ46NiUL6E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BUA7l/Z42aZHm6bZu6cvdP4cU0o6OQD/j4m4DeMo7LtONrkNKt0CqCBddI1N/Jhfx
+	 VO/SWv5hiAbW+UNLL7cWsWKPTyMzdSgZzZWnGpzAWI3xJHv8/TDeP2Yo350ai3iJl9
+	 6b5H26UjUPnrOtP6evKC0CXCqc+jDElGfA4wLbHah2pJszcPvItcVIk6K+Vpd9NHhf
+	 O8vN5wGRUDiJo3QQo0hSG2SG1LDcqiOaRGWMIQ6CKlxY/evh6xh+bl3g57CgwAeYnt
+	 mwlKuiZo8NTkI7KDBEaf6/iq1uCKc2UwB89PlT/6DIMUSsfaBRl2hyOtWLt2PSYOdP
+	 CjPhmLEcOJNUw==
+Date: Thu, 23 May 2024 17:22:39 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.9 00/25] 6.9.2-rc1 review
+Message-ID: <582f22bf-d6ff-4214-8fe7-63b913945b3c@sirena.org.uk>
+References: <20240523130330.386580714@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Kernel 5.15.150 black screen with AMD Raven/Picasso GPU
-To: Barry Kauler <bkauler@gmail.com>
-Cc: Alex Deucher <alexdeucher@gmail.com>, Yifan Zhang <yifan1.zhang@amd.com>,
- Prike Liang <Prike.Liang@amd.com>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
-References: <CABWT5yiejGABNXicsS7u-daKnBBjK6YTDVgaQOqwGYn8P20D8Q@mail.gmail.com>
- <6580c2d4-b084-470f-80a0-aa09f1ab880d@gmx.de>
- <CABWT5yiD110qmJcRsoGVMevULAVmYpyiW4w9MtmNjp7E0rDQ8A@mail.gmail.com>
- <CABWT5yg5jG7eMiDp7QN2yhFj6983qF9zN7eHOprH4eEjwQJLBQ@mail.gmail.com>
- <c3205455-7ad2-487e-8954-52102754e154@gmx.de>
- <CADnq5_PM_FuBE4913Z4bxiMTDYtRS+VJgLW6gfDU1qnQQ=FDzA@mail.gmail.com>
- <d04105ea-0f8a-4f0b-b4f2-bc8407d37c73@gmx.de>
- <CABWT5yibc52CTUWeCWxYQb4ooi4dsbvBWxJAJCDrG+8405RPTg@mail.gmail.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <CABWT5yibc52CTUWeCWxYQb4ooi4dsbvBWxJAJCDrG+8405RPTg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:CVQLpDXT0By1e1CKa7ZKRSdTDbToVGPsmA1swDIrsMgbDvIgOnm
- A8IorigLyklbt88BuOCoEUW44dXLQsEj8Q7WdnQEs2oT+Joq7xFk+z7169OAlqkSnkZj1v5
- hu8Uy3uIgleKNiwF+mX7vVLn9EvAQLLakcvs3fp9gZtgJkXkj3N4Yv/+S/xmxDTDfm3Wvp5
- McLAPWg3QLQoKaYeRmCrQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:LyOt50Zb6uE=;Y0lrtnAFTLe7AUTa5lDL3W/j1q3
- mfdL9yhqEDHyrUhmnsCYERnAKW51ZY/wR3qX3a9rP7ab5MoQGuY3stPuHs/7mTalTwUmKhmXm
- hRR93mb1Z/ckWsUHzc1vxDrVs8ySbgBGSDDOZal1+8Uo9uaZHztkh07YF9NKiwr5lKBxd1rI8
- te3735+nKLugtUFxpveTLVoM9Wh2IzKU+g9TI0iyi1I63s2ngw2EOLFQ9K3JMt/k5TA3waSmc
- 8n6vzOVxs0u7mZ7kuvbVmusj9W9AoOVMBpZkyo7ayEa33Vt/aIUSdDPwIO/tjiaL2mvp5DL8r
- G7+g/gY/Dj+3wkxhMMY3/XOk0JUjBL+WajYYc0VbVvfF0VzLSecZKpRbyzRqdxBGAYhsfDd4+
- HxIby+76l7QjyAW7aca9MBvnOvAt/rnOyeawdV3FxHfqva3v730F0cg3p0Hd+sTH/53fU9PsQ
- YJVUDHgamFB1NJMcS3UXN23r4x0vsWUv3pFX0HfNLO6mgRAdu+8vksRQ54kAPwGfKUbz+fRiE
- hLaL/nHbMMAmthPKzx7oVPkxbmuXiXA15EEsmyyc0C/u438Di/0zW9c0PAcrpfQnFsm5foKw0
- hbJProOvIpIXpyeGkMiUedtnLkVib6px8D5I7QY5zNDpAgfJ1hNW+l0bU4pZu0CKkAh9VqhEE
- TKS9QQIUpTYo0MlCsiITqt6NwORlWB7fwKmGn9Lr6drqZcNnHNEHsX1S8yKgTqvOLTwVw604x
- JLrvmtmr0S79J9yIO29K8AKfhVD5D/yJhMlFXRA6Yj2E+pTLmhQi7gxk8Rawk/TJqn2tjfCj5
- J+qII7Q5fQ4DoBnKK/hIYxoO5tGF2P0ur+3cGq01bq9d8=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7bDdeMFkXa2K2ZgZ"
+Content-Disposition: inline
+In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+X-Cookie: You auto buy now.
 
-Am 23.05.24 um 15:13 schrieb Barry Kauler:
 
-> On Wed, May 22, 2024 at 12:58=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
-te:
->> Am 20.05.24 um 18:22 schrieb Alex Deucher:
->>
->>> On Sat, May 18, 2024 at 8:17=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wr=
-ote:
->>>> Am 17.05.24 um 03:30 schrieb Barry Kauler:
->>>>
->>>>> Armin, Yifan, Prike,
->>>>> I will top-post, so you don't have to scroll down.
->>>>> After identifying the commit that causes black screen with my gpu, I
->>>>> posted the result to you guys, on May 9.
->>>>> It is now May 17 and no reply.
->>>>> OK, I have now created a patch that reverts Yifan's commit, compiled
->>>>> 5.15.158, and my gpu now works.
->>>>> Note, the radeon module is not loaded, so it is not a factor.
->>>>> I'm not a kernel developer. I have identified the culprit and it is =
-up
->>>>> to you guys to fix it, Yifan especially, as you are the person who h=
-as
->>>>> created the regression.
->>>>> I will attach my patch.
->>>>> Regards,
->>>>> Barry Kauler
->>>> Hi,
->>>>
->>>> sorry for not responding to your findings. I normally do not work wit=
-h GPU drivers,
->>>> so i hoped one of the amdgpu developers would handle this.
->>>>
->>>> I CCeddri-devel@lists.freedesktop.org  and amd-gfx@lists.freedesktop.=
-org so that other
->>>> amdgpu developers hear from this issue.
->>>>
->>>> Thanks you for you persistence in finding the offending commit.
->>> Likely this patch should not have been ported to 5.15 in the first
->>> place.  The IOMMU requirements have been dropped from the driver for
->>> the last few kernel versions so it is no longer relevant on newer
->>> kernels.
->>>
->>> Alex
->> Barry, can you verify that the latest upstream kernel works on you devi=
-ce?
->> If yes, then the commit itself is ok and just the backporting itself wa=
-s wrong.
->>
->> Thanks,
->> Armin Wolf
-> Armin,
-> The unmodified 6.8.1 kernel works ok.
-> I presume that patch was applied long before 6.8.1 got released and
-> only got backported to 5.15.x recently.
->
-> Regards,
-> Barry
->
-Great to hear, that means we only have to revert commit 56b522f46681 ("drm=
-/amdgpu: init iommu after amdkfd device init")
-from the 5.15.y series.
+--7bDdeMFkXa2K2ZgZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I CCed the stable mailing list so that they can revert the offending commi=
-t.
+On Thu, May 23, 2024 at 03:12:45PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.2 release.
+> There are 25 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks,
-Armin Wolf
+Tested-by: Mark Brown <broonie@kernel.org>
 
->>>> Armin Wolf
->>>>
->>>>> On Thu, May 9, 2024 at 4:08=E2=80=AFPM Barry Kauler <bkauler@gmail.c=
-om> wrote:
->>>>>> On Fri, May 3, 2024 at 9:03=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> =
-wrote:
->>>>>>>> ...
->>>>>>>> # lspci | grep VGA
->>>>>>>> 05:00.0 VGA compatible controller: Advanced Micro Devices, Inc.
->>>>>>>> [AMD/ATI] Picasso/Raven 2 [Radeon Vega Series / Radeon Vega Mobil=
-e
->>>>>>>> Series] (rev c2)
->>>>>>>> 05:00.7 Non-VGA unclassified device: Advanced Micro Devices, Inc.
->>>>>>>> [AMD] Raven/Raven2/Renoir Non-Sensor Fusion Hub KMDF driver
->>>>>>>>
->>>>>>>> # lspci -n -k
->>>>>>>> ...
->>>>>>>> 05:00.0 0300: 1002:15d8 (rev c2)
->>>>>>>> Subsystem: 1025:1456
->>>>>>>> Kernel driver in use: amdgpu
->>>>>>>> Kernel modules: amdgpu
->>>>>>>> ...
->>>>>>> thanks for informing us of this regression. Since there are four c=
-ommits affecting
->>>>>>> amdgpu in 5.15.150, i suggest that you use "git bisect" to find th=
-e faulty commits,
->>>>>>> see https://docs.kernel.org/admin-guide/bug-bisect.html for detail=
-s.
->>>>>>>
->>>>>>> I think you can speed up the bisecting process by limiting yoursel=
-f to the AMD DRM
->>>>>>> driver directory with "git bisect start -- drivers/gpu/drm/amd", t=
-ake a look at the
->>>>>>> man page of "git bisect" for details.
->>>>>>>
->>>>>>> Thanks,
->>>>>>> Armin Wolf
->>>>>> Armin,
->>>>>> Thanks for the advice. I am unfamiliar with git on the commandline.
->>>>>> Previously only used SmartGit gui.
->>>>>> EasyOS requires aufs patch, and for a few days tried to figure out =
-how
->>>>>> to use that with git bisect, then gave up. Changed to testing with =
-my
->>>>>> "QV" distro, which is more conventional, doesn't need any kernel
->>>>>> patches. Managed to get it down to one commit. Here are the steps I
->>>>>> followed:
->>>>>>
->>>>>> # git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/li=
-nux-stable.git
->>>>>> # cd linux-stable
->>>>>> # git tag -l | grep '5\.15\.150'
->>>>>> v5.15.150
->>>>>> # git checkout -b my5.15.150 v5.15.150
->>>>>> Updating files: 100% (65776/65776), done.
->>>>>> Switched to a new branch 'my5.15.150'
->>>>>>
->>>>>> Copied in my .config then...
->>>>>>
->>>>>> # make menuconfig
->>>>>> # git bisect start -- drivers/gpu/drm/amd
->>>>>> # git bisect bad
->>>>>> # git bisect good v5.15.149
->>>>>> Bisecting: 1 revision left to test after this (roughly 1 step)
->>>>>> [b9a61ee2bb2704e42516e3da962f99dfa98f3b20] drm/amdgpu: reset gpu fo=
-r
->>>>>> s3 suspend abort case
->>>>>> # make
->>>>>> # rm -rf /boot2
->>>>>> # mkdir -p /boot2/lib/modules
->>>>>> # make INSTALL_MOD_STRIP=3D1 INSTALL_MOD_PATH=3D/boot2 modules_inst=
-all
->>>>>> # cp arch/x86/boot/bzImage /boot2/vmlinuz
->>>>>> # sync
->>>>>> ...QV on Acer laptop, with amdgpu, works!
->>>>>> # git bisect good
->>>>>> Bisecting: 0 revisions left to test after this (roughly 0 steps)
->>>>>> [56b522f4668167096a50c39446d6263c96219f5f] drm/amdgpu: init iommu
->>>>>> after amdkfd device init
->>>>>> # make
->>>>>> # mkdir -p /boot2/lib/modules
->>>>>> # make INSTALL_MOD_STRIP=3D1 INSTALL_MOD_PATH=3D/boot2 modules_inst=
-all
->>>>>> # cp arch/x86/boot/bzImage /boot2/vmlinuz
->>>>>> # sync
->>>>>> ...QV on Acer laptop, black screen!
->>>>>>
->>>>>> # git bisect bad
->>>>>> 56b522f4668167096a50c39446d6263c96219f5f is the first bad commit
->>>>>> commit 56b522f4668167096a50c39446d6263c96219f5f
->>>>>> Author: Yifan Zhang <yifan1.zhang@amd.com>
->>>>>> Date:   Tue Sep 28 15:42:35 2021 +0800
->>>>>>
->>>>>>        drm/amdgpu: init iommu after amdkfd device init
->>>>>>
->>>>>>        [ Upstream commit 286826d7d976e7646b09149d9bc2899d74ff962b ]
->>>>>>
->>>>>>        This patch is to fix clinfo failure in Raven/Picasso:
->>>>>>
->>>>>>        Number of platforms: 1
->>>>>>          Platform Profile: FULL_PROFILE
->>>>>>          Platform Version: OpenCL 2.2 AMD-APP (3364.0)
->>>>>>          Platform Name: AMD Accelerated Parallel Processing
->>>>>>          Platform Vendor: Advanced Micro Devices, Inc.
->>>>>>          Platform Extensions: cl_khr_icd cl_amd_event_callback
->>>>>>
->>>>>>          Platform Name: AMD Accelerated Parallel Processing Number =
-of devices: 0
->>>>>>
->>>>>>        Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
->>>>>>        Reviewed-by: James Zhu <James.Zhu@amd.com>
->>>>>>        Tested-by: James Zhu <James.Zhu@amd.com>
->>>>>>        Acked-by: Felix Kuehling <Felix.Kuehling@amd.com>
->>>>>>        Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
->>>>>>        Signed-off-by: Sasha Levin <sashal@kernel.org>
->>>>>>
->>>>>>     drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 8 ++++----
->>>>>>     1 file changed, 4 insertions(+), 4 deletions(-)
->>>>>>
->>>>>> Anything else I should do, to identify what in this commit is the
->>>>>> likely culprit?
->>>>>> Regards,
->>>>>> Barry Kauler
+--7bDdeMFkXa2K2ZgZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZPbU8ACgkQJNaLcl1U
+h9BeYggAg7sTWHL7PXVHI6EK0UVx0Da/s2zKFCrAaNEmWk0DUn7J1aEn4vsmjflT
+OTaLoWxR7X6lbfS9GQDkeLdygxHtScTOCXlnTcpx8o+pqDveq7Dm/NSS0OxxWgH0
+eOPZyg1o0khRCGSDLVDNoBrJrCwGfxLeIdaWoFRSrI+YVKIt3VjNEzCv1Lz2oJxb
+oTNrazSjM+4/YtnG+BdNRy2At42DdAUpVE179dndFHtzg3fCPGwwOCIcoJoUWKZX
+pfaJAQuB3opSCVWNhcJJdZ5a4CJFTNXoTaefx71UH2YFTDsbaivapgKe00iw8Tdy
+v1lrLFZB4Y88C5SA7/E+wwxY2lM6KA==
+=t122
+-----END PGP SIGNATURE-----
+
+--7bDdeMFkXa2K2ZgZ--
 
