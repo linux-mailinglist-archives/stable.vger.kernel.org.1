@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-45633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624F18CCCAD
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 09:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 548228CCCAF
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 09:05:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85DD81C2224B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 07:05:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 864C41C220BF
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 07:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA7713C9B8;
-	Thu, 23 May 2024 07:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391EF13C9AB;
+	Thu, 23 May 2024 07:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpchGsiK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyJCv+ih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB8213AA24
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 07:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCFC13AA24
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 07:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716447932; cv=none; b=SXRAx+zS0tWmCCXjYnSatoccOfiGpBr//xM2q8Z63gov+wX/zKPeluXCI9htuyJq8L8xnPjfo3pPtLMnP55dJDguIjPj3pwRfR3sQVpBj2jH23PSKHEMA/qQIymM5j8b02YvzwZjDSOugxmsExqYbaH8u5kz4kMDV1IN37Jnl/k=
+	t=1716447935; cv=none; b=nZ8QrAhZSo+5JyiuZyw8lflkfOTVQvT0VwOkppQv14YF8FD9tW592NztNaedosJZG3uwyHTqlLNSqO72A4cb0ztW+zohG0J1ld1GqwMjKy/EVaL1rdLIExfzjM0XL+vGSL68EhYhwCieahcwL26Zi54tZWIt9tS7QPczQDndUwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716447932; c=relaxed/simple;
-	bh=ck0jwkNu0VYcvLlDtNd5gGhZ1TV69nYpd5obgKCPHxU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FMxYfXOMYWFRkchGEP+jJJM6NP6Ds/ItQtJhPTy9bzxn6vvbYPE0BXpEFpyLHsAj43En1aJvDWTCM/WnyvZ+UxLtEGwGSQ/udA69h+RpF0OVGzb8PbI8MEFXq39PuIM1sffidKzBlHT7yHLqY0ATRGgR1N4dstbLVTQC9Q1tI6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpchGsiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885D8C2BD10;
-	Thu, 23 May 2024 07:05:31 +0000 (UTC)
+	s=arc-20240116; t=1716447935; c=relaxed/simple;
+	bh=CXlNAEhp9enJENjb6O1U74vkIY7mVhfayKl9N03lc6c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cRbSHoqaos8A/P9oCQTvtNthzT0kdu1lbTTZYvvPBI28HQ8mP2Sf14e/T9CSJirkwE9pnMRY37aNGsvcTjxAVqgKoccanJa+VlkWKguSHsOwiOhe91U91N8zL2bI7lr4oJBs0J2CqRfvSHMFBzD3/YH/wjXwKnOjoa1JnDAo+RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyJCv+ih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4ACC2BD10;
+	Thu, 23 May 2024 07:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716447931;
-	bh=ck0jwkNu0VYcvLlDtNd5gGhZ1TV69nYpd5obgKCPHxU=;
+	s=korg; t=1716447934;
+	bh=CXlNAEhp9enJENjb6O1U74vkIY7mVhfayKl9N03lc6c=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zpchGsiK7n8u8DCzjNPvpIRtSvMbrblzm/yFN6FP6VsiboaJ2uYnXy9JwUa5sS9cD
-	 f3cOwiZPTUwhcvzBKHuPd7usxNbQipbFStlCx3c49F64Drr+K0GclXvikv5LwMlBre
-	 tYHJTUTKOHENGCZZoE+IUdLCc7+9yxoDnlfB73qw=
-Subject: FAILED: patch "[PATCH] Bluetooth: L2CAP: Fix slab-use-after-free in l2cap_connect()" failed to apply to 5.10-stable tree
+	b=cyJCv+ihPNiJ+z+fujQkpdicK8+DEAt7LGSuXjYiWSuNvrlLk7iC2An1T1/XemvWQ
+	 ththPqcKl9OFIi8AzDNsxhZTu5i3ekanHDYgK1C6QwxbQntl2s4n+u0Igv0ziIH5OK
+	 8VXwzAXBNlReTUKAH4RWd+wm8BFg3c3VsCOiqBP0=
+Subject: FAILED: patch "[PATCH] Bluetooth: L2CAP: Fix slab-use-after-free in l2cap_connect()" failed to apply to 5.4-stable tree
 To: iam@sung-woo.kim,luiz.von.dentz@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 May 2024 09:05:25 +0200
-Message-ID: <2024052324-onlooker-removal-e3ba@gregkh>
+Date: Thu, 23 May 2024 09:05:26 +0200
+Message-ID: <2024052326-overthrow-unveiled-8f66@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4d7b41c0e43995b0e992b9f8903109275744b658
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052324-onlooker-removal-e3ba@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052326-overthrow-unveiled-8f66@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
