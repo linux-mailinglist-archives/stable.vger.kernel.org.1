@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DF18CD46D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C57A8CD3EF
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA0C1C2139D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8861C20359
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F32F13BAE2;
-	Thu, 23 May 2024 13:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7777614A62F;
+	Thu, 23 May 2024 13:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pp7Ma2VX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc4mX6xJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09BC1E497;
-	Thu, 23 May 2024 13:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C2C14C599;
+	Thu, 23 May 2024 13:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470660; cv=none; b=M2IwTSV2G9xz3U8WyTQo+a1ldVZdOa96MV/sijrPKBtwY6kymA1gSMJN0zCeKfQdC/Nfkli/j96NhS1QZNzQX9hvvw9bd9nnwtkVCZGsvwoTZhJsDgLtDpVtdHf238XNvJtAihDUnGH83kJhoSexq1O48LlAgGGuJDwMyMBULvY=
+	t=1716470380; cv=none; b=VSWK8tbzwzOSOYjt9n6qg6IXr40TL1iqiEOyngWQlDhnWiItf+cye4FQAVIzucKhvj3xa1jjiX2mzz/RyY86gJVpOc3TudO/mh5yKljVyg3AAqB+K60TXcVITIvUt3MVRisyLQblba3aq1giHiPO4ZBMuzDDJaQK8HnrI0z5vSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470660; c=relaxed/simple;
-	bh=Dge6HeSmbvBjJwuG8LE8ACOwXSRuks8niBRloYIOPqw=;
+	s=arc-20240116; t=1716470380; c=relaxed/simple;
+	bh=shng2I1rVJ0Et0yDN9XgTbfBz6hoBnJ8fljPAcDgW+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3xFLJKPZUv5h9FdjHSSewa1aO333vipWk+OuqAZpaBHkhQDyRYpgKbCC5yI0Ef3689quBZTpEynL3PLBzBTv4p2jswMP3IhLeCSdwBuPsDg5epniGSXHWuIIzMLi6HgUBAl9BjxvHiJPJsCJlEU1tK2IuVxrn6v184sZB+1JAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pp7Ma2VX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32827C2BD10;
-	Thu, 23 May 2024 13:24:19 +0000 (UTC)
+	 MIME-Version; b=Z7EdPGpCKVv4wgHKaaXEm09kKuF4GR5235H+Klxp1/0lJZNI2sHIVjEv3CCEPJZ32Cw7o8aTXCz4IKV+3zJlaiyZoQ33gb6cm4uQesifFNThCL92iRbxHB/pNbOT3EZrk7v7Vfe2L08obDBF+rNsbL2n590kMuTT7jQQzMO6Vlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mc4mX6xJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1DFC4AF09;
+	Thu, 23 May 2024 13:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470659;
-	bh=Dge6HeSmbvBjJwuG8LE8ACOwXSRuks8niBRloYIOPqw=;
+	s=korg; t=1716470380;
+	bh=shng2I1rVJ0Et0yDN9XgTbfBz6hoBnJ8fljPAcDgW+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pp7Ma2VXVWAlfEltWJx6KQ/j8bveP4U9JzKuqcY4/6+PDlzlVHl31ft+73V2PnWum
-	 zmx5G1X/Z2DeDwztMJ7Qc0Ifdwikhs2mZQnWk78Gdfv/zc1ykcwJo3UWaMuMoJut99
-	 kLTZ8okRu/YJQYITe7Fi11u+QDTWPxh/B5Ir9CIo=
+	b=Mc4mX6xJHK7IMuPTcnM6l2pSRFeieZf9CHZePSSPm+Ek99ihnO7Xwk0ohSFuFCDFV
+	 yY1TyNCKYxpD7lM0X+aJUJWZibomwM8JXGfN0Ly9Rp38/x8pHZV+dHXhKOLenlER9/
+	 UE/oQBJpysYWbMyTTLJuyY/wf6yFLhfbITeAdPXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/102] smb: client: do not defer close open handles to deleted files
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 17/45] xfs: use iomap_valid method to detect stale cached iomaps
 Date: Thu, 23 May 2024 15:13:08 +0200
-Message-ID: <20240523130344.090689692@linuxfoundation.org>
+Message-ID: <20240523130333.142766911@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,259 +62,389 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit ffceb7640cbfe6ea60e7769e107451d63a2fe3d3 ]
+[ Upstream commit 304a68b9c63bbfc1f6e159d68e8892fc54a06067 ]
 
-When a file/dentry has been deleted before closing all its open
-handles, currently, closing them can add them to the deferred
-close list. This can lead to problems in creating file with the
-same name when the file is re-created before the deferred close
-completes. This issue was seen while reusing a client's already
-existing lease on a file for compound operations and xfstest 591
-failed because of the deferred close handle that remained valid
-even after the file was deleted and was being reused to create a
-file with the same name. The server in this case returns an error
-on open with STATUS_DELETE_PENDING. Recreating the file would
-fail till the deferred handles are closed (duration specified in
-closetimeo).
+Now that iomap supports a mechanism to validate cached iomaps for
+buffered write operations, hook it up to the XFS buffered write ops
+so that we can avoid data corruptions that result from stale cached
+iomaps. See:
 
-This patch fixes the issue by flagging all open handles for the
-deleted file (file path to be precise) by setting
-status_file_deleted to true in the cifsFileInfo structure. As per
-the information classes specified in MS-FSCC, SMB2 query info
-response from the server has a DeletePending field, set to true
-to indicate that deletion has been requested on that file. If
-this is the case, flag the open handles for this file too.
+https://lore.kernel.org/linux-xfs/20220817093627.GZ3600936@dread.disaster.area/
 
-When doing close in cifs_close for each of these handles, check the
-value of this boolean field and do not defer close these handles
-if the corresponding filepath has been deleted.
+or the ->iomap_valid() introduction commit for exact details of the
+corruption vector.
 
-Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The validity cookie we store in the iomap is based on the type of
+iomap we return. It is expected that the iomap->flags we set in
+xfs_bmbt_to_iomap() is not perturbed by the iomap core and are
+returned to us in the iomap passed via the .iomap_valid() callback.
+This ensures that the validity cookie is always checking the correct
+inode fork sequence numbers to detect potential changes that affect
+the extent cached by the iomap.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h  |  1 +
- fs/smb/client/cifsproto.h |  4 ++++
- fs/smb/client/file.c      |  3 ++-
- fs/smb/client/inode.c     | 28 +++++++++++++++++++++++++---
- fs/smb/client/misc.c      | 34 ++++++++++++++++++++++++++++++++++
- fs/smb/client/smb2inode.c |  9 ++++++++-
- 6 files changed, 74 insertions(+), 5 deletions(-)
+ fs/xfs/libxfs/xfs_bmap.c |    6 +-
+ fs/xfs/xfs_aops.c        |    2 
+ fs/xfs/xfs_iomap.c       |   95 +++++++++++++++++++++++++++++++++++++----------
+ fs/xfs/xfs_iomap.h       |    5 +-
+ fs/xfs/xfs_pnfs.c        |    6 +-
+ 5 files changed, 87 insertions(+), 27 deletions(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index a149579910add..fdadda4024f46 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1427,6 +1427,7 @@ struct cifsFileInfo {
- 	bool invalidHandle:1;	/* file closed via session abend */
- 	bool swapfile:1;
- 	bool oplock_break_cancelled:1;
-+	bool status_file_deleted:1; /* file has been deleted */
- 	bool offload:1; /* offload final part of _put to a wq */
- 	unsigned int oplock_epoch; /* epoch from the lease break */
- 	__u32 oplock_level; /* oplock/lease level from the lease break */
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index e9b38b279a6c5..50040990e70b9 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -298,6 +298,10 @@ extern void cifs_close_all_deferred_files(struct cifs_tcon *cifs_tcon);
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -4551,7 +4551,8 @@ xfs_bmapi_convert_delalloc(
+ 	 * the extent.  Just return the real extent at this offset.
+ 	 */
+ 	if (!isnullstartblock(bma.got.br_startblock)) {
+-		xfs_bmbt_to_iomap(ip, iomap, &bma.got, 0, flags);
++		xfs_bmbt_to_iomap(ip, iomap, &bma.got, 0, flags,
++				xfs_iomap_inode_sequence(ip, flags));
+ 		*seq = READ_ONCE(ifp->if_seq);
+ 		goto out_trans_cancel;
+ 	}
+@@ -4599,7 +4600,8 @@ xfs_bmapi_convert_delalloc(
+ 	XFS_STATS_INC(mp, xs_xstrat_quick);
  
- extern void cifs_close_deferred_file_under_dentry(struct cifs_tcon *cifs_tcon,
- 				const char *path);
-+
-+extern void cifs_mark_open_handles_for_deleted_file(struct inode *inode,
-+				const char *path);
-+
- extern struct TCP_Server_Info *
- cifs_get_tcp_session(struct smb3_fs_context *ctx,
- 		     struct TCP_Server_Info *primary_server);
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 751ae89cefe36..8eaf195ef5604 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -501,6 +501,7 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
- 	cfile->uid = current_fsuid();
- 	cfile->dentry = dget(dentry);
- 	cfile->f_flags = file->f_flags;
-+	cfile->status_file_deleted = false;
- 	cfile->invalidHandle = false;
- 	cfile->deferred_close_scheduled = false;
- 	cfile->tlink = cifs_get_tlink(tlink);
-@@ -1167,7 +1168,7 @@ int cifs_close(struct inode *inode, struct file *file)
- 		if ((cifs_sb->ctx->closetimeo && cinode->oplock == CIFS_CACHE_RHW_FLG)
- 		    && cinode->lease_granted &&
- 		    !test_bit(CIFS_INO_CLOSE_ON_LOCK, &cinode->flags) &&
--		    dclose) {
-+		    dclose && !(cfile->status_file_deleted)) {
- 			if (test_and_clear_bit(CIFS_INO_MODIFIED_ATTR, &cinode->flags)) {
- 				inode_set_mtime_to_ts(inode,
- 						      inode_set_ctime_current(inode));
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 156713186b3c9..2739cb8390804 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -894,6 +894,9 @@ cifs_get_file_info(struct file *filp)
- 	struct cifsFileInfo *cfile = filp->private_data;
- 	struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
- 	struct TCP_Server_Info *server = tcon->ses->server;
-+	struct dentry *dentry = filp->f_path.dentry;
-+	void *page = alloc_dentry_path();
-+	const unsigned char *path;
+ 	ASSERT(!isnullstartblock(bma.got.br_startblock));
+-	xfs_bmbt_to_iomap(ip, iomap, &bma.got, 0, flags);
++	xfs_bmbt_to_iomap(ip, iomap, &bma.got, 0, flags,
++				xfs_iomap_inode_sequence(ip, flags));
+ 	*seq = READ_ONCE(ifp->if_seq);
  
- 	if (!server->ops->query_file_info)
- 		return -ENOSYS;
-@@ -908,7 +911,14 @@ cifs_get_file_info(struct file *filp)
- 			data.symlink = true;
- 			data.reparse.tag = IO_REPARSE_TAG_SYMLINK;
- 		}
-+		path = build_path_from_dentry(dentry, page);
-+		if (IS_ERR(path)) {
-+			free_dentry_path(page);
-+			return PTR_ERR(path);
-+		}
- 		cifs_open_info_to_fattr(&fattr, &data, inode->i_sb);
-+		if (fattr.cf_flags & CIFS_FATTR_DELETE_PENDING)
-+			cifs_mark_open_handles_for_deleted_file(inode, path);
- 		break;
- 	case -EREMOTE:
- 		cifs_create_junction_fattr(&fattr, inode->i_sb);
-@@ -938,6 +948,7 @@ cifs_get_file_info(struct file *filp)
- 	rc = cifs_fattr_to_inode(inode, &fattr, false);
- cgfi_exit:
- 	cifs_free_open_info(&data);
-+	free_dentry_path(page);
- 	free_xid(xid);
- 	return rc;
- }
-@@ -1076,6 +1087,7 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
- 	struct kvec rsp_iov, *iov = NULL;
- 	int rsp_buftype = CIFS_NO_BUFFER;
- 	u32 tag = data->reparse.tag;
-+	struct inode *inode = NULL;
- 	int rc = 0;
+ 	if (whichfork == XFS_COW_FORK)
+--- a/fs/xfs/xfs_aops.c
++++ b/fs/xfs/xfs_aops.c
+@@ -372,7 +372,7 @@ retry:
+ 	    isnullstartblock(imap.br_startblock))
+ 		goto allocate_blocks;
  
- 	if (!tag && server->ops->query_reparse_point) {
-@@ -1115,8 +1127,12 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
- 
- 	if (tcon->posix_extensions)
- 		smb311_posix_info_to_fattr(fattr, data, sb);
--	else
-+	else {
- 		cifs_open_info_to_fattr(fattr, data, sb);
-+		inode = cifs_iget(sb, fattr);
-+		if (inode && fattr->cf_flags & CIFS_FATTR_DELETE_PENDING)
-+			cifs_mark_open_handles_for_deleted_file(inode, full_path);
-+	}
- out:
- 	fattr->cf_cifstag = data->reparse.tag;
- 	free_rsp_buf(rsp_buftype, rsp_iov.iov_base);
-@@ -1171,6 +1187,8 @@ static int cifs_get_fattr(struct cifs_open_info_data *data,
- 						   full_path, fattr);
- 		} else {
- 			cifs_open_info_to_fattr(fattr, data, sb);
-+			if (fattr->cf_flags & CIFS_FATTR_DELETE_PENDING)
-+				cifs_mark_open_handles_for_deleted_file(*inode, full_path);
- 		}
- 		break;
- 	case -EREMOTE:
-@@ -1853,16 +1871,20 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
- 
- psx_del_no_retry:
- 	if (!rc) {
--		if (inode)
-+		if (inode) {
-+			cifs_mark_open_handles_for_deleted_file(inode, full_path);
- 			cifs_drop_nlink(inode);
-+		}
- 	} else if (rc == -ENOENT) {
- 		d_drop(dentry);
- 	} else if (rc == -EBUSY) {
- 		if (server->ops->rename_pending_delete) {
- 			rc = server->ops->rename_pending_delete(full_path,
- 								dentry, xid);
--			if (rc == 0)
-+			if (rc == 0) {
-+				cifs_mark_open_handles_for_deleted_file(inode, full_path);
- 				cifs_drop_nlink(inode);
-+			}
- 		}
- 	} else if ((rc == -EACCES) && (dosattr == 0) && inode) {
- 		attrs = kzalloc(sizeof(*attrs), GFP_KERNEL);
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index d56959d02e36d..669d27b4d414a 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -853,6 +853,40 @@ cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon, const char *path)
- 	free_dentry_path(page);
+-	xfs_bmbt_to_iomap(ip, &wpc->iomap, &imap, 0, 0);
++	xfs_bmbt_to_iomap(ip, &wpc->iomap, &imap, 0, 0, XFS_WPC(wpc)->data_seq);
+ 	trace_xfs_map_blocks_found(ip, offset, count, whichfork, &imap);
+ 	return 0;
+ allocate_blocks:
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -48,13 +48,45 @@ xfs_alert_fsblock_zero(
+ 	return -EFSCORRUPTED;
  }
  
-+/*
-+ * If a dentry has been deleted, all corresponding open handles should know that
-+ * so that we do not defer close them.
-+ */
-+void cifs_mark_open_handles_for_deleted_file(struct inode *inode,
-+					     const char *path)
++u64
++xfs_iomap_inode_sequence(
++	struct xfs_inode	*ip,
++	u16			iomap_flags)
 +{
-+	struct cifsFileInfo *cfile;
-+	void *page;
-+	const char *full_path;
-+	struct cifsInodeInfo *cinode = CIFS_I(inode);
++	u64			cookie = 0;
 +
-+	page = alloc_dentry_path();
-+	spin_lock(&cinode->open_file_lock);
-+
-+	/*
-+	 * note: we need to construct path from dentry and compare only if the
-+	 * inode has any hardlinks. When number of hardlinks is 1, we can just
-+	 * mark all open handles since they are going to be from the same file.
-+	 */
-+	if (inode->i_nlink > 1) {
-+		list_for_each_entry(cfile, &cinode->openFileList, flist) {
-+			full_path = build_path_from_dentry(cfile->dentry, page);
-+			if (!IS_ERR(full_path) && strcmp(full_path, path) == 0)
-+				cfile->status_file_deleted = true;
-+		}
-+	} else {
-+		list_for_each_entry(cfile, &cinode->openFileList, flist)
-+			cfile->status_file_deleted = true;
-+	}
-+	spin_unlock(&cinode->open_file_lock);
-+	free_dentry_path(page);
++	if (iomap_flags & IOMAP_F_XATTR)
++		return READ_ONCE(ip->i_af.if_seq);
++	if ((iomap_flags & IOMAP_F_SHARED) && ip->i_cowfp)
++		cookie = (u64)READ_ONCE(ip->i_cowfp->if_seq) << 32;
++	return cookie | READ_ONCE(ip->i_df.if_seq);
 +}
 +
- /* parses DFS referral V3 structure
-  * caller is responsible for freeing target_nodes
-  * returns:
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index e452c59c13e2d..0b7b083352919 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -561,8 +561,15 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 		case SMB2_OP_DELETE:
- 			if (rc)
- 				trace_smb3_delete_err(xid,  ses->Suid, tcon->tid, rc);
--			else
-+			else {
-+				/*
-+				 * If dentry (hence, inode) is NULL, lease break is going to
-+				 * take care of degrading leases on handles for deleted files.
-+				 */
-+				if (inode)
-+					cifs_mark_open_handles_for_deleted_file(inode, full_path);
- 				trace_smb3_delete_done(xid, ses->Suid, tcon->tid);
-+			}
- 			break;
- 		case SMB2_OP_MKDIR:
- 			if (rc)
--- 
-2.43.0
-
++/*
++ * Check that the iomap passed to us is still valid for the given offset and
++ * length.
++ */
++static bool
++xfs_iomap_valid(
++	struct inode		*inode,
++	const struct iomap	*iomap)
++{
++	return iomap->validity_cookie ==
++			xfs_iomap_inode_sequence(XFS_I(inode), iomap->flags);
++}
++
++const struct iomap_page_ops xfs_iomap_page_ops = {
++	.iomap_valid		= xfs_iomap_valid,
++};
++
+ int
+ xfs_bmbt_to_iomap(
+ 	struct xfs_inode	*ip,
+ 	struct iomap		*iomap,
+ 	struct xfs_bmbt_irec	*imap,
+ 	unsigned int		mapping_flags,
+-	u16			iomap_flags)
++	u16			iomap_flags,
++	u64			sequence_cookie)
+ {
+ 	struct xfs_mount	*mp = ip->i_mount;
+ 	struct xfs_buftarg	*target = xfs_inode_buftarg(ip);
+@@ -91,6 +123,9 @@ xfs_bmbt_to_iomap(
+ 	if (xfs_ipincount(ip) &&
+ 	    (ip->i_itemp->ili_fsync_fields & ~XFS_ILOG_TIMESTAMP))
+ 		iomap->flags |= IOMAP_F_DIRTY;
++
++	iomap->validity_cookie = sequence_cookie;
++	iomap->page_ops = &xfs_iomap_page_ops;
+ 	return 0;
+ }
+ 
+@@ -195,7 +230,8 @@ xfs_iomap_write_direct(
+ 	xfs_fileoff_t		offset_fsb,
+ 	xfs_fileoff_t		count_fsb,
+ 	unsigned int		flags,
+-	struct xfs_bmbt_irec	*imap)
++	struct xfs_bmbt_irec	*imap,
++	u64			*seq)
+ {
+ 	struct xfs_mount	*mp = ip->i_mount;
+ 	struct xfs_trans	*tp;
+@@ -285,6 +321,7 @@ xfs_iomap_write_direct(
+ 		error = xfs_alert_fsblock_zero(ip, imap);
+ 
+ out_unlock:
++	*seq = xfs_iomap_inode_sequence(ip, 0);
+ 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
+ 	return error;
+ 
+@@ -743,6 +780,7 @@ xfs_direct_write_iomap_begin(
+ 	bool			shared = false;
+ 	u16			iomap_flags = 0;
+ 	unsigned int		lockmode = XFS_ILOCK_SHARED;
++	u64			seq;
+ 
+ 	ASSERT(flags & (IOMAP_WRITE | IOMAP_ZERO));
+ 
+@@ -811,9 +849,10 @@ xfs_direct_write_iomap_begin(
+ 			goto out_unlock;
+ 	}
+ 
++	seq = xfs_iomap_inode_sequence(ip, iomap_flags);
+ 	xfs_iunlock(ip, lockmode);
+ 	trace_xfs_iomap_found(ip, offset, length, XFS_DATA_FORK, &imap);
+-	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, iomap_flags);
++	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, iomap_flags, seq);
+ 
+ allocate_blocks:
+ 	error = -EAGAIN;
+@@ -839,24 +878,26 @@ allocate_blocks:
+ 	xfs_iunlock(ip, lockmode);
+ 
+ 	error = xfs_iomap_write_direct(ip, offset_fsb, end_fsb - offset_fsb,
+-			flags, &imap);
++			flags, &imap, &seq);
+ 	if (error)
+ 		return error;
+ 
+ 	trace_xfs_iomap_alloc(ip, offset, length, XFS_DATA_FORK, &imap);
+ 	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags,
+-				 iomap_flags | IOMAP_F_NEW);
++				 iomap_flags | IOMAP_F_NEW, seq);
+ 
+ out_found_cow:
+-	xfs_iunlock(ip, lockmode);
+ 	length = XFS_FSB_TO_B(mp, cmap.br_startoff + cmap.br_blockcount);
+ 	trace_xfs_iomap_found(ip, offset, length - offset, XFS_COW_FORK, &cmap);
+ 	if (imap.br_startblock != HOLESTARTBLOCK) {
+-		error = xfs_bmbt_to_iomap(ip, srcmap, &imap, flags, 0);
++		seq = xfs_iomap_inode_sequence(ip, 0);
++		error = xfs_bmbt_to_iomap(ip, srcmap, &imap, flags, 0, seq);
+ 		if (error)
+-			return error;
++			goto out_unlock;
+ 	}
+-	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, IOMAP_F_SHARED);
++	seq = xfs_iomap_inode_sequence(ip, IOMAP_F_SHARED);
++	xfs_iunlock(ip, lockmode);
++	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, IOMAP_F_SHARED, seq);
+ 
+ out_unlock:
+ 	if (lockmode)
+@@ -915,6 +956,7 @@ xfs_buffered_write_iomap_begin(
+ 	int			allocfork = XFS_DATA_FORK;
+ 	int			error = 0;
+ 	unsigned int		lockmode = XFS_ILOCK_EXCL;
++	u64			seq;
+ 
+ 	if (xfs_is_shutdown(mp))
+ 		return -EIO;
+@@ -1094,26 +1136,31 @@ retry:
+ 	 * Flag newly allocated delalloc blocks with IOMAP_F_NEW so we punch
+ 	 * them out if the write happens to fail.
+ 	 */
++	seq = xfs_iomap_inode_sequence(ip, IOMAP_F_NEW);
+ 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
+ 	trace_xfs_iomap_alloc(ip, offset, count, allocfork, &imap);
+-	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, IOMAP_F_NEW);
++	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, IOMAP_F_NEW, seq);
+ 
+ found_imap:
++	seq = xfs_iomap_inode_sequence(ip, 0);
+ 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
+-	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0);
++	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0, seq);
+ 
+ found_cow:
+-	xfs_iunlock(ip, XFS_ILOCK_EXCL);
++	seq = xfs_iomap_inode_sequence(ip, 0);
+ 	if (imap.br_startoff <= offset_fsb) {
+-		error = xfs_bmbt_to_iomap(ip, srcmap, &imap, flags, 0);
++		error = xfs_bmbt_to_iomap(ip, srcmap, &imap, flags, 0, seq);
+ 		if (error)
+-			return error;
++			goto out_unlock;
++		seq = xfs_iomap_inode_sequence(ip, IOMAP_F_SHARED);
++		xfs_iunlock(ip, XFS_ILOCK_EXCL);
+ 		return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags,
+-					 IOMAP_F_SHARED);
++					 IOMAP_F_SHARED, seq);
+ 	}
+ 
+ 	xfs_trim_extent(&cmap, offset_fsb, imap.br_startoff - offset_fsb);
+-	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, 0);
++	xfs_iunlock(ip, XFS_ILOCK_EXCL);
++	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, 0, seq);
+ 
+ out_unlock:
+ 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
+@@ -1193,6 +1240,7 @@ xfs_read_iomap_begin(
+ 	int			nimaps = 1, error = 0;
+ 	bool			shared = false;
+ 	unsigned int		lockmode = XFS_ILOCK_SHARED;
++	u64			seq;
+ 
+ 	ASSERT(!(flags & (IOMAP_WRITE | IOMAP_ZERO)));
+ 
+@@ -1206,13 +1254,14 @@ xfs_read_iomap_begin(
+ 			       &nimaps, 0);
+ 	if (!error && (flags & IOMAP_REPORT))
+ 		error = xfs_reflink_trim_around_shared(ip, &imap, &shared);
++	seq = xfs_iomap_inode_sequence(ip, shared ? IOMAP_F_SHARED : 0);
+ 	xfs_iunlock(ip, lockmode);
+ 
+ 	if (error)
+ 		return error;
+ 	trace_xfs_iomap_found(ip, offset, length, XFS_DATA_FORK, &imap);
+ 	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags,
+-				 shared ? IOMAP_F_SHARED : 0);
++				 shared ? IOMAP_F_SHARED : 0, seq);
+ }
+ 
+ const struct iomap_ops xfs_read_iomap_ops = {
+@@ -1237,6 +1286,7 @@ xfs_seek_iomap_begin(
+ 	struct xfs_bmbt_irec	imap, cmap;
+ 	int			error = 0;
+ 	unsigned		lockmode;
++	u64			seq;
+ 
+ 	if (xfs_is_shutdown(mp))
+ 		return -EIO;
+@@ -1271,8 +1321,9 @@ xfs_seek_iomap_begin(
+ 		if (data_fsb < cow_fsb + cmap.br_blockcount)
+ 			end_fsb = min(end_fsb, data_fsb);
+ 		xfs_trim_extent(&cmap, offset_fsb, end_fsb);
++		seq = xfs_iomap_inode_sequence(ip, IOMAP_F_SHARED);
+ 		error = xfs_bmbt_to_iomap(ip, iomap, &cmap, flags,
+-					  IOMAP_F_SHARED);
++				IOMAP_F_SHARED, seq);
+ 		/*
+ 		 * This is a COW extent, so we must probe the page cache
+ 		 * because there could be dirty page cache being backed
+@@ -1293,8 +1344,9 @@ xfs_seek_iomap_begin(
+ 	imap.br_startblock = HOLESTARTBLOCK;
+ 	imap.br_state = XFS_EXT_NORM;
+ done:
++	seq = xfs_iomap_inode_sequence(ip, 0);
+ 	xfs_trim_extent(&imap, offset_fsb, end_fsb);
+-	error = xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0);
++	error = xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0, seq);
+ out_unlock:
+ 	xfs_iunlock(ip, lockmode);
+ 	return error;
+@@ -1320,6 +1372,7 @@ xfs_xattr_iomap_begin(
+ 	struct xfs_bmbt_irec	imap;
+ 	int			nimaps = 1, error = 0;
+ 	unsigned		lockmode;
++	int			seq;
+ 
+ 	if (xfs_is_shutdown(mp))
+ 		return -EIO;
+@@ -1336,12 +1389,14 @@ xfs_xattr_iomap_begin(
+ 	error = xfs_bmapi_read(ip, offset_fsb, end_fsb - offset_fsb, &imap,
+ 			       &nimaps, XFS_BMAPI_ATTRFORK);
+ out_unlock:
++
++	seq = xfs_iomap_inode_sequence(ip, IOMAP_F_XATTR);
+ 	xfs_iunlock(ip, lockmode);
+ 
+ 	if (error)
+ 		return error;
+ 	ASSERT(nimaps);
+-	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0);
++	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, IOMAP_F_XATTR, seq);
+ }
+ 
+ const struct iomap_ops xfs_xattr_iomap_ops = {
+--- a/fs/xfs/xfs_iomap.h
++++ b/fs/xfs/xfs_iomap.h
+@@ -13,14 +13,15 @@ struct xfs_bmbt_irec;
+ 
+ int xfs_iomap_write_direct(struct xfs_inode *ip, xfs_fileoff_t offset_fsb,
+ 		xfs_fileoff_t count_fsb, unsigned int flags,
+-		struct xfs_bmbt_irec *imap);
++		struct xfs_bmbt_irec *imap, u64 *sequence);
+ int xfs_iomap_write_unwritten(struct xfs_inode *, xfs_off_t, xfs_off_t, bool);
+ xfs_fileoff_t xfs_iomap_eof_align_last_fsb(struct xfs_inode *ip,
+ 		xfs_fileoff_t end_fsb);
+ 
++u64 xfs_iomap_inode_sequence(struct xfs_inode *ip, u16 iomap_flags);
+ int xfs_bmbt_to_iomap(struct xfs_inode *ip, struct iomap *iomap,
+ 		struct xfs_bmbt_irec *imap, unsigned int mapping_flags,
+-		u16 iomap_flags);
++		u16 iomap_flags, u64 sequence_cookie);
+ 
+ int xfs_zero_range(struct xfs_inode *ip, loff_t pos, loff_t len,
+ 		bool *did_zero);
+--- a/fs/xfs/xfs_pnfs.c
++++ b/fs/xfs/xfs_pnfs.c
+@@ -125,6 +125,7 @@ xfs_fs_map_blocks(
+ 	int			nimaps = 1;
+ 	uint			lock_flags;
+ 	int			error = 0;
++	u64			seq;
+ 
+ 	if (xfs_is_shutdown(mp))
+ 		return -EIO;
+@@ -176,6 +177,7 @@ xfs_fs_map_blocks(
+ 	lock_flags = xfs_ilock_data_map_shared(ip);
+ 	error = xfs_bmapi_read(ip, offset_fsb, end_fsb - offset_fsb,
+ 				&imap, &nimaps, bmapi_flags);
++	seq = xfs_iomap_inode_sequence(ip, 0);
+ 
+ 	ASSERT(!nimaps || imap.br_startblock != DELAYSTARTBLOCK);
+ 
+@@ -189,7 +191,7 @@ xfs_fs_map_blocks(
+ 		xfs_iunlock(ip, lock_flags);
+ 
+ 		error = xfs_iomap_write_direct(ip, offset_fsb,
+-				end_fsb - offset_fsb, 0, &imap);
++				end_fsb - offset_fsb, 0, &imap, &seq);
+ 		if (error)
+ 			goto out_unlock;
+ 
+@@ -209,7 +211,7 @@ xfs_fs_map_blocks(
+ 	}
+ 	xfs_iunlock(ip, XFS_IOLOCK_EXCL);
+ 
+-	error = xfs_bmbt_to_iomap(ip, iomap, &imap, 0, 0);
++	error = xfs_bmbt_to_iomap(ip, iomap, &imap, 0, 0, seq);
+ 	*device_generation = mp->m_generation;
+ 	return error;
+ out_unlock:
 
 
 
