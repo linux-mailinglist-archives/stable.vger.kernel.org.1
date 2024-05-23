@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-45871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1A78CD44D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4F48CD371
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9488B218B1
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1C71C21165
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958AD14BF85;
-	Thu, 23 May 2024 13:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3143B14AD1B;
+	Thu, 23 May 2024 13:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B93TDpvl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFCcBh4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547F214BF89;
-	Thu, 23 May 2024 13:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E164814A604;
+	Thu, 23 May 2024 13:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470602; cv=none; b=WtdvjpyHoD2b9HLwwdbZ6POWJU30oStrJ8kPjfHxtHWoGKbtzaAM8jS238Nd0IB2NVWvOOdOmsRSAlPkpnRurUoPyUPz3yy5GGpnwxTBMqLcocYhESeL+NZsvPZF/Kq77vTfWV7ASFLVsdIkkjRVkt3KCgWZ5578w3sqeR/gPF0=
+	t=1716470114; cv=none; b=IaTFMt1zEHz/dE0SkyBcdjne1aQ23MIQTnyZPLoFTJREFp9DpsZrIN6vY1SyrsyNCxofVZpbgP9IWRWs7n9WXfmEN0lkY/anQvExdncdb61ujig1C9iOXmZSrtN0OjObzIfnw6HlbL6USWUbWBj0yU7PoiHS+VTvl0cMVouGEEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470602; c=relaxed/simple;
-	bh=lCHh3CowkY31HaJn6l9iRUCkQs5r3WRKdfcReKf+p7Y=;
+	s=arc-20240116; t=1716470114; c=relaxed/simple;
+	bh=6NEldmJ5J0jO6MKxjU6pT882xrRKpgXkw0bavVc2ZUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vl5J+Bv+3NJV72iwnMpZ6jlcuEwUWOlJMOqG65GzEENnd0kF9cDLjLBjCxgh25gPoR+NLIIsWPJAPjVpvgrY9rCALkPaCH+0UGUx/5lH05C2A3w4c2A43ttIaTMle8Hh0FkPFg4GF3wpIcd8x/9vEpCQEtxo9PrCSY5+CeoZuZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B93TDpvl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBB7C32781;
-	Thu, 23 May 2024 13:23:21 +0000 (UTC)
+	 MIME-Version; b=ZlvWpECYCDngr1WMXKYzSrIr1JJaZJ3FAZktFjbXVbLGBqJ8MnFpwqmUMVb0LrMLsGBvsQ1v9OBR/TTVaEHLRFi2zJTH1MgsSABIUDJHW4U4kdZ5g+HpxtqaYlJyZevuIpBzpmZzZLKA6Zxare6RJiOyasiWuTMDo+bXH8q1PCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFCcBh4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C066C3277B;
+	Thu, 23 May 2024 13:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470601;
-	bh=lCHh3CowkY31HaJn6l9iRUCkQs5r3WRKdfcReKf+p7Y=;
+	s=korg; t=1716470113;
+	bh=6NEldmJ5J0jO6MKxjU6pT882xrRKpgXkw0bavVc2ZUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B93TDpvlHbWGufmbITLs81GTb5nKyMmavEkqUS1x3EULlqkqwNbZb+X//7kWDsUlG
-	 4jA4O3/gvbTZKbC+g3XGtPlaHduAcruDQQEhCIXXlercN9t7mQhTaceky+5G12kqg4
-	 oe5ljxo0PXmieV4TZG9IpuuVPPFHrC345hZfaIqg=
+	b=zFCcBh4MyKwDx+SWx/H2f7ScWvR+GtsKXrGcjJmqn/zpyS7asdYsBjpNVx/I3J9Hk
+	 huU6dD4YNOfxjWvjucVD8hzWeUyGtXGHX5ZbdUWQXR++7N+75JS4Vpio04XMHqkodk
+	 eDHbNUpDjVTDD/38xzenaF+awNJ+QbdA4sycFtOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/102] smb: client: allow creating symlinks via reparse points
+	Akira Yokosawa <akiyks@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH 4.19 18/18] docs: kernel_include.py: Cope with docutils 0.21
 Date: Thu, 23 May 2024 15:12:41 +0200
-Message-ID: <20240523130343.077083052@linuxfoundation.org>
+Message-ID: <20240523130326.429632764@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
+References: <20240523130325.727602650@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,208 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Akira Yokosawa <akiyks@gmail.com>
 
-[ Upstream commit 514d793e27a310eb26b112c1f8f1a160472907e5 ]
+commit d43ddd5c91802a46354fa4c4381416ef760676e2 upstream.
 
-Add support for creating symlinks via IO_REPARSE_TAG_SYMLINK reparse
-points in SMB2+.
+Running "make htmldocs" on a newly installed Sphinx 7.3.7 ends up in
+a build error:
 
-These are fully supported by most SMB servers and documented in
-MS-FSCC.  Also have the advantage of requiring fewer roundtrips as
-their symlink targets can be parsed directly from CREATE responses on
-STATUS_STOPPED_ON_SYMLINK errors.
+    Sphinx parallel build error:
+    AttributeError: module 'docutils.nodes' has no attribute 'reprunicode'
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311260838.nx5mkj1j-lkp@intel.com/
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+docutils 0.21 has removed nodes.reprunicode, quote from release note [1]:
+
+  * Removed objects:
+
+    docutils.nodes.reprunicode, docutils.nodes.ensure_str()
+        Python 2 compatibility hacks
+
+Sphinx 7.3.0 supports docutils 0.21 [2]:
+
+kernel_include.py, whose origin is misc.py of docutils, uses reprunicode.
+
+Upstream docutils removed the offending line from the corresponding file
+(docutils/docutils/parsers/rst/directives/misc.py) in January 2022.
+Quoting the changelog [3]:
+
+    Deprecate `nodes.reprunicode` and `nodes.ensure_str()`.
+
+    Drop uses of the deprecated constructs (not required with Python 3).
+
+Do the same for kernel_include.py.
+
+Tested against:
+  - Sphinx 2.4.5 (docutils 0.17.1)
+  - Sphinx 3.4.3 (docutils 0.17.1)
+  - Sphinx 5.3.0 (docutils 0.18.1)
+  - Sphinx 6.2.1 (docutils 0.19)
+  - Sphinx 7.2.6 (docutils 0.20.1)
+  - Sphinx 7.3.7 (docutils 0.21.2)
+
+Link: http://www.docutils.org/RELEASE-NOTES.html#release-0-21-2024-04-09 [1]
+Link: https://www.sphinx-doc.org/en/master/changes.html#release-7-3-0-released-apr-16-2024 [2]
+Link: https://github.com/docutils/docutils/commit/c8471ce47a24 [3]
+Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/faf5fa45-2a9d-4573-9d2e-3930bdc1ed65@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h |  6 ++++
- fs/smb/client/link.c     | 15 ++++++---
- fs/smb/client/smb2ops.c  | 70 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 86 insertions(+), 5 deletions(-)
+ Documentation/sphinx/kernel_include.py |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 3e7c3c3d73a73..414648bf816b2 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -577,6 +577,12 @@ struct smb_version_operations {
- 	int (*parse_reparse_point)(struct cifs_sb_info *cifs_sb,
- 				   struct kvec *rsp_iov,
- 				   struct cifs_open_info_data *data);
-+	int (*create_reparse_symlink)(const unsigned int xid,
-+				      struct inode *inode,
-+				      struct dentry *dentry,
-+				      struct cifs_tcon *tcon,
-+				      const char *full_path,
-+				      const char *symname);
- };
+--- a/Documentation/sphinx/kernel_include.py
++++ b/Documentation/sphinx/kernel_include.py
+@@ -94,7 +94,6 @@ class KernelInclude(Include):
+         # HINT: this is the only line I had to change / commented out:
+         #path = utils.relative_path(None, path)
  
- struct smb_version_values {
-diff --git a/fs/smb/client/link.c b/fs/smb/client/link.c
-index 691f43a1ec2bc..d86da949a9190 100644
---- a/fs/smb/client/link.c
-+++ b/fs/smb/client/link.c
-@@ -569,6 +569,7 @@ cifs_symlink(struct mnt_idmap *idmap, struct inode *inode,
- 	int rc = -EOPNOTSUPP;
- 	unsigned int xid;
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
-+	struct TCP_Server_Info *server;
- 	struct tcon_link *tlink;
- 	struct cifs_tcon *pTcon;
- 	const char *full_path;
-@@ -590,6 +591,7 @@ cifs_symlink(struct mnt_idmap *idmap, struct inode *inode,
- 		goto symlink_exit;
- 	}
- 	pTcon = tlink_tcon(tlink);
-+	server = cifs_pick_channel(pTcon->ses);
- 
- 	full_path = build_path_from_dentry(direntry, page);
- 	if (IS_ERR(full_path)) {
-@@ -601,17 +603,20 @@ cifs_symlink(struct mnt_idmap *idmap, struct inode *inode,
- 	cifs_dbg(FYI, "symname is %s\n", symname);
- 
- 	/* BB what if DFS and this volume is on different share? BB */
--	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MF_SYMLINKS)
-+	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MF_SYMLINKS) {
- 		rc = create_mf_symlink(xid, pTcon, cifs_sb, full_path, symname);
- #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
--	else if (pTcon->unix_ext)
-+	} else if (pTcon->unix_ext) {
- 		rc = CIFSUnixCreateSymLink(xid, pTcon, full_path, symname,
- 					   cifs_sb->local_nls,
- 					   cifs_remap(cifs_sb));
- #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
--	/* else
--	   rc = CIFSCreateReparseSymLink(xid, pTcon, fromName, toName,
--					cifs_sb_target->local_nls); */
-+	} else if (server->ops->create_reparse_symlink) {
-+		rc =  server->ops->create_reparse_symlink(xid, inode, direntry,
-+							  pTcon, full_path,
-+							  symname);
-+		goto symlink_exit;
-+	}
- 
- 	if (rc == 0) {
- 		if (pTcon->posix_extensions) {
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 4fed19d5a81d4..c5957deb1a859 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -5246,6 +5246,72 @@ static int nfs_make_node(unsigned int xid, struct inode *inode,
- 	return rc;
- }
- 
-+static int smb2_create_reparse_symlink(const unsigned int xid,
-+				       struct inode *inode,
-+				       struct dentry *dentry,
-+				       struct cifs_tcon *tcon,
-+				       const char *full_path,
-+				       const char *symname)
-+{
-+	struct reparse_symlink_data_buffer *buf = NULL;
-+	struct cifs_open_info_data data;
-+	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
-+	struct inode *new;
-+	struct kvec iov;
-+	__le16 *path;
-+	char *sym;
-+	u16 len, plen;
-+	int rc = 0;
-+
-+	sym = kstrdup(symname, GFP_KERNEL);
-+	if (!sym)
-+		return -ENOMEM;
-+
-+	data = (struct cifs_open_info_data) {
-+		.reparse_point = true,
-+		.reparse = { .tag = IO_REPARSE_TAG_SYMLINK, },
-+		.symlink_target = sym,
-+	};
-+
-+	path = cifs_convert_path_to_utf16(symname, cifs_sb);
-+	if (!path) {
-+		rc = -ENOMEM;
-+		goto out;
-+	}
-+
-+	plen = 2 * UniStrnlen((wchar_t *)path, PATH_MAX);
-+	len = sizeof(*buf) + plen * 2;
-+	buf = kzalloc(len, GFP_KERNEL);
-+	if (!buf) {
-+		rc = -ENOMEM;
-+		goto out;
-+	}
-+
-+	buf->ReparseTag = cpu_to_le32(IO_REPARSE_TAG_SYMLINK);
-+	buf->ReparseDataLength = cpu_to_le16(len - sizeof(struct reparse_data_buffer));
-+	buf->SubstituteNameOffset = cpu_to_le16(plen);
-+	buf->SubstituteNameLength = cpu_to_le16(plen);
-+	memcpy(&buf->PathBuffer[plen], path, plen);
-+	buf->PrintNameOffset = 0;
-+	buf->PrintNameLength = cpu_to_le16(plen);
-+	memcpy(buf->PathBuffer, path, plen);
-+	buf->Flags = cpu_to_le32(*symname != '/' ? SYMLINK_FLAG_RELATIVE : 0);
-+
-+	iov.iov_base = buf;
-+	iov.iov_len = len;
-+	new = smb2_get_reparse_inode(&data, inode->i_sb, xid,
-+				     tcon, full_path, &iov);
-+	if (!IS_ERR(new))
-+		d_instantiate(dentry, new);
-+	else
-+		rc = PTR_ERR(new);
-+out:
-+	kfree(path);
-+	cifs_free_open_info(&data);
-+	kfree(buf);
-+	return rc;
-+}
-+
- static int smb2_make_node(unsigned int xid, struct inode *inode,
- 			  struct dentry *dentry, struct cifs_tcon *tcon,
- 			  const char *full_path, umode_t mode, dev_t dev)
-@@ -5322,6 +5388,7 @@ struct smb_version_operations smb20_operations = {
- 	.parse_reparse_point = smb2_parse_reparse_point,
- 	.query_mf_symlink = smb3_query_mf_symlink,
- 	.create_mf_symlink = smb3_create_mf_symlink,
-+	.create_reparse_symlink = smb2_create_reparse_symlink,
- 	.open = smb2_open_file,
- 	.set_fid = smb2_set_fid,
- 	.close = smb2_close_file,
-@@ -5424,6 +5491,7 @@ struct smb_version_operations smb21_operations = {
- 	.parse_reparse_point = smb2_parse_reparse_point,
- 	.query_mf_symlink = smb3_query_mf_symlink,
- 	.create_mf_symlink = smb3_create_mf_symlink,
-+	.create_reparse_symlink = smb2_create_reparse_symlink,
- 	.open = smb2_open_file,
- 	.set_fid = smb2_set_fid,
- 	.close = smb2_close_file,
-@@ -5530,6 +5598,7 @@ struct smb_version_operations smb30_operations = {
- 	.parse_reparse_point = smb2_parse_reparse_point,
- 	.query_mf_symlink = smb3_query_mf_symlink,
- 	.create_mf_symlink = smb3_create_mf_symlink,
-+	.create_reparse_symlink = smb2_create_reparse_symlink,
- 	.open = smb2_open_file,
- 	.set_fid = smb2_set_fid,
- 	.close = smb2_close_file,
-@@ -5645,6 +5714,7 @@ struct smb_version_operations smb311_operations = {
- 	.parse_reparse_point = smb2_parse_reparse_point,
- 	.query_mf_symlink = smb3_query_mf_symlink,
- 	.create_mf_symlink = smb3_create_mf_symlink,
-+	.create_reparse_symlink = smb2_create_reparse_symlink,
- 	.open = smb2_open_file,
- 	.set_fid = smb2_set_fid,
- 	.close = smb2_close_file,
--- 
-2.43.0
-
+-        path = nodes.reprunicode(path)
+         encoding = self.options.get(
+             'encoding', self.state.document.settings.input_encoding)
+         e_handler=self.state.document.settings.input_encoding_error_handler
 
 
 
