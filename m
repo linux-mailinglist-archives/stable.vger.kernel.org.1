@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-45877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0FE8CD453
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84598CD38D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE67F1C20D49
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 965B1281C57
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEC514A4C1;
-	Thu, 23 May 2024 13:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AA514A62F;
+	Thu, 23 May 2024 13:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu6TwlXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCwbkrjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEF21D545;
-	Thu, 23 May 2024 13:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACBC1E504;
+	Thu, 23 May 2024 13:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470619; cv=none; b=RK2OgRxsT+7UUN0Ix7Skj/KOgEnmMaF4Qgi6N7CZ7nhKpECf79a+hW7e+9haqM6tic1bq2I/a0eN4c73954qEv5B9V9rm6Rf0wZrc20D47rAyU7ZN7L9sleCdi5ZJ12p1UmgS+mkgZ84VbuntEjNhi3YF9tmLCyKxqP9cVmXJ60=
+	t=1716470180; cv=none; b=Nlv7IM+Z4GzuCnHjI0KgU0ZG5UCKNVEV27pMYDBivPPwPiYd5sOrgsXrCuAqamjpYlCwF6VhTX1VtX3yZw11XKG+NSmB+AK+fSHpsgOVEfHGJFwjfhlilPRcDdVd+Ru0E4Q1s68AqWMY1SdNYNwQeyYrNKrm5hVMED3+bx+r/gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470619; c=relaxed/simple;
-	bh=uaJx5xKa7R1e7pC6dwo/WlkBkDH0IPk2ylhcy6qdRtQ=;
+	s=arc-20240116; t=1716470180; c=relaxed/simple;
+	bh=Y0XPkQK3dhz+RIIYXEkMrtWFlJfgQzQsBQN6eQvKpRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RNcgJJ+BwpxHiS00G5+LlhbPXduJiDTNrrFGyh3qLR5I1tFvYuG842zXbzO0b0N9MViRJtdQ6ts+OwNfIuvAFYT9J6YyMgkqBJA704czEH5nC05sYMUmmkip3UFnFJa/QlLoGHu4PaN05ztEVc49GEuIH0QM3msSdaWIKHghA0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu6TwlXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA153C3277B;
-	Thu, 23 May 2024 13:23:38 +0000 (UTC)
+	 MIME-Version; b=OTvfFVYJy3O4YDCGRwXDPPHFlonpA9R0WMm7HXneM7dJ9pZ7DmlfjH76i5s/7XjllpfMmsdY8MXX3G33REDAdqLrnAsckYkRh15htuA5xrHa/oCULBjbcz9LvtpCwUPwm5z7C/QximmvpxLlw1t9NuMkKotiGS/fdYQ+qeQctKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCwbkrjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8618EC3277B;
+	Thu, 23 May 2024 13:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470619;
-	bh=uaJx5xKa7R1e7pC6dwo/WlkBkDH0IPk2ylhcy6qdRtQ=;
+	s=korg; t=1716470179;
+	bh=Y0XPkQK3dhz+RIIYXEkMrtWFlJfgQzQsBQN6eQvKpRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tu6TwlXk6yHmRa9HoXg1/2Whe8H2oZjGXnF8HoeOPScK1M604b/smxyWEHU4L1N4q
-	 xQP36Yr3wJl1XMoMhh3GM7n+D3D87oiOPdENXS1ldl2eHhHjShsCIZmScB9gaZOYEX
-	 tZL2Qh3S1ScAsrKMmZxE5J+afSNCMmNJvfO4jpkk=
+	b=dCwbkrjji5OXy14FSYw7zUvvSqHDfvEiws+iK5dH2RQmDAT5jpgkZ06tP6rAIQ48J
+	 oIvZTRHj9gyiYsEcW+pptbNPjeWFg4T+g7hQVShpYD1mXDjx2VdiDyxwOgkcZolwxg
+	 mZ1sLUU++3JwjZ7zUtQb7T4JiYDZsQQoO3Bfn8fY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/102] smb: client: dont clobber ->i_rdev from cached reparse points
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.10 13/15] usb: typec: ucsi: displayport: Fix potential deadlock
 Date: Thu, 23 May 2024 15:12:55 +0200
-Message-ID: <20240523130343.600043667@linuxfoundation.org>
+Message-ID: <20240523130326.958599196@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
+References: <20240523130326.451548488@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit 66c9314b61ed5b7bfcff0d89359aa0f975c0ab53 ]
+commit b791a67f68121d69108640d4a3e591d210ffe850 upstream.
 
-Don't clobber ->i_rdev from valid reparse inodes over readdir(2) as it
-can't be provided by query dir responses.
+The function ucsi_displayport_work() does not access the
+connector, so it also must not acquire the connector lock.
 
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a potential deadlock scenario:
+
+ucsi_displayport_work() -> lock(&con->lock)
+typec_altmode_vdm()
+dp_altmode_vdm()
+dp_altmode_work()
+typec_altmode_enter()
+ucsi_displayport_enter() -> lock(&con->lock)
+
+Reported-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240507134316.161999-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/readdir.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/typec/ucsi/displayport.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
-index 47f5a82bc2507..73ff9bd059682 100644
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -133,14 +133,14 @@ cifs_prime_dcache(struct dentry *parent, struct qstr *name,
- 				 * Query dir responses don't provide enough
- 				 * information about reparse points other than
- 				 * their reparse tags.  Save an invalidation by
--				 * not clobbering the existing mode, size and
--				 * symlink target (if any) when reparse tag and
--				 * ctime haven't changed.
-+				 * not clobbering some existing attributes when
-+				 * reparse tag and ctime haven't changed.
- 				 */
- 				rc = 0;
- 				if (fattr->cf_cifsattrs & ATTR_REPARSE) {
- 					if (likely(reparse_inode_match(inode, fattr))) {
- 						fattr->cf_mode = inode->i_mode;
-+						fattr->cf_rdev = inode->i_rdev;
- 						fattr->cf_eof = CIFS_I(inode)->server_eof;
- 						fattr->cf_symlink_target = NULL;
- 					} else {
--- 
-2.43.0
-
+--- a/drivers/usb/typec/ucsi/displayport.c
++++ b/drivers/usb/typec/ucsi/displayport.c
+@@ -249,8 +249,6 @@ static void ucsi_displayport_work(struct
+ 	struct ucsi_dp *dp = container_of(work, struct ucsi_dp, work);
+ 	int ret;
+ 
+-	mutex_lock(&dp->con->lock);
+-
+ 	ret = typec_altmode_vdm(dp->alt, dp->header,
+ 				dp->vdo_data, dp->vdo_size);
+ 	if (ret)
+@@ -259,8 +257,6 @@ static void ucsi_displayport_work(struct
+ 	dp->vdo_data = NULL;
+ 	dp->vdo_size = 0;
+ 	dp->header = 0;
+-
+-	mutex_unlock(&dp->con->lock);
+ }
+ 
+ void ucsi_displayport_remove_partner(struct typec_altmode *alt)
 
 
 
