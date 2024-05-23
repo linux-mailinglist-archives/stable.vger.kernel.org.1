@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4F48CD371
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817C78CD37D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1C71C21165
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFFD7B21E24
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3143B14AD1B;
-	Thu, 23 May 2024 13:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628DD1E4B0;
+	Thu, 23 May 2024 13:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFCcBh4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPr+3DfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E164814A604;
-	Thu, 23 May 2024 13:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2061D52D;
+	Thu, 23 May 2024 13:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470114; cv=none; b=IaTFMt1zEHz/dE0SkyBcdjne1aQ23MIQTnyZPLoFTJREFp9DpsZrIN6vY1SyrsyNCxofVZpbgP9IWRWs7n9WXfmEN0lkY/anQvExdncdb61ujig1C9iOXmZSrtN0OjObzIfnw6HlbL6USWUbWBj0yU7PoiHS+VTvl0cMVouGEEY=
+	t=1716470146; cv=none; b=Bn0LS3WLT47RZ8+vDIK+WWh9eaJQ7t4wn2NR60HPmntuoTtWA6yA64L+tRloZEYAIM/dTdcRR8i2AO6c+lI7hsjT17z9ln7p03he8lpCWiQXQWU12JUj3jR9KpLC+f+7BXTQYnuSMJy/J39/8SiBsU3o6nL5q8op4/W07FBiLR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470114; c=relaxed/simple;
-	bh=6NEldmJ5J0jO6MKxjU6pT882xrRKpgXkw0bavVc2ZUk=;
+	s=arc-20240116; t=1716470146; c=relaxed/simple;
+	bh=exfcqu3Y+++IZE6eH6/3RPN7L+4ZQEzB7BMUXLEyK5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZlvWpECYCDngr1WMXKYzSrIr1JJaZJ3FAZktFjbXVbLGBqJ8MnFpwqmUMVb0LrMLsGBvsQ1v9OBR/TTVaEHLRFi2zJTH1MgsSABIUDJHW4U4kdZ5g+HpxtqaYlJyZevuIpBzpmZzZLKA6Zxare6RJiOyasiWuTMDo+bXH8q1PCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFCcBh4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C066C3277B;
-	Thu, 23 May 2024 13:15:13 +0000 (UTC)
+	 MIME-Version; b=fDQ28c/ix+65o36FssGWFRsTTUlU48sYndEOZlH+l3+hU+DeZN5Fq6EyMRKRpihZD4dvra0Bx6v98a39bqswV8LiwuGDIWqnn8+8U8Y7mzb6cADB+ZdpkYWEFpUyMtgWFn7miAU6aihXUFJFbwCqXeVODRp2ZRw1A59eT4Y23Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPr+3DfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442A0C2BD10;
+	Thu, 23 May 2024 13:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470113;
-	bh=6NEldmJ5J0jO6MKxjU6pT882xrRKpgXkw0bavVc2ZUk=;
+	s=korg; t=1716470145;
+	bh=exfcqu3Y+++IZE6eH6/3RPN7L+4ZQEzB7BMUXLEyK5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zFCcBh4MyKwDx+SWx/H2f7ScWvR+GtsKXrGcjJmqn/zpyS7asdYsBjpNVx/I3J9Hk
-	 huU6dD4YNOfxjWvjucVD8hzWeUyGtXGHX5ZbdUWQXR++7N+75JS4Vpio04XMHqkodk
-	 eDHbNUpDjVTDD/38xzenaF+awNJ+QbdA4sycFtOI=
+	b=qPr+3DfV9TriTOzjcBLuDyrdNL08BUADVQER4zkIQ7trfPcjEsIxVE4fZOuvIFema
+	 3EomWy1/Hd1Tr46JVbtNPhqYbJCwygpQwZkx+2i29kgvIB2VVauSjdtrSN8TZagy4/
+	 7fMQbTJl14uZDapMr0wKME/cso9bExfymClEEb7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 4.19 18/18] docs: kernel_include.py: Cope with docutils 0.21
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 08/16] net: bcmgenet: synchronize UMAC_CMD access
 Date: Thu, 23 May 2024 15:12:41 +0200
-Message-ID: <20240523130326.429632764@linuxfoundation.org>
+Message-ID: <20240523130326.062490292@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
-References: <20240523130325.727602650@linuxfoundation.org>
+In-Reply-To: <20240523130325.743454852@linuxfoundation.org>
+References: <20240523130325.743454852@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akira Yokosawa <akiyks@gmail.com>
+From: Doug Berger <opendmb@gmail.com>
 
-commit d43ddd5c91802a46354fa4c4381416ef760676e2 upstream.
+commit 0d5e2a82232605b337972fb2c7d0cbc46898aca1 upstream.
 
-Running "make htmldocs" on a newly installed Sphinx 7.3.7 ends up in
-a build error:
+The UMAC_CMD register is written from different execution
+contexts and has insufficient synchronization protections to
+prevent possible corruption. Of particular concern are the
+acceses from the phy_device delayed work context used by the
+adjust_link call and the BH context that may be used by the
+ndo_set_rx_mode call.
 
-    Sphinx parallel build error:
-    AttributeError: module 'docutils.nodes' has no attribute 'reprunicode'
+A spinlock is added to the driver to protect contended register
+accesses (i.e. reg_lock) and it is used to synchronize accesses
+to UMAC_CMD.
 
-docutils 0.21 has removed nodes.reprunicode, quote from release note [1]:
-
-  * Removed objects:
-
-    docutils.nodes.reprunicode, docutils.nodes.ensure_str()
-        Python 2 compatibility hacks
-
-Sphinx 7.3.0 supports docutils 0.21 [2]:
-
-kernel_include.py, whose origin is misc.py of docutils, uses reprunicode.
-
-Upstream docutils removed the offending line from the corresponding file
-(docutils/docutils/parsers/rst/directives/misc.py) in January 2022.
-Quoting the changelog [3]:
-
-    Deprecate `nodes.reprunicode` and `nodes.ensure_str()`.
-
-    Drop uses of the deprecated constructs (not required with Python 3).
-
-Do the same for kernel_include.py.
-
-Tested against:
-  - Sphinx 2.4.5 (docutils 0.17.1)
-  - Sphinx 3.4.3 (docutils 0.17.1)
-  - Sphinx 5.3.0 (docutils 0.18.1)
-  - Sphinx 6.2.1 (docutils 0.19)
-  - Sphinx 7.2.6 (docutils 0.20.1)
-  - Sphinx 7.3.7 (docutils 0.21.2)
-
-Link: http://www.docutils.org/RELEASE-NOTES.html#release-0-21-2024-04-09 [1]
-Link: https://www.sphinx-doc.org/en/master/changes.html#release-7-3-0-released-apr-16-2024 [2]
-Link: https://github.com/docutils/docutils/commit/c8471ce47a24 [3]
-Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/faf5fa45-2a9d-4573-9d2e-3930bdc1ed65@gmail.com
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/sphinx/kernel_include.py |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c     |   12 +++++++++++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h     |    2 ++
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c |    6 ++++++
+ drivers/net/ethernet/broadcom/genet/bcmmii.c       |    2 ++
+ 4 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/Documentation/sphinx/kernel_include.py
-+++ b/Documentation/sphinx/kernel_include.py
-@@ -94,7 +94,6 @@ class KernelInclude(Include):
-         # HINT: this is the only line I had to change / commented out:
-         #path = utils.relative_path(None, path)
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1990,14 +1990,18 @@ static void umac_enable_set(struct bcmge
+ {
+ 	u32 reg;
  
--        path = nodes.reprunicode(path)
-         encoding = self.options.get(
-             'encoding', self.state.document.settings.input_encoding)
-         e_handler=self.state.document.settings.input_encoding_error_handler
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+-	if (reg & CMD_SW_RESET)
++	if (reg & CMD_SW_RESET) {
++		spin_unlock_bh(&priv->reg_lock);
+ 		return;
++	}
+ 	if (enable)
+ 		reg |= mask;
+ 	else
+ 		reg &= ~mask;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	/* UniMAC stops on a packet boundary, wait for a full-size packet
+ 	 * to be processed
+@@ -2013,8 +2017,10 @@ static void reset_umac(struct bcmgenet_p
+ 	udelay(10);
+ 
+ 	/* issue soft reset and disable MAC while updating its registers */
++	spin_lock_bh(&priv->reg_lock);
+ 	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
+ 	udelay(2);
++	spin_unlock_bh(&priv->reg_lock);
+ }
+ 
+ static void bcmgenet_intr_disable(struct bcmgenet_priv *priv)
+@@ -3148,16 +3154,19 @@ static void bcmgenet_set_rx_mode(struct
+ 	 * 3. The number of filters needed exceeds the number filters
+ 	 *    supported by the hardware.
+ 	*/
++	spin_lock(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if ((dev->flags & (IFF_PROMISC | IFF_ALLMULTI)) ||
+ 	    (nfilter > MAX_MDF_FILTER)) {
+ 		reg |= CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
+ 		bcmgenet_umac_writel(priv, 0, UMAC_MDF_CTRL);
+ 		return;
+ 	} else {
+ 		reg &= ~CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
+ 	}
+ 
+ 	/* update MDF filter */
+@@ -3515,6 +3524,7 @@ static int bcmgenet_probe(struct platfor
+ 		goto err;
+ 	}
+ 
++	spin_lock_init(&priv->reg_lock);
+ 	spin_lock_init(&priv->lock);
+ 
+ 	SET_NETDEV_DEV(dev, &pdev->dev);
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -608,6 +608,8 @@ struct bcmgenet_rx_ring {
+ /* device context */
+ struct bcmgenet_priv {
+ 	void __iomem *base;
++	/* reg_lock: lock to serialize access to shared registers */
++	spinlock_t reg_lock;
+ 	enum bcmgenet_version version;
+ 	struct net_device *dev;
+ 
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+@@ -133,6 +133,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	}
+ 
+ 	/* Can't suspend with WoL if MAC is still in reset */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if (reg & CMD_SW_RESET)
+ 		reg &= ~CMD_SW_RESET;
+@@ -140,6 +141,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* disable RX */
+ 	reg &= ~CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 	mdelay(10);
+ 
+ 	reg = bcmgenet_umac_readl(priv, UMAC_MPD_CTRL);
+@@ -163,6 +165,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 		  retries);
+ 
+ 	/* Enable CRC forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	priv->crc_fwd_en = 1;
+ 	reg |= CMD_CRC_FWD;
+@@ -170,6 +173,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* Receiver must be enabled for WOL MP detection */
+ 	reg |= CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	return 0;
+ }
+@@ -191,8 +195,10 @@ void bcmgenet_wol_power_up_cfg(struct bc
+ 	bcmgenet_umac_writel(priv, reg, UMAC_MPD_CTRL);
+ 
+ 	/* Disable CRC Forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~CMD_CRC_FWD;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 	priv->crc_fwd_en = 0;
+ }
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -91,6 +91,7 @@ void bcmgenet_mii_setup(struct net_devic
+ 		reg |= RGMII_LINK;
+ 		bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
+ 
++		spin_lock_bh(&priv->reg_lock);
+ 		reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 		reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
+ 			       CMD_HD_EN |
+@@ -103,6 +104,7 @@ void bcmgenet_mii_setup(struct net_devic
+ 			reg |= CMD_TX_EN | CMD_RX_EN;
+ 		}
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock_bh(&priv->reg_lock);
+ 
+ 		priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
+ 		bcmgenet_eee_enable_set(dev,
 
 
 
