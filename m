@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-45879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB47A8CD456
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF90B8CD409
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 199CB1C209BF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46B90B2155C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5906314A4F4;
-	Thu, 23 May 2024 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2652C14A60C;
+	Thu, 23 May 2024 13:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woB+UQWr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2ZTsofT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D7A1D545;
-	Thu, 23 May 2024 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0B813BAC3;
+	Thu, 23 May 2024 13:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470625; cv=none; b=BXzJyko2LPQbMkOYDbcrtM72RyOCd/w0fjapZWk0sFdr2VF1Buatdp9EjWf43yMkJaGld82EqpFKmISJVTrIH/FGc7pHpnRH8gwLDkKjcHpbViTSWN5IQv/NO8VbwiOGMrIE9Haja4Ka7Z6iu8qvDRdEK26iJ4573IPoqmVlI5M=
+	t=1716470440; cv=none; b=PDrI7wZq73r9uujZWZuicAe5kNskog/7qZxjBThX5ywMmaSKwUMnbb6s/gGGBU8omZhlFO6njZHNm97OfQb/vIWYakDgc22Mva+NTXsrCelX29r4lLYmocGZM8WJGeRwWI+b8EIksyZZ5uKADM704yfCZ25iONSmWqWqLXf/INI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470625; c=relaxed/simple;
-	bh=hjmDvl1bcA5lsfJckDYAjaF44h0vtniQmJFR6c0BqAM=;
+	s=arc-20240116; t=1716470440; c=relaxed/simple;
+	bh=qPVn5sj0hQphBFDCn+6YY3b5439rF1z4lrhn7UBoDwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eM5C6rsry4sk5WtDeZsh6kRvPjStgqTj8ZjLcw2BzmW69XEsZS4McUE94DdJiDJSDpMPXSptPZrDAR6anNgRImTxvBEzIMLrjZ2Dbu9BSbJitCW+h5MW1ncSlB4bIldXSR/vsrwyHRc17oi7GANxpQnD0iYsG59S5/GdWlbitHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woB+UQWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934EEC3277B;
-	Thu, 23 May 2024 13:23:44 +0000 (UTC)
+	 MIME-Version; b=ISPjaMTQcxxFvLg7iO5EfECjEbtvZtrZWyH2meMMoSeRCdxXlewfntt+OSvjXGvsFDLUBFbaZFvJ8nu/RG5BkRD37vbSFjc6KG6/enbwKzr0PVZ6eF2aW2pcVK3G5pla8wJyZZx8kuSsSf442t3z/ZiFAGSTTgDzgqtwxtgPVoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2ZTsofT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656B3C3277B;
+	Thu, 23 May 2024 13:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470625;
-	bh=hjmDvl1bcA5lsfJckDYAjaF44h0vtniQmJFR6c0BqAM=;
+	s=korg; t=1716470440;
+	bh=qPVn5sj0hQphBFDCn+6YY3b5439rF1z4lrhn7UBoDwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=woB+UQWrblSetenN07e4JnW/Wrx0d3trC9uLpgpS+B9HEbbRFcju7Ni92f0JPHKXk
-	 aNuaEY3cQFQaqv9pHtF55zh28Q3e9EmSJiUc2Bc24gDe8c5uuFLy6SPin/x+sTBLJ0
-	 0xQWuR38GUbZ5NG2UF9XcktMbEP+BsCygFE0ghSM=
+	b=G2ZTsofTirOhaQGfCQQUJgVxtyhqa0EulKquz/DWwm50LJXP9nX1miB9eo2xVWFm8
+	 6MvZ9+kqsDWBOU6DRNxfRE7z5pPtPcYC0Ld4YNUZ3P79myz05vGnDCd/tBZWp2c1u/
+	 gHosTPur7/AZGcrYgHvoP1Tyz2j6UKQcSnCfQL+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/102] smb: Fix some kernel-doc comments
+	Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Yoann Congal <yoann.congal@smile.fr>
+Subject: [PATCH 6.1 06/45] mfd: stpmic1: Fix swapped mask/unmask in irq chip
 Date: Thu, 23 May 2024 15:12:57 +0200
-Message-ID: <20240523130343.675565050@linuxfoundation.org>
+Message-ID: <20240523130332.740537717@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+From: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
 
-[ Upstream commit 72b0cbf6b81003c01d63c60180b335f7692d170e ]
+commit c79e387389d5add7cb967d2f7622c3bf5550927b upstream.
 
-Fix some kernel-doc comments to silence the warnings:
-fs/smb/server/transport_tcp.c:374: warning: Function parameter or struct member 'max_retries' not described in 'ksmbd_tcp_read'
-fs/smb/server/transport_tcp.c:423: warning: Function parameter or struct member 'iface' not described in 'create_socket'
+The usual behavior of mask registers is writing a '1' bit to
+disable (mask) an interrupt; similarly, writing a '1' bit to
+an unmask register enables (unmasks) an interrupt.
 
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Due to a longstanding issue in regmap-irq, mask and unmask
+registers were inverted when both kinds of registers were
+present on the same chip, ie. regmap-irq actually wrote '1's
+to the mask register to enable an IRQ and '1's to the unmask
+register to disable an IRQ.
+
+This was fixed by commit e8ffb12e7f06 ("regmap-irq: Fix
+inverted handling of unmask registers") but the fix is opt-in
+via mask_unmask_non_inverted = true because it requires manual
+changes for each affected driver. The new behavior will become
+the default once all drivers have been updated.
+
+The STPMIC1 has a normal mask register with separate set and
+clear registers. The driver intends to use the set & clear
+registers with regmap-irq and has compensated for regmap-irq's
+inverted behavior, and should currently be working properly.
+Thus, swap mask_base and unmask_base, and opt in to the new
+non-inverted behavior.
+
+Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20221112151835.39059-16-aidanmacdonald.0x0@gmail.com
+Cc: Yoann Congal <yoann.congal@smile.fr>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_tcp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mfd/stpmic1.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 0012919309f11..6633fa78e9b96 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -365,6 +365,7 @@ static int ksmbd_tcp_readv(struct tcp_transport *t, struct kvec *iov_orig,
-  * @t:		TCP transport instance
-  * @buf:	buffer to store read data from socket
-  * @to_read:	number of bytes to read from socket
-+ * @max_retries: number of retries if reading from socket fails
-  *
-  * Return:	on success return number of bytes read from socket,
-  *		otherwise return error number
-@@ -416,6 +417,7 @@ static void tcp_destroy_socket(struct socket *ksmbd_socket)
- 
- /**
-  * create_socket - create socket for ksmbd/0
-+ * @iface:      interface to bind the created socket to
-  *
-  * Return:	0 on success, error number otherwise
-  */
--- 
-2.43.0
-
+--- a/drivers/mfd/stpmic1.c
++++ b/drivers/mfd/stpmic1.c
+@@ -108,8 +108,9 @@ static const struct regmap_irq stpmic1_i
+ static const struct regmap_irq_chip stpmic1_regmap_irq_chip = {
+ 	.name = "pmic_irq",
+ 	.status_base = INT_PENDING_R1,
+-	.mask_base = INT_CLEAR_MASK_R1,
+-	.unmask_base = INT_SET_MASK_R1,
++	.mask_base = INT_SET_MASK_R1,
++	.unmask_base = INT_CLEAR_MASK_R1,
++	.mask_unmask_non_inverted = true,
+ 	.ack_base = INT_CLEAR_R1,
+ 	.num_regs = STPMIC1_PMIC_NUM_IRQ_REGS,
+ 	.irqs = stpmic1_irqs,
 
 
 
