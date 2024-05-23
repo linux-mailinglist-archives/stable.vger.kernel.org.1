@@ -1,225 +1,167 @@
-Return-Path: <stable+bounces-45680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DBA8CD239
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 14:22:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009BD8CD23F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 14:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598F5284021
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 12:22:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 328161C211B3
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 12:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1958C13BC02;
-	Thu, 23 May 2024 12:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2485013C3E7;
+	Thu, 23 May 2024 12:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTQgiUT8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kHMLGmED"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8531E481
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 12:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C5413BAE5
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 12:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716466926; cv=none; b=Akr3W7q/Wi//tQcjR5E5+PbQYa95SN8JrdWFT6Q/Ybdaf5ElRXiTND+72Sx3/lupnZ8kJoAarZCJM1dNtghFW2JfZSMFjmaq4MFd4ozhuQtD0PHKQwkw/MRsA+PCRyWpTE+11vo8POHGnNiK5xKi9U34tZ695U9TRy/EMJuKs9g=
+	t=1716467070; cv=none; b=pRDfwrmXsETrroz0vRIzAdvNRh1+ElYipr/LHXvGU+ja6WT2G8DwAPgRediRreAioDBeEE9gHIkj7Ebu4HhGeC5NyD4gB1380rGW0owf1t7utn14ckdWdOSTAvUpaxM1DH65cLizxL2BBQjrifCpv79fnJACq2yAqyHByrtmWf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716466926; c=relaxed/simple;
-	bh=pK4eqqBIVxn+EXHSlntLYj1Wx2rQMN+b1vtyh+h8fm8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DPaZKkhDpVA1r9/0EIQz05/1hff4/d77Hs8G4hAPhZRinRSkrgEPkeW3AaLf9zm6ShvIZ/dhDIpCmOhRu50aTprxl1uoPPGv/eaYr7Xpta5DVfwdx19mqeAaRMlfACoUxMzYewaYgtucLLd8LpNZpOHMOTOailUMM9UgPmTiYow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTQgiUT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D937C2BD10;
-	Thu, 23 May 2024 12:22:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716466926;
-	bh=pK4eqqBIVxn+EXHSlntLYj1Wx2rQMN+b1vtyh+h8fm8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=oTQgiUT8f+RSgS6Ojz5zjEP7yBsnw23k6Hu/dvnvqTO901eu1E5RlAuE8WYa0LcFZ
-	 nnCRc2M3Gj+mchNgHK0IC8EmrnuWiZcaYk2uXPjGGocpyVkAnUVpKoiCD/WYkBu7PA
-	 bP3trJyeehJCbPfUe/H9g45U7fJxi/3zfvXds4F4=
-Subject: FAILED: patch "[PATCH] usb: typec: tipd: fix event checking for tps6598x" failed to apply to 4.19-stable tree
-To: javier.carrasco@wolfvision.net,gregkh@linuxfoundation.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 May 2024 14:21:57 +0200
-Message-ID: <2024052357-thong-expensive-7cdd@gregkh>
+	s=arc-20240116; t=1716467070; c=relaxed/simple;
+	bh=x3/gDXCN8QwyY7LtftEfCAY5ZJlQ8iNcSJuXoLgkKpc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sUW9JyEVzUNSwHzPefYRn1C3JPMgF37a277soPTIo8g2tosSIg2RkUq+pQJva7i6P+ADCi71FYIFQE23D2ip3XnAh5VAiWp3bGLiIByVtnP+eOMKVRlxMZNsvxTZmz4RYr2Hmom6BebKQ19ikYi1zfDoa9xYrxpBGWEVRVUr84k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kHMLGmED; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716467068; x=1748003068;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=x3/gDXCN8QwyY7LtftEfCAY5ZJlQ8iNcSJuXoLgkKpc=;
+  b=kHMLGmEDetU4sbJMX3FLOc8LPokqJW+4nU/l4LQEF+Gj1Bn04C5+zxql
+   Diz5vyyL9ARJKOaNA4Z9raCLC9ldBDgPU/MfqvKxAEF/mVA9JjQEa6oy1
+   rjz8X4TFm+VLdEDpErGA8CEeoiulqP1sPi0fkc95nLqX81GrjeHNhLg5U
+   mFL+ueLk0/THv+LtMZ0ByZlCW33tarSzJHgaH57Nt5xA8+GzzFgPzTsQF
+   3nHjV9L89fUAgd/2eaPwI+BkBMILK60d5LIfno1MOwmhE+EQizzCCyS8e
+   hwtr0ENJ/6jyWw214ZrWv7LrshJz5V/d906wQL4+XXwxG3a477fGvwcN6
+   Q==;
+X-CSE-ConnectionGUID: XyXxLWifS5KIkaovA+ec7w==
+X-CSE-MsgGUID: Zp/zfDtUQUupPQgA4vLO6A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="12896209"
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
+   d="scan'208";a="12896209"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 05:24:28 -0700
+X-CSE-ConnectionGUID: sT/bykXxTj6c8qchiUwrMg==
+X-CSE-MsgGUID: rrME+WXwRRuhNSt37UKCEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; 
+   d="scan'208";a="33635693"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 23 May 2024 05:24:25 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Thu, 23 May 2024 15:24:24 +0300
+Date: Thu, 23 May 2024 15:24:24 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Vidya Srinivas <vidya.srinivas@intel.com>,
+	intel-gfx@lists.freedesktop.org, shawn.c.lee@intel.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/dpt: Make DPT object unshrinkable
+Message-ID: <Zk81eDBUlz_axOn4@intel.com>
+References: <20240520165634.1162470-1-vidya.srinivas@intel.com>
+ <20240522152916.1702614-1-vidya.srinivas@intel.com>
+ <5e5660ac-e14b-4759-a6f6-38cc55d37246@ursulin.net>
+ <Zk8mM0bh5QMGcSGL@intel.com>
+ <0f459a5b-4926-40ea-820e-ab0e5516a821@ursulin.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <0f459a5b-4926-40ea-820e-ab0e5516a821@ursulin.net>
+X-Patchwork-Hint: comment
 
+On Thu, May 23, 2024 at 01:07:24PM +0100, Tvrtko Ursulin wrote:
+> 
+> On 23/05/2024 12:19, Ville Syrjälä wrote:
+> > On Thu, May 23, 2024 at 09:25:45AM +0100, Tvrtko Ursulin wrote:
+> >>
+> >> On 22/05/2024 16:29, Vidya Srinivas wrote:
+> >>> In some scenarios, the DPT object gets shrunk but
+> >>> the actual framebuffer did not and thus its still
+> >>> there on the DPT's vm->bound_list. Then it tries to
+> >>> rewrite the PTEs via a stale CPU mapping. This causes panic.
+> >>>
+> >>> Suggested-by: Ville Syrjala <ville.syrjala@linux.intel.com>
+> >>> Cc: stable@vger.kernel.org
+> >>> Fixes: 0dc987b699ce ("drm/i915/display: Add smem fallback allocation for dpt")
+> >>> Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+> >>> ---
+> >>>    drivers/gpu/drm/i915/gem/i915_gem_object.h | 3 ++-
+> >>>    1 file changed, 2 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_object.h b/drivers/gpu/drm/i915/gem/i915_gem_object.h
+> >>> index 3560a062d287..e6b485fc54d4 100644
+> >>> --- a/drivers/gpu/drm/i915/gem/i915_gem_object.h
+> >>> +++ b/drivers/gpu/drm/i915/gem/i915_gem_object.h
+> >>> @@ -284,7 +284,8 @@ bool i915_gem_object_has_iomem(const struct drm_i915_gem_object *obj);
+> >>>    static inline bool
+> >>>    i915_gem_object_is_shrinkable(const struct drm_i915_gem_object *obj)
+> >>>    {
+> >>> -	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE);
+> >>> +	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE) &&
+> >>> +		!obj->is_dpt;
+> >>
+> >> Is there a reason i915_gem_object_make_unshrinkable() cannot be used to
+> >> mark the object at a suitable place?
+> > 
+> > Do you have a suitable place in mind?
+> > i915_gem_object_make_unshrinkable() contains some magic
+> > ingredients so doesn't look like it can be called willy
+> > nilly.
+> 
+> After it is created in intel_dpt_create?
+> 
+> I don't see that helper couldn't be called. It is called from madvise 
+> and tiling for instance without any apparent special considerations.
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Did you actually read through i915_gem_object_make_unshrinkable()?
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> Also, there is no mention of this angle in the commit message so I 
+> assumed it wasn't considered. If it was, then it should have been 
+> mentioned why hacky solution was chosen instead...
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 409c1cfb5a803f3cf2d17aeaf75c25c4be951b07
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052357-thong-expensive-7cdd@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+I suppose.
 
-Possible dependencies:
+> 
+> > Anyways, looks like I forgot to reply that I already pushed this
+> > with this extra comment added:
+> > /* TODO: make DPT shrinkable when it has no bound vmas */
+> 
+> ... becuase IMO the special case is quite ugly and out of place. :(
 
+Yeah, not the nicest. But there's already a is_dpt check in the
+i915_gem_object_is_framebuffer() right next door, so it's not
+*that* out of place.
 
+Another option maybe could be to manually clear
+I915_GEM_OBJECT_IS_SHRINKABLE but I don't think that is
+supposed to be mutable, so might also have other issues.
+So a more proper solution with that approach would perhaps
+need some kind of gem_create_shmem_unshrinkable() function.
 
-thanks,
+> 
+> I don't remember from the top of my head how DPT magic works but if 
+> shrinker protection needs to be tied with VMAs there is also 
+> i915_make_make(un)shrinkable to try.
 
-greg k-h
+I presume you mistyped something there.
 
------------------- original commit in Linus's tree ------------------
-
-From 409c1cfb5a803f3cf2d17aeaf75c25c4be951b07 Mon Sep 17 00:00:00 2001
-From: Javier Carrasco <javier.carrasco@wolfvision.net>
-Date: Mon, 29 Apr 2024 15:35:58 +0200
-Subject: [PATCH] usb: typec: tipd: fix event checking for tps6598x
-
-The current interrupt service routine of the tps6598x only reads the
-first 64 bits of the INT_EVENT1 and INT_EVENT2 registers, which means
-that any event above that range will be ignored, leaving interrupts
-unattended. Moreover, those events will not be cleared, and the device
-will keep the interrupt enabled.
-
-This issue has been observed while attempting to load patches, and the
-'ReadyForPatch' field (bit 81) of INT_EVENT1 was set.
-
-Given that older versions of the tps6598x (1, 2 and 6) provide 8-byte
-registers, a mechanism based on the upper byte of the version register
-(0x0F) has been included. The manufacturer has confirmed [1] that this
-byte is always 0 for older versions, and either 0xF7 (DH parts) or 0xF9
-(DK parts) is returned in newer versions (7 and 8).
-
-Read the complete INT_EVENT registers to handle all interrupts generated
-by the device and account for the hardware version to select the
-register size.
-
-Link: https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1346521/tps65987d-register-command-to-distinguish-between-tps6591-2-6-and-tps65987-8 [1]
-Fixes: 0a4c005bd171 ("usb: typec: driver for TI TPS6598x USB Power Delivery controllers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
-Link: https://lore.kernel.org/r/20240429-tps6598x_fix_event_handling-v3-2-4e8e58dce489@wolfvision.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
-index 7c2f01344860..191f86da283d 100644
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -28,6 +28,7 @@
- #define TPS_REG_MODE			0x03
- #define TPS_REG_CMD1			0x08
- #define TPS_REG_DATA1			0x09
-+#define TPS_REG_VERSION			0x0F
- #define TPS_REG_INT_EVENT1		0x14
- #define TPS_REG_INT_EVENT2		0x15
- #define TPS_REG_INT_MASK1		0x16
-@@ -636,49 +637,67 @@ static irqreturn_t tps25750_interrupt(int irq, void *data)
- 
- static irqreturn_t tps6598x_interrupt(int irq, void *data)
- {
-+	int intev_len = TPS_65981_2_6_INTEVENT_LEN;
- 	struct tps6598x *tps = data;
--	u64 event1 = 0;
--	u64 event2 = 0;
-+	u64 event1[2] = { };
-+	u64 event2[2] = { };
-+	u32 version;
- 	u32 status;
- 	int ret;
- 
- 	mutex_lock(&tps->lock);
- 
--	ret = tps6598x_read64(tps, TPS_REG_INT_EVENT1, &event1);
--	ret |= tps6598x_read64(tps, TPS_REG_INT_EVENT2, &event2);
-+	ret = tps6598x_read32(tps, TPS_REG_VERSION, &version);
-+	if (ret)
-+		dev_warn(tps->dev, "%s: failed to read version (%d)\n",
-+			 __func__, ret);
-+
-+	if (TPS_VERSION_HW_VERSION(version) == TPS_VERSION_HW_65987_8_DH ||
-+	    TPS_VERSION_HW_VERSION(version) == TPS_VERSION_HW_65987_8_DK)
-+		intev_len = TPS_65987_8_INTEVENT_LEN;
-+
-+	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT1, event1, intev_len);
-+
-+	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT1, event1, intev_len);
- 	if (ret) {
--		dev_err(tps->dev, "%s: failed to read events\n", __func__);
-+		dev_err(tps->dev, "%s: failed to read event1\n", __func__);
- 		goto err_unlock;
- 	}
--	trace_tps6598x_irq(event1, event2);
-+	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT2, event2, intev_len);
-+	if (ret) {
-+		dev_err(tps->dev, "%s: failed to read event2\n", __func__);
-+		goto err_unlock;
-+	}
-+	trace_tps6598x_irq(event1[0], event2[0]);
- 
--	if (!(event1 | event2))
-+	if (!(event1[0] | event1[1] | event2[0] | event2[1]))
- 		goto err_unlock;
- 
- 	if (!tps6598x_read_status(tps, &status))
- 		goto err_clear_ints;
- 
--	if ((event1 | event2) & TPS_REG_INT_POWER_STATUS_UPDATE)
-+	if ((event1[0] | event2[0]) & TPS_REG_INT_POWER_STATUS_UPDATE)
- 		if (!tps6598x_read_power_status(tps))
- 			goto err_clear_ints;
- 
--	if ((event1 | event2) & TPS_REG_INT_DATA_STATUS_UPDATE)
-+	if ((event1[0] | event2[0]) & TPS_REG_INT_DATA_STATUS_UPDATE)
- 		if (!tps6598x_read_data_status(tps))
- 			goto err_clear_ints;
- 
- 	/* Handle plug insert or removal */
--	if ((event1 | event2) & TPS_REG_INT_PLUG_EVENT)
-+	if ((event1[0] | event2[0]) & TPS_REG_INT_PLUG_EVENT)
- 		tps6598x_handle_plug_event(tps, status);
- 
- err_clear_ints:
--	tps6598x_write64(tps, TPS_REG_INT_CLEAR1, event1);
--	tps6598x_write64(tps, TPS_REG_INT_CLEAR2, event2);
-+	tps6598x_block_write(tps, TPS_REG_INT_CLEAR1, event1, intev_len);
-+	tps6598x_block_write(tps, TPS_REG_INT_CLEAR2, event2, intev_len);
- 
- err_unlock:
- 	mutex_unlock(&tps->lock);
- 
--	if (event1 | event2)
-+	if (event1[0] | event1[1] | event2[0] | event2[1])
- 		return IRQ_HANDLED;
-+
- 	return IRQ_NONE;
- }
- 
-diff --git a/drivers/usb/typec/tipd/tps6598x.h b/drivers/usb/typec/tipd/tps6598x.h
-index 89b24519463a..9b23e9017452 100644
---- a/drivers/usb/typec/tipd/tps6598x.h
-+++ b/drivers/usb/typec/tipd/tps6598x.h
-@@ -253,4 +253,15 @@
- #define TPS_PTCC_DEV				2
- #define TPS_PTCC_APP				3
- 
-+/* Version Register */
-+#define TPS_VERSION_HW_VERSION_MASK            GENMASK(31, 24)
-+#define TPS_VERSION_HW_VERSION(x)              TPS_FIELD_GET(TPS_VERSION_HW_VERSION_MASK, (x))
-+#define TPS_VERSION_HW_65981_2_6               0x00
-+#define TPS_VERSION_HW_65987_8_DH              0xF7
-+#define TPS_VERSION_HW_65987_8_DK              0xF9
-+
-+/* Int Event Register length */
-+#define TPS_65981_2_6_INTEVENT_LEN             8
-+#define TPS_65987_8_INTEVENT_LEN               11
-+
- #endif /* __TPS6598X_H__ */
-
+-- 
+Ville Syrjälä
+Intel
 
