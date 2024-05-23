@@ -1,54 +1,93 @@
-Return-Path: <stable+bounces-45662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF888CD190
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:56:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5238CD196
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62C4AB209FC
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:56:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AAED1C20FE2
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABF213BC12;
-	Thu, 23 May 2024 11:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6005513BC15;
+	Thu, 23 May 2024 11:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKgGxXUw"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="3Bei+NqQ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hB3LTyjW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0F613BC0C
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 11:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A574113BAFA;
+	Thu, 23 May 2024 11:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716465387; cv=none; b=Vru2scmSblKE0Gl5xk7E7uy16mp/rFtWm0ukak+cHPGWVVxPIXkHatUx6WGIDCLzXFbLTK+7vVwAuj3zDIkEUSOBCbe3LeU6p3jCYsqebmS24/+nrIxdE4u1nZ4Vcq8Kxw3fErSPx59RbrZqJ9crKu+BVCwEsL5SUDkAhC0n8aI=
+	t=1716465469; cv=none; b=d7XRjwIWtMkwSf1dhYWmLJYIBkrHCNKuSs156Hi2JfSb9mVXQ44R94UgDVJGkzaFsnNWBDnQnAISl3NaetD1vbTU4v6tavDQxRFCYm1FloSrthrHZgbIFWN9A/ZbKNiJ9ItIL4YJux2s8239oZs52Ay8mGcrgy4JChmoGXNDWZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716465387; c=relaxed/simple;
-	bh=TSfI3BBhH4SQXg15oTofZkSYvmFAtIJa1tOfLIcM9B0=;
+	s=arc-20240116; t=1716465469; c=relaxed/simple;
+	bh=QM5IKcZN5RvrcFQh2uL0RP3WbNIjDxPpRh4An5D/hC4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jwTbr3TSrzjzqaH1Qx2obWs3Fgmq40ZAF2kFIxQYnSzK4GPs5KJ0axCbZY/R93LcPkwhR3umQtZmwowcsP0SNkAYyjJC38f5UXS7ujLeOQowz4gY0k86OunQIfaNmVkc66Ok+jWae3T908enWc0UKPSTTkMXXfq3/gzh/s0Y+zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKgGxXUw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270B5C2BD10;
-	Thu, 23 May 2024 11:56:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716465386;
-	bh=TSfI3BBhH4SQXg15oTofZkSYvmFAtIJa1tOfLIcM9B0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JKgGxXUws6sCt60RPWuz5taXnWtwkms5/6fpdduD3LQwOU2kJIKMiqBrTIbTv/J3V
-	 sly6G5AHSXiEGA6gQSxt2FrTIUCQGaVAX7WVzV20Jhh4t5tSzUIOrMFuMH6v9z7MQi
-	 g0XQptM31iLDqYq8dYkqFUwr4Q6yj5wflI+XM1UU=
-Date: Thu, 23 May 2024 13:56:23 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Oleksandr Tymoshenko <ovt@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, stable@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 6.1] arm64: atomics: lse: remove stale dependency on
- JUMP_LABEL
-Message-ID: <2024052316-diaper-carless-bcdd@gregkh>
-References: <20240521-lse-atomics-6-1-v1-1-7aa6040fc6cd@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YBE3ofnmYBgCsjo9qFGgZ+WBiv1z+H/pRcnrMS1t1wpdGWH/5nYvcZVRLHmtAlfZBvFJ2Ytcmh4y+unKdCis4qc8RW6r63yNOa5H7yeyZ4DWpcK3jR3GsJ2Dg6WvjBCRp5QvnDTw30/XchOQzW2jX9NrIBIk2bRnKI/XZcwyzgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=3Bei+NqQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hB3LTyjW; arc=none smtp.client-ip=64.147.123.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfhigh.west.internal (Postfix) with ESMTP id D77EF180017F;
+	Thu, 23 May 2024 07:57:45 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Thu, 23 May 2024 07:57:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1716465465; x=1716551865; bh=cdF/5ks+gM
+	MxZAFnyrmZUGOhVVo9SQKIKtB3OVCVODA=; b=3Bei+NqQmDoWoGVY0MQphhb+I7
+	tzv8g0BS8dh8OEACHJQy3k2e2pyFgueihF/2OjyDrHmsdvvV+FC/CPy29O1rCsH7
+	Z0FaE7u8UKUthir76AsFN4qxsc+cRzRhymKh0kRnfi7VqOK7fu0gmT8q1ZiCnJ/V
+	Qo6MiEaX9LUKSJtcwoeqWV2k02l+/5TrsHFBaRhMJDF7yDkPK7DrO3O9lEH7+URa
+	7rXAvqIx7Pj+C8nQEc1X8BaurMTOl11fnSlYGBYxzSYYxxS5QZyJgYVlN+SpjtUM
+	aTJpey7dtm1Z+hBcj5FD+WopEvKjE81eTCczFBYCsHa5vIdrFxXN5PJEYVPA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1716465465; x=1716551865; bh=cdF/5ks+gMMxZAFnyrmZUGOhVVo9
+	SQKIKtB3OVCVODA=; b=hB3LTyjWhjUayDyxwERFyr53FYdxivNpvdrgVLIFtrQs
+	Q97T4ENMb/8dHjtKwL0+sHeiP2v88TSDq9x4pWCCRq/fcJy+ZReihKiL2oNdyfzI
+	kbkicjwcsYpUUgPLZ6NRYAva3/vP56yw/lM4rUC/0T4KFJmzKQPfSbIWm+OBBqBj
+	cEVo1QkP5UAzbozAFMlyxXBJW1n0iEqKirzLyxTtb72T0vxpbvhOxDZj5RXNBkWU
+	1gyoiU49/ZE0Z9BD3yS7XxAMpMo+Rx8HRl/WLthptaX6c9T0f2TC5ZJ9kpOQOs3X
+	YGe++7ohm4Civh1oCUVqbwFm9ddI+Ol9NDzxD7Vv/g==
+X-ME-Sender: <xms:OS9PZoNEL8YIpvYR2RKQSkJYnCiT0JtVBG_2mEA9c8poI0yVia25qg>
+    <xme:OS9PZu_5Z-R5qAJZ4ugr0ijfVPjzhB18ss3B0qNfTcmVbOCXF37P9uJzXs6Vimb6z
+    Iv0LKsTyEQKpQ>
+X-ME-Received: <xmr:OS9PZvR8hkxQ8EBy-ysPJ0AfS6dDxMAeWumgFQaWz7_T9D8BqW51uRNeB4EroK4xFcldU48NqM3yfyRkN366qS5Qd7lr7xhsinQq_Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeiiedggeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
+    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
+    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:OS9PZgvYWXcHRCwNgPFWakA-RS2V-9B9eY5MnAivxQhsQtJ25VoGeg>
+    <xmx:OS9PZgejwnm0cks63IRSc8Y4cpPsXYYVE-uK0SYRKZWT4R1XrDOarQ>
+    <xmx:OS9PZk1QspP1RbVvOlluQNK2AYZ1UQaETCllNbSTVWBgIN51ebYBfA>
+    <xmx:OS9PZk_wqlZ6fqYp_c2Rp_Ojg1TUIq1a1Q1Ot-suPx6cjTG699u2Ig>
+    <xmx:OS9PZjtIxR4Ppi-r3mhFG5aVY1HhWAuiol9AG_Np5W4oTWegDt-UsW3->
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 23 May 2024 07:57:44 -0400 (EDT)
+Date: Thu, 23 May 2024 13:57:43 +0200
+From: Greg KH <greg@kroah.com>
+To: Ignat Korchagin <ignat@cloudflare.com>
+Cc: stable@vger.kernel.org, bpf@vger.kernel.org, kernel-team@cloudflare.com,
+	Pengfei Xu <pengfei.xu@intel.com>, Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>, Hou Tao <houtao1@huawei.com>
+Subject: Re: [PATCH 6.6.y] bpf: Add missing BPF_LINK_TYPE invocations
+Message-ID: <2024052328-squatting-umpire-a826@gregkh>
+References: <20240521101826.95373-1-ignat@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,74 +96,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240521-lse-atomics-6-1-v1-1-7aa6040fc6cd@google.com>
+In-Reply-To: <20240521101826.95373-1-ignat@cloudflare.com>
 
-On Tue, May 21, 2024 at 02:51:29PM +0000, Oleksandr Tymoshenko wrote:
-> From: Mark Rutland <mark.rutland@arm.com>
+On Tue, May 21, 2024 at 11:18:26AM +0100, Ignat Korchagin wrote:
+> From: Jiri Olsa <jolsa@kernel.org>
 > 
-> [ Upstream commit 657eef0a5420a02c02945ed8c87f2ddcbd255772 ]
+> commit 117211aa739a926e6555cfea883be84bee6f1695 upstream.
 > 
-> Currently CONFIG_ARM64_USE_LSE_ATOMICS depends upon CONFIG_JUMP_LABEL,
-> as the inline atomics were indirected with a static branch.
+> Pengfei Xu reported [1] Syzkaller/KASAN issue found in bpf_link_show_fdinfo.
 > 
-> However, since commit:
+> The reason is missing BPF_LINK_TYPE invocation for uprobe multi
+> link and for several other links, adding that.
 > 
->   21fb26bfb01ffe0d ("arm64: alternatives: add alternative_has_feature_*()")
+> [1] https://lore.kernel.org/bpf/ZXptoKRSLspnk2ie@xpf.sh.intel.com/
 > 
-> ... we use an alternative_branch (which is always available) rather than
-> a static branch, and hence the dependency is unnecessary.
-> 
-> Remove the stale dependency, along with the stale include. This will
-> allow the use of LSE atomics in kernels built with CONFIG_JUMP_LABEL=n,
-> and reduces the risk of circular header dependencies via <asm/lse.h>.
-> 
-> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Link: https://lore.kernel.org/r/20221114125424.2998268-1-mark.rutland@arm.com
-> Signed-off-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+> Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+> Fixes: e420bed02507 ("bpf: Add fd-based tcx multi-prog infra with link support")
+> Fixes: 84601d6ee68a ("bpf: add bpf_link support for BPF_NETFILTER programs")
+> Fixes: 35dfaad7188c ("netkit, bpf: Add bpf programmable net device")
+> Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+> Acked-by: Hou Tao <houtao1@huawei.com>
+> Link: https://lore.kernel.org/bpf/20231215230502.2769743-1-jolsa@kernel.org
+> Cc: stable@vger.kernel.org # 6.6
+> Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
 > ---
->  arch/arm64/Kconfig           | 1 -
->  arch/arm64/include/asm/lse.h | 1 -
->  2 files changed, 2 deletions(-)
+> Hi,
 > 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index c15f71501c6c..044b98a62f7b 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1752,7 +1752,6 @@ config ARM64_LSE_ATOMICS
->  
->  config ARM64_USE_LSE_ATOMICS
->  	bool "Atomic instructions"
-> -	depends on JUMP_LABEL
->  	default y
->  	help
->  	  As part of the Large System Extensions, ARMv8.1 introduces new
-> diff --git a/arch/arm64/include/asm/lse.h b/arch/arm64/include/asm/lse.h
-> index c503db8e73b0..f99d74826a7e 100644
-> --- a/arch/arm64/include/asm/lse.h
-> +++ b/arch/arm64/include/asm/lse.h
-> @@ -10,7 +10,6 @@
->  
->  #include <linux/compiler_types.h>
->  #include <linux/export.h>
-> -#include <linux/jump_label.h>
->  #include <linux/stringify.h>
->  #include <asm/alternative.h>
->  #include <asm/alternative-macros.h>
+> We have experienced a KASAN warning in production on a 6.6 kernel, similar to
+> [1]. This backported patch was adjusted to apply onto 6.6 stable branch: the
+> only change is dropping the BPF_LINK_TYPE(BPF_LINK_TYPE_NETKIT, netkit)
+> definition from the header as netkit was only introduced in 6.7 and 6.7 has the
+> backport already.
 > 
-> ---
-> base-commit: 4078fa637fcd80c8487680ec2e4ef7c58308e9aa
-> change-id: 20240521-lse-atomics-6-1-b0960e206035
-> 
-> Best regards,
-> -- 
-> Oleksandr Tymoshenko <ovt@google.com>
-> 
-> 
+> I was not able to run the syzkaller reproducer from [1], but we have not seen
+> the KASAN warning in production since applying this patch internally.
 
-Now queued up, thanks.
+Looks good, thanks for the backport, now queued up.
 
 greg k-h
 
