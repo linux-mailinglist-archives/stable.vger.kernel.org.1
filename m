@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-45917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED448CD48B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15ECE8CD430
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF1C7283B1E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB3411F23AF6
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D02C14AD29;
-	Thu, 23 May 2024 13:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CBE14A606;
+	Thu, 23 May 2024 13:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xuJo0JZK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NewIAUvP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1947614AD0E;
-	Thu, 23 May 2024 13:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4DA1E497;
+	Thu, 23 May 2024 13:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470735; cv=none; b=pAuyW2gTscCE4YcM8s0t7+nR54Zrf9Ic77nrkLF+aF1kLOxALtiV52CATv4Ivux5lOUaeTRYy5BcxYHYVCgw4t3djMwTKOqk9h3EHKUQriiYz5IzvRGY/0LLChLRZ3fNjocxW5j7WFvrI4sPPdLZYeyvpNXQ4I96rCIUxDTOsOA=
+	t=1716470539; cv=none; b=daCg+A6hnssDTlcyBpwUL0KowTIHdEtTVqaMATCvXERzF65ancNBwUH7bXZ31PCOKouqGRho6r+ouzdLMCTLSOgDQvZgVSIQYSK7v8X7KmSsYNMtrPqZAWP5zoNADyBJYEqQxAByi1wT9Th4NYlIC4/7C1uGnt4sEzIPIC1ijL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470735; c=relaxed/simple;
-	bh=VVUkQGOjyW3b6ExzWPVjwjbRIE80MKw9cRNuSeYNOKM=;
+	s=arc-20240116; t=1716470539; c=relaxed/simple;
+	bh=8AN3wU9iD8K4Oo0CwUBVw9UwAJymIglGc49c+zBFqyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRAMHaIOc4VDGGzGTEYij3jEiCzBoggFIqD4KwyS3BfZyLbUnVlGxAlYmk4BFgaZOjZHN19WeFeD4FTFHtZ+qZnH2SGIoLdvt3/r/b/3LWjHP4JNxR55zMDkPtdQLoQ2JltyX3DIRjFlRVf7HQekJAqLXu715zezYLNBatdWxvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xuJo0JZK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C57C2BD10;
-	Thu, 23 May 2024 13:25:34 +0000 (UTC)
+	 MIME-Version; b=NLAa+8HlXwsEvlAmsVkTv0i4htvQxXwxadZsk+oovpNVbeRXPV6EYbNcH06pFag0Wi/E4gc5iPVP8ZPNPRGFPiOzN8P8GHQK107jaOtiKFaG61DSqs6PvKWsEnwQeZiUALpj3gj/VrCQ4aOm9tnVXdp6qRxE+llS5O2fiLsDQAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NewIAUvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348A7C3277B;
+	Thu, 23 May 2024 13:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470735;
-	bh=VVUkQGOjyW3b6ExzWPVjwjbRIE80MKw9cRNuSeYNOKM=;
+	s=korg; t=1716470538;
+	bh=8AN3wU9iD8K4Oo0CwUBVw9UwAJymIglGc49c+zBFqyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xuJo0JZKx+jOvPRlCwSWV0EaFImsAcWn3MmcU3Rg5lv6rtGasgaC3gcCG2IInHX3+
-	 2hRdOFtIdtGGmsXgU78d3yZoIxEV8cIkQZRlT4fHpRaNsdCGhIDcZVAUktV8gQBSh6
-	 YBgPoKeSkUyOPpcwSa3p0/IC0B1KGszW7Si1IDv0=
+	b=NewIAUvPB87Z70qTurCe15cFwRiWrQqsAHxE82jH+jJCgOUXjUoLaFvhVgx9bWIEa
+	 tSJCV/OZnnvFc0otfU9vjn9YEUW1INakhzPPvsGgSk4vcFRd6qC+s4GPOEBZyHvw8y
+	 Urjm4nUbuzddg7bF8vY1loTV/SqKoawFJnJCYxOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/102] smb311: correct incorrect offset field in compression header
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.8 07/23] KEYS: trusted: Fix memory leak in tpm2_key_encode()
 Date: Thu, 23 May 2024 15:13:34 +0200
-Message-ID: <20240523130345.071844031@linuxfoundation.org>
+Message-ID: <20240523130330.024423583@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
+References: <20240523130329.745905823@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +60,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit 68c5818a27afcb5cdddab041b82e9d47c996cb6a ]
+commit ffcaa2172cc1a85ddb8b783de96d38ca8855e248 upstream.
 
-The offset field in the compression header is 32 bits not 16.
+'scratch' is never freed. Fix this by calling kfree() in the success, and
+in the error case.
 
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Reported-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # +v5.13
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/common/smb2pdu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/keys/trusted-keys/trusted_tpm2.c |   24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
-index 61c6e72ccddc4..735614d233a06 100644
---- a/fs/smb/common/smb2pdu.h
-+++ b/fs/smb/common/smb2pdu.h
-@@ -227,7 +227,7 @@ struct smb2_compression_hdr {
- 	__le32 OriginalCompressedSegmentSize;
- 	__le16 CompressionAlgorithm;
- 	__le16 Flags;
--	__le16 Offset; /* this is the size of the uncompressed SMB2 header below */
-+	__le32 Offset; /* this is the size of the uncompressed SMB2 header below */
- 	/* uncompressed SMB2 header (READ or WRITE) goes here */
- 	/* compressed data goes here */
- } __packed;
--- 
-2.43.0
-
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -38,6 +38,7 @@ static int tpm2_key_encode(struct truste
+ 	u8 *end_work = scratch + SCRATCH_SIZE;
+ 	u8 *priv, *pub;
+ 	u16 priv_len, pub_len;
++	int ret;
+ 
+ 	priv_len = get_unaligned_be16(src) + 2;
+ 	priv = src;
+@@ -57,8 +58,10 @@ static int tpm2_key_encode(struct truste
+ 		unsigned char bool[3], *w = bool;
+ 		/* tag 0 is emptyAuth */
+ 		w = asn1_encode_boolean(w, w + sizeof(bool), true);
+-		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
+-			return PTR_ERR(w);
++		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
++			ret = PTR_ERR(w);
++			goto err;
++		}
+ 		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
+ 	}
+ 
+@@ -69,8 +72,10 @@ static int tpm2_key_encode(struct truste
+ 	 * trigger, so if it does there's something nefarious going on
+ 	 */
+ 	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
+-		 "BUG: scratch buffer is too small"))
+-		return -EINVAL;
++		 "BUG: scratch buffer is too small")) {
++		ret = -EINVAL;
++		goto err;
++	}
+ 
+ 	work = asn1_encode_integer(work, end_work, options->keyhandle);
+ 	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
+@@ -79,10 +84,17 @@ static int tpm2_key_encode(struct truste
+ 	work1 = payload->blob;
+ 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
+ 				     scratch, work - scratch);
+-	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
+-		return PTR_ERR(work1);
++	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
++		ret = PTR_ERR(work1);
++		goto err;
++	}
+ 
++	kfree(scratch);
+ 	return work1 - payload->blob;
++
++err:
++	kfree(scratch);
++	return ret;
+ }
+ 
+ struct tpm2_key_context {
 
 
 
