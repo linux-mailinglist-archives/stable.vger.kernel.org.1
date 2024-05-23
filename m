@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-45764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296818CD3C3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 469D48CD3BE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC1731F2595C
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01C382852AE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D857414AD03;
-	Thu, 23 May 2024 13:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AB014A62A;
+	Thu, 23 May 2024 13:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHwdI+XD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1y0OT2T7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9524E2AE94;
-	Thu, 23 May 2024 13:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4026B13B7AE;
+	Thu, 23 May 2024 13:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470294; cv=none; b=BjWNpyVFqLswEIPb7PC1nIvuFoklURBDNawKdIWkHyDWVax9zQCs01ndgohy1xVJdMM3cBJxHttFI6eUgQ8i1V2keS64aQk2Mo8Pgg62PCbofL/bAy2gffO+u/eEwT5PKou/En5SN+F4hdFv8PgalBMtnHkyCRgyFiprCfsj/fY=
+	t=1716470280; cv=none; b=RnFKijapBPU6vesmUf8AQkzFONt2GzpTIhlme1gGkqMbkovAY6lymk3hEcfq2aX41JCiCinIK9MzP/EDS5hd6puzszg+yue5sj7WQ1mGLGiL3KE3M3P+G47S9rTAM68yMs9mmOA8+N7iZMpDbIESj7gR9O842gyU7h91CsVk+6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470294; c=relaxed/simple;
-	bh=clbvBLTGA/dWwceJit2jmVA4H1ec14yENQHlDGM+eMA=;
+	s=arc-20240116; t=1716470280; c=relaxed/simple;
+	bh=1IDhpaEKD2zqJ4fJ2bWGcr9uglXWbY0V7pnmp4ueZg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INbs+bxHpHB/fJA0gXMAIfma6oe/j9GJdV4WOyhaJY3f4HYn8Vd4wYQ081jIA+E4d1dP7A7w4Fkqzlxk1uk/vkG5MOuENlaEh/FX56KRH22ZFS8DhOUNu2wTI1eS1tdA3C7M3NglFc9VKrVW04LIqhhO0b9TvjypkJ2pUXla34k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHwdI+XD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D49EC2BD10;
-	Thu, 23 May 2024 13:18:13 +0000 (UTC)
+	 MIME-Version; b=cq0hY/hjnpSTqrI2RqovWFyE9ZUoqWgVbYnV3wez+aw6afdb9sTAHCFF5WVWEBNBcUUHbbWKps0OKsQdQWklcujUK/+wNPi08LXigMBUT3jpF1twUJAwulI6CzeL8zpfD7Vgm8hXSYE4SWAL8SZ5jDSi1hY3ma0P+t7zIeKIyKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1y0OT2T7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD700C2BD10;
+	Thu, 23 May 2024 13:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470294;
-	bh=clbvBLTGA/dWwceJit2jmVA4H1ec14yENQHlDGM+eMA=;
+	s=korg; t=1716470280;
+	bh=1IDhpaEKD2zqJ4fJ2bWGcr9uglXWbY0V7pnmp4ueZg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pHwdI+XDtL7G+hEV+zY4gpRLF0TtslO5b89Oao4Urm+filLbaUF9ulXX2xCnq9BCF
-	 9eEFXkQOrAakVE7WKG6lg16YCC/nPjyh5ahm8YsWCxxsz5xiaDIGQMHiIPIaRTjf7E
-	 /NVfqhDpSRIyXHGE4I7z4sSsZRwDsU/hltyN/TNU=
+	b=1y0OT2T7sWsYJNPeBvVvycWoPNZTCF73kOQiuZbeCxL3akCVnHSMM70Zt92K9AzV+
+	 0RTEqpFwYQDfSsQ+moPHlZpzE3qHe9Dup9fwMwyEMKjZDAzseMBznLuMLiOPSGzp6B
+	 CnMGiDoAgiB8372Y0t3rhFKqorvG3EqgLz7CfdbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	valis <sec@valis.email>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Shaoying Xu <shaoyi@amazon.com>
-Subject: [PATCH 5.15 11/23] tls: fix race between async notify and socket close
+	SeongJae Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 22/25] Docs/admin-guide/mm/damon/usage: fix wrong example of DAMOS filter matching sysfs file
 Date: Thu, 23 May 2024 15:13:07 +0200
-Message-ID: <20240523130328.380394341@linuxfoundation.org>
+Message-ID: <20240523130331.217812248@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+References: <20240523130330.386580714@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,174 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: SeongJae Park <sj@kernel.org>
 
-commit aec7961916f3f9e88766e2688992da6980f11b8d upstream.
+commit da2a061888883e067e8e649d086df35c92c760a7 upstream.
 
-The submitting thread (one which called recvmsg/sendmsg)
-may exit as soon as the async crypto handler calls complete()
-so any code past that point risks touching already freed data.
+The example usage of DAMOS filter sysfs files, specifically the part of
+'matching' file writing for memcg type filter, is wrong.  The intention is
+to exclude pages of a memcg that already getting enough care from a given
+scheme, but the example is setting the filter to apply the scheme to only
+the pages of the memcg.  Fix it.
 
-Try to avoid the locking and extra flags altogether.
-Have the main thread hold an extra reference, this way
-we can depend solely on the atomic ref counter for
-synchronization.
-
-Don't futz with reiniting the completion, either, we are now
-tightly controlling when completion fires.
-
-Reported-by: valis <sec@valis.email>
-Fixes: 0cada33241d9 ("net/tls: fix race condition causing kernel panic")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[v5.15: fixed contextual conflicts in struct tls_sw_context_rx and func
-init_ctx_rx; replaced DEBUG_NET_WARN_ON_ONCE with BUILD_BUG_ON_INVALID
-since they're equivalent when DEBUG_NET is not defined]
-Cc: <stable@vger.kernel.org> # 5.15
-Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
+Link: https://lkml.kernel.org/r/20240503180318.72798-7-sj@kernel.org
+Fixes: 9b7f9322a530 ("Docs/admin-guide/mm/damon/usage: document DAMOS filters of sysfs")
+Closes: https://lore.kernel.org/r/20240317191358.97578-1-sj@kernel.org
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.3.x]
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tls.h |    5 -----
- net/tls/tls_sw.c  |   43 ++++++++++---------------------------------
- 2 files changed, 10 insertions(+), 38 deletions(-)
+ Documentation/admin-guide/mm/damon/usage.rst |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -128,9 +128,6 @@ struct tls_sw_context_tx {
- 	struct tls_rec *open_rec;
- 	struct list_head tx_list;
- 	atomic_t encrypt_pending;
--	/* protect crypto_wait with encrypt_pending */
--	spinlock_t encrypt_compl_lock;
--	int async_notify;
- 	u8 async_capable:1;
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -434,7 +434,7 @@ pages of all memory cgroups except ``/ha
+     # # further filter out all cgroups except one at '/having_care_already'
+     echo memcg > 1/type
+     echo /having_care_already > 1/memcg_path
+-    echo N > 1/matching
++    echo Y > 1/matching
  
- #define BIT_TX_SCHEDULED	0
-@@ -148,8 +145,6 @@ struct tls_sw_context_rx {
- 	struct sk_buff *recv_pkt;
- 	u8 async_capable:1;
- 	atomic_t decrypt_pending;
--	/* protect crypto_wait with decrypt_pending*/
--	spinlock_t decrypt_compl_lock;
- };
- 
- struct tls_record_info {
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -220,22 +220,15 @@ static void tls_decrypt_done(struct cryp
- 
- 	kfree(aead_req);
- 
--	spin_lock_bh(&ctx->decrypt_compl_lock);
--	if (!atomic_dec_return(&ctx->decrypt_pending))
-+	if (atomic_dec_and_test(&ctx->decrypt_pending))
- 		complete(&ctx->async_wait.completion);
--	spin_unlock_bh(&ctx->decrypt_compl_lock);
- }
- 
- static int tls_decrypt_async_wait(struct tls_sw_context_rx *ctx)
- {
--	int pending;
--
--	spin_lock_bh(&ctx->decrypt_compl_lock);
--	reinit_completion(&ctx->async_wait.completion);
--	pending = atomic_read(&ctx->decrypt_pending);
--	spin_unlock_bh(&ctx->decrypt_compl_lock);
--	if (pending)
-+	if (!atomic_dec_and_test(&ctx->decrypt_pending))
- 		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
-+	atomic_inc(&ctx->decrypt_pending);
- 
- 	return ctx->async_wait.err;
- }
-@@ -271,6 +264,7 @@ static int tls_do_decryption(struct sock
- 		aead_request_set_callback(aead_req,
- 					  CRYPTO_TFM_REQ_MAY_BACKLOG,
- 					  tls_decrypt_done, skb);
-+		BUILD_BUG_ON_INVALID(atomic_read(&ctx->decrypt_pending) < 1);
- 		atomic_inc(&ctx->decrypt_pending);
- 	} else {
- 		aead_request_set_callback(aead_req,
-@@ -460,7 +454,6 @@ static void tls_encrypt_done(struct cryp
- 	struct sk_msg *msg_en;
- 	struct tls_rec *rec;
- 	bool ready = false;
--	int pending;
- 
- 	rec = container_of(aead_req, struct tls_rec, aead_req);
- 	msg_en = &rec->msg_encrypted;
-@@ -495,12 +488,8 @@ static void tls_encrypt_done(struct cryp
- 			ready = true;
- 	}
- 
--	spin_lock_bh(&ctx->encrypt_compl_lock);
--	pending = atomic_dec_return(&ctx->encrypt_pending);
--
--	if (!pending && ctx->async_notify)
-+	if (atomic_dec_and_test(&ctx->encrypt_pending))
- 		complete(&ctx->async_wait.completion);
--	spin_unlock_bh(&ctx->encrypt_compl_lock);
- 
- 	if (!ready)
- 		return;
-@@ -512,22 +501,9 @@ static void tls_encrypt_done(struct cryp
- 
- static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
- {
--	int pending;
--
--	spin_lock_bh(&ctx->encrypt_compl_lock);
--	ctx->async_notify = true;
--
--	pending = atomic_read(&ctx->encrypt_pending);
--	spin_unlock_bh(&ctx->encrypt_compl_lock);
--	if (pending)
-+	if (!atomic_dec_and_test(&ctx->encrypt_pending))
- 		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
--	else
--		reinit_completion(&ctx->async_wait.completion);
--
--	/* There can be no concurrent accesses, since we have no
--	 * pending encrypt operations
--	 */
--	WRITE_ONCE(ctx->async_notify, false);
-+	atomic_inc(&ctx->encrypt_pending);
- 
- 	return ctx->async_wait.err;
- }
-@@ -571,6 +547,7 @@ static int tls_do_encryption(struct sock
- 
- 	/* Add the record in tx_list */
- 	list_add_tail((struct list_head *)&rec->list, &ctx->tx_list);
-+	BUILD_BUG_ON_INVALID(atomic_read(&ctx->encrypt_pending) < 1);
- 	atomic_inc(&ctx->encrypt_pending);
- 
- 	rc = crypto_aead_encrypt(aead_req);
-@@ -2312,7 +2289,7 @@ static struct tls_sw_context_tx *init_ct
- 	}
- 
- 	crypto_init_wait(&sw_ctx_tx->async_wait);
--	spin_lock_init(&sw_ctx_tx->encrypt_compl_lock);
-+	atomic_set(&sw_ctx_tx->encrypt_pending, 1);
- 	INIT_LIST_HEAD(&sw_ctx_tx->tx_list);
- 	INIT_DELAYED_WORK(&sw_ctx_tx->tx_work.work, tx_work_handler);
- 	sw_ctx_tx->tx_work.sk = sk;
-@@ -2333,7 +2310,7 @@ static struct tls_sw_context_rx *init_ct
- 	}
- 
- 	crypto_init_wait(&sw_ctx_rx->async_wait);
--	spin_lock_init(&sw_ctx_rx->decrypt_compl_lock);
-+	atomic_set(&sw_ctx_rx->decrypt_pending, 1);
- 	skb_queue_head_init(&sw_ctx_rx->rx_list);
- 
- 	return sw_ctx_rx;
+ Note that ``anon`` and ``memcg`` filters are currently supported only when
+ ``paddr`` :ref:`implementation <sysfs_context>` is being used.
 
 
 
