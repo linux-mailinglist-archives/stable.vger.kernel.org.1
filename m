@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-45795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811118CD3F0
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:20:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF738CD3C5
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E754A1F26AD2
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:20:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB01128286E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD7614A60E;
-	Thu, 23 May 2024 13:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957EA14AD17;
+	Thu, 23 May 2024 13:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/BchWFc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aimOR9WI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F3D14A605;
-	Thu, 23 May 2024 13:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544852AE94;
+	Thu, 23 May 2024 13:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470383; cv=none; b=JOIKqxG8oGqx0wU+UYxMp+SKN09RtF5ySS9Qgfib6XVHgKE9fmW0eCTJM4fD5wRlsvhE0qLGTgDIlQ5JigXaB02ba9UMauuQY7RRoa4UQCJ4iT7iWv4htZutWQTkTw1xYhv6rvTzZwH+AFy2g4e8j0C+3hO/p0zmOqk2FzEynx4=
+	t=1716470300; cv=none; b=DHQRwW4LKuaF+2H0fMF3c58yQiOhUZfkfIi5BUQFlTbXC5xQ8aZlPb1KDALC/VCHwGLxAFGoPmtKk1I8J6dmvw2044H/dQUh0zmb4LtC/llesKhXRq1Gbr4yw21AcyrDoXQrnq/AcaOW0rtIt71eXcFEX6tCFvDS5KeD6EoSbws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470383; c=relaxed/simple;
-	bh=hdz4o+CDamjgLKKZE+49fJNUknFRGcmxg3VKH6BWGCk=;
+	s=arc-20240116; t=1716470300; c=relaxed/simple;
+	bh=zOybmDRXxOu3bI3kEa8ND5baG5q8/6D+PQ/RwfMc/hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooZWGUE7urKB/tMzRAq8XzM/SdbzjBx2/m8rqdA3seRqOhmF8Xj/FymbsTSd1YhZuAT+pZbOZVPENmKcHxQOlC8w8zHYT2BXu+OBAJo1FXnrjHzpAem4w8ibcy5e+dqMS6N5AAnC+KNrxePL5Jqpt1ngnfOxsmYlLiV30uAiuo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/BchWFc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EF5C2BD10;
-	Thu, 23 May 2024 13:19:42 +0000 (UTC)
+	 MIME-Version; b=CdmdUtGMRxymXDnuuuq8kR7al4hFSY29yvJIyo1yEBCOCmlNG9vtuBceH+iqfz6j4H10ZGELfD0vHdZJEw5idjlaSBLxljay6/P52SZt3WQsuiPkHp0eDBeLx94d/o/FKyHRuLsLv/KX/eb6p5Xev8tmdBc7+xz8oFU341gw/YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aimOR9WI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D239CC2BD10;
+	Thu, 23 May 2024 13:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470382;
-	bh=hdz4o+CDamjgLKKZE+49fJNUknFRGcmxg3VKH6BWGCk=;
+	s=korg; t=1716470300;
+	bh=zOybmDRXxOu3bI3kEa8ND5baG5q8/6D+PQ/RwfMc/hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/BchWFc8rvCrSIqgdzzzR3cousJJF2YKmaW5jRoQqn+erUo3RCZZg9L/+rDr5jmc
-	 ccXrKhT0YyMiwj0btIK+MVc0IjM3DWQ0FjqJ9V9HbmfHq89K+dgdDH6THpLf6CQ/Nj
-	 q2uXV1OmLYNcx5S2a3oLr36tmg4mYLQQxpzs9LWA=
+	b=aimOR9WIzTUqRjfmj4yVA+nmIsDM2HYvNgYHZeXn3SZU/1b86AjNStOC6r+oiiQSh
+	 ERXXlHkYTR5Ms+/HDdsSvU46sfFUNjGRcOHJvr93Tls210J8ZUriM5Hk/IU+toWaA7
+	 n+5+H7FVYVgbzq6P/9nP+OuWQXNB7SBRibcKduKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 18/45] xfs: drop write error injection is unfixable, remove it
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"yenchia.chen" <yenchia.chen@mediatek.com>
+Subject: [PATCH 5.15 13/23] netlink: annotate lockless accesses to nlk->max_recvmsg_len
 Date: Thu, 23 May 2024 15:13:09 +0200
-Message-ID: <20240523130333.180855255@linuxfoundation.org>
+Message-ID: <20240523130328.455931434@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,214 +64,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6e8af15ccdc4e138a5b529c1901a0013e1dcaa09 ]
+commit a1865f2e7d10dde00d35a2122b38d2e469ae67ed upstream.
 
-With the changes to scan the page cache for dirty data to avoid data
-corruptions from partial write cleanup racing with other page cache
-operations, the drop writes error injection no longer works the same
-way it used to and causes xfs/196 to fail. This is because xfs/196
-writes to the file and populates the page cache before it turns on
-the error injection and starts failing -overwrites-.
+syzbot reported a data-race in data-race in netlink_recvmsg() [1]
 
-The result is that the original drop-writes code failed writes only
--after- overwriting the data in the cache, followed by invalidates
-the cached data, then punching out the delalloc extent from under
-that data.
+Indeed, netlink_recvmsg() can be run concurrently,
+and netlink_dump() also needs protection.
 
-On the surface, this looks fine. The problem is that page cache
-invalidation *doesn't guarantee that it removes anything from the
-page cache* and it doesn't change the dirty state of the folio. When
-block size == page size and we do page aligned IO (as xfs/196 does)
-everything happens to align perfectly and page cache invalidation
-removes the single page folios that span the written data. Hence the
-followup delalloc punch pass does not find cached data over that
-range and it can punch the extent out.
+[1]
+BUG: KCSAN: data-race in netlink_recvmsg / netlink_recvmsg
 
-IOWs, xfs/196 "works" for block size == page size with the new
-code. I say "works", because it actually only works for the case
-where IO is page aligned, and no data was read from disk before
-writes occur. Because the moment we actually read data first, the
-readahead code allocates multipage folios and suddenly the
-invalidate code goes back to zeroing subfolio ranges without
-changing dirty state.
+read to 0xffff888141840b38 of 8 bytes by task 23057 on cpu 0:
+netlink_recvmsg+0xea/0x730 net/netlink/af_netlink.c:1988
+sock_recvmsg_nosec net/socket.c:1017 [inline]
+sock_recvmsg net/socket.c:1038 [inline]
+__sys_recvfrom+0x1ee/0x2e0 net/socket.c:2194
+__do_sys_recvfrom net/socket.c:2212 [inline]
+__se_sys_recvfrom net/socket.c:2208 [inline]
+__x64_sys_recvfrom+0x78/0x90 net/socket.c:2208
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Hence, with multipage folios in play, block size == page size is
-functionally identical to block size < page size behaviour, and
-drop-writes is manifestly broken w.r.t to this case. Invalidation of
-a subfolio range doesn't result in the folio being removed from the
-cache, just the range gets zeroed. Hence after we've sequentially
-walked over a folio that we've dirtied (via write data) and then
-invalidated, we end up with a dirty folio full of zeroed data.
+write to 0xffff888141840b38 of 8 bytes by task 23037 on cpu 1:
+netlink_recvmsg+0x114/0x730 net/netlink/af_netlink.c:1989
+sock_recvmsg_nosec net/socket.c:1017 [inline]
+sock_recvmsg net/socket.c:1038 [inline]
+____sys_recvmsg+0x156/0x310 net/socket.c:2720
+___sys_recvmsg net/socket.c:2762 [inline]
+do_recvmmsg+0x2e5/0x710 net/socket.c:2856
+__sys_recvmmsg net/socket.c:2935 [inline]
+__do_sys_recvmmsg net/socket.c:2958 [inline]
+__se_sys_recvmmsg net/socket.c:2951 [inline]
+__x64_sys_recvmmsg+0xe2/0x160 net/socket.c:2951
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-And because the new code skips punching ranges that have dirty
-folios covering them, we end up leaving the delalloc range intact
-after failing all the writes. Hence failed writes now end up
-writing zeroes to disk in the cases where invalidation zeroes folios
-rather than removing them from cache.
+value changed: 0x0000000000000000 -> 0x0000000000001000
 
-This is a fundamental change of behaviour that is needed to avoid
-the data corruption vectors that exist in the old write fail path,
-and it renders the drop-writes injection non-functional and
-unworkable as it stands.
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 23037 Comm: syz-executor.2 Not tainted 6.3.0-rc4-syzkaller-00195-g5a57b48fdfcb #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/02/2023
 
-As it is, I think the error injection is also now unnecessary, as
-partial writes that need delalloc extent are going to be a lot more
-common with stale iomap detection in place. Hence this patch removes
-the drop-writes error injection completely. xfs/196 can remain for
-testing kernels that don't have this data corruption fix, but those
-that do will report:
-
-xfs/196 3s ... [not run] XFS error injection drop_writes unknown on this kernel.
-
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: 9063e21fb026 ("netlink: autosize skb lengthes")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230403214643.768555-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: yenchia.chen <yenchia.chen@mediatek.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_errortag.h |   12 +++++-------
- fs/xfs/xfs_error.c           |   27 ++++++++++++++++++++-------
- fs/xfs/xfs_iomap.c           |    9 ---------
- 3 files changed, 25 insertions(+), 23 deletions(-)
+ net/netlink/af_netlink.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_errortag.h
-+++ b/fs/xfs/libxfs/xfs_errortag.h
-@@ -40,13 +40,12 @@
- #define XFS_ERRTAG_REFCOUNT_FINISH_ONE			25
- #define XFS_ERRTAG_BMAP_FINISH_ONE			26
- #define XFS_ERRTAG_AG_RESV_CRITICAL			27
-+
- /*
-- * DEBUG mode instrumentation to test and/or trigger delayed allocation
-- * block killing in the event of failed writes. When enabled, all
-- * buffered writes are silenty dropped and handled as if they failed.
-- * All delalloc blocks in the range of the write (including pre-existing
-- * delalloc blocks!) are tossed as part of the write failure error
-- * handling sequence.
-+ * Drop-writes support removed because write error handling cannot trash
-+ * pre-existing delalloc extents in any useful way anymore. We retain the
-+ * definition so that we can reject it as an invalid value in
-+ * xfs_errortag_valid().
-  */
- #define XFS_ERRTAG_DROP_WRITES				28
- #define XFS_ERRTAG_LOG_BAD_CRC				29
-@@ -95,7 +94,6 @@
- #define XFS_RANDOM_REFCOUNT_FINISH_ONE			1
- #define XFS_RANDOM_BMAP_FINISH_ONE			1
- #define XFS_RANDOM_AG_RESV_CRITICAL			4
--#define XFS_RANDOM_DROP_WRITES				1
- #define XFS_RANDOM_LOG_BAD_CRC				1
- #define XFS_RANDOM_LOG_ITEM_PIN				1
- #define XFS_RANDOM_BUF_LRU_REF				2
---- a/fs/xfs/xfs_error.c
-+++ b/fs/xfs/xfs_error.c
-@@ -46,7 +46,7 @@ static unsigned int xfs_errortag_random_
- 	XFS_RANDOM_REFCOUNT_FINISH_ONE,
- 	XFS_RANDOM_BMAP_FINISH_ONE,
- 	XFS_RANDOM_AG_RESV_CRITICAL,
--	XFS_RANDOM_DROP_WRITES,
-+	0, /* XFS_RANDOM_DROP_WRITES has been removed */
- 	XFS_RANDOM_LOG_BAD_CRC,
- 	XFS_RANDOM_LOG_ITEM_PIN,
- 	XFS_RANDOM_BUF_LRU_REF,
-@@ -162,7 +162,6 @@ XFS_ERRORTAG_ATTR_RW(refcount_continue_u
- XFS_ERRORTAG_ATTR_RW(refcount_finish_one,	XFS_ERRTAG_REFCOUNT_FINISH_ONE);
- XFS_ERRORTAG_ATTR_RW(bmap_finish_one,	XFS_ERRTAG_BMAP_FINISH_ONE);
- XFS_ERRORTAG_ATTR_RW(ag_resv_critical,	XFS_ERRTAG_AG_RESV_CRITICAL);
--XFS_ERRORTAG_ATTR_RW(drop_writes,	XFS_ERRTAG_DROP_WRITES);
- XFS_ERRORTAG_ATTR_RW(log_bad_crc,	XFS_ERRTAG_LOG_BAD_CRC);
- XFS_ERRORTAG_ATTR_RW(log_item_pin,	XFS_ERRTAG_LOG_ITEM_PIN);
- XFS_ERRORTAG_ATTR_RW(buf_lru_ref,	XFS_ERRTAG_BUF_LRU_REF);
-@@ -206,7 +205,6 @@ static struct attribute *xfs_errortag_at
- 	XFS_ERRORTAG_ATTR_LIST(refcount_finish_one),
- 	XFS_ERRORTAG_ATTR_LIST(bmap_finish_one),
- 	XFS_ERRORTAG_ATTR_LIST(ag_resv_critical),
--	XFS_ERRORTAG_ATTR_LIST(drop_writes),
- 	XFS_ERRORTAG_ATTR_LIST(log_bad_crc),
- 	XFS_ERRORTAG_ATTR_LIST(log_item_pin),
- 	XFS_ERRORTAG_ATTR_LIST(buf_lru_ref),
-@@ -256,6 +254,19 @@ xfs_errortag_del(
- 	kmem_free(mp->m_errortag);
- }
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1935,7 +1935,7 @@ static int netlink_recvmsg(struct socket
+ 	struct sock *sk = sock->sk;
+ 	struct netlink_sock *nlk = nlk_sk(sk);
+ 	int noblock = flags & MSG_DONTWAIT;
+-	size_t copied;
++	size_t copied, max_recvmsg_len;
+ 	struct sk_buff *skb, *data_skb;
+ 	int err, ret;
  
-+static bool
-+xfs_errortag_valid(
-+	unsigned int		error_tag)
-+{
-+	if (error_tag >= XFS_ERRTAG_MAX)
-+		return false;
-+
-+	/* Error out removed injection types */
-+	if (error_tag == XFS_ERRTAG_DROP_WRITES)
-+		return false;
-+	return true;
-+}
-+
- bool
- xfs_errortag_test(
- 	struct xfs_mount	*mp,
-@@ -277,7 +288,9 @@ xfs_errortag_test(
- 	if (!mp->m_errortag)
- 		return false;
+@@ -1968,9 +1968,10 @@ static int netlink_recvmsg(struct socket
+ #endif
  
--	ASSERT(error_tag < XFS_ERRTAG_MAX);
-+	if (!xfs_errortag_valid(error_tag))
-+		return false;
-+
- 	randfactor = mp->m_errortag[error_tag];
- 	if (!randfactor || prandom_u32_max(randfactor))
- 		return false;
-@@ -293,7 +306,7 @@ xfs_errortag_get(
- 	struct xfs_mount	*mp,
- 	unsigned int		error_tag)
- {
--	if (error_tag >= XFS_ERRTAG_MAX)
-+	if (!xfs_errortag_valid(error_tag))
- 		return -EINVAL;
+ 	/* Record the max length of recvmsg() calls for future allocations */
+-	nlk->max_recvmsg_len = max(nlk->max_recvmsg_len, len);
+-	nlk->max_recvmsg_len = min_t(size_t, nlk->max_recvmsg_len,
+-				     SKB_WITH_OVERHEAD(32768));
++	max_recvmsg_len = max(READ_ONCE(nlk->max_recvmsg_len), len);
++	max_recvmsg_len = min_t(size_t, max_recvmsg_len,
++				SKB_WITH_OVERHEAD(32768));
++	WRITE_ONCE(nlk->max_recvmsg_len, max_recvmsg_len);
  
- 	return mp->m_errortag[error_tag];
-@@ -305,7 +318,7 @@ xfs_errortag_set(
- 	unsigned int		error_tag,
- 	unsigned int		tag_value)
- {
--	if (error_tag >= XFS_ERRTAG_MAX)
-+	if (!xfs_errortag_valid(error_tag))
- 		return -EINVAL;
+ 	copied = data_skb->len;
+ 	if (len < copied) {
+@@ -2219,6 +2220,7 @@ static int netlink_dump(struct sock *sk)
+ 	struct netlink_ext_ack extack = {};
+ 	struct netlink_callback *cb;
+ 	struct sk_buff *skb = NULL;
++	size_t max_recvmsg_len;
+ 	struct module *module;
+ 	int err = -ENOBUFS;
+ 	int alloc_min_size;
+@@ -2241,8 +2243,9 @@ static int netlink_dump(struct sock *sk)
+ 	cb = &nlk->cb;
+ 	alloc_min_size = max_t(int, cb->min_dump_alloc, NLMSG_GOODSIZE);
  
- 	mp->m_errortag[error_tag] = tag_value;
-@@ -319,7 +332,7 @@ xfs_errortag_add(
- {
- 	BUILD_BUG_ON(ARRAY_SIZE(xfs_errortag_random_default) != XFS_ERRTAG_MAX);
- 
--	if (error_tag >= XFS_ERRTAG_MAX)
-+	if (!xfs_errortag_valid(error_tag))
- 		return -EINVAL;
- 
- 	return xfs_errortag_set(mp, error_tag,
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -1190,15 +1190,6 @@ xfs_buffered_write_iomap_end(
- 	struct xfs_mount	*mp = XFS_M(inode->i_sb);
- 	int			error;
- 
--	/*
--	 * Behave as if the write failed if drop writes is enabled. Set the NEW
--	 * flag to force delalloc cleanup.
--	 */
--	if (XFS_TEST_ERROR(false, mp, XFS_ERRTAG_DROP_WRITES)) {
--		iomap->flags |= IOMAP_F_NEW;
--		written = 0;
--	}
--
- 	error = iomap_file_buffered_write_punch_delalloc(inode, iomap, offset,
- 			length, written, &xfs_buffered_write_delalloc_punch);
- 	if (error && !xfs_is_shutdown(mp)) {
+-	if (alloc_min_size < nlk->max_recvmsg_len) {
+-		alloc_size = nlk->max_recvmsg_len;
++	max_recvmsg_len = READ_ONCE(nlk->max_recvmsg_len);
++	if (alloc_min_size < max_recvmsg_len) {
++		alloc_size = max_recvmsg_len;
+ 		skb = alloc_skb(alloc_size,
+ 				(GFP_KERNEL & ~__GFP_DIRECT_RECLAIM) |
+ 				__GFP_NOWARN | __GFP_NORETRY);
 
 
 
