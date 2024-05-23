@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-45773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C50C8CD3CD
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C908CD3B6
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07C62283D2B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89339B229DE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9631714B07E;
-	Thu, 23 May 2024 13:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FB714B084;
+	Thu, 23 May 2024 13:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ogelknpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eK/DJXTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A9D2AE94;
-	Thu, 23 May 2024 13:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AB414B077;
+	Thu, 23 May 2024 13:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470320; cv=none; b=jI1tTzHQ3slbzBwlUxpX4aOWIJ0eRwDxegcVgzniGI7vR8XD/epeISXOpbAVmnFzGWxcItF5nKyh1uWOHDDBEDciqTA+s8VjT9lXgAZVm9SFHx2rjgY1JnjvWelKWXqXsDI/9Iw9VGJSc1oHvpNA+uqd+WG1L7V4rgrvEuQtqPE=
+	t=1716470266; cv=none; b=Y3R8fb47kDfR6fKj8URatPsP82xS/pbCuoOUcOmorsEIymICYptMPav6bggLMjZD0TUlJas1Syow8Iwt/uwD82q2bA2YpfGtFZAhWYNc3BRf2s0ula08glGcq17flt+JYvCSOV6STLFQ+AsHR2kONLCQdk5AGwOrj2Jl8jC2Yhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470320; c=relaxed/simple;
-	bh=Bb0q5r0EHV5ZzUgbgx+WXjBy5kmAWRWx15cns605iNw=;
+	s=arc-20240116; t=1716470266; c=relaxed/simple;
+	bh=yptMw5g5clDmkmEplPv+JAgYganX9VoNt78uNU31m98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhmsFGlmwG9cOgCJkkMkh9IARBWgFtoyl5a21IXR8H6gvYGFZaX2ESe9HR0R7YgjERq742NuGXBPQ4k+oST4P6ke/GgE6NFtBphIhKnGALR9zndijf3y0WjbDjziH1jZu/Ez7GizV9nzZCajyWN71L/IzNkSy2oXPQHGyDK2Bds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ogelknpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30ABC2BD10;
-	Thu, 23 May 2024 13:18:39 +0000 (UTC)
+	 MIME-Version; b=lASRxcG28poeCuKAbSF2VhfN0NV4r/DS3uvaf3zvuJ4qDKtbmw+AL8MlzqVSaMkuVhLmGmgsEyppV1ej+kNV2SSSbBAAVQIgTEaA1EfkAPFWMmEk7AU3EudKkQ2X6Gl6Bsr8+P236CFlXSyJMZRELSOtiOV0m6TR+ErAn/JKprI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eK/DJXTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBDCC2BD10;
+	Thu, 23 May 2024 13:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470320;
-	bh=Bb0q5r0EHV5ZzUgbgx+WXjBy5kmAWRWx15cns605iNw=;
+	s=korg; t=1716470265;
+	bh=yptMw5g5clDmkmEplPv+JAgYganX9VoNt78uNU31m98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OgelknpdXkJzDqpVZXEpSwa5ugyI0+iroOlnBUsNRVMdjOchr8h3Mroa8Q8nExanX
-	 NIFqZUhmWJsqF3RgEbvjV6WZX6eMm31HVDsTLr6B5jzn3FgGxi9LsihZdt/ng+rEqa
-	 J+O2Ooqhvc+WTyUKHSBm8LGRoaFdAixQqfg+Od08=
+	b=eK/DJXTwxE4Ei+w1ydT6IB+10MIGIqAhCWaAjxEWFyXsNIjhL9qnoHXYC9zJAx2wH
+	 6RaR0WkyXGh9LcYon5ll/xzXku83Hup0DSdTUPegx/YXOaparljrSAgoBxAe2iTZHx
+	 bgyZ3N7XiP15w27XQ0dVWUY5kGnFhq1KwzN9Saic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 06/23] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.9 17/25] remoteproc: mediatek: Make sure IPI buffer fits in L2TCM
 Date: Thu, 23 May 2024 15:13:02 +0200
-Message-ID: <20240523130328.196694486@linuxfoundation.org>
+Message-ID: <20240523130331.035116956@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+References: <20240523130330.386580714@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit d85cf67a339685beae1d0aee27b7f61da95455be upstream.
+commit 331f91d86f71d0bb89a44217cc0b2a22810bbd42 upstream.
 
-The EXT_RGMII_OOB_CTRL register can be written from different
-contexts. It is predominantly written from the adjust_link
-handler which is synchronized by the phydev->lock, but can
-also be written from a different context when configuring the
-mii in bcmgenet_mii_config().
+The IPI buffer location is read from the firmware that we load to the
+System Companion Processor, and it's not granted that both the SRAM
+(L2TCM) size that is defined in the devicetree node is large enough
+for that, and while this is especially true for multi-core SCP, it's
+still useful to check on single-core variants as well.
 
-The chances of contention are quite low, but it is conceivable
-that adjust_link could occur during resume when WoL is enabled
-so use the phydev->lock synchronizer in bcmgenet_mii_config()
-to be sure.
+Failing to perform this check may make this driver perform R/W
+operations out of the L2TCM boundary, resulting (at best) in a
+kernel panic.
 
-Fixes: afe3f907d20f ("net: bcmgenet: power on MII block for all MII modes")
+To fix that, check that the IPI buffer fits, otherwise return a
+failure and refuse to boot the relevant SCP core (or the SCP at
+all, if this is single core).
+
+Fixes: 3efa0ea743b7 ("remoteproc/mediatek: read IPI buffer offset from FW")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/r/20240321084614.45253-2-angelogioacchino.delregno@collabora.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmmii.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/remoteproc/mtk_scp.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -264,6 +264,7 @@ int bcmgenet_mii_config(struct net_devic
- 	 * block for the interface to work
- 	 */
- 	if (priv->ext_phy) {
-+		mutex_lock(&phydev->lock);
- 		reg = bcmgenet_ext_readl(priv, EXT_RGMII_OOB_CTRL);
- 		reg &= ~ID_MODE_DIS;
- 		reg |= id_mode_dis;
-@@ -272,6 +273,7 @@ int bcmgenet_mii_config(struct net_devic
- 		else
- 			reg |= RGMII_MODE_EN;
- 		bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
-+		mutex_unlock(&phydev->lock);
- 	}
+--- a/drivers/remoteproc/mtk_scp.c
++++ b/drivers/remoteproc/mtk_scp.c
+@@ -132,7 +132,7 @@ static int scp_elf_read_ipi_buf_addr(str
+ static int scp_ipi_init(struct mtk_scp *scp, const struct firmware *fw)
+ {
+ 	int ret;
+-	size_t offset;
++	size_t buf_sz, offset;
  
- 	if (init)
+ 	/* read the ipi buf addr from FW itself first */
+ 	ret = scp_elf_read_ipi_buf_addr(scp, fw, &offset);
+@@ -144,6 +144,14 @@ static int scp_ipi_init(struct mtk_scp *
+ 	}
+ 	dev_info(scp->dev, "IPI buf addr %#010zx\n", offset);
+ 
++	/* Make sure IPI buffer fits in the L2TCM range assigned to this core */
++	buf_sz = sizeof(*scp->recv_buf) + sizeof(*scp->send_buf);
++
++	if (scp->sram_size < buf_sz + offset) {
++		dev_err(scp->dev, "IPI buffer does not fit in SRAM.\n");
++		return -EOVERFLOW;
++	}
++
+ 	scp->recv_buf = (struct mtk_share_obj __iomem *)
+ 			(scp->sram_base + offset);
+ 	scp->send_buf = (struct mtk_share_obj __iomem *)
 
 
 
