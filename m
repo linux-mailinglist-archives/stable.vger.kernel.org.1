@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3C38CD41E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B178F8CD494
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBF231C218DE
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E34941C218B5
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2C714A62D;
-	Thu, 23 May 2024 13:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F49614A606;
+	Thu, 23 May 2024 13:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZR1K1pMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obZm78ei"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC1B1D545;
-	Thu, 23 May 2024 13:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F0F13BAC3;
+	Thu, 23 May 2024 13:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470501; cv=none; b=GBr0uYWyG2SlQBSZImUN2/KnIVFYkNKux9piWnOHIcCAe/JfNBLE1b3nBqqMMmYnVdk+7hRGzgcJDKP/cneVKCbqLYAbbPomFO0BIPDEyvLp1nKwVTA4EKgPPFe+0lGg8H4d/Uk0HPAdwriqHFVKcUxQcrsnEJURr/qnLx1Y5q8=
+	t=1716470752; cv=none; b=u6eLIX6fP7jThaVJRi/XonIsJfX2S1twYf5yx+KnmwhJpRNm+08zLmWYMdxHUTwo2gQ2w9wS9wD0CasXTGBYl3gEWFF54HsMOh7KCrFjoyFHnhJbc59rLLmJ+Epxa/tTExPXRDrH9K8F+YYkAt40C1kMdqeqMVNcQqpcQ9TAdVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470501; c=relaxed/simple;
-	bh=i/wEetXsmwLduTHNYRSBlM8afdEbIrkkOPAOT67Sqmg=;
+	s=arc-20240116; t=1716470752; c=relaxed/simple;
+	bh=PpfQ3UBX5/9fOze8flXhbnv8n7sDNB1+ZiutHUJE+To=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnGwpvmGa0m7gpYvFZFnD2eMrX3YmzdMErQyB4MTdbaKshIzzNKqb1lGmuRffGM1mz+fmR6vs/dadfr5o5wZzA4V5JF3fhZYx1bBOI5OXmEulU7663OHwJ07cHenkIqTGhjaX8RJ1SvzwhjS9nw/qhN0NfBnFLyK6KZ6zveiqxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZR1K1pMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB12C2BD10;
-	Thu, 23 May 2024 13:21:40 +0000 (UTC)
+	 MIME-Version; b=kVRQIbKPgT5h9caopZM2QPpfA9j8wBFhzmqCqZLG+NnQAiQ552lNpvMs3iAvNXzFqTjHe9SGZ3gO03NTJJcfeOpEbeFxLSOgNmSqxcdwTpRILUTzZaX4SIMoOQy3q3stop+gqB85lV5uMVvoSzgD2Fsu5pFhz2Oc6KxdlkJA0lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obZm78ei; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5950C2BD10;
+	Thu, 23 May 2024 13:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470500;
-	bh=i/wEetXsmwLduTHNYRSBlM8afdEbIrkkOPAOT67Sqmg=;
+	s=korg; t=1716470752;
+	bh=PpfQ3UBX5/9fOze8flXhbnv8n7sDNB1+ZiutHUJE+To=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZR1K1pMPmNL2JjTHl8Bi+3vIBpGjXiRgUOLxx5nBUz9HMfBmQIkMPsuhiRAYUlttP
-	 9H7qcuxLGHZdhWwPjX6RdYmNE5jYkeAG8ABWlSGid3VIribhaLESpjC+5mkYWUNLL3
-	 4ues7tC7sOABjCGd2IYGHlGRPy3P177Z98txaIUc=
+	b=obZm78eiCRbUX5om+wfnSI1dhMlJshe0/l8ExbpbZUmgER/yhwK5qrWXaunz8znuZ
+	 XmwLdi6F+g+XuXFLM0xKvNsOK/grGq30DxYEkrGISwDANuzNf22+8IvIaBam18uhEj
+	 DJ+SHrMSDi0MmSqYm3wF00FCFtQq5JJex/f4F2ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.8 13/23] usb: typec: ucsi: displayport: Fix potential deadlock
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 075/102] ksmbd: add continuous availability share parameter
 Date: Thu, 23 May 2024 15:13:40 +0200
-Message-ID: <20240523130330.252890611@linuxfoundation.org>
+Message-ID: <20240523130345.295295379@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
-References: <20240523130329.745905823@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit b791a67f68121d69108640d4a3e591d210ffe850 upstream.
+[ Upstream commit e9d8c2f95ab8acaf3f4d4a53682a4afa3c263692 ]
 
-The function ucsi_displayport_work() does not access the
-connector, so it also must not acquire the connector lock.
+If capabilities of the share is not SMB2_SHARE_CAP_CONTINUOUS_AVAILABILITY,
+ksmbd should not grant a persistent handle to the client.
+This patch add continuous availability share parameter to control it.
 
-This fixes a potential deadlock scenario:
-
-ucsi_displayport_work() -> lock(&con->lock)
-typec_altmode_vdm()
-dp_altmode_vdm()
-dp_altmode_work()
-typec_altmode_enter()
-ucsi_displayport_enter() -> lock(&con->lock)
-
-Reported-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240507134316.161999-1-heikki.krogerus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/displayport.c |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/smb/server/ksmbd_netlink.h | 35 ++++++++++++++++++-----------------
+ fs/smb/server/smb2pdu.c       | 11 +++++++++--
+ 2 files changed, 27 insertions(+), 19 deletions(-)
 
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -275,8 +275,6 @@ static void ucsi_displayport_work(struct
- 	struct ucsi_dp *dp = container_of(work, struct ucsi_dp, work);
- 	int ret;
+diff --git a/fs/smb/server/ksmbd_netlink.h b/fs/smb/server/ksmbd_netlink.h
+index 686b321c5a8bb..f4e55199938d5 100644
+--- a/fs/smb/server/ksmbd_netlink.h
++++ b/fs/smb/server/ksmbd_netlink.h
+@@ -340,23 +340,24 @@ enum KSMBD_TREE_CONN_STATUS {
+ /*
+  * Share config flags.
+  */
+-#define KSMBD_SHARE_FLAG_INVALID		(0)
+-#define KSMBD_SHARE_FLAG_AVAILABLE		BIT(0)
+-#define KSMBD_SHARE_FLAG_BROWSEABLE		BIT(1)
+-#define KSMBD_SHARE_FLAG_WRITEABLE		BIT(2)
+-#define KSMBD_SHARE_FLAG_READONLY		BIT(3)
+-#define KSMBD_SHARE_FLAG_GUEST_OK		BIT(4)
+-#define KSMBD_SHARE_FLAG_GUEST_ONLY		BIT(5)
+-#define KSMBD_SHARE_FLAG_STORE_DOS_ATTRS	BIT(6)
+-#define KSMBD_SHARE_FLAG_OPLOCKS		BIT(7)
+-#define KSMBD_SHARE_FLAG_PIPE			BIT(8)
+-#define KSMBD_SHARE_FLAG_HIDE_DOT_FILES		BIT(9)
+-#define KSMBD_SHARE_FLAG_INHERIT_OWNER		BIT(10)
+-#define KSMBD_SHARE_FLAG_STREAMS		BIT(11)
+-#define KSMBD_SHARE_FLAG_FOLLOW_SYMLINKS	BIT(12)
+-#define KSMBD_SHARE_FLAG_ACL_XATTR		BIT(13)
+-#define KSMBD_SHARE_FLAG_UPDATE			BIT(14)
+-#define KSMBD_SHARE_FLAG_CROSSMNT		BIT(15)
++#define KSMBD_SHARE_FLAG_INVALID			(0)
++#define KSMBD_SHARE_FLAG_AVAILABLE			BIT(0)
++#define KSMBD_SHARE_FLAG_BROWSEABLE			BIT(1)
++#define KSMBD_SHARE_FLAG_WRITEABLE			BIT(2)
++#define KSMBD_SHARE_FLAG_READONLY			BIT(3)
++#define KSMBD_SHARE_FLAG_GUEST_OK			BIT(4)
++#define KSMBD_SHARE_FLAG_GUEST_ONLY			BIT(5)
++#define KSMBD_SHARE_FLAG_STORE_DOS_ATTRS		BIT(6)
++#define KSMBD_SHARE_FLAG_OPLOCKS			BIT(7)
++#define KSMBD_SHARE_FLAG_PIPE				BIT(8)
++#define KSMBD_SHARE_FLAG_HIDE_DOT_FILES			BIT(9)
++#define KSMBD_SHARE_FLAG_INHERIT_OWNER			BIT(10)
++#define KSMBD_SHARE_FLAG_STREAMS			BIT(11)
++#define KSMBD_SHARE_FLAG_FOLLOW_SYMLINKS		BIT(12)
++#define KSMBD_SHARE_FLAG_ACL_XATTR			BIT(13)
++#define KSMBD_SHARE_FLAG_UPDATE				BIT(14)
++#define KSMBD_SHARE_FLAG_CROSSMNT			BIT(15)
++#define KSMBD_SHARE_FLAG_CONTINUOUS_AVAILABILITY	BIT(16)
  
--	mutex_lock(&dp->con->lock);
--
- 	ret = typec_altmode_vdm(dp->alt, dp->header,
- 				dp->vdo_data, dp->vdo_size);
- 	if (ret)
-@@ -285,8 +283,6 @@ static void ucsi_displayport_work(struct
- 	dp->vdo_data = NULL;
- 	dp->vdo_size = 0;
- 	dp->header = 0;
--
--	mutex_unlock(&dp->con->lock);
- }
+ /*
+  * Tree connect request flags.
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 75db0e63bcebd..1e536ae277618 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1988,7 +1988,12 @@ int smb2_tree_connect(struct ksmbd_work *work)
+ 	write_unlock(&sess->tree_conns_lock);
+ 	rsp->StructureSize = cpu_to_le16(16);
+ out_err1:
+-	rsp->Capabilities = 0;
++	if (server_conf.flags & KSMBD_GLOBAL_FLAG_DURABLE_HANDLE &&
++	    test_share_config_flag(share,
++				   KSMBD_SHARE_FLAG_CONTINUOUS_AVAILABILITY))
++		rsp->Capabilities = SMB2_SHARE_CAP_CONTINUOUS_AVAILABILITY;
++	else
++		rsp->Capabilities = 0;
+ 	rsp->Reserved = 0;
+ 	/* default manual caching */
+ 	rsp->ShareFlags = SMB2_SHAREFLAG_MANUAL_CACHING;
+@@ -3502,7 +3507,9 @@ int smb2_open(struct ksmbd_work *work)
+ 	memcpy(fp->client_guid, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
  
- void ucsi_displayport_remove_partner(struct typec_altmode *alt)
+ 	if (dh_info.type == DURABLE_REQ_V2 || dh_info.type == DURABLE_REQ) {
+-		if (dh_info.type == DURABLE_REQ_V2 && dh_info.persistent)
++		if (dh_info.type == DURABLE_REQ_V2 && dh_info.persistent &&
++		    test_share_config_flag(work->tcon->share_conf,
++					   KSMBD_SHARE_FLAG_CONTINUOUS_AVAILABILITY))
+ 			fp->is_persistent = true;
+ 		else
+ 			fp->is_durable = true;
+-- 
+2.43.0
+
 
 
 
