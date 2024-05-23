@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BA78CD403
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E1C8CD4A3
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C451F1F26B6A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 507681F21693
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849C214AD03;
-	Thu, 23 May 2024 13:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F166213C66A;
+	Thu, 23 May 2024 13:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQhshYju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUYJMvi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4206814A60C;
-	Thu, 23 May 2024 13:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00D013A897;
+	Thu, 23 May 2024 13:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470429; cv=none; b=sCLldyQbIm6eolOQ789e4yKdLacprkWvsSStUCFjcOsSLuCjPvb9AuPxxcsFXbLNl/YvxG19VwycjY+YEqd6neBa4BMPqurRxx9IPeo/To+6bx4TIsdenFowqiHzgS1aS68AOtS4XGXZFTGl01BPpYbeQry60LRYMhBQNdmnscU=
+	t=1716470789; cv=none; b=M3PotMcU3zYmWHXsg6tYXvUdmmsPZJk9+83mgpjHJr8JKz8GqNmUxsTcG1ebpaPbLA2CMd5OJOOEroXr1ucAs0Pa/RSyGTq4WuQbNdMT4GsbSp10fjr0AXQran/vCH3fAEhxAVQjfbPRjzDtVkWQGKf0ANx5Be8DGmEgvO0UESU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470429; c=relaxed/simple;
-	bh=d+2Ncqa0GCsY94kPOLrqwI2LwNdiht8lslipLl8h7qE=;
+	s=arc-20240116; t=1716470789; c=relaxed/simple;
+	bh=bwq/qULzK88RzKtW+1dSISYttKoA6BwKU1zZPDKqI8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQ5JO+6G6fhUrtlFsG5OVdb0M96hemBDo3ME5hnyRRC4aNBPlbuG2E4z2f27fXAjzJxZg+4OI+LXxRVFy9/+sp0odNPnF2YcLGaaYh07SWcncG4I4ANTakVVJiSVDT835e3EKEInTbFuh+ku2GdUuMMy6v3gD9SEGQNyIFIIKpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQhshYju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97F3C2BD10;
-	Thu, 23 May 2024 13:20:28 +0000 (UTC)
+	 MIME-Version; b=nPDLHbtbwRkaa7q8cRucRYzQqeVEvjkMBsBVnXFnWxAWmj4dhJI06D1LwsLj02HT/GBs0X8KXIZHw67yPcziIAHfFiyY151ZQiTAeHdaoktb0sVDHIw+l+W7bxmUOhv7Gf39+nqjhrTubAkMDm5KvkLbOac89rwe64/+iU9mmZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUYJMvi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD5AC3277B;
+	Thu, 23 May 2024 13:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470429;
-	bh=d+2Ncqa0GCsY94kPOLrqwI2LwNdiht8lslipLl8h7qE=;
+	s=korg; t=1716470789;
+	bh=bwq/qULzK88RzKtW+1dSISYttKoA6BwKU1zZPDKqI8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NQhshYjutei16lti3jMjLwmBrN3/gEzfk0u7XUnkn6foNC0Hyy8m3rg1A6P0Eante
-	 CwesmLkHyyyLk2yiA/Uy3/M+5wIT0gJFZnnr8f1Q9gjuMfb8NqcIpXaDroHqPTOVxI
-	 dX01HMs0cloptrW21aUqTDhVQOzwvcjrh2h4+3X0=
+	b=lUYJMvi6GRyT4M3Fe70jwpZ943PHKmPf9SrduXH9mYNgEaaywsN9okge64xKYm6te
+	 kaQlgrdw34HdAuZAlCQjFnrSBVQdoAabjfc3XQUV94iQLuLSk5VSPRDDTNQiwgOP4O
+	 /hdX/QMtxrlcw5vr+atMNJjPg4/rVTusvIuAQPAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hironori Shiina <shiina.hironori@fujitsu.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 32/45] xfs: get root inode correctly at bulkstat
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 058/102] smb: common: simplify compression headers
 Date: Thu, 23 May 2024 15:13:23 +0200
-Message-ID: <20240523130333.708698382@linuxfoundation.org>
+Message-ID: <20240523130344.656424262@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hironori Shiina <shiina.hironori@gmail.com>
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-[ Upstream commit 817644fa4525258992f17fecf4f1d6cdd2e1b731 ]
+[ Upstream commit 24337b60e88219816f84d633369299660e8e8cce ]
 
-The root inode number should be set to `breq->startino` for getting stat
-information of the root when XFS_BULK_IREQ_SPECIAL_ROOT is used.
-Otherwise, the inode search is started from 1
-(XFS_BULK_IREQ_SPECIAL_ROOT) and the inode with the lowest number in a
-filesystem is returned.
+Unify compression headers (chained and unchained) into a single struct
+so we can use it for the initial compression transform header
+interchangeably.
 
-Fixes: bf3cb3944792 ("xfs: allow single bulkstat of special inodes")
-Signed-off-by: Hironori Shiina <shiina.hironori@fujitsu.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also make the OriginalPayloadSize field to be always visible in the
+compression payload header, and have callers subtract its size when not
+needed.
+
+Rename the related structs to match the naming convetion used in the
+other SMB2 structs.
+
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_ioctl.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/common/smb2pdu.h | 45 ++++++++++++++++++++++++-----------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
---- a/fs/xfs/xfs_ioctl.c
-+++ b/fs/xfs/xfs_ioctl.c
-@@ -754,7 +754,7 @@ xfs_bulkstat_fmt(
- static int
- xfs_bulk_ireq_setup(
- 	struct xfs_mount	*mp,
--	struct xfs_bulk_ireq	*hdr,
-+	const struct xfs_bulk_ireq *hdr,
- 	struct xfs_ibulk	*breq,
- 	void __user		*ubuffer)
- {
-@@ -780,7 +780,7 @@ xfs_bulk_ireq_setup(
+diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
+index 10a9e20eec43f..61c6e72ccddc4 100644
+--- a/fs/smb/common/smb2pdu.h
++++ b/fs/smb/common/smb2pdu.h
+@@ -208,36 +208,43 @@ struct smb2_transform_hdr {
+ 	__le64  SessionId;
+ } __packed;
  
- 		switch (hdr->ino) {
- 		case XFS_BULK_IREQ_SPECIAL_ROOT:
--			hdr->ino = mp->m_sb.sb_rootino;
-+			breq->startino = mp->m_sb.sb_rootino;
- 			break;
- 		default:
- 			return -EINVAL;
++/*
++ * These are simplified versions from the spec, as we don't need a fully fledged
++ * form of both unchained and chained structs.
++ *
++ * Moreover, even in chained compressed payloads, the initial compression header
++ * has the form of the unchained one -- i.e. it never has the
++ * OriginalPayloadSize field and ::Offset field always represent an offset
++ * (instead of a length, as it is in the chained header).
++ *
++ * See MS-SMB2 2.2.42 for more details.
++ */
++#define SMB2_COMPRESSION_FLAG_NONE	0x0000
++#define SMB2_COMPRESSION_FLAG_CHAINED	0x0001
+ 
+-/* See MS-SMB2 2.2.42 */
+-struct smb2_compression_transform_hdr_unchained {
+-	__le32 ProtocolId;	/* 0xFC 'S' 'M' 'B' */
++struct smb2_compression_hdr {
++	__le32 ProtocolId; /* 0xFC 'S' 'M' 'B' */
+ 	__le32 OriginalCompressedSegmentSize;
+ 	__le16 CompressionAlgorithm;
+ 	__le16 Flags;
+-	__le16 Length; /* if chained it is length, else offset */
++	__le16 Offset; /* this is the size of the uncompressed SMB2 header below */
++	/* uncompressed SMB2 header (READ or WRITE) goes here */
++	/* compressed data goes here */
+ } __packed;
+ 
+-/* See MS-SMB2 2.2.42.1 */
+-#define SMB2_COMPRESSION_FLAG_NONE	0x0000
+-#define SMB2_COMPRESSION_FLAG_CHAINED	0x0001
+-
+-struct compression_payload_header {
++/*
++ * ... OTOH, set compression payload header to always have OriginalPayloadSize
++ * as it's easier to pass the struct size minus sizeof(OriginalPayloadSize)
++ * than to juggle around the header/data memory.
++ */
++struct smb2_compression_payload_hdr {
+ 	__le16	CompressionAlgorithm;
+ 	__le16	Flags;
+ 	__le32	Length; /* length of compressed playload including field below if present */
+-	/* __le32 OriginalPayloadSize; */ /* optional, present when LZNT1, LZ77, LZ77+Huffman */
+-} __packed;
+-
+-/* See MS-SMB2 2.2.42.2 */
+-struct smb2_compression_transform_hdr_chained {
+-	__le32 ProtocolId;	/* 0xFC 'S' 'M' 'B' */
+-	__le32 OriginalCompressedSegmentSize;
+-	/* struct compression_payload_header[] */
++	__le32 OriginalPayloadSize; /* accounted when LZNT1, LZ77, LZ77+Huffman */
+ } __packed;
+ 
+-/* See MS-SMB2 2.2.42.2.2 */
+-struct compression_pattern_payload_v1 {
++struct smb2_compression_pattern_v1 {
+ 	__u8	Pattern;
+ 	__u8	Reserved1;
+ 	__le16	Reserved2;
+-- 
+2.43.0
+
 
 
 
