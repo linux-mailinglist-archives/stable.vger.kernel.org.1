@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-45661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FA58CD18D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:55:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF888CD190
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E66BB20B4A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:55:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62C4AB209FC
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A707313BC0A;
-	Thu, 23 May 2024 11:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABF213BC12;
+	Thu, 23 May 2024 11:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsfsBe75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKgGxXUw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F8E13BAFA
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 11:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0F613BC0C
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 11:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716465299; cv=none; b=tpubaVYRJh8oxn0LNDxzbnkE+LwDNcyS519x5sNOAXse2Qv4O6MIOV7GGC0ZP0Rb2GZ069nDl6WG+UBldd2cRsUUm3XV/QeWO/WCtFXH8i3KK0CkaS2HS+bGWnHfjOc/sbbVtgaKnhGc5ZI+eiNDJSXjkqLQLNLjRDMpxcMKH1M=
+	t=1716465387; cv=none; b=Vru2scmSblKE0Gl5xk7E7uy16mp/rFtWm0ukak+cHPGWVVxPIXkHatUx6WGIDCLzXFbLTK+7vVwAuj3zDIkEUSOBCbe3LeU6p3jCYsqebmS24/+nrIxdE4u1nZ4Vcq8Kxw3fErSPx59RbrZqJ9crKu+BVCwEsL5SUDkAhC0n8aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716465299; c=relaxed/simple;
-	bh=o/p6hcHqbfbXYBZHTVEOA7+AOdESDvvQ5NesMEcReek=;
+	s=arc-20240116; t=1716465387; c=relaxed/simple;
+	bh=TSfI3BBhH4SQXg15oTofZkSYvmFAtIJa1tOfLIcM9B0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QJ3nSMCOBq+UtHKjCsKe2mZJwr1uW/7REvHO7oGHvth0OToGqgsZwPQGlDuvh+hpuOqcR4jInvFJaIE/0LZQPqQZ4458+VhtUbcJNe7I4Do+jqLyBArqAfuIMfDtZ8tbX99i5uuOy5jar15W77UrDi9LDfGs6Q8u3M326IBKc3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsfsBe75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88AE6C2BD10;
-	Thu, 23 May 2024 11:54:58 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=jwTbr3TSrzjzqaH1Qx2obWs3Fgmq40ZAF2kFIxQYnSzK4GPs5KJ0axCbZY/R93LcPkwhR3umQtZmwowcsP0SNkAYyjJC38f5UXS7ujLeOQowz4gY0k86OunQIfaNmVkc66Ok+jWae3T908enWc0UKPSTTkMXXfq3/gzh/s0Y+zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKgGxXUw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270B5C2BD10;
+	Thu, 23 May 2024 11:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716465298;
-	bh=o/p6hcHqbfbXYBZHTVEOA7+AOdESDvvQ5NesMEcReek=;
+	s=korg; t=1716465386;
+	bh=TSfI3BBhH4SQXg15oTofZkSYvmFAtIJa1tOfLIcM9B0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GsfsBe75Rm97u8SbhxaFOi53icvNi9WXfzHTMPUQhSgZwIlSKjg3OKH1tp4y0TuHZ
-	 WcVdUjJxW5/KByZgUeNgKATjSdyA+MREP8cyNzFCd29ew1zya5BWVYAsIahrk0mVSO
-	 3/7jouEVIXBUM8o5g91qVWahvmGSW3/1jucNQJck=
-Date: Thu, 23 May 2024 13:54:56 +0200
+	b=JKgGxXUws6sCt60RPWuz5taXnWtwkms5/6fpdduD3LQwOU2kJIKMiqBrTIbTv/J3V
+	 sly6G5AHSXiEGA6gQSxt2FrTIUCQGaVAX7WVzV20Jhh4t5tSzUIOrMFuMH6v9z7MQi
+	 g0XQptM31iLDqYq8dYkqFUwr4Q6yj5wflI+XM1UU=
+Date: Thu, 23 May 2024 13:56:23 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Nicolas Saenz Julienne <nsaenz@amazon.com>, stable@vger.kernel.org,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 5.10.y] KVM: x86: Clear "has_error_code", not
- "error_code", for RM exception injection
-Message-ID: <2024052348-overhung-sulfite-caec@gregkh>
-References: <2023041135-yippee-shabby-b9ad@gregkh>
- <20240510131213.21633-1-nsaenz@amazon.com>
- <Zj5AfN-kdz9UmccT@google.com>
+To: Oleksandr Tymoshenko <ovt@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, stable@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 6.1] arm64: atomics: lse: remove stale dependency on
+ JUMP_LABEL
+Message-ID: <2024052316-diaper-carless-bcdd@gregkh>
+References: <20240521-lse-atomics-6-1-v1-1-7aa6040fc6cd@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,44 +57,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zj5AfN-kdz9UmccT@google.com>
+In-Reply-To: <20240521-lse-atomics-6-1-v1-1-7aa6040fc6cd@google.com>
 
-On Fri, May 10, 2024 at 08:42:52AM -0700, Sean Christopherson wrote:
-> On Fri, May 10, 2024, Nicolas Saenz Julienne wrote:
-> > From: Sean Christopherson <seanjc@google.com>
-> > 
-> > When injecting an exception into a vCPU in Real Mode, suppress the error
-> > code by clearing the flag that tracks whether the error code is valid, not
-> > by clearing the error code itself.  The "typo" was introduced by recent
-> > fix for SVM's funky Paged Real Mode.
-> > 
-> > Opportunistically hoist the logic above the tracepoint so that the trace
-> > is coherent with respect to what is actually injected (this was also the
-> > behavior prior to the buggy commit).
-> > 
-> > Fixes: b97f07458373 ("KVM: x86: determine if an exception has an error code only when injecting it.")
-> > Cc: stable@vger.kernel.org
-> > Cc: Maxim Levitsky <mlevitsk@redhat.com>
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > Message-Id: <20230322143300.2209476-2-seanjc@google.com>
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > (cherry picked from commit 6c41468c7c12d74843bb414fc00307ea8a6318c3)
-> > [nsaenz: backport to 5.10.y]
-> > Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-> > 
-> > Conflicts:
-> > 	arch/x86/kvm/x86.c: Patch offsets had to be corrected.
-> > ---
-> > Testing: Kernel build and VM launch with KVM.
-> > Unfortunately I don't have a repro for the issue this solves, but the
-> > patch is straightforward, so I believe the testing above is good enough.
+On Tue, May 21, 2024 at 02:51:29PM +0000, Oleksandr Tymoshenko wrote:
+> From: Mark Rutland <mark.rutland@arm.com>
 > 
-> LOL, famous last words.
+> [ Upstream commit 657eef0a5420a02c02945ed8c87f2ddcbd255772 ]
 > 
-> Acked-by: Sean Christopherson <seanjc@google.com>
+> Currently CONFIG_ARM64_USE_LSE_ATOMICS depends upon CONFIG_JUMP_LABEL,
+> as the inline atomics were indirected with a static branch.
+> 
+> However, since commit:
+> 
+>   21fb26bfb01ffe0d ("arm64: alternatives: add alternative_has_feature_*()")
+> 
+> ... we use an alternative_branch (which is always available) rather than
+> a static branch, and hence the dependency is unnecessary.
+> 
+> Remove the stale dependency, along with the stale include. This will
+> allow the use of LSE atomics in kernels built with CONFIG_JUMP_LABEL=n,
+> and reduces the risk of circular header dependencies via <asm/lse.h>.
+> 
+> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Link: https://lore.kernel.org/r/20221114125424.2998268-1-mark.rutland@arm.com
+> Signed-off-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+> ---
+>  arch/arm64/Kconfig           | 1 -
+>  arch/arm64/include/asm/lse.h | 1 -
+>  2 files changed, 2 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index c15f71501c6c..044b98a62f7b 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1752,7 +1752,6 @@ config ARM64_LSE_ATOMICS
+>  
+>  config ARM64_USE_LSE_ATOMICS
+>  	bool "Atomic instructions"
+> -	depends on JUMP_LABEL
+>  	default y
+>  	help
+>  	  As part of the Large System Extensions, ARMv8.1 introduces new
+> diff --git a/arch/arm64/include/asm/lse.h b/arch/arm64/include/asm/lse.h
+> index c503db8e73b0..f99d74826a7e 100644
+> --- a/arch/arm64/include/asm/lse.h
+> +++ b/arch/arm64/include/asm/lse.h
+> @@ -10,7 +10,6 @@
+>  
+>  #include <linux/compiler_types.h>
+>  #include <linux/export.h>
+> -#include <linux/jump_label.h>
+>  #include <linux/stringify.h>
+>  #include <asm/alternative.h>
+>  #include <asm/alternative-macros.h>
+> 
+> ---
+> base-commit: 4078fa637fcd80c8487680ec2e4ef7c58308e9aa
+> change-id: 20240521-lse-atomics-6-1-b0960e206035
+> 
+> Best regards,
+> -- 
+> Oleksandr Tymoshenko <ovt@google.com>
+> 
 > 
 
-All now queued up, thanks.
+Now queued up, thanks.
 
 greg k-h
 
