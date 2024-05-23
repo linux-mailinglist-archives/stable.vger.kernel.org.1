@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894638CD3B9
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459308CD467
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DF811F25739
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4F84B20A3C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D38114D280;
-	Thu, 23 May 2024 13:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BE214B941;
+	Thu, 23 May 2024 13:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsTfiJqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVEp0OfO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A21414BF85;
-	Thu, 23 May 2024 13:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECB814AD36;
+	Thu, 23 May 2024 13:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470269; cv=none; b=UsXPN0t4WPrqZ/sL01KtocrAB9OgOK7TvDC6fDLpSyS3zDN5UOkoa5/bfBn1BtpO4XOZvR1xhyO9ZB9CDCq7Hk+QV650W9yc0pdYfBcLybCnC76AHUzPRVisgAfQwD7jZViDFA1owh/ZBbYfvDmfynXJFrhx9XHGWK8tO8C4XO0=
+	t=1716470645; cv=none; b=F48mIKxlOhJAiXKPeZr0u19ljZpV88+GnfZaXwMWQP++kBHQ+zSZ7lYrEt2uUAge7IjhQt5kzEOTXPZaB1QyM44OFIljWv+r9XSDJOYPAhJgM3EpQJ0Z/Eg9cm9lj787onbWQ6dR2+Z2820X0KvdMxspncbLnwHm9V26YVAV8I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470269; c=relaxed/simple;
-	bh=kvqRI6G69uxY9OVl7JI6M9jrb4NvUA2DUXcVZXGJzaQ=;
+	s=arc-20240116; t=1716470645; c=relaxed/simple;
+	bh=dvddSzMPNP+7LD38niesJ14ww41MOC8RTMEoDV2wvdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ahtpIEhk76Cd1Tw4+Gpj1dEqS/wFciVGFQ/sjBEv8/rDdgmZ8KyaHiUQfO94tyLxOvW1+mYHt5oq292QzukMZuyjXtuPdFvYwQwn51Jy5LAjPa7li84l1OiLuEf4ZX5aRy6fmNRyCq6sDO+sp+Fcb2QDQZDtA5V5Y/anfjNIMh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsTfiJqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57419C4AF09;
-	Thu, 23 May 2024 13:17:48 +0000 (UTC)
+	 MIME-Version; b=blgfnolYJoN3pONghVaCBW6v/+3VhG15v/6XMFwpRFTMpfHmZ/KY8hFgox4Uae0ippsYQNs6qbUJw0MeViAfZ1zhMcC4kJ3yB2WQcrNvD94Pw5dS/QU3+tjUVuvI5UBhyKn5BxM9n9p/mmSopZT8jKuE12e1ibSbbiTAr+GmeXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVEp0OfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B93C4AF0A;
+	Thu, 23 May 2024 13:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470268;
-	bh=kvqRI6G69uxY9OVl7JI6M9jrb4NvUA2DUXcVZXGJzaQ=;
+	s=korg; t=1716470645;
+	bh=dvddSzMPNP+7LD38niesJ14ww41MOC8RTMEoDV2wvdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsTfiJqjXeL3muOS5wMlRr7cbcaoO4Wl4XmB7w90Udli75Rjblo1X7+ApVCAr0KvR
-	 sJDPaQiua9O7fWC1FuQiYelHvjLoF6+4dMlFQnKYBLphQqfNDFfuFQG8/QY8/eaw9Q
-	 KZ2zbR7he1T4l4WhZ7FmzD9YxhiGWNt/GKz9Y5qc=
+	b=kVEp0OfOq9EHRKhYclsTMKK4era0NvjhZ8XcjXzFxaG7+YT06Irt6N8Url7Pa3KeH
+	 AYc8+fA3LzboIKzzoiSYbNKRVCs92ka4Q9OWVXgwHH/xAf8pDog0DdAiwEs4NvE0v0
+	 PiskvfPwV7n8gF0EVBCrA/BJA8twwtt9cZ7/Wd8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 6.9 18/25] Revert "media: v4l2-ctrls: show all owned controls in log_status"
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 038/102] smb: client: handle path separator of created SMB symlinks
 Date: Thu, 23 May 2024 15:13:03 +0200
-Message-ID: <20240523130331.071611751@linuxfoundation.org>
+Message-ID: <20240523130343.901249804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit eba63df7eb1f95df6bfb67722a35372b6994928d upstream.
+[ Upstream commit 8bde59b20de06339d598e8b05e5195f7c631c38b ]
 
-This reverts commit 9801b5b28c6929139d6fceeee8d739cc67bb2739.
+Convert path separator to CIFS_DIR_SEP(cifs_sb) from symlink target
+before sending it over the wire otherwise the created SMB symlink may
+become innaccesible from server side.
 
-This patch introduced a potential deadlock scenario:
-
-[Wed May  8 10:02:06 2024]  Possible unsafe locking scenario:
-
-[Wed May  8 10:02:06 2024]        CPU0                    CPU1
-[Wed May  8 10:02:06 2024]        ----                    ----
-[Wed May  8 10:02:06 2024]   lock(vivid_ctrls:1620:(hdl_vid_cap)->_lock);
-[Wed May  8 10:02:06 2024]                                lock(vivid_ctrls:1608:(hdl_user_vid)->_lock);
-[Wed May  8 10:02:06 2024]                                lock(vivid_ctrls:1620:(hdl_vid_cap)->_lock);
-[Wed May  8 10:02:06 2024]   lock(vivid_ctrls:1608:(hdl_user_vid)->_lock);
-
-For now just revert.
-
-Fixes: 9801b5b28c69 ("media: v4l2-ctrls: show all owned controls in log_status")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 514d793e27a3 ("smb: client: allow creating symlinks via reparse points")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-core.c |   18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ fs/smb/client/smb2ops.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -2504,8 +2504,7 @@ int v4l2_ctrl_handler_setup(struct v4l2_
- EXPORT_SYMBOL(v4l2_ctrl_handler_setup);
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 23cf6e92fd54c..9ade347978709 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -5212,7 +5212,7 @@ static int smb2_create_reparse_symlink(const unsigned int xid,
+ 	struct inode *new;
+ 	struct kvec iov;
+ 	__le16 *path;
+-	char *sym;
++	char *sym, sep = CIFS_DIR_SEP(cifs_sb);
+ 	u16 len, plen;
+ 	int rc = 0;
  
- /* Log the control name and value */
--static void log_ctrl(const struct v4l2_ctrl_handler *hdl,
--		     struct v4l2_ctrl *ctrl,
-+static void log_ctrl(const struct v4l2_ctrl *ctrl,
- 		     const char *prefix, const char *colon)
- {
- 	if (ctrl->flags & (V4L2_CTRL_FLAG_DISABLED | V4L2_CTRL_FLAG_WRITE_ONLY))
-@@ -2515,11 +2514,7 @@ static void log_ctrl(const struct v4l2_c
+@@ -5226,7 +5226,8 @@ static int smb2_create_reparse_symlink(const unsigned int xid,
+ 		.symlink_target = sym,
+ 	};
  
- 	pr_info("%s%s%s: ", prefix, colon, ctrl->name);
+-	path = cifs_convert_path_to_utf16(symname, cifs_sb);
++	convert_delimiter(sym, sep);
++	path = cifs_convert_path_to_utf16(sym, cifs_sb);
+ 	if (!path) {
+ 		rc = -ENOMEM;
+ 		goto out;
+@@ -5249,7 +5250,10 @@ static int smb2_create_reparse_symlink(const unsigned int xid,
+ 	buf->PrintNameLength = cpu_to_le16(plen);
+ 	memcpy(buf->PathBuffer, path, plen);
+ 	buf->Flags = cpu_to_le32(*symname != '/' ? SYMLINK_FLAG_RELATIVE : 0);
++	if (*sym != sep)
++		buf->Flags = cpu_to_le32(SYMLINK_FLAG_RELATIVE);
  
--	if (ctrl->handler != hdl)
--		v4l2_ctrl_lock(ctrl);
- 	ctrl->type_ops->log(ctrl);
--	if (ctrl->handler != hdl)
--		v4l2_ctrl_unlock(ctrl);
- 
- 	if (ctrl->flags & (V4L2_CTRL_FLAG_INACTIVE |
- 			   V4L2_CTRL_FLAG_GRABBED |
-@@ -2538,7 +2533,7 @@ static void log_ctrl(const struct v4l2_c
- void v4l2_ctrl_handler_log_status(struct v4l2_ctrl_handler *hdl,
- 				  const char *prefix)
- {
--	struct v4l2_ctrl_ref *ref;
-+	struct v4l2_ctrl *ctrl;
- 	const char *colon = "";
- 	int len;
- 
-@@ -2550,12 +2545,9 @@ void v4l2_ctrl_handler_log_status(struct
- 	if (len && prefix[len - 1] != ' ')
- 		colon = ": ";
- 	mutex_lock(hdl->lock);
--	list_for_each_entry(ref, &hdl->ctrl_refs, node) {
--		if (ref->from_other_dev ||
--		    (ref->ctrl->flags & V4L2_CTRL_FLAG_DISABLED))
--			continue;
--		log_ctrl(hdl, ref->ctrl, prefix, colon);
--	}
-+	list_for_each_entry(ctrl, &hdl->ctrls, node)
-+		if (!(ctrl->flags & V4L2_CTRL_FLAG_DISABLED))
-+			log_ctrl(ctrl, prefix, colon);
- 	mutex_unlock(hdl->lock);
- }
- EXPORT_SYMBOL(v4l2_ctrl_handler_log_status);
++	convert_delimiter(sym, '/');
+ 	iov.iov_base = buf;
+ 	iov.iov_len = len;
+ 	new = smb2_get_reparse_inode(&data, inode->i_sb, xid,
+-- 
+2.43.0
+
 
 
 
