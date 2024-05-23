@@ -1,336 +1,394 @@
-Return-Path: <stable+bounces-45607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518538CCA11
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 02:19:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B268CCA58
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 03:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5065A1C21551
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 00:19:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C784F1F21C8E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 01:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED09A38;
-	Thu, 23 May 2024 00:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0C6EC7;
+	Thu, 23 May 2024 01:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="VJgNGh8J"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l7O28/vF"
 X-Original-To: stable@vger.kernel.org
-Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.220])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3485D365;
-	Thu, 23 May 2024 00:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.50.220
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBD65227
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 01:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716423536; cv=none; b=HMYcv7Ue3gpgCXtRSd6RH7qboGQnr8uWBG5lDWCHPCbMXj6EMiiJTEg/X/WXBWHuLmrDQnMgJDRCZmbZPCQEGYoxGH/4uzdf1WP6cOEZ+M1fOnIvns30u3jHxEkPhLgOGbTS2iFxFXJ2F32TPjUBisD3Yx13t+SgXszo4sUSVTo=
+	t=1716427227; cv=none; b=rbU5jufKcXbbhkToqb4+3lOS30R8Y1obFjnIuHKspxDyRJ+1k2rGMCGhU3Xe3OYwqcgM+8xHd/ppk86kzzelhBB21XT/GiupDUisBp9JZaz8ymkZGgzWPMa5ZsQ6FyYlBnKtFeP7HJmxsMO70dhWOxc3VwVc0uriibY4SwMEFKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716423536; c=relaxed/simple;
-	bh=YKY/NuFYDEsNEs4V49FBLPwLEWrJvY5Be5myay1m+VE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lqbEZEbx9MdS4zEtLy8i+K427PEAIREQD9YWs07ZzC0/mDfqDxl2K5KZUoT/kEdjc7O2sr3m6I2CtWYEjwQuli/MRw/3MdQmyZK7tE0EqmtuCtg8VDVnZrurqySVty2xGknE2tBuLn/vatCB3iTo5XIfxKRfTu8ffYoBLAgFjCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=VJgNGh8J; arc=none smtp.client-ip=45.254.50.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=Qtu/VUqDCy0UprgDf+ZNyfo4Le5L2Zc0yEzLcQTP5DQ=;
-	b=VJgNGh8JCvs+sLdO6PPphkud5nl/j/waSm6X/2MvyNqqXUzYOVVOLFSP9+ApJY
-	/Dp0D/tTu7iZfXU1YLqcXn6Rqaoxp04Z2CYtuLzJ5Ro2bu8eCNeWI3BtSEre8BL4
-	lFAvg2tvJrxoNsvClqTIhr+EaAW1PpB5C5SmeX+h8pThw=
-Received: from [192.168.1.26] (unknown [183.195.6.89])
-	by gzga-smtp-mta-g0-2 (Coremail) with SMTP id _____wD3qdEHi05mlhvmFQ--.32369S2;
-	Thu, 23 May 2024 08:17:12 +0800 (CST)
-Message-ID: <f7a408b4-ccef-4a4c-a919-df501cf3e878@163.com>
-Date: Thu, 23 May 2024 08:17:11 +0800
+	s=arc-20240116; t=1716427227; c=relaxed/simple;
+	bh=OBJ6NI3y8qebJ5AK/thr6FfcOgOdvK+rfZRhsCXNxII=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=RfPDkCCB/BQV4o31eTESu5kGLIWOnSFOVzmRiX6EwUPbkMeazSjfiEecBwrugVKx1WppT1+e//WK/uk4vf/dI1sHlNH5HqlanwUBFoqA6VAs5pJHzKm6bwvhMQ+F/FVH+/YK9Kyp2syXEN/jz/w4fHduD8HaLbY7m33DmWJaQmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l7O28/vF; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716427226; x=1747963226;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=OBJ6NI3y8qebJ5AK/thr6FfcOgOdvK+rfZRhsCXNxII=;
+  b=l7O28/vFsBB2dl8Gsy/KMhxNiSnTtXit6m4hcXn0HE86u5tk27TtiPSL
+   gg+zJHtEcuGAHw5kK5MCUCLDGZugC3gaQk4FWUv+0s2/g9DFacaqyxJV8
+   75q5p4/fxXVJQYHOh5dlelya9V4ZnTpfPPwSRKqU4FhX1LJ5XjwQpSvjn
+   ehl7S2XY7yCGipXfSeKBfbe5ex/Q1mMi6UYdAw7U2J86LTBaC0GPuuaOE
+   VmGIc8oeJ4cd1gytLEr8SCSsBoeOGY1oLwU746oCKZ+7hOCMuDUsv8Xg3
+   RiGwbO6agaeCK1uTyujm1r/MEk/eG3uenLIgpYu95BeDn34M5tlwk0V2P
+   A==;
+X-CSE-ConnectionGUID: UBpnbBC5S6eK6wWBkw4U+Q==
+X-CSE-MsgGUID: OCsJerdkTf6Og384X/j6fw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="12551039"
+X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; 
+   d="scan'208";a="12551039"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 18:20:24 -0700
+X-CSE-ConnectionGUID: OiVUy4GeSKWtjX+5/NuI4A==
+X-CSE-MsgGUID: Pscf/n4xQnuzctPt7iKQSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; 
+   d="scan'208";a="34026442"
+Received: from jjsopko-mobl1.amr.corp.intel.com (HELO desk) ([10.212.211.181])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 18:20:24 -0700
+Date: Wed, 22 May 2024 18:20:15 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: virtualization@lists.linux-foundation.org, dave.hansen@linux.intel.com,
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+	xen-devel@lists.xenproject.org, security@debian.org,
+	Salvatore Bonaccorso <carnil@debian.org>, benh@debian.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
+	Deep Shah <sdeep@vmware.com>,
+	"VMware, Inc." <pv-drivers@vmware.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>, Borislav Petkov <bp@suse.de>
+Subject: [PATCH 5.10] x86/xen: Drop USERGS_SYSRET64 paravirt call
+Message-ID: <20240522-verw-xen-pv-fix-v1-1-45add699c0e4@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAHmZTmYC/x2MywqAIBAAfyX23Iat2etXooPYVnuxULAg+vek4
+ wzMPBA5CEcYiwcCJ4ly+Ax1WYDbrd8YZckMpKhRhggThwtv9ngmXOVGbnXf0WCddhZydQbO+j9
+ OYKpawfy+H0Rh7bhnAAAA
+X-Mailer: b4 0.12.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Bluetooth: qca: Fix BT enable failure again for
- QCA6390 after warm reboot
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>, luiz.von.dentz@intel.com,
- marcel@holtmann.org, linux-bluetooth@vger.kernel.org, wt@penguintechs.org,
- regressions@lists.linux.dev, pmenzel@molgen.mpg.de,
- krzysztof.kozlowski@linaro.org, stable@vger.kernel.org
-References: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
- <f343ecae-efee-4bdc-ac38-89b614e081b5@163.com>
- <CABBYNZ+nLgozYxL=znsXrg0qoz-ENgSBwcPzY-KrBnVJJut8Kw@mail.gmail.com>
- <34a8e7c3-8843-4f07-9eef-72fb1f8e9378@163.com>
- <CABBYNZLzTcnXP3bKdQB3wdBCMgCJrqu=jXQ91ws6+c1mioYt9A@mail.gmail.com>
-Content-Language: en-US
-From: Lk Sii <lk_sii@163.com>
-In-Reply-To: <CABBYNZLzTcnXP3bKdQB3wdBCMgCJrqu=jXQ91ws6+c1mioYt9A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3qdEHi05mlhvmFQ--.32369S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3tw47tFWfKFW5CF4DXrW3GFg_yoWkXFWfpF
-	WDKFyYkr4UJr1Ikry2vr17WFyjqwnxtrW7Wr13G345GanYvry5GF4xtrW5ua48Gr98Gr4j
-	vr17X343W34YkFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jxvtAUUUUU=
-X-CM-SenderInfo: 5onb2xrl6rljoofrz/1tbisg7nNWVODT6GDwAAs-
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+From: Juergen Gross <jgross@suse.com>
 
+commit afd30525a659ac0ae0904f0cb4a2ca75522c3123 upstream.
 
-On 2024/5/21 23:48, Luiz Augusto von Dentz wrote:
-> Hi,
-> 
-> On Tue, May 21, 2024 at 10:52 AM Lk Sii <lk_sii@163.com> wrote:
->>
->>
->>
->> On 2024/5/16 23:55, Luiz Augusto von Dentz wrote:
->>> Hi,
->>>
->>> On Thu, May 16, 2024 at 10:57 AM Lk Sii <lk_sii@163.com> wrote:
->>>>
->>>>
->>>>
->>>> On 2024/5/16 21:31, Zijun Hu wrote:
->>>>> Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
->>>>> serdev") will cause below regression issue:
->>>>>
->>>>> BT can't be enabled after below steps:
->>>>> cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failure
->>>>> if property enable-gpios is not configured within DT|ACPI for QCA6390.
->>>>>
->>>>> The commit is to fix a use-after-free issue within qca_serdev_shutdown()
->>>>> by adding condition to avoid the serdev is flushed or wrote after closed
->>>>> but also introduces this regression issue regarding above steps since the
->>>>> VSC is not sent to reset controller during warm reboot.
->>>>>
->>>>> Fixed by sending the VSC to reset controller within qca_serdev_shutdown()
->>>>> once BT was ever enabled, and the use-after-free issue is also fixed by
->>>>> this change since the serdev is still opened before it is flushed or wrote.
->>>>>
->>>>> Verified by the reported machine Dell XPS 13 9310 laptop over below two
->>>>> kernel commits:
->>>>> commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
->>>>> implementation for QCA") of bluetooth-next tree.
->>>>> commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
->>>>> implementation for QCA") of linus mainline tree.
->>>>>
->>>>> Fixes: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed serdev")
->>>>> Cc: stable@vger.kernel.org
->>>>> Reported-by: Wren Turkal <wt@penguintechs.org>
->>>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218726
->>>>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
->>>>> Tested-by: Wren Turkal <wt@penguintechs.org>
->>>>> ---
->>>>> V1 -> V2: Add comments and more commit messages
->>>>>
->>>>> V1 discussion link:
->>>>> https://lore.kernel.org/linux-bluetooth/d553edef-c1a4-4d52-a892-715549d31ebe@163.com/T/#t
->>>>>
->>>>>  drivers/bluetooth/hci_qca.c | 18 +++++++++++++++---
->>>>>  1 file changed, 15 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
->>>>> index 0c9c9ee56592..9a0bc86f9aac 100644
->>>>> --- a/drivers/bluetooth/hci_qca.c
->>>>> +++ b/drivers/bluetooth/hci_qca.c
->>>>> @@ -2450,15 +2450,27 @@ static void qca_serdev_shutdown(struct device *dev)
->>>>>       struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
->>>>>       struct hci_uart *hu = &qcadev->serdev_hu;
->>>>>       struct hci_dev *hdev = hu->hdev;
->>>>> -     struct qca_data *qca = hu->priv;
->>>>>       const u8 ibs_wake_cmd[] = { 0xFD };
->>>>>       const u8 edl_reset_soc_cmd[] = { 0x01, 0x00, 0xFC, 0x01, 0x05 };
->>>>>
->>>>>       if (qcadev->btsoc_type == QCA_QCA6390) {
->>>>> -             if (test_bit(QCA_BT_OFF, &qca->flags) ||
->>>>> -                 !test_bit(HCI_RUNNING, &hdev->flags))
->>>>> +             /* The purpose of sending the VSC is to reset SOC into a initial
->>>>> +              * state and the state will ensure next hdev->setup() success.
->>>>> +              * if HCI_QUIRK_NON_PERSISTENT_SETUP is set, it means that
->>>>> +              * hdev->setup() can do its job regardless of SoC state, so
->>>>> +              * don't need to send the VSC.
->>>>> +              * if HCI_SETUP is set, it means that hdev->setup() was never
->>>>> +              * invoked and the SOC is already in the initial state, so
->>>>> +              * don't also need to send the VSC.
->>>>> +              */
->>>>> +             if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks) ||
->>>>> +                 hci_dev_test_flag(hdev, HCI_SETUP))
->>>>>                       return;
->> The main purpose of above checking is NOT to make sure the serdev within
->> open state as its comments explained.
->>>>>
->>>>> +             /* The serdev must be in open state when conrol logic arrives
->>>>> +              * here, so also fix the use-after-free issue caused by that
->>>>> +              * the serdev is flushed or wrote after it is closed.
->>>>> +              */
->>>>>               serdev_device_write_flush(serdev);
->>>>>               ret = serdev_device_write_buf(serdev, ibs_wake_cmd,
->>>>>                                             sizeof(ibs_wake_cmd));
->>>> i believe Zijun's change is able to fix both below issues and don't
->>>> introduce new issue.
->>>>
->>>> regression issue A:  BT enable failure after warm reboot.
->>>> issue B:  use-after-free issue, namely, kernel crash.
->>>>
->>>>
->>>> For issue B, i have more findings related to below commits ordered by time.
->>>>
->>>> Commit A: 7e7bbddd029b ("Bluetooth: hci_qca: Fix qca6390 enable failure
->>>> after warm reboot")
->>>>
->>>> Commit B: de8892df72be ("Bluetooth: hci_serdev: Close UART port if
->>>> NON_PERSISTENT_SETUP is set")
->>>> this commit introduces issue B, it is also not suitable to associate
->>>> protocol state with state of lower level transport type such as serdev
->>>> or uart, in my opinion, protocol state should be independent with
->>>> transport type state, flag HCI_UART_PROTO_READY is for protocol state,
->>>> it means if protocol hu->proto is initialized and if we can invoke its
->>>> interfaces.it is common for various kinds of transport types. perhaps,
->>>> this is the reason why Zijun's change doesn't use flag HCI_UART_PROTO_READY.
->>>
->>> Don't really follow you here, if HCI_UART_PROTO_READY indicates the
->>> protocol state they is even _more_ important to use before invoking
->>> serdev APIs, so checking for the quirk sound like a problem because:
->>>
->>> [1] hci_uart_close
->>>      /* When QUIRK HCI_QUIRK_NON_PERSISTENT_SETUP is set by driver,
->>>      * BT SOC is completely powered OFF during BT OFF, holding port
->>>      * open may drain the battery.
->>>      */
->>>     if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
->>>         clear_bit(HCI_UART_PROTO_READY, &hu->flags);
->>>         serdev_device_close(hu->serdev);
->>>     }
->>>
->>> [2] hci_uart_unregister_device
->>>     if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
->>>         clear_bit(HCI_UART_PROTO_READY, &hu->flags);
->>>         serdev_device_close(hu->serdev);
->>>     }
->>> both case 1 and case 2 were introduced by Commit B in question which
->> uses protocol state flag HCI_UART_PROTO_READY to track lower level
->> transport type state, i don't think it is perfect.
->>
->> for common files hci_serdev.c and hci_ldisc.c, as you saw, the purpose
->> of checking HCI_UART_PROTO_READY is to call protocol relevant
->> interfaces, moreover, these protocol relevant interfaces do not deal
->> with lower transport state. you maybe even notice below present function
->> within which lower level serdev is flushed before HCI_UART_PROTO_READY
->> is checked:
->>
->> static int hci_uart_flush(struct hci_dev *hdev)
->> {
->> ......
->>         /* Flush any pending characters in the driver and discipline. */
->>         serdev_device_write_flush(hu->serdev);
->>
->>         if (test_bit(HCI_UART_PROTO_READY, &hu->flags))
->>                 hu->proto->flush(hu);
->>
->>         return 0;
->> }
->>
->> in my opinion, that is why qca_serdev_shutdown() does not check
->> HCI_UART_PROTO_READY for later lower level serdev operations.
->>> So only in case 1 checking the quirk is equivalent to
->>> HCI_UART_PROTO_READY on case 2 it does actually check the quirk and
->>> will proceed to call serdev_device_close, now perhaps the code is
->>> assuming that shutdown won't be called after that, but it looks it
->>> does since:
->>>
->> qca_serdev_shutdown() will never be called after case 2 as explained
->> in the end.
->>> static void serdev_drv_remove(struct device *dev)
->>> {
->>>     const struct serdev_device_driver *sdrv =
->>> to_serdev_device_driver(dev->driver);
->>>     if (sdrv->remove)
->>>         sdrv->remove(to_serdev_device(dev));
->>>
->>>     dev_pm_domain_detach(dev, true);
->>> }
->>>
->>> dev_pm_domain_detach says it will power off so I assume that means
->>> that shutdown will be called _after_ remove, so not I'm not really
->>> convinced that we can avoid using HCI_UART_PROTO_READY, in fact the
->>> following sequence might always be triggering:
->>>
->> dev_pm_domain_detach() should be irrelevant with qca_serdev_shutdown(),
->> should not trigger call of qca_serdev_shutdown() as explained in the end
->>> serdev_drv_remove -> qca_serdev_remove -> hci_uart_unregister_device
->>> -> serdev_device_close -> qca_close -> kfree(qca)
->>> dev_pm_domain_detach -> ??? -> qca_serdev_shutdown
->>>
->>> If this sequence is correct then qca_serdev_shutdown accessing
->>> qca_data will always result in a UAF problem.
->>>
->> above sequence should not correct as explained below.
->>
->> serdev and its driver should also follow below generic device and driver
->> design.
->>
->> 1)
->> driver->shutdown() will be called during shut-down time at this time
->> driver->remove() should not have been called.
->>
->> 2)
->> driver->shutdown() is impossible to be called once driver->remove()
->> was called.
->>
->> 3) for serdev, driver->remove() does not trigger call of
->> driver->shutdown() since PM relevant poweroff is irrelevant with
->> driver->shutdown() and i also don't find any PM relevant interfaces will
->> call driver->shutdown().
->>
->> i would like to explain issue B based on comments Zijun posted by public
->> as below:
->>
->> issue B actually happens during reboot and let me look at these steps
->> boot -> enable BT -> disable BT -> reboot.
->>
->> 1) step boot will call driver->probe() to register hdev and the serdev
->> is opened after boot.
->>
->> 2) step enable will call hdev->open() and the serdev will still in open
->> state
->>
->> 3) step disable will call hdev->close() and the serdev will be closed
->> after hdev->close() for machine with config which results in
->> HCI_QUIRK_NON_PERSISTENT_SETUP is set.
->>
->> 4) step reboot will call qca_serdev_shutdown() which will flush and
->> write the serdev which are closed by above step disable, so cause the
->> UAF issue, namely, kernel crash issue.
->>
->> so this issue is caused by commit B which close the serdev during
->> hdev->close().
->>
->> driver->remove() even is not triggered during above steps.
->>>> Commit C: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on
->>>> closed serdev")
->>>> this commit is to fix issue B which is actually caused by Commit B, but
->>>> it has Fixes tag for Commit A. and it also introduces the regression
->>>> issue A.
->>>>
->>>
->>>
-> 
-> Reading again the commit message for the UAF fix it sounds like a
-> different problem:
-> 
->     The driver shutdown callback (which sends EDL_SOC_RESET to the device
->     over serdev) should not be invoked when HCI device is not open (e.g. if
->     hci_dev_open_sync() failed), because the serdev and its TTY are not open
->     either.  Also skip this step if device is powered off
->     (qca_power_shutdown()).
-> 
-> So if hci_dev_open_sync has failed it says serdev and its TTY will not
-> be open either, so I guess that's why HCI_SETUP was added as a
-> condition to bail out? So it seems correct to do that although I'd
-> change the comments.
-> 
-yes, agree with you on these points, Zijun's change is able to fix this
-different problem as well.
-> @Krzysztof Kozlowski do you still have a test setup for 272970be3dab
-> ("Bluetooth: hci_qca: Fix driver shutdown on closed serdev"), can you
-> try with these changes?
-> 
+USERGS_SYSRET64 is used to return from a syscall via SYSRET, but
+a Xen PV guest will nevertheless use the IRET hypercall, as there
+is no sysret PV hypercall defined.
+
+So instead of testing all the prerequisites for doing a sysret and
+then mangling the stack for Xen PV again for doing an iret just use
+the iret exit from the beginning.
+
+This can easily be done via an ALTERNATIVE like it is done for the
+sysenter compat case already.
+
+It should be noted that this drops the optimization in Xen for not
+restoring a few registers when returning to user mode, but it seems
+as if the saved instructions in the kernel more than compensate for
+this drop (a kernel build in a Xen PV guest was slightly faster with
+this patch applied).
+
+While at it remove the stale sysret32 remnants.
+
+  [ pawan: Brad Spengler and Salvatore Bonaccorso <carnil@debian.org>
+	   reported a problem with the 5.10 backport commit edc702b4a820
+	   ("x86/entry_64: Add VERW just before userspace transition").
+
+	   When CONFIG_PARAVIRT_XXL=y, CLEAR_CPU_BUFFERS is not executed in
+	   syscall_return_via_sysret path as USERGS_SYSRET64 is runtime
+	   patched to:
+
+	.cpu_usergs_sysret64    = { 0x0f, 0x01, 0xf8,
+				    0x48, 0x0f, 0x07 }, // swapgs; sysretq
+
+	   which is missing CLEAR_CPU_BUFFERS. It turns out dropping
+	   USERGS_SYSRET64 simplifies the code, allowing CLEAR_CPU_BUFFERS
+	   to be explicitly added to syscall_return_via_sysret path. Below
+	   is with CONFIG_PARAVIRT_XXL=y and this patch applied:
+
+	   syscall_return_via_sysret:
+	   ...
+	   <+342>:   swapgs
+	   <+345>:   xchg   %ax,%ax
+	   <+347>:   verw   -0x1a2(%rip)  <------
+	   <+354>:   sysretq
+  ]
+
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Link: https://lkml.kernel.org/r/20210120135555.32594-6-jgross@suse.com
+---
+ arch/x86/entry/entry_64.S             | 17 ++++++++---------
+ arch/x86/include/asm/irqflags.h       |  7 -------
+ arch/x86/include/asm/paravirt.h       |  5 -----
+ arch/x86/include/asm/paravirt_types.h |  8 --------
+ arch/x86/kernel/asm-offsets_64.c      |  2 --
+ arch/x86/kernel/paravirt.c            |  5 +----
+ arch/x86/kernel/paravirt_patch.c      |  4 ----
+ arch/x86/xen/enlighten_pv.c           |  1 -
+ arch/x86/xen/xen-asm.S                | 21 ---------------------
+ arch/x86/xen/xen-ops.h                |  2 --
+ 10 files changed, 9 insertions(+), 63 deletions(-)
+
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 1631a9a1566e..bd785386d629 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -46,14 +46,6 @@
+ .code64
+ .section .entry.text, "ax"
+ 
+-#ifdef CONFIG_PARAVIRT_XXL
+-SYM_CODE_START(native_usergs_sysret64)
+-	UNWIND_HINT_EMPTY
+-	swapgs
+-	sysretq
+-SYM_CODE_END(native_usergs_sysret64)
+-#endif /* CONFIG_PARAVIRT_XXL */
+-
+ /*
+  * 64-bit SYSCALL instruction entry. Up to 6 arguments in registers.
+  *
+@@ -128,7 +120,12 @@ SYM_INNER_LABEL(entry_SYSCALL_64_after_hwframe, SYM_L_GLOBAL)
+ 	 * Try to use SYSRET instead of IRET if we're returning to
+ 	 * a completely clean 64-bit userspace context.  If we're not,
+ 	 * go to the slow exit path.
++	 * In the Xen PV case we must use iret anyway.
+ 	 */
++
++	ALTERNATIVE "", "jmp	swapgs_restore_regs_and_return_to_usermode", \
++		X86_FEATURE_XENPV
++
+ 	movq	RCX(%rsp), %rcx
+ 	movq	RIP(%rsp), %r11
+ 
+@@ -220,7 +217,9 @@ syscall_return_via_sysret:
+ 
+ 	popq	%rdi
+ 	popq	%rsp
+-	USERGS_SYSRET64
++	swapgs
++	CLEAR_CPU_BUFFERS
++	sysretq
+ SYM_CODE_END(entry_SYSCALL_64)
+ 
+ /*
+diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
+index f40dea50dfbf..e585a4705b8d 100644
+--- a/arch/x86/include/asm/irqflags.h
++++ b/arch/x86/include/asm/irqflags.h
+@@ -132,13 +132,6 @@ static __always_inline unsigned long arch_local_irq_save(void)
+ #endif
+ 
+ #define INTERRUPT_RETURN	jmp native_iret
+-#define USERGS_SYSRET64				\
+-	swapgs;					\
+-	CLEAR_CPU_BUFFERS;			\
+-	sysretq;
+-#define USERGS_SYSRET32				\
+-	swapgs;					\
+-	sysretl
+ 
+ #else
+ #define INTERRUPT_RETURN		iret
+diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+index 4a32b0d34376..3c89c1f64871 100644
+--- a/arch/x86/include/asm/paravirt.h
++++ b/arch/x86/include/asm/paravirt.h
+@@ -776,11 +776,6 @@ extern void default_banner(void);
+ 
+ #ifdef CONFIG_X86_64
+ #ifdef CONFIG_PARAVIRT_XXL
+-#define USERGS_SYSRET64							\
+-	PARA_SITE(PARA_PATCH(PV_CPU_usergs_sysret64),			\
+-		  ANNOTATE_RETPOLINE_SAFE;				\
+-		  jmp PARA_INDIRECT(pv_ops+PV_CPU_usergs_sysret64);)
+-
+ #ifdef CONFIG_DEBUG_ENTRY
+ #define SAVE_FLAGS(clobbers)                                        \
+ 	PARA_SITE(PARA_PATCH(PV_IRQ_save_fl),			    \
+diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
+index 903d71884fa2..55d8b7950e61 100644
+--- a/arch/x86/include/asm/paravirt_types.h
++++ b/arch/x86/include/asm/paravirt_types.h
+@@ -157,14 +157,6 @@ struct pv_cpu_ops {
+ 
+ 	u64 (*read_pmc)(int counter);
+ 
+-	/*
+-	 * Switch to usermode gs and return to 64-bit usermode using
+-	 * sysret.  Only used in 64-bit kernels to return to 64-bit
+-	 * processes.  Usermode register state, including %rsp, must
+-	 * already be restored.
+-	 */
+-	void (*usergs_sysret64)(void);
+-
+ 	/* Normal iret.  Jump to this with the standard iret stack
+ 	   frame set up. */
+ 	void (*iret)(void);
+diff --git a/arch/x86/kernel/asm-offsets_64.c b/arch/x86/kernel/asm-offsets_64.c
+index 1354bc30614d..b14533af7676 100644
+--- a/arch/x86/kernel/asm-offsets_64.c
++++ b/arch/x86/kernel/asm-offsets_64.c
+@@ -13,8 +13,6 @@ int main(void)
+ {
+ #ifdef CONFIG_PARAVIRT
+ #ifdef CONFIG_PARAVIRT_XXL
+-	OFFSET(PV_CPU_usergs_sysret64, paravirt_patch_template,
+-	       cpu.usergs_sysret64);
+ #ifdef CONFIG_DEBUG_ENTRY
+ 	OFFSET(PV_IRQ_save_fl, paravirt_patch_template, irq.save_fl);
+ #endif
+diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
+index f0e4ad8595ca..9d91061b862c 100644
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -124,8 +124,7 @@ unsigned paravirt_patch_default(u8 type, void *insn_buff,
+ 	else if (opfunc == _paravirt_ident_64)
+ 		ret = paravirt_patch_ident_64(insn_buff, len);
+ 
+-	else if (type == PARAVIRT_PATCH(cpu.iret) ||
+-		 type == PARAVIRT_PATCH(cpu.usergs_sysret64))
++	else if (type == PARAVIRT_PATCH(cpu.iret))
+ 		/* If operation requires a jmp, then jmp */
+ 		ret = paravirt_patch_jmp(insn_buff, opfunc, addr, len);
+ #endif
+@@ -159,7 +158,6 @@ static u64 native_steal_clock(int cpu)
+ 
+ /* These are in entry.S */
+ extern void native_iret(void);
+-extern void native_usergs_sysret64(void);
+ 
+ static struct resource reserve_ioports = {
+ 	.start = 0,
+@@ -299,7 +297,6 @@ struct paravirt_patch_template pv_ops = {
+ 
+ 	.cpu.load_sp0		= native_load_sp0,
+ 
+-	.cpu.usergs_sysret64	= native_usergs_sysret64,
+ 	.cpu.iret		= native_iret,
+ 
+ #ifdef CONFIG_X86_IOPL_IOPERM
+diff --git a/arch/x86/kernel/paravirt_patch.c b/arch/x86/kernel/paravirt_patch.c
+index 7c518b08aa3c..2fada2c347c9 100644
+--- a/arch/x86/kernel/paravirt_patch.c
++++ b/arch/x86/kernel/paravirt_patch.c
+@@ -27,7 +27,6 @@ struct patch_xxl {
+ 	const unsigned char	mmu_write_cr3[3];
+ 	const unsigned char	irq_restore_fl[2];
+ 	const unsigned char	cpu_wbinvd[2];
+-	const unsigned char	cpu_usergs_sysret64[6];
+ 	const unsigned char	mov64[3];
+ };
+ 
+@@ -40,8 +39,6 @@ static const struct patch_xxl patch_data_xxl = {
+ 	.mmu_write_cr3		= { 0x0f, 0x22, 0xdf },	// mov %rdi, %cr3
+ 	.irq_restore_fl		= { 0x57, 0x9d },	// push %rdi; popfq
+ 	.cpu_wbinvd		= { 0x0f, 0x09 },	// wbinvd
+-	.cpu_usergs_sysret64	= { 0x0f, 0x01, 0xf8,
+-				    0x48, 0x0f, 0x07 },	// swapgs; sysretq
+ 	.mov64			= { 0x48, 0x89, 0xf8 },	// mov %rdi, %rax
+ };
+ 
+@@ -83,7 +80,6 @@ unsigned int native_patch(u8 type, void *insn_buff, unsigned long addr,
+ 	PATCH_CASE(mmu, read_cr3, xxl, insn_buff, len);
+ 	PATCH_CASE(mmu, write_cr3, xxl, insn_buff, len);
+ 
+-	PATCH_CASE(cpu, usergs_sysret64, xxl, insn_buff, len);
+ 	PATCH_CASE(cpu, wbinvd, xxl, insn_buff, len);
+ #endif
+ 
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 94804670caab..b1efc4b4f42a 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -1059,7 +1059,6 @@ static const struct pv_cpu_ops xen_cpu_ops __initconst = {
+ 	.read_pmc = xen_read_pmc,
+ 
+ 	.iret = xen_iret,
+-	.usergs_sysret64 = xen_sysret64,
+ 
+ 	.load_tr_desc = paravirt_nop,
+ 	.set_ldt = xen_set_ldt,
+diff --git a/arch/x86/xen/xen-asm.S b/arch/x86/xen/xen-asm.S
+index e3031afcb103..3a33713cf449 100644
+--- a/arch/x86/xen/xen-asm.S
++++ b/arch/x86/xen/xen-asm.S
+@@ -220,27 +220,6 @@ SYM_CODE_START(xen_iret)
+ 	jmp hypercall_iret
+ SYM_CODE_END(xen_iret)
+ 
+-SYM_CODE_START(xen_sysret64)
+-	UNWIND_HINT_EMPTY
+-	/*
+-	 * We're already on the usermode stack at this point, but
+-	 * still with the kernel gs, so we can easily switch back.
+-	 *
+-	 * tss.sp2 is scratch space.
+-	 */
+-	movq %rsp, PER_CPU_VAR(cpu_tss_rw + TSS_sp2)
+-	movq PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+-
+-	pushq $__USER_DS
+-	pushq PER_CPU_VAR(cpu_tss_rw + TSS_sp2)
+-	pushq %r11
+-	pushq $__USER_CS
+-	pushq %rcx
+-
+-	pushq $VGCF_in_syscall
+-	jmp hypercall_iret
+-SYM_CODE_END(xen_sysret64)
+-
+ /*
+  * XEN pv doesn't use trampoline stack, PER_CPU_VAR(cpu_tss_rw + TSS_sp0) is
+  * also the kernel stack.  Reusing swapgs_restore_regs_and_return_to_usermode()
+diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
+index 8695809b88f0..98242430d07e 100644
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -138,8 +138,6 @@ __visible unsigned long xen_read_cr2_direct(void);
+ 
+ /* These are not functions, and cannot be called normally */
+ __visible void xen_iret(void);
+-__visible void xen_sysret32(void);
+-__visible void xen_sysret64(void);
+ 
+ extern int xen_panic_handler_init(void);
+ 
+
+---
+base-commit: ce3838dbefdccfb95a63f81fe6cf77592ae9138c
+change-id: 20240522-verw-xen-pv-fix-e638729ac3ca
+
+Best regards,
+-- 
+Thanks,
+Pawan
 
 
