@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-45736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CCA8CD3A0
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9458CD385
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D631A1C225D0
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AA26B21E7D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED69914BF92;
-	Thu, 23 May 2024 13:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DA114AD3E;
+	Thu, 23 May 2024 13:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saWF5lJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meErOzym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC7814BF8D;
-	Thu, 23 May 2024 13:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266BB14AD38;
+	Thu, 23 May 2024 13:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470214; cv=none; b=Bx03FgWSWjCYxM8T7Rgx8ww5c6CXJE/r/j+iOQVgw/Sm+NdI23/bIjKuOX7dPcOd13feSuVwEbh3dFTuN4PZCzRzQV3VkHgvAvZ7yGmnDwd41lAhgWQhrW+/R+Vtz7archCKHa4QuRrtuW+bNgnM5+q4ksiW1B5hfN5hbB6BrEg=
+	t=1716470157; cv=none; b=QF/8PRsL6fcXGA/3zPr7kw5I7tpDcPHjHWRO59Lgnk2fBeyx2WauJlodgadl/fx51AZsOAyDbrBFT03LgjM2Zxgg6MmEMQgPhtZrkgHrRnkgQbbM9Xn5TPHVaBbsqfV786hEvMmmGVNKnxFkyjnW5IAz2NhouM97I3zYzTDVrGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470214; c=relaxed/simple;
-	bh=J4uvElDrgjNnfw5m07YC8CviD80SNMQjRxotTRXNqX8=;
+	s=arc-20240116; t=1716470157; c=relaxed/simple;
+	bh=u2jcGAOTl0OL3M3WQeG4rpKmdEpmhmzcsLTqZvFjDPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eG3ZcXrneovEW5T95TeRtt/AGeOc7o5bbVy8DA4Y68CzZ5hdVysmJWvsDlZTyTA3OMqZVJR1OpfRPqlQH5CuF8Z/6KXA0cPaa4Yzh/wbzFtrkzQ4cK46RVGyeqwmlm4VKQMNSjphHGIhylMAVWX3V5HbVQau/dolJITNnK/qANw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saWF5lJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70E6C32786;
-	Thu, 23 May 2024 13:16:53 +0000 (UTC)
+	 MIME-Version; b=uwxd4+tBUd9d31bbpO9B8eE06ljpEa522+UvUizMpT7pgvoW2eHoTdjNR1Ekw8a6RtRaqEAkZ8MimZ8IDc9xxT3hRxQ1BAj1GOY2zOUtv5ZTU3tZJSHdPzmGLNXPnEoF9vPvpld4dnYhL+uFoJOPpcXX71DTHOYIcHa4VIXoL0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meErOzym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A473EC4AF0A;
+	Thu, 23 May 2024 13:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470214;
-	bh=J4uvElDrgjNnfw5m07YC8CviD80SNMQjRxotTRXNqX8=;
+	s=korg; t=1716470157;
+	bh=u2jcGAOTl0OL3M3WQeG4rpKmdEpmhmzcsLTqZvFjDPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=saWF5lJK5TJdPl+3V7ve64WEUqYCPSvntrcmwAdTzZdIOMQ4S3dTw2FZMJ8gibbrI
-	 D7ELQ7MLtMpkvsLrvlg7b77ovZ+9x4BzgRfL1RGBT6apzSmnZqqfIP5t8204M2Fs7e
-	 De390G0Zh4wto/C2V+P9ZE4o96cOomeB5CUnlqAo=
+	b=meErOzymTwosds66Hf2cOyVTiCr5jJNq5ArMFt2U2bv2UInwnMKG9GVsAkGrdRLq+
+	 WmtMpgJvQDRLDLPHOCujrSIr4ncwTQi46P5J/qMXqEP80cpe0k+o2HqkhJzDNB4NUN
+	 u5+RcItnk/b5CJo5yk3pG11uoo1y65g2T6pMvqd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Tsao <peter.tsao@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.9 01/25] Bluetooth: btusb: Fix the patch for MT7920 the affected to MT7921
-Date: Thu, 23 May 2024 15:12:46 +0200
-Message-ID: <20240523130330.443000086@linuxfoundation.org>
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.4 14/16] usb: typec: ucsi: displayport: Fix potential deadlock
+Date: Thu, 23 May 2024 15:12:47 +0200
+Message-ID: <20240523130326.284613729@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130325.743454852@linuxfoundation.org>
+References: <20240523130325.743454852@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Tsao <peter.tsao@mediatek.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-commit 958cd6beab693f395ffe07814ef77d2b45e8b0fc upstream.
+commit b791a67f68121d69108640d4a3e591d210ffe850 upstream.
 
-Because both MT7920 and MT7921 use the same chip ID.
-We use the 8th bit of fw_flavor to distingush MT7920.
-The original patch made a mistake to check whole fw_flavor,
-that makes the condition both true (dev_id == 0x7961 && fw_flavor),
-and makes MT7921 flow wrong.
+The function ucsi_displayport_work() does not access the
+connector, so it also must not acquire the connector lock.
 
-In this patch, we correct the flow to get the 8th bit value for MT7920.
-And the patch is verified pass with both MT7920 and MT7921.
+This fixes a potential deadlock scenario:
 
-Signed-off-by: Peter Tsao <peter.tsao@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+ucsi_displayport_work() -> lock(&con->lock)
+typec_altmode_vdm()
+dp_altmode_vdm()
+dp_altmode_work()
+typec_altmode_enter()
+ucsi_displayport_enter() -> lock(&con->lock)
+
+Reported-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240507134316.161999-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/typec/ucsi/displayport.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3118,6 +3118,7 @@ static int btusb_mtk_setup(struct hci_de
- 			bt_dev_err(hdev, "Failed to get fw flavor (%d)", err);
- 			return err;
- 		}
-+		fw_flavor = (fw_flavor & 0x00000080) >> 7;
- 	}
+--- a/drivers/usb/typec/ucsi/displayport.c
++++ b/drivers/usb/typec/ucsi/displayport.c
+@@ -251,8 +251,6 @@ static void ucsi_displayport_work(struct
+ 	struct ucsi_dp *dp = container_of(work, struct ucsi_dp, work);
+ 	int ret;
  
- 	mediatek = hci_get_priv(hdev);
+-	mutex_lock(&dp->con->lock);
+-
+ 	ret = typec_altmode_vdm(dp->alt, dp->header,
+ 				dp->vdo_data, dp->vdo_size);
+ 	if (ret)
+@@ -261,8 +259,6 @@ static void ucsi_displayport_work(struct
+ 	dp->vdo_data = NULL;
+ 	dp->vdo_size = 0;
+ 	dp->header = 0;
+-
+-	mutex_unlock(&dp->con->lock);
+ }
+ 
+ void ucsi_displayport_remove_partner(struct typec_altmode *alt)
 
 
 
