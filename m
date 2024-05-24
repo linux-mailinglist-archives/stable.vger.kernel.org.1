@@ -1,85 +1,229 @@
-Return-Path: <stable+bounces-46020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B9F8CDF9A
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 04:57:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E24288CDFE0
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 05:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13B5DB21D34
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 02:57:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1196D1C221B7
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 03:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DDD2D611;
-	Fri, 24 May 2024 02:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0B138DD9;
+	Fri, 24 May 2024 03:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="t07vfPWT"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EAnFq72n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBA612B6C;
-	Fri, 24 May 2024 02:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602BC383BF
+	for <stable@vger.kernel.org>; Fri, 24 May 2024 03:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716519455; cv=none; b=mPaluDVDpV8tI/0SKJamVPjVHMvR+N0YEFSoEFPv+O+f7r6b6dtwnxikmiR/ENKjGqO0BVkFuWW+f4YYZUa05BV6rc/D03+qbFwT5734U4l8On5iYf6a5wQuWJbemsX5aWozY+5uGaruKL5j+YeYxDvXiwQ3SUrCuinYZvz1ABo=
+	t=1716521993; cv=none; b=T76yEIiAlF40gRf10HwZTy4T8seSHKKCXez27pfvhz5DaUcm2L8XSzKgsnh1wqmQ03dXXHPW2PbQt2NU9VSWyGSptCe4Xox+JM/lLrB53wrqFWs2UhPxO8Zl3JDGZ0PXqVXZWlXFSFSCQH5ACT6sXdz/vg8U49vmlClOAPZxxLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716519455; c=relaxed/simple;
-	bh=KumiJ0dcTbAP3ItPboriTQrVVDVKUARaIq7RCMFm+nw=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=KD5OQkX1fNPOruUfctS+T6VYLf90NZmriTW2Dl1FVNWFQWGxJmMocJh4b4Z1ICKJGQnCaveqsuux7zWpAeO4ST1XSySpesHE21V3MhHK41DvkRxnZYaPWJ0pzNn6RhQSW377pbX8ykpsvQLTNIHG686TahlGMFp+0SOPM51WywQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=t07vfPWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC635C2BD10;
-	Fri, 24 May 2024 02:57:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1716519455;
-	bh=KumiJ0dcTbAP3ItPboriTQrVVDVKUARaIq7RCMFm+nw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=t07vfPWTsUhVpAlA44lnGhqRPWVxDW4/G0c7tGCLBfSlG4Um8+SlW6GxDCDM0Ie/3
-	 ZT9Rsr4SnkxXKdrCWUHU2WqBfgSAi4IOJdpiUfRBmQ/gJH+MHWY9lC6J2mmVZCBllu
-	 H65fjrfxEqe2T+aDn8vX4oLx58h2cVnJUoi5Ic1M=
-Date: Thu, 23 May 2024 19:57:34 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Donet Tom <donettom@linux.ibm.com>, Shuah Khan <shuah@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Tony Battersby
- <tonyb@cybernetics.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Ritesh
- Harjani <ritesh.list@gmail.com>, Mike Rapoport <rppt@kernel.org>, Muchun
- Song <songmuchun@bytedance.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] selftest: mm: Test if hugepage does not get leaked
- during __bio_release_pages()
-Message-Id: <20240523195734.bc03a8822a34b1a97880fb65@linux-foundation.org>
-In-Reply-To: <d551d1cd-a02f-42aa-9de2-10ff7757224c@redhat.com>
-References: <20240523063905.3173-1-donettom@linux.ibm.com>
-	<20240523121344.6a67a109e0af2ba70973b34b@linux-foundation.org>
-	<d551d1cd-a02f-42aa-9de2-10ff7757224c@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1716521993; c=relaxed/simple;
+	bh=23moA4iMJXSgtkxujKg/JAxWm3k0ziZQHmIoopuyc70=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Qmzfei1WF2hgYFphO968JrG0DShjR68sxozpFCFLo4wyBLEZN8uwbihOqGRvOl/ANoHTbQcFJeV7pRY6XPHRdqQxa0ohLM2XEN3YaQ5lUr3xmInOoJzVctkH0QfabcTmtbWjpa8Lrj8L0vFX6x3eyIuLGsqKWIWN4vrGJdugdc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EAnFq72n; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-6f10092c8c7so4323726a34.1
+        for <stable@vger.kernel.org>; Thu, 23 May 2024 20:39:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1716521990; x=1717126790; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j6jr022mlOQVdTQNdYCM0jmCCOa9PK9T8m0GA7PmwSw=;
+        b=EAnFq72nP3DWnIENBt6bak1yK0hRnCHettp4QHJW+TniqVP1Ukusn/rGWO15BP6o8N
+         TOUI3uMjvlZPtbD7OzxanVlYjZEK0W5yfgZkGmQ948JLY+b3nT19tnfQ7pNKh/C5vpbP
+         gN5bljzjnZpklV4Yw0rmR1uTSkuavL9c8c9Ig=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716521990; x=1717126790;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j6jr022mlOQVdTQNdYCM0jmCCOa9PK9T8m0GA7PmwSw=;
+        b=Vl2GQ3TyCRbrQa5FKmJ5DPy89kEPa58oAOHr1TJ+QrYz0h368mRKnjzc+k9gAORKqs
+         ePGm10hdnFDjjV7Qyyq5xVVkGSGILJGPBbMeIyn0hI8bI06miYvlPgOafmk7EJjnItAZ
+         dCRSjuwPCn+qYMPwB20QRGS2bzqQjLW53pjQSxPPBqJ4yiSVW/+OBwndnXQfGGvfXN8s
+         1hYVq+MJY5gJQkUztvPQ9X4Gi1nhAUdnF7wYsZhMQuUJaOjPj20+zho7yLiSyV0194Io
+         nTfsoq2a3IMVBC/SD4FPB5p5uep2gFtSXlbNycpz/6NjtRfuBpC6nvOrl6LwAOgFSrOv
+         II+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUvFO8HHU04Ycdj00Vm2vAaSYUApKQBkx22OAVj6XgMwhvTzvFHLfJEVDqU0pUyAS9NIpqO3ZJitqtq61nHF8RbEfnxZMpO
+X-Gm-Message-State: AOJu0YydgXBmuDsnd0gUPXzBcE/J708Dg4MJ9bXmtDTY1Qqb36/yHglf
+	B1ewXS2sKjDwxjktmOrDFENjDNpgfiKW0m6DqF/h7NkCVaEazc/sZ2smoPk+lQ==
+X-Google-Smtp-Source: AGHT+IHZf+jr2XVCdIxoQjdDZnqMqm+D003gUslsBjdQqg0R++wGRM0qaMzD5yCdbM2LCfnRng/Tyg==
+X-Received: by 2002:a05:6870:1492:b0:24c:6198:5ff8 with SMTP id 586e51a60fabf-24ca105306amr1500902fac.4.1716521990321;
+        Thu, 23 May 2024 20:39:50 -0700 (PDT)
+Received: from localhost (197.59.83.34.bc.googleusercontent.com. [34.83.59.197])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-6f8fcbeb674sm315258b3a.122.2024.05.23.20.39.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 May 2024 20:39:50 -0700 (PDT)
+From: jeffxu@chromium.org
+To: jeffxu@google.com
+Cc: jeffxu@chromium.org,
+	akpm@linux-foundation.org,
+	cyphar@cyphar.com,
+	dmitry.torokhov@gmail.com,
+	dverkamp@chromium.org,
+	hughd@google.com,
+	jorgelo@chromium.org,
+	keescook@chromium.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	pobrn@protonmail.com,
+	skhan@linuxfoundation.org,
+	stable@vger.kernel.org,
+	David Rheinsberg <david@readahead.eu>
+Subject: [PATCH v2 1/2] memfd: fix MFD_NOEXEC_SEAL to be non-sealable by default
+Date: Fri, 24 May 2024 03:39:30 +0000
+Message-ID: <20240524033933.135049-2-jeffxu@google.com>
+X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
+In-Reply-To: <20240524033933.135049-1-jeffxu@google.com>
+References: <20240524033933.135049-1-jeffxu@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 23 May 2024 22:40:25 +0200 David Hildenbrand <david@redhat.com> wrote:
+From: Jeff Xu <jeffxu@google.com>
 
-> > You have stable@vger.kernel.org in the mail headers, so I assume you're
-> > proposing this for backporting.  When doing this, please include
-> > 
-> > Cc: <stable@vger.kernel.org>
-> > 
-> > in the changelog footers and also include a Fixes: target.  I'm
-> > assuming the suitable Fixes: target for this patch is 38b43539d64b?
-> 
-> This adds a new selfest to make sure what was fixed (and backported to 
-> stable) remains fixed.
+By default, memfd_create() creates a non-sealable MFD, unless the
+MFD_ALLOW_SEALING flag is set.
 
-Sure.  But we should provide -stable maintainers guidance for "how far
-back to go".  There isn't much point in backporting this into kernels
-where it's known to fail!
+When the MFD_NOEXEC_SEAL flag is initially introduced, the MFD created
+with that flag is sealable, even though MFD_ALLOW_SEALING is not set.
+This patch changes MFD_NOEXEC_SEAL to be non-sealable by default,
+unless MFD_ALLOW_SEALING is explicitly set.
 
-I'm still thinking that we want this in kernels which have 38b43539d64b?
+This is a non-backward compatible change. However, as MFD_NOEXEC_SEAL
+is new, we expect not many applications will rely on the nature of
+MFD_NOEXEC_SEAL being sealable. In most cases, the application already
+sets MFD_ALLOW_SEALING if they need a sealable MFD.
+
+Additionally, this enhances the useability of  pid namespace sysctl
+vm.memfd_noexec. When vm.memfd_noexec equals 1 or 2, the kernel will
+add MFD_NOEXEC_SEAL if mfd_create does not specify MFD_EXEC or
+MFD_NOEXEC_SEAL, and the addition of MFD_NOEXEC_SEAL enables the MFD
+to be sealable. This means, any application that does not desire this
+behavior will be unable to utilize vm.memfd_noexec = 1 or 2 to
+migrate/enforce non-executable MFD. This adjustment ensures that
+applications can anticipate that the sealable characteristic will
+remain unmodified by vm.memfd_noexec.
+
+This patch was initially developed by Barnabás Pőcze, and Barnabás
+used Debian Code Search and GitHub to try to find potential breakages
+and could only find a single one. Dbus-broker's memfd_create() wrapper
+is aware of this implicit `MFD_ALLOW_SEALING` behavior, and tries to
+work around it [1]. This workaround will break. Luckily, this only
+affects the test suite, it does not affect
+the normal operations of dbus-broker. There is a PR with a fix[2]. In
+addition, David Rheinsberg also raised similar fix in [3]
+
+[1]: https://github.com/bus1/dbus-broker/blob/9eb0b7e5826fc76cad7b025bc46f267d4a8784cb/src/util/misc.c#L114
+[2]: https://github.com/bus1/dbus-broker/pull/366
+[3]: https://lore.kernel.org/lkml/20230714114753.170814-1-david@readahead.eu/
+
+Cc: stable@vger.kernel.org
+Fixes: 105ff5339f498a ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EXEC")
+Signed-off-by: Barnabás Pőcze <pobrn@protonmail.com>
+Signed-off-by: Jeff Xu <jeffxu@google.com>
+Reviewed-by: David Rheinsberg <david@readahead.eu>
+---
+ mm/memfd.c                                 |  9 ++++----
+ tools/testing/selftests/memfd/memfd_test.c | 26 +++++++++++++++++++++-
+ 2 files changed, 29 insertions(+), 6 deletions(-)
+
+diff --git a/mm/memfd.c b/mm/memfd.c
+index 7d8d3ab3fa37..8b7f6afee21d 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -356,12 +356,11 @@ SYSCALL_DEFINE2(memfd_create,
+ 
+ 		inode->i_mode &= ~0111;
+ 		file_seals = memfd_file_seals_ptr(file);
+-		if (file_seals) {
+-			*file_seals &= ~F_SEAL_SEAL;
++		if (file_seals)
+ 			*file_seals |= F_SEAL_EXEC;
+-		}
+-	} else if (flags & MFD_ALLOW_SEALING) {
+-		/* MFD_EXEC and MFD_ALLOW_SEALING are set */
++	}
++
++	if (flags & MFD_ALLOW_SEALING) {
+ 		file_seals = memfd_file_seals_ptr(file);
+ 		if (file_seals)
+ 			*file_seals &= ~F_SEAL_SEAL;
+diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/selftests/memfd/memfd_test.c
+index 95af2d78fd31..8579a93d006b 100644
+--- a/tools/testing/selftests/memfd/memfd_test.c
++++ b/tools/testing/selftests/memfd/memfd_test.c
+@@ -1151,7 +1151,7 @@ static void test_noexec_seal(void)
+ 			    mfd_def_size,
+ 			    MFD_CLOEXEC | MFD_NOEXEC_SEAL);
+ 	mfd_assert_mode(fd, 0666);
+-	mfd_assert_has_seals(fd, F_SEAL_EXEC);
++	mfd_assert_has_seals(fd, F_SEAL_SEAL | F_SEAL_EXEC);
+ 	mfd_fail_chmod(fd, 0777);
+ 	close(fd);
+ }
+@@ -1169,6 +1169,14 @@ static void test_sysctl_sysctl0(void)
+ 	mfd_assert_has_seals(fd, 0);
+ 	mfd_assert_chmod(fd, 0644);
+ 	close(fd);
++
++	fd = mfd_assert_new("kern_memfd_sysctl_0_dfl",
++			    mfd_def_size,
++			    MFD_CLOEXEC);
++	mfd_assert_mode(fd, 0777);
++	mfd_assert_has_seals(fd, F_SEAL_SEAL);
++	mfd_assert_chmod(fd, 0644);
++	close(fd);
+ }
+ 
+ static void test_sysctl_set_sysctl0(void)
+@@ -1206,6 +1214,14 @@ static void test_sysctl_sysctl1(void)
+ 	mfd_assert_has_seals(fd, F_SEAL_EXEC);
+ 	mfd_fail_chmod(fd, 0777);
+ 	close(fd);
++
++	fd = mfd_assert_new("kern_memfd_sysctl_1_noexec_nosealable",
++			    mfd_def_size,
++			    MFD_CLOEXEC | MFD_NOEXEC_SEAL);
++	mfd_assert_mode(fd, 0666);
++	mfd_assert_has_seals(fd, F_SEAL_EXEC | F_SEAL_SEAL);
++	mfd_fail_chmod(fd, 0777);
++	close(fd);
+ }
+ 
+ static void test_sysctl_set_sysctl1(void)
+@@ -1238,6 +1254,14 @@ static void test_sysctl_sysctl2(void)
+ 	mfd_assert_has_seals(fd, F_SEAL_EXEC);
+ 	mfd_fail_chmod(fd, 0777);
+ 	close(fd);
++
++	fd = mfd_assert_new("kern_memfd_sysctl_2_noexec_notsealable",
++			    mfd_def_size,
++			    MFD_CLOEXEC | MFD_NOEXEC_SEAL);
++	mfd_assert_mode(fd, 0666);
++	mfd_assert_has_seals(fd, F_SEAL_EXEC | F_SEAL_SEAL);
++	mfd_fail_chmod(fd, 0777);
++	close(fd);
+ }
+ 
+ static void test_sysctl_set_sysctl2(void)
+-- 
+2.45.1.288.g0e0cd299f1-goog
+
 
