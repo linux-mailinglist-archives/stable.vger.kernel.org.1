@@ -1,150 +1,95 @@
-Return-Path: <stable+bounces-46053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8258CE483
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 12:57:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C288CE4C8
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 13:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BA561C20BF6
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 10:57:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C95A2823C7
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 11:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F8E85C44;
-	Fri, 24 May 2024 10:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J+p5TNps";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wyrt3ETa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DD18529D;
+	Fri, 24 May 2024 11:21:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9144585956;
-	Fri, 24 May 2024 10:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EBB53E31;
+	Fri, 24 May 2024 11:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716548268; cv=none; b=kbBFGQIqWT89qGnsNFnWMt7Jwpvqm1gNSRV/8dA85bN20dN3O5UGkYHrbYapPLY9P6NwDnkg0Tx51O67WuHplYji2tk9Q6H3+xClCCREZh5Mv8Tva7MvMyQOLY4OlHltP3Te+3QNmsMtfXx4Q6dGR3rRik0xmwsD1ee2PSCh5Ew=
+	t=1716549708; cv=none; b=S4PV7Zfu7LG8XkBSfi0kd4X8CtEzJqWJrLq1mTXHMvgPZmChane2DewdHzFecdnZvbT10wmX1hq+U411Fns7DJqoufDCev0/nCVpiicQdBFJkwZ36rkgIA08hkpyY4f1D0y6uL83rOJ4P7Hbz3Km0De9RgXyKmX48UY1z0nRoco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716548268; c=relaxed/simple;
-	bh=colrypTjylwyez/3r9sQhQskA+fGLFAX5Vtn76reIsw=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IBk+ySyHK/134aWZZttRdRwqDlBUvwutEH2ekEfFewr5svqs3uIG+OAc2Uo1PSr5r2SvN+x/8jNFNeWhVKKFRzWb9/eQr1QdVzcB+38O6WHIS4OHnOyg3nqmv3Sc6IH5FX/pmBpmJC25sjETq9vXL1XcS4BOKWO2k3k6qc+6rtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J+p5TNps; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wyrt3ETa; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 24 May 2024 10:57:43 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1716548264;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BLYn3FwQBwFMOl0ONyA3r9l1SvJ452A313P0X1CGLe0=;
-	b=J+p5TNpsmfs1LzuvHTrFETBpJUNc2Ow2jID0Odkui9OWA14LfyWRuQdwoZQghv3yGVqcQp
-	iFoQYQi3VOwZhVUKikSDbrQ5eclREGbuBLE7vKPUSstHlLNpl6QuMtC95rO5fEQrKhH+af
-	H7Eieono3dKrINSXXHWv5K43wDVRK6WKBxDalCckG2lwRoFHIJoE/YOlL2+y9/LnzSJpXJ
-	3Xqw9gkNHwTlSYGnDUkTqYSh/LMPNe1o/gtnECEJjmv7eE/nrxBhQWWXeyiHkrbWVkCRwe
-	RozwWzJBdKbhTvBBI5HiOks2aOxAlxBiDJwUTnvZTyW5Udrc8LnMuNW9UXap4A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1716548264;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BLYn3FwQBwFMOl0ONyA3r9l1SvJ452A313P0X1CGLe0=;
-	b=Wyrt3ETaQN8tBUGYJimQo23LgMKAtNZQ0hlQiv9n7oPAun+/7GAigxd4mFzwIGd7vRnqwg
-	tTH4gAxF5U9OjNAQ==
-From: "tip-bot2 for dicken.ding" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/irqdesc: Prevent use-after-free in
- irq_find_at_or_after()
-Cc: "dicken.ding" <dicken.ding@mediatek.com>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240524091739.31611-1-dicken.ding@mediatek.com>
-References: <20240524091739.31611-1-dicken.ding@mediatek.com>
+	s=arc-20240116; t=1716549708; c=relaxed/simple;
+	bh=iNaLU3x3F9DnZTL/G2EVoXtFqgEqnENgimI7Dtu8GWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZE40jNzuub6g4IvHRcWw7R6y9h5VmLaL5h8R/oaxuGRsWAqXNuu6NIeqEUgomEYa4Sdk6TM5+MhUTxVsCbMsEwPlbi+pix9zKhkmUIUAXt4D0N87rnJhv78Gwb49QHx4dXv/c2D8xr6bs14qTYjBn26o6fV5oI0QDz4aP4aPpu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 9F3A61C0094; Fri, 24 May 2024 13:21:37 +0200 (CEST)
+Date: Fri, 24 May 2024 13:21:37 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 00/45] 6.1.92-rc1 review
+Message-ID: <ZlB4Qcryqo6YNWPh@duo.ucw.cz>
+References: <20240523130332.496202557@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="+7R2Yu/myQgOF7UR"
+Content-Disposition: inline
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
 
-The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     b84a8aba806261d2f759ccedf4a2a6a80a5e55ba
-Gitweb:        https://git.kernel.org/tip/b84a8aba806261d2f759ccedf4a2a6a80a5e55ba
-Author:        dicken.ding <dicken.ding@mediatek.com>
-AuthorDate:    Fri, 24 May 2024 17:17:39 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 24 May 2024 12:49:35 +02:00
+--+7R2Yu/myQgOF7UR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-genirq/irqdesc: Prevent use-after-free in irq_find_at_or_after()
+Hi!
 
-irq_find_at_or_after() dereferences the interrupt descriptor which is
-returned by mt_find() while neither holding sparse_irq_lock nor RCU read
-lock, which means the descriptor can be freed between mt_find() and the
-dereference:
+> This is the start of the stable review cycle for the 6.1.92 release.
+> There are 45 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-    CPU0                            CPU1
-    desc = mt_find()
-                                    delayed_free_desc(desc)
-    irq_desc_get_irq(desc)
+CIP testing did not find any problems here:
 
-The use-after-free is reported by KASAN:
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
 
-    Call trace:
-     irq_get_next_irq+0x58/0x84
-     show_stat+0x638/0x824
-     seq_read_iter+0x158/0x4ec
-     proc_reg_read_iter+0x94/0x12c
-     vfs_read+0x1e0/0x2c8
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
-    Freed by task 4471:
-     slab_free_freelist_hook+0x174/0x1e0
-     __kmem_cache_free+0xa4/0x1dc
-     kfree+0x64/0x128
-     irq_kobj_release+0x28/0x3c
-     kobject_put+0xcc/0x1e0
-     delayed_free_desc+0x14/0x2c
-     rcu_do_batch+0x214/0x720
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-Guard the access with a RCU read lock section.
+--+7R2Yu/myQgOF7UR
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
-Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240524091739.31611-1-dicken.ding@mediatek.com
----
- kernel/irq/irqdesc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 88ac365..07e99c9 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -160,7 +160,10 @@ static int irq_find_free_area(unsigned int from, unsigned int cnt)
- static unsigned int irq_find_at_or_after(unsigned int offset)
- {
- 	unsigned long index = offset;
--	struct irq_desc *desc = mt_find(&sparse_irqs, &index, nr_irqs);
-+	struct irq_desc *desc;
-+
-+	guard(rcu)();
-+	desc = mt_find(&sparse_irqs, &index, nr_irqs);
- 
- 	return desc ? irq_desc_get_irq(desc) : nr_irqs;
- }
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZlB4QQAKCRAw5/Bqldv6
+8qldAKC5ifYgfrZheQqCFYE2JH1FgjRl9gCfRM0TRwKmzBg+6UCu8hv02q0Dtxs=
+=iYhs
+-----END PGP SIGNATURE-----
+
+--+7R2Yu/myQgOF7UR--
 
