@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-46109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57A68CEAF5
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 22:42:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 721C58CEAED
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 22:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0285B21194
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 20:42:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2F861C213D5
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 20:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E62D71747;
-	Fri, 24 May 2024 20:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76DA811FF;
+	Fri, 24 May 2024 20:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="mUBD+W3n"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="vCIuG6p5"
 X-Original-To: stable@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.140])
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4892C6BD
-	for <stable@vger.kernel.org>; Fri, 24 May 2024 20:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCBE71747
+	for <stable@vger.kernel.org>; Fri, 24 May 2024 20:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716583369; cv=none; b=rIYfn6/NYYGFfgzy6J7HrhAlSid+9unGcMfyHVoCKK4gYt8TGW31IsyKdVW+tXgpfAAO62bVoCHKCMxnuIKNkXjbkyo/QDN9M/ifpMP3cEpC88g2nC19wE75lJaT8dPcG887Qwiay2gjvvLTaQDqOBkIpLGJMNFVrihEsh+C7s8=
+	t=1716583114; cv=none; b=XpvCzJljYAqH1S2A33iZRVlZcCklF4xV+FeJafghWgAwEXJcqnYyW6HzW89hQcA8+4JY/eR/AjvUDs4zdwudFQOQxnGOHg4i9X+g0CMQlS3iNHZt5/MZfEG4YUp90zIT0gXkpzTk/AaKC/ec7xYnDPeiwZ9RwIGbBEaTDMLXKCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716583369; c=relaxed/simple;
-	bh=oWXJ08RLom/Ju8zwXhA6alHS7EfpCkfg2uR/OB2o0FM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hz7KiS+jKKX8g+9cBb6ACe+gPHzleh/bmYvYepFVzo8cYWeTyOARetOCye/O8GP7s5g+2HK09gadTBc3Ml3V6qKfqIs+pOo9M8SgOUPOv4lkDx/gIEZ2L0lcZvImfbTFSyb1lCeqiOQedhrrC1M4/F0RNTxdyl7Jr701CVLHW5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=mUBD+W3n; arc=none smtp.client-ip=193.222.135.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 14652 invoked from network); 24 May 2024 22:36:01 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1716582961; bh=m0CGDw1bcAt6TZ3vxcJ+F1QhRzC4rQJht3A2hx/u2e8=;
-          h=Subject:To:Cc:From;
-          b=mUBD+W3nyvs95+axD+MFRZIAEEIIzCxgluzG/CCwIDyV9yqS537VVCOFgdcl8UXjk
-           e5eBwHZlgDMvzlD7ZquS7xIxD6kRLNUvThecD8/0zOPPGDnu/hXdjZ8676x64uvjru
-           XyfI12tS1Jh0ze90kyV0Sei4p/+2rpcx13e8mXHk=
-Received: from aaez60.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.129.60])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <gregkh@linuxfoundation.org>; 24 May 2024 22:36:01 +0200
-Message-ID: <789c90fc-ecbf-41a6-8cfd-c883bfef301a@o2.pl>
-Date: Fri, 24 May 2024 22:35:56 +0200
-Precedence: bulk
-X-Mailing-List: stable@vger.kernel.org
-List-Id: <stable.vger.kernel.org>
-List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/45] 6.1.92-rc1 review
+	s=arc-20240116; t=1716583114; c=relaxed/simple;
+	bh=S/CepABZtOlPX20ha1FrGJQLcyN9UQbC79cMMCFoGoU=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=MrjoGCLguMOOq1Bn1Qm1i8qjWyHLII8vkgI0LMiC7/n7XzloL64Xv/1lc0OWKxsInfBrIyB0sSQPngiADEVlmnzo1yNQ8MsBHo47ph8qbYsGLZXDgCwvB3bJSwyRCpzOYIr8tr0b9Gn7ENM0jhfbANPOqpnhl1f5rDNjWVVafYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=vCIuG6p5; arc=none smtp.client-ip=35.89.44.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6005a.ext.cloudfilter.net ([10.0.30.201])
+	by cmsmtp with ESMTPS
+	id AZWAsNOLNezZ4AbepskXel; Fri, 24 May 2024 20:36:55 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id AbeosYaWJHHoAAbeosZrQl; Fri, 24 May 2024 20:36:54 +0000
+X-Authority-Analysis: v=2.4 cv=dskQCEg4 c=1 sm=1 tr=0 ts=6650fa66
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=TpHVaj0NuXgA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=BXyYjBD0cXuZo9oD7aYA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=gZ7TlAKxKHB4HHiLPpdNE3DMEhio6U5TCd2emnuDUVU=; b=vCIuG6p5ue1XfMNcZVHBnRzo+2
+	3R/5NjRYI9+C6IwgSZHXieXJJ7iued8gRuKRFMoXzTbmmsHTEiImLUXZoGR7jZdLmH4y+egytu1cV
+	CyXZ3BlJ1/tTdrWWNlRjTi5GtAoQOzatA9Xg+8CXzzkP2qw8ZSDYyeunkcUOr+bxERzjXPlGTmQot
+	t+xXUOzw/VdPWX8bUkgTyXMOAuKhgr1nZIhp3ClkkIihQhnDj74gYesmQreK273JHjlAwdGGZIjQU
+	iDNFpx8D/Erw2xRtl6UaoHShCPud/KrhZlEkgXRsLBYZ4VZ2IuKFmnGerSO6c9oCwq4r8SKnEItRG
+	a/uEEQYA==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:39790 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sAbem-0033LW-0J;
+	Fri, 24 May 2024 14:36:52 -0600
+Subject: Re: [PATCH 6.6 000/102] 6.6.32-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
@@ -59,62 +68,46 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
  f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
  rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240523130332.496202557@linuxfoundation.org>
-Content-Language: en-GB
-From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
- 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
- TANkZ3QqXNX2
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: c6f30098c5715e81eca202bc32287114
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [QeN0]                               
+References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <9e5db24b-23f7-2f5b-f74d-6fef6b779cbc@w6rz.net>
+Date: Fri, 24 May 2024 13:36:49 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+Precedence: bulk
+X-Mailing-List: stable@vger.kernel.org
+List-Id: <stable.vger.kernel.org>
+List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1sAbem-0033LW-0J
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:39790
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfCPrb3ceUqjeG0Rd95EgM8Kw/EFjY3nHjyjlDSFvNH5eYojUHZQkqUE+bt/IH0qoFcQivIEdV/2xVxVfALiyDD/IgZ/nPTQDDX8lwZd+rUiSoaQrcTWc
+ YhltW9xJAMikeLDc8axbhYdeDwLDpDIFJN4rvXJJkiBtw5XYZIQi545OEDwcxF1f8AkCtkC9MHAEOQ==
 
-W dniu 23.05.2024 o 15:12, Greg Kroah-Hartman pisze:
-> This is the start of the stable review cycle for the 6.1.92 release.
-> There are 45 patches in this series, all will be posted as a response
+On 5/23/24 6:12 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.32 release.
+> There are 102 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -122,42 +115,17 @@ W dniu 23.05.2024 o 15:12, Greg Kroah-Hartman pisze:
 > Anything received after that time might be too late.
 >
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.92-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.32-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
 > and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
-Hello,
 
-Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
+Tested-by: Ron Economos <re@w6rz.net>
 
-Stack:
-- amd64,
-- ext4 on top of LVM on top of LUKS on top of mdraid on top of
-  NVMe and SATA drives (the SATA drive in the write-mostly mode).
-
-Tested (lightly):
-- suspend to RAM,
-- suspend to disk,
-- virtual machines in QEMU (both i386 and amd64 guests),
-
-- GPU (Intel HD Graphics 620, tested with an Unigine benchmark)
-- WiFi (Realtek RTL8822BE),
-- USB soundcard (Logitech Pro X),
-- PCI soundcard (Intel HD Audio),
-- Bluetooth (Realtek RTL8822BE),
-- webcam.
-
-Filesystems tested very lightly (mounting, listing and opening files):
-- NFS,
-- exFAT
-- NTFS via FUSE
-
-Greetings,
-Mateusz
 
