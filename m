@@ -1,109 +1,134 @@
-Return-Path: <stable+bounces-46105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC5C8CEA33
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 21:12:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1BE8CEAB4
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 22:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C94E1F21490
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 19:12:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DACD91C214EE
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 20:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723F143AA8;
-	Fri, 24 May 2024 19:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AEF5FDD2;
+	Fri, 24 May 2024 20:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jit+t6H7"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wzY8fuDX"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBBF4084E
-	for <stable@vger.kernel.org>; Fri, 24 May 2024 19:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405BB84DEA
+	for <stable@vger.kernel.org>; Fri, 24 May 2024 20:08:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716577930; cv=none; b=VxPTwP0isezSfbsRuvOHXP4t15G4aEwlghxViy6MsTrsLvXejaw4d532LGu1EGGDy/UpGP9ZzmNXQAMS5d7Y+D33SlsfvjvJGFfR2p++zfP58SpBuXUllC3oURv3NwEnk/23kuEStMP4VL+UhTlkLxxP62zpfiOPKXSHhgED3PQ=
+	t=1716581305; cv=none; b=H9lQ6s07fA39CWAPouqvODZtM2Oej7zC2Z18GLuyK7hhf4WYFbEllPitMAO/q86ogsoT9LHfckOO7/EOqy077nU1kwXzxQOowqNBQA9qerT47acjfptri6DaJF7QRxCGsSrRVcI4IhNDmnS/9B9RaPKZgw5xbX/Nw/UmKUAsmOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716577930; c=relaxed/simple;
-	bh=To0OfW8UhNyQzsEaufFFs9KOq/Dr+/1breFnWXwFUxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NYZTYepf/+4H85gJaAEB4nK5Fec5T+vSdyjz8gDAWPOvrU17ALbIcpoUTxnIVs6nD6gUORvBT25jhV2Xqr88xt6y//UnZlUu1X0+B+A2xKW8nn2IyabRAReGxf1Woj+m0Fcgj5oh+ZDjEb9sJAwJgyicZyC/pauFpJ+ZZ5L0SYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jit+t6H7; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: maz@kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1716577924;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aOQPR+PFW3Jz3mG3fzP+mOTdARSvGM3LenEwZaOdVug=;
-	b=jit+t6H7r37/KNWwUSPDSkjz9HghvGWPqoxpUComVVA0vEhopRO+L2QLxQIWFljiAo8Gxa
-	FoLiXJ8ZxlDgMQTxCGiofZ/iVLySGhXnlzuWIpFsp0BhkRI/mvX3HF0wVfnt3ADnVt81Wr
-	GGjNikISz2O18CPcy9BlO5lpmtGJ4Jk=
-X-Envelope-To: kvmarm@lists.linux.dev
-X-Envelope-To: kvm@vger.kernel.org
-X-Envelope-To: linux-arm-kernel@lists.infradead.org
-X-Envelope-To: nsg@linux.ibm.com
-X-Envelope-To: james.morse@arm.com
-X-Envelope-To: suzuki.poulose@arm.com
-X-Envelope-To: yuzenghui@huawei.com
-X-Envelope-To: stable@vger.kernel.org
-Date: Fri, 24 May 2024 12:11:59 -0700
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
-	James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] KVM: arm64: Allow AArch32 PSTATE.M to be restored as
- System mode
-Message-ID: <ZlDmf6SkfCkEAWtn@linux.dev>
-References: <20240524141956.1450304-1-maz@kernel.org>
- <20240524141956.1450304-3-maz@kernel.org>
+	s=arc-20240116; t=1716581305; c=relaxed/simple;
+	bh=4FcReVOVCS7hYyDzoxRFPQL2lrzw79+DnOI7/JBY7bI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QvVCYjAiBZJOw7Wvgh4vCpsLa3rRWMO3pfeCH260Bxer/XOISegpRhwJ1d8xCAen/i9V2QTNY7ZxwWomVEUY8m/SVgjc67ZrpNiuhW2tZ+cGxnChmMRBSDainQdid7dZgGaT05MNy8XBfkpvyv8TLh+CQnWH51tx1101A1S0S7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wzY8fuDX; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-df7812c4526so598125276.1
+        for <stable@vger.kernel.org>; Fri, 24 May 2024 13:08:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716581302; x=1717186102; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eCIWhXYa2p87CDvkJmySfb+8QTD7UAzsT7978LLc4BA=;
+        b=wzY8fuDXc2MIzqoc41UIfK6/pwnVFMAg/Ga7Jg7yC7gD7f7H50dLYsRddqUn3tgXK5
+         rcXTUO/hpOywg5M+fsO1s8pcT+bTb+69rKZ27CyG/ijGbqcHxy1Nznow+ksZGN8g+hPw
+         0xyITZRZi7kiEOSn6cYCdkVNtB2MYuvMRgOpC7yRffDXFHJ++7HSilg30XnRs3Tg67iT
+         XnEWxbSZQRMp9t+BUqILT/ipSn4xnuGL9c/H2CLkuNno966Rf8aP+erDTB7nPDGFG5oB
+         tt8VTlUelt82XcmMMc+4oXZTFe8y2PfxnjZOjbS/2zTKe99R1lrKwrKs8Aukb89fzg+t
+         s4PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716581302; x=1717186102;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eCIWhXYa2p87CDvkJmySfb+8QTD7UAzsT7978LLc4BA=;
+        b=ao9CYeS/u1Wz7ALUDxzoBXHSR3LEcro6Cp5DDpIYHey4O1v8UBt9rqkOtulbP0GXTx
+         Eyz3MoxXiRAfoo7VYkVY3o5c+7U4SWlVbqsj6DcNDam2KRo2Jj2RnjQpgh4nw2Nv661M
+         n9+xOICVub4gEPQWaq9NPQehLXwS8t3Dysfv16ZwUkfFb0PdLRMSQfuatgqqX7EaLrDO
+         pfhY9wOff93TMk259YBd2moE6sMfN53wxs5/QIj5T2g5yjUKNF2DHXwNwjqYloFUxmkj
+         S9/YQIepxrBax2vk6sb7BlZ4FeztLUKVeye1VGJvL2PiTz3pjYy3E6aagoWLTmtaCT43
+         E1XA==
+X-Forwarded-Encrypted: i=1; AJvYcCVmPikCld5RrLb6q6WDCXAUvnGXQ4VxWFFSYWSENW7Tr1Mthe9U825pujkEYHQmLZs+rnYiNNs4EMnaPUWjbFOn6wNUjWaN
+X-Gm-Message-State: AOJu0YzWR0aifIbTjhxHqMRJOqJRdeoL6DFWc1ITkQF97virux9/d9vP
+	fMs9Pi/K6z8jzXlOpNOd/t64svT9sX6v/Y9TUNXY1+Y79HE2OsnOgpWKiOotD9PZDNkKt3ursyv
+	c6WbHNWFIdGMujpcMvt1sNBMtsvYBVraYeODQHw==
+X-Google-Smtp-Source: AGHT+IGfAILPpHKmHhMhPuha3zVO3krHrOtz2jtUmy9g1cSv1RC+mxHXjhsBUatjQc7ZmXfc28FlOTJyiuPQQbjt8K8=
+X-Received: by 2002:a25:6b0d:0:b0:df6:ad25:f5ef with SMTP id
+ 3f1490d57ef6-df77237822bmr3447230276.58.1716581302201; Fri, 24 May 2024
+ 13:08:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240524141956.1450304-3-maz@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+References: <CAMSo37V5uqJ229iFk-t9DBs-1M5pkWNidM6xZocp4Osi+AOc1g@mail.gmail.com>
+ <20240523064546.7017-1-jtornosm@redhat.com>
+In-Reply-To: <20240523064546.7017-1-jtornosm@redhat.com>
+From: Yongqin Liu <yongqin.liu@linaro.org>
+Date: Sat, 25 May 2024 04:08:10 +0800
+Message-ID: <CAMSo37UyC-JRfZjd83Vx2+W-K-WqxAN9sHJ88Jev67Fnwci_pg@mail.gmail.com>
+Subject: Re: [PATCH] net: usb: ax88179_178a: fix link status when link is set
+ to down/up
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: davem@davemloft.net, edumazet@google.com, inventor500@vivaldi.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, May 24, 2024 at 03:19:55PM +0100, Marc Zyngier wrote:
-> It appears that we don't allowed a vcpu to be restored in AArch32
+Hi, Jose
 
-s/allowed/allow/
+On Thu, 23 May 2024 at 14:45, Jose Ignacio Tornos Martinez
+<jtornosm@redhat.com> wrote:
+>
+> Hello Yongqin,
+>
+> Again, not a lot of information from the logs, but perhaps you coud give me
+> more information for your scenario.
+>
+> Could you try to execute the down interface operation, mac assignment and
+> the up interface operation from command line?
+> That works for me.
+When I tried the down and up operations manually from the command line,
+it worked.
+But it only worked after I ran the down and up operations after the boot.
+It fails to work by default after the boot for both the fresh deployment,
+and for the later reboot
 
-> System mode, as we *never* included it in the list of valid modes.
-> 
-> Just add it to the list of allowed modes.
-> 
-> Fixes: 0d854a60b1d7 ("arm64: KVM: enable initialization of a 32bit vcpu")
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
->  arch/arm64/kvm/guest.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> index d9617b11f7a8..11098eb7eb44 100644
-> --- a/arch/arm64/kvm/guest.c
-> +++ b/arch/arm64/kvm/guest.c
-> @@ -251,6 +251,7 @@ static int set_core_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
->  		case PSR_AA32_MODE_SVC:
->  		case PSR_AA32_MODE_ABT:
->  		case PSR_AA32_MODE_UND:
-> +		case PSR_AA32_MODE_SYS:
->  			if (!vcpu_el1_is_32bit(vcpu))
->  				return -EINVAL;
->  			break;
-> -- 
-> 2.39.2
-> 
+One thing I noticed is that the following message was printed twice
+    "ax88179_178a 2-3:1.0 eth0: ax88179 - Link status is: 1"
+after I ran the up operation,
+
+Is that expected?
+
+For details, please check the log here:
+https://gist.github.com/liuyq/be8f5305d538067a344001f1d35f677b
+
+> Maybe some synchronization issue is happening in your boot operation.
+> Could you provide more information about how/when you are doing the
+> commented operations to try to reproduce?
+
+The scripts are simple, here are the two scripts for Android build:
+    https://android.googlesource.com/device/linaro/dragonboard/+/refs/heads/main/shared/utils/ethaddr/ethaddr.rc
+    https://android.googlesource.com/device/linaro/dragonboard/+/refs/heads/main/shared/utils/ethaddr/set_ethaddr.sh
+
+Is the one to run the down/change mac/up operations script.
+
+Not sure why the up in the script does not work, but works when run manually.
+
+--
+Best Regards,
+Yongqin Liu
+---------------------------------------------------------------
+#mailing list
+linaro-android@lists.linaro.org
+http://lists.linaro.org/mailman/listinfo/linaro-android
 
