@@ -1,128 +1,151 @@
-Return-Path: <stable+bounces-46030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AAE8CE073
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 06:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F19A18CE088
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 07:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54EA4283589
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 04:48:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88B5528307D
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 05:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C514383A3;
-	Fri, 24 May 2024 04:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02A65B5D6;
+	Fri, 24 May 2024 05:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nDNihhaB"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Sy9kJN7Y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A864A28E3;
-	Fri, 24 May 2024 04:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9418320B;
+	Fri, 24 May 2024 05:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716526085; cv=none; b=ciuJ07T70s58Il8YzTCoHJFu6cMkTxKmSEBJvbthiFu8ZmaUvanPkq6m/a3igaOqeM9CmWn6yd12rF7RX0oDL0A3jRNYIFU738hj/9San/jzJr77yzCoiwFMzNia6vxaGkQYFfRIzrZ6qKbid8lZRiazZ9TGlfsUQUxcC1dyY0I=
+	t=1716527715; cv=none; b=qKwObQw608db5ZxMsbxNqFMhyZG68IF0RTDTHaHVPLmOy8UoF0S7nd4ttWimPn5Kygb/wrEnQskbWdgBOwjX740fKv/y1p5HypPsbeGpm44yKWIFg9EkEATKabnq6QerObioncbGHT7Itd5SuFIfl4BA/ZdagaxOcBHv2mkK1gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716526085; c=relaxed/simple;
-	bh=JHlAFuVHHupjqfSPzb0L0lQNXH+CrBtA7lb766b1aOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nH2uq5QuVBSYW0nMuEBetbQFHGhJ8LCGBtZIGP0S9w40BWnJRUqjuoA39SbYFhfOa1CxHcfP2ibBRbw+MNLPjubCnAPOSC7k423rCJS05/CBzpKy7a9dQBqkJ+HeuvR5GmItP8KwWuHi24UPOFxGy7UMXFGod+6M5sfupgpnBa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nDNihhaB; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2bf59b781d6so475862a91.0;
-        Thu, 23 May 2024 21:48:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716526083; x=1717130883; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bpI8w7HA5s7CGzkYjIe1gFefxklkIAHGAMzGmPuhWSQ=;
-        b=nDNihhaBfXSsd/3XQ4kMu/ssMy2w1TVVhu2c+NFDPI7Fxuun7zmHMpofQGZvdKx3yr
-         KkXziKydPRYM2HL+CeH/cHFGMfVbLHM1fcWOCvebv8iaLcKmcjDhbBQcrm+2V+5c4IAQ
-         H1iJvWKpGcmhG6mrQTY32gsoQe4gzbP+/SGsTZo3svpjsocjn7lL3cFGcznrt5hRr/SD
-         BoLAldEMNgj7D2Pk+YtxheRVkkugpaSjXTwISY/9iwAx5OoJ2669lrytpXXsKtkydCLx
-         JuyHUkfQu6PAqdGl+kt0KrNouvbqA6QHA1y32mCY7zqB0sWq2yG0TeyNzwLugTr5sZ9F
-         VgIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716526083; x=1717130883;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bpI8w7HA5s7CGzkYjIe1gFefxklkIAHGAMzGmPuhWSQ=;
-        b=QLJSyRWZaRnpwDp8nf1Wsrrt1+fN/5x43y3MnlnC8qUkKpNPyTDDXIerVdfglL67Y5
-         LGKYvKQB5Nn6Oyz/Mrn0W0AnboacXxHK48x1h/Q0H+wmVEN/iEjx1S/iiYHvyjex/hnZ
-         0SXBPTc1vQw2qMbXrNFVjdDM0nHzThyrnPSEUBRXorQvG3CfNXW/Y1mkf4GalWAAxQ6x
-         MHzBMYC0qQ626e7oUys+sNBj1Jf592RWyI1f0y7F4SlenBCeZzhhbczZ87ovkH8r6oZO
-         c5gWB0L4pC/kSRgNVnMIOnWytVshoOm3lawrsE4avSZz1c8T8vVD1LmTJV3szfjMV720
-         IMIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWv6YSbk+OSD4QJ/VlFjibMXqpaYgf6cPABF1JlvOJ93LJh0c79WCZ83hYdMRnHN3dE1a/fWt0Zp9jysl42PwLxPD2yg0E+lVlRvZ6Lvx8JNSbzWfdG77G3+DDy//c5XdJuqBuC
-X-Gm-Message-State: AOJu0YxDGfSLZOsuJqb4jBd8JIKKAFx75xrPPERIBJKy/1nDkbYIEfON
-	X5DHwZIDDL18bDl0PlxhNpXs2wAv2qg2J32+DfDZdxlqJ5OcDW/m
-X-Google-Smtp-Source: AGHT+IGSwipV0BTxyla45eLqcSZPIaUZuqB8z2DVVK3gxMIMe1PpJFyLm6brKsGJgAyHLJKH8QyjLw==
-X-Received: by 2002:a17:90a:db90:b0:2b4:32ae:9932 with SMTP id 98e67ed59e1d1-2bf5e14a08bmr1125838a91.17.1716526082509;
-        Thu, 23 May 2024 21:48:02 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2bf5f9b38fasm485622a91.47.2024.05.23.21.48.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 May 2024 21:48:01 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 9781E184799CC; Fri, 24 May 2024 11:47:58 +0700 (WIB)
-Date: Fri, 24 May 2024 11:47:58 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 00/25] 6.9.2-rc1 review
-Message-ID: <ZlAb_rGP6sGS5K9H@archie.me>
-References: <20240523130330.386580714@linuxfoundation.org>
+	s=arc-20240116; t=1716527715; c=relaxed/simple;
+	bh=DV02NM7IGHIMfIAtW8NdebcwPtehp2HgLESzy+sYf48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=L94LgSrCJlC36P5CmT3B4oY8PcP7BE9nWPq5aHf0IMPJQM0ZJ6gTTyU/+mw3l//tj2J++qpBUsN9XNQUhpbJMzPzXiSQQJ402Z5oWbgLPWzy5lSQeyjUOH1xoV69IBLcu/F7sRymk025ZCFWQm4qGrLhJiZIq/mGEEs3NmzOTP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Sy9kJN7Y; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44NNPHK9004398;
+	Fri, 24 May 2024 05:15:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7rwQB85D4QX6bHSTtqyWKtjZAG2zZY/KlCEDg3gPgk8=; b=Sy9kJN7Y8bSUMyKa
+	hD5SY4IOsNXpu2vl2o0Hd+lPzs3qZKCLHiTd+Odva9hcweZIF0FWSCbO5m8y4A/a
+	3kc0bO7cmJprg4ETOwNP09q4sHjlEX78I5JcywRAPIdSpPUoA6fuIL6eLHxhS6MD
+	TIPkZfSAXOKXk/x/C1hc6a+WDnZ+2kA/6jToPEDlcJ4NwLgFLH1o4yDH8PlZVA7K
+	tUYlvdruFPyDaT0a9i4EPM++/m5/P9DzvwDgGis4Cva+fECt0lN9R10D20LMqH7y
+	CI57oyYP3DTa26w3q7Kp8mRJzm9DcjQiEYln1L63dw5zvovgQFfyvYdNRp5tUVUU
+	aCagvA==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yaabq17w4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 May 2024 05:15:06 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44O5F5NZ020539
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 May 2024 05:15:05 GMT
+Received: from [10.253.37.124] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 23 May
+ 2024 22:15:03 -0700
+Message-ID: <74465bf5-ca18-45f8-a881-e95561c59a02@quicinc.com>
+Date: Fri, 24 May 2024 13:15:01 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gp24Hajt84rvAMGj"
-Content-Disposition: inline
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kobject_uevent: Fix OOB access within zap_modalias_env()
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: <rafael@kernel.org>, <akpm@linux-foundation.org>,
+        <dmitry.torokhov@gmail.com>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <1716524403-5415-1-git-send-email-quic_zijuhu@quicinc.com>
+ <2024052418-casket-partition-c143@gregkh>
+Content-Language: en-US
+From: quic_zijuhu <quic_zijuhu@quicinc.com>
+In-Reply-To: <2024052418-casket-partition-c143@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ffSjiLEijHxRilRZ6LX5cOPdtPQNRTDt
+X-Proofpoint-ORIG-GUID: ffSjiLEijHxRilRZ6LX5cOPdtPQNRTDt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-23_15,2024-05-23_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 suspectscore=0 bulkscore=0 impostorscore=0 malwarescore=0
+ spamscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405240034
 
+On 5/24/2024 12:33 PM, Greg KH wrote:
+> On Fri, May 24, 2024 at 12:20:03PM +0800, Zijun Hu wrote:
+>> zap_modalias_env() wrongly calculates size of memory block
+>> to move, so maybe cause OOB memory access issue, fixed by
+>> correcting size to memmove.
+> 
+> "maybe" or "does"?  That's a big difference :)
+> 
+i found this issue by reading code instead of really meeting this issue.
+this issue should be prone to happen if there are more than 1 other
+environment vars.
 
---gp24Hajt84rvAMGj
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+do you have suggestion about term to use?
 
-On Thu, May 23, 2024 at 03:12:45PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.2 release.
-> There are 25 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+>>
+>> Fixes: 9b3fa47d4a76 ("kobject: fix suppressing modalias in uevents delivered over netlink")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+>> ---
+>>  lib/kobject_uevent.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/lib/kobject_uevent.c b/lib/kobject_uevent.c
+>> index 03b427e2707e..f153b4f9d4d9 100644
+>> --- a/lib/kobject_uevent.c
+>> +++ b/lib/kobject_uevent.c
+>> @@ -434,7 +434,7 @@ static void zap_modalias_env(struct kobj_uevent_env *env)
+>>  
+>>  		if (i != env->envp_idx - 1) {
+>>  			memmove(env->envp[i], env->envp[i + 1],
+>> -				env->buflen - len);
+>> +				env->buf + env->buflen - env->envp[i + 1]);
+> 
+> How is this "more correct"?  Please explain it better, this logic is not
+> obvious at all.
+> 
+env->envp[] contains pointers to env->buf[] with length env->buflen,
+we want to delete environment variable pointed by env->envp[i] with
+length @len as shown below.
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+env->buf[]            |-> target block <-|
+0-----------------------------------------env->buflen
+        ^             ^
+	| ->  @len <- |
+  env->envp[i]   env->envp[i+1]
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+so move "target block" forward by @len, so size of target block is
+env->buf + env->buflen - env->envp[i+1] instead of env->buflen
+-len.
 
---=20
-An old man doll... just what I always wanted! - Clara
+do you suggest add inline comments to explain it ?
 
---gp24Hajt84rvAMGj
-Content-Type: application/pgp-signature; name="signature.asc"
+> thanks,
+> 
+> greg k-h
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZlAb+AAKCRD2uYlJVVFO
-o8v5AP0R37rL5TXxn2u6/rZn9N1nSDzdsutZTdwXbGHHt3S2ywEAn9DYrApyjahe
-+b8kkaOoPdrFTHaSVM8vJR756o8aCQ8=
-=q8Md
------END PGP SIGNATURE-----
-
---gp24Hajt84rvAMGj--
 
