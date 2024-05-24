@@ -1,172 +1,119 @@
-Return-Path: <stable+bounces-46066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D24EF8CE6CF
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 16:15:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11F98CE6DC
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 16:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C6A1C20D0D
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 14:15:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 180B81C221AB
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 14:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82660126F04;
-	Fri, 24 May 2024 14:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7697912C49B;
+	Fri, 24 May 2024 14:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b="v6rR/A02";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="m79tD6Sr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B9ntX7qs"
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A925686279;
-	Fri, 24 May 2024 14:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3045086262;
+	Fri, 24 May 2024 14:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716560145; cv=none; b=uXITjeFCcj5oouGNBagDYtkCqONxqtX6PDAeANskAyVu98y90bdqv8/QNo6zqrJ+AZnaSwVaFstKPSBv3MY01T945avXgzy9FCACgT53MTlOS0wqnTy7l8ItuQIfyTg98yiMESKDItEsdraIO9KelkDyq/Vl6h+ZXMZHs4ecuuE=
+	t=1716560413; cv=none; b=Ks7lnoLekfZY4FGO4PD7cYQVaRvQOtmbzEJXYn7U/b+nT20mr2a6yYfHjjeOvauccw86RLEk+7f3rBC5Flazss8BbiKyGOK4Z0z2yMVKQud4drfqESHdZSBXcZoM0b4AK2OKXIeiqcf7IXcXi6pfZ/0XLqfVpLoCWPd2spi0IiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716560145; c=relaxed/simple;
-	bh=EXGqEZ+6IZa4t+vQ3br7xmeU+42xs9OcjiGVeuVCtOg=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=BkKU13AzBGpp4hrmiptXAUuXehuUDzBHCfxYijd/3ccpvqDAF3Y7thMjWicMFZVD4FXPXxF7z0tHbKEEh4HjH27KX5mOXRI0ZPYsJlPCwCwr8g3see4jS8HUyQ18Ptpmjw1+x2OMW4yY/4Ry0U1hZ8Ed/7yZ4a6bD1MEqHIcM3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu; spf=pass smtp.mailfrom=readahead.eu; dkim=pass (2048-bit key) header.d=readahead.eu header.i=@readahead.eu header.b=v6rR/A02; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=m79tD6Sr; arc=none smtp.client-ip=64.147.123.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readahead.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=readahead.eu
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfhigh.west.internal (Postfix) with ESMTP id B33BE1800122;
-	Fri, 24 May 2024 10:15:39 -0400 (EDT)
-Received: from imap50 ([10.202.2.100])
-  by compute6.internal (MEProxy); Fri, 24 May 2024 10:15:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1716560139;
-	 x=1716646539; bh=SX/ETyfE9F87YnrwRyr03ccHrX8ow3V9bkqTKeM04kI=; b=
-	v6rR/A02Ruy16iWS6ZBc6fQaUbkzd7fhoSdR7XuFBW+6lRqbYkD1Q/zgMyaNW0JI
-	HGkLx3K/2yz9MADgxKjl2Zr7SNDijV/AVL6mTMxqg1WWPz76Uk1sSz8B+OOLdEgA
-	5HtzcOdaER2bv21IoM0OZu8DVn1a7B8oAwOFnX7fvIZtNxtY+hXg0Bh0DxibDiYj
-	j3eoEJctlY6BI+NGu9f4Lzimgz/96bMrK43T+sub2YOz0YTc2Iy0vAtJNdomnavb
-	sTAJ8gcNeiLWOSRci9zoZp8wngEtUwMrIbXZHa+fVMGl2PrpzGsWTgo/HDiaPRvE
-	AJWMLO0M+qEO5/8wjSim/g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1716560139; x=
-	1716646539; bh=SX/ETyfE9F87YnrwRyr03ccHrX8ow3V9bkqTKeM04kI=; b=m
-	79tD6Sr8WShuEz7/pN+BUHj8WoSUFBqud4bBvEao+oVGHHX+H6lksrlSNDl0AoNX
-	K15AipgiBHVtBl7qhqAp6pYFylrMnMGHjlTgpfVciD/FTq9COhGt/9V5x8wGCzCa
-	DzBHavzXv6cLssOpVOYJpGKGzcpiTAxzT8E0VKwi8ntrvrUC/iCz26m4lAcRFzge
-	om7zSS3XgrAS6NxMEmjdkwyLSW+1b+WpYLmde8+4dBL+pGTqFoUgxJ5zefsOgqKi
-	ox35v7j8wAQ4r5riW5PeUmLN0bjf8hp8z/CmY4Cp+hzi2awlRjD/O9pRpEg+TES1
-	vfkyix+YDWj88GNIRYO+w==
-X-ME-Sender: <xms:CqFQZpfW6zqJtLtPvnKLvRU8aKos4TCzPnnxwvBnZUc1MQ9eR-sUgw>
-    <xme:CqFQZnMkYAbQlVGybXkF8pPwtMIMv1SXV4GCnhfFPxBnUnFGk4o1kxq0pLE2-XMnR
-    54AEVrvnoP_jG6_wI0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeikedgjedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdff
-    rghvihguucfthhgvihhnshgsvghrghdfuceouggrvhhiugesrhgvrggurghhvggrugdrvg
-    huqeenucggtffrrghtthgvrhhnpefgvefhteeivddvkefhveekfefgvdeuleeiffeihfej
-    vdettdevvefgveeugffhleenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkvghrnh
-    gvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
-    ohhmpegurghvihgusehrvggruggrhhgvrggurdgvuh
-X-ME-Proxy: <xmx:CqFQZigvE2PZLctxOyKy2_1paXAx2z5Ona3v8BHwPanW9s5Nd-325g>
-    <xmx:C6FQZi9wTNkD7YDLuamsDR4oJkPb8Em3gkdHVb99FdjrG3sBnh_Nfw>
-    <xmx:C6FQZlvC7Zvcep-wCnzQk08fq2Hk94oK2iZryQJFHUpx3logYyQdtA>
-    <xmx:C6FQZhEfpJeOnDoSyRHv2hWtkHWB_C719RBfNJGGhbZ8Ha6WMtf1Ng>
-    <xmx:C6FQZlFSBHsoOBIemMsgghotBoCfBV6bxvJ5sdLGL-Y8cEdwpU50t5P6>
-Feedback-ID: id2994666:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id DAC861700093; Fri, 24 May 2024 10:15:38 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-480-g515a2f54a-fm-20240515.001-g515a2f54
+	s=arc-20240116; t=1716560413; c=relaxed/simple;
+	bh=UBoLwNGuQCcRtKQYXG4UrSzJ5ovYyH9dKoajeluIiAs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=P3YKpgMhbmy2KT9uWf9uThERL9AzmZiK9sLNTy13QbzryEKSp3oWcaOmZolWQLR92klnxCwbomcl60gDgQvwrlyny9ifGJp1gGZnLq2YWMZYdxh+JxWKzOuc3mGpA/Y9B8tgkM8q027EgTTJ+xJ72+vdH9+JCicEc77IEimGMTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B9ntX7qs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4DBC2BBFC;
+	Fri, 24 May 2024 14:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716560412;
+	bh=UBoLwNGuQCcRtKQYXG4UrSzJ5ovYyH9dKoajeluIiAs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=B9ntX7qs8kqzO1p6AolukxanwQs5o+WPLe6sF1b/3V4NhCQoa/ZNNXbdCxwolozPQ
+	 3xm65YF4JuOxWlXldjpSSSSxvPHM5HrmwdMaEzQPEpyZRgkey5M277zg97bBm1PpBC
+	 +sGD4WkU9EhP9MIlCcCevZwwvc+8BEG1OMTOAPXs4dMKEdnyyVk6Knw2SR97tonwGn
+	 k3RfSG6+rXaRK7PJdtLALG2YNG6EFwnIDDZG3+0gcZ8+jJsNR7RMv8gLZHxkOTVqau
+	 FraVuTeH++kNnSG1wQ8UNuIFLUCeX6Doz7Wyt6utMXLXFZGvHxxupeIFh/q/XQJQhw
+	 vg/z99n5m4OZg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sAVmE-00FRdK-S2;
+	Fri, 24 May 2024 15:20:10 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+	James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] KVM: arm64: Fix AArch32 register narrowing on userspace write
+Date: Fri, 24 May 2024 15:19:54 +0100
+Message-Id: <20240524141956.1450304-2-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240524141956.1450304-1-maz@kernel.org>
+References: <20240524141956.1450304-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <79b3aa3e-bc70-410e-9646-0b6880a4a74b@app.fastmail.com>
-In-Reply-To: <20240524033933.135049-2-jeffxu@google.com>
-References: <20240524033933.135049-1-jeffxu@google.com>
- <20240524033933.135049-2-jeffxu@google.com>
-Date: Fri, 24 May 2024 16:15:06 +0200
-From: "David Rheinsberg" <david@readahead.eu>
-To: "Jeff Xu" <jeffxu@chromium.org>, "Jeff Xu" <jeffxu@google.com>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, cyphar@cyphar.com,
- dmitry.torokhov@gmail.com, "Daniel Verkamp" <dverkamp@chromium.org>,
- hughd@google.com, jorgelo@chromium.org, "Kees Cook" <keescook@chromium.org>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org,
- =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>,
- skhan@linuxfoundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] memfd: fix MFD_NOEXEC_SEAL to be non-sealable by default
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, nsg@linux.ibm.com, james.morse@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi
+When userspace writes to once of the core registers, we make
+sure to narrow the corresponding GPRs if PSTATE indicates
+an AArch32 context.
 
-On Fri, May 24, 2024, at 5:39 AM, jeffxu@chromium.org wrote:
-> From: Jeff Xu <jeffxu@google.com>
->
-> By default, memfd_create() creates a non-sealable MFD, unless the
-> MFD_ALLOW_SEALING flag is set.
->
-> When the MFD_NOEXEC_SEAL flag is initially introduced, the MFD created
-> with that flag is sealable, even though MFD_ALLOW_SEALING is not set.
-> This patch changes MFD_NOEXEC_SEAL to be non-sealable by default,
-> unless MFD_ALLOW_SEALING is explicitly set.
->
-> This is a non-backward compatible change. However, as MFD_NOEXEC_SEAL
-> is new, we expect not many applications will rely on the nature of
-> MFD_NOEXEC_SEAL being sealable. In most cases, the application already
-> sets MFD_ALLOW_SEALING if they need a sealable MFD.
+The code tries to check whether the context is EL0 or EL1 so
+that it narrows the correct registers. But it does so by checking
+the full PSTATE instead of PSTATE.M.
 
-This does not really reflect the effort that went into this. Shouldn't t=
-his be something along the lines of:
+As a consequence, and if we are restoring an AArch32 EL0 context
+in a 64bit guest, and that PSTATE has *any* bit set outside of
+PSTATE.M, we narrow *all* registers instead of only the first 15,
+destroying the 64bit state.
 
-    This is a non-backward compatible change. However, MFD_NOEXEC_SEAL
-    was only recently introduced and a codesearch revealed no breaking
-    users apart from dbus-broker unit-tests (which have a patch pending
-    and explicitly support this change).
+Obviously, this is not something the guest is likely to enjoy.
 
-> Additionally, this enhances the useability of  pid namespace sysctl
-> vm.memfd_noexec. When vm.memfd_noexec equals 1 or 2, the kernel will
-> add MFD_NOEXEC_SEAL if mfd_create does not specify MFD_EXEC or
-> MFD_NOEXEC_SEAL, and the addition of MFD_NOEXEC_SEAL enables the MFD
-> to be sealable. This means, any application that does not desire this
-> behavior will be unable to utilize vm.memfd_noexec =3D 1 or 2 to
-> migrate/enforce non-executable MFD. This adjustment ensures that
-> applications can anticipate that the sealable characteristic will
-> remain unmodified by vm.memfd_noexec.
->
-> This patch was initially developed by Barnab=C3=A1s P=C5=91cze, and Ba=
-rnab=C3=A1s
-> used Debian Code Search and GitHub to try to find potential breakages
-> and could only find a single one. Dbus-broker's memfd_create() wrapper
-> is aware of this implicit `MFD_ALLOW_SEALING` behavior, and tries to
-> work around it [1]. This workaround will break. Luckily, this only
-> affects the test suite, it does not affect
-> the normal operations of dbus-broker. There is a PR with a fix[2]. In
-> addition, David Rheinsberg also raised similar fix in [3]
->
-> [1]:=20
-> https://github.com/bus1/dbus-broker/blob/9eb0b7e5826fc76cad7b025bc46f2=
-67d4a8784cb/src/util/misc.c#L114
-> [2]: https://github.com/bus1/dbus-broker/pull/366
-> [3]:=20
-> https://lore.kernel.org/lkml/20230714114753.170814-1-david@readahead.e=
-u/
->
-> Cc: stable@vger.kernel.org
-> Fixes: 105ff5339f498a ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EXEC")
-> Signed-off-by: Barnab=C3=A1s P=C5=91cze <pobrn@protonmail.com>
-> Signed-off-by: Jeff Xu <jeffxu@google.com>
-> Reviewed-by: David Rheinsberg <david@readahead.eu>
+Correctly masking PSTATE to only evaluate PSTATE.M fixes it.
 
-Looks good! Thanks!
-David
+Fixes: 90c1f934ed71 ("KVM: arm64: Get rid of the AArch32 register mapping code")
+Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/kvm/guest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+index e2f762d959bb..d9617b11f7a8 100644
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -276,7 +276,7 @@ static int set_core_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
+ 	if (*vcpu_cpsr(vcpu) & PSR_MODE32_BIT) {
+ 		int i, nr_reg;
+ 
+-		switch (*vcpu_cpsr(vcpu)) {
++		switch (*vcpu_cpsr(vcpu) & PSR_AA32_MODE_MASK) {
+ 		/*
+ 		 * Either we are dealing with user mode, and only the
+ 		 * first 15 registers (+ PC) must be narrowed to 32bit.
+-- 
+2.39.2
+
 
