@@ -1,190 +1,129 @@
-Return-Path: <stable+bounces-46076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7468CE750
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 16:47:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826588CE76F
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 16:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7553F28285A
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 14:47:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 121CC1F211D4
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 14:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A13612C484;
-	Fri, 24 May 2024 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C67812CDB2;
+	Fri, 24 May 2024 14:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="X6b7v7xX"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NpPwofG2"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77EB2BAF3;
-	Fri, 24 May 2024 14:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DB212CDB6
+	for <stable@vger.kernel.org>; Fri, 24 May 2024 14:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716562068; cv=none; b=YELmJhvorgIqei+XFAapYRz7CiM9LV+n2zU7VsVN8e26VAbaR9btHy6vwMUCSw0Uv+VqYPK0LiGqammLAPGP7fwmyEDLdoF9Nequ3a2hwdU+23rCkOMAdfZbHrwwIYsxfjSDphl8o6tI9nVl+YGUnv26FeTAD660ZU6d3azZujQ=
+	t=1716562589; cv=none; b=ZZD2H7VsUf+AoUj/ZZViyYsYPmLiQJSBwO5vb32ZnMR8CnCKABXlNMNkorh4o8cUsnRJU6YmPj272RUVmYa88DoLlZ8ChZDEEaHhVYcd0FBCwEbnTwdorBUaHZCbtGOKouOk6TyD9voNj8vxKQy7xkypz0zDRfkcobQg5oqY2ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716562068; c=relaxed/simple;
-	bh=1BYXmgN7udHWcL+OkJLf8ckhKsGB6dLjT7Ru1SeyaY4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Jedaq6lrfW5o0dYrjLtF91sFmtkA5Z7nJG50/z1c6aJ5caueLh2dW33vTH+REgBM7Vlp5P/NFi28GIE2o/UuLbxxTMCjmF2ovCML+h34LhvOhbTKMpqGvEIhl5lMZf+Yrwi+sq6ii3hduXhJeHaoK3sHCSjNq9ncz2dCbA+GZNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=X6b7v7xX; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=GAm6SuMCXIOFlOJm80hD0+OtxP9VsZ++oPDngmQ1KLU=; b=X6b7v7xX2Zl1SQRZaUKBDG0t14
-	gYf0F1qlHvyCxE1urg2qG6EabrbsR1mTl1TWV/+xytzr0BveyxDtsAPYgamZyQlxWSU72kgQokua/
-	ulCanMjlRpIiAKWEQTAEkEt1xgVuM/eDjfeVjjv8yo+J60idrN7eAKbqbhj/KHoaCcBrNo1plmhrB
-	if8SgBFNyhCF2zs099f5kGYe2Oz48u+ZbH6ngBgsincxdqXkW4y7N8KqbWsNDJhliiDeKW2ItppF3
-	sAibBKcwMk61Pikwz68lHp9F7AHS92ucRWUwF448bXu2n9d3VMEZfCPY6lI4fkU2BG6AH+zzif34o
-	jkm007ew==;
-Received: from 179-125-79-244-dinamico.pombonet.net.br ([179.125.79.244] helo=quatroqueijos.lan)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1sAWCk-00C18E-S8; Fri, 24 May 2024 16:47:35 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: netdev@vger.kernel.org
-Cc: Cong Wang <cong.wang@bytedance.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	bpf@vger.kernel.org,
-	kernel-dev@igalia.com,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] sock_map: avoid race between sock_map_close and sk_psock_put
-Date: Fri, 24 May 2024 11:47:02 -0300
-Message-Id: <20240524144702.1178377-1-cascardo@igalia.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1716562589; c=relaxed/simple;
+	bh=OYw8Cg1eCDv4d2lRRfYHRk0lfNtBpolIkz/iSx2vZqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LLfz19KaXYzJd+Z9r8JzmQfYlynzpTag9BP/oIvWwSFC84SLJ/+zpyNapJB3UtJMGDcBoiUjcY5aoSgaG1dMd3JcQBNV49ukUxAsQn/hLDhSgJ31Nj0K5nVecKAIVeDfX5O4XzoKYzUBhzOz+chfdV5WwNQrvk1UpjrW06+Bt68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NpPwofG2; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-420180b59b7so31134655e9.0
+        for <stable@vger.kernel.org>; Fri, 24 May 2024 07:56:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716562586; x=1717167386; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IFd4NSwhfGGM0dkHfawikZtgqzn4xojK3Pqv6CdYZAo=;
+        b=NpPwofG2YFaIMPOzgmeWLIZcM84n/mpwjjXkpYeeSfe8k96Cmvqsi3ruBpQghEd9Nz
+         ZgZLop6umYPTQFhfunXW0JumlW1XeURH1wRC6XcapR2RvnS7mal1TJThzMSocwDuVTuO
+         I4oyL8f9dBCgEWNzNbndfwktCXBsUhRRvT7QZcFVzxNm9FT8KJkQAC1IOiLf0fpKqfrR
+         bkEt7L5gTw74PcU8Ojc/jzwedVwcDfNY8SFH9T+Q3I2qdxeqyNTK+EYSmu5564iVXQLj
+         i6v2cjd5zLKI3URicA6lgNV2BmIpQE2BphgRBbG/FzhNv2uWQOtikFUHGiWjHneGWSer
+         eBHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716562586; x=1717167386;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IFd4NSwhfGGM0dkHfawikZtgqzn4xojK3Pqv6CdYZAo=;
+        b=bWdkRKD2tw8kUwwpe6yqEfnCdpfzwOZu81S32PL7qYjPFX4lceRsq06Wr8SVbCIIGv
+         cNxOjLq/9JPChGu+D/wPEV/X59IE+sGBxP4+pGBsphHETHmBveyUCyZXuqi0duZ6gp+V
+         A6NdRhpN0x+wskk0O51kzJKPlIkA2B8X9MWpOzCJMfS6/bt4lyzG5+vT9rwWeG4yB9HJ
+         2SKjYU9jL4bcHhZQLmZ+aNRs6UXRQybxekvMPyy6G5AyZdILJbDQQLH/dqiPy0SkpPtK
+         XukqsdLHWLedT2k/u86t1XwwV/f+DWpQMsS2AA6tRC8FfC5tbK3/0oiPPmWl7Wi+Olk2
+         qRUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQrfiGCfxby4cZOhMWz6nWrC4CVc0T3B/P0tyD+pQeJ8ZThvMLBLLQ3uLVArV8npVoUvxFc484AJD/uP2fn+Xbyb0R1r4E
+X-Gm-Message-State: AOJu0YyEgGOndZo1H44KyQvRl15sDYQYnUbjURmSWRfbc3kVT0FFCXWy
+	WMAZlQ0Sj/HR++RIS3fGc01fpYo3Wlbn5/4yQ7p4R56u+Ci6xLqGpEPIXc5Cp8o=
+X-Google-Smtp-Source: AGHT+IFzhnwidECh45iEEjkgcSjoxnXJokt/Bwq6KmtAyfAEk5qpNjP3Kf0y8Ah4BCe9mjKHHw/9IA==
+X-Received: by 2002:a05:600c:6b04:b0:41f:f053:edb4 with SMTP id 5b1f17b1804b1-421089ebea3mr21345815e9.23.1716562585592;
+        Fri, 24 May 2024 07:56:25 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-420fc82c4e0sm74313045e9.0.2024.05.24.07.56.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 May 2024 07:56:25 -0700 (PDT)
+Date: Fri, 24 May 2024 17:56:21 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
+	Michal Simek <michal.simek@amd.com>,
+	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Bharat Kumar Gogada <bharatku@xilinx.com>
+Subject: Re: [PATCH v3 2/7] PCI: xilinx-nwl: Fix off-by-one in IRQ handler
+Message-ID: <c2e1d87c-14e2-4efd-a5cd-f173b52dad35@moroto.mountain>
+References: <20240522222834.GA101664@bhelgaas>
+ <9299ee92-a32b-4b82-aa37-c7087a5c1376@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9299ee92-a32b-4b82-aa37-c7087a5c1376@linux.dev>
 
-sk_psock_get will return NULL if the refcount of psock has gone to 0, which
-will happen when the last call of sk_psock_put is done. However,
-sk_psock_drop may not have finished yet, so the close callback will still
-point to sock_map_close despite psock being NULL.
+On Thu, May 23, 2024 at 11:21:52AM -0400, Sean Anderson wrote:
+> On 5/22/24 18:28, Bjorn Helgaas wrote:
+> > On Mon, May 20, 2024 at 10:53:57AM -0400, Sean Anderson wrote:
+> >> MSGF_LEG_MASK is laid out with INTA in bit 0, INTB in bit 1, INTC in bit
+> >> 2, and INTD in bit 3. Hardware IRQ numbers start at 0, and we register
+> >> PCI_NUM_INTX irqs. So to enable INTA (aka hwirq 0) we should set bit 0.
+> >> Remove the subtraction of one. This fixes the following UBSAN error:
+> > 
+> > Thanks for these details!
+> > 
+> > I guess UBSAN == "undefined behavior sanitizer", right?  That sounds
+> > like an easy way to find this but not the way users are likely to find
+> > it.
+> 
+> It's pretty likely they will find it this way, since I found it this way
+> and no one else had ;)
+> 
+> > I assume users would notice spurious and missing interrupts, e.g.,
+> > a driver that tried to enable INTB would have actually enabled INTA,
+> > so we'd see spurious INTA interrupts and the driver would never see
+> > the INTB it expected.
+> > 
+> > And a driver that tried to enable INTA would never see that interrupt,
+> > and we might not set any bit in MSGF_LEG_MASK?
+> 
+> And yes, this would manifest as INTx interrupts being broken.
+> 
 
-This can be reproduced with a thread deleting an element from the sock map,
-while the second one creates a socket, adds it to the map and closes it.
+It's so weird that it's been broken for seven years and no one reported
+it.  :/
 
-That will trigger the WARN_ON_ONCE:
-
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 7220 at net/core/sock_map.c:1701 sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-Modules linked in:
-CPU: 1 PID: 7220 Comm: syz-executor380 Not tainted 6.9.0-syzkaller-07726-g3c999d1ae3c7 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-RIP: 0010:sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-Code: df e8 92 29 88 f8 48 8b 1b 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 79 29 88 f8 4c 8b 23 eb 89 e8 4f 15 23 f8 90 <0f> 0b 90 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d e9 13 26 3d 02
-RSP: 0018:ffffc9000441fda8 EFLAGS: 00010293
-RAX: ffffffff89731ae1 RBX: ffffffff94b87540 RCX: ffff888029470000
-RDX: 0000000000000000 RSI: ffffffff8bcab5c0 RDI: ffffffff8c1faba0
-RBP: 0000000000000000 R08: ffffffff92f9b61f R09: 1ffffffff25f36c3
-R10: dffffc0000000000 R11: fffffbfff25f36c4 R12: ffffffff89731840
-R13: ffff88804b587000 R14: ffff88804b587000 R15: ffffffff89731870
-FS:  000055555e080380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000000207d4000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- unix_release+0x87/0xc0 net/unix/af_unix.c:1048
- __sock_release net/socket.c:659 [inline]
- sock_close+0xbe/0x240 net/socket.c:1421
- __fput+0x42b/0x8a0 fs/file_table.c:422
- __do_sys_close fs/open.c:1556 [inline]
- __se_sys_close fs/open.c:1541 [inline]
- __x64_sys_close+0x7f/0x110 fs/open.c:1541
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb37d618070
-Code: 00 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff eb d4 e8 10 2c 00 00 80 3d 31 f0 07 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
-RSP: 002b:00007ffcd4a525d8 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fb37d618070
-RDX: 0000000000000010 RSI: 00000000200001c0 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000100000000 R09: 0000000100000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-Use sk_psock, which will only check that the pointer is not been set to
-NULL yet, which should only happen after the callbacks are restored. If,
-then, a reference can still be gotten, we may call sk_psock_stop and cancel
-psock->work.
-
-As suggested by Paolo Abeni, reorder the condition so the control flow is
-less convoluted.
-
-After that change, the reproducer does not trigger the WARN_ON_ONCE
-anymore.
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reported-by: syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=07a2e4a1a57118ef7355
-Fixes: aadb2bb83ff7 ("sock_map: Fix a potential use-after-free in sock_map_close()")
-Fixes: 5b4a79ba65a1 ("bpf, sockmap: Don't let sock_map_{close,destroy,unhash} call itself")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
-
-v2: change control flow as suggested by Paolo Abeni
-
-v1: https://lore.kernel.org/netdev/20240520214153.847619-1-cascardo@igalia.com/
-
----
- net/core/sock_map.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 9402889840bf..c3179567a99a 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -1680,19 +1680,23 @@ void sock_map_close(struct sock *sk, long timeout)
- 
- 	lock_sock(sk);
- 	rcu_read_lock();
--	psock = sk_psock_get(sk);
--	if (unlikely(!psock)) {
--		rcu_read_unlock();
--		release_sock(sk);
--		saved_close = READ_ONCE(sk->sk_prot)->close;
--	} else {
-+	psock = sk_psock(sk);
-+	if (likely(psock)) {
- 		saved_close = psock->saved_close;
- 		sock_map_remove_links(sk, psock);
-+		psock = sk_psock_get(sk);
-+		if (unlikely(!psock))
-+			goto no_psock;
- 		rcu_read_unlock();
- 		sk_psock_stop(psock);
- 		release_sock(sk);
- 		cancel_delayed_work_sync(&psock->work);
- 		sk_psock_put(sk, psock);
-+	} else {
-+		saved_close = READ_ONCE(sk->sk_prot)->close;
-+no_psock:
-+		rcu_read_unlock();
-+		release_sock(sk);
- 	}
- 
- 	/* Make sure we do not recurse. This is a bug.
--- 
-2.34.1
+regards,
+dan carpenter
 
 
