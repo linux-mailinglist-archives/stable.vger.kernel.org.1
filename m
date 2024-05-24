@@ -1,131 +1,212 @@
-Return-Path: <stable+bounces-46047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F099B8CE305
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 11:08:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E31598CE388
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 11:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7167C1F20F50
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 09:08:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99550282F80
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 09:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB46129A7B;
-	Fri, 24 May 2024 09:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5B485635;
+	Fri, 24 May 2024 09:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mbX42WD/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GREKJUnN"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948F2127E2A;
-	Fri, 24 May 2024 09:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2448562A
+	for <stable@vger.kernel.org>; Fri, 24 May 2024 09:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716541700; cv=none; b=rBy3SgOzMkE/Y1S8xmMvi9WGvKPjCCdL1MGD9O7P9HKV3XmQKvYL7PiI+cwD0I8XsPxOeTZBRjgXQckddkNqhjPhsL6An9iJuP3G6sXlmH6aDmOFb4dOjPCuS3SnuKQaTtc2j74DaxunKhPPMHzUE31N5cgHOnFE6XNM8mY04KE=
+	t=1716543147; cv=none; b=ctU51c4pJtytVoBpu6GEpMSOPvXp1zQXtp5ZFqrRJWgi8UQS+Johdx91lLkEUMJkM2/IwzbNdgU32JB6TZCxDZAl1TGizH5YVpLrH2AE+V9xuaaMx/8C5hVgPZP3w4B9GA1bqYS30jTfnYt/lfNCoPwqz7OSrzRt3A1EC4XYAEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716541700; c=relaxed/simple;
-	bh=9Sa658riCmbCqT3J4PTUjBFOqYcZyEuze19YWzLl+Ss=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qtQE4O/OSh9X1wD0VkaKxZu+Qm6OAVcrik1dOUAvkRUoXzH2MK6I3qSXrligzPGN0IIF9T2Vn6Au3dMVBoqkipBvM37qH8YGREYZOtRvUt85yz8AdyZ35kYPjymgSECfKlwhz7E5y7g/xwFLUN6uGZFeL75BIPEaSlkjs/cOcC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mbX42WD/; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44NNPFQw004328;
-	Fri, 24 May 2024 09:08:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	B7/WifPwzNZzPU9rOUg01zfQZ3c0yxVuki52/ZR7b14=; b=mbX42WD/1ON8fmsr
-	yRfw5/qMoRgLRlLwwtro5eVhz9sWrr3lFDyDVsx6oWVcZiNLbC3WPLB4QhaBB9Rj
-	PBgpezBTHU7PNvegP13dZ9a1Swssx/xpFE6ET7dHCwL9iUHVCfs/xyf7NyjEbh8X
-	LNU98mAgE3zwPHgYEXGsu96JaZs/kGZlSOuvboch/9q6nXhSSA6Bc2t0/MfQBKtm
-	bJ33YVKb1O2GdSEoP4zMmfill3sgiyDHkWD3IE7lcDBuwBd9xPu0ATnmpkTloWz3
-	BJfjaLU1kfGN41GlY2PbjmWkIGFHkQB53OpC4APH0U/AYRVAJf8fA+p1kXjoliyb
-	OGFgRg==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yaa8khsaa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 May 2024 09:08:11 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44O98ALV026893
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 May 2024 09:08:10 GMT
-Received: from [10.253.37.124] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 24 May
- 2024 02:08:08 -0700
-Message-ID: <0b916393-eb39-4467-9c99-ac1bc9746512@quicinc.com>
-Date: Fri, 24 May 2024 17:08:06 +0800
+	s=arc-20240116; t=1716543147; c=relaxed/simple;
+	bh=+r+3JkdoTS2WhVcXvGMz1cSz9823Vhc8c1KI2ioY+Gk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IMMpMUP0Omq+9flIXHI3pgx6Jg++m+6uYg1t9VkYliI8FUYw8xKEbailo3k0fciEgKtthZJLjwg4qALnm6rY3IelRDe0AMh/67ZzOQkH8RQdAmxTDrYNcwzB3ELGYN+jorPT4yOEwNEN2KiS/0ma2e/rAnlbDCD8pCenr/Hfbvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GREKJUnN; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6ab83788bf5so14870876d6.0
+        for <stable@vger.kernel.org>; Fri, 24 May 2024 02:32:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716543144; x=1717147944; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QobU3V4M9zLBH4ceWs5naausHLldCyE6Lvje0EpDn/I=;
+        b=GREKJUnNYJ9C4fagsN9CZ7OxJmbLPKBwOtjfGUBe13BSolz9NO6OYvQxuCRGwh38r+
+         IuglzW4vlpPTKsPX8fV5k7WocYNcDpiXhvOte1vPf0CWFjGfcyH+XKbZuNIKAINf9xXH
+         YRt6U08zrQDA8A2SgjRyxXa2mAcuJEpWHpNIxqhjem6quvyUx4/qphNKjDsFwdvAEvW0
+         L2/cvQOytRIzCe4ym2DE62nJOysWJV4AugM9pS/RiBj9Xx55qZ3WBB+nVvcLfbNHSaYI
+         jIVTyPhXRGOYP4cBwCtB72kY2IO0RPjTFnaIjX9/XU3B7XP/KrSdNdnAKfGt863ZL2kd
+         tlOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716543144; x=1717147944;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QobU3V4M9zLBH4ceWs5naausHLldCyE6Lvje0EpDn/I=;
+        b=GJLstHJweEnWhS4LeIzSKQpEtyZzLGI4LQBbpnH3tiJYvun3ppu/xmsr/Y90X7j12T
+         +j93oGgDVmKeL6gWxmhdgba3leKOUluGQBfHAWoRW/aHCIezSsBrOkBc/QmDcRcqzEbt
+         SznTRhoOobojgmnNoSlkEYbyIsY/HdWr+RKz+qFTVM5WbIBcWqCMaKXzQtUKKS30bPtn
+         E76WuaEA0Gan4TIHcB5x6xBVBFFcSrorstSuUJgVicXG3JewqiIy+QMr08hBlqPXLSl0
+         DrQ5DoxR/Gdow25zDOFrhSUflTIF4wa0MblRiewwKzJgwb4jQxuV7Lf4gzjrJKrCNcsT
+         /8nA==
+X-Gm-Message-State: AOJu0Yyfiz2yN6k6eOE5IANonMr97c5rmWR97nMqrg9BvMuzKgDDsAIi
+	71Shuw7tUUBKCi5DOQa90i73B7oNh3tpjSS1wET4Ej6luy434guZ/ryTWpB19X7cfM8deJ/UH9S
+	z34TOsHIxjd3P5fd2El+qTgI3MHxE/VJrNelKEQ==
+X-Google-Smtp-Source: AGHT+IFjoTKXgMDlyDzfnWuX3M1jKwtPOvvc+KZ+MYplITOHlLZg+z2dEWqjtafHvad6W6+WbomyBD93D2MSib0JiRY=
+X-Received: by 2002:a05:6214:4903:b0:6ab:8e5c:e17b with SMTP id
+ 6a1803df08f44-6abbbc194eamr17864306d6.9.1716543144576; Fri, 24 May 2024
+ 02:32:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kobject_uevent: Fix OOB access within zap_modalias_env()
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <rafael@kernel.org>, <akpm@linux-foundation.org>,
-        <dmitry.torokhov@gmail.com>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <1716524403-5415-1-git-send-email-quic_zijuhu@quicinc.com>
- <2024052418-casket-partition-c143@gregkh>
- <74465bf5-ca18-45f8-a881-e95561c59a02@quicinc.com>
- <2024052438-hesitate-chevron-dbd7@gregkh>
- <5acce173-0224-4a05-ae88-3eb1833fcb39@quicinc.com>
- <2024052458-unleash-atom-489b@gregkh>
-Content-Language: en-US
-From: quic_zijuhu <quic_zijuhu@quicinc.com>
-In-Reply-To: <2024052458-unleash-atom-489b@gregkh>
+References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Fri, 24 May 2024 11:32:13 +0200
+Message-ID: <CADYN=9+OCBJ0qkoB-t7ECCS=c4rHf0YKNZmmYkvu1F9dfkq1Zw@mail.gmail.com>
+Subject: Re: [PATCH 6.9 00/25] 6.9.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: dBrbM2yb5iv4TzbRnaERgjGqmr-zxoCQ
-X-Proofpoint-GUID: dBrbM2yb5iv4TzbRnaERgjGqmr-zxoCQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-24_02,2024-05-23_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- phishscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- malwarescore=0 adultscore=0 mlxlogscore=907 spamscore=0 lowpriorityscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2405240062
+Content-Transfer-Encoding: quoted-printable
 
-On 5/24/2024 2:56 PM, Greg KH wrote:
-> On Fri, May 24, 2024 at 01:34:49PM +0800, quic_zijuhu wrote:
->> On 5/24/2024 1:21 PM, Greg KH wrote:
->>> On Fri, May 24, 2024 at 01:15:01PM +0800, quic_zijuhu wrote:
->>>> On 5/24/2024 12:33 PM, Greg KH wrote:
->>>>> On Fri, May 24, 2024 at 12:20:03PM +0800, Zijun Hu wrote:
->>>>>> zap_modalias_env() wrongly calculates size of memory block
->>>>>> to move, so maybe cause OOB memory access issue, fixed by
->>>>>> correcting size to memmove.
->>>>>
->>>>> "maybe" or "does"?  That's a big difference :)
->>>>>
->>>> i found this issue by reading code instead of really meeting this issue.
->>>> this issue should be prone to happen if there are more than 1 other
->>>> environment vars.
->>>
->>> But does it?  Given that we have loads of memory checkers, and I haven't
->>> ever seen any report of any overrun, it would be nice to be sure.
->>>
->> yes. if @env includes env vairable MODALIAS and  more than one other env
->> vairables. then (env->buflen - len) must be greater that actual size of
->> "target block" shown previously, so the OOB issue must happen.
-> 
-> Then why are none of the tools that we have for catching out-of-bound
-> issues triggered here?  Are the tools broken or is this really just not
-> ever happening?  It would be good to figure that out...
-> 
-don't know why. perhaps, need to report our case to expert of tools.
-> thanks,
-> 
-> greg k-h
+On Thu, 23 May 2024 at 15:17, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.9.2 release.
+> There are 25 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.9.2-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.9.y
+> and the diffstat can be found below.
 
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 126 total, 126 passed, 0 failed
+* arm64: 38 total, 38 passed, 0 failed
+* i386: 29 total, 29 passed, 0 failed
+* mips: 23 total, 23 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 34 total, 34 passed, 0 failed
+* riscv: 17 total, 17 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 33 total, 33 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
