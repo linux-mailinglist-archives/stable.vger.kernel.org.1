@@ -1,141 +1,190 @@
-Return-Path: <stable+bounces-46075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072248CE74C
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 16:47:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7468CE750
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 16:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76E68B2112A
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 14:47:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7553F28285A
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 14:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCC18626D;
-	Fri, 24 May 2024 14:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A13612C484;
+	Fri, 24 May 2024 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bW7ceZwj"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="X6b7v7xX"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B4D1802B;
-	Fri, 24 May 2024 14:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77EB2BAF3;
+	Fri, 24 May 2024 14:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716562027; cv=none; b=ffS5xKHXxh4ahdajU8cbvnKhcR/gHAyrC/2yHJrK7rQcNcKdSpRHde/CltB0DZhkP9lSqCHsAOO3aMnudPNv338JqS8ueTc2m6cGMySo98DZR4uOK6iZefv3/ExbWBvKGgPo5iOqpj9WqR1yyF7pJax4eskcz23TnWeUePMZfaU=
+	t=1716562068; cv=none; b=YELmJhvorgIqei+XFAapYRz7CiM9LV+n2zU7VsVN8e26VAbaR9btHy6vwMUCSw0Uv+VqYPK0LiGqammLAPGP7fwmyEDLdoF9Nequ3a2hwdU+23rCkOMAdfZbHrwwIYsxfjSDphl8o6tI9nVl+YGUnv26FeTAD660ZU6d3azZujQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716562027; c=relaxed/simple;
-	bh=BJ5VrB+qJfZCoyNHI7babiy3dogLb5Qii6s5S49ROfk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mLTjONSjcHf4MmKG0fMPdGcXk2UJ+xgvO436hGCzIP95Tbn5TqRwbhGbb7ylFl34XnADyOvSXfxW5tKGTIe/VYjTR4DU42FBXtQXDjgNhaIZz4HW8x765fQnU4WRcOcjJQlqI/7afJtrQfHTCUAmG7vKSFEnFNYy/eyCHTsdQ8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bW7ceZwj; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44O97ddS007622;
-	Fri, 24 May 2024 14:46:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	RQj5TYZnb1ah25s5Ay50rB8Vo5r8uZJ5JDJMSNUD8KM=; b=bW7ceZwjonyC/fWy
-	6DzWjZB9cv9AhlUB7kIYpSeze8Ksh+oDyM5xUrtD5T2P2bzXtvHI9IfZbX9Tflaz
-	bP5yDB5Zue0mtxTrkt9E3yeHS6ScA3ha9RYpyZ8M4Ac1P/Hqo+fQ/wYi2qOOoWaa
-	spRpP0pGOtxnv43mfGjF0IVa7eePHU7gThxYD6SZ5TLlU1M7I3Z8veZIT798IPho
-	+ZCS/az2s8eCVoRG5ywNVWQgf90nXkfZxESNjnIFFYEI0i4oKMg9NJvxfxgqrd6Q
-	qvLXSGQfHRpET0byoIoZYcWsRgewZuJushpq/WLH9zMf7EhU1V0/YeTRE0QWKjpF
-	3h1+Sg==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yaa9ttrpv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 May 2024 14:46:58 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44OEku8s000561
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 May 2024 14:46:56 GMT
-Received: from [10.253.37.124] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 24 May
- 2024 07:46:55 -0700
-Message-ID: <ced59dca-70cd-4680-b7d5-e0983aa9be74@quicinc.com>
-Date: Fri, 24 May 2024 22:46:53 +0800
+	s=arc-20240116; t=1716562068; c=relaxed/simple;
+	bh=1BYXmgN7udHWcL+OkJLf8ckhKsGB6dLjT7Ru1SeyaY4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Jedaq6lrfW5o0dYrjLtF91sFmtkA5Z7nJG50/z1c6aJ5caueLh2dW33vTH+REgBM7Vlp5P/NFi28GIE2o/UuLbxxTMCjmF2ovCML+h34LhvOhbTKMpqGvEIhl5lMZf+Yrwi+sq6ii3hduXhJeHaoK3sHCSjNq9ncz2dCbA+GZNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=X6b7v7xX; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=GAm6SuMCXIOFlOJm80hD0+OtxP9VsZ++oPDngmQ1KLU=; b=X6b7v7xX2Zl1SQRZaUKBDG0t14
+	gYf0F1qlHvyCxE1urg2qG6EabrbsR1mTl1TWV/+xytzr0BveyxDtsAPYgamZyQlxWSU72kgQokua/
+	ulCanMjlRpIiAKWEQTAEkEt1xgVuM/eDjfeVjjv8yo+J60idrN7eAKbqbhj/KHoaCcBrNo1plmhrB
+	if8SgBFNyhCF2zs099f5kGYe2Oz48u+ZbH6ngBgsincxdqXkW4y7N8KqbWsNDJhliiDeKW2ItppF3
+	sAibBKcwMk61Pikwz68lHp9F7AHS92ucRWUwF448bXu2n9d3VMEZfCPY6lI4fkU2BG6AH+zzif34o
+	jkm007ew==;
+Received: from 179-125-79-244-dinamico.pombonet.net.br ([179.125.79.244] helo=quatroqueijos.lan)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1sAWCk-00C18E-S8; Fri, 24 May 2024 16:47:35 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: netdev@vger.kernel.org
+Cc: Cong Wang <cong.wang@bytedance.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	bpf@vger.kernel.org,
+	kernel-dev@igalia.com,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] sock_map: avoid race between sock_map_close and sk_psock_put
+Date: Fri, 24 May 2024 11:47:02 -0300
+Message-Id: <20240524144702.1178377-1-cascardo@igalia.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kobject_uevent: Fix OOB access within zap_modalias_env()
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <rafael@kernel.org>, <akpm@linux-foundation.org>,
-        <dmitry.torokhov@gmail.com>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <1716524403-5415-1-git-send-email-quic_zijuhu@quicinc.com>
- <2024052418-casket-partition-c143@gregkh>
- <74465bf5-ca18-45f8-a881-e95561c59a02@quicinc.com>
- <2024052438-hesitate-chevron-dbd7@gregkh>
- <5acce173-0224-4a05-ae88-3eb1833fcb39@quicinc.com>
- <2024052458-unleash-atom-489b@gregkh>
- <0b916393-eb39-4467-9c99-ac1bc9746512@quicinc.com>
- <2024052405-award-recycling-6931@gregkh>
-Content-Language: en-US
-From: quic_zijuhu <quic_zijuhu@quicinc.com>
-In-Reply-To: <2024052405-award-recycling-6931@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ikya5VPHETM-SYfas71xA-vDncOI2iBH
-X-Proofpoint-ORIG-GUID: ikya5VPHETM-SYfas71xA-vDncOI2iBH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-24_04,2024-05-24_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- spamscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
- malwarescore=0 adultscore=0 suspectscore=0 phishscore=0 impostorscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2405240102
+Content-Transfer-Encoding: 8bit
 
-On 5/24/2024 7:47 PM, Greg KH wrote:
-> On Fri, May 24, 2024 at 05:08:06PM +0800, quic_zijuhu wrote:
->> On 5/24/2024 2:56 PM, Greg KH wrote:
->>> On Fri, May 24, 2024 at 01:34:49PM +0800, quic_zijuhu wrote:
->>>> On 5/24/2024 1:21 PM, Greg KH wrote:
->>>>> On Fri, May 24, 2024 at 01:15:01PM +0800, quic_zijuhu wrote:
->>>>>> On 5/24/2024 12:33 PM, Greg KH wrote:
->>>>>>> On Fri, May 24, 2024 at 12:20:03PM +0800, Zijun Hu wrote:
->>>>>>>> zap_modalias_env() wrongly calculates size of memory block
->>>>>>>> to move, so maybe cause OOB memory access issue, fixed by
->>>>>>>> correcting size to memmove.
->>>>>>>
->>>>>>> "maybe" or "does"?  That's a big difference :)
->>>>>>>
->>>>>> i found this issue by reading code instead of really meeting this issue.
->>>>>> this issue should be prone to happen if there are more than 1 other
->>>>>> environment vars.
->>>>>
->>>>> But does it?  Given that we have loads of memory checkers, and I haven't
->>>>> ever seen any report of any overrun, it would be nice to be sure.
->>>>>
->>>> yes. if @env includes env vairable MODALIAS and  more than one other env
->>>> vairables. then (env->buflen - len) must be greater that actual size of
->>>> "target block" shown previously, so the OOB issue must happen.
->>>
->>> Then why are none of the tools that we have for catching out-of-bound
->>> issues triggered here?  Are the tools broken or is this really just not
->>> ever happening?  It would be good to figure that out...
->>>
->> don't know why. perhaps, need to report our case to expert of tools.
-> 
-> Try running them yourself and see!
-i find out the reason why the OOB issue is difficult to be observed.
-the reason is that MODALIAS is the last variable added by most of
-drivers by accident, and it skips the obvious wrong logic within
-zap_modalias_env().
+sk_psock_get will return NULL if the refcount of psock has gone to 0, which
+will happen when the last call of sk_psock_put is done. However,
+sk_psock_drop may not have finished yet, so the close callback will still
+point to sock_map_close despite psock being NULL.
 
-you maybe run below command to confirm the reason.
-grep -l -r MODALIAS drivers/  | xargs grep add_uevent_var
+This can be reproduced with a thread deleting an element from the sock map,
+while the second one creates a socket, adds it to the map and closes it.
+
+That will trigger the WARN_ON_ONCE:
+
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 7220 at net/core/sock_map.c:1701 sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
+Modules linked in:
+CPU: 1 PID: 7220 Comm: syz-executor380 Not tainted 6.9.0-syzkaller-07726-g3c999d1ae3c7 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+RIP: 0010:sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
+Code: df e8 92 29 88 f8 48 8b 1b 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 79 29 88 f8 4c 8b 23 eb 89 e8 4f 15 23 f8 90 <0f> 0b 90 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d e9 13 26 3d 02
+RSP: 0018:ffffc9000441fda8 EFLAGS: 00010293
+RAX: ffffffff89731ae1 RBX: ffffffff94b87540 RCX: ffff888029470000
+RDX: 0000000000000000 RSI: ffffffff8bcab5c0 RDI: ffffffff8c1faba0
+RBP: 0000000000000000 R08: ffffffff92f9b61f R09: 1ffffffff25f36c3
+R10: dffffc0000000000 R11: fffffbfff25f36c4 R12: ffffffff89731840
+R13: ffff88804b587000 R14: ffff88804b587000 R15: ffffffff89731870
+FS:  000055555e080380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000207d4000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ unix_release+0x87/0xc0 net/unix/af_unix.c:1048
+ __sock_release net/socket.c:659 [inline]
+ sock_close+0xbe/0x240 net/socket.c:1421
+ __fput+0x42b/0x8a0 fs/file_table.c:422
+ __do_sys_close fs/open.c:1556 [inline]
+ __se_sys_close fs/open.c:1541 [inline]
+ __x64_sys_close+0x7f/0x110 fs/open.c:1541
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fb37d618070
+Code: 00 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff eb d4 e8 10 2c 00 00 80 3d 31 f0 07 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
+RSP: 002b:00007ffcd4a525d8 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
+RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fb37d618070
+RDX: 0000000000000010 RSI: 00000000200001c0 RDI: 0000000000000004
+RBP: 0000000000000000 R08: 0000000100000000 R09: 0000000100000000
+R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+
+Use sk_psock, which will only check that the pointer is not been set to
+NULL yet, which should only happen after the callbacks are restored. If,
+then, a reference can still be gotten, we may call sk_psock_stop and cancel
+psock->work.
+
+As suggested by Paolo Abeni, reorder the condition so the control flow is
+less convoluted.
+
+After that change, the reproducer does not trigger the WARN_ON_ONCE
+anymore.
+
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=07a2e4a1a57118ef7355
+Fixes: aadb2bb83ff7 ("sock_map: Fix a potential use-after-free in sock_map_close()")
+Fixes: 5b4a79ba65a1 ("bpf, sockmap: Don't let sock_map_{close,destroy,unhash} call itself")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+---
+
+v2: change control flow as suggested by Paolo Abeni
+
+v1: https://lore.kernel.org/netdev/20240520214153.847619-1-cascardo@igalia.com/
+
+---
+ net/core/sock_map.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 9402889840bf..c3179567a99a 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -1680,19 +1680,23 @@ void sock_map_close(struct sock *sk, long timeout)
+ 
+ 	lock_sock(sk);
+ 	rcu_read_lock();
+-	psock = sk_psock_get(sk);
+-	if (unlikely(!psock)) {
+-		rcu_read_unlock();
+-		release_sock(sk);
+-		saved_close = READ_ONCE(sk->sk_prot)->close;
+-	} else {
++	psock = sk_psock(sk);
++	if (likely(psock)) {
+ 		saved_close = psock->saved_close;
+ 		sock_map_remove_links(sk, psock);
++		psock = sk_psock_get(sk);
++		if (unlikely(!psock))
++			goto no_psock;
+ 		rcu_read_unlock();
+ 		sk_psock_stop(psock);
+ 		release_sock(sk);
+ 		cancel_delayed_work_sync(&psock->work);
+ 		sk_psock_put(sk, psock);
++	} else {
++		saved_close = READ_ONCE(sk->sk_prot)->close;
++no_psock:
++		rcu_read_unlock();
++		release_sock(sk);
+ 	}
+ 
+ 	/* Make sure we do not recurse. This is a bug.
+-- 
+2.34.1
 
 
