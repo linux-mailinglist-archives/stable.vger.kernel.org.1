@@ -1,131 +1,150 @@
-Return-Path: <stable+bounces-46052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F9E78CE468
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 12:50:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8258CE483
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 12:57:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A52B282382
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 10:50:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BA561C20BF6
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 10:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD6184FAC;
-	Fri, 24 May 2024 10:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F8E85C44;
+	Fri, 24 May 2024 10:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="vuV92Fr1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J+p5TNps";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wyrt3ETa"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92203482D8;
-	Fri, 24 May 2024 10:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9144585956;
+	Fri, 24 May 2024 10:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716547822; cv=none; b=CHdELZC9hnz6xHL1jjfujTnVG0cu8DPGeJac+0mZffIsAwDSoa9UL6LIOVw6eNlIv+Mm7eZ59mZvLNXm6Nn2dRUFAxeDEdVMPbfyntp+Ij/IYi/nuH07gLLea1dU/0IoC9nF1aHijRIr9a3w7bKri7RAolbCLzZgw0kfy0S3EvE=
+	t=1716548268; cv=none; b=kbBFGQIqWT89qGnsNFnWMt7Jwpvqm1gNSRV/8dA85bN20dN3O5UGkYHrbYapPLY9P6NwDnkg0Tx51O67WuHplYji2tk9Q6H3+xClCCREZh5Mv8Tva7MvMyQOLY4OlHltP3Te+3QNmsMtfXx4Q6dGR3rRik0xmwsD1ee2PSCh5Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716547822; c=relaxed/simple;
-	bh=W5iK/L69w1vS5jHqSzlK6AF7Pl8WAdVP/lDrntYBJek=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DtT3Lr9evlIfQ44G2ELYPdUB92EChOSksOKpSeNGEMiD7Gl7hwwCpHLB7trDbusj5nOOWxhbPK/ueKbZVeMjbIOiMWq89N0rFQ9GFZ0SkZqBXhonUeZdxvpnicZulh8jNLD2EMXwYTuKDnEdyVldfcwExdi2dCX1CHSgYHOUrLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=vuV92Fr1; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=Xi0VV02aPT82jOki/4MXoZyGpobBnrrrOZsLV1eML+U=;
-	t=1716547818; x=1716979818; b=vuV92Fr1MFPiVmDIIDyp5+OsC1e5TCZP0ceCOqr9r0v/8/3
-	qahymqwOQddmwPc3nAxxSyo+zjPDYIeb9VcNU7I4Q+NywT4jIGcSVlvLdVkg5/mZ1JDZ76AiiyPoO
-	5jGd8iDmJ9QMVlIQMljtQWIidVClNaY8TG6AvX+HiqEA+WdFc6/jZcmwMknCjBUh3GmCSln1JGdUW
-	+l/2VcJ2JtzzLFTZJ5NZBIUzwjF+XmmHkaSynZ9Apq6Di4nGqIt6O0uhAvYxHLlCIfP44kPTF9ZIk
-	kPrYr3D3FFdAj48Zwp7Y9e3/Rzi0Y/muITCWS7ttzQs6x86IELiWjgbR87jbS2gw==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sASUy-0000GP-TV; Fri, 24 May 2024 12:50:08 +0200
-Message-ID: <5b79732b-087c-411f-a477-9b837566673e@leemhuis.info>
-Date: Fri, 24 May 2024 12:50:08 +0200
+	s=arc-20240116; t=1716548268; c=relaxed/simple;
+	bh=colrypTjylwyez/3r9sQhQskA+fGLFAX5Vtn76reIsw=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=IBk+ySyHK/134aWZZttRdRwqDlBUvwutEH2ekEfFewr5svqs3uIG+OAc2Uo1PSr5r2SvN+x/8jNFNeWhVKKFRzWb9/eQr1QdVzcB+38O6WHIS4OHnOyg3nqmv3Sc6IH5FX/pmBpmJC25sjETq9vXL1XcS4BOKWO2k3k6qc+6rtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J+p5TNps; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wyrt3ETa; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 24 May 2024 10:57:43 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1716548264;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BLYn3FwQBwFMOl0ONyA3r9l1SvJ452A313P0X1CGLe0=;
+	b=J+p5TNpsmfs1LzuvHTrFETBpJUNc2Ow2jID0Odkui9OWA14LfyWRuQdwoZQghv3yGVqcQp
+	iFoQYQi3VOwZhVUKikSDbrQ5eclREGbuBLE7vKPUSstHlLNpl6QuMtC95rO5fEQrKhH+af
+	H7Eieono3dKrINSXXHWv5K43wDVRK6WKBxDalCckG2lwRoFHIJoE/YOlL2+y9/LnzSJpXJ
+	3Xqw9gkNHwTlSYGnDUkTqYSh/LMPNe1o/gtnECEJjmv7eE/nrxBhQWWXeyiHkrbWVkCRwe
+	RozwWzJBdKbhTvBBI5HiOks2aOxAlxBiDJwUTnvZTyW5Udrc8LnMuNW9UXap4A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1716548264;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BLYn3FwQBwFMOl0ONyA3r9l1SvJ452A313P0X1CGLe0=;
+	b=Wyrt3ETaQN8tBUGYJimQo23LgMKAtNZQ0hlQiv9n7oPAun+/7GAigxd4mFzwIGd7vRnqwg
+	tTH4gAxF5U9OjNAQ==
+From: "tip-bot2 for dicken.ding" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] genirq/irqdesc: Prevent use-after-free in
+ irq_find_at_or_after()
+Cc: "dicken.ding" <dicken.ding@mediatek.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20240524091739.31611-1-dicken.ding@mediatek.com>
+References: <20240524091739.31611-1-dicken.ding@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bug in Kernel 6.8.x, 6.9.x Causing Trace/Panic During
- Shutdown/Reboot
-To: =?UTF-8?Q?Ilkka_Naulap=C3=A4=C3=A4?= <digirigawa@gmail.com>,
- stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, Steven Rostedt <rostedt@goodmis.org>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-References: <CAE4VaREzY+a2PvQJYJbfh8DwB4OP7kucZG-e28H22xyWob1w_A@mail.gmail.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CAE4VaREzY+a2PvQJYJbfh8DwB4OP7kucZG-e28H22xyWob1w_A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1716547818;62e16c8f;
-X-HE-SMSGID: 1sASUy-0000GP-TV
+Message-ID: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-[CCing a few people]
+The following commit has been merged into the irq/urgent branch of tip:
 
-On 24.05.24 12:31, Ilkka Naulapää wrote:
-> 
-> I have encountered a critical bug in the Linux vanilla kernel that
-> leads to a kernel panic during the shutdown or reboot process. The
-> issue arises after all services, including `journald`, have been
-> stopped. As a result, the machine fails to complete the shutdown or
-> reboot procedure, effectively causing the system to hang and not shut
-> down or reboot.
+Commit-ID:     b84a8aba806261d2f759ccedf4a2a6a80a5e55ba
+Gitweb:        https://git.kernel.org/tip/b84a8aba806261d2f759ccedf4a2a6a80a5e55ba
+Author:        dicken.ding <dicken.ding@mediatek.com>
+AuthorDate:    Fri, 24 May 2024 17:17:39 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 24 May 2024 12:49:35 +02:00
 
-Thx for the report. Not my area of expertise, so take this with a gain
-of salt. But given the versions your mention in your report and the
-screenshot that mentioned tracefs_free_inode I suspect this is caused by
-baa23a8d4360d ("tracefs: Reset permissions on remount if permissions are
-options"). A few fixes for it will soon hit mainline and are meant to be
-backported to affected stable trees:
+genirq/irqdesc: Prevent use-after-free in irq_find_at_or_after()
 
-https://lore.kernel.org/all/20240523212406.254317554@goodmis.org/
-https://lore.kernel.org/all/20240523174419.1e5885a5@gandalf.local.home/
+irq_find_at_or_after() dereferences the interrupt descriptor which is
+returned by mt_find() while neither holding sparse_irq_lock nor RCU read
+lock, which means the descriptor can be freed between mt_find() and the
+dereference:
 
-You might want to try them – or recheck once they hit the stable trees
-you are about. If they don't work, please report back.
+    CPU0                            CPU1
+    desc = mt_find()
+                                    delayed_free_desc(desc)
+    irq_desc_get_irq(desc)
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+The use-after-free is reported by KASAN:
 
-> Here are the details of the issue:
-> 
-> - Affected Versions: Before kernel version 6.8.10, the bug caused a
-> quick display of a kernel trace dump before the shutdown/reboot
-> completed. Starting from version 6.8.10 and continuing into version
-> 6.9.0 and 6.9.1, this issue has escalated to a kernel panic,
-> preventing the shutdown or reboot from completing and leaving the
-> machine stuck.
-> 
-> - Symptoms:
->   - In normal shutdown/reboot scenarios, the kernel trace dump briefly
-> appears as the last message on the screen.
->   - In rescue mode, the kernel panic message is displayed. Normally it
-> is not shown.
-> 
-> Since `journald` is stopped before this issue occurs, no textual logs
-> are available. However, I have captured two pictures illustrating
-> these related issues, which I am attaching to this email for your
-> reference. Also added my custom kernel config.
-> 
-> Thank you for your attention to this matter. Please let me know if any
-> additional information is required to assist in diagnosing and
-> resolving this bug.
-> 
-> Best regards,
-> 
-> Ilkka Naulapää
+    Call trace:
+     irq_get_next_irq+0x58/0x84
+     show_stat+0x638/0x824
+     seq_read_iter+0x158/0x4ec
+     proc_reg_read_iter+0x94/0x12c
+     vfs_read+0x1e0/0x2c8
+
+    Freed by task 4471:
+     slab_free_freelist_hook+0x174/0x1e0
+     __kmem_cache_free+0xa4/0x1dc
+     kfree+0x64/0x128
+     irq_kobj_release+0x28/0x3c
+     kobject_put+0xcc/0x1e0
+     delayed_free_desc+0x14/0x2c
+     rcu_do_batch+0x214/0x720
+
+Guard the access with a RCU read lock section.
+
+Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
+Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240524091739.31611-1-dicken.ding@mediatek.com
+---
+ kernel/irq/irqdesc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index 88ac365..07e99c9 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -160,7 +160,10 @@ static int irq_find_free_area(unsigned int from, unsigned int cnt)
+ static unsigned int irq_find_at_or_after(unsigned int offset)
+ {
+ 	unsigned long index = offset;
+-	struct irq_desc *desc = mt_find(&sparse_irqs, &index, nr_irqs);
++	struct irq_desc *desc;
++
++	guard(rcu)();
++	desc = mt_find(&sparse_irqs, &index, nr_irqs);
+ 
+ 	return desc ? irq_desc_get_irq(desc) : nr_irqs;
+ }
 
