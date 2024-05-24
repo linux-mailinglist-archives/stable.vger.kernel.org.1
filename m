@@ -1,104 +1,98 @@
-Return-Path: <stable+bounces-46025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108AD8CE02E
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 06:08:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60A18CE02F
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 06:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1194283B8E
-	for <lists+stable@lfdr.de>; Fri, 24 May 2024 04:08:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28BD9B20B12
+	for <lists+stable@lfdr.de>; Fri, 24 May 2024 04:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EB3364CD;
-	Fri, 24 May 2024 04:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FC3364CD;
+	Fri, 24 May 2024 04:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiCb4dv6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZWSf/BQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376CF2231F
-	for <stable@vger.kernel.org>; Fri, 24 May 2024 04:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235992231F
+	for <stable@vger.kernel.org>; Fri, 24 May 2024 04:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716523731; cv=none; b=ASwywdCMsQxD1LMioVZGR8VeIp1/VLvNiXHVndw/0nxyjMIDGlhnqaFenwv9u1nVTKIFlnVMwplFTtP8rtK9ijgq1EOPWiHbZkIagcUZLz6ol1oYWuD9AGHJHCGtIv7JhLAhFvKonJITIHTMYSE2D3GokAfY7IuaxqN24K1nzDg=
+	t=1716523796; cv=none; b=UMUmOKRw7YucYX3u/boYOkcR2FomDLBQgXkhkMbgfaMLUJqNvJBo6K/NFPnzzoDq1Eg/4zWBqCfJhIwA3+UvHJuPxxuhqNyhisfw9/AAj38mG7+UuQWldDm2mUGjmXoG3KegffBp9uKxFYr7g1wkX38UaN0/J7V10fcicL2LH8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716523731; c=relaxed/simple;
-	bh=LttComLx0+BJsTYa65HP2O9WrEe+BygAQKCASvI735k=;
+	s=arc-20240116; t=1716523796; c=relaxed/simple;
+	bh=ujSy0ghq53Rar15M1r7t6otLcq9oSO/xzo0cfyTbcGg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JpMNX600xFB7lrKSx1v4Xm1LVyN9ykF7uMLvs/Qw08ViZm7BkUvW8BqAITPFIYjZfpcDMtHEbVy2wXsWJj6mHUkG/8x1YAh0SXcZIV3v41jGswEO5Vqx7Hz6y8luzfVT2yjy4Ieh3vZYvo+uP2Gmd6Bt6ud4PyV9+UgYDSg0g6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiCb4dv6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 498EEC2BBFC;
-	Fri, 24 May 2024 04:08:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=dpHpD9GWDBjqeYsrpXga+Ou2iUYydvpKgbV+SFW2beMueC9S3Ggxhfiw8uaZz61POPyOiiTn6bsLOQPB9wfXuvMp/jgSUzny9+MgCWNKRkMFjzzNPCEE2hma0doM1RspGMJlx3EDl45E+vzI/Sh5wfWRjBj+NQBCRGRx/2JP02c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZWSf/BQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31866C2BBFC;
+	Fri, 24 May 2024 04:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716523730;
-	bh=LttComLx0+BJsTYa65HP2O9WrEe+BygAQKCASvI735k=;
+	s=korg; t=1716523795;
+	bh=ujSy0ghq53Rar15M1r7t6otLcq9oSO/xzo0cfyTbcGg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qiCb4dv6/0lCNBl0vsSZ9ccCU4geQdANDoJBmjlIrI6olxPnvzY1ETDHRSIpplBZw
-	 h4lU0SLaPXGdwvK/xMAWQPVGFhsb3/bzryJbbWPF1afqFahmKbbCf3b2TUWKrcAR4Q
-	 K4qpo1nq1tiqHY3vb/2VdybjGwRvaVmRDHrfHMQE=
-Date: Fri, 24 May 2024 06:08:47 +0200
+	b=IZWSf/BQX5xtERkIjcFKlIkdHzQJeO0C2HDN/F8gVyQCYvB1qAszb/D2W/6kQdu2Q
+	 9FgHH95IEdHZ1EC1MOD2LhxR9sR1HHrNcbFn/FUNPrmHMAZLIdmLKGZpVaYbbIfCwm
+	 BCQhrxBn6Uu3ik9x65rWQ8iK3mlEEoS9O14fJPis=
+Date: Fri, 24 May 2024 06:09:52 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Lin Gui =?utf-8?B?KOahguaelyk=?= <Lin.Gui@mediatek.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Yongdong Zhang =?utf-8?B?KOW8oOawuOS4nCk=?= <Yongdong.Zhang@mediatek.com>,
-	Bo Ye =?utf-8?B?KOWPtuazoik=?= <Bo.Ye@mediatek.com>,
-	Qilin Tan =?utf-8?B?KOiwrem6kum6nyk=?= <Qilin.Tan@mediatek.com>,
-	Wenbin Mei =?utf-8?B?KOaiheaWh+W9rCk=?= <Wenbin.Mei@mediatek.com>,
-	Mengqi Zhang =?utf-8?B?KOW8oOaipueQpik=?= <Mengqi.Zhang@mediatek.com>
-Subject: Re: =?utf-8?B?5Zue5aSNOiDlm57lpI06IOWbng==?=
- =?utf-8?B?5aSNOiBiYWNrcG9ydCA=?= =?utf-8?Q?a?= patch for Linux kernel-5.15
- kernel-6.1 kenrel-6.6 stable tree
-Message-ID: <2024052426-recognize-luxurious-bda8@gregkh>
-References: <PSAPR03MB5653FFA63E972A80A6A2F4AF952F2@PSAPR03MB5653.apcprd03.prod.outlook.com>
- <PSAPR03MB565326FF3D69B95B7A5897D7952F2@PSAPR03MB5653.apcprd03.prod.outlook.com>
- <PSAPR03MB56531563C88DFF85F963CA3295F42@PSAPR03MB5653.apcprd03.prod.outlook.com>
- <2024052333-parasitic-impure-6d69@gregkh>
- <PSAPR03MB565389D72939161224B110CE95F42@PSAPR03MB5653.apcprd03.prod.outlook.com>
- <2024052329-sadden-disallow-a982@gregkh>
- <PSAPR03MB5653135ABCAF08A979BCCE0295F42@PSAPR03MB5653.apcprd03.prod.outlook.com>
- <2024052313-taste-diner-2d78@gregkh>
- <PSAPR03MB5653638EEC15BE49B2E03E9495F52@PSAPR03MB5653.apcprd03.prod.outlook.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: akpm@linux-foundation.org, fleischermarius@gmail.com,
+	sidhartha.kumar@oracle.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] maple_tree: fix mas_empty_area_rev() null
+ pointer dereference" failed to apply to 6.1-stable tree
+Message-ID: <2024052401-scrimmage-camera-8cfa@gregkh>
+References: <2024051347-uncross-jockstrap-5ce0@gregkh>
+ <tqyvr6nenpho7fg5p5byipkmlhrv7oqdw6qi3mzbq54nofeohf@4m4fe7xcxoyr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PSAPR03MB5653638EEC15BE49B2E03E9495F52@PSAPR03MB5653.apcprd03.prod.outlook.com>
+In-Reply-To: <tqyvr6nenpho7fg5p5byipkmlhrv7oqdw6qi3mzbq54nofeohf@4m4fe7xcxoyr>
 
-On Fri, May 24, 2024 at 01:07:18AM +0000, Lin Gui (桂林) wrote:
-> Dear @Greg KH<mailto:gregkh@linuxfoundation.org>,
-> 
-> Base : kernel-5.15.159
-> 
-> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-> index a569066..d656964 100644
-> --- a/drivers/mmc/core/mmc.c
-> +++ b/drivers/mmc/core/mmc.c
-> @@ -1800,7 +1800,13 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
->               if (err)
->                      goto free_card;
-> 
-> -      } else if (!mmc_card_hs400es(card)) {
-> +     } else if (mmc_card_hs400es(card)){
-> +            if (host->ops->execute_hs400_tuning) {
-> +                   err = host->ops->execute_hs400_tuning(host, card);
-> +                   if (err)
-> +                   goto free_card;
-> +            }
-> +     } else {
->               /* Select the desired bus width optionally */
->               err = mmc_select_bus_width(card);
->               if (err > 0 && mmc_card_hs(card)) {
-> 
+On Thu, May 23, 2024 at 03:45:22PM -0400, Liam R. Howlett wrote:
+> * gregkh@linuxfoundation.org <gregkh@linuxfoundation.org> [240513 09:30]:
+> > 
+> > The patch below does not apply to the 6.1-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 955a923d2809803980ff574270f81510112be9cf
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051347-uncross-jockstrap-5ce0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> > 
+> > Possible dependencies:
+> > 
+> > 955a923d2809 ("maple_tree: fix mas_empty_area_rev() null pointer dereference")
+> > 29ad6bb31348 ("maple_tree: fix allocation in mas_sparse_area()")
+>    ^- This patch is needed, and has a fixes tag.  I'm not entirely sure
+>    why it wasn't included in 6.1 already, but it applies cleanly and
+>    fixes the issue with 955a923d2809.
 
-Also, please read:
+"Fixes:" tags does not mean "will always end up in stable".  Please
+read:
     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
 for how to do this properly.
 
+> > fad8e4291da5 ("maple_tree: make maple state reusable after mas_empty_area_rev()")
+
+So you want us to take all of these?  Or just the one?
+
+thanks,
+
+greg k-h
 
