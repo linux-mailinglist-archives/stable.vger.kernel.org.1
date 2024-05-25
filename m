@@ -1,102 +1,106 @@
-Return-Path: <stable+bounces-46128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611B08CEF23
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 15:42:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228588CEF46
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 16:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4321B2106E
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 13:42:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B72791F213F1
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 14:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7994D10A;
-	Sat, 25 May 2024 13:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4459D4EB51;
+	Sat, 25 May 2024 14:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="VtwIkuKh";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="VtwIkuKh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kh15BzI"
 X-Original-To: stable@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4BB1E480;
-	Sat, 25 May 2024 13:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C572A1D3;
+	Sat, 25 May 2024 14:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716644528; cv=none; b=tgUBkMQuKEAWmnPIRYAyidvQI8ln6haQkZyqTSz8Tq/UblDMfFGZN4S9oCMQR5WpceWhbYrkRIHiTwyobCL25uBRW0qUd0I5FXZIw1sGo1U9BdUa0GjgdnSWb2tFP7qPsyvHsT1xbBPD1x/BROqEpynzs1P3n4EhKmEjU60DcRo=
+	t=1716646809; cv=none; b=sJo7TtRsJqkfui0v/DjA/Amug5vnIZdI8I3dKzeYNmu92nl+9pIDGwQM21tR+hhx54+tOYicwXeVEl9px0Ua10qBiO3FlSp6I/2+siwJ3nRgzPlg7Nm7eeJoIZwel/7rMNINuB1auvDczZ3U6Cisg/xTpNrXMeMXyCA8Qf8yEoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716644528; c=relaxed/simple;
-	bh=amI1SPYRnBjM8Ew/R6TtCgxDdWD5U2OLyaFMWH/xHco=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aa1MMQQLBgU5qJ0eBmBtTOBfknBd+HJDXf7QKzay6smJ/8R1wudXxA7AgcXP+fNY99wXZ5W+y2C1G7D/ZiaRJNLQIcFthWDhYMjToySBWgzMVdnZP8WfkY9doUvzZAZ5m2Z8oP/X4yXjN0HimND+Wc6prxWQj4GoqMAHBTVLRSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=VtwIkuKh; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=VtwIkuKh; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1716644525;
-	bh=amI1SPYRnBjM8Ew/R6TtCgxDdWD5U2OLyaFMWH/xHco=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=VtwIkuKhcA50/tF3DmtgWWcszs8/cLEA02WPuZLwtGVta7DLVEO8WmZkDFCORIqsk
-	 M6F2y02YGWSrUrh4IyyC1rabzA8T7vAvMA5F4a6PBtoo6n2rbDP235Ww7vJVEqlYtz
-	 WCiaJ6fKL3qM5CCSGUtQApDaVgwDKWg4VEmYbi5o=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 7818B1287ABA;
-	Sat, 25 May 2024 09:42:05 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id 1QvmScxBCgUX; Sat, 25 May 2024 09:42:05 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1716644525;
-	bh=amI1SPYRnBjM8Ew/R6TtCgxDdWD5U2OLyaFMWH/xHco=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=VtwIkuKhcA50/tF3DmtgWWcszs8/cLEA02WPuZLwtGVta7DLVEO8WmZkDFCORIqsk
-	 M6F2y02YGWSrUrh4IyyC1rabzA8T7vAvMA5F4a6PBtoo6n2rbDP235Ww7vJVEqlYtz
-	 WCiaJ6fKL3qM5CCSGUtQApDaVgwDKWg4VEmYbi5o=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 5AFC01287AB8;
-	Sat, 25 May 2024 09:42:04 -0400 (EDT)
-Message-ID: <b1ac7ec116c871294d856185da44ae1e9fc02fe7.camel@HansenPartnership.com>
-Subject: Re: [PATCH] KEYS: trusted_tpm2: Only check options->keyhandle for
- ASN.1
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org, stable@vger.kernel.org, Mimi Zohar
-	 <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, Paul Moore
-	 <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
-	 <serge@hallyn.com>, linux-security-module@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Sat, 25 May 2024 09:42:02 -0400
-In-Reply-To: <20240525123634.3396-1-jarkko@kernel.org>
-References: <20240525123634.3396-1-jarkko@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1716646809; c=relaxed/simple;
+	bh=LELYlH2TsI85qd++YmKvIhQ9XuKF1OIKFsdx17FkjiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=phoDsoAliUYOVZ7Blec92rQVeOqIPu8VZCVFldmQpm5s9RShprg8xHSOiCoChuf1PGT5fL2H4o92lWjBoj8zGevGbgq8df6fhpx6hsEwEN1O66P/vs8PVbiwingTpW/ob6vKlLgKoU7hVIEgj9rK2XrCJK2cEinJSs1vdz1Ajgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kh15BzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84B7C2BD11;
+	Sat, 25 May 2024 14:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1716646808;
+	bh=LELYlH2TsI85qd++YmKvIhQ9XuKF1OIKFsdx17FkjiI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=2kh15BzIPBuLlRPBXaHB4Dy1/gmVoFQXxljXDgarBPk0lKUElf75IWsdAOOodu69m
+	 qX2BNqodLPpQPN5gaKo/H6lZIWHvXkn/G5ur7kq1a8PXqtbNpH9ZFOp1kCcVlX8YS2
+	 vJBcqs0o1KvfMmSHGOkBlqz3ZxMPWU+xTtDX2/uo=
+Date: Sat, 25 May 2024 16:20:05 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH 5.15 00/23] 5.15.160-rc1 review
+Message-ID: <2024052541-likeness-banjo-e147@gregkh>
+References: <20240523130327.956341021@linuxfoundation.org>
+ <8e60522f-22db-4308-bb7d-3c71a0c7d447@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8e60522f-22db-4308-bb7d-3c71a0c7d447@nvidia.com>
 
-On Sat, 2024-05-25 at 15:36 +0300, Jarkko Sakkinen wrote:
-> tpm2_load_cmd incorrectly checks options->keyhandle also for the
-> legacy format, as also implied by the inline comment. Check
-> options->keyhandle when ASN.1 is loaded.
+On Sat, May 25, 2024 at 12:13:28AM +0100, Jon Hunter wrote:
+> Hi Greg,
+> 
+> On 23/05/2024 14:12, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.15.160 release.
+> > There are 23 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.160-rc1.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> > 
+> > -------------
+> > Pseudo-Shortlog of commits:
+> 
+> ...
+> 
+> > NeilBrown <neilb@suse.de>
+> >      nfsd: don't allow nfsd threads to be signalled.
+> 
+> 
+> I am seeing a suspend regression on a couple boards and bisect is pointing
+> to the above commit. Reverting this commit does fix the issue.
 
-No that's not right.  keyhandle must be specified for the old format,
-because it's just the two private/public blobs and doesn't know it's
-parent. Since tpm2_key_decode() always places the ASN.1 parent into
-options->keyhandle, the proposed new code is fully redundant (options-
->keyhandle must be non zero if the ASN.1 parsed correctly) but it loses
-the check that the loader must specify it for the old format.
+Ugh, that fixes the report from others.  Can you cc: everyone on that
+and figure out what is going on, as this keeps going back and forth...
 
-What the comment above the code you removed means is that the keyhandle
-must be non zero here, either extracted from the ASN.1 for the new
-format or specified on the command line for the old.
+thanks,
 
-James
-
+greg k-h
 
