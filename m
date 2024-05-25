@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-46149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7228CEF93
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 16:58:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AE68CEF96
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 17:00:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB1BF281ABD
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 14:58:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E01CD1C20A17
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 15:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216335A7AA;
-	Sat, 25 May 2024 14:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2281E519;
+	Sat, 25 May 2024 15:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2B++BMC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSbc4a5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74BE5A109
-	for <stable@vger.kernel.org>; Sat, 25 May 2024 14:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA5A53E33
+	for <stable@vger.kernel.org>; Sat, 25 May 2024 15:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716649132; cv=none; b=UzuhrxM/qY1NY5ZnBRg0TZJuz24Ube0rbUrhKkUDvNMgehp+nGGbgqy+YvTrD1Rr6X0oCzUpsgtvYszAmV9NbIujSIAYDd07n1OUKfqga8Ie1ZLpG9FBHV7+XSxylFnai9S/Qhan/yYwg+Fw3Zuqjqhz25lKrizOU0nHW058/u0=
+	t=1716649208; cv=none; b=r98ab4VwhlmtI+2O5kj+TJwAzYo/BKYxf+/M+vpnPVfDA3HLBVozyCl3MW+bQBU+vOYadIexkyWCN6S6B0QQe/STAI6jMF5kgyEvOgl+kdoKl/FL0lTClY1sKb3TjO4k/kPC8UvqOkAnBKSzKhoUMSpIUkdZbNq3Oe8pWaklLmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716649132; c=relaxed/simple;
-	bh=0KcMYveQWj28RKKxHHamQBgYoUF3YN+GDydPYohkwTg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dSRdyDQIQT/dOz1IEEHpDAS/L/WzWwjDALiVOTt1mZJU1MAMnKKLeckA/1BvAqTOD3ef/2QgZKM3eQVVaRbfH7W6hktcO4JV44ebt8J4/k7438lAlylGsjdFh0UtgAkANBMsp4gCp5HCsdFD/4Zbxp5CEibZq8HzA/QiNUTIHQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2B++BMC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9CFC3277B;
-	Sat, 25 May 2024 14:58:51 +0000 (UTC)
+	s=arc-20240116; t=1716649208; c=relaxed/simple;
+	bh=rL74qJhBwqBkt7HKbdzStNSwXBpTcOopzJBaRjdOKxk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nJzJIti5Bm0SzzYksqygnEp8ZM13NldcWdtvNvGwFrZg7xjaywaqxj8KZv4tqEddNAxiW/lCE3s4ZW3wEUxuNdm7eCDmf7cFPPwrn5+pjc1yN5VcaEfjLYmHaPUM+TQh9GlLvCHjRj0zO2cB9/5OTKXAQWxQ2spym12hUjfZ8jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSbc4a5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74687C2BD11;
+	Sat, 25 May 2024 15:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716649132;
-	bh=0KcMYveQWj28RKKxHHamQBgYoUF3YN+GDydPYohkwTg=;
+	s=korg; t=1716649208;
+	bh=rL74qJhBwqBkt7HKbdzStNSwXBpTcOopzJBaRjdOKxk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=c2B++BMCWaGYcsPbsS1Y+c8NwO0yaliUvSPdvM3SmilBRHJ+Jzr2oQRBtas1uKTj1
-	 /Ju1U+t+1J4OdjQIdSUt51+lBJ3s3NnxezRHWKLvdSgz2LlMT/qEBZSTf+LCntH7ty
-	 KjzJHj46y2h/N/KLt4Zb9hnDNWE3tDi+2KGyPG5M=
-Subject: FAILED: patch "[PATCH] tty: n_gsm: fix possible out-of-bounds in gsm0_receive()" failed to apply to 4.19-stable tree
-To: daniel.starke@siemens.com,gregkh@linuxfoundation.org
+	b=tSbc4a5uhYLICEn3PKizUsb7Um42EPrYMP4IV3Ej+jeA+oVbj8BkxKN5ryc0VHZri
+	 DftMzm7CH1376yoZzFsoxub1FbHL3TiCCFXpGtrmqyf2l43qqs3DvQ6hJGSdwCCXcm
+	 WC9xOhGN8dJOzTlRQ1OOpijw3875NbNjm7IWEpX4=
+Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using" failed to apply to 6.6-stable tree
+To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org,jirislaby@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 25 May 2024 16:58:39 +0200
-Message-ID: <2024052539-pacific-rejoin-8bca@gregkh>
+Date: Sat, 25 May 2024 17:00:05 +0200
+Message-ID: <2024052504-hungrily-verdict-1471@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 47388e807f85948eefc403a8a5fdc5b406a65d5a
+git cherry-pick -x 8492bd91aa055907c67ef04f2b56f6dadd1f44bf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052539-pacific-rejoin-8bca@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052504-hungrily-verdict-1471@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,63 +77,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 47388e807f85948eefc403a8a5fdc5b406a65d5a Mon Sep 17 00:00:00 2001
-From: Daniel Starke <daniel.starke@siemens.com>
-Date: Wed, 24 Apr 2024 07:48:41 +0200
-Subject: [PATCH] tty: n_gsm: fix possible out-of-bounds in gsm0_receive()
+From 8492bd91aa055907c67ef04f2b56f6dadd1f44bf Mon Sep 17 00:00:00 2001
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Date: Tue, 30 Apr 2024 16:04:30 -0400
+Subject: [PATCH] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using
+ prescaler
 
-Assuming the following:
-- side A configures the n_gsm in basic option mode
-- side B sends the header of a basic option mode frame with data length 1
-- side A switches to advanced option mode
-- side B sends 2 data bytes which exceeds gsm->len
-  Reason: gsm->len is not used in advanced option mode.
-- side A switches to basic option mode
-- side B keeps sending until gsm0_receive() writes past gsm->buf
-  Reason: Neither gsm->state nor gsm->len have been reset after
-  reconfiguration.
+When using a high speed clock with a low baud rate, the 4x prescaler is
+automatically selected if required. In that case, sc16is7xx_set_baud()
+properly configures the chip registers, but returns an incorrect baud
+rate by not taking into account the prescaler value. This incorrect baud
+rate is then fed to uart_update_timeout().
 
-Fix this by changing gsm->count to gsm->len comparison from equal to less
-than. Also add upper limit checks against the constant MAX_MRU in
-gsm0_receive() and gsm1_receive() to harden against memory corruption of
-gsm->len and gsm->mru.
+For example, with an input clock of 80MHz, and a selected baud rate of 50,
+sc16is7xx_set_baud() will return 200 instead of 50.
 
-All other checks remain as we still need to limit the data according to the
-user configuration and actual payload size.
+Fix this by first changing the prescaler variable to hold the selected
+prescaler value instead of the MCR bitfield. Then properly take into
+account the selected prescaler value in the return value computation.
 
-Reported-by: j51569436@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218708
-Tested-by: j51569436@gmail.com
-Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
+Also add better documentation about the divisor value computation.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20240424054842.7741-1-daniel.starke@siemens.com
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20240430200431.4102923-1-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
-index 4036566febcb..72b82bf1c280 100644
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -2913,7 +2913,10 @@ static void gsm0_receive(struct gsm_mux *gsm, u8 c)
- 		break;
- 	case GSM_DATA:		/* Data */
- 		gsm->buf[gsm->count++] = c;
--		if (gsm->count == gsm->len) {
-+		if (gsm->count >= MAX_MRU) {
-+			gsm->bad_size++;
-+			gsm->state = GSM_SEARCH;
-+		} else if (gsm->count >= gsm->len) {
- 			/* Calculate final FCS for UI frames over all data */
- 			if ((gsm->control & ~PF) != UIH) {
- 				gsm->fcs = gsm_fcs_add_block(gsm->fcs, gsm->buf,
-@@ -3026,7 +3029,7 @@ static void gsm1_receive(struct gsm_mux *gsm, u8 c)
- 		gsm->state = GSM_DATA;
- 		break;
- 	case GSM_DATA:		/* Data */
--		if (gsm->count > gsm->mru) {	/* Allow one for the FCS */
-+		if (gsm->count > gsm->mru || gsm->count > MAX_MRU) {	/* Allow one for the FCS */
- 			gsm->state = GSM_OVERRUN;
- 			gsm->bad_size++;
- 		} else
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 929206a9a6e1..12915fffac27 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -554,16 +554,28 @@ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
+ 	return reg == SC16IS7XX_RHR_REG;
+ }
+ 
++/*
++ * Configure programmable baud rate generator (divisor) according to the
++ * desired baud rate.
++ *
++ * From the datasheet, the divisor is computed according to:
++ *
++ *              XTAL1 input frequency
++ *             -----------------------
++ *                    prescaler
++ * divisor = ---------------------------
++ *            baud-rate x sampling-rate
++ */
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ {
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 	u8 lcr;
+-	u8 prescaler = 0;
++	unsigned int prescaler = 1;
+ 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
+ 
+ 	if (div >= BIT(16)) {
+-		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
+-		div /= 4;
++		prescaler = 4;
++		div /= prescaler;
+ 	}
+ 
+ 	/* Enable enhanced features */
+@@ -573,9 +585,10 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 			      SC16IS7XX_EFR_ENABLE_BIT);
+ 	sc16is7xx_efr_unlock(port);
+ 
++	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_CLKSEL_BIT,
+-			      prescaler);
++			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
+ 
+ 	/* Backup LCR and access special register set (DLL/DLH) */
+ 	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
+@@ -591,7 +604,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	/* Restore LCR and access to general register set */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+ 
+-	return DIV_ROUND_CLOSEST(clk / 16, div);
++	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
+ }
+ 
+ static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
 
 
