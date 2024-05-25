@@ -1,94 +1,89 @@
-Return-Path: <stable+bounces-46120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501318CEE54
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 11:37:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524F18CEE5B
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 11:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA6B2817EA
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 09:37:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072CA1F216F8
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 09:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6267619BDC;
-	Sat, 25 May 2024 09:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4366319BDC;
+	Sat, 25 May 2024 09:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="z3pSQdmw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMAdpl81"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E9218E3F;
-	Sat, 25 May 2024 09:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC34D23748;
+	Sat, 25 May 2024 09:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716629843; cv=none; b=XBqnRq0lq6IIOTVj0MoNIFFSqXOQJ/OVH7EWn/QojEFJTbuxVuKv5Xj/PjYCWaw7pHjn13fhr60XDPqV/gLMqWASxbNbcOI87bpLFOzUKDkUMHdQU6cpabOpdKh8ygMuEavmqtsN3KILmt4alvVps1vVqetzR/GwUlfvnPe4AC8=
+	t=1716630159; cv=none; b=PshV3MAgOhJByqbs6laMAnBymC7xAFGabyobXsCCChUntyZBmIKHCsovThreMRBatbJdaPXYNbJSKO7e4HHqj0OOvjbiUfbd0OO/m/zOQMKnRCPnPaQ24X1vJ+sK0dzUbU2y4ID0avqkUe2T4oJ3DLuBZf4VZjJYIrUpeuZSHIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716629843; c=relaxed/simple;
-	bh=M0R+1z3DK0h60G/oPIyYQDPmLrcLTvb3ohK1sQJDcFU=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=t0BuseWTDzlPN9bgpPzAF2DRtQROkTPjmUUXF8ndOWae5mQesUXLG7yBBGXx0RS60IM77e+1EKBeA17IuRoGdBeTX2EcvbKQ5v4PKAyZuY9MPCSXQhwE09ekdFflQIJj/8fhMDSShuRkDfbzmHSXkrKHI6+16i+lcQOP8WTEuRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=z3pSQdmw; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1716629839;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c40YkThs28V4qKi9wSLxiEi1vDtYBwch29f9N6r9i88=;
-	b=z3pSQdmwPwnQvmCvHJvKr1u+bNDr5AM1X5SoKysiyL2TuPgmPF39UbtsZg9IgU+DazklLU
-	Zkg2cyiVRqQHbSCA==
-Message-ID: <8a6dbd72-43ed-4541-ac7f-23bfaafde3fe@hardfalcon.net>
-Date: Sat, 25 May 2024 11:37:18 +0200
+	s=arc-20240116; t=1716630159; c=relaxed/simple;
+	bh=RiSBNerJeUUysE1tNmEwQ7JhpvQEcx5D1JY07vm8CDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q0IGa6JaEkL2hC23v/MCdowFz4d7rVZAoKlvEeUl9Ulch49FUCtTPsQi83Xw3/q7VYTle/5Qdl7v8KaqPspkn8UdzOzgsoGqJ3gkzN+3G7t7do3Wp+L9qwp0rRQ/g55qAvIGO/OOjekj/nFliMmKoLFwwKbtOj6zN0nSKNC+V7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMAdpl81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B53C2BD11;
+	Sat, 25 May 2024 09:42:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1716630158;
+	bh=RiSBNerJeUUysE1tNmEwQ7JhpvQEcx5D1JY07vm8CDk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=yMAdpl81sfNgGy7j+B0YCqpyYdzYRX4+s42aHXoFFYdBwh9fTsRq1DqKyKgVhgL7r
+	 AcTJTF5SXYmx8JnVz6q8RYOfiedQQkUPPxomKqF7i0udoHJfoe3yVIphKqSYWgXJiJ
+	 8kGhjIOoPpROt8jhL7B6UB9hfEqNIsKEakGA9icg=
+Date: Sat, 25 May 2024 11:42:40 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: shaozhengchao <shaozhengchao@huawei.com>
+Cc: stable@vger.kernel.org, netdev@vger.kernel.org, davem@davemloft.net,
+	kuznet@ms2.inr.ac.ru, yoshfuji@linux-ipv6.org, kuba@kernel.org,
+	edumazet@google.com, kuniyu@amazon.com, weiyongjun1@huawei.com,
+	yuehaibing@huawei.com
+Subject: Re: [PATCH stable,5.15 0/2] Revert the patchset for fix
+ CVE-2024-26865
+Message-ID: <2024052511-aflutter-outsider-4917@gregkh>
+References: <20240506030554.3168143-1-shaozhengchao@huawei.com>
+ <2024052355-doze-implicate-236d@gregkh>
+ <92bc4c96-9aaa-056c-e59a-4396d19a9f58@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Pascal Ernster <git@hardfalcon.net>
-Subject: Re: [PATCH 6.9 00/25] 6.9.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240523130330.386580714@linuxfoundation.org>
-Content-Language: en-US
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92bc4c96-9aaa-056c-e59a-4396d19a9f58@huawei.com>
 
-[2024-05-23 15:12] Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.9.2 release.
-> There are 25 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sat, May 25, 2024 at 05:33:00PM +0800, shaozhengchao wrote:
 > 
-> Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
-> Anything received after that time might be too late.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> On 2024/5/23 19:34, Greg KH wrote:
+> > On Mon, May 06, 2024 at 11:05:52AM +0800, Zhengchao Shao wrote:
+> > > There's no "pernet" variable in the struct hashinfo. The "pernet" variable
+> > > is introduced from v6.1-rc1. Revert pre-patch and post-patch.
+> > 
+> > I do not understand, why are these reverts needed?
+> > 
+> > How does the code currently build if there is no variable here?
+> > 
+> > confused,
+> > 
+> > greg k-h
+> Hi greg:
+>   If only the first patch is merged, compilation will fail.
+> There's no "pernet" variable in the struct hashinfo.
 
+But both patches are merged together here.  Does the released kernel
+versions fail to build somehow?
 
-Hi, 6.9.2-rc1 is running fine on various x86_64 bare metal and virtual 
-machines of mine (Haswell, Kaby Lake, Coffee Lake).
+thanks,
 
-Tested-by: Pascal Ernster <git@hardfalcon.net>
-
-
-Regards
-Pascal
+greg k-h
 
