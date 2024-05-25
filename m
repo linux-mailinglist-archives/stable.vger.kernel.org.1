@@ -1,104 +1,104 @@
-Return-Path: <stable+bounces-46123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30108CEE75
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 12:21:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5096C8CEE79
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 12:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 844B4281BA3
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 10:21:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F35AA1F21839
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 10:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F61225CF;
-	Sat, 25 May 2024 10:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D657A22EE9;
+	Sat, 25 May 2024 10:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="XZqrWqKQ"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E6B179B7;
-	Sat, 25 May 2024 10:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9164A171CC;
+	Sat, 25 May 2024 10:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716632476; cv=none; b=aELIDgU+fLn/iyKT9JZyLC695LBZIRzjdK899d5EHYURTOr2mLnSaBMRcK1dcpy92q0Ctn4O7aJO5ViSlmQOigmd8DwuYd9WaFIyZxyTyhVF5ROwCJJDNXm2vcYC8Ce3rZd9mIhay9xNNRPd+e5oxQ5zJZE23H8yDf19nOCsYvM=
+	t=1716632550; cv=none; b=PYorbGsUeaNUurjErLRYYHBjrr5UO/WGRtXxDhLm99345u7D1cEBfzaFbjO0el8Rll5+FBkVz/Tr2huXdyobXHu86N0x+Sysdrn8GETDeFbnEh2gcUXN/JDmcWpKmzq+PbROoOM/ElEa6safTw21lgKCN6yayQxbJngB+INVpd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716632476; c=relaxed/simple;
-	bh=owXOYxICyjkkQR1wYwKyKf/bwsErQYSY5YS6+3DrE+A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DmL2/yFVTJFAu10GvWfbv28YBZnEGnQPpFSmkDHOkgM5VxzTrnHFVBrbqRXBVBiQvSiQcr1zvjd56BMtiJ4LVSeVORM83RyLgWMSIBW/6x0vwFmvU++HgkNdkl0eWcr/Pk8sCv9Bw3v+LJZgc+zmqGm8dLfibZJ31WIsXCkfelA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4VmdBb1dZRz1S4xh;
-	Sat, 25 May 2024 18:17:27 +0800 (CST)
-Received: from dggpeml500026.china.huawei.com (unknown [7.185.36.106])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3750314011D;
-	Sat, 25 May 2024 18:21:09 +0800 (CST)
-Received: from [10.174.178.66] (10.174.178.66) by
- dggpeml500026.china.huawei.com (7.185.36.106) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sat, 25 May 2024 18:21:08 +0800
-Message-ID: <9940d719-ee96-341d-93e6-ffd04b6fddba@huawei.com>
-Date: Sat, 25 May 2024 18:21:08 +0800
+	s=arc-20240116; t=1716632550; c=relaxed/simple;
+	bh=YNsy0eiDe4FNlCTPePDFDDRv38WnUx+b+e1glkTNzGQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Z+EwB71w68P+XCtMInZsLZebffy8ixjILPI4JW+WLboQwodDqm6GgMT0u5NJEjndSJ4H4nkVx6Mbqp0CpSb9ocy3fAsSO6owD+j2C2YI9zicXB8ZyOm0EGjtsM+qul4QOUZhaNC+9DHw+K6U1dps27s+505ETRpxgbDaqTJjn9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=XZqrWqKQ; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1716632527; x=1717237327; i=markus.elfring@web.de;
+	bh=YNsy0eiDe4FNlCTPePDFDDRv38WnUx+b+e1glkTNzGQ=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=XZqrWqKQ5I+Rvo192FgMqh9MJRz0NpYsHJo9CcyUFt5ad68a6Ns+fTVVfAItVQCF
+	 ILU1VUzBkJkdivvYVZVZ4ShWDFBKrwQuXOs6d6qecu35ffaDxH+aEMVPffhl7xbkQ
+	 utoE+ZoGR1U/fSnW2+T96y6NsGiQIy7AsbBbe180VZiqtYfmMmFoiFnBS3dazu4re
+	 sm2tD+g4e0GkEX2i7uipMF456QDA2ICM+Dc5YksOnXrM6HqgdCbkITkhmm8NWm07N
+	 EbLbSKY6tbn8d+HM8B5hV9fwY7UvKRVVKBpP6r9J8ZBDe6EK+WlUGuek79JSxb2iT
+	 8sLC51Q4VIfGNo3wYw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mfc4q-1sheFj1ZbU-00qOAP; Sat, 25
+ May 2024 12:22:07 +0200
+Message-ID: <ea971463-c43b-4524-bf43-ce4d05ec0db3@web.de>
+Date: Sat, 25 May 2024 12:22:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0.2
-Subject: Re: [PATCH stable,5.15 0/2] Revert the patchset for fix
- CVE-2024-26865
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <netdev@vger.kernel.org>, <davem@davemloft.net>,
-	<kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>, <kuba@kernel.org>,
-	<edumazet@google.com>, <kuniyu@amazon.com>, <weiyongjun1@huawei.com>,
-	<yuehaibing@huawei.com>
-References: <20240506030554.3168143-1-shaozhengchao@huawei.com>
- <2024052355-doze-implicate-236d@gregkh>
- <92bc4c96-9aaa-056c-e59a-4396d19a9f58@huawei.com>
- <2024052511-aflutter-outsider-4917@gregkh>
-From: shaozhengchao <shaozhengchao@huawei.com>
-In-Reply-To: <2024052511-aflutter-outsider-4917@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpeml500026.china.huawei.com (7.185.36.106)
+User-Agent: Mozilla Thunderbird
+To: dicken.ding@mediatek.com, tip-bot2@linutronix.de,
+ linux-tip-commits@vger.kernel.org, x86@kernel.org, stable@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
+Cc: LKML <linux-kernel@vger.kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
+Subject: Re: [tip: irq/urgent] genirq/irqdesc: Prevent use-after-free in
+ irq_find_at_or_after()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <171654826399.10875.17851209724801691980.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:yZlp2qNBCCyPQtANKc+yVQwq1uB7RafszQ4bA+CLIimc76fvE9j
+ byliV4Ex/S8EG3wJFf2YZKIlA6AvmbeBB8sBOSIY7vtmACI7LP2xzX6E3J/NYGcLcUUaUBk
+ I/TxkunGsCC+IYoEtXhLhUdy+U6/zy9l+9i335qE7Trq2AviGX1XpZQWDHFVw2W2M2Vv1W7
+ pqOfzLvi+dplU/7cMdczw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:EAMcd4seoSU=;dhwW3IiT8O+SC9rWgKgYf3rBbFh
+ pKdBsFNKDZ+6QSe4xEg6S0wfMKgwD7NkCGTnpgo5Oybrc0FfTMeBzjViO9cIcX8UeFkZ3dley
+ NQ/lsf5OK91AZHyrfy4ifkcsXOU9DAX8G7gK8sPuLkBsgxeDBZKmB/qXwsrlycTwGllOYbzc5
+ TXP8C40SkZ86iRhJ1LKgmawL+r3BU3RGyFpLYuZznA/B1c+mY+nIe/oNwqsL3/JEJbAjk6cvJ
+ /Crp9GSQkRWJ1f7vRaTCb6Pj4DJz0wjRpIlMlmCGbDc7N7RCpQnOrysNoBKZrG31cXhvuOUTJ
+ WRKofpxV/0FjoTiYlFQ2YSWbEjKMfayxWurvA1IF6LnZVyQSaUD4+FbkCb/n518wdyA2hs29r
+ vlyoUlRyNC7FEN/Jbg+i2cc1MZ73KQenYWecXLLTA5wpyZQAuvKSDxVdXlC6WJ/o7pghQzlWC
+ 1JpNDYU6YPBoBKMXHoFoHxXnOJXatBlI9KEiYc8CVbmI3bNFr/iytn/km3CU3Mdgg9EEiRfGx
+ lkMLcqCuDk4xeXwZJMRpq3HODc1gtNNUvzkuNxZSnvnj4Jr9fi2aKebdC6XeNwZlaeptFU7Tl
+ L1vefo04fYmOpKCO4t2ue+jLMO+mOEWoNkKrH/n9EHNQiTRPIcY1yaMsJKIPlVTGj9mm3T4Ww
+ r9zDokW+79A9uZ7SoapNSRHQfK7rmPvs3RHMgQ0QQ45/K33nvcyxqmlWTun0kD8DoMCZgeycB
+ QFVxwWjq277xyTbD9fo7sjAngEvEcQhzn9pDbH/ncIDVo1qrHM/jHUZKajDxk7C5aEi+afcf7
+ fUuU1kqTarFTIDIkGH8UjsResSZn5v8rLux4imuUrMp7Y=
 
+=E2=80=A6
+> Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor =
+management")
+> Signed-off-by: dicken.ding <dicken.ding@mediatek.com>
+=E2=80=A6
 
+Would a slightly different author name be preferred here
+according to the Developer's Certificate of Origin?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.9#n438
 
-On 2024/5/25 17:42, Greg KH wrote:
-> On Sat, May 25, 2024 at 05:33:00PM +0800, shaozhengchao wrote:
->>
->>
->> On 2024/5/23 19:34, Greg KH wrote:
->>> On Mon, May 06, 2024 at 11:05:52AM +0800, Zhengchao Shao wrote:
->>>> There's no "pernet" variable in the struct hashinfo. The "pernet" variable
->>>> is introduced from v6.1-rc1. Revert pre-patch and post-patch.
->>>
->>> I do not understand, why are these reverts needed?
->>>
->>> How does the code currently build if there is no variable here?
->>>
->>> confused,
->>>
->>> greg k-h
->> Hi greg:
->>    If only the first patch is merged, compilation will fail.
->> There's no "pernet" variable in the struct hashinfo.
-> 
-> But both patches are merged together here.  Does the released kernel
-> versions fail to build somehow?
-> 
-> thanks,
-> 
-> greg k-h
-> 
-Work well, as I know.
-
-Thank you
-
-Zhengchao Shao
+Regards,
+Markus
 
