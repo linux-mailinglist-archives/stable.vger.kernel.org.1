@@ -1,53 +1,43 @@
-Return-Path: <stable+bounces-46121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809888CEE58
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 11:41:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978C28CEE50
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 11:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 226A71F21683
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 09:41:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEF6E1F21638
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 09:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D8E1C6B9;
-	Sat, 25 May 2024 09:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="XwZHjcNE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5DB19479;
+	Sat, 25 May 2024 09:35:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852C918E3F;
-	Sat, 25 May 2024 09:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7819818635;
+	Sat, 25 May 2024 09:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716630112; cv=none; b=pE9DR67PLXjbE+U3Hqogpowj0htT2WmxuJXEZ1eQJ/vZt/A8JiuKfQ8XLxiLGEeqFApd/rA66xiwslsg9hix5/ec1VwsKVTWSI4bS5UNHVvlBmsNMaOOIu2RaXo3q2mMHBRcyOjmM/cWb1p2Ca7sZiYH3F1SQjc1IqNF85cAh3A=
+	t=1716629759; cv=none; b=EuTLMbzJO3wZj6nP4IfbhKI7+NndPu329/zeNJZqd0oVe8eBcMYYkf1Ng1mHl2zU2UABbEFklaJlBLqokYCcmw8v0Uh6hxQGKshk3c+B3uywpZaDxVcMkJxvkYSuTWm2A+zpj4c4zxOwMRTqLq1hGVnK5Xvjb6+3ndWmHCwWB0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716630112; c=relaxed/simple;
-	bh=SJ59JMVtpyZTcrEGLV2jLrMerwK7VxltPx9DOExCwN4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oD1bX3zeIM2phtkaqpHok9yTIfTRNTqDWXqbQZPAqppnsph+z73n+x/HsGTUVxUGjb8qVjrJqHcqlr3USDpqbmxc5SftkYFbicm+/VY1jDXi8ctm8AUYz/LWOYi91ILQi2SJHo4zfvsuuXIcmRTt3LUh8YxSijwbQ3L8ll3zJFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=XwZHjcNE; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1716629725;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=48NlGMNTZbB6+4Wz9FsN3ZNPb6s0eRmxoFaiI7zXOEw=;
-	b=XwZHjcNEeSF/Ir845/eBpKE9PekDrpxsbPMolFg/HCjTNfqudO6PDBYXp3kAzLdi9wKKTS
-	k4h5QnkahPgtkyDQ==
-Message-ID: <a352133b-935f-4d0e-8e98-beb657938f81@hardfalcon.net>
-Date: Sat, 25 May 2024 11:35:23 +0200
+	s=arc-20240116; t=1716629759; c=relaxed/simple;
+	bh=M0R+1z3DK0h60G/oPIyYQDPmLrcLTvb3ohK1sQJDcFU=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ail9sA+tsJ8wkork962pQ8LXGPrPxhG+zNpEYY1pOhnH+eK0yuFNaqghRdNEUD/O7NGe5XYwiTSXEp6QwWEQiCkodCSu4aQuJSgLJmvffDW3QhtqY2ZBsk1ltofBpvjYB4/5Fg7KlOBzG59R+mKCUhMmapFMEeFISGVsrMeu8hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0.smtp.remotehost.it; spf=none smtp.mailfrom=0.smtp.remotehost.it; arc=none smtp.client-ip=213.190.28.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0.smtp.remotehost.it
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=0.smtp.remotehost.it
+Message-ID: <5e6a5a0c-180b-442a-88e3-f084bc48a45a@0.smtp.remotehost.it>
+Date: Sat, 25 May 2024 11:35:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: Pascal Ernster <whatever@0.smtp.remotehost.it>
 Subject: Re: [PATCH 6.9 00/25] 6.9.2-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -58,7 +48,6 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
 References: <20240523130330.386580714@linuxfoundation.org>
 Content-Language: en-US
-From: Pascal Ernster <git@hardfalcon.net>
 In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -83,7 +72,7 @@ Content-Transfer-Encoding: 7bit
 > greg k-h
 
 
-Hi, 6.8.7-rc1 is running fine on various x86_64 bare metal and virtual 
+Hi, 6.9.2-rc1 is running fine on various x86_64 bare metal and virtual 
 machines of mine (Haswell, Kaby Lake, Coffee Lake).
 
 Tested-by: Pascal Ernster <git@hardfalcon.net>
