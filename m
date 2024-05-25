@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-46163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDFC8CEFA7
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 17:06:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE328CEFA8
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 17:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E290F1F214D4
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 15:06:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60877281542
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 15:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366F26518F;
-	Sat, 25 May 2024 15:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CAF4EB51;
+	Sat, 25 May 2024 15:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qe638hks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLOG+AZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC317107A6
-	for <stable@vger.kernel.org>; Sat, 25 May 2024 15:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3645F6A003
+	for <stable@vger.kernel.org>; Sat, 25 May 2024 15:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716649564; cv=none; b=mk1j6tmVOCNWpC8HS8+qpYlFuJzSTZXm476A2gPeK0xvAT4JoRrt1jKVeczikKRphnVs3AwinBcCBAjQiJzMF+iUdm2ZHNx+wjD5PKXxQhM1mrRYvwvKP8nehOVLR9rOiXOfJ9QCMhY0/aF29bUJhCvF9uE5x8byvrbxCgizBmE=
+	t=1716649747; cv=none; b=qauSiHcTzBcfDL2lRNiqHN0SW7MGzK2Y/QUeY9qLIujINdgxnmqI+Nq9u4D2+pWDx0LC7ROyQJHtq/6SWZyLyRHp6MhlCK6dOBYi9HMQh2EmFJGIkgniLqSTecI461DvTpPi6/SMTLKcd3HkVpYWU64mGo/HDpa5uZ/QW8JXnCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716649564; c=relaxed/simple;
-	bh=wL8bdn6xqcg36IbOcDdVmLyg1qfE3CRE33qHRFwdaQY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q7wm5UNU1KOG6iBsWShShNKtPnF2aI+0jITvjwXGLnFRkXBHR7xbmoCRPKPsMuNazQIr2eAslswb5xLmODyZakgjOiXL83D7UDXZxzPFTCmO6FPLaIo2Rq+khtqtOtlppzIZW+hQaEYx85dmEZJxquMJf9GIcgow7wCgtwQPpFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qe638hks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26640C3277B;
-	Sat, 25 May 2024 15:06:01 +0000 (UTC)
+	s=arc-20240116; t=1716649747; c=relaxed/simple;
+	bh=QgCDTSOXy8pZ7LiD53M5H4qj9gvaNKfmbnHxOzXS6jQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h6ml/Ih6w+GTI2/cRNDdlkXLTsnEBfOLlyuH8OrnRIpf6LDiVYcexDZ691VmhbBfidv5TVQwWKIZTt7EOZL0K5FVhftR5bvQjyiV0+GmhQVhoA3N+MITpHxurrMIBwWgildWpAQ0eHjJ8LLe56PytEw65ucuqjVQu3/b/GH0KHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLOG+AZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2128AC2BD11;
+	Sat, 25 May 2024 15:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716649562;
-	bh=wL8bdn6xqcg36IbOcDdVmLyg1qfE3CRE33qHRFwdaQY=;
+	s=korg; t=1716649746;
+	bh=QgCDTSOXy8pZ7LiD53M5H4qj9gvaNKfmbnHxOzXS6jQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qe638hksyrthc0CXgY9jV7JcAU479pO8Glef9pkodKGGvZZMyD50v2y1bPkCf5TwQ
-	 RnhK6/tikHpjUjvO6OEtOYUkNusTBJS3hSM/RT+4zOddPp17gGeGG7Rvdysbv25ie1
-	 zkzw9/ph07Slp3GPPbP2mIPeJvw1CmeizjKqtJgU=
-Subject: FAILED: patch "[PATCH] io_uring: fail NOP if non-zero op flags is passed in" failed to apply to 5.4-stable tree
-To: ming.lei@redhat.com,axboe@kernel.dk
+	b=sLOG+AZrJ4t9dXgeqjgVIoOiD8rZu4j8BbUlcze+CLpE+XC9CL12Msc+l/lL4sice
+	 qcyrOD0BhS0hZSVLDwHlQJGvh9czrvPlEDdCA16PjqN+iQ5CqIMHG5kvodnH+YUEka
+	 kx1YK4izmX6o6vGziR9azbG8sAR29UHgQSLN24Gw=
+Subject: FAILED: patch "[PATCH] net: ks8851: Fix another TX stall caused by wrong ISR flag" failed to apply to 6.9-stable tree
+To: ronald.wahl@raritan.com,davem@davemloft.net,edumazet@google.com,horms@kernel.org,kuba@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 25 May 2024 17:05:49 +0200
-Message-ID: <2024052549-gyration-replica-129f@gregkh>
+Date: Sat, 25 May 2024 17:09:03 +0200
+Message-ID: <2024052503-purchase-hardcore-0032@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.9-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3d8f874bd620ce03f75a5512847586828ab86544
+git cherry-pick -x 317a215d493230da361028ea8a4675de334bfa1a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052549-gyration-replica-129f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052503-purchase-hardcore-0032@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,37 +77,108 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3d8f874bd620ce03f75a5512847586828ab86544 Mon Sep 17 00:00:00 2001
-From: Ming Lei <ming.lei@redhat.com>
-Date: Fri, 10 May 2024 11:50:27 +0800
-Subject: [PATCH] io_uring: fail NOP if non-zero op flags is passed in
+From 317a215d493230da361028ea8a4675de334bfa1a Mon Sep 17 00:00:00 2001
+From: Ronald Wahl <ronald.wahl@raritan.com>
+Date: Mon, 13 May 2024 16:39:22 +0200
+Subject: [PATCH] net: ks8851: Fix another TX stall caused by wrong ISR flag
+ handling
 
-The NOP op flags should have been checked from beginning like any other
-opcode, otherwise NOP may not be extended with the op flags.
+Under some circumstances it may happen that the ks8851 Ethernet driver
+stops sending data.
 
-Given both liburing and Rust io-uring crate always zeros SQE op flags, just
-ignore users which play raw NOP uring interface without zeroing SQE, because
-NOP is just for test purpose. Then we can save one NOP2 opcode.
+Currently the interrupt handler resets the interrupt status flags in the
+hardware after handling TX. With this approach we may lose interrupts in
+the time window between handling the TX interrupt and resetting the TX
+interrupt status bit.
 
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Fixes: 2b188cc1bb85 ("Add io_uring IO interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240510035031.78874-2-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+When all of the three following conditions are true then transmitting
+data stops:
 
-diff --git a/io_uring/nop.c b/io_uring/nop.c
-index d956599a3c1b..1a4e312dfe51 100644
---- a/io_uring/nop.c
-+++ b/io_uring/nop.c
-@@ -12,6 +12,8 @@
- 
- int io_nop_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+  - TX queue is stopped to wait for room in the hardware TX buffer
+  - no queued SKBs in the driver (txq) that wait for being written to hw
+  - hardware TX buffer is empty and the last TX interrupt was lost
+
+This is because reenabling the TX queue happens when handling the TX
+interrupt status but if the TX status bit has already been cleared then
+this interrupt will never come.
+
+With this commit the interrupt status flags will be cleared before they
+are handled. That way we stop losing interrupts.
+
+The wrong handling of the ISR flags was there from the beginning but
+with commit 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX
+buffer overrun") the issue becomes apparent.
+
+Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index 502518cdb461..6453c92f0fa7 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -328,7 +328,6 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
  {
-+	if (READ_ONCE(sqe->rw_flags))
-+		return -EINVAL;
- 	return 0;
- }
+ 	struct ks8851_net *ks = _ks;
+ 	struct sk_buff_head rxq;
+-	unsigned handled = 0;
+ 	unsigned long flags;
+ 	unsigned int status;
+ 	struct sk_buff *skb;
+@@ -336,24 +335,17 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 	ks8851_lock(ks, &flags);
  
+ 	status = ks8851_rdreg16(ks, KS_ISR);
++	ks8851_wrreg16(ks, KS_ISR, status);
+ 
+ 	netif_dbg(ks, intr, ks->netdev,
+ 		  "%s: status 0x%04x\n", __func__, status);
+ 
+-	if (status & IRQ_LCI)
+-		handled |= IRQ_LCI;
+-
+ 	if (status & IRQ_LDI) {
+ 		u16 pmecr = ks8851_rdreg16(ks, KS_PMECR);
+ 		pmecr &= ~PMECR_WKEVT_MASK;
+ 		ks8851_wrreg16(ks, KS_PMECR, pmecr | PMECR_WKEVT_LINK);
+-
+-		handled |= IRQ_LDI;
+ 	}
+ 
+-	if (status & IRQ_RXPSI)
+-		handled |= IRQ_RXPSI;
+-
+ 	if (status & IRQ_TXI) {
+ 		unsigned short tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+ 
+@@ -365,20 +357,12 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 		if (netif_queue_stopped(ks->netdev))
+ 			netif_wake_queue(ks->netdev);
+ 		spin_unlock(&ks->statelock);
+-
+-		handled |= IRQ_TXI;
+ 	}
+ 
+-	if (status & IRQ_RXI)
+-		handled |= IRQ_RXI;
+-
+ 	if (status & IRQ_SPIBEI) {
+ 		netdev_err(ks->netdev, "%s: spi bus error\n", __func__);
+-		handled |= IRQ_SPIBEI;
+ 	}
+ 
+-	ks8851_wrreg16(ks, KS_ISR, handled);
+-
+ 	if (status & IRQ_RXI) {
+ 		/* the datasheet says to disable the rx interrupt during
+ 		 * packet read-out, however we're masking the interrupt
 
 
