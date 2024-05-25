@@ -1,130 +1,98 @@
-Return-Path: <stable+bounces-46175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C8B8CEFB6
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 17:10:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D197B8CEFBB
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 17:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46234281750
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 15:10:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ECBC1C209E6
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 15:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED56763511;
-	Sat, 25 May 2024 15:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8578823BF;
+	Sat, 25 May 2024 15:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eG5MEmDj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtdhsD21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE47D4EB51
-	for <stable@vger.kernel.org>; Sat, 25 May 2024 15:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941661429E;
+	Sat, 25 May 2024 15:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716649839; cv=none; b=q8k6jxvsRP9bQEdx393IOaRbsnMhCIwqvQPMMhSWrn+QHIO6VjfAy1vMctZ3augkdj82EYdVUxLWs0qypT9inxLEC46LU20e1IyI0Dobi7QaGIbian4WNAhCuE7/UA/6BXwv/crekvP+AxADku1DRInPpxx6gEgYoIQAgRZob6Q=
+	t=1716650148; cv=none; b=c8MZVi74P9VKe+kr1Sse76+VawtyL+5i0cMStXKvQ8mKPv2dANDk7WLxU9hUU9IZLYJtzyyQNsz7/x0pxHoMlMOlMLkK8IMfqY6yUd6dOfWXLiBasI6F3p1vv+hx12y5zIPtV2KlUdt4eFeyZsFvtf1By8oRfr6XO/0D8H5aRiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716649839; c=relaxed/simple;
-	bh=lBZDgxMyLk6EAS5ZGODs74pXyYGwVsK/nXOuV9pAEOA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ihnHhI1smHlOpBwJFmIIzJW5Vmj/TRKR1RtKdlsM3ZJwg8cz2TR66WE6+xTc1q38MelwEMz+ZoO10AOXc8R36yEVgd+FEyFzDqkK6jmJZLzPMiyXFuhVJUnR4NBALYLcwk00j4Dky6OPin4Fo1YzKCXY+WgSHA6b1eZWwIAvUaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eG5MEmDj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36356C3277B;
-	Sat, 25 May 2024 15:10:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716649839;
-	bh=lBZDgxMyLk6EAS5ZGODs74pXyYGwVsK/nXOuV9pAEOA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=eG5MEmDjvkHk1TyLmuQGfyVRai8u5wI8tD+v8h9QiSisn55l8qYgWPFlUpTiKeXDI
-	 OEVS161Mu2/NFkY+8KKkCE3jBMLNbYohUUB1LNx2pGYwxiWQzg5D9ggZ5iaLrzx1f9
-	 eh2yrNsl0RgK61DO4TQ4hE5GoEN23XS9U9z5Ay3I=
-Subject: FAILED: patch "[PATCH] dt-bindings: adc: axi-adc: add clocks property" failed to apply to 5.10-stable tree
-To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@ver.kernel.org,krzysztof.kozlowski@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 25 May 2024 17:10:22 +0200
-Message-ID: <2024052522-mud-contempt-f78d@gregkh>
+	s=arc-20240116; t=1716650148; c=relaxed/simple;
+	bh=wa6xP9S3uLlfg3n05vhFPt+ult4CTmP8SbHN1IB6x8k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=KyD95gB5RCbXHB85BuOfwDBFCKWhDdeqYso2dpsGt9gH7j52ey2Fr9KVjWECY4y54EUjh/SxgmYKVK95urEirwLjGoRYn/lUS7n+kptEkIgef+pG4fUFsIHdPu99N+p2YcqIoC9qTYLNU0nl9G7s8PDDO5rj5yqrtt6ARqm1jUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtdhsD21; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E0DC2BD11;
+	Sat, 25 May 2024 15:15:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716650148;
+	bh=wa6xP9S3uLlfg3n05vhFPt+ult4CTmP8SbHN1IB6x8k=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=EtdhsD21R6oyJ+uqt0hQcgFgh0snb4v+N6wSvwXT2XYlgYogoAL/13xwlDlzxDJag
+	 LpH3cjRPZmTOpgBEmYl4pz4O+Nf+jyJ0fj+cVfIy8L5/MgWQwK4j99+mKrGw00Qu28
+	 EN6pNZfN06ZXmKry8u67XOiHwUL5TtCf24E5LIQTYVcEYHHveRYlFbyVbyWkY9WiNh
+	 Mt/lt56vD/IRJpQnhEs5iDLz9M7KRtUTidg3vj43D0I6G1ao1AkA5v3gFXq5+JSUrZ
+	 fUn1c2MNp7rkVqciE5C+qucjVuDphhB8UGM1oqRAOy1m4xTtLLPHse+lrcGKOsiadI
+	 Zsl3XjysNN09w==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 25 May 2024 18:15:43 +0300
+Message-Id: <D1ITOT1F26RK.S2V3FRMXPAPD@kernel.org>
+Cc: <keyrings@vger.kernel.org>, <stable@vger.kernel.org>, "Mimi Zohar"
+ <zohar@linux.ibm.com>, "David Howells" <dhowells@redhat.com>, "Paul Moore"
+ <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
+ Hallyn" <serge@hallyn.com>, <linux-security-module@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: trusted_tpm2: Only check options->keyhandle for
+ ASN.1
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240525123634.3396-1-jarkko@kernel.org>
+ <b1ac7ec116c871294d856185da44ae1e9fc02fe7.camel@HansenPartnership.com>
+In-Reply-To: <b1ac7ec116c871294d856185da44ae1e9fc02fe7.camel@HansenPartnership.com>
 
+On Sat May 25, 2024 at 4:42 PM EEST, James Bottomley wrote:
+> On Sat, 2024-05-25 at 15:36 +0300, Jarkko Sakkinen wrote:
+> > tpm2_load_cmd incorrectly checks options->keyhandle also for the
+> > legacy format, as also implied by the inline comment. Check
+> > options->keyhandle when ASN.1 is loaded.
+>
+> No that's not right.  keyhandle must be specified for the old format,
+> because it's just the two private/public blobs and doesn't know it's
+> parent. Since tpm2_key_decode() always places the ASN.1 parent into
+> options->keyhandle, the proposed new code is fully redundant (options-
+> >keyhandle must be non zero if the ASN.1 parsed correctly) but it loses
+> the check that the loader must specify it for the old format.
+>
+> What the comment above the code you removed means is that the keyhandle
+> must be non zero here, either extracted from the ASN.1 for the new
+> format or specified on the command line for the old.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+My code change was plain direct to the word interpreation of the
+comment.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+So I just take the last paragraph of yours and instead fix the
+misleading comment:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 19fb11d7220b8abc016aa254dc7e6d9f2d49b178
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052522-mud-contempt-f78d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+/*
+ * Keyhandle must be non zero here, either extracted from the ASN.1 for
+ * the new format or specified on the command line for the old.
+ */
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 19fb11d7220b8abc016aa254dc7e6d9f2d49b178 Mon Sep 17 00:00:00 2001
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Fri, 26 Apr 2024 17:42:12 +0200
-Subject: [PATCH] dt-bindings: adc: axi-adc: add clocks property
-
-Add a required clock property as we can't access the device registers if
-the AXI bus clock is not properly enabled.
-
-Note this clock is a very fundamental one that is typically enabled
-pretty early during boot. Independently of that, we should really rely on
-it to be enabled.
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Fixes: 96553a44e96d ("dt-bindings: iio: adc: add bindings doc for AXI ADC driver")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240426-ad9467-new-features-v2-3-6361fc3ba1cc@analog.com
-Cc: <Stable@ver.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-index 3d49d21ad33d..e1f450b80db2 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-@@ -28,6 +28,9 @@ properties:
-   reg:
-     maxItems: 1
- 
-+  clocks:
-+    maxItems: 1
-+
-   dmas:
-     maxItems: 1
- 
-@@ -48,6 +51,7 @@ required:
-   - compatible
-   - dmas
-   - reg
-+  - clocks
- 
- additionalProperties: false
- 
-@@ -58,6 +62,7 @@ examples:
-         reg = <0x44a00000 0x10000>;
-         dmas = <&rx_dma 0>;
-         dma-names = "rx";
-+        clocks = <&axi_clk>;
-         #io-backend-cells = <0>;
-     };
- ...
-
+BR, Jarkko
 
