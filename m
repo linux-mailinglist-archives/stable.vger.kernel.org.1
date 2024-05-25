@@ -1,103 +1,73 @@
-Return-Path: <stable+bounces-46126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9758CEEE6
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 14:36:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68FBA8CEEEC
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 14:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9D9AB21389
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 12:36:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23E18281A4B
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 12:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC86644C8B;
-	Sat, 25 May 2024 12:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C2042073;
+	Sat, 25 May 2024 12:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ubWj447c"
+	dkim=pass (1024-bit key) header.d=flokli.de header.i=@flokli.de header.b="RopJ7zKA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.flokli.de (mail.flokli.de [116.203.226.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836AFDF62;
-	Sat, 25 May 2024 12:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019BB4204B
+	for <stable@vger.kernel.org>; Sat, 25 May 2024 12:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.226.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716640606; cv=none; b=d37LBzim/SfW1RCHSb2+IdEWlhPvK9W5QLRRghE+UW812n72ch17Cany4NdNmYHZDSeUowFhx2J+/Jg6M61Gk4Zcq61DzljbL7XZxxOrXY24vCSNS4ioR7Cbht5K1VZ2BOROmz/46qmAqyAEY/OqaPjwe32rtOVX1BZuI/TAl+s=
+	t=1716640930; cv=none; b=SQ6sjkSNcdeS01HlM0372hVihlTTXRfmCpJHHhwXqYPvh61S1IO+KXoIHbnQN/6hfWdxJ6GGK0CdYsbecBhLF5q+bI3i6I2Wnsg05JBmBX1/IV8T9gMslpAV/lRAQ+reHuGIgu3LNgjmsr1Dl3mDuHodabeQyc5xbUCmovgQpyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716640606; c=relaxed/simple;
-	bh=iYJiwZkq202sbFOQmZ/InspF352DafABToYi4GRr+ps=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S87TlXO1XQ3xCG/hsTEV+JKWy5iOONh6wARkAexl33yRIJV5K9gOYmoRbG9G68xqYBhRPxP8sWjYsIus7sc2QxeNn/jCFQSSzOlJzWBQkg6N6B8iPb011E3P28My1EdqJUgjLkX1dDRAGj4WKSfLZvsUgw6SFElKW4Fvy9tSM6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ubWj447c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CC4C2BD11;
-	Sat, 25 May 2024 12:36:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716640605;
-	bh=iYJiwZkq202sbFOQmZ/InspF352DafABToYi4GRr+ps=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ubWj447cpnppasdvMyvq08tvBeJD4k495DIDLj5VpV7XZXppojROdM94TAKzujuvb
-	 bIhwbPJ2BQHa9TSWAFMNaEW0xOimICXZ6i0aWHc62jNFw+T3l9b4IWTsnwREX3H81J
-	 aKLyPMBhXF6VZQSoTr+5xkl8ia+6YaWMmCiF/6WXIDjPX2J7ByQG+FNxmdTCI3dQCe
-	 NU38ASVM37vlftlIWZr1BAgsNNJKy0v1VVr4F6Ei4/s1P5XQeCugJBX5ndJGNFfzW/
-	 S2tryxDtyKrrlL8pmyBbPireptWqei0qzSC79MnxmTOcN/vYcJzsWa5c41osn2gq8d
-	 SfT+ONdUOof9w==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org,
-	James.Bottomley@HansenPartnership.com,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KEYS: trusted_tpm2: Only check options->keyhandle for ASN.1
-Date: Sat, 25 May 2024 15:36:33 +0300
-Message-ID: <20240525123634.3396-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.45.1
+	s=arc-20240116; t=1716640930; c=relaxed/simple;
+	bh=0qS8wSauLUnTYjfVDo3Dk8MFVN9Elalr3WPvHgl/6Cg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=uwNZq7low5d3aCE32rxhJSc0fr5o1zB4My0cJLl14c50QxSo6RIXNmcwwJSZX57ZSfcmTnDQNpXhtpomY1IcVJZhuf6XYvIcVEJWHaq6jiXpN32CqUlHQkKiPgfn14KxaglpyYMw5bgjUzpiVpLJucoUhH/SUaw0/oLIP4InFFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flokli.de; spf=pass smtp.mailfrom=flokli.de; dkim=pass (1024-bit key) header.d=flokli.de header.i=@flokli.de header.b=RopJ7zKA; arc=none smtp.client-ip=116.203.226.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flokli.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flokli.de
+Date: Sat, 25 May 2024 14:36:41 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flokli.de; s=mail;
+	t=1716640602; bh=rKSddhw4rUv+siIbg+JSaX75PtgMAQWEmSEofbJp13E=;
+	h=Date:From:To:Cc:Subject;
+	b=RopJ7zKAH4DJ6N3yncbEYdxbFj/fmPDpB4uKWICjoYr0SctfHCX0BWBqcc0xQVLtk
+	 9CQT2Kn1EOR3tjlr70DkjAmoWCya4p0kbbkmRow3ihy+K1u2jcbnALF18ET3a+Fek1
+	 eAK+J6/P/dH/luaAde6ZaiG4jpSLR/iznQD2l46Q=
+From: Florian Klink <flokli@flokli.de>
+To: stable@vger.kernel.org
+Cc: thorsten@leemhuis.info, gregkh@linuxfoundation.org
+Subject: cherry-pick request for "arm64/fpsimd: Avoid erroneous elide of user
+ state reload"
+Message-ID: <xvhrz2hqorwt42c4bdx7qzbofjpkv5x4ryzfmoptde5aztygha@pi7mq5dxdq75>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 
-tpm2_load_cmd incorrectly checks options->keyhandle also for the legacy
-format, as also implied by the inline comment. Check options->keyhandle
-when ASN.1 is loaded.
 
-Cc: James Bottomey <James.Bottomley@HansenPartnership.com>
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- security/keys/trusted-keys/trusted_tpm2.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Hey,
 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index 8b7dd73d94c1..4f8207bf52a7 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -400,12 +400,11 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
- 		/* old form */
- 		blob = payload->blob;
- 		payload->old_format = 1;
-+	} else {
-+		if (!options->keyhandle)
-+			return -EINVAL;
- 	}
- 
--	/* new format carries keyhandle but old format doesn't */
--	if (!options->keyhandle)
--		return -EINVAL;
--
- 	/* must be big enough for at least the two be16 size counts */
- 	if (payload->blob_len < 4)
- 		return -EINVAL;
--- 
-2.45.1
+I got encouraged to send another email here from
+https://github.com/tpwrules/nixos-apple-silicon/issues/200.
 
+"arm64/fpsimd: Avoid erroneous elide of user state reload" / 
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=e92bee9f861b466c676f0200be3e46af7bc4ac6b
+fixes a data corruption issue with dm-crypt on aarch64, reproducible on
+the mainline Linux kernel (not just asahi specific!).
+
+This list has been included as Cc on this commit, but it'd be very nice
+to make sure this already lands in 6.9.2, due to its data corruption
+nature.
+
+Thanks,
+Florian
 
