@@ -1,73 +1,102 @@
-Return-Path: <stable+bounces-46127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FBA8CEEEC
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 14:42:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611B08CEF23
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 15:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23E18281A4B
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 12:42:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4321B2106E
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 13:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C2042073;
-	Sat, 25 May 2024 12:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7994D10A;
+	Sat, 25 May 2024 13:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=flokli.de header.i=@flokli.de header.b="RopJ7zKA"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="VtwIkuKh";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="VtwIkuKh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.flokli.de (mail.flokli.de [116.203.226.116])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019BB4204B
-	for <stable@vger.kernel.org>; Sat, 25 May 2024 12:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.226.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4BB1E480;
+	Sat, 25 May 2024 13:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716640930; cv=none; b=SQ6sjkSNcdeS01HlM0372hVihlTTXRfmCpJHHhwXqYPvh61S1IO+KXoIHbnQN/6hfWdxJ6GGK0CdYsbecBhLF5q+bI3i6I2Wnsg05JBmBX1/IV8T9gMslpAV/lRAQ+reHuGIgu3LNgjmsr1Dl3mDuHodabeQyc5xbUCmovgQpyU=
+	t=1716644528; cv=none; b=tgUBkMQuKEAWmnPIRYAyidvQI8ln6haQkZyqTSz8Tq/UblDMfFGZN4S9oCMQR5WpceWhbYrkRIHiTwyobCL25uBRW0qUd0I5FXZIw1sGo1U9BdUa0GjgdnSWb2tFP7qPsyvHsT1xbBPD1x/BROqEpynzs1P3n4EhKmEjU60DcRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716640930; c=relaxed/simple;
-	bh=0qS8wSauLUnTYjfVDo3Dk8MFVN9Elalr3WPvHgl/6Cg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=uwNZq7low5d3aCE32rxhJSc0fr5o1zB4My0cJLl14c50QxSo6RIXNmcwwJSZX57ZSfcmTnDQNpXhtpomY1IcVJZhuf6XYvIcVEJWHaq6jiXpN32CqUlHQkKiPgfn14KxaglpyYMw5bgjUzpiVpLJucoUhH/SUaw0/oLIP4InFFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flokli.de; spf=pass smtp.mailfrom=flokli.de; dkim=pass (1024-bit key) header.d=flokli.de header.i=@flokli.de header.b=RopJ7zKA; arc=none smtp.client-ip=116.203.226.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flokli.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flokli.de
-Date: Sat, 25 May 2024 14:36:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flokli.de; s=mail;
-	t=1716640602; bh=rKSddhw4rUv+siIbg+JSaX75PtgMAQWEmSEofbJp13E=;
-	h=Date:From:To:Cc:Subject;
-	b=RopJ7zKAH4DJ6N3yncbEYdxbFj/fmPDpB4uKWICjoYr0SctfHCX0BWBqcc0xQVLtk
-	 9CQT2Kn1EOR3tjlr70DkjAmoWCya4p0kbbkmRow3ihy+K1u2jcbnALF18ET3a+Fek1
-	 eAK+J6/P/dH/luaAde6ZaiG4jpSLR/iznQD2l46Q=
-From: Florian Klink <flokli@flokli.de>
-To: stable@vger.kernel.org
-Cc: thorsten@leemhuis.info, gregkh@linuxfoundation.org
-Subject: cherry-pick request for "arm64/fpsimd: Avoid erroneous elide of user
- state reload"
-Message-ID: <xvhrz2hqorwt42c4bdx7qzbofjpkv5x4ryzfmoptde5aztygha@pi7mq5dxdq75>
+	s=arc-20240116; t=1716644528; c=relaxed/simple;
+	bh=amI1SPYRnBjM8Ew/R6TtCgxDdWD5U2OLyaFMWH/xHco=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aa1MMQQLBgU5qJ0eBmBtTOBfknBd+HJDXf7QKzay6smJ/8R1wudXxA7AgcXP+fNY99wXZ5W+y2C1G7D/ZiaRJNLQIcFthWDhYMjToySBWgzMVdnZP8WfkY9doUvzZAZ5m2Z8oP/X4yXjN0HimND+Wc6prxWQj4GoqMAHBTVLRSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=VtwIkuKh; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=VtwIkuKh; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1716644525;
+	bh=amI1SPYRnBjM8Ew/R6TtCgxDdWD5U2OLyaFMWH/xHco=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=VtwIkuKhcA50/tF3DmtgWWcszs8/cLEA02WPuZLwtGVta7DLVEO8WmZkDFCORIqsk
+	 M6F2y02YGWSrUrh4IyyC1rabzA8T7vAvMA5F4a6PBtoo6n2rbDP235Ww7vJVEqlYtz
+	 WCiaJ6fKL3qM5CCSGUtQApDaVgwDKWg4VEmYbi5o=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 7818B1287ABA;
+	Sat, 25 May 2024 09:42:05 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id 1QvmScxBCgUX; Sat, 25 May 2024 09:42:05 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1716644525;
+	bh=amI1SPYRnBjM8Ew/R6TtCgxDdWD5U2OLyaFMWH/xHco=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=VtwIkuKhcA50/tF3DmtgWWcszs8/cLEA02WPuZLwtGVta7DLVEO8WmZkDFCORIqsk
+	 M6F2y02YGWSrUrh4IyyC1rabzA8T7vAvMA5F4a6PBtoo6n2rbDP235Ww7vJVEqlYtz
+	 WCiaJ6fKL3qM5CCSGUtQApDaVgwDKWg4VEmYbi5o=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 5AFC01287AB8;
+	Sat, 25 May 2024 09:42:04 -0400 (EDT)
+Message-ID: <b1ac7ec116c871294d856185da44ae1e9fc02fe7.camel@HansenPartnership.com>
+Subject: Re: [PATCH] KEYS: trusted_tpm2: Only check options->keyhandle for
+ ASN.1
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
+Cc: keyrings@vger.kernel.org, stable@vger.kernel.org, Mimi Zohar
+	 <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, Paul Moore
+	 <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
+	 <serge@hallyn.com>, linux-security-module@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Sat, 25 May 2024 09:42:02 -0400
+In-Reply-To: <20240525123634.3396-1-jarkko@kernel.org>
+References: <20240525123634.3396-1-jarkko@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
 
+On Sat, 2024-05-25 at 15:36 +0300, Jarkko Sakkinen wrote:
+> tpm2_load_cmd incorrectly checks options->keyhandle also for the
+> legacy format, as also implied by the inline comment. Check
+> options->keyhandle when ASN.1 is loaded.
 
-Hey,
+No that's not right.  keyhandle must be specified for the old format,
+because it's just the two private/public blobs and doesn't know it's
+parent. Since tpm2_key_decode() always places the ASN.1 parent into
+options->keyhandle, the proposed new code is fully redundant (options-
+>keyhandle must be non zero if the ASN.1 parsed correctly) but it loses
+the check that the loader must specify it for the old format.
 
-I got encouraged to send another email here from
-https://github.com/tpwrules/nixos-apple-silicon/issues/200.
+What the comment above the code you removed means is that the keyhandle
+must be non zero here, either extracted from the ASN.1 for the new
+format or specified on the command line for the old.
 
-"arm64/fpsimd: Avoid erroneous elide of user state reload" / 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=e92bee9f861b466c676f0200be3e46af7bc4ac6b
-fixes a data corruption issue with dm-crypt on aarch64, reproducible on
-the mainline Linux kernel (not just asahi specific!).
+James
 
-This list has been included as Cc on this commit, but it'd be very nice
-to make sure this already lands in 6.9.2, due to its data corruption
-nature.
-
-Thanks,
-Florian
 
