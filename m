@@ -1,81 +1,110 @@
-Return-Path: <stable+bounces-46184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E308CF03F
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 18:53:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9612A8CF072
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 19:29:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9C71F21528
-	for <lists+stable@lfdr.de>; Sat, 25 May 2024 16:53:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D87E281BE9
+	for <lists+stable@lfdr.de>; Sat, 25 May 2024 17:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7730886266;
-	Sat, 25 May 2024 16:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4ACC86AFA;
+	Sat, 25 May 2024 17:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D0/1cDwo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uz6wyo8M"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729D885C77
-	for <stable@vger.kernel.org>; Sat, 25 May 2024 16:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA249473;
+	Sat, 25 May 2024 17:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716656018; cv=none; b=jn+G9HBVRhwPpAwd8Flh2oF0UnDSk34Su7X/ixZ4o/o9iSPXedZT/2UjFcZ3XBI8cZ7q6kNQd5yJrVWpJmcnenOFndIJDHO6viiCEJwGFN+lWxg49p3XK+rCmTxOVVnVeKHXOERtJOGYKu7EhEdWsHFn/325oCT1eQZbWKU76so=
+	t=1716658175; cv=none; b=p67yl9YfSQ2DdZeFIxmr+poi32K0aveaKyZ8/VQWLLTzpbCvts/QIutMhWh+luJqEyjjuCz22mQoZFvLRgosEVWbU+VXUIF72ueKjAQlqzSTywBIZteChVXA0cjUlZAQBOAf9roE3JaTJrgqCu2nnHxItrhO6/nXOe8DNpZ+lbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716656018; c=relaxed/simple;
-	bh=HmHRVY+ARnWot9yuVWSf1MyKtrmFTYzjYQNaqG9Mnwg=;
-	h=Date:Message-ID:From:To:Cc:Subject:MIME-Version:Content-Type; b=sMSI/4VJu0Gf+EyBNsiLiLz9Bf5rnXhMzFZ2Po57f3GwOD5g2KzTTthBnxbFk+Blr5G0ZwWpPJfQ05kaPSOpF3/ukOhgI1TLUNq/+j6MiYnV1Ir+z3luUHAGCsMCFPujD0B98DLXV/DYkqSO1UsSU0tjot74i5ShtZI7k0VutGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D0/1cDwo; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716656017; x=1748192017;
-  h=date:message-id:from:to:cc:subject:mime-version;
-  bh=HmHRVY+ARnWot9yuVWSf1MyKtrmFTYzjYQNaqG9Mnwg=;
-  b=D0/1cDwoWH1emcfdF7/Oa1yywYCitXb8itxHDzR/J1XOLjwTmlQsjxO0
-   Iy9E4WqD4m0Ubf13ZifB0wjzhM20VVaBP6dGYrtVb+RwWK7Iq/x91ALuI
-   /gnZb9Y1UVIUSppZb6OPks8B1gM7HeQxB6ozkBpne07CfwpXRBInuEmN/
-   vZ113DNPIaBPnD4hA7MocRR2UUMYu0GuCXkUAnTmkWnszQ9srD7zOFl5c
-   4YxqpiWLF+Pg0nFnBH/tPcqDF2/4sou8M/uoxeK8pjbDV32LjGdhaHKdt
-   jY5wAXGWvnq9IIE3LLWoNgxuQt7lU8SZdTbwT0deaZD7bmKN63xCfooF/
-   g==;
-X-CSE-ConnectionGUID: wf/uSOknSjCY0zc4vq8Itw==
-X-CSE-MsgGUID: Rv8U6mBlQNKEV6TkSiZLQQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11083"; a="11694835"
-X-IronPort-AV: E=Sophos;i="6.08,188,1712646000"; 
-   d="scan'208";a="11694835"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2024 09:53:36 -0700
-X-CSE-ConnectionGUID: lJjysrm1QxaAdwmbxKGzsg==
-X-CSE-MsgGUID: h7GizBXnRfSSTZzwrceH6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,188,1712646000"; 
-   d="scan'208";a="38729077"
-Received: from rladwax-mobl1.amr.corp.intel.com (HELO adixit-arch.intel.com) ([10.92.232.169])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2024 09:53:37 -0700
-Date: Sat, 25 May 2024 09:41:33 -0700
-Message-ID: <875xv1lu82.wl-ashutosh.dixit@intel.com>
-From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: stable@vger.kernel.org
-Cc: intel-gfx@lists.freedesktop.org
-Subject: Please apply "drm/i915/hwmon: Get rid of devm" to stable trees (Option 2)
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/29.3 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1716658175; c=relaxed/simple;
+	bh=Ix5ZA2sKjCOi4M8doKjLb5umOxPLM58qMYPoYAVI5xM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GHGtK6/0qJG4tMU7Rj7iTwMHOuE+U6+EyaDjE32kd02HZvEMma9RH7Y1lB0qiAocpmGp+6PzJg2Mt0HVhnAwVR5GthN/zNmUgDF1v0bXe9jAwbgRfRLVTX94NxNN+98Ftkss+XgYyjbG6cw41kNcnwesUujupvwPcld/+oJZg1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uz6wyo8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A27C2BD11;
+	Sat, 25 May 2024 17:29:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716658174;
+	bh=Ix5ZA2sKjCOi4M8doKjLb5umOxPLM58qMYPoYAVI5xM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Uz6wyo8MDGjZVyrxdn8Nb7+TgGnU42buxToxoNO3Gtn10aOMXCiz1UhIw1nMz3UOT
+	 qR4gA9R5ZEXYj1brMA8zE5N/Gg+a0HONxYQUBCCYbWwr0OEpafzlCGekKyY3XP+lUH
+	 yaWKPevvHDko3s+Y+IiaYbM8nAn5/Kbo5N/i0WzoEQsbhI1GI7OjqjHmhWoUT8V6Bk
+	 8P4MpKF91fVoD0VMLKf2E8UGLfd/poZc4mdRnmeXV5xodU12gWN9TNY5nugx3Hc1ZY
+	 gTTn80rrI8KAoqngjY3ae/Xa8asKOPcMHF6MZCoNf95Sx9/7EZUisSKljrLvM0XowC
+	 id4CFZFWwOVPQ==
+Date: Sat, 25 May 2024 18:29:23 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: inv.git-commit@tdk.com
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH] iio: invensense: fix odr switching to same value
+Message-ID: <20240525182923.490475e5@jic23-huawei>
+In-Reply-To: <20240524124851.567485-1-inv.git-commit@tdk.com>
+References: <20240524124851.567485-1-inv.git-commit@tdk.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Patch subject:		drm/i915/hwmon: Get rid of devm
-Commit ID:		5bc9de065b8bb9b8dd8799ecb4592d0403b54281
-Reason:			Fixes potential kernel crash listed in
-			https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10366
-Kernel versions:	6.2 and later
+On Fri, 24 May 2024 12:48:51 +0000
+inv.git-commit@tdk.com wrote:
+
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> ODR switching happens in 2 steps, update to store the new value and then
+> apply when the ODR change flag is received in the data. When switching to
+> the same ODR value, the ODR change flag is never happening, and frequency
+> switching is blocked waiting for the never coming apply.
+> 
+> Fix the issue by preventing update to happen when switching to same ODR
+> value.
+> 
+> Fixes: 0ecc363ccea7 ("iio: make invensense timestamp module generic")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
+Applied to the fixes-togreg branch of iio.git
+
+Note I'll rebase that tree on rc1 once available.
+
+> ---
+>  drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> index fa205f17bd90..f44458c380d9 100644
+> --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> @@ -60,11 +60,15 @@ EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_init, IIO_INV_SENSORS_TIMESTAMP);
+>  int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
+>  				     uint32_t period, bool fifo)
+>  {
+> +	uint32_t mult;
+> +
+>  	/* when FIFO is on, prevent odr change if one is already pending */
+>  	if (fifo && ts->new_mult != 0)
+>  		return -EAGAIN;
+>  
+> -	ts->new_mult = period / ts->chip.clock_period;
+> +	mult = period / ts->chip.clock_period;
+> +	if (mult != ts->mult)
+> +		ts->new_mult = mult;
+>  
+>  	return 0;
+>  }
+
 
