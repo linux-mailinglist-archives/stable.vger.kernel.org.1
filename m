@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-46198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38C88CF347
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:43:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4078CF349
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A041D281E56
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:43:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCF4A1C203D5
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FE421101;
-	Sun, 26 May 2024 09:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5821208C1;
+	Sun, 26 May 2024 09:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OPVcVC8L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H12PbXJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF75F20B02;
-	Sun, 26 May 2024 09:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7D522F0E;
+	Sun, 26 May 2024 09:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716716529; cv=none; b=oCphnj8DMqtg4gyY9MKUo1WKmk6El2uQjibXztoBFhpWUYh7PNwn4BI5hbqW3nCVh7/+7pI3jCoakvVXgwGhSk/ZcYDM4/gKQ7QujYv5HGFsMypM3bLLvvrr82ExCLxRoOADz5XCi5MgYCPBxQcBoTALU9vF3ltOfgwtjRZT10Q=
+	t=1716716530; cv=none; b=WJ2ZS4uEGipmGAJBoU+I1dC8V08oxX5rxgCiKSVFstd39uXGLlM9unhHxCmhwdWWu2vX0secZyBwiHUEyhhfxFC67Crlfg5Av0NQ/ZWztSCK1Z3kAh1YdakLdKGwAm6y9N/uwoE0NWzH658w8DX2/B02RyVozsaDCJxrJlAJOGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716716529; c=relaxed/simple;
-	bh=af/ol9iL4gMIhU2wLPXuPquFvHSnfZuzbvNlF9lJ1ZI=;
+	s=arc-20240116; t=1716716530; c=relaxed/simple;
+	bh=yZCx+Ui138RWNHsw6N6p9WbGX2dhsHntqReUeJevRsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VO8YEUlKxEpOwj9FS4e5+c7rjaWX0eGCY0zR8khfeSE75thlqwBOvXa5EH6AtOXOUf9ntPkgJjZZi9Fp6QD/SVQuV1Q/U8EGIsPTqdpF6hDJ/sgQ6mEvONCltcnc78SnBpzvnZFyj1nT82GRPOh7KL292tYg89XA1WYNXy+uQAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OPVcVC8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1298C32781;
-	Sun, 26 May 2024 09:42:07 +0000 (UTC)
+	 MIME-Version; b=Qh3jzzJQwB14HWg0ffUvBaentVCsMEGot8GdN9t4QY0c3wqD6/bvKNLYYj4/7z24Owp5c96BjTblptP/vUq2wXfSlzxVKwj75H2AF/BH8ncZAIKtjgwrbXRht4ERyWzDrlZ505ebcWwbp0rmiQQK0wHYSBet1ya5k+zBeC8vK2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H12PbXJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A5AC2BD10;
+	Sun, 26 May 2024 09:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716716528;
-	bh=af/ol9iL4gMIhU2wLPXuPquFvHSnfZuzbvNlF9lJ1ZI=;
+	s=k20201202; t=1716716530;
+	bh=yZCx+Ui138RWNHsw6N6p9WbGX2dhsHntqReUeJevRsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OPVcVC8LtOzuK/gIEVhCldNm9mIpQRz9hSRoIpPohYGaV7q12Bo6DBxRE2V6JaFR9
-	 g4fpP+4R64JSYKfen3ls4ezI4JPDm+JH7D9fl/q2pkwUeu5G6zUUOED99y8Ly4p2De
-	 e9dxz8ry/oFs3q2fY2/imA/QmM3VLEV+SZ18Kh52M8p4Vb2C4twLmFGze5sDQWnEGe
-	 HEVluyheznLvn9b5la+KuSer9AyZRDBbiqUVBuf67KtoBBqQtqUrbQjYsfu+m2I7h0
-	 pUnVZwJes45nTG3YS6eV3J/NTmf8NF0d/cbU6QMoCU76mW01xAfSn9yBNAKmgOomQi
-	 O6URJdd+fpXfg==
+	b=H12PbXJRWwUs4qUrR7/UCM60O2drp95+uuo7qza9Letqy1VdivoJWZr6BSG+rFN+o
+	 5O+WC3SiSsEtQurEXWN/7SitlObWFsB6A4ANxKEL7A3ggTqYoH7hZZQX7Se9eLqH7h
+	 srMF7IVYRGoOGKPzFral7El08dKjwR3Jx2bbkN5Tpt1LR0fhSAzUlPLQRQLdkcvddz
+	 fr9RPipfrSka9kAnXOC51jNKLlA/vB68rrGFKOYpeh9IPbw8BVZbiLTXGJyyAH83Z1
+	 fohlRPYK/uIsazpEgiK0g/TxKReW5LpUeCb01Njv6oJDhMCHLlT2OPn1DM0N96GuNW
+	 UVTXrMqTa983g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Tzung-Bi Shih <tzungbi@kernel.org>,
 	Benson Leung <bleung@chromium.org>,
+	Prashant Malani <pmalani@chromium.org>,
 	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	chrome-platform@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.9 10/15] platform/chrome: cros_usbpd_logger: provide ID table for avoiding fallback match
-Date: Sun, 26 May 2024 05:41:42 -0400
-Message-ID: <20240526094152.3412316-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 11/15] platform/chrome: cros_usbpd_notify: provide ID table for avoiding fallback match
+Date: Sun, 26 May 2024 05:41:43 -0400
+Message-ID: <20240526094152.3412316-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240526094152.3412316-1-sashal@kernel.org>
 References: <20240526094152.3412316-1-sashal@kernel.org>
@@ -68,7 +69,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit e0e59c5335a0a038058a080474c34fe04debff33 ]
+[ Upstream commit 8ad3b9652ed6a115c56214a0eab06952818b3ddf ]
 
 Instead of using fallback driver name match, provide ID table[1] for the
 primary match.
@@ -76,50 +77,51 @@ primary match.
 [1]: https://elixir.bootlin.com/linux/v6.8/source/drivers/base/platform.c#L1353
 
 Reviewed-by: Benson Leung <bleung@chromium.org>
+Acked-by: Prashant Malani <pmalani@chromium.org>
 Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20240329075630.2069474-7-tzungbi@kernel.org
+Link: https://lore.kernel.org/r/20240329075630.2069474-8-tzungbi@kernel.org
 Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_usbpd_logger.c | 9 ++++++++-
+ drivers/platform/chrome/cros_usbpd_notify.c | 9 ++++++++-
  1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/chrome/cros_usbpd_logger.c b/drivers/platform/chrome/cros_usbpd_logger.c
-index f618757f8b321..930c2f47269f6 100644
---- a/drivers/platform/chrome/cros_usbpd_logger.c
-+++ b/drivers/platform/chrome/cros_usbpd_logger.c
-@@ -7,6 +7,7 @@
+diff --git a/drivers/platform/chrome/cros_usbpd_notify.c b/drivers/platform/chrome/cros_usbpd_notify.c
+index aacad022f21df..c83f81d86483c 100644
+--- a/drivers/platform/chrome/cros_usbpd_notify.c
++++ b/drivers/platform/chrome/cros_usbpd_notify.c
+@@ -6,6 +6,7 @@
+  */
  
- #include <linux/ktime.h>
- #include <linux/math64.h>
+ #include <linux/acpi.h>
 +#include <linux/mod_devicetable.h>
  #include <linux/module.h>
- #include <linux/platform_data/cros_ec_commands.h>
  #include <linux/platform_data/cros_ec_proto.h>
-@@ -249,6 +250,12 @@ static int __maybe_unused cros_usbpd_logger_suspend(struct device *dev)
- static SIMPLE_DEV_PM_OPS(cros_usbpd_logger_pm_ops, cros_usbpd_logger_suspend,
- 			 cros_usbpd_logger_resume);
+ #include <linux/platform_data/cros_usbpd_notify.h>
+@@ -218,12 +219,19 @@ static void cros_usbpd_notify_remove_plat(struct platform_device *pdev)
+ 					   &pdnotify->nb);
+ }
  
-+static const struct platform_device_id cros_usbpd_logger_id[] = {
++static const struct platform_device_id cros_usbpd_notify_id[] = {
 +	{ DRV_NAME, 0 },
 +	{}
 +};
-+MODULE_DEVICE_TABLE(platform, cros_usbpd_logger_id);
++MODULE_DEVICE_TABLE(platform, cros_usbpd_notify_id);
 +
- static struct platform_driver cros_usbpd_logger_driver = {
+ static struct platform_driver cros_usbpd_notify_plat_driver = {
  	.driver = {
  		.name = DRV_NAME,
-@@ -256,10 +263,10 @@ static struct platform_driver cros_usbpd_logger_driver = {
  	},
- 	.probe = cros_usbpd_logger_probe,
- 	.remove_new = cros_usbpd_logger_remove,
-+	.id_table = cros_usbpd_logger_id,
+ 	.probe = cros_usbpd_notify_probe_plat,
+ 	.remove_new = cros_usbpd_notify_remove_plat,
++	.id_table = cros_usbpd_notify_id,
  };
  
- module_platform_driver(cros_usbpd_logger_driver);
- 
- MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("Logging driver for ChromeOS EC USBPD Charger.");
+ static int __init cros_usbpd_notify_init(void)
+@@ -258,4 +266,3 @@ module_exit(cros_usbpd_notify_exit);
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("ChromeOS power delivery notifier device");
+ MODULE_AUTHOR("Jon Flatley <jflat@chromium.org>");
 -MODULE_ALIAS("platform:" DRV_NAME);
 -- 
 2.43.0
