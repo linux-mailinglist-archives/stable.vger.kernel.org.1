@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A5B8CF698
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 01:01:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE958CF699
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 01:01:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72EA11C20DBE
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 23:01:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C38221C20DAF
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 23:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88432139CF8;
-	Sun, 26 May 2024 23:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87ABC13A249;
+	Sun, 26 May 2024 23:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="TbiTwXZ4"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Z0cAbTfu"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDE11D53F;
-	Sun, 26 May 2024 23:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262DE8BE7;
+	Sun, 26 May 2024 23:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716764462; cv=none; b=Ua52OTRzj/gU881rKqT6ijkTqXoHFJhcwCkgPCSGB9WzZ68S1WFtt5Xj26DcdTRgWRjv8uRW/46ZZE9pRRpyR4QWxImp3dBPfhM44opjo6UspS/P3JC3fB+oObQjYOhPPrs0z6TJ3QF7LLDNPPSDvsgtbmUsaT15OGvxfyt5tD4=
+	t=1716764487; cv=none; b=mmgfglSpfT/jK+SRF6rb8Nt+9i+D+tHorgisItRFkgnJkbF/0stBynqI5yXhSRpW8CUoMNmj0nNYmnUnnrqQHyYJKMhpwsPVmywCS/rSO8m1yfxmsSTb4g59caOHaHf9dapxd59YsE5vcSXK6GQOTu8XUC/yQJT6tYLU5qssJqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716764462; c=relaxed/simple;
-	bh=EvC6ibCCee3TTt4zfNcqGEyB0TPvVCPpFlLaQfltyK0=;
+	s=arc-20240116; t=1716764487; c=relaxed/simple;
+	bh=UdiX13aBCJ6JK0lMebOQzLQD4aUfgWr0XV/+fAtP4ww=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JJV4UgpyjKWUIZrdu/Zlfvrrzecr6dVLM9aDUHhtAzRicy1E52efaNtvBzJ8BpTnbO+YtXqNgdTXys8yQQHAlN5OcQoEJlRiur/Otrd6KC23xucJj23GF7K1XE5APPzFqvKOwsZZjsAQ/FTTSTmabGQho3cYpcO7USmWVLug+Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=TbiTwXZ4; arc=none smtp.client-ip=212.227.17.22
+	 In-Reply-To:Content-Type; b=UrvfIXtCpc0SJDamIQFnnGx0hP8qnldT53HDnDmT17ZTFCeaw8ggn8jZJbYk2JiTujzObyS/kl3Ev/v/+QR2on0n/UfQMr70jNUjXhDcWYuure8fVVB7ehDm3zxoFsfwJ7HMJ/h7m5YPhtVY889J8P8YJJAhlBIYvpSYaXmbOVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Z0cAbTfu; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1716764453; x=1717369253; i=w_armin@gmx.de;
-	bh=4TuH7MrgTfwd/xaiBwxiq5zSzhSgv92c6sItYcg1LSI=;
+	s=s31663417; t=1716764476; x=1717369276; i=w_armin@gmx.de;
+	bh=P5XKCrcACz3TJmn89IhZloNTj9kPqeiccxUgq66mKvw=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=TbiTwXZ484nT+WpGLjiwuhHjbVsP6kBKMe1BUaN6YbMKPNfEpVcVnBq2dBwSCsPz
-	 +xloOcCDl91AUFHsVGRGYbjm7QNtVxSnAMi2eSoP+L+6IQeT/mAKen2XZhuth6iNt
-	 hwBITXlFDKodgm0l4AxRYoppRcYuLhaQwCohKaHg+Yvr6PHm4KVm9I4Y76fXGSskG
-	 gii8MGXAGUW5tSCXdg/akpRyixrpU/qsjljLznzgmwtR28YnH1ttnsJbiDFgvsf9k
-	 DSzzc5livfHzaGpow9heaHLgtvH4cvbj92Rr5lTYjSQqjS5f81SpoiIT4rsXqBwfa
-	 JcUWFBPZQGwGfFTyTg==
+	b=Z0cAbTfuKyzTmn9ZtCbgNCIpuKtxn5yYFkIKLBMUVgDbY6yTt6BVCIGwS6zy0TWN
+	 lo39rWmR3eLSeM7yuUwDA0Iqj6Qmo9UBD7NksXBq9RQrI7bPlr4eLnsEz/2kMPNiy
+	 ymO11IivA/I/haZviZ66iUPSRk/SnGyb6muzAzSzwE+cr6SlzE4VoTW5hQPNBRRNU
+	 YvM1lc6D1lqKI5NZyZtNlDQZEm5CXZAOAdPPqfTJ/ZNtmgrk8591ihsRUCuhe1nIk
+	 KCx6semR3/yvxcIGasHpVflAlNfBj+HQ0HiIvJzoO6gbVEkTnBbm0Citn9aLfakTL
+	 5IC9MN5+kQKeikAzrw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MbivG-1snABX14xy-00dE9O; Mon, 27
- May 2024 01:00:53 +0200
-Message-ID: <4b856637-2aa3-43d6-bb52-39c10d84af38@gmx.de>
-Date: Mon, 27 May 2024 01:00:52 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mel3t-1slFRh2han-00akQz; Mon, 27
+ May 2024 01:01:16 +0200
+Message-ID: <07a90693-980b-4bfa-afbb-95a98e04371a@gmx.de>
+Date: Mon, 27 May 2024 01:01:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,49 +59,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Patch "platform/x86: xiaomi-wmi: Fix race condition when
- reporting key events" has been added to the 5.15-stable tree
+ reporting key events" has been added to the 5.10-stable tree
 To: stable@vger.kernel.org, stable-commits@vger.kernel.org
 Cc: Hans de Goede <hdegoede@redhat.com>,
  =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-References: <20240526200716.3522653-1-sashal@kernel.org>
+References: <20240526201420.3528366-1-sashal@kernel.org>
 Content-Language: en-US
 From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <20240526200716.3522653-1-sashal@kernel.org>
+In-Reply-To: <20240526201420.3528366-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:IKZSSBhie5/R7i7ktpq5q0xFLXcTjC4UP6YY96S3+4OfAXZmRzg
- n7Lf9V+pb28iqW4jtwehtbo+GF7bt/ff34MATqOM17jGBlDQym83SFIVNEOr/QvCBik1GYW
- x/hpyAKdjYaTYg0SiaqvFc0pEdIMv5sX9soBWU66g18wmFBo2TLZ+aYkSNX+t8N4zNOohnY
- I7ihexnyziYilgQ4WKRbg==
+X-Provags-ID: V03:K1:baoU9oKAHFpZRlq6uhG5Vs+3rDrQsJE5CjSH59rehFx9I9Zfq1z
+ HW6YM9vwliIbBiDQfK9eBN+4E8xY37VqmorgWKn3VPAbqezjikw0ipB4hqkaRTQ+SlCCyA3
+ pjDVCBLJ11/v3gPZC2+I5m2/pEXquGOe7tA7Vi0ObHF+kNb7k03UQu5KdfVVeajHvi3cToj
+ +mo8EZojQpvFcI/0u/2Xg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:3hWAEdJw1vA=;jo1T/8I0SMdDSGDJ7St6r8BMIwK
- F02pnOJClGW0QjtaqXK8eSim2JI6F+GUqFTjQ7uRIpCVY6MYZaI9Q0AryFg5hAr5Do7aeReqH
- h7SVCE3IV4w7xbaxnJDtunaNZV9PSDlCSJEXo66rTpzFW9YUxOkUCu2wyB2J1mfrUpa8r7Jwe
- nqGRsCTdYhJ+ZRdK952/cy/kmiYomkRBWcU4njEM6d9nzmpwVT0SOOIpUtvacQ7O7sym7bbZs
- 6r/MwA0EX3RZ4/f5u3DVdamgxZDo2LDxh44zlzFV/BmUQddnGFSGqD/+YYnlAdCscw1EQWNkX
- FGA/vb9KwrvLw1KdcZRUSym5UmmwX1Sf4wZ49iHKZzaOcCL1ydmJ+XXcy3wzxp9a2Q0eDW2Ag
- SqPFaiaA8reOYNcUN8rfMOGNEMqfiMqYGusUthCdQ+GIZgOzpU1ShOtt+EqaiVffBALok/Qc3
- THff9d7ViTjuWGNS6y6PIaIVLw1CpWc9OGiIHLUf1L7lcRhrhG0Tjsay6VNgstqVAddj34Bmu
- aWHhsdXIys6KiGB3m9315izLSxHLWLNpSvSHp2HpTmaQajNedbA+Zj6sS5LzCkUJj+6w3pdSr
- 7hCH2Mc1/5oe8bJHBwEuxlzbQatJueglT5pz3kildCL9r9mzuiasq6WDayjahwlbdsBdX8XA2
- RaCnGNP8TV7EejnFvxvweRa2PJ3yJ5gY2AadBGV9VuLWtE/cLzxYdQ/7mo6g9G5Oor/6mVhD/
- WizakXU+B7Mlbxkifl3JCCzqpUZJ0BSGSgSZ38WdbS5J5QC9fJ1WKAKEt6j1DRlPJq9PaRzYt
- 4+CKDgPWlpx48k0VFRiJmtCUj7HM3oTNgqyJxPl/Qqyb0=
+UI-OutboundReport: notjunk:1;M01:P0:Ia25sJgR3Dc=;8lRgBlwp0Y2QTVFhzcJ/B6ufy41
+ 4TEVMnLYOtPZs2tmU+1s4MvSLfVU6KcTQeFgOuqvZXj+kjkg2qFgK7NraWNE3l/ZVS62UZR96
+ EGqHbKbcwyOMrH/2ArsyD2B5uAKyTNbC3YuPVUhXSiQQdSIWsbtaHJsOYd7sEfLVz34vg+ENE
+ H5m7+wl/4oAap5wQnbs5bJn3IISaqe/vFCHhHR/apc/pWTpvaNYTgrtCUURR+b0izenwHir1D
+ x5x7nD6HmUDK17fzZchDCA+aHaEO+Vh7FbPybLMdNCeZaBov4LEJLlqvzY5lcch+ZzLvViyg2
+ ZR+X+zD2LZIOXMPwDnzVjFTezfECPVZt/50dUCZYUHv1RzbUIHsgBJgZaMHghjv2+R1Bz5xtL
+ zTK4QRXL0LHIwigdVLsAwj03Wn+Ij3t0rbO5hq0/pLP1pC1Ad2uJn+IU0tZKkcD2HlOuaCZwx
+ OAwNFPpkVHkfntwwYkwEwyW00vh1qOV304cftWLnhEo4RtJx+fWMnOK9W7wlrp6NXkayMmohF
+ Df30SGDx6F4N9PHjQm1BMr3OLs1MKJ0tnFjvJlUf2VFHpU4f7gHVomItNzrswOICQyOSqMJEX
+ VmQk0CqTmYnXsnuHzuJuq9uw3gUNjL0cfdPBODoMei8ptDrhqxps0INkMxwS7MRYntECFBkAg
+ ED3PSTQnudfaMnYelTC+yU+bxXlHjBlppKvYObHVCHJCeHONaCTinvn7duMvuBq1roMa/tWUS
+ x3oSwe0IV0uIl1xQbDVsSicbhpKtRkhyQ5TiTpi/thH9pP9dNsQ+9qcq0Gk06nMfNx0d5SuMI
+ If9fu82TkuuXLr8siNdtFzmpwrHLnn+XoWriKoIpSAuEg=
 
-Am 26.05.24 um 22:07 schrieb Sasha Levin:
+Am 26.05.24 um 22:14 schrieb Sasha Levin:
 
 > This is a note to let you know that I've just added the patch titled
 >
 >      platform/x86: xiaomi-wmi: Fix race condition when reporting key eve=
 nts
 >
-> to the 5.15-stable tree which can be found at:
+> to the 5.10-stable tree which can be found at:
 >      http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue=
 .git;a=3Dsummary
 >
 > The filename of the patch is:
 >       platform-x86-xiaomi-wmi-fix-race-condition-when-repo.patch
-> and it can be found in the queue-5.15 subdirectory.
+> and it can be found in the queue-5.10 subdirectory.
 >
 > If you, or anyone else, feels it should not be added to the stable tree,
 > please let <stable@vger.kernel.org> know about it.
@@ -120,7 +120,7 @@ Thanks,
 Armin Wolf
 
 >
-> commit 1f436551dd453c28c23f800e7273136e526197cb
+> commit 6f4e7901c3ed3c0bd3da7af5854dbb765fad2e00
 > Author: Armin Wolf <W_Armin@gmx.de>
 > Date:   Tue Apr 2 16:30:57 2024 +0200
 >
