@@ -1,106 +1,122 @@
-Return-Path: <stable+bounces-46253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FF68CF3F8
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 13:01:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192778CF42F
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 14:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BB8F1F21C5C
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:01:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4531A1C20A5F
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 12:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6480B664;
-	Sun, 26 May 2024 11:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05E6D30B;
+	Sun, 26 May 2024 12:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cJ+z3s7n";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9E6rWNlr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lM8VfTo3"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916D479C0;
-	Sun, 26 May 2024 11:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDDDC13B;
+	Sun, 26 May 2024 12:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716721283; cv=none; b=CqSGeFWf3HjTkUQOYo079J62clzJuUZT+xFUo/Dsa7BgEnlC0iV63VU0dXv51ZoOLJr/2bbZ9EV7077CE/P/J90lXx6Gy7mRCvjBNbBm2W93tYIvBfJf8b1yawFY1OCXPauMY4CenH1AKafBlclnf6cNpMYb8gZgOEIC0bdcAr8=
+	t=1716725568; cv=none; b=pC2Q3CI8Amx7mvrFH3nYeyQzjyft1nLUecMaQvOF2sZqKGBrUcCxTOJoniEFzQoFExPs6yufu777pNgrGlcl2+qQbvCmPIz/dpvhcJaTCFK2rpMnMDAvVq9mJozdosgQ+RFx2KP+UeOeGO9jFH+6Eb8TfUnJ9u/yrOoYwStpZ6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716721283; c=relaxed/simple;
-	bh=6e+h3k3AZ4xi2cYwU9pOafFSVaC00lSZkE0jcbqcV3s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IRc8xwANe7fLQA0EtQKm37x6PBe6jNsIHphSZOpaWRw9+/ZMqHae61g9s1z4xsiPk8Zt0fBMsJVgQmqTHjmkK+shQg4aw0IATXSEBItMIxZkqswqCbFx5UKUoos4OSwHgZmsKgjI+8LziFV3hWaGTsxaI+q5pa49wvZgYBXFh6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cJ+z3s7n; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9E6rWNlr; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1716721274;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=t2Uz48YRsUOXeGZ9DVsANdtln0IbDr3I+aFSlZRM3WI=;
-	b=cJ+z3s7nk0Gp7f9D4DJzEQ/CuZwEJLOxzlVVbBIkA2z/NXZpKArFHcQqGF50fczr1iPJlp
-	gT6hOT56hnY4ui78+Pwa9Sp2Dx+brf4ii0v0Evv3QFke+pvS0MaXaI/WgDiqi+WWIXclfP
-	7rRkWQwKuy4u7Vwrik4nrKEF4FxiGL1dRM4wuLSjUDrisUUt/gDbPia9iErLESPSK8MdPr
-	rx0fZmY+DQxZjDwIzoTNBAnCtv31ssmh2El/j1pIqyNrVnULVGymlLgIC9uahERdM0YBZO
-	nfvFyCQ0M0Xo7uBZsZIL89FTBg57DtwG935Uq5gzbZxLSj/QoI8dBRFAZLOMzg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1716721274;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=t2Uz48YRsUOXeGZ9DVsANdtln0IbDr3I+aFSlZRM3WI=;
-	b=9E6rWNlr93vWj3BRUMTK3cmikVL1VaaaPC9QIWtLSafLmmoHGrMk5F4SfqY7UVXXIfWpWY
-	Bm8URRST7vSd3SDg==
-To: Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH] riscv: enable HAVE_ARCH_HUGE_VMAP for XIP kernel
-Date: Sun, 26 May 2024 13:01:04 +0200
-Message-Id: <20240526110104.470429-1-namcao@linutronix.de>
+	s=arc-20240116; t=1716725568; c=relaxed/simple;
+	bh=ZMVFJSRS2yxYjeJpxLja6BCPls0KW8ksKZKmGSK3Sl4=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=SuG8MbCtEGEr8X5aquutVgwR1iBqy5IMX2QJ8NgmbdVQUJZZYpOxCQgxGFyceWvJ4OEICgWsNaPFhh0WY961rJRUcBSeMVolSqI29STC5iASeh3hl6VTAjcQhru+NJCKI4JwTRlzOxpksxu6kRLTCYuD2SJymWXUbxd56nRiMCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lM8VfTo3; arc=none smtp.client-ip=209.85.210.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6f8d0a1e500so2012458a34.3;
+        Sun, 26 May 2024 05:12:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716725566; x=1717330366; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YZMEk0MJ7v95mx9JD25KgC5mIBJ6kyKaibPLYwKl5lw=;
+        b=lM8VfTo3iyuir28gy8/DY7LCGpMqL1+SuW0jggP62mpGyzh7Yy7e+9mkj07vNUyX8i
+         hdUThvLzCFSuuT3HNKKFqrwof9NWYLpMCOaHqVkZpQTtveyBtWr0dWl2e42WHHNdczRG
+         h1L5kJX9dyEsGMBdAC41nBTbLUYVtlkyuuw6f8JwNND2GGvH59vBI0HpBmuW51vEN7kI
+         0FElWON3veHluuMxSCkN6aa0EPu03ytKtQSM2VQVjiwN5GcWR7PN8MEAI6/zpwUo07mV
+         K6XPRlVpSI87H8DkEz999BwjWRmE6KLePW4My2cHBXe5pGHOIm5Q3RExwpW6lSzp20W7
+         dK6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716725566; x=1717330366;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YZMEk0MJ7v95mx9JD25KgC5mIBJ6kyKaibPLYwKl5lw=;
+        b=Qy2DYIAFdUOFbaI/FFT5bXXvLFuG0dnncWXE8F3gNPms1Ey7XXxh+w2+YWxtaAEhYp
+         wz3LemS6Babb9yz6v9+HGLIQqdceOTCBzAHgTtiZ6zg58dXI7q8SsiLSpeSZK0l/sGdV
+         qa0KYCkWTOct8Xx/qXBx/WXCQYdsi+LDH1JFsky7vmh2srytS0hEEAndvBkR5HEaCsvd
+         3zbVd0Rt8ie9ZUc4sjX94jucrAb5a2Km/dakbyuZpwrQOvNfmIDVe9h6rpbQsc2o5aQW
+         nfTK+D1LBaifr7uEGcx0xF9ykgo/pp3mL8eljyRyyyftHOq0oh42AAKSrYFwdAPQshyo
+         GchA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPbvalsSk+9xmUCZ4XolKqSOouJsRcck4gtGdx7ftWP2gP+TzqIYTICPccr+dCpvwzCw64fy3jpxGV0InYoJ3GkyioaJrN
+X-Gm-Message-State: AOJu0Yz3YBOkokLligGYxZ2276b/BJLI5UwRfVC9WciX29cdXZFwYG2j
+	B9uINxfmwPt8vk4920LUxbaxjisiZl+W5qrGPOsS8OT83yRqTvEZqElAR6wD9+2IHAoRdcqlwAf
+	njJFYAaDEtoLEnfjPEUUYZuGKGaajo6aDJDk=
+X-Google-Smtp-Source: AGHT+IE1MDGE9QLtBK+sakiMMrwhyyPKERzoTeqoNJqSNZGTCFkYi0jLEa9juBszHLzTsLGXkA1ZJEME1kpVEJY/jbE=
+X-Received: by 2002:a05:6870:fba9:b0:24c:afd5:1135 with SMTP id
+ 586e51a60fabf-24cafd5123dmr6721138fac.18.1716725565758; Sun, 26 May 2024
+ 05:12:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Chris Rankin <rankincj@gmail.com>
+Date: Sun, 26 May 2024 13:12:34 +0100
+Message-ID: <CAK2bqV+2iAG8u9vVqYNFho8ccjE88LWwoksH+-7765g6X4CCDg@mail.gmail.com>
+Subject: RE: [BUG] NPE with Linux 6.8.10 and Linux 6.8.11 SCSI optical drive.
+To: linux-block@vger.kernel.org, Linux Stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-HAVE_ARCH_HUGE_VMAP also works on XIP kernel, so remove its dependency on
-!XIP_KERNEL.
+FWW this is the output from faddr2line for Linux 6.8.11:
 
-This also fixes a boot problem for XIP kernel introduced by the commit in
-"Fixes:". This commit used huge page mapping for vmemmap, but huge page
-vmap was not enabled for XIP kernel.
+$ scripts/faddr2line --list vmlinux blk_try_enter_queue+0xc/0x75
+blk_try_enter_queue+0xc/0x75:
 
-Fixes: ff172d4818ad ("riscv: Use hugepage mappings for vmemmap")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: <stable@vger.kernel.org>
----
-This patch replaces:
-https://patchwork.kernel.org/project/linux-riscv/patch/20240508173116.2866192-1-namcao@linutronix.de/
+__ref_is_percpu at include/linux/percpu-refcount.h:174 (discriminator 2)
+ 169          * READ_ONCE() is required when fetching it.
+ 170          *
+ 171          * The dependency ordering from the READ_ONCE() pairs
+ 172          * with smp_store_release() in __percpu_ref_switch_to_percpu().
+ 173          */
+>174<        percpu_ptr = READ_ONCE(ref->percpu_count_ptr);
+ 175
+ 176         /*
+ 177          * Theoretically, the following could test just ATOMIC; however,
+ 178          * then we'd have to mask off DEAD separately as DEAD may be
+ 179          * visible without ATOMIC if we race with percpu_ref_kill().  DEAD
 
- arch/riscv/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+(inlined by) percpu_ref_tryget_live_rcu at
+include/linux/percpu-refcount.h:282 (discriminator 2)
+ 277         unsigned long __percpu *percpu_count;
+ 278         bool ret = false;
+ 279
+ 280         WARN_ON_ONCE(!rcu_read_lock_held());
+ 281
+>282<        if (likely(__ref_is_percpu(ref, &percpu_count))) {
+ 283             this_cpu_inc(*percpu_count);
+ 284             ret = true;
+ 285         } else if (!(ref->percpu_count_ptr & __PERCPU_REF_DEAD)) {
+ 286             ret = atomic_long_inc_not_zero(&ref->data->count);
+ 287         }
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index b94176e25be1..0525ee2d63c7 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -106,7 +106,7 @@ config RISCV
- 	select HAS_IOPORT if MMU
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HUGE_VMALLOC if HAVE_ARCH_HUGE_VMAP
--	select HAVE_ARCH_HUGE_VMAP if MMU && 64BIT && !XIP_KERNEL
-+	select HAVE_ARCH_HUGE_VMAP if MMU && 64BIT
- 	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL
- 	select HAVE_ARCH_JUMP_LABEL_RELATIVE if !XIP_KERNEL
- 	select HAVE_ARCH_KASAN if MMU && 64BIT
--- 
-2.39.2
-
+(inlined by) blk_try_enter_queue at block/blk.h:43 (discriminator 2)
+ 38     void submit_bio_noacct_nocheck(struct bio *bio);
+ 39
+ 40     static inline bool blk_try_enter_queue(struct request_queue *q, bool pm)
+ 41     {
+ 42         rcu_read_lock();
+>43<        if (!percpu_ref_tryget_live_rcu(&q->q_usage_counter))
+ 44             goto fail;
+ 45
+ 46         /*
+ 47          * The code that increments the pm_only counter must ensure that the
+ 48          * counter is globally visible before the queue is unfrozen.
 
