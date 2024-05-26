@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-46197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3A58CF345
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E38C88CF347
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD012282015
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:43:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A041D281E56
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF44179AB;
-	Sun, 26 May 2024 09:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FE421101;
+	Sun, 26 May 2024 09:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NiOeOkKh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OPVcVC8L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EEA200A9;
-	Sun, 26 May 2024 09:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF75F20B02;
+	Sun, 26 May 2024 09:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716716528; cv=none; b=LPFN//StPYKA6xm8NzabvX7GDsbaUlClQ+G6G7XheP42zqyhwkwS6jVcpA2w3A+36Anq8AuZY+WL6FneFIevK8vLG2fhZxo27MiBSMazXPAPVMWPisNiK8xmNec8zLgjysTlub0r1kN+1xAJiC3+KOkdg11efXzmoX4v1rsPTcg=
+	t=1716716529; cv=none; b=oCphnj8DMqtg4gyY9MKUo1WKmk6El2uQjibXztoBFhpWUYh7PNwn4BI5hbqW3nCVh7/+7pI3jCoakvVXgwGhSk/ZcYDM4/gKQ7QujYv5HGFsMypM3bLLvvrr82ExCLxRoOADz5XCi5MgYCPBxQcBoTALU9vF3ltOfgwtjRZT10Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716716528; c=relaxed/simple;
-	bh=BxjzAQhkvmNaBabXRvXN9XXUdjuRcVcI4lOrk8ASs6I=;
+	s=arc-20240116; t=1716716529; c=relaxed/simple;
+	bh=af/ol9iL4gMIhU2wLPXuPquFvHSnfZuzbvNlF9lJ1ZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MrO5C9jYz0OsPKoo9gagUGc1rmJ3nx0/YWAOupaZ9uIZ8AEIdnFxPU37CEQUcR05lZWmFGgK5gmMABS5HqK2z5V8QN3BP1DCBmWfIn/n0terhXGWAwf9sKew1t6Db3aBkXCbC1SzFbFruK+wclYXp3i1R3W4glz4/3LXto13XlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NiOeOkKh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2755AC2BD10;
-	Sun, 26 May 2024 09:42:06 +0000 (UTC)
+	 MIME-Version; b=VO8YEUlKxEpOwj9FS4e5+c7rjaWX0eGCY0zR8khfeSE75thlqwBOvXa5EH6AtOXOUf9ntPkgJjZZi9Fp6QD/SVQuV1Q/U8EGIsPTqdpF6hDJ/sgQ6mEvONCltcnc78SnBpzvnZFyj1nT82GRPOh7KL292tYg89XA1WYNXy+uQAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OPVcVC8L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1298C32781;
+	Sun, 26 May 2024 09:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716716527;
-	bh=BxjzAQhkvmNaBabXRvXN9XXUdjuRcVcI4lOrk8ASs6I=;
+	s=k20201202; t=1716716528;
+	bh=af/ol9iL4gMIhU2wLPXuPquFvHSnfZuzbvNlF9lJ1ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NiOeOkKh3ZS+yUtQ4suK1cf93pFVItnbt1c1r6Eaf1NxQweKaDfUFBSJDCMSJcS+t
-	 VKK5SLglXbYlXZ2iPPtDgiBTc/hf0jvzTFpYraNMJn6uDJl3QrYMgpH8BNeZmeqOuU
-	 fHkjjJgnmG9TJ/z7gmbKiP2K/b6CD2CuI9seWxFBeZcG/8F7yQF/k6FDkdlnXHA0aR
-	 280sy9XE1jb/Q1OVeoEqn4w/T/t9MfJCA/XhbhrSgMatQLhTy+694rimRa3Q02+NZ/
-	 LdkzNleuEBQGd9c4nLp3HgC80VB+PiEIXqjD2o/kJdR+zbu5hMlsS428x5CtE0ljyQ
-	 5nEwxv/V1fq5w==
+	b=OPVcVC8LtOzuK/gIEVhCldNm9mIpQRz9hSRoIpPohYGaV7q12Bo6DBxRE2V6JaFR9
+	 g4fpP+4R64JSYKfen3ls4ezI4JPDm+JH7D9fl/q2pkwUeu5G6zUUOED99y8Ly4p2De
+	 e9dxz8ry/oFs3q2fY2/imA/QmM3VLEV+SZ18Kh52M8p4Vb2C4twLmFGze5sDQWnEGe
+	 HEVluyheznLvn9b5la+KuSer9AyZRDBbiqUVBuf67KtoBBqQtqUrbQjYsfu+m2I7h0
+	 pUnVZwJes45nTG3YS6eV3J/NTmf8NF0d/cbU6QMoCU76mW01xAfSn9yBNAKmgOomQi
+	 O6URJdd+fpXfg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zqiang <qiang.zhang1211@gmail.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
+Cc: Tzung-Bi Shih <tzungbi@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	dave@stgolabs.net,
-	josh@joshtriplett.org,
-	frederic@kernel.org,
-	neeraj.upadhyay@kernel.org,
-	joel@joelfernandes.org,
-	boqun.feng@gmail.com,
-	rcu@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 09/15] rcutorture: Fix invalid context warning when enable srcu barrier testing
-Date: Sun, 26 May 2024 05:41:41 -0400
-Message-ID: <20240526094152.3412316-9-sashal@kernel.org>
+	chrome-platform@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.9 10/15] platform/chrome: cros_usbpd_logger: provide ID table for avoiding fallback match
+Date: Sun, 26 May 2024 05:41:42 -0400
+Message-ID: <20240526094152.3412316-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240526094152.3412316-1-sashal@kernel.org>
 References: <20240526094152.3412316-1-sashal@kernel.org>
@@ -72,117 +66,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.1
 Content-Transfer-Encoding: 8bit
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 668c0406d887467d53f8fe79261dda1d22d5b671 ]
+[ Upstream commit e0e59c5335a0a038058a080474c34fe04debff33 ]
 
-When the torture_type is set srcu or srcud and cb_barrier is
-non-zero, running the rcutorture test will trigger the
-following warning:
+Instead of using fallback driver name match, provide ID table[1] for the
+primary match.
 
-[  163.910989][    C1] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-[  163.910994][    C1] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-[  163.910999][    C1] preempt_count: 10001, expected: 0
-[  163.911002][    C1] RCU nest depth: 0, expected: 0
-[  163.911005][    C1] INFO: lockdep is turned off.
-[  163.911007][    C1] irq event stamp: 30964
-[  163.911010][    C1] hardirqs last  enabled at (30963): [<ffffffffabc7df52>] do_idle+0x362/0x500
-[  163.911018][    C1] hardirqs last disabled at (30964): [<ffffffffae616eff>] sysvec_call_function_single+0xf/0xd0
-[  163.911025][    C1] softirqs last  enabled at (0): [<ffffffffabb6475f>] copy_process+0x16ff/0x6580
-[  163.911033][    C1] softirqs last disabled at (0): [<0000000000000000>] 0x0
-[  163.911038][    C1] Preemption disabled at:
-[  163.911039][    C1] [<ffffffffacf1964b>] stack_depot_save_flags+0x24b/0x6c0
-[  163.911063][    C1] CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W          6.8.0-rc4-rt4-yocto-preempt-rt+ #3 1e39aa9a737dd024a3275c4f835a872f673a7d3a
-[  163.911071][    C1] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-[  163.911075][    C1] Call Trace:
-[  163.911078][    C1]  <IRQ>
-[  163.911080][    C1]  dump_stack_lvl+0x88/0xd0
-[  163.911089][    C1]  dump_stack+0x10/0x20
-[  163.911095][    C1]  __might_resched+0x36f/0x530
-[  163.911105][    C1]  rt_spin_lock+0x82/0x1c0
-[  163.911112][    C1]  spin_lock_irqsave_ssp_contention+0xb8/0x100
-[  163.911121][    C1]  srcu_gp_start_if_needed+0x782/0xf00
-[  163.911128][    C1]  ? _raw_spin_unlock_irqrestore+0x46/0x70
-[  163.911136][    C1]  ? debug_object_active_state+0x336/0x470
-[  163.911148][    C1]  ? __pfx_srcu_gp_start_if_needed+0x10/0x10
-[  163.911156][    C1]  ? __pfx_lock_release+0x10/0x10
-[  163.911165][    C1]  ? __pfx_rcu_torture_barrier_cbf+0x10/0x10
-[  163.911188][    C1]  __call_srcu+0x9f/0xe0
-[  163.911196][    C1]  call_srcu+0x13/0x20
-[  163.911201][    C1]  srcu_torture_call+0x1b/0x30
-[  163.911224][    C1]  rcu_torture_barrier1cb+0x4a/0x60
-[  163.911247][    C1]  __flush_smp_call_function_queue+0x267/0xca0
-[  163.911256][    C1]  ? __pfx_rcu_torture_barrier1cb+0x10/0x10
-[  163.911281][    C1]  generic_smp_call_function_single_interrupt+0x13/0x20
-[  163.911288][    C1]  __sysvec_call_function_single+0x7d/0x280
-[  163.911295][    C1]  sysvec_call_function_single+0x93/0xd0
-[  163.911302][    C1]  </IRQ>
-[  163.911304][    C1]  <TASK>
-[  163.911308][    C1]  asm_sysvec_call_function_single+0x1b/0x20
-[  163.911313][    C1] RIP: 0010:default_idle+0x17/0x20
-[  163.911326][    C1] RSP: 0018:ffff888001997dc8 EFLAGS: 00000246
-[  163.911333][    C1] RAX: 0000000000000000 RBX: dffffc0000000000 RCX: ffffffffae618b51
-[  163.911337][    C1] RDX: 0000000000000000 RSI: ffffffffaea80920 RDI: ffffffffaec2de80
-[  163.911342][    C1] RBP: ffff888001997dc8 R08: 0000000000000001 R09: ffffed100d740cad
-[  163.911346][    C1] R10: ffffed100d740cac R11: ffff88806ba06563 R12: 0000000000000001
-[  163.911350][    C1] R13: ffffffffafe460c0 R14: ffffffffafe460c0 R15: 0000000000000000
-[  163.911358][    C1]  ? ct_kernel_exit.constprop.3+0x121/0x160
-[  163.911369][    C1]  ? lockdep_hardirqs_on+0xc4/0x150
-[  163.911376][    C1]  arch_cpu_idle+0x9/0x10
-[  163.911383][    C1]  default_idle_call+0x7a/0xb0
-[  163.911390][    C1]  do_idle+0x362/0x500
-[  163.911398][    C1]  ? __pfx_do_idle+0x10/0x10
-[  163.911404][    C1]  ? complete_with_flags+0x8b/0xb0
-[  163.911416][    C1]  cpu_startup_entry+0x58/0x70
-[  163.911423][    C1]  start_secondary+0x221/0x280
-[  163.911430][    C1]  ? __pfx_start_secondary+0x10/0x10
-[  163.911440][    C1]  secondary_startup_64_no_verify+0x17f/0x18b
-[  163.911455][    C1]  </TASK>
+[1]: https://elixir.bootlin.com/linux/v6.8/source/drivers/base/platform.c#L1353
 
-This commit therefore use smp_call_on_cpu() instead of
-smp_call_function_single(), make rcu_torture_barrier1cb() invoked
-happens on task-context.
-
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20240329075630.2069474-7-tzungbi@kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/platform/chrome/cros_usbpd_logger.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 4a2cf312e695a..cf2e907534a8d 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -3041,11 +3041,12 @@ static void rcu_torture_barrier_cbf(struct rcu_head *rcu)
- }
+diff --git a/drivers/platform/chrome/cros_usbpd_logger.c b/drivers/platform/chrome/cros_usbpd_logger.c
+index f618757f8b321..930c2f47269f6 100644
+--- a/drivers/platform/chrome/cros_usbpd_logger.c
++++ b/drivers/platform/chrome/cros_usbpd_logger.c
+@@ -7,6 +7,7 @@
  
- /* IPI handler to get callback posted on desired CPU, if online. */
--static void rcu_torture_barrier1cb(void *rcu_void)
-+static int rcu_torture_barrier1cb(void *rcu_void)
- {
- 	struct rcu_head *rhp = rcu_void;
+ #include <linux/ktime.h>
+ #include <linux/math64.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/platform_data/cros_ec_commands.h>
+ #include <linux/platform_data/cros_ec_proto.h>
+@@ -249,6 +250,12 @@ static int __maybe_unused cros_usbpd_logger_suspend(struct device *dev)
+ static SIMPLE_DEV_PM_OPS(cros_usbpd_logger_pm_ops, cros_usbpd_logger_suspend,
+ 			 cros_usbpd_logger_resume);
  
- 	cur_ops->call(rhp, rcu_torture_barrier_cbf);
-+	return 0;
- }
- 
- /* kthread function to register callbacks used to test RCU barriers. */
-@@ -3071,11 +3072,9 @@ static int rcu_torture_barrier_cbs(void *arg)
- 		 * The above smp_load_acquire() ensures barrier_phase load
- 		 * is ordered before the following ->call().
- 		 */
--		if (smp_call_function_single(myid, rcu_torture_barrier1cb,
--					     &rcu, 1)) {
--			// IPI failed, so use direct call from current CPU.
-+		if (smp_call_on_cpu(myid, rcu_torture_barrier1cb, &rcu, 1))
- 			cur_ops->call(&rcu, rcu_torture_barrier_cbf);
--		}
++static const struct platform_device_id cros_usbpd_logger_id[] = {
++	{ DRV_NAME, 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(platform, cros_usbpd_logger_id);
 +
- 		if (atomic_dec_and_test(&barrier_cbs_count))
- 			wake_up(&barrier_wq);
- 	} while (!torture_must_stop());
+ static struct platform_driver cros_usbpd_logger_driver = {
+ 	.driver = {
+ 		.name = DRV_NAME,
+@@ -256,10 +263,10 @@ static struct platform_driver cros_usbpd_logger_driver = {
+ 	},
+ 	.probe = cros_usbpd_logger_probe,
+ 	.remove_new = cros_usbpd_logger_remove,
++	.id_table = cros_usbpd_logger_id,
+ };
+ 
+ module_platform_driver(cros_usbpd_logger_driver);
+ 
+ MODULE_LICENSE("GPL v2");
+ MODULE_DESCRIPTION("Logging driver for ChromeOS EC USBPD Charger.");
+-MODULE_ALIAS("platform:" DRV_NAME);
 -- 
 2.43.0
 
