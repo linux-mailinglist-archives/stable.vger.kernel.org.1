@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-46229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6CC8CF39A
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:51:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A50C68CF39D
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625781F21AA0
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 351A92823E6
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91173175A1;
-	Sun, 26 May 2024 09:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52C712AAF8;
+	Sun, 26 May 2024 09:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MAtnp7vJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYkNZVGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46ABB12AACA;
-	Sun, 26 May 2024 09:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4D612AAC0;
+	Sun, 26 May 2024 09:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716716595; cv=none; b=tpOb5qF+OHh/g1kzznRSwWMFSYFYax6HJ102lF0pX30i6NU4W1vjA8BFO3K7PpotPyx2CDfM3YN6H+gtexODPrLxgXdH6BQG6akrfic4oDc363EoD4/GxoOa3kxzdMCFR4P4gJlSzUHcknLmktjjhfiF7Ch+2ew0SxjhrqiOEXA=
+	t=1716716596; cv=none; b=imJVfMR8rDtA9ILN4ShyB8kDgeRSg9v8hRbiUbvSnMpPQL9gJeORbR/2VJU1wKJxP8B/LgD5EdqlG/91BByagVaQBfRcKG6njZ3MLcLWH0sZHrkwLkpc4y2Tw6gbQkAeVS2YYU+1Hq4Xi7wFjypL3kBFVHq7dWSERvY45JT5ZSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716716595; c=relaxed/simple;
-	bh=ikzD/pPJyDYEsC44NSBTdvkAV6GGd/PPD7UKDhPhev4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZbHfKEgh1aPos2gBBjyWuU29Kslr8aMDiT65YlJE1HxTRJr/aodN7m45sd6ZVNodAd20mR+Js8US6WMDTpzixQqjqy2EEZpAn4MQFrB0feoxXJc47U5DEqLsZq9XfOP5ODaSDhtbQ5wLwXMCQ1VpZoX/ICqLEBsdXYFlL68v65Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MAtnp7vJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD72AC32782;
-	Sun, 26 May 2024 09:43:13 +0000 (UTC)
+	s=arc-20240116; t=1716716596; c=relaxed/simple;
+	bh=TPR7es+CZ0E3Rfms9HXS3UyLVh9PuTj3jC2tjEXJq1g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rGDk26Da0ZbXeuEs/FXuIwOeXH4PXZfuXB8AQ9TxZn2qIumnGx2sDeAre34IggIGvd3Ha5e6mBYjcDD8t5RCVjzYT1ONLhaqNQaM03Y9KbZcud6DHCBMqOyxrJn6KECTiCo7kjWNzcrAgElAIuUYG8IHpeglwsyXn+wODS2H1vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYkNZVGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523B0C32781;
+	Sun, 26 May 2024 09:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716716594;
-	bh=ikzD/pPJyDYEsC44NSBTdvkAV6GGd/PPD7UKDhPhev4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MAtnp7vJpb90jMSvPcOF519uEfG0nwJX2yJ/fino+jLhiuyAFR3MjEpp2+skgHo1b
-	 fifKgmOSDptkJv1IhJIwic/a8Xw6cI/a3W2bYcbxyOaKx8rSrOy+gwJVpYgffONiRJ
-	 iS+axllub0UWm/CXOpV86UCCeSoUU6DRpN4LskIdX/6MXlPgGLI0SjlnCHKAfdZy9x
-	 nrkPR/gSyMVG65ABn7fMYSevd7fz7qG5Vh1hzmM+hX+SPGxS36vztkofkwMd46fwiR
-	 erQFTX6wGetu1DlDU0YuZNS6pU/lhaddvKLmaTd/EDhlvqMwkkgVrCkqgp9KZkHVUh
-	 UgAboiQquhV/g==
+	s=k20201202; t=1716716596;
+	bh=TPR7es+CZ0E3Rfms9HXS3UyLVh9PuTj3jC2tjEXJq1g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gYkNZVGh5MB1Os/+mCy+utLTCjXfu+pnQEpDCjxbLs/fVAxZlcu38BSEA2pcWA6Gs
+	 gjwaeSQfqZ7p0jY6djscnkciOlWi98kYJom1+L1BlpgvycbKwSm73a5Pe2LVx+ml18
+	 mveBsoXexiykzfrYGsq0+gTh6x6d17EqBtMWauFhRH82zCVlcKqGjzSwW51BMZti5G
+	 xOomIqMCfWZV8NfnffzKUXbVvLItJQ93JAeBc6YMq1usPttEhlnn96yLb0s4n9UFZc
+	 PETpsgbB+AVgYbE16nLCai031q/M4fQ1pkz5uikidxYV7ec2IWj1IMVVc5y2FlyiwC
+	 LJ1Ya4gysrUCQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	axboe@kernel.dk,
-	linux-raid@vger.kernel.org,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 1/9] md: Fix overflow in is_mddev_idle
-Date: Sun, 26 May 2024 05:43:02 -0400
-Message-ID: <20240526094312.3413460-1-sashal@kernel.org>
+	steffen.klassert@secunet.com,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 2/9] padata: Disable BH when taking works lock on MT path
+Date: Sun, 26 May 2024 05:43:03 -0400
+Message-ID: <20240526094312.3413460-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240526094312.3413460-1-sashal@kernel.org>
+References: <20240526094312.3413460-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,102 +67,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.91
 Content-Transfer-Encoding: 8bit
 
-From: Li Nan <linan122@huawei.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 3f9f231236ce7e48780d8a4f1f8cb9fae2df1e4e ]
+[ Upstream commit 58329c4312031603bb1786b44265c26d5065fe72 ]
 
-UBSAN reports this problem:
+As the old padata code can execute in softirq context, disable
+softirqs for the new padata_do_mutithreaded code too as otherwise
+lockdep will get antsy.
 
-  UBSAN: Undefined behaviour in drivers/md/md.c:8175:15
-  signed integer overflow:
-  -2147483291 - 2072033152 cannot be represented in type 'int'
-  Call trace:
-   dump_backtrace+0x0/0x310
-   show_stack+0x28/0x38
-   dump_stack+0xec/0x15c
-   ubsan_epilogue+0x18/0x84
-   handle_overflow+0x14c/0x19c
-   __ubsan_handle_sub_overflow+0x34/0x44
-   is_mddev_idle+0x338/0x3d8
-   md_do_sync+0x1bb8/0x1cf8
-   md_thread+0x220/0x288
-   kthread+0x1d8/0x1e0
-   ret_from_fork+0x10/0x18
-
-'curr_events' will overflow when stat accum or 'sync_io' is greater than
-INT_MAX.
-
-Fix it by changing sync_io, last_events and curr_events to 64bit.
-
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240117031946.2324519-2-linan666@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
+Reported-by: syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c        | 7 ++++---
- drivers/md/md.h        | 4 ++--
- include/linux/blkdev.h | 2 +-
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ kernel/padata.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 788acc81e7a84..7b7c048e2670a 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -8541,14 +8541,15 @@ static int is_mddev_idle(struct mddev *mddev, int init)
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 7bef7dae3db54..0261bced7eb6e 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -98,7 +98,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
  {
- 	struct md_rdev *rdev;
- 	int idle;
--	int curr_events;
-+	long long curr_events;
+ 	int i;
  
- 	idle = 1;
- 	rcu_read_lock();
- 	rdev_for_each_rcu(rdev, mddev) {
- 		struct gendisk *disk = rdev->bdev->bd_disk;
--		curr_events = (int)part_stat_read_accum(disk->part0, sectors) -
--			      atomic_read(&disk->sync_io);
-+		curr_events =
-+			(long long)part_stat_read_accum(disk->part0, sectors) -
-+			atomic64_read(&disk->sync_io);
- 		/* sync IO will cause sync_io to increase before the disk_stats
- 		 * as sync_io is counted when a request starts, and
- 		 * disk_stats is counted when it completes.
-diff --git a/drivers/md/md.h b/drivers/md/md.h
-index 4f0b480974552..5910527514db2 100644
---- a/drivers/md/md.h
-+++ b/drivers/md/md.h
-@@ -50,7 +50,7 @@ struct md_rdev {
+-	spin_lock(&padata_works_lock);
++	spin_lock_bh(&padata_works_lock);
+ 	/* Start at 1 because the current task participates in the job. */
+ 	for (i = 1; i < nworks; ++i) {
+ 		struct padata_work *pw = padata_work_alloc();
+@@ -108,7 +108,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
+ 		padata_work_init(pw, padata_mt_helper, data, 0);
+ 		list_add(&pw->pw_list, head);
+ 	}
+-	spin_unlock(&padata_works_lock);
++	spin_unlock_bh(&padata_works_lock);
  
- 	sector_t sectors;		/* Device size (in 512bytes sectors) */
- 	struct mddev *mddev;		/* RAID array if running */
--	int last_events;		/* IO event timestamp */
-+	long long last_events;		/* IO event timestamp */
+ 	return i;
+ }
+@@ -126,12 +126,12 @@ static void __init padata_works_free(struct list_head *works)
+ 	if (list_empty(works))
+ 		return;
  
- 	/*
- 	 * If meta_bdev is non-NULL, it means that a separate device is
-@@ -576,7 +576,7 @@ extern void mddev_unlock(struct mddev *mddev);
- 
- static inline void md_sync_acct(struct block_device *bdev, unsigned long nr_sectors)
- {
--	atomic_add(nr_sectors, &bdev->bd_disk->sync_io);
-+	atomic64_add(nr_sectors, &bdev->bd_disk->sync_io);
+-	spin_lock(&padata_works_lock);
++	spin_lock_bh(&padata_works_lock);
+ 	list_for_each_entry_safe(cur, next, works, pw_list) {
+ 		list_del(&cur->pw_list);
+ 		padata_work_free(cur);
+ 	}
+-	spin_unlock(&padata_works_lock);
++	spin_unlock_bh(&padata_works_lock);
  }
  
- static inline void md_sync_acct_bio(struct bio *bio, unsigned long nr_sectors)
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index e255674a9ee72..02e55676e0283 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -161,7 +161,7 @@ struct gendisk {
- 	struct list_head slave_bdevs;
- #endif
- 	struct timer_rand_state *random;
--	atomic_t sync_io;		/* RAID */
-+	atomic64_t sync_io;		/* RAID */
- 	struct disk_events *ev;
- #ifdef  CONFIG_BLK_DEV_INTEGRITY
- 	struct kobject integrity_kobj;
+ static void padata_parallel_worker(struct work_struct *parallel_work)
 -- 
 2.43.0
 
