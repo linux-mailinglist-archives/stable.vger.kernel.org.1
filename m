@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-46223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2648CF38B
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4F68CF38D
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A11B281006
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:49:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3744F281DC7
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F7B6BFA4;
-	Sun, 26 May 2024 09:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752CC7FBD0;
+	Sun, 26 May 2024 09:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zn4mU1FN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nVxV+VeH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF0C69D29;
-	Sun, 26 May 2024 09:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B3C7C08F;
+	Sun, 26 May 2024 09:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716716581; cv=none; b=tgzAM67/G0YybCQyvQ7CDOHWVpgu7sbSl0Gt2tLdVMEM7FzhlosVtdqW8iVrhZBobGfzzp24pwyQYbmlsCngcrCiejlLFN/HiWoNSa2PmKs2C+Gq3uSp5PmRUTPQbYzMOX+X+Js13w5Rf5MGhz6TuKLpR57eiboKDqZgwcE5q7I=
+	t=1716716583; cv=none; b=M5yqcK2fhjYJeKQYZkHJMdOsNaikS4nl3mHJQERPJyXerYDSUAmurYuLyVaAF0EIQtOLRheAUwqdo4ED9y0IUJWz6ZF73p2b1P4MhPz6gEaPKhLaFqa0zEbgbZu6UfeG1se0wKMHO5Eb05KGZLHCPQN7yuNvL9aBBp6J41TuspE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716716581; c=relaxed/simple;
-	bh=JgenaFV+7nFpbALnZO+VIAqY0wsCGJI94ujw+zT+hmw=;
+	s=arc-20240116; t=1716716583; c=relaxed/simple;
+	bh=sXseDOvVUdSHtWU/fS7YvS0C0q5Z1V5Iz1T7PcKEaqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/hcQF233Xo6lBFF5HkJG0CqFt3tQuGkurirWEEIb9T6z14t84YhlXG3dsNRzjZHM0wK7+ImBrL6jmOZWiAo1Pbjn6P1B3GOQ8Y8TeWcTM/P8kiYNWwjnBLNSfxaWT2dUmLo/Csi7wGRPnuXHM7N2+7EQZdJkiyYOLAbtWhQpUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zn4mU1FN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E253C32782;
-	Sun, 26 May 2024 09:43:00 +0000 (UTC)
+	 MIME-Version; b=ONqKfLl0PsagoCNjXULRFil41CAws0kOhm+Fp5HsIjk3zkuXKY94kXZuciABMn7D/cMNp5ydKxj3LAvgUNOMH1ab0SqhYKeq1vhJvHwTBCJiJzGW1nSU02DKoBg7l1IYUmtzC29nKt/Nc9DzITrs5cZFaZmsLITDnqhN0gackLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nVxV+VeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787D7C32781;
+	Sun, 26 May 2024 09:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716716581;
-	bh=JgenaFV+7nFpbALnZO+VIAqY0wsCGJI94ujw+zT+hmw=;
+	s=k20201202; t=1716716582;
+	bh=sXseDOvVUdSHtWU/fS7YvS0C0q5Z1V5Iz1T7PcKEaqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zn4mU1FN2KZhmYmrggl36XXCvUqXi47EGeKJazGsFmXlofHxTJD0T+YiQw/qAAaO1
-	 EwNFWgfCCbq0Y6fjImyLL+cPa0F2gXOnHsvHu/jTqVdTvrWnNkf9qurRGgJ8iyvVAc
-	 DoWssMkxYW2A44aNc8jkgfbaN31GMctF9z20chRcbV9HbnJPlVKtNjbgruqZUzNZ6u
-	 1Ab9xAwnOkMlfY8QO9fewBqWFUknPTO7LYpyZxuJB5jjt4ljkRMtfMnr5v3YEa1377
-	 4vA9tG5ZsHHVcz9TdyJ35XNiCzhVwT5/Kaiaa3y0kxcas7UEskGvCwDn+/9SGHukL8
-	 EpSEWXbdVwt6g==
+	b=nVxV+VeHHR+5olarp9l9fBmJLinWVa+z4KkvZyLG1G6xNpLn9nTL32LKh60LKOGb8
+	 xLolFXfh6C2dZIo7pqXI7J5wNnmZ1epdMM3789dCMIGkKaclTde/KLhU3zgX+4xkxu
+	 ScVh9gpwMUuo8uXZQEzmhqzaebE1YdkZnVcj445/wP7FJD+HkBSuiBDpCjf5NWQC9Z
+	 xOex/IFnKMX/ipfa+iyVXZiq1MI7dK757Su/RtZCh4PGUyWTHjYniWKbas8bnMj42u
+	 fyV/xYIUIWxuqYyn4Ua7Jrw2UDQ+3pqfZNO86B8pGc2BnYDqxc6eZAE3UoytfSfVJL
+	 koGYU6WI5OSfg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	io-uring@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 06/11] io_uring/sqpoll: work around a potential audit memory leak
-Date: Sun, 26 May 2024 05:42:44 -0400
-Message-ID: <20240526094251.3413178-6-sashal@kernel.org>
+	dave@stgolabs.net,
+	josh@joshtriplett.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joel@joelfernandes.org,
+	boqun.feng@gmail.com,
+	rcu@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 07/11] rcutorture: Fix rcu_torture_one_read() pipe_count overflow comment
+Date: Sun, 26 May 2024 05:42:45 -0400
+Message-ID: <20240526094251.3413178-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240526094251.3413178-1-sashal@kernel.org>
 References: <20240526094251.3413178-1-sashal@kernel.org>
@@ -64,64 +72,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.31
 Content-Transfer-Encoding: 8bit
 
-From: Jens Axboe <axboe@kernel.dk>
+From: "Paul E. McKenney" <paulmck@kernel.org>
 
-[ Upstream commit c4ce0ab27646f4206a9eb502d6fe45cb080e1cae ]
+[ Upstream commit 8b9b443fa860276822b25057cb3ff3b28734dec0 ]
 
-kmemleak complains that there's a memory leak related to connect
-handling:
+The "pipe_count > RCU_TORTURE_PIPE_LEN" check has a comment saying "Should
+not happen, but...".  This is only true when testing an RCU whose grace
+periods are always long enough.  This commit therefore fixes this comment.
 
-unreferenced object 0xffff0001093bdf00 (size 128):
-comm "iou-sqp-455", pid 457, jiffies 4294894164
-hex dump (first 32 bytes):
-02 00 fa ea 7f 00 00 01 00 00 00 00 00 00 00 00  ................
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-backtrace (crc 2e481b1a):
-[<00000000c0a26af4>] kmemleak_alloc+0x30/0x38
-[<000000009c30bb45>] kmalloc_trace+0x228/0x358
-[<000000009da9d39f>] __audit_sockaddr+0xd0/0x138
-[<0000000089a93e34>] move_addr_to_kernel+0x1a0/0x1f8
-[<000000000b4e80e6>] io_connect_prep+0x1ec/0x2d4
-[<00000000abfbcd99>] io_submit_sqes+0x588/0x1e48
-[<00000000e7c25e07>] io_sq_thread+0x8a4/0x10e4
-[<00000000d999b491>] ret_from_fork+0x10/0x20
-
-which can can happen if:
-
-1) The command type does something on the prep side that triggers an
-   audit call.
-2) The thread hasn't done any operations before this that triggered
-   an audit call inside ->issue(), where we have audit_uring_entry()
-   and audit_uring_exit().
-
-Work around this by issuing a blanket NOP operation before the SQPOLL
-does anything.
-
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Closes: https://lore.kernel.org/lkml/CAHk-=wi7rJ-eGq+xaxVfzFEgbL9tdf6Kc8Z89rCpfcQOKm74Tw@mail.gmail.com/
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/sqpoll.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/rcu/rcutorture.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
-index 65b5dbe3c850e..350436e55aafe 100644
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -240,6 +240,14 @@ static int io_sq_thread(void *data)
- 		sqd->sq_cpu = raw_smp_processor_id();
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index ade42d6a9d9b6..eb40c1f63a8b1 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -1992,7 +1992,8 @@ static bool rcu_torture_one_read(struct torture_random_state *trsp, long myid)
+ 	preempt_disable();
+ 	pipe_count = READ_ONCE(p->rtort_pipe_count);
+ 	if (pipe_count > RCU_TORTURE_PIPE_LEN) {
+-		/* Should not happen, but... */
++		// Should not happen in a correct RCU implementation,
++		// happens quite often for torture_type=busted.
+ 		pipe_count = RCU_TORTURE_PIPE_LEN;
  	}
- 
-+	/*
-+	 * Force audit context to get setup, in case we do prep side async
-+	 * operations that would trigger an audit call before any issue side
-+	 * audit has been done.
-+	 */
-+	audit_uring_entry(IORING_OP_NOP);
-+	audit_uring_exit(true, 0);
-+
- 	mutex_lock(&sqd->lock);
- 	while (1) {
- 		bool cap_entries, sqt_spin = false;
+ 	completed = cur_ops->get_gp_seq();
 -- 
 2.43.0
 
