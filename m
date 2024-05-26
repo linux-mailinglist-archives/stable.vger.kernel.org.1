@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-46244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A16C8CF3C1
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:54:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A3A8CF3C4
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2331C212A4
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:54:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3020428200F
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA90F130E54;
-	Sun, 26 May 2024 09:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6BF1311AB;
+	Sun, 26 May 2024 09:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9nOsDBk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cXNAL//u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E1A130E46;
-	Sun, 26 May 2024 09:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3211311A5;
+	Sun, 26 May 2024 09:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716716621; cv=none; b=uC8dMjnwK3PTVZTh5q1RBmF02aDkroeGAR1AJlkLtFPg2YHz7oqLPAbHDwXZffYzT7+/QWZniHiRAbFZTdKJ1XPGcSzHrwsEZhbp7K89zEcsPYdnEfTWvuMMME+6JMYNQ0US0f6nW/gyBHT2ruYKeVpgZ0EB/NFeNJPYGaioIQk=
+	t=1716716625; cv=none; b=nwq+G9EbJKEVH97957lZIdUlkjsTlNoR3LDsDwKMsL72nqRyWA3lVujiNowNYAIednBsMXD8R5Nsyy4vofP7smmIjycfhGmgh5TB3XBo9hyJSBlJbidMtvdGF4PlmwWcrLLoBixoisH4AblsCTJKHFK8XEPjWSPj8ArjoTBr4hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716716621; c=relaxed/simple;
-	bh=ZYm2C7mWJ2gAoDgYChnVbEiePdJi4ggRSDKbaUQgY6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAOAvkEceClZ0I0GwI1oQAkV5p+1qTQi2RcpL4ecBa7a/FxiEAcUgQWfVb+DMxpTZBR4Eu7MeOFECUIkfbggUZxAxKH5p8yRqFaWRaJ8lhN7RIavfWvZta8VoSq8yBQsytmAA23egGD1ELBimG6zRPmYMF9/A1LAHHCwmtBSxWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9nOsDBk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B8CC32789;
-	Sun, 26 May 2024 09:43:40 +0000 (UTC)
+	s=arc-20240116; t=1716716625; c=relaxed/simple;
+	bh=bafW+hAQkLlXTWalx25XHXsPpoYh8vyZ4X/xwceNVjQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RNjLXISz3G2Dj+U8ajue/M2xUYi4aG0oaBmc9ndkymJkNX+Oky8rtVj6CAeGtSJjakelKz2QBhTe1vCdWoYE3nrvVM1+ICONYBEe55qvk5+J8ev7p/9F8HfzQLg5KYx8n+6PcPwKyyxM/6bWxQ+agbW6lErFWZPMcd7rok5dSvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cXNAL//u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161C4C2BD10;
+	Sun, 26 May 2024 09:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716716621;
-	bh=ZYm2C7mWJ2gAoDgYChnVbEiePdJi4ggRSDKbaUQgY6c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9nOsDBks0SKZXtcLZg+fICxjzMSmLvBbelb+xznVOsBP/BXP0zGAUDdH43/DNMAm
-	 ZQi9BL4wrCZ3p/XYao6A6VIMLAmicdlaKpeulR68W3qWF0Xq/CYolx4LmHPRnFa8TF
-	 y326QcIq7sQvAehlhfdrvnjuk4y1YboscZrUedNxamHr8Z8815eS/XcY5uUO2Mvqwq
-	 Zzur9l7FefKNGbyUrULzrK4PRsUfX1etJ+w+1+BFBtrVN+AzkpUEjYW7nUACI5MRWP
-	 lQfkTFxTz4TDi/XtOp4Wy+YIGrrHF3Sbu6DRMKyUbkvBa4CB8KVXUv1Sk1FrYsYbKC
-	 aScKchnqR4MQw==
+	s=k20201202; t=1716716625;
+	bh=bafW+hAQkLlXTWalx25XHXsPpoYh8vyZ4X/xwceNVjQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cXNAL//unomYHsDHz2j7K1QwIfX2n0lshwn/oz3B3QSpCW0sNCCSFttVSHSpikAGj
+	 c4mK6QGqytaVjQV2VR08YPqNPNhDaYDsWRgwKLVZehSg1oP6FjMdSDS6xfCp4m4Ngf
+	 9pn5OZZ4FXf70WBWFufiDfVtTbueuRJRYf9kKvI9UXu+ScOgKoU4wwEQst/zSdRI0V
+	 Hkq7DbUaS/syIR2QKz8tBsOH92qpiN9fXumqOB9tYGd8+dYhfPs/Bw1DAKMqf6cNtO
+	 UdbqeiRIub2ifugbOPzYACKsU7uW8lo62/65zDTqsowce3pghnExsp8zqcGB7r2Nst
+	 XxD8we2MWE/Eg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Justin Stitt <justinstitt@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	nathan@kernel.org,
-	linux-block@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.15 7/7] block/ioctl: prefer different overflow check
-Date: Sun, 26 May 2024 05:43:27 -0400
-Message-ID: <20240526094329.3413652-7-sashal@kernel.org>
+	steffen.klassert@secunet.com,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 1/5] padata: Disable BH when taking works lock on MT path
+Date: Sun, 26 May 2024 05:43:37 -0400
+Message-ID: <20240526094342.3413841-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240526094329.3413652-1-sashal@kernel.org>
-References: <20240526094329.3413652-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,89 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.159
+X-stable-base: Linux 5.10.217
 Content-Transfer-Encoding: 8bit
 
-From: Justin Stitt <justinstitt@google.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit ccb326b5f9e623eb7f130fbbf2505ec0e2dcaff9 ]
+[ Upstream commit 58329c4312031603bb1786b44265c26d5065fe72 ]
 
-Running syzkaller with the newly reintroduced signed integer overflow
-sanitizer shows this report:
+As the old padata code can execute in softirq context, disable
+softirqs for the new padata_do_mutithreaded code too as otherwise
+lockdep will get antsy.
 
-[   62.982337] ------------[ cut here ]------------
-[   62.985692] cgroup: Invalid name
-[   62.986211] UBSAN: signed-integer-overflow in ../block/ioctl.c:36:46
-[   62.989370] 9pnet_fd: p9_fd_create_tcp (7343): problem connecting socket to 127.0.0.1
-[   62.992992] 9223372036854775807 + 4095 cannot be represented in type 'long long'
-[   62.997827] 9pnet_fd: p9_fd_create_tcp (7345): problem connecting socket to 127.0.0.1
-[   62.999369] random: crng reseeded on system resumption
-[   63.000634] GUP no longer grows the stack in syz-executor.2 (7353): 20002000-20003000 (20001000)
-[   63.000668] CPU: 0 PID: 7353 Comm: syz-executor.2 Not tainted 6.8.0-rc2-00035-gb3ef86b5a957 #1
-[   63.000677] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   63.000682] Call Trace:
-[   63.000686]  <TASK>
-[   63.000731]  dump_stack_lvl+0x93/0xd0
-[   63.000919]  __get_user_pages+0x903/0xd30
-[   63.001030]  __gup_longterm_locked+0x153e/0x1ba0
-[   63.001041]  ? _raw_read_unlock_irqrestore+0x17/0x50
-[   63.001072]  ? try_get_folio+0x29c/0x2d0
-[   63.001083]  internal_get_user_pages_fast+0x1119/0x1530
-[   63.001109]  iov_iter_extract_pages+0x23b/0x580
-[   63.001206]  bio_iov_iter_get_pages+0x4de/0x1220
-[   63.001235]  iomap_dio_bio_iter+0x9b6/0x1410
-[   63.001297]  __iomap_dio_rw+0xab4/0x1810
-[   63.001316]  iomap_dio_rw+0x45/0xa0
-[   63.001328]  ext4_file_write_iter+0xdde/0x1390
-[   63.001372]  vfs_write+0x599/0xbd0
-[   63.001394]  ksys_write+0xc8/0x190
-[   63.001403]  do_syscall_64+0xd4/0x1b0
-[   63.001421]  ? arch_exit_to_user_mode_prepare+0x3a/0x60
-[   63.001479]  entry_SYSCALL_64_after_hwframe+0x6f/0x77
-[   63.001535] RIP: 0033:0x7f7fd3ebf539
-[   63.001551] Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-[   63.001562] RSP: 002b:00007f7fd32570c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[   63.001584] RAX: ffffffffffffffda RBX: 00007f7fd3ff3f80 RCX: 00007f7fd3ebf539
-[   63.001590] RDX: 4db6d1e4f7e43360 RSI: 0000000020000000 RDI: 0000000000000004
-[   63.001595] RBP: 00007f7fd3f1e496 R08: 0000000000000000 R09: 0000000000000000
-[   63.001599] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[   63.001604] R13: 0000000000000006 R14: 00007f7fd3ff3f80 R15: 00007ffd415ad2b8
-...
-[   63.018142] ---[ end trace ]---
-
-Historically, the signed integer overflow sanitizer did not work in the
-kernel due to its interaction with `-fwrapv` but this has since been
-changed [1] in the newest version of Clang; It was re-enabled in the
-kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
-sanitizer").
-
-Let's rework this overflow checking logic to not actually perform an
-overflow during the check itself, thus avoiding the UBSAN splat.
-
-[1]: https://github.com/llvm/llvm-project/pull/82432
-
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240507-b4-sio-block-ioctl-v3-1-ba0c2b32275e@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/padata.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index 7a939c178660f..a260e39e56a48 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -33,7 +33,7 @@ static int blkpg_do_ioctl(struct block_device *bdev,
- 	if (op == BLKPG_DEL_PARTITION)
- 		return bdev_del_partition(disk, p.pno);
+diff --git a/kernel/padata.c b/kernel/padata.c
+index fdcd78302cd72..471ccbc44541d 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -111,7 +111,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
+ {
+ 	int i;
  
--	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
-+	if (p.start < 0 || p.length <= 0 || LLONG_MAX - p.length < p.start)
- 		return -EINVAL;
- 	/* Check that the partition is aligned to the block size */
- 	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
+-	spin_lock(&padata_works_lock);
++	spin_lock_bh(&padata_works_lock);
+ 	/* Start at 1 because the current task participates in the job. */
+ 	for (i = 1; i < nworks; ++i) {
+ 		struct padata_work *pw = padata_work_alloc();
+@@ -121,7 +121,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
+ 		padata_work_init(pw, padata_mt_helper, data, 0);
+ 		list_add(&pw->pw_list, head);
+ 	}
+-	spin_unlock(&padata_works_lock);
++	spin_unlock_bh(&padata_works_lock);
+ 
+ 	return i;
+ }
+@@ -139,12 +139,12 @@ static void __init padata_works_free(struct list_head *works)
+ 	if (list_empty(works))
+ 		return;
+ 
+-	spin_lock(&padata_works_lock);
++	spin_lock_bh(&padata_works_lock);
+ 	list_for_each_entry_safe(cur, next, works, pw_list) {
+ 		list_del(&cur->pw_list);
+ 		padata_work_free(cur);
+ 	}
+-	spin_unlock(&padata_works_lock);
++	spin_unlock_bh(&padata_works_lock);
+ }
+ 
+ static void padata_parallel_worker(struct work_struct *parallel_work)
 -- 
 2.43.0
 
