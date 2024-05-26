@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-46243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B578CF3BE
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:54:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A16C8CF3C1
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 11:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 778191F215C9
-	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:54:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A2331C212A4
+	for <lists+stable@lfdr.de>; Sun, 26 May 2024 09:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A55130AF3;
-	Sun, 26 May 2024 09:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA90F130E54;
+	Sun, 26 May 2024 09:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XwQd1XHc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9nOsDBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7762130AEB;
-	Sun, 26 May 2024 09:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E1A130E46;
+	Sun, 26 May 2024 09:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716716620; cv=none; b=dv74DE4yUjyJvdlGsgBYyGD6KQB/Feps34rsNKLjL1pSxBa9Mo8tEVKC4aPV3pJ+rzw2pLPmWTmQewFYiFBMPMWgnwU53sPKIwtPPVL0JGMTVbtetJhqKcDFVtuljn/QFsR+XCuFQN9DD0vTnA7m77LN3s85AJ8TYbmejKs2mqI=
+	t=1716716621; cv=none; b=uC8dMjnwK3PTVZTh5q1RBmF02aDkroeGAR1AJlkLtFPg2YHz7oqLPAbHDwXZffYzT7+/QWZniHiRAbFZTdKJ1XPGcSzHrwsEZhbp7K89zEcsPYdnEfTWvuMMME+6JMYNQ0US0f6nW/gyBHT2ruYKeVpgZ0EB/NFeNJPYGaioIQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716716620; c=relaxed/simple;
-	bh=8M2a9IXtQtKWm46K1pN791UcrKjl7qfSLlHLkSIFFNA=;
+	s=arc-20240116; t=1716716621; c=relaxed/simple;
+	bh=ZYm2C7mWJ2gAoDgYChnVbEiePdJi4ggRSDKbaUQgY6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9IdpKADXr7gA1tQ3tdTV2Khbxc7bx8+O7yOOiqHuBOHd7im7ZviL0QtdJde2DlDy6Nic18oYDS46/yEIi7g36UJRKdbvreSO4DWBn2FcFsCAe/oFB47sWtFtpIBnC/HiJswMbt4cxqvbdq18vhyDLZT/DXT9MK7VkGVZaacoK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XwQd1XHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3FBC32781;
-	Sun, 26 May 2024 09:43:38 +0000 (UTC)
+	 MIME-Version; b=QAOAvkEceClZ0I0GwI1oQAkV5p+1qTQi2RcpL4ecBa7a/FxiEAcUgQWfVb+DMxpTZBR4Eu7MeOFECUIkfbggUZxAxKH5p8yRqFaWRaJ8lhN7RIavfWvZta8VoSq8yBQsytmAA23egGD1ELBimG6zRPmYMF9/A1LAHHCwmtBSxWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9nOsDBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B8CC32789;
+	Sun, 26 May 2024 09:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716716619;
-	bh=8M2a9IXtQtKWm46K1pN791UcrKjl7qfSLlHLkSIFFNA=;
+	s=k20201202; t=1716716621;
+	bh=ZYm2C7mWJ2gAoDgYChnVbEiePdJi4ggRSDKbaUQgY6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwQd1XHcK6DNpyzl4hOKUgDvzSmpj3vQH/2UXK5bXNppI5AqEUXDOPmaqY9iOUZBP
-	 gN9zxaCvd8R7+1P3hRGFD2Ycu/Q6O3eVYbIIUY3OhL2F0wZ9grF8JYdzN3Jqytux20
-	 gZucp4c8vIBMVAyLbutnyANN9nQWDfTTO1xrP06drvFoefPNzBsvsk/JH7DlVAOskA
-	 uaS32FMOl911dleMVZ8JguLmz8K2YLJRUC0Kah/x39XYKqXofugMomvM/Qp++glYZa
-	 hcUf/rqZaYaZUbaMDn2o82TgKdk6lM2KF/Lietb6hAj658DuTilz6hYkqir9PA4CuX
-	 uDdheaOaxoGXA==
+	b=S9nOsDBks0SKZXtcLZg+fICxjzMSmLvBbelb+xznVOsBP/BXP0zGAUDdH43/DNMAm
+	 ZQi9BL4wrCZ3p/XYao6A6VIMLAmicdlaKpeulR68W3qWF0Xq/CYolx4LmHPRnFa8TF
+	 y326QcIq7sQvAehlhfdrvnjuk4y1YboscZrUedNxamHr8Z8815eS/XcY5uUO2Mvqwq
+	 Zzur9l7FefKNGbyUrULzrK4PRsUfX1etJ+w+1+BFBtrVN+AzkpUEjYW7nUACI5MRWP
+	 lQfkTFxTz4TDi/XtOp4Wy+YIGrrHF3Sbu6DRMKyUbkvBa4CB8KVXUv1Sk1FrYsYbKC
+	 aScKchnqR4MQw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>,
-	y0un9n132@gmail.com,
+Cc: Justin Stitt <justinstitt@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH AUTOSEL 5.15 6/7] binfmt_elf: Leave a gap between .bss and brk
-Date: Sun, 26 May 2024 05:43:26 -0400
-Message-ID: <20240526094329.3413652-6-sashal@kernel.org>
+	nathan@kernel.org,
+	linux-block@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 7/7] block/ioctl: prefer different overflow check
+Date: Sun, 26 May 2024 05:43:27 -0400
+Message-ID: <20240526094329.3413652-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240526094329.3413652-1-sashal@kernel.org>
 References: <20240526094329.3413652-1-sashal@kernel.org>
@@ -68,39 +68,86 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.159
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <keescook@chromium.org>
+From: Justin Stitt <justinstitt@google.com>
 
-[ Upstream commit 2a5eb9995528441447d33838727f6ec1caf08139 ]
+[ Upstream commit ccb326b5f9e623eb7f130fbbf2505ec0e2dcaff9 ]
 
-Currently the brk starts its randomization immediately after .bss,
-which means there is a chance that when the random offset is 0, linear
-overflows from .bss can reach into the brk area. Leave at least a single
-page gap between .bss and brk (when it has not already been explicitly
-relocated into the mmap range).
+Running syzkaller with the newly reintroduced signed integer overflow
+sanitizer shows this report:
 
-Reported-by:  <y0un9n132@gmail.com>
-Closes: https://lore.kernel.org/linux-hardening/CA+2EKTVLvc8hDZc+2Yhwmus=dzOUG5E4gV7ayCbu0MPJTZzWkw@mail.gmail.com/
-Link: https://lore.kernel.org/r/20240217062545.1631668-2-keescook@chromium.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+[   62.982337] ------------[ cut here ]------------
+[   62.985692] cgroup: Invalid name
+[   62.986211] UBSAN: signed-integer-overflow in ../block/ioctl.c:36:46
+[   62.989370] 9pnet_fd: p9_fd_create_tcp (7343): problem connecting socket to 127.0.0.1
+[   62.992992] 9223372036854775807 + 4095 cannot be represented in type 'long long'
+[   62.997827] 9pnet_fd: p9_fd_create_tcp (7345): problem connecting socket to 127.0.0.1
+[   62.999369] random: crng reseeded on system resumption
+[   63.000634] GUP no longer grows the stack in syz-executor.2 (7353): 20002000-20003000 (20001000)
+[   63.000668] CPU: 0 PID: 7353 Comm: syz-executor.2 Not tainted 6.8.0-rc2-00035-gb3ef86b5a957 #1
+[   63.000677] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   63.000682] Call Trace:
+[   63.000686]  <TASK>
+[   63.000731]  dump_stack_lvl+0x93/0xd0
+[   63.000919]  __get_user_pages+0x903/0xd30
+[   63.001030]  __gup_longterm_locked+0x153e/0x1ba0
+[   63.001041]  ? _raw_read_unlock_irqrestore+0x17/0x50
+[   63.001072]  ? try_get_folio+0x29c/0x2d0
+[   63.001083]  internal_get_user_pages_fast+0x1119/0x1530
+[   63.001109]  iov_iter_extract_pages+0x23b/0x580
+[   63.001206]  bio_iov_iter_get_pages+0x4de/0x1220
+[   63.001235]  iomap_dio_bio_iter+0x9b6/0x1410
+[   63.001297]  __iomap_dio_rw+0xab4/0x1810
+[   63.001316]  iomap_dio_rw+0x45/0xa0
+[   63.001328]  ext4_file_write_iter+0xdde/0x1390
+[   63.001372]  vfs_write+0x599/0xbd0
+[   63.001394]  ksys_write+0xc8/0x190
+[   63.001403]  do_syscall_64+0xd4/0x1b0
+[   63.001421]  ? arch_exit_to_user_mode_prepare+0x3a/0x60
+[   63.001479]  entry_SYSCALL_64_after_hwframe+0x6f/0x77
+[   63.001535] RIP: 0033:0x7f7fd3ebf539
+[   63.001551] Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+[   63.001562] RSP: 002b:00007f7fd32570c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+[   63.001584] RAX: ffffffffffffffda RBX: 00007f7fd3ff3f80 RCX: 00007f7fd3ebf539
+[   63.001590] RDX: 4db6d1e4f7e43360 RSI: 0000000020000000 RDI: 0000000000000004
+[   63.001595] RBP: 00007f7fd3f1e496 R08: 0000000000000000 R09: 0000000000000000
+[   63.001599] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+[   63.001604] R13: 0000000000000006 R14: 00007f7fd3ff3f80 R15: 00007ffd415ad2b8
+...
+[   63.018142] ---[ end trace ]---
+
+Historically, the signed integer overflow sanitizer did not work in the
+kernel due to its interaction with `-fwrapv` but this has since been
+changed [1] in the newest version of Clang; It was re-enabled in the
+kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
+sanitizer").
+
+Let's rework this overflow checking logic to not actually perform an
+overflow during the check itself, thus avoiding the UBSAN splat.
+
+[1]: https://github.com/llvm/llvm-project/pull/82432
+
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240507-b4-sio-block-ioctl-v3-1-ba0c2b32275e@google.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ block/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 30379c33ad20c..932141c93f3e3 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1289,6 +1289,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 		if (IS_ENABLED(CONFIG_ARCH_HAS_ELF_RANDOMIZE) &&
- 		    elf_ex->e_type == ET_DYN && !interpreter) {
- 			mm->brk = mm->start_brk = ELF_ET_DYN_BASE;
-+		} else {
-+			/* Otherwise leave a gap between .bss and brk. */
-+			mm->brk = mm->start_brk = mm->brk + PAGE_SIZE;
- 		}
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 7a939c178660f..a260e39e56a48 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -33,7 +33,7 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ 	if (op == BLKPG_DEL_PARTITION)
+ 		return bdev_del_partition(disk, p.pno);
  
- 		mm->brk = mm->start_brk = arch_randomize_brk(mm);
+-	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
++	if (p.start < 0 || p.length <= 0 || LLONG_MAX - p.length < p.start)
+ 		return -EINVAL;
+ 	/* Check that the partition is aligned to the block size */
+ 	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
 -- 
 2.43.0
 
