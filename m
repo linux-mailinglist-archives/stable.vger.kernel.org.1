@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5068D8D0BB0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4218D0D84
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B93F2856EB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6622B20B9E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C716A039;
-	Mon, 27 May 2024 19:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D3A15FA60;
+	Mon, 27 May 2024 19:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6TdRrdK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XM+90COa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EA317E90E;
-	Mon, 27 May 2024 19:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0214617727;
+	Mon, 27 May 2024 19:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837124; cv=none; b=lj2WL6wLZ+U7vqRCrq6XVPgyVqcJagbmDX+ZYSRapl6ee+KPcNsYf5MhtOn6pPxsb/H9PgnLBx0Zb0u/GuT1VbNgnSRRDlBVsmy2jptF5dCNAIFYBW7c5py2VfLm/hCh6aZ37hDySbqNTQZgc0re0XWLBzEIz8W+zKLVfwOyq8s=
+	t=1716838248; cv=none; b=Q6+1+Exz5IasjSEIPn6ELOY2ynK0xl0TzipLuJ5wep3O8Mznj8btUY1vFZ2SBG2g2hzrn0sng2DVxL1CFLdlZBTeO1iFG2JuiAdJu5k7IgaOHNOjOSWNamUhRwFusaFV9j5gfdAXfn6GeSBRcLAAHyuSoKkx0X04SSo+yD9bbls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837124; c=relaxed/simple;
-	bh=o9nx1tzujl53h542GoVMld2G3uY6zHskK7ZowzKwK/E=;
+	s=arc-20240116; t=1716838248; c=relaxed/simple;
+	bh=aaKtoPfXSxfMzLXmqrLygcykBBojEDnFBLL8lGf3Ybk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFQ3T8LVxdMKHfNNTZvpdVu4iD33WYeYHDogA7nZZEQO7bIDpnmBAGgtI8UVqb5OA7otZArs/dcWMLLjfWXWLh0bAQc0KuTL/CH9JRGv/Y3QPMfzU5LR5cE7qWyqRYCAZV3nRa7aJdF0J/kLtF+1JbEUPIqPaeHB7QGBEiOqfkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6TdRrdK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24C4C2BBFC;
-	Mon, 27 May 2024 19:12:03 +0000 (UTC)
+	 MIME-Version; b=W17OJPCjeZgH2KWwNobVMG+tOQoXysn4MddY8sRF/cPoA7k/L2/EpK50rObDmAAR/NFv0z5805ZB2KyxMIlwKkf5Wb9PBPuhvQaH6JIyFVn6cOqjfyvXMyoEUSlpTybGodZPUvIAT1Y3ISZ3eF1PDjzcvfa5G/vtZGLmV4EaO/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XM+90COa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E5BC2BBFC;
+	Mon, 27 May 2024 19:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837124;
-	bh=o9nx1tzujl53h542GoVMld2G3uY6zHskK7ZowzKwK/E=;
+	s=korg; t=1716838247;
+	bh=aaKtoPfXSxfMzLXmqrLygcykBBojEDnFBLL8lGf3Ybk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6TdRrdKLVXD9Kiw5PDPuYOYz6HOLD8OAhD5OqMo6POKoMnL9SPXLYgE5khBALpHu
-	 yxzlhzNmm3ac5au2NAhSSFQ7sGrLxnCgklnqR65JIHAWe8dj6vH9BsYvg/X2oXUXw1
-	 YDwC25gWYsdSb0oT8Ra3p+MMSdqfYZldGF4bUgK4=
+	b=XM+90COaqk0btmUBMjdC+0e2QDoSSPkOrdrrvY4mLaNJARMvrrj/Wyq9YsiFBCeWY
+	 rIr6CbNLO6AuNqiicPpIpBJcyohqjGh7Ksi8oY2frnGfgKCuhfQLkE6pQK8sVOVIdX
+	 dMg68ju4yQ8zCA6l4zC3hjO+S8ifdIaUKjoiGJgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 277/427] drm/nouveau/dp: Fix incorrect return code in r535_dp_aux_xfer()
+Subject: [PATCH 6.8 322/493] ax25: Fix reference count leak issues of ax25_dev
 Date: Mon, 27 May 2024 20:55:24 +0200
-Message-ID: <20240527185628.395522847@linuxfoundation.org>
+Message-ID: <20240527185640.806850712@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 97252d0a4bfbb07079503d059f7522d305fe0f7a ]
+[ Upstream commit b505e0319852b08a3a716b64620168eab21f4ced ]
 
-I've recently been seeing some unexplained GSP errors on my RTX 6000 from
-failed aux transactions:
+The ax25_addr_ax25dev() and ax25_dev_device_down() exist a reference
+count leak issue of the object "ax25_dev".
 
-  [  132.915867] nouveau 0000:1f:00.0: gsp: cli:0xc1d00002 obj:0x00730000
-  ctrl cmd:0x00731341 failed: 0x0000ffff
+Memory leak issue in ax25_addr_ax25dev():
 
-While the cause of these is not yet clear, these messages made me notice
-that the aux transactions causing these transactions were succeeding - not
-failing. As it turns out, this is because we're currently not returning the
-correct variable when r535_dp_aux_xfer() hits an error - causing us to
-never propagate GSP errors for failed aux transactions to userspace.
+The reference count of the object "ax25_dev" can be increased multiple
+times in ax25_addr_ax25dev(). This will cause a memory leak.
 
-So, let's fix that.
+Memory leak issues in ax25_dev_device_down():
 
-Fixes: 4ae3a20102b2 ("nouveau/gsp: don't free ctrl messages on errors")
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240315212104.776936-1-lyude@redhat.com
+The reference count of ax25_dev is set to 1 in ax25_dev_device_up() and
+then increase the reference count when ax25_dev is added to ax25_dev_list.
+As a result, the reference count of ax25_dev is 2. But when the device is
+shutting down. The ax25_dev_device_down() drops the reference count once
+or twice depending on if we goto unlock_put or not, which will cause
+memory leak.
+
+As for the issue of ax25_addr_ax25dev(), it is impossible for one pointer
+to be on a list twice. So add a break in ax25_addr_ax25dev(). As for the
+issue of ax25_dev_device_down(), increase the reference count of ax25_dev
+once in ax25_dev_device_up() and decrease the reference count of ax25_dev
+after it is removed from the ax25_dev_list.
+
+Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/361bbf2a4b091e120006279ec3b382d73c4a0c17.1715247018.git.duoming@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ax25/ax25_dev.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c b/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c
-index 6a0a4d3b8902d..027867c2a8c5b 100644
---- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c
-@@ -1080,7 +1080,7 @@ r535_dp_aux_xfer(struct nvkm_outp *outp, u8 type, u32 addr, u8 *data, u8 *psize)
- 	ret = nvkm_gsp_rm_ctrl_push(&disp->rm.objcom, &ctrl, sizeof(*ctrl));
- 	if (ret) {
- 		nvkm_gsp_rm_ctrl_done(&disp->rm.objcom, ctrl);
--		return PTR_ERR(ctrl);
-+		return ret;
- 	}
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index f16ee5c09d07a..52ccc37d5687a 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -39,6 +39,7 @@ ax25_dev *ax25_addr_ax25dev(ax25_address *addr)
+ 		if (ax25cmp(addr, (const ax25_address *)ax25_dev->dev->dev_addr) == 0) {
+ 			res = ax25_dev;
+ 			ax25_dev_hold(ax25_dev);
++			break;
+ 		}
+ 	spin_unlock_bh(&ax25_dev_lock);
  
- 	memcpy(data, ctrl->data, size);
+@@ -88,7 +89,6 @@ void ax25_dev_device_up(struct net_device *dev)
+ 	list_add(&ax25_dev->list, &ax25_dev_list);
+ 	dev->ax25_ptr     = ax25_dev;
+ 	spin_unlock_bh(&ax25_dev_lock);
+-	ax25_dev_hold(ax25_dev);
+ 
+ 	ax25_register_dev_sysctl(ax25_dev);
+ }
+@@ -129,7 +129,6 @@ void ax25_dev_device_down(struct net_device *dev)
+ unlock_put:
+ 	dev->ax25_ptr = NULL;
+ 	spin_unlock_bh(&ax25_dev_lock);
+-	ax25_dev_put(ax25_dev);
+ 	netdev_put(dev, &ax25_dev->dev_tracker);
+ 	ax25_dev_put(ax25_dev);
+ }
 -- 
 2.43.0
 
