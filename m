@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-47002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646B48D0C2A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2A3F8D0E0B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:36:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FD571C215C7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1001A1C216FF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654D11607A1;
-	Mon, 27 May 2024 19:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D37161301;
+	Mon, 27 May 2024 19:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JkpEPnkZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4+ugjgw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D37C1863F;
-	Mon, 27 May 2024 19:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C87160877;
+	Mon, 27 May 2024 19:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837408; cv=none; b=q0eRKLCZHtMv2LhjKVswYV4jhTHXbG9QPIJ5r+S7pzbMun+kJJhqEWdOxsSR642bMCPlekZrpiL+guSBLWdp9NNEo5BMZ0dbbcWSHDbkHRvN2sAWBg9FmX440LhF10hJZjzzJGpHBhEJA9Z5ALzBeYgYfBS/4Yu2VDJPZBRn06k=
+	t=1716838586; cv=none; b=eJL/qM3jm0mUZ+3wAPfLQWtk787NM3eodsr62PttGEQGaVQFK2L5npec5VIGFefoJx3nsQEcfupb4nu+SStGuGBF7fo5WegVnM1FesIQ1M0pTQMw4eLL8iaODPo3eQEf22t1lVcaC4L7DCaWRLhMc9gCA25JEKPwP+eLFbeWbJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837408; c=relaxed/simple;
-	bh=AllN4PymFLFzPbYi7cV97hTl4LQdJC5JQ1lKOtKykXU=;
+	s=arc-20240116; t=1716838586; c=relaxed/simple;
+	bh=o9qlUjN44qZWu8ea2M1+4d4Am2CZZDuBdLakRj++ze0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NyJHe9D8cw/wlnf96AuTLS4wfbSedlRsF5qKATn6PvszNXUoNwxEyhbMSX8V8GUxa6xGxXVQzgOGljijSACMk+oSJHJJgKPFJKTS4/MDyNbX7gjYldo8S4fsOxVQLG/b06BqJbQ8fRM5DtqH9frKfoOjRSSDtsSkGMTN5BfxEZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkpEPnkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D2BC2BBFC;
-	Mon, 27 May 2024 19:16:47 +0000 (UTC)
+	 MIME-Version; b=l9lfLXrJM+sVMCl09USY/zKNwR9Iy3o8v2YCV+Mnz7Ql/gTCXCW669EpIxXuw7jZ6m3NwNBv52Vge730Iqo74k0aJBH6YnWg4gNl6wX2nTBTlrucgQzvpEe9pzieY3AE+AkzFtbSu1d6nYl2Ty2fCMKD2efCbh4aKJrpDgKHzKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4+ugjgw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F695C2BBFC;
+	Mon, 27 May 2024 19:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837408;
-	bh=AllN4PymFLFzPbYi7cV97hTl4LQdJC5JQ1lKOtKykXU=;
+	s=korg; t=1716838585;
+	bh=o9qlUjN44qZWu8ea2M1+4d4Am2CZZDuBdLakRj++ze0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JkpEPnkZEVu+y2gEDM+4jAftazo49l25dGiiXvEpVnQvSDLcEFFMXAwbGkXvuPTEO
-	 xb3Ox+7Czp5Pb1Az7DdP+aj/ZYSGkdiI6sPnV7NE8aZIg3NQ3C9GZkSQQH6m+NcfIq
-	 OAjMc0rSdn7CqQDkeUw/Jl2ngiaArTR9YUuU+Nt4=
+	b=O4+ugjgwa2ZVwRwqNfz+FZaPzoFmu/BF8aRXOmm7nI7Sn+DBlSKyjSktFH7Q4DkFs
+	 coAbAR0Zo853+WjR6KC0O4Bd3PuZ/EfGRFeGNxPUE5fk5u/Gd3Ttvu0WZpE9+Jgtfu
+	 lKV0BgE7xULexfPTJT25HjF0rMQu97//S2Up3Bsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 406/427] RDMA/IPoIB: Fix format truncation compilation errors
+Subject: [PATCH 6.8 451/493] RDMA/mana_ib: Introduce helpers to create and destroy mana queues
 Date: Mon, 27 May 2024 20:57:33 +0200
-Message-ID: <20240527185635.282014471@linuxfoundation.org>
+Message-ID: <20240527185644.978917764@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +61,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Konstantin Taranov <kotaranov@microsoft.com>
 
-[ Upstream commit 49ca2b2ef3d003402584c68ae7b3055ba72e750a ]
+[ Upstream commit 46f5be7cd4bceb3a503c544b3dab7b75fe4bb96b ]
 
-Truncate the device name to store IPoIB VLAN name.
+Intoduce helpers to work with mana ib queues (struct mana_ib_queue).
+A queue always consists of umem, gdma_region, and id.
+A queue can become a WQ or a CQ.
 
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 allmodconfig
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 W=1 drivers/infiniband/ulp/ipoib/
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c: In function ‘ipoib_vlan_add’:
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:52: error: ‘%04x’
-directive output may be truncated writing 4 bytes into a region of size
-between 0 and 15 [-Werror=format-truncation=]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                    ^~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:48: note: directive
-argument in the range [0, 65535]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                ^~~~~~~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:9: note: ‘snprintf’ output
-between 6 and 21 bytes into a destination of size 16
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  188 |                  ppriv->dev->name, pkey);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/ulp/ipoib/ipoib_vlan.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
-
-Fixes: 9baa0b036410 ("IB/ipoib: Add rtnl_link_ops support")
-Link: https://lore.kernel.org/r/e9d3e1fef69df4c9beaf402cc3ac342bad680791.1715240029.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+Link: https://lore.kernel.org/r/1711483688-24358-2-git-send-email-kotaranov@linux.microsoft.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: f79edef79b6a ("RDMA/mana_ib: boundary check before installing cq callbacks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_vlan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mana/main.c    | 43 ++++++++++++++++++++++++++++
+ drivers/infiniband/hw/mana/mana_ib.h | 10 +++++++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-index 4bd161e86f8dd..562df2b3ef187 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-@@ -184,8 +184,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
+diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
+index 71e33feee61bb..4524c6b807487 100644
+--- a/drivers/infiniband/hw/mana/main.c
++++ b/drivers/infiniband/hw/mana/main.c
+@@ -237,6 +237,49 @@ void mana_ib_dealloc_ucontext(struct ib_ucontext *ibcontext)
+ 		ibdev_dbg(ibdev, "Failed to destroy doorbell page %d\n", ret);
+ }
  
- 	ppriv = ipoib_priv(pdev);
- 
--	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
--		 ppriv->dev->name, pkey);
-+	/* If you increase IFNAMSIZ, update snprintf below
-+	 * to allow longer names.
++int mana_ib_create_queue(struct mana_ib_dev *mdev, u64 addr, u32 size,
++			 struct mana_ib_queue *queue)
++{
++	struct ib_umem *umem;
++	int err;
++
++	queue->umem = NULL;
++	queue->id = INVALID_QUEUE_ID;
++	queue->gdma_region = GDMA_INVALID_DMA_REGION;
++
++	umem = ib_umem_get(&mdev->ib_dev, addr, size, IB_ACCESS_LOCAL_WRITE);
++	if (IS_ERR(umem)) {
++		err = PTR_ERR(umem);
++		ibdev_dbg(&mdev->ib_dev, "Failed to get umem, %d\n", err);
++		return err;
++	}
++
++	err = mana_ib_create_zero_offset_dma_region(mdev, umem, &queue->gdma_region);
++	if (err) {
++		ibdev_dbg(&mdev->ib_dev, "Failed to create dma region, %d\n", err);
++		goto free_umem;
++	}
++	queue->umem = umem;
++
++	ibdev_dbg(&mdev->ib_dev,
++		  "create_dma_region ret %d gdma_region 0x%llx\n",
++		  err, queue->gdma_region);
++
++	return 0;
++free_umem:
++	ib_umem_release(umem);
++	return err;
++}
++
++void mana_ib_destroy_queue(struct mana_ib_dev *mdev, struct mana_ib_queue *queue)
++{
++	/* Ignore return code as there is not much we can do about it.
++	 * The error message is printed inside.
 +	 */
-+	BUILD_BUG_ON(IFNAMSIZ != 16);
-+	snprintf(intf_name, sizeof(intf_name), "%.10s.%04x", ppriv->dev->name,
-+		 pkey);
++	mana_ib_gd_destroy_dma_region(mdev, queue->gdma_region);
++	ib_umem_release(queue->umem);
++}
++
+ static int
+ mana_ib_gd_first_dma_region(struct mana_ib_dev *dev,
+ 			    struct gdma_context *gc,
+diff --git a/drivers/infiniband/hw/mana/mana_ib.h b/drivers/infiniband/hw/mana/mana_ib.h
+index f83390eebb7d7..859fd3bfc764f 100644
+--- a/drivers/infiniband/hw/mana/mana_ib.h
++++ b/drivers/infiniband/hw/mana/mana_ib.h
+@@ -45,6 +45,12 @@ struct mana_ib_adapter_caps {
+ 	u32 max_inline_data_size;
+ };
  
- 	ndev = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
- 	if (IS_ERR(ndev)) {
++struct mana_ib_queue {
++	struct ib_umem *umem;
++	u64 gdma_region;
++	u64 id;
++};
++
+ struct mana_ib_dev {
+ 	struct ib_device ib_dev;
+ 	struct gdma_dev *gdma_dev;
+@@ -169,6 +175,10 @@ int mana_ib_create_dma_region(struct mana_ib_dev *dev, struct ib_umem *umem,
+ int mana_ib_gd_destroy_dma_region(struct mana_ib_dev *dev,
+ 				  mana_handle_t gdma_region);
+ 
++int mana_ib_create_queue(struct mana_ib_dev *mdev, u64 addr, u32 size,
++			 struct mana_ib_queue *queue);
++void mana_ib_destroy_queue(struct mana_ib_dev *mdev, struct mana_ib_queue *queue);
++
+ struct ib_wq *mana_ib_create_wq(struct ib_pd *pd,
+ 				struct ib_wq_init_attr *init_attr,
+ 				struct ib_udata *udata);
 -- 
 2.43.0
 
