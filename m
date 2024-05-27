@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EDC8D0AD2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 828A28D0CDA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 161FB1F229C1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B462E1C210A7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB68161301;
-	Mon, 27 May 2024 19:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD234160783;
+	Mon, 27 May 2024 19:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7GoLcKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOfZDoMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0C81607BC;
-	Mon, 27 May 2024 19:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFE415FCFC;
+	Mon, 27 May 2024 19:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836587; cv=none; b=FlIDZxsqPaVeOw/hDvzGwBrRGfQeDzcHIpc398jMMdkiHiDSPDAbgH6etABf5g7lwCljmJXcOn2ds2XIdifiPp2d89FhRPktcVPX7HWN4FsCiN950i6NfRzmxUjWPM2JlOO0Ift7MlPM+aQiSB92GNWOrH8DPijEvFyuo1o0NJY=
+	t=1716837822; cv=none; b=uXV5OZyvC2tR1x0w6jGu3VKgKi1oRtmQHreoE2w8Be4rJiFTd2uVkcwAIZ8+Tds9zi4SZ5q5uLJtvyxLimSJIHeU6ahH0BZYFGKI//VmzBPr8psY7QK31aiZpC6EVzOG5YotO9kIKbvdJK81vSEaYeTMn4r3UNuXeDiRNKJ+6+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836587; c=relaxed/simple;
-	bh=+SXBtHwz/jwQ0qSWBwk/yWruhQyyi8jVxos92t2oqvQ=;
+	s=arc-20240116; t=1716837822; c=relaxed/simple;
+	bh=pivcUogwqgp10B5tsM2u45mj3yALYVrxCGMANPHB3+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGDNIGfg4nVbneTChAfl0aiXgAb+RIh4jj7p5B5zHPy1FIyOn9Gmqt6EaNfAFbFZyDGRbU4i/ng/YMCo+BYpSTcaqwY3p3z6iH5nl2tL6e3hmFc8DhqKcJ0pssJx2FeJeI6a5KW6DgVfrhi3LqFI+B1+gcmPZ/pytSdtbS91QyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7GoLcKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC15C2BBFC;
-	Mon, 27 May 2024 19:03:06 +0000 (UTC)
+	 MIME-Version; b=lApSpweLRXwWtDSlvMxi9G1e0FFHyyw4ZVjv6akp9cn7ia7Q+StLmHwa+Cmx9S8U0e78YcF0IMiHmDBXgYKAkl12X34vlfORaBlTehEIJz+GC0b0z90uc/Zx6WJ89qRF3QOG1blNGFfV/qb/BEZZel4ESzqnaGqz6Wde/MIiLQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOfZDoMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6B6C2BBFC;
+	Mon, 27 May 2024 19:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836587;
-	bh=+SXBtHwz/jwQ0qSWBwk/yWruhQyyi8jVxos92t2oqvQ=;
+	s=korg; t=1716837822;
+	bh=pivcUogwqgp10B5tsM2u45mj3yALYVrxCGMANPHB3+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7GoLcKKB/XldP6xKkZ9GdH1LMPuJyMeczBSK3gtoaCm4/2RD6ZCuzLDRRuySPsja
-	 fIvnF5364NftU9XDoYjVbxMi6YDx9uq6sd2A7KTcH0CjCBZhEBCH2r/Ues5FJERxeo
-	 7nbK3H/g+4Y4Ua0bFKs3Hjtx3OcJ/kP99a5osnIc=
+	b=kOfZDoMF7Rge/OgMdSNKhkQ01NqR9GHWsIzkVMrDv0k9nHq4xswQfm3QOFZucvx0V
+	 q8M29S52r9mhNFMAJJfDjbhvAMnOw/0Zmnve+W6gFNV2qkAFPUPaIw6S9TmJ2jo+e2
+	 K6eHb4q/a2pavzCRRF1CAV5lRFGky1C9K72MUDGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Damian Muszynski <damian.muszynski@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 112/427] ACPI: bus: Indicate support for the Generic Event Device thru _OSC
+Subject: [PATCH 6.8 157/493] crypto: qat - specify firmware files for 402xx
 Date: Mon, 27 May 2024 20:52:39 +0200
-Message-ID: <20240527185612.236441067@linuxfoundation.org>
+Message-ID: <20240527185635.547727038@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit a8a967a243d71dd635ede076020f665a4df51c63 ]
+[ Upstream commit a3dc1f2b6b932a13f139d3be3c765155542c1070 ]
 
-A device driver for the Generic Event Device (ACPI0013) already
-exists for quite some time, but support for it was never reported
-thru _OSC.
+The 4xxx driver can probe 4xxx and 402xx devices. However, the driver
+only specifies the firmware images required for 4xxx.
+This might result in external tools missing these binaries, if required,
+in the initramfs.
 
-Fix this by setting bit 11 ("Generic Event Device support") when
-evaluating _OSC.
+Specify the firmware image used by 402xx with the MODULE_FIRMWARE()
+macros in the 4xxx driver.
 
-Fixes: 3db80c230da1 ("ACPI: implement Generic Event Device")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: a3e8c919b993 ("crypto: qat - add support for 402xx devices")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/bus.c   | 1 +
- include/linux/acpi.h | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/crypto/intel/qat/qat_4xxx/adf_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index d5b0e80dc48e4..0c48b603098a8 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -322,6 +322,7 @@ static void acpi_bus_osc_negotiate_platform_control(void)
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_HOTPLUG_OST_SUPPORT;
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_OVER_16_PSTATES_SUPPORT;
-+	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_GED_SUPPORT;
- 	if (IS_ENABLED(CONFIG_ACPI_PRMT))
- 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PRM_SUPPORT;
- 	if (IS_ENABLED(CONFIG_ACPI_FFH))
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 0e0b027e27e21..b0d909d1f5fc3 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -575,6 +575,7 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
- #define OSC_SB_OSLPI_SUPPORT			0x00000100
- #define OSC_SB_FAST_THERMAL_SAMPLING_SUPPORT	0x00000200
- #define OSC_SB_OVER_16_PSTATES_SUPPORT		0x00000400
-+#define OSC_SB_GED_SUPPORT			0x00000800
- #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
- #define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
- #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
+diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
+index 9762f2bf7727f..d26564cebdec4 100644
+--- a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
++++ b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
+@@ -197,7 +197,9 @@ module_pci_driver(adf_driver);
+ MODULE_LICENSE("Dual BSD/GPL");
+ MODULE_AUTHOR("Intel");
+ MODULE_FIRMWARE(ADF_4XXX_FW);
++MODULE_FIRMWARE(ADF_402XX_FW);
+ MODULE_FIRMWARE(ADF_4XXX_MMP);
++MODULE_FIRMWARE(ADF_402XX_MMP);
+ MODULE_DESCRIPTION("Intel(R) QuickAssist Technology");
+ MODULE_VERSION(ADF_DRV_VERSION);
+ MODULE_SOFTDEP("pre: crypto-intel_qat");
 -- 
 2.43.0
 
