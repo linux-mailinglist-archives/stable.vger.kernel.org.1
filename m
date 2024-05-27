@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF4A8D0DC5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0018D0BC8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D6DB1C20D44
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CEA81F234DB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF2315FCFB;
-	Mon, 27 May 2024 19:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8B017E90E;
+	Mon, 27 May 2024 19:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIB3lELx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrBhuRc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF0B17727;
-	Mon, 27 May 2024 19:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2366A039;
+	Mon, 27 May 2024 19:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838416; cv=none; b=UrdiPCmGykdxuPkhRh2WnVMFWE8vkR9Yeryf3PV0g3ROm1SFWPVG94yvwUOjOaJR5Ygtok23ymyDZx+1KYp8YXXvai/j7lQZ2uIph4Sn5MNZ+ehTmZmUN+sn101Hb+FKe3/TxljAdhTcwh2xWhkG5LHCff6CZh8wj31ChJYNJg8=
+	t=1716837173; cv=none; b=Hk/vBgGl6h9NYyLghzHOSgU/G7Znw0pPbP8lejKskG+bjvi9gNucH6pdnpfoxQK8X3HLpx3O0jZoP3xZ2OnZnuWT8TC9OgOW/THRiHmjapxZ9TSfW0eRuoWLJJceKDh0jqX7U2fuWzh4oK8QnrYoY5CRhcQNKuuUQZwQ7j77eOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838416; c=relaxed/simple;
-	bh=eMFBTY4egr/lFRn5UlKK6/0/EH33h+V+Y8mHqzKS22A=;
+	s=arc-20240116; t=1716837173; c=relaxed/simple;
+	bh=3LZplkpMttu/CIGk/GrUCt4fJr1DNO0i/9tpJbRwrus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L7GasIEtjiMc8IngwaCYfCgNbs8hHcevw9qDhLL0KZG+o7tD00/tiZFq/cGAbZ75l3j72XwNJEra5ctl5Q0UY/Pn7lPtl/sH8ZN/NRZnEh1y4aHLVQWOFWVgRwE2KV1bbmHHXeTMLisbXak/FK/rbM5WjcA+MUw14OzLEgfrkzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIB3lELx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F95C2BBFC;
-	Mon, 27 May 2024 19:33:35 +0000 (UTC)
+	 MIME-Version; b=ozMewPkw0Q8MdcbPx7s2VBghgXOoiNHwJK1xyNW2N4Swh9P6TWyxJ+JzYFyYnqNRyw8fuWDCluw01abjMfDBb3oleHmWUV/y5R6mpBqRXJwQnMQsH3ZsyHAdauxE7uc5LzxPs+zaOevGDcfFRyAuz84Hzl878v/+vjRpTjmKX48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrBhuRc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E77C2BBFC;
+	Mon, 27 May 2024 19:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838416;
-	bh=eMFBTY4egr/lFRn5UlKK6/0/EH33h+V+Y8mHqzKS22A=;
+	s=korg; t=1716837173;
+	bh=3LZplkpMttu/CIGk/GrUCt4fJr1DNO0i/9tpJbRwrus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIB3lELxj3JnafObcX22XtPBOh4/ke1hBGXjQaW3MnjGIMggKA62ckHCNi5yp/rvP
-	 7oI+LaX9LV8I3RvT+S9YAB1Qda9CnbsufIa/9URUNfGQ+y6gBxQnGzmfJyL7lsT5mN
-	 S+8zUK5jfoI77P98ZT64XHodTZMWWoTMO5zY/Fqk=
+	b=WrBhuRc0SYVJ99zQDMHy7UNGQqaBPVCD8RTtjVqcvKONyL504VGexrLoDBJOMZIfu
+	 eVksROrLIJLRqeJv3inZ4xvY4hItX0atwF770OYch5FqLX6Lz4tTm1ajpzIfM7DieO
+	 gPURdmSVn6zUBo8tXsIYHBeGSOOUgtkjeG8hvekQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 383/493] ASoC: Intel: avs: Restore stream decoupling on prepare
+Subject: [PATCH 6.9 338/427] drm/bridge: anx7625: Update audio status while detecting
 Date: Mon, 27 May 2024 20:56:25 +0200
-Message-ID: <20240527185642.803688634@linuxfoundation.org>
+Message-ID: <20240527185632.701328106@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 680507581e025d16a0b6d3782603ca8c598fbe2b ]
+[ Upstream commit a665b4e60369867cddf50f37f16169a3e2f434ad ]
 
-Revert changes from commit b87b8f43afd5 ("ASoC: Intel: avs: Drop
-superfluous stream decoupling") to restore working streaming during S3.
+Previously, the audio status was not updated during detection, leading
+to a persistent audio despite hot plugging events. To resolve this
+issue, update the audio status during detection.
 
-Fixes: b87b8f43afd5 ("ASoC: Intel: avs: Drop superfluous stream decoupling")
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://msgid.link/r/20240405090929.1184068-2-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 566fef1226c1 ("drm/bridge: anx7625: add HDMI audio function")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240416-anx7625-v3-1-f916ae31bdd7@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/pcm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/avs/pcm.c b/sound/soc/intel/avs/pcm.c
-index 4dfc5a1ebb7c2..f25a293c0915d 100644
---- a/sound/soc/intel/avs/pcm.c
-+++ b/sound/soc/intel/avs/pcm.c
-@@ -356,6 +356,7 @@ static int avs_dai_hda_be_prepare(struct snd_pcm_substream *substream, struct sn
- 					   stream_info->sig_bits);
- 	format_val = snd_hdac_stream_format(runtime->channels, bits, runtime->rate);
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 02bf450053076..59e9ad3499696 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -2469,15 +2469,22 @@ static void anx7625_bridge_atomic_disable(struct drm_bridge *bridge,
+ 	mutex_unlock(&ctx->aux_lock);
+ }
  
-+	snd_hdac_ext_stream_decouple(bus, link_stream, true);
- 	snd_hdac_ext_stream_reset(link_stream);
- 	snd_hdac_ext_stream_setup(link_stream, format_val);
++static void
++anx7625_audio_update_connector_status(struct anx7625_data *ctx,
++				      enum drm_connector_status status);
++
+ static enum drm_connector_status
+ anx7625_bridge_detect(struct drm_bridge *bridge)
+ {
+ 	struct anx7625_data *ctx = bridge_to_anx7625(bridge);
+ 	struct device *dev = ctx->dev;
++	enum drm_connector_status status;
  
-@@ -611,6 +612,7 @@ static int avs_dai_fe_prepare(struct snd_pcm_substream *substream, struct snd_so
- 	struct avs_dev *adev = to_avs_dev(dai->dev);
- 	struct hdac_ext_stream *host_stream;
- 	unsigned int format_val;
-+	struct hdac_bus *bus;
- 	unsigned int bits;
- 	int ret;
+ 	DRM_DEV_DEBUG_DRIVER(dev, "drm bridge detect\n");
  
-@@ -620,6 +622,8 @@ static int avs_dai_fe_prepare(struct snd_pcm_substream *substream, struct snd_so
- 	if (hdac_stream(host_stream)->prepared)
- 		return 0;
+-	return anx7625_sink_detect(ctx);
++	status = anx7625_sink_detect(ctx);
++	anx7625_audio_update_connector_status(ctx, status);
++	return status;
+ }
  
-+	bus = hdac_stream(host_stream)->bus;
-+	snd_hdac_ext_stream_decouple(bus, data->host_stream, true);
- 	snd_hdac_stream_reset(hdac_stream(host_stream));
- 
- 	stream_info = snd_soc_dai_get_pcm_stream(dai, substream->stream);
+ static const struct drm_edid *anx7625_bridge_edid_read(struct drm_bridge *bridge,
 -- 
 2.43.0
 
