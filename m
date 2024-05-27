@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-47169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9698D0CE4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826B28D0ADC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF0181C210E3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A76E28237E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8DC15FD04;
-	Mon, 27 May 2024 19:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CD61607A1;
+	Mon, 27 May 2024 19:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezaG1mpl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7eFsxEx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1751715EFC3;
-	Mon, 27 May 2024 19:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66402D518;
+	Mon, 27 May 2024 19:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837848; cv=none; b=jRrKdw/dUVI2jucTp96UdvCMrTpBEdi1nwnp7Yv1ygElt7svO1+yvqi2A/fSsR/Biu+84Zkn3yCkY5pEeRvToqueLkNo3OFWgAwbVibIEBB0bionPm7EB1K8w2phaS2zjBih40l0RtRQv+EIHxdv+GB8DHjh+qYZRyRHskSJcTM=
+	t=1716836613; cv=none; b=dbdMDAGYWXYF48uPVojV4vlk9iDrPNMFVULR6iIffLXnuHuhw+JdEt5Hy2cgi59F5aeNMI3qUOmPKa4lMTTrEQCMBlQrSBk49hPq2MK57Edlz9pBwTin6y8k/rTdOPNsHcmKRqEw5PZ5M+zp64qRSd6Z9e0OM0awIZiteEdC6Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837848; c=relaxed/simple;
-	bh=7DPJXShouZSaVfmKRJy+J00BHADVAXifQPGp9CJHRlI=;
+	s=arc-20240116; t=1716836613; c=relaxed/simple;
+	bh=st70cTuNPs7w+GJ+QfpSr3bRuvEJGhfZJC5qVQApDvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8V/5MQoYFEuuuVmvKNsc5uf3g0EQY4derwmWRLdFZvEvApaV5Ay+ecyZxYvA40RADhnlSjTo++csUV7kZ3URkO6V0ot90k4GR+ME79hbMw1NIrThfXRgCpvOVeSYe/W31AD+YbD0To2rhB0mP03O/U7O9p0G/7wc3+WfEdoznI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezaG1mpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99AB1C2BBFC;
-	Mon, 27 May 2024 19:24:07 +0000 (UTC)
+	 MIME-Version; b=gyq8gSHLGlj9Ky9gW1dcoympVxaJcSZtk5yITnfShAAygF1t7xbVSj8/OAlAmLyNyobS7W3uKiO3FzgtPSyJMsXZbooc9N4dP+ecEdTZ4ALV1/cTdz31oMz/yZW2rDzR+8lN48vYzFrHIWrYQ1FjoHjCl5px2lUIFSDU1BeRIhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7eFsxEx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2285C2BBFC;
+	Mon, 27 May 2024 19:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837847;
-	bh=7DPJXShouZSaVfmKRJy+J00BHADVAXifQPGp9CJHRlI=;
+	s=korg; t=1716836613;
+	bh=st70cTuNPs7w+GJ+QfpSr3bRuvEJGhfZJC5qVQApDvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ezaG1mpl/g189iBrxvr26ACyJZKxRTRZsv8yonZ+G9+pA2j3Gf5LFNig5ymhF3iE1
-	 OBkFCjBIzdayMBs7kDsSD6E8ZLUwd2y25w1ZmDkw5JPK3axQ4TIOodPsfWWHSIPidm
-	 6lXI6HXOz4beHu57Xm0NlRNkbsfqRGDtjr64sI+Q=
+	b=P7eFsxExFHzsXXqAyoN6bNG+nhBKUfmtdV0WLie5g0rzMS11dQEnfmerdXnQS63C1
+	 TyA1Lz18uq90KxLINkFbD0XJ9vstW+C7rsKMr/oGdtCAjUVK75r0xSuGo8RWTbu7/4
+	 u0OWTtsLEbXSv/wWtyigkX1XYR2pgf3eNa4MVu/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aloka Dixit <quic_alokad@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Kees Cook <keescook@chromium.org>,
+	Christian Lamparter <chunkeey@gmail.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 166/493] wifi: ath12k: use correct flag field for 320 MHz channels
+Subject: [PATCH 6.9 121/427] wifi: carl9170: re-fix fortified-memset warning
 Date: Mon, 27 May 2024 20:52:48 +0200
-Message-ID: <20240527185635.794896979@linuxfoundation.org>
+Message-ID: <20240527185613.143272379@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aloka Dixit <quic_alokad@quicinc.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 020e08ae5e68cbc0791e8d842443a86eb6aa99f6 ]
+[ Upstream commit 066afafc10c9476ee36c47c9062527a17e763901 ]
 
-Due to an error during rebasing the patchset 320 MHz channel support got
-broken. ath12k was setting the QoS bit instead of the correct flag.
-WMI_PEER_EXT_320MHZ (0x2) is defined as an extended flag, replace
-peer_flags by peer_flags_ext while sending peer data.
+The carl9170_tx_release() function sometimes triggers a fortified-memset
+warning in my randconfig builds:
 
-This affected both QCN9274 and WCN7850 which use the same flag.
+In file included from include/linux/string.h:254,
+                 from drivers/net/wireless/ath/carl9170/tx.c:40:
+In function 'fortify_memset_chk',
+    inlined from 'carl9170_tx_release' at drivers/net/wireless/ath/carl9170/tx.c:283:2,
+    inlined from 'kref_put' at include/linux/kref.h:65:3,
+    inlined from 'carl9170_tx_put_skb' at drivers/net/wireless/ath/carl9170/tx.c:342:9:
+include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  493 |                         __write_overflow_field(p_size_field, size);
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Kees previously tried to avoid this by using memset_after(), but it seems
+this does not fully address the problem. I noticed that the memset_after()
+here is done on a different part of the union (status) than the original
+cast was from (rate_driver_data), which may confuse the compiler.
 
-Fixes: 6734cf9b4cc7 ("wifi: ath12k: peer assoc for 320 MHz")
-Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Unfortunately, the memset_after() trick does not work on driver_rates[]
+because that is part of an anonymous struct, and I could not get
+struct_group() to do this either. Using two separate memset() calls
+on the two members does address the warning though.
+
+Fixes: fb5f6a0e8063b ("mac80211: Use memset_after() to clear tx status")
+Link: https://lore.kernel.org/lkml/20230623152443.2296825-1-arnd@kernel.org/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240314204651.11075-1-quic_alokad@quicinc.com
+Link: https://msgid.link/20240328135509.3755090-2-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/carl9170/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 11cc3005c0f98..035d8f247e23e 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -1836,7 +1836,7 @@ static void ath12k_wmi_copy_peer_flags(struct wmi_peer_assoc_complete_cmd *cmd,
- 		if (arg->bw_160)
- 			cmd->peer_flags |= cpu_to_le32(WMI_PEER_160MHZ);
- 		if (arg->bw_320)
--			cmd->peer_flags |= cpu_to_le32(WMI_PEER_EXT_320MHZ);
-+			cmd->peer_flags_ext |= cpu_to_le32(WMI_PEER_EXT_320MHZ);
+diff --git a/drivers/net/wireless/ath/carl9170/tx.c b/drivers/net/wireless/ath/carl9170/tx.c
+index e902ca80eba78..0226c31a6cae2 100644
+--- a/drivers/net/wireless/ath/carl9170/tx.c
++++ b/drivers/net/wireless/ath/carl9170/tx.c
+@@ -280,7 +280,8 @@ static void carl9170_tx_release(struct kref *ref)
+ 	 * carl9170_tx_fill_rateinfo() has filled the rate information
+ 	 * before we get to this point.
+ 	 */
+-	memset_after(&txinfo->status, 0, rates);
++	memset(&txinfo->pad, 0, sizeof(txinfo->pad));
++	memset(&txinfo->rate_driver_data, 0, sizeof(txinfo->rate_driver_data));
  
- 		/* Typically if STBC is enabled for VHT it should be enabled
- 		 * for HT as well
+ 	if (atomic_read(&ar->tx_total_queued))
+ 		ar->tx_schedule = true;
 -- 
 2.43.0
 
