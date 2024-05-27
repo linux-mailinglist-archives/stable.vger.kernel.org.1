@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BDA8D0DB6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826298D0BA5
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9AC28130C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A8241F220B2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A543815FCE9;
-	Mon, 27 May 2024 19:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2EC155CA7;
+	Mon, 27 May 2024 19:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDP6M/68"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFTA/4wT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6134817727;
-	Mon, 27 May 2024 19:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6950B17E90E;
+	Mon, 27 May 2024 19:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838377; cv=none; b=jTXkGeONNrrwlPll8Y2o2yt5jqLwySXT5GMXhVq+T1100IdhcOpFC7vFF13bLW2JWyLgMHiDpP4ME/PxFRCze9+cBXBRMSwS1a33TFP2qHa5QJIDJqDIXHDx5LsXeFO4cCcymu/vqGXV3bd5oOWIoMaY4nsdpexDXDF6dB574VQ=
+	t=1716837094; cv=none; b=A2knWD1vWE/pliKbangWsJE5oeBrJzUjR1hEgJ8ssHAtBfZN7WFswx4Z9ouHqUCuTJkPtpOWvooXj3Oc6PK4bajYoEM6eoR75IH6shmyFpp0FSWdmHAxXMe2wrVV8X3ukDetI78OJr6D9TKZ3Trp6krkPC3pm/0VXwnAR5lDi58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838377; c=relaxed/simple;
-	bh=IriL+G8v5q+V3PPlU7DXMlnTmXTO+cIUMR5SojgGeF8=;
+	s=arc-20240116; t=1716837094; c=relaxed/simple;
+	bh=Mza6/cJIN8FsNp7pinJoojHrjZ74UR5YZtH++1OYrW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zg/vUCzqsnzrlovHG3Mk9a63THrTthxMHkbz8iR0Xe0joMtJrHlZkSsZJ6y+zhsDWqh+dJ+uVNwV2u0h58NM8Oc13b3OgXvWL+3NZV3lxjvoQvsHbDy5OKfpHoUhEziG3KKCPmOpaJcMbY7mDRZPfYMjbWPsY6daX4AAbnaxlNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDP6M/68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD13C2BBFC;
-	Mon, 27 May 2024 19:32:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tJ4KQYFkGmyHrnzxJKfUFv6UFz3AzgWk8oWDZ6nSmHibLE+F98EuMQCVmwTIL1bSOiVjWqWTZyo2kvPzBAQ/+Jfwk5nkdTUurXhMFKuLXZm0ZVTC2XtOp0rDt+nApwVYYHBuqIqieosKKKitwyBFm7I+B7loVzp1ZxcCttdnFEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFTA/4wT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13CAC2BBFC;
+	Mon, 27 May 2024 19:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838377;
-	bh=IriL+G8v5q+V3PPlU7DXMlnTmXTO+cIUMR5SojgGeF8=;
+	s=korg; t=1716837094;
+	bh=Mza6/cJIN8FsNp7pinJoojHrjZ74UR5YZtH++1OYrW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDP6M/68FjBDu09RXCYr6G1QW0ZkZqX2Uk1WNpByk8t9+mLNSe97kmkYbLOS1dlyC
-	 60Hz0z9xaFEey3/F/UujthEb3Z4VTwS1136BJzGFMGVUcc78H5lJllSAbavQ1pzL/8
-	 APduLHEkUQ2nlb8u5OsGqjEGC5mv2pi/trO8zoYg=
+	b=yFTA/4wTVxu1cGBpurZrqw7hKWrlLRifvMU5xRpxL2LTUDbzF+oxyg6darU/jCkt9
+	 kC/6Fe8Hv3n4QV+6NWdufG704bPmtdOwJ5gx4IUtUDpa8m0rUa9AwkNGJ8QnY92q34
+	 AbISVYKvTqrMzD6+Ivu0fOZsPZTTF54VGmJdc5Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 352/493] drm/nouveau/dp: Fix incorrect return code in r535_dp_aux_xfer()
+Subject: [PATCH 6.9 307/427] ASoC: Intel: avs: Restore stream decoupling on prepare
 Date: Mon, 27 May 2024 20:55:54 +0200
-Message-ID: <20240527185641.804634504@linuxfoundation.org>
+Message-ID: <20240527185630.674450521@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit 97252d0a4bfbb07079503d059f7522d305fe0f7a ]
+[ Upstream commit 680507581e025d16a0b6d3782603ca8c598fbe2b ]
 
-I've recently been seeing some unexplained GSP errors on my RTX 6000 from
-failed aux transactions:
+Revert changes from commit b87b8f43afd5 ("ASoC: Intel: avs: Drop
+superfluous stream decoupling") to restore working streaming during S3.
 
-  [  132.915867] nouveau 0000:1f:00.0: gsp: cli:0xc1d00002 obj:0x00730000
-  ctrl cmd:0x00731341 failed: 0x0000ffff
-
-While the cause of these is not yet clear, these messages made me notice
-that the aux transactions causing these transactions were succeeding - not
-failing. As it turns out, this is because we're currently not returning the
-correct variable when r535_dp_aux_xfer() hits an error - causing us to
-never propagate GSP errors for failed aux transactions to userspace.
-
-So, let's fix that.
-
-Fixes: 4ae3a20102b2 ("nouveau/gsp: don't free ctrl messages on errors")
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240315212104.776936-1-lyude@redhat.com
+Fixes: b87b8f43afd5 ("ASoC: Intel: avs: Drop superfluous stream decoupling")
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://msgid.link/r/20240405090929.1184068-2-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/avs/pcm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c b/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c
-index 6a0a4d3b8902d..027867c2a8c5b 100644
---- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/r535.c
-@@ -1080,7 +1080,7 @@ r535_dp_aux_xfer(struct nvkm_outp *outp, u8 type, u32 addr, u8 *data, u8 *psize)
- 	ret = nvkm_gsp_rm_ctrl_push(&disp->rm.objcom, &ctrl, sizeof(*ctrl));
- 	if (ret) {
- 		nvkm_gsp_rm_ctrl_done(&disp->rm.objcom, ctrl);
--		return PTR_ERR(ctrl);
-+		return ret;
- 	}
+diff --git a/sound/soc/intel/avs/pcm.c b/sound/soc/intel/avs/pcm.c
+index 2cafbc392cdbe..72f1bc3b7b1fe 100644
+--- a/sound/soc/intel/avs/pcm.c
++++ b/sound/soc/intel/avs/pcm.c
+@@ -356,6 +356,7 @@ static int avs_dai_hda_be_prepare(struct snd_pcm_substream *substream, struct sn
+ 					   stream_info->sig_bits);
+ 	format_val = snd_hdac_stream_format(runtime->channels, bits, runtime->rate);
  
- 	memcpy(data, ctrl->data, size);
++	snd_hdac_ext_stream_decouple(bus, link_stream, true);
+ 	snd_hdac_ext_stream_reset(link_stream);
+ 	snd_hdac_ext_stream_setup(link_stream, format_val);
+ 
+@@ -611,6 +612,7 @@ static int avs_dai_fe_prepare(struct snd_pcm_substream *substream, struct snd_so
+ 	struct avs_dev *adev = to_avs_dev(dai->dev);
+ 	struct hdac_ext_stream *host_stream;
+ 	unsigned int format_val;
++	struct hdac_bus *bus;
+ 	unsigned int bits;
+ 	int ret;
+ 
+@@ -620,6 +622,8 @@ static int avs_dai_fe_prepare(struct snd_pcm_substream *substream, struct snd_so
+ 	if (hdac_stream(host_stream)->prepared)
+ 		return 0;
+ 
++	bus = hdac_stream(host_stream)->bus;
++	snd_hdac_ext_stream_decouple(bus, data->host_stream, true);
+ 	snd_hdac_stream_reset(hdac_stream(host_stream));
+ 
+ 	stream_info = snd_soc_dai_get_pcm_stream(dai, substream->stream);
 -- 
 2.43.0
 
