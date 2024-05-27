@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-47460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F378D0E15
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:36:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6328D0C16
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25B80B20D86
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E214E1F2459C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EC91607AB;
-	Mon, 27 May 2024 19:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C5B15FCE9;
+	Mon, 27 May 2024 19:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gS0Kmt19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIO9DA7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5216715FCF0;
-	Mon, 27 May 2024 19:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BF8168C4;
+	Mon, 27 May 2024 19:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838607; cv=none; b=mZ9DlEy2d1qMtPW88LaElD+otvsgEMx28U4RsWND0Fxk8BaQSirW2wr3gv93b7gCzihVO3JtkuVckxLAwQagnbs1ZT2Zm+Vbgem/gIgbOS4yN414sq7F8fs86mRhAE2nht9WJzXJ33rm0bjSxOY8Vs7NRHTMKgdCHTd7XoBqRwo=
+	t=1716837365; cv=none; b=ryGWkFGlwDf7xAHVFZdT7pkijmSq9yBweV0qfqASb/iqBPXDISlY3vJKKUKAhzf5GQKAPsevoelILt30Xo07gFOHJbqkivvxBFoHyHlJBe4oMHKTIe/wL3HKt6mIzhbiZUwx8gLKDmvVc6GiXsNPiliAXu++zhNblDCAfnBRKyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838607; c=relaxed/simple;
-	bh=8QtG+DxdpXb+reg3ONlxGnmUGWFv6rzNVjCVL9S6S8o=;
+	s=arc-20240116; t=1716837365; c=relaxed/simple;
+	bh=gHn3UJsBu2pp7QFmotGp5sSmhUFVeWtCib0U4kR65iE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbZ7zg8GqK5oKJVAvQ5Pn4NVVo4Mzj1iY2DDh4SOw+0KJR77taXCRHgMSg2LkZnS0BtwijWtoMFJtTTZ0xcbNUatUi2cHnpbyU6qvPuVApDhhwIQsIp9VDfX6C9vLLqoc26OZiLsQ6G1tcKDygupl9JuCjzKr4luYOQtotOz7vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gS0Kmt19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1208C2BBFC;
-	Mon, 27 May 2024 19:36:46 +0000 (UTC)
+	 MIME-Version; b=A1fD3sE1XN+s4EpqX+1QEqoK1ItNw+cZf0QYXQ0/x1hRFtGSLBkoqJLHii6EW1aecQRyzreXz+6f0jQO7Mb3WKLfD7ksM34mlnWURU2XmKyisnNeikgl+cGDwxmbJQtEECAdhATnJHY8lM7Vlrhdvbs47FB3xz25UBx6mxcjblo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIO9DA7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C869C2BBFC;
+	Mon, 27 May 2024 19:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838607;
-	bh=8QtG+DxdpXb+reg3ONlxGnmUGWFv6rzNVjCVL9S6S8o=;
+	s=korg; t=1716837365;
+	bh=gHn3UJsBu2pp7QFmotGp5sSmhUFVeWtCib0U4kR65iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gS0Kmt19yOEKISAuQlg9C2ZHv/mhADrqjy8m12I47BVmy+aYnCP3aii/gcpcux8g8
-	 9vJQW1cEQ98zuXaJv8s3EAhGMAXOVYRz0JKF/kNGYNXgsmMzOopDKIa6+KPZhzR4Uh
-	 8zKZZLzzy+9F3Goz8xu8ltPzhzd+3cqqJfcGeXBo=
+	b=nIO9DA7xi6l3fS+E9ApRFXHCliimGL89q7OcIWAw6D3od/ieKDrjv2B6bVvNjpdWv
+	 Zf6ZdCFcXb5+OVITBeK5Qpzr51/ucT8eS5L9JSqP1mNR6+OfO56iWLO/Y21D8mU+7y
+	 9Qb+T8KFtDtXaBcWSYzCpW3EPFqCq2s4sP6h7zdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Theodore Tso <tytso@mit.edu>,
+	syzbot+fa04eb8a56fd923fc5d8@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 458/493] ext4: fix potential unnitialized variable
+Subject: [PATCH 6.9 413/427] net: bridge: mst: fix vlan use-after-free
 Date: Mon, 27 May 2024 20:57:40 +0200
-Message-ID: <20240527185645.187340125@linuxfoundation.org>
+Message-ID: <20240527185635.491484735@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 3f4830abd236d0428e50451e1ecb62e14c365e9b ]
+[ Upstream commit 3a7c1661ae1383364cd6092d851f5e5da64d476b ]
 
-Smatch complains "err" can be uninitialized in the caller.
+syzbot reported a suspicious rcu usage[1] in bridge's mst code. While
+fixing it I noticed that nothing prevents a vlan to be freed while
+walking the list from the same path (br forward delay timer). Fix the rcu
+usage and also make sure we are not accessing freed memory by making
+br_mst_vlan_set_state use rcu read lock.
 
-    fs/ext4/indirect.c:349 ext4_alloc_branch()
-    error: uninitialized symbol 'err'.
+[1]
+ WARNING: suspicious RCU usage
+ 6.9.0-rc6-syzkaller #0 Not tainted
+ -----------------------------
+ net/bridge/br_private.h:1599 suspicious rcu_dereference_protected() usage!
+ ...
+ stack backtrace:
+ CPU: 1 PID: 8017 Comm: syz-executor.1 Not tainted 6.9.0-rc6-syzkaller #0
+ Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+ Call Trace:
+  <IRQ>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+  lockdep_rcu_suspicious+0x221/0x340 kernel/locking/lockdep.c:6712
+  nbp_vlan_group net/bridge/br_private.h:1599 [inline]
+  br_mst_set_state+0x1ea/0x650 net/bridge/br_mst.c:105
+  br_set_state+0x28a/0x7b0 net/bridge/br_stp.c:47
+  br_forward_delay_timer_expired+0x176/0x440 net/bridge/br_stp_timer.c:88
+  call_timer_fn+0x18e/0x650 kernel/time/timer.c:1793
+  expire_timers kernel/time/timer.c:1844 [inline]
+  __run_timers kernel/time/timer.c:2418 [inline]
+  __run_timer_base+0x66a/0x8e0 kernel/time/timer.c:2429
+  run_timer_base kernel/time/timer.c:2438 [inline]
+  run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2448
+  __do_softirq+0x2c6/0x980 kernel/softirq.c:554
+  invoke_softirq kernel/softirq.c:428 [inline]
+  __irq_exit_rcu+0xf2/0x1c0 kernel/softirq.c:633
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:645
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
+  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
+  </IRQ>
+  <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+ RIP: 0010:lock_acquire+0x264/0x550 kernel/locking/lockdep.c:5758
+ Code: 2b 00 74 08 4c 89 f7 e8 ba d1 84 00 f6 44 24 61 02 0f 85 85 01 00 00 41 f7 c7 00 02 00 00 74 01 fb 48 c7 44 24 40 0e 36 e0 45 <4b> c7 44 25 00 00 00 00 00 43 c7 44 25 09 00 00 00 00 43 c7 44 25
+ RSP: 0018:ffffc90013657100 EFLAGS: 00000206
+ RAX: 0000000000000001 RBX: 1ffff920026cae2c RCX: 0000000000000001
+ RDX: dffffc0000000000 RSI: ffffffff8bcaca00 RDI: ffffffff8c1eaa60
+ RBP: ffffc90013657260 R08: ffffffff92efe507 R09: 1ffffffff25dfca0
+ R10: dffffc0000000000 R11: fffffbfff25dfca1 R12: 1ffff920026cae28
+ R13: dffffc0000000000 R14: ffffc90013657160 R15: 0000000000000246
 
-Set the error to zero on the success path.
-
-Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/363a4673-0fb8-4adf-b4fb-90a499077276@moroto.mountain
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
+Reported-by: syzbot+fa04eb8a56fd923fc5d8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fa04eb8a56fd923fc5d8
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bridge/br_mst.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index cf407425d0f30..00b0839b534da 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -6119,6 +6119,7 @@ ext4_mb_new_blocks_simple(struct ext4_allocation_request *ar, int *errp)
- 	ext4_mb_mark_bb(sb, block, 1, true);
- 	ar->len = 1;
+diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
+index ee680adcee179..3c66141d34d62 100644
+--- a/net/bridge/br_mst.c
++++ b/net/bridge/br_mst.c
+@@ -78,7 +78,7 @@ static void br_mst_vlan_set_state(struct net_bridge_port *p, struct net_bridge_v
+ {
+ 	struct net_bridge_vlan_group *vg = nbp_vlan_group(p);
  
-+	*errp = 0;
- 	return block;
+-	if (v->state == state)
++	if (br_vlan_get_state(v) == state)
+ 		return;
+ 
+ 	br_vlan_set_state(v, state);
+@@ -100,11 +100,12 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 	};
+ 	struct net_bridge_vlan_group *vg;
+ 	struct net_bridge_vlan *v;
+-	int err;
++	int err = 0;
+ 
++	rcu_read_lock();
+ 	vg = nbp_vlan_group(p);
+ 	if (!vg)
+-		return 0;
++		goto out;
+ 
+ 	/* MSTI 0 (CST) state changes are notified via the regular
+ 	 * SWITCHDEV_ATTR_ID_PORT_STP_STATE.
+@@ -112,17 +113,20 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 	if (msti) {
+ 		err = switchdev_port_attr_set(p->dev, &attr, extack);
+ 		if (err && err != -EOPNOTSUPP)
+-			return err;
++			goto out;
+ 	}
+ 
+-	list_for_each_entry(v, &vg->vlan_list, vlist) {
++	err = 0;
++	list_for_each_entry_rcu(v, &vg->vlan_list, vlist) {
+ 		if (v->brvlan->msti != msti)
+ 			continue;
+ 
+ 		br_mst_vlan_set_state(p, v, state);
+ 	}
+ 
+-	return 0;
++out:
++	rcu_read_unlock();
++	return err;
  }
  
+ static void br_mst_vlan_sync_state(struct net_bridge_vlan *pv, u16 msti)
 -- 
 2.43.0
 
