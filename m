@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831D88D0AE4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F26798D0D12
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B43528235E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4946282829
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1957155CA7;
-	Mon, 27 May 2024 19:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0061607A5;
+	Mon, 27 May 2024 19:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuQ6ww57"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lk1LmFz/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7C3D518;
-	Mon, 27 May 2024 19:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF9915FD01;
+	Mon, 27 May 2024 19:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836636; cv=none; b=D/fM1I5zCTOZD5+g1cB279TY+pZDiPEw1J6pj7E5J1AF0cW/dtQwVKFZ22GEzyzLgyr+NA6oM3PjN8NMldkAUy7RKeWU/5MwBpYl+sLUFnnw9Ljz5YUY6gc73XGx6FLUwd/fLPmgWU2rnz6dtVfbS1Q5m3lxHdi7stzleVzaFpo=
+	t=1716837957; cv=none; b=VpIKeyQ+ngsBTqwROvJPfWGOD7NeaX8sv2RSlSlT6eLjW1kz4sbqWvYFkhqFDCCmr9by9nIDuY7U5vqb7654L1i9iOSgxgf50br/Luh2AMifLoGH2DADElV/vS3KTo4KsjJItJZ8GKW29aJtPf9GDuTvwfgZB3ezTvpE9ivUl2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836636; c=relaxed/simple;
-	bh=tqYsUHqsf15htg515qBOMyb96FhDsmOnnr7LsZSHOBU=;
+	s=arc-20240116; t=1716837957; c=relaxed/simple;
+	bh=QaJvz/ZvlAVEEqtZRb/9r4ymxSGaEHxAwnuxOVrjRjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vyt57Nkk/vJE1bNz6+hxio1zqywbjAkYF5/iLUcMaGKeiZ0xTMvhnBu4cBpDQMorTg7xogRC324Z+XKZ4ldTXIyTGmMLnSaQMFBq88tivWByWBza5AcG9KCxfrQtl7KUPHwas1su73T/F7bH19f6l1ZuKyzEtQ8byXpTAi8yq0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuQ6ww57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C23C2BBFC;
-	Mon, 27 May 2024 19:03:55 +0000 (UTC)
+	 MIME-Version; b=X2F1xSyeC52M1QV6kZV9p/gI/JWptDk/Io31SabQvm4cls6JqiEfkO9B7nltTNwfP2huWhI4bwRrKiiJCKA0pDWZ9wzEIYYNcYZeS94TW7MUWajViIAXpy0xTIbkZUSBnivSrJR+R5sqXT7DRt7cTaZILMjQjfJzgrMHAVnCMf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lk1LmFz/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663BAC2BBFC;
+	Mon, 27 May 2024 19:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836635;
-	bh=tqYsUHqsf15htg515qBOMyb96FhDsmOnnr7LsZSHOBU=;
+	s=korg; t=1716837957;
+	bh=QaJvz/ZvlAVEEqtZRb/9r4ymxSGaEHxAwnuxOVrjRjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuQ6ww57AWv+Px5No7Gp7krHdQqqcBgAN+sdXNkE/jxnRS/Nm/cTboN/qXHIlZQZm
-	 IhyY8HbKxTjvDe3CRQfk/D+COd0lQRZSA2TBb7H93iLM/X4SuW+un8FE7DgjpGx4uL
-	 1AGufjWv8joab7EA0G4q6XqKcCXMtKPwjgo8DIM4=
+	b=lk1LmFz/w/079HG1/gzKOWxTg1jNCqtgGwUvhc9HcfnbBcYftjxafVkg6Jy90fTTQ
+	 o1UP7+DJYlB0xjnaZcyGCAIEbxngiDJ+PuKjifWRZTIfeQX5/dHrT3R9GAZzBkj+MU
+	 G7h91NsHSHL2/pg/k04iaKMCC9gZncoUuQjUEkJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 129/427] scsi: ufs: qcom: Perform read back after writing CGC enable
+Subject: [PATCH 6.8 174/493] wifi: iwlwifi: mvm: fix active link counting during recovery
 Date: Mon, 27 May 2024 20:52:56 +0200
-Message-ID: <20240527185613.975873551@linuxfoundation.org>
+Message-ID: <20240527185636.042321958@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit d9488511b3ac7eb48a91bc5eded7027525525e03 ]
+[ Upstream commit 9737da2f00d6409ae48a79d4dddd9362b230aa31 ]
 
-Currently, the CGC enable bit is written and then an mb() is used to ensure
-that completes before continuing.
+During recovery, the chanctx_conf in mac80211 is still non-NULL even
+though the channel context has not yet been assigned again. In that
+case, the real count is actually lower.
 
-mb() ensures that the write completes, but completion doesn't mean that it
-isn't stored in a buffer somewhere. The recommendation for ensuring this
-bit has taken effect on the device is to perform a read back to force it to
-make it all the way to the device. This is documented in device-io.rst and
-a talk by Will Deacon on this can be seen over here:
+Switch to instead count the phy_ctx assignment and ensure that the
+assignment is cleared at the start of recovery.
 
-    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
-
-Let's do that to ensure the bit hits the device. Because the mb()'s purpose
-wasn't to add extra ordering (on top of the ordering guaranteed by
-writel()/readl()), it can safely be removed.
-
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-5-181252004586@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 12bacfc2c065 ("wifi: iwlwifi: handle eSR transitions")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320232419.55f37339e7d1.I57006568a90ffb7a1232def1b2f3264dea711ba6@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 20 ++++++++-----------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 004a0f6b1fffa..62c343444d973 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -412,7 +412,7 @@ static void ufs_qcom_enable_hw_clk_gating(struct ufs_hba *hba)
- 		    REG_UFS_CFG2);
- 
- 	/* Ensure that HW clock gating is enabled before next operations */
--	mb();
-+	ufshcd_readl(hba, REG_UFS_CFG2);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 1da4fd1c4560b..0aa54d33e3ba1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -189,17 +189,13 @@ static void iwl_mvm_mld_mac_remove_interface(struct ieee80211_hw *hw,
+ 	mutex_unlock(&mvm->mutex);
  }
  
- static int ufs_qcom_hce_enable_notify(struct ufs_hba *hba,
+-static unsigned int iwl_mvm_mld_count_active_links(struct ieee80211_vif *vif)
++static unsigned int iwl_mvm_mld_count_active_links(struct iwl_mvm_vif *mvmvif)
+ {
+ 	unsigned int n_active = 0;
+ 	int i;
+ 
+ 	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
+-		struct ieee80211_bss_conf *link_conf;
+-
+-		link_conf = link_conf_dereference_protected(vif, i);
+-		if (link_conf &&
+-		    rcu_access_pointer(link_conf->chanctx_conf))
++		if (mvmvif->link[i] && mvmvif->link[i]->phy_ctxt)
+ 			n_active++;
+ 	}
+ 
+@@ -245,18 +241,18 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
+ {
+ 	u16 *phy_ctxt_id = (u16 *)ctx->drv_priv;
+ 	struct iwl_mvm_phy_ctxt *phy_ctxt = &mvm->phy_ctxts[*phy_ctxt_id];
+-	unsigned int n_active = iwl_mvm_mld_count_active_links(vif);
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	unsigned int n_active = iwl_mvm_mld_count_active_links(mvmvif);
+ 	unsigned int link_id = link_conf->link_id;
+ 	int ret;
+ 
+-	/* if the assigned one was not counted yet, count it now */
+-	if (!rcu_access_pointer(link_conf->chanctx_conf))
+-		n_active++;
+-
+ 	if (WARN_ON_ONCE(!mvmvif->link[link_id]))
+ 		return -EINVAL;
+ 
++	/* if the assigned one was not counted yet, count it now */
++	if (!mvmvif->link[link_id]->phy_ctxt)
++		n_active++;
++
+ 	/* mac parameters such as HE support can change at this stage
+ 	 * For sta, need first to configure correct state from drv_sta_state
+ 	 * and only after that update mac config.
+@@ -416,7 +412,7 @@ __iwl_mvm_mld_unassign_vif_chanctx(struct iwl_mvm *mvm,
+ 
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	unsigned int n_active = iwl_mvm_mld_count_active_links(vif);
++	unsigned int n_active = iwl_mvm_mld_count_active_links(mvmvif);
+ 	unsigned int link_id = link_conf->link_id;
+ 
+ 	/* shouldn't happen, but verify link_id is valid before accessing */
 -- 
 2.43.0
 
