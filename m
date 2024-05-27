@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390838D0A58
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 20:59:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2E4D8D0C6D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD29AB20914
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:59:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A0BD1F22438
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFB115FD1A;
-	Mon, 27 May 2024 18:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286BD15FD01;
+	Mon, 27 May 2024 19:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19baxsGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5T2NIBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C64B161309;
-	Mon, 27 May 2024 18:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB794168C4;
+	Mon, 27 May 2024 19:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836342; cv=none; b=qR0MGwLbVHBtIiGpNpu71cSIab7m5s5+LnKm5IcUIUPTZotUsKS12+FyIAhbf24YwYSm57sG6Hkkfu8xFzEBvVXit7t58PDpO1mhSl75x5BwTe/klIpLYXE9zmFgMgoXRg2gsyc90z1It03rdBxiC7Hf/53J2RCaOq3yXj/PGHQ=
+	t=1716837571; cv=none; b=DcNIBSx17S7OgqhGPH6gQwfGMBY0oKVSSiok2ujWclK2cB/cGczzyc25X75BJ9ondvx5zvXw4UkhCb9aObyOvlAlfOdCzBoD7f//OY5Wvg7emk2iyAdy3/KMh1OErWg8LTmI/bsW1HyQBJNUFeUzjtmlAvJOojNEa3ahBj+6/u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836342; c=relaxed/simple;
-	bh=Iw2T+sCOUBJXhffzTchP1Yh8PvNoefG2vDAg2KU9/ZI=;
+	s=arc-20240116; t=1716837571; c=relaxed/simple;
+	bh=ltqszpaEtrYTv8NfJvYsN3scVWE9/Bz6PsNDdL8o8c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DATfV/G0Zx2FaYHdKV+dPvWmSFm3VfBbC/D7TjiR62M0mOcFtYOCJQm9uF2GqcbDT15mBYLUhXiLZrpkSs20TP9FhcPQQx47OsbHdPk6vILFfVP+f24dtpjmphW0xGH41K5Svu1PXCvYByhXKrXP3v0CFtjRfbghXNP5uVd4Mkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19baxsGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC8EC2BBFC;
-	Mon, 27 May 2024 18:59:02 +0000 (UTC)
+	 MIME-Version; b=ErOEqX2xEsa5HQGs7OLviOM0igDLpSChiziDP+QUbw4nVBEuFTJgamW9DzkOWUtUufWuT2dHCejtDMM/Kfka9kzLeHyfgdSboNMOYoHPhwktCceSy3i9OxOSRbGiNWEj8xscMxKBtW6R9dJcV1vgXvPdizCcqVqIDqZJE6WaOxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5T2NIBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FF7C2BBFC;
+	Mon, 27 May 2024 19:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836342;
-	bh=Iw2T+sCOUBJXhffzTchP1Yh8PvNoefG2vDAg2KU9/ZI=;
+	s=korg; t=1716837571;
+	bh=ltqszpaEtrYTv8NfJvYsN3scVWE9/Bz6PsNDdL8o8c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19baxsGoc3pLE2a3Z5ry+SZXNmcBbY13Pbn3RF7xf3LeZW6Xm3Nx+EmJepd/T/8/h
-	 KnKRletzGLtLEsJyZWC0iRRp4D2O4D+/SvnZpVQ+WdB5gDpBiV2kZVq+s5S0QmUwtC
-	 D9LY+crxwwEWbRJAoG9IjsT2VNmKyCLEBVjdruNQ=
+	b=V5T2NIBeDZ0jd4hPhHYNVsUuc3imuzsWifqIJJf2PSwPHskK+kTanZPXXu5ilWBKy
+	 IEV+SyCLJAhGaWIgkTf4MewLhi8mU10TMFFF9Jnv+KfjvP6iVdR5gppgNkdUaC+SVu
+	 KwrKZKrHRw2cYPZvMjaTy7JRA2We2Vcb0Djij2tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ken Milmore <ken.milmore@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.9 017/427] Revert "r8169: dont try to disable interrupts if NAPI is, scheduled already"
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 062/493] ASoC: Intel: bytcr_rt5640: Apply Asus T100TA quirk to Asus T100TAM too
 Date: Mon, 27 May 2024 20:51:04 +0200
-Message-ID: <20240527185603.354312020@linuxfoundation.org>
+Message-ID: <20240527185631.582380140@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit eabb8a9be1e4a12f3bf37ceb7411083e3775672d upstream.
+[ Upstream commit e50729d742ec364895f1c389c32315984a987aa5 ]
 
-This reverts commit 7274c4147afbf46f45b8501edbdad6da8cd013b9.
+The Asus T100TA quirk has been using an exact match on a product-name of
+"T100TA" but there are also T100TAM variants with a slightly higher
+clocked CPU and a metal backside which need the same quirk.
 
-Ken reported that RTL8125b can lock up if gro_flush_timeout has the
-default value of 20000 and napi_defer_hard_irqs is set to 0.
-In this scenario device interrupts aren't disabled, what seems to
-trigger some silicon bug under heavy load. I was able to reproduce this
-behavior on RTL8168h. Fix this by reverting 7274c4147afb.
+Sort the existing T100TA (stereo speakers) below the more specific
+T100TAF (mono speaker) quirk and switch from exact matching to
+substring matching so that the T100TA quirk will also match on
+the T100TAM models.
 
-Fixes: 7274c4147afb ("r8169: don't try to disable interrupts if NAPI is scheduled already")
-Cc: stable@vger.kernel.org
-Reported-by: Ken Milmore <ken.milmore@gmail.com>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/9b5b6f4c-4f54-4b90-b0b3-8d8023c2e780@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://msgid.link/r/20240407191559.21596-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4655,10 +4655,8 @@ static irqreturn_t rtl8169_interrupt(int
- 		rtl_schedule_task(tp, RTL_FLAG_TASK_RESET_PENDING);
- 	}
- 
--	if (napi_schedule_prep(&tp->napi)) {
--		rtl_irq_disable(tp);
--		__napi_schedule(&tp->napi);
--	}
-+	rtl_irq_disable(tp);
-+	napi_schedule(&tp->napi);
- out:
- 	rtl_ack_events(tp, status);
- 
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 05f38d1f7d824..b41a1147f1c34 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -636,28 +636,30 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_USE_AMCR0F28),
+ 	},
+ 	{
++		/* Asus T100TAF, unlike other T100TA* models this one has a mono speaker */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T100TA"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T100TAF"),
+ 		},
+ 		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
+ 					BYT_RT5640_JD_SRC_JD2_IN4N |
+ 					BYT_RT5640_OVCD_TH_2000UA |
+ 					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_MONO_SPEAKER |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+ 	{
++		/* Asus T100TA and T100TAM, must come after T100TAF (mono spk) match */
+ 		.matches = {
+-			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T100TAF"),
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "T100TA"),
+ 		},
+ 		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
+ 					BYT_RT5640_JD_SRC_JD2_IN4N |
+ 					BYT_RT5640_OVCD_TH_2000UA |
+ 					BYT_RT5640_OVCD_SF_0P75 |
+-					BYT_RT5640_MONO_SPEAKER |
+-					BYT_RT5640_DIFF_MIC |
+-					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+ 	{
+-- 
+2.43.0
+
 
 
 
