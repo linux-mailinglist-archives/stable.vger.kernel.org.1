@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828A28D0CDA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F9B8D0AD3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B462E1C210A7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79E841C20A9F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD234160783;
-	Mon, 27 May 2024 19:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6068A161306;
+	Mon, 27 May 2024 19:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOfZDoMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtOewKbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFE415FCFC;
-	Mon, 27 May 2024 19:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1DA1607A1;
+	Mon, 27 May 2024 19:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837822; cv=none; b=uXV5OZyvC2tR1x0w6jGu3VKgKi1oRtmQHreoE2w8Be4rJiFTd2uVkcwAIZ8+Tds9zi4SZ5q5uLJtvyxLimSJIHeU6ahH0BZYFGKI//VmzBPr8psY7QK31aiZpC6EVzOG5YotO9kIKbvdJK81vSEaYeTMn4r3UNuXeDiRNKJ+6+Y=
+	t=1716836590; cv=none; b=Fm/bK7othlLgRWIkRWUslp1fus0KB1w4uF8Db+C5vommq9Wn/CtlIx41GJgZwwMY+kBL7qbIR7oqjcLnOBUk/cBXvd5Uln8NvFxVy2NqSkJe6dou+/ar8pLpST7LeVc6m6Mok6PZauThuEZpqTl28hUUnYRnZd5c7LYN5b7js20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837822; c=relaxed/simple;
-	bh=pivcUogwqgp10B5tsM2u45mj3yALYVrxCGMANPHB3+4=;
+	s=arc-20240116; t=1716836590; c=relaxed/simple;
+	bh=FkEAw1NMo8FKE7SmBeG8cImGKJyAu8FLXdCdmz5aIPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lApSpweLRXwWtDSlvMxi9G1e0FFHyyw4ZVjv6akp9cn7ia7Q+StLmHwa+Cmx9S8U0e78YcF0IMiHmDBXgYKAkl12X34vlfORaBlTehEIJz+GC0b0z90uc/Zx6WJ89qRF3QOG1blNGFfV/qb/BEZZel4ESzqnaGqz6Wde/MIiLQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOfZDoMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6B6C2BBFC;
-	Mon, 27 May 2024 19:23:41 +0000 (UTC)
+	 MIME-Version; b=nxLaMIC4FupUw5Jj0E+XgkOftdu3wLYIc4/cW3kcBCTmsWItIrI6/tjw6KJUdRk4POJUc7IkQ4eYVDZAYgNfRavtIxvAJezCgj27jAgk5RcWpIJT/C1JMhAHXUV63lKKTnA//hAihfKWkGQFV+WG53ydi+ey63M3nn+0DCQwtO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtOewKbG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4122EC2BBFC;
+	Mon, 27 May 2024 19:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837822;
-	bh=pivcUogwqgp10B5tsM2u45mj3yALYVrxCGMANPHB3+4=;
+	s=korg; t=1716836589;
+	bh=FkEAw1NMo8FKE7SmBeG8cImGKJyAu8FLXdCdmz5aIPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOfZDoMF7Rge/OgMdSNKhkQ01NqR9GHWsIzkVMrDv0k9nHq4xswQfm3QOFZucvx0V
-	 q8M29S52r9mhNFMAJJfDjbhvAMnOw/0Zmnve+W6gFNV2qkAFPUPaIw6S9TmJ2jo+e2
-	 K6eHb4q/a2pavzCRRF1CAV5lRFGky1C9K72MUDGs=
+	b=gtOewKbGdqO0toslHUukrIKUoi2PeYtgG4fR8vR6TqZ+8ilkPT1UdRmXG8nIcw+z2
+	 rvMfbdV7LZ22mcG38rzj7Jw1b2uLKHuTbN2uKCOoKG9hoDuqqeN7LxS34ZSqxLVhVh
+	 78esvv+TgPvY43jmDg6z/J42V/TL/4L8ojXtFPdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 157/493] crypto: qat - specify firmware files for 402xx
-Date: Mon, 27 May 2024 20:52:39 +0200
-Message-ID: <20240527185635.547727038@linuxfoundation.org>
+Subject: [PATCH 6.9 113/427] ACPI: Fix Generic Initiator Affinity _OSC bit
+Date: Mon, 27 May 2024 20:52:40 +0200
+Message-ID: <20240527185612.323052078@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit a3dc1f2b6b932a13f139d3be3c765155542c1070 ]
+[ Upstream commit d0d4f1474e36b195eaad477373127ae621334c01 ]
 
-The 4xxx driver can probe 4xxx and 402xx devices. However, the driver
-only specifies the firmware images required for 4xxx.
-This might result in external tools missing these binaries, if required,
-in the initramfs.
+The ACPI spec says bit 17 should be used to indicate support
+for Generic Initiator Affinity Structure in SRAT, but we currently
+set bit 13 ("Interrupt ResourceSource support").
 
-Specify the firmware image used by 402xx with the MODULE_FIRMWARE()
-macros in the 4xxx driver.
+Fix this by actually setting bit 17 when evaluating _OSC.
 
-Fixes: a3e8c919b993 ("crypto: qat - add support for 402xx devices")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 01aabca2fd54 ("ACPI: Let ACPI know we support Generic Initiator Affinity Structures")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_4xxx/adf_drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/acpi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-index 9762f2bf7727f..d26564cebdec4 100644
---- a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-@@ -197,7 +197,9 @@ module_pci_driver(adf_driver);
- MODULE_LICENSE("Dual BSD/GPL");
- MODULE_AUTHOR("Intel");
- MODULE_FIRMWARE(ADF_4XXX_FW);
-+MODULE_FIRMWARE(ADF_402XX_FW);
- MODULE_FIRMWARE(ADF_4XXX_MMP);
-+MODULE_FIRMWARE(ADF_402XX_MMP);
- MODULE_DESCRIPTION("Intel(R) QuickAssist Technology");
- MODULE_VERSION(ADF_DRV_VERSION);
- MODULE_SOFTDEP("pre: crypto-intel_qat");
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index b0d909d1f5fc3..e77783e101c36 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -577,8 +577,8 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+ #define OSC_SB_OVER_16_PSTATES_SUPPORT		0x00000400
+ #define OSC_SB_GED_SUPPORT			0x00000800
+ #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
+-#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
+ #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
++#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00020000
+ #define OSC_SB_NATIVE_USB4_SUPPORT		0x00040000
+ #define OSC_SB_PRM_SUPPORT			0x00200000
+ #define OSC_SB_FFH_OPR_SUPPORT			0x00400000
 -- 
 2.43.0
 
