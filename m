@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-46736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AACF8D0B0E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141F38D0D13
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A84AEB226BF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:05:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE82D2829B6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A242915DBD8;
-	Mon, 27 May 2024 19:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A484515FD01;
+	Mon, 27 May 2024 19:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXbhtcn8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgkqF7PG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8D526ACA;
-	Mon, 27 May 2024 19:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CCD262BE;
+	Mon, 27 May 2024 19:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836727; cv=none; b=A01C8h0udZVE4wX55dx3tXS+t1YkUrf26k4jJjrbGGjHwVbHb/pypGaZwePFFch27wfUQSBTWuk8sWEBEqQLBZnZF1v5pYTrBCIMhFg3w3diizl6y4JtGPlkr/1bEssioGRanejh9spU85VGgj6UmzcxOeNpMZDJv14NXZoNDZ0=
+	t=1716837960; cv=none; b=sG46G2S7Ypqm9uKdwr+dbcdVCW6aybtqFQV8HHF6MbqMqXOIlnj725bCz9kCqUuYKQeZfAAmdD6h90HmPAu2SOGkXfwKRErkFBI6XvUjLxa2/BhaEgEmwvdPYDf1W9iAhq1NFa4T597fCiupy9KogfGc5bPAdIqe2DO8Y7E8lDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836727; c=relaxed/simple;
-	bh=mWn/0csLZxSczEiwq/7XD47Prv4jGIRQJR4g3zuSpy0=;
+	s=arc-20240116; t=1716837960; c=relaxed/simple;
+	bh=8ns4IHBvqEb400OD6wmjDLb0dEPECXuqV9ZchUhPsKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NN5RhkttFv6Gzp/tpREh9WHZw9z+7N4YP73onxzJwsCvuTDRUVmPZD7ZJtrKTvjyWHGj90tAggC9x3H/smobJo4Vcl9fl9+GuwulWv2MJIg37nvVzrXKt1aG8+fb06PgAHd7RDIvALvJiZCAJdZ3FRE2/3CDIrfh+MzzRGBIYXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXbhtcn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF208C2BBFC;
-	Mon, 27 May 2024 19:05:26 +0000 (UTC)
+	 MIME-Version; b=hBP34wPcPUj4/2NXkZlmHAgUeVjPccFdZkZ33k7pz4NtPrDDJ5GbBrauhXuzF8GMfh7Mq2ThxZQymNNf2ziis6RYdJZSJyM9WVoDXo5oqMDDOV4jgQ3u/9dXgtR2kPSbY3q//7Y7v/20QAr2mT3dS4/oD+uRMQ80ZB8QxHOCKdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgkqF7PG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA67C2BBFC;
+	Mon, 27 May 2024 19:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836727;
-	bh=mWn/0csLZxSczEiwq/7XD47Prv4jGIRQJR4g3zuSpy0=;
+	s=korg; t=1716837960;
+	bh=8ns4IHBvqEb400OD6wmjDLb0dEPECXuqV9ZchUhPsKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXbhtcn80GdvHzRr6UX362VVI3vDiNosJq33c3xzNyXXwXstp6FPTtj7Acp6KFXUr
-	 unN6XdlmLiOEQbNszBvd279+4pu1prhFxYbpUsXZYmtz0BbAEAS8yd2cVDd4OqVC2w
-	 URGUSh1/cAI8SgePdLPOgaO8h7zjD9CSn9+7z4UM=
+	b=qgkqF7PGZhKOBbHB4gQEobMglHkLvuDGLCVioWagbWe84sSQeJUQI1FQeoJ/rdn7V
+	 GSipiVR3ujtrsr/kqyzjN2/Oj7dBU7ydJTh1cGv4ykg+TZguGJAOhAzDkHNEFLk3zT
+	 koPZeivTJJS6w0HKZWPLsbu85H+RxWly8jvET0aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 164/427] thermal/drivers/tsens: Fix null pointer dereference
-Date: Mon, 27 May 2024 20:53:31 +0200
-Message-ID: <20240527185617.688222868@linuxfoundation.org>
+Subject: [PATCH 6.8 210/493] gfs2: Fix "ignore unlock failures after withdraw"
+Date: Mon, 27 May 2024 20:53:32 +0200
+Message-ID: <20240527185637.185697683@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit d998ddc86a27c92140b9f7984ff41e3d1d07a48f ]
+[ Upstream commit 5d9231111966b6c5a65016d58dcbeab91055bc91 ]
 
-compute_intercept_slope() is called from calibrate_8960() (in tsens-8960.c)
-as compute_intercept_slope(priv, p1, NULL, ONE_PT_CALIB) which lead to null
-pointer dereference (if DEBUG or DYNAMIC_DEBUG set).
-Fix this bug by adding null pointer check.
+Commit 3e11e53041502 tries to suppress dlm_lock() lock conversion errors
+that occur when the lockspace has already been released.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+It does that by setting and checking the SDF_SKIP_DLM_UNLOCK flag.  This
+conflicts with the intended meaning of the SDF_SKIP_DLM_UNLOCK flag, so
+check whether the lockspace is still allocated instead.
 
-Fixes: dfc1193d4dbd ("thermal/drivers/tsens: Replace custom 8960 apis with generic apis")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240411114021.12203-1-amishin@t-argos.ru
+(Given the current DLM API, checking for this kind of error after the
+fact seems easier that than to make sure that the lockspace is still
+allocated before calling dlm_lock().  Changing the DLM API so that users
+maintain the lockspace references themselves would be an option.)
+
+Fixes: 3e11e53041502 ("GFS2: ignore unlock failures after withdraw")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/tsens.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/glock.c | 4 +++-
+ fs/gfs2/util.c  | 1 -
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
-index 6d7c16ccb44dc..4edee8d929a75 100644
---- a/drivers/thermal/qcom/tsens.c
-+++ b/drivers/thermal/qcom/tsens.c
-@@ -264,7 +264,7 @@ void compute_intercept_slope(struct tsens_priv *priv, u32 *p1,
- 	for (i = 0; i < priv->num_sensors; i++) {
- 		dev_dbg(priv->dev,
- 			"%s: sensor%d - data_point1:%#x data_point2:%#x\n",
--			__func__, i, p1[i], p2[i]);
-+			__func__, i, p1[i], p2 ? p2[i] : 0);
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 34540f9d011ca..385561cd4f4c7 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -802,11 +802,13 @@ __acquires(&gl->gl_lockref.lock)
+ 	}
  
- 		if (!priv->sensor[i].slope)
- 			priv->sensor[i].slope = SLOPE_DEFAULT;
+ 	if (sdp->sd_lockstruct.ls_ops->lm_lock)	{
++		struct lm_lockstruct *ls = &sdp->sd_lockstruct;
++
+ 		/* lock_dlm */
+ 		ret = sdp->sd_lockstruct.ls_ops->lm_lock(gl, target, lck_flags);
+ 		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
+ 		    target == LM_ST_UNLOCKED &&
+-		    test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags)) {
++		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
+ 			finish_xmote(gl, target);
+ 			gfs2_glock_queue_work(gl, 0);
+ 		} else if (ret) {
+diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+index f52141ce94853..fc3ecb180ac53 100644
+--- a/fs/gfs2/util.c
++++ b/fs/gfs2/util.c
+@@ -350,7 +350,6 @@ int gfs2_withdraw(struct gfs2_sbd *sdp)
+ 			fs_err(sdp, "telling LM to unmount\n");
+ 			lm->lm_unmount(sdp);
+ 		}
+-		set_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags);
+ 		fs_err(sdp, "File system withdrawn\n");
+ 		dump_stack();
+ 		clear_bit(SDF_WITHDRAW_IN_PROG, &sdp->sd_flags);
 -- 
 2.43.0
 
