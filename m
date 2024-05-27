@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-47055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690978D0C65
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D28F98D0A44
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 20:59:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24250284658
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DB461C21614
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410E4160783;
-	Mon, 27 May 2024 19:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E8915FD1E;
+	Mon, 27 May 2024 18:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXb+X9xD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NaNUv0Ss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F3E15FCE9;
-	Mon, 27 May 2024 19:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3DC15FD19;
+	Mon, 27 May 2024 18:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837550; cv=none; b=p5f1MMj8P9nN6S7irCyIoGhHYA9fHZSSSi3A3yNfbq18SaOvMqwRV6eIucJq3AALms7F8iuMgsgybDc8XN/XX3jtmax+jvhzE0EutC7i36U5jb17cvZ2mPPyeKQzZy1u6bVKKuTQ+Qb2m2HAZ3SyzETNnJQeookMa4kgVD2loC8=
+	t=1716836327; cv=none; b=M+hiexX+BajFAc9DU6zf/A5IsKsSI0QTzpMNzhZvXsoHcY3o5DiUski5yonbNIjBcCBPWoh4Ekn2vj9rsRU++3aug4g7/yEVt9HU9GYAoMW9grc6jkRAAin8ctcU9bDf5jHCGnZiZXqnO3TcZl8VnwTf1XFyKCpqIgDuQjVe5I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837550; c=relaxed/simple;
-	bh=wbn1pwDX8bcl70xK/+QX0IzHaNlL1g/OgDJgoETMSYs=;
+	s=arc-20240116; t=1716836327; c=relaxed/simple;
+	bh=84APOGqb1/5iI6aiG1dnx5RDxuvltT0aWadbol3/M7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3S3IauWw14aEBRfhANFEdXX7GT8KBY8MKo/hwe9x0CK499vBBJ7sYmtxgtlLTJQMhCBQMtbqc+n6N+/Ho7cqBshVo91asTMZFFiRbsfT02v9+tyTKyosbHISxZkzIMwYLyM/ZNw/Rszb2IYoIfKU3+GIgZnM3+kswxCzXsTjA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXb+X9xD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87890C2BBFC;
-	Mon, 27 May 2024 19:19:09 +0000 (UTC)
+	 MIME-Version; b=oF3FdSdZBL3tlwPwMO/3dLo5Y/8ue15E3916S12tjSZ4L4FgOD+ah342dow9GuyBKc4w2r8Q2GcvMS2U8UUkLftugbdhwl9UKYaLDSzHN+3+gbiVAQIxdFsKM+9xgj0PrKQwazvF07ZK1lkw39DAJHmr4MVI89kIDQqWXaqiMOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NaNUv0Ss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F8EC2BBFC;
+	Mon, 27 May 2024 18:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837549;
-	bh=wbn1pwDX8bcl70xK/+QX0IzHaNlL1g/OgDJgoETMSYs=;
+	s=korg; t=1716836326;
+	bh=84APOGqb1/5iI6aiG1dnx5RDxuvltT0aWadbol3/M7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXb+X9xDb0+F9oDZ1EIuNuQDNJirQ9wAiaVRAHCXbfHuIMiUITXq494vTA5nzlyIJ
-	 DT0qIjfjWwSLhVvDcYJSlImbROt4t0LGSvSraT/AH5DQ72pvO048bnJ4XUH4Lz72en
-	 HGAcnmP8JMFY52ijBWWPA+kWREXKlmjAtHxZu0y8=
+	b=NaNUv0Sswj6EZBQERVD0oYW0ed1jd1ZDQiTBD/LUOmszTHcQ3ZtTiO4G4FbZs92QN
+	 SsTXSEDjYaA1Yek/bPotR7QjEQRSqotUtmGtn+0faRxkArSWIRCINBiYzS4a0cb8ua
+	 E86lDZdsOWlzLESN7+FH8aS9L4lLaan5Wvc6NLG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 055/493] cpu: Ignore "mitigations" kernel parameter if CPU_MITIGATIONS=n
-Date: Mon, 27 May 2024 20:50:57 +0200
-Message-ID: <20240527185631.106292948@linuxfoundation.org>
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 6.9 011/427] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler
+Date: Mon, 27 May 2024 20:50:58 +0200
+Message-ID: <20240527185602.837148888@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit ce0abef6a1d540acef85068e0e82bdf1fbeeb0e9 ]
+commit 8492bd91aa055907c67ef04f2b56f6dadd1f44bf upstream.
 
-Explicitly disallow enabling mitigations at runtime for kernels that were
-built with CONFIG_CPU_MITIGATIONS=n, as some architectures may omit code
-entirely if mitigations are disabled at compile time.
+When using a high speed clock with a low baud rate, the 4x prescaler is
+automatically selected if required. In that case, sc16is7xx_set_baud()
+properly configures the chip registers, but returns an incorrect baud
+rate by not taking into account the prescaler value. This incorrect baud
+rate is then fed to uart_update_timeout().
 
-E.g. on x86, a large pile of Kconfigs are buried behind CPU_MITIGATIONS,
-and trying to provide sane behavior for retroactively enabling mitigations
-is extremely difficult, bordering on impossible.  E.g. page table isolation
-and call depth tracking require build-time support, BHI mitigations will
-still be off without additional kernel parameters, etc.
+For example, with an input clock of 80MHz, and a selected baud rate of 50,
+sc16is7xx_set_baud() will return 200 instead of 50.
 
-  [ bp: Touchups. ]
+Fix this by first changing the prescaler variable to hold the selected
+prescaler value instead of the MCR bitfield. Then properly take into
+account the selected prescaler value in the return value computation.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240420000556.2645001-3-seanjc@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also add better documentation about the divisor value computation.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20240430200431.4102923-1-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  3 +++
- arch/x86/Kconfig                                |  8 ++++++--
- include/linux/cpu.h                             | 11 +++++++++++
- kernel/cpu.c                                    | 14 ++++++++++----
- 4 files changed, 30 insertions(+), 6 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 31fdaf4fe9dd8..9bfc972af2403 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3399,6 +3399,9 @@
- 			arch-independent options, each of which is an
- 			aggregation of existing arch-specific options.
- 
-+			Note, "mitigations" is supported if and only if the
-+			kernel was built with CPU_MITIGATIONS=y.
-+
- 			off
- 				Disable all optional CPU mitigations.  This
- 				improves system performance, but it may also
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 6f49999a6b838..bfccf1213871b 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2474,9 +2474,13 @@ menuconfig CPU_MITIGATIONS
- 	help
- 	  Say Y here to enable options which enable mitigations for hardware
- 	  vulnerabilities (usually related to speculative execution).
-+	  Mitigations can be disabled or restricted to SMT systems at runtime
-+	  via the "mitigations" kernel parameter.
- 
--	  If you say N, all mitigations will be disabled. You really
--	  should know what you are doing to say so.
-+	  If you say N, all mitigations will be disabled.  This CANNOT be
-+	  overridden at runtime.
-+
-+	  Say 'Y', unless you really know what you are doing.
- 
- if CPU_MITIGATIONS
- 
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 8654714421a0d..75f0344bd3b94 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -219,7 +219,18 @@ void cpuhp_report_idle_dead(void);
- static inline void cpuhp_report_idle_dead(void) { }
- #endif /* #ifdef CONFIG_HOTPLUG_CPU */
- 
-+#ifdef CONFIG_CPU_MITIGATIONS
- extern bool cpu_mitigations_off(void);
- extern bool cpu_mitigations_auto_nosmt(void);
-+#else
-+static inline bool cpu_mitigations_off(void)
-+{
-+	return true;
-+}
-+static inline bool cpu_mitigations_auto_nosmt(void)
-+{
-+	return false;
-+}
-+#endif
- 
- #endif /* _LINUX_CPU_H_ */
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index f8a0406ce8ba5..bac70ea54e349 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -3196,6 +3196,7 @@ void __init boot_cpu_hotplug_init(void)
- 	this_cpu_write(cpuhp_state.target, CPUHP_ONLINE);
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -554,16 +554,28 @@ static bool sc16is7xx_regmap_noinc(struc
+ 	return reg == SC16IS7XX_RHR_REG;
  }
  
-+#ifdef CONFIG_CPU_MITIGATIONS
- /*
-  * These are used for a global "mitigations=" cmdline option for toggling
-  * optional CPU mitigations.
-@@ -3206,9 +3207,7 @@ enum cpu_mitigations {
- 	CPU_MITIGATIONS_AUTO_NOSMT,
- };
- 
--static enum cpu_mitigations cpu_mitigations __ro_after_init =
--	IS_ENABLED(CONFIG_CPU_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
--					     CPU_MITIGATIONS_OFF;
-+static enum cpu_mitigations cpu_mitigations __ro_after_init = CPU_MITIGATIONS_AUTO;
- 
- static int __init mitigations_parse_cmdline(char *arg)
++/*
++ * Configure programmable baud rate generator (divisor) according to the
++ * desired baud rate.
++ *
++ * From the datasheet, the divisor is computed according to:
++ *
++ *              XTAL1 input frequency
++ *             -----------------------
++ *                    prescaler
++ * divisor = ---------------------------
++ *            baud-rate x sampling-rate
++ */
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
  {
-@@ -3224,7 +3223,6 @@ static int __init mitigations_parse_cmdline(char *arg)
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 	u8 lcr;
+-	u8 prescaler = 0;
++	unsigned int prescaler = 1;
+ 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
  
- 	return 0;
- }
--early_param("mitigations", mitigations_parse_cmdline);
+ 	if (div >= BIT(16)) {
+-		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
+-		div /= 4;
++		prescaler = 4;
++		div /= prescaler;
+ 	}
  
- /* mitigations=off */
- bool cpu_mitigations_off(void)
-@@ -3239,3 +3237,11 @@ bool cpu_mitigations_auto_nosmt(void)
- 	return cpu_mitigations == CPU_MITIGATIONS_AUTO_NOSMT;
+ 	/* Enable enhanced features */
+@@ -573,9 +585,10 @@ static int sc16is7xx_set_baud(struct uar
+ 			      SC16IS7XX_EFR_ENABLE_BIT);
+ 	sc16is7xx_efr_unlock(port);
+ 
++	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_CLKSEL_BIT,
+-			      prescaler);
++			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
+ 
+ 	/* Backup LCR and access special register set (DLL/DLH) */
+ 	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
+@@ -591,7 +604,7 @@ static int sc16is7xx_set_baud(struct uar
+ 	/* Restore LCR and access to general register set */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+ 
+-	return DIV_ROUND_CLOSEST(clk / 16, div);
++	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
  }
- EXPORT_SYMBOL_GPL(cpu_mitigations_auto_nosmt);
-+#else
-+static int __init mitigations_parse_cmdline(char *arg)
-+{
-+	pr_crit("Kernel compiled without mitigations, ignoring 'mitigations'; system may still be vulnerable\n");
-+	return 0;
-+}
-+#endif
-+early_param("mitigations", mitigations_parse_cmdline);
--- 
-2.43.0
-
+ 
+ static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
 
 
 
