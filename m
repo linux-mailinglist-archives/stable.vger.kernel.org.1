@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932698D0BDD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19E18D0DD7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4A591C2127D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 524B7B20CB7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8526A039;
-	Mon, 27 May 2024 19:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B8015FA9F;
+	Mon, 27 May 2024 19:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tb3CSdko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlwnnEs3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D025B17E90E;
-	Mon, 27 May 2024 19:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E08317727;
+	Mon, 27 May 2024 19:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837227; cv=none; b=ZKpNbk0oCP0qN5/QMIhHtXZHzbU/9i0hO4PjY8fYQZWzWejCJHHBU5zOc3xAoUlvQKVuSmfY/pMJ8ewnoMeavnTgkenp2+HlMXlhqtc8NxrT9qYESwI5uNj0pEsjMeZ0TjXDgWQsqTpSWPJcudrxVQdGYWv2HJzNlPvrOHQ9qyg=
+	t=1716838460; cv=none; b=FDM8cMewQeZXY3zDtB0uu+ImSClg388x0sxdoP8GRYB+Iw4D6GIMDI/Q3B9Bvkk9wUE+90uNbQTyZEQpfEMrVHZ10zxr9l5F9bN4m08CI0hyk+7STWkpP9vIHRymIoPDzTSFXCc0CUCBihdfJxEHP1YgAMMpIVTjN5JSzZiU0b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837227; c=relaxed/simple;
-	bh=BPvyz3XTYiCbcyBrVS9kXwhs4l0158vhZ4LtuivgxDE=;
+	s=arc-20240116; t=1716838460; c=relaxed/simple;
+	bh=fIqJnNv/x3V3lpAONTZ7n6SY3LZrT0eFd3+KRCc3M5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsiezPRVGCHm+u7Fkd3Fw5wN9ljZEgjwND6Tk7Lo62qTAisaOkMZ4jDcWQsNZwaHJqeILowVB61Mot6julTn1lAwF6wENN+sFQzfKqL5zspk+H7b1weOYssSPivrHe4PYnFMDr4k5K0I4pOSu23h3Im3Y+Xni+rt2h5DIPg+qfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tb3CSdko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64070C2BBFC;
-	Mon, 27 May 2024 19:13:47 +0000 (UTC)
+	 MIME-Version; b=Sq46+yzcKVKFFZhpoc4oCoHrZSxQQvJ9m+A4Kr0FnPHgQJAzHQJ4b8V4fK2Caz664GzFUM8MoBNOf/3rnvS+e+k107UoN169kqvk6LVJ6Tda2LtK+dVzOfeoLCToThGA1nEwW934eyfd18ZJcPpBHDE4bYZY+F7cSlyb6OJ+uHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlwnnEs3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF60DC2BBFC;
+	Mon, 27 May 2024 19:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837227;
-	bh=BPvyz3XTYiCbcyBrVS9kXwhs4l0158vhZ4LtuivgxDE=;
+	s=korg; t=1716838460;
+	bh=fIqJnNv/x3V3lpAONTZ7n6SY3LZrT0eFd3+KRCc3M5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tb3CSdkocLAUXgg7hM/h9XIUUiEEiHhzf7RYxrK+2kOyv2/2ooFIdZrm3v5z7aWyN
-	 0hrgP5s++UAgPoRnUCE5+7C36ml2uHYe9WAmPas9MMUrG2+kyC26bUJfNj10jkXLP8
-	 ZCtxOYU4MHMxDH4KbDshDX8TQfUj8VQsIzCmzA7o=
+	b=IlwnnEs3fhGnXtMzDXs2OXnzXLkhr3zYHvfpOsb0/fxmp/0CeQj3DndvzgPzFwXwL
+	 oXm/iK4Wpm7WGZmGPnPj2RGSD/PyJ6+mkYDUn+JFHLD8rNLYtvkigdO3recTeLcJdP
+	 5BtfYTFOIuENW5x4lgxVRjhBy07K9MZ/B3u4IM7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 357/427] RDMA/hns: Fix UAF for cq async event
+Subject: [PATCH 6.8 402/493] drm: vc4: Fix possible null pointer dereference
 Date: Mon, 27 May 2024 20:56:44 +0200
-Message-ID: <20240527185633.738348566@linuxfoundation.org>
+Message-ID: <20240527185643.434589053@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit a942ec2745ca864cd8512142100e4027dc306a42 ]
+[ Upstream commit c534b63bede6cb987c2946ed4d0b0013a52c5ba7 ]
 
-The refcount of CQ is not protected by locks. When CQ asynchronous
-events and CQ destruction are concurrent, CQ may have been released,
-which will cause UAF.
+In vc4_hdmi_audio_init() of_get_address() may return
+NULL which is later dereferenced. Fix this bug by adding NULL check.
 
-Use the xa_lock() to protect the CQ refcount.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-6-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: bb7d78568814 ("drm/vc4: Add HDMI audio support")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240409075622.11783-1-amishin@t-argos.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_cq.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_cq.c b/drivers/infiniband/hw/hns/hns_roce_cq.c
-index 7250d0643b5c5..68e22f368d43a 100644
---- a/drivers/infiniband/hw/hns/hns_roce_cq.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_cq.c
-@@ -149,7 +149,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
- 		return ret;
- 	}
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index f827f26543641..eff47465707be 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2739,6 +2739,8 @@ static int vc4_hdmi_audio_init(struct vc4_hdmi *vc4_hdmi)
+ 		index = 1;
  
--	ret = xa_err(xa_store(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
-+	ret = xa_err(xa_store_irq(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
- 	if (ret) {
- 		ibdev_err(ibdev, "failed to xa_store CQ, ret = %d.\n", ret);
- 		goto err_put;
-@@ -163,7 +163,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
- 	return 0;
+ 	addr = of_get_address(dev->of_node, index, NULL, NULL);
++	if (!addr)
++		return -EINVAL;
  
- err_xa:
--	xa_erase(&cq_table->array, hr_cq->cqn);
-+	xa_erase_irq(&cq_table->array, hr_cq->cqn);
- err_put:
- 	hns_roce_table_put(hr_dev, &cq_table->table, hr_cq->cqn);
- 
-@@ -182,7 +182,7 @@ static void free_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
- 		dev_err(dev, "DESTROY_CQ failed (%d) for CQN %06lx\n", ret,
- 			hr_cq->cqn);
- 
--	xa_erase(&cq_table->array, hr_cq->cqn);
-+	xa_erase_irq(&cq_table->array, hr_cq->cqn);
- 
- 	/* Waiting interrupt process procedure carried out */
- 	synchronize_irq(hr_dev->eq_table.eq[hr_cq->vector].irq);
-@@ -476,13 +476,6 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
- 	struct ib_event event;
- 	struct ib_cq *ibcq;
- 
--	hr_cq = xa_load(&hr_dev->cq_table.array,
--			cqn & (hr_dev->caps.num_cqs - 1));
--	if (!hr_cq) {
--		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
--		return;
--	}
--
- 	if (event_type != HNS_ROCE_EVENT_TYPE_CQ_ID_INVALID &&
- 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_ACCESS_ERROR &&
- 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_OVERFLOW) {
-@@ -491,7 +484,16 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
- 		return;
- 	}
- 
--	refcount_inc(&hr_cq->refcount);
-+	xa_lock(&hr_dev->cq_table.array);
-+	hr_cq = xa_load(&hr_dev->cq_table.array,
-+			cqn & (hr_dev->caps.num_cqs - 1));
-+	if (hr_cq)
-+		refcount_inc(&hr_cq->refcount);
-+	xa_unlock(&hr_dev->cq_table.array);
-+	if (!hr_cq) {
-+		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
-+		return;
-+	}
- 
- 	ibcq = &hr_cq->ib_cq;
- 	if (ibcq->event_handler) {
+ 	vc4_hdmi->audio.dma_data.addr = be32_to_cpup(addr) + mai_data->offset;
+ 	vc4_hdmi->audio.dma_data.addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
 -- 
 2.43.0
 
