@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A568D0B1F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF4E8D0CFA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 356F21F22B1E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D0AFB203FA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B9926AF2;
-	Mon, 27 May 2024 19:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EDD15FCE9;
+	Mon, 27 May 2024 19:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6xUNCpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4C6drCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866311078F;
-	Mon, 27 May 2024 19:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66523168C4;
+	Mon, 27 May 2024 19:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836778; cv=none; b=ddN5ZjpsZdm55LERvYPZlMuHaJCZXu4Sya68XVpaCrtW+DnXYFUzVla7pgvfXJtKdz6Km7E9rjarloyHmfKXNqJZifXcPrDYWcRwZeqBh2wcI8POoN9ScpfyTKRtiWuVvvGFcUwEZGJziThDw9LPeF7LGH99c+Sp/jipAEpCwOI=
+	t=1716837896; cv=none; b=kie/TleZDt070l6Os8TbCqOGwXsBy3FqRWtYgWYn4uCL9whFRR6t1JgGPW7Saj3HA6dHz5zXfxf3r4ayobFVQbS1oCCF7yYlgu5mg6wwOm62kjmos9z9GZHAmSIZgLShON/dHsBMuOkSOQTlb4kqMQ0nQlsdx0pcxYoHNJF6Vjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836778; c=relaxed/simple;
-	bh=blmM30pR3u9mfqLt9UNV9/jv7IgMW0WV2r2WMgOvGxg=;
+	s=arc-20240116; t=1716837896; c=relaxed/simple;
+	bh=hw27nk9rMuH4+E4L2smE+N6xhVnX+F/TFPxbbtDlYrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFuLbvSbVvkPOJVRtGK2qXBeqE4RzJRMnKfWvkEJ6wRJOM70We1wIfj/o5c9NHDOFTWtXUyJD6j2NNkR/NMe3IAd41VVwyf6Uv43MeEBt+J6JY13Mqs0f+zmqJfkTd0i2/PU0GomM06PGV0n9pI02Szjez++GRKlDejZ0fsvmMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6xUNCpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1AFC2BBFC;
-	Mon, 27 May 2024 19:06:17 +0000 (UTC)
+	 MIME-Version; b=jaD2BWuEzB2+9TqWzpL/74b1A7eNOPNJ0iHtLMo3vnBuu775q9aEn8SmEwNeO5PC3TaLlckcWqWf9gOOLltiKt7AoHP7aZ+mpZDzTn7Gu1oqSy5PrLKcuSpPRfKeZZ1zarJVbB2PRabBEuSmZihO/u2mYJCeFvNdyx3qbR/xIoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4C6drCi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F115BC2BBFC;
+	Mon, 27 May 2024 19:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836778;
-	bh=blmM30pR3u9mfqLt9UNV9/jv7IgMW0WV2r2WMgOvGxg=;
+	s=korg; t=1716837896;
+	bh=hw27nk9rMuH4+E4L2smE+N6xhVnX+F/TFPxbbtDlYrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p6xUNCpjfhlSke8GY8yp1iX5S01mI8ogszZq2gCtz0y3zFRi2rqcwX11GCcDCnLi2
-	 DpmzEHgdD9Ht87qRO0d+S/BysHKcwYu5ATUOVU59byKnObAxbvA0010LYKazS747uI
-	 92ect9/H0aYRU72GYrn8iyXqEB6j5RJYVl1a3XtM=
+	b=q4C6drCiRo/lBTbbssQ55v+qrr+CkPQWy41opyIw0M+ZweAqOf0SL3K+J1kuN7MYz
+	 VdC9TSlh3V1sedoaCg+pksQqc8yoKyGDlB80R98DP9aJKFDQoedEp79AbUtPscFuDr
+	 I3Tz9uMK5U8lmdS/AET6BzK887o15gHRXWdxGTyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Will Deacon <will@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 142/427] arm64: Remove unnecessary irqflags alternative.h include
-Date: Mon, 27 May 2024 20:53:09 +0200
-Message-ID: <20240527185615.129545233@linuxfoundation.org>
+Subject: [PATCH 6.8 188/493] bitops: add missing prototype check
+Date: Mon, 27 May 2024 20:53:10 +0200
+Message-ID: <20240527185636.506043458@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit 98631c4904bf6380834c8585ce50451f00eb5389 ]
+[ Upstream commit 72cc1980a0ef3ccad0d539e7dace63d0d7d432a4 ]
 
-Since commit 20af807d806d ("arm64: Avoid cpus_have_const_cap() for
-ARM64_HAS_GIC_PRIO_MASKING"), the alternative.h include is not used,
-so remove it.
+Commit 8238b4579866 ("wait_on_bit: add an acquire memory barrier") added
+a new bitop, test_bit_acquire(), with proper wrapping in order to try to
+optimize it at compile-time, but missed the list of bitops used for
+checking their prototypes a bit below.
+The functions added have consistent prototypes, so that no more changes
+are required and no functional changes take place.
 
-Fixes: 20af807d806d ("arm64: Avoid cpus_have_const_cap() for ARM64_HAS_GIC_PRIO_MASKING")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240314063819.2636445-1-ruanjinjie@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 8238b4579866 ("wait_on_bit: add an acquire memory barrier")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/irqflags.h | 1 -
- 1 file changed, 1 deletion(-)
+ include/linux/bitops.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/include/asm/irqflags.h b/arch/arm64/include/asm/irqflags.h
-index 0a7186a93882d..d4d7451c2c129 100644
---- a/arch/arm64/include/asm/irqflags.h
-+++ b/arch/arm64/include/asm/irqflags.h
-@@ -5,7 +5,6 @@
- #ifndef __ASM_IRQFLAGS_H
- #define __ASM_IRQFLAGS_H
+diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+index 2ba557e067fe6..f7f5a783da2aa 100644
+--- a/include/linux/bitops.h
++++ b/include/linux/bitops.h
+@@ -80,6 +80,7 @@ __check_bitop_pr(__test_and_set_bit);
+ __check_bitop_pr(__test_and_clear_bit);
+ __check_bitop_pr(__test_and_change_bit);
+ __check_bitop_pr(test_bit);
++__check_bitop_pr(test_bit_acquire);
  
--#include <asm/alternative.h>
- #include <asm/barrier.h>
- #include <asm/ptrace.h>
- #include <asm/sysreg.h>
+ #undef __check_bitop_pr
+ 
 -- 
 2.43.0
 
