@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-47291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9A68D0D65
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51AD68D0B65
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59406280FB9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74FB21C20FE3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D118F16078F;
-	Mon, 27 May 2024 19:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A2A15FA9F;
+	Mon, 27 May 2024 19:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvN0Ob8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwuJWX+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902F3262BE;
-	Mon, 27 May 2024 19:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048141078F;
+	Mon, 27 May 2024 19:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838162; cv=none; b=YsnOZmfzEmAz0XwEBuCUxgOiW+24XzkiSrBAXtUbt0oEf0s+2mDKQZIHcPLVobAmjugpduGacKX1Rap1RszsdoW5Z7F0z/g/vuZT8l640Pw821ZzVjtti+QVqRK1NAW4rOolrUGN9enO8uhRvyFgSZ9/v/+bLNsC6WVJ8LmWwYs=
+	t=1716836934; cv=none; b=Q5cevyHo+h0cfZsEilalzteEh5Xw1p6JI3fzKK12lf6h6F532KdIvwFeKDbCmDR77yFM/OTKTM8GzQgVZlWoPBg3TbMYq94kVxxmmlKXUEH9SVeA0ACkW5w/jbmKEjkATzBWlhF5QW3G+yY8sjm8Kv1VNUlYV5Fftcj1lCoPC5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838162; c=relaxed/simple;
-	bh=sD4xzaOBQbpzgI0F79hoYDzQv9JXO4lvC8ogVXcbzoo=;
+	s=arc-20240116; t=1716836934; c=relaxed/simple;
+	bh=OeuDtPSKZXrNTcp3gJguQMW43U07v0U0sy42BXcUI5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vk9fSOc3ZOPZDmMpj/Tm6rPAEJCCy6LbxVGwa32sYWF42BqyeaGpAcNhHLoFvphl2AuI0LPdj1YTNyaVbkUOzo1702bZutk+3methNYQP4nDN/7sz4n2sxG/3biZCZvCK5UpU5mAlixH3dIQB8MYGUr0449+fYl66F3q3ZPnjCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvN0Ob8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269BBC2BBFC;
-	Mon, 27 May 2024 19:29:22 +0000 (UTC)
+	 MIME-Version; b=V3RQNwMiH7nQfdV9ge6h6w6Z3ZkbF7vHteVopOBv+cHGzDRC0PuUUvZulN816aj2JDM1Lode7ypueM2Q9d+JbU33an0saHS5j6+B32q5Y2eiqwrlj/d8UNfA7/F9VKN5CqDk6P/EUsRhQvmk/8yHpEGEA9DW+GwCtHcmVQ+9nQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwuJWX+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F411C2BBFC;
+	Mon, 27 May 2024 19:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838162;
-	bh=sD4xzaOBQbpzgI0F79hoYDzQv9JXO4lvC8ogVXcbzoo=;
+	s=korg; t=1716836933;
+	bh=OeuDtPSKZXrNTcp3gJguQMW43U07v0U0sy42BXcUI5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvN0Ob8/PKqz/XeSmClKTmfmclpiOD9jMUvd98r0CnXKO0lfyC9ejWQjejB3WaCoM
-	 d/ZeuTu8ZQQELYYvdPfK9TM6YG6nbeZ56eRH3zlYfUYdlpkt54F203Hzc9XjQ6nXmm
-	 I0RwYs2pMAy5kb/Gp5crN8PQpFGwHlThhM8LMNqM=
+	b=uwuJWX+nFXkBYEMyelRj4QF08srJvVgcy/gXLzH2asR+sYbW1nL6B2PWkHE/QoM5z
+	 FbrAiI60g/USb4xeMFUcthI2gTiZSN0BrYCx8v0VWxiM04WBrS+rAW+r3dyNxC9W9V
+	 7zOjdi7Y8aYNfdzXJhU42mg7k3pUp12jszwOFo5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Robert Richter <rrichter@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 290/493] x86/numa: Fix SRAT lookup of CFMWS ranges with numa_fill_memblks()
+Subject: [PATCH 6.9 245/427] af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg
 Date: Mon, 27 May 2024 20:54:52 +0200
-Message-ID: <20240527185639.795449395@linuxfoundation.org>
+Message-ID: <20240527185625.459142804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,120 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Richter <rrichter@amd.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit f9f67e5adc8dc2e1cc51ab2d3d6382fa97f074d4 ]
+[ Upstream commit 540bf24fba16b88c1b3b9353927204b4f1074e25 ]
 
-For configurations that have the kconfig option NUMA_KEEP_MEMINFO
-disabled, numa_fill_memblks() only returns with NUMA_NO_MEMBLK (-1).
-SRAT lookup fails then because an existing SRAT memory range cannot be
-found for a CFMWS address range. This causes the addition of a
-duplicate numa_memblk with a different node id and a subsequent page
-fault and kernel crash during boot.
+A data-race condition has been identified in af_unix. In one data path,
+the write function unix_release_sock() atomically writes to
+sk->sk_shutdown using WRITE_ONCE. However, on the reader side,
+unix_stream_sendmsg() does not read it atomically. Consequently, this
+issue is causing the following KCSAN splat to occur:
 
-Fix this by making numa_fill_memblks() always available regardless of
-NUMA_KEEP_MEMINFO.
+	BUG: KCSAN: data-race in unix_release_sock / unix_stream_sendmsg
 
-As Dan suggested, the fix is implemented to remove numa_fill_memblks()
-from sparsemem.h and alos using __weak for the function.
+	write (marked) to 0xffff88867256ddbb of 1 bytes by task 7270 on cpu 28:
+	unix_release_sock (net/unix/af_unix.c:640)
+	unix_release (net/unix/af_unix.c:1050)
+	sock_close (net/socket.c:659 net/socket.c:1421)
+	__fput (fs/file_table.c:422)
+	__fput_sync (fs/file_table.c:508)
+	__se_sys_close (fs/open.c:1559 fs/open.c:1541)
+	__x64_sys_close (fs/open.c:1541)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-Note that the issue was initially introduced with [1]. But since
-phys_to_target_node() was originally used that returned the valid node
-0, an additional numa_memblk was not added. Though, the node id was
-wrong too, a message is seen then in the logs:
+	read to 0xffff88867256ddbb of 1 bytes by task 989 on cpu 14:
+	unix_stream_sendmsg (net/unix/af_unix.c:2273)
+	__sock_sendmsg (net/socket.c:730 net/socket.c:745)
+	____sys_sendmsg (net/socket.c:2584)
+	__sys_sendmmsg (net/socket.c:2638 net/socket.c:2724)
+	__x64_sys_sendmmsg (net/socket.c:2753 net/socket.c:2750 net/socket.c:2750)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
- kernel/numa.c:  pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
+	value changed: 0x01 -> 0x03
 
-[1] commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
-    CFMWS not in SRAT")
+The line numbers are related to commit dd5a440a31fa ("Linux 6.9-rc7").
 
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/all/66271b0072317_69102944c@dwillia2-xfh.jf.intel.com.notmuch/
-Fixes: 8f1004679987 ("ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window")
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Commit e1d09c2c2f57 ("af_unix: Fix data races around sk->sk_shutdown.")
+addressed a comparable issue in the past regarding sk->sk_shutdown.
+However, it overlooked resolving this particular data path.
+This patch only offending unix_stream_sendmsg() function, since the
+other reads seem to be protected by unix_state_lock() as discussed in
+Link: https://lore.kernel.org/all/20240508173324.53565-1-kuniyu@amazon.com/
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240509081459.2807828-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/sparsemem.h | 2 --
- arch/x86/mm/numa.c               | 4 ++--
- drivers/acpi/numa/srat.c         | 5 +++++
- include/linux/numa.h             | 7 +------
- 4 files changed, 8 insertions(+), 10 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
-index 1be13b2dfe8bf..64df897c0ee30 100644
---- a/arch/x86/include/asm/sparsemem.h
-+++ b/arch/x86/include/asm/sparsemem.h
-@@ -37,8 +37,6 @@ extern int phys_to_target_node(phys_addr_t start);
- #define phys_to_target_node phys_to_target_node
- extern int memory_add_physaddr_to_nid(u64 start);
- #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
--extern int numa_fill_memblks(u64 start, u64 end);
--#define numa_fill_memblks numa_fill_memblks
- #endif
- #endif /* __ASSEMBLY__ */
- 
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 65e9a6e391c04..ce84ba86e69e9 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -929,6 +929,8 @@ int memory_add_physaddr_to_nid(u64 start)
- }
- EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
- 
-+#endif
-+
- static int __init cmp_memblk(const void *a, const void *b)
- {
- 	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
-@@ -1001,5 +1003,3 @@ int __init numa_fill_memblks(u64 start, u64 end)
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 9a6ad5974dff5..e94839d89b09d 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2270,7 +2270,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 			goto out_err;
  	}
- 	return 0;
- }
--
--#endif
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 0214518fc582f..3ca22db3ed5db 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -206,6 +206,11 @@ int __init srat_disabled(void)
- 	return acpi_numa < 0;
- }
  
-+__weak int __init numa_fill_memblks(u64 start, u64 end)
-+{
-+	return NUMA_NO_MEMBLK;
-+}
-+
- #if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
- /*
-  * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
-diff --git a/include/linux/numa.h b/include/linux/numa.h
-index 915033a757315..1d43371fafd2f 100644
---- a/include/linux/numa.h
-+++ b/include/linux/numa.h
-@@ -36,12 +36,7 @@ int memory_add_physaddr_to_nid(u64 start);
- int phys_to_target_node(u64 start);
- #endif
+-	if (sk->sk_shutdown & SEND_SHUTDOWN)
++	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 		goto pipe_err;
  
--#ifndef numa_fill_memblks
--static inline int __init numa_fill_memblks(u64 start, u64 end)
--{
--	return NUMA_NO_MEMBLK;
--}
--#endif
-+int numa_fill_memblks(u64 start, u64 end);
- 
- #else /* !CONFIG_NUMA */
- static inline int numa_nearest_node(int node, unsigned int state)
+ 	while (sent < len) {
 -- 
 2.43.0
 
