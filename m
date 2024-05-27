@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-46982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A358D8D0C13
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1368D0DDB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 413CC1F24550
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A745FB20D86
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ED615FA85;
-	Mon, 27 May 2024 19:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE8715FA9F;
+	Mon, 27 May 2024 19:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVqmqNqV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr2o2rZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71563168C4;
-	Mon, 27 May 2024 19:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E84117727;
+	Mon, 27 May 2024 19:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837357; cv=none; b=SUUHJgeIW00y26eizxUAXwf4RNMT3xtZ2xEW71Ljcl/AcDbs9yhm2aHXoAH6BiOohEyHxTTFm+lEAzg11rlmyTCahWzQCO1KckB8tYlB7R93p75wiTbVIC1n4rrTmsFcvL0RzE4vicWBKF3XCRAwfUZmORnKiXyS9Iaqy6qV17I=
+	t=1716838470; cv=none; b=FwY3ssaVKrFTPlEY4oJGlV7Cd+8EWtYDAKwnprUtvySBQOoD/Q9erHGeP5vjRmBFTkEnyjNdAqKOVPxS6n20On4BCGQ3Vgc9CiJ5Q462eHTBgfYo5TXHeTWvuY8Wn0RvmZ3+JCUc2xRkk/ZrXuxshPI7WT361Rl1++RsTAz/BQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837357; c=relaxed/simple;
-	bh=K5iXjIZNYeAJvBJ6Eontl67GmAI0eepfP5EcaFbn84Y=;
+	s=arc-20240116; t=1716838470; c=relaxed/simple;
+	bh=+Cp0bPTWJAq6RBCeChwEfnM2oC42mIVMTm7Xv5UGxpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ED4edrfJRhqu9thiHdnRUUGDCZrzXHqe6C3Fg3ddU7ziJYkAvWY6DzfqqZ32LFdia2TuIhIoMdMTvAfAwqNEOAh7QK7QBPVqA2NHf0dXa83hcQZM96dgRozHv7AnCoakYICtqr5GbWhZTP1+WciePYrKBmgTotkAdlEthKtN7yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVqmqNqV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DCAC2BBFC;
-	Mon, 27 May 2024 19:15:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d6k4dP7/kUANZee+7KouTo3plaFxAL8AOY7xILbc9YWILPWCbrxKErOzHgl7jhptKMjkNkgwEotpLoQEFvmf3Kw6jrMOLdgTz0eg6RwiErj6I54WUQzdrQe2CU0SwUWNjwqx+qE/zwKo9Ts/gKYBLHh5uroN8NnG46pRBtfDJ1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr2o2rZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7F1C2BBFC;
+	Mon, 27 May 2024 19:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837357;
-	bh=K5iXjIZNYeAJvBJ6Eontl67GmAI0eepfP5EcaFbn84Y=;
+	s=korg; t=1716838470;
+	bh=+Cp0bPTWJAq6RBCeChwEfnM2oC42mIVMTm7Xv5UGxpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVqmqNqVhKun4OzNKb5t4SFP5YYIXqZeOHL4p+VLKLsh0jMRRsmfNe7IUusAFJKRj
-	 wvBEwh3pniCGoX4AdZEE49AV5V+DYoVpe0Q97tYI2rsLz+3hE/J52NOoZajIVBWUdx
-	 M3X1QCOThg96tuaycgU+O4a5dZ7KmDumhVq2ACGo=
+	b=qr2o2rZDjF1/6Ud/mqVQQjwQwOVnnR8BE8vVi5db5i0ddMrGMlJCFXvfHcCqvKfXr
+	 1cld4EwyX3P3BH+O1jvQRG7eTgA+T0FftY51ZEEZy8EdTHQ5h943j9g22xSrR9NFPx
+	 5Tu54CnQiDBV0Yt6ErQHHqYnQuJXjkxuZQ/L9zDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 360/427] RDMA/hns: Use complete parentheses in macros
-Date: Mon, 27 May 2024 20:56:47 +0200
-Message-ID: <20240527185633.854510497@linuxfoundation.org>
+Subject: [PATCH 6.8 406/493] drm/bridge: lt8912b: Dont log an error when DSI host cant be found
+Date: Mon, 27 May 2024 20:56:48 +0200
+Message-ID: <20240527185643.565140580@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 4125269bb9b22e1d8cdf4412c81be8074dbc61ca ]
+[ Upstream commit b3b4695ff47c4964d4ccb930890c9ffd8e455e20 ]
 
-Use complete parentheses to ensure that macro expansion does
-not produce unexpected results.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-Fixes: a25d13cbe816 ("RDMA/hns: Add the interfaces to support multi hop addressing for the contexts in hip08")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-10-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-3-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.h b/drivers/infiniband/hw/hns/hns_roce_hem.h
-index 6fb51db9682b8..9c415b2541af8 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.h
-@@ -57,16 +57,16 @@ enum {
- };
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index 97d4af3d13653..0b5b98d3e5f6f 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -494,10 +494,8 @@ static int lt8912_attach_dsi(struct lt8912 *lt)
+ 						 };
  
- #define check_whether_bt_num_3(type, hop_num) \
--	(type < HEM_TYPE_MTT && hop_num == 2)
-+	((type) < HEM_TYPE_MTT && (hop_num) == 2)
+ 	host = of_find_mipi_dsi_host_by_node(lt->host_node);
+-	if (!host) {
+-		dev_err(dev, "failed to find dsi host\n");
+-		return -EPROBE_DEFER;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
  
- #define check_whether_bt_num_2(type, hop_num) \
--	((type < HEM_TYPE_MTT && hop_num == 1) || \
--	(type >= HEM_TYPE_MTT && hop_num == 2))
-+	(((type) < HEM_TYPE_MTT && (hop_num) == 1) || \
-+	((type) >= HEM_TYPE_MTT && (hop_num) == 2))
- 
- #define check_whether_bt_num_1(type, hop_num) \
--	((type < HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0) || \
--	(type >= HEM_TYPE_MTT && hop_num == 1) || \
--	(type >= HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0))
-+	(((type) < HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0) || \
-+	((type) >= HEM_TYPE_MTT && (hop_num) == 1) || \
-+	((type) >= HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0))
- 
- struct hns_roce_hem {
- 	void *buf;
+ 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
