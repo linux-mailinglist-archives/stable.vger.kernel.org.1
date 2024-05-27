@@ -1,69 +1,70 @@
-Return-Path: <stable+bounces-46551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA088D07A1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:09:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993678D07AA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE0161C21129
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:09:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02EF5B2A2AB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085A716F855;
-	Mon, 27 May 2024 15:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0191167D93;
+	Mon, 27 May 2024 15:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6H+pw8+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+lHfd3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D8B167299;
-	Mon, 27 May 2024 15:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2AD15FA87;
+	Mon, 27 May 2024 15:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825510; cv=none; b=n90w5xtpmWMwvnohATnyp6G9DJzFPj1fOBpWzBx/GaHrecdV5fQOOZ9Y45+xSrI5uzai/edKP/BoOAKUUEw0PiWUbAfe/KlZz/Gen4VcnP18W1xpF4LeNPumUSp4XMEKtDDTajdR5VSAYt0tjFHwmDN8g+Ash9HosNC2apkZYFY=
+	t=1716825540; cv=none; b=r9ggIPgVaL7To0b7trKoe0u+yspLyO8Zi9FXEvXNPZZhuJbr8IjtpQD/1n1wSQwicORUP1TmHjpEz5BiJ+/R42IOWftQHbfQIdMib7yMIT3gxpg+DpKtK/OAnPXl8tdK0TBXOcMYHXCLDMjqPRH7H5Qm5Or18d5NbmOXuljt0ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825510; c=relaxed/simple;
-	bh=1K2NBI0Y7/fYJW/usZ6Ws/DhvePpAOIipLG6PE2fSsU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwOSoB9t2DKTHoqSNmLalvKtdzdRecRokC4HSdqsQ5987nYpkNxUN+EanMf5n7SCoFLrk8daWPKCCy6hRdKjkphUO321z8dqr62HzkREKPAx1CfSAD/4ioQdgrlbXo7qd8VgDYVvpLUXlh8XL3wdtSq1pQwcKiIXpmt63lBZtZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6H+pw8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1802C32781;
-	Mon, 27 May 2024 15:58:28 +0000 (UTC)
+	s=arc-20240116; t=1716825540; c=relaxed/simple;
+	bh=xipOaRVdVWSiUaRoSxffQqcebbtF8vt7roSqD9RJX+M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sR/jB/1d9bfaQtWee+cShgoMT97nyy+Piu+4qFionXlDwP2mH56uQFv03HuvAHS/cE92iLhOe6qp1s77CgW7vYMPiXfNpGwdJSwjuZKd8jebMtAL8Le1+zyD3HWb7NEq32EE7rvXsk0Dlw2H5m9tVVOCGPDb36pLepfWjMRtpzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+lHfd3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FD0C4AF09;
+	Mon, 27 May 2024 15:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716825510;
-	bh=1K2NBI0Y7/fYJW/usZ6Ws/DhvePpAOIipLG6PE2fSsU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6H+pw8+kNMLJKxdZKpQDp5WAQFH2ddmzMl/DZzK8EqvDfDG1Lot2XiKRAk+Bny9h
-	 xzg9ueA+L9InZdFbcI/Hz1UiBaiqg6AagugNsDSgw6dY7BpO3UUxti4rILzyeRnZao
-	 0NNu1LbzrKr0rFYL/OHMx7xQH4hMvf9JMT3f+NQklyCRnDUnqlS1+XQtBi0fju+d+I
-	 0paDJJFfcRdSRhmD/3QBZh4t59PA8rcB0YX62HjFL1xF/dBwx32txQlhquTdAyHirE
-	 LMPb56XKNFThONuolrvXzC23U1TmW6nd9oTU6XGlF5HzwESdT1z21ni9koFaf3eETw
-	 X2MFL5ZMSHz3w==
+	s=k20201202; t=1716825540;
+	bh=xipOaRVdVWSiUaRoSxffQqcebbtF8vt7roSqD9RJX+M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i+lHfd3goMChVeZu1o8y162YS/MqZLCq4dtOxsghybpm4ej2bszlbbw9IOcO9v/lh
+	 ZCtaz598bj2JYNyKm71QgOl9o9mEV0lST9INHwe8AT2kgOuYhEE+QN53VGdSEwUcna
+	 aLMqb5BOgtvVLDGVhh73rMzsxrwkU6LbQyCDktN2eZQUhrufcHEVI+go+Xxv5FX80v
+	 hwctMhofDpy1Uu4QaCM9PxubkrX5SluxIPwUdkmEHEF2xv2qpr1CBrkeDI9WJcsaPY
+	 g9+/zCmee9lPxHgNYERV6YGNP2ro0bdg8D/Qvm0gJ26QzYSihihj6ITMc7kF2qB079
+	 cgh8eID/FihLA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	nathan@kernel.org,
-	arnd@arndb.de,
-	bhe@redhat.com,
-	geert@linux-m68k.org,
-	rppt@kernel.org,
-	bhelgaas@google.com,
-	christophe.leroy@csgroup.eu,
-	stanislav.kinsburskii@gmail.com,
-	wangkefeng.wang@huawei.com,
-	linuxppc-dev@lists.ozlabs.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.15 6/6] powerpc/io: Avoid clang null pointer arithmetic warnings
-Date: Mon, 27 May 2024 11:57:56 -0400
-Message-ID: <20240527155808.3866107-6-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	martin.leung@amd.com,
+	wayne.lin@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.10 1/7] drm/amd/display: Exit idle optimizations before HDCP execution
+Date: Mon, 27 May 2024 11:58:25 -0400
+Message-ID: <20240527155845.3866271-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240527155808.3866107-1-sashal@kernel.org>
-References: <20240527155808.3866107-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,86 +73,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.160
+X-stable-base: Linux 5.10.218
 Content-Transfer-Encoding: 8bit
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 03c0f2c2b2220fc9cf8785cd7b61d3e71e24a366 ]
+[ Upstream commit f30a3bea92bdab398531129d187629fb1d28f598 ]
 
-With -Wextra clang warns about pointer arithmetic using a null pointer.
-When building with CONFIG_PCI=n, that triggers a warning in the IO
-accessors, eg:
+[WHY]
+PSP can access DCN registers during command submission and we need
+to ensure that DCN is not in PG before doing so.
 
-  In file included from linux/arch/powerpc/include/asm/io.h:672:
-  linux/arch/powerpc/include/asm/io-defs.h:23:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     23 | DEF_PCI_AC_RET(inb, u8, (unsigned long port), (port), pio, port)
-        | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ...
-  linux/arch/powerpc/include/asm/io.h:591:53: note: expanded from macro '__do_inb'
-    591 | #define __do_inb(port)          readb((PCI_IO_ADDR)_IO_BASE + port);
-        |                                       ~~~~~~~~~~~~~~~~~~~~~ ^
+[HOW]
+Add a callback to DM to lock and notify DC for idle optimization exit.
+It can't be DC directly because of a potential race condition with the
+link protection thread and the rest of DM operation.
 
-That is because when CONFIG_PCI=n, _IO_BASE is defined as 0.
-
-Although _IO_BASE is defined as plain 0, the cast (PCI_IO_ADDR) converts
-it to void * before the addition with port happens.
-
-Instead the addition can be done first, and then the cast. The resulting
-value will be the same, but avoids the warning, and also avoids void
-pointer arithmetic which is apparently non-standard.
-
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Closes: https://lore.kernel.org/all/CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240503075619.394467-1-mpe@ellerman.id.au
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/io.h | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c    | 10 ++++++++++
+ drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h |  8 ++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index a4fe1292909e6..56eb8ac443930 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -556,12 +556,12 @@ __do_out_asm(_rec_outl, "stwbrx")
- #define __do_inw(port)		_rec_inw(port)
- #define __do_inl(port)		_rec_inl(port)
- #else /* CONFIG_PPC32 */
--#define __do_outb(val, port)	writeb(val,(PCI_IO_ADDR)_IO_BASE+port);
--#define __do_outw(val, port)	writew(val,(PCI_IO_ADDR)_IO_BASE+port);
--#define __do_outl(val, port)	writel(val,(PCI_IO_ADDR)_IO_BASE+port);
--#define __do_inb(port)		readb((PCI_IO_ADDR)_IO_BASE + port);
--#define __do_inw(port)		readw((PCI_IO_ADDR)_IO_BASE + port);
--#define __do_inl(port)		readl((PCI_IO_ADDR)_IO_BASE + port);
-+#define __do_outb(val, port)	writeb(val,(PCI_IO_ADDR)(_IO_BASE+port));
-+#define __do_outw(val, port)	writew(val,(PCI_IO_ADDR)(_IO_BASE+port));
-+#define __do_outl(val, port)	writel(val,(PCI_IO_ADDR)(_IO_BASE+port));
-+#define __do_inb(port)		readb((PCI_IO_ADDR)(_IO_BASE + port));
-+#define __do_inw(port)		readw((PCI_IO_ADDR)(_IO_BASE + port));
-+#define __do_inl(port)		readl((PCI_IO_ADDR)(_IO_BASE + port));
- #endif /* !CONFIG_PPC32 */
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
+index fa8aeec304ef4..c39cb4b6767cf 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
+@@ -86,6 +86,14 @@ static uint8_t is_cp_desired_hdcp2(struct mod_hdcp *hdcp)
+ 			!hdcp->connection.is_hdcp2_revoked;
+ }
  
- #ifdef CONFIG_EEH
-@@ -577,12 +577,12 @@ __do_out_asm(_rec_outl, "stwbrx")
- #define __do_writesw(a, b, n)	_outsw(PCI_FIX_ADDR(a),(b),(n))
- #define __do_writesl(a, b, n)	_outsl(PCI_FIX_ADDR(a),(b),(n))
++static void exit_idle_optimizations(struct mod_hdcp *hdcp)
++{
++	struct mod_hdcp_dm *dm = &hdcp->config.dm;
++
++	if (dm->funcs.exit_idle_optimizations)
++		dm->funcs.exit_idle_optimizations(dm->handle);
++}
++
+ static enum mod_hdcp_status execution(struct mod_hdcp *hdcp,
+ 		struct mod_hdcp_event_context *event_ctx,
+ 		union mod_hdcp_transition_input *input)
+@@ -448,6 +456,8 @@ enum mod_hdcp_status mod_hdcp_process_event(struct mod_hdcp *hdcp,
+ 	memset(&event_ctx, 0, sizeof(struct mod_hdcp_event_context));
+ 	event_ctx.event = event;
  
--#define __do_insb(p, b, n)	readsb((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
--#define __do_insw(p, b, n)	readsw((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
--#define __do_insl(p, b, n)	readsl((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
--#define __do_outsb(p, b, n)	writesb((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
--#define __do_outsw(p, b, n)	writesw((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
--#define __do_outsl(p, b, n)	writesl((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
-+#define __do_insb(p, b, n)	readsb((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
-+#define __do_insw(p, b, n)	readsw((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
-+#define __do_insl(p, b, n)	readsl((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
-+#define __do_outsb(p, b, n)	writesb((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
-+#define __do_outsw(p, b, n)	writesw((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
-+#define __do_outsl(p, b, n)	writesl((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
++	exit_idle_optimizations(hdcp);
++
+ 	/* execute and transition */
+ 	exec_status = execution(hdcp, &event_ctx, &hdcp->auth.trans_input);
+ 	trans_status = transition(
+diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
+index eed560eecbab4..fb195276fb704 100644
+--- a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
++++ b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
+@@ -143,6 +143,13 @@ struct mod_hdcp_ddc {
+ 	} funcs;
+ };
  
- #define __do_memset_io(addr, c, n)	\
- 				_memset_io(PCI_FIX_ADDR(addr), c, n)
++struct mod_hdcp_dm {
++	void *handle;
++	struct {
++		void (*exit_idle_optimizations)(void *handle);
++	} funcs;
++};
++
+ struct mod_hdcp_psp {
+ 	void *handle;
+ 	void *funcs;
+@@ -252,6 +259,7 @@ struct mod_hdcp_display_query {
+ struct mod_hdcp_config {
+ 	struct mod_hdcp_psp psp;
+ 	struct mod_hdcp_ddc ddc;
++	struct mod_hdcp_dm dm;
+ 	uint8_t index;
+ };
+ 
 -- 
 2.43.0
 
