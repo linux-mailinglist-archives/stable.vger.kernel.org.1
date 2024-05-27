@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC058D0E0D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:36:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 297AB8D0C30
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF0461C213F5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B81F4B22A95
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA6F1607B2;
-	Mon, 27 May 2024 19:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79AA15FD01;
+	Mon, 27 May 2024 19:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFOR84GB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5Frm0dZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBBE15FCF0;
-	Mon, 27 May 2024 19:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49CE15FA91;
+	Mon, 27 May 2024 19:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838591; cv=none; b=LQnDbGgQFRLKCMmfYiyxiA3JHL8Zpz6VdOYPSJvBz+Tr8IO3yL7RCLj8XVjdxyp/IfJfxzu732K7+thkMsZzybRlwcMhKnhjQbDC55mdnlvNBnmrVaycqZfA6eVs9GTMn/YcGZfAwB+kkk8BRdk+YwU1YyI+H4rTfUm2Qbu+5Nc=
+	t=1716837415; cv=none; b=cYtZjuAorHkvMe0OgBi3UTYR3eT03Rw+r+nHHx8AcWzmFPL0/xelZfIFCGeBTGNJi90FznQB3BxXsPVyCk9S1sRkzm1J9IjhWHCWnLTWKjDJ1laqjSNueOry7fiExHsnZXqc1VUThFmYX8cbw1m5tQeG0/qD6gMOKneIGK8MvW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838591; c=relaxed/simple;
-	bh=4nlgFrMXrBJLnIOWibZP7Ju9D1Z4UETtg2Jd/1VmmAQ=;
+	s=arc-20240116; t=1716837415; c=relaxed/simple;
+	bh=n5aYAvZ+vrAPR4ywMo+im/UXGlOxhdRlKD5Jna+ZZho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqiSVTxyVjtiVO+8sAUR0Wlzf/UOwxDWJYza0JVPFopZpt2nCp/i0EoNjjVcI37JB0jr/q99S79/Hai1FZ3fNLIili3sgLEdbXjglSA4IjuMgefEfNNwe3iilPvg/aIxR9NcmwQ3vCiID3WXw7N246zmV1gKNnYtvW3woq0kEqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFOR84GB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93158C2BBFC;
-	Mon, 27 May 2024 19:36:30 +0000 (UTC)
+	 MIME-Version; b=V99e6BOriuTNMINarqcMyUieJUIAYHfznf6f144RMj8R14tWZmgHX0VTCnQc6qPyzdi2X2KNhp1RYWD+SULRFKW4a8CK/w239EwCs/kpKQ+0uc/dyTvA5ir+X78JrNeFpmOXT01rzWXOGuPea+Qb+td2mTsToOxu/dYT+BFE0RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5Frm0dZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4FFC2BBFC;
+	Mon, 27 May 2024 19:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838590;
-	bh=4nlgFrMXrBJLnIOWibZP7Ju9D1Z4UETtg2Jd/1VmmAQ=;
+	s=korg; t=1716837415;
+	bh=n5aYAvZ+vrAPR4ywMo+im/UXGlOxhdRlKD5Jna+ZZho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFOR84GBcwHPZUNNUzpZEzGNb4IAUV1n0ZYtxWL4XILhV/n0Vj9n0gpqFfVp9OPzd
-	 ojmseWY4YDHhcb3g0GrD5XTzhx3gd00KSCtQ1NQcjgUqNzJ1VsyWDdP0353hLf5vCX
-	 4R7wEfoR6yUlJMIbOtm2TVxr3DbqiBQXyn8EKaNs=
+	b=x5Frm0dZpfQWZOmJ30XDlHuTDnfyl9GRkRLZqUWlMbqmAk/mcTSLPmdwYibRgQgnR
+	 D/NaPMGlR+Vp04w//2TJEUybupznmmCmzKz19cKbNGlHm8mbGV/YI3MMvHk+si1bOh
+	 8M7IJmv1P0LDU3KK60rXqOo9D4UfCH74k+P2i7XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Beau Belgrave <beaub@linux.microsoft.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 453/493] RDMA/mana_ib: boundary check before installing cq callbacks
-Date: Mon, 27 May 2024 20:57:35 +0200
-Message-ID: <20240527185645.041020514@linuxfoundation.org>
+Subject: [PATCH 6.9 409/427] tracing/user_events: Fix non-spaced field matching
+Date: Mon, 27 May 2024 20:57:36 +0200
+Message-ID: <20240527185635.371056912@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Beau Belgrave <beaub@linux.microsoft.com>
 
-[ Upstream commit f79edef79b6a2161f4124112f9b0c46891bb0b74 ]
+[ Upstream commit bd125a084091396f3e796bb3dc009940d9771811 ]
 
-Add a boundary check inside mana_ib_install_cq_cb to prevent index overflow.
+When the ABI was updated to prevent same name w/different args, it
+missed an important corner case when fields don't end with a space.
+Typically, space is used for fields to help separate them, like
+"u8 field1; u8 field2". If no spaces are used, like
+"u8 field1;u8 field2", then the parsing works for the first time.
+However, the match check fails on a subsequent register, leading to
+confusion.
 
-Fixes: 2a31c5a7e0d8 ("RDMA/mana_ib: Introduce mana_ib_install_cq_cb helper function")
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://lore.kernel.org/r/1714137160-5222-5-git-send-email-kotaranov@linux.microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This is because the match check uses argv_split() and assumes that all
+fields will be split upon the space. When spaces are used, we get back
+{ "u8", "field1;" }, without spaces we get back { "u8", "field1;u8" }.
+This causes a mismatch, and the user program gets back -EADDRINUSE.
+
+Add a method to detect this case before calling argv_split(). If found
+force a space after the field separator character ';'. This ensures all
+cases work properly for matching.
+
+With this fix, the following are all treated as matching:
+u8 field1;u8 field2
+u8 field1; u8 field2
+u8 field1;\tu8 field2
+u8 field1;\nu8 field2
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240423162338.292-2-beaub@linux.microsoft.com
+
+Fixes: ba470eebc2f6 ("tracing/user_events: Prevent same name but different args event")
+Signed-off-by: Beau Belgrave <beaub@linux.microsoft.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mana/cq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/trace_events_user.c | 76 +++++++++++++++++++++++++++++++-
+ 1 file changed, 75 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mana/cq.c b/drivers/infiniband/hw/mana/cq.c
-index c9129218f1be1..89fcc09ded8a4 100644
---- a/drivers/infiniband/hw/mana/cq.c
-+++ b/drivers/infiniband/hw/mana/cq.c
-@@ -81,6 +81,8 @@ int mana_ib_install_cq_cb(struct mana_ib_dev *mdev, struct mana_ib_cq *cq)
- 	struct gdma_context *gc = mdev_to_gc(mdev);
- 	struct gdma_queue *gdma_cq;
+diff --git a/kernel/trace/trace_events_user.c b/kernel/trace/trace_events_user.c
+index 70d428c394b68..82b191f33a28f 100644
+--- a/kernel/trace/trace_events_user.c
++++ b/kernel/trace/trace_events_user.c
+@@ -1989,6 +1989,80 @@ static int user_event_set_tp_name(struct user_event *user)
+ 	return 0;
+ }
  
-+	if (cq->queue.id >= gc->max_num_cqs)
-+		return -EINVAL;
- 	/* Create CQ table entry */
- 	WARN_ON(gc->cq_table[cq->queue.id]);
- 	gdma_cq = kzalloc(sizeof(*gdma_cq), GFP_KERNEL);
++/*
++ * Counts how many ';' without a trailing space are in the args.
++ */
++static int count_semis_no_space(char *args)
++{
++	int count = 0;
++
++	while ((args = strchr(args, ';'))) {
++		args++;
++
++		if (!isspace(*args))
++			count++;
++	}
++
++	return count;
++}
++
++/*
++ * Copies the arguments while ensuring all ';' have a trailing space.
++ */
++static char *insert_space_after_semis(char *args, int count)
++{
++	char *fixed, *pos;
++	int len;
++
++	len = strlen(args) + count;
++	fixed = kmalloc(len + 1, GFP_KERNEL);
++
++	if (!fixed)
++		return NULL;
++
++	pos = fixed;
++
++	/* Insert a space after ';' if there is no trailing space. */
++	while (*args) {
++		*pos = *args++;
++
++		if (*pos++ == ';' && !isspace(*args))
++			*pos++ = ' ';
++	}
++
++	*pos = '\0';
++
++	return fixed;
++}
++
++static char **user_event_argv_split(char *args, int *argc)
++{
++	char **split;
++	char *fixed;
++	int count;
++
++	/* Count how many ';' without a trailing space */
++	count = count_semis_no_space(args);
++
++	/* No fixup is required */
++	if (!count)
++		return argv_split(GFP_KERNEL, args, argc);
++
++	/* We must fixup 'field;field' to 'field; field' */
++	fixed = insert_space_after_semis(args, count);
++
++	if (!fixed)
++		return NULL;
++
++	/* We do a normal split afterwards */
++	split = argv_split(GFP_KERNEL, fixed, argc);
++
++	/* We can free since argv_split makes a copy */
++	kfree(fixed);
++
++	return split;
++}
++
+ /*
+  * Parses the event name, arguments and flags then registers if successful.
+  * The name buffer lifetime is owned by this method for success cases only.
+@@ -2012,7 +2086,7 @@ static int user_event_parse(struct user_event_group *group, char *name,
+ 		return -EPERM;
+ 
+ 	if (args) {
+-		argv = argv_split(GFP_KERNEL, args, &argc);
++		argv = user_event_argv_split(args, &argc);
+ 
+ 		if (!argv)
+ 			return -ENOMEM;
 -- 
 2.43.0
 
