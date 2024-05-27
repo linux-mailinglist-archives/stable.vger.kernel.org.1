@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076798D0C15
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F378D0E15
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96801B22582
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25B80B20D86
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D086215FA85;
-	Mon, 27 May 2024 19:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EC91607AB;
+	Mon, 27 May 2024 19:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2UIafsD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gS0Kmt19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7ED168C4;
-	Mon, 27 May 2024 19:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5216715FCF0;
+	Mon, 27 May 2024 19:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837362; cv=none; b=nhdPc4xJT2TiCnwH2sEort4c8+eo+uJ323iv5SVO+lI+/zMTes5ZXyuurUu8VZMFc8NnA8MnQPS9Foc/HMMSDTmr8j7CXhIfpB6bzwLjG9XvspQUdgP116MKsVi+GDeKqEjO0HHf3z3D9QX0sjJOFfAV4ilvlFxGTgMeVs+Czd0=
+	t=1716838607; cv=none; b=mZ9DlEy2d1qMtPW88LaElD+otvsgEMx28U4RsWND0Fxk8BaQSirW2wr3gv93b7gCzihVO3JtkuVckxLAwQagnbs1ZT2Zm+Vbgem/gIgbOS4yN414sq7F8fs86mRhAE2nht9WJzXJ33rm0bjSxOY8Vs7NRHTMKgdCHTd7XoBqRwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837362; c=relaxed/simple;
-	bh=feyO3/AJcMEWqNnYLkSOakadTIRrVzrenFm9VAN7tyo=;
+	s=arc-20240116; t=1716838607; c=relaxed/simple;
+	bh=8QtG+DxdpXb+reg3ONlxGnmUGWFv6rzNVjCVL9S6S8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFe5vCChNgb5K/eBkB/r1pdl8AXmJgAgX4nyTmsRle4kvIgnd9wbi4c7LM5JUSIml+aIF8dlKT+n3IZwHiEQ9Ab9ozRke3zATldPfR7ItfFgtxrK224yTNwtOGsgaRekFdxA3zLKH46uYDR11JTyBnaW393a7mXlX+rr89kCu6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2UIafsD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227D6C2BBFC;
-	Mon, 27 May 2024 19:16:01 +0000 (UTC)
+	 MIME-Version; b=nbZ7zg8GqK5oKJVAvQ5Pn4NVVo4Mzj1iY2DDh4SOw+0KJR77taXCRHgMSg2LkZnS0BtwijWtoMFJtTTZ0xcbNUatUi2cHnpbyU6qvPuVApDhhwIQsIp9VDfX6C9vLLqoc26OZiLsQ6G1tcKDygupl9JuCjzKr4luYOQtotOz7vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gS0Kmt19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1208C2BBFC;
+	Mon, 27 May 2024 19:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837362;
-	bh=feyO3/AJcMEWqNnYLkSOakadTIRrVzrenFm9VAN7tyo=;
+	s=korg; t=1716838607;
+	bh=8QtG+DxdpXb+reg3ONlxGnmUGWFv6rzNVjCVL9S6S8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2UIafsDvtekDIHZOgkhIGGh25mhFuY1WF+WGx/mMPS1FZDlPFLAy8mXzjvInRRTT
-	 Ty7TcwGc4d5+JmRIaD1lYMB8EablUznlvSi45Ss+vULulgt0xA6xCMaUUv1c+T9WEY
-	 wXPY+FD1XPAzIwiMfb75pl71RsNMT7Wr2fC6iWBo=
+	b=gS0Kmt19yOEKISAuQlg9C2ZHv/mhADrqjy8m12I47BVmy+aYnCP3aii/gcpcux8g8
+	 9vJQW1cEQ98zuXaJv8s3EAhGMAXOVYRz0JKF/kNGYNXgsmMzOopDKIa6+KPZhzR4Uh
+	 8zKZZLzzy+9F3Goz8xu8ltPzhzd+3cqqJfcGeXBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 412/427] selftests: net: bridge: increase IGMP/MLD exclude timeout membership interval
-Date: Mon, 27 May 2024 20:57:39 +0200
-Message-ID: <20240527185635.461066303@linuxfoundation.org>
+Subject: [PATCH 6.8 458/493] ext4: fix potential unnitialized variable
+Date: Mon, 27 May 2024 20:57:40 +0200
+Message-ID: <20240527185645.187340125@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 06080ea23095afe04a2cb7a8d05fab4311782623 ]
+[ Upstream commit 3f4830abd236d0428e50451e1ecb62e14c365e9b ]
 
-When running the bridge IGMP/MLD selftests on debug kernels we can get
-spurious errors when setting up the IGMP/MLD exclude timeout tests
-because the membership interval is just 3 seconds and the setup has 2
-seconds of sleep plus various validations, the one second that is left
-is not enough. Increase the membership interval from 3 to 5 seconds to
-make room for the setup validation and 2 seconds of sleep.
+Smatch complains "err" can be uninitialized in the caller.
 
-Fixes: 34d7ecb3d4f7 ("selftests: net: bridge: update IGMP/MLD membership interval value")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+    fs/ext4/indirect.c:349 ext4_alloc_branch()
+    error: uninitialized symbol 'err'.
+
+Set the error to zero on the success path.
+
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/363a4673-0fb8-4adf-b4fb-90a499077276@moroto.mountain
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/bridge_igmp.sh | 6 +++---
- tools/testing/selftests/net/forwarding/bridge_mld.sh  | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ fs/ext4/mballoc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/net/forwarding/bridge_igmp.sh b/tools/testing/selftests/net/forwarding/bridge_igmp.sh
-index 2aa66d2a1702b..e6a3e04fd83f3 100755
---- a/tools/testing/selftests/net/forwarding/bridge_igmp.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_igmp.sh
-@@ -478,10 +478,10 @@ v3exc_timeout_test()
- 	RET=0
- 	local X=("192.0.2.20" "192.0.2.30")
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index cf407425d0f30..00b0839b534da 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -6119,6 +6119,7 @@ ext4_mb_new_blocks_simple(struct ext4_allocation_request *ar, int *errp)
+ 	ext4_mb_mark_bb(sb, block, 1, true);
+ 	ar->len = 1;
  
--	# GMI should be 3 seconds
-+	# GMI should be 5 seconds
- 	ip link set dev br0 type bridge mcast_query_interval 100 \
- 					mcast_query_response_interval 100 \
--					mcast_membership_interval 300
-+					mcast_membership_interval 500
++	*errp = 0;
+ 	return block;
+ }
  
- 	v3exclude_prepare $h1 $ALL_MAC $ALL_GROUP
- 	ip link set dev br0 type bridge mcast_query_interval 500 \
-@@ -489,7 +489,7 @@ v3exc_timeout_test()
- 					mcast_membership_interval 1500
- 
- 	$MZ $h1 -c 1 -b $ALL_MAC -B $ALL_GROUP -t ip "proto=2,p=$MZPKT_ALLOW2" -q
--	sleep 3
-+	sleep 5
- 	bridge -j -d -s mdb show dev br0 \
- 		| jq -e ".[].mdb[] | \
- 			 select(.grp == \"$TEST_GROUP\" and \
-diff --git a/tools/testing/selftests/net/forwarding/bridge_mld.sh b/tools/testing/selftests/net/forwarding/bridge_mld.sh
-index e2b9ff773c6b6..f84ab2e657547 100755
---- a/tools/testing/selftests/net/forwarding/bridge_mld.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_mld.sh
-@@ -478,10 +478,10 @@ mldv2exc_timeout_test()
- 	RET=0
- 	local X=("2001:db8:1::20" "2001:db8:1::30")
- 
--	# GMI should be 3 seconds
-+	# GMI should be 5 seconds
- 	ip link set dev br0 type bridge mcast_query_interval 100 \
- 					mcast_query_response_interval 100 \
--					mcast_membership_interval 300
-+					mcast_membership_interval 500
- 
- 	mldv2exclude_prepare $h1
- 	ip link set dev br0 type bridge mcast_query_interval 500 \
-@@ -489,7 +489,7 @@ mldv2exc_timeout_test()
- 					mcast_membership_interval 1500
- 
- 	$MZ $h1 -c 1 $MZPKT_ALLOW2 -q
--	sleep 3
-+	sleep 5
- 	bridge -j -d -s mdb show dev br0 \
- 		| jq -e ".[].mdb[] | \
- 			 select(.grp == \"$TEST_GROUP\" and \
 -- 
 2.43.0
 
