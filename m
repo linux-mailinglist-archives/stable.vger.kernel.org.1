@@ -1,83 +1,140 @@
-Return-Path: <stable+bounces-47518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858148D1057
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 00:43:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628B88D1062
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 00:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6EB41C21229
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 22:43:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AC842823D8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 22:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C5B169382;
-	Mon, 27 May 2024 22:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C986A33A;
+	Mon, 27 May 2024 22:52:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03B0169368;
-	Mon, 27 May 2024 22:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB4B1DFE4;
+	Mon, 27 May 2024 22:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716849753; cv=none; b=VSOOZCVA1QmEmB3cgZnCbzLgqsJrB+WhqWXZF/1cv6A94zZrQx0rITmg8yY52NKdFzuOjN29ZELiixHVmFVqZAdD6ARaN6buF3n3VmkGD4nGh5AsZpCHHpaWSvXmCPCYVT3bmAUDOIrmdwJXfDnKYH0pqXT1jZ1a3WfenuGIYQE=
+	t=1716850341; cv=none; b=rwx+oOlzQMZKxY5DE+L/UeybWwhRT0+mBw3HGdX/w9mftzpoMwRu7wYdh9/ovg1UktYqXnApRgZgpwPdSC6X8hjzPA9JdohxMlyuGzjNWGGfGcZJet2S4tlVMwrgYJQRWaEJ+DmkV7ijEO2hEndhpB/+ybgGRHGvMD6A8IYe/NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716849753; c=relaxed/simple;
-	bh=VyOQIWPEbtuHOC1cQJVCNYPzGlSZqGH9Wpc+QOwHASY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XG3utdnZVGXkPHl5xFoGZ2ZFOzEMs33h/aOw1dzIc94TepJumY4/Vt4fI8BeyTW205yWy4fvI1JnVUkOTEa2yaZjD1JEZW/Z0WLpQ0rPJ9oRIPg7jb69i8SOLjPGGdO6bYf/t0l84yHE/JexdpeUH3gqItsGmsp48HYlGzEj6ZA=
+	s=arc-20240116; t=1716850341; c=relaxed/simple;
+	bh=B/ujHKF4cYcDAPAD7yF5zk3E89zp7t8vYX9ezPn+xZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jCoFCEAG3vEL69rcZUSo76bBUKgKHs3qvgEuoqrehVNqG0bGlT5V9WS7jWKVu9YHnSY674gfHVS6xJ0ZgSTWKcx4QIa/7/HKVDUQJKDjYSDGJTD9oHbWmbnuxx2xta6iWfAv08ZbickY8CQoTUExTn+ZS2XlKnIpj/Mx1Bpm5w0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Received: from i5e86193d.versanet.de ([94.134.25.61] helo=phil.lan)
+Received: from i5e86193d.versanet.de ([94.134.25.61] helo=diego.localnet)
 	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <heiko@sntech.de>)
-	id 1sBj2q-0005Os-ED; Tue, 28 May 2024 00:42:20 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: Dragan Simic <dsimic@manjaro.org>,
-	linux-rockchip@lists.infradead.org
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	krzk+dt@kernel.org,
-	robh+dt@kernel.org,
-	Diederik de Haas <didi.debian@cknow.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: rockchip: Fix the DCDC_REG2 minimum voltage on Quartz64 Model B
-Date: Tue, 28 May 2024 00:42:15 +0200
-Message-Id: <171684956152.1783037.2786989707792820997.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <e70742ea2df432bf57b3f7de542d81ca22b0da2f.1716225483.git.dsimic@manjaro.org>
-References: <e70742ea2df432bf57b3f7de542d81ca22b0da2f.1716225483.git.dsimic@manjaro.org>
+	id 1sBjC4-0005YB-Ez; Tue, 28 May 2024 00:51:52 +0200
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: Val Packett <val@packett.cool>
+Cc: stable@vger.kernel.org, Sandy Huang <hjc@rock-chips.com>,
+ Andy Yan <andy.yan@rock-chips.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH v2 1/2] drm/rockchip: vop: clear DMA stop bit upon vblank on
+ RK3066
+Date: Tue, 28 May 2024 00:51:51 +0200
+Message-ID: <2972856.VdNmn5OnKV@diego>
+In-Reply-To: <BF06ES.TD22854ZPLB92@packett.cool>
+References:
+ <2024051930-canteen-produce-1ba7@gregkh> <1817371.3VsfAaAtOV@diego>
+ <BF06ES.TD22854ZPLB92@packett.cool>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-On Mon, 20 May 2024 19:20:28 +0200, Dragan Simic wrote:
-> Correct the specified regulator-min-microvolt value for the buck DCDC_REG2
-> regulator, which is part of the Rockchip RK809 PMIC, in the Pine64 Quartz64
-> Model B board dts.  According to the RK809 datasheet, version 1.01, this
-> regulator is capable of producing voltages as low as 0.5 V on its output,
-> instead of going down to 0.9 V only, which is additionally confirmed by the
-> regulator-min-microvolt values found in the board dts files for the other
-> supported boards that use the same RK809 PMIC.
-> 
-> [...]
+Hey,
 
-Applied, thanks!
+Am Dienstag, 28. Mai 2024, 00:13:59 CEST schrieb Val Packett:
+> On Mon, May 27 2024 at 22:43:18 +02:00:00, Heiko St=FCbner=20
+> <heiko@sntech.de> wrote:
+> > Am Montag, 27. Mai 2024, 09:16:33 CEST schrieb Val Packett:
+> >>  On the RK3066, there is a bit that must be cleared, otherwise
+> >>  the picture does not show up
+> >> on the display (at least for RGB).
+> >>=20
+> >>  Fixes: f4a6de8 ("drm: rockchip: vop: add rk3066 vop definitions")
+> >>  Cc: stable@vger.kernel.org
+> >>  Signed-off-by: Val Packett <val@packett.cool>
+> >>  ---
+> >>  v2: doing this on vblank makes more sense; added fixes tag
+> >=20
+> > can you give a rationale for this please?
+> >=20
+> > I.e. does this dma-stop bit need to be set on each vblank that happens
+> > to push this frame to the display somehow?
+>=20
+>=20
+> The only things I'm 100% sure about:
+>=20
+> - that bit is called dma_stop in the Android kernel's header;
+> - without ever setting that bit to 1, it was getting set to 1 by the=20
+> chip itself, as logging the register on flush was showing a 1 in that=20
+> position (it was the only set bit - I guess others aren't readable=20
+> after cfg_done?);
+> - without clearing it "between" frames, the whole screen is always=20
+> filled with noise, the picture is not visible.
+>=20
+> The rest is at least a bit (ha) speculative:
+>=20
+> As I understand from what the name implies, the hardware sets it to=20
+> indicate that it has scanned out the frame and is waiting for=20
+> acknowledgment (clearing) to be able to scan out the next frame. I=20
+> guess it's a redundant synchronization mechanism that was removed in=20
+> later iterations of the VOP hardware block.
+>=20
+> I've been trying to see if moving where I clear the bit affects the=20
+> sort-of-tearing-but-vertical glitches that sometimes happen, especially=20
+> early on after the system has just booted, but that seems to be=20
+> completely unrelated pixel clock craziness (the Android kernel runs the=20
+> screen at 66 fps, interestingly).
+>=20
+> I'm fairly confident that both places are "correct". The reason I'm=20
+> more on the side of vblank now is that it made logical sense to me when=20
+> I thought about it more: acknowledging that the frame has been scanned=20
+> out is a reaction to the frame having been scanned out. It's a=20
+> consequence of *that* that the acknowledgment is required for the next=20
+> frame to be drawn.
+>=20
+> Unless we can get the opinion of someone closely familiar with this=20
+> decade-old hardware, we only have this reasoning to go off of :)
 
-[1/1] arm64: dts: rockchip: Fix the DCDC_REG2 minimum voltage on Quartz64 Model B
-      commit: d201c92bff90f3d3d0b079fc955378c15c0483cc
+Actually that reasoning was exactly what I was hoping for :-) .
+And it actually also makes perfect sense.
 
-Best regards,
--- 
-Heiko Stuebner <heiko@sntech.de>
+I was somehow thinking this needs to be set only when starting output
+and not as sort of an Ack.
+
+Could you do a v3 with:
+=2D the findings from above slightly condensed in the commit message
+  It's really helpful when someone stumbles onto that commit 10 years
+  from now and can get this really helpful explanation from the commit
+  message.
+=2D sending it as a _new_ thread
+  Having v2 as reply to v1 patches confuses tooling that then can't
+  distinguish what is actually part of this v2
+
+
+Thanks a lot
+Heiko
+
+
 
