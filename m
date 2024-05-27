@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-46739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6951F8D0B0F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4F68D0D16
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26A96282EE5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 247B1B20D0B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAC315FA85;
-	Mon, 27 May 2024 19:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EED1607B0;
+	Mon, 27 May 2024 19:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0+bQy6i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qz3mBDXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BF917E90E;
-	Mon, 27 May 2024 19:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0485A168C4;
+	Mon, 27 May 2024 19:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836735; cv=none; b=LQJUm9CLbF8tN/5nKHo7LlXgpWK/+ZaVhfx9cOP7u4qGF2tRSnuMYH9bVSEAIoRYMg3M5sHcXIsgOgLC2RHmFwKycEX++y+bSTf+WUI/ud/mWaopDNKyKmFkhFelIgwBZZNJZvXpYlYqWKdr230EQMs46FB830gejSXq3rJ+2ps=
+	t=1716837963; cv=none; b=HOIw6SFQFZpCcnIQAbr1IvW3Ic9VPa4wvBgHZeIitry6u7QG/GitGBjIpgDBHqsx/QGJRoRh17ft7zCTHqXpK7VyBpg0Mr/gOHsP2qv/l8NwpHFPiLSL2i4LuSR3boRiZli7c1JYhCTkrXSZqnzouHo+X2EK0FnGmvrZNljgHP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836735; c=relaxed/simple;
-	bh=w43UkdPHjp3eicED17OWPF5Fj2B/hNDKKiqnPulFVOg=;
+	s=arc-20240116; t=1716837963; c=relaxed/simple;
+	bh=PSPlWaCYJIwwWOPqy57GIEpiiTWxpceUww3ZGjKyOQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jo8DRzY109tdTkpjVR8Rrj+SwvZGBwUedJbkFfk080hc3lIqxMJqB7S/fzZDxo1elJdHX3w82YPnwGOrS+pqRbE3QJnk09HzKD9BobFZim2YTiA/YP4oimTndFMDJ/qUuH0LZ/gdlt3JZC0ksqC/svEccYYx5cwQgId7HnldWhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0+bQy6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E5FC2BBFC;
-	Mon, 27 May 2024 19:05:34 +0000 (UTC)
+	 MIME-Version; b=WQoCF7L2kUG4PenOZNgtW9EcnIKyr1BhfwYRkp3sVNH3Y9gTzbHnEl2BOWvv3VBXrSMqguLYuesK36QmZ2UqQlfuWzlf/KSQogVx9vkuLEdlhVyxHry9h86KVXw3uKUxOoh6pyHYh3bLaSbc12Km3xcDONX9ZZKmK8cYba6wP0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qz3mBDXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF2EC2BBFC;
+	Mon, 27 May 2024 19:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836735;
-	bh=w43UkdPHjp3eicED17OWPF5Fj2B/hNDKKiqnPulFVOg=;
+	s=korg; t=1716837962;
+	bh=PSPlWaCYJIwwWOPqy57GIEpiiTWxpceUww3ZGjKyOQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0+bQy6iWlhRpOrLGamQGMXUHABb4d6f/VD96Rsj9oaT/vx+wx0YyeW5GbAmNPVN1
-	 kHjvkYxVrqZC3qNanAKwtplz4nTlyPCTswUINxv3e/y2DA0sLjfDdJZeyH8PSC4M7t
-	 uxv9QGdw8mT9EI8FR2Ilnq3kFCikpCG0Av7Ji1UY=
+	b=qz3mBDXBFPzNU+pjVlinQBGR6yr5Y6VxKa+PiSfHbyHJehxxYsW6iiwDNT3FB2Crt
+	 Sdgb44+L/gHpWKCwLn+ZC21nuN0EuqmMgb1oXHo9VTDvcfW+s13XDp/06wFgmN+3AM
+	 QAQX4YtlImmAvWWjIMTYq30qODsyXv9LLc5pLRqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 166/427] dt-bindings: thermal: loongson,ls2k-thermal: Fix incorrect compatible definition
+Subject: [PATCH 6.8 211/493] arm64: Remove unnecessary irqflags alternative.h include
 Date: Mon, 27 May 2024 20:53:33 +0200
-Message-ID: <20240527185617.878249611@linuxfoundation.org>
+Message-ID: <20240527185637.215927704@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit c8c4353685778e75e186103411e9d01a4a3f2b90 ]
+[ Upstream commit 98631c4904bf6380834c8585ce50451f00eb5389 ]
 
-The temperature output register of the Loongson-2K2000 is defined in the
-chip configuration domain, which is different from the Loongson-2K1000,
-so it can't be fallbacked.
+Since commit 20af807d806d ("arm64: Avoid cpus_have_const_cap() for
+ARM64_HAS_GIC_PRIO_MASKING"), the alternative.h include is not used,
+so remove it.
 
-We need to use two groups of registers to describe it: the first group
-is the high and low temperature threshold setting register; the second
-group is the temperature output register.
-
-It is true that this fix will cause ABI corruption, but it is necessary
-otherwise the Loongson-2K2000 temperature sensor will not work properly.
-
-Fixes: 72684d99a854 ("thermal: dt-bindings: add loongson-2 thermal")
-Cc: Yinbo Zhu <zhuyinbo@loongson.cn>
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/5198999d679f1a1c3457385acb9fadfc85da1f1e.1713837379.git.zhoubinbin@loongson.cn
+Fixes: 20af807d806d ("arm64: Avoid cpus_have_const_cap() for ARM64_HAS_GIC_PRIO_MASKING")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240314063819.2636445-1-ruanjinjie@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../thermal/loongson,ls2k-thermal.yaml        | 23 +++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/irqflags.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/thermal/loongson,ls2k-thermal.yaml b/Documentation/devicetree/bindings/thermal/loongson,ls2k-thermal.yaml
-index 9748a479dcd4d..ca81c8afba79c 100644
---- a/Documentation/devicetree/bindings/thermal/loongson,ls2k-thermal.yaml
-+++ b/Documentation/devicetree/bindings/thermal/loongson,ls2k-thermal.yaml
-@@ -18,14 +18,15 @@ properties:
-     oneOf:
-       - enum:
-           - loongson,ls2k1000-thermal
-+          - loongson,ls2k2000-thermal
-       - items:
-           - enum:
-               - loongson,ls2k0500-thermal
--              - loongson,ls2k2000-thermal
-           - const: loongson,ls2k1000-thermal
+diff --git a/arch/arm64/include/asm/irqflags.h b/arch/arm64/include/asm/irqflags.h
+index 0a7186a93882d..d4d7451c2c129 100644
+--- a/arch/arm64/include/asm/irqflags.h
++++ b/arch/arm64/include/asm/irqflags.h
+@@ -5,7 +5,6 @@
+ #ifndef __ASM_IRQFLAGS_H
+ #define __ASM_IRQFLAGS_H
  
-   reg:
--    maxItems: 1
-+    minItems: 1
-+    maxItems: 2
- 
-   interrupts:
-     maxItems: 1
-@@ -39,6 +40,24 @@ required:
-   - interrupts
-   - '#thermal-sensor-cells'
- 
-+if:
-+  properties:
-+    compatible:
-+      contains:
-+        enum:
-+          - loongson,ls2k2000-thermal
-+
-+then:
-+  properties:
-+    reg:
-+      minItems: 2
-+      maxItems: 2
-+
-+else:
-+  properties:
-+    reg:
-+      maxItems: 1
-+
- unevaluatedProperties: false
- 
- examples:
+-#include <asm/alternative.h>
+ #include <asm/barrier.h>
+ #include <asm/ptrace.h>
+ #include <asm/sysreg.h>
 -- 
 2.43.0
 
