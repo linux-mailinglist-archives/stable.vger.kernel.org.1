@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-46781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59FF8D0B38
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A89AA8D0B3B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E73FD1C21606
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAA001C21773
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75906A039;
-	Mon, 27 May 2024 19:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19E126ACA;
+	Mon, 27 May 2024 19:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvybEvfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4nKYB+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A532117E90E;
-	Mon, 27 May 2024 19:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF5217E90E;
+	Mon, 27 May 2024 19:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836842; cv=none; b=l5xXia8x2BboXclwdEllQNDRCUKD5qxS2ftFvJbH4xmDLLMAIGBblERwxJSV0XKiEfAhNnU1J1+ERRL0jGvBEFPkr6mrZRAhopvh079DiRNPaJ7+qtGX2ubz51Nd39GaIMWEdFL1D1LMJPWtKljcozimUl3yrZY2n4iGZyOYTfY=
+	t=1716836847; cv=none; b=FPPU3UD3oFwj0RhCpYa5zDSAQtNyuQ60duKsi4Hdus1jJWQJnnf01m7eANDmsS24+DHvsPluI12cRoy0sECZbzz+3YCfrTcg6QMpAUow6eKxWxl4XWN8A4ivzvcr9qJWlUalhDDfMTPVTug1YQgnfNioQnqF3McklkZf8q/at3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836842; c=relaxed/simple;
-	bh=2UwjFP8DTXA8N8rHFAedp9NDe4NAJo5G7C0gc5PiUsw=;
+	s=arc-20240116; t=1716836847; c=relaxed/simple;
+	bh=xTABD2S8Y7eqKrr0smdkmZ2BYGg0CwuyIRIviUT4IVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dE6k8bBHEwDy5g5O54NLRBtTYZzwRiuq0zgmSwE7+cGA6iN6NbR4trNvv2CjmDuNd/3SD8OMKNixLTNmU7L5ifjvrODAmFN3a9b6QcI8ZSbrIFPqB9YfV9KpW5ixaixcAdcdGac8LrEX6fjBh0RGtzv8mv8owk0TlykWKvSFydU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvybEvfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384C1C2BBFC;
-	Mon, 27 May 2024 19:07:22 +0000 (UTC)
+	 MIME-Version; b=ngGUWmvyLxY4Iscbh4pj/MUgRwUeKqQ9MWJa6OTW0J05m7VSankaWyTImVLviddKS+H/F62lQKObmLM+u4O6i3CN4IwmjRB1RVrEVhnRRpdMYfJwE5EnM0l+mD4czkxWq6Jc6pZMTij0YDM2j7YjDtV+GVloLtREigngWk/HeQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4nKYB+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2729AC2BBFC;
+	Mon, 27 May 2024 19:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836842;
-	bh=2UwjFP8DTXA8N8rHFAedp9NDe4NAJo5G7C0gc5PiUsw=;
+	s=korg; t=1716836847;
+	bh=xTABD2S8Y7eqKrr0smdkmZ2BYGg0CwuyIRIviUT4IVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OvybEvfS0Fd5yZhP4Ob+FPcj4YmO78jL329+sHNYBKWlStStLy9Wxhl3DWV+XVXoL
-	 aimsWSHbk93pLgl9jPLWyPTJrEif5Obp2BRKLxkBZbNkmeIvmMlKleDFhKftAoNSZx
-	 Yl7rqJsbl8KtUJP8pQBURz4khZTQ64Gb/cI91RrU=
+	b=D4nKYB+PZrDyCYT+ABpl/WhGkg7wsE4gTK0b2YGI5CdR8tNXcEzf3rsieM9c5aLdU
+	 Zs0cnNo4VRTU7ev4ZlTIk2qyRI/bU/DFnenLIOPPpcV9nrs32CAgx6YmFt2kYuo1hx
+	 Vm+HTsJRRkTNt2fuv88N1n9dVOoDsL7Kmc3qawao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Christian Brauner <brauner@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 209/427] selftests: power_supply: Make it POSIX-compliant
-Date: Mon, 27 May 2024 20:54:16 +0200
-Message-ID: <20240527185621.873656179@linuxfoundation.org>
+Subject: [PATCH 6.9 210/427] selftests/binderfs: use the Makefiles rules, not Makes implicit rules
+Date: Mon, 27 May 2024 20:54:17 +0200
+Message-ID: <20240527185621.964113919@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -62,45 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 5b1c8b1e56ff8b5e9c1a09606af3627bb55933cf ]
+[ Upstream commit 019baf635eb6ffe8d6c1343f81788f02a7e0ed98 ]
 
-There is one use of bash specific syntax in the script. Change it to the
-equivalent POSIX syntax. This doesn't change functionality and allows
-the test to be run on shells other than bash.
+First of all, in order to build with clang at all, one must first apply
+Valentin Obst's build fix for LLVM [1]. Once that is done, then when
+building with clang, via:
 
-Reported-by: Mike Looijmans <mike.looijmans@topic.nl>
-Closes: https://lore.kernel.org/all/efae4037-c22a-40be-8ba9-7c1c12ece042@topic.nl/
-Fixes: 4a679c5afca0 ("selftests: Add test to verify power supply properties")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+    make LLVM=1 -C tools/testing/selftests
+
+...the following error occurs:
+
+   clang: error: cannot specify -o when generating multiple output files
+
+This is because clang, unlike gcc, won't accept invocations of this
+form:
+
+    clang file1.c header2.h
+
+While trying to fix this, I noticed that:
+
+a) selftests/lib.mk already avoids the problem, and
+
+b) The binderfs Makefile indavertently bypasses the selftests/lib.mk
+build system, and quitely uses Make's implicit build rules for .c files
+instead.
+
+The Makefile attempts to set up both a dependency and a source file,
+neither of which was needed, because lib.mk is able to automatically
+handle both. This line:
+
+    binderfs_test: binderfs_test.c
+
+...causes Make's implicit rules to run, which builds binderfs_test
+without ever looking at lib.mk.
+
+Fix this by simply deleting the "binderfs_test:" Makefile target and
+letting lib.mk handle it instead.
+
+[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
+
+Fixes: 6e29225af902 ("binderfs: port tests to test harness infrastructure")
+Cc: Christian Brauner <brauner@kernel.org>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/power_supply/test_power_supply_properties.sh      | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/filesystems/binderfs/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/testing/selftests/power_supply/test_power_supply_properties.sh b/tools/testing/selftests/power_supply/test_power_supply_properties.sh
-index df272dfe1d2a9..a66b1313ed882 100755
---- a/tools/testing/selftests/power_supply/test_power_supply_properties.sh
-+++ b/tools/testing/selftests/power_supply/test_power_supply_properties.sh
-@@ -23,7 +23,7 @@ count_tests() {
- 	total_tests=0
+diff --git a/tools/testing/selftests/filesystems/binderfs/Makefile b/tools/testing/selftests/filesystems/binderfs/Makefile
+index c2f7cef919c04..eb4c3b4119348 100644
+--- a/tools/testing/selftests/filesystems/binderfs/Makefile
++++ b/tools/testing/selftests/filesystems/binderfs/Makefile
+@@ -3,6 +3,4 @@
+ CFLAGS += $(KHDR_INCLUDES) -pthread
+ TEST_GEN_PROGS := binderfs_test
  
- 	for i in $SUPPLIES; do
--		total_tests=$(("$total_tests" + "$NUM_TESTS"))
-+		total_tests=$((total_tests + NUM_TESTS))
- 	done
- 
- 	echo "$total_tests"
+-binderfs_test: binderfs_test.c ../../kselftest.h ../../kselftest_harness.h
+-
+ include ../../lib.mk
 -- 
 2.43.0
 
