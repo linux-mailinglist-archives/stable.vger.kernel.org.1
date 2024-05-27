@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-46732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355F58D0B09
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:05:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 794AC8D0D0C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABDD0B21CFC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AEC41F2133E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9BB16088F;
-	Mon, 27 May 2024 19:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8EF15FD04;
+	Mon, 27 May 2024 19:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMZQbNpZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/RZUrL9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAA216087B;
-	Mon, 27 May 2024 19:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2776C168C4;
+	Mon, 27 May 2024 19:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836717; cv=none; b=JC5e4kr4KeT2tl0DMPRn9F8Sg6CaQufsSlrpLX96jHpaaiCIcux9SSmuPV1vijJN1ERtPi+jrOSETzDGm+qGzZUelrdl9bD+kexshOmHyyXX6RMG17CWeofhVVzfaNMBoDcYy7eOCSKpTRv6ScNxZgv5lpmgnqt4RxSkR5UAJn8=
+	t=1716837945; cv=none; b=QuoVaIkj0KWSoxcQ22xuASNmqHPG46qPYqqbK5vBMXmcNACTP6+O+qzuG+jZRjwz8sjlu36J/b0NB8e+BAmbi1ZSADJAIvF7Smvniu5kCCmxh2yN4ERcyTDuF5EUaqAhgOLTqVC9kHz+iS/niq5uqzfOQA3BYy96k1GB0mzsaME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836717; c=relaxed/simple;
-	bh=7n0UwbCkz2YhpDLdY+hJiUTuJLf/IJlMazX3YKg9lqc=;
+	s=arc-20240116; t=1716837945; c=relaxed/simple;
+	bh=iq//nYSpQpiRqpfYotlDpzt5Jxsg908NcZ08vEw4Qkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGJCDaOyBgKjrlHty4Nw7g+V5oVXVq/zmw91DYyPDZx72soyfnfQJIcezswHAz4lLKs0z7PIPAfUwPxZiW4ReELsubdTdqUq7jx9J87eGSPRFV6w5m3IVnt+kFvty+4xojb2z/zFwjZi2SBUxjYLmy/V8XE0T35xJOKNfOZIEYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMZQbNpZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FBBC2BBFC;
-	Mon, 27 May 2024 19:05:16 +0000 (UTC)
+	 MIME-Version; b=SYIXg8D/Y3iLfojXQdIuEfmLHN6wPZMUujB0jGn4VZSBeLaKMoSUZ9oTaDq04oOoo5Wvgnk9dFtNXtkiBBXmRH2F3GJUw50KMqxJ091xdzmtA9kEEsaicvjeAe12iWe0byYe0z2HkkY8T/jpiZ+j8ssSm3q+eTiZGJQGdorbKc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/RZUrL9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD2D7C2BBFC;
+	Mon, 27 May 2024 19:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836717;
-	bh=7n0UwbCkz2YhpDLdY+hJiUTuJLf/IJlMazX3YKg9lqc=;
+	s=korg; t=1716837945;
+	bh=iq//nYSpQpiRqpfYotlDpzt5Jxsg908NcZ08vEw4Qkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMZQbNpZE/lcSwiplwe/MC3WRG1fGjrDzb7v4isz9mn50b1A5IlZ2aJTpyllqkwIe
-	 FPTNeGZmsesXOBdMbD2uIQ5yEmHbb2+qDE+TYKLxnVR61Isg8emBQot7wH8gj6c2zm
-	 1XwikWw5U+lpuLOviPAMwKzGIPkuzs3DpZhXnmz4=
+	b=T/RZUrL9TN2OBz95TEuMloWl4VhI4TOTOnlkP46H7Y8L3i6XFVbl1kCImpyti25Ou
+	 z5hSNQB5AHOby94Qvf9h9chcrba091G/GojkpYSeMOli4QIeCac0aqztTDYx3Ie9+Q
+	 0MxEZLyDcoeso3RpRSOwK4k+3NcrWIRComabUD0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuri Karpov <YKarpov@ispras.ru>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 160/427] scsi: hpsa: Fix allocation size for Scsi_Host private data
+Subject: [PATCH 6.8 205/493] locking/atomic/x86: Correct the definition of __arch_try_cmpxchg128()
 Date: Mon, 27 May 2024 20:53:27 +0200
-Message-ID: <20240527185617.358234437@linuxfoundation.org>
+Message-ID: <20240527185637.029330719@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuri Karpov <YKarpov@ispras.ru>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 504e2bed5d50610c1836046c0c195b0a6dba9c72 ]
+[ Upstream commit 929ad065ba2967be238dfdc0895b79fda62c7f16 ]
 
-struct Scsi_Host private data contains pointer to struct ctlr_info.
+Correct the definition of __arch_try_cmpxchg128(), introduced by:
 
-Restore allocation of only 8 bytes to store pointer in struct Scsi_Host
-private data area.
+  b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: bbbd25499100 ("scsi: hpsa: Fix allocation size for scsi_host_alloc()")
-Signed-off-by: Yuri Karpov <YKarpov@ispras.ru>
-Link: https://lore.kernel.org/r/20240312170447.743709-1-YKarpov@ispras.ru
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20240408091547.90111-2-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hpsa.c | 2 +-
+ arch/x86/include/asm/cmpxchg_64.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
-index af18d20f30794..49c57a9c110b5 100644
---- a/drivers/scsi/hpsa.c
-+++ b/drivers/scsi/hpsa.c
-@@ -5850,7 +5850,7 @@ static int hpsa_scsi_host_alloc(struct ctlr_info *h)
- {
- 	struct Scsi_Host *sh;
- 
--	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info));
-+	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info *));
- 	if (sh == NULL) {
- 		dev_err(&h->pdev->dev, "scsi_host_alloc failed\n");
- 		return -ENOMEM;
+diff --git a/arch/x86/include/asm/cmpxchg_64.h b/arch/x86/include/asm/cmpxchg_64.h
+index 44b08b53ab32f..c1d6cd58f8094 100644
+--- a/arch/x86/include/asm/cmpxchg_64.h
++++ b/arch/x86/include/asm/cmpxchg_64.h
+@@ -62,7 +62,7 @@ static __always_inline u128 arch_cmpxchg128_local(volatile u128 *ptr, u128 old,
+ 	asm volatile(_lock "cmpxchg16b %[ptr]"				\
+ 		     CC_SET(e)						\
+ 		     : CC_OUT(e) (ret),					\
+-		       [ptr] "+m" (*ptr),				\
++		       [ptr] "+m" (*(_ptr)),				\
+ 		       "+a" (o.low), "+d" (o.high)			\
+ 		     : "b" (n.low), "c" (n.high)			\
+ 		     : "memory");					\
 -- 
 2.43.0
 
