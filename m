@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-46445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93FA58D048D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:49:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6684E8D0579
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A8EE1F2105C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:49:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72529B2EC93
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0533416EC18;
-	Mon, 27 May 2024 14:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179DF168C20;
+	Mon, 27 May 2024 14:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YD/As5Qb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mcW5E8s2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AE316EC0F;
-	Mon, 27 May 2024 14:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86EB168C17;
+	Mon, 27 May 2024 14:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819573; cv=none; b=lDHb60Df5Un+NkZM4z/9zfvkdzspwGH3Y5NoumkPdmyMGJTF2E1LOP5pfDrudw9Q34xZRX+Fzls4tuFmD6NN+310B/ByzmnbV2qH1m5nZ+3lTUEqh0cHb4y/eUP6LucioWv7KDKlM0jtUCQUnAHnmmXuTVhEkw+HpheHXUe44RI=
+	t=1716819574; cv=none; b=J7G/I2A3VTZ2CdXO18W58OECKnFIkKXs0yyGAX1LbvLbUJvQO1mvMzo055FWZbXRgQpMher5bXbNY/ZxutYLPro/Pqo3cQrfZbDx/zKKN5F2qaLGEO53DtzR2MphHtv9qwSp3KNitZX3ayHqPMlxtM1C8IGhY0FRQZybAl68s3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819573; c=relaxed/simple;
-	bh=4TDtS9hjxGe1jUT8iSGEEEQdE6/obmENE9Q7Iy+Ohkg=;
+	s=arc-20240116; t=1716819574; c=relaxed/simple;
+	bh=NXAqXjPE/NMeldOeBm2byS+kMVIl+2R4hN11reIED+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GirXgwot60E918+hlf09iMRQIsAHA5riZEkb+dUPhXW2he+rFaE92wY88Rpgye99nWR+lSNPy4jsE3xsrvACH4PDWvjmQZlhmOtlO4s5/j75EOovhWbMtd9nkg3whgUCQ9uSpWADVYrnYntC/hlqSqyKICs/+ueozYETP/Gc+Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YD/As5Qb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADB1C2BBFC;
-	Mon, 27 May 2024 14:19:32 +0000 (UTC)
+	 MIME-Version; b=J75Va3haYz76bKfe7BZNOxdGiMaVTf3OmbYkFBa+8WxRyz3y8VYMCjvCifp4bsgsAcXxoBFDqiu3QKlxhG5+1nCQ7LbH820w4VN1a12dNVqv6OQDgokkTk1YlEvodGgrkID5s3HZ9meQNtc6j99Ojintmzdzft3MBrDrxrQynrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mcW5E8s2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA90C4AF07;
+	Mon, 27 May 2024 14:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819573;
-	bh=4TDtS9hjxGe1jUT8iSGEEEQdE6/obmENE9Q7Iy+Ohkg=;
+	s=k20201202; t=1716819574;
+	bh=NXAqXjPE/NMeldOeBm2byS+kMVIl+2R4hN11reIED+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YD/As5Qb6XeBsBxu4Z41+WKBIzawrpJxXCyNXHyzCymQXybIKgRHJ+Yyi7JfbB1NY
-	 uuLP/SCARjYT04wbBrAN62HIATD2FbSJGot3gp+lzaiEhoO+Pz77LcIs8TrJhyNDiU
-	 nmF6vGgcMTDNYpvfbEq4a6kZ9lhPPriqRMujjB5+wj11GL0cZTTlEGriwHIFdKfGgt
-	 18CRV9gXc9qth77W+IJD7tNVaVzulL9f1TFFDjAf49YdqyJV7bU8HMvutoR+aXEUE9
-	 SaNlBTz/zbUxq3WOJUprvWfLHIlQzlrlWGzrQo/fM4k9w0xPpaDK9YXtMIP0P6cUxZ
-	 YvOliDztqwOEw==
+	b=mcW5E8s26bu1SzTB5vPd9qEDDs5CCw2L00DUsHYfxDGXbNSWij21l/DqMQcYju1Xe
+	 7ESALwDZVCrNEH6vrDagwM+bkpYuNRO0KWDI5O+zqc9+jyjfYZ2weE8xhhfiugNcVy
+	 i3UwQk7+Y7JpGCvTrxjrM3Zce5AXnpJOdRoEOVNnfV+PqEgAqF3vmnUW7LR3BmLzNS
+	 dZeMaD4waN69MViFYpCKEI/8nSDb/kYVv4+0Mgb81GJ/NGJL98OQGogxA1x86GFKlb
+	 RV+Pvh2w8UYF41wAr0+z1mC3Oxk8SDZHIZMZtkaYXWiIDsgQgg+WLqG9mKZQWShZgH
+	 XEJHnxjZ3Gh0A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Sean O'Brien <seobrien@chromium.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 09/13] netpoll: Fix race condition in netpoll_owner_active
-Date: Mon, 27 May 2024 10:18:46 -0400
-Message-ID: <20240527141901.3854691-9-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 10/13] HID: Add quirk for Logitech Casa touchpad
+Date: Mon, 27 May 2024 10:18:47 -0400
+Message-ID: <20240527141901.3854691-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141901.3854691-1-sashal@kernel.org>
 References: <20240527141901.3854691-1-sashal@kernel.org>
@@ -68,50 +67,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.218
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Sean O'Brien <seobrien@chromium.org>
 
-[ Upstream commit c2e6a872bde9912f1a7579639c5ca3adf1003916 ]
+[ Upstream commit dd2c345a94cfa3873cc20db87387ee509c345c1b ]
 
-KCSAN detected a race condition in netpoll:
+This device sometimes doesn't send touch release signals when moving
+from >=4 fingers to <4 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
+of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
 
-	BUG: KCSAN: data-race in net_rx_action / netpoll_send_skb
-	write (marked) to 0xffff8881164168b0 of 4 bytes by interrupt on cpu 10:
-	net_rx_action (./include/linux/netpoll.h:90 net/core/dev.c:6712 net/core/dev.c:6822)
-<snip>
-	read to 0xffff8881164168b0 of 4 bytes by task 1 on cpu 2:
-	netpoll_send_skb (net/core/netpoll.c:319 net/core/netpoll.c:345 net/core/netpoll.c:393)
-	netpoll_send_udp (net/core/netpoll.c:?)
-<snip>
-	value changed: 0x0000000a -> 0xffffffff
+MT_QUIRK_FORCE_MULTI_INPUT is not necessary for this device, but does no
+harm.
 
-This happens because netpoll_owner_active() needs to check if the
-current CPU is the owner of the lock, touching napi->poll_owner
-non atomically. The ->poll_owner field contains the current CPU holding
-the lock.
-
-Use an atomic read to check if the poll owner is the current CPU.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240429100437.3487432-1-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sean O'Brien <seobrien@chromium.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 2ad22511b9c6d..f76afab9fd8bd 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -316,7 +316,7 @@ static int netpoll_owner_active(struct net_device *dev)
- 	struct napi_struct *napi;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 0732fe6c7a853..9f3f7588fe46d 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -765,6 +765,7 @@
+ #define USB_DEVICE_ID_LOGITECH_AUDIOHUB 0x0a0e
+ #define USB_DEVICE_ID_LOGITECH_T651	0xb00c
+ #define USB_DEVICE_ID_LOGITECH_DINOVO_EDGE_KBD	0xb309
++#define USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD	0xbb00
+ #define USB_DEVICE_ID_LOGITECH_C007	0xc007
+ #define USB_DEVICE_ID_LOGITECH_C077	0xc077
+ #define USB_DEVICE_ID_LOGITECH_RECEIVER	0xc101
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 8dcd636daf270..e7b047421f3d9 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1998,6 +1998,12 @@ static const struct hid_device_id mt_devices[] = {
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
  
- 	list_for_each_entry_rcu(napi, &dev->napi_list, dev_list) {
--		if (napi->poll_owner == smp_processor_id())
-+		if (READ_ONCE(napi->poll_owner) == smp_processor_id())
- 			return 1;
- 	}
- 	return 0;
++	/* Logitech devices */
++	{ .driver_data = MT_CLS_NSMU,
++		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_LOGITECH,
++			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
++
+ 	/* MosArt panels */
+ 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ASUS,
 -- 
 2.43.0
 
