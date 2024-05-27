@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-47420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3848D0DE7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 926308D0BEC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7FF4B20D86
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 004BBB21FBF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF0313AD05;
-	Mon, 27 May 2024 19:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2205215FA85;
+	Mon, 27 May 2024 19:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9RovcqH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TREWwSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0FC17727;
-	Mon, 27 May 2024 19:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D086A17E90E;
+	Mon, 27 May 2024 19:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838503; cv=none; b=f3SonAjXPbErVVVTb6lOZcJ4srPtap6vYdJNZ6Wm6F9ERyWDRSBPKGLOkA/365inmJgsGmUFeF/plmk3bb7BoN+W6CtKz+5Bmp7zdmQb6q2tmio9q7cKSqKBEoQhAIOY+7+O79GjAUJ4jCG0Wcfm/ELpFaECQZC+nSKziEb6NZU=
+	t=1716837262; cv=none; b=TbUPnb3S3cGklK53sLCXGcE048QdTERds8SZ/bGtplVAjN6YYeIVZ7nWSVGCPu3rJwOplsEBaeH4zhNEKJXkArdnm1uZ7HhgJpxc6+ldyhuLZo25/YVBbSSB00BfaZ5jNecgfcCTr3a4XTGHY0CAS8weqX20DDCt9Nw+FYxmU5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838503; c=relaxed/simple;
-	bh=bY2F+Z83RmnGR/eEZihjho52PdS/DPCzObMKglFcqrM=;
+	s=arc-20240116; t=1716837262; c=relaxed/simple;
+	bh=/TMd9Tshwti61BWkQg4Hmul84FTInqAHTDJwfOGvrsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C2ch5Ri8SmR1L9sCuvnKID8qzEjkmShzsceqzV+oGA3IcsMVUKb4sj5uOQ9TLuGo16kPQpRnbH2/WThDN4313XV6tVTWHcbEP4exQ6uK850IHnIe+hMZDX/ryU0j5JWFFhDfXafPz3q/mDmz/pCp/QS0hwzjcciWvVOGUUydPLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9RovcqH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFC5C2BBFC;
-	Mon, 27 May 2024 19:35:03 +0000 (UTC)
+	 MIME-Version; b=r+esTdCvZkxw0f6CDVlV8a0VfYv9T1B19jVr0s0wgrORohkWbbMseBEAbZ9QMvyf7DcogfuyA2vI02rB6E5LmVUTe0dqf8SjPPSrOiYEneYNonO+/6w9JymFij7jnLNrYCqWRP+37mzB+/SbfcuBsoj3Cb5yIk4pDaBu6ZVknzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TREWwSh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B4CC2BBFC;
+	Mon, 27 May 2024 19:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838503;
-	bh=bY2F+Z83RmnGR/eEZihjho52PdS/DPCzObMKglFcqrM=;
+	s=korg; t=1716837262;
+	bh=/TMd9Tshwti61BWkQg4Hmul84FTInqAHTDJwfOGvrsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9RovcqHXGgLM80w48UE9Qqr5wTud/5b4OKS4MEFG4DXJl7m4dbj06/od/Yq14AKG
-	 1U8PZk/QrnSpH/eZ44W9pP+kuPuSa+lnp8B4zbeXWOA3pc8Eq13a3vVdH9CAg1AoMK
-	 wHidHfJnvEyXrZRWJkv1t+NTdK23QQGV345/hoNg=
+	b=0TREWwSh+zipddUCer3rYHdV7ZfNC0aPrGnaua+APO1rHL7Pyxdy9lL67ofvzqNhU
+	 VxEVuJ2jvq41xkJZx9GoebgZFTBFjCSuQMfjb5wTn3pZbzHjxrIqNdt8Lv9p+Xbaak
+	 g10P/8WyHkbBZz5I92UYiiJ4c5OoGheH1heHFx14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Nanyong Sun <sunnanyong@huawei.com>,
+	Rik van Riel <riel@surriel.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 418/493] drm/edid: Parse topology block for all DispID structure v1.x
-Date: Mon, 27 May 2024 20:57:00 +0200
-Message-ID: <20240527185643.962264650@linuxfoundation.org>
+Subject: [PATCH 6.9 374/427] mm/ksm: fix ksm exec support for prctl
+Date: Mon, 27 May 2024 20:57:01 +0200
+Message-ID: <20240527185634.304744343@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +66,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit e0a200ab4b72afd581bd6f82fc1ef510a4fb5478 ]
+[ Upstream commit 3a9e567ca45fb5280065283d10d9a11f0db61d2b ]
 
-DisplayID spec v1.3 revision history notes do claim that
-the toplogy block was added in v1.3 so requiring structure
-v1.2 would seem correct, but there is at least one EDID in
-edid.tv with a topology block and structure v1.0. And
-there are also EDIDs with DisplayID structure v1.3 which
-seems to be totally incorrect as DisplayID spec v1.3 lists
-structure v1.2 as the only legal value.
+Patch series "mm/ksm: fix ksm exec support for prctl", v4.
 
-Unfortunately I couldn't find copies of DisplayID spec
-v1.0-v1.2 anywhere (even on vesa.org), so I'll have to
-go on empirical evidence alone.
+commit 3c6f33b7273a ("mm/ksm: support fork/exec for prctl") inherits
+MMF_VM_MERGE_ANY flag when a task calls execve().  However, it doesn't
+create the mm_slot, so ksmd will not try to scan this task.  The first
+patch fixes the issue.
 
-We used to parse the topology block on all v1.x
-structures until the check for structure v2.0 was added.
-Let's go back to doing that as the evidence does suggest
-that there are DisplayIDs in the wild that would miss
-out on the topology stuff otherwise.
+The second patch refactors to prepare for the third patch.  The third
+patch extends the selftests of ksm to verfity the deduplication really
+happens after fork/exec inherits ths KSM setting.
 
-Also toss out DISPLAY_ID_STRUCTURE_VER_12 entirely as
-it doesn't appear we can really use it for anything.
+This patch (of 3):
 
-I *think* we could technically skip all the structure
-version checks as the block tags shouldn't conflict
-between v2.0 and v1.x. But no harm in having a bit of
-extra sanity checks I guess.
+commit 3c6f33b7273a ("mm/ksm: support fork/exec for prctl") inherits
+MMF_VM_MERGE_ANY flag when a task calls execve().  Howerver, it doesn't
+create the mm_slot, so ksmd will not try to scan this task.
 
-So far I'm not aware of any user reported regressions
-from overly strict check, but I do know that it broke
-igt/kms_tiled_display's fake DisplayID as that one
-gets generated with structure v1.0.
+To fix it, allocate and add the mm_slot to ksm_mm_head in __bprm_mm_init()
+when the mm has MMF_VM_MERGE_ANY flag.
 
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Fixes: c5a486af9df7 ("drm/edid: parse Tiled Display Topology Data Block for DisplayID 2.0")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240410180139.21352-1-ville.syrjala@linux.intel.com
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lkml.kernel.org/r/20240328111010.1502191-1-tujinjiang@huawei.com
+Link: https://lkml.kernel.org/r/20240328111010.1502191-2-tujinjiang@huawei.com
+Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Stefan Roesch <shr@devkernel.io>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_edid.c  | 2 +-
- include/drm/drm_displayid.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ fs/exec.c           | 11 +++++++++++
+ include/linux/ksm.h | 13 +++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 69c68804023ff..9ef9a70a836c7 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -7345,7 +7345,7 @@ static void drm_parse_tiled_block(struct drm_connector *connector,
- static bool displayid_is_tiled_block(const struct displayid_iter *iter,
- 				     const struct displayid_block *block)
+diff --git a/fs/exec.c b/fs/exec.c
+index cf1df7f16e55c..0c5f06d08c355 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -67,6 +67,7 @@
+ #include <linux/time_namespace.h>
+ #include <linux/user_events.h>
+ #include <linux/rseq.h>
++#include <linux/ksm.h>
+ 
+ #include <linux/uaccess.h>
+ #include <asm/mmu_context.h>
+@@ -267,6 +268,14 @@ static int __bprm_mm_init(struct linux_binprm *bprm)
+ 		goto err_free;
+ 	}
+ 
++	/*
++	 * Need to be called with mmap write lock
++	 * held, to avoid race with ksmd.
++	 */
++	err = ksm_execve(mm);
++	if (err)
++		goto err_ksm;
++
+ 	/*
+ 	 * Place the stack at the largest stack address the architecture
+ 	 * supports. Later, we'll move this to an appropriate place. We don't
+@@ -288,6 +297,8 @@ static int __bprm_mm_init(struct linux_binprm *bprm)
+ 	bprm->p = vma->vm_end - sizeof(void *);
+ 	return 0;
+ err:
++	ksm_exit(mm);
++err_ksm:
+ 	mmap_write_unlock(mm);
+ err_free:
+ 	bprm->vma = NULL;
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index 401348e9f92b4..7e2b1de3996ac 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -59,6 +59,14 @@ static inline int ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+ 	return 0;
+ }
+ 
++static inline int ksm_execve(struct mm_struct *mm)
++{
++	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags))
++		return __ksm_enter(mm);
++
++	return 0;
++}
++
+ static inline void ksm_exit(struct mm_struct *mm)
  {
--	return (displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_12 &&
-+	return (displayid_version(iter) < DISPLAY_ID_STRUCTURE_VER_20 &&
- 		block->tag == DATA_BLOCK_TILED_DISPLAY) ||
- 		(displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_20 &&
- 		 block->tag == DATA_BLOCK_2_TILED_DISPLAY_TOPOLOGY);
-diff --git a/include/drm/drm_displayid.h b/include/drm/drm_displayid.h
-index 566497eeb3b81..bc1f6b378195f 100644
---- a/include/drm/drm_displayid.h
-+++ b/include/drm/drm_displayid.h
-@@ -30,7 +30,6 @@ struct drm_edid;
- #define VESA_IEEE_OUI				0x3a0292
+ 	if (test_bit(MMF_VM_MERGEABLE, &mm->flags))
+@@ -107,6 +115,11 @@ static inline int ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+ 	return 0;
+ }
  
- /* DisplayID Structure versions */
--#define DISPLAY_ID_STRUCTURE_VER_12		0x12
- #define DISPLAY_ID_STRUCTURE_VER_20		0x20
- 
- /* DisplayID Structure v1r2 Data Blocks */
++static inline int ksm_execve(struct mm_struct *mm)
++{
++	return 0;
++}
++
+ static inline void ksm_exit(struct mm_struct *mm)
+ {
+ }
 -- 
 2.43.0
 
