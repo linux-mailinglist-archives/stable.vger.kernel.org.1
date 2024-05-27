@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-47453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90178D0E0C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:36:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B814B8D0C2C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 180511C216FF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7084B284084
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286DA1607B9;
-	Mon, 27 May 2024 19:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77F01607A4;
+	Mon, 27 May 2024 19:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrdMOJrl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb1hivNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD0815FCF0;
-	Mon, 27 May 2024 19:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69EE15FA91;
+	Mon, 27 May 2024 19:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838588; cv=none; b=EDoZHSYb2moIpwFdyYE0VITivHxygolBPosEaLJnL/tMtLCE5L2+fhSyeyYP41IPpKpAa9IigxJKy402kl5DmAZvKEbpgyKOcL/EuV0lv+6DuZB6DEWcN4KlHfYtITTYWjpigU0eOSSJkHLUm3ZSeCMlSwWL6/bNWK0+xmQ7E8k=
+	t=1716837410; cv=none; b=LQyKRvoCBt72X8ihtfkdWXg6mzmGDHdWn8ZZ1XNiR3TK5bJ+iyaWiCQ9Xg/+MFAQjUTWOdmJwYR17vlZBx5I6g3vxiGfZeRMWRsO9u7Z/o91AqDTS8/JoHE6iQgMOr7CyNFFnTlURvO4X9B+N70dwC2tpbqOKL6eR0OeHTk2reY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838588; c=relaxed/simple;
-	bh=K7tkI6yf3X/jaUkUjpHtCN9fuL7+CTtxFsMDuIU/YYQ=;
+	s=arc-20240116; t=1716837410; c=relaxed/simple;
+	bh=S3bq0FpMsRdTlITcFbGmfOlW4AzJvxkSR8xeJt8GEjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J18R39GNpR5i8+kNpXLm93ZN0bMH67D0bVEpsiQx4cE8iAEfs7otUIMshVebK55afdWRYDEXsa5RCbkjXZt+ay0haH0OdDZ359cD3Z5QAqsUtOTmaGUR0J1t4CJ020UmUmkkV9KHD6Gxamq4JO+rbBK46tY4ANILbOzLFbFkia0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrdMOJrl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA46C2BBFC;
-	Mon, 27 May 2024 19:36:27 +0000 (UTC)
+	 MIME-Version; b=AZHnJfYRywfrfzzvLXCO14m4/+vhQMdE54+kB7xLCUyt+9F9AzOn5bLMFuMfqneqnApcYJ83mpDkJIfohafc15Gtv42d+/yeM+wW16fedbDZc8YX+g3GzfkgFhbh+3S5FMhy1ACEtz40/kR/h2h50jZOwTro22n0VcwUMSRtScE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bb1hivNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B874C2BBFC;
+	Mon, 27 May 2024 19:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838588;
-	bh=K7tkI6yf3X/jaUkUjpHtCN9fuL7+CTtxFsMDuIU/YYQ=;
+	s=korg; t=1716837410;
+	bh=S3bq0FpMsRdTlITcFbGmfOlW4AzJvxkSR8xeJt8GEjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HrdMOJrlETSAIa2IlWjDFucspilmXzDj6neuJj9k6yHUCxmGraiLbN19nS342FZ1h
-	 O3+rHiYoAi7g2t1XBcWEO74z8rrBv0Xd2+FiBCnqQuPsEWnmEMEKKhxSLnbVPpg7CU
-	 mksz425G8lsGPnskpVfbcpWXGF+A6z6RxoTnitGA=
+	b=bb1hivNCDBxpk7A9uQmM7zMsTlgp79LXUf6l7HkodAHbXSkyFCKbxkAa0FSD9COGC
+	 c+v6UzpvQqfR2ECaqv5upmB5GEKrZnNxhT6NrUPloP7Pn0Nnpd72jZJMh8m96FgXeq
+	 N23GLKtXz/o2AgvOqfm3Ey9IQfbbvofTsAhoAFfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Long Li <longli@microsoft.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
 	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 452/493] RDMA/mana_ib: Use struct mana_ib_queue for CQs
+	Sasha Levin <sashal@kernel.org>,
+	Yi Zhang <yi.zhang@redhat.com>
+Subject: [PATCH 6.9 407/427] RDMA/cma: Fix kmemleak in rdma_core observed during blktests nvme/rdma use siw
 Date: Mon, 27 May 2024 20:57:34 +0200
-Message-ID: <20240527185645.009061999@linuxfoundation.org>
+Message-ID: <20240527185635.308100017@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,233 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit 60a7ac0b8bec5df9764b7460ffee91fc981e8a31 ]
+[ Upstream commit 9c0731832d3b7420cbadba6a7f334363bc8dfb15 ]
 
-Use struct mana_ib_queue and its helpers for CQs
+When running blktests nvme/rdma, the following kmemleak issue will appear.
 
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://lore.kernel.org/r/1711483688-24358-3-git-send-email-kotaranov@linux.microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
+kmemleak: Kernel memory leak detector initialized (mempool available:36041)
+kmemleak: Automatic memory scanning thread started
+kmemleak: 2 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+kmemleak: 8 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+kmemleak: 17 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+kmemleak: 4 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+
+unreferenced object 0xffff88855da53400 (size 192):
+  comm "rdma", pid 10630, jiffies 4296575922
+  hex dump (first 32 bytes):
+    37 00 00 00 00 00 00 00 c0 ff ff ff 1f 00 00 00  7...............
+    10 34 a5 5d 85 88 ff ff 10 34 a5 5d 85 88 ff ff  .4.].....4.]....
+  backtrace (crc 47f66721):
+    [<ffffffff911251bd>] kmalloc_trace+0x30d/0x3b0
+    [<ffffffffc2640ff7>] alloc_gid_entry+0x47/0x380 [ib_core]
+    [<ffffffffc2642206>] add_modify_gid+0x166/0x930 [ib_core]
+    [<ffffffffc2643468>] ib_cache_update.part.0+0x6d8/0x910 [ib_core]
+    [<ffffffffc2644e1a>] ib_cache_setup_one+0x24a/0x350 [ib_core]
+    [<ffffffffc263949e>] ib_register_device+0x9e/0x3a0 [ib_core]
+    [<ffffffffc2a3d389>] 0xffffffffc2a3d389
+    [<ffffffffc2688cd8>] nldev_newlink+0x2b8/0x520 [ib_core]
+    [<ffffffffc2645fe3>] rdma_nl_rcv_msg+0x2c3/0x520 [ib_core]
+    [<ffffffffc264648c>]
+rdma_nl_rcv_skb.constprop.0.isra.0+0x23c/0x3a0 [ib_core]
+    [<ffffffff9270e7b5>] netlink_unicast+0x445/0x710
+    [<ffffffff9270f1f1>] netlink_sendmsg+0x761/0xc40
+    [<ffffffff9249db29>] __sys_sendto+0x3a9/0x420
+    [<ffffffff9249dc8c>] __x64_sys_sendto+0xdc/0x1b0
+    [<ffffffff92db0ad3>] do_syscall_64+0x93/0x180
+    [<ffffffff92e00126>] entry_SYSCALL_64_after_hwframe+0x71/0x79
+
+The root cause: rdma_put_gid_attr is not called when sgid_attr is set
+to ERR_PTR(-ENODEV).
+
+Reported-and-tested-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/all/19bf5745-1b3b-4b8a-81c2-20d945943aaf@linux.dev/T/
+Fixes: f8ef1be816bf ("RDMA/cma: Avoid GID lookups on iWARP devices")
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240510211247.31345-1-yanjun.zhu@linux.dev
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: f79edef79b6a ("RDMA/mana_ib: boundary check before installing cq callbacks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mana/cq.c      | 52 ++++++----------------------
- drivers/infiniband/hw/mana/mana_ib.h |  4 +--
- drivers/infiniband/hw/mana/qp.c      | 26 +++++++-------
- 3 files changed, 24 insertions(+), 58 deletions(-)
+ drivers/infiniband/core/cma.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mana/cq.c b/drivers/infiniband/hw/mana/cq.c
-index 4a71e678d09c1..c9129218f1be1 100644
---- a/drivers/infiniband/hw/mana/cq.c
-+++ b/drivers/infiniband/hw/mana/cq.c
-@@ -39,37 +39,13 @@ int mana_ib_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
+diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
+index 1e2cd7c8716e8..64ace0b968f07 100644
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -715,8 +715,10 @@ cma_validate_port(struct ib_device *device, u32 port,
+ 		rcu_read_lock();
+ 		ndev = rcu_dereference(sgid_attr->ndev);
+ 		if (!net_eq(dev_net(ndev), dev_addr->net) ||
+-		    ndev->ifindex != bound_if_index)
++		    ndev->ifindex != bound_if_index) {
++			rdma_put_gid_attr(sgid_attr);
+ 			sgid_attr = ERR_PTR(-ENODEV);
++		}
+ 		rcu_read_unlock();
+ 		goto out;
  	}
- 
- 	cq->cqe = attr->cqe;
--	cq->umem = ib_umem_get(ibdev, ucmd.buf_addr, cq->cqe * COMP_ENTRY_SIZE,
--			       IB_ACCESS_LOCAL_WRITE);
--	if (IS_ERR(cq->umem)) {
--		err = PTR_ERR(cq->umem);
--		ibdev_dbg(ibdev, "Failed to get umem for create cq, err %d\n",
--			  err);
--		return err;
--	}
--
--	err = mana_ib_create_zero_offset_dma_region(mdev, cq->umem, &cq->gdma_region);
-+	err = mana_ib_create_queue(mdev, ucmd.buf_addr, cq->cqe * COMP_ENTRY_SIZE, &cq->queue);
- 	if (err) {
--		ibdev_dbg(ibdev,
--			  "Failed to create dma region for create cq, %d\n",
--			  err);
--		goto err_release_umem;
-+		ibdev_dbg(ibdev, "Failed to create queue for create cq, %d\n", err);
-+		return err;
- 	}
- 
--	ibdev_dbg(ibdev,
--		  "create_dma_region ret %d gdma_region 0x%llx\n",
--		  err, cq->gdma_region);
--
--	/*
--	 * The CQ ID is not known at this time. The ID is generated at create_qp
--	 */
--	cq->id = INVALID_QUEUE_ID;
--
- 	return 0;
--
--err_release_umem:
--	ib_umem_release(cq->umem);
--	return err;
- }
- 
- int mana_ib_destroy_cq(struct ib_cq *ibcq, struct ib_udata *udata)
-@@ -78,24 +54,16 @@ int mana_ib_destroy_cq(struct ib_cq *ibcq, struct ib_udata *udata)
- 	struct ib_device *ibdev = ibcq->device;
- 	struct mana_ib_dev *mdev;
- 	struct gdma_context *gc;
--	int err;
- 
- 	mdev = container_of(ibdev, struct mana_ib_dev, ib_dev);
- 	gc = mdev_to_gc(mdev);
- 
--	err = mana_ib_gd_destroy_dma_region(mdev, cq->gdma_region);
--	if (err) {
--		ibdev_dbg(ibdev,
--			  "Failed to destroy dma region, %d\n", err);
--		return err;
--	}
--
--	if (cq->id != INVALID_QUEUE_ID) {
--		kfree(gc->cq_table[cq->id]);
--		gc->cq_table[cq->id] = NULL;
-+	if (cq->queue.id != INVALID_QUEUE_ID) {
-+		kfree(gc->cq_table[cq->queue.id]);
-+		gc->cq_table[cq->queue.id] = NULL;
- 	}
- 
--	ib_umem_release(cq->umem);
-+	mana_ib_destroy_queue(mdev, &cq->queue);
- 
- 	return 0;
- }
-@@ -114,7 +82,7 @@ int mana_ib_install_cq_cb(struct mana_ib_dev *mdev, struct mana_ib_cq *cq)
- 	struct gdma_queue *gdma_cq;
- 
- 	/* Create CQ table entry */
--	WARN_ON(gc->cq_table[cq->id]);
-+	WARN_ON(gc->cq_table[cq->queue.id]);
- 	gdma_cq = kzalloc(sizeof(*gdma_cq), GFP_KERNEL);
- 	if (!gdma_cq)
- 		return -ENOMEM;
-@@ -122,7 +90,7 @@ int mana_ib_install_cq_cb(struct mana_ib_dev *mdev, struct mana_ib_cq *cq)
- 	gdma_cq->cq.context = cq;
- 	gdma_cq->type = GDMA_CQ;
- 	gdma_cq->cq.callback = mana_ib_cq_handler;
--	gdma_cq->id = cq->id;
--	gc->cq_table[cq->id] = gdma_cq;
-+	gdma_cq->id = cq->queue.id;
-+	gc->cq_table[cq->queue.id] = gdma_cq;
- 	return 0;
- }
-diff --git a/drivers/infiniband/hw/mana/mana_ib.h b/drivers/infiniband/hw/mana/mana_ib.h
-index 859fd3bfc764f..6acb5c281c368 100644
---- a/drivers/infiniband/hw/mana/mana_ib.h
-+++ b/drivers/infiniband/hw/mana/mana_ib.h
-@@ -88,10 +88,8 @@ struct mana_ib_mr {
- 
- struct mana_ib_cq {
- 	struct ib_cq ibcq;
--	struct ib_umem *umem;
-+	struct mana_ib_queue queue;
- 	int cqe;
--	u64 gdma_region;
--	u64 id;
- 	u32 comp_vector;
- };
- 
-diff --git a/drivers/infiniband/hw/mana/qp.c b/drivers/infiniband/hw/mana/qp.c
-index 6e7627745c957..d7485ee6a6854 100644
---- a/drivers/infiniband/hw/mana/qp.c
-+++ b/drivers/infiniband/hw/mana/qp.c
-@@ -197,7 +197,7 @@ static int mana_ib_create_qp_rss(struct ib_qp *ibqp, struct ib_pd *pd,
- 		wq_spec.gdma_region = wq->gdma_region;
- 		wq_spec.queue_size = wq->wq_buf_size;
- 
--		cq_spec.gdma_region = cq->gdma_region;
-+		cq_spec.gdma_region = cq->queue.gdma_region;
- 		cq_spec.queue_size = cq->cqe * COMP_ENTRY_SIZE;
- 		cq_spec.modr_ctx_id = 0;
- 		eq = &mpc->ac->eqs[cq->comp_vector % gc->max_num_queues];
-@@ -213,16 +213,16 @@ static int mana_ib_create_qp_rss(struct ib_qp *ibqp, struct ib_pd *pd,
- 
- 		/* The GDMA regions are now owned by the WQ object */
- 		wq->gdma_region = GDMA_INVALID_DMA_REGION;
--		cq->gdma_region = GDMA_INVALID_DMA_REGION;
-+		cq->queue.gdma_region = GDMA_INVALID_DMA_REGION;
- 
- 		wq->id = wq_spec.queue_index;
--		cq->id = cq_spec.queue_index;
-+		cq->queue.id = cq_spec.queue_index;
- 
- 		ibdev_dbg(&mdev->ib_dev,
- 			  "ret %d rx_object 0x%llx wq id %llu cq id %llu\n",
--			  ret, wq->rx_object, wq->id, cq->id);
-+			  ret, wq->rx_object, wq->id, cq->queue.id);
- 
--		resp.entries[i].cqid = cq->id;
-+		resp.entries[i].cqid = cq->queue.id;
- 		resp.entries[i].wqid = wq->id;
- 
- 		mana_ind_table[i] = wq->rx_object;
-@@ -232,7 +232,7 @@ static int mana_ib_create_qp_rss(struct ib_qp *ibqp, struct ib_pd *pd,
- 		if (ret)
- 			goto fail;
- 
--		gdma_cq_allocated[i] = gc->cq_table[cq->id];
-+		gdma_cq_allocated[i] = gc->cq_table[cq->queue.id];
- 	}
- 	resp.num_entries = i;
- 
-@@ -264,7 +264,7 @@ static int mana_ib_create_qp_rss(struct ib_qp *ibqp, struct ib_pd *pd,
- 		wq = container_of(ibwq, struct mana_ib_wq, ibwq);
- 		cq = container_of(ibcq, struct mana_ib_cq, ibcq);
- 
--		gc->cq_table[cq->id] = NULL;
-+		gc->cq_table[cq->queue.id] = NULL;
- 		kfree(gdma_cq_allocated[i]);
- 
- 		mana_destroy_wq_obj(mpc, GDMA_RQ, wq->rx_object);
-@@ -374,7 +374,7 @@ static int mana_ib_create_qp_raw(struct ib_qp *ibqp, struct ib_pd *ibpd,
- 	wq_spec.gdma_region = qp->sq_gdma_region;
- 	wq_spec.queue_size = ucmd.sq_buf_size;
- 
--	cq_spec.gdma_region = send_cq->gdma_region;
-+	cq_spec.gdma_region = send_cq->queue.gdma_region;
- 	cq_spec.queue_size = send_cq->cqe * COMP_ENTRY_SIZE;
- 	cq_spec.modr_ctx_id = 0;
- 	eq_vec = send_cq->comp_vector % gc->max_num_queues;
-@@ -392,10 +392,10 @@ static int mana_ib_create_qp_raw(struct ib_qp *ibqp, struct ib_pd *ibpd,
- 
- 	/* The GDMA regions are now owned by the WQ object */
- 	qp->sq_gdma_region = GDMA_INVALID_DMA_REGION;
--	send_cq->gdma_region = GDMA_INVALID_DMA_REGION;
-+	send_cq->queue.gdma_region = GDMA_INVALID_DMA_REGION;
- 
- 	qp->sq_id = wq_spec.queue_index;
--	send_cq->id = cq_spec.queue_index;
-+	send_cq->queue.id = cq_spec.queue_index;
- 
- 	/* Create CQ table entry */
- 	err = mana_ib_install_cq_cb(mdev, send_cq);
-@@ -404,10 +404,10 @@ static int mana_ib_create_qp_raw(struct ib_qp *ibqp, struct ib_pd *ibpd,
- 
- 	ibdev_dbg(&mdev->ib_dev,
- 		  "ret %d qp->tx_object 0x%llx sq id %llu cq id %llu\n", err,
--		  qp->tx_object, qp->sq_id, send_cq->id);
-+		  qp->tx_object, qp->sq_id, send_cq->queue.id);
- 
- 	resp.sqid = qp->sq_id;
--	resp.cqid = send_cq->id;
-+	resp.cqid = send_cq->queue.id;
- 	resp.tx_vp_offset = pd->tx_vp_offset;
- 
- 	err = ib_copy_to_udata(udata, &resp, sizeof(resp));
-@@ -422,7 +422,7 @@ static int mana_ib_create_qp_raw(struct ib_qp *ibqp, struct ib_pd *ibpd,
- 
- err_release_gdma_cq:
- 	kfree(gdma_cq);
--	gc->cq_table[send_cq->id] = NULL;
-+	gc->cq_table[send_cq->queue.id] = NULL;
- 
- err_destroy_wq_obj:
- 	mana_destroy_wq_obj(mpc, GDMA_SQ, qp->tx_object);
 -- 
 2.43.0
 
