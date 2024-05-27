@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B44E8D0B23
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980718D0CF0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15E0B283822
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9C261C21391
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABCD26ACA;
-	Mon, 27 May 2024 19:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E6915FCFC;
+	Mon, 27 May 2024 19:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAbYZPH6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTyx22BZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C2117E90E;
-	Mon, 27 May 2024 19:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B19168C4;
+	Mon, 27 May 2024 19:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836786; cv=none; b=A7atwtfvUIJOV2AnD5wnpp1QS6yx1WHfX07/JTh7zbfqZWcphUuRP/RnzB/4/kE4MzR0yEkwnTdRxOHh9PJL+/f+s1ZKioe2iW2cYf0C1SndNhD0Nv2IzZtl2S8gwtgnSqkAuCdFakoEMV95zTDQ03+qDTMbRb0AB+1vYBhnBbY=
+	t=1716837876; cv=none; b=lBh3vLS2IWLBjzii2LeR6DvRcO1NEc/R0oe2TirTFqM7Y3ivq7ZHBJxn7ioPJwo79UEbLG9p2uvJSab2znXdg/N9MSN8LmYQUnODRt+iwwJgr66surDcH/PjjZkDToTN1pNZPBN7g2zmgQGtBb3Qi6mtv60KojqIO/eJjO9gVJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836786; c=relaxed/simple;
-	bh=9cxUG7XVLpEmlAVDdW5HICZ0du52RqqEWYAHWKw43ts=;
+	s=arc-20240116; t=1716837876; c=relaxed/simple;
+	bh=um3dkAn63SQKLgqoIZeA7Le2TfzTihvwgjC8hgQwQBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2A775g1PBwXWsU8PxaoWLti7VNK5tca076nOj+YfuiwHuN8oPU+c3LT+WCnj3vfSya227z4PQ48vCP+TVlZj0ehi1tnEzv1AAi80e+v/pFjcwE0QTUhuv5RXzXRFIw4XmUQ6CnqfpVpjW3w37jLT4K3l6lR4C6g/T4rOBVD9Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAbYZPH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0175C32781;
-	Mon, 27 May 2024 19:06:25 +0000 (UTC)
+	 MIME-Version; b=p25ZNfQhfEuanIrDjbzeGYWv1VlkkvBlYgjYVokjg5R99Ddci1Qdhcr5Q0+I4iVIuM0kzycUPP+pggqRHzcsVarH3wN5GMemHjo45emobmVtWXR0KLBHx46bel/TMRfseBXuLSCytrqiYA6umxIeWAQ1j2Nt6F6/TecjnVJKpcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTyx22BZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EB7C2BBFC;
+	Mon, 27 May 2024 19:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836786;
-	bh=9cxUG7XVLpEmlAVDdW5HICZ0du52RqqEWYAHWKw43ts=;
+	s=korg; t=1716837876;
+	bh=um3dkAn63SQKLgqoIZeA7Le2TfzTihvwgjC8hgQwQBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAbYZPH6/EoJMn4cdLLhPCCx13R+x2lKQzd36kT2WxMdv95MoCWScLykusetAr/Sj
-	 px/AhKecK2riz1hiD+r0S80KIkind6KFhfvjtbfci5eyqptz3KylCF9sySODMQXuaY
-	 yqdEm4xBn6TYy+NkTh0GEkS1slKnX4693AJ6S+lc=
+	b=bTyx22BZhltIT6aaJRrWRnsHRyo9BnnJDlGgMQy0nf3gRIrewq0VtaKDPuHYECxxz
+	 4AKE9EDI44UVvfAbKdScI1l+L2fm3uf910cl2i55mDpS5arWh7ItkqG24npcVgPQ5R
+	 J5ElmIzmE9C79/crG1DiyLsp3ZpUqujbltBiVgYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 135/427] EDAC/skx_common: Allow decoding of SGX addresses
+Subject: [PATCH 6.8 180/493] ACPI: bus: Indicate support for more than 16 p-states thru _OSC
 Date: Mon, 27 May 2024 20:53:02 +0200
-Message-ID: <20240527185614.466318168@linuxfoundation.org>
+Message-ID: <20240527185636.239139264@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit e0d335077831196bffe6a634ffe385fc684192ca ]
+[ Upstream commit 6e8345f23ca37d6d41bb76be5d6a705ddf542817 ]
 
-There are no "struct page" associations with SGX pages, causing the check
-pfn_to_online_page() to fail. This results in the inability to decode the
-SGX addresses and warning messages like:
+The code responsible for parsing the available p-states should
+have no problems handling more than 16 p-states.
 
-  Invalid address 0x34cc9a98840 in IA32_MC17_ADDR
+Indicate this by setting bit 10 ("Greater Than 16 p-state support")
+when evaluating _OSC.
 
-Add an additional check to allow the decoding of the error address and to
-skip the warning message, if the error address is an SGX address.
-
-Fixes: 1e92af09fab1 ("EDAC/skx_common: Filter out the invalid address")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20240408120419.50234-1-qiuxu.zhuo@intel.com
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: a8a967a243d7 ("ACPI: bus: Indicate support for the Generic Event Device thru _OSC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/skx_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/bus.c   | 1 +
+ include/linux/acpi.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
-index 9c5b6f8bd8bd5..27996b7924c82 100644
---- a/drivers/edac/skx_common.c
-+++ b/drivers/edac/skx_common.c
-@@ -648,7 +648,7 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
- 	memset(&res, 0, sizeof(res));
- 	res.mce  = mce;
- 	res.addr = mce->addr & MCI_ADDR_PHYSADDR;
--	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT)) {
-+	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT) && !arch_is_platform_page(res.addr)) {
- 		pr_err("Invalid address 0x%llx in IA32_MC%d_ADDR\n", mce->addr, mce->bank);
- 		return NOTIFY_DONE;
- 	}
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 9c5fc12fc13cb..aee91fa2a4596 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -321,6 +321,7 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+ 
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_HOTPLUG_OST_SUPPORT;
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
++	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_OVER_16_PSTATES_SUPPORT;
+ 	if (IS_ENABLED(CONFIG_ACPI_PRMT))
+ 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PRM_SUPPORT;
+ 	if (IS_ENABLED(CONFIG_ACPI_FFH))
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index e4f4fb67ab55a..7658d06b5bccf 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -574,6 +574,7 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+ #define OSC_SB_PCLPI_SUPPORT			0x00000080
+ #define OSC_SB_OSLPI_SUPPORT			0x00000100
+ #define OSC_SB_FAST_THERMAL_SAMPLING_SUPPORT	0x00000200
++#define OSC_SB_OVER_16_PSTATES_SUPPORT		0x00000400
+ #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
+ #define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
+ #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
 -- 
 2.43.0
 
