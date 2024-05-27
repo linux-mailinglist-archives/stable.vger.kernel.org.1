@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-46835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2288D0B76
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E97388D0D7D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B55741F21B7D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EA29281632
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CA21078F;
-	Mon, 27 May 2024 19:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7951915FA60;
+	Mon, 27 May 2024 19:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvOaydk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXPwoJyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D792117E90E;
-	Mon, 27 May 2024 19:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D0717727;
+	Mon, 27 May 2024 19:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836976; cv=none; b=lSfLUJ9LxOwV5sJlDURmvJdAWipm0NIl3uixZzka/+hQm0YVUBbK+LT2TsBbkQviuRM5s47nmT1W4jE6bF6k6A/j1QfGuGID9eiXAlhXjF36i9AZ4uPtkGlBSTq78dVlkYXXmukgx/UC8Y4qHUqVHW7+zqXn1R6RlaNuWVYU6RE=
+	t=1716838229; cv=none; b=Ze7IFWuuqsUKbpcPige7Z0PfLTapQ4oNQxcG5Fiv5HPfbV9d3f6+BSO3ne5lbbyJx/6BHSRSmMJtXUTKsnrFYU+Hi4PkJnVY6llrPMOVx5OhYXTrzMSbVMzslmBX5cCxAj3iO0CLMgnVSVtbjwMBHzOKVo6YMlabxZXPbyg4tow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836976; c=relaxed/simple;
-	bh=5kNROnP1tn/wwrnhyaF4oNm9E0PQOidzaHmbhqhlXQk=;
+	s=arc-20240116; t=1716838229; c=relaxed/simple;
+	bh=LYb24pcTBRvf7+eeNVPlwDOkAsum3E+37QUf1xAUhrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsDi+YOxCJDmshdLsgfRC78NkLTXniwIIy0pfEhntzIql6eZZuTebC15eFvdT7nMpAE4NDoOFIFOtGvfmHCk1iGiQbL/cbKni0jj9TNSrEhFAvB9E/4LYInQPCz071EjhzwSPvwxhIXnItyOuK6MoirfMb736dsSpnbwmmWadhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvOaydk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB43C2BBFC;
-	Mon, 27 May 2024 19:09:36 +0000 (UTC)
+	 MIME-Version; b=bg3Arks2jDdUVIlRC6q1EKyZm7FIJThN4Gz73kpxpHFTLc1FbDflv/18QG1ORgLG2b8pb0q5kYmmK36TqoxITtjTERR25EZ25QjI+sdaJezAbbR/5CZJM1agWC+a+PVBdeO9xGPGo6SWnEDCi5r80xmdrc0txrCaftUnXBVJo14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXPwoJyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFC1C2BBFC;
+	Mon, 27 May 2024 19:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836976;
-	bh=5kNROnP1tn/wwrnhyaF4oNm9E0PQOidzaHmbhqhlXQk=;
+	s=korg; t=1716838229;
+	bh=LYb24pcTBRvf7+eeNVPlwDOkAsum3E+37QUf1xAUhrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvOaydk6NX7bGAHeDf8W107LL872LO9uk7zYiCXNdfGZ9YrqVUEUnPVkMQAK3Nqn2
-	 5Luhtg8XvareYTWn3/pfG/j2ljaqKz8v/ZWAxp72rHYdh46fat7+1HjRgVBwhzAo0l
-	 olGwLHDSzRFmpcwIadmd16ltNrAs3PQqQEM6AGJA=
+	b=xXPwoJyOrHFD8TZKbJVYq4/7hG7yTXZXhaa5WjeGlVpKaSaK46dskzxiW4vN4dOyh
+	 QUrJp7zJLOYcAn6dSPp05zgzb0gCAV2tSP2ySx5gmPaWA1WLsyOU9qpQwK6EyUul/J
+	 rujIIHm83MsKLib0GbYtXRDsEY+p4NmRbCHUXBZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Duoming Zhou <duoming@zju.edu.cn>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Dan Nowlin <dan.nowlin@intel.com>,
+	Paul Greenwalt <paul.greenwalt@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 261/427] ax25: Fix reference count leak issue of net_device
-Date: Mon, 27 May 2024 20:55:08 +0200
-Message-ID: <20240527185626.811713120@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.8 307/493] ice: Fix package download algorithm
+Date: Mon, 27 May 2024 20:55:09 +0200
+Message-ID: <20240527185640.341796943@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +67,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Dan Nowlin <dan.nowlin@intel.com>
 
-[ Upstream commit 36e56b1b002bb26440403053f19f9e1a8bc075b2 ]
+[ Upstream commit 6d51d44ecddb5c2962688ef06e55e4fbc949f04a ]
 
-There is a reference count leak issue of the object "net_device" in
-ax25_dev_device_down(). When the ax25 device is shutting down, the
-ax25_dev_device_down() drops the reference count of net_device one
-or zero times depending on if we goto unlock_put or not, which will
-cause memory leak.
+Previously, the driver assumed that all signature segments would contain
+one or more buffers to download. In the future, there will be signature
+segments that will contain no buffers to download.
 
-In order to solve the above issue, decrease the reference count of
-net_device after dev->ax25_ptr is set to null.
+Correct download flow to allow for signature segments that have zero
+download buffers and skip the download in this case.
 
-Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/7ce3b23a40d9084657ba1125432f0ecc380cbc80.1715247018.git.duoming@zju.edu.cn
+Fixes: 3cbdb0343022 ("ice: Add support for E830 DDP package segment")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Dan Nowlin <dan.nowlin@intel.com>
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240508171908.2760776-1-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ax25/ax25_dev.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ddp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
-index 52ccc37d5687a..c9d55b99a7a57 100644
---- a/net/ax25/ax25_dev.c
-+++ b/net/ax25/ax25_dev.c
-@@ -118,15 +118,10 @@ void ax25_dev_device_down(struct net_device *dev)
- 	list_for_each_entry(s, &ax25_dev_list, list) {
- 		if (s == ax25_dev) {
- 			list_del(&s->list);
--			goto unlock_put;
-+			break;
- 		}
+diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
+index 8b7504a9df316..90b9e28ddba91 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ddp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
+@@ -1424,14 +1424,14 @@ ice_dwnld_sign_and_cfg_segs(struct ice_hw *hw, struct ice_pkg_hdr *pkg_hdr,
+ 		goto exit;
  	}
--	dev->ax25_ptr = NULL;
--	spin_unlock_bh(&ax25_dev_lock);
--	ax25_dev_put(ax25_dev);
--	return;
  
--unlock_put:
- 	dev->ax25_ptr = NULL;
- 	spin_unlock_bh(&ax25_dev_lock);
- 	netdev_put(dev, &ax25_dev->dev_tracker);
+-	conf_idx = le32_to_cpu(seg->signed_seg_idx);
+-	start = le32_to_cpu(seg->signed_buf_start);
+ 	count = le32_to_cpu(seg->signed_buf_count);
+-
+ 	state = ice_download_pkg_sig_seg(hw, seg);
+-	if (state)
++	if (state || !count)
+ 		goto exit;
+ 
++	conf_idx = le32_to_cpu(seg->signed_seg_idx);
++	start = le32_to_cpu(seg->signed_buf_start);
++
+ 	state = ice_download_pkg_config_seg(hw, pkg_hdr, conf_idx, start,
+ 					    count);
+ 
 -- 
 2.43.0
 
