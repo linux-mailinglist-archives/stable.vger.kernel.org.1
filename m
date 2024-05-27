@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B938D0DC8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1C18D0BCB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5887B1C21357
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE29A2861A8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B153B13AD05;
-	Mon, 27 May 2024 19:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E7715DBD8;
+	Mon, 27 May 2024 19:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twz17G8g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVSs1ASP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2F717727;
-	Mon, 27 May 2024 19:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0491078F;
+	Mon, 27 May 2024 19:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838424; cv=none; b=s2ngjEXqthivLHdTQVDMnpR9SNF86/hoaaVgXnI0Xmsel/Iw7bVLegeGOpMRw6Ku6lHFqq0iKYgpT2rm3KQ4nGc0ErtoLLv2TD7NHwFUzHW3jkOQJ9wqNUoxFsOgSLCiqI1i2gvxdDGmGRKoRW7ldgp7nnBCGVHVnn+7GMSAKl0=
+	t=1716837181; cv=none; b=S8X1sBvJad8Uiy+MK5MyTej04bYhBVOU/r7KjG5Wr7MhTavvWt7D6zlCocLE02wy7CO+KHVrwvXPaa7Ot5fTuEfbF8XSY4/uiqb+gZzP9GrqiiTqyrza1DQ7BElPYeLrFHpEeselJ9gK00iLPn54CM5Sx2E8VmRmMpIMO99Q93A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838424; c=relaxed/simple;
-	bh=vA6Bf+tPqOeXLuLKHzR0efqgdlmr0BOTnX2wxv+fPXM=;
+	s=arc-20240116; t=1716837181; c=relaxed/simple;
+	bh=YYOzdrVhi8iLeuptqBgydBWZxMSwDdNcVsJvagUAvMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5dY2TuewDM6f2yMVRiRAv5H5I/FrFMQ1vh6RtcAlt41V7be9zUp5zPsfVTDuvd7P/wjXBMAxakUUDF0Tj5dBMxX6hS9IdfKHnVDXkdgL2qe4jdaEVgCIDxeBxehj7AdrFaNUlzN/E+fUVsvdghCE8RU7pcukRRGItl7aSHbi8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twz17G8g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA140C2BBFC;
-	Mon, 27 May 2024 19:33:43 +0000 (UTC)
+	 MIME-Version; b=dLWBrUikOeUe67ZkckAlyebSWbccUs0lIgdqoz+Sg+vBNMTscfpnBqQMwcxs5LL7CbooliDomTHU2DbCXw4ZtzH/sjl1QUAjgatk+9yysAZ3QP9st8oBs2Ccx5GMKc+oRypa/9mIdlw8e7ItuRyPxXNCxDBL7xkUEp6S6Sh6gcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVSs1ASP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996B4C2BBFC;
+	Mon, 27 May 2024 19:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838424;
-	bh=vA6Bf+tPqOeXLuLKHzR0efqgdlmr0BOTnX2wxv+fPXM=;
+	s=korg; t=1716837180;
+	bh=YYOzdrVhi8iLeuptqBgydBWZxMSwDdNcVsJvagUAvMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twz17G8gY+9cZRyggHe7VA/vmSDBeTkeeTTVBx/k2ieYbKnZz8NS2SiMKPt0Q7lJz
-	 MoF7fkBcYfVm4vdAUmM0vW/Iod2lXPVWgf2OiBLBVOnjv5syQz6t2rMUH86t12Snkw
-	 mmosO37p2N/V8dsKWqnl1bnYJp/g7IWPvpZbbBSs=
+	b=ZVSs1ASPpi9RM1Ec7Ywz676F5CUK4vUsJFs74i1lBS3hJzKFkDic9sHv1L2J3nJoj
+	 SGB5ThyDVI8Wt3Oh/p5LAIPOgX6yWzZVUbfQP7WyrfBtsV0fI5SyjsogRLAZqscdVK
+	 MV0sAK7Lk0r4KxWncQ5F2jNEBF7BDvypFa0sFECo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 386/493] ASoC: Intel: avs: Test result of avs_get_module_entry()
+Subject: [PATCH 6.9 341/427] drm/mipi-dsi: use correct return type for the DSC functions
 Date: Mon, 27 May 2024 20:56:28 +0200
-Message-ID: <20240527185642.901865128@linuxfoundation.org>
+Message-ID: <20240527185632.898036233@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 41bf4525fadb3d8df3860420d6ac9025c51a3bac ]
+[ Upstream commit de1c705c50326acaceaf1f02bc5bf6f267c572bd ]
 
-While PROBE_MOD_UUID is always part of the base AudioDSP firmware
-manifest, from maintenance point of view it is better to check the
-result.
+The functions mipi_dsi_compression_mode() and
+mipi_dsi_picture_parameter_set() return 0-or-error rather than a buffer
+size. Follow example of other similar MIPI DSI functions and use int
+return type instead of size_t.
 
-Fixes: dab8d000e25c ("ASoC: Intel: avs: Add data probing requests")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://msgid.link/r/20240405090929.1184068-9-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f4dea1aaa9a1 ("drm/dsi: add helpers for DSI compression mode and PPS packets")
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240408-lg-sw43408-panel-v5-2-4e092da22991@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/probes.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_mipi_dsi.c | 6 +++---
+ include/drm/drm_mipi_dsi.h     | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/intel/avs/probes.c b/sound/soc/intel/avs/probes.c
-index 817e543036f29..7e781a3156909 100644
---- a/sound/soc/intel/avs/probes.c
-+++ b/sound/soc/intel/avs/probes.c
-@@ -19,8 +19,11 @@ static int avs_dsp_init_probe(struct avs_dev *adev, union avs_connector_node_id
- 	struct avs_probe_cfg cfg = {{0}};
- 	struct avs_module_entry mentry;
- 	u8 dummy;
-+	int ret;
- 
--	avs_get_module_entry(adev, &AVS_PROBE_MOD_UUID, &mentry);
-+	ret = avs_get_module_entry(adev, &AVS_PROBE_MOD_UUID, &mentry);
-+	if (ret)
-+		return ret;
- 
- 	/*
- 	 * Probe module uses no cycles, audio data format and input and output
-@@ -39,11 +42,12 @@ static int avs_dsp_init_probe(struct avs_dev *adev, union avs_connector_node_id
- static void avs_dsp_delete_probe(struct avs_dev *adev)
+diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
+index ef6e416522f8a..9874ff6d47181 100644
+--- a/drivers/gpu/drm/drm_mipi_dsi.c
++++ b/drivers/gpu/drm/drm_mipi_dsi.c
+@@ -654,7 +654,7 @@ EXPORT_SYMBOL(mipi_dsi_set_maximum_return_packet_size);
+  *
+  * Return: 0 on success or a negative error code on failure.
+  */
+-ssize_t mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable)
++int mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable)
  {
- 	struct avs_module_entry mentry;
-+	int ret;
+ 	/* Note: Needs updating for non-default PPS or algorithm */
+ 	u8 tx[2] = { enable << 0, 0 };
+@@ -679,8 +679,8 @@ EXPORT_SYMBOL(mipi_dsi_compression_mode);
+  *
+  * Return: 0 on success or a negative error code on failure.
+  */
+-ssize_t mipi_dsi_picture_parameter_set(struct mipi_dsi_device *dsi,
+-				       const struct drm_dsc_picture_parameter_set *pps)
++int mipi_dsi_picture_parameter_set(struct mipi_dsi_device *dsi,
++				   const struct drm_dsc_picture_parameter_set *pps)
+ {
+ 	struct mipi_dsi_msg msg = {
+ 		.channel = dsi->channel,
+diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
+index c0aec0d4d664e..3011d33eccbd2 100644
+--- a/include/drm/drm_mipi_dsi.h
++++ b/include/drm/drm_mipi_dsi.h
+@@ -241,9 +241,9 @@ int mipi_dsi_shutdown_peripheral(struct mipi_dsi_device *dsi);
+ int mipi_dsi_turn_on_peripheral(struct mipi_dsi_device *dsi);
+ int mipi_dsi_set_maximum_return_packet_size(struct mipi_dsi_device *dsi,
+ 					    u16 value);
+-ssize_t mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable);
+-ssize_t mipi_dsi_picture_parameter_set(struct mipi_dsi_device *dsi,
+-				       const struct drm_dsc_picture_parameter_set *pps);
++int mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable);
++int mipi_dsi_picture_parameter_set(struct mipi_dsi_device *dsi,
++				   const struct drm_dsc_picture_parameter_set *pps);
  
--	avs_get_module_entry(adev, &AVS_PROBE_MOD_UUID, &mentry);
--
--	/* There is only ever one probe module instance. */
--	avs_dsp_delete_module(adev, mentry.module_id, 0, INVALID_PIPELINE_ID, 0);
-+	ret = avs_get_module_entry(adev, &AVS_PROBE_MOD_UUID, &mentry);
-+	if (!ret)
-+		/* There is only ever one probe module instance. */
-+		avs_dsp_delete_module(adev, mentry.module_id, 0, INVALID_PIPELINE_ID, 0);
- }
- 
- static inline struct hdac_ext_stream *avs_compr_get_host_stream(struct snd_compr_stream *cstream)
+ ssize_t mipi_dsi_generic_write(struct mipi_dsi_device *dsi, const void *payload,
+ 			       size_t size);
 -- 
 2.43.0
 
