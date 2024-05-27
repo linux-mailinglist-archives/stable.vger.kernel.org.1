@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-46773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375B28D0B31
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9EB8D0D3A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9BB3282552
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4982A283C5A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E1B26ACA;
-	Mon, 27 May 2024 19:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DFB15FD0F;
+	Mon, 27 May 2024 19:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owvXLwe2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhKkaGOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C6E17E90E;
-	Mon, 27 May 2024 19:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39753262BE;
+	Mon, 27 May 2024 19:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836822; cv=none; b=YG9IMIxBIURwp3vO31vsVTo3rbxm7fmJwV4y43r5D+yVWe+riAes4o2URljELk2lgn5qssaYWwPYVweu9McokqlhR8f96ZFiX+QYCPT8BBvTZV3wM0+ELOmGg0ArekIPJCtfesMcs2C5WBlVyctWai7khwf2buwwp7svFgu11hE=
+	t=1716838052; cv=none; b=SoiAYJTjlujiAiRX0Q9Tl6Oj7CG1xgXypHTPEZ2Bd15Z+jSnk7AEmt8totWMTpr85FCNip4OIVEwTlXhA5Fn6lyLe92guKuDLHv+R/GPuQ/jc6rYDCZgN7ZLSB74sTpATuQTt6oo0DuLPNG896+xhPNZG6KHHsO+nVVoxqjcN7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836822; c=relaxed/simple;
-	bh=PFu+NSr8S/KPE/+UQR9uXGEvFffl5v1fAUFT2/1Trv4=;
+	s=arc-20240116; t=1716838052; c=relaxed/simple;
+	bh=Dfk/kBjznLIp1A5fVIyU0PdObY1eJ/R3LIkDFHT2qCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DzWK2SBek4Jl/abh38C+Bvyl00b02BOIYlGlR4o32Ui8YnN+7gpiENudlBZUo+kbyQcaEJtzT8q/VWYub3jj0EkzWd0tE3TWBjwIwhCNBg39frVVPhfaWnkc4tMcTBYsn4RLtme3stcvmvXMDIrZDuf0dqfeG7utM6pDWJ5C/7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owvXLwe2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5B6C2BBFC;
-	Mon, 27 May 2024 19:07:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XKFc7h8l9FLGTqBRfhYYAX9rukA4P6lQAkX6LXnimKKRthYgWVIxCDQyV2HCiaAH8RtguM2x/zcOVwWrmRrjHGG8wZLc4O6He1hRwnz5jEPSQT4YtEgx8GClruoSE78STBovSMXNbfmDJwNF3mZ9E1IpZh9IS19SeCJmWUvCrCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhKkaGOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C710CC2BBFC;
+	Mon, 27 May 2024 19:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836822;
-	bh=PFu+NSr8S/KPE/+UQR9uXGEvFffl5v1fAUFT2/1Trv4=;
+	s=korg; t=1716838052;
+	bh=Dfk/kBjznLIp1A5fVIyU0PdObY1eJ/R3LIkDFHT2qCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=owvXLwe2nV+j99/Bb77sYngYI+zq9l/YgufDjC9CgHINGpBO8ASHq+0Y7yFJBz6Xd
-	 i5Acf4G/Rz/nap5XcQt5AgzVo5hazjfp90Kzy9RaznYwmstnTMRwkocOARfixN2jk4
-	 ketYdBjxIV3ZqWZElf2eb5yntLpoMbQmQ0Ufkpag=
+	b=NhKkaGOrFQ9SMQuq2M4z13dzbyXj7SG3p98z137FdXhlK1OYIt44pbKx44MF33EWD
+	 Z+SkmkHpdOQ+gAucPSZ6wF/cMikExFgXXGsHNL9Gc5mxY1HGSOnm58QC5hZHOBQ/dQ
+	 Ifz8j6saVA38EkYSf360rTUsQEgdJ/tAqd8tYhlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 201/427] wifi: mt76: mt7925: ensure 4-byte alignment for suspend & wow command
-Date: Mon, 27 May 2024 20:54:08 +0200
-Message-ID: <20240527185621.033247253@linuxfoundation.org>
+Subject: [PATCH 6.8 247/493] pwm: sti: Simplify probe function using devm functions
+Date: Mon, 27 May 2024 20:54:09 +0200
+Message-ID: <20240527185638.385295035@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +59,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit fa46bd62c9a8ab195d9c5108a91abf0680fec10e ]
+[ Upstream commit 5bb0b194aeee5d5da6881232f4e9989b35957c25 ]
 
-Before sending suspend & wow command to FW, its length should be
-4-bytes alignd.
+Instead of of_clk_get_by_name() use devm_clk_get_prepared() which has
+several advantages:
 
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+ - Combines getting the clock and a call to clk_prepare(). The latter
+   can be dropped from sti_pwm_probe() accordingly.
+ - Cares for calling clk_put() which is missing in both probe's error
+   path and the remove function.
+ - Cares for calling clk_unprepare() which can be dropped from the error
+   paths and the remove function. (Note that not all error path got this
+   right.)
+
+With additionally using devm_pwmchip_add() instead of pwmchip_add() the
+remove callback can be dropped completely. With it the last user of
+platform_get_drvdata() goes away and so platform_set_drvdata() can be
+dropped from the probe function, too.
+
+Fixes: 378fe115d19d ("pwm: sti: Add new driver for ST's PWM IP")
+Link: https://lore.kernel.org/r/81f0e1d173652f435afda6719adaed1922fe059a.1710068192.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 1 +
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.h      | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-sti.c | 39 +++------------------------------------
+ 1 file changed, 3 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 7af60eebe517a..990738a23eee5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -2527,6 +2527,7 @@ int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend)
- 			__le16 tag;
- 			__le16 len;
- 			u8 suspend;
-+			u8 pad[7];
- 		} __packed hif_suspend;
- 	} req = {
- 		.hif_suspend = {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-index 2a0bbfe7bfa5e..b8315a89f4a9a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-@@ -535,7 +535,7 @@ struct mt7925_wow_pattern_tlv {
- 	u8 offset;
- 	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
- 	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
--	u8 rsv[4];
-+	u8 rsv[7];
- } __packed;
+diff --git a/drivers/pwm/pwm-sti.c b/drivers/pwm/pwm-sti.c
+index 826eb547cc96f..f3df7b1895d35 100644
+--- a/drivers/pwm/pwm-sti.c
++++ b/drivers/pwm/pwm-sti.c
+@@ -624,32 +624,20 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ 		return ret;
  
- static inline enum connac3_mcu_cipher_type
+ 	if (cdata->pwm_num_devs) {
+-		pc->pwm_clk = of_clk_get_by_name(dev->of_node, "pwm");
++		pc->pwm_clk = devm_clk_get_prepared(dev, "pwm");
+ 		if (IS_ERR(pc->pwm_clk)) {
+ 			dev_err(dev, "failed to get PWM clock\n");
+ 			return PTR_ERR(pc->pwm_clk);
+ 		}
+-
+-		ret = clk_prepare(pc->pwm_clk);
+-		if (ret) {
+-			dev_err(dev, "failed to prepare clock\n");
+-			return ret;
+-		}
+ 	}
+ 
+ 	if (cdata->cpt_num_devs) {
+-		pc->cpt_clk = of_clk_get_by_name(dev->of_node, "capture");
++		pc->cpt_clk = devm_clk_get_prepared(dev, "capture");
+ 		if (IS_ERR(pc->cpt_clk)) {
+ 			dev_err(dev, "failed to get PWM capture clock\n");
+ 			return PTR_ERR(pc->cpt_clk);
+ 		}
+ 
+-		ret = clk_prepare(pc->cpt_clk);
+-		if (ret) {
+-			dev_err(dev, "failed to prepare clock\n");
+-			return ret;
+-		}
+-
+ 		cdata->ddata = devm_kzalloc(dev, cdata->cpt_num_devs * sizeof(*cdata->ddata), GFP_KERNEL);
+ 		if (!cdata->ddata)
+ 			return -ENOMEM;
+@@ -666,27 +654,7 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ 		mutex_init(&ddata->lock);
+ 	}
+ 
+-	ret = pwmchip_add(chip);
+-	if (ret < 0) {
+-		clk_unprepare(pc->pwm_clk);
+-		clk_unprepare(pc->cpt_clk);
+-		return ret;
+-	}
+-
+-	platform_set_drvdata(pdev, chip);
+-
+-	return 0;
+-}
+-
+-static void sti_pwm_remove(struct platform_device *pdev)
+-{
+-	struct pwm_chip *chip = platform_get_drvdata(pdev);
+-	struct sti_pwm_chip *pc = to_sti_pwmchip(chip);
+-
+-	pwmchip_remove(chip);
+-
+-	clk_unprepare(pc->pwm_clk);
+-	clk_unprepare(pc->cpt_clk);
++	return devm_pwmchip_add(dev, chip);
+ }
+ 
+ static const struct of_device_id sti_pwm_of_match[] = {
+@@ -701,7 +669,6 @@ static struct platform_driver sti_pwm_driver = {
+ 		.of_match_table = sti_pwm_of_match,
+ 	},
+ 	.probe = sti_pwm_probe,
+-	.remove_new = sti_pwm_remove,
+ };
+ module_platform_driver(sti_pwm_driver);
+ 
 -- 
 2.43.0
 
