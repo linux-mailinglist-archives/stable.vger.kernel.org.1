@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-46666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0192F8D0ABE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742A18D0C93
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339AA1C20EC9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ECC9286490
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C584167D83;
-	Mon, 27 May 2024 19:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E8215FD01;
+	Mon, 27 May 2024 19:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0GX7u9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLVjswUZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE29626AF2;
-	Mon, 27 May 2024 19:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC49155C81;
+	Mon, 27 May 2024 19:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836542; cv=none; b=GTO2moQmuWwsJJKjIyJV4SJ7J/dhVRn74e/jZSmIAouGfqgPzgqY3ySZExbXx0WnNcMQ79DAsYnCtLPsIDuLHbqkrMZSjCc/yOmihdD4VOeEvPPJCaQ5rduLhkspZi17AMVXztWkVBsTXFm2wMqNlJz3mtUyhb7LKHsLW03bWCA=
+	t=1716837663; cv=none; b=QLifv4/bbnNkzb6EO0wiLbMVJ+D/ZiFT0Dv8z2JLZUQWHw62cgC5EoFG3YkydGwtNq842Ualv9vxkRXKP8zbZ8nZ7BAK9ibZAn+5oOvtynGuNuB9/EG40ZY/UU9rKYUGV6mM6B0+a4yrXLm0JyJkp2Lwbz5BLR6TDwgx6XSbXs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836542; c=relaxed/simple;
-	bh=XV3R9ytdJx19jR+Ppar+XzZyzPWixxLIbsniVQnD29E=;
+	s=arc-20240116; t=1716837663; c=relaxed/simple;
+	bh=dCbZNwE6JeBlcQY5kefVl5rJ/aIJmC/k4yT4L1ESrSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pPOIAmO93/cvHVXf+ERtaNmy5n5yiP+Rje3cB2ucZB1oCHbxAidNxbX4i/HA6Kt8Gl5P3X3p5AfGSib1pWBPyy0IbLjiZ+znSetz0WoggeIF/0b4ASH0LzUo+JjEux/h6s2qIO/HrX4TVZ7Gi3bK1eT49YHGKZ8O/xTNKWa2QsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0GX7u9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24992C32781;
-	Mon, 27 May 2024 19:02:20 +0000 (UTC)
+	 MIME-Version; b=iKCwGVVgym9NPBUc/W0euHmyNW4MynVSNFB6om9nahnWRWdJyxGCReu/54azPg7wdEZDoL+cx7rB0iwx6smfgWz+Lii+kLD1vqdQiVOtBNWTEEig7T4ww7myiH0VlNusBnMyhKgYs9liRfK0P1Qm12DfcIk/0cilDt5LUjYrjgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLVjswUZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153F4C2BBFC;
+	Mon, 27 May 2024 19:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836541;
-	bh=XV3R9ytdJx19jR+Ppar+XzZyzPWixxLIbsniVQnD29E=;
+	s=korg; t=1716837663;
+	bh=dCbZNwE6JeBlcQY5kefVl5rJ/aIJmC/k4yT4L1ESrSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0GX7u9KAQLh85OcmNhqDbIa4Z5Ps/wcTB9aYegpWaz8GOhQoylPSK6jYObTLWvxX
-	 51kdJYjkYoxKhZNqvOvg4xUfD+THW5roLrkApiWZaiOUY9DNXg0nL8mLJ6QE5h38ci
-	 ub0tSOMRIovIeCk8Qr9mp8/PDVNk65oXGurwzN9c=
+	b=sLVjswUZJp3YPWRGMZ2Ep5PY7fd9eozAM/NLVaIHTX/n84dlVEaWPVAjVSZOWuj6A
+	 fOiEcj0I0LI4XCgqRb48ZuZ5yUGUGhccPnAXKdBzC/wioWL1D8LQrwMnn8xp9BMQcu
+	 96ja/yxTljKDvnXuP/hy6AiaMmYCPuoSmTc9c7Kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Leo Ma <hanghong.ma@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 052/427] crypto: x86/nh-avx2 - add missing vzeroupper
+Subject: [PATCH 6.8 097/493] drm/amd/display: Fix DC mode screen flickering on DCN321
 Date: Mon, 27 May 2024 20:51:39 +0200
-Message-ID: <20240527185606.562470323@linuxfoundation.org>
+Message-ID: <20240527185633.642240579@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Leo Ma <hanghong.ma@amd.com>
 
-[ Upstream commit 4ad096cca942959871d8ff73826d30f81f856f6e ]
+[ Upstream commit ce649bd2d834db83ecc2756a362c9a1ec61658a5 ]
 
-Since nh_avx2() uses ymm registers, execute vzeroupper before returning
-from it.  This is necessary to avoid reducing the performance of SSE
-code.
+[Why && How]
+Screen flickering saw on 4K@60 eDP with high refresh rate external
+monitor when booting up in DC mode. DC Mode Capping is disabled
+which caused wrong UCLK being used.
 
-Fixes: 0f961f9f670e ("crypto: x86/nhpoly1305 - add AVX2 accelerated NHPoly1305")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Leo Ma <hanghong.ma@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/nh-avx2-x86_64.S | 1 +
- 1 file changed, 1 insertion(+)
+ .../amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c  | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/crypto/nh-avx2-x86_64.S b/arch/x86/crypto/nh-avx2-x86_64.S
-index ef73a3ab87263..791386d9a83aa 100644
---- a/arch/x86/crypto/nh-avx2-x86_64.S
-+++ b/arch/x86/crypto/nh-avx2-x86_64.S
-@@ -154,5 +154,6 @@ SYM_TYPED_FUNC_START(nh_avx2)
- 	vpaddq		T1, T0, T0
- 	vpaddq		T4, T0, T0
- 	vmovdqu		T0, (HASH)
-+	vzeroupper
- 	RET
- SYM_FUNC_END(nh_avx2)
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
+index bbdbc78161a00..39c63565baa9a 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
+@@ -696,8 +696,12 @@ static void dcn32_update_clocks(struct clk_mgr *clk_mgr_base,
+ 					 * since we calculate mode support based on softmax being the max UCLK
+ 					 * frequency.
+ 					 */
+-					dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK,
+-							dc->clk_mgr->bw_params->dc_mode_softmax_memclk);
++					if (dc->debug.disable_dc_mode_overwrite) {
++						dcn30_smu_set_hard_max_by_freq(clk_mgr, PPCLK_UCLK, dc->clk_mgr->bw_params->max_memclk_mhz);
++						dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK, dc->clk_mgr->bw_params->max_memclk_mhz);
++					} else
++						dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK,
++								dc->clk_mgr->bw_params->dc_mode_softmax_memclk);
+ 				} else {
+ 					dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK, dc->clk_mgr->bw_params->max_memclk_mhz);
+ 				}
+@@ -730,8 +734,13 @@ static void dcn32_update_clocks(struct clk_mgr *clk_mgr_base,
+ 		/* set UCLK to requested value if P-State switching is supported, or to re-enable P-State switching */
+ 		if (clk_mgr_base->clks.p_state_change_support &&
+ 				(update_uclk || !clk_mgr_base->clks.prev_p_state_change_support) &&
+-				!dc->work_arounds.clock_update_disable_mask.uclk)
++				!dc->work_arounds.clock_update_disable_mask.uclk) {
++			if (dc->clk_mgr->dc_mode_softmax_enabled && dc->debug.disable_dc_mode_overwrite)
++				dcn30_smu_set_hard_max_by_freq(clk_mgr, PPCLK_UCLK,
++						max((int)dc->clk_mgr->bw_params->dc_mode_softmax_memclk, khz_to_mhz_ceil(clk_mgr_base->clks.dramclk_khz)));
++
+ 			dcn32_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK, khz_to_mhz_ceil(clk_mgr_base->clks.dramclk_khz));
++		}
+ 
+ 		if (clk_mgr_base->clks.num_ways != new_clocks->num_ways &&
+ 				clk_mgr_base->clks.num_ways > new_clocks->num_ways) {
 -- 
 2.43.0
 
