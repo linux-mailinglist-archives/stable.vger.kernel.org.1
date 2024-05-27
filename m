@@ -1,119 +1,121 @@
-Return-Path: <stable+bounces-46320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E30D8D02D1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF0E8D032A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DBC01C20A77
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:11:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B88D61C20FFB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C36015ECF9;
-	Mon, 27 May 2024 14:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C611B16F0FE;
+	Mon, 27 May 2024 14:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="btIVkH8V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a4L5XRQ6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2479F1640B;
-	Mon, 27 May 2024 14:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FAB16F0EF;
+	Mon, 27 May 2024 14:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819100; cv=none; b=RMPKH1+r8XvfeZ8c3ZNE1/leElgf6g6e/HMrgmASf9q1H3Az8+lHKbkIlQ7iTqQwVNKONGluiPuHZ2LdLjQIylRby5IuDrgJVqsGkO0Y8nP0fqmiJpAJatK8SQh7wC241UaKMTIWnk74qqqFmozyc1o83hxQOwkKKqUZrPRhcjc=
+	t=1716819195; cv=none; b=AAWVmUGxNWXwWVko2OHr50LY8DsrLyNMgtf+g5ZQ4aVioQUQgjR7stJun1yv091AI3LGk95eJvdGsk6GgdUmppZ8eA8G/Yj/mcTK/W6bQQPb31rQ0andFUrqpqkiMW9O0gKMcAXzKdyKxBbL+sLumG8+LQbknb8wM/0K7HEMhC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819100; c=relaxed/simple;
-	bh=o5hbqwBIk7hbVfK+3GoDhFtKqh6k+H303kYL9/uP8BU=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=bxRUPK9iJVCtXIUwrGuOpyQ8vj9QgU8SKS51PQAc2GoAubCUBlfKs4N5WeFmjfOaiNM1fnjEM4y4J0ofn6QAqxhm94PRZbFagRoq6cAqt8PUzUI0II2aIda5rkVqDImSoGO5MGDMqRxrexVLCSDZTaR940W6aKlEJB5eg6mI7GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=btIVkH8V; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716819100; x=1748355100;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=o5hbqwBIk7hbVfK+3GoDhFtKqh6k+H303kYL9/uP8BU=;
-  b=btIVkH8VG3nLkoluYtHKtpqtNocofhWbTYqn3SSi5k0AsqkdNY2Y6Mdx
-   mavajyB6uW31yeGxAk70SJdJOQbNzqWoIGLQhr40pxLerX4TAO5dI+BGO
-   gELXg3nRlcc21gDfrCOfTLPK05eHDIaCtI5bEDB/0hprbcih2aptPZTKP
-   ftvXweCQgTLHiNIEPStlqU1Ms5xEYPxEcJ4V0CPjKbLieUfswm4JOV2pY
-   w1HvMUsGjWMMbuZzlBywKieM19hGlPlg/RfKXSkoh4ScMmW31QhqqXafK
-   ItNqdplFIwaoaYK9Q11stCDjv5bYPmhJj1FXPMHQA8TlYQMxDTmghbLyR
-   w==;
-X-CSE-ConnectionGUID: Zd8Ki25gTKOdKGmKgylV0g==
-X-CSE-MsgGUID: sVVEbBwxQ8SPHSAbEMIciQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13085578"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="13085578"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:11:39 -0700
-X-CSE-ConnectionGUID: Zhuq5rPFQmKHqU+Ja7y81A==
-X-CSE-MsgGUID: CZN/hKapTWO683lguzJlNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="65990651"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.140])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:11:36 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 27 May 2024 17:11:32 +0300 (EEST)
-To: Dan Carpenter <dan.carpenter@linaro.org>
-cc: Linus Walleij <linus.walleij@linaro.org>, 
-    Bartosz Golaszewski <brgl@bgdev.pl>, 
-    Dmitry Baryshkov <dbaryshkov@gmail.com>, linux-gpio@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] gpio: amd8111: Convert PCIBIOS_* return codes to
- errnos
-In-Reply-To: <09f2f3ac-94a7-43d3-8c43-0d264a1d9c65@moroto.mountain>
-Message-ID: <7d475c6c-8bbf-86f4-b2d8-8bc11cb9043e@linux.intel.com>
-References: <20240527132345.13956-1-ilpo.jarvinen@linux.intel.com> <09f2f3ac-94a7-43d3-8c43-0d264a1d9c65@moroto.mountain>
+	s=arc-20240116; t=1716819195; c=relaxed/simple;
+	bh=ETcJdqbSScuSY4Yy7oqB29b8RsjwPd19paZ2rBpxt5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QAnWjh58hzDC56hKH6xKDtmVSf++0A+p7MPdixiGrDY1v29a+GVgiSyPasN2bbzb9fiBW6S30rMtKbKsNdnHA5O9jqO0N2GokeXY0cMfR1ZwINukHO9Vp4rFhM3U272/H6Rodbxqx4xgFOywZnyprRApqgbofS9oWld09zL3aKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4L5XRQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6CAC2BBFC;
+	Mon, 27 May 2024 14:13:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716819195;
+	bh=ETcJdqbSScuSY4Yy7oqB29b8RsjwPd19paZ2rBpxt5U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=a4L5XRQ6u2dmmxfEC5SCZ4unDBPaDEeh1xk9XOqnbvsMVnCwiWS1jA/VpM+OU5yaB
+	 lXF65F3uwVwfXKw7yxsxRh67o35JUruG+8ioj/Azc8NqmlmbgfR9sigfQtqu1YK8q+
+	 38yJkVvmjLb5Et4pH0qyvrz7ocYEu8Cxr+G4KUs2jqRMlzfID5mCbAwjrR8BJlHtJb
+	 jQ1IbuOjtq2XzKY+w7BC3ULhuyM4f5VLi1qt9+wfJzqpOmvqwS6Y86blJM1bSxvaBC
+	 NICB9g3QEGiy0Ntiy/be1IcXAUTuG+kDDqmYnLG0E2dqi6Kd9VNDV99UmKqKEDO9nr
+	 7xurGlghsJRRg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Sean O'Brien <seobrien@chromium.org>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 28/35] HID: Add quirk for Logitech Casa touchpad
+Date: Mon, 27 May 2024 10:11:33 -0400
+Message-ID: <20240527141214.3844331-28-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
+References: <20240527141214.3844331-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1881005345-1716819092=:1006"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.2
+Content-Transfer-Encoding: 8bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Sean O'Brien <seobrien@chromium.org>
 
---8323328-1881005345-1716819092=:1006
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+[ Upstream commit dd2c345a94cfa3873cc20db87387ee509c345c1b ]
 
-On Mon, 27 May 2024, Dan Carpenter wrote:
+This device sometimes doesn't send touch release signals when moving
+from >=4 fingers to <4 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
+of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
 
-> On Mon, May 27, 2024 at 04:23:44PM +0300, Ilpo J=E4rvinen wrote:
-> > diff --git a/drivers/gpio/gpio-amd8111.c b/drivers/gpio/gpio-amd8111.c
-> > index 6f3ded619c8b..3377667a28de 100644
-> > --- a/drivers/gpio/gpio-amd8111.c
-> > +++ b/drivers/gpio/gpio-amd8111.c
-> > @@ -195,8 +195,10 @@ static int __init amd_gpio_init(void)
-> > =20
-> >  found:
-> >  =09err =3D pci_read_config_dword(pdev, 0x58, &gp.pmbase);
-> > -=09if (err)
-> > +=09if (err) {
-> > +=09=09err =3D pcibios_err_to_errno(err);
->=20
-> The patch is correct, but is the CC to stable necessary?  Is this a real
-> concern?
->=20
-> Most callers don't check.  Linus Torvalds, once said something to the
-> effect that if your PCI bus starts failing, there isn't anything the
-> operating system can do, so checking is pointless.  The only fix is to
-> buy new hardware.  There was a hotpluggable PCI back in the day but I
-> don't think it exists any more.
+MT_QUIRK_FORCE_MULTI_INPUT is not necessary for this device, but does no
+harm.
 
-I don't mind if the CC stable isn't there.
+Signed-off-by: Sean O'Brien <seobrien@chromium.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 8376fb5e2d0b4..68b0f39deaa9a 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -823,6 +823,7 @@
+ #define USB_DEVICE_ID_LOGITECH_AUDIOHUB 0x0a0e
+ #define USB_DEVICE_ID_LOGITECH_T651	0xb00c
+ #define USB_DEVICE_ID_LOGITECH_DINOVO_EDGE_KBD	0xb309
++#define USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD	0xbb00
+ #define USB_DEVICE_ID_LOGITECH_C007	0xc007
+ #define USB_DEVICE_ID_LOGITECH_C077	0xc077
+ #define USB_DEVICE_ID_LOGITECH_RECEIVER	0xc101
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 04a014cd2a2f6..56fc78841f245 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2081,6 +2081,12 @@ static const struct hid_device_id mt_devices[] = {
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
+ 
++	/* Logitech devices */
++	{ .driver_data = MT_CLS_NSMU,
++		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_LOGITECH,
++			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
++
+ 	/* MosArt panels */
+ 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ASUS,
+-- 
+2.43.0
 
---=20
- i.
-
---8323328-1881005345-1716819092=:1006--
 
