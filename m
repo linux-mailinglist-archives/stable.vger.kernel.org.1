@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-46715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E595C8D0AF2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D6F8D0CF2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F67AB22310
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB9232876A0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40ECF15FCF2;
-	Mon, 27 May 2024 19:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3BE16078F;
+	Mon, 27 May 2024 19:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sO0QbOKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLW8yUsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DEC1078F;
-	Mon, 27 May 2024 19:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8DD15FA91;
+	Mon, 27 May 2024 19:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836672; cv=none; b=Rkg1ZHukVm33MmKzrcjicPpsDf6lCAR9xWb1uOMSicfnqk+Cazrdyt7sHCLubHrL8ioHB7Gm+a5iOqyxw6A2Rzh5yBlIQGOSMYhYhsECHB9O6UAs7YXipRALjFqOAeNFIQMhP+mrNsvHXeJcfyvZicGTeUfoOqkOl3nMBm5PK8s=
+	t=1716837879; cv=none; b=O9jP1djbcP3dJrISHGd/Ho0FS+92PB/+VHCqT9wKASsD3Xwtl67RWvU+1/+Rz4SuSP109SlVhDTNRYhB8oiRvnwmKIq8sG44aTUB2noFS9sFQgetDCvQQD1x+z0ATAbvbJ+K2GCoIooo4DIDnthkDPfCT6D7rDmU3BQUEHoQoi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836672; c=relaxed/simple;
-	bh=4OXvpqCmgwKTAKpI5nONYDTHdtMAUbrp0qZE+mHrgxQ=;
+	s=arc-20240116; t=1716837879; c=relaxed/simple;
+	bh=2iMmCpAJ1W4XpS/8gNg3jx2GSvv9tbPHEAwfLK6wO/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sNIV/Ql+ULdCa4ZdEnHANZovKYa8p/5krINWDQ3tM2LAtP9CA2VZcl4TqUQnDUGBMZRCGc/tmjNZrTVP40LDJ9gy7EEp1bcFdcTubEvjfSiSjNvkyba3o/AV1Vc0oGgHlRCMGsM+fMaThvhma2bCsPfXNWS2j20XSXCYt6Ol2sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sO0QbOKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82765C2BBFC;
-	Mon, 27 May 2024 19:04:31 +0000 (UTC)
+	 MIME-Version; b=DoVv+h/bKpsF84UBYuu0OGIBjLHsYyVT3Vk/tL6G2XiJqxBFKPY68FLrq2jyCZkqpwTKx9dJTOsz01WG1L0hsY66rcM3k6f7iAJejQAHwBh3MA6mHxP7NRGHeQ7RWE3KbXmzO3Qom+0boxChV1eoIGBcDhylVrWpSBgG8Vk6V38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLW8yUsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EF4C32781;
+	Mon, 27 May 2024 19:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836671;
-	bh=4OXvpqCmgwKTAKpI5nONYDTHdtMAUbrp0qZE+mHrgxQ=;
+	s=korg; t=1716837878;
+	bh=2iMmCpAJ1W4XpS/8gNg3jx2GSvv9tbPHEAwfLK6wO/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sO0QbOKJK1+cjVy4DRmPEdEZ7qFaf/tEYSfs/q9BxLd6OizUzoWY5n2RvGZkO+dJp
-	 BVxk338sYTIWMUIBmFkUothfuWQMfJDbPg4hWrLoIlxOh349PtOerIZfz7VtpZoFZo
-	 4EG6/Y1Vt5ew8A4LSsOQjePY+l58Ri/GP0qbGyTI=
+	b=bLW8yUsVv1blEDgnthZjV0IE2joKVLbkzPqvbcH8sQLBtfT6umCFWNqu+ntTrhUEg
+	 dzb1Tba4/gwVLOfxVow22xFECTO6al1rc/7ZKoO0yzl/mUdZmRnAKijwmItHay7xuW
+	 msZsZtzfu8+Z4N4wDeWhepKd9krHO0+9PCBueRyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 136/427] locking/atomic/x86: Correct the definition of __arch_try_cmpxchg128()
+Subject: [PATCH 6.8 181/493] ACPI: bus: Indicate support for the Generic Event Device thru _OSC
 Date: Mon, 27 May 2024 20:53:03 +0200
-Message-ID: <20240527185614.581288595@linuxfoundation.org>
+Message-ID: <20240527185636.272107657@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 929ad065ba2967be238dfdc0895b79fda62c7f16 ]
+[ Upstream commit a8a967a243d71dd635ede076020f665a4df51c63 ]
 
-Correct the definition of __arch_try_cmpxchg128(), introduced by:
+A device driver for the Generic Event Device (ACPI0013) already
+exists for quite some time, but support for it was never reported
+thru _OSC.
 
-  b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
+Fix this by setting bit 11 ("Generic Event Device support") when
+evaluating _OSC.
 
-Fixes: b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20240408091547.90111-2-ubizjak@gmail.com
+Fixes: 3db80c230da1 ("ACPI: implement Generic Event Device")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/cmpxchg_64.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/bus.c   | 1 +
+ include/linux/acpi.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/cmpxchg_64.h b/arch/x86/include/asm/cmpxchg_64.h
-index 44b08b53ab32f..c1d6cd58f8094 100644
---- a/arch/x86/include/asm/cmpxchg_64.h
-+++ b/arch/x86/include/asm/cmpxchg_64.h
-@@ -62,7 +62,7 @@ static __always_inline u128 arch_cmpxchg128_local(volatile u128 *ptr, u128 old,
- 	asm volatile(_lock "cmpxchg16b %[ptr]"				\
- 		     CC_SET(e)						\
- 		     : CC_OUT(e) (ret),					\
--		       [ptr] "+m" (*ptr),				\
-+		       [ptr] "+m" (*(_ptr)),				\
- 		       "+a" (o.low), "+d" (o.high)			\
- 		     : "b" (n.low), "c" (n.high)			\
- 		     : "memory");					\
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index aee91fa2a4596..9486c1be7258e 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -322,6 +322,7 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_HOTPLUG_OST_SUPPORT;
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_OVER_16_PSTATES_SUPPORT;
++	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_GED_SUPPORT;
+ 	if (IS_ENABLED(CONFIG_ACPI_PRMT))
+ 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PRM_SUPPORT;
+ 	if (IS_ENABLED(CONFIG_ACPI_FFH))
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 7658d06b5bccf..60517f4650a3b 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -575,6 +575,7 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+ #define OSC_SB_OSLPI_SUPPORT			0x00000100
+ #define OSC_SB_FAST_THERMAL_SAMPLING_SUPPORT	0x00000200
+ #define OSC_SB_OVER_16_PSTATES_SUPPORT		0x00000400
++#define OSC_SB_GED_SUPPORT			0x00000800
+ #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
+ #define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
+ #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
 -- 
 2.43.0
 
