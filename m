@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-46582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28F98D0A44
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 20:59:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E27B8D0C66
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DB461C21614
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:59:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F1F51C2142F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E8915FD1E;
-	Mon, 27 May 2024 18:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE6E160796;
+	Mon, 27 May 2024 19:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NaNUv0Ss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXxrTqux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3DC15FD19;
-	Mon, 27 May 2024 18:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5111015FA91;
+	Mon, 27 May 2024 19:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836327; cv=none; b=M+hiexX+BajFAc9DU6zf/A5IsKsSI0QTzpMNzhZvXsoHcY3o5DiUski5yonbNIjBcCBPWoh4Ekn2vj9rsRU++3aug4g7/yEVt9HU9GYAoMW9grc6jkRAAin8ctcU9bDf5jHCGnZiZXqnO3TcZl8VnwTf1XFyKCpqIgDuQjVe5I8=
+	t=1716837553; cv=none; b=F5tfnpq1O32H9QygJk3NduQkj8MWjKsFovno5gsOBZeXDLlaKUlROfCzCUfKTFPUVy6juZMgH8VBkflnVyrrt4S9BBaYQRTv5AP/A4I/8Ok11LRZfRfedFpu02+fCDXeqshiqP1pIfsJkg0+wuVx5aW0m7R4Kh8PDQ45ncRL55I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836327; c=relaxed/simple;
-	bh=84APOGqb1/5iI6aiG1dnx5RDxuvltT0aWadbol3/M7w=;
+	s=arc-20240116; t=1716837553; c=relaxed/simple;
+	bh=me3CLKijNdEtc4Xxn1Kd0Cwf6D6Bjy2GklZiJvq7Il0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oF3FdSdZBL3tlwPwMO/3dLo5Y/8ue15E3916S12tjSZ4L4FgOD+ah342dow9GuyBKc4w2r8Q2GcvMS2U8UUkLftugbdhwl9UKYaLDSzHN+3+gbiVAQIxdFsKM+9xgj0PrKQwazvF07ZK1lkw39DAJHmr4MVI89kIDQqWXaqiMOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NaNUv0Ss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F8EC2BBFC;
-	Mon, 27 May 2024 18:58:46 +0000 (UTC)
+	 MIME-Version; b=ZLy+lJefTgiXayMZozYepiCNYqCR8k2u2MFZIj7vqGJ+F7bUgiWUliUZrxOAtWkka2FhFgnflJ57raf4T+AWR662HsMJJKIhvgf9gFDuGGyV5m3cxEW9cDt59T/SmQo+FjhZFgKmsLn0ZKlUGkMOmNSSk17yhxqxM2kYrGlRcn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXxrTqux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8519DC2BBFC;
+	Mon, 27 May 2024 19:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836326;
-	bh=84APOGqb1/5iI6aiG1dnx5RDxuvltT0aWadbol3/M7w=;
+	s=korg; t=1716837552;
+	bh=me3CLKijNdEtc4Xxn1Kd0Cwf6D6Bjy2GklZiJvq7Il0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NaNUv0Sswj6EZBQERVD0oYW0ed1jd1ZDQiTBD/LUOmszTHcQ3ZtTiO4G4FbZs92QN
-	 SsTXSEDjYaA1Yek/bPotR7QjEQRSqotUtmGtn+0faRxkArSWIRCINBiYzS4a0cb8ua
-	 E86lDZdsOWlzLESN7+FH8aS9L4lLaan5Wvc6NLG8=
+	b=yXxrTquxCgxLDgkDoHCn6sGHC5UEnAFm/J8yBbuj1JqBea37x+hLVCt/XjbTLzOEW
+	 awVY+lqJUSVW1Nwm5oypn2TvSZ3aMmtZcUeWuKj9z3tFz5fQjo+jqyg/oIBnmkoCgV
+	 eMHsylvuyCvWqU+SaR0m09gTr0x1coqCwUUys2EM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.9 011/427] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 056/493] LoongArch: Lately init pmu after smp is online
 Date: Mon, 27 May 2024 20:50:58 +0200
-Message-ID: <20240527185602.837148888@linuxfoundation.org>
+Message-ID: <20240527185631.172364429@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 8492bd91aa055907c67ef04f2b56f6dadd1f44bf upstream.
+[ Upstream commit f3334ebb8a2a1841c2824594dd992e66de19deb2 ]
 
-When using a high speed clock with a low baud rate, the 4x prescaler is
-automatically selected if required. In that case, sc16is7xx_set_baud()
-properly configures the chip registers, but returns an incorrect baud
-rate by not taking into account the prescaler value. This incorrect baud
-rate is then fed to uart_update_timeout().
+There is an smp function call named reset_counters() to init PMU
+registers of every CPU in PMU initialization state. It requires that all
+CPUs are online. However there is an early_initcall() wrapper for the
+PMU init funciton init_hw_perf_events(), so that pmu init funciton is
+called in do_pre_smp_initcalls() which before function smp_init().
+Function reset_counters() cannot work on other CPUs since they haven't
+boot up still.
 
-For example, with an input clock of 80MHz, and a selected baud rate of 50,
-sc16is7xx_set_baud() will return 200 instead of 50.
+Here replace the wrapper early_initcall() with pure_initcall(), so that
+the PMU init function is called after every cpu is online.
 
-Fix this by first changing the prescaler variable to hold the selected
-prescaler value instead of the MCR bitfield. Then properly take into
-account the selected prescaler value in the return value computation.
-
-Also add better documentation about the divisor value computation.
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20240430200431.4102923-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ arch/loongarch/kernel/perf_event.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -554,16 +554,28 @@ static bool sc16is7xx_regmap_noinc(struc
- 	return reg == SC16IS7XX_RHR_REG;
+diff --git a/arch/loongarch/kernel/perf_event.c b/arch/loongarch/kernel/perf_event.c
+index 0491bf453cd49..cac7cba81b65f 100644
+--- a/arch/loongarch/kernel/perf_event.c
++++ b/arch/loongarch/kernel/perf_event.c
+@@ -884,4 +884,4 @@ static int __init init_hw_perf_events(void)
+ 
+ 	return 0;
  }
- 
-+/*
-+ * Configure programmable baud rate generator (divisor) according to the
-+ * desired baud rate.
-+ *
-+ * From the datasheet, the divisor is computed according to:
-+ *
-+ *              XTAL1 input frequency
-+ *             -----------------------
-+ *                    prescaler
-+ * divisor = ---------------------------
-+ *            baud-rate x sampling-rate
-+ */
- static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- {
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 	u8 lcr;
--	u8 prescaler = 0;
-+	unsigned int prescaler = 1;
- 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
- 
- 	if (div >= BIT(16)) {
--		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
--		div /= 4;
-+		prescaler = 4;
-+		div /= prescaler;
- 	}
- 
- 	/* Enable enhanced features */
-@@ -573,9 +585,10 @@ static int sc16is7xx_set_baud(struct uar
- 			      SC16IS7XX_EFR_ENABLE_BIT);
- 	sc16is7xx_efr_unlock(port);
- 
-+	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
--			      prescaler);
-+			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
- 
- 	/* Backup LCR and access special register set (DLL/DLH) */
- 	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
-@@ -591,7 +604,7 @@ static int sc16is7xx_set_baud(struct uar
- 	/* Restore LCR and access to general register set */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
- 
--	return DIV_ROUND_CLOSEST(clk / 16, div);
-+	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
- }
- 
- static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
+-early_initcall(init_hw_perf_events);
++pure_initcall(init_hw_perf_events);
+-- 
+2.43.0
+
 
 
 
