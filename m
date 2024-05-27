@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-47463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508778D0E1A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7F38D0C19
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0E2DB21402
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78061280F55
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297C91607BA;
-	Mon, 27 May 2024 19:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD2E15EFC3;
+	Mon, 27 May 2024 19:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7ChPKV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KItLkxdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC0115FCF0;
-	Mon, 27 May 2024 19:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF6C168C4;
+	Mon, 27 May 2024 19:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838616; cv=none; b=ob9/moX1YsFZn92j0lLz/9HcHZI7RwL9OYyYDv8S48THofyfBPwtuWWN5+epyHRt0WV0AiQn+//Q+oIqsaVR+HOM6vnFNL6KKg2fHZ/XSYhCOTh60z7PXGdYWgdcyciCVhB7zBf3LFvH//v1ryrzW3ZCW9GdJEuzQ/XCmjz8ebE=
+	t=1716837372; cv=none; b=kZSjHccBhaYqTkIaC954Ny8wTYn4beD219FPi9P4mYiwgwD6K06iDIl/ZoYCZT9gX5Vn2mOQFvPW5jzVdkmRbJisNvaRIRJRTG8r0vrAhm3tLfRfYuqC9LpLC7yRqJDiOoqOV2XsZ9eD9g7Lg3c4DBlnrMpiwJWfjr3A02UPUcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838616; c=relaxed/simple;
-	bh=JaXQov4HeVG72utvQ6bHTC3hUYXkj7uM8dm0rF0ZOaA=;
+	s=arc-20240116; t=1716837372; c=relaxed/simple;
+	bh=nFKaDEfmBS+KL0wf3k6080fPrP0vo2yhYVlO+tLYhzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+Umg23eqve45P4oMFA9WPtLNU2QklwJ5++H1EpeQwr1QtjORVJuYvEmtv60cMqXBaGE8F4FWHC8vSU8dIC8AckgH9p+0ppUZL34f7mHooD+UmFKkxIIc7y6eTbAPpHnsMmUj1LVdiORFr+V/ZOSrsdu2bWs8UhQ2WiveqO+Elc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7ChPKV7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725FCC2BBFC;
-	Mon, 27 May 2024 19:36:55 +0000 (UTC)
+	 MIME-Version; b=b6W4sSpnO+T4hdSVApCXJJsrC5egYHiTbR0Z9aXMFfqC/BnQbsDt/VyLu15IBDiESrVFYIKWtgqoqmCHveWrFxDbkm7t/vdfabJJ+OKtAhWMWjVhr7EI2GNTohQIddA/5hSefkmwsk7Y4DLC+HIxWkONhmfHMRuNMXghnTTr4rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KItLkxdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE98C2BBFC;
+	Mon, 27 May 2024 19:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838615;
-	bh=JaXQov4HeVG72utvQ6bHTC3hUYXkj7uM8dm0rF0ZOaA=;
+	s=korg; t=1716837372;
+	bh=nFKaDEfmBS+KL0wf3k6080fPrP0vo2yhYVlO+tLYhzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7ChPKV7jZ+YZm7Deq2OmnJGiEbKBAIDmmjsIb+n8sfQcTSGPPcBWR/Fdb4x4Zw91
-	 aWBf9zp5AzKxjchNj1IC5493X1WjSFWk1GcjTO3L+Qlf+q+cCGcewpqhxTpSR/5chz
-	 noRinseFsJ7ygYnJDO/arjKgJdr1YbbmbqMZUBtQ=
+	b=KItLkxdtKn2doZ6W7pe9h8Lls/VGg0xQ3ej3LOud7/p2CvrVyEIkIiw8UFjys3E58
+	 Te6YsZ1Rv2HuLtZ18PHw0WDIwocXB4kf6hkEcpO52a7V4HkgEyQfUG+RqZ0m1BjnGN
+	 9/jrkHK8CELGweEQxEcVN3klZIVJCzcVUm+Z03vE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 461/493] clk: qcom: Fix SM_GPUCC_8650 dependencies
+Subject: [PATCH 6.9 416/427] selftests/net/lib: no need to record ns name if it already exist
 Date: Mon, 27 May 2024 20:57:43 +0200
-Message-ID: <20240527185645.275969899@linuxfoundation.org>
+Message-ID: <20240527185635.584092439@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 07fb0a76bb757990b99fc2ab78ad7d1709cc441d ]
+[ Upstream commit 83e93942796db58652288f0391ac00072401816f ]
 
-CONFIG_SM_GCC_8650 depends on ARM64 but it is selected by
-CONFIG_SM_GPUCC_8650, which can be selected on ARM, resulting in a
-Kconfig warning.
+There is no need to add the name to ns_list again if the netns already
+recoreded.
 
-WARNING: unmet direct dependencies detected for SM_GCC_8650
-  Depends on [n]: COMMON_CLK [=y] && COMMON_CLK_QCOM [=y] && (ARM64 || COMPILE_TEST [=n])
-  Selected by [y]:
-  - SM_GPUCC_8650 [=y] && COMMON_CLK [=y] && COMMON_CLK_QCOM [=y]
-
-Add the same dependencies to CONFIG_SM_GPUCC_8650 to resolve the
-warning.
-
-Fixes: 8676fd4f3874 ("clk: qcom: add the SM8650 GPU Clock Controller driver")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240318-fix-some-qcom-kconfig-deps-v1-2-ea0773e3df5a@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/lib.sh | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
-index 67f1151a3d2b0..be35803c7a4bf 100644
---- a/drivers/clk/qcom/Kconfig
-+++ b/drivers/clk/qcom/Kconfig
-@@ -1070,6 +1070,7 @@ config SM_GPUCC_8550
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index f9fe182dfbd44..56a9454b7ba35 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -73,15 +73,17 @@ setup_ns()
+ 	local ns=""
+ 	local ns_name=""
+ 	local ns_list=""
++	local ns_exist=
+ 	for ns_name in "$@"; do
+ 		# Some test may setup/remove same netns multi times
+ 		if unset ${ns_name} 2> /dev/null; then
+ 			ns="${ns_name,,}-$(mktemp -u XXXXXX)"
+ 			eval readonly ${ns_name}="$ns"
++			ns_exist=false
+ 		else
+ 			eval ns='$'${ns_name}
+ 			cleanup_ns "$ns"
+-
++			ns_exist=true
+ 		fi
  
- config SM_GPUCC_8650
- 	tristate "SM8650 Graphics Clock Controller"
-+	depends on ARM64 || COMPILE_TEST
- 	select SM_GCC_8650
- 	help
- 	  Support for the graphics clock controller on SM8650 devices.
+ 		if ! ip netns add "$ns"; then
+@@ -90,7 +92,7 @@ setup_ns()
+ 			return $ksft_skip
+ 		fi
+ 		ip -n "$ns" link set lo up
+-		ns_list="$ns_list $ns"
++		! $ns_exist && ns_list="$ns_list $ns"
+ 	done
+ 	NS_LIST="$NS_LIST $ns_list"
+ }
 -- 
 2.43.0
 
