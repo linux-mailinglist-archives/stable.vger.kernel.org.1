@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-46918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725C48D0BCF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E10C8D0BDA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29117286182
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7CD1286208
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC316155CA7;
-	Mon, 27 May 2024 19:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EEAC6A039;
+	Mon, 27 May 2024 19:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1i7TdDB9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXhPoUQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686E417E90E;
-	Mon, 27 May 2024 19:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0DE17E90E;
+	Mon, 27 May 2024 19:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837192; cv=none; b=AMPwxN3S2ot7D6pD8vfoMmURUvYglbbDlliwv0O2YK/yxhmwOaxoo/nhAXAL4/2V71/u7iZbZjZnchLqDCj1lKMuQ36bcgQ0uqhuRObFHazVycr/S9wdGcfndsCsFPpi6osOkodH+oSnjZLrLbymRfCOSHGrwWguWVmSuBU+DmE=
+	t=1716837220; cv=none; b=M0MM2+kxZ8dorj1/+Agz71Sm870Ogq0MmDUBRjTs4jMaDB7XybAaZG2rXqWm6FzsE74GUmhaD/REC1QzwIkWRRnqtUysfRfssI2Hhdb+RHZRyPiqKPmWqQcciKVyeVTtE0qk8DT2YBap2I5QMhrYtRxIqijTu3/LHcIJ/Q3kltI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837192; c=relaxed/simple;
-	bh=fRGzh667BiUYsByclKuLOZQCchpCqB0aFA1B4fxT0u8=;
+	s=arc-20240116; t=1716837220; c=relaxed/simple;
+	bh=bQKdAmVog69FzqQtoo5rL66oKVvEEf8xWFrsOCuupLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhQjHEhtcF0bRDIaVNs2byRCv454YZDr6wA4ML7M19qmL61RXzFXz9MNlzC5yzqNfzstpp4FTNjD/rPZg5yo7nUrgJikMMo5k7oWJ7F06lb8QgCzIMpBV2D4rwejr1qBv/tJegXQVdB/HNa3xWVRktZmEbK0Xm0YeH+8zlejVMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1i7TdDB9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3840C2BBFC;
-	Mon, 27 May 2024 19:13:11 +0000 (UTC)
+	 MIME-Version; b=e4IB7Xmrjod2KI9qWJUTti6VWEDvROwnkkeXgVBWBVJjCrxGcRAhwU7TbW5eMmAPPVUResmVhZtZxlKiIIdPE4aNlimtSLiDpwVx24cURzT8DAorDNl+5+01HCdY8Nm7zreKqUL7eNxrvH+rb7Abg9gUZK6wNxPfRdU1MH0XPbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXhPoUQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85B9C2BBFC;
+	Mon, 27 May 2024 19:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837192;
-	bh=fRGzh667BiUYsByclKuLOZQCchpCqB0aFA1B4fxT0u8=;
+	s=korg; t=1716837220;
+	bh=bQKdAmVog69FzqQtoo5rL66oKVvEEf8xWFrsOCuupLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1i7TdDB9eZuhULAbgSthHezTi+Hs9F/TQ+CEcOGACBr5uBWJAufEsPLUW0Jvxfdp4
-	 Ln1+cYZ6vv08zi/NwyMsIVYLeyabrJ9a3O+ghM9NjACtVoEBNE0thMxEkegDrcqCh7
-	 XMRceK0Yh6SMwc+/5SjZKk4jO7p38j7LgORvf39E=
+	b=lXhPoUQ6U1ck+Bh8RMvBZjLk3+w4ocWc8UpR0Cek6e+f5IR0ZcahrXjcYY/HflHx1
+	 UyuG/tM0gCs3l4ElfPATxQZ03NnxB/xapR+R7i9qdNRevFl9rhdsGhI253nN9SBD31
+	 xALQMG30Uj1k3c5AOoxVipkp6kcOJnf2+gITRgZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Douglas Anderson <dianders@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 318/427] drm/msm/dp: allow voltage swing / pre emphasis of 3
-Date: Mon, 27 May 2024 20:56:05 +0200
-Message-ID: <20240527185631.429292721@linuxfoundation.org>
+Subject: [PATCH 6.9 319/427] drm/msm/dp: Avoid a long timeout for AUX transfer if nothing connected
+Date: Mon, 27 May 2024 20:56:06 +0200
+Message-ID: <20240527185631.490961011@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -66,136 +68,130 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 22578178e5dd6d3aa4490879df8b6c2977d980be ]
+[ Upstream commit 5d1a7493343cc00d9019880b686e4e0a0f649531 ]
 
-Both dp_link_adjust_levels() and dp_ctrl_update_vx_px() limit swing and
-pre-emphasis to 2, while the real maximum value for the sum of the
-voltage swing and pre-emphasis is 3. Fix the DP code to remove this
-limitation.
+As documented in the description of the transfer() function of
+"struct drm_dp_aux", the transfer() function can be called at any time
+regardless of the state of the DP port. Specifically if the kernel has
+the DP AUX character device enabled and userspace accesses
+"/dev/drm_dp_auxN" directly then the AUX transfer function will be
+called regardless of whether a DP device is connected.
+
+For eDP panels we have a special rule where we wait (with a 5 second
+timeout) for HPD to go high. This rule was important before all panels
+drivers were converted to call wait_hpd_asserted() and actually can be
+removed in a future commit.
+
+For external DP devices we never checked for HPD. That means that
+trying to access the DP AUX character device (AKA `hexdump -C
+/dev/drm_dp_auxN`) would very, very slowly timeout. Specifically on my
+system:
+  $ time hexdump -C /dev/drm_dp_aux0
+  hexdump: /dev/drm_dp_aux0: Connection timed out
+  real    0m8.200s
+We want access to the drm_dp_auxN character device to fail faster than
+8 seconds when no DP cable is plugged in.
+
+Let's add a test to make transfers fail right away if a device isn't
+plugged in. Rather than testing the HPD line directly, we have the
+dp_display module tell us when AUX transfers should be enabled so we
+can handle cases where HPD is signaled out of band like with Type C.
 
 Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/583127/
+Link: https://lore.kernel.org/r/20240315143621.v2.1.I16aff881c9fe82b5e0fc06ca312da017aa7b5b3e@changeid
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Tested-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/577006/
-Link: https://lore.kernel.org/r/20240203-dp-swing-3-v1-1-6545e1706196@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_ctrl.c |  6 +++---
- drivers/gpu/drm/msm/dp/dp_link.c | 22 +++++++++++-----------
- drivers/gpu/drm/msm/dp/dp_link.h | 14 +-------------
- 3 files changed, 15 insertions(+), 27 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_aux.c     | 20 ++++++++++++++++++++
+ drivers/gpu/drm/msm/dp/dp_aux.h     |  1 +
+ drivers/gpu/drm/msm/dp/dp_display.c |  4 ++++
+ 3 files changed, 25 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-index c4dda1faef677..112c7e54fc7a6 100644
---- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
-+++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-@@ -1052,14 +1052,14 @@ static int dp_ctrl_update_vx_px(struct dp_ctrl_private *ctrl)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/gpu/drm/msm/dp/dp_aux.c b/drivers/gpu/drm/msm/dp/dp_aux.c
+index adbd5a367395c..f98d089ea5b1a 100644
+--- a/drivers/gpu/drm/msm/dp/dp_aux.c
++++ b/drivers/gpu/drm/msm/dp/dp_aux.c
+@@ -38,6 +38,7 @@ struct dp_aux_private {
+ 	bool no_send_stop;
+ 	bool initted;
+ 	bool is_edp;
++	bool enable_xfers;
+ 	u32 offset;
+ 	u32 segment;
  
--	if (voltage_swing_level >= DP_TRAIN_VOLTAGE_SWING_MAX) {
-+	if (voltage_swing_level >= DP_TRAIN_LEVEL_MAX) {
- 		drm_dbg_dp(ctrl->drm_dev,
- 				"max. voltage swing level reached %d\n",
- 				voltage_swing_level);
- 		max_level_reached |= DP_TRAIN_MAX_SWING_REACHED;
+@@ -304,6 +305,17 @@ static ssize_t dp_aux_transfer(struct drm_dp_aux *dp_aux,
+ 		goto exit;
  	}
  
--	if (pre_emphasis_level >= DP_TRAIN_PRE_EMPHASIS_MAX) {
-+	if (pre_emphasis_level >= DP_TRAIN_LEVEL_MAX) {
- 		drm_dbg_dp(ctrl->drm_dev,
- 				"max. pre-emphasis level reached %d\n",
- 				pre_emphasis_level);
-@@ -1150,7 +1150,7 @@ static int dp_ctrl_link_train_1(struct dp_ctrl_private *ctrl,
- 		}
++	/*
++	 * If we're using DP and an external display isn't connected then the
++	 * transfer won't succeed. Return right away. If we don't do this we
++	 * can end up with long timeouts if someone tries to access the DP AUX
++	 * character device when no DP device is connected.
++	 */
++	if (!aux->is_edp && !aux->enable_xfers) {
++		ret = -ENXIO;
++		goto exit;
++	}
++
+ 	/*
+ 	 * For eDP it's important to give a reasonably long wait here for HPD
+ 	 * to be asserted. This is because the panel driver may have _just_
+@@ -436,6 +448,14 @@ irqreturn_t dp_aux_isr(struct drm_dp_aux *dp_aux)
+ 	return IRQ_HANDLED;
+ }
  
- 		if (ctrl->link->phy_params.v_level >=
--			DP_TRAIN_VOLTAGE_SWING_MAX) {
-+			DP_TRAIN_LEVEL_MAX) {
- 			DRM_ERROR_RATELIMITED("max v_level reached\n");
- 			return -EAGAIN;
- 		}
-diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
-index 49dfac1fd1ef2..ea911d9244be7 100644
---- a/drivers/gpu/drm/msm/dp/dp_link.c
-+++ b/drivers/gpu/drm/msm/dp/dp_link.c
-@@ -1109,6 +1109,7 @@ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
- int dp_link_adjust_levels(struct dp_link *dp_link, u8 *link_status)
++void dp_aux_enable_xfers(struct drm_dp_aux *dp_aux, bool enabled)
++{
++	struct dp_aux_private *aux;
++
++	aux = container_of(dp_aux, struct dp_aux_private, dp_aux);
++	aux->enable_xfers = enabled;
++}
++
+ void dp_aux_reconfig(struct drm_dp_aux *dp_aux)
  {
- 	int i;
-+	u8 max_p_level;
- 	int v_max = 0, p_max = 0;
- 	struct dp_link_private *link;
+ 	struct dp_aux_private *aux;
+diff --git a/drivers/gpu/drm/msm/dp/dp_aux.h b/drivers/gpu/drm/msm/dp/dp_aux.h
+index f47d591c1f54e..4f65e892a8076 100644
+--- a/drivers/gpu/drm/msm/dp/dp_aux.h
++++ b/drivers/gpu/drm/msm/dp/dp_aux.h
+@@ -12,6 +12,7 @@
+ int dp_aux_register(struct drm_dp_aux *dp_aux);
+ void dp_aux_unregister(struct drm_dp_aux *dp_aux);
+ irqreturn_t dp_aux_isr(struct drm_dp_aux *dp_aux);
++void dp_aux_enable_xfers(struct drm_dp_aux *dp_aux, bool enabled);
+ void dp_aux_init(struct drm_dp_aux *dp_aux);
+ void dp_aux_deinit(struct drm_dp_aux *dp_aux);
+ void dp_aux_reconfig(struct drm_dp_aux *dp_aux);
+diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
+index ffbfde9225898..36a0ef1cdc1b9 100644
+--- a/drivers/gpu/drm/msm/dp/dp_display.c
++++ b/drivers/gpu/drm/msm/dp/dp_display.c
+@@ -555,6 +555,8 @@ static int dp_hpd_plug_handle(struct dp_display_private *dp, u32 data)
+ 	int ret;
+ 	struct platform_device *pdev = dp->dp_display.pdev;
  
-@@ -1140,30 +1141,29 @@ int dp_link_adjust_levels(struct dp_link *dp_link, u8 *link_status)
- 	 * Adjust the voltage swing and pre-emphasis level combination to within
- 	 * the allowable range.
- 	 */
--	if (dp_link->phy_params.v_level > DP_TRAIN_VOLTAGE_SWING_MAX) {
-+	if (dp_link->phy_params.v_level > DP_TRAIN_LEVEL_MAX) {
- 		drm_dbg_dp(link->drm_dev,
- 			"Requested vSwingLevel=%d, change to %d\n",
- 			dp_link->phy_params.v_level,
--			DP_TRAIN_VOLTAGE_SWING_MAX);
--		dp_link->phy_params.v_level = DP_TRAIN_VOLTAGE_SWING_MAX;
-+			DP_TRAIN_LEVEL_MAX);
-+		dp_link->phy_params.v_level = DP_TRAIN_LEVEL_MAX;
- 	}
++	dp_aux_enable_xfers(dp->aux, true);
++
+ 	mutex_lock(&dp->event_mutex);
  
--	if (dp_link->phy_params.p_level > DP_TRAIN_PRE_EMPHASIS_MAX) {
-+	if (dp_link->phy_params.p_level > DP_TRAIN_LEVEL_MAX) {
- 		drm_dbg_dp(link->drm_dev,
- 			"Requested preEmphasisLevel=%d, change to %d\n",
- 			dp_link->phy_params.p_level,
--			DP_TRAIN_PRE_EMPHASIS_MAX);
--		dp_link->phy_params.p_level = DP_TRAIN_PRE_EMPHASIS_MAX;
-+			DP_TRAIN_LEVEL_MAX);
-+		dp_link->phy_params.p_level = DP_TRAIN_LEVEL_MAX;
- 	}
+ 	state =  dp->hpd_state;
+@@ -620,6 +622,8 @@ static int dp_hpd_unplug_handle(struct dp_display_private *dp, u32 data)
+ 	u32 state;
+ 	struct platform_device *pdev = dp->dp_display.pdev;
  
--	if ((dp_link->phy_params.p_level > DP_TRAIN_PRE_EMPHASIS_LVL_1)
--		&& (dp_link->phy_params.v_level ==
--			DP_TRAIN_VOLTAGE_SWING_LVL_2)) {
-+	max_p_level = DP_TRAIN_LEVEL_MAX - dp_link->phy_params.v_level;
-+	if (dp_link->phy_params.p_level > max_p_level) {
- 		drm_dbg_dp(link->drm_dev,
- 			"Requested preEmphasisLevel=%d, change to %d\n",
- 			dp_link->phy_params.p_level,
--			DP_TRAIN_PRE_EMPHASIS_LVL_1);
--		dp_link->phy_params.p_level = DP_TRAIN_PRE_EMPHASIS_LVL_1;
-+			max_p_level);
-+		dp_link->phy_params.p_level = max_p_level;
- 	}
++	dp_aux_enable_xfers(dp->aux, false);
++
+ 	mutex_lock(&dp->event_mutex);
  
- 	drm_dbg_dp(link->drm_dev, "adjusted: v_level=%d, p_level=%d\n",
-diff --git a/drivers/gpu/drm/msm/dp/dp_link.h b/drivers/gpu/drm/msm/dp/dp_link.h
-index 83da170bc56bf..42aed9c90b732 100644
---- a/drivers/gpu/drm/msm/dp/dp_link.h
-+++ b/drivers/gpu/drm/msm/dp/dp_link.h
-@@ -19,19 +19,7 @@ struct dp_link_info {
- 	unsigned long capabilities;
- };
- 
--enum dp_link_voltage_level {
--	DP_TRAIN_VOLTAGE_SWING_LVL_0	= 0,
--	DP_TRAIN_VOLTAGE_SWING_LVL_1	= 1,
--	DP_TRAIN_VOLTAGE_SWING_LVL_2	= 2,
--	DP_TRAIN_VOLTAGE_SWING_MAX	= DP_TRAIN_VOLTAGE_SWING_LVL_2,
--};
--
--enum dp_link_preemaphasis_level {
--	DP_TRAIN_PRE_EMPHASIS_LVL_0	= 0,
--	DP_TRAIN_PRE_EMPHASIS_LVL_1	= 1,
--	DP_TRAIN_PRE_EMPHASIS_LVL_2	= 2,
--	DP_TRAIN_PRE_EMPHASIS_MAX	= DP_TRAIN_PRE_EMPHASIS_LVL_2,
--};
-+#define DP_TRAIN_LEVEL_MAX	3
- 
- struct dp_link_test_video {
- 	u32 test_video_pattern;
+ 	state = dp->hpd_state;
 -- 
 2.43.0
 
