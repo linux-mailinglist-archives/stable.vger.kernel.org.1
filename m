@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-46688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4018D0AD6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F018D0CDE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9B601F22493
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAD841F233EC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3AE15FD10;
-	Mon, 27 May 2024 19:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092C015FCFE;
+	Mon, 27 May 2024 19:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDn+S0DT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="az0nx8RR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0641754B;
-	Mon, 27 May 2024 19:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3A1168C4;
+	Mon, 27 May 2024 19:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836597; cv=none; b=I/EJuMCb+xH5pS+xESHl427gDXhSbw12QSWKo86nV1OxV9hGB0qP8GpJKXtlDOVAog7J5xLUhBQmd12Dk6uEsF0Wjg+uY64p2x13IkNpBYDnCAfkHJ/y6dnSb0OTglpOxV9bHPSRFBp08zF21v2MDAQo3rNMD+jLxKmqDfq4KBo=
+	t=1716837832; cv=none; b=afz02Hr8A8mcaQ46/8YyC+oHux5HqKBFxJ2mBRXLrVeAR/cLz3W9I+6kuFgouZ61AdZzcMZ9yewhpOLenYfT5jNg+F6e8m8xpTGBS4LgZX1FdtH37pt6O3zjLpL4om2TqJ+FFiXLb/8VeOA3vg07KCENW3/O8eDIql4ic7gZdu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836597; c=relaxed/simple;
-	bh=tODK13eHxYEm9XIqDaPxE4uwk1jiuNHLvwphV4B8xmQ=;
+	s=arc-20240116; t=1716837832; c=relaxed/simple;
+	bh=2BxuoyUMV2td1xjsgMvLL5GbgIpu3M/qtux9PQ6WLvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJy6vFaP8Mhmd3u7akxAh/YoijABqBs90SnYJWv1N00rKyTW3ASlWp3RAaTXxXV1JT22GtmFPskbQsw8g0kxU+6/tnKiHtwmGf5N79ZjBRsjVD0Ywbcz8/FD6lLe5s9dMJzEHIxRGmqHVc2PjQ+foPKMd0rSUAkhi/4yHVrIE7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDn+S0DT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE54C2BBFC;
-	Mon, 27 May 2024 19:03:16 +0000 (UTC)
+	 MIME-Version; b=rwGi2GTbb9frCvICLRjbbxIFY2IfO+tMHbSds4Xp3JTK/rykywwxCKnN02gkpFHqvW9qFMum28ZfJ1cUgQUyVAdPchVJunXrhuwilU4lm3Rr4kF+2wxUnNKbeIOMqNpXd8bqgNLnC961KDJ/IytBua6tfzRVZLgHM4z1xDg/p18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=az0nx8RR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AD7C2BBFC;
+	Mon, 27 May 2024 19:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836597;
-	bh=tODK13eHxYEm9XIqDaPxE4uwk1jiuNHLvwphV4B8xmQ=;
+	s=korg; t=1716837832;
+	bh=2BxuoyUMV2td1xjsgMvLL5GbgIpu3M/qtux9PQ6WLvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDn+S0DTmyOxS9NjGQ/WqrSyry7Rqjq7bjtyt7cLaKtVczsHPY7E8RvVRJ+WuJXiV
-	 o/3f5KwW3wvpRISX81xluUnV2HiQEb25u9EEU3kS06GL2PBLG6rHch6H7lcfS0mZmF
-	 A5fFcVeWxi/OllEQZ4PAss/mZetUMFGXqahUTUII=
+	b=az0nx8RRt5a7WfkDKR0enITHEI/WKOW9WGpTPrQkq42tSY48UZWZ244qmJyAudV3R
+	 DHWA824+fUc+wGxEEuiGIAhBD06MMZgqaW1pZUaWq3ckBjecc3HqZK9rO6cPmMqSjg
+	 B8YeYzm75lDGTNO+CQHL4YBDRjlUTcvTfpTvmYC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	James Prestwood <prestwoj@gmail.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 116/427] qed: avoid truncating work queue length
+Subject: [PATCH 6.8 161/493] wifi: ath10k: poll service ready message before failing
 Date: Mon, 27 May 2024 20:52:43 +0200
-Message-ID: <20240527185612.656770144@linuxfoundation.org>
+Message-ID: <20240527185635.654967746@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 954fd908f177604d4cce77e2a88cc50b29bad5ff ]
+[ Upstream commit e57b7d62a1b2f496caf0beba81cec3c90fad80d5 ]
 
-clang complains that the temporary string for the name passed into
-alloc_workqueue() is too short for its contents:
+Currently host relies on CE interrupts to get notified that
+the service ready message is ready. This results in timeout
+issue if the interrupt is not fired, due to some unknown
+reasons. See below logs:
 
-drivers/net/ethernet/qlogic/qed/qed_main.c:1218:3: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 18 [-Werror,-Wformat-truncation]
+[76321.937866] ath10k_pci 0000:02:00.0: wmi service ready event not received
+...
+[76322.016738] ath10k_pci 0000:02:00.0: Could not init core: -110
 
-There is no need for a temporary buffer, and the actual name of a workqueue
-is 32 bytes (WQ_NAME_LEN), so just use the interface as intended to avoid
-the truncation.
+And finally it causes WLAN interface bring up failure.
 
-Fixes: 59ccf86fe69a ("qed: Add driver infrastucture for handling mfw requests.")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240326223825.4084412-4-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Change to give it one more chance here by polling CE rings,
+before failing directly.
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+
+Fixes: 5e3dd157d7e7 ("ath10k: mac80211 driver for Qualcomm Atheros 802.11ac CQA98xx devices")
+Reported-by: James Prestwood <prestwoj@gmail.com>
+Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
+Link: https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240227030409.89702-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_main.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_main.c b/drivers/net/ethernet/qlogic/qed/qed_main.c
-index c278f8893042b..8159b4c315b5d 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_main.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_main.c
-@@ -1206,7 +1206,6 @@ static void qed_slowpath_task(struct work_struct *work)
- static int qed_slowpath_wq_start(struct qed_dev *cdev)
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 88befe92f95dc..24f1ab2785214 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1763,12 +1763,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
+ 
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
  {
- 	struct qed_hwfn *hwfn;
--	char name[NAME_SIZE];
- 	int i;
+-	unsigned long time_left;
++	unsigned long time_left, i;
  
- 	if (IS_VF(cdev))
-@@ -1215,11 +1214,11 @@ static int qed_slowpath_wq_start(struct qed_dev *cdev)
- 	for_each_hwfn(cdev, i) {
- 		hwfn = &cdev->hwfns[i];
+ 	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+ 						WMI_SERVICE_READY_TIMEOUT_HZ);
+-	if (!time_left)
+-		return -ETIMEDOUT;
++	if (!time_left) {
++		/* Sometimes the PCI HIF doesn't receive interrupt
++		 * for the service ready message even if the buffer
++		 * was completed. PCIe sniffer shows that it's
++		 * because the corresponding CE ring doesn't fires
++		 * it. Workaround here by polling CE rings once.
++		 */
++		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
++
++		for (i = 0; i < CE_COUNT; i++)
++			ath10k_hif_send_complete_check(ar, i, 1);
++
++		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
++							WMI_SERVICE_READY_TIMEOUT_HZ);
++		if (!time_left) {
++			ath10k_warn(ar, "polling timed out\n");
++			return -ETIMEDOUT;
++		}
++
++		ath10k_warn(ar, "service ready completion received, continuing normally\n");
++	}
++
+ 	return 0;
+ }
  
--		snprintf(name, NAME_SIZE, "slowpath-%02x:%02x.%02x",
--			 cdev->pdev->bus->number,
--			 PCI_SLOT(cdev->pdev->devfn), hwfn->abs_pf_id);
-+		hwfn->slowpath_wq = alloc_workqueue("slowpath-%02x:%02x.%02x",
-+					 0, 0, cdev->pdev->bus->number,
-+					 PCI_SLOT(cdev->pdev->devfn),
-+					 hwfn->abs_pf_id);
- 
--		hwfn->slowpath_wq = alloc_workqueue(name, 0, 0);
- 		if (!hwfn->slowpath_wq) {
- 			DP_NOTICE(hwfn, "Cannot create slowpath workqueue\n");
- 			return -ENOMEM;
 -- 
 2.43.0
 
