@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-47125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BA78D0CAF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571D78D0A79
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AACA1C21230
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDDA91F22777
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EB915FCFC;
-	Mon, 27 May 2024 19:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B8016078F;
+	Mon, 27 May 2024 19:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7jMCALJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bi950QqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39019168C4;
-	Mon, 27 May 2024 19:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008D717E8F5;
+	Mon, 27 May 2024 19:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837735; cv=none; b=vAWAXztuJIX+cmp12vE75kk21hcy72S0/cWd9JffX1YCQHlt3HSg5ldcRiUc7bqrJavxM+VxSrpNoZ4qdyaIFY0l+6eQ22CzNh/JjHHSfamfBx7DaWbyWPVCLra2q6hh8SmkMtXZacxIrNmW56rIG5Eg/HIen0+y8hKWn6WQ3iA=
+	t=1716836414; cv=none; b=obbs17U7lidn5fXuomLWhiqrr1sdYgDQiuDnUiBxM2rxkpj42Ly/udRlZhJGG3ppebucxYyVk8A64Z9piEo6JrEf0NZRyWSLTS6bRxw2pLCO4laFeq7jhOPfSJqQyHoWrcc1eE8KBnWZKHVU/hy+ZMsmcMBdn4e+DneMCQ45oM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837735; c=relaxed/simple;
-	bh=9GP5cl/4oswg0LzhSMgvRdjiRgFevCg7yshFWG6fgdY=;
+	s=arc-20240116; t=1716836414; c=relaxed/simple;
+	bh=rMjOEU9/MHJ9+8+j6IM9PBveNtM58v1zFffNXP4EyoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kN023HBYVYNn5QrhZi2SZwJWZk1TeLZSdjvCyxV+mDTju8c8I/sfkJiyarCnQ9vGWuuThsCWlGCzT0F6M/jm9Blryna/Eyc9G4sgg0QDM2QOCJAjmcIPcUpLtIuskwTvtn4AQRmVfnkALBgzNHb2YA5Ojfz6KimconPSfOM0oLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7jMCALJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC0BC2BBFC;
-	Mon, 27 May 2024 19:22:14 +0000 (UTC)
+	 MIME-Version; b=chb5DuBoxFc6QUD6Lld5bCZxqPoLlTc+uhTYKifapZTui4BvGdY2oW7iixTrrYMAzhVKW3dgF+q6b5gK8o9s2i1oIa/fdNu3DXLCp0HIlAcbyDJo5s2o9J4g8t+NvZ7xoNu39YjpJGQOPXFGZIPQ4TnnyHAhsTWFFVRUPje6m+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bi950QqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA21C2BBFC;
+	Mon, 27 May 2024 19:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837735;
-	bh=9GP5cl/4oswg0LzhSMgvRdjiRgFevCg7yshFWG6fgdY=;
+	s=korg; t=1716836413;
+	bh=rMjOEU9/MHJ9+8+j6IM9PBveNtM58v1zFffNXP4EyoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7jMCALJ/aQFkNEXvX3i0AAwPNCdMvSwHjfYMV+sELq3gkAQQgVIyODflDxl3OgJX
-	 Ez42nCr5YqOWvLxhYWbc/jjTY2uocNCD/3jQtU7oDXIRCAmej8uVH+spzlZU2EmPRK
-	 o1/qzzczpsjS6Wd2Ggo3GQT64+FYxELE/eq3v/dM=
+	b=bi950QqArg7HV4lBgYvfyAV5AwEpPyXQ7VLkU6jW33tXrQ11bHC6S/0FNlV9YDgOq
+	 oaupZmOivr2nvRkqwctvUGcURT6pgYZm8E51CzeJxJuR2tWy+YAK8X3mOCbwmFca5W
+	 PObRlmffomEnvztr4spLRw6r8crynr454fo7WnxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 087/493] platform/x86: ISST: Add Grand Ridge to HPM CPU list
+	kernel test robot <oliver.sang@intel.com>,
+	Simo Sorce <simo@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.9 042/427] KEYS: asymmetric: Add missing dependencies of FIPS_SIGNATURE_SELFTEST
 Date: Mon, 27 May 2024 20:51:29 +0200
-Message-ID: <20240527185633.194981238@linuxfoundation.org>
+Message-ID: <20240527185605.709286344@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 515a3c3a5489a890c7c3c1df3855eb4868a27598 ]
+commit 9d2fd8bdc12f403a5c35c971936a0e1d5cb5108e upstream.
 
-Add Grand Ridge (ATOM_CRESTMONT) to hpm_cpu_ids, so that MSR 0x54 can be
-used.
+Since the signature self-test uses RSA and SHA-256, it must only be
+enabled when those algorithms are enabled.  Otherwise it fails and
+panics the kernel on boot-up.
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20240422212222.3881606-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202404221528.51d75177-lkp@intel.com
+Fixes: 3cde3174eb91 ("certs: Add FIPS selftests")
+Cc: stable@vger.kernel.org
+Cc: Simo Sorce <simo@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_if_common.c | 1 +
- 1 file changed, 1 insertion(+)
+ crypto/asymmetric_keys/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-index 30951f7131cd9..1accdaaf282c5 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-@@ -721,6 +721,7 @@ static struct miscdevice isst_if_char_driver = {
- static const struct x86_cpu_id hpm_cpu_ids[] = {
- 	X86_MATCH_INTEL_FAM6_MODEL(GRANITERAPIDS_D,	NULL),
- 	X86_MATCH_INTEL_FAM6_MODEL(GRANITERAPIDS_X,	NULL),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_CRESTMONT,	NULL),
- 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_CRESTMONT_X,	NULL),
- 	{}
- };
--- 
-2.43.0
-
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -86,5 +86,7 @@ config FIPS_SIGNATURE_SELFTEST
+ 	depends on ASYMMETRIC_KEY_TYPE
+ 	depends on PKCS7_MESSAGE_PARSER=X509_CERTIFICATE_PARSER
+ 	depends on X509_CERTIFICATE_PARSER
++	depends on CRYPTO_RSA
++	depends on CRYPTO_SHA256
+ 
+ endif # ASYMMETRIC_KEY_TYPE
 
 
 
