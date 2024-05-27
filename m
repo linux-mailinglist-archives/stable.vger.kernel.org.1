@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94838D0DB3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7578D0BE3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAB091C2105B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A77DB2861FE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100FB15FA60;
-	Mon, 27 May 2024 19:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193676A039;
+	Mon, 27 May 2024 19:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7EZ+02R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Za2zf8OD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C406E17727;
-	Mon, 27 May 2024 19:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB42E17E90E;
+	Mon, 27 May 2024 19:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838369; cv=none; b=E3QEUm0+KbeeR643WsQwc1xTRinUncEKwAn0yve+nucVsqSC8eoLUEZp4ETSHmWRwJHA2goEYMFYp899EvZq1N49VPPsil2FTQwBmksCIW8cT1jy/+1ZvHkfdEGXWFio0gIKwx3e0HDc+reDmdz2hnUmhKaucaE2PYpLvtIDGQw=
+	t=1716837242; cv=none; b=bqTxIaYP5hVAnBgk+igwRsvVz/O8Jf6G99qUPKsbSBAGfjELx5f5n0MQ64Kqh0ZvHfjKjsAZFiGk/v+Cvsf7kpXFwxu0xU1QYsmBGo3MedZ+ISQPbjuXdK0B9IjGE3lDFSV6hZniKQd7Jjoz9HAG8H/E8bEBrU+soI3R7LfLPi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838369; c=relaxed/simple;
-	bh=jiWSFjRH56O1YjdBWWMEaoi9p6+tqbxVSIkOa7cZ+Zk=;
+	s=arc-20240116; t=1716837242; c=relaxed/simple;
+	bh=B9AaKuQ0IoUlf8Noaz6Yi60kqBcd9V6WbVEfdDIF3nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdjKeF80kbpIaX9oto0l178RnyBdzOt65hIFuS09419a6wszscQA2rj9Q6DbUxtTI4u/hvnZYnyA9meDUk6OyNmQhMA+UA+gtHJZ9V5u8PR1xxzj1D5+ITh1wJ2ahxGjUYpJYPrb55xYrDoJW+DD0OzVYUJjZFi7gEaLiyI4haY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7EZ+02R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7B0C2BBFC;
-	Mon, 27 May 2024 19:32:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j9Wxk8uUZPem5UxNxjvCQEMhJjJF+XbFU+8kwtM1+njfwd+Qs9Z3RejA6BOHh6Q5lEwNAmCL3gEQvWucfqew+AV+hHSSVSlvyoYAkdlWzhxYMMCzNUfQBpI3UK1mqM9HBYawNYs3sjejo8cuYO+ZwFyiHgK5/TZfZnpAgFzUV9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Za2zf8OD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5B2C2BBFC;
+	Mon, 27 May 2024 19:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838369;
-	bh=jiWSFjRH56O1YjdBWWMEaoi9p6+tqbxVSIkOa7cZ+Zk=;
+	s=korg; t=1716837242;
+	bh=B9AaKuQ0IoUlf8Noaz6Yi60kqBcd9V6WbVEfdDIF3nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B7EZ+02RZVIMX1qNTbVbIbk4h1RzfFlOAE1H9pjdh3fIFjGsUK+9f0XBHB6x8UfxR
-	 cbsdAUylIvGPBZhupMbGRYhb/eu1755ATIwUbE9rWFlvxLI6qKcGzk1McRStfIDbF8
-	 0/pQqFbAYVwLN0Ep3AEaDzQoBAHwuiVDEgqsPGz0=
+	b=Za2zf8ODrtayHQ9vJuNlv9N7o44uFHOaVWHgHJv0zsigW4fzNsd0qIVhCJYen1/2l
+	 L52cZ4L9Kuhxx4TnL/IGpJX4IQs2UbWh38VFZ33fz3SpBA4bWT4QvlE1w+7Z5kKvpQ
+	 zACCj0IApPq7xyXbLEB2NZ2KDwbypYKeBU2xsp6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 367/493] ASoC: mediatek: Assign dummy when codec not specified for a DAI link
-Date: Mon, 27 May 2024 20:56:09 +0200
-Message-ID: <20240527185642.290489123@linuxfoundation.org>
+Subject: [PATCH 6.9 323/427] media: i2c: et8ek8: Dont strip remove function when driver is builtin
+Date: Mon, 27 May 2024 20:56:10 +0200
+Message-ID: <20240527185631.755062606@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 5f39231888c63f0a7708abc86b51b847476379d8 ]
+[ Upstream commit 545b215736c5c4b354e182d99c578a472ac9bfce ]
 
-MediaTek sound card drivers are checking whether a DAI link is present
-and used on a board to assign the correct parameters and this is done
-by checking the codec DAI names at probe time.
+Using __exit for the remove function results in the remove callback
+being discarded with CONFIG_VIDEO_ET8EK8=y. When such a device gets
+unbound (e.g. using sysfs or hotplug), the driver is just removed
+without the cleanup being performed. This results in resource leaks. Fix
+it by compiling in the remove callback unconditionally.
 
-If no real codec is present, assign the dummy codec to the DAI link
-to avoid NULL pointer during string comparison.
+This also fixes a W=1 modpost warning:
 
-Fixes: 4302187d955f ("ASoC: mediatek: common: add soundcard driver common code")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://msgid.link/r/20240313110147.1267793-5-angelogioacchino.delregno@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+	WARNING: modpost: drivers/media/i2c/et8ek8/et8ek8: section mismatch in reference: et8ek8_i2c_driver+0x10 (section: .data) -> et8ek8_remove (section: .exit.text)
+
+Fixes: c5254e72b8ed ("[media] media: Driver for Toshiba et8ek8 5MP sensor")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/common/mtk-soundcard-driver.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/i2c/et8ek8/et8ek8_driver.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/mediatek/common/mtk-soundcard-driver.c b/sound/soc/mediatek/common/mtk-soundcard-driver.c
-index a58e1e3674dec..000a086a8cf44 100644
---- a/sound/soc/mediatek/common/mtk-soundcard-driver.c
-+++ b/sound/soc/mediatek/common/mtk-soundcard-driver.c
-@@ -22,7 +22,11 @@ static int set_card_codec_info(struct snd_soc_card *card,
+diff --git a/drivers/media/i2c/et8ek8/et8ek8_driver.c b/drivers/media/i2c/et8ek8/et8ek8_driver.c
+index f548b1bb75fb9..e932d25ca7b3a 100644
+--- a/drivers/media/i2c/et8ek8/et8ek8_driver.c
++++ b/drivers/media/i2c/et8ek8/et8ek8_driver.c
+@@ -1475,7 +1475,7 @@ static int et8ek8_probe(struct i2c_client *client)
+ 	return ret;
+ }
  
- 	codec_node = of_get_child_by_name(sub_node, "codec");
- 	if (!codec_node) {
--		dev_dbg(dev, "%s no specified codec\n", dai_link->name);
-+		dev_dbg(dev, "%s no specified codec: setting dummy.\n", dai_link->name);
-+
-+		dai_link->codecs = &snd_soc_dummy_dlc;
-+		dai_link->num_codecs = 1;
-+		dai_link->dynamic = 1;
- 		return 0;
- 	}
+-static void __exit et8ek8_remove(struct i2c_client *client)
++static void et8ek8_remove(struct i2c_client *client)
+ {
+ 	struct v4l2_subdev *subdev = i2c_get_clientdata(client);
+ 	struct et8ek8_sensor *sensor = to_et8ek8_sensor(subdev);
+@@ -1517,7 +1517,7 @@ static struct i2c_driver et8ek8_i2c_driver = {
+ 		.of_match_table	= et8ek8_of_table,
+ 	},
+ 	.probe		= et8ek8_probe,
+-	.remove		= __exit_p(et8ek8_remove),
++	.remove		= et8ek8_remove,
+ 	.id_table	= et8ek8_id_table,
+ };
  
 -- 
 2.43.0
