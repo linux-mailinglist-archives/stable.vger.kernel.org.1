@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-46940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886588D0BE5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B88E8D0DAE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B995A1C210B8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C9BEB2132E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3C3155CA7;
-	Mon, 27 May 2024 19:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCAC15FA60;
+	Mon, 27 May 2024 19:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXYBwXcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vY4GwtOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBD617E90E;
-	Mon, 27 May 2024 19:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EACC17727;
+	Mon, 27 May 2024 19:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837247; cv=none; b=eL8fbco2uGdetaAY80SB8m1aQF5GMHDXm+b30q2JZEqeWq5PxmH0JCZNsLyDyLp5I/P+wXWFskhgLcoosFUhxysH2ptYvfiD5853CiztOwVsOVtBLGkhdkr4d7OtXpEfeKONuZU8ivMvq9c74fsblIciY0TfDd9hfB3UF0sWC2Q=
+	t=1716838352; cv=none; b=WABU2Qt5GNjjOjwSLtjYTcaP5fnePXnlSH1X5eiZQOqRW9WDAyvPS8GEmC3HZ4gCnstU9eDYQBJ6SX3VQpvwdluiaeAe26zrstROQLiSCzfCyj8PUnjSIxlhEuPZCNYHqjoq7O2muEA9Fbko2kgYGtkJWKlYs0q17VGuCpF102Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837247; c=relaxed/simple;
-	bh=jV6U9BSbuqhLwh/Gw4oraXNInLcKuwARLwEJmlE9XlY=;
+	s=arc-20240116; t=1716838352; c=relaxed/simple;
+	bh=ih1jF0EkennuXq/V7Cpqor1xWJTPyHEkFUspOt8KQHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B58HK8/Wd9XlWgS5jw2R2GwXr1mpevGFdL1tY7jNZP9Ybzf0aZ11bvzOqhbvwFg1VcFGlimzf3EexbIBYUdwmghlNKtXahZblkazS4Ak4Y2Z+liYkrNSGpchbL1ODtFgUt1xGVPXPj1HiLPc8u2j4UGVYdWX+pIkpizy/26VWxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXYBwXcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C68C2BBFC;
-	Mon, 27 May 2024 19:14:07 +0000 (UTC)
+	 MIME-Version; b=DMVZHX2dcQUano0/oLOjhZ2B7n5J/g1LdiTY2QjhGG7nZDoWFMQnlEun/tMibCGgJmlxPQDQ4aBeIlUADLbaOazPfXvy3tuMxuFkZRJYnj2hqAFdyDPveap1EgJoXxGxG/vbpH0lqlwbHlx+vjCH8Fm7YjJeLAp4X46T2F78Ld8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vY4GwtOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F597C2BBFC;
+	Mon, 27 May 2024 19:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837247;
-	bh=jV6U9BSbuqhLwh/Gw4oraXNInLcKuwARLwEJmlE9XlY=;
+	s=korg; t=1716838351;
+	bh=ih1jF0EkennuXq/V7Cpqor1xWJTPyHEkFUspOt8KQHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mXYBwXcZEZEKVRzPV+Z7uMchKFrRqBLr8eTodLIHYjTcDWlr4CKkYUR+qJTMJgns6
-	 MSAjmBI0XhslwMgX2AhXQgNY4v6KjBTg9HNrrXVLKagjuhORjr95yrfTy3cT17fh13
-	 DpA1hWRm8BN59cocdoaMmhpx9LsYYjbxqQ4ujzko=
+	b=vY4GwtOipsr10khcChIEl/JrU/lPXnQn4FU5BwO3T6iJAa/GnDMtLzNptv8ARQ5Jo
+	 Ixzw6fRkz9v2pDPjRmbBhLtM1Jwoza5bH1JHNa+Qd3Gd4auUukT2PACrJ1vuxuba0d
+	 o5NjkfO4i1ePmXVlTkk6bO+KkqDBLKMKWhugoYqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Qingqing Zhuo <Qingqing.Zhuo@amd.com>,
+	Harry Wentland <Harry.Wentland@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 315/427] media: radio-shark2: Avoid led_names truncations
-Date: Mon, 27 May 2024 20:56:02 +0200
-Message-ID: <20240527185631.207620188@linuxfoundation.org>
+Subject: [PATCH 6.8 361/493] drm/amd/display: Remove redundant condition in dcn35_calc_blocks_to_gate()
+Date: Mon, 27 May 2024 20:56:03 +0200
+Message-ID: <20240527185642.090778802@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +66,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 1820e16a3019b6258e6009d34432946a6ddd0a90 ]
+[ Upstream commit a43dbeaba81eb645a12a004c67722c632ed0d94b ]
 
-Increase the size of led_names so it can fit any valid v4l2 device name.
+pipe_ctx->plane_res.mpcc_inst is of a type that can only hold values
+between 0 and 255, so it's always greater than or equal to 0.
 
-Fixes:
-drivers/media/radio/radio-shark2.c:197:17: warning: ‘%s’ directive output may be truncated writing up to 35 bytes into a region of size 32 [-Wformat-truncation=]
+Thus the condition 'pipe_ctx->plane_res.mpcc_inst >= 0' was always true
+and has been removed.
 
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn35/dcn35_hwseq.c:1023 dcn35_calc_blocks_to_gate() warn: always true condition '(pipe_ctx->plane_res.mpcc_inst >= 0) => (0-255 >= 0)'
+
+Fixes: 6f8b7565cca4 ("drm/amd/display: Add DCN35 HWSEQ")
+Cc: Qingqing Zhuo <Qingqing.Zhuo@amd.com>
+Cc: Harry Wentland <Harry.Wentland@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/radio/radio-shark2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/radio/radio-shark2.c b/drivers/media/radio/radio-shark2.c
-index f1c5c0a6a335c..e3e6aa87fe081 100644
---- a/drivers/media/radio/radio-shark2.c
-+++ b/drivers/media/radio/radio-shark2.c
-@@ -62,7 +62,7 @@ struct shark_device {
- #ifdef SHARK_USE_LEDS
- 	struct work_struct led_work;
- 	struct led_classdev leds[NO_LEDS];
--	char led_names[NO_LEDS][32];
-+	char led_names[NO_LEDS][64];
- 	atomic_t brightness[NO_LEDS];
- 	unsigned long brightness_new;
- #endif
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+index 46cbb5a6c8e74..1a3c212ae63c8 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -999,8 +999,7 @@ void dcn35_calc_blocks_to_gate(struct dc *dc, struct dc_state *context,
+ 		if (pipe_ctx->plane_res.dpp)
+ 			update_state->pg_pipe_res_update[PG_DPP][pipe_ctx->plane_res.hubp->inst] = false;
+ 
+-		if ((pipe_ctx->plane_res.dpp || pipe_ctx->stream_res.opp) &&
+-			pipe_ctx->plane_res.mpcc_inst >= 0)
++		if (pipe_ctx->plane_res.dpp || pipe_ctx->stream_res.opp)
+ 			update_state->pg_pipe_res_update[PG_MPCC][pipe_ctx->plane_res.mpcc_inst] = false;
+ 
+ 		if (pipe_ctx->stream_res.dsc)
 -- 
 2.43.0
 
