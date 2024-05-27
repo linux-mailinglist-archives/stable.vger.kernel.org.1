@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-46635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD548D0A98
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACFE78D0CBA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D22FB21BF5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 604BE287257
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99D31667CB;
-	Mon, 27 May 2024 19:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3540015FD11;
+	Mon, 27 May 2024 19:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omfBNYNZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpZQ9fzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FB415A879;
-	Mon, 27 May 2024 19:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E803F168C4;
+	Mon, 27 May 2024 19:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836462; cv=none; b=gbQaldKByCOoQTNC4J4MYcrwfMiH3jDdPkucane4rGnMpsVbBLTayUIYAaxWtqLHNV6+lg66p6+OvniSM9TDYmzs/lxw9vMXM5INfVN94QJ4vuH0HPPY+XoV3T3HvLVBpc5I3l+/+4FP06lHKWvXvPaRIw0IsmkG9ERDD9TFUj0=
+	t=1716837753; cv=none; b=GrGc6jmP2Iteu0EFBa5eWLtK+CpoF85LXX9W5ABAIod9NOWz2tKzW06tkich/JCRXx/j9PHDitfaAO3w7mpTtDuAvmJ3Fa1tlyYroZO4THcg7Pr2TuKCUy8KpGpI0d1+SFjq4QTfXiF7c8PhKcIj3OIzIq8gDQdnFhjD1lCQgJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836462; c=relaxed/simple;
-	bh=Wb5BY/idvhtYqo0Us5eYeQGgP7/LMOAIi3oaX7+VLqo=;
+	s=arc-20240116; t=1716837753; c=relaxed/simple;
+	bh=7wTLt4E0dXym+IvTR3by1l7I9L3daHsjSFCmmddb7LA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYLbZu76stILFeQWgeKfYiDePxKXPG5CatQKUWYhD1/GnSjq39//gbnyV2nKNrEy4OL4UZm9Bq9HlJ6f0zae1tNDg+Uts7aq+GgojEbquHcRU+IBxAU4MjuyDseM4lG4zmNdgWDvITus1upYJfY1RTz+WaRQfhbrlVjRp7triUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omfBNYNZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB4CC32789;
-	Mon, 27 May 2024 19:01:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OSNRWBdgxPUvUtCVLwXhdFh+2LU+Zcat3N+PxFOp2WQh2KxqnrHTMSMLlUbV+5dYIgHKES6x5Y5gv3flanh+9YS4fkMUhNbqdmKl+JmxfccpmzzV4eotpCYlxltmCKB2A6jlrH3vFh9RtrLT2EQ70sWJSv65N9OzDT0NEMEzAyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpZQ9fzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0ABC2BBFC;
+	Mon, 27 May 2024 19:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836462;
-	bh=Wb5BY/idvhtYqo0Us5eYeQGgP7/LMOAIi3oaX7+VLqo=;
+	s=korg; t=1716837752;
+	bh=7wTLt4E0dXym+IvTR3by1l7I9L3daHsjSFCmmddb7LA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omfBNYNZw3lJImtYsBTKz6buZYmV05x86xrz2KMIugWAEMQNmm2ef2gaKiAfnj2Wq
-	 4gHKEM3GW9Zy9pB/q7JdL8Kt1rM4fbvZSaZGPfeYQCsXSHCWDO5ZPbtSZL8rdLLRkn
-	 PCz+4W8x1MCfeidw2KF+hYmvUZQaeSxYqhU9MsJI=
+	b=PpZQ9fzGJZwXtYf/pw86GyhZbCYpOtiSbQmhBMH1yfqztJax1wZViNN0HJesWcbKy
+	 2qyOOUE6OQ400paeJEsPqA01oMh5DsY/xj6uA60GGvS1FB9puff1iozpPZr3x1Qybd
+	 mrIu+bhovh7/rCwnArLuvHwzW0L0TCQtxOyHuo7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Glitta <glittao@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Daniel Latypov <dlatypov@google.com>,
-	Marco Elver <elver@google.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 046/427] mm/slub, kunit: Use inverted data to corrupt kmem cache
+Subject: [PATCH 6.8 091/493] Input: amimouse - mark driver struct with __refdata to prevent section mismatch
 Date: Mon, 27 May 2024 20:51:33 +0200
-Message-ID: <20240527185606.047780571@linuxfoundation.org>
+Message-ID: <20240527185633.362352378@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit b1080c667b3b2c8c38a7fa83ca5567124887abae ]
+[ Upstream commit 0537c8eef4f699aacdeb67c6181c66cccd63c7f5 ]
 
-Two failure patterns are seen randomly when running slub_kunit tests with
-CONFIG_SLAB_FREELIST_RANDOM and CONFIG_SLAB_FREELIST_HARDENED enabled.
+As described in the added code comment, a reference to .exit.text is ok
+for drivers registered via module_platform_driver_probe(). Make this
+explicit to prevent the following section mismatch warning
 
-Pattern 1:
-     # test_clobber_zone: pass:1 fail:0 skip:0 total:1
-     ok 1 test_clobber_zone
-     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:72
-     Expected 3 == slab_errors, but
-         slab_errors == 0 (0x0)
-     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:84
-     Expected 2 == slab_errors, but
-         slab_errors == 0 (0x0)
-     # test_next_pointer: pass:0 fail:1 skip:0 total:1
-     not ok 2 test_next_pointer
+	WARNING: modpost: drivers/input/mouse/amimouse: section mismatch in reference: amimouse_driver+0x8 (section: .data) -> amimouse_remove (section: .exit.text)
 
-In this case, test_next_pointer() overwrites p[s->offset], but the data
-at p[s->offset] is already 0x12.
+that triggers on an allmodconfig W=1 build.
 
-Pattern 2:
-     ok 1 test_clobber_zone
-     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:72
-     Expected 3 == slab_errors, but
-         slab_errors == 2 (0x2)
-     # test_next_pointer: pass:0 fail:1 skip:0 total:1
-     not ok 2 test_next_pointer
-
-In this case, p[s->offset] has a value other than 0x12, but one of the
-expected failures is nevertheless missing.
-
-Invert data instead of writing a fixed value to corrupt the cache data
-structures to fix the problem.
-
-Fixes: 1f9f78b1b376 ("mm/slub, kunit: add a KUnit test for SLUB debugging functionality")
-Cc: Oliver Glitta <glittao@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-CC: Daniel Latypov <dlatypov@google.com>
-Cc: Marco Elver <elver@google.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/2e3783106bf6bd9a7bdeb12b706378fb16316471.1711748999.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/slub_kunit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/mouse/amimouse.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/lib/slub_kunit.c b/lib/slub_kunit.c
-index d4a3730b08fa7..4ce9604388069 100644
---- a/lib/slub_kunit.c
-+++ b/lib/slub_kunit.c
-@@ -55,7 +55,7 @@ static void test_next_pointer(struct kunit *test)
+diff --git a/drivers/input/mouse/amimouse.c b/drivers/input/mouse/amimouse.c
+index cda0c3ff5a288..2fbbaeb76d708 100644
+--- a/drivers/input/mouse/amimouse.c
++++ b/drivers/input/mouse/amimouse.c
+@@ -132,7 +132,13 @@ static void __exit amimouse_remove(struct platform_device *pdev)
+ 	input_unregister_device(dev);
+ }
  
- 	ptr_addr = (unsigned long *)(p + s->offset);
- 	tmp = *ptr_addr;
--	p[s->offset] = 0x12;
-+	p[s->offset] = ~p[s->offset];
- 
- 	/*
- 	 * Expecting three errors.
+-static struct platform_driver amimouse_driver = {
++/*
++ * amimouse_remove() lives in .exit.text. For drivers registered via
++ * module_platform_driver_probe() this is ok because they cannot get unbound at
++ * runtime. So mark the driver struct with __refdata to prevent modpost
++ * triggering a section mismatch warning.
++ */
++static struct platform_driver amimouse_driver __refdata = {
+ 	.remove_new = __exit_p(amimouse_remove),
+ 	.driver   = {
+ 		.name	= "amiga-mouse",
 -- 
 2.43.0
 
