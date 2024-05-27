@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-47392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678BB8D0DCB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6AA78D0BD0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15428282975
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26422861C8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA27915FA9F;
-	Mon, 27 May 2024 19:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8BE6A039;
+	Mon, 27 May 2024 19:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rA+vOgJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuCj3ECY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A11017727;
-	Mon, 27 May 2024 19:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F077817E90E;
+	Mon, 27 May 2024 19:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838432; cv=none; b=Ana0pSGhbaqNij9k7TDpp5nwXr/06zJLpYls+SAxFL21JRqKHbg0T91wh1LjdEFZLO4N1WdV/H3vpPpJJua6NJ5Sp5XzHmTH/v6nAoDyKOMtYzvJXp6txNyssb8gyMC3bJXovtM0gWlvBFB4RClgyq6RXLytQTVSzTxuuIFRK5A=
+	t=1716837195; cv=none; b=YNdZfxyxFAgFKYmV6TYU2tJWpuftJAYUZ/GVD8+Se990ci1Dd4rIAgNauUX6In7YTe6tDhf2o8HsPEDqiRpkZ6XeQSk/oGqzK07rbrETeMxP5/tp8GE1yLitRpV6lV2u/Y0rWdioWa8Y1ywPC/r1JlVMhcv8BAPSpfB/KNXRpZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838432; c=relaxed/simple;
-	bh=wjETf1DgnwTtXK4ekzCTb7RdGLCkQyRMH4fhHcN67ic=;
+	s=arc-20240116; t=1716837195; c=relaxed/simple;
+	bh=eX7i1MUzJ0qV3sEbU0kOA6Ej8SgXD6nPB1lN9hBzxs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JrMBqAoPXTidhmedxk/+xbYVDtB682u8nIpN66RBcjuTQy3iqlSh/iay5fdqsKFywXzdYGMhJdoS0+2tPvGNJnTS0ESua3OZmdBM1z+6i76dMYkmNTQL0LkojQgMB9VbyMw4I6jnWSbHeSE4B2RogQfT3rwYEbekX7DfiRDfPBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rA+vOgJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117E4C2BBFC;
-	Mon, 27 May 2024 19:33:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ayGPj1u34lAMnfxClX0FX38CHixpJFjUIfc3+t6zmy84fkbE+Svlf7EG0cAhvP58uRjj3gQpRDuwXaDt9LCZh6XocYZKwCSzC90rm9n3F1V33Qe7dGEwjBFXZVlntEJ3U2iUh4LMprMJ9oayMj0NFwRtGGABA/J4cUnCvSGLRrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuCj3ECY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D35C2BBFC;
+	Mon, 27 May 2024 19:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838432;
-	bh=wjETf1DgnwTtXK4ekzCTb7RdGLCkQyRMH4fhHcN67ic=;
+	s=korg; t=1716837194;
+	bh=eX7i1MUzJ0qV3sEbU0kOA6Ej8SgXD6nPB1lN9hBzxs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rA+vOgJNKo6+lAyV+ICMnPdL6UDTe19/ahVI4Fr3Bfmw8ysXFF91w0ePbXagQO+5H
-	 oRgcskv3If90wr2tXyrSdCVMJrdFh0KABWrGrp/aCn/iOQCNPEMmNH5+mnXAz2sSl3
-	 V2svFzfoeK2UZuW16OiTdqsa1fSBuvq+/aP0N5Ok=
+	b=tuCj3ECYgtr1b6Wb5q5bq41Dtm4Ewi6XbJBrK1sHk8UQq3nDLTgR7EIAhPxzHk8x5
+	 AZxxXx4StLsjKTNsp15XTi0FGqIyG3jvszFhA/kjPNLdgElXGrqqNrB4YgOlypQLpc
+	 YWbXtGHChtOZ88f/dvlu8zLWA2UldJC1O2MCgJH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 389/493] media: rcar-vin: work around -Wenum-compare-conditional warning
-Date: Mon, 27 May 2024 20:56:31 +0200
-Message-ID: <20240527185642.984611892@linuxfoundation.org>
+Subject: [PATCH 6.9 345/427] drm/edid: Parse topology block for all DispID structure v1.x
+Date: Mon, 27 May 2024 20:56:32 +0200
+Message-ID: <20240527185633.172355922@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 1a742c6010d136cb6c441a0f1dd2bfbfae3c4df2 ]
+[ Upstream commit e0a200ab4b72afd581bd6f82fc1ef510a4fb5478 ]
 
-clang-19 warns about mixing two enum types here:
+DisplayID spec v1.3 revision history notes do claim that
+the toplogy block was added in v1.3 so requiring structure
+v1.2 would seem correct, but there is at least one EDID in
+edid.tv with a topology block and structure v1.0. And
+there are also EDIDs with DisplayID structure v1.3 which
+seems to be totally incorrect as DisplayID spec v1.3 lists
+structure v1.2 as the only legal value.
 
-drivers/media/platform/renesas/rcar-vin/rcar-vin.h:296:12: error: conditional expression between different enumeration types ('enum rvin_csi_id' and 'enum rvin_isp_id') [-Werror,-Wenum-compare-conditional]
-drivers/media/platform/renesas/rcar-vin/rcar-core.c:216:18: error: conditional expression between different enumeration types ('enum rvin_csi_id' and 'enum rvin_isp_id') [-Werror,-Wenum-compare-conditional]
-drivers/media/platform/renesas/rcar-vin/rcar-vin.h:296:12: error: conditional expression between different enumeration types ('enum rvin_csi_id' and 'enum rvin_isp_id') [-Werror,-Wenum-compare-conditional]
-drivers/media/platform/renesas/rcar-vin/rcar-vin.h:296:12: error: conditional expression between different enumeration types ('enum rvin_csi_id' and 'enum rvin_isp_id') [-Werror,-Wenum-compare-conditional]
+Unfortunately I couldn't find copies of DisplayID spec
+v1.0-v1.2 anywhere (even on vesa.org), so I'll have to
+go on empirical evidence alone.
 
-This one is intentional, and there is already a cast to work around another
-warning, so address this by adding another cast.
+We used to parse the topology block on all v1.x
+structures until the check for structure v2.0 was added.
+Let's go back to doing that as the evidence does suggest
+that there are DisplayIDs in the wild that would miss
+out on the topology stuff otherwise.
 
-Fixes: 406bb586dec0 ("media: rcar-vin: Add r8a779a0 support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Also toss out DISPLAY_ID_STRUCTURE_VER_12 entirely as
+it doesn't appear we can really use it for anything.
+
+I *think* we could technically skip all the structure
+version checks as the block tags shouldn't conflict
+between v2.0 and v1.x. But no harm in having a bit of
+extra sanity checks I guess.
+
+So far I'm not aware of any user reported regressions
+from overly strict check, but I do know that it broke
+igt/kms_tiled_display's fake DisplayID as that one
+gets generated with structure v1.0.
+
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Fixes: c5a486af9df7 ("drm/edid: parse Tiled Display Topology Data Block for DisplayID 2.0")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240410180139.21352-1-ville.syrjala@linux.intel.com
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/rcar-vin/rcar-vin.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_edid.c  | 2 +-
+ include/drm/drm_displayid.h | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-vin.h b/drivers/media/platform/renesas/rcar-vin/rcar-vin.h
-index 792336dada447..997a66318a293 100644
---- a/drivers/media/platform/renesas/rcar-vin/rcar-vin.h
-+++ b/drivers/media/platform/renesas/rcar-vin/rcar-vin.h
-@@ -59,7 +59,7 @@ enum rvin_isp_id {
+diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+index 923c4423151c1..9064cdeb1319b 100644
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -7324,7 +7324,7 @@ static void drm_parse_tiled_block(struct drm_connector *connector,
+ static bool displayid_is_tiled_block(const struct displayid_iter *iter,
+ 				     const struct displayid_block *block)
+ {
+-	return (displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_12 &&
++	return (displayid_version(iter) < DISPLAY_ID_STRUCTURE_VER_20 &&
+ 		block->tag == DATA_BLOCK_TILED_DISPLAY) ||
+ 		(displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_20 &&
+ 		 block->tag == DATA_BLOCK_2_TILED_DISPLAY_TOPOLOGY);
+diff --git a/include/drm/drm_displayid.h b/include/drm/drm_displayid.h
+index 566497eeb3b81..bc1f6b378195f 100644
+--- a/include/drm/drm_displayid.h
++++ b/include/drm/drm_displayid.h
+@@ -30,7 +30,6 @@ struct drm_edid;
+ #define VESA_IEEE_OUI				0x3a0292
  
- #define RVIN_REMOTES_MAX \
- 	(((unsigned int)RVIN_CSI_MAX) > ((unsigned int)RVIN_ISP_MAX) ? \
--	 RVIN_CSI_MAX : RVIN_ISP_MAX)
-+	 (unsigned int)RVIN_CSI_MAX : (unsigned int)RVIN_ISP_MAX)
+ /* DisplayID Structure versions */
+-#define DISPLAY_ID_STRUCTURE_VER_12		0x12
+ #define DISPLAY_ID_STRUCTURE_VER_20		0x20
  
- /**
-  * enum rvin_dma_state - DMA states
+ /* DisplayID Structure v1r2 Data Blocks */
 -- 
 2.43.0
 
