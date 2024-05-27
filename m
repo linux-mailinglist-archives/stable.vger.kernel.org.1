@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AD48D0AB9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD478D0CEC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0D5F1F223A4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21FEE1F22667
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837B1167265;
-	Mon, 27 May 2024 19:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136831607A5;
+	Mon, 27 May 2024 19:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtX1gllZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8DAeXaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4361649C2;
-	Mon, 27 May 2024 19:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69C51607A4;
+	Mon, 27 May 2024 19:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836529; cv=none; b=edT9pttXD/bEIvu8mlc9nULi2pVN7QR+UfG/+GALLw7jmM3xqXuy3QlQhXvq+8LrELMJpKr6wGKHog9HhOmVrK0FOUjcVtB6lSQZTSqWbP0twAGodMh/j3ZbJOx6Gn8vCJEuaVhFlnlzTq2JFCTYPV6YTCes9H8gy9QvuS+BVy8=
+	t=1716837863; cv=none; b=k/vviEuinA2Tu3Nz1ZwpERvYE6KH8HsGM+n+0fkDIHT8MPNS9FVzSga1x6IKdijFo+mcNyYylp/eZ/tjRbEkdGP/dYCfzn9vp/M8lvYUbNCMiqAAiJBKI8zNaUPAoLDYogIZ0sOuhkZFoJ6zUMfkaGLr7p3lBsu33dfgxepWrIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836529; c=relaxed/simple;
-	bh=Yh74qXK4Lcf+4/A5QTNdD9mbrQA88WDlIG9nsC0fdoc=;
+	s=arc-20240116; t=1716837863; c=relaxed/simple;
+	bh=nL7Clfvm5g9+qIXuZCkETP52hg3q3GwUQVAU3gElwV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4SS1iQjywEFxGUK7dBMlm5HeltVBacU8MFzJIVbHKGeIcKH5sNbMhns6wwiI5al0QzPNB4IYbioiZ6D3PpZqnu0+fRXT3TYQymtcfRIMFuz4RivNK3Ib+6x4fRva9oSB++noVhD6i4Pn3yrJN5eq+dRb7BSdZcfXFmn3XHP0Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtX1gllZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBB6C2BBFC;
-	Mon, 27 May 2024 19:02:08 +0000 (UTC)
+	 MIME-Version; b=qbTMjzbvQ/7BodOxcP0ICekTPQX0VwCKGaOjhEPtsNQozv9D+f9hjmBHEzSwHbY8xi4UQhEVIvYdOHdMKzjEgvD2SXTChqNCgzKfu1dTP7zWD5eQQgLoloAVy+LSJP2sdOe2Gldx2Ke5ok2ezUVscVAulp1nA92wD2937IJLSkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8DAeXaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1FBC2BBFC;
+	Mon, 27 May 2024 19:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836528;
-	bh=Yh74qXK4Lcf+4/A5QTNdD9mbrQA88WDlIG9nsC0fdoc=;
+	s=korg; t=1716837863;
+	bh=nL7Clfvm5g9+qIXuZCkETP52hg3q3GwUQVAU3gElwV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CtX1gllZ7owu2WeaoDdpYbn4DakGcsNnwVacFnUkHt21cahCaHv80HCCFWk0eBO2v
-	 q84nMB4M8dV1/dyPq/1zKo72sbv5fykK1elgN/PCR+SZLHngufsCCAxkifFSnV5iUJ
-	 xytU0WBLSMk4nX9GB2Rin8IUulvosRlILpYppicA=
+	b=W8DAeXaKxAgtNAxA2I3qbLWGNLetnZvC5NDHfNlqSJNRZMK7JXMZyjg4inJONhdJb
+	 inpB/Fi/tfXXWoaCZkDs5TpPYK6ygWvrWTKh7yZr6mfvVDfxDZPBOmHXiDIP7u+Xfy
+	 35S1Q1XkA4h+E9jROykODQ1fdI1h0XhpM8hJEOYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0a3683a0a6fecf909244@syzkaller.appspotmail.com,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 087/427] block: refine the EOF check in blkdev_iomap_begin
-Date: Mon, 27 May 2024 20:52:14 +0200
-Message-ID: <20240527185609.874384294@linuxfoundation.org>
+Subject: [PATCH 6.8 133/493] libfs: Fix simple_offset_rename_exchange()
+Date: Mon, 27 May 2024 20:52:15 +0200
+Message-ID: <20240527185634.823338780@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 0c12028aec837f5a002009bbf68d179d506510e8 ]
+[ Upstream commit 23cdd0eed3f1fff3af323092b0b88945a7950d8e ]
 
-blkdev_iomap_begin rounds down the offset to the logical block size
-before stashing it in iomap->offset and checking that it still is
-inside the inode size.
+User space expects the replacement (old) directory entry to have
+the same directory offset after the rename.
 
-Check the i_size check to the raw pos value so that we don't try a
-zero size write if iter->pos is unaligned.
-
-Fixes: 487c607df790 ("block: use iomap for writes to block devices")
-Reported-by: syzbot+0a3683a0a6fecf909244@syzkaller.appspotmail.com
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Tested-by: syzbot+0a3683a0a6fecf909244@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/20240503081042.2078062-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Suggested-by: Christian Brauner <brauner@kernel.org>
+Fixes: a2e459555c5f ("shmem: stable directory offsets")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20240415152057.4605-2-cel@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/fops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/libfs.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/block/fops.c b/block/fops.c
-index 679d9b752fe82..df2c68d3f198e 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -390,7 +390,7 @@ static int blkdev_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
+diff --git a/fs/libfs.c b/fs/libfs.c
+index d3d31197c8e43..c9516f3e14bb7 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -294,6 +294,18 @@ int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry)
+ 	return 0;
+ }
  
- 	iomap->bdev = bdev;
- 	iomap->offset = ALIGN_DOWN(offset, bdev_logical_block_size(bdev));
--	if (iomap->offset >= isize)
-+	if (offset >= isize)
- 		return -EIO;
- 	iomap->type = IOMAP_MAPPED;
- 	iomap->addr = iomap->offset;
++static int simple_offset_replace(struct offset_ctx *octx, struct dentry *dentry,
++				 long offset)
++{
++	int ret;
++
++	ret = mtree_store(&octx->mt, offset, dentry, GFP_KERNEL);
++	if (ret)
++		return ret;
++	offset_set(dentry, offset);
++	return 0;
++}
++
+ /**
+  * simple_offset_remove - Remove an entry to a directory's offset map
+  * @octx: directory offset ctx to be updated
+@@ -351,6 +363,9 @@ int simple_offset_empty(struct dentry *dentry)
+  * @new_dir: destination parent
+  * @new_dentry: destination dentry
+  *
++ * This API preserves the directory offset values. Caller provides
++ * appropriate serialization.
++ *
+  * Returns zero on success. Otherwise a negative errno is returned and the
+  * rename is rolled back.
+  */
+@@ -368,11 +383,11 @@ int simple_offset_rename_exchange(struct inode *old_dir,
+ 	simple_offset_remove(old_ctx, old_dentry);
+ 	simple_offset_remove(new_ctx, new_dentry);
+ 
+-	ret = simple_offset_add(new_ctx, old_dentry);
++	ret = simple_offset_replace(new_ctx, old_dentry, new_index);
+ 	if (ret)
+ 		goto out_restore;
+ 
+-	ret = simple_offset_add(old_ctx, new_dentry);
++	ret = simple_offset_replace(old_ctx, new_dentry, old_index);
+ 	if (ret) {
+ 		simple_offset_remove(new_ctx, old_dentry);
+ 		goto out_restore;
+@@ -387,10 +402,8 @@ int simple_offset_rename_exchange(struct inode *old_dir,
+ 	return 0;
+ 
+ out_restore:
+-	offset_set(old_dentry, old_index);
+-	mtree_store(&old_ctx->mt, old_index, old_dentry, GFP_KERNEL);
+-	offset_set(new_dentry, new_index);
+-	mtree_store(&new_ctx->mt, new_index, new_dentry, GFP_KERNEL);
++	(void)simple_offset_replace(old_ctx, old_dentry, old_index);
++	(void)simple_offset_replace(new_ctx, new_dentry, new_index);
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
