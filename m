@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-46701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916588D0AE5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C9D8D0D06
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFFFCB21ED9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2CFFB208C6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9EB16132E;
-	Mon, 27 May 2024 19:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AFC15FD01;
+	Mon, 27 May 2024 19:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEYCokQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtoV2AYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58496D518;
-	Mon, 27 May 2024 19:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0127C168C4;
+	Mon, 27 May 2024 19:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836631; cv=none; b=lPDAZ4Y7j+k1OL2Hyor+yjBI67PfO3W+YvgIW3JdtBQDPmuvbCPFtkiLzTyQuriqpfiEfD9CNqjlo9RvBj7LihYCD9oxdc3vEnbUXTTnv1FiyK0qhZPghFTrLmOoP61dCTPWUt4V1qNMnHIvqC4sEV4eqMUhlhv7Xnbe4Nz+Y5g=
+	t=1716837930; cv=none; b=J3MIdSzziqUZWGBfoNpRVySnsCQJ/Ztryd1ALDenNEnva0p/fULCKhe2ArE3iR6ddC0YPHBSEhrpotouuHl29pOVO1wDVbRyhhOmzXQxNzj71yleJ9JC+Z6twOOqWV7FHfbhzQqcE1cx/mC59gzneyPbBmFREhZKGOhDSiDlH8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836631; c=relaxed/simple;
-	bh=5txbhwUkYgzIc0Z9GgvWZEqY1BxjIhxhCYg8vglEtk8=;
+	s=arc-20240116; t=1716837930; c=relaxed/simple;
+	bh=vAYdHzlhCh0eW4X7zHOhYJ95D0XLHe7ss52sfjuK9Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqHFLERqLMriD0ZQBmgoe/v7s6Q/8gWLY+jptNEn6KNRlIdeG6p6sw7a+jrET5kkkxLniO0zJB7tXy+atGRjf74gsfLHObMj+5TxoNrgcxFYlg7ml5kFlPwlxVytwpgkWuyChKcWa/uyM7EUvSvpjoy3WTmXNfjIepYVe9bZ5J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEYCokQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3DEC2BBFC;
-	Mon, 27 May 2024 19:03:50 +0000 (UTC)
+	 MIME-Version; b=cS29k81fXD0sR23ZnfhecWOEV28+9B2gC+0lFpfG7kOgijZDFTxw98dpH7nu+X06Hn4xTX6EyhGvxTOd0eeMdA2PGOiFkkiQS4ROV8wzYqY851HjrqL2Vvf7TaEi86IIoF69OYylfswUHfmzUdIeEwdjSlU/043Yimx4LBV1XYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtoV2AYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC35C2BBFC;
+	Mon, 27 May 2024 19:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836630;
-	bh=5txbhwUkYgzIc0Z9GgvWZEqY1BxjIhxhCYg8vglEtk8=;
+	s=korg; t=1716837929;
+	bh=vAYdHzlhCh0eW4X7zHOhYJ95D0XLHe7ss52sfjuK9Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEYCokQ1CiHBlcU0XxcMJrjEHt+huZz8HwT0SlYtP6KmMDbwBiNlW1hc4uBEZqRKT
-	 ABJ9AOdnXvXuZjQfjs9ODNY3J8Iu40KIZFAXbpDCve24//ZxaK1yzQXdGtIZJM7IYw
-	 hmPYUhKUzT8fq6mjZ8rWUUFr2cyExLyez/kzGzBo=
+	b=OtoV2AYF8LWr+Oq4uMyxHRx3i70ZFlV37PWLH2i3SqQsUzLB+7Vy98CK7sZIj2rcB
+	 KXImpkZllfGtBm+Lhej4mP0TrlbPkH5mtHXon1Kt+Xo46y+Exr5iKiHK7+2iYhG3xS
+	 TDPePYX203DX8tvYnUqNrivRY115FffLjpZjQljQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 128/427] scsi: ufs: qcom: Perform read back after writing unipro mode
+Subject: [PATCH 6.8 173/493] wifi: iwlwifi: implement can_activate_links callback
 Date: Mon, 27 May 2024 20:52:55 +0200
-Message-ID: <20240527185613.902934006@linuxfoundation.org>
+Message-ID: <20240527185636.006011654@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 823150ecf04f958213cf3bf162187cd1a91c885c ]
+[ Upstream commit c4d32f2745c75c9041937767f0329f6f1051778b ]
 
-Currently, the QUNIPRO_SEL bit is written to and then an mb() is used to
-ensure that completes before continuing.
+This callback checks if a given bitmap of active_links
+will be supported by the driver or not.
 
-mb() ensures that the write completes, but completion doesn't mean that it
-isn't stored in a buffer somewhere. The recommendation for ensuring this
-bit has taken effect on the device is to perform a read back to force it to
-make it all the way to the device. This is documented in device-io.rst and
-a talk by Will Deacon on this can be seen over here:
-
-    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
-
-But, there's really no reason to even ensure completion before
-continuing. The only requirement here is that this write is ordered to this
-endpoint (which readl()/writel() guarantees already). For that reason the
-mb() can be dropped altogether without anything forcing completion.
-
-Fixes: f06fcc7155dc ("scsi: ufs-qcom: add QUniPro hardware support and power optimizations")
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-4-181252004586@redhat.com
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://msgid.link/20240123200528.a26fd48bfe3d.I03ae6b4c7fd24e8701660a68cec9403dc3469a0e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 9737da2f00d6 ("wifi: iwlwifi: mvm: fix active link counting during recovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 3 ---
- 1 file changed, 3 deletions(-)
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c  | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index bb3445e5efa8b..004a0f6b1fffa 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -284,9 +284,6 @@ static void ufs_qcom_select_unipro_mode(struct ufs_qcom_host *host)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 893b69fc841b8..1da4fd1c4560b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -254,9 +254,6 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
+ 	if (!rcu_access_pointer(link_conf->chanctx_conf))
+ 		n_active++;
  
- 	if (host->hw_ver.major >= 0x05)
- 		ufshcd_rmwl(host->hba, QUNIPRO_G4_SEL, 0, REG_UFS_CFG0);
+-	if (n_active > iwl_mvm_max_active_links(mvm, vif))
+-		return -EOPNOTSUPP;
 -
--	/* make sure above configuration is applied before we return */
--	mb();
+ 	if (WARN_ON_ONCE(!mvmvif->link[link_id]))
+ 		return -EINVAL;
+ 
+@@ -1122,17 +1119,12 @@ iwl_mvm_mld_change_vif_links(struct ieee80211_hw *hw,
+ 			     struct ieee80211_bss_conf *old[IEEE80211_MLD_MAX_NUM_LINKS])
+ {
+ 	struct iwl_mvm_vif_link_info *new_link[IEEE80211_MLD_MAX_NUM_LINKS] = {};
+-	unsigned int n_active = iwl_mvm_mld_count_active_links(vif);
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	u16 removed = old_links & ~new_links;
+ 	u16 added = new_links & ~old_links;
+ 	int err, i;
+ 
+-	if (hweight16(new_links) > 1 &&
+-	    n_active > iwl_mvm_max_active_links(mvm, vif))
+-		return -EOPNOTSUPP;
+-
+ 	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
+ 		int r;
+ 
+@@ -1224,6 +1216,15 @@ iwl_mvm_mld_change_sta_links(struct ieee80211_hw *hw,
+ 	return ret;
  }
  
- /*
++static bool iwl_mvm_mld_can_activate_links(struct ieee80211_hw *hw,
++					   struct ieee80211_vif *vif,
++					   u16 desired_links)
++{
++	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
++
++	return hweight16(desired_links) <= iwl_mvm_max_active_links(mvm, vif);
++}
++
+ const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
+ 	.tx = iwl_mvm_mac_tx,
+ 	.wake_tx_queue = iwl_mvm_mac_wake_tx_queue,
+@@ -1318,4 +1319,5 @@ const struct ieee80211_ops iwl_mvm_mld_hw_ops = {
+ 
+ 	.change_vif_links = iwl_mvm_mld_change_vif_links,
+ 	.change_sta_links = iwl_mvm_mld_change_sta_links,
++	.can_activate_links = iwl_mvm_mld_can_activate_links,
+ };
 -- 
 2.43.0
 
