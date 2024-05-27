@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-46549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292A58D07A4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:09:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 401B08D0864
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11368296392
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:08:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14A29B2DC7C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A8416F299;
-	Mon, 27 May 2024 15:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC3016728F;
+	Mon, 27 May 2024 15:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dSUUdrOP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0/X+WWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6793C167289;
-	Mon, 27 May 2024 15:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3786A167299;
+	Mon, 27 May 2024 15:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825504; cv=none; b=Es96Bl9k4N0kPVGYPR1l6sNDjEPFQVwknKscFuwfIOQ/Le+MoLCbnRKsSRYUccq6JQJ22Xcw6NF61LboMIwKI9D6yhpW51r+W92upbO2ApgkBjw7F3NtOZFZiFfIt5ETyi1ipFzst+B9TTwBdadHmYvBLNOEfoPb/KCeoe3XKXI=
+	t=1716825507; cv=none; b=uxnZdhYa70OMDFosD4NlLExpH3rGgDCJLCKSIxkHQI6H8g6/LbEGnT7yoyz1P+2KiEuFaoJ/eDSdLFicxXbPUCtSG+dCRkTrYwqpHVJHjUG8RFo52FZSXRo1QevhG2UrWUBUbnETcfWLdgF3CQ2tp/qtG5MvfX45br79/gx61V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825504; c=relaxed/simple;
-	bh=+675MIHNbN9OSUKuccdTXAcdMyna4REx8+9EpCYYC+E=;
+	s=arc-20240116; t=1716825507; c=relaxed/simple;
+	bh=eYPbWO+J/KyuX3TfC231czK2CmnPahyBLfsU/aZGuxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FxsGXGn2dnlRPSaF5Be7FuU07WkwYNnY8AY9o7PEOcjuEeX9hhp3ynrVKhJKAaRpYSrIEWsGIjmCI61cGLNnY/YU9pIednmovOmJa3y4DA0ah3uMVs5dSZSYWHyB4BH3jY2Jo9Fezv0VwH/Jet1sbQJ2UyVQDiuZEre41/z2x5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dSUUdrOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8133C4AF07;
-	Mon, 27 May 2024 15:58:22 +0000 (UTC)
+	 MIME-Version; b=Q0d5y5pagL6mNAOpBR9CQ3gdmEIZcJlWRTxbPDc3mxROSeK1iywjDOkUSXMM66FTRy1qu3bUO06x/yVdwvf62KmGbzUHq74ljJjD+IlGPMkgfS9AVfvCR33Xo0s/itZ81d/K5AdY78BNlY4H50yoeosRQvHIAzdRFdxzvyCyouE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0/X+WWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46E6C32781;
+	Mon, 27 May 2024 15:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716825504;
-	bh=+675MIHNbN9OSUKuccdTXAcdMyna4REx8+9EpCYYC+E=;
+	s=k20201202; t=1716825507;
+	bh=eYPbWO+J/KyuX3TfC231czK2CmnPahyBLfsU/aZGuxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSUUdrOPlQfRZ6ESKc5FZKRF7H1NohbvG19pIBJQnu4ZhhCyF9KL7rwZsS/H3Nioa
-	 Str34Uo0P/WN/Pmj1Acgt8bRWV0DMV6cbjfHbqy9kF1/Vz4XZ8B8c5bq2sGBLNO7UU
-	 wSptMV7NbhQWFTox4StZHKoRzTtdSYZzIdjDbyjabiZV9f69UyzymS0UiPuWHA/bYQ
-	 DK5aSNqSXja4NL9GOqu4sIhUFJaMSoX9CujBVwqegqDTgbhIXLA72H72g1OkwW+iMt
-	 1CcP46rWqvxBSGJnObBpDYhBNfQ0mCLxxKPxgeNPgYUf1eEltYhqw7MLDnhX0+Xqho
-	 uKk5q6nTZzORQ==
+	b=T0/X+WWIrCXVnngvQbOAa4muBvjPtGrpJRyED0rU86SdwoUd7O3huEuDzmgz4gv03
+	 aWiTI8ClKKBRsON21QnZv8pnRTk2Bf6K+ABZ/guhigAveIW8T5/d/cUcALG9Deba/I
+	 oseulT7r8ergiVIE/w1QZk4Gs3bPv4TSSc/l582pcG4PwHs0iLok4V3ZVDiogvf8tQ
+	 uk647R0JY43Q9KriU4bLp9Ktzkz6DC+qab3i/j8CbJU8DWSYKzD0qrp4uE/EWzNKRP
+	 e9SQ7SqGrDKuKUhz9ZGicOf72c81AVSAuaRPgawKkEBvfWtQ8qKKuPUvO8FSUdo2HF
+	 K83ltMgESSwLA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zheyu Ma <zheyuma97@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>,
-	broonie@kernel.org,
-	hkallweit1@gmail.com,
-	gregkh@linuxfoundation.org,
-	mcgrof@kernel.org,
-	andriy.shevchenko@linux.intel.com,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 4/6] media: lgdt3306a: Add a check against null-pointer-def
-Date: Mon, 27 May 2024 11:57:54 -0400
-Message-ID: <20240527155808.3866107-4-sashal@kernel.org>
+	nathan@kernel.org,
+	vaibhav@linux.ibm.com,
+	amachhiw@linux.vnet.ibm.com,
+	sshegde@linux.ibm.com,
+	jniethe5@gmail.com,
+	linuxppc-dev@lists.ozlabs.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 5/6] powerpc/pseries: Enforce hcall result buffer validity and size
+Date: Mon, 27 May 2024 11:57:55 -0400
+Message-ID: <20240527155808.3866107-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527155808.3866107-1-sashal@kernel.org>
 References: <20240527155808.3866107-1-sashal@kernel.org>
@@ -70,54 +71,80 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.160
 Content-Transfer-Encoding: 8bit
 
-From: Zheyu Ma <zheyuma97@gmail.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit c1115ddbda9c930fba0fdd062e7a8873ebaf898d ]
+[ Upstream commit ff2e185cf73df480ec69675936c4ee75a445c3e4 ]
 
-The driver should check whether the client provides the platform_data.
+plpar_hcall(), plpar_hcall9(), and related functions expect callers to
+provide valid result buffers of certain minimum size. Currently this
+is communicated only through comments in the code and the compiler has
+no idea.
 
-The following log reveals it:
+For example, if I write a bug like this:
 
-[   29.610324] BUG: KASAN: null-ptr-deref in kmemdup+0x30/0x40
-[   29.610730] Read of size 40 at addr 0000000000000000 by task bash/414
-[   29.612820] Call Trace:
-[   29.613030]  <TASK>
-[   29.613201]  dump_stack_lvl+0x56/0x6f
-[   29.613496]  ? kmemdup+0x30/0x40
-[   29.613754]  print_report.cold+0x494/0x6b7
-[   29.614082]  ? kmemdup+0x30/0x40
-[   29.614340]  kasan_report+0x8a/0x190
-[   29.614628]  ? kmemdup+0x30/0x40
-[   29.614888]  kasan_check_range+0x14d/0x1d0
-[   29.615213]  memcpy+0x20/0x60
-[   29.615454]  kmemdup+0x30/0x40
-[   29.615700]  lgdt3306a_probe+0x52/0x310
-[   29.616339]  i2c_device_probe+0x951/0xa90
+  long retbuf[PLPAR_HCALL_BUFSIZE]; // should be PLPAR_HCALL9_BUFSIZE
+  plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf, ...);
 
-Link: https://lore.kernel.org/linux-media/20220405095018.3993578-1-zheyuma97@gmail.com
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+This compiles with no diagnostics emitted, but likely results in stack
+corruption at runtime when plpar_hcall9() stores results past the end
+of the array. (To be clear this is a contrived example and I have not
+found a real instance yet.)
+
+To make this class of error less likely, we can use explicitly-sized
+array parameters instead of pointers in the declarations for the hcall
+APIs. When compiled with -Warray-bounds[1], the code above now
+provokes a diagnostic like this:
+
+error: array argument is too small;
+is of size 32, callee requires at least 72 [-Werror,-Warray-bounds]
+   60 |                 plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf,
+      |                 ^                                   ~~~~~~
+
+[1] Enabled for LLVM builds but not GCC for now. See commit
+    0da6e5fd6c37 ("gcc: disable '-Warray-bounds' for gcc-13 too") and
+    related changes.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240408-pseries-hvcall-retbuf-v1-1-ebc73d7253cf@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/lgdt3306a.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/include/asm/hvcall.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/lgdt3306a.c b/drivers/media/dvb-frontends/lgdt3306a.c
-index f6e83a38738dd..79174336faec2 100644
---- a/drivers/media/dvb-frontends/lgdt3306a.c
-+++ b/drivers/media/dvb-frontends/lgdt3306a.c
-@@ -2177,6 +2177,11 @@ static int lgdt3306a_probe(struct i2c_client *client,
- 	struct dvb_frontend *fe;
- 	int ret;
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 9bcf345cb208b..0e9d8a5eeb2dc 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -472,7 +472,7 @@ long plpar_hcall_norets_notrace(unsigned long opcode, ...);
+  * Used for all but the craziest of phyp interfaces (see plpar_hcall9)
+  */
+ #define PLPAR_HCALL_BUFSIZE 4
+-long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
++long plpar_hcall(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
  
-+	if (!client->dev.platform_data) {
-+		dev_err(&client->dev, "platform data is mandatory\n");
-+		return -EINVAL;
-+	}
-+
- 	config = kmemdup(client->dev.platform_data,
- 			 sizeof(struct lgdt3306a_config), GFP_KERNEL);
- 	if (config == NULL) {
+ /**
+  * plpar_hcall_raw: - Make a hypervisor call without calculating hcall stats
+@@ -486,7 +486,7 @@ long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
+  * plpar_hcall, but plpar_hcall_raw works in real mode and does not
+  * calculate hypervisor call statistics.
+  */
+-long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
++long plpar_hcall_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+ 
+ /**
+  * plpar_hcall9: - Make a pseries hypervisor call with up to 9 return arguments
+@@ -497,8 +497,8 @@ long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
+  * PLPAR_HCALL9_BUFSIZE to size the return argument buffer.
+  */
+ #define PLPAR_HCALL9_BUFSIZE 9
+-long plpar_hcall9(unsigned long opcode, unsigned long *retbuf, ...);
+-long plpar_hcall9_raw(unsigned long opcode, unsigned long *retbuf, ...);
++long plpar_hcall9(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
++long plpar_hcall9_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
+ 
+ struct hvcall_mpp_data {
+ 	unsigned long entitled_mem;
 -- 
 2.43.0
 
