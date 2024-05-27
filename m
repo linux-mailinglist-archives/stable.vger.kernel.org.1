@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-47103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B018D0C99
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AF38D0A78
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27DFC1F22667
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EAF81C2149A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFDB15FD04;
-	Mon, 27 May 2024 19:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B7115FA85;
+	Mon, 27 May 2024 19:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nf09C6eq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7THi77c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D367168C4;
-	Mon, 27 May 2024 19:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7AFDDA9;
+	Mon, 27 May 2024 19:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837679; cv=none; b=hiGzPyaRnMs7t1UxuA3yoikQngvyDIRKwA7kkCYT8ePSIT6qvISYOO9wAkZYfac323Vh0lFv3V0CFhNFp0pByvAs7gZ+PwXS8ByQp5vMWdpRMGDtjdyQzWPYjwkO33YA+UZQRn2MEYsJ9uEOENy6pPMweDp22/pt/+EvyrahwPo=
+	t=1716836411; cv=none; b=BAgNgi41ryP4/OsIFfq90QPCFo2QgYnw3fV9719Onlbw71b2BxOgsjJBpiCs5nlmfoLMF7ekx2M5Qvtof4oaB4iNf0c5Qx0ZySFRZSbYJH//+DJSuVo4+27N7fcejVgJyYKp4axEaDSgEQtMMR1koSMMrd+NNLefvzVorhe0ImY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837679; c=relaxed/simple;
-	bh=P3PXk84rzvp/6qEkg9InCL9tzP9sV/+hTsJLE2855r4=;
+	s=arc-20240116; t=1716836411; c=relaxed/simple;
+	bh=AvW51SVkt4ya0Rd9YoSLXMyLuA22UcjxExHSes/aRn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXavBY+K1mIVo5rlKNytpUOt3JKt5ZVMk1MavAeJ73DBi2IZwTnJ5WRvStve2Y7C1S5io4VFXMm4G7q9xPMzfpwvVkrp2UZa6l/lKyciOeYekZ9CS9drqhpn2sw1tNmwTiMSU8KkUjH/XqBXh7hCeyhAK1kqvhpjhgg0/cRjHvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nf09C6eq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A583FC2BBFC;
-	Mon, 27 May 2024 19:21:18 +0000 (UTC)
+	 MIME-Version; b=mNwevCX5tld9w4AEq/rUns9Tl3ZTns77uK5G0UPxpVsyCGCJWaDs9VOvO1ZLzuyx/Evvj9VsHcHyQnW3n3hvMbPeuwCalQ2t7Ba4tTQZkJyBeBBzmhKs7D8RnPASk6rHqphC/R8RKxqPVMjoMhLqHhsCG0x+6bk6yWTzQq3sjfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7THi77c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABBFC2BBFC;
+	Mon, 27 May 2024 19:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837679;
-	bh=P3PXk84rzvp/6qEkg9InCL9tzP9sV/+hTsJLE2855r4=;
+	s=korg; t=1716836411;
+	bh=AvW51SVkt4ya0Rd9YoSLXMyLuA22UcjxExHSes/aRn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nf09C6eq2J5rSQs5+odxae4tm2CV8ETqCgB2y2P+7Hh15ICqLsDULqHjIM2ziymWt
-	 +fJWo/Dat1Nx295LZJ4K2W+oa4b5fOY/+PgxfMPq1GmM55fU4jOA+2gVxjXkAa8UC1
-	 Fu3DTUOD9Vt/l01ovDYCo+QepQnvdOzVaDVZRS6U=
+	b=r7THi77cwb6Nae4gThuk9kZp628l1oVrT3rdIfTaX94Ul3AedFlAFmQI4zbQtW0x2
+	 XTW52s/71+PAuP17wYt5z8crQp8uya5vNFcs0L3JIiJmEgIYXHf1QRBWPy5cdYVC02
+	 qXgYAFfk2GxZ7fvQiGk2L2ua8ZLzMCLPHCkqLCWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 085/493] ALSA: emu10k1: make E-MU FPGA writes potentially more reliable
-Date: Mon, 27 May 2024 20:51:27 +0200
-Message-ID: <20240527185633.065708574@linuxfoundation.org>
+	Eric Biggers <ebiggers@google.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.9 041/427] KEYS: asymmetric: Add missing dependency on CRYPTO_SIG
+Date: Mon, 27 May 2024 20:51:28 +0200
+Message-ID: <20240527185605.532204335@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 15c7e87aa88f0ab2d51c2e2123b127a6d693ca21 ]
+commit dcaa86b904ea3761e62c849957dd0904e126bf4a upstream.
 
-We did not delay after the second strobe signal, so another immediately
-following access could potentially corrupt the written value.
+Make ASYMMETRIC_PUBLIC_KEY_SUBTYPE select CRYPTO_SIG to avoid build
+errors like the following, which were possible with
+CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y && CONFIG_CRYPTO_SIG=n:
 
-This is a purely speculative fix with no supporting evidence, but after
-taking out the spinlocks around the writes, it seems plausible that a
-modern processor could be actually too fast. Also, it's just cleaner to
-be consistent.
+    ld: vmlinux.o: in function `public_key_verify_signature':
+    (.text+0x306280): undefined reference to `crypto_alloc_sig'
+    ld: (.text+0x306300): undefined reference to `crypto_sig_set_pubkey'
+    ld: (.text+0x306324): undefined reference to `crypto_sig_verify'
+    ld: (.text+0x30636c): undefined reference to `crypto_sig_set_privkey'
 
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Message-ID: <20240428093716.3198666-7-oswald.buddenhagen@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 63ba4d67594a ("KEYS: asymmetric: Use new crypto interface without scatterlists")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/emu10k1/io.c | 1 +
+ crypto/asymmetric_keys/Kconfig |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/emu10k1/io.c b/sound/pci/emu10k1/io.c
-index 74df2330015f6..5cb8acf5b158c 100644
---- a/sound/pci/emu10k1/io.c
-+++ b/sound/pci/emu10k1/io.c
-@@ -285,6 +285,7 @@ static void snd_emu1010_fpga_write_locked(struct snd_emu10k1 *emu, u32 reg, u32
- 	outw(value, emu->port + A_GPIO);
- 	udelay(10);
- 	outw(value | 0x80 , emu->port + A_GPIO);  /* High bit clocks the value into the fpga. */
-+	udelay(10);
- }
- 
- void snd_emu1010_fpga_write(struct snd_emu10k1 *emu, u32 reg, u32 value)
--- 
-2.43.0
-
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -15,6 +15,7 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+ 	select MPILIB
+ 	select CRYPTO_HASH_INFO
+ 	select CRYPTO_AKCIPHER
++	select CRYPTO_SIG
+ 	select CRYPTO_HASH
+ 	help
+ 	  This option provides support for asymmetric public key type handling.
 
 
 
