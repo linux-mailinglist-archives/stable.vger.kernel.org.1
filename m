@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34398D0AB8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAD98D0CEA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2102A1C2144F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A61F0287625
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07979160784;
-	Mon, 27 May 2024 19:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F3D16079B;
+	Mon, 27 May 2024 19:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPQzCcrn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bvf3KFNN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAE515FCE0;
-	Mon, 27 May 2024 19:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4A515FD01;
+	Mon, 27 May 2024 19:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836526; cv=none; b=V614oGQt6QEV8YzM1eAvWgVHjs3BS6RMPXLkhFO2uOG7qsJs6/u4GgC6lh1MjCzQdLI+bfa451FGizGxA83dub3lkmyNv5qHJXJbzYPrcSDJ2S6FhD9WH0wFhZ8OsYJj7LAHLX+zAswXgtVcNIAYqrpJc3jXQik5FD4mqup/aPU=
+	t=1716837858; cv=none; b=b8Ugpfl1oKTBJR7/i2iMB3bznRTThdRD8WPXGvN9Yvux94A3eR/QRLoXL2cmUNTKk4vvxs2tNWtAjqclH/r0ZAQZ2RnAaLMIBfp0XwWrchY2UJkg/QRvbJQ0vObwKKcMZ6CrIoS2X9YxsJeSQFC/aCczeulKpsIHNVfL4C0QYGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836526; c=relaxed/simple;
-	bh=iwMue27QdhVv3EnLvsJ+Te/Ts0fnsRwRPFUsCWFOTp4=;
+	s=arc-20240116; t=1716837858; c=relaxed/simple;
+	bh=OWWVqqayg06pfjRtpmXlIZBKp+2SyuUD/e5Hw7QSjgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avshFvCN64FN4NQVw62ORmCCQsLmORNLTimTKn16ii8H1vwTXv5m7UH4gJ2syphVt5RztKRzYkzbjWyhjp2wUmxS2Sl8i7MwuclHz5m599T9uf4ee9zAsfhvNBbGHh5+64K4skupWQz7zNfqZ0R++OfPGu7i2R9+6Fqx5eEGQPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPQzCcrn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3634C2BBFC;
-	Mon, 27 May 2024 19:02:05 +0000 (UTC)
+	 MIME-Version; b=TpiFYSPxEIkx5vgrisHjWoGqkhc68iAwNXJWKUp0Z88qahAQE6oFPGW3PKJbpOMyasPi0+qRbD50norb7xJv32FEsLP8JsaMnNvnSA5UeJipKVWxS+MKUfzLBEc/yDfzhhqzZFRI8RWKwtcIgJRoSgRUCNiJbvS1hn24XSdEoWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bvf3KFNN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9969C2BBFC;
+	Mon, 27 May 2024 19:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836526;
-	bh=iwMue27QdhVv3EnLvsJ+Te/Ts0fnsRwRPFUsCWFOTp4=;
+	s=korg; t=1716837858;
+	bh=OWWVqqayg06pfjRtpmXlIZBKp+2SyuUD/e5Hw7QSjgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPQzCcrnw/mWiutnwe+kAmZqboIbJSJb4m3Vi3ZlROsS8rr/ySYS9J/gixvTs0VKI
-	 M9WGD/B04Vj+wXrp0G0VDMDbmcpwIlIfyLItlk8CF/p/nAbRvulu/cwkZEXOISRTw6
-	 lQ+H4WMQhJqrPzhmF+obCcvg115K/iQD0bOzs5MM=
+	b=Bvf3KFNNsN7lwlpghvMObAnio+xWTA2ijiMFEALnzvWhL7snH15/QPzwHaZWacc/H
+	 PgXs8byWS9GovyWQDJRhN7o6EgUIGq7jDR6enAkeqyDaae5WVTcXR0m+6eo7JizPux
+	 AaaWxR1IkRhc39R2WeozpK1eV1yK6pQdAkEy+dTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 086/427] crypto: qat - specify firmware files for 402xx
+Subject: [PATCH 6.8 131/493] maple_tree: Add mtree_alloc_cyclic()
 Date: Mon, 27 May 2024 20:52:13 +0200
-Message-ID: <20240527185609.786773961@linuxfoundation.org>
+Message-ID: <20240527185634.766051614@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit a3dc1f2b6b932a13f139d3be3c765155542c1070 ]
+[ Upstream commit 9b6713cc75229f25552c643083cbdbfb771e5bca ]
 
-The 4xxx driver can probe 4xxx and 402xx devices. However, the driver
-only specifies the firmware images required for 4xxx.
-This might result in external tools missing these binaries, if required,
-in the initramfs.
+I need a cyclic allocator for the simple_offset implementation in
+fs/libfs.c.
 
-Specify the firmware image used by 402xx with the MODULE_FIRMWARE()
-macros in the 4xxx driver.
-
-Fixes: a3e8c919b993 ("crypto: qat - add support for 402xx devices")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/170820144179.6328.12838600511394432325.stgit@91.116.238.104.host.secureserver.net
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 23cdd0eed3f1 ("libfs: Fix simple_offset_rename_exchange()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_4xxx/adf_drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/maple_tree.h |  7 +++
+ lib/maple_tree.c           | 93 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 100 insertions(+)
 
-diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-index 9762f2bf7727f..d26564cebdec4 100644
---- a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-@@ -197,7 +197,9 @@ module_pci_driver(adf_driver);
- MODULE_LICENSE("Dual BSD/GPL");
- MODULE_AUTHOR("Intel");
- MODULE_FIRMWARE(ADF_4XXX_FW);
-+MODULE_FIRMWARE(ADF_402XX_FW);
- MODULE_FIRMWARE(ADF_4XXX_MMP);
-+MODULE_FIRMWARE(ADF_402XX_MMP);
- MODULE_DESCRIPTION("Intel(R) QuickAssist Technology");
- MODULE_VERSION(ADF_DRV_VERSION);
- MODULE_SOFTDEP("pre: crypto-intel_qat");
+diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
+index b3d63123b945b..a53ad4dabd7e8 100644
+--- a/include/linux/maple_tree.h
++++ b/include/linux/maple_tree.h
+@@ -171,6 +171,7 @@ enum maple_type {
+ #define MT_FLAGS_LOCK_IRQ	0x100
+ #define MT_FLAGS_LOCK_BH	0x200
+ #define MT_FLAGS_LOCK_EXTERN	0x300
++#define MT_FLAGS_ALLOC_WRAPPED	0x0800
+ 
+ #define MAPLE_HEIGHT_MAX	31
+ 
+@@ -319,6 +320,9 @@ int mtree_insert_range(struct maple_tree *mt, unsigned long first,
+ int mtree_alloc_range(struct maple_tree *mt, unsigned long *startp,
+ 		void *entry, unsigned long size, unsigned long min,
+ 		unsigned long max, gfp_t gfp);
++int mtree_alloc_cyclic(struct maple_tree *mt, unsigned long *startp,
++		void *entry, unsigned long range_lo, unsigned long range_hi,
++		unsigned long *next, gfp_t gfp);
+ int mtree_alloc_rrange(struct maple_tree *mt, unsigned long *startp,
+ 		void *entry, unsigned long size, unsigned long min,
+ 		unsigned long max, gfp_t gfp);
+@@ -499,6 +503,9 @@ void *mas_find_range(struct ma_state *mas, unsigned long max);
+ void *mas_find_rev(struct ma_state *mas, unsigned long min);
+ void *mas_find_range_rev(struct ma_state *mas, unsigned long max);
+ int mas_preallocate(struct ma_state *mas, void *entry, gfp_t gfp);
++int mas_alloc_cyclic(struct ma_state *mas, unsigned long *startp,
++		void *entry, unsigned long range_lo, unsigned long range_hi,
++		unsigned long *next, gfp_t gfp);
+ 
+ bool mas_nomem(struct ma_state *mas, gfp_t gfp);
+ void mas_pause(struct ma_state *mas);
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index d70db05757091..fe6092a1dc353 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -4290,6 +4290,56 @@ static inline void *mas_insert(struct ma_state *mas, void *entry)
+ 
+ }
+ 
++/**
++ * mas_alloc_cyclic() - Internal call to find somewhere to store an entry
++ * @mas: The maple state.
++ * @startp: Pointer to ID.
++ * @range_lo: Lower bound of range to search.
++ * @range_hi: Upper bound of range to search.
++ * @entry: The entry to store.
++ * @next: Pointer to next ID to allocate.
++ * @gfp: The GFP_FLAGS to use for allocations.
++ *
++ * Return: 0 if the allocation succeeded without wrapping, 1 if the
++ * allocation succeeded after wrapping, or -EBUSY if there are no
++ * free entries.
++ */
++int mas_alloc_cyclic(struct ma_state *mas, unsigned long *startp,
++		void *entry, unsigned long range_lo, unsigned long range_hi,
++		unsigned long *next, gfp_t gfp)
++{
++	unsigned long min = range_lo;
++	int ret = 0;
++
++	range_lo = max(min, *next);
++	ret = mas_empty_area(mas, range_lo, range_hi, 1);
++	if ((mas->tree->ma_flags & MT_FLAGS_ALLOC_WRAPPED) && ret == 0) {
++		mas->tree->ma_flags &= ~MT_FLAGS_ALLOC_WRAPPED;
++		ret = 1;
++	}
++	if (ret < 0 && range_lo > min) {
++		ret = mas_empty_area(mas, min, range_hi, 1);
++		if (ret == 0)
++			ret = 1;
++	}
++	if (ret < 0)
++		return ret;
++
++	do {
++		mas_insert(mas, entry);
++	} while (mas_nomem(mas, gfp));
++	if (mas_is_err(mas))
++		return xa_err(mas->node);
++
++	*startp = mas->index;
++	*next = *startp + 1;
++	if (*next == 0)
++		mas->tree->ma_flags |= MT_FLAGS_ALLOC_WRAPPED;
++
++	return ret;
++}
++EXPORT_SYMBOL(mas_alloc_cyclic);
++
+ static __always_inline void mas_rewalk(struct ma_state *mas, unsigned long index)
+ {
+ retry:
+@@ -6443,6 +6493,49 @@ int mtree_alloc_range(struct maple_tree *mt, unsigned long *startp,
+ }
+ EXPORT_SYMBOL(mtree_alloc_range);
+ 
++/**
++ * mtree_alloc_cyclic() - Find somewhere to store this entry in the tree.
++ * @mt: The maple tree.
++ * @startp: Pointer to ID.
++ * @range_lo: Lower bound of range to search.
++ * @range_hi: Upper bound of range to search.
++ * @entry: The entry to store.
++ * @next: Pointer to next ID to allocate.
++ * @gfp: The GFP_FLAGS to use for allocations.
++ *
++ * Finds an empty entry in @mt after @next, stores the new index into
++ * the @id pointer, stores the entry at that index, then updates @next.
++ *
++ * @mt must be initialized with the MT_FLAGS_ALLOC_RANGE flag.
++ *
++ * Context: Any context.  Takes and releases the mt.lock.  May sleep if
++ * the @gfp flags permit.
++ *
++ * Return: 0 if the allocation succeeded without wrapping, 1 if the
++ * allocation succeeded after wrapping, -ENOMEM if memory could not be
++ * allocated, -EINVAL if @mt cannot be used, or -EBUSY if there are no
++ * free entries.
++ */
++int mtree_alloc_cyclic(struct maple_tree *mt, unsigned long *startp,
++		void *entry, unsigned long range_lo, unsigned long range_hi,
++		unsigned long *next, gfp_t gfp)
++{
++	int ret;
++
++	MA_STATE(mas, mt, 0, 0);
++
++	if (!mt_is_alloc(mt))
++		return -EINVAL;
++	if (WARN_ON_ONCE(mt_is_reserved(entry)))
++		return -EINVAL;
++	mtree_lock(mt);
++	ret = mas_alloc_cyclic(&mas, startp, entry, range_lo, range_hi,
++			       next, gfp);
++	mtree_unlock(mt);
++	return ret;
++}
++EXPORT_SYMBOL(mtree_alloc_cyclic);
++
+ int mtree_alloc_rrange(struct maple_tree *mt, unsigned long *startp,
+ 		void *entry, unsigned long size, unsigned long min,
+ 		unsigned long max, gfp_t gfp)
 -- 
 2.43.0
 
