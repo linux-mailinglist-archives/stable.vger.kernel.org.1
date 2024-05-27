@@ -1,114 +1,147 @@
-Return-Path: <stable+bounces-47515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB468D0FAC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 23:58:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EE78D101A
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 00:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C21DFB21B9C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:58:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 565251F21C19
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 22:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B0B16191B;
-	Mon, 27 May 2024 21:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901301667FA;
+	Mon, 27 May 2024 22:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJLGt255"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="IGHQr9is"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781D3179A8;
-	Mon, 27 May 2024 21:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC93D52F6D
+	for <stable@vger.kernel.org>; Mon, 27 May 2024 22:14:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716847078; cv=none; b=XE73DQ4ftwAWfSGfu3Qq6blvHIB9+c/zGHtvF6riYeJpnf4M/s4+/1WNhhspreYxsXf3PhT2NNY3MNR7LV3691Nkrb6HEkAsEChpgZhITOsbAbWEbyKbaw/mRRZrJfGOQxReDq0TqWt/oUsZUP4qF5lkH0ckxUiVMdk2Ug/uYSs=
+	t=1716848071; cv=none; b=EEGboNhMpsBD07ftPnaVK3qDCwSIYEMdpqMuAnPysFTxONfA5d43kFDho3iLcaNt8JoesQqTiWnL4E0cdRAx3kdTDBT52lZl2mx4LxedsD9Kq2Pq/ACP1z4PYhI9c2Bk39u15TQN+A3eGYFNdbkaJiEw+1/8nKOap4Cu7qaZwh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716847078; c=relaxed/simple;
-	bh=tFpudmb7utFLtp1DrkxJwkGe4WVa+1FmsNU710JrlLA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=ol2aQRV4DAMttlcELRC15lCr9nCdJY55fU2K3WZw5PSpQc6tWwGGxDvtXKa5LwnvUWB86IREyOvsbsurQWzfdLKN4TamjoZaLN0gLqLGL21mU0AgRMi+VVVG4orXBumDxrWKaV9R3ft/GVN9WwOmXuaz4upWqkMcan4McmqzocA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJLGt255; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6f6bddf57f6so189383b3a.0;
-        Mon, 27 May 2024 14:57:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716847077; x=1717451877; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4aEY/VZ0kOW3TO79bbaxiQdw+PPKgHYYJ4mnExDE3Dw=;
-        b=dJLGt255ljxAq+2FwTxgGtZYFDiV9WE+r2qKq1wy686VH9pzYeglM91MKop/hz2WtA
-         //KS2yKqkwoextAghk1hj0WMDCYbHHYFo8Uv+07kP5W1/gvknRBYzGoWnTSkzu1OlEQD
-         9lpBlucComTyUmouD314ssoG4gk+nmzp8StB4znZv7YS2HkhUw7VJsXkDPPGnFcwmt6S
-         Qd9BArNnSWyB3torwmE6nWx6idOKOUe4HaDE2dMjhSRmQcmbvWKx6Jnmu+fUuKXd0kda
-         Vd6+Dg9ZV/7qFJNks7Cb+uehxsTfsb/1gs1Z2qcuuGo0wLVz6nfULpdMzpw8NPOGLdwm
-         4d4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716847077; x=1717451877;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4aEY/VZ0kOW3TO79bbaxiQdw+PPKgHYYJ4mnExDE3Dw=;
-        b=DKbLoqpTfpxu6naZOp6W3b9EJhlN7ARgGOHs7p9UDu6beDaiX6SU8MTYzHQwJwlLvg
-         vbttoX+wYuxyC2/DmBqJvkuFz0S6NXS7J+vmxDvWSMTY6Jemud/cRp+8391bboqLQslH
-         AZj+ipejblaI0HzWKmHFhJqLOnWM4Kv0Tj1HzzVykFf55L2QDO80n6FCNXlE6J2QFvUs
-         gA+AHGvkopie0AGFyL78w8vo2nkh/H1egMjxAP8l8mb3C+1CU4JN396j2wGFnMY8n0Wl
-         BtA3fyk+638WIPu+P2d/y2/S0M8c/Vh2Y+axgqTLkSeaNDqi45bdUCjpl7HBR3rfuIls
-         W0tA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeOKr6H/Y8BvXilg9c2VPR0OUAdsZKoWl4DcFWcjhGhZ0000J2ICeyUIyU0oHTjHv51edOsP3CKC3K95fosTuifYXN5XteW4QT7qe+90vM+iZxKLvb3PO+N4e8GBqFNxZGqH/x
-X-Gm-Message-State: AOJu0Yz1hn7loPYi/DCtBOH/DJJ0D4zInSsuGNswe0Z8iqgZXyZfpbC7
-	Ojb9EG2OmhQpn/LwlOyl7rI00EMsGo8ONL04o0S4SRpy++OQrelc
-X-Google-Smtp-Source: AGHT+IHyyK9R+xE+MtpfI+UAMFtrboJJduXIZ818GnkIr7zOYph0pzCdXWMyUAy3gUzpvIq3+Gb5Dw==
-X-Received: by 2002:a05:6a00:330d:b0:6f8:d499:2d41 with SMTP id d2e1a72fcca58-6f8f3f8ba84mr12440692b3a.24.1716847076494;
-        Mon, 27 May 2024 14:57:56 -0700 (PDT)
-Received: from [10.83.3.140] (177.204.11.224.dynamic.adsl.gvt.net.br. [177.204.11.224])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-701b2219980sm508796b3a.46.2024.05.27.14.57.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 May 2024 14:57:56 -0700 (PDT)
-Message-ID: <bf02d65d-876f-4a90-84b5-595707659fb0@gmail.com>
-Date: Mon, 27 May 2024 18:57:52 -0300
+	s=arc-20240116; t=1716848071; c=relaxed/simple;
+	bh=HXu8FO1ScNVR3jbl9HR/Vt1CMWulFYMmliuYqg76wkw=;
+	h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c9WX+C+1Xp35WJIP6phzmUFFzaQaoTzKGwTvbYVdpxL/zepNGA1oYpUquGhwijlzKnKvWfFpaEk/brComomOJAiXHY2T0RPY336crDkXSRqFzngYQhfUHwMDdHdTHJNIMBR2eDdN2JAixQdyjFZ9vaqNRpM4sc+eTJXoVUK/pB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=IGHQr9is; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+X-Envelope-To: heiko@sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1716848065;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YnZ/NUIKzPnirf4nzS8FsKuGvYh2MR991UL4fFHPwO0=;
+	b=IGHQr9iszj6g7WZYaa2WxnCqObS9wjX+wmrILoqd0qwIfKD7ZV1Gy9wcIX0s3yRYOUw9g7
+	spQvOraVGUghBymnz2UaYZZQa1Qh0T86Cd5SIYEb5lsQTuMQxsKPiZsAMz0PR8dsXNb6u4
+	saUafCkEbA+yf0Ftk/AYo1iPgdym15rTqitQNvFfUXMANtcUR9UquykghQKNfFUuzJ0XqS
+	tC0j1hpFWd1P82j3ZKHHH1kMDiR+26hAgjlFdTV4ATw4Yb6Ebpe/Iv2f3GX+gVIG5/AuPJ
+	tK/B/po651uYGQ8hw3R0zls/uBmcy17wC6qxD8tZUf+sWgGMp9RTi/uL9BITpA==
+X-Envelope-To: stable@vger.kernel.org
+X-Envelope-To: hjc@rock-chips.com
+X-Envelope-To: andy.yan@rock-chips.com
+X-Envelope-To: maarten.lankhorst@linux.intel.com
+X-Envelope-To: mripard@kernel.org
+X-Envelope-To: tzimmermann@suse.de
+X-Envelope-To: airlied@gmail.com
+X-Envelope-To: daniel@ffwll.ch
+X-Envelope-To: dri-devel@lists.freedesktop.org
+X-Envelope-To: linux-arm-kernel@lists.infradead.org
+X-Envelope-To: linux-rockchip@lists.infradead.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+Date: Mon, 27 May 2024 19:13:59 -0300
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+Subject: Re: [PATCH v2 1/2] drm/rockchip: vop: clear DMA stop bit upon vblank
+ on RK3066
+To: Heiko =?iso-8859-1?q?St=FCbner?= <heiko@sntech.de>
+Cc: stable@vger.kernel.org, Sandy Huang <hjc@rock-chips.com>, Andy Yan
+	<andy.yan@rock-chips.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>, dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Message-Id: <BF06ES.TD22854ZPLB92@packett.cool>
+In-Reply-To: <1817371.3VsfAaAtOV@diego>
+References: <2024051930-canteen-produce-1ba7@gregkh>
+	<20240527071736.21784-1-val@packett.cool> <1817371.3VsfAaAtOV@diego>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Gustavo Brondani Schenkel <gustavo.schenkel@gmail.com>
-Subject: Issue with f2fs on kernel 6.9.x
-To: linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <2024052527-panama-playgroup-899a@gregkh>
-Content-Language: en-US
-In-Reply-To: <2024052527-panama-playgroup-899a@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 
-Hi,
-since upgrade to Kernel 6.9 I am getting Issues when booting using f2fs.
-If I am correct, I am receiving `fs error: invalid_blkaddr` in two 
-distinct drives, one nvme, and other sata.
-Each reboot the fsck runs to correct this suppose error.
-If I downgrade to Kernel 6.6.29, on the first boot, fsck runs just once, 
-than after reboot is normal.
-I used 6.9.0, but in 6.9.1 it took my attention because I don't reboot 
-often. One 6.9.2 the Issue persist.
-Since I didn't find nothing about issues on kernel messages I am trying 
-reach you.
 
-I use Slackware Linux 15.0-current, and debug flags are disabled by 
-default, but if you needed,
-I can rebuilt the kernel with the flags you say are needed, to find what 
-are happening.
 
-PS: I didn't find any better way to report this issue, said that, sorry 
-if this is the wrong way to do so.
+On Mon, May 27 2024 at 22:43:18 +02:00:00, Heiko St=FCbner=20
+<heiko@sntech.de> wrote:
+> Hi Val,
+>=20
+> Am Montag, 27. Mai 2024, 09:16:33 CEST schrieb Val Packett:
+>>  On the RK3066, there is a bit that must be cleared, otherwise
+>>  the picture does not show up
+>> on the display (at least for RGB).
+>>=20
+>>  Fixes: f4a6de8 ("drm: rockchip: vop: add rk3066 vop definitions")
+>>  Cc: stable@vger.kernel.org
+>>  Signed-off-by: Val Packett <val@packett.cool>
+>>  ---
+>>  v2: doing this on vblank makes more sense; added fixes tag
+>=20
+> can you give a rationale for this please?
+>=20
+> I.e. does this dma-stop bit need to be set on each vblank that happens
+> to push this frame to the display somehow?
 
--- 
-Gustavo B. Schenkel
-System Analyst
-B.Sc(IT), MBA(Banking)
+
+The only things I'm 100% sure about:
+
+- that bit is called dma_stop in the Android kernel's header;
+- without ever setting that bit to 1, it was getting set to 1 by the=20
+chip itself, as logging the register on flush was showing a 1 in that=20
+position (it was the only set bit - I guess others aren't readable=20
+after cfg_done?);
+- without clearing it "between" frames, the whole screen is always=20
+filled with noise, the picture is not visible.
+
+The rest is at least a bit (ha) speculative:
+
+As I understand from what the name implies, the hardware sets it to=20
+indicate that it has scanned out the frame and is waiting for=20
+acknowledgment (clearing) to be able to scan out the next frame. I=20
+guess it's a redundant synchronization mechanism that was removed in=20
+later iterations of the VOP hardware block.
+
+I've been trying to see if moving where I clear the bit affects the=20
+sort-of-tearing-but-vertical glitches that sometimes happen, especially=20
+early on after the system has just booted, but that seems to be=20
+completely unrelated pixel clock craziness (the Android kernel runs the=20
+screen at 66 fps, interestingly).
+
+I'm fairly confident that both places are "correct". The reason I'm=20
+more on the side of vblank now is that it made logical sense to me when=20
+I thought about it more: acknowledging that the frame has been scanned=20
+out is a reaction to the frame having been scanned out. It's a=20
+consequence of *that* that the acknowledgment is required for the next=20
+frame to be drawn.
+
+Unless we can get the opinion of someone closely familiar with this=20
+decade-old hardware, we only have this reasoning to go off of :)
+
+~val
+>=20
+
 
 
