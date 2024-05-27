@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-47289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD47F8D0D63
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8098D0B61
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 697E1280D31
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02B1D1F2210F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C6116079A;
-	Mon, 27 May 2024 19:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77811160783;
+	Mon, 27 May 2024 19:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvolhgX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2dRhAa8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0C1262BE;
-	Mon, 27 May 2024 19:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C4726AF2;
+	Mon, 27 May 2024 19:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838157; cv=none; b=Z9Qn4NT9ey1vs09kCKbK2LNc55W0Dg8gVPRQUTSzVggIyezlxtt55QFfmBZHtHE30Ycuz/wVX/2vZqSLDBmo4axo5JKwyhsNVAajdT+pkFHiL3N+ssx68Iw72dozLF9cNX+pzljYJ+O89wc0S3lBnIOmo7qz1vCHoixZCG6E7rk=
+	t=1716836926; cv=none; b=ug0zTj3DeDqOBjrl+/EFVxZIy0EizbUNRZyoLbpjmsCO75cHVzAGm1HrtkVHX0MudURo5qhksj9iNhjDPNL4zArMFdWTDK7um59K0qxtFnwPpvgqWvkz/zfwH6mXjmb8LduJVp00GeIegs/OVSZRuDThSao3IPYX05YF6rshyKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838157; c=relaxed/simple;
-	bh=GH25DuIXRs1EwL4uTVmTDb7CwPgak/nK+wIbHf0OejA=;
+	s=arc-20240116; t=1716836926; c=relaxed/simple;
+	bh=2GG6jCS1q5MAI/roPd0MaKkY20DYKGy1bve7VGWLr0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mykvNJIspAF/YB+G/R29X1X3Pa03QCqI0wi/2LrokwDteXLdrevZLrZnK5zuyehNioC10nmQZ+oDMn1uCyNU6hugYcfauquDNTOq24aWfOMf/yVhbwCWA4i/Q12Eq30KvvvZ5MYcICiUlx++STWMXhe6taXxcdxNNCa3jiVmSRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvolhgX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1478FC2BBFC;
-	Mon, 27 May 2024 19:29:16 +0000 (UTC)
+	 MIME-Version; b=BWhd6BXlIqw2UMIMBN5MuV2Cd8rSjfCFRs4PhL6lNCVKFD3YajZZOMjL2bWLz5x0mh78f+czfA6okMVeTYVIGn1V3ZUDAsK+0VAh3pwdkBRpi6uasUKe7qAnJvmZswLwkSeSnLLZ3ZEiRUUCx6oUoRg/mlQ6dCvskeREhDy70no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2dRhAa8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD536C2BBFC;
+	Mon, 27 May 2024 19:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838157;
-	bh=GH25DuIXRs1EwL4uTVmTDb7CwPgak/nK+wIbHf0OejA=;
+	s=korg; t=1716836926;
+	bh=2GG6jCS1q5MAI/roPd0MaKkY20DYKGy1bve7VGWLr0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvolhgX/1IZAe8P8MfxPZpC+mgbtzvbDUgJtVM4k51Tpq5XCxOVnfrVUZknrgL4P1
-	 4ic8DpzToyOXPE947lPDwY55wQ9QBloeWUyvZkFz+x3DlKftbmACeq4WbwrxLj0JML
-	 Z+PvqGwnj8bUWIXlzazpAQ15Qlpqb4/wfOPwEHnw=
+	b=Q2dRhAa8Nb6SPkFszo+6eHxnuZYdtoWrwpKtsZFUxuVJNqYp2S90mqTeGLW7R8G+a
+	 vBkg+FbHzOuXKJXa0LO5N4+/vtTmi+Xniwfor1buUhu4UrgIGUa2+dR65qVt02+WfV
+	 YCSLZs4rBprJYDbuW3D0NWSDXNrgAdVi6u+kV5r8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 288/493] scsi: qla2xxx: Fix debugfs output for fw_resource_count
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Dan Nowlin <dan.nowlin@intel.com>,
+	Paul Greenwalt <paul.greenwalt@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.9 243/427] ice: Fix package download algorithm
 Date: Mon, 27 May 2024 20:54:50 +0200
-Message-ID: <20240527185639.737957307@linuxfoundation.org>
+Message-ID: <20240527185625.262583602@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +67,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Himanshu Madhani <himanshu.madhani@oracle.com>
+From: Dan Nowlin <dan.nowlin@intel.com>
 
-[ Upstream commit 998d09c5ef6183bd8137d1a892ba255b15978bb4 ]
+[ Upstream commit 6d51d44ecddb5c2962688ef06e55e4fbc949f04a ]
 
-DebugFS output for fw_resource_count shows:
+Previously, the driver assumed that all signature segments would contain
+one or more buffers to download. In the future, there will be signature
+segments that will contain no buffers to download.
 
-estimate exchange used[0] high water limit [1945] n        estimate iocb2 used [0] high water limit [5141]
-        estimate exchange2 used[0] high water limit [1945]
+Correct download flow to allow for signature segments that have zero
+download buffers and skip the download in this case.
 
-Which shows incorrect display due to missing newline in seq_print().
-
-[mkp: fix checkpatch warning about space before newline]
-
-Fixes: 5f63a163ed2f ("scsi: qla2xxx: Fix exchange oversubscription for management commands")
-Signed-off-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Link: https://lore.kernel.org/r/20240426020056.3639406-1-himanshu.madhani@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 3cbdb0343022 ("ice: Add support for E830 DDP package segment")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Dan Nowlin <dan.nowlin@intel.com>
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240508171908.2760776-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_dfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_ddp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
-index 55ff3d7482b3e..a1545dad0c0ce 100644
---- a/drivers/scsi/qla2xxx/qla_dfs.c
-+++ b/drivers/scsi/qla2xxx/qla_dfs.c
-@@ -274,7 +274,7 @@ qla_dfs_fw_resource_cnt_show(struct seq_file *s, void *unused)
- 		seq_printf(s, "Driver: estimate iocb used [%d] high water limit [%d]\n",
- 			   iocbs_used, ha->base_qpair->fwres.iocbs_limit);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
+index fc91c4d411863..4df561d64bc38 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ddp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
+@@ -1424,14 +1424,14 @@ ice_dwnld_sign_and_cfg_segs(struct ice_hw *hw, struct ice_pkg_hdr *pkg_hdr,
+ 		goto exit;
+ 	}
  
--		seq_printf(s, "estimate exchange used[%d] high water limit [%d] n",
-+		seq_printf(s, "estimate exchange used[%d] high water limit [%d]\n",
- 			   exch_used, ha->base_qpair->fwres.exch_limit);
+-	conf_idx = le32_to_cpu(seg->signed_seg_idx);
+-	start = le32_to_cpu(seg->signed_buf_start);
+ 	count = le32_to_cpu(seg->signed_buf_count);
+-
+ 	state = ice_download_pkg_sig_seg(hw, seg);
+-	if (state)
++	if (state || !count)
+ 		goto exit;
  
- 		if (ql2xenforce_iocb_limit == 2) {
++	conf_idx = le32_to_cpu(seg->signed_seg_idx);
++	start = le32_to_cpu(seg->signed_buf_start);
++
+ 	state = ice_download_pkg_config_seg(hw, pkg_hdr, conf_idx, start,
+ 					    count);
+ 
 -- 
 2.43.0
 
