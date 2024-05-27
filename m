@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-46617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3118D0A7A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E058D0AC0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DA3F1C2142A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7403A280D67
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2566F1607A0;
-	Mon, 27 May 2024 19:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17B21667C8;
+	Mon, 27 May 2024 19:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6PlT948"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff6dEIhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8319DDA9;
-	Mon, 27 May 2024 19:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C7F167DA7;
+	Mon, 27 May 2024 19:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836416; cv=none; b=lUwwjmlwKRX0+OP1z6n/fcj/s5hyrAdc0MGGeH/UB3sRSyBD2f1+U4ae9sBfPvjcVSjxp9Rs0xGS/PPn0sIRCkxQ55Gnd+funsEgWg3LGW7PdSTitwFvggCtVf9wjh35Rsz+rxiZPsjI67K90+lWgvyJcOonv18D3yPfYb6dNhU=
+	t=1716836548; cv=none; b=PbawYRzc4oDLxy2yjSdPzXi6JtGNddzu+fHKabmLMG8XUiZkh+XkaP6MB9uI1hrTpkownx3k5ME7E9ljBpKkYy6P2ELdkbO992owW5fa79c/Qy4+qCFSWhTBuoF9mYP+Qtp8x2Y5Z+fWvjiI/8EvkNdNw29FpCqW3cQl6AK10cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836416; c=relaxed/simple;
-	bh=/6tKymXw2m2ssGd4pq/B8BWq4Jo+9WalU4EESsvT40Y=;
+	s=arc-20240116; t=1716836548; c=relaxed/simple;
+	bh=Q8rGwDCbpnsZtwdZfNNUhihYERVC8E+ci1JntanBIPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CDyND8T/W1d2c5RStNWPWIapLjRfiAlkC1hAlAHs1DHgOM1S/6LGpanSqscnB4DB/gpyuzRBm0OV80NBi8E9H4KYIk+Cfx0U5T9nhgDS6FaPtnlKoVZ/RBJHTW39Y2WHpfGqIlxuIdnezxOzeBUL3OCvoF8UKeKI1Inu6ILgVnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6PlT948; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19347C2BBFC;
-	Mon, 27 May 2024 19:00:15 +0000 (UTC)
+	 MIME-Version; b=MSDwornYfAQQlqWokUPVyVn6g/QFBDnkcNJ3BqJOTn82JPQ2hbgHDq5FYnmt+ykYOk7X99cebi4gbtMpeA29QeOEk4OCQp8RDADWzd5zhZp6PROWl1cNhYmwOCY5dYVfiXXDsAO/LGm3ZGhqLF7tP1SAdC3mrZ7WdjYCt4AW99c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff6dEIhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353F4C2BBFC;
+	Mon, 27 May 2024 19:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836416;
-	bh=/6tKymXw2m2ssGd4pq/B8BWq4Jo+9WalU4EESsvT40Y=;
+	s=korg; t=1716836546;
+	bh=Q8rGwDCbpnsZtwdZfNNUhihYERVC8E+ci1JntanBIPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6PlT948rfbdtZCRERqjdDYvHceHlh2ChYOaRCydgtuN5JTLc7pOwwP88Gvtkq78o
-	 mlOfePzCZ3ngk7OusU52hcMEY9O6EF5K99Y7Eb4lGvhIU56ZNLmoSurX9Dhi/lCEpu
-	 YdekXaWJaoRlcSLkG375mPL1+So8BVZe8wLoG3dc=
+	b=Ff6dEIhHP6naks+hvRORjUxDSqegq5RWAJp6X1VURntQNFrphheXI6rbyg6YzpFn1
+	 HJXnncjOB67A/+zmtGQuea4epFl0B587cuPcJcxMN+7lAYiewE8FE7XHTj1y+3j9vM
+	 zfLsN2SiPxPWJdOslUTPlGimi54Y6vt8OnzlbeLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 043/427] openpromfs: finish conversion to the new mount API
-Date: Mon, 27 May 2024 20:51:30 +0200
-Message-ID: <20240527185605.781596735@linuxfoundation.org>
+Subject: [PATCH 6.9 044/427] crypto: bcm - Fix pointer arithmetic
+Date: Mon, 27 May 2024 20:51:31 +0200
+Message-ID: <20240527185605.878908284@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -66,56 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 8f27829974b025d4df2e78894105d75e3bf349f0 ]
+[ Upstream commit 2b3460cbf454c6b03d7429e9ffc4fe09322eb1a9 ]
 
-The original mount API conversion inexplicably left out the change
-from ->remount_fs to ->reconfigure; do that now.
+In spu2_dump_omd() value of ptr is increased by ciph_key_len
+instead of hash_iv_len which could lead to going beyond the
+buffer boundaries.
+Fix this bug by changing ciph_key_len to hash_iv_len.
 
-Fixes: 7ab2fa7693c3 ("vfs: Convert openpromfs to use the new mount API")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/90b968aa-c979-420f-ba37-5acc3391b28f@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/openpromfs/inode.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/crypto/bcm/spu2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/openpromfs/inode.c b/fs/openpromfs/inode.c
-index 4a0779e3ef792..a7b527ea50d3c 100644
---- a/fs/openpromfs/inode.c
-+++ b/fs/openpromfs/inode.c
-@@ -355,10 +355,10 @@ static struct inode *openprom_iget(struct super_block *sb, ino_t ino)
- 	return inode;
- }
+diff --git a/drivers/crypto/bcm/spu2.c b/drivers/crypto/bcm/spu2.c
+index 07989bb8c220a..3fdc64b5a65e7 100644
+--- a/drivers/crypto/bcm/spu2.c
++++ b/drivers/crypto/bcm/spu2.c
+@@ -495,7 +495,7 @@ static void spu2_dump_omd(u8 *omd, u16 hash_key_len, u16 ciph_key_len,
+ 	if (hash_iv_len) {
+ 		packet_log("  Hash IV Length %u bytes\n", hash_iv_len);
+ 		packet_dump("  hash IV: ", ptr, hash_iv_len);
+-		ptr += ciph_key_len;
++		ptr += hash_iv_len;
+ 	}
  
--static int openprom_remount(struct super_block *sb, int *flags, char *data)
-+static int openpromfs_reconfigure(struct fs_context *fc)
- {
--	sync_filesystem(sb);
--	*flags |= SB_NOATIME;
-+	sync_filesystem(fc->root->d_sb);
-+	fc->sb_flags |= SB_NOATIME;
- 	return 0;
- }
- 
-@@ -366,7 +366,6 @@ static const struct super_operations openprom_sops = {
- 	.alloc_inode	= openprom_alloc_inode,
- 	.free_inode	= openprom_free_inode,
- 	.statfs		= simple_statfs,
--	.remount_fs	= openprom_remount,
- };
- 
- static int openprom_fill_super(struct super_block *s, struct fs_context *fc)
-@@ -415,6 +414,7 @@ static int openpromfs_get_tree(struct fs_context *fc)
- 
- static const struct fs_context_operations openpromfs_context_ops = {
- 	.get_tree	= openpromfs_get_tree,
-+	.reconfigure	= openpromfs_reconfigure,
- };
- 
- static int openpromfs_init_fs_context(struct fs_context *fc)
+ 	if (ciph_iv_len) {
 -- 
 2.43.0
 
