@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-46628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012598D0A88
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:01:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BFF8D0C98
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96B861F227A6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:01:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79A481F21BDC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67B81607B2;
-	Mon, 27 May 2024 19:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C674615FCFE;
+	Mon, 27 May 2024 19:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmevPges"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wO77G6Nq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644181DFED;
-	Mon, 27 May 2024 19:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A08168C4;
+	Mon, 27 May 2024 19:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836444; cv=none; b=TzbLmiEmNXvIjLOD8vtfDIUD6Yl7mKGvai9yJyDLT1UHvn/9sHg2SgwhWmrBEy+CNJigFRSZY3j8zpw1+XXdGOwn/TWGtLj59Gf8xjmm6/KSC3SnRQLvPVImzTDxaTFChZJEQqR/tUeVfJwa4spCaiWuvSaOwwCFBz7Y6AVCZ/8=
+	t=1716837676; cv=none; b=jNKqOafDAB/GL/gMw2OKZuITiUCWVY07hLGEzlUqoIhQ5mCT3OOPZI+DYDcWRJy27oPPkaRdVPqrw4bGu6XkNbD38CfWB0z8C9KM33zdc6VU/dEv9nGMCYPAgWjf+JaBhloAcIR3T5TvHL+/0CrntgyLFzmTewOSKWWk9uzvOkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836444; c=relaxed/simple;
-	bh=3tnjLJMLBbvmDL4Oapln8FAZkVm4to83uZCttaz/6d4=;
+	s=arc-20240116; t=1716837676; c=relaxed/simple;
+	bh=p1pNQIDU/9/jmP2UpD23qKU8mnlatV84MV7x96i8/sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ks9u73D8eymkEILngNfharmaFVjhv+uHO7IANw5PIggy/pXqwFAH9whyYWRmtiU+xs6rU85Mu/iuwb9RZKoNAhq8XNCKaMq+/oX8OApbGvN7HDdsioqq1JdtblKLyeYI6PKNFKAll+THUp8cdTMFIXWI4xrSU8eSCYHcp5rfdjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmevPges; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE17C2BBFC;
-	Mon, 27 May 2024 19:00:43 +0000 (UTC)
+	 MIME-Version; b=apvRR5iUv2fkOymAyLjXA1TW5/GfTQbQ95OiiiuPY2texottxRgYkc18gmm03yP9UfqNSMHgUHjkEpDrtErzeeWAEzHj0TnZqBybVK5g4OhH1BVOEDtVQr9XCRIjceIpGvXVecDGOTiE8WVswWu1c2rY5eSHFNJzuIoRsNWheWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wO77G6Nq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17017C2BBFC;
+	Mon, 27 May 2024 19:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836444;
-	bh=3tnjLJMLBbvmDL4Oapln8FAZkVm4to83uZCttaz/6d4=;
+	s=korg; t=1716837676;
+	bh=p1pNQIDU/9/jmP2UpD23qKU8mnlatV84MV7x96i8/sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmevPgesVtYoJ0E7Z3a46fiHfIKG+oYf5RQ0MW/95W3Dz9GqNlMQ7HVOcKVPifeFe
-	 s2X6ZyhZrmx3NNtzCuRD4SLILpmC9nfIUXgld4XqIjWUerbF1/0N1aj1l6tomL/HSE
-	 wc4F9lNlrLYuhzEmI/ZscX9RWSM6OvtyOJy29QPQ=
+	b=wO77G6NqJS8hduw0PxVqbyabGr2KfXl4PXBWiP0z2uZwI+YlwlUv6d8PMbyHqJC4d
+	 /bU5122yLK3180gajKzX2rjh6XrYZwFaTgbAoMoG879LfqK1S5JRYTpElMPz607urs
+	 2/IHJEk3oekGCYjLyXcS9tap1S/22LQIn7+6kNAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 057/427] rcu-tasks: Fix show_rcu_tasks_trace_gp_kthread buffer overflow
+Subject: [PATCH 6.8 102/493] nvmet-auth: return the error code to the nvmet_auth_host_hash() callers
 Date: Mon, 27 May 2024 20:51:44 +0200
-Message-ID: <20240527185607.160668410@linuxfoundation.org>
+Message-ID: <20240527185633.849296575@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit cc5645fddb0ce28492b15520306d092730dffa48 ]
+[ Upstream commit 46b8f9f74f6d500871985e22eb19560b21f3bc81 ]
 
-There is a possibility of buffer overflow in
-show_rcu_tasks_trace_gp_kthread() if counters, passed
-to sprintf() are huge. Counter numbers, needed for this
-are unrealistically high, but buffer overflow is still
-possible.
+If the nvmet_auth_host_hash() function fails, the error code should
+be returned to its callers.
 
-Use snprintf() with buffer size instead of sprintf().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: edf3775f0ad6 ("rcu-tasks: Add count for idle tasks on offline CPUs")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tasks.h | 2 +-
+ drivers/nvme/target/auth.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 147b5945d67a0..2a453de9f3d95 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -1994,7 +1994,7 @@ void show_rcu_tasks_trace_gp_kthread(void)
- {
- 	char buf[64];
+diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
+index 3ddbc3880cac8..9e51c064b0728 100644
+--- a/drivers/nvme/target/auth.c
++++ b/drivers/nvme/target/auth.c
+@@ -370,7 +370,7 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
+ 	nvme_auth_free_key(transformed_key);
+ out_free_tfm:
+ 	crypto_free_shash(shash_tfm);
+-	return 0;
++	return ret;
+ }
  
--	sprintf(buf, "N%lu h:%lu/%lu/%lu",
-+	snprintf(buf, sizeof(buf), "N%lu h:%lu/%lu/%lu",
- 		data_race(n_trc_holdouts),
- 		data_race(n_heavy_reader_ofl_updates),
- 		data_race(n_heavy_reader_updates),
+ int nvmet_auth_ctrl_hash(struct nvmet_req *req, u8 *response,
 -- 
 2.43.0
 
