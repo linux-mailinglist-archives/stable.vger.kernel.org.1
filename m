@@ -1,157 +1,194 @@
-Return-Path: <stable+bounces-47494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52BC8D0E3C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:38:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F384E8D0B45
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22D581C21714
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:38:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E47C1F22D19
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DCC1607B2;
-	Mon, 27 May 2024 19:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1471607A0;
+	Mon, 27 May 2024 19:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWPBVP0z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YR8/eFXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFC761FDF;
-	Mon, 27 May 2024 19:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7402215ECFF;
+	Mon, 27 May 2024 19:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838694; cv=none; b=gfjsgJ2CRWoOxy3q0cFM93Oy1263z4fXFlLR6QNrBR1K0tvlp4Saej04Dk/A2PSl10WmGKsCVTR2NQ2oAAf4OMJc33YZ3SXKicO0xMrTm+mf6hnyvW2bORJnFM3ITOqVk0RAoxprGoldoKMmol1urbUsv+LB8JmXZ3MBTXl/OHk=
+	t=1716836860; cv=none; b=IMDcq/mhGcFVz8qfbZ30txvMfhc2dmxV97w/+I6QylvHn2k9/2pdW9GbUOgnUR+Zyb69L6+FL+pQiqs58N0cbPppsYie5xDNsDY5Ocb8VUkSfPKCwv1OKwlMDrrwj4t6z64pKqH3xquML6dho0ay4Lj9kNss9PiWM0sHZAK6ZBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838694; c=relaxed/simple;
-	bh=AGQJsZnwUaDM9RaBeiCn1wKsGNSzBl5SnloAN/uSbB8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFK8M5mrmP0r4y5j5pkZEXW5g8Dc0InTluppLU0/fnKVS+SKtdIRrgkEIZUJysNnkD0Y1Jp66mePtyxGceKheVoFefRARO5uvs6hKL9RpmtNJZHhPOKpnSpNHvA3OqFHJ0N6/ciILg4LhHxqC7rWEhsrIMb5cKp9DkzQq01vO2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWPBVP0z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6290BC32781;
-	Mon, 27 May 2024 19:38:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838694;
-	bh=AGQJsZnwUaDM9RaBeiCn1wKsGNSzBl5SnloAN/uSbB8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWPBVP0zm6/Wexo+S6HOUB/xAkV/C4kO85pJYbxJiMBrOOcDrecdym7iGulR8jDSa
-	 H3KDt0/WmlV22nUD13WR69u4NZqJKs17WX0xYg3f22SDMfQOmmekaBHpO+/MXdqiHB
-	 VqiY/q3YKpaIh4dX9tJB/BmQ7/22XPgyfwzOBpkg=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 493/493] net: txgbe: fix GPIO interrupt blocking
-Date: Mon, 27 May 2024 20:58:15 +0200
-Message-ID: <20240527185646.258015434@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1716836860; c=relaxed/simple;
+	bh=UAEnHiSC1PDA0L1KaZk1ZNrZGkvGLhQGf5jxKFjBwLc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lQaDWe5U96cCE7w4v59chp4RHtgN7j/+97E+hWfXzvaXJJAUG5VmWRZkrgvxPs67SacGqQYqZh669DULYIthXQFpUmGuiGWGtR4hveqP7J7SB1EVnp/Q9gxrFmMffru7i0JB7PeJISkCuxtg2xadjOwBF9t1gNU8Ms7Qn7FmZu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YR8/eFXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88945C2BBFC;
+	Mon, 27 May 2024 19:07:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716836860;
+	bh=UAEnHiSC1PDA0L1KaZk1ZNrZGkvGLhQGf5jxKFjBwLc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YR8/eFXJyUokyJhCKsd2N8o4+6s0N8UvrEamhTdSXomXPST5JbQJuI0vjaWwKbfMG
+	 TQFDvUwj6aosaxDpYWID/W9VLyicSyy/AR7mDNOqBUwDn7A9n+VJcapdPBqvgKiUCt
+	 SwHQgI/o4GM8wKMtY60ZTHA7nL67CNGIlT775YIObUHL8SuJmNKJ7tcxh6mXISzfqT
+	 P+RCSYpRbP9SUVQdDMS1LPIDkgLePczld6jtCHhwgAaEIF0Ns9QYs91yNs4JpbLqZZ
+	 zbnYpa7RLwzWN4VMVp+FOR7j9M7cIsAFMHEmQEHGMZ+rLmRc7pPt96Us6Li8njks94
+	 o8dPHplm0FyPQ==
+Date: Mon, 27 May 2024 20:07:31 +0100
+From: Mark Brown <broonie@kernel.org>
+To: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>, Kees Cook <keescook@chromium.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Shengyu Li <shengyu.li.evgeny@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Brendan Higgins <brendanhiggins@google.com>,
+	David Gow <davidgow@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>, Ron Economos <re@w6rz.net>,
+	Ronald Warsow <rwarsow@gmx.de>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Will Drewry <wad@chromium.org>,
+	kernel test robot <oliver.sang@intel.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v7 04/10] selftests/harness: Fix interleaved scheduling
+ leading to race conditions
+Message-ID: <9341d4db-5e21-418c-bf9e-9ae2da7877e1@sirena.org.uk>
+References: <20240511171445.904356-1-mic@digikod.net>
+ <20240511171445.904356-5-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-6.8-stable review patch.  If anyone has any objections, please let me know.
-
-------------------
-
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-
-[ Upstream commit b4a2496c17ed645f8d51061047c9c249b58c74ba ]
-
-The register of GPIO interrupt status is masked before MAC IRQ
-is enabled. This is because of hardware deficiency. So manually
-clear the interrupt status before using them. Otherwise, GPIO
-interrupts will never be reported again. There is a workaround for
-clearing interrupts to set GPIO EOI in txgbe_up_complete().
-
-Fixes: aefd013624a1 ("net: txgbe: use irq_domain for interrupt controller")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://lore.kernel.org/r/20240301092956.18544-1-jiawenwu@trustnetic.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  1 +
- .../net/ethernet/wangxun/txgbe/txgbe_phy.c    | 27 +++++++++++++++++++
- .../net/ethernet/wangxun/txgbe/txgbe_phy.h    |  1 +
- 3 files changed, 29 insertions(+)
-
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 88ea20946e6ec..8c7a74981b907 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -81,6 +81,7 @@ static void txgbe_up_complete(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
- 
-+	txgbe_reinit_gpio_intr(wx);
- 	wx_control_hw(wx, true);
- 	wx_configure_vectors(wx);
- 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 3c9bb4ab98681..93295916b1d2b 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -491,6 +491,33 @@ irqreturn_t txgbe_gpio_irq_handler(int irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
-+void txgbe_reinit_gpio_intr(struct wx *wx)
-+{
-+	struct txgbe *txgbe = wx->priv;
-+	irq_hw_number_t hwirq;
-+	unsigned long gpioirq;
-+	struct gpio_chip *gc;
-+	unsigned long flags;
-+
-+	/* for gpio interrupt pending before irq enable */
-+	gpioirq = rd32(wx, WX_GPIO_INTSTATUS);
-+
-+	gc = txgbe->gpio;
-+	for_each_set_bit(hwirq, &gpioirq, gc->ngpio) {
-+		int gpio = irq_find_mapping(gc->irq.domain, hwirq);
-+		struct irq_data *d = irq_get_irq_data(gpio);
-+		u32 irq_type = irq_get_trigger_type(gpio);
-+
-+		txgbe_gpio_irq_ack(d);
-+
-+		if ((irq_type & IRQ_TYPE_SENSE_MASK) == IRQ_TYPE_EDGE_BOTH) {
-+			raw_spin_lock_irqsave(&wx->gpio_lock, flags);
-+			txgbe_toggle_trigger(gc, hwirq);
-+			raw_spin_unlock_irqrestore(&wx->gpio_lock, flags);
-+		}
-+	}
-+}
-+
- static int txgbe_gpio_init(struct txgbe *txgbe)
- {
- 	struct gpio_irq_chip *girq;
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.h
-index 9855d44076cb8..8a026d804fe24 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.h
-@@ -5,6 +5,7 @@
- #define _TXGBE_PHY_H_
- 
- irqreturn_t txgbe_gpio_irq_handler(int irq, void *data);
-+void txgbe_reinit_gpio_intr(struct wx *wx);
- irqreturn_t txgbe_link_irq_handler(int irq, void *data);
- int txgbe_init_phy(struct txgbe *txgbe);
- void txgbe_remove_phy(struct txgbe *txgbe);
--- 
-2.43.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pwkg7Agk0Gg3e4Mx"
+Content-Disposition: inline
+In-Reply-To: <20240511171445.904356-5-mic@digikod.net>
+X-Cookie: Teutonic:
 
 
+--pwkg7Agk0Gg3e4Mx
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, May 11, 2024 at 07:14:39PM +0200, Micka=EBl Sala=FCn wrote:
+
+> Fix a race condition when running several FIXTURE_TEARDOWN() managing
+> the same resource.  This fixes a race condition in the Landlock file
+> system tests when creating or unmounting the same directory.
+
+> Using clone3() with CLONE_VFORK guarantees that the child and grandchild
+> test processes are sequentially scheduled.  This is implemented with a
+> new clone3_vfork() helper replacing the fork() call.
+
+This is now in mainline and appears to be causing several tests (at
+least the ptrace vmaccess global_attach test on arm64, possibly also
+some of the epoll tests) that previously were timed out by the harness
+to to hang instead.  A bisect seems to point at this patch in
+particular, there was a bunch of discussion of the fallout of these
+patches but I'm afraid I lost track of it, is there something in flight
+for this?  -next is affected as well from the looks of it.
+
+Log of the ptrace issue (not that it's useful, the job just gets killed
+by the test runner):
+
+   https://lava.sirena.org.uk/scheduler/job/307984
+
+Bisect log:
+
+git bisect start
+# status: waiting for both good and bad commits
+# good: [e8f897f4afef0031fe618a8e94127a0934896aba] Linux 6.8
+git bisect good e8f897f4afef0031fe618a8e94127a0934896aba
+# status: waiting for bad commit, 1 good commit known
+# bad: [a38297e3fb012ddfa7ce0321a7e5a8daeb1872b6] Linux 6.9
+git bisect bad a38297e3fb012ddfa7ce0321a7e5a8daeb1872b6
+# good: [480e035fc4c714fb5536e64ab9db04fedc89e910] Merge tag 'drm-next-2024=
+-03-13' of https://gitlab.freedesktop.org/drm/kernel
+git bisect good 480e035fc4c714fb5536e64ab9db04fedc89e910
+# good: [2ac2b1665d3fbec6ca709dd6ef3ea05f4a51ee4c] Merge tag 'hwlock-v6.9' =
+of git://git.kernel.org/pub/scm/linux/kernel/git/remoteproc/linux
+git bisect good 2ac2b1665d3fbec6ca709dd6ef3ea05f4a51ee4c
+# good: [e858beeddfa3a400844c0e22d2118b3b52f1ea5e] bcachefs: If we run merg=
+es at a lower watermark, they must be nonblocking
+git bisect good e858beeddfa3a400844c0e22d2118b3b52f1ea5e
+# good: [e43afae4a335ac0bf54c7a8f23ed65dd55449649] Merge tag 'powerpc-6.9-3=
+' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux
+git bisect good e43afae4a335ac0bf54c7a8f23ed65dd55449649
+# good: [09e10499ee6a5a89fc352f25881276398a49596a] Merge tag 'drm-misc-fixe=
+s-2024-05-02' of https://gitlab.freedesktop.org/drm/misc/kernel into drm-fi=
+xes
+git bisect good 09e10499ee6a5a89fc352f25881276398a49596a
+# good: [3c15237018eb8a9a56bb49a5dbf4d8eeb154b5cc] Merge tag 'usb-6.9-rc7' =
+of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb
+git bisect good 3c15237018eb8a9a56bb49a5dbf4d8eeb154b5cc
+# good: [62788b0f225da1837ad38101112e2c49123470ee] Merge tag 'for-linus' of=
+ git://git.kernel.org/pub/scm/linux/kernel/git/rmk/linux
+git bisect good 62788b0f225da1837ad38101112e2c49123470ee
+# good: [ed44935c330a2633440e8d2660db3c7538eeaf10] Merge tag 'spi-fix-v6.9-=
+rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi
+git bisect good ed44935c330a2633440e8d2660db3c7538eeaf10
+# good: [c22c3e0753807feee1391a22228b0d5e6ba39b74] Merge tag 'mm-hotfixes-s=
+table-2024-05-10-13-14' of git://git.kernel.org/pub/scm/linux/kernel/git/ak=
+pm/mm
+git bisect good c22c3e0753807feee1391a22228b0d5e6ba39b74
+# good: [b61821bb32c5577272408e1b05e6a0879a64257f] Merge tag 'drm-misc-fixe=
+s-2024-05-10' of https://gitlab.freedesktop.org/drm/misc/kernel into drm-fi=
+xes
+git bisect good b61821bb32c5577272408e1b05e6a0879a64257f
+# bad: [323feb3bdb67649bfa5614eb24ec9cb92a60cf33] selftests/harness: Handle=
+ TEST_F()'s explicit exit codes
+git bisect bad 323feb3bdb67649bfa5614eb24ec9cb92a60cf33
+# bad: [323feb3bdb67649bfa5614eb24ec9cb92a60cf33] selftests/harness: Handle=
+ TEST_F()'s explicit exit codes
+git bisect bad 323feb3bdb67649bfa5614eb24ec9cb92a60cf33
+# bad: [3656bc23429a4d539c81b5cb8f17ceeeeca8901a] selftests/landlock: Do no=
+t allocate memory in fixture data
+git bisect bad 3656bc23429a4d539c81b5cb8f17ceeeeca8901a
+# good: [7e4042abe2ee7c0977fd8bb049a6991b174a5e6f] selftests/landlock: Fix =
+FS tests when run on a private mount point
+git bisect good 7e4042abe2ee7c0977fd8bb049a6991b174a5e6f
+# bad: [a86f18903db9211e265cc130b61adb175b7a4c42] selftests/harness: Fix in=
+terleaved scheduling leading to race conditions
+git bisect bad a86f18903db9211e265cc130b61adb175b7a4c42
+# good: [fff37bd32c7605d93bf900c4c318d56d12000048] selftests/harness: Fix f=
+ixture teardown
+git bisect good fff37bd32c7605d93bf900c4c318d56d12000048
+# first bad commit: [a86f18903db9211e265cc130b61adb175b7a4c42] selftests/ha=
+rness: Fix interleaved scheduling leading to race conditions
+
+--pwkg7Agk0Gg3e4Mx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZU2fIACgkQJNaLcl1U
+h9Dbvwf9GBe6CMev8rV7g0l9ySTK2TS6MgAsua7pQ3x/WySaCk0rujv9vrJ+sIR8
+tEIjLhwHiAsapapJ9sWukiC9O5pud9XH2NtvinE1i51LIQhdpiuwarqPa3Jcdyf/
+wkKrVrAIlS4AWb0N5heFCTSkL5Oq1DHWiqw/ojlDoWs0f3F/pN3pbCsCJFIzhNhS
+dvlgnGo9WYNUa0PTay1FYdjA24Q/eJO9FDBTqnC5VU6bp3MoZPzVuS/aj5FRK/0R
+O3dbNQ2zCcZtQSDCNXBUGIu93ySlLbXyK7e+wZ/FWh4KZJsjwGIGXShxFKKQH65+
+GKs/BgwkzGoDBlvdbqfqlGkjrZGcJw==
+=iE8h
+-----END PGP SIGNATURE-----
+
+--pwkg7Agk0Gg3e4Mx--
 
