@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-47257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C178D0D41
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B9B8D0B3C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68A31F21B83
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FF96B217ED
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A3615FD04;
-	Mon, 27 May 2024 19:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1F526AF2;
+	Mon, 27 May 2024 19:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkLdXZhj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZpTkIp1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004AF262BE;
-	Mon, 27 May 2024 19:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE9917E90E;
+	Mon, 27 May 2024 19:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838074; cv=none; b=i+do8nm78J0CELjhHumMCIjVDlVKBo1xU8ebWtuhkIAMZgEYHqFvqLDnpyRrM0UwgGPmauO4IhjSJKBx97Z9cICKL8Abd948RQrdIQe+6ToNcW58ixnBQscM7SoG4Fs10ZW4IhkYOPekuqDmiQsU7ZeHvRNBIyU0UKQexd5nR9c=
+	t=1716836850; cv=none; b=OPVhD0rLJy5LfqdeUpVfMuXxVMj0JGq02mmgDaC/9YvGxiV3Ywpbqwz9Uk55gQj8zYtJl5UB9Lg3ynnbXbAy+i/1WqloU1JEpvG+LYn5nmvu5OLFysM78EZc1pEAJDrN3r/CbqXj9wcvT0ep2PQ7QVKciS+1Q9V8rpZCW/dyoic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838074; c=relaxed/simple;
-	bh=znthojYMjBIci5w28WfIeyzr9xb2W+sDnVUP0OcFv2U=;
+	s=arc-20240116; t=1716836850; c=relaxed/simple;
+	bh=1yeafLFuJZ3oPyqt92yiVSFqB2tt71ZWMr1gfEj+qgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkM0eyNwhP4kxnkGTMfMJnqIL7VVjNIKHKJjHbu2LFyKTZ9qsrUSke3aqmFqO4DgtmWj1jYKWxlvv37KKKPbhgGYY+SecMkT4VshmSTqeVR34WUieDR6dWodd/XwsCcEfPU6FWTh9O97W9qSNEdFDtRQJSXLF2x0jr4chn4I78I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkLdXZhj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA62C2BBFC;
-	Mon, 27 May 2024 19:27:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iL6CvoNAlrJXDDM0XNtgeN0Y1J2YKrorcrEg/rhbh1Fqat9k0vFikz47w3hsVeBECqiQJbE9Pp+MV28pKNyJlKVZO2gadzGw9C8br0ucTgciv4PWMUFJBjD/TpdwKaLyHXm8CLx+1/Ro5kC888adol4DIF9svCutn+DQA7WCAj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZpTkIp1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CD4C2BBFC;
+	Mon, 27 May 2024 19:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838073;
-	bh=znthojYMjBIci5w28WfIeyzr9xb2W+sDnVUP0OcFv2U=;
+	s=korg; t=1716836850;
+	bh=1yeafLFuJZ3oPyqt92yiVSFqB2tt71ZWMr1gfEj+qgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QkLdXZhjmqLNbwV8QNjLTwZF8x66Q3fIRdYVo1nX8mQVYvHf/dcAU2V1dMjVf+PcM
-	 oXj/4fS8E5L1L9cw/NV/oAx0N745xM4P+dQNrL54ZloRPHriwe1ZS/iJFwcbbWNswb
-	 Kzb2eXcR802BPlInASZhr7MyRoamDlgwRhKJk64I=
+	b=cZpTkIp1ypHzshx+47op7eRGrpFschdripAAZF1QsiamYbxYeopUI9a8IIQtslQq5
+	 8MjKmKACFpG1F6N8BOIjwmq4Z1yNH92MhJq0FMqZCKxd0Onbv2Bx5Vehc7WLOifDiU
+	 PXl0wCQpD7W7KbVIQEmBRYa45m/RiLUjyD9HzqQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viktor Malik <vmalik@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 255/493] selftests/bpf: Run cgroup1_hierarchy test in own mount namespace
-Date: Mon, 27 May 2024 20:54:17 +0200
-Message-ID: <20240527185638.635115268@linuxfoundation.org>
+Subject: [PATCH 6.9 211/427] selftests/resctrl: fix clang build failure: use LOCAL_HDRS
+Date: Mon, 27 May 2024 20:54:18 +0200
+Message-ID: <20240527185622.077655082@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viktor Malik <vmalik@redhat.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 19468ed51488dae19254e8a67c75d583b05fa5e3 ]
+[ Upstream commit d8171aa4ca72f1a67bf3c14c59441d63c1d2585f ]
 
-The cgroup1_hierarchy test uses setup_classid_environment to setup
-cgroupv1 environment. The problem is that the environment is set in
-/sys/fs/cgroup and therefore, if not run under an own mount namespace,
-effectively deletes all system cgroups:
+First of all, in order to build with clang at all, one must first apply
+Valentin Obst's build fix for LLVM [1]. Once that is done, then when
+building with clang, via:
 
-    $ ls /sys/fs/cgroup | wc -l
-    27
-    $ sudo ./test_progs -t cgroup1_hierarchy
-    #41/1    cgroup1_hierarchy/test_cgroup1_hierarchy:OK
-    #41/2    cgroup1_hierarchy/test_root_cgid:OK
-    #41/3    cgroup1_hierarchy/test_invalid_level:OK
-    #41/4    cgroup1_hierarchy/test_invalid_cgid:OK
-    #41/5    cgroup1_hierarchy/test_invalid_hid:OK
-    #41/6    cgroup1_hierarchy/test_invalid_cgrp_name:OK
-    #41/7    cgroup1_hierarchy/test_invalid_cgrp_name2:OK
-    #41/8    cgroup1_hierarchy/test_sleepable_prog:OK
-    #41      cgroup1_hierarchy:OK
-    Summary: 1/8 PASSED, 0 SKIPPED, 0 FAILED
-    $ ls /sys/fs/cgroup | wc -l
-    1
+    make LLVM=1 -C tools/testing/selftests
 
-To avoid this, run setup_cgroup_environment first which will create an
-own mount namespace. This only affects the cgroupv1_hierarchy test as
-all other cgroup1 test progs already run setup_cgroup_environment prior
-to running setup_classid_environment.
+...the following error occurs:
 
-Also add a comment to the header of setup_classid_environment to warn
-against this invalid usage in future.
+   clang: error: cannot specify -o when generating multiple output files
 
-Fixes: 360769233cc9 ("selftests/bpf: Add selftests for cgroup1 hierarchy")
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240429112311.402497-1-vmalik@redhat.com
+This is because clang, unlike gcc, won't accept invocations of this
+form:
+
+    clang file1.c header2.h
+
+Fix this by using selftests/lib.mk facilities for tracking local header
+file dependencies: add them to LOCAL_HDRS, leaving only the .c files to
+be passed to the compiler.
+
+[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
+
+Fixes: 8e289f454289 ("selftests/resctrl: Add resctrl.h into build deps")
+Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/cgroup_helpers.c               | 3 +++
- tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c | 7 ++++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/Makefile | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
-index 19be9c63d5e84..e812876d79c7e 100644
---- a/tools/testing/selftests/bpf/cgroup_helpers.c
-+++ b/tools/testing/selftests/bpf/cgroup_helpers.c
-@@ -508,6 +508,9 @@ int cgroup_setup_and_join(const char *path) {
- /**
-  * setup_classid_environment() - Setup the cgroupv1 net_cls environment
-  *
-+ * This function should only be called in a custom mount namespace, e.g.
-+ * created by running setup_cgroup_environment.
-+ *
-  * After calling this function, cleanup_classid_environment should be called
-  * once testing is complete.
-  *
-diff --git a/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c b/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c
-index 74d6d7546f40f..25332e596750f 100644
---- a/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c
-+++ b/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c
-@@ -87,9 +87,12 @@ void test_cgroup1_hierarchy(void)
- 		goto destroy;
+diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
+index 2deac2031de9e..021863f86053a 100644
+--- a/tools/testing/selftests/resctrl/Makefile
++++ b/tools/testing/selftests/resctrl/Makefile
+@@ -5,6 +5,8 @@ CFLAGS += $(KHDR_INCLUDES)
  
- 	/* Setup cgroup1 hierarchy */
-+	err = setup_cgroup_environment();
-+	if (!ASSERT_OK(err, "setup_cgroup_environment"))
-+		goto destroy;
- 	err = setup_classid_environment();
- 	if (!ASSERT_OK(err, "setup_classid_environment"))
--		goto destroy;
-+		goto cleanup_cgroup;
+ TEST_GEN_PROGS := resctrl_tests
  
- 	err = join_classid();
- 	if (!ASSERT_OK(err, "join_cgroup1"))
-@@ -153,6 +156,8 @@ void test_cgroup1_hierarchy(void)
++LOCAL_HDRS += $(wildcard *.h)
++
+ include ../lib.mk
  
- cleanup:
- 	cleanup_classid_environment();
-+cleanup_cgroup:
-+	cleanup_cgroup_environment();
- destroy:
- 	test_cgroup1_hierarchy__destroy(skel);
- }
+-$(OUTPUT)/resctrl_tests: $(wildcard *.[ch])
++$(OUTPUT)/resctrl_tests: $(wildcard *.c)
 -- 
 2.43.0
 
