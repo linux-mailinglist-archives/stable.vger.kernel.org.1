@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-46395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BCE8D03DE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:34:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E86F8D03E2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C51A31F218F6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:34:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3B4A1F20EFC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA552194C88;
-	Mon, 27 May 2024 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AFB199E93;
+	Mon, 27 May 2024 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z3GhvYH6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="amDYMmwY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6561A194C82;
-	Mon, 27 May 2024 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02B9199E8B;
+	Mon, 27 May 2024 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819383; cv=none; b=AC/mP8zB7vuEdqRjeRaUFH2ekiepHEMAdvsBFnksh+fXAnj98vwPch9NehPL4y1C3wpMll6t/HXisYqaaKte+NB9Nez43AqiOwE2p15ZObeSc8eQ3kLYveNZqvyQOa6zQ9NWBUQZemttAKR16fquIpGiTpJHFAB0wnHX4DCNG5M=
+	t=1716819385; cv=none; b=Fcgms0kGI0JWo0QqvbykTqVicLGJL2AodgrBRDjFUPKxC+94P6ShwToem8I4+KmkNfhjrFm5sGGxPra2EmTMS6iPtLUkiqP7jH3kN6U15eyur0bunqg6dm5tCF34slP5TIwZ0EhwClnDp+s6HUaBBPT3i5KeBLWOM3EgRmDdmvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819383; c=relaxed/simple;
-	bh=tNphdjirBb9tdMxisUu7AmYR16l1TQhNBoK7qKrb16g=;
+	s=arc-20240116; t=1716819385; c=relaxed/simple;
+	bh=Can2IdNu0X2Ceo51lrTYJj4NxVeEvcYzU2ZY71cXhJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ji9wNofnHiTZD6CrEcawkLY0pJ3+TZMvsZT1LmP23JYn/pRGG7l1GpQ37F/kHs9dw6iupmDqQv1yX673/v6ZARjP/MAT2Dzxi2ZRp+YiExnXsfszlbF4EYYM0ZITVxDe3dtk/iLHk+N/+4sA/5w2Gk3zbytDV+U1f+K3B+3VJ1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z3GhvYH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146A5C2BBFC;
-	Mon, 27 May 2024 14:16:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NKC+hGYXbEB4RcXKI5OTWXAh/5o+3luepNAUTrZBuEBzzvlcKQJW5rPwhKtCfJl1xLEMMTYkVd30gwL0mJoyU86f2d8LhsbVIuzUE2cSrslqWizG+h+3vDDIzpUCsoMWyF9PurIIM4wvvS7r2ZKeE+FIxpg/4bTUsKTjjR/SygI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=amDYMmwY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B49C32781;
+	Mon, 27 May 2024 14:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819383;
-	bh=tNphdjirBb9tdMxisUu7AmYR16l1TQhNBoK7qKrb16g=;
+	s=k20201202; t=1716819385;
+	bh=Can2IdNu0X2Ceo51lrTYJj4NxVeEvcYzU2ZY71cXhJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3GhvYH64Qou1w0CG/9QpHDbGTpYJVsG5QyXbEpmuoCiKaUwVb37MoQvauZqy10aL
-	 I2DmNW3Hi27sBvbIGMoFxDHHkiSBjRl7ujxznBE+Dq06FStlLPL51iq5Pa/rlR7tiq
-	 3Re1AJBFLWTSesBadXGCXw/dJ31dCEGFU1SuXrGlQC/Tz8+DM8yVYID9D7AvduaIIH
-	 kIUVOGn5RGPwJsPPe4EXG7LBoWFZS9Vyf4HZaIAlN/PTa1ApJNh5LmFTCA4+Dpe8fT
-	 nPt9W6leMY0Rr0ntB4AUW+dAHb35KO/gPWsotXYLFmyKb6XjU8Pfj5Yx7OgoPCdWdO
-	 pLjkS/HKSIDRQ==
+	b=amDYMmwYGYp7Qd1KHYoamawnDlhomOWR1MR/9IeoMRmvcxKy6z1PfyY0yZYQVi83n
+	 5yG8sHIZAN+/qeei+8rmVSIifJB2tbNU8HdEMenjrfM9a6nJilqTIimQtyz0UzwQ5k
+	 HQNqSncveS/u67NBQxgjfgIqR2rIxmez8gbMMf0tHPclNM1OZvMMXOp7su2bR5qJNA
+	 uxUERhqpEqmDVEBzGRGtdfElb7B0uyZ5ByPuv96fTQtUC/XCCx9VAI2AkvJqVbcEDf
+	 yIApzW8GMJGB9E/vtnTohDmiXl+3eYyUjd9ItJAHUw2RxD2zXQD5SCV23OQN//Dj+l
+	 m+8GCEnLB7lFA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manish Rangankar <mrangankar@marvell.com>,
-	Martin Hoyer <mhoyer@redhat.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Daniel Golle <daniel@makrotopia.org>,
+	Josef Schlehofer <pepe.schlehofer@gmail.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	njavali@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 10/21] scsi: qedi: Fix crash while reading debugfs attribute
-Date: Mon, 27 May 2024 10:15:21 -0400
-Message-ID: <20240527141551.3853516-10-sashal@kernel.org>
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 11/21] net: sfp: add quirk for ATS SFP-GE-T 1000Base-TX module
+Date: Mon, 27 May 2024 10:15:22 -0400
+Message-ID: <20240527141551.3853516-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141551.3853516-1-sashal@kernel.org>
 References: <20240527141551.3853516-1-sashal@kernel.org>
@@ -65,98 +68,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
-From: Manish Rangankar <mrangankar@marvell.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 28027ec8e32ecbadcd67623edb290dad61e735b5 ]
+[ Upstream commit 0805d67bc0ef95411228e802f31975cfb7555056 ]
 
-The qedi_dbg_do_not_recover_cmd_read() function invokes sprintf() directly
-on a __user pointer, which results into the crash.
+Add quirk for ATS SFP-GE-T 1000Base-TX module.
 
-To fix this issue, use a small local stack buffer for sprintf() and then
-call simple_read_from_buffer(), which in turns make the copy_to_user()
-call.
+This copper module comes with broken TX_FAULT indicator which must be
+ignored for it to work.
 
-BUG: unable to handle page fault for address: 00007f4801111000
-PGD 8000000864df6067 P4D 8000000864df6067 PUD 864df7067 PMD 846028067 PTE 0
-Oops: 0002 [#1] PREEMPT SMP PTI
-Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 06/15/2023
-RIP: 0010:memcpy_orig+0xcd/0x130
-RSP: 0018:ffffb7a18c3ffc40 EFLAGS: 00010202
-RAX: 00007f4801111000 RBX: 00007f4801111000 RCX: 000000000000000f
-RDX: 000000000000000f RSI: ffffffffc0bfd7a0 RDI: 00007f4801111000
-RBP: ffffffffc0bfd7a0 R08: 725f746f6e5f6f64 R09: 3d7265766f636572
-R10: ffffb7a18c3ffd08 R11: 0000000000000000 R12: 00007f4881110fff
-R13: 000000007fffffff R14: ffffb7a18c3ffca0 R15: ffffffffc0bfd7af
-FS:  00007f480118a740(0000) GS:ffff98e38af00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f4801111000 CR3: 0000000864b8e001 CR4: 00000000007706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body+0x1a/0x60
- ? page_fault_oops+0x183/0x510
- ? exc_page_fault+0x69/0x150
- ? asm_exc_page_fault+0x22/0x30
- ? memcpy_orig+0xcd/0x130
- vsnprintf+0x102/0x4c0
- sprintf+0x51/0x80
- qedi_dbg_do_not_recover_cmd_read+0x2f/0x50 [qedi 6bcfdeeecdea037da47069eca2ba717c84a77324]
- full_proxy_read+0x50/0x80
- vfs_read+0xa5/0x2e0
- ? folio_add_new_anon_rmap+0x44/0xa0
- ? set_pte_at+0x15/0x30
- ? do_pte_missing+0x426/0x7f0
- ksys_read+0xa5/0xe0
- do_syscall_64+0x58/0x80
- ? __count_memcg_events+0x46/0x90
- ? count_memcg_event_mm+0x3d/0x60
- ? handle_mm_fault+0x196/0x2f0
- ? do_user_addr_fault+0x267/0x890
- ? exc_page_fault+0x69/0x150
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7f4800f20b4d
-
-Tested-by: Martin Hoyer <mhoyer@redhat.com>
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
-Link: https://lore.kernel.org/r/20240415072155.30840-1-mrangankar@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Co-authored-by: Josef Schlehofer <pepe.schlehofer@gmail.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+[ rebased on top of net-next ]
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Link: https://lore.kernel.org/r/20240423090025.29231-1-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_debugfs.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/net/phy/sfp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/qedi/qedi_debugfs.c b/drivers/scsi/qedi/qedi_debugfs.c
-index 8deb2001dc2ff..37eed6a278164 100644
---- a/drivers/scsi/qedi/qedi_debugfs.c
-+++ b/drivers/scsi/qedi/qedi_debugfs.c
-@@ -120,15 +120,11 @@ static ssize_t
- qedi_dbg_do_not_recover_cmd_read(struct file *filp, char __user *buffer,
- 				 size_t count, loff_t *ppos)
- {
--	size_t cnt = 0;
--
--	if (*ppos)
--		return 0;
-+	char buf[64];
-+	int len;
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index c1a481b25a120..000bd62ac0712 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -482,6 +482,9 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRC-1", sfp_fixup_fs_10gt),
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRI-1", sfp_fixup_fs_10gt),
  
--	cnt = sprintf(buffer, "do_not_recover=%d\n", qedi_do_not_recover);
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	len = sprintf(buf, "do_not_recover=%d\n", qedi_do_not_recover);
-+	return simple_read_from_buffer(buffer, count, ppos, buf, len);
- }
- 
- static int
++	// OEM SFP-GE-T is a 1000Base-T module with broken TX_FAULT indicator
++	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
++
+ 	SFP_QUIRK_F("OEM", "SFP-10G-T", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_M("OEM", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
 -- 
 2.43.0
 
