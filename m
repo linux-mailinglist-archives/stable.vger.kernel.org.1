@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-47062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054EF8D0C6C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4FB8D0A52
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 20:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 700A61F214B1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FEE81F2246C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9580915FCE9;
-	Mon, 27 May 2024 19:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8B115FCF0;
+	Mon, 27 May 2024 18:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5hNXVbE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVO/L7xM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A1F7347E;
-	Mon, 27 May 2024 19:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17BA1607B8;
+	Mon, 27 May 2024 18:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837569; cv=none; b=JZDMmb402ZYKmVW5/Id9U18Q9qME5RZTstzBB9M1B0Z8dbpRhgHwA9qVDJbBkSa+4iBkzhkSBiEGuY+UxuxvxvkCa+64pA9WBXZZOiy6Mk7ZUjbE7uwwbiUzXrlrd+1iRhqxVDH9H+V82ykPN3X916Ha7Z+FAMhCK+kJf2wmjT0=
+	t=1716836340; cv=none; b=fAdm7Os/gt993IMDIjXrXlcJWj32Xo5XpIrKHzYWm3NMcsY4oJNkbPaycq4+IjMpVn11677H48CgmPq3Mcj0W8rnUKZTkd3N+W1ZYxO3hTTPcEom3mpO8KU5bhno7rsJHxGV9p8iZZo7n7Xrv256NplVyiscyGnodfQTuEKPVRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837569; c=relaxed/simple;
-	bh=DQUvq59zIDm+rbyzmhKpPJRoY1zFMHEgnEq+pervDG8=;
+	s=arc-20240116; t=1716836340; c=relaxed/simple;
+	bh=10/7otn0HWBN3GidM3KP/yMeRhcu7mY6QNS9gS8DZT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JO3PReUBMwBqh185c3QjI5Db4giF9e++CSNn0jn0K/lP1bldIUPrGkEcrzAZtjI2LRq7kqyAydvdWctRhUHNFGCZk2a05kGMA17iBHAS4qVAalZjDFd5tF3CoIPaW/R0SIUhJmcDVjDLpWHC2nhE3183+4pNfOBsa4WAkxrZkqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5hNXVbE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779DEC2BBFC;
-	Mon, 27 May 2024 19:19:28 +0000 (UTC)
+	 MIME-Version; b=UgFPHi0Wpp/iuy4ZTxxaTM75nmdN1XXobwDXqsL8obzxdTtpGXNzn0BALIi/O9fPN6Y07RtfOTwQzRnZXNAcPT7ZwvGbHnmgV/FtNNRzAGO9RfVB/X4I43aaiCthlkt7lWkjOFB2HNBLV5IQ1r8VJQhsot99y3VO8BD1YDPYMLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVO/L7xM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE9DC32781;
+	Mon, 27 May 2024 18:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837569;
-	bh=DQUvq59zIDm+rbyzmhKpPJRoY1zFMHEgnEq+pervDG8=;
+	s=korg; t=1716836339;
+	bh=10/7otn0HWBN3GidM3KP/yMeRhcu7mY6QNS9gS8DZT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5hNXVbEYeil/tC3OsH4QzhXns1wdum/vftIXr7bJfDMjVfHRCONv8QssVOV951Zr
-	 ygZAnsWtLH09GoJkcC1N8ZUm9TB0KQkn+TsfGLGLEtMaAeVMTVWo84ZV84axI0KiTq
-	 IWaEcb1ycdATzjdK9aEBgSVo53iepFcwg3n2Wm88=
+	b=GVO/L7xMmMbZ7yzDydPTlaFWAt2nuHt6oBRg2V0X/g6E/C0lsk4Ns0772OMHJhn3I
+	 EIrBckJQRvzaiMeV5GMWlYUVNQdGDVKiZAHkApyS8ymmmjX7piindX0B+WDOFQ+QgS
+	 nih9zIvFDNNTTsxgprtHRyIMTnOclBLlVg8QmgMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Phil Auld <pauld@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 061/493] sched/isolation: Fix boot crash when maxcpus < first housekeeping CPU
+	Andrew Udvare <audvare@gmail.com>,
+	Christian Heusel <christian@heusel.eu>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.9 016/427] io_uring/sqpoll: ensure that normal task_work is also run timely
 Date: Mon, 27 May 2024 20:51:03 +0200
-Message-ID: <20240527185631.511119261@linuxfoundation.org>
+Message-ID: <20240527185603.240467546@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 257bf89d84121280904800acd25cc2c444c717ae ]
+commit d13ddd9c893f0e8498526bf88c6b5fad01f0edd8 upstream.
 
-housekeeping_setup() checks cpumask_intersects(present, online) to ensure
-that the kernel will have at least one housekeeping CPU after smp_init(),
-but this doesn't work if the maxcpus= kernel parameter limits the number of
-processors available after bootup.
+With the move to private task_work, SQPOLL neglected to also run the
+normal task_work, if any is pending. This will eventually get run, but
+we should run it with the private task_work to ensure that things like
+a final fput() is processed in a timely fashion.
 
-For example, a kernel with "maxcpus=2 nohz_full=0-2" parameters crashes at
-boot time on a virtual machine with 4 CPUs.
-
-Change housekeeping_setup() to use cpumask_first_and() and check that the
-returned CPU number is valid and less than setup_max_cpus.
-
-Another corner case is "nohz_full=0" on a machine with a single CPU or with
-the maxcpus=1 kernel argument. In this case non_housekeeping_mask is empty
-and tick_nohz_full_setup() makes no sense. And indeed, the kernel hits the
-WARN_ON(tick_nohz_full_running) in tick_sched_do_timer().
-
-And how should the kernel interpret the "nohz_full=" parameter? It should
-be silently ignored, but currently cpulist_parse() happily returns the
-empty cpumask and this leads to the same problem.
-
-Change housekeeping_setup() to check cpumask_empty(non_housekeeping_mask)
-and do nothing in this case.
-
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20240413141746.GA10008@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/313824bc-799d-414f-96b7-e6de57c7e21d@gmail.com/
+Reported-by: Andrew Udvare <audvare@gmail.com>
+Fixes: af5d68f8892f ("io_uring/sqpoll: manage task_work privately")
+Tested-by: Christian Heusel <christian@heusel.eu>
+Tested-by: Andrew Udvare <audvare@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/isolation.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ io_uring/sqpoll.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index 373d42c707bc5..82e2f7fc7c267 100644
---- a/kernel/sched/isolation.c
-+++ b/kernel/sched/isolation.c
-@@ -109,6 +109,7 @@ static void __init housekeeping_setup_type(enum hk_type type,
- static int __init housekeeping_setup(char *str, unsigned long flags)
- {
- 	cpumask_var_t non_housekeeping_mask, housekeeping_staging;
-+	unsigned int first_cpu;
- 	int err = 0;
- 
- 	if ((flags & HK_FLAG_TICK) && !(housekeeping.flags & HK_FLAG_TICK)) {
-@@ -129,7 +130,8 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
- 	cpumask_andnot(housekeeping_staging,
- 		       cpu_possible_mask, non_housekeeping_mask);
- 
--	if (!cpumask_intersects(cpu_present_mask, housekeeping_staging)) {
-+	first_cpu = cpumask_first_and(cpu_present_mask, housekeeping_staging);
-+	if (first_cpu >= nr_cpu_ids || first_cpu >= setup_max_cpus) {
- 		__cpumask_set_cpu(smp_processor_id(), housekeeping_staging);
- 		__cpumask_clear_cpu(smp_processor_id(), non_housekeeping_mask);
- 		if (!housekeeping.flags) {
-@@ -138,6 +140,9 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
- 		}
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 554c7212aa46..b3722e5275e7 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -238,11 +238,13 @@ static unsigned int io_sq_tw(struct llist_node **retry_list, int max_entries)
+ 	if (*retry_list) {
+ 		*retry_list = io_handle_tw_list(*retry_list, &count, max_entries);
+ 		if (count >= max_entries)
+-			return count;
++			goto out;
+ 		max_entries -= count;
  	}
+-
+ 	*retry_list = tctx_task_work_run(tctx, max_entries, &count);
++out:
++	if (task_work_pending(current))
++		task_work_run();
+ 	return count;
+ }
  
-+	if (cpumask_empty(non_housekeeping_mask))
-+		goto free_housekeeping_staging;
-+
- 	if (!housekeeping.flags) {
- 		/* First setup call ("nohz_full=" or "isolcpus=") */
- 		enum hk_type type;
 -- 
-2.43.0
+2.45.1
 
 
 
