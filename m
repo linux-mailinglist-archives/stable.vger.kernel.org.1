@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-47377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032068D0DBC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7AB8D0BBF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3483281BB2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 574401C217E2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5157215FCE9;
-	Mon, 27 May 2024 19:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BD01607B0;
+	Mon, 27 May 2024 19:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6WpAH9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRDQ/p9i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BEA17727;
-	Mon, 27 May 2024 19:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8B51607A5;
+	Mon, 27 May 2024 19:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838393; cv=none; b=d4vK6FreAdq5rKEReJhIoALa8giFYm7XyYYLBI1NfqIYop1zA5F17Xer1Y1xKkS9TDZ+nx96QRCyE7T5hYbaYN8VZ4GCvrIE79w60h8JIE2AOgWeM/iZbmjxJUCXEK9mMwl0B/ejAZjlSl7WgoR3brACcbZH9LsaZX53VZOMY2A=
+	t=1716837150; cv=none; b=Q+sirnXJmNeSqB3yHnPATt3HNtOEr0EcIRtE4i0z8KjylosTy+GnCqLXlEdKxAq1p6fwRA3+6rc1tQ6E9hEjD9De++Se1qWNdTjvC+atS/gfZM//Bu6LZGD7yROW9m5EDYj2yK0jWEE4xztCz37rv8LTdwoWdV5p1oogGRTxa8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838393; c=relaxed/simple;
-	bh=oHPJF1PiU9HhLeQt3kOkr3BG81XunxH88vybH9NVfS0=;
+	s=arc-20240116; t=1716837150; c=relaxed/simple;
+	bh=kd04hnsHc+uSFp7/4tpTw+P1iVLsG/8GoR2Objh8W2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ku1yWyakFWaS1IdgislBoP+3BA16/AX6xhmKhgErTTC9pFgOa2xN4SoYh5mbidl75JNrhVPKEfm6Jfu7OccFPbH7g5oUq3axle6L0bIWcBO9Tdu+F6Hbq52bts0VkuMvgA3FDcuHWHGo2WpAe3Feb0Rbq9e6BT+UVnpvh5AOQQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6WpAH9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924A9C2BBFC;
-	Mon, 27 May 2024 19:33:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hg8D14v1unIRy3202iauEHakZxoCvYcEegvp/9dYNAC//ygbiRFUiQllMuOgQcWv1aRI0XwpE6HSJ2Oh+DWFRwv+6tzyBY+DAFpmNxWZ7e9l1BQVLIdHhLd6NBYbPoP55QkIUg6LHjTMaf4PXko0YcEuPQABDsKSzWJrlNpPOZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRDQ/p9i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810F6C32789;
+	Mon, 27 May 2024 19:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838392;
-	bh=oHPJF1PiU9HhLeQt3kOkr3BG81XunxH88vybH9NVfS0=;
+	s=korg; t=1716837149;
+	bh=kd04hnsHc+uSFp7/4tpTw+P1iVLsG/8GoR2Objh8W2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H6WpAH9LDkjZNpTuvvDN/j/DtJyKkvtjknRRg1r56DeYqqv0Wt74KOzHhZHwki0Yi
-	 nKuHAllO7r80OBEx0t9vmfvlncJnh8xwbbAk95DazTzWc+YHViSOgfu8dJ7+xEx+6l
-	 YvgIZAqt/Pnya8ImlVZC77AMHZ4K6OhZ8ytvANqs=
+	b=ZRDQ/p9ilGz7OEPDvIy5XR5+fra+kzDaEtZeTPmm/dviRMT6+iMSZPGeoKFbB5Ywx
+	 3/vnSgJjJybslk47DwyEv1zdcu7FhdOzhSty9jxs4weeDf9Mqi4J2JIThD3vBh8Hv6
+	 sB1HWJHUMzUT3Glh8LYv6FzgXs328v5EUozuEOmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 375/493] ASoC: SOF: Intel: hda-dai: fix channel map configuration for aggregated dailink
+Subject: [PATCH 6.9 330/427] drm/bridge: anx7625: Dont log an error when DSI host cant be found
 Date: Mon, 27 May 2024 20:56:17 +0200
-Message-ID: <20240527185642.540495760@linuxfoundation.org>
+Message-ID: <20240527185632.188393417@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 831045513c8a2ef14c3cf39b33d1ccedf588c4a8 ]
+[ Upstream commit ef4a9204d594fe959cdbc7418273caf4001535c8 ]
 
-The existing code derives the channel map used to program the HDaudio
-link DMA from the hw_params, but that is not quite right in the case
-of aggregation. The code in soc-pcm.c splits the hw_params depending
-on the codec_ch_map, and we need to reconstruct the channel-map to
-insert the data in the right places.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-This issue is seen only on amplifier feedback capture where the data
-from the second amplifier was replaced by that of the first amplifier.
-
-Note that the loop iterator of the macro for_each_rtd_cpu_dais() is
-reused in a following loop. This is different to all existing usages
-of that macro, hence the use of a boolean flag to avoid an access to
-an uninitialized variable.
-
-Fixes: 2960ee5c4814 ("ASoC: SOF: Intel: hda-dai: add helpers for SoundWire callbacks")
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20240402151828.175002-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 269332997a16 ("drm/bridge: anx7625: Return -EPROBE_DEFER if the dsi host was not found")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-1-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-dai.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda-dai.c b/sound/soc/sof/intel/hda-dai.c
-index f4cbc0ad5de3b..0e665c0840d71 100644
---- a/sound/soc/sof/intel/hda-dai.c
-+++ b/sound/soc/sof/intel/hda-dai.c
-@@ -434,10 +434,17 @@ int sdw_hda_dai_hw_params(struct snd_pcm_substream *substream,
- 			  int link_id)
- {
- 	struct snd_soc_dapm_widget *w = snd_soc_dai_get_widget(cpu_dai, substream->stream);
-+	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	const struct hda_dai_widget_dma_ops *ops;
-+	struct snd_soc_dai_link_ch_map *ch_maps;
- 	struct hdac_ext_stream *hext_stream;
-+	struct snd_soc_dai *dai;
- 	struct snd_sof_dev *sdev;
-+	bool cpu_dai_found = false;
-+	int cpu_dai_id;
-+	int ch_mask;
- 	int ret;
-+	int j;
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 9d96d28d6fe8e..02bf450053076 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -2066,10 +2066,8 @@ static int anx7625_setup_dsi_device(struct anx7625_data *ctx)
+ 	};
  
- 	ret = non_hda_dai_hw_params(substream, params, cpu_dai);
- 	if (ret < 0) {
-@@ -452,9 +459,29 @@ int sdw_hda_dai_hw_params(struct snd_pcm_substream *substream,
- 	if (!hext_stream)
- 		return -ENODEV;
+ 	host = of_find_mipi_dsi_host_by_node(ctx->pdata.mipi_host_node);
+-	if (!host) {
+-		DRM_DEV_ERROR(dev, "fail to find dsi host.\n");
+-		return -EPROBE_DEFER;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -EPROBE_DEFER, "fail to find dsi host.\n");
  
--	/* in the case of SoundWire we need to program the PCMSyCM registers */
-+	/*
-+	 * in the case of SoundWire we need to program the PCMSyCM registers. In case
-+	 * of aggregated devices, we need to define the channel mask for each sublink
-+	 * by reconstructing the split done in soc-pcm.c
-+	 */
-+	for_each_rtd_cpu_dais(rtd, cpu_dai_id, dai) {
-+		if (dai == cpu_dai) {
-+			cpu_dai_found = true;
-+			break;
-+		}
-+	}
-+
-+	if (!cpu_dai_found)
-+		return -ENODEV;
-+
-+	ch_mask = 0;
-+	for_each_link_ch_maps(rtd->dai_link, j, ch_maps) {
-+		if (ch_maps->cpu == cpu_dai_id)
-+			ch_mask |= ch_maps->ch_mask;
-+	}
-+
- 	ret = hdac_bus_eml_sdw_map_stream_ch(sof_to_bus(sdev), link_id, cpu_dai->id,
--					     GENMASK(params_channels(params) - 1, 0),
-+					     ch_mask,
- 					     hdac_stream(hext_stream)->stream_tag,
- 					     substream->stream);
- 	if (ret < 0) {
+ 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
