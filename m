@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18308D0CC1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298098D0AEA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94B03287440
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCD251F228DB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17CB1607A5;
-	Mon, 27 May 2024 19:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43811160796;
+	Mon, 27 May 2024 19:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRYETYbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHRx5Kyv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7015115FCFE;
-	Mon, 27 May 2024 19:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCE2763F8;
+	Mon, 27 May 2024 19:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837770; cv=none; b=dAZ2YqoS7ilVX7XeUBONbaLcoB1LjNjKOip3cr1/UJGcDD6l3izKds2L7wr9ziYnQtSjLewg3YBXpKLXRlnUbWHhlrCtEEGokjWUgQ8wPOwMDImQGmADQmx6Al1Z8sKOlBM+uEktFhjZjSZSqMlSxcrZHBC0j2E9x8+9/xxpC14=
+	t=1716836651; cv=none; b=tEQRvidDpNGWlB5vuarOW5vwcNn1ZM5tBRKbV2j+1lL7cxSdFNLLxMhgVgro4tpFIaHYNowNBwhGdt3mEAts7oB15o5H1bjoB9aNtmJ3cnkXdvYVgwyygmwmeL86FpgNJbj3Oo76qUNNZ5ej/Mdc8qgbDg0LFY08svDo7cbE83c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837770; c=relaxed/simple;
-	bh=3/AutRcbiJjRpCFf1XF+NOy1LFk7KV8Zx4Gwcrpeb7U=;
+	s=arc-20240116; t=1716836651; c=relaxed/simple;
+	bh=sFxClzDhnZJVamf2jYOG1NzjR4rftAzlsBF0AZWaMyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LeXrw/RykpY6y1AjwhrBnSFRfk7Rfn3/iXmkAPdcjjAbN09tez/sWILELxheiW5dwlPQ47wYp4wQnH/m+fPcZ8FABqHMszI+dYdp2Ya/DLNpZKRJ//0lwbAM3Nph34kNIcq7m6Z7pUrFNxtAurihTUo0fwOeaN9BItEvwSWuIHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRYETYbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E29C2BBFC;
-	Mon, 27 May 2024 19:22:49 +0000 (UTC)
+	 MIME-Version; b=PdQt7uLj4iQMe2Jo0Hzjgum4E+X+/H/BzEdBiaoBVMDq+HBHjjhCno/zimbY7azLDZ079+Ig6hAAb3A2F5RFegEYNWHx57dc2NHzR2Ko1NbxzpvYsuNXUhoNmySfmaxZd6MXASfv8zo5qIcWhMRntj4YLMnsuk9a8iO5RsnrKtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHRx5Kyv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812C8C2BBFC;
+	Mon, 27 May 2024 19:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837770;
-	bh=3/AutRcbiJjRpCFf1XF+NOy1LFk7KV8Zx4Gwcrpeb7U=;
+	s=korg; t=1716836650;
+	bh=sFxClzDhnZJVamf2jYOG1NzjR4rftAzlsBF0AZWaMyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRYETYbSnOe0ye8SqtyZrJ2sb/LkS0ZZkN2+ApkAFjoNR2LX7INA50oFMUVFkjZGw
-	 XMFFuJB7Xu6FWgROaD6ROFQl6QMPphNdcRLEtg8xMvducMkQhJsPox4xGhB+WsRD8t
-	 YVfr7hm+TWa3TOCZaX/XAOAhdanQw3GsiwSWVW7g=
+	b=YHRx5KyvckSngWQ74W3zz8/iOp6RAVDm0GeqG35xCOcYsd1X6xUYpS8fovA4CQJeK
+	 BABhbKyRotOrEnE3s5cbyO7Q1DOVWEQIECht9nrI3nBwj4F8TDEcEws8LpEWUasjaT
+	 HaZRKKvEwjrvUPT3gMwb3C+a5fPROu/3IcnVcTzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 139/493] crypto: octeontx2 - add missing check for dma_map_single
+Subject: [PATCH 6.9 094/427] libbpf: Prevent null-pointer dereference when prog to load has no BTF
 Date: Mon, 27 May 2024 20:52:21 +0200
-Message-ID: <20240527185635.003884377@linuxfoundation.org>
+Message-ID: <20240527185610.575662813@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Quentin Monnet <qmo@kernel.org>
 
-[ Upstream commit 6a6d6a3a328a59ed0d8ae2e65696ef38e49133a0 ]
+[ Upstream commit 9bf48fa19a4b1d186e08b20bf7e5de26a15644fb ]
 
-Add check for dma_map_single() and return error if it fails in order
-to avoid invalid dma address.
+In bpf_objec_load_prog(), there's no guarantee that obj->btf is non-NULL
+when passing it to btf__fd(), and this function does not perform any
+check before dereferencing its argument (as bpf_object__btf_fd() used to
+do). As a consequence, we get segmentation fault errors in bpftool (for
+example) when trying to load programs that come without BTF information.
 
-Fixes: e92971117c2c ("crypto: octeontx2 - add ctx_val workaround")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Bharat Bhushan <bbhushan2@marvell.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+v2: Keep btf__fd() in the fix instead of reverting to bpf_object__btf_fd().
+
+Fixes: df7c3f7d3a3d ("libbpf: make uniform use of btf__fd() accessor inside libbpf")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Quentin Monnet <qmo@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240314150438.232462-1-qmo@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/octeontx2/cn10k_cpt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/lib/bpf/libbpf.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/marvell/octeontx2/cn10k_cpt.c b/drivers/crypto/marvell/octeontx2/cn10k_cpt.c
-index 79b4e74804f6d..6bfc59e677478 100644
---- a/drivers/crypto/marvell/octeontx2/cn10k_cpt.c
-+++ b/drivers/crypto/marvell/octeontx2/cn10k_cpt.c
-@@ -138,6 +138,10 @@ int cn10k_cpt_hw_ctx_init(struct pci_dev *pdev,
- 		return -ENOMEM;
- 	cptr_dma = dma_map_single(&pdev->dev, hctx, CN10K_CPT_HW_CTX_SIZE,
- 				  DMA_BIDIRECTIONAL);
-+	if (dma_mapping_error(&pdev->dev, cptr_dma)) {
-+		kfree(hctx);
-+		return -ENOMEM;
-+	}
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index a2061fcd612d7..4980ed4f7559b 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -7321,9 +7321,9 @@ static int bpf_object_load_prog(struct bpf_object *obj, struct bpf_program *prog
+ 	char *cp, errmsg[STRERR_BUFSIZE];
+ 	size_t log_buf_size = 0;
+ 	char *log_buf = NULL, *tmp;
+-	int btf_fd, ret, err;
+ 	bool own_log_buf = true;
+ 	__u32 log_level = prog->log_level;
++	int ret, err;
  
- 	cn10k_cpt_hw_ctx_set(hctx, 1);
- 	er_ctx->hw_ctx = hctx;
+ 	if (prog->type == BPF_PROG_TYPE_UNSPEC) {
+ 		/*
+@@ -7347,9 +7347,8 @@ static int bpf_object_load_prog(struct bpf_object *obj, struct bpf_program *prog
+ 	load_attr.prog_ifindex = prog->prog_ifindex;
+ 
+ 	/* specify func_info/line_info only if kernel supports them */
+-	btf_fd = btf__fd(obj->btf);
+-	if (btf_fd >= 0 && kernel_supports(obj, FEAT_BTF_FUNC)) {
+-		load_attr.prog_btf_fd = btf_fd;
++	if (obj->btf && btf__fd(obj->btf) >= 0 && kernel_supports(obj, FEAT_BTF_FUNC)) {
++		load_attr.prog_btf_fd = btf__fd(obj->btf);
+ 		load_attr.func_info = prog->func_info;
+ 		load_attr.func_info_rec_size = prog->func_info_rec_size;
+ 		load_attr.func_info_cnt = prog->func_info_cnt;
 -- 
 2.43.0
 
