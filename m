@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-46785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249938D0B3D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA898D0D46
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB13DB2182C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DC4D282438
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D862F61FD6;
-	Mon, 27 May 2024 19:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6343C16079A;
+	Mon, 27 May 2024 19:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9yx4ave"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyHYCiJs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C9B17E90E;
-	Mon, 27 May 2024 19:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22643262BE;
+	Mon, 27 May 2024 19:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836852; cv=none; b=qp8KkjViu7DJO74ZrrTRI3Ug3U3UAHX68s9tt8CSXGYL/pwfuZ1TUjwetro2fXysRwWj2fB33CrH/HVDH+la22/OBYtCgzCGIUbjJ7faXStjfHio2RytiS6i3C1/p6bGBxs6bP02XxGU85i230RFKpAHfaYS+q2Z0wJwtrJ9P5A=
+	t=1716838084; cv=none; b=nvX4MAxBrR0xHCP+42GLv/Fyr+Fap2S9UtSgdr8S225rLYZjdYSdyoXuRm3Vvo0yHeQzfWU4Ya3smTTMEQYFWhBNgzq0gDYWjbYCFmu7AhvP3YacpUZfYPahLyk12wxyag7lcyu+8Pp7TVDL3x81c5R24WY6NzlYf/KtyiKGH+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836852; c=relaxed/simple;
-	bh=SfEoLZkahWeopqe1cRaOl2EXGcOh40yz3RUj5ZUGbJs=;
+	s=arc-20240116; t=1716838084; c=relaxed/simple;
+	bh=h4fiEiD231ZWQRH10cN9M+/G9mRr7m4pcIZ7ed+wtbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WepZ08dmw6Gb9lKQ3n5DGtOr260qV1n/3G3rAMN1u2bwWQCvpRmBAl6HYBv0eCIufpWiW+gb78zxIFa0Xlw257oAIIte7xo9MHZ0ugzTyR6BnKgF/BSz6kstHsuwWaGywBv84hZkobx7Cuo8dwkWSCKYqQ1ruq9ZDwlnTTcplzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9yx4ave; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C251C2BBFC;
-	Mon, 27 May 2024 19:07:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nNehSVRCmWZaW1sAaVcV9rfppdlhyKIExQdWQdHU5cUsFTxHk6gPHTsP39yzSIII9L2xP/ijxxcGVd6/gN6anuLvNcR9zlQAfWEgVb/c7YE/HHY5eYgSIJbx4vy4VEemu4tfOv/7X6Iks2l+fkxvvOdG66Hriv8m2QZi/u6tNjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyHYCiJs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD15EC2BBFC;
+	Mon, 27 May 2024 19:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836852;
-	bh=SfEoLZkahWeopqe1cRaOl2EXGcOh40yz3RUj5ZUGbJs=;
+	s=korg; t=1716838084;
+	bh=h4fiEiD231ZWQRH10cN9M+/G9mRr7m4pcIZ7ed+wtbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9yx4avejaw2KyEYighXtH1oRL9gsY0/ZQzR1WM4hyASBKq91f0xz4a10bpuBEmUO
-	 jmMfJnS6GSsi3nOf0oUriYlhCGkzWOG3bGWxQzVEV4RKHUYgriPZb+N7C6bkLxoJQQ
-	 QRYd9tHfByCy+cQ4WIMA6U7Au3uJk5H5z6yus3w4=
+	b=IyHYCiJs5z36oeSXi0uWfZC4iJeCIk44u9owMZd5cy1PHCMY6QvPXDcZxQgmEBELn
+	 J2v0VDa67529++Z6/Fg1fheAqUNx8YtS8MJwzpWn9X3huf6KRf9Yvioyju4+8Oa06O
+	 1qJUrbK96GuW6aXrw82bLVKy9wH2yGnsb7QM0UFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Valentin Obst <kernel@valentinobst.de>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 212/427] selftests: default to host arch for LLVM builds
-Date: Mon, 27 May 2024 20:54:19 +0200
-Message-ID: <20240527185622.202584198@linuxfoundation.org>
+Subject: [PATCH 6.8 258/493] pwm: Let the of_xlate callbacks accept references without period
+Date: Mon, 27 May 2024 20:54:20 +0200
+Message-ID: <20240527185638.730057765@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +59,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Obst <kernel@valentinobst.de>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit d4e6fbd245c48b272cc591d1c5e7c07aedd7f071 ]
+[ Upstream commit 40ade0c2e7940becad70a0643ba90488b905b468 ]
 
-Align the behavior for gcc and clang builds by interpreting unset
-`ARCH` and `CROSS_COMPILE` variables in `LLVM` builds as a sign that the
-user wants to build for the host architecture.
+With this extension of_pwm_xlate_with_flags() is suitable to replace the
+custom xlate function of the pwm-clps711x driver.
 
-This patch preserves the properties that setting the `ARCH` variable to an
-unknown value will trigger an error that complains about insufficient
-information, and that a set `CROSS_COMPILE` variable will override the
-target triple that is determined based on presence/absence of `ARCH`.
+While touching these very similar functions align their implementations.
 
-When compiling with clang, i.e., `LLVM` is set, an unset `ARCH` variable in
-combination with an unset `CROSS_COMPILE` variable, i.e., compiling for
-the host architecture, leads to compilation failures since `lib.mk` can
-not determine the clang target triple. In this case, the following error
-message is displayed for each subsystem that does not set `ARCH` in its
-own Makefile before including `lib.mk` (lines wrapped at 75 chrs):
-
-  make[1]: Entering directory '/mnt/build/linux/tools/testing/selftests/
-   sysctl'
-  ../lib.mk:33: *** Specify CROSS_COMPILE or add '--target=' option to
-   lib.mk.  Stop.
-  make[1]: Leaving directory '/mnt/build/linux/tools/testing/selftests/
-   sysctl'
-
-In the same scenario a gcc build would default to the host architecture,
-i.e., it would use plain `gcc`.
-
-Fixes: 795285ef2425 ("selftests: Fix clang cross compilation")
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Valentin Obst <kernel@valentinobst.de>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/127622315d07d9d419ae8e6373c7e5be7fab7a62.1704835845.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Stable-dep-of: 3e551115aee0 ("pwm: meson: Add check for error from clk_round_rate()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/lib.mk | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/pwm/core.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
-index da2cade3bab0e..8ae203d8ed7fa 100644
---- a/tools/testing/selftests/lib.mk
-+++ b/tools/testing/selftests/lib.mk
-@@ -7,6 +7,8 @@ else ifneq ($(filter -%,$(LLVM)),)
- LLVM_SUFFIX := $(LLVM)
- endif
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index 31f210872a079..606d9ef0c7097 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -107,8 +107,8 @@ of_pwm_xlate_with_flags(struct pwm_chip *chip, const struct of_phandle_args *arg
+ {
+ 	struct pwm_device *pwm;
  
-+CLANG := $(LLVM_PREFIX)clang$(LLVM_SUFFIX)
-+
- CLANG_TARGET_FLAGS_arm          := arm-linux-gnueabi
- CLANG_TARGET_FLAGS_arm64        := aarch64-linux-gnu
- CLANG_TARGET_FLAGS_hexagon      := hexagon-linux-musl
-@@ -18,7 +20,13 @@ CLANG_TARGET_FLAGS_riscv        := riscv64-linux-gnu
- CLANG_TARGET_FLAGS_s390         := s390x-linux-gnu
- CLANG_TARGET_FLAGS_x86          := x86_64-linux-gnu
- CLANG_TARGET_FLAGS_x86_64       := x86_64-linux-gnu
--CLANG_TARGET_FLAGS              := $(CLANG_TARGET_FLAGS_$(ARCH))
-+
-+# Default to host architecture if ARCH is not explicitly given.
-+ifeq ($(ARCH),)
-+CLANG_TARGET_FLAGS := $(shell $(CLANG) -print-target-triple)
-+else
-+CLANG_TARGET_FLAGS := $(CLANG_TARGET_FLAGS_$(ARCH))
-+endif
+-	/* flags in the third cell are optional */
+-	if (args->args_count < 2)
++	/* period in the second cell and flags in the third cell are optional */
++	if (args->args_count < 1)
+ 		return ERR_PTR(-EINVAL);
  
- ifeq ($(CROSS_COMPILE),)
- ifeq ($(CLANG_TARGET_FLAGS),)
-@@ -30,7 +38,7 @@ else
- CLANG_FLAGS     += --target=$(notdir $(CROSS_COMPILE:%-=%))
- endif # CROSS_COMPILE
+ 	if (args->args[0] >= chip->npwm)
+@@ -118,9 +118,10 @@ of_pwm_xlate_with_flags(struct pwm_chip *chip, const struct of_phandle_args *arg
+ 	if (IS_ERR(pwm))
+ 		return pwm;
  
--CC := $(LLVM_PREFIX)clang$(LLVM_SUFFIX) $(CLANG_FLAGS) -fintegrated-as
-+CC := $(CLANG) $(CLANG_FLAGS) -fintegrated-as
- else
- CC := $(CROSS_COMPILE)gcc
- endif # LLVM
+-	pwm->args.period = args->args[1];
+-	pwm->args.polarity = PWM_POLARITY_NORMAL;
++	if (args->args_count > 1)
++		pwm->args.period = args->args[1];
+ 
++	pwm->args.polarity = PWM_POLARITY_NORMAL;
+ 	if (args->args_count > 2 && args->args[2] & PWM_POLARITY_INVERTED)
+ 		pwm->args.polarity = PWM_POLARITY_INVERSED;
+ 
+@@ -133,18 +134,15 @@ of_pwm_single_xlate(struct pwm_chip *chip, const struct of_phandle_args *args)
+ {
+ 	struct pwm_device *pwm;
+ 
+-	/* validate that one cell is specified, optionally with flags */
+-	if (args->args_count != 1 && args->args_count != 2)
+-		return ERR_PTR(-EINVAL);
+-
+ 	pwm = pwm_request_from_chip(chip, 0, NULL);
+ 	if (IS_ERR(pwm))
+ 		return pwm;
+ 
+-	pwm->args.period = args->args[0];
+-	pwm->args.polarity = PWM_POLARITY_NORMAL;
++	if (args->args_count > 1)
++		pwm->args.period = args->args[0];
+ 
+-	if (args->args_count == 2 && args->args[1] & PWM_POLARITY_INVERTED)
++	pwm->args.polarity = PWM_POLARITY_NORMAL;
++	if (args->args_count > 1 && args->args[1] & PWM_POLARITY_INVERTED)
+ 		pwm->args.polarity = PWM_POLARITY_INVERSED;
+ 
+ 	return pwm;
 -- 
 2.43.0
 
