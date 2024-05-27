@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D778D0BA3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:11:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B7C8D0DAB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9C641F219E2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:11:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DE8C283D24
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E612515DBD8;
-	Mon, 27 May 2024 19:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EE415FD04;
+	Mon, 27 May 2024 19:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="da4/RoZv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWPEzhXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EF017E90E;
-	Mon, 27 May 2024 19:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E31C13AD05;
+	Mon, 27 May 2024 19:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837088; cv=none; b=YILkblbOmH4dHdEs/309TN7q8U3T+h4H3k5LVfgpQi4NyF2v17B+nwMhspG1up/UifDy9yIsK4bhMk97YMnueS2Bz+EOVdNqaLY0u66SkDsTIqAqxs0h74gJAgl4MfLihzl08oP6cTc5cdnQLyyjYe2baK5U4bsn2UCSBhVklyg=
+	t=1716838346; cv=none; b=himQolHz619X5eMC0S6+f7MQyE8LQRUCOC0AtG2Gs5V6RGltSitDYRWEYIUWhKbZYH++Rv4g3NsRg4hijfvAdTORpQRbCpCxbFZhX1DZ5oaythAOMUl2yz5EmYafbdkI57CrIQVGvEAxDp1QZ1CIkCwnh9YoaUrBwvJGpDAxG9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837088; c=relaxed/simple;
-	bh=Z41lnDo7t6wKuthNYBwcU1IgILOV0B9eHyTjcwoQ8KQ=;
+	s=arc-20240116; t=1716838346; c=relaxed/simple;
+	bh=jXV/5EcHCG8kzNos3ZwVTyQzZD3U8PcGtceWR6yb43M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QctGWIOpOOK+hmo+ZQKVESOuwjBBya9fhW/cOfyEYSIAyVmJbnugFu/H2ybmz+nBjqMBY96TIagbmRUSxqqdL3edXBxrb3eF7YYdlJ7UDdd5LZWfjTqMoTDQfJXmZsySU1eQZ22pFIBpAAgu+9xeCrxGfEsm816fBMD1ebDSxHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=da4/RoZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D60C2BBFC;
-	Mon, 27 May 2024 19:11:28 +0000 (UTC)
+	 MIME-Version; b=nE87JxctfIP6d8JdfJXMjm7vmFr+kvwu3eV5CwEbNLGXFHd2mtlJVHFeDDOVd/6/Ku3ysF4tIA3x53NJpAgel5ddFb5b/0z5BvzFvIdIlTRICj1+IDCAZXXdPNXFEOJq97bSmjVe3IFwJcPtZnMHNBLyIBRhn8NILYPmffUST3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWPEzhXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6175C2BBFC;
+	Mon, 27 May 2024 19:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837088;
-	bh=Z41lnDo7t6wKuthNYBwcU1IgILOV0B9eHyTjcwoQ8KQ=;
+	s=korg; t=1716838346;
+	bh=jXV/5EcHCG8kzNos3ZwVTyQzZD3U8PcGtceWR6yb43M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=da4/RoZvjK9PauYcB0wL4Cwu3ozjvuI1jux+g5E/cMh1FfCUk+OcBTjguBXUUhAyk
-	 kAghRCPRvi9g5CR9RlbnrMNQu9X/YaCHjLdC3DJyDa/cuwAbeWk8Y6CM6jg1L/Yaxg
-	 a94+UwgesyoAWIZHabsPmOBVv7mNL4hSynvn37g4=
+	b=tWPEzhXVl3E0/m/oNKL28JVFdLkHyh9j5muBSD41yrk4Uz4I8NVuIw0il66Wm7WSG
+	 b3TS1Vz78XteyrNX+pIKOP/IDrSIJJKtaizzBSCVJv0osG4sD236bUsQ0Erbd8yW/I
+	 G8LUrXm6NW++kM84M33aeQ8NT70eXQGXlMcYwcH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Helge Deller <deller@gmx.de>,
+	David Heidelberg <david.heidelberg@collabora.com>,
+	Vignesh Raman <vignesh.raman@collabora.com>,
+	Helen Koike <helen.koike@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 305/427] fbdev: sisfb: hide unused variables
-Date: Mon, 27 May 2024 20:55:52 +0200
-Message-ID: <20240527185630.535127506@linuxfoundation.org>
+Subject: [PATCH 6.8 351/493] drm/ci: update device type for volteer devices
+Date: Mon, 27 May 2024 20:55:53 +0200
+Message-ID: <20240527185641.771101001@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Vignesh Raman <vignesh.raman@collabora.com>
 
-[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
+[ Upstream commit a2c71b711e7efc6478976233768bdbc3386e6dce ]
 
-Building with W=1 shows that a couple of variables in this driver are only
-used in certain configurations:
+Volteer devices in the collabora lab are categorized under the
+asus-cx9400-volteer device type. The majority of these units
+has an Intel Core i5-1130G7 CPU, while some of them have a
+Intel Core i7-1160G7 CPU instead. So due to this difference,
+new device type template is added for the Intel Core i5-1130G7
+and i7-1160G7 variants of the Acer Chromebook Spin 514 (CP514-2H)
+volteer Chromebooks. So update the same in drm-ci.
 
-drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
-  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
-  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
-  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
-  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
-  184 | static const unsigned char SiS_Part2CLVX_2[] = {
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
-  176 | static const unsigned char SiS_Part2CLVX_1[] = {
-      |                            ^~~~~~~~~~~~~~~
+https://gitlab.collabora.com/lava/lava/-/merge_requests/149
 
-This started showing up after the definitions were moved into the
-source file from the header, which was not flagged by the compiler.
-Move the definition into the appropriate #ifdef block that already
-exists next to them.
-
-Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 0119c894ab0d ("drm: Add initial ci/ subdirectory")
+Reviewed-by: David Heidelberg <david.heidelberg@collabora.com>
+Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+Acked-by: Helen Koike <helen.koike@collabora.com>
+Signed-off-by: Helen Koike <helen.koike@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240307021841.100561-1-vignesh.raman@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sis/init301.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/ci/test.yml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
-index a8fb41f1a2580..09329072004f4 100644
---- a/drivers/video/fbdev/sis/init301.c
-+++ b/drivers/video/fbdev/sis/init301.c
-@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
- };
+diff --git a/drivers/gpu/drm/ci/test.yml b/drivers/gpu/drm/ci/test.yml
+index 9faf76e55a56a..da381257e7e54 100644
+--- a/drivers/gpu/drm/ci/test.yml
++++ b/drivers/gpu/drm/ci/test.yml
+@@ -237,11 +237,11 @@ i915:cml:
+ i915:tgl:
+   extends:
+     - .i915
+-  parallel: 8
++  parallel: 5
+   variables:
+-    DEVICE_TYPE: asus-cx9400-volteer
++    DEVICE_TYPE: acer-cp514-2h-1130g7-volteer
+     GPU_VERSION: tgl
+-    RUNNER_TAG: mesa-ci-x86-64-lava-asus-cx9400-volteer
++    RUNNER_TAG: mesa-ci-x86-64-lava-acer-cp514-2h-1130g7-volteer
  
- /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
--
-+#ifdef CONFIG_FB_SIS_315
- static const unsigned char SiS_Part2CLVX_1[] = {
-     0x00,0x00,
-     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
-@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-     0xFF,0xFF,
- };
- 
--#ifdef CONFIG_FB_SIS_315
- /* 661 et al LCD data structure (2.03.00) */
- static const unsigned char SiS_LCDStruct661[] = {
-     /* 1024x768 */
+ .amdgpu:
+   extends:
 -- 
 2.43.0
 
