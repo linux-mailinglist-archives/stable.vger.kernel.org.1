@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-47502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBBE58D0E45
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:38:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034DC8D0E39
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B8FBB20CEC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:38:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE9191F21CE9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96C716086C;
-	Mon, 27 May 2024 19:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA5D16086C;
+	Mon, 27 May 2024 19:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCp0fvjr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCfUjgaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756E015FCFB;
-	Mon, 27 May 2024 19:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2F461FDF;
+	Mon, 27 May 2024 19:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838715; cv=none; b=lRqqo0ztFpnmOOORixIDqqqAB7bHSZyZARbH+HpCj2liwmDWvaWTc1I+Zv45r0/lh+SkmuBqRfFX9I3+atqx2VxOOfKU027R8cwXGBfa0U1Gt8TCp70APPLeXBFf/ArbENcbYSe3vLhyZ9m1HLPQmvqS7gVo47levLnH0tNa1Iw=
+	t=1716838689; cv=none; b=oXx/BR39dbGSyVcfhmXAuUGTohKmGDeQdY14j8+DtxWm9VAJzl0Sy+SA9bTDs0RfCkjrb/+69F5MPDYtteBwQ6CGBPGsMmFoog5pJ+pDMp6BtTsRPNhXrHJjP3SWiS7n7+tDmtXeIViXqnS1ObWS5w/4noyJ2AwtNZJujbhY5NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838715; c=relaxed/simple;
-	bh=YSGIcTkXKZGsQfdEXxKaII7Fk7y/IPdczVrBrCJXxmk=;
+	s=arc-20240116; t=1716838689; c=relaxed/simple;
+	bh=LyeDXIntMXFbVOjiw+3UM3dcFBAHrUqr10zq0XyuZEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khRBqGhiZyHVCxDH1KGlly/QcDoR1u3TKflFyELE3bvk3AQb8ufZBGSE6A2Rm0jX/b3uJbA4RQ5j3/3xRILEctpTiNYZjwvqqMBi1d0YGHs9K1sWT/m5DfYyKK6fJeG+gICVB6fEOz5Rel5YBwu6JwihjBHvKC1alGgAOGM5Zrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCp0fvjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF2CC2BBFC;
-	Mon, 27 May 2024 19:38:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZfS84XmWHNx5BV/BYv6hfLDw1NOw9/Zg7XYjps3GAK76O9KS4yhgPwlfvf5MJ2Gz8U74Qjyrn9DJ2zrt3wuU1Tn+Zs2rAZ1A37xu56IRqSl5sNqckHkWfBKfgrxY3HzFZYvJ/W91i6zomJOOhw4pt3v5Imz4SJMiJan4LRCnIpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCfUjgaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FB2C2BBFC;
+	Mon, 27 May 2024 19:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838715;
-	bh=YSGIcTkXKZGsQfdEXxKaII7Fk7y/IPdczVrBrCJXxmk=;
+	s=korg; t=1716838689;
+	bh=LyeDXIntMXFbVOjiw+3UM3dcFBAHrUqr10zq0XyuZEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCp0fvjrlJeERu52K5kWYAwlAiDV6N6qd7jy2SLUE7d/QRRW719XaWei8zes92tko
-	 d1uLt2KU3F+b5oxO5tD1awwLYUH0j4pNl7PeESiVl3HavHcOYL9CdmZE6LqoOgywd4
-	 /kX60khNh3Eww9JRSJXk3MYTn7Y/OrC+e1kec73A=
+	b=wCfUjgaPvqoI3r/UrqHRzCdO7Aq4zmamAB/Mob/gb+2GLTY5uc1R6Reov1G2d/0wW
+	 duYZs9rwGfu+oF/J7JG30VvZTqnaS7knHOuJ7LT6k4y7NrhzuoUp7iO44CaloMlY5z
+	 A0Fryij7hYiOLPuIPBDO01Kx7KLaazbJFBIkVvBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Karel Balej <balejk@matfyz.cz>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 490/493] io_uring/net: ensure async prep handlers always initialize ->done_io
-Date: Mon, 27 May 2024 20:58:12 +0200
-Message-ID: <20240527185646.158703929@linuxfoundation.org>
+Subject: [PATCH 6.8 491/493] pwm: Fix setting period with #pwm-cells = <1> and of_pwm_single_xlate()
+Date: Mon, 27 May 2024 20:58:13 +0200
+Message-ID: <20240527185646.192296793@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -59,68 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit f3a640cca951ef9715597e68f5363afc0f452a88 ]
+[ Upstream commit 73dfe970c038d0548beccc5bfb2707e1d543b01f ]
 
-If we get a request with IOSQE_ASYNC set, then we first run the prep
-async handlers. But if we then fail setting it up and want to post
-a CQE with -EINVAL, we use ->done_io. This was previously guarded with
-REQ_F_PARTIAL_IO, and the normal setup handlers do set it up before any
-potential errors, but we need to cover the async setup too.
+For drivers making use of of_pwm_single_xlate() (i.e. those that don't
+pass a hwpwm index) and also don't pass flags, setting period was
+wrongly skipped. This affects the pwm-pxa and ti-sn65dsi86 drivers.
 
-Fixes: 9817ad85899f ("io_uring/net: remove dependency on REQ_F_PARTIAL_IO for sr->done_io")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Karel Balej <balejk@matfyz.cz>
+Link: https://lore.kernel.org/r/D05IVTPYH35N.2CLDG6LSILRSN@matfyz.cz
+Fixes: 40ade0c2e794 ("pwm: Let the of_xlate callbacks accept references without period")
+Tested-by: Karel Balej <balejk@matfyz.cz>
+Link: https://lore.kernel.org/r/20240329103544.545290-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/pwm/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 099ab92cca0b7..dbabe0058f1cb 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -311,7 +311,10 @@ int io_send_prep_async(struct io_kiocb *req)
- 	struct io_async_msghdr *io;
- 	int ret;
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index 830a697826af5..9d2dc5e1c8aac 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -443,7 +443,7 @@ of_pwm_single_xlate(struct pwm_chip *chip, const struct of_phandle_args *args)
+ 	if (IS_ERR(pwm))
+ 		return pwm;
  
--	if (!zc->addr || req_has_async_data(req))
-+	if (req_has_async_data(req))
-+		return 0;
-+	zc->done_io = 0;
-+	if (!zc->addr)
- 		return 0;
- 	io = io_msg_alloc_async_prep(req);
- 	if (!io)
-@@ -338,8 +341,10 @@ static int io_setup_async_addr(struct io_kiocb *req,
+-	if (args->args_count > 1)
++	if (args->args_count > 0)
+ 		pwm->args.period = args->args[0];
  
- int io_sendmsg_prep_async(struct io_kiocb *req)
- {
-+	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
- 	int ret;
- 
-+	sr->done_io = 0;
- 	if (!io_msg_alloc_async_prep(req))
- 		return -ENOMEM;
- 	ret = io_sendmsg_copy_hdr(req, req->async_data);
-@@ -586,9 +591,11 @@ static int io_recvmsg_copy_hdr(struct io_kiocb *req,
- 
- int io_recvmsg_prep_async(struct io_kiocb *req)
- {
-+	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
- 	struct io_async_msghdr *iomsg;
- 	int ret;
- 
-+	sr->done_io = 0;
- 	if (!io_msg_alloc_async_prep(req))
- 		return -ENOMEM;
- 	iomsg = req->async_data;
+ 	pwm->args.polarity = PWM_POLARITY_NORMAL;
 -- 
 2.43.0
 
