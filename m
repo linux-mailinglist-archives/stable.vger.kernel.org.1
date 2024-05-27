@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-46839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C99D8D0B7A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B08A8D0D53
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E45D1C215BA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC3B31C20F62
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FF726AF2;
-	Mon, 27 May 2024 19:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0879E16078C;
+	Mon, 27 May 2024 19:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJseA+Ku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uE7GkiAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B8F17E90E;
-	Mon, 27 May 2024 19:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC03B262BE;
+	Mon, 27 May 2024 19:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836987; cv=none; b=cMeDp9POf50z0kREb38gZ/MnRS287gEx6fIQK0zhh2fkm7Zd88x/8/oBBWGmV8KASWNVWgrOLZ1ugRBbAgbs9jaQ0mZOmvX4gJouYrbh3d6NAT54F2Bsgj6XXOU7wS1xPmuPX5jpX2rR5Magf5j8Hf6pNwSlxtF3seB3ARdRDYs=
+	t=1716838118; cv=none; b=CguU6EGMxyPeyj05+Z40CvtdbiXFgMiK+sDhnDdlMW6c7cFN58kcBR8SJJ+csqWuuyl1FpZiFvK//dT0zpO1ZRuGsqvRlwEAU0nrU0+Tc28i9nnmKCzBfth3EMe0F+EBwIi8y3KJEluiewqP30Us6uVrERaAqNar/p/X7llEfKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836987; c=relaxed/simple;
-	bh=9j0p0zz4NyKSQe7auRufoHJkSHwIAiEVWU06AOQBemg=;
+	s=arc-20240116; t=1716838118; c=relaxed/simple;
+	bh=Bq01vfZ63inoYRXc7dpNuwKZVGBKub5DoCiO4rC47dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YatW2X9/OziKu/ZECc7o//bMqVQrohF5RuYRvKbRxMvrc6+DJQe47Y+guNAzmDYX+Rkmp15625xUgFEbOJBBt9OTG3lgXBXWI8YallhCqS22xt+r7t9RP7Tyaa2lV/8bzPafmlxH28BU413sWw9vfw7JGuzrpsP0k2H1yd6bfFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJseA+Ku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99004C2BBFC;
-	Mon, 27 May 2024 19:09:46 +0000 (UTC)
+	 MIME-Version; b=C/taCbxy7re3CfxqsvDVqAqvlgTJuCRlEFT8i/HtW5teSB2CyO3kFFIP0qkAYapk8YKXlnf1Gs2mVSu5HtHpeJkabzSrG+RTLsWVs0peD0/i5JYK9VgHv12oTOi+5HB9exsidvUXJ8HlSG7Dyq+qJfKcX0BAGu0+V89X4+NQYzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uE7GkiAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B175C2BBFC;
+	Mon, 27 May 2024 19:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836986;
-	bh=9j0p0zz4NyKSQe7auRufoHJkSHwIAiEVWU06AOQBemg=;
+	s=korg; t=1716838118;
+	bh=Bq01vfZ63inoYRXc7dpNuwKZVGBKub5DoCiO4rC47dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJseA+Ku094vxGK4Eu7hZ8Hw8EcJWqTdmgfllHgT+wgxDg3f3cTomGZC/0oSTgfzj
-	 BQFKc9klByEWGkWjASgBEarl75o+vM97IVb38vzLitRg1wOX4MkzFtvDuQaXgLtsz4
-	 8GEO+2bRlbxzbAbIEAut382vvC0M2RMDuyeFg40I=
+	b=uE7GkiAYPoVnE+8nXPTXoOjlQt5mw04PAeXmRJ4zT3Xg903jP2elj9jDwWTnCv01y
+	 0eUveq8q8tqxr1fdFijsKygU09TzeB4o5LOePyhX1lL/Tabsw2l4S7kNqUdSFVG3Op
+	 tYDNU1dsP2UtOTXJgR1Kjv6kSIstmUvuwmlk58jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 6.9 229/427] m68k: mac: Fix reboot hang on Mac IIci
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Howard Hsu <howard-yh.hsu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 274/493] wifi: mt76: mt7996: fix potential memory leakage when reading chip temperature
 Date: Mon, 27 May 2024 20:54:36 +0200
-Message-ID: <20240527185623.880060307@linuxfoundation.org>
+Message-ID: <20240527185639.249987646@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-[ Upstream commit 265a3b322df9a973ff1fc63da70af456ab6ae1d6 ]
+[ Upstream commit 474b9412f33be87076b40a49756662594598a85e ]
 
-Calling mac_reset() on a Mac IIci does reset the system, but what
-follows is a POST failure that requires a manual reset to resolve.
-Avoid that by using the 68030 asm implementation instead of the C
-implementation.
+Without this commit, reading chip temperature will cause memory leakage.
 
-Apparently the SE/30 has a similar problem as it has used the asm
-implementation since before git. This patch extends that solution to
-other systems with a similar ROM.
-
-After this patch, the only systems still using the C implementation are
-68040 systems where adb_type is either MAC_ADB_IOP or MAC_ADB_II. This
-implies a 1 MiB Quadra ROM.
-
-This now includes the Quadra 900/950, which previously fell through to
-the "should never get here" catch-all.
-
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/480ebd1249d229c6dc1f3f1c6d599b8505483fd8.1714797072.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 6879b2e94172 ("wifi: mt76: mt7996: add thermal sensor device support")
+Reported-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/mac/misc.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
-index 4c8f8cbfa05f3..e7f0f72c1b36e 100644
---- a/arch/m68k/mac/misc.c
-+++ b/arch/m68k/mac/misc.c
-@@ -453,30 +453,18 @@ void mac_poweroff(void)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 25ea81ecdab9b..10d13fa45c5a1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3733,6 +3733,7 @@ int mt7996_mcu_get_temperature(struct mt7996_phy *phy)
+ 	} __packed * res;
+ 	struct sk_buff *skb;
+ 	int ret;
++	u32 temp;
  
- void mac_reset(void)
- {
--	if (macintosh_config->adb_type == MAC_ADB_II &&
--	    macintosh_config->ident != MAC_MODEL_SE30) {
--		/* need ROMBASE in booter */
--		/* indeed, plus need to MAP THE ROM !! */
--
--		if (mac_bi_data.rombase == 0)
--			mac_bi_data.rombase = 0x40800000;
--
--		/* works on some */
--		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
--
--		local_irq_disable();
--		rom_reset();
- #ifdef CONFIG_ADB_CUDA
--	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
--	           macintosh_config->adb_type == MAC_ADB_CUDA) {
-+	if (macintosh_config->adb_type == MAC_ADB_EGRET ||
-+	    macintosh_config->adb_type == MAC_ADB_CUDA) {
- 		cuda_restart();
-+	} else
- #endif
- #ifdef CONFIG_ADB_PMU
--	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
-+	if (macintosh_config->adb_type == MAC_ADB_PB2) {
- 		pmu_restart();
-+	} else
- #endif
--	} else if (CPU_IS_030) {
--
-+	if (CPU_IS_030) {
- 		/* 030-specific reset routine.  The idea is general, but the
- 		 * specific registers to reset are '030-specific.  Until I
- 		 * have a non-030 machine, I can't test anything else.
-@@ -524,6 +512,18 @@ void mac_reset(void)
- 		    "jmp %/a0@\n\t" /* jump to the reset vector */
- 		    ".chip 68k"
- 		    : : "r" (offset), "a" (rombase) : "a0");
-+	} else {
-+		/* need ROMBASE in booter */
-+		/* indeed, plus need to MAP THE ROM !! */
-+
-+		if (mac_bi_data.rombase == 0)
-+			mac_bi_data.rombase = 0x40800000;
-+
-+		/* works on some */
-+		rom_reset = (void *)(mac_bi_data.rombase + 0xa);
-+
-+		local_irq_disable();
-+		rom_reset();
- 	}
+ 	ret = mt76_mcu_send_and_get_msg(&phy->dev->mt76, MCU_WM_UNI_CMD(THERMAL),
+ 					&req, sizeof(req), true, &skb);
+@@ -3740,8 +3741,10 @@ int mt7996_mcu_get_temperature(struct mt7996_phy *phy)
+ 		return ret;
  
- 	/* should never get here */
+ 	res = (void *)skb->data;
++	temp = le32_to_cpu(res->temperature);
++	dev_kfree_skb(skb);
+ 
+-	return le32_to_cpu(res->temperature);
++	return temp;
+ }
+ 
+ int mt7996_mcu_set_thermal_throttling(struct mt7996_phy *phy, u8 state)
 -- 
 2.43.0
 
