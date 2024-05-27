@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-47304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AC98D0D72
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438778D0B71
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D01D281589
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3CE1284747
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAAA16079A;
-	Mon, 27 May 2024 19:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DF06A039;
+	Mon, 27 May 2024 19:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6FPoD+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfYjQ4pe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24092262BE;
-	Mon, 27 May 2024 19:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354D117E90E;
+	Mon, 27 May 2024 19:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838196; cv=none; b=ReXfHojNVHY24pSNyJGTttlmLxpZiuY+1AzTFra9ubOUDLZU4P0t6Vxyf85FEBGd+a8vucow5Xe/EWqFBVuoSzJNg/aEDFzBI0mZphVwFxkXVCP4DCp+f1lwTenadW6UbTSER4DMxqk7kEPdhtHtUmLD/wo8xgjCv0Oy1fcFpq0=
+	t=1716836964; cv=none; b=F9mlLnDTpFVhTcYQ0ttq6JsFdcwO57gntBP/j7PatNYxpl45gxjd/RtOMZV71lIKkUExE7S08TGZKGb8DixPC6jibNCL3NJTbBhV59IewgM6Ym8+iJUmNfz6GxkpjlmSdFoEvlRwZBf2dloxG5+3h3gdzHn58rv/yzulR6Nx9/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838196; c=relaxed/simple;
-	bh=NR3JQESadvJpyaI1XrqYgTz7jDUsa90S7dZCAn2j0QY=;
+	s=arc-20240116; t=1716836964; c=relaxed/simple;
+	bh=d2z3QPmZ24nOmz2Tpv9nCQ2zPQum72eVUxkXyLmqur0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIjEMpUhTvgcWWs+pithFJ6bC0oCRP7kU4Han3Rf5LENqVef7DTkzRUKtAauBn5Lvf5C+3RU3obXj8V1iXtAuwV8/jAsgHLGpLj0Yl+O8Q4fJ8jTgfHXjRPOjg7lkYVPh3zt0GAveQzv0JqbYpduyURhvSmUaK+h60owyyZMHC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6FPoD+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2F0C2BBFC;
-	Mon, 27 May 2024 19:29:55 +0000 (UTC)
+	 MIME-Version; b=d/IEXugQFZyJaALrl6WhiTF2QXRDFxAaSUkuQiYYh/soBETu+toLW2RL6Be23D5iYrYRC6YQsOR6Dkz2idOqcHHaT8zumnRZj77OKpzl9sUbArpJbXo9ZhddSfjzQjTSp53syVcwXaMAE192pYLVlIZPcD2rYoFSdBwi39K/C+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfYjQ4pe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF15C2BBFC;
+	Mon, 27 May 2024 19:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838196;
-	bh=NR3JQESadvJpyaI1XrqYgTz7jDUsa90S7dZCAn2j0QY=;
+	s=korg; t=1716836964;
+	bh=d2z3QPmZ24nOmz2Tpv9nCQ2zPQum72eVUxkXyLmqur0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6FPoD+OwRDe9DMlOoFxB/GqYzeBTmYT+gUSPjUHwOOxfUvjhFUC6u3hHf5MhVdek
-	 FRRDXgqDTAEwamBnDvnHQzPi1hQmDybwHgui5fAMyZKOnBccSp8EegLnvR2DDsDSis
-	 uC3etexVtEGCozJRPSfsaYc1H5Ut5Yaffl1vB2Eg=
+	b=VfYjQ4peTBBlxW5LFkwER/fYKCWgJnmD/9nyihkiBbhJgJXW5+DPHAhynfYo01sv7
+	 b5Sam60C/2ZOHZZqW2ID4Xw/qkdX5M47vKMYQ1GrTXsL8VM/1CNXAMUw35i7aijta7
+	 HqiACQAekTHQf1d9Nx8njG6O7LACkWL7sxZSW/X4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xingwang <gaoxingwang1@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Puranjay Mohan <puranjay12@gmail.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 301/493] net: ipv6: fix wrong start position when receive hop-by-hop fragment
+Subject: [PATCH 6.9 256/427] s390/bpf: Emit a barrier for BPF_FETCH instructions
 Date: Mon, 27 May 2024 20:55:03 +0200
-Message-ID: <20240527185640.151280199@linuxfoundation.org>
+Message-ID: <20240527185626.404498050@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gaoxingwang <gaoxingwang1@huawei.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit 1cd354fe1e4864eeaff62f66ee513080ec946f20 ]
+[ Upstream commit 68378982f0b21de02ac3c6a11e2420badefcb4bc ]
 
-In IPv6, ipv6_rcv_core will parse the hop-by-hop type extension header and increase skb->transport_header by one extension header length.
-But if there are more other extension headers like fragment header at this time, the skb->transport_header points to the second extension header,
-not the transport layer header or the first extension header.
+BPF_ATOMIC_OP() macro documentation states that "BPF_ADD | BPF_FETCH"
+should be the same as atomic_fetch_add(), which is currently not the
+case on s390x: the serialization instruction "bcr 14,0" is missing.
+This applies to "and", "or" and "xor" variants too.
 
-This will result in the start and nexthdrp variable not pointing to the same position in ipv6frag_thdr_trunced,
-and ipv6_skip_exthdr returning incorrect offset and frag_off.Sometimes,the length of the last sharded packet is smaller than the calculated incorrect offset, resulting in packet loss.
-We can use network header to offset and calculate the correct position to solve this problem.
+s390x is allowed to reorder stores with subsequent fetches from
+different addresses, so code relying on BPF_FETCH acting as a barrier,
+for example:
 
-Fixes: 9d9e937b1c8b (ipv6/netfilter: Discard first fragment not including all headers)
-Signed-off-by: Gao Xingwang <gaoxingwang1@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  stw [%r0], 1
+  afadd [%r1], %r2
+  ldxw %r3, [%r4]
+
+may be broken. Fix it by emitting "bcr 14,0".
+
+Note that a separate serialization instruction is not needed for
+BPF_XCHG and BPF_CMPXCHG, because COMPARE AND SWAP performs
+serialization itself.
+
+Fixes: ba3b86b9cef0 ("s390/bpf: Implement new atomic ops")
+Reported-by: Puranjay Mohan <puranjay12@gmail.com>
+Closes: https://lore.kernel.org/bpf/mb61p34qvq3wf.fsf@kernel.org/
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
+Link: https://lore.kernel.org/r/20240507000557.12048-1-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/reassembly.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/net/bpf_jit_comp.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-index 5ebc47da1000c..2af98edef87ee 100644
---- a/net/ipv6/reassembly.c
-+++ b/net/ipv6/reassembly.c
-@@ -369,7 +369,7 @@ static int ipv6_frag_rcv(struct sk_buff *skb)
- 	 * the source of the fragment, with the Pointer field set to zero.
- 	 */
- 	nexthdr = hdr->nexthdr;
--	if (ipv6frag_thdr_truncated(skb, skb_transport_offset(skb), &nexthdr)) {
-+	if (ipv6frag_thdr_truncated(skb, skb_network_offset(skb) + sizeof(struct ipv6hdr), &nexthdr)) {
- 		__IP6_INC_STATS(net, __in6_dev_get_safely(skb->dev),
- 				IPSTATS_MIB_INHDRERRORS);
- 		icmpv6_param_prob(skb, ICMPV6_HDR_INCOMP, 0);
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index 5af0402e94b88..1d168a98ae21b 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -1427,8 +1427,12 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 	EMIT6_DISP_LH(0xeb000000, is32 ? (op32) : (op64),		\
+ 		      (insn->imm & BPF_FETCH) ? src_reg : REG_W0,	\
+ 		      src_reg, dst_reg, off);				\
+-	if (is32 && (insn->imm & BPF_FETCH))				\
+-		EMIT_ZERO(src_reg);					\
++	if (insn->imm & BPF_FETCH) {					\
++		/* bcr 14,0 - see atomic_fetch_{add,and,or,xor}() */	\
++		_EMIT2(0x07e0);						\
++		if (is32)                                               \
++			EMIT_ZERO(src_reg);				\
++	}								\
+ } while (0)
+ 		case BPF_ADD:
+ 		case BPF_ADD | BPF_FETCH:
 -- 
 2.43.0
 
