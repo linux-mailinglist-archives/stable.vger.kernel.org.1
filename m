@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0398D0BDB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D99B8D0E02
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BB221F23870
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1ED6B21324
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108D46A039;
-	Mon, 27 May 2024 19:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0286315FCFB;
+	Mon, 27 May 2024 19:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzpvEs8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzWg5cnc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19E017E90E;
-	Mon, 27 May 2024 19:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B596017727;
+	Mon, 27 May 2024 19:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837222; cv=none; b=mtnyJyafkDZQvPt1/U0OCMVYqxXruj9qNeU/p5ni+2iZRHnAfpwZyiPsAicqZPG6OZKzYLLfy7/hAbvxtABDY+fde7SEwapy3RD/cZ98sAdq1+sVmMItMbc0/JH5bh3BdZKcHD3msd/BlcBe07qh9QrZYqq9JQgMyiIBM3I68+o=
+	t=1716838563; cv=none; b=ZhIKxliT4ZOr9cnDZSYyO3DbDNC8XrGyglPN933Z0tq4/ViI5v0NJY+V+gSkMmvfklwUAcuabrN5YzF80l/rGqHk+f/UYJg16yznrH+FqeAt6pnLuNZSMog7RY/y65K73eamR0sJvpmva4fa+XSDAjcy5kHENs40hFqVirrJ+qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837222; c=relaxed/simple;
-	bh=vfSb5NdAchSC8A9t1RcHDk1F6lHke1WhT4Y6JJWfSAQ=;
+	s=arc-20240116; t=1716838563; c=relaxed/simple;
+	bh=vE2iBW+2k84cZU30eJ/of6MJ3sTcTsxk7TTN+bI3smg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBJIBxKOLedusCFO6vaFMsYxEIYE5qTLgcqWddhN/09ZQfR0sNPbJ3zF1NsiwZ3BYGvZTV19LqfpA320BzYWgGqa3rMu4THVmFA90aHaVYWy2i74bVAzBa+9sIK4/fqCqKivAD8NTEVravFd3NhW6z7QDlmqyc1DLpB8GpMwkp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzpvEs8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDDDC2BBFC;
-	Mon, 27 May 2024 19:13:42 +0000 (UTC)
+	 MIME-Version; b=R3sdPvhlKjconvwgIaCks5ajDXyYrg9TCJHWKp9ZvkE/C7vBmccj7fenJl+4ymLbvHtY5WBQDLTUKNwpNR8KaGnJBm4XS4JlilP2anXxAiM1Wv/z0j6aH4lkUnFbASxQfpoKgh46FbW+4sltm5on/grNVdTg1Eg4w93b5MRLxAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzWg5cnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5611C2BBFC;
+	Mon, 27 May 2024 19:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837222;
-	bh=vfSb5NdAchSC8A9t1RcHDk1F6lHke1WhT4Y6JJWfSAQ=;
+	s=korg; t=1716838563;
+	bh=vE2iBW+2k84cZU30eJ/of6MJ3sTcTsxk7TTN+bI3smg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzpvEs8LZR9m5oHWkTsY1Yaf/1yACc0aJybjRy92GYqf/l5k7B+78OBhjacOuLMcD
-	 P5yekbYzAoBNIrP/bfZ1uIlvcNK6bhZXNrRSuX5jxx4OR7zwqT6TzKH+sxTaZROWb1
-	 dTcCu9QHU63sLLyLSnP83i0E7NLS2QmsF/mmIkZ0=
+	b=tzWg5cnc7aYC+pYXW2eJJ5j5eep9bWLBXWh3Gr5YWUPZOrdj39no0wTThqTftHm5s
+	 0lGPeLtK5CmlkujYmraoSB1NWabEv2gicbeH4+jd8cvBsIYkKrLsRYgZg4cl9erXkG
+	 hYA9hBX0cGBwaoi21NvHKETfXRcwovVNBOWdWSOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Huai-Yuan Liu <qq810974084@gmail.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 355/427] RDMA/hns: Add max_ah and cq moderation capacities in query_device()
-Date: Mon, 27 May 2024 20:56:42 +0200
-Message-ID: <20240527185633.641957483@linuxfoundation.org>
+Subject: [PATCH 6.8 401/493] drm/arm/malidp: fix a possible null pointer dereference
+Date: Mon, 27 May 2024 20:56:43 +0200
+Message-ID: <20240527185643.396012683@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Huai-Yuan Liu <qq810974084@gmail.com>
 
-[ Upstream commit 2ce384307f2ddf39dc662878e151722199afc9ae ]
+[ Upstream commit a1f95aede6285dba6dd036d907196f35ae3a11ea ]
 
-Add max_ah and cq moderation capacities to hns_roce_query_device().
+In malidp_mw_connector_reset, new memory is allocated with kzalloc, but
+no check is performed. In order to prevent null pointer dereferencing,
+ensure that mw_state is checked before calling
+__drm_atomic_helper_connector_reset.
 
-Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 8cbc5caf36ef ("drm: mali-dp: Add writeback connector")
+Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240407063053.5481-1-qq810974084@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_device.h | 3 +++
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c  | 2 +-
- drivers/infiniband/hw/hns/hns_roce_hw_v2.h  | 2 +-
- drivers/infiniband/hw/hns/hns_roce_main.c   | 7 +++++++
- 4 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/arm/malidp_mw.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
-index c3cbd0a494bfd..0b47c6d68804f 100644
---- a/drivers/infiniband/hw/hns/hns_roce_device.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_device.h
-@@ -100,6 +100,9 @@
- #define CQ_BANKID_SHIFT 2
- #define CQ_BANKID_MASK GENMASK(1, 0)
+diff --git a/drivers/gpu/drm/arm/malidp_mw.c b/drivers/gpu/drm/arm/malidp_mw.c
+index 626709bec6f5f..2577f0cef8fcd 100644
+--- a/drivers/gpu/drm/arm/malidp_mw.c
++++ b/drivers/gpu/drm/arm/malidp_mw.c
+@@ -72,7 +72,10 @@ static void malidp_mw_connector_reset(struct drm_connector *connector)
+ 		__drm_atomic_helper_connector_destroy_state(connector->state);
  
-+#define HNS_ROCE_MAX_CQ_COUNT 0xFFFF
-+#define HNS_ROCE_MAX_CQ_PERIOD 0xFFFF
+ 	kfree(connector->state);
+-	__drm_atomic_helper_connector_reset(connector, &mw_state->base);
++	connector->state = NULL;
 +
- enum {
- 	SERV_TYPE_RC,
- 	SERV_TYPE_UC,
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index ba7ae792d279d..99f6ae6135c2f 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -5802,7 +5802,7 @@ static int hns_roce_v2_modify_cq(struct ib_cq *cq, u16 cq_count, u16 cq_period)
- 			dev_info(hr_dev->dev,
- 				 "cq_period(%u) reached the upper limit, adjusted to 65.\n",
- 				 cq_period);
--			cq_period = HNS_ROCE_MAX_CQ_PERIOD;
-+			cq_period = HNS_ROCE_MAX_CQ_PERIOD_HIP08;
- 		}
- 		cq_period *= HNS_ROCE_CLOCK_ADJUST;
- 	}
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-index df04bc8ede57b..dfed6b4ddb04d 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-@@ -1334,7 +1334,7 @@ struct fmea_ram_ecc {
++	if (mw_state)
++		__drm_atomic_helper_connector_reset(connector, &mw_state->base);
+ }
  
- /* only for RNR timeout issue of HIP08 */
- #define HNS_ROCE_CLOCK_ADJUST 1000
--#define HNS_ROCE_MAX_CQ_PERIOD 65
-+#define HNS_ROCE_MAX_CQ_PERIOD_HIP08 65
- #define HNS_ROCE_MAX_EQ_PERIOD 65
- #define HNS_ROCE_RNR_TIMER_10NS 1
- #define HNS_ROCE_1US_CFG 999
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index 1dc60c2b2b7ab..4d94fcb8685ab 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -40,6 +40,7 @@
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hem.h"
-+#include "hns_roce_hw_v2.h"
- 
- static int hns_roce_set_mac(struct hns_roce_dev *hr_dev, u32 port,
- 			    const u8 *addr)
-@@ -192,6 +193,12 @@ static int hns_roce_query_device(struct ib_device *ib_dev,
- 			    IB_ATOMIC_HCA : IB_ATOMIC_NONE;
- 	props->max_pkeys = 1;
- 	props->local_ca_ack_delay = hr_dev->caps.local_ca_ack_delay;
-+	props->max_ah = INT_MAX;
-+	props->cq_caps.max_cq_moderation_period = HNS_ROCE_MAX_CQ_PERIOD;
-+	props->cq_caps.max_cq_moderation_count = HNS_ROCE_MAX_CQ_COUNT;
-+	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08)
-+		props->cq_caps.max_cq_moderation_period = HNS_ROCE_MAX_CQ_PERIOD_HIP08;
-+
- 	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_SRQ) {
- 		props->max_srq = hr_dev->caps.num_srqs;
- 		props->max_srq_wr = hr_dev->caps.max_srq_wrs;
+ static enum drm_connector_status
 -- 
 2.43.0
 
