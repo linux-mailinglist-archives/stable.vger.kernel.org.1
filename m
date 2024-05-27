@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-46959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE57F8D0BF8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBE08D0DF9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8489A286210
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81AE31C213F4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FB415FA85;
-	Mon, 27 May 2024 19:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BDE16078C;
+	Mon, 27 May 2024 19:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwnddlW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvtDkmX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D239017E90E;
-	Mon, 27 May 2024 19:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C7B17727;
+	Mon, 27 May 2024 19:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837295; cv=none; b=r0klKyDfGpUBgpm7Ga9eV8mE8rNrueLEAfX6NKoZeg3A1DrSVTYI9MqEFksnHFdwzoFZ4O30sfNPDjzXcSa1PZRpsqtjtvCYaBYVIH6z9KFv2TFF/2/bSxlOIqYkjG7hEB12QwOFfGhHWAIgPwhDQ0XELLbfcbMj5Wuh1eIdJQ4=
+	t=1716838545; cv=none; b=i39RUkRBv/LTu14jUaMgyLOLoGrhSybwHTeowySA2BO37oKLdeabVgZARNDL/W7+nIxAe6gFkV0EIlPfGLG4ye0v9/dBRvtt8b98IfDi850hekXN3ek/HoHvi8FDCA2HAWeZtFDjEvkcdKrU4isAQgSbkGiXsEy6gN5k43ki18Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837295; c=relaxed/simple;
-	bh=90Pr1ExvdvVoeO5o95/gtJewRkGRYDd0j0NwM9FLkPE=;
+	s=arc-20240116; t=1716838545; c=relaxed/simple;
+	bh=sm3Nbmo9oj5f6S2n3lGo9/z4bLovY+OGRr5cE3cuJjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=na7lCsutl1z0R5e7WUsHFPaqFw48FBmsOnzwCEHbP2JMsdMvbWeqKULnYENnMA3H07zzEf2ekP7s0Mg0zhXDq8qeUhD+oZhUbVjAAxKz31g7mKOvdnBAqMUoOzayxi54dFzi8tsFMpQnQO/EPMGG8lNmvZEKXSce6Op74YWGmfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwnddlW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A20C2BBFC;
-	Mon, 27 May 2024 19:14:55 +0000 (UTC)
+	 MIME-Version; b=dOAYpyvUpVCwQXCBNnMLi4DUymPusstCZPcwpN+BAr6NXQQq2BjI+1nA71gAEEeFVEBcQiZiWkw9VAjOBWXwx7H12OpAQoap5/54tJX6ld1dMlfR7fYh1OeHIobowrLToAAa8dlUzzAcDacBFqowRGtAiStzZ2MTFAhXK6AJwIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvtDkmX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3418C2BBFC;
+	Mon, 27 May 2024 19:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837295;
-	bh=90Pr1ExvdvVoeO5o95/gtJewRkGRYDd0j0NwM9FLkPE=;
+	s=korg; t=1716838545;
+	bh=sm3Nbmo9oj5f6S2n3lGo9/z4bLovY+OGRr5cE3cuJjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jwnddlW4VYYaGCJeCgviZfmbM5e6esu3ebKBNWq4cvqyABYooEmsnpBB9yP1oS50t
-	 4NBiODTdpxLPPJzly98NNt8Cu+L6L4lv7tZaHBMNEcETVnhsjK4VpsAkFekV/kvcjY
-	 SXz7jDYF1rtpCn5MMjxInqvr4OhBebC75v4v67qo=
+	b=vvtDkmX9SugWOO9J7YQ6qEtNgOY04XzVXPs1IhBxov1EiLYdw76LAqySvKCTCi7uo
+	 vjQZoKag1x2mEoFhZgsMAxtcNUv7O/KgYXJTzrZcb5HqWjutC1mmCItWNV1lQ+RbQc
+	 kgHsGqO50UbLM07ea1xI5RhnmtGUGefb2X+sD4lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	David Hildenbrand <david@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Fei Li <fei1.li@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 386/427] virt: acrn: stop using follow_pfn
-Date: Mon, 27 May 2024 20:57:13 +0200
-Message-ID: <20240527185634.675037198@linuxfoundation.org>
+Subject: [PATCH 6.8 432/493] clk: mediatek: mt8365-mm: fix DPI0 parent
+Date: Mon, 27 May 2024 20:57:14 +0200
+Message-ID: <20240527185644.410833307@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,73 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-[ Upstream commit 1b265da7ea1e1ae997fa119c2846bb389eb39c6b ]
+[ Upstream commit 4c0c087772d7e29bc2489ddb068d5167140bfc38 ]
 
-Patch series "remove follow_pfn".
+To have a working display through DPI, a workaround has been
+implemented downstream to add "mm_dpi0_dpi0" and "dpi0_sel" to
+the DPI node. Shortly, that add an extra clock.
 
-This series open codes follow_pfn in the only remaining caller, although
-the code there remains questionable.  It then also moves follow_phys into
-the only user and simplifies it a bit.
+It seems consistent to have the "dpi0_sel" as parent.
+Additionnaly, "vpll_dpix" isn't used/managed.
 
-This patch (of 3):
+Then, set the "mm_dpi0_dpi0" parent clock to "dpi0_sel".
 
-Switch from follow_pfn to follow_pte so that we can get rid of follow_pfn.
-Note that this doesn't fix any of the pre-existing raciness and lack of
-permission checking in the code.
+The new clock tree is:
 
-Link: https://lkml.kernel.org/r/20240324234542.2038726-1-hch@lst.de
-Link: https://lkml.kernel.org/r/20240324234542.2038726-2-hch@lst.de
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Fei Li <fei1.li@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 3d6586008f7b ("drivers/virt/acrn: fix PFNMAP PTE checks in acrn_vm_ram_map()")
+clk26m
+  lvdspll
+    lvdspll_X (2, 4, 8, 16)
+      dpi0_sel
+        mm_dpi0_dpi0
+
+Fixes: d46adccb7966 ("clk: mediatek: add driver for MT8365 SoC")
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Link: https://lore.kernel.org/r/20231023-display-support-v3-12-53388f3ed34b@baylibre.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/acrn/mm.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/clk/mediatek/clk-mt8365-mm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/virt/acrn/mm.c b/drivers/virt/acrn/mm.c
-index fa5d9ca6be570..69c3f619f8819 100644
---- a/drivers/virt/acrn/mm.c
-+++ b/drivers/virt/acrn/mm.c
-@@ -171,18 +171,24 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
- 	mmap_read_lock(current->mm);
- 	vma = vma_lookup(current->mm, memmap->vma_base);
- 	if (vma && ((vma->vm_flags & VM_PFNMAP) != 0)) {
-+		spinlock_t *ptl;
-+		pte_t *ptep;
-+
- 		if ((memmap->vma_base + memmap->len) > vma->vm_end) {
- 			mmap_read_unlock(current->mm);
- 			return -EINVAL;
- 		}
- 
--		ret = follow_pfn(vma, memmap->vma_base, &pfn);
--		mmap_read_unlock(current->mm);
-+		ret = follow_pte(vma->vm_mm, memmap->vma_base, &ptep, &ptl);
- 		if (ret < 0) {
-+			mmap_read_unlock(current->mm);
- 			dev_dbg(acrn_dev.this_device,
- 				"Failed to lookup PFN at VMA:%pK.\n", (void *)memmap->vma_base);
- 			return ret;
- 		}
-+		pfn = pte_pfn(ptep_get(ptep));
-+		pte_unmap_unlock(ptep, ptl);
-+		mmap_read_unlock(current->mm);
- 
- 		return acrn_mm_region_add(vm, memmap->user_vm_pa,
- 			 PFN_PHYS(pfn), memmap->len,
+diff --git a/drivers/clk/mediatek/clk-mt8365-mm.c b/drivers/clk/mediatek/clk-mt8365-mm.c
+index 01a2ef8f594ef..3f62ec7507336 100644
+--- a/drivers/clk/mediatek/clk-mt8365-mm.c
++++ b/drivers/clk/mediatek/clk-mt8365-mm.c
+@@ -53,7 +53,7 @@ static const struct mtk_gate mm_clks[] = {
+ 	GATE_MM0(CLK_MM_MM_DSI0, "mm_dsi0", "mm_sel", 17),
+ 	GATE_MM0(CLK_MM_MM_DISP_RDMA1, "mm_disp_rdma1", "mm_sel", 18),
+ 	GATE_MM0(CLK_MM_MM_MDP_RDMA1, "mm_mdp_rdma1", "mm_sel", 19),
+-	GATE_MM0(CLK_MM_DPI0_DPI0, "mm_dpi0_dpi0", "vpll_dpix", 20),
++	GATE_MM0(CLK_MM_DPI0_DPI0, "mm_dpi0_dpi0", "dpi0_sel", 20),
+ 	GATE_MM0(CLK_MM_MM_FAKE, "mm_fake", "mm_sel", 21),
+ 	GATE_MM0(CLK_MM_MM_SMI_COMMON, "mm_smi_common", "mm_sel", 22),
+ 	GATE_MM0(CLK_MM_MM_SMI_LARB0, "mm_smi_larb0", "mm_sel", 23),
 -- 
 2.43.0
 
