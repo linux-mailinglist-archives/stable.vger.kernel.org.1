@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-46856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D038D0B8C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF01F8D0D8D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54BA2284E98
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F3CEB2101B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46C66A039;
-	Mon, 27 May 2024 19:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE9A15FA9F;
+	Mon, 27 May 2024 19:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdyBcES8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHBZbLPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C8317E90E;
-	Mon, 27 May 2024 19:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF5F17727;
+	Mon, 27 May 2024 19:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837030; cv=none; b=h61iLvj/juXh301+5D/eJV2aAesUyDsJ7s18j2a7nlWf3np52G1pzQfs8nQLXB/S/XpNarH4ZSTDvTZqLo/7lrDagE58IhyCV3f3oBgjJaV2oFTmaVo7cjJa3Km/8bhzqsJa9e0BDDwP7WHnwSmqajXm8P/Ac/xo2fg632fbp08=
+	t=1716838269; cv=none; b=s28xrg9id6XxZqKwbimI16jlviArkTsxjUCwasaCF92uTFmo/vR3EMT4V4DKvdkUjz0YkELimGeqYPFrxHv/1oSweAnEzSgYZaY0tnsABxV0wsSeVobeHja6FU0sBqb/sqI2JtR7mk4AwiQBvqYvWeJv0Nk0qCJijPKT3YZyFqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837030; c=relaxed/simple;
-	bh=S3s0rrnUrVKELBCSVo2hjmt/AIyK5RQ4yo8BjzErpVU=;
+	s=arc-20240116; t=1716838269; c=relaxed/simple;
+	bh=cBr+gMQG7LlJHVKgbEodbaayBO5LQ0M/DRcd9K/i1JQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNBIEGDkEoNM8SUulrJJ+gWidwtrineKmVyJQA9K9R0mZSs3Qe0VPeZenzC73e+ThDHNzWGz/b8PZZ5SPnv2aSxMY8pWZu/5z8+7StJ5utjmEVGjTlihVL0Fg8QjKTPU2kUBvt0PRFhViNCcQvwld8a1tRSeoNQ9dIT6fcz0neU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdyBcES8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14627C2BBFC;
-	Mon, 27 May 2024 19:10:30 +0000 (UTC)
+	 MIME-Version; b=CWPJ5B3DSMvjMPTWyW0/0mr0kmWqnjp/VOW2n1M7jJr76zL1qu7B2DtC7AwfF+pPwku7L6oTKAWnZwm7tfLRiS55jZcWc6+IkC4+jmsK/3Dd0wxRM057NghNxfQssA4G1QbHMt+E00SOJhcCUsirNBTezAansWGWO9wf7RPvoxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHBZbLPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A08AC2BBFC;
+	Mon, 27 May 2024 19:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837030;
-	bh=S3s0rrnUrVKELBCSVo2hjmt/AIyK5RQ4yo8BjzErpVU=;
+	s=korg; t=1716838268;
+	bh=cBr+gMQG7LlJHVKgbEodbaayBO5LQ0M/DRcd9K/i1JQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdyBcES8RYkfYFODZWvkpHqNK7J1KloEAUMaBmob1shE+uDHsSH111CxwsBsOPZMB
-	 EwX/k+e0XHPt30H0oDuj9mX6rBgP/O/hSKgBhyMe6UBKch9XqeVIj9MbEHrNWh/+mE
-	 LA5YQkGqjwg++GZnWIt4qvJhHZFsAjvNwng11jfE=
+	b=HHBZbLPbPjZcMy/2OYKCOKy5ZE3UWO+B+KRJvG1BwTQmK8RYZc0pz3+lR1KwtjbX/
+	 n6sTC6YUl3vdZelN4K4SEbOdtF8PT+caTXdCN4fmaair3OwrflzFKstZEoVE+f3nK6
+	 Ev1oEbQt6rQ+J4BXd2WrlaodwuYCO04US5EX4yyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 284/427] drm/amd/display: Fix potential index out of bounds in color transformation function
+Subject: [PATCH 6.8 329/493] mptcp: implement TCP_NOTSENT_LOWAT support
 Date: Mon, 27 May 2024 20:55:31 +0200
-Message-ID: <20240527185629.035445171@linuxfoundation.org>
+Message-ID: <20240527185641.029704459@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,59 +64,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 63ae548f1054a0b71678d0349c7dc9628ddd42ca ]
+[ Upstream commit 29b5e5ef87397963ca38d3eec0d296ad1c979bbc ]
 
-Fixes index out of bounds issue in the color transformation function.
-The issue could occur when the index 'i' exceeds the number of transfer
-function points (TRANSFER_FUNC_POINTS).
+Add support for such socket option storing the user-space provided
+value in a new msk field, and using such data to implement the
+_mptcp_stream_memory_free() helper, similar to the TCP one.
 
-The fix adds a check to ensure 'i' is within bounds before accessing the
-transfer function points. If 'i' is out of bounds, an error message is
-logged and the function returns false to indicate an error.
+To avoid adding more indirect calls in the fast path, open-code
+a variant of sk_stream_memory_free() in mptcp_sendmsg() and add
+direct calls to the mptcp stream memory free helper where possible.
 
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:405 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:406 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn10/dcn10_cm_common.c:407 cm_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
-
-Fixes: b629596072e5 ("drm/amd/display: Build unity lut for shaper")
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Charlene Liu <Charlene.Liu@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/464
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bd11dc4fb969 ("mptcp: fix full TCP keep-alive support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/mptcp/protocol.c | 39 ++++++++++++++++++++++++++++++++++-----
+ net/mptcp/protocol.h | 28 +++++++++++++++++++++++++++-
+ net/mptcp/sockopt.c  | 12 ++++++++++++
+ 3 files changed, 73 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-index b7e57aa273619..b0d192c6e63eb 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c
-@@ -402,6 +402,11 @@ bool cm_helper_translate_curve_to_hw_format(struct dc_context *ctx,
- 				i += increment) {
- 			if (j == hw_points - 1)
- 				break;
-+			if (i >= TRANSFER_FUNC_POINTS) {
-+				DC_LOG_ERROR("Index out of bounds: i=%d, TRANSFER_FUNC_POINTS=%d\n",
-+					     i, TRANSFER_FUNC_POINTS);
-+				return false;
-+			}
- 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
- 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
- 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index fcd85adc621c1..54e29ab911f0d 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1757,6 +1757,30 @@ static int do_copy_data_nocache(struct sock *sk, int copy,
+ 	return 0;
+ }
+ 
++/* open-code sk_stream_memory_free() plus sent limit computation to
++ * avoid indirect calls in fast-path.
++ * Called under the msk socket lock, so we can avoid a bunch of ONCE
++ * annotations.
++ */
++static u32 mptcp_send_limit(const struct sock *sk)
++{
++	const struct mptcp_sock *msk = mptcp_sk(sk);
++	u32 limit, not_sent;
++
++	if (sk->sk_wmem_queued >= READ_ONCE(sk->sk_sndbuf))
++		return 0;
++
++	limit = mptcp_notsent_lowat(sk);
++	if (limit == UINT_MAX)
++		return UINT_MAX;
++
++	not_sent = msk->write_seq - msk->snd_nxt;
++	if (not_sent >= limit)
++		return 0;
++
++	return limit - not_sent;
++}
++
+ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+@@ -1801,6 +1825,12 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		struct mptcp_data_frag *dfrag;
+ 		bool dfrag_collapsed;
+ 		size_t psize, offset;
++		u32 copy_limit;
++
++		/* ensure fitting the notsent_lowat() constraint */
++		copy_limit = mptcp_send_limit(sk);
++		if (!copy_limit)
++			goto wait_for_memory;
+ 
+ 		/* reuse tail pfrag, if possible, or carve a new one from the
+ 		 * page allocator
+@@ -1808,9 +1838,6 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		dfrag = mptcp_pending_tail(sk);
+ 		dfrag_collapsed = mptcp_frag_can_collapse_to(msk, pfrag, dfrag);
+ 		if (!dfrag_collapsed) {
+-			if (!sk_stream_memory_free(sk))
+-				goto wait_for_memory;
+-
+ 			if (!mptcp_page_frag_refill(sk, pfrag))
+ 				goto wait_for_memory;
+ 
+@@ -1825,6 +1852,7 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		offset = dfrag->offset + dfrag->data_len;
+ 		psize = pfrag->size - offset;
+ 		psize = min_t(size_t, psize, msg_data_left(msg));
++		psize = min_t(size_t, psize, copy_limit);
+ 		total_ts = psize + frag_truesize;
+ 
+ 		if (!sk_wmem_schedule(sk, total_ts))
+@@ -3761,6 +3789,7 @@ static struct proto mptcp_prot = {
+ 	.unhash		= mptcp_unhash,
+ 	.get_port	= mptcp_get_port,
+ 	.forward_alloc_get	= mptcp_forward_alloc_get,
++	.stream_memory_free	= mptcp_stream_memory_free,
+ 	.sockets_allocated	= &mptcp_sockets_allocated,
+ 
+ 	.memory_allocated	= &tcp_memory_allocated,
+@@ -3932,12 +3961,12 @@ static __poll_t mptcp_check_writeable(struct mptcp_sock *msk)
+ {
+ 	struct sock *sk = (struct sock *)msk;
+ 
+-	if (sk_stream_is_writeable(sk))
++	if (__mptcp_stream_is_writeable(sk, 1))
+ 		return EPOLLOUT | EPOLLWRNORM;
+ 
+ 	set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
+ 	smp_mb__after_atomic(); /* NOSPACE is changed by mptcp_write_space() */
+-	if (sk_stream_is_writeable(sk))
++	if (__mptcp_stream_is_writeable(sk, 1))
+ 		return EPOLLOUT | EPOLLWRNORM;
+ 
+ 	return 0;
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 6b83869ef7938..2f17f295d7c8b 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -305,6 +305,7 @@ struct mptcp_sock {
+ 			in_accept_queue:1,
+ 			free_first:1,
+ 			rcvspace_init:1;
++	u32		notsent_lowat;
+ 	struct work_struct work;
+ 	struct sk_buff  *ooo_last_skb;
+ 	struct rb_root  out_of_order_queue;
+@@ -789,11 +790,36 @@ static inline bool mptcp_data_fin_enabled(const struct mptcp_sock *msk)
+ 	       READ_ONCE(msk->write_seq) == READ_ONCE(msk->snd_nxt);
+ }
+ 
++static inline u32 mptcp_notsent_lowat(const struct sock *sk)
++{
++	struct net *net = sock_net(sk);
++	u32 val;
++
++	val = READ_ONCE(mptcp_sk(sk)->notsent_lowat);
++	return val ?: READ_ONCE(net->ipv4.sysctl_tcp_notsent_lowat);
++}
++
++static inline bool mptcp_stream_memory_free(const struct sock *sk, int wake)
++{
++	const struct mptcp_sock *msk = mptcp_sk(sk);
++	u32 notsent_bytes;
++
++	notsent_bytes = READ_ONCE(msk->write_seq) - READ_ONCE(msk->snd_nxt);
++	return (notsent_bytes << wake) < mptcp_notsent_lowat(sk);
++}
++
++static inline bool __mptcp_stream_is_writeable(const struct sock *sk, int wake)
++{
++	return mptcp_stream_memory_free(sk, wake) &&
++	       __sk_stream_is_writeable(sk, wake);
++}
++
+ static inline void mptcp_write_space(struct sock *sk)
+ {
+ 	/* pairs with memory barrier in mptcp_poll */
+ 	smp_mb();
+-	sk_stream_write_space(sk);
++	if (mptcp_stream_memory_free(sk, 1))
++		sk_stream_write_space(sk);
+ }
+ 
+ static inline void __mptcp_sync_sndbuf(struct sock *sk)
+diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+index 82d0cd0819f09..f2fe28a3912a9 100644
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -810,6 +810,16 @@ static int mptcp_setsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 		return 0;
+ 	case TCP_ULP:
+ 		return -EOPNOTSUPP;
++	case TCP_NOTSENT_LOWAT:
++		ret = mptcp_get_int_option(msk, optval, optlen, &val);
++		if (ret)
++			return ret;
++
++		lock_sock(sk);
++		WRITE_ONCE(msk->notsent_lowat, val);
++		mptcp_write_space(sk);
++		release_sock(sk);
++		return 0;
+ 	case TCP_CONGESTION:
+ 		return mptcp_setsockopt_sol_tcp_congestion(msk, optval, optlen);
+ 	case TCP_CORK:
+@@ -1343,6 +1353,8 @@ static int mptcp_getsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->cork);
+ 	case TCP_NODELAY:
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->nodelay);
++	case TCP_NOTSENT_LOWAT:
++		return mptcp_put_int_option(msk, optval, optlen, msk->notsent_lowat);
+ 	}
+ 	return -EOPNOTSUPP;
+ }
 -- 
 2.43.0
 
