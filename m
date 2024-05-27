@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8F98D0BF3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F373D8D0DF0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B40C21F23D8A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A710C28122F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AC615ECFF;
-	Mon, 27 May 2024 19:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9F417727;
+	Mon, 27 May 2024 19:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WetRpieP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTGAjCgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E476717E90E;
-	Mon, 27 May 2024 19:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F69535A4;
+	Mon, 27 May 2024 19:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837283; cv=none; b=czXZy8RX8QiqDT+rGHGPn/nlntFzYLXCsExZT5KOIozZmjKCaGB/eUZBin8mV55wRS7d8/7eWYlJMlJOZ9KLQJXy7oJsao0OXEaq7BFA6n7kehRrN0WhHZB+tpIwvKd3CEpQXQ6fRPJAFJz60Jwf14JpXFRsSc4WLt8G8h8v57Q=
+	t=1716838527; cv=none; b=t98TacRsGFhT6uN13S/Sxdt01hOO1kw3oPgv2KhwWSJQg8HwBwUR5MgOFbvLuO4cGDm0riPe83UEcUC8ARIRJAX0Ij2QXVPCVeeqFFS9iwVWUo2mRAh4+A6X4hL32ZYmIxqcUiYqtWAlHatbubHxUlAFvf2GDc6lecRlhklxXfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837283; c=relaxed/simple;
-	bh=3MNtDGYyPGRR8CUiBKEeLqz8chF2IpxrPAAipOEl3qw=;
+	s=arc-20240116; t=1716838527; c=relaxed/simple;
+	bh=gbwGHU7KOtOS3SQNYBKyGhPWNWPyCL/1LmpEzjpq140=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJqJdyxgu/f0LvZVWSYcajHr57hg1cVMMDHlezOXPAwpqjxWui+Q0/y8jDpPtSrY4YoDrO5xOs7HXJjxK14sfjFtqHdSYQlQHJXf0cFXgS9RpPbU5PGHGPGwhOcAvIXrsOjQOWyCG3Qf2Q6FZDycm5RVC4su/k3mn/9GkqKmVco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WetRpieP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B31AC2BBFC;
-	Mon, 27 May 2024 19:14:42 +0000 (UTC)
+	 MIME-Version; b=jZ7b5bFQmgnbSUGoE+oh2KTzmmWfHdo0/M2Y7wIcmYKqoL+BrCTu6QgKTvmINnMqEln6/U6pHfbfJ8POt/NhX+9obGH6AuWwQ1+74DVNUPX92/pqOtzeYkA59sO6nVYDW4+rXmxieUJ9duQxdwP4pFwswUJqI1/V08dbKb+7zME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTGAjCgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870EFC2BBFC;
+	Mon, 27 May 2024 19:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837282;
-	bh=3MNtDGYyPGRR8CUiBKEeLqz8chF2IpxrPAAipOEl3qw=;
+	s=korg; t=1716838526;
+	bh=gbwGHU7KOtOS3SQNYBKyGhPWNWPyCL/1LmpEzjpq140=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WetRpiePruKrEOu9vwbwkUN6R4e2Ok2dFOM20WulMeu/W9BNftRs1WnuIGhtsVZ1W
-	 w/Awg5Bd2hnEFUGnUnXc3r+f9Q8MfxMd9eYWfSE8Y2fRIcqmOll2z16Fox9RzZGTIw
-	 Fg8A/ePVyZmINn6gjgpHtSOIR3EqbwoMNVTENBXc=
+	b=qTGAjCgFVug7bN9fQkUx6pSfX10wEzYOEaQZjpj/QiF1V+Qf0+H1VWy+Dnrp/MTR+
+	 kkR24fmTQKL7jeTGln8PmUuUXUkbXT0z+y9cjxxN8UigxfxMS8Ca8V8IKmtGM3if1Y
+	 uSbrY4d1sbAG8LnVpV35H99QiiHimjho0RrcaFmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 381/427] x86/insn: Add VEX versions of VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS
+Subject: [PATCH 6.8 426/493] RDMA/hns: Fix return value in hns_roce_map_mr_sg
 Date: Mon, 27 May 2024 20:57:08 +0200
-Message-ID: <20240527185634.518593704@linuxfoundation.org>
+Message-ID: <20240527185644.225338052@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit b8000264348979b60dbe479255570a40e1b3a097 ]
+[ Upstream commit 203b70fda63425a4eb29f03f9074859afe821a39 ]
 
-The x86 instruction decoder is used not only for decoding kernel
-instructions. It is also used by perf uprobes (user space probes) and by
-perf tools Intel Processor Trace decoding. Consequently, it needs to
-support instructions executed by user space also.
+As described in the ib_map_mr_sg function comment, it returns the number
+of sg elements that were mapped to the memory region. However,
+hns_roce_map_mr_sg returns the number of pages required for mapping the
+DMA area. Fix it.
 
-Intel Architecture Instruction Set Extensions and Future Features manual
-number 319433-044 of May 2021, documented VEX versions of instructions
-VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS, but the opcode map has them
-listed as EVEX only.
-
-Remove EVEX-only (ev) annotation from instructions VPDPBUSD, VPDPBUSDS,
-VPDPWSSD and VPDPWSSDS, which allows them to be decoded with either a VEX
-or EVEX prefix.
-
-Fixes: 0153d98f2dd6 ("x86/insn: Add misc instructions to x86 instruction decoder")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240502105853.5338-4-adrian.hunter@intel.com
+Fixes: 9b2cf76c9f05 ("RDMA/hns: Optimize PBL buffer allocation process")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20240411033851.2884771-1-shaozhengchao@huawei.com
+Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/x86-opcode-map.txt       | 8 ++++----
- tools/arch/x86/lib/x86-opcode-map.txt | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_mr.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index 84ffe9e528e78..da9347552be69 100644
---- a/arch/x86/lib/x86-opcode-map.txt
-+++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -698,10 +698,10 @@ AVXcode: 2
- 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
- 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
- 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
--50: vpdpbusd Vx,Hx,Wx (66),(ev)
--51: vpdpbusds Vx,Hx,Wx (66),(ev)
--52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
--53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
-+50: vpdpbusd Vx,Hx,Wx (66)
-+51: vpdpbusds Vx,Hx,Wx (66)
-+52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
-+53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
- 54: vpopcntb/w Vx,Wx (66),(ev)
- 55: vpopcntd/q Vx,Wx (66),(ev)
- 58: vpbroadcastd Vx,Wx (66),(v)
-diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index 84ffe9e528e78..da9347552be69 100644
---- a/tools/arch/x86/lib/x86-opcode-map.txt
-+++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -698,10 +698,10 @@ AVXcode: 2
- 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
- 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
- 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
--50: vpdpbusd Vx,Hx,Wx (66),(ev)
--51: vpdpbusds Vx,Hx,Wx (66),(ev)
--52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
--53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
-+50: vpdpbusd Vx,Hx,Wx (66)
-+51: vpdpbusds Vx,Hx,Wx (66)
-+52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
-+53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
- 54: vpopcntb/w Vx,Wx (66),(ev)
- 55: vpopcntd/q Vx,Wx (66),(ev)
- 58: vpbroadcastd Vx,Wx (66),(v)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 91cd580480fe2..0d42fd197c11e 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -433,18 +433,18 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+-	int ret = 0;
++	int ret, sg_num = 0;
+ 
+ 	mr->npages = 0;
+ 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
+ 				 sizeof(dma_addr_t), GFP_KERNEL);
+ 	if (!mr->page_list)
+-		return ret;
++		return sg_num;
+ 
+-	ret = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
+-	if (ret < 1) {
++	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
++	if (sg_num < 1) {
+ 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
+-			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, ret);
++			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
+ 		goto err_page_list;
+ 	}
+ 
+@@ -455,17 +455,16 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	ret = hns_roce_mtr_map(hr_dev, mtr, mr->page_list, mr->npages);
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to map sg mtr, ret = %d.\n", ret);
+-		ret = 0;
++		sg_num = 0;
+ 	} else {
+ 		mr->pbl_mtr.hem_cfg.buf_pg_shift = (u32)ilog2(ibmr->page_size);
+-		ret = mr->npages;
+ 	}
+ 
+ err_page_list:
+ 	kvfree(mr->page_list);
+ 	mr->page_list = NULL;
+ 
+-	return ret;
++	return sg_num;
+ }
+ 
+ static void hns_roce_mw_free(struct hns_roce_dev *hr_dev,
 -- 
 2.43.0
 
