@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-46603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275668D0A6A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DBC8D0C7B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1DE4282485
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E7E6284C36
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A3415FCE9;
-	Mon, 27 May 2024 18:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E37015FCE9;
+	Mon, 27 May 2024 19:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UC4ikuuE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWGyVL96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882A015FCE6;
-	Mon, 27 May 2024 18:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0004168C4;
+	Mon, 27 May 2024 19:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836380; cv=none; b=p3oHFmE+WhomUmQxswHnywqPpGAPvTZkmpy8eyQ4zaGuJHGHlaiW1mRKGThOlxNCr/ez4v1d+bl2dYDVWWLtR+s4zb8npH/f72UAISgFfS0Dke5lqyo0AEtXPMBCkT5nMAeOYZZl3O9H4n1VLH6GfVKVGY+FV29Ll5si+I6beg0=
+	t=1716837609; cv=none; b=pjqi1esUODzvbGtDWSu7RtC45WWfaYnG3Ay2P5HfG+/eQkbTqfhHg8XvE/jHngHZVRJ17iLQ8D2We46rECxtu5UkmAG5TqoKN7i8lVNfmWfXNNKa8HLqAO0Vnmc79ZSWCwwLfTkZZjoXM144bqWo39eW1UHrE59vFtWdRdVcA7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836380; c=relaxed/simple;
-	bh=Twp0g3AAgK61rjho50QxntfVPMU+a2L4YBZtkvo5zUY=;
+	s=arc-20240116; t=1716837609; c=relaxed/simple;
+	bh=G4eZBCHLepS1eGsvX2oRQlVJz4VVTz3WtIHma4afWs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHHNfe3ah+q9BYDvTydwpocQaMT4jePr8P0pI9+XMeMoKPzD2j9XZ1cHxCxR0GJUtNLtffaBJxqAGQEhOehpEzsY+F2Ol98CmwbBc8pkc8XbcsbKygOTCN45p5D/fEL+MwF5oO1eaLyItuBTYbbqmj0bcqx5LQagoKeWR+Dk9aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UC4ikuuE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC35C2BBFC;
-	Mon, 27 May 2024 18:59:39 +0000 (UTC)
+	 MIME-Version; b=Q1okcQ+BfQpAd1XggSg1JR272toGrPLbcInJX+XzKr1eUDvJwAmxei85iq8v74TCz7ciik8umxTfIU/h9JLLKv1amQ1iN5DHkfF/vTf3hG4875wxqocfvoT1junOlJcbCd9S0cpj9s4YbFTKP7/MAGFCDp+oSneimELdyXmGAes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWGyVL96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BE0C2BBFC;
+	Mon, 27 May 2024 19:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836380;
-	bh=Twp0g3AAgK61rjho50QxntfVPMU+a2L4YBZtkvo5zUY=;
+	s=korg; t=1716837609;
+	bh=G4eZBCHLepS1eGsvX2oRQlVJz4VVTz3WtIHma4afWs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UC4ikuuEB6fjlVNCVLULECZIE6hyyBIp5AtPXoTPuHXVpwdRjJkXrvbNNAO84JYY6
-	 mTer3wdNvqfo0XR/ibSmQPUQ5B13RvBTkWpavUM7ZdXFBC90bcKuz/EA9WHtfeT7Tl
-	 a/1PgAev+iGrEwf6AlA+JDMGhWMP7BmIbATvO6BY=
+	b=vWGyVL96LY27yiEW2wUirvh1a3NX/liCtKpPUvNYZwp/GPw1ZIP7S2LFoDLGI+Npp
+	 h6XkgNhroVdkBFDzflyZoraqc9aHb3nVjlqK3YQ4kHfnXoi4dLg1LlL7nzYnmuzMae
+	 kBTyz++QMN3ZJUpEN0G5NpAO9NOv9Uir6MqS8zvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com,
-	"Bai, Shuangpeng" <sjb7183@psu.edu>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 030/427] nilfs2: fix potential hang in nilfs_detach_log_writer()
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 075/493] regulator: vqmmc-ipq4019: fix module autoloading
 Date: Mon, 27 May 2024 20:51:17 +0200
-Message-ID: <20240527185604.518194158@linuxfoundation.org>
+Message-ID: <20240527185632.426921204@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-commit eb85dace897c5986bc2f36b3c783c6abb8a4292e upstream.
+[ Upstream commit 68adb581a39ae63a0ed082c47f01fbbe515efa0e ]
 
-Syzbot has reported a potential hang in nilfs_detach_log_writer() called
-during nilfs2 unmount.
+Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
+based on the alias from of_device_id table.
 
-Analysis revealed that this is because nilfs_segctor_sync(), which
-synchronizes with the log writer thread, can be called after
-nilfs_segctor_destroy() terminates that thread, as shown in the call trace
-below:
-
-nilfs_detach_log_writer
-  nilfs_segctor_destroy
-    nilfs_segctor_kill_thread  --> Shut down log writer thread
-    flush_work
-      nilfs_iput_work_func
-        nilfs_dispose_list
-          iput
-            nilfs_evict_inode
-              nilfs_transaction_commit
-                nilfs_construct_segment (if inode needs sync)
-                  nilfs_segctor_sync  --> Attempt to synchronize with
-                                          log writer thread
-                           *** DEADLOCK ***
-
-Fix this issue by changing nilfs_segctor_sync() so that the log writer
-thread returns normally without synchronizing after it terminates, and by
-forcing tasks that are already waiting to complete once after the thread
-terminates.
-
-The skipped inode metadata flushout will then be processed together in the
-subsequent cleanup work in nilfs_segctor_destroy().
-
-Link: https://lkml.kernel.org/r/20240520132621.4054-4-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e3973c409251e136fdd0
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://msgid.link/r/20240410172615.255424-2-krzk@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/regulator/vqmmc-ipq4019-regulator.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2196,6 +2196,14 @@ static int nilfs_segctor_sync(struct nil
- 	for (;;) {
- 		set_current_state(TASK_INTERRUPTIBLE);
+diff --git a/drivers/regulator/vqmmc-ipq4019-regulator.c b/drivers/regulator/vqmmc-ipq4019-regulator.c
+index 086da36abc0b4..4955616517ce9 100644
+--- a/drivers/regulator/vqmmc-ipq4019-regulator.c
++++ b/drivers/regulator/vqmmc-ipq4019-regulator.c
+@@ -84,6 +84,7 @@ static const struct of_device_id regulator_ipq4019_of_match[] = {
+ 	{ .compatible = "qcom,vqmmc-ipq4019-regulator", },
+ 	{},
+ };
++MODULE_DEVICE_TABLE(of, regulator_ipq4019_of_match);
  
-+		/*
-+		 * Synchronize only while the log writer thread is alive.
-+		 * Leave flushing out after the log writer thread exits to
-+		 * the cleanup work in nilfs_segctor_destroy().
-+		 */
-+		if (!sci->sc_task)
-+			break;
-+
- 		if (atomic_read(&wait_req.done)) {
- 			err = wait_req.err;
- 			break;
-@@ -2211,7 +2219,7 @@ static int nilfs_segctor_sync(struct nil
- 	return err;
- }
- 
--static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err)
-+static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err, bool force)
- {
- 	struct nilfs_segctor_wait_request *wrq, *n;
- 	unsigned long flags;
-@@ -2219,7 +2227,7 @@ static void nilfs_segctor_wakeup(struct
- 	spin_lock_irqsave(&sci->sc_wait_request.lock, flags);
- 	list_for_each_entry_safe(wrq, n, &sci->sc_wait_request.head, wq.entry) {
- 		if (!atomic_read(&wrq->done) &&
--		    nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq)) {
-+		    (force || nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq))) {
- 			wrq->err = err;
- 			atomic_set(&wrq->done, 1);
- 		}
-@@ -2368,7 +2376,7 @@ static void nilfs_segctor_notify(struct
- 	if (mode == SC_LSEG_SR) {
- 		sci->sc_state &= ~NILFS_SEGCTOR_COMMIT;
- 		sci->sc_seq_done = sci->sc_seq_accepted;
--		nilfs_segctor_wakeup(sci, err);
-+		nilfs_segctor_wakeup(sci, err, false);
- 		sci->sc_flush_request = 0;
- 	} else {
- 		if (mode == SC_FLUSH_FILE)
-@@ -2752,6 +2760,13 @@ static void nilfs_segctor_destroy(struct
- 		|| sci->sc_seq_request != sci->sc_seq_done);
- 	spin_unlock(&sci->sc_state_lock);
- 
-+	/*
-+	 * Forcibly wake up tasks waiting in nilfs_segctor_sync(), which can
-+	 * be called from delayed iput() via nilfs_evict_inode() and can race
-+	 * with the above log writer thread termination.
-+	 */
-+	nilfs_segctor_wakeup(sci, 0, true);
-+
- 	if (flush_work(&sci->sc_iput_work))
- 		flag = true;
- 
+ static struct platform_driver ipq4019_regulator_driver = {
+ 	.probe = ipq4019_regulator_probe,
+-- 
+2.43.0
+
 
 
 
