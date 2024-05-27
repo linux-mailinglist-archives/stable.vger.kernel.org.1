@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-47391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FAB8D0DCA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3A18D0BCD
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324171F21469
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BB771F235F0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C158E15FA60;
-	Mon, 27 May 2024 19:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B9215ECFF;
+	Mon, 27 May 2024 19:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amMFKJ1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zijztP8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8092D17727;
-	Mon, 27 May 2024 19:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57C817E90E;
+	Mon, 27 May 2024 19:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838429; cv=none; b=YLhOUCmgMTCqdF/zivUWJkaAB9Z5Y0nclqRuuF93wqG+jbYomT5C48xziJc5S75garY00imuPwYh2O9Ajzxsy2kRujMIuNI6wfHL+eED6Loa+MQxfWjNtzNgJheIkSLZeQZHwPIjkySa3hUAnhvxAScD2AcTSfqWSddfftHK+sw=
+	t=1716837189; cv=none; b=OXx4mqmAztd6YqIG/MW2mKnbYxuzoMXpx/ewgB9rIrrErml4AAwUkig/P5BRB+47uFCFqNJjkiEFRKW6CaLDfEpyHrCbvd3bjRRXXx8ES6hpQ71wQymiQ5nNhmFSHS0kYzB4pSTh9gYFvaXWH8Vow9VMDtaS9XegB24VayBoIpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838429; c=relaxed/simple;
-	bh=jYkfDHL+DZeptSTQ1QstqIpBot1Xq/2+TUhKMMN75MY=;
+	s=arc-20240116; t=1716837189; c=relaxed/simple;
+	bh=40uFVohz+nLU61IqcDrmF1tit1zvAjtrh8fskC21dJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rq7Bugn047ET4cVtpM6neJ1aDbCBiYSfNSY2yrvF4nucwx95wZ9mr5SHBJlYk7k0sRuM0FC2QQd211/07cQspDJF/GyErZ9jpzPioLBj+tRb3aISpdJ/ik4SY8z3eP6cP2FMgBRxX/4LIBF+CC4WG0c8Tr9suGZFxqkIBFbLV6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amMFKJ1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177D1C2BBFC;
-	Mon, 27 May 2024 19:33:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N63KEpViowTjrHeIQbjHghXnlk3XcdTCHZlo0ST2jC3pfNT/o9VH5rMUBZhZlX5LB2jn0hV0goNiL8+vPIMKrclJoTXIh8t1nAo0pcLwipYaHXX7ONeR79d9tG636ABY1m8YGiGZsezwrZPXKW2vceAbg5nR5UrRFYuccYmpSfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zijztP8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2A0C2BBFC;
+	Mon, 27 May 2024 19:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838429;
-	bh=jYkfDHL+DZeptSTQ1QstqIpBot1Xq/2+TUhKMMN75MY=;
+	s=korg; t=1716837189;
+	bh=40uFVohz+nLU61IqcDrmF1tit1zvAjtrh8fskC21dJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amMFKJ1VdF0xWm2ex20nfm/i6X9d133Gjl5kwngKkd97XQNoZqB6FtZOHub36zDVr
-	 PIKFhm3MEwu+Vvn/GEuI5YJETqaFzp+mdn+MpfP+/nV3IIgPdyT076rFF9IucXyvKH
-	 OChZUrqG8qz/NKDVlS0VknIn7dHrYFKBNBbSjyus=
+	b=zijztP8NfoL6zSceEXv3+7WsKqFdJ/DhnlerbNHvTv0bXZgiwWF6Apks1xuqEqH0P
+	 kt/p4pf2F5IlXwZA7LoALq7JJjGwyNGib6983x0cskTIGY4Wdn1/11/JdwZAaev9qQ
+	 65A/lyf3WXRXgmgSStt2tvisfvJVgZ5BrXahGiYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Changhuang Liang <changhuang.liang@starfivetech.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Anup Patel <anup@brainfault.org>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Atish Patra <atishp@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 388/493] staging: media: starfive: Remove links when unregistering devices
-Date: Mon, 27 May 2024 20:56:30 +0200
-Message-ID: <20240527185642.951608261@linuxfoundation.org>
+Subject: [PATCH 6.9 344/427] RISC-V: Fix the typo in Scountovf CSR name
+Date: Mon, 27 May 2024 20:56:31 +0200
+Message-ID: <20240527185633.101598259@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +64,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
+From: Atish Patra <atishp@rivosinc.com>
 
-[ Upstream commit 810dd605e917c716f6f83e6cd8ea23d9155d32a2 ]
+[ Upstream commit d1927f64e0e1094f296842e127138cb5f3bf3c6d ]
 
-Need to remove links when unregistering devices.
+The counter overflow CSR name is "scountovf" not "sscountovf".
 
-Fixes: ac7da4a73b10 ("media: staging: media: starfive: camss: Register devices")
+Fix the csr name.
 
-Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 4905ec2fb7e6 ("RISC-V: Add sscofpmf extension support")
+Reviewed-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20240420151741.962500-2-atishp@rivosinc.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/starfive/camss/stf-camss.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/riscv/include/asm/csr.h | 2 +-
+ drivers/perf/riscv_pmu_sbi.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/media/starfive/camss/stf-camss.c b/drivers/staging/media/starfive/camss/stf-camss.c
-index a587f860101ae..323aa70fdeaf1 100644
---- a/drivers/staging/media/starfive/camss/stf-camss.c
-+++ b/drivers/staging/media/starfive/camss/stf-camss.c
-@@ -162,6 +162,12 @@ static int stfcamss_register_devs(struct stfcamss *stfcamss)
+diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
+index 2468c55933cd0..9d1b07932794e 100644
+--- a/arch/riscv/include/asm/csr.h
++++ b/arch/riscv/include/asm/csr.h
+@@ -281,7 +281,7 @@
+ #define CSR_HPMCOUNTER30H	0xc9e
+ #define CSR_HPMCOUNTER31H	0xc9f
  
- static void stfcamss_unregister_devs(struct stfcamss *stfcamss)
- {
-+	struct stf_capture *cap_yuv = &stfcamss->captures[STF_CAPTURE_YUV];
-+	struct stf_isp_dev *isp_dev = &stfcamss->isp_dev;
-+
-+	media_entity_remove_links(&isp_dev->subdev.entity);
-+	media_entity_remove_links(&cap_yuv->video.vdev.entity);
-+
- 	stf_isp_unregister(&stfcamss->isp_dev);
- 	stf_capture_unregister(stfcamss);
- }
+-#define CSR_SSCOUNTOVF		0xda0
++#define CSR_SCOUNTOVF		0xda0
+ 
+ #define CSR_SSTATUS		0x100
+ #define CSR_SIE			0x104
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index 8cbe6e5f9c39a..3e44d2fb8bf81 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -27,7 +27,7 @@
+ 
+ #define ALT_SBI_PMU_OVERFLOW(__ovl)					\
+ asm volatile(ALTERNATIVE_2(						\
+-	"csrr %0, " __stringify(CSR_SSCOUNTOVF),			\
++	"csrr %0, " __stringify(CSR_SCOUNTOVF),				\
+ 	"csrr %0, " __stringify(THEAD_C9XX_CSR_SCOUNTEROF),		\
+ 		THEAD_VENDOR_ID, ERRATA_THEAD_PMU,			\
+ 		CONFIG_ERRATA_THEAD_PMU,				\
 -- 
 2.43.0
 
