@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-47383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63DD08D0DC3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5A88D0BC5
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9676B21047
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77E381F23396
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29C615FCE9;
-	Mon, 27 May 2024 19:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B097D15FD04;
+	Mon, 27 May 2024 19:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C98JW3zU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBcf60Tg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1ABF17727;
-	Mon, 27 May 2024 19:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6D217E90E;
+	Mon, 27 May 2024 19:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838408; cv=none; b=rHd0zw+/SODwsG7H4fopk5/nLXVNOXzaqqSoE9GEptYM6OyjRyQOw82fAYMSOnrIZ+J2iuOBasG1xkd+/k+2L4A7c1XqHwgvBykqLLHVj8bKXWVCGBbY/+1Y9zokOnNgUFMxVyUVZAIsLCgL9JIignlMvnnB799HDuj1R9oT10o=
+	t=1716837165; cv=none; b=UGxMrnSX/dDsrHSt63nNl+vsy2HoabaWQMhNSJDdjxSclFokek52Y/3IW7j5fJIrBhwCOwO2h+djS4xz2XgwzH6xUU3RWvvawIIvopTqjykRKMtsZEUu2DjRNPccZ57Cbu9LhpIWI1ifHdIdUU3Y6sHkdT6ZepJ7fz4g4Y2UNXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838408; c=relaxed/simple;
-	bh=zxXVvRyf1Knw5kAQu8LtzdFWJCIPM93ixMFCqf0SOTk=;
+	s=arc-20240116; t=1716837165; c=relaxed/simple;
+	bh=jcb1mabQ332I/TRlyIxIOV6ygtbBP8cwbMHjZ1O8NN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CN6ltHzqjpWvlH+5b9MhNZ8IeZBGiOWU7Gc8cEjnSYNa0JyFTb5IU25g62Ml846nOzW0C9ufhzMUDKULoig/1sS9kzFw6pI3ovUigk+z2Ed+Ft77wvF1Y43UaGx4q409qnOYby7hfFZADxTCfgBN3p04OdvgrUQh7EP/hN/hqJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C98JW3zU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2DBC2BBFC;
-	Mon, 27 May 2024 19:33:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=isiLAJkL9S0iYFE+lK2IPGt9pXTzV6WdqhdLsqjgh9HhjzrijXfvYIQ/gBrccT2/5PqD+n0RIMboNQF5sc5nXzpRbq5W9YloY5k5rwlKhd4YSHv7j1g/yraqG8go8X/d+5B0LLMes9G/KZoQgjFrI7FTZFDhdhskfAibHoX9M3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBcf60Tg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035C3C2BBFC;
+	Mon, 27 May 2024 19:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838408;
-	bh=zxXVvRyf1Knw5kAQu8LtzdFWJCIPM93ixMFCqf0SOTk=;
+	s=korg; t=1716837165;
+	bh=jcb1mabQ332I/TRlyIxIOV6ygtbBP8cwbMHjZ1O8NN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C98JW3zUyodJNugyN0TjeyBEoMDnOFE6sI+63jRsYHMuNj9pgd2nVLB5oeKf+7/1n
-	 zjLzz54geNpDzDJSk1LM40huY60S5AldlGYNpKtSACjyNpDXLrh5LGZf/p5ef1Vv5t
-	 YH0UfJY4iHekwCM1TiNaRUDPwc2KdHP4g2/fqQLA=
+	b=gBcf60TgXvkNQgBGoca4X45XNLvxLycE2PlMDaojGHu1+WFy8cOA3psGXf6k3t/4r
+	 XxTiCc5LH6wu+YnMMQx9IGzbmj78yPkzrFCZPqCbY/5mV7Zmr91Z0qssRa9EKC7I6T
+	 ea5sJGvsz6tO/6Lzq4dlbwLKagY0mHF6SwuChTr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 380/493] ASoC: SOF: Intel: mtl: Implement firmware boot state check
+Subject: [PATCH 6.9 335/427] drm/bridge: tc358775: Dont log an error when DSI host cant be found
 Date: Mon, 27 May 2024 20:56:22 +0200
-Message-ID: <20240527185642.701752263@linuxfoundation.org>
+Message-ID: <20240527185632.521624023@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 6b1c1c47e76f0161bda2b1ac2e86a219fe70244f ]
+[ Upstream commit 272377aa0e3dddeec3f568c8bb9d12c7a79d8ef5 ]
 
-With the corrected rom_status_reg values we can now add a check for target
-boot status for firmware booting.
-With the check now we can identify failed firmware boots (IMR boots) and
-we can use the fallback to purge boot the DSP.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-Fixes: 064520e8aeaa ("ASoC: SOF: Intel: Add support for MeteorLake (MTL)")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://msgid.link/r/20240403105210.17949-6-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b26975593b17 ("display/drm/bridge: TC358775 DSI/LVDS driver")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-6-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/mtl.c | 37 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 32 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/bridge/tc358775.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/sof/intel/mtl.c b/sound/soc/sof/intel/mtl.c
-index fbd7cf77e8174..05023763080d9 100644
---- a/sound/soc/sof/intel/mtl.c
-+++ b/sound/soc/sof/intel/mtl.c
-@@ -439,7 +439,7 @@ int mtl_dsp_cl_init(struct snd_sof_dev *sdev, int stream_tag, bool imr_boot)
- {
- 	struct sof_intel_hda_dev *hda = sdev->pdata->hw_pdata;
- 	const struct sof_intel_dsp_desc *chip = hda->desc;
--	unsigned int status;
-+	unsigned int status, target_status;
- 	u32 ipc_hdr, flags;
- 	char *dump_msg;
- 	int ret;
-@@ -485,13 +485,40 @@ int mtl_dsp_cl_init(struct snd_sof_dev *sdev, int stream_tag, bool imr_boot)
+diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/tc358775.c
+index 90a89d70d8328..fea4f00a20f83 100644
+--- a/drivers/gpu/drm/bridge/tc358775.c
++++ b/drivers/gpu/drm/bridge/tc358775.c
+@@ -610,10 +610,8 @@ static int tc_attach_host(struct tc_data *tc)
+ 						};
  
- 	mtl_enable_ipc_interrupts(sdev);
+ 	host = of_find_mipi_dsi_host_by_node(tc->host_node);
+-	if (!host) {
+-		dev_err(dev, "failed to find dsi host\n");
+-		return -EPROBE_DEFER;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
  
-+	if (chip->rom_status_reg == MTL_DSP_ROM_STS) {
-+		/*
-+		 * Workaround: when the ROM status register is pointing to
-+		 * the SRAM window (MTL_DSP_ROM_STS) the platform cannot catch
-+		 * ROM_INIT_DONE because of a very short timing window.
-+		 * Follow the recommendations and skip target state waiting.
-+		 */
-+		return 0;
-+	}
-+
- 	/*
--	 * ACE workaround: don't wait for ROM INIT.
--	 * The platform cannot catch ROM_INIT_DONE because of a very short
--	 * timing window. Follow the recommendations and skip this part.
-+	 * step 7:
-+	 * - Cold/Full boot: wait for ROM init to proceed to download the firmware
-+	 * - IMR boot: wait for ROM firmware entered (firmware booted up from IMR)
- 	 */
-+	if (imr_boot)
-+		target_status = FSR_STATE_FW_ENTERED;
-+	else
-+		target_status = FSR_STATE_INIT_DONE;
- 
--	return 0;
-+	ret = snd_sof_dsp_read_poll_timeout(sdev, HDA_DSP_BAR,
-+					chip->rom_status_reg, status,
-+					(FSR_TO_STATE_CODE(status) == target_status),
-+					HDA_DSP_REG_POLL_INTERVAL_US,
-+					chip->rom_init_timeout *
-+					USEC_PER_MSEC);
-+
-+	if (!ret)
-+		return 0;
-+
-+	if (hda->boot_iteration == HDA_FW_BOOT_ATTEMPTS)
-+		dev_err(sdev->dev,
-+			"%s: timeout with rom_status_reg (%#x) read\n",
-+			__func__, chip->rom_status_reg);
- 
- err:
- 	flags = SOF_DBG_DUMP_PCI | SOF_DBG_DUMP_MBOX | SOF_DBG_DUMP_OPTIONAL;
+ 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
