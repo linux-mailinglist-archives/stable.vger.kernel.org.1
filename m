@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-46855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D5B8D0B8B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE838D0D8B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CEFB284CF4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 812E81F219ED
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBE815DBD8;
-	Mon, 27 May 2024 19:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09AC15FCFB;
+	Mon, 27 May 2024 19:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+3AI61Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIK5JpgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB2117E90E;
-	Mon, 27 May 2024 19:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1D917727;
+	Mon, 27 May 2024 19:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837027; cv=none; b=LmZtDZMCLcHkNIwNC7MQsIIu/QPZfI+cIoYVA56b1a5b4A1kdltXkmq70lz7BTECevPRGIoJPqwLSgzS67RgkXk2MeshWvOe1WmsuohTnHNqekl0emuRNsUlqEWJAqk6Ye4DtOCP+l0BM8XHqF+xgyRB/sHhFx638QnNBIwuE/c=
+	t=1716838266; cv=none; b=dj4it2BTMka01POkH4fNHZirBPYig1jkEEyxwEl2ZalGtc30S3/HVKWXoRfPjVDego4BgTm3B7tKFlEd/9uCfRw+dIZDQE9mnLuzioTMZT4QRbvBlczx42RLmuElogXKopPXaBhgnao5l4xT7TYxUCP64iYinIIYw5YetsxCEis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837027; c=relaxed/simple;
-	bh=HgLMdFcBzijp5ifP3v+xdZcjt8cfdxDEADy8xcoulII=;
+	s=arc-20240116; t=1716838266; c=relaxed/simple;
+	bh=0KmV1MEVUDKMGb9I1PKWAGxe5ek/RVZ7mDnxlk0wvqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJ0J700hf4pDCvUe4Gm4mBZrBkp55bcRIigUsvRVBENfOeFVG0OdpBCaG5466ApzIxRKhu9Utur1ZJTjJlj9H446+WX9xCZmHmp/nd7GALTcz2hfsBY79MchG6v2iCRpCrp+EKJwmfaAbTq0U3qmjac7Gu/yUXo14B9jTqW2kH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+3AI61Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DA2C2BBFC;
-	Mon, 27 May 2024 19:10:27 +0000 (UTC)
+	 MIME-Version; b=e+LghTQXE9d45DGO9Ur0nuTU8L4CC7LHDGuLj+gIJddHimcUB1fMSKrdAXqtO+8kvFdhVB/3MQiME1d4s2vNfM7kbj9II5EPH0gcwRYTq3Nkk2+u6G6LScdqEmNDMxXkqg2IZFBUWvu8y6Jqj/HU9k5gFy8C3R5Pjkxk2X/kl90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIK5JpgO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D35C2BBFC;
+	Mon, 27 May 2024 19:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837027;
-	bh=HgLMdFcBzijp5ifP3v+xdZcjt8cfdxDEADy8xcoulII=;
+	s=korg; t=1716838266;
+	bh=0KmV1MEVUDKMGb9I1PKWAGxe5ek/RVZ7mDnxlk0wvqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+3AI61Y68zc1ONmExDimEiQMN477tIJOQHLoUHQ4/GLojt18ntwp8yPHgpmHfk02
-	 M3WZP53lA0siLLYnaOJdMaDYg+mIEI3gd0/iYl9YZNQ/VxujAWVDYRwh8a7/1cDeLe
-	 WlQT5eKnndTuCc4fQjkTb+Rnhi/Sy0UgEB1CG1xM=
+	b=jIK5JpgOKGcWz3YoQPHoyp6+He+FutFVfTi6a17dXoIOjYCuqFMCf+xwudg9ecfg8
+	 A7HvWdVRNmp4bvprx5iWuOZF3tzY0s1Uul56m9xDEN8LFHFumd5Fxvv3R8qG4t6Nwv
+	 EA0BCeKrs+8fLxEN3USZ67Y9RtB8CCVkilURrk1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 283/427] drm/panel: atna33xc20: Fix unbalanced regulator in the case HPD doesnt assert
+Subject: [PATCH 6.8 328/493] mptcp: avoid some duplicate code in socket option handling
 Date: Mon, 27 May 2024 20:55:30 +0200
-Message-ID: <20240527185628.949426962@linuxfoundation.org>
+Message-ID: <20240527185641.002331403@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 5e842d55bad7794823a50f24fd645b58f2ef93ab ]
+[ Upstream commit a74762675f700a5473ebe54a671a0788a5b23cc9 ]
 
-When the atna33xc20 driver was first written the resume code never
-returned an error. If there was a problem waiting for HPD it just
-printed a warning and moved on. This changed in response to review
-feedback [1] on a future patch but I accidentally didn't account for
-rolling back the regulator enable in the error cases. Do so now.
+The mptcp_get_int_option() helper is needless open-coded in a
+couple of places, replace the duplicate code with the helper
+call.
 
-[1] https://lore.kernel.org/all/5f3cf3a6-1cc2-63e4-f76b-4ee686764705@linaro.org/
-
-Fixes: 3b5765df375c ("drm/panel: atna33xc20: Take advantage of wait_hpd_asserted() in struct drm_dp_aux")
-Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240313-homestarpanel-regulator-v1-1-b8e3a336da12@chromium.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bd11dc4fb969 ("mptcp: fix full TCP keep-alive support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/panel/panel-samsung-atna33xc20.c  | 22 +++++++++++--------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ net/mptcp/sockopt.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
-index 76c2a8f6718c8..9c336c71562b9 100644
---- a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
-+++ b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
-@@ -109,19 +109,17 @@ static int atana33xc20_resume(struct device *dev)
- 		if (hpd_asserted < 0)
- 			ret = hpd_asserted;
- 
--		if (ret)
-+		if (ret) {
- 			dev_warn(dev, "Error waiting for HPD GPIO: %d\n", ret);
+diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+index f361d02f94b7e..82d0cd0819f09 100644
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -627,13 +627,11 @@ static int mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, sockptr_t optva
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val;
 -
--		return ret;
--	}
+-	if (optlen < sizeof(int))
+-		return -EINVAL;
++	int val, ret;
+ 
+-	if (copy_from_sockptr(&val, optval, sizeof(val)))
+-		return -EFAULT;
++	ret = mptcp_get_int_option(msk, optval, optlen, &val);
++	if (ret)
++		return ret;
+ 
+ 	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
+@@ -657,13 +655,11 @@ static int mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, sockptr_t op
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val;
 -
--	if (p->aux->wait_hpd_asserted) {
-+			goto error;
-+		}
-+	} else if (p->aux->wait_hpd_asserted) {
- 		ret = p->aux->wait_hpd_asserted(p->aux, HPD_MAX_US);
+-	if (optlen < sizeof(int))
+-		return -EINVAL;
++	int val, ret;
  
--		if (ret)
-+		if (ret) {
- 			dev_warn(dev, "Controller error waiting for HPD: %d\n", ret);
--
--		return ret;
-+			goto error;
-+		}
- 	}
+-	if (copy_from_sockptr(&val, optval, sizeof(val)))
+-		return -EFAULT;
++	ret = mptcp_get_int_option(msk, optval, optlen, &val);
++	if (ret)
++		return ret;
  
- 	/*
-@@ -133,6 +131,12 @@ static int atana33xc20_resume(struct device *dev)
- 	 * right times.
- 	 */
- 	return 0;
-+
-+error:
-+	drm_dp_dpcd_set_powered(p->aux, false);
-+	regulator_disable(p->supply);
-+
-+	return ret;
- }
- 
- static int atana33xc20_disable(struct drm_panel *panel)
+ 	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
 -- 
 2.43.0
 
