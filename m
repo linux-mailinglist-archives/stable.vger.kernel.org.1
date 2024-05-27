@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66F48D0BE0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DD38D0DB0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0641F2394C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9E3F283E33
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFA815DBD8;
-	Mon, 27 May 2024 19:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825FB15FA60;
+	Mon, 27 May 2024 19:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aiy1d6Sq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDTezE+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F73817E90E;
-	Mon, 27 May 2024 19:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4326617727;
+	Mon, 27 May 2024 19:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837235; cv=none; b=XqU3Me9RRjzw4zg3Kp6JDXedIe9ECnm9fztJPmzfAmz08bHnAQgtO5tyfPZgfyBiw/MZMpBEgOrdRzwaFdmnqwzhcoBHim9GV7B/BuT9pAOvJ/4IZMkuZ9SqpJl+dszX3lsFWrvF59Mzr4k9fwwHLsOzJTwsObuapALGBLPZ8lQ=
+	t=1716838364; cv=none; b=WzhGslTGPNpzH4+p2x4q0/u/fUFS7Q9SvlKOdE/ua8XziboQvyYT3n2xlSthc8FxqrH71Q0HaxIRkVuRrzAsjLmzFbWwyGv8eUnAE7L0m5nIh/u2tuApowvYXfA6Y4WBHx7kSdv9U6lJ1UJEzAlAaF9EXwaHqaoBdub7Y9Km/uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837235; c=relaxed/simple;
-	bh=rv149LHJlaA5DjPboTHo8hlhk+NKtDT23QtntdLiNRM=;
+	s=arc-20240116; t=1716838364; c=relaxed/simple;
+	bh=TSMDJNRk4fVMfzCEDh0/5WHj/ckIyngr2RE01IAhcZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lu8Bk7Sxcqf5RtWM0x71LzfsgYfru6lIxAO2CGSWbtcdjjGn4MqCvOCHQ/kOi7QtUjnlpzhdRpHEB8nnXv64hgvRKM+I9kCq50UNV7he2zFR4BO8WC5+L+PFFYHs78BHkCVeRBH9K4+QdBHYNE8oI8AGD4qNjKfOwAhgqH3ljiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aiy1d6Sq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5DBC2BBFC;
-	Mon, 27 May 2024 19:13:54 +0000 (UTC)
+	 MIME-Version; b=T0dNhG9ypCXqko+TBz2p4/H6PAnTycLeCQx6LQ9d20LbEBuT9VjYBuqdtX/VEkr6keMHz6j3w0fB8IKzxzEb4RgmEggpnF6Kf0cYCyRKOCsbbXB0ti52Xj/c8zI3PqNTGffj8rs5zNiTDo7ZGwatSDPMG+dMcDsKQh84ER3o9Vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDTezE+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C9BC2BBFC;
+	Mon, 27 May 2024 19:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837235;
-	bh=rv149LHJlaA5DjPboTHo8hlhk+NKtDT23QtntdLiNRM=;
+	s=korg; t=1716838364;
+	bh=TSMDJNRk4fVMfzCEDh0/5WHj/ckIyngr2RE01IAhcZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aiy1d6Sq74d9dkBne3dUPaoOi+Jpa9asLYjO2bnQQ18TCopxabd0ILuTXwuMnul+T
-	 bG0NYlcA2XlPpfWEECXlpLZQ+y9l9YUv3KUB/D2b42/TsfKLQGuC0Oq9U2BCDiD3ln
-	 zZMGgSRI1M0ezjR+5siu9UARmAzqdhKra771xq8o=
+	b=XDTezE+nOVgzIadKgXJ8JxoaVjUxswfbi5hmrzj/c2wPWHd4SqK4N+RqPxgcmkIl1
+	 OEV/8iTIBI/60LgnS4EMkjGzpfSFBYFKsJVqlC1i3P4PsC3iWmSH8ff9R7JO99PyWD
+	 fI464cL+RvmsNvjColANx9UXNnObTII007R7OXm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maxim Korotkov <korotkov.maxim.s@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 320/427] drm/msm/dp: Account for the timeout in wait_hpd_asserted() callback
+Subject: [PATCH 6.8 365/493] mtd: rawnand: hynix: fixed typo
 Date: Mon, 27 May 2024 20:56:07 +0200
-Message-ID: <20240527185631.553498656@linuxfoundation.org>
+Message-ID: <20240527185642.220955564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Maxim Korotkov <korotkov.maxim.s@gmail.com>
 
-[ Upstream commit c8520d5e5d8fe2e329f21ce04464a22b3d456caa ]
+[ Upstream commit 6819db94e1cd3ce24a432f3616cd563ed0c4eaba ]
 
-The DP wait_hpd_asserted() callback is passed a timeout which
-indicates how long we should wait for HPD. This timeout was being
-ignored in the MSM DP implementation and instead a hardcoded 500 ms
-timeout was used. Fix it to use the proper timeout.
+The function hynix_nand_rr_init() should probably return an error code.
+Judging by the usage, it seems that the return code is passed up
+the call stack.
+Right now, it always returns 0 and the function hynix_nand_cleanup()
+in hynix_nand_init() has never been called.
 
-As part of this we move the hardcoded 500 ms number into the AUX
-transfer function, which isn't given a timeout. The wait in the AUX
-transfer function will be removed in a future commit.
+Found by RASU JSC and Linux Verification Center (linuxtesting.org)
 
-Fixes: e2969ee30252 ("drm/msm/dp: move of_dp_aux_populate_bus() to eDP probe()")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/583128/
-Link: https://lore.kernel.org/r/20240315143621.v2.2.I7758d18a1773821fa39c034b16a12ef3f18a51ee@changeid
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 626994e07480 ("mtd: nand: hynix: Add read-retry support for 1x nm MLC NANDs")
+
+Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240313102721.1991299-1-korotkov.maxim.s@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_aux.c     | 5 +++--
- drivers/gpu/drm/msm/dp/dp_catalog.c | 7 ++++---
- drivers/gpu/drm/msm/dp/dp_catalog.h | 3 ++-
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/raw/nand_hynix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_aux.c b/drivers/gpu/drm/msm/dp/dp_aux.c
-index f98d089ea5b1a..707489776e913 100644
---- a/drivers/gpu/drm/msm/dp/dp_aux.c
-+++ b/drivers/gpu/drm/msm/dp/dp_aux.c
-@@ -325,7 +325,8 @@ static ssize_t dp_aux_transfer(struct drm_dp_aux *dp_aux,
- 	 * avoid ever doing the extra long wait for DP.
- 	 */
- 	if (aux->is_edp) {
--		ret = dp_catalog_aux_wait_for_hpd_connect_state(aux->catalog);
-+		ret = dp_catalog_aux_wait_for_hpd_connect_state(aux->catalog,
-+								500000);
- 		if (ret) {
- 			DRM_DEBUG_DP("Panel not ready for aux transactions\n");
- 			goto exit;
-@@ -533,7 +534,7 @@ static int dp_wait_hpd_asserted(struct drm_dp_aux *dp_aux,
- 	aux = container_of(dp_aux, struct dp_aux_private, dp_aux);
+diff --git a/drivers/mtd/nand/raw/nand_hynix.c b/drivers/mtd/nand/raw/nand_hynix.c
+index 39076735a3fbb..9695f07b5eb26 100644
+--- a/drivers/mtd/nand/raw/nand_hynix.c
++++ b/drivers/mtd/nand/raw/nand_hynix.c
+@@ -402,7 +402,7 @@ static int hynix_nand_rr_init(struct nand_chip *chip)
+ 	if (ret)
+ 		pr_warn("failed to initialize read-retry infrastructure");
  
- 	pm_runtime_get_sync(aux->dev);
--	ret = dp_catalog_aux_wait_for_hpd_connect_state(aux->catalog);
-+	ret = dp_catalog_aux_wait_for_hpd_connect_state(aux->catalog, wait_us);
- 	pm_runtime_put_sync(aux->dev);
- 
- 	return ret;
-diff --git a/drivers/gpu/drm/msm/dp/dp_catalog.c b/drivers/gpu/drm/msm/dp/dp_catalog.c
-index 3e7c84cdef472..628c8181ddd48 100644
---- a/drivers/gpu/drm/msm/dp/dp_catalog.c
-+++ b/drivers/gpu/drm/msm/dp/dp_catalog.c
-@@ -263,17 +263,18 @@ void dp_catalog_aux_enable(struct dp_catalog *dp_catalog, bool enable)
- 	dp_write_aux(catalog, REG_DP_AUX_CTRL, aux_ctrl);
+-	return 0;
++	return ret;
  }
  
--int dp_catalog_aux_wait_for_hpd_connect_state(struct dp_catalog *dp_catalog)
-+int dp_catalog_aux_wait_for_hpd_connect_state(struct dp_catalog *dp_catalog,
-+					      unsigned long wait_us)
- {
- 	u32 state;
- 	struct dp_catalog_private *catalog = container_of(dp_catalog,
- 				struct dp_catalog_private, dp_catalog);
- 
--	/* poll for hpd connected status every 2ms and timeout after 500ms */
-+	/* poll for hpd connected status every 2ms and timeout after wait_us */
- 	return readl_poll_timeout(catalog->io.aux.base +
- 				REG_DP_DP_HPD_INT_STATUS,
- 				state, state & DP_DP_HPD_STATE_STATUS_CONNECTED,
--				2000, 500000);
-+				min(wait_us, 2000), wait_us);
- }
- 
- static void dump_regs(void __iomem *base, int len)
-diff --git a/drivers/gpu/drm/msm/dp/dp_catalog.h b/drivers/gpu/drm/msm/dp/dp_catalog.h
-index 75ec290127c77..72a85810607e8 100644
---- a/drivers/gpu/drm/msm/dp/dp_catalog.h
-+++ b/drivers/gpu/drm/msm/dp/dp_catalog.h
-@@ -87,7 +87,8 @@ int dp_catalog_aux_clear_trans(struct dp_catalog *dp_catalog, bool read);
- int dp_catalog_aux_clear_hw_interrupts(struct dp_catalog *dp_catalog);
- void dp_catalog_aux_reset(struct dp_catalog *dp_catalog);
- void dp_catalog_aux_enable(struct dp_catalog *dp_catalog, bool enable);
--int dp_catalog_aux_wait_for_hpd_connect_state(struct dp_catalog *dp_catalog);
-+int dp_catalog_aux_wait_for_hpd_connect_state(struct dp_catalog *dp_catalog,
-+					      unsigned long wait_us);
- u32 dp_catalog_aux_get_irq(struct dp_catalog *dp_catalog);
- 
- /* DP Controller APIs */
+ static void hynix_nand_extract_oobsize(struct nand_chip *chip,
 -- 
 2.43.0
 
