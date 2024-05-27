@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-47438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DDB8D0DFB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E1A8D0BFB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B5E81C21714
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC02DB220B3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BF3262BE;
-	Mon, 27 May 2024 19:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C7B15FCF2;
+	Mon, 27 May 2024 19:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GFOguU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ic7KjU6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D12915FA60;
-	Mon, 27 May 2024 19:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D704A15FA85;
+	Mon, 27 May 2024 19:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838550; cv=none; b=l9mKEodSpQI9TvTTjQjRK+JczYQHmG4bHtAvGXVuUgBmVVcQFv3ExWuBHKVAVviRK3y0aim3R1aDuia5jcxe1XHNv+Cxk9lVTtw5jnyr2currmL23UVKxf71tnIPE3mwaP4VuaLmHJ5IuXCcOzgRvnKHLfCL8u2/wAs8gdsLWbQ=
+	t=1716837303; cv=none; b=rRLlQ6IWkH0KLl2je9UEDlEJFXTfhhJzv691+okySottmVsI+OdlNiC22S7YyvHXzJCjKjXTP2e1Mp2iSikveE6Tl/D907KkeA90sY3EHLX2fsV2pw6DRP1ogc8EKRLSyC5x1DryDDm8fyjXUk17Nia/jINEp99FThOQDwlZxP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838550; c=relaxed/simple;
-	bh=eEIoeQBRTmccXOfwpcnesYET6gY+sIORQ28b7YQdlEE=;
+	s=arc-20240116; t=1716837303; c=relaxed/simple;
+	bh=/AIuGzMNWZJHscZ6EpeowurhI1+QyPhqKEWAWQoWDH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNuy+h8CG22ROrTs0nasG6lWHVDuZ/vaUWwaC42bkI9LQNRCbu1FRwNTP+XKzK/5IlZGlGvXbWfIf5m2C0K6VlocVC3vam/Q32AJHEn+gQMDLbIUKPgjt5723w62YYnnZuUgqJLtXFEgpElN4vhUICxQ6YHhxHMcoW+444kBg+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GFOguU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D650EC2BBFC;
-	Mon, 27 May 2024 19:35:49 +0000 (UTC)
+	 MIME-Version; b=Iyll+K62oRb0zpehtWdWiGf005s/J6ALda1gxMdO2RqUT/lFfeVvWUhTSpwxwMLNYTBG0xxmAFFuXq1465XeWA9D3NB/zFLJXcF1l1ZnjrU2rL1iM2Tl84w8AUHoi4QhMjZsSq8TUBzHo2nZ6U/QBwlmN+4OBqS5GkZtao4o4XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ic7KjU6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9B0C32781;
+	Mon, 27 May 2024 19:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838550;
-	bh=eEIoeQBRTmccXOfwpcnesYET6gY+sIORQ28b7YQdlEE=;
+	s=korg; t=1716837303;
+	bh=/AIuGzMNWZJHscZ6EpeowurhI1+QyPhqKEWAWQoWDH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1GFOguU1tVBO/zZ3vc+gkzZNBux57OVb+f7Av7fMySoa53mZD2/km+DyLf/JWZMpC
-	 MkU2Mbs/Hh2A28eBpD6m6oWZ4rms7Jomlwp1vOA1ZG58tlQITrZ2HiszBGLUHBZlNG
-	 Cyqa4K56Uf5qx9bPsXpCW/Zm0/gFqog0iaOJqN6E=
+	b=ic7KjU6hl3E9xRDTEpj03IGztWIYysSALmur3ZP5V00hRUun62KXKbB8v+3K6iwD8
+	 JvyR6LTdOYSQkcfmurzswDkJe9CVcAeGpIxv3kJaMlKQbwFvFzfxlM6YEyPIewjzll
+	 ubSZoaQq/oBcPjNGhOJHPZIXOl3fjgdZXDoBi0P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 434/493] clk: qcom: clk-alpha-pll: remove invalid Stromer register offset
+Subject: [PATCH 6.9 389/427] iommu/amd: Enable Guest Translation after reading IOMMU feature register
 Date: Mon, 27 May 2024 20:57:16 +0200
-Message-ID: <20240527185644.468773883@linuxfoundation.org>
+Message-ID: <20240527185634.765081969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit 4f2bc4acbb1916b8cd2ce4bb3ba7b1cd7cb705fa ]
+[ Upstream commit de111f6b4f6a3010020825d22a068f416bc29c95 ]
 
-The offset of the CONFIG_CTL_U register defined for the Stromer
-PLL is wrong. It is not aligned on a 4 bytes boundary which might
-causes errors in regmap operations.
+Commit 8e0179733172 ("iommu/amd: Enable Guest Translation before
+registering devices") moved IOMMU Guest Translation (GT) enablement to
+early init path. It does feature check based on Global EFR value (got from
+ACPI IVRS table). Later it adjusts EFR value based on IOMMU feature
+register (late_iommu_features_init()).
 
-Maybe the intention behind of using the 0xff value was to indicate
-that the register is not implemented in the PLL, but this is not
-verified anywhere in the code. Moreover, this value is not used
-even in other register offset arrays despite that those PLLs also
-have unimplemented registers.
+It seems in some systems BIOS doesn't set gloabl EFR value properly.
+This is causing mismatch. Hence move IOMMU GT enablement after
+late_iommu_features_init() so that it does check based on IOMMU EFR
+value.
 
-Additionally, on the Stromer PLLs the current code only touches
-the CONFIG_CTL_U register if the result of pll_has_64bit_config()
-is true which condition is not affected by the change.
-
-Due to the reasons above, simply remove the CONFIG_CTL_U entry
-from the Stromer specific array.
-
-Fixes: e47a4f55f240 ("clk: qcom: clk-alpha-pll: Add support for Stromer PLLs")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240311-alpha-pll-stromer-cleanup-v1-1-f7c0c5607cca@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 8e0179733172 ("iommu/amd: Enable Guest Translation before registering devices")
+Reported-by: Klara Modin <klarasmodin@gmail.com>
+Closes: https://lore.kernel.org/linux-iommu/333e6eb6-361c-4afb-8107-2573324bf689@gmail.com/
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
+Link: https://lore.kernel.org/r/20240506082039.7575-1-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/iommu/amd/init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-index 05898d2a8b22c..58ae732959803 100644
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -212,7 +212,6 @@ const u8 clk_alpha_pll_regs[][PLL_OFF_MAX_REGS] = {
- 		[PLL_OFF_USER_CTL] = 0x18,
- 		[PLL_OFF_USER_CTL_U] = 0x1c,
- 		[PLL_OFF_CONFIG_CTL] = 0x20,
--		[PLL_OFF_CONFIG_CTL_U] = 0xff,
- 		[PLL_OFF_TEST_CTL] = 0x30,
- 		[PLL_OFF_TEST_CTL_U] = 0x34,
- 		[PLL_OFF_STATUS] = 0x28,
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index ac6754a85f350..f440ca440d924 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -2097,6 +2097,8 @@ static int __init iommu_init_pci(struct amd_iommu *iommu)
+ 			amd_iommu_max_glx_val = glxval;
+ 		else
+ 			amd_iommu_max_glx_val = min(amd_iommu_max_glx_val, glxval);
++
++		iommu_enable_gt(iommu);
+ 	}
+ 
+ 	if (check_feature(FEATURE_PPR) && alloc_ppr_log(iommu))
+@@ -2773,7 +2775,6 @@ static void early_enable_iommu(struct amd_iommu *iommu)
+ 	iommu_enable_command_buffer(iommu);
+ 	iommu_enable_event_buffer(iommu);
+ 	iommu_set_exclusion_range(iommu);
+-	iommu_enable_gt(iommu);
+ 	iommu_enable_ga(iommu);
+ 	iommu_enable_xt(iommu);
+ 	iommu_enable_irtcachedis(iommu);
+@@ -2830,7 +2831,6 @@ static void early_enable_iommus(void)
+ 			iommu_disable_irtcachedis(iommu);
+ 			iommu_enable_command_buffer(iommu);
+ 			iommu_enable_event_buffer(iommu);
+-			iommu_enable_gt(iommu);
+ 			iommu_enable_ga(iommu);
+ 			iommu_enable_xt(iommu);
+ 			iommu_enable_irtcachedis(iommu);
 -- 
 2.43.0
 
