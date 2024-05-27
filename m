@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-46852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CC98D0B88
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952858D0D87
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 058701F21A48
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6BCC1C21346
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F4A1DFED;
-	Mon, 27 May 2024 19:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE5A15FA60;
+	Mon, 27 May 2024 19:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbvEBow4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLVU8yv1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1212117E90E;
-	Mon, 27 May 2024 19:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7F117727;
+	Mon, 27 May 2024 19:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837020; cv=none; b=lnzyspOxgJ2FGNRDLQUNk5pOZ6wvhbviyffe+eLTnCxlNaC+gbwpaNa/vlUwKykp/oOncsd/lEvnwxApfGlXNXWYruiL5rpSD6EA0GloujhkmImuPdmtTgMiUnV87HhDw31kllQEsrvd51aLyNTrDLyYW2Koj5RtZryoqMJyTxQ=
+	t=1716838255; cv=none; b=gYFPmbK238/TEt3xMApu/wZKpH1QspL22iSxfdDQwiLRSG3oTUSdH4hOKGjaoh+GEH166e07S76dN1x8j/v9U6LMnX1cOyQcWSVViPMJahAyEo93RCAVl0kU9nPN9qpo0AoWndUsE+uLtlE6lQB44HXAEO+KOtwn5nAQn7X9+ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837020; c=relaxed/simple;
-	bh=3UIjb+IlpN6K4dFG4ReUmlhwu77u3YBEdXpSVMAtfvo=;
+	s=arc-20240116; t=1716838255; c=relaxed/simple;
+	bh=zh0TQE8uVSafsVciF8PXypBHmXTxvVmRLVV3nIzjWxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhtUZZ6O+qRtvhJ3ZsiyNJIQZJKECLJ3LLO45jrEAeCmWsZ5fGP3E1wnhRHtofpgqsvT5EYfA59mkyAYZb7pF6aCvqX6R2mTcq+U7bkXa/0GQaEjxhfTDm/U5SJ6WByWOsp2cgX6u+VSh7QYurebOhLYBXFrc/AxwZFVRWglWs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbvEBow4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB63C2BBFC;
-	Mon, 27 May 2024 19:10:19 +0000 (UTC)
+	 MIME-Version; b=V47JJ9597l5cYRAC8h6DE8lrFhdkxDbQPL1xXepXNofpg/EqkCIvbKfLZFjOxw+DNjvwZP+OGBWkRC43bhGMSnd2OLkJqIpaR/hhvZNGrRNTN9KWDhPfcEA95Q5IEYS3JkTPCsImytfP1bVtFSBWoSWs+eSio2S6ijWX2OaNo0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLVU8yv1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64059C2BBFC;
+	Mon, 27 May 2024 19:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837020;
-	bh=3UIjb+IlpN6K4dFG4ReUmlhwu77u3YBEdXpSVMAtfvo=;
+	s=korg; t=1716838255;
+	bh=zh0TQE8uVSafsVciF8PXypBHmXTxvVmRLVV3nIzjWxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbvEBow4Ld0HiYGKtVeAnkxA9+qsT1RT1nt6+PH61stzPRLrfQnHpFvc/DdYi85w4
-	 psxJdlF/XCmcay8BVFsgws7FQwnFf3JwCmwr6Iihb8QEWb9nUs8Tan5AGfEZsCIJiu
-	 yDO0P3s4LTEruD00cQNvAvrSfWsoeYCHs4lXiEP0=
+	b=LLVU8yv1y7aKFacxK45pjonXRYzyMZGleb3NKKP4N8iX2ZLo63xjUB+tqHNDFhlAJ
+	 OKBt/iiFKLboHTMYVVURkhnxyOdFb0vASypg+8lqCcjd79pYaeBetldoIzptMw1iB+
+	 nBaGNb62eedhVAwDi45bpLxwmHcygFVir3CmHsKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Chris Down <chris@chrisdown.name>,
-	Petr Mladek <pmladek@suse.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 280/427] printk: Let no_printk() use _printk()
+Subject: [PATCH 6.8 325/493] net: fec: remove .ndo_poll_controller to avoid deadlocks
 Date: Mon, 27 May 2024 20:55:27 +0200
-Message-ID: <20240527185628.684545882@linuxfoundation.org>
+Message-ID: <20240527185640.897230375@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 8522f6b760ca588928eede740d5d69dd1e936b49 ]
+[ Upstream commit c2e0c58b25a0a0c37ec643255558c5af4450c9f5 ]
 
-When printk-indexing is enabled, each printk() invocation emits a
-pi_entry structure, containing the format string and other information
-related to its location in the kernel sources.  This is even true for
-no_printk(): while the actual code to print the message is optimized out
-by the compiler due to the always-false check, the pi_entry structure is
-still emitted.
+There is a deadlock issue found in sungem driver, please refer to the
+commit ac0a230f719b ("eth: sungem: remove .ndo_poll_controller to avoid
+deadlocks"). The root cause of the issue is that netpoll is in atomic
+context and disable_irq() is called by .ndo_poll_controller interface
+of sungem driver, however, disable_irq() might sleep. After analyzing
+the implementation of fec_poll_controller(), the fec driver should have
+the same issue. Due to the fec driver uses NAPI for TX completions, the
+.ndo_poll_controller is unnecessary to be implemented in the fec driver,
+so fec_poll_controller() can be safely removed.
 
-As the main purpose of no_printk() is to provide a helper to maintain
-printf()-style format checking when debugging is disabled, this leads to
-the inclusion in the index of lots of printk formats that cannot be
-emitted by the current kernel.
-
-Fix this by switching no_printk() from printk() to _printk().
-
-This reduces the size of an arm64 defconfig kernel with
-CONFIG_PRINTK_INDEX=y by 576 KiB.
-
-Fixes: 337015573718b161 ("printk: Userspace format indexing support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Chris Down <chris@chrisdown.name>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/56cf92edccffea970e1f40a075334dd6cf5bb2a4.1709127473.git.geert+renesas@glider.be
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Fixes: 7f5c6addcdc0 ("net/fec: add poll controller function for fec nic")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Link: https://lore.kernel.org/r/20240511062009.652918-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/printk.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 26 -----------------------
+ 1 file changed, 26 deletions(-)
 
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index 955e31860095e..2fde40cc96778 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -126,7 +126,7 @@ struct va_format {
- #define no_printk(fmt, ...)				\
- ({							\
- 	if (0)						\
--		printk(fmt, ##__VA_ARGS__);		\
-+		_printk(fmt, ##__VA_ARGS__);		\
- 	0;						\
- })
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 8decb1b072c5e..e92a830330590 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3678,29 +3678,6 @@ fec_set_mac_address(struct net_device *ndev, void *p)
+ 	return 0;
+ }
  
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-/**
+- * fec_poll_controller - FEC Poll controller function
+- * @dev: The FEC network adapter
+- *
+- * Polled functionality used by netconsole and others in non interrupt mode
+- *
+- */
+-static void fec_poll_controller(struct net_device *dev)
+-{
+-	int i;
+-	struct fec_enet_private *fep = netdev_priv(dev);
+-
+-	for (i = 0; i < FEC_IRQ_NUM; i++) {
+-		if (fep->irq[i] > 0) {
+-			disable_irq(fep->irq[i]);
+-			fec_enet_interrupt(fep->irq[i], dev);
+-			enable_irq(fep->irq[i]);
+-		}
+-	}
+-}
+-#endif
+-
+ static inline void fec_enet_set_netdev_features(struct net_device *netdev,
+ 	netdev_features_t features)
+ {
+@@ -4007,9 +3984,6 @@ static const struct net_device_ops fec_netdev_ops = {
+ 	.ndo_tx_timeout		= fec_timeout,
+ 	.ndo_set_mac_address	= fec_set_mac_address,
+ 	.ndo_eth_ioctl		= phy_do_ioctl_running,
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-	.ndo_poll_controller	= fec_poll_controller,
+-#endif
+ 	.ndo_set_features	= fec_set_features,
+ 	.ndo_bpf		= fec_enet_bpf,
+ 	.ndo_xdp_xmit		= fec_enet_xdp_xmit,
 -- 
 2.43.0
 
