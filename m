@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E28A8D0BFD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E110E8D0E37
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 203AF1F23F9A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94A6F1F21D4B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EA415FCF0;
-	Mon, 27 May 2024 19:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEFD1607BA;
+	Mon, 27 May 2024 19:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbh26Ph3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+fow4HH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D64E15DBD8;
-	Mon, 27 May 2024 19:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6B761FDF;
+	Mon, 27 May 2024 19:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837309; cv=none; b=M/1ppWMcmEaWMZDIb3SuG1jJLD+ct3J9AvQazeSG83t6fQLbmKNnxENBdZL4+EbPVML4vy3z7OPInIiOFTMZHMQTUBl9ycrGmgbsOOcaoPU4MCI0Gr0zlVkWmoss96cSTOo/Jos+iCyFhHS4wrupVriK0Si1haTrGloXFPKutLI=
+	t=1716838684; cv=none; b=TcRE6NyIae4eL1hffNxn4U+p3vtjAsZbro0JvW/MeHoVB6jqKu7zQV1U3x3mMXEQVKmBdSxXfAFGFnWJSiAZGbPQyZEHZ7M+FrUupfScsR9M0h0o2/itGByGLmZCQuAT91mcxCobkbX5ElK/8AbkBJlcMqO9XIeEnbOBpT9dsuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837309; c=relaxed/simple;
-	bh=h6XulrfaPscbKiqmCkC0CkQyvFqD/4PoXUqJ/68FPNQ=;
+	s=arc-20240116; t=1716838684; c=relaxed/simple;
+	bh=BGfvV/DEOx+58Dv23NNGxLesk2th9pZNpxaXXMdxjjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cf+eu5+1FcH0qxpJgPDC7vxQUhNXkeJZSrEgO86OCdar6oS2PQ5rzNKRhYBcOMSYhuxF9wBVHkFglXi+1dpxz0bhBZKpUagsx551DdpnYCz40z549zxt7PRvcm5ApjIvzV/47M51hWnC6paQLmtZZBk/8RkTBqa1UuoWMwvrYFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbh26Ph3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E581DC2BBFC;
-	Mon, 27 May 2024 19:15:08 +0000 (UTC)
+	 MIME-Version; b=th1wR29NM7qbrLvP2/2VqNQqdi1yBaF84SdQ4veT5ggn7CipB9phhwDUQa9St2ceNV2m32OXnAsbDRRZztUnXYnMgkHP9ayCHUrCWvV21Qdco+L1sFvU+E+mFqP70EOpLzZQf7JOnITnZ877Xmc1xLkoYU1taC3Sbnsab3nwUZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+fow4HH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7CCC2BBFC;
+	Mon, 27 May 2024 19:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837309;
-	bh=h6XulrfaPscbKiqmCkC0CkQyvFqD/4PoXUqJ/68FPNQ=;
+	s=korg; t=1716838684;
+	bh=BGfvV/DEOx+58Dv23NNGxLesk2th9pZNpxaXXMdxjjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbh26Ph3hJA/43ATrzudlIYn2g7InYm6L7yuSOWi+6nFXYBR61YY6Znw+Ef8qx6vy
-	 JUMWakr2IJ/Ldgv3qhNb/s1WqqBNddzKxszi5RlGwIt48ycbtDry7q6seDIlXIZTQE
-	 ZGCn7pQbnGldQHfDcTvAEo2j6gLSorQ8Kxufs/ug=
+	b=g+fow4HH2ggIUu6ct6YjS58M5COFeZOwT01BPAMAMEaPt4Gj+bo/hy+lmROiQ4Tv1
+	 DJFRzoyD0EpH9SbWBIRD9jd8Yw6oDpPSodUrxfLPFL9iKZE9uS9CbPE5erSQ8hJnHQ
+	 nFH5gIOJ24IhiqXNCJ1vfn8cpz4/ZKpBcEfjeku0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Aprelkov <aaprelkov@usergate.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Bob Pearson <rpearsonhpe@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 390/427] sunrpc: removed redundant procp check
+Subject: [PATCH 6.8 435/493] RDMA/rxe: Fix seg fault in rxe_comp_queue_pkt
 Date: Mon, 27 May 2024 20:57:17 +0200
-Message-ID: <20240527185634.792243486@linuxfoundation.org>
+Message-ID: <20240527185644.499623782@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Aprelkov <aaprelkov@usergate.com>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit a576f36971ab4097b6aa76433532aa1fb5ee2d3b ]
+[ Upstream commit 2b23b6097303ed0ba5f4bc036a1c07b6027af5c6 ]
 
-since vs_proc pointer is dereferenced before getting it's address there's
-no need to check for NULL.
+In rxe_comp_queue_pkt() an incoming response packet skb is enqueued to the
+resp_pkts queue and then a decision is made whether to run the completer
+task inline or schedule it. Finally the skb is dereferenced to bump a 'hw'
+performance counter. This is wrong because if the completer task is
+already running in a separate thread it may have already processed the skb
+and freed it which can cause a seg fault.  This has been observed
+infrequently in testing at high scale.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This patch fixes this by changing the order of enqueuing the packet until
+after the counter is accessed.
 
-Fixes: 8e5b67731d08 ("SUNRPC: Add a callback to initialise server requests")
-Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20240329145513.35381-4-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Fixes: 0b1e5b99a48b ("IB/rxe: Add port protocol stats")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_comp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index b33e429336fb7..2b4b1276d4e86 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1265,8 +1265,6 @@ svc_generic_init_request(struct svc_rqst *rqstp,
- 	if (rqstp->rq_proc >= versp->vs_nproc)
- 		goto err_bad_proc;
- 	rqstp->rq_procinfo = procp = &versp->vs_proc[rqstp->rq_proc];
--	if (!procp)
--		goto err_bad_proc;
+diff --git a/drivers/infiniband/sw/rxe/rxe_comp.c b/drivers/infiniband/sw/rxe/rxe_comp.c
+index d0bdc2d8adc82..acd2172bf092b 100644
+--- a/drivers/infiniband/sw/rxe/rxe_comp.c
++++ b/drivers/infiniband/sw/rxe/rxe_comp.c
+@@ -131,12 +131,12 @@ void rxe_comp_queue_pkt(struct rxe_qp *qp, struct sk_buff *skb)
+ {
+ 	int must_sched;
  
- 	/* Initialize storage for argp and resp */
- 	memset(rqstp->rq_argp, 0, procp->pc_argzero);
+-	skb_queue_tail(&qp->resp_pkts, skb);
+-
+-	must_sched = skb_queue_len(&qp->resp_pkts) > 1;
++	must_sched = skb_queue_len(&qp->resp_pkts) > 0;
+ 	if (must_sched != 0)
+ 		rxe_counter_inc(SKB_TO_PKT(skb)->rxe, RXE_CNT_COMPLETER_SCHED);
+ 
++	skb_queue_tail(&qp->resp_pkts, skb);
++
+ 	if (must_sched)
+ 		rxe_sched_task(&qp->comp.task);
+ 	else
 -- 
 2.43.0
 
