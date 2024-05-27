@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7D08D0CDD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83648D0AD5
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66E5E1F237E0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9269F281CE0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E9516078C;
-	Mon, 27 May 2024 19:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBE6160877;
+	Mon, 27 May 2024 19:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpiUCWs2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvTOuNff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36ED215FCE9;
-	Mon, 27 May 2024 19:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136A11754B;
+	Mon, 27 May 2024 19:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837830; cv=none; b=tt4vSBuVRF8sks+kIo7Q2poeyaqcLS38aq6dwW/F2uh+952PiBxuGd8GlO6fL3eaMoMBExcuYpj5LCVw96g0hE1aJy/Zm62xvBx3Nda+GiOcbEtLdenW3QTK1iucwcMeqe5Z229c1yqaG7YSwjd2fYbKveXbSrhhZn2ebLrJ5UM=
+	t=1716836595; cv=none; b=UNGCKoEVDFxl3aJvwWWyfyzWDUBQS2H6HVaH6bBbOvEbGbMCNkC7xE4STqXN581m+vR2u+8AYuq6LrWnNo0ZFC1Tdxn4wh1jSTyC0PhaXt+E2ApYDJddUuxonLw+JpPrCyPN5FbS/q33uVfFpDFnIj64Uz3EIP4K891L7JXISBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837830; c=relaxed/simple;
-	bh=t/UcmtvIVB2maWOAFEb+FWB0x36LL7/lkds4U7BhoaQ=;
+	s=arc-20240116; t=1716836595; c=relaxed/simple;
+	bh=TN0QdzCNMGNzhWfmIa2+PJSUWUa/riqKweqTVOZPVZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OE5LMhbio48gBF8PkQ3JQGZadXa6+iNt9RTq4n3rk4XdnsiwHsGTI3Zskx3AIgjXYagyc1LWFzPS9KpgzUmjTQMc5JNPcxI4g+X7brOtQ0rhCIm1Jj8Ht96ItYm3R/dJu6TDPpY+3i03B/ljIdvwpRCvL2Y5saPWH27R6ELCKpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpiUCWs2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FC3C2BBFC;
-	Mon, 27 May 2024 19:23:49 +0000 (UTC)
+	 MIME-Version; b=A3mEpWLpxfja6HJNsguqWmpMB+XGPk8FHItGjoE0RgkE9yN48V2T5I0VV7krf0Y0WZFn8JMayLRqoxqiPT4t6YsFCLm4WQuEj5OalGPYnBadjqR1RgmTHBzs0G4MdVvb4yQXsiIj1QnQUWS8GSVZVU/CatoyS3sZv7e/hm0EvJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvTOuNff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FC8C2BBFC;
+	Mon, 27 May 2024 19:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837830;
-	bh=t/UcmtvIVB2maWOAFEb+FWB0x36LL7/lkds4U7BhoaQ=;
+	s=korg; t=1716836594;
+	bh=TN0QdzCNMGNzhWfmIa2+PJSUWUa/riqKweqTVOZPVZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FpiUCWs2ZdL78ydkBujZrkX/vkV4D319xJxGXvjbUV1gbiIvt4z8EN8o+N8vi6khP
-	 hQl2GH/AYRhnRH4ZqcXgBkRn/4RZ1ECVOR4c1jZONKZvkt44EZ6jKicNiotZUipOwv
-	 h6enMshSdkNTdi9t78+RdKtFa9vvPf54Q2W6Bg0k=
+	b=QvTOuNff/pcNLSTZ3fkh9fN2YeTrCZT5pmeYsDGkJdDsosR1EyGoPl5RT5FGoNWcS
+	 D8fYPpUg4j60Bbt8IqlglwRUo+DGVpfeh7yGXydYis+M/WuehCs2+LUhWWewkl7DpV
+	 Fr9ba6n7jn20ovPlMYb3PmoPP/SEPXpyrvkcD0Cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 160/493] block: support to account io_ticks precisely
+Subject: [PATCH 6.9 115/427] enetc: avoid truncating error message
 Date: Mon, 27 May 2024 20:52:42 +0200
-Message-ID: <20240527185635.628552816@linuxfoundation.org>
+Message-ID: <20240527185612.532510486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,154 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 99dc422335d8b2bd4d105797241d3e715bae90e9 ]
+[ Upstream commit 9046d581ed586f3c715357638ca12c0e84402002 ]
 
-Currently, io_ticks is accounted based on sampling, specifically
-update_io_ticks() will always account io_ticks by 1 jiffies from
-bdev_start_io_acct()/blk_account_io_start(), and the result can be
-inaccurate, for example(HZ is 250):
+As clang points out, the error message in enetc_setup_xdp_prog()
+still does not fit in the buffer and will be truncated:
 
-Test script:
-fio -filename=/dev/sda -bs=4k -rw=write -direct=1 -name=test -thinktime=4ms
+drivers/net/ethernet/freescale/enetc/enetc.c:2771:3: error: 'snprintf' will always be truncated; specified size is 80, but format string expands to at least 87 [-Werror,-Wformat-truncation]
 
-Test result: util is about 90%, while the disk is really idle.
+Replace it with an even shorter message that should fit.
 
-This behaviour is introduced by commit 5b18b5a73760 ("block: delete
-part_round_stats and switch to less precise counting"), however, there
-was a key point that is missed that this patch also improve performance
-a lot:
-
-Before the commit:
-part_round_stats:
-  if (part->stamp != now)
-   stats |= 1;
-
-  part_in_flight()
-  -> there can be lots of task here in 1 jiffies.
-  part_round_stats_single()
-   __part_stat_add()
-  part->stamp = now;
-
-After the commit:
-update_io_ticks:
-  stamp = part->bd_stamp;
-  if (time_after(now, stamp))
-   if (try_cmpxchg())
-    __part_stat_add()
-    -> only one task can reach here in 1 jiffies.
-
-Hence in order to account io_ticks precisely, we only need to know if
-there are IO inflight at most once in one jiffies. Noted that for
-rq-based device, iterating tags should not be used here because
-'tags->lock' is grabbed in blk_mq_find_and_get_req(), hence
-part_stat_lock_inc/dec() and part_in_flight() is used to trace inflight.
-The additional overhead is quite little:
-
- - per cpu add/dec for each IO for rq-based device;
- - per cpu sum for each jiffies;
-
-And it's verified by null-blk that there are no performance degration
-under heavy IO pressure.
-
-Fixes: 5b18b5a73760 ("block: delete part_round_stats and switch to less precise counting")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240509123717.3223892-2-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: f968c56417f0 ("net: enetc: shorten enetc_setup_xdp_prog() error message to fit NETLINK_MAX_FMTMSG_LEN")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240326223825.4084412-3-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c  | 9 +++++----
- block/blk-merge.c | 2 ++
- block/blk-mq.c    | 4 ++++
- block/blk.h       | 1 +
- block/genhd.c     | 2 +-
- 5 files changed, 13 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 99d684085719d..923b7d91e6dc5 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -976,10 +976,11 @@ void update_io_ticks(struct block_device *part, unsigned long now, bool end)
- 	unsigned long stamp;
- again:
- 	stamp = READ_ONCE(part->bd_stamp);
--	if (unlikely(time_after(now, stamp))) {
--		if (likely(try_cmpxchg(&part->bd_stamp, &stamp, now)))
--			__part_stat_add(part, io_ticks, end ? now - stamp : 1);
--	}
-+	if (unlikely(time_after(now, stamp)) &&
-+	    likely(try_cmpxchg(&part->bd_stamp, &stamp, now)) &&
-+	    (end || part_in_flight(part)))
-+		__part_stat_add(part, io_ticks, now - stamp);
-+
- 	if (part->bd_partno) {
- 		part = bdev_whole(part);
- 		goto again;
-diff --git a/block/blk-merge.c b/block/blk-merge.c
-index 2d470cf2173e2..925c5eaac5815 100644
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -779,6 +779,8 @@ static void blk_account_io_merge_request(struct request *req)
- 	if (blk_do_io_stat(req)) {
- 		part_stat_lock();
- 		part_stat_inc(req->part, merges[op_stat_group(req_op(req))]);
-+		part_stat_local_dec(req->part,
-+				    in_flight[op_is_write(req_op(req))]);
- 		part_stat_unlock();
- 	}
- }
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 25d2f3239eb65..f1d071810893e 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -998,6 +998,8 @@ static inline void blk_account_io_done(struct request *req, u64 now)
- 		update_io_ticks(req->part, jiffies, true);
- 		part_stat_inc(req->part, ios[sgrp]);
- 		part_stat_add(req->part, nsecs[sgrp], now - req->start_time_ns);
-+		part_stat_local_dec(req->part,
-+				    in_flight[op_is_write(req_op(req))]);
- 		part_stat_unlock();
- 	}
- }
-@@ -1020,6 +1022,8 @@ static inline void blk_account_io_start(struct request *req)
- 
- 		part_stat_lock();
- 		update_io_ticks(req->part, jiffies, false);
-+		part_stat_local_inc(req->part,
-+				    in_flight[op_is_write(req_op(req))]);
- 		part_stat_unlock();
- 	}
- }
-diff --git a/block/blk.h b/block/blk.h
-index 1ef920f72e0f8..1154e87a4022d 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -344,6 +344,7 @@ static inline bool blk_do_io_stat(struct request *rq)
- }
- 
- void update_io_ticks(struct block_device *part, unsigned long now, bool end);
-+unsigned int part_in_flight(struct block_device *part);
- 
- static inline void req_set_nomerge(struct request_queue *q, struct request *req)
- {
-diff --git a/block/genhd.c b/block/genhd.c
-index d0471f469f7d0..2e4c2521584a1 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -118,7 +118,7 @@ static void part_stat_read_all(struct block_device *part,
- 	}
- }
- 
--static unsigned int part_in_flight(struct block_device *part)
-+unsigned int part_in_flight(struct block_device *part)
- {
- 	unsigned int inflight = 0;
- 	int cpu;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index 9f07f4947b631..5c45f42232d32 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -2769,7 +2769,7 @@ static int enetc_setup_xdp_prog(struct net_device *ndev, struct bpf_prog *prog,
+ 	if (priv->min_num_stack_tx_queues + num_xdp_tx_queues >
+ 	    priv->num_tx_rings) {
+ 		NL_SET_ERR_MSG_FMT_MOD(extack,
+-				       "Reserving %d XDP TXQs does not leave a minimum of %d for stack (total %d)",
++				       "Reserving %d XDP TXQs leaves under %d for stack (total %d)",
+ 				       num_xdp_tx_queues,
+ 				       priv->min_num_stack_tx_queues,
+ 				       priv->num_tx_rings);
 -- 
 2.43.0
 
