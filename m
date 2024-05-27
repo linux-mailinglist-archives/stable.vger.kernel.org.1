@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82918D0B79
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6A38D0D93
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74ECD1F215B0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65AE728277F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72EC26ACA;
-	Mon, 27 May 2024 19:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E9915FA60;
+	Mon, 27 May 2024 19:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQCusfUd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dub+8UwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9496117E90E;
-	Mon, 27 May 2024 19:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515E017727;
+	Mon, 27 May 2024 19:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836984; cv=none; b=ETG6x85gGv2xqWqADFlVynY9FrZjCXRzJ3eG7wcmM4HEbvDnevMS79f4lKmWBkgFhe0OXfq4+SLMRLQMPcSqDgbZfUpNgmSDziQjqTYul6r2Y980PGWFdOPy8BEDWIKpU5aUJ34bxxIpwPvnUIkvNEZqLeTppvMQ7NKynlQgkhM=
+	t=1716838289; cv=none; b=S9Gyh92uS11jUSOv+ISgUrirduC1pUY428bp+CGDke23IK748TwVPP4IOJTD1uw+CujQIcWfKh7Dt/xP2WvoSUeqv2rNR0ZMY2qx+ejvvCGEpdPtKxqyazStPKmyMBxc58JGHuQYHWJuzKttJ2E5ycQKr+2lhASDDqx/H4a4Vw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836984; c=relaxed/simple;
-	bh=uoxgB93CDJis5fWur4PITK2E+EXVPG/zHD6bb5IIk/E=;
+	s=arc-20240116; t=1716838289; c=relaxed/simple;
+	bh=6kEKVqyf41P5d/PTKVx8KXWoravkm+5eOWJAr31n7oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=js3nR1X2uxNzLt+DWDwnTJYjmFS2E2daa5BAXTWaCVo55VjIixpKtSsRjlo4n/29hVA47hxn3uD6ypXXmhQb4sX0kxIhA/qS+PSEh0wAUT2yzrefU86Dfvl+k2g3N2O5W995smYyA3AwLTyq3SGIEDkxQTdAVEz9qEXGgXpPU64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQCusfUd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2091DC2BBFC;
-	Mon, 27 May 2024 19:09:43 +0000 (UTC)
+	 MIME-Version; b=VXecVKDkw0aPUdYqSqmuieyALAikclsNL9m+H/cZ9tmHOTm4qSZKcALHyoPqRABIK8c6/8VdxRiL16oZ6WfJCnWjbgnCjq6PkhSr8Tj0TxDT9sIrowYMHhT0V2DIk62eJnzM8dzYs1nQEoNk1yTKr5zdV+FBydgNwhOrPUzaWXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dub+8UwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93544C32782;
+	Mon, 27 May 2024 19:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836984;
-	bh=uoxgB93CDJis5fWur4PITK2E+EXVPG/zHD6bb5IIk/E=;
+	s=korg; t=1716838288;
+	bh=6kEKVqyf41P5d/PTKVx8KXWoravkm+5eOWJAr31n7oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQCusfUdFzO9aA8zlcefU4G2lxV81douNeTaIT7db1QfnRJ0eTfFlDv8CsVqk3nu7
-	 58xinC89kMRGpZrSWJdRkv0s/3gPO25p0Bg0W8jDRfiwhvL7pGjpSjKgvlJdpPAZ9G
-	 3k6SCcWsnZfU8VwfbXx9w6QVjCbSqyIYKh+eRuqY=
+	b=Dub+8UwJobUoa1ejTtBiSGbzuUkwmUdpJOhqEmtMyq3dxTpcpkKWT2K77HavmS3aY
+	 Cbqt7TMuUoE7f3eQIDx3P42OPoV/72d4vqbDclf+jj41fbZRvqMG7JoAwfF8151TNH
+	 CjqHxi3cWo+/CA684QD6aTRZY2UID4YxhAb4nYeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 264/427] mptcp: SO_KEEPALIVE: fix getsockopt support
+Subject: [PATCH 6.8 309/493] af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg
 Date: Mon, 27 May 2024 20:55:11 +0200
-Message-ID: <20240527185627.103549774@linuxfoundation.org>
+Message-ID: <20240527185640.399740396@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit a65198136eaa15b74ee0abf73f12ef83d469a334 ]
+[ Upstream commit 540bf24fba16b88c1b3b9353927204b4f1074e25 ]
 
-SO_KEEPALIVE support has to be set on each subflow: on each TCP socket,
-where sk_prot->keepalive is defined. Technically, nothing has to be done
-on the MPTCP socket. That's why mptcp_sol_socket_sync_intval() was
-called instead of mptcp_sol_socket_intval().
+A data-race condition has been identified in af_unix. In one data path,
+the write function unix_release_sock() atomically writes to
+sk->sk_shutdown using WRITE_ONCE. However, on the reader side,
+unix_stream_sendmsg() does not read it atomically. Consequently, this
+issue is causing the following KCSAN splat to occur:
 
-Except that when nothing is done on the MPTCP socket, the
-getsockopt(SO_KEEPALIVE), handled in net/core/sock.c:sk_getsockopt(),
-will not know if SO_KEEPALIVE has been set on the different subflows or
-not.
+	BUG: KCSAN: data-race in unix_release_sock / unix_stream_sendmsg
 
-The fix is simple: simply call mptcp_sol_socket_intval() which will end
-up calling net/core/sock.c:sk_setsockopt() where the SOCK_KEEPOPEN flag
-will be set, the one used in sk_getsockopt().
+	write (marked) to 0xffff88867256ddbb of 1 bytes by task 7270 on cpu 28:
+	unix_release_sock (net/unix/af_unix.c:640)
+	unix_release (net/unix/af_unix.c:1050)
+	sock_close (net/socket.c:659 net/socket.c:1421)
+	__fput (fs/file_table.c:422)
+	__fput_sync (fs/file_table.c:508)
+	__se_sys_close (fs/open.c:1559 fs/open.c:1541)
+	__x64_sys_close (fs/open.c:1541)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-So now, getsockopt(SO_KEEPALIVE) on an MPTCP socket will return the same
-value as the one previously set with setsockopt(SO_KEEPALIVE).
+	read to 0xffff88867256ddbb of 1 bytes by task 989 on cpu 14:
+	unix_stream_sendmsg (net/unix/af_unix.c:2273)
+	__sock_sendmsg (net/socket.c:730 net/socket.c:745)
+	____sys_sendmsg (net/socket.c:2584)
+	__sys_sendmmsg (net/socket.c:2638 net/socket.c:2724)
+	__x64_sys_sendmmsg (net/socket.c:2753 net/socket.c:2750 net/socket.c:2750)
+	x64_sys_call (arch/x86/entry/syscall_64.c:33)
+	do_syscall_64 (arch/x86/entry/common.c:?)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20240514011335.176158-2-martineau@kernel.org
+	value changed: 0x01 -> 0x03
+
+The line numbers are related to commit dd5a440a31fa ("Linux 6.9-rc7").
+
+Commit e1d09c2c2f57 ("af_unix: Fix data races around sk->sk_shutdown.")
+addressed a comparable issue in the past regarding sk->sk_shutdown.
+However, it overlooked resolving this particular data path.
+This patch only offending unix_stream_sendmsg() function, since the
+other reads seem to be protected by unix_state_lock() as discussed in
+Link: https://lore.kernel.org/all/20240508173324.53565-1-kuniyu@amazon.com/
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240509081459.2807828-1-leitao@debian.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/sockopt.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-index 73fdf423de44e..08b7be2b1b69e 100644
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -181,8 +181,6 @@ static int mptcp_setsockopt_sol_socket_int(struct mptcp_sock *msk, int optname,
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 9df15a7bc2569..eb90a255507ef 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2209,7 +2209,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 			goto out_err;
+ 	}
  
- 	switch (optname) {
- 	case SO_KEEPALIVE:
--		mptcp_sol_socket_sync_intval(msk, optname, val);
--		return 0;
- 	case SO_DEBUG:
- 	case SO_MARK:
- 	case SO_PRIORITY:
+-	if (sk->sk_shutdown & SEND_SHUTDOWN)
++	if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 		goto pipe_err;
+ 
+ 	while (sent < len) {
 -- 
 2.43.0
 
