@@ -1,74 +1,66 @@
-Return-Path: <stable+bounces-46482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA9A8D06B9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A25038D06BB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EA7A1F240A9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:53:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 447491F2353A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C1361FE8;
-	Mon, 27 May 2024 15:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F2D15E5B0;
+	Mon, 27 May 2024 15:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c1q6Q5Oj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQhTrfRs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47C917E8E2;
-	Mon, 27 May 2024 15:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C26717E8E2;
+	Mon, 27 May 2024 15:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825124; cv=none; b=bnFyprNavwWRPwv5AhRLjH7BSJ12RPPr3E48dXhCQqaCzZygd2eZ1tc+3d0xYHftZOeMpFUzgsr7rnMSsjmEifqkMMFNuMlINLcyok8lIxjc2f04eiRncIpUqw59LUq4yvN7rhUUK9dJ6Ku/RK2MIjH2vpKX/wkoW6darOI8B1I=
+	t=1716825128; cv=none; b=e++SzzwoBF6+DphlWelzk865AGu5VF22445b3rQilySgHkU7Grpk+5vsVKbrYzjXE+9MgvWDWqGkbSFbfvIiLJDJIs+2+O+oLSZfaHmtKhQpThp7GuDfj8aqdDHf0Pel77X2TacF6lxR4rvNSggxBprz99wLozaGhmPy9lGhDKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825124; c=relaxed/simple;
-	bh=ypB96dWGLy8iJdOom+0sKyOXUXvjUh7LdOWWwNomkhU=;
+	s=arc-20240116; t=1716825128; c=relaxed/simple;
+	bh=2cLx1RTnLIZnsam3m/uMcFJB/9IKs3dw7YoYr5Yf46k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kp4Eqvk+3mA80absSV51IPqHFygGg09rRhF/BOGfEBK111+bmibnQJR/X5Svo/a7GNdvoQ7YXASOz5WrMK1Kosq+/vs8r2q+gkEvcYwoLXwF5+Dhz8QuSqdnTKlYjLBzfUSUnGsP6Pw4GjGcvQlLYo5RLU/OtqhzoHuFxOumTuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c1q6Q5Oj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA1AC2BBFC;
-	Mon, 27 May 2024 15:52:01 +0000 (UTC)
+	 MIME-Version; b=JTP1FLEKGkQprj0riHOUi+r4lD/OZTPFNeo0U8Jn/YumPbwMFaikdPDkW7N1EPq+lizhryBXMQ8I0UCoYee9kOy/MgpnqQjYeOlR7gDFUsXGfe1gZQ++Vqd1ap0puJsVam6dpsyo9QXLUSd71o++kEAoCWRQmN0UXU5FXnd+PJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQhTrfRs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6584FC4AF08;
+	Mon, 27 May 2024 15:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716825124;
-	bh=ypB96dWGLy8iJdOom+0sKyOXUXvjUh7LdOWWwNomkhU=;
+	s=k20201202; t=1716825128;
+	bh=2cLx1RTnLIZnsam3m/uMcFJB/9IKs3dw7YoYr5Yf46k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1q6Q5OjK1vsT0wqFZozAZlZ+dDfHt9+4QrzpF1y2RPJCzlREzhr1upbPeJPvduun
-	 taJr9bt2U08novDYtyV7QDcfu/fpZzr2GB91N2KWZ/ArA7g0/RZFblV550U7ReUIfb
-	 9IKAshtH9byDCHL3v55N+s2YcmcgwvIDQLQITgWTdCISKDFPwocKJGkLndhsOKbLb8
-	 jn9d8fct2IK+z0EgbBIiYsWk/w7sygueMit/lEVhvLhaOajNkjow7SEu4y8yejGVUY
-	 EciQNazhb8gTjR37KVLt8Wg0xo9b0VzmxqVK99+GdwF0ZqdhHWvhlifXnffphGkZDj
-	 s/BEAPHonjsXQ==
+	b=XQhTrfRslkJjPbNnEn1XmIuo9RlCJqoRqp71BSlUALfNy33GryknV+/cojNKVUGU2
+	 yQX5pm9zsiC0Z7GbgeziIsx7MEH3ODSdOXgu4Wb2m03lz3E/WveDrz1iD83JaL03j+
+	 otiPOm8zSgYemkVYkhTow3RTBsrh9W29uTQEwqhGtERH2xZqt8tSNqdC2Ye1TaqcPC
+	 fbYj44OsRFCHF4YJuG+XvydVwC/GC1KYd9HMarKwbiku50xToC7fuKAi5GlEz7Z4RA
+	 XYq4Uaib5q5LoQvaV5RLSa0g219fj6IzK5YLMgeh/5JcQUzsz4CUrHuFaFwgW8lv87
+	 3v2InRlsKFoyg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Xi (Alex) Liu" <xi.liu@amd.com>,
-	Daniel Miess <daniel.miess@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	chiahsuan.chung@amd.com,
-	charlene.liu@amd.com,
-	sungjoon.kim@amd.com,
-	duncan.ma@amd.com,
-	allen.pan@amd.com,
-	danny.wang@amd.com,
-	alvin.lee2@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.9 07/23] drm/amd/display: add root clock control function pointer to fix display corruption
-Date: Mon, 27 May 2024 11:50:08 -0400
-Message-ID: <20240527155123.3863983-7-sashal@kernel.org>
+	cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	ckeepax@opensource.cirrus.com,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 08/23] ASoC: Intel: sof_sdw: add JD2 quirk for HP Omen 14
+Date: Mon, 27 May 2024 11:50:09 -0400
+Message-ID: <20240527155123.3863983-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527155123.3863983-1-sashal@kernel.org>
 References: <20240527155123.3863983-1-sashal@kernel.org>
@@ -83,36 +75,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: "Xi (Alex) Liu" <xi.liu@amd.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit de2d1105a3757742b45b0d8270b3c8734cd6b6f8 ]
+[ Upstream commit 4fee07fbf47d2a5f1065d985459e5ce7bf7969f0 ]
 
-[Why and how]
+The default JD1 does not seem to work, use JD2 instead.
 
-External display has corruption because no root clock control function. Add the function pointer to fix the issue.
-
-Reviewed-by: Daniel Miess <daniel.miess@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Xi (Alex) Liu <xi.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240411220347.131267-4-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c
-index 670255c9bc822..4dca5c5a8318f 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c
-@@ -147,6 +147,7 @@ static const struct hwseq_private_funcs dcn351_private_funcs = {
- 	//.hubp_pg_control = dcn35_hubp_pg_control,
- 	.enable_power_gating_plane = dcn35_enable_power_gating_plane,
- 	.dpp_root_clock_control = dcn35_dpp_root_clock_control,
-+	.dpstream_root_clock_control = dcn35_dpstream_root_clock_control,
- 	.program_all_writeback_pipes_in_tree = dcn30_program_all_writeback_pipes_in_tree,
- 	.update_odm = dcn35_update_odm,
- 	.set_hdr_multiplier = dcn10_set_hdr_multiplier,
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 08f330ed5c2ea..f4f08e9031506 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -495,6 +495,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 					SOF_BT_OFFLOAD_SSP(1) |
+ 					SOF_SSP_BT_OFFLOAD_PRESENT),
+ 	},
++	{
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN Transcend Gaming Laptop"),
++		},
++		.driver_data = (void *)(RT711_JD2),
++	},
++
+ 	/* LunarLake devices */
+ 	{
+ 		.callback = sof_sdw_quirk_cb,
 -- 
 2.43.0
 
