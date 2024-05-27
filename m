@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DF88D0BE9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D17C8D0DE5
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD268286227
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F89D1C215B9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EA5155CA7;
-	Mon, 27 May 2024 19:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981F913AD05;
+	Mon, 27 May 2024 19:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wegru0st"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9yGwJzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E297C17E90E;
-	Mon, 27 May 2024 19:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F0117727;
+	Mon, 27 May 2024 19:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837258; cv=none; b=u/HHmD0PH6wxjSL18p9K8vQdUayxEiZamza+BbqcryjdpFqtbKOhSyvDvctgv5yjB0AK2PKnpIPyAXtBSzK6R9lVuTRkjhXLANdqLdecpvzvWM2uWDshk0RgISPVsaKIoS/+heDB1NkXB4K9cdn76Ry2GCiwlrc2d/h8AsCGoHs=
+	t=1716838501; cv=none; b=iiYJ880uWYw/+LMgeNXn0RZXhbJuPF3AbUcq1/G8fL/ztUSVPI+4LK7EgxF8pmCRFVz87fXtTYpRxpghbn4bjBVaZ+G60izlRFCmUzmaKqsNOuKtFjPvFzJhsfbqK3Fr/jtrzzq6dEybxwmKli6ta26XTHPq2DhMf8ih1UJvXP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837258; c=relaxed/simple;
-	bh=wvYtHrHbR8VvR1/oWQ8rOqUN1k3oB3jlR1Mv1jVt7k8=;
+	s=arc-20240116; t=1716838501; c=relaxed/simple;
+	bh=7ortPyJR5XUS7AmyTNiq42MIraebjQi7N6Mzk691BD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCMzf2uGKqOg09VDDr6YDbUjvbzESK6SDeGzfMaZ9pxLEvyExg536nMkW0Hc+XEWuOP8ZITcXsDRo0oTcZOXgWt8oH1B/4Mk838jQluMd4FFisA7uDLPd69eQIDha9ZwOP3vbakSQoFr9nP4D6U7DCChgyXGTZeD34SOAvOa7no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wegru0st; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753D2C2BBFC;
-	Mon, 27 May 2024 19:14:17 +0000 (UTC)
+	 MIME-Version; b=bKEfsF51lRH6vd6TexKJrycdIuGP2PhN+ETwLIGxFmI0La08+sX86rE1R7gYYUEZ8xsh/NjB3k2wYgiKuCanUfcP8GyCylw8eYDzqH+TZKKerP8DO1qgsE9BslUuuE8CWe3LGhkSd8rxyFU8BTMss8RFdsRm0o0Zn6oLusFMTDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9yGwJzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D802CC2BBFC;
+	Mon, 27 May 2024 19:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837257;
-	bh=wvYtHrHbR8VvR1/oWQ8rOqUN1k3oB3jlR1Mv1jVt7k8=;
+	s=korg; t=1716838501;
+	bh=7ortPyJR5XUS7AmyTNiq42MIraebjQi7N6Mzk691BD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wegru0stZG5bSWh0ADBT3NeB2khnCHHWiXVceYfd9ZukytoWrAOSBMnI1QbgvwLUp
-	 dtJ2Vw+MO8hS8XjeTMWjqjw6BBC91TnCcrLNOtQTJ5SGH0UaJNf+cHOrrgh4bPgvP4
-	 2Pb50Ms1aYJOb1oQckrDgmRPAN2tM5WWKdCVRWCM=
+	b=v9yGwJzKbawAK//sm6GwOQmmrORXDmTF9V7Vt62wFfrNr78PicY4qX6SBwENkFNwc
+	 EcefTmkJVJO45b9PlLMqA+vhTIPiUN3luZYy4UoFZvb3++UHkKBrGJHNbWep6812Xp
+	 qLXDi/5LFwUWKmqRnQavLuZdb+alL3s2EK5rluYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 372/427] clk: renesas: r9a07g043: Add clock and reset entry for PLIC
+Subject: [PATCH 6.8 417/493] drm/rockchip: vop2: Do not divide height twice for YUV
 Date: Mon, 27 May 2024 20:56:59 +0200
-Message-ID: <20240527185634.243199328@linuxfoundation.org>
+Message-ID: <20240527185643.930700146@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Detlev Casanova <detlev.casanova@collabora.com>
 
-[ Upstream commit 44019387fce230beda35b83da3a2c9fc5787704e ]
+[ Upstream commit e80c219f52861e756181d7f88b0d341116daac2b ]
 
-Add the missing clock and reset entry for PLIC. Also add
-R9A07G043_NCEPLIC_ACLK to the critical clocks list.
+For the cbcr format, gt2 and gt4 are computed again after src_h has been
+divided by vsub.
 
-Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240403200952.633084-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+As src_h as already been divided by 2 before, introduce cbcr_src_h and
+cbcr_src_w to keep a copy of those values to be used for cbcr gt2 and
+gt4 computation.
+
+This fixes yuv planes being unaligned vertically when down scaling to
+1080 pixels from 2160.
+
+Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
+Acked-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240414182706.655270-1-detlev.casanova@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a07g043-cpg.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 22 +++++++++++---------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
-index 33532673d25d7..26b71547fdbe3 100644
---- a/drivers/clk/renesas/r9a07g043-cpg.c
-+++ b/drivers/clk/renesas/r9a07g043-cpg.c
-@@ -280,6 +280,10 @@ static struct rzg2l_mod_clk r9a07g043_mod_clks[] = {
- 				0x5a8, 1),
- 	DEF_MOD("tsu_pclk",	R9A07G043_TSU_PCLK, R9A07G043_CLK_TSU,
- 				0x5ac, 0),
-+#ifdef CONFIG_RISCV
-+	DEF_MOD("nceplic_aclk",	R9A07G043_NCEPLIC_ACLK, R9A07G043_CLK_P1,
-+				0x608, 0),
-+#endif
- };
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index fdd768bbd487c..62ebbdb16253d 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -706,6 +706,8 @@ static void vop2_setup_scale(struct vop2 *vop2, const struct vop2_win *win,
+ 	const struct drm_format_info *info;
+ 	u16 hor_scl_mode, ver_scl_mode;
+ 	u16 hscl_filter_mode, vscl_filter_mode;
++	uint16_t cbcr_src_w = src_w;
++	uint16_t cbcr_src_h = src_h;
+ 	u8 gt2 = 0;
+ 	u8 gt4 = 0;
+ 	u32 val;
+@@ -763,27 +765,27 @@ static void vop2_setup_scale(struct vop2 *vop2, const struct vop2_win *win,
+ 	vop2_win_write(win, VOP2_WIN_YRGB_VSCL_FILTER_MODE, vscl_filter_mode);
  
- static struct rzg2l_reset r9a07g043_resets[] = {
-@@ -338,6 +342,10 @@ static struct rzg2l_reset r9a07g043_resets[] = {
- 	DEF_RST(R9A07G043_ADC_PRESETN, 0x8a8, 0),
- 	DEF_RST(R9A07G043_ADC_ADRST_N, 0x8a8, 1),
- 	DEF_RST(R9A07G043_TSU_PRESETN, 0x8ac, 0),
-+#ifdef CONFIG_RISCV
-+	DEF_RST(R9A07G043_NCEPLIC_ARESETN, 0x908, 0),
-+#endif
-+
- };
+ 	if (info->is_yuv) {
+-		src_w /= info->hsub;
+-		src_h /= info->vsub;
++		cbcr_src_w /= info->hsub;
++		cbcr_src_h /= info->vsub;
  
- static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
-@@ -347,6 +355,7 @@ static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
- #endif
- #ifdef CONFIG_RISCV
- 	MOD_CLK_BASE + R9A07G043_IAX45_CLK,
-+	MOD_CLK_BASE + R9A07G043_NCEPLIC_ACLK,
- #endif
- 	MOD_CLK_BASE + R9A07G043_DMAC_ACLK,
- };
+ 		gt4 = 0;
+ 		gt2 = 0;
+ 
+-		if (src_h >= (4 * dst_h)) {
++		if (cbcr_src_h >= (4 * dst_h)) {
+ 			gt4 = 1;
+-			src_h >>= 2;
+-		} else if (src_h >= (2 * dst_h)) {
++			cbcr_src_h >>= 2;
++		} else if (cbcr_src_h >= (2 * dst_h)) {
+ 			gt2 = 1;
+-			src_h >>= 1;
++			cbcr_src_h >>= 1;
+ 		}
+ 
+-		hor_scl_mode = scl_get_scl_mode(src_w, dst_w);
+-		ver_scl_mode = scl_get_scl_mode(src_h, dst_h);
++		hor_scl_mode = scl_get_scl_mode(cbcr_src_w, dst_w);
++		ver_scl_mode = scl_get_scl_mode(cbcr_src_h, dst_h);
+ 
+-		val = vop2_scale_factor(src_w, dst_w);
++		val = vop2_scale_factor(cbcr_src_w, dst_w);
+ 		vop2_win_write(win, VOP2_WIN_SCALE_CBCR_X, val);
+ 
+-		val = vop2_scale_factor(src_h, dst_h);
++		val = vop2_scale_factor(cbcr_src_h, dst_h);
+ 		vop2_win_write(win, VOP2_WIN_SCALE_CBCR_Y, val);
+ 
+ 		vop2_win_write(win, VOP2_WIN_VSD_CBCR_GT4, gt4);
 -- 
 2.43.0
 
