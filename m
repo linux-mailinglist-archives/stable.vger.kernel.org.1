@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-46793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818008D0B4C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 625C98D0B4D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2ADB1C20B1A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C959283EA7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E7B155CA7;
-	Mon, 27 May 2024 19:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D2217E90E;
+	Mon, 27 May 2024 19:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDH8rSmy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUFlajIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5204117E90E;
-	Mon, 27 May 2024 19:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3E215FD04;
+	Mon, 27 May 2024 19:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836870; cv=none; b=UxWLobKnuqBCFc0AqEbfvK7G8WoKpdQP1GHXi080w5YT5rToBVPE490aZyRW+TVPgs1v7g8qBZRy9515cW+1/osltD2fJ6R3ceb5no9eA2UmQyqTDF4jwei5SPK///0ypWCeW1fvxXChHW+jZK2AU3ZkzpeT+NGj99cucHoPVyg=
+	t=1716836875; cv=none; b=j3RVHDzgnlvpIhFff+Sxlt9TElOWkyevbaX8gn76dHZO0btMQqENTrLXSPAUWXB+tIQ26+jSTULX7SJPqpZRjZ86wtylEEra4hOLZDX2tGilAN3TSdKx+0wIbJfQfBCFPE9wXcJKDE9mvY05RhC/LYP3VUSlUDt1gnuS37cFSZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836870; c=relaxed/simple;
-	bh=Siamr7/kTcHRlVt8gz86Khsgpk0wbE3hiEpJVY3G6Bo=;
+	s=arc-20240116; t=1716836875; c=relaxed/simple;
+	bh=WDj2G4CvoyyJNd7QF78dcu5rt/tK2M1AGJhHMfonP5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5no/lg7Zlt9RcvIKwkpc3JmN8Y0DuqbddcXoEvU03CXNUiZC2tX/Bx020DhJHIyjqvJBh7AWthRqNr7dWUgYdCoVTy9JauTmwXwBoGNap9HwkGgz2WVcb0VT5eplhshAzb3T+dtQCclIEKV5e2jWUMcO1SW3VVcpIwzBxf5VKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDH8rSmy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61EDC2BBFC;
-	Mon, 27 May 2024 19:07:49 +0000 (UTC)
+	 MIME-Version; b=gwCjG6LOiwkIp4MIXDjWHAAI9Y0gG8GpTKvn4DtL2cCAfXjLgo3qSHIeSFujTME95z1a3BI+lPJnDnmwwvX22Wb9oe2rDccjIlmgKaLu5bzzcaC0WAUhUZT8Z9n+vm3HPbLj2tdT5jYSeDZezcxowjr9XxPjeHwSx9X98Ejnqzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUFlajIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63ABC2BBFC;
+	Mon, 27 May 2024 19:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836870;
-	bh=Siamr7/kTcHRlVt8gz86Khsgpk0wbE3hiEpJVY3G6Bo=;
+	s=korg; t=1716836875;
+	bh=WDj2G4CvoyyJNd7QF78dcu5rt/tK2M1AGJhHMfonP5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZDH8rSmyZ1pTY8C+BWJujTrit40xJnmsN0d6WtLAglJMpUpTBVLvpqnoJocfKZPcL
-	 HNGc4DHdvoeeSwYD8wX9BpscaYY0bztH4NYdTYbXkDRWr/Ptz7qirfkBVBswxgZ38f
-	 6dMa+NpCBbuE28527J5tXs9EORK8HszJ0qlvrC1E=
+	b=IUFlajIwcyHVGvzXGAbWclD1l7V2uP8HT4DoKD5DwHqkF7nOWQv4xDLveSOtxR1mp
+	 iqqnXfa1W1DJYOg/itvr1YsZRakxEiTfAnGFBklKfilI0J8hhsCcyQgaVj4IcgJ0TQ
+	 5doRyk85+VLMwO/Mp5DjG26QlKravLhmcEFXXMV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 219/427] scsi: qedf: Ensure the copied buf is NUL terminated
-Date: Mon, 27 May 2024 20:54:26 +0200
-Message-ID: <20240527185623.013331807@linuxfoundation.org>
+Subject: [PATCH 6.9 220/427] scsi: qla2xxx: Fix debugfs output for fw_resource_count
+Date: Mon, 27 May 2024 20:54:27 +0200
+Message-ID: <20240527185623.099579454@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -66,38 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Himanshu Madhani <himanshu.madhani@oracle.com>
 
-[ Upstream commit d0184a375ee797eb657d74861ba0935b6e405c62 ]
+[ Upstream commit 998d09c5ef6183bd8137d1a892ba255b15978bb4 ]
 
-Currently, we allocate a count-sized kernel buffer and copy count from
-userspace to that buffer. Later, we use kstrtouint on this buffer but we
-don't ensure that the string is terminated inside the buffer, this can
-lead to OOB read when using kstrtouint. Fix this issue by using
-memdup_user_nul instead of memdup_user.
+DebugFS output for fw_resource_count shows:
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-4-f1f1b53a10f4@gmail.com
+estimate exchange used[0] high water limit [1945] n        estimate iocb2 used [0] high water limit [5141]
+        estimate exchange2 used[0] high water limit [1945]
+
+Which shows incorrect display due to missing newline in seq_print().
+
+[mkp: fix checkpatch warning about space before newline]
+
+Fixes: 5f63a163ed2f ("scsi: qla2xxx: Fix exchange oversubscription for management commands")
+Signed-off-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Link: https://lore.kernel.org/r/20240426020056.3639406-1-himanshu.madhani@oracle.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_debugfs.c | 2 +-
+ drivers/scsi/qla2xxx/qla_dfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 451fd236bfd05..96174353e3898 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -170,7 +170,7 @@ qedf_dbg_debug_cmd_write(struct file *filp, const char __user *buffer,
- 	if (!count || *ppos)
- 		return 0;
+diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
+index 55ff3d7482b3e..a1545dad0c0ce 100644
+--- a/drivers/scsi/qla2xxx/qla_dfs.c
++++ b/drivers/scsi/qla2xxx/qla_dfs.c
+@@ -274,7 +274,7 @@ qla_dfs_fw_resource_cnt_show(struct seq_file *s, void *unused)
+ 		seq_printf(s, "Driver: estimate iocb used [%d] high water limit [%d]\n",
+ 			   iocbs_used, ha->base_qpair->fwres.iocbs_limit);
  
--	kern_buf = memdup_user(buffer, count);
-+	kern_buf = memdup_user_nul(buffer, count);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+-		seq_printf(s, "estimate exchange used[%d] high water limit [%d] n",
++		seq_printf(s, "estimate exchange used[%d] high water limit [%d]\n",
+ 			   exch_used, ha->base_qpair->fwres.exch_limit);
  
+ 		if (ql2xenforce_iocb_limit == 2) {
 -- 
 2.43.0
 
