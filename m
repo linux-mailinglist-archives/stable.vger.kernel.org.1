@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-47080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1168D0C7F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70E08D0A6E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A180D284DDE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0CF1F2251E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E71A160784;
-	Mon, 27 May 2024 19:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46B915FD1A;
+	Mon, 27 May 2024 18:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dE1B+3oN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7DfKVl9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B962168C4;
-	Mon, 27 May 2024 19:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D9515FA85;
+	Mon, 27 May 2024 18:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837620; cv=none; b=URtbZDcU7nViYumLP3wFiIdmGra+fc+IWGgdxONlum4Ei0BQSXMsUdjDlAHWZ0ww6RrRYqr8FS6vaIhZqjVwDlWVOqiwGmuVW8XAg5liWInvZJnSax1m5hx3BLAWRr4n0VLlOJjKt6SLbXxipbkSX0WAVvMfD8rc47K/wWgJiYE=
+	t=1716836388; cv=none; b=p7554ienc1GILnuFR9hF5QLx4yKqqhspZ1DIeTibWuJ13ctq5G8ZjODVe3VvfJNb2g+B3eCNIcMsNLjIdaGAM3hht55NGdZ3h/A1upADbeQs69B8w3tTNMUw5Z5/ClxirRm2GG7aYlhFE9BAk0uR7tL1wsBR9FaVEpBe5rheExU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837620; c=relaxed/simple;
-	bh=2bHMaDSyTVWY7a4m5R1N8dSkiOAZQpVNDitOAIKlxuw=;
+	s=arc-20240116; t=1716836388; c=relaxed/simple;
+	bh=9fF1HuWHuqoKTkqflum+SVkYnN14ILJsSVLJkQTpiDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ft8uDz0rMp8HZTwJwORw86o2wWGbGsjCGeH6YanDJAot4osMmf1RfX5CLelgHVcluJIgYgf3DRqx3n1ziY4doL/DdLbecWccTwbdu/1QzMtiNUe8+nGh8Y75gjWG4WoxVnlnf+vN05ZdgbFcGXzCLrNyMiQ6b9jgsqobF6ThJiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dE1B+3oN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB63C2BBFC;
-	Mon, 27 May 2024 19:20:19 +0000 (UTC)
+	 MIME-Version; b=ew87Ly2Y0178jJbxDiTlSMf1zgfUmwaCv+GZRcrkiFvy/H8GXNUA3pZCmH4nPNzSpJmhyWYGcxCg/wECYDlNpmRZeSSNDldfmz8oyuKJgSwOV9aly2N1ZUCwzAjcZe/7Z/C3u2sEJfimPNf/VmPlRL0n/gCCTxcWOk9c50wfdGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7DfKVl9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CBDC2BBFC;
+	Mon, 27 May 2024 18:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837620;
-	bh=2bHMaDSyTVWY7a4m5R1N8dSkiOAZQpVNDitOAIKlxuw=;
+	s=korg; t=1716836388;
+	bh=9fF1HuWHuqoKTkqflum+SVkYnN14ILJsSVLJkQTpiDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dE1B+3oNfn1WeOh/IMKeDfMhWXNh6BeHVywKAmalygvoyHe5Hau4c3T3ExjD+oPc9
-	 /4yJthUAXlVQZyUNk9Uy4CV+K9qFnf6cADC+iMaljV3A2JAZQWnh9O4r3hWWfHoOAH
-	 8j4upbmtbZkQtTFE3Nk7RnHZnvQeUfXaVH1+urWA=
+	b=v7DfKVl91J6V3CR0cRMhDZdgp/7NEUNIUiYx32gWsRseETs/3r+jUte0/XpjhsJ5q
+	 nWy2vF/XLCTHcVNd47XJD8W3fmDWSl4YsXfZvxcS+WsFcED7Ing1ZWju1qM9cqMBFR
+	 WfV47tQJnmpJnRAN8oOHIvLbUZFgGlBX1wngqth4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Yu <jack.yu@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 078/493] ASoC: rt715-sdca: volume step modification
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.9 033/427] fs/ntfs3: Fix case when index is reused during tree transformation
 Date: Mon, 27 May 2024 20:51:20 +0200
-Message-ID: <20240527185632.626091376@linuxfoundation.org>
+Message-ID: <20240527185604.749710718@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Yu <jack.yu@realtek.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit bda16500dd0b05e2e047093b36cbe0873c95aeae ]
+commit 05afeeebcac850a016ec4fb1f681ceda11963562 upstream.
 
-Volume step (dB/step) modification to fix format error
-which shown in amixer control.
+In most cases when adding a cluster to the directory index,
+they are placed at the end, and in the bitmap, this cluster corresponds
+to the last bit. The new directory size is calculated as follows:
 
-Signed-off-by: Jack Yu <jack.yu@realtek.com>
-Link: https://lore.kernel.org/r/b1f546ad16dc4c7abb7daa7396e8345c@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	data_size = (u64)(bit + 1) << indx->index_bits;
+
+In the case of reusing a non-final cluster from the index,
+data_size is calculated incorrectly, resulting in the directory size
+differing from the actual size.
+
+A check for cluster reuse has been added, and the size update is skipped.
+
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt715-sdca.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ntfs3/index.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/codecs/rt715-sdca.c b/sound/soc/codecs/rt715-sdca.c
-index 4533eedd7e189..27d17e3cc8027 100644
---- a/sound/soc/codecs/rt715-sdca.c
-+++ b/sound/soc/codecs/rt715-sdca.c
-@@ -316,7 +316,7 @@ static int rt715_sdca_set_amp_gain_8ch_get(struct snd_kcontrol *kcontrol,
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1533,6 +1533,11 @@ static int indx_add_allocate(struct ntfs
+ 		goto out1;
+ 	}
+ 
++	if (data_size <= le64_to_cpu(alloc->nres.data_size)) {
++		/* Reuse index. */
++		goto out;
++	}
++
+ 	/* Increase allocation. */
+ 	err = attr_set_size(ni, ATTR_ALLOC, in->name, in->name_len,
+ 			    &indx->alloc_run, data_size, &data_size, true,
+@@ -1546,6 +1551,7 @@ static int indx_add_allocate(struct ntfs
+ 	if (in->name == I30_NAME)
+ 		i_size_write(&ni->vfs_inode, data_size);
+ 
++out:
+ 	*vbn = bit << indx->idx2vbn_bits;
+ 
  	return 0;
- }
- 
--static const DECLARE_TLV_DB_SCALE(in_vol_tlv, -17625, 375, 0);
-+static const DECLARE_TLV_DB_SCALE(in_vol_tlv, -1725, 75, 0);
- static const DECLARE_TLV_DB_SCALE(mic_vol_tlv, 0, 1000, 0);
- 
- static int rt715_sdca_get_volsw(struct snd_kcontrol *kcontrol,
-@@ -477,7 +477,7 @@ static const struct snd_kcontrol_new rt715_sdca_snd_controls[] = {
- 			RT715_SDCA_FU_VOL_CTRL, CH_01),
- 		SDW_SDCA_CTL(FUN_MIC_ARRAY, RT715_SDCA_FU_ADC7_27_VOL,
- 			RT715_SDCA_FU_VOL_CTRL, CH_02),
--			0x2f, 0x7f, 0,
-+			0x2f, 0x3f, 0,
- 		rt715_sdca_set_amp_gain_get, rt715_sdca_set_amp_gain_put,
- 		in_vol_tlv),
- 	RT715_SDCA_EXT_TLV("FU02 Capture Volume",
-@@ -485,13 +485,13 @@ static const struct snd_kcontrol_new rt715_sdca_snd_controls[] = {
- 			RT715_SDCA_FU_VOL_CTRL, CH_01),
- 		rt715_sdca_set_amp_gain_4ch_get,
- 		rt715_sdca_set_amp_gain_4ch_put,
--		in_vol_tlv, 4, 0x7f),
-+		in_vol_tlv, 4, 0x3f),
- 	RT715_SDCA_EXT_TLV("FU06 Capture Volume",
- 		SDW_SDCA_CTL(FUN_MIC_ARRAY, RT715_SDCA_FU_ADC10_11_VOL,
- 			RT715_SDCA_FU_VOL_CTRL, CH_01),
- 		rt715_sdca_set_amp_gain_4ch_get,
- 		rt715_sdca_set_amp_gain_4ch_put,
--		in_vol_tlv, 4, 0x7f),
-+		in_vol_tlv, 4, 0x3f),
- 	/* MIC Boost Control */
- 	RT715_SDCA_BOOST_EXT_TLV("FU0E Boost",
- 		SDW_SDCA_CTL(FUN_MIC_ARRAY, RT715_SDCA_FU_DMIC_GAIN_EN,
--- 
-2.43.0
-
 
 
 
