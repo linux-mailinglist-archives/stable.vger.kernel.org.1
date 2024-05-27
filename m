@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-47319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC7E8D0D81
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:30:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E79278D0BA8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A035F1F21B3E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:30:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A330D2854FF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D2613AD05;
-	Mon, 27 May 2024 19:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554B26A039;
+	Mon, 27 May 2024 19:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7ASwgoX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+gjkFSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4D217727;
-	Mon, 27 May 2024 19:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107AC17E90E;
+	Mon, 27 May 2024 19:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838240; cv=none; b=bd1mMWGfPI90Br2a2AH3ANrvaaY/qDYyJGMKj4OMJfRDkOuLSgOgVCgVZOC95IUtaKd3UjDmlWxETUuyKEgA7y3joKgJw/aX4A0sHxi7OSzolx9lfCTI93AmZh4wxK7p60HucXFfdviNCafpymmlEBiNdFTItnDXR/yyZ+mT7fk=
+	t=1716837102; cv=none; b=bHEau+q+i7lwIQBlxni/PE3w8gyIQgidm2NT3HMdFiyJJDhXHhI+KiBDA6zGX3e20xiNTmu10KFXcGuHy433ser9nQ310CGziIzJPQSHNaEFOS8sDVUDq66lBFZt3ejfQYgkMntcszcxWCMghwHhuy0yMK2nZEmuRF3LRPIs5M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838240; c=relaxed/simple;
-	bh=w70AokBUgI/Z3vfdcUE0yQdGe8UV/d2Uj9fTpHK6xkU=;
+	s=arc-20240116; t=1716837102; c=relaxed/simple;
+	bh=ENYqkh0v7EKIDMhJcn1+wXCTVc5cVWGfcV1RbVFVLyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWh2EbnAgIEZJq8EokU22dQJ28g7XJplaHJN9GYoQSYWbQoZk9pi9f5n1E67etfOqRVq2wm1uc7+ib9jDEbN0vxeT8EcVlBGb0qmyI3SJNEopVmgAud1+SSS6XKnZATm6wKJlav8phRDzLLaGe9E5wwGPgxv51Qt1S7k9ZIrLLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7ASwgoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E93FC2BBFC;
-	Mon, 27 May 2024 19:30:39 +0000 (UTC)
+	 MIME-Version; b=ONh12VRjBLZtUcYrVpInXrt4oBWVgWETwXW2PnTS3YOeSBnGyw03/OPDaVLis7KU3MwGjXzQml9fe5VkpavOYk+VgQ0W5tbpJGA/Oa8a+9VWrr3sahnL47ArzunogLw7neGqJP8t41kUWLNPXm1KSvOGWOKVMGTi02EfRwEBv00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+gjkFSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99909C2BBFC;
+	Mon, 27 May 2024 19:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838239;
-	bh=w70AokBUgI/Z3vfdcUE0yQdGe8UV/d2Uj9fTpHK6xkU=;
+	s=korg; t=1716837101;
+	bh=ENYqkh0v7EKIDMhJcn1+wXCTVc5cVWGfcV1RbVFVLyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7ASwgoXRrO/KSYxoJpx8ICqjtUpR9TCVbPfUoDEMSVgaAyZKYIHE6oEInpwVc+cg
-	 5sss6h9VYDf4nP7CV8jHbdNl9g62gYjfkOvTXvc3G3+yRIlAMCISdfc3ntfzIo9+yf
-	 y5JAn774GPuIFxy3wa7wH0iGZxkgegzY8cEKTi90=
+	b=Y+gjkFSaUWVH3NOrZ41JpoQlqWuXPyb48zYCYeOp2PxSH2PYrRk2jaifUSFk9d62x
+	 SNZDHDiid4vrwnWVyfWQPA2Bwr2fb2Q0y+2DuLohe3Ti69/2kY8kdqxMI9sOAnXhhO
+	 SdFVArINON4dohxpgjO7KruW5dac7itqjSWYrMXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay12@gmail.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Zhengqiao Xia <xiazhengqiao@huaqin.corp-partner.google.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 319/493] s390/bpf: Emit a barrier for BPF_FETCH instructions
+Subject: [PATCH 6.9 274/427] drm/panel-edp: Add prepare_to_enable to 200ms for MNC207QS1-1
 Date: Mon, 27 May 2024 20:55:21 +0200
-Message-ID: <20240527185640.713656954@linuxfoundation.org>
+Message-ID: <20240527185628.091386056@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Zhengqiao Xia <xiazhengqiao@huaqin.corp-partner.google.com>
 
-[ Upstream commit 68378982f0b21de02ac3c6a11e2420badefcb4bc ]
+[ Upstream commit e635b7eb7062b464bbd9795308b1a80eac0b01f5 ]
 
-BPF_ATOMIC_OP() macro documentation states that "BPF_ADD | BPF_FETCH"
-should be the same as atomic_fetch_add(), which is currently not the
-case on s390x: the serialization instruction "bcr 14,0" is missing.
-This applies to "and", "or" and "xor" variants too.
+For MNC207QS1-1 panel, Splash screen occur when switch from VT1 to VT2.
+The BL_EN signal does not conform to the VESA protocol.
+BL_EN signal needs to be pulled high after video signal.
+So add prepare_to_enable to 200ms.
 
-s390x is allowed to reorder stores with subsequent fetches from
-different addresses, so code relying on BPF_FETCH acting as a barrier,
-for example:
+[ dianders: Adjusted subject prefix and added Fixes tag ]
 
-  stw [%r0], 1
-  afadd [%r1], %r2
-  ldxw %r3, [%r4]
-
-may be broken. Fix it by emitting "bcr 14,0".
-
-Note that a separate serialization instruction is not needed for
-BPF_XCHG and BPF_CMPXCHG, because COMPARE AND SWAP performs
-serialization itself.
-
-Fixes: ba3b86b9cef0 ("s390/bpf: Implement new atomic ops")
-Reported-by: Puranjay Mohan <puranjay12@gmail.com>
-Closes: https://lore.kernel.org/bpf/mb61p34qvq3wf.fsf@kernel.org/
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20240507000557.12048-1-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 0547692ac146 ("drm/panel-edp: Add several generic edp panels")
+Signed-off-by: Zhengqiao Xia <xiazhengqiao@huaqin.corp-partner.google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240301084006.14422-1-xiazhengqiao@huaqin.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/net/bpf_jit_comp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-edp.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 5af0402e94b88..1d168a98ae21b 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -1427,8 +1427,12 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 	EMIT6_DISP_LH(0xeb000000, is32 ? (op32) : (op64),		\
- 		      (insn->imm & BPF_FETCH) ? src_reg : REG_W0,	\
- 		      src_reg, dst_reg, off);				\
--	if (is32 && (insn->imm & BPF_FETCH))				\
--		EMIT_ZERO(src_reg);					\
-+	if (insn->imm & BPF_FETCH) {					\
-+		/* bcr 14,0 - see atomic_fetch_{add,and,or,xor}() */	\
-+		_EMIT2(0x07e0);						\
-+		if (is32)                                               \
-+			EMIT_ZERO(src_reg);				\
-+	}								\
- } while (0)
- 		case BPF_ADD:
- 		case BPF_ADD | BPF_FETCH:
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index d58f90bc48fba..745f3e48f02ac 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1865,6 +1865,13 @@ static const struct panel_delay delay_200_500_e50 = {
+ 	.enable = 50,
+ };
+ 
++static const struct panel_delay delay_200_500_e50_p2e200 = {
++	.hpd_absent = 200,
++	.unprepare = 500,
++	.enable = 50,
++	.prepare_to_enable = 200,
++};
++
+ static const struct panel_delay delay_200_500_e80 = {
+ 	.hpd_absent = 200,
+ 	.unprepare = 500,
+@@ -2034,7 +2041,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('C', 'M', 'N', 0x14d6, &delay_200_500_e80_d50, "N140BGA-EA4"),
+ 	EDP_PANEL_ENTRY('C', 'M', 'N', 0x14e5, &delay_200_500_e80_d50, "N140HGA-EA1"),
+ 
+-	EDP_PANEL_ENTRY('C', 'S', 'O', 0x1200, &delay_200_500_e50, "MNC207QS1-1"),
++	EDP_PANEL_ENTRY('C', 'S', 'O', 0x1200, &delay_200_500_e50_p2e200, "MNC207QS1-1"),
+ 
+ 	EDP_PANEL_ENTRY('H', 'K', 'C', 0x2d51, &delay_200_500_e200, "Unknown"),
+ 	EDP_PANEL_ENTRY('H', 'K', 'C', 0x2d5b, &delay_200_500_e200, "Unknown"),
 -- 
 2.43.0
 
