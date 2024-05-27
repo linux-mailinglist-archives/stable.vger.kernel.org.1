@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-46846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9758D0B81
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FABE8D0D55
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B09A91C21736
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81D081C20E86
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE4226ACA;
-	Mon, 27 May 2024 19:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE46315FCFC;
+	Mon, 27 May 2024 19:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fg2hzSWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5lTKDLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE29E17E90E;
-	Mon, 27 May 2024 19:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B80E262BE;
+	Mon, 27 May 2024 19:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837004; cv=none; b=TfD8Lp6yLqg8upwq+zOI3sA7jBko+6sQ78cxNlWlthVv9VsG3u8F42/S6LwBVueoJ6Ldkm+2b3dMZkopk0eQsyi29djQpV/JjSm/rtprobg9sjL+dJTcrTX8wWqhAeDZ/5u7RIR+FLhdLhJYes3Yv1ttdJWEAqq5f4eHhW5mC8o=
+	t=1716838123; cv=none; b=OuK7lGZjPeoxx+mK/ANU2ikExTSLO3N7tiV5UkZgzcBHoSQy7kPE3NPW9It2Z/ULgAwXxUEabj+4aE4LAfE5BGyYe/POCiTcv+eH/2tzteW9sOH4mltVFlshiX/e4drFxIc3x20FMWu6D5IfHADTtwRvb7e6+7K4sTE3dJb+wE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837004; c=relaxed/simple;
-	bh=C2smHGWuhdwTtqY1BgL7GxjRuTNhWUu2PK5r5vTB49c=;
+	s=arc-20240116; t=1716838123; c=relaxed/simple;
+	bh=XdFg7IJWqZ+QJHGs66Nnwgd7hizAchVKiJngVy9oJCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PKjLWRVQskj1Zi68Bgtqie2MGzFDBs7RWBberCkoz/476w6oVDqA13Jz2X25npox9AoRx4vkT+fvWhliZpbjy9kHdPAH7oDtUY+65SVug/Qhh843fWCn7r6b7sECDWUKUxfKUtkN4XKUOacz6pg/qL+/7I7bM1ZGjsBFN+yDR24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fg2hzSWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62654C2BBFC;
-	Mon, 27 May 2024 19:10:04 +0000 (UTC)
+	 MIME-Version; b=nKD6EIC1KvHfH3sZDXFAfE4RajHsifu1OGm0zuEUP9L+Cj3o3ZRRkWF2vzEzG0fSGu9yRy5wQ8kpWBvf37FEZrZ7tTBKVPp1xgI5oupdCgaHnnW1EbK2pDhPd8MwSIC4rkHujbfz2n9qDog37+UfbOQFq4VQWQUyA5PT6T26E3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5lTKDLP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25856C2BBFC;
+	Mon, 27 May 2024 19:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837004;
-	bh=C2smHGWuhdwTtqY1BgL7GxjRuTNhWUu2PK5r5vTB49c=;
+	s=korg; t=1716838123;
+	bh=XdFg7IJWqZ+QJHGs66Nnwgd7hizAchVKiJngVy9oJCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fg2hzSWhsE/59DiYARjj200hXChdyfcDIpQo5yCfcwtdkkVkH+aX4AwxJ6MjjXVFh
-	 pCvifvzI/OBYG5lxWTUbJGgr3chK4yAKJs9keAn1GJhMk2yaOg5uoaVeOh8ZEHXtvW
-	 cS7L8Jpld6bPughB9IaahAVXimx5/gE4WQVguZ24=
+	b=A5lTKDLPMAiQCt/4yjljmo/T82eM/LJvt3LRTuDcLO3o0E4mIdXs4PInII5XwUkmC
+	 rRqQfviuvH09dI0lnMsANFOmtjBjBhX4hkPp6yRasUVrv5hD+ei31plRyVZASK1Ifg
+	 iC/VwKbDH1wCAqWc/Ofh8aN9iiH/LZhDtycFdtkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Edward Liaw <edliaw@google.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 231/427] selftests: Compile kselftest headers with -D_GNU_SOURCE
+Subject: [PATCH 6.8 276/493] wifi: nl80211: Avoid address calculations via out of bounds array indexing
 Date: Mon, 27 May 2024 20:54:38 +0200
-Message-ID: <20240527185624.054270813@linuxfoundation.org>
+Message-ID: <20240527185639.325985243@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Liaw <edliaw@google.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit daef47b89efd0b745e8478d69a3ad724bd8b4dc6 ]
+[ Upstream commit 838c7b8f1f278404d9d684c34a8cb26dc41aaaa1 ]
 
-Add the -D_GNU_SOURCE flag to KHDR_INCLUDES so that it is defined in a
-central location.
+Before request->channels[] can be used, request->n_channels must be set.
+Additionally, address calculations for memory after the "channels" array
+need to be calculated from the allocation base ("request") rather than
+via the first "out of bounds" index of "channels", otherwise run-time
+bounds checking will throw a warning.
 
-Commit 809216233555 ("selftests/harness: remove use of LINE_MAX")
-introduced asprintf into kselftest_harness.h, which is a GNU extension
-and needs _GNU_SOURCE to either be defined prior to including headers or
-with the -D_GNU_SOURCE flag passed to the compiler.
-
-Fixed up commit log:
-Shuah Khan <skhan@linuxfoundation.org>
-
-Fixes: 809216233555 ("selftests/harness: remove use of LINE_MAX")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202404301040.3bea5782-oliver.sang@intel.com
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://msgid.link/20240424220057.work.819-kees@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/Makefile            | 4 ++--
- tools/testing/selftests/kselftest_harness.h | 2 +-
- tools/testing/selftests/lib.mk              | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ net/wireless/nl80211.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index e1504833654db..ed012a7f07865 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -161,11 +161,11 @@ ifneq ($(KBUILD_OUTPUT),)
-   # $(realpath ...) resolves symlinks
-   abs_objtree := $(realpath $(abs_objtree))
-   BUILD := $(abs_objtree)/kselftest
--  KHDR_INCLUDES := -isystem ${abs_objtree}/usr/include
-+  KHDR_INCLUDES := -D_GNU_SOURCE -isystem ${abs_objtree}/usr/include
- else
-   BUILD := $(CURDIR)
-   abs_srctree := $(shell cd $(top_srcdir) && pwd)
--  KHDR_INCLUDES := -isystem ${abs_srctree}/usr/include
-+  KHDR_INCLUDES := -D_GNU_SOURCE -isystem ${abs_srctree}/usr/include
-   DEFAULT_INSTALL_HDR_PATH := 1
- endif
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index daac83aa8988e..4e7b517c78bfd 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -9148,6 +9148,7 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
+ 	struct wiphy *wiphy;
+ 	int err, tmp, n_ssids = 0, n_channels, i;
+ 	size_t ie_len, size;
++	size_t ssids_offset, ie_offset;
  
-diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
-index 3c8f2965c2850..37b03f1b8741d 100644
---- a/tools/testing/selftests/kselftest_harness.h
-+++ b/tools/testing/selftests/kselftest_harness.h
-@@ -51,7 +51,7 @@
- #define __KSELFTEST_HARNESS_H
+ 	wiphy = &rdev->wiphy;
  
- #ifndef _GNU_SOURCE
--#define _GNU_SOURCE
-+static_assert(0, "kselftest harness requires _GNU_SOURCE to be defined");
- #endif
- #include <asm/types.h>
- #include <ctype.h>
-diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
-index 8ae203d8ed7fa..7fa4a96e26ed6 100644
---- a/tools/testing/selftests/lib.mk
-+++ b/tools/testing/selftests/lib.mk
-@@ -53,7 +53,7 @@ selfdir = $(realpath $(dir $(filter %/lib.mk,$(MAKEFILE_LIST))))
- top_srcdir = $(selfdir)/../../..
+@@ -9193,21 +9194,20 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
+ 		return -EINVAL;
  
- ifeq ($(KHDR_INCLUDES),)
--KHDR_INCLUDES := -isystem $(top_srcdir)/usr/include
-+KHDR_INCLUDES := -D_GNU_SOURCE -isystem $(top_srcdir)/usr/include
- endif
+ 	size = struct_size(request, channels, n_channels);
++	ssids_offset = size;
+ 	size = size_add(size, array_size(sizeof(*request->ssids), n_ssids));
++	ie_offset = size;
+ 	size = size_add(size, ie_len);
+ 	request = kzalloc(size, GFP_KERNEL);
+ 	if (!request)
+ 		return -ENOMEM;
++	request->n_channels = n_channels;
  
- # The following are built by lib.mk common compile rules.
+ 	if (n_ssids)
+-		request->ssids = (void *)&request->channels[n_channels];
++		request->ssids = (void *)request + ssids_offset;
+ 	request->n_ssids = n_ssids;
+-	if (ie_len) {
+-		if (n_ssids)
+-			request->ie = (void *)(request->ssids + n_ssids);
+-		else
+-			request->ie = (void *)(request->channels + n_channels);
+-	}
++	if (ie_len)
++		request->ie = (void *)request + ie_offset;
+ 
+ 	i = 0;
+ 	if (scan_freqs) {
 -- 
 2.43.0
 
