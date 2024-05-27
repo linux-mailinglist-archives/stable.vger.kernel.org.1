@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-47404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE74C8D0DD6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3EC8D0BDE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0ADC1C21047
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 659571F2391F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D0D15FA9F;
-	Mon, 27 May 2024 19:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73DA155CA7;
+	Mon, 27 May 2024 19:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8bhCd8d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwUMEPZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1134A17727;
-	Mon, 27 May 2024 19:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6695D17E90E;
+	Mon, 27 May 2024 19:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838463; cv=none; b=pXyTN38SC93+/FftrW3avOICDFUXy0VL2YYHegLSDNcrCWMHOH9cPoQhFDlcdT9V8mub4kT1xlr/vmE5oZB0z8lH52QEEj2An7IvoBeZf6qRXY/XxPrYKDoPXYrEc/zh3ZRnH7INe0LZOBcgoz6l3nC+jKqeGgO1i1sw+uspiso=
+	t=1716837230; cv=none; b=UaG5YvU8lclSUelAG3rMkDQHIIjhcQxEFV/fRgR6MYAmiDIsPX65gAvIr0mV9nRv+YGespg6ng2x+6BBuFDQoDXGyIG2tv3ljDy4uydCyDcF97uWz+51V0HpVwdPKoeOvo0x7/PGik9OY3/zmQWFz9T5F8gRdW9Xk0HI5DH1lUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838463; c=relaxed/simple;
-	bh=Z12yb9tvhwB56VrFseycth6+p/n2fZ/b4ozcLXkc+CU=;
+	s=arc-20240116; t=1716837230; c=relaxed/simple;
+	bh=QcBowhhJo6zwIp2G8p0h+ueHcPYgVljq5E8w1WlE0E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGVxeW5CADd4Yc97hCoVIOomYS8K+YPvWUAHhn5WmVOm14raAOCS11xtKQfmadhw+yTJ06Vdg1JMvS0QuIRhT/33ETnhQHqPziUkERVID3wQzPYPucrdDFbkfzi78I7ZJPjhvlj2TAWFCh/0tEt/NNkvWwZGXEuFF4q3zgBDct8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8bhCd8d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C04C2BBFC;
-	Mon, 27 May 2024 19:34:22 +0000 (UTC)
+	 MIME-Version; b=S5//AjmGDlGJKP+CgQqRwg7ZB1iogsLO9YBlnHISYtuUdhjND7I5MgyjoaVQeq2Q5wdwBkgjTV5xM2bXzp9R5AVxuBhqwry8jqg5JIgU1L3pE7NAlGNxwoPz4ov88FaYxlitAOmPJlureF7R6jgpEOH6aa42g7+aBTKQ+RSdcNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwUMEPZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E865CC2BBFC;
+	Mon, 27 May 2024 19:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838462;
-	bh=Z12yb9tvhwB56VrFseycth6+p/n2fZ/b4ozcLXkc+CU=;
+	s=korg; t=1716837230;
+	bh=QcBowhhJo6zwIp2G8p0h+ueHcPYgVljq5E8w1WlE0E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8bhCd8dIj6+w0i19y/0EnqIY53YbZ4k0O2nsxFfduUdfgYzpxfuutedXyfeVygO1
-	 x32IXfyN90EUxXuBEEq0jQi32iXWWR6H1GfoRp4AsZPd3+6vm03AX1zJ6KcjdDcSDp
-	 0m+62Ko7n/XNU3RV7BA9sGxzf0Uy2j+B6YPf59UQ=
+	b=NwUMEPZ4UVI8AGxEVWQybOsuA/TZFi6wHDfkLgBe2ZyS7WjQhchIh0lufApYSQJ6P
+	 /8Zpd46RZZ1minzTQPhpZT3o6p3Gf834ZqwYt6GYfgOs9exW6ZKQe1yW27qe/g+IjX
+	 COa9n+M5gP6/UDYYJQLAUxDMhBX/wDJE59t7ANJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Mark Brown <broonie@kernel.org>,
+	wenglianfa <wenglianfa@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 403/493] ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT to its value
+Subject: [PATCH 6.9 358/427] RDMA/hns: Fix mismatch exception rollback
 Date: Mon, 27 May 2024 20:56:45 +0200
-Message-ID: <20240527185643.467967985@linuxfoundation.org>
+Message-ID: <20240527185633.778320723@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: wenglianfa <wenglianfa@huawei.com>
 
-[ Upstream commit 58300f8d6a48e58d1843199be743f819e2791ea3 ]
+[ Upstream commit dc3bda6e568e9310b7cd07769dd70a3f0cd696ca ]
 
-The string SND_SOC_DAPM_DIR_OUT is printed in the snd_soc_dapm_path trace
-event instead of its value:
+When dma_alloc_coherent() fails in hns_roce_alloc_hem(), just call
+kfree() to release hem instead of hns_roce_free_hem().
 
-   (((REC->path_dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
-
-User space cannot parse this, as it has no idea what SND_SOC_DAPM_DIR_OUT
-is. Use TRACE_DEFINE_ENUM() to convert it to its value:
-
-   (((REC->path_dir) == 1) ? "->" : "<-")
-
-So that user space tools, such as perf and trace-cmd, can parse it
-correctly.
-
-Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Fixes: 6e588a0d839b5 ("ASoC: dapm: Consolidate path trace events")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20240416000303.04670cdf@rorschach.local.home
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c00743cbf2b8 ("RDMA/hns: Simplify 'struct hns_roce_hem' allocation")
+Signed-off-by: wenglianfa <wenglianfa@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-7-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/asoc.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_hem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/trace/events/asoc.h b/include/trace/events/asoc.h
-index 4d8ef71090af1..97a434d021356 100644
---- a/include/trace/events/asoc.h
-+++ b/include/trace/events/asoc.h
-@@ -12,6 +12,8 @@
- #define DAPM_DIRECT "(direct)"
- #define DAPM_ARROW(dir) (((dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
+index a4b3f19161dc1..658c522be7583 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
+@@ -281,7 +281,7 @@ static struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev,
+ 	return hem;
  
-+TRACE_DEFINE_ENUM(SND_SOC_DAPM_DIR_OUT);
-+
- struct snd_soc_jack;
- struct snd_soc_card;
- struct snd_soc_dapm_widget;
+ fail:
+-	hns_roce_free_hem(hr_dev, hem);
++	kfree(hem);
+ 	return NULL;
+ }
+ 
 -- 
 2.43.0
 
