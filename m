@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-47285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C358D0D5F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6C08D0B5E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE991F2152A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79BA1284381
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11CA16079B;
-	Mon, 27 May 2024 19:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3668515FCF2;
+	Mon, 27 May 2024 19:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="an3NkqYm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sb2nlZ+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F57C15FD04;
-	Mon, 27 May 2024 19:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A8217E90E;
+	Mon, 27 May 2024 19:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838147; cv=none; b=e0mdla+n6p+W86xGK7HEOlYMhxuejS7xnqg0Mf3Ry04anxwZRZYYy8xzLBlFPLfrKXdqOPzaRejCzIkv41wnkpTLZPyytu145XCXgKHvTi3pce2CMUfaI6NdhEE5JeEefmnGwhCDKkDwCwC8EGIMgWG1qEKbHVrIPc7x17Do0yA=
+	t=1716836916; cv=none; b=BKAVKAoeWuS4aEheo+VRXmArMf/dL9ZWHFjAxvCiwbP8MKTMEfmqveMCUYJraYdrZgLzurtXhLper2fMBtP0xXcJfXlvalbfkBoD5b2XFdca2NJYEEnUqLVeVlzhX8T/70Vb/nAtNCyDmiyME6vfGrtGFBhn7rpqzo//O8A5Ync=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838147; c=relaxed/simple;
-	bh=qhPebOEgOCkP4k8KiI16VHMOKTLkgmsxq73s4PR/GoM=;
+	s=arc-20240116; t=1716836916; c=relaxed/simple;
+	bh=DuMt4c5X/X1E+gCgSyjsUZ6sL91shpGFL4pjiVC9V/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l/JcHshrM9cMCOYWTAGBw0OjYay4shbclmHk3dM9MoYHv3q7/cDfPrlCuyCMRwXVwraMifJoHb+1bUk7Mw2rnlULv2f+MdrH6TCN5gHkoMEyU/sl8JnjqvjNJtiI8E71U1+/bF3lGY+eRrRApTdptQl9SjTM74EdzFi2VNgIF4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=an3NkqYm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002F8C2BBFC;
-	Mon, 27 May 2024 19:29:06 +0000 (UTC)
+	 MIME-Version; b=oUc6HY/wq0rEsObDfp2x2gO/umlaLHX3Bo4vjagsysC51M5kRHiARd5jEUSo4HNfvXSXmscAdweYuW3hGiDQfzsvA3LoCabdQ/agvAi/Mwmc71fKNpbOiLeq7iiM7OOlz5s4HCO7MYkeEntC9QCjyiaT5aYSlZJHCb2ShOELrNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sb2nlZ+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D428C2BBFC;
+	Mon, 27 May 2024 19:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838147;
-	bh=qhPebOEgOCkP4k8KiI16VHMOKTLkgmsxq73s4PR/GoM=;
+	s=korg; t=1716836915;
+	bh=DuMt4c5X/X1E+gCgSyjsUZ6sL91shpGFL4pjiVC9V/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=an3NkqYmMExi30k5F45y7Qa4nKGvBt7ITJu1EDObh+5w//1eE3aX1vKOemQ9CeD3K
-	 Q1Ky5eLYnAV9TbRTVgVew9mCkgMNaMP1xeYMqzoiJKid5INCnV2aSgzFpUvnNYmauJ
-	 NSCSP7Bm6upxATUuAM1g+dDk6S3i5XfuycRcv5eE=
+	b=Sb2nlZ+J3n5oplZeJTS5Xa9evggyfoUEvFbFKulPi+WVXlgOByepKBy74w4iGgAHR
+	 DkcLyicvo4UAUTfulvzpCNmEDShMxRjRQHkoEyMVKSejxmskeSSGPF+COfEqxHpPuo
+	 rHgcPj8WeMs3xl8LzT8G+WXFHBn3l/M9F7w6C1h8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 284/493] selftests/bpf: Fix pointer arithmetic in test_xdp_do_redirect
+Subject: [PATCH 6.9 239/427] selftests: net: add missing config for amt.sh
 Date: Mon, 27 May 2024 20:54:46 +0200
-Message-ID: <20240527185639.604851568@linuxfoundation.org>
+Message-ID: <20240527185624.813529959@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +59,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit e549b39a0ab8880d7ae6c6495b00fc1cb8f36174 ]
+[ Upstream commit c499fe96d3f75a5cf50de6089dd8f1cddd1301a9 ]
 
-Cast operation has a higher precedence than addition. The code here
-wants to zero the 2nd half of the 64-bit metadata, but due to a pointer
-arithmetic mistake, it writes the zero at offset 16 instead.
+Test needs IPv6 multicast. smcroute currently crashes when trying
+to install a route in a kernel without IPv6 multicast.
 
-Just adding parentheses around "data + 4" would fix this, but I think
-this will be slightly better readable with array syntax.
-
-I was unable to test this with tools/testing/selftests/bpf/vmtest.sh,
-because my glibc is newer than glibc in the provided VM image.
-So I just checked the difference in the compiled code.
-objdump -S tools/testing/selftests/bpf/xdp_do_redirect.test.o:
-  -	*((__u32 *)data) = 0x42; /* metadata test value */
-  +	((__u32 *)data)[0] = 0x42; /* metadata test value */
-        be7:	48 8d 85 30 fc ff ff 	lea    -0x3d0(%rbp),%rax
-        bee:	c7 00 42 00 00 00    	movl   $0x42,(%rax)
-  -	*((__u32 *)data + 4) = 0;
-  +	((__u32 *)data)[1] = 0;
-        bf4:	48 8d 85 30 fc ff ff 	lea    -0x3d0(%rbp),%rax
-  -     bfb:	48 83 c0 10          	add    $0x10,%rax
-  +     bfb:	48 83 c0 04          	add    $0x4,%rax
-        bff:	c7 00 00 00 00 00    	movl   $0x0,(%rax)
-
-Fixes: 5640b6d89434 ("selftests/bpf: fix "metadata marker" getting overwritten by the netstack")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://lore.kernel.org/bpf/20240506145023.214248-1-mschmidt@redhat.com
+Fixes: c08e8baea78e ("selftests: add amt interface selftest script")
+Link: https://lore.kernel.org/r/20240509161919.3939966-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/config | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c b/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c
-index 498d3bdaa4b0b..bad0ea167be70 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c
-@@ -107,8 +107,8 @@ void test_xdp_do_redirect(void)
- 			    .attach_point = BPF_TC_INGRESS);
- 
- 	memcpy(&data[sizeof(__u64)], &pkt_udp, sizeof(pkt_udp));
--	*((__u32 *)data) = 0x42; /* metadata test value */
--	*((__u32 *)data + 4) = 0;
-+	((__u32 *)data)[0] = 0x42; /* metadata test value */
-+	((__u32 *)data)[1] = 0;
- 
- 	skel = test_xdp_do_redirect__open();
- 	if (!ASSERT_OK_PTR(skel, "skel"))
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 5e4390cac17ed..04de7a6ba6f31 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -30,6 +30,7 @@ CONFIG_IP_GRE=m
+ CONFIG_NETFILTER=y
+ CONFIG_NETFILTER_ADVANCED=y
+ CONFIG_NF_CONNTRACK=m
++CONFIG_IPV6_MROUTE=y
+ CONFIG_IPV6_SIT=y
+ CONFIG_IP_DCCP=m
+ CONFIG_NF_NAT=m
 -- 
 2.43.0
 
