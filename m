@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-47187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731988D0CF8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A568D0B1F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9A34B209D7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 356F21F22B1E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3062415FD01;
-	Mon, 27 May 2024 19:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B9926AF2;
+	Mon, 27 May 2024 19:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynzT5KuM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6xUNCpj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3323168C4;
-	Mon, 27 May 2024 19:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866311078F;
+	Mon, 27 May 2024 19:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837894; cv=none; b=MNatdzqaCABXOuWeI4vTQlp+AnlpWfciBJ5quZTT6dWFAnTFFfLutKj7Jh9u0k2S+lFZoG4AToX5SblwB3II/C4hVExx8WpPiQdcF85N8JvVobUvTjMshMYa9m1I7nToXywZ7IlCo+3h6WXAUM6jBNJqWdGgnKKgglfe/vJXeUw=
+	t=1716836778; cv=none; b=ddN5ZjpsZdm55LERvYPZlMuHaJCZXu4Sya68XVpaCrtW+DnXYFUzVla7pgvfXJtKdz6Km7E9rjarloyHmfKXNqJZifXcPrDYWcRwZeqBh2wcI8POoN9ScpfyTKRtiWuVvvGFcUwEZGJziThDw9LPeF7LGH99c+Sp/jipAEpCwOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837894; c=relaxed/simple;
-	bh=mwKxaH8pgpbfGspGgMzKlEMHh993qRZRweDJ4eP6HA0=;
+	s=arc-20240116; t=1716836778; c=relaxed/simple;
+	bh=blmM30pR3u9mfqLt9UNV9/jv7IgMW0WV2r2WMgOvGxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AM1cN4dqfoGE+7WmmxZ1vXjINP1zucaKhNarb3JMP0g0RmKtZS+sQJbNzJP34XGBlEl8b/yNB3LqxVc1800Q+Bm2cU96UZejeEix6MOOAEuRIZ0C1CVzTk92x9695r582F/vd9DzgzZuPfMC724tjBVbM1asJGAA/K6iwBUpgVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynzT5KuM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780C4C2BBFC;
-	Mon, 27 May 2024 19:24:53 +0000 (UTC)
+	 MIME-Version; b=CFuLbvSbVvkPOJVRtGK2qXBeqE4RzJRMnKfWvkEJ6wRJOM70We1wIfj/o5c9NHDOFTWtXUyJD6j2NNkR/NMe3IAd41VVwyf6Uv43MeEBt+J6JY13Mqs0f+zmqJfkTd0i2/PU0GomM06PGV0n9pI02Szjez++GRKlDejZ0fsvmMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6xUNCpj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1AFC2BBFC;
+	Mon, 27 May 2024 19:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837893;
-	bh=mwKxaH8pgpbfGspGgMzKlEMHh993qRZRweDJ4eP6HA0=;
+	s=korg; t=1716836778;
+	bh=blmM30pR3u9mfqLt9UNV9/jv7IgMW0WV2r2WMgOvGxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ynzT5KuMpDZ7xunIbpM2ktTX1afhigjWbomY+MjMgDzx73YiIwhCdksCqCB2R+4ls
-	 b2ztjYP7Awm5YOCTSoTfpd+ZOphJcwF0Q6yPyE88RncVUJB8KThf5KxGIhvJKzAbv5
-	 eKiV/QgyQJVVqZN6PktAA50Cmz83Fgl6JIDDYSuw=
+	b=p6xUNCpjfhlSke8GY8yp1iX5S01mI8ogszZq2gCtz0y3zFRi2rqcwX11GCcDCnLi2
+	 DpmzEHgdD9Ht87qRO0d+S/BysHKcwYu5ATUOVU59byKnObAxbvA0010LYKazS747uI
+	 92ect9/H0aYRU72GYrn8iyXqEB6j5RJYVl1a3XtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Maxim Mikityanskiy <maxtram95@gmail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 187/493] mlx5: stop warning for 64KB pages
+Subject: [PATCH 6.9 142/427] arm64: Remove unnecessary irqflags alternative.h include
 Date: Mon, 27 May 2024 20:53:09 +0200
-Message-ID: <20240527185636.466324543@linuxfoundation.org>
+Message-ID: <20240527185615.129545233@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit a5535e5336943b33689f558199366102387b7bbf ]
+[ Upstream commit 98631c4904bf6380834c8585ce50451f00eb5389 ]
 
-When building with 64KB pages, clang points out that xsk->chunk_size
-can never be PAGE_SIZE:
+Since commit 20af807d806d ("arm64: Avoid cpus_have_const_cap() for
+ARM64_HAS_GIC_PRIO_MASKING"), the alternative.h include is not used,
+so remove it.
 
-drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c:19:22: error: result of comparison of constant 65536 with expression of type 'u16' (aka 'unsigned short') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-        if (xsk->chunk_size > PAGE_SIZE ||
-            ~~~~~~~~~~~~~~~ ^ ~~~~~~~~~
-
-In older versions of this code, using PAGE_SIZE was the only
-possibility, so this would have never worked on 64KB page kernels,
-but the patch apparently did not address this case completely.
-
-As Maxim Mikityanskiy suggested, 64KB chunks are really not all that
-useful, so just shut up the warning by adding a cast.
-
-Fixes: 282c0c798f8e ("net/mlx5e: Allow XSK frames smaller than a page")
-Link: https://lore.kernel.org/netdev/20211013150232.2942146-1-arnd@kernel.org/
-Link: https://lore.kernel.org/lkml/a7b27541-0ebb-4f2d-bd06-270a4d404613@app.fastmail.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Maxim Mikityanskiy <maxtram95@gmail.com>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240328143051.1069575-9-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 20af807d806d ("arm64: Avoid cpus_have_const_cap() for ARM64_HAS_GIC_PRIO_MASKING")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240314063819.2636445-1-ruanjinjie@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/irqflags.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-index 82e6abbc17342..c969b8e709804 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-@@ -28,8 +28,10 @@ bool mlx5e_validate_xsk_param(struct mlx5e_params *params,
- 			      struct mlx5e_xsk_param *xsk,
- 			      struct mlx5_core_dev *mdev)
- {
--	/* AF_XDP doesn't support frames larger than PAGE_SIZE. */
--	if (xsk->chunk_size > PAGE_SIZE || xsk->chunk_size < MLX5E_MIN_XSK_CHUNK_SIZE) {
-+	/* AF_XDP doesn't support frames larger than PAGE_SIZE,
-+	 * and xsk->chunk_size is limited to 65535 bytes.
-+	 */
-+	if ((size_t)xsk->chunk_size > PAGE_SIZE || xsk->chunk_size < MLX5E_MIN_XSK_CHUNK_SIZE) {
- 		mlx5_core_err(mdev, "XSK chunk size %u out of bounds [%u, %lu]\n", xsk->chunk_size,
- 			      MLX5E_MIN_XSK_CHUNK_SIZE, PAGE_SIZE);
- 		return false;
+diff --git a/arch/arm64/include/asm/irqflags.h b/arch/arm64/include/asm/irqflags.h
+index 0a7186a93882d..d4d7451c2c129 100644
+--- a/arch/arm64/include/asm/irqflags.h
++++ b/arch/arm64/include/asm/irqflags.h
+@@ -5,7 +5,6 @@
+ #ifndef __ASM_IRQFLAGS_H
+ #define __ASM_IRQFLAGS_H
+ 
+-#include <asm/alternative.h>
+ #include <asm/barrier.h>
+ #include <asm/ptrace.h>
+ #include <asm/sysreg.h>
 -- 
 2.43.0
 
