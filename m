@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F353D8D0CA8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4021C8D0AA3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF05E286982
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71F291C212D3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1365915FCFE;
-	Mon, 27 May 2024 19:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EF915FA91;
+	Mon, 27 May 2024 19:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imJfgRQ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXgWOS+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C2F168C4;
-	Mon, 27 May 2024 19:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407FA1078F;
+	Mon, 27 May 2024 19:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837719; cv=none; b=KyNtasYOrTbkMTNxnjQML1Wq6RORwYNBnBVC0qvKAMK06vEq9sZH2qAywiLGmaCKQ0cjWkSnNXw3VyzxvFjJigXExaghBfY4JtFA96Fqv/Xj/8rtsdyHcTyz64fYLlGIdYXD9AZSSpJ+E5iKokNOMq22QePVcB/mg2GDtgXjtRA=
+	t=1716836485; cv=none; b=cr5npxQUe5FMb+gj3pLjTFU4lJMChiyFILeIHaseF+2a43+x4Nk4sG+aD+t19tbLICvzwWeCPh8a8HolmFjLLoUtP3NfT1u0wxHI5AerE45M2zyi/I7Q/o0o4EovNo9nMY0sswQsUEEmgFAT1/C6lSwWjvqbvYSuWx6tJ7x9oXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837719; c=relaxed/simple;
-	bh=esnbydoelvBNbgOHYpurAVCp4IkcYc2qq5+CYY0GtF4=;
+	s=arc-20240116; t=1716836485; c=relaxed/simple;
+	bh=ECGVzxMlKFAlU5fegUCEhfDSQ4mETD9jLKdQpjH6LAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXMyH4zNSX11TvYjHjAPxwKPnxts1YMeYBq69P7BSqyJ4KQOp/PHmc6iBFsWpY20xlyC/TOfDqyw5QACrU2Z+fJVzR1CrhG12qDX8loFH+9qnlhlyIVlQZNAL/ozhm2bJ0bXPbkv+V54nvSqvfbaMbuMwrFSUG5qG+NG3jnNVh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imJfgRQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B08C2BBFC;
-	Mon, 27 May 2024 19:21:59 +0000 (UTC)
+	 MIME-Version; b=fBnvx/2J0EaPqpsSDgrHsWGQCl+uS4EGX1xwQdeEgogzQ7DLAavQwRaEf+KpfqlGIFpcKFh0eVktnt5b1N4CTkO3Ooz37eAq4cWRscsafYBz2QsbvBilIwoR8OuX4EawFVlEYX2iYfA9ZAKrtxAyw2KZL0yz8tkXK18d6Wkx4DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXgWOS+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08FFC32781;
+	Mon, 27 May 2024 19:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837719;
-	bh=esnbydoelvBNbgOHYpurAVCp4IkcYc2qq5+CYY0GtF4=;
+	s=korg; t=1716836485;
+	bh=ECGVzxMlKFAlU5fegUCEhfDSQ4mETD9jLKdQpjH6LAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imJfgRQ8nCLq7TasiNZN/t8YpgK7JQeFC7eZRJwkEk5oQqox4Ko+WQ6uolWwS8yFb
-	 KMvkBC3l7cMLDvDuYm+4dhe9Jx2O9aRPaL/kjVZbGFmhFlBH/JEfwudOShkzKqC01i
-	 4MktT3RabXsQsnIr8AbCKG9S+0zZRVLCMoA5Imag=
+	b=JXgWOS+TDJctFaFqNhTrqUVe7vONP9//uYaumE3zkt8GsWXHXI6HjfOOIK2ftCyal
+	 JDGovG8Ty35BPbqoKHf4pLmlcM3tRTul9jG43CkFGdI4V3ObQgwb9dlGkwJvMMK2qR
+	 LgbRLMRCVpso7Y9RxVb3hKiflVghc0QrNq1aU3fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 117/493] parisc: add missing export of __cmpxchg_u8()
+Subject: [PATCH 6.9 072/427] firmware: qcom: scm: Fix __scm and waitq completion variable initialization
 Date: Mon, 27 May 2024 20:51:59 +0200
-Message-ID: <20240527185634.334523057@linuxfoundation.org>
+Message-ID: <20240527185608.594195962@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-[ Upstream commit c57e5dccb06decf3cb6c272ab138c033727149b5 ]
+[ Upstream commit 2e4955167ec5c04534cebea9e8273a907e7a75e1 ]
 
-__cmpxchg_u8() had been added (initially) for the sake of
-drivers/phy/ti/phy-tusb1210.c; the thing is, that drivers is
-modular, so we need an export
+It is possible qcom_scm_is_available() gives wrong indication that
+if __scm is initialized while __scm->dev is not and similar issue
+is also possible with __scm->waitq_comp.
 
-Fixes: b344d6a83d01 "parisc: add support for cmpxchg on u8 pointers"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Fix this appropriately by the use of release barrier and read barrier
+that will make sure if __scm is initialized so, is all of its field
+variable.
+
+Fixes: d0f6fa7ba2d6 ("firmware: qcom: scm: Convert SCM to platform driver")
+Fixes: 6bf325992236 ("firmware: qcom: scm: Add wait-queue handling logic")
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Link: https://lore.kernel.org/r/1711034642-22860-4-git-send-email-quic_mojha@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/parisc_ksyms.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/qcom/qcom_scm.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/parisc/kernel/parisc_ksyms.c b/arch/parisc/kernel/parisc_ksyms.c
-index 6f0c92e8149d8..dcf61cbd31470 100644
---- a/arch/parisc/kernel/parisc_ksyms.c
-+++ b/arch/parisc/kernel/parisc_ksyms.c
-@@ -22,6 +22,7 @@ EXPORT_SYMBOL(memset);
- #include <linux/atomic.h>
- EXPORT_SYMBOL(__xchg8);
- EXPORT_SYMBOL(__xchg32);
-+EXPORT_SYMBOL(__cmpxchg_u8);
- EXPORT_SYMBOL(__cmpxchg_u32);
- EXPORT_SYMBOL(__cmpxchg_u64);
- #ifdef CONFIG_SMP
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index ca381cb2ee979..29c24578ad2bf 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -1713,7 +1713,7 @@ static int qcom_scm_qseecom_init(struct qcom_scm *scm)
+  */
+ bool qcom_scm_is_available(void)
+ {
+-	return !!__scm;
++	return !!READ_ONCE(__scm);
+ }
+ EXPORT_SYMBOL_GPL(qcom_scm_is_available);
+ 
+@@ -1794,10 +1794,12 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	if (!scm)
+ 		return -ENOMEM;
+ 
++	scm->dev = &pdev->dev;
+ 	ret = qcom_scm_find_dload_address(&pdev->dev, &scm->dload_mode_addr);
+ 	if (ret < 0)
+ 		return ret;
+ 
++	init_completion(&scm->waitq_comp);
+ 	mutex_init(&scm->scm_bw_lock);
+ 
+ 	scm->path = devm_of_icc_get(&pdev->dev, NULL);
+@@ -1829,10 +1831,8 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	__scm = scm;
+-	__scm->dev = &pdev->dev;
+-
+-	init_completion(&__scm->waitq_comp);
++	/* Let all above stores be available after this */
++	smp_store_release(&__scm, scm);
+ 
+ 	irq = platform_get_irq_optional(pdev, 0);
+ 	if (irq < 0) {
 -- 
 2.43.0
 
