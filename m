@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEB48D0D94
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227038D0B94
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36E09B20C8A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B63351F21B6C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34BB15FA60;
-	Mon, 27 May 2024 19:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2E326AF2;
+	Mon, 27 May 2024 19:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWt/BnMh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymjeCRDA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EE817727;
-	Mon, 27 May 2024 19:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C78D17E90E;
+	Mon, 27 May 2024 19:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838292; cv=none; b=bOP85pc8AJPeqt9gHfaFvaCsooBaKjy536ecbJt7dzxvlGE23yzk2qPqf7CMthWjMaL4W4/Xwxrca76Gz6C6rrefMc0QOkui5h1R28V57Z24OgrTUncJfTubN6AjTwc6+8rwmqrH2TS83F4gWEJmCIFnGg9Jje80ndIIJXbweGg=
+	t=1716837051; cv=none; b=FkgRIUGk8FhJ0fJdJJrgHvjP4wNBnBdh/fe00t4D8etCM0lN4RyJKwxJVyGs1wx0Gg7LymNTjwgfAh6TQDLrc+PWnzmIOHd/Wod7g++Eefsitk+zS3bqFHMMW10wBai0CqLeLx2Gs0msSA7wJ4MWeDxoGtF2BVJDVnR5tMB5ilM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838292; c=relaxed/simple;
-	bh=rXk56skLLbJjoC1hDQ66xYQwmOzOoNfK+wesqpY3ovM=;
+	s=arc-20240116; t=1716837051; c=relaxed/simple;
+	bh=Fho2e9qA7nqM77EaKG5js2mdfd3jBAh9yt9zFeepYa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJ/vwmSUnOBZ+C8D/3aamGhkJkRFWTSy2uHruzJmU6b+HjFloF18BLYQQtS0edH7DduKU6aLIS+egV9dj6/h51CIh1emIBS+TWzJFTB68VVSKH/g1HDQnkahKvJ0YBPqQVU9Rl+fjp8vjDPa0sNagBgi7r0ahRBBncSij4gKPsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWt/BnMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18081C2BBFC;
-	Mon, 27 May 2024 19:31:31 +0000 (UTC)
+	 MIME-Version; b=Lupgd+YEOvCvfruPHAeO7MOnHby3TNn5T1+DkESP7UBlkFvD4vD3T7kSjH4+PDYjlQ2/Di7ANy271hIj8g4fGf9poKRPaLASeFu3OXWmth4ER+uPEt3jrM4UOsZ4oX44faf9N0D8KCXM9zh8Ii1rZdwg52ExfDt9oo7IBmY/NzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymjeCRDA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B924C2BBFC;
+	Mon, 27 May 2024 19:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838292;
-	bh=rXk56skLLbJjoC1hDQ66xYQwmOzOoNfK+wesqpY3ovM=;
+	s=korg; t=1716837050;
+	bh=Fho2e9qA7nqM77EaKG5js2mdfd3jBAh9yt9zFeepYa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWt/BnMhRXiZafJjDbs3zeuRBzjiy1LzM5XlfGwAHS6DA6Ix2sEq8nI6usnksy5CC
-	 J2ZIyZS3n0RyzAb759nvZc8BJKpHHtUCs6O8ndMszU4uN5T/oC5NpXwMNkpJDsmGih
-	 2ihBOlZXz1CM01IAfkWD+MkGsn6D9OblClM8nbxw=
+	b=ymjeCRDAOvlwyvfGa5OuWcOkmjE68+EOeZv5vNTiVTFHXhMNsKio96qiMiyR90UiG
+	 s1fahr8hdHMZHSVOgfuV00XR/uzdMIsLcEVKP3iOajn8/hvfPaCwK46kjCqDwS1WXl
+	 KK1Sc7XVYh2ewTPBGmjELXtveR5Sle5l1wHi7eLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 336/493] net: micrel: Fix receiving the timestamp in the frame for lan8841
+Subject: [PATCH 6.9 291/427] ASoC: mediatek: Assign dummy when codec not specified for a DAI link
 Date: Mon, 27 May 2024 20:55:38 +0200
-Message-ID: <20240527185641.264326712@linuxfoundation.org>
+Message-ID: <20240527185629.555111583@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit aea27a92a41dae14843f92c79e9e42d8f570105c ]
+[ Upstream commit 5f39231888c63f0a7708abc86b51b847476379d8 ]
 
-The blamed commit started to use the ptp workqueue to get the second
-part of the timestamp. And when the port was set down, then this
-workqueue is stopped. But if the config option NETWORK_PHY_TIMESTAMPING
-is not enabled, then the ptp_clock is not initialized so then it would
-crash when it would try to access the delayed work.
-So then basically by setting up and then down the port, it would crash.
-The fix consists in checking if the ptp_clock is initialized and only
-then cancel the delayed work.
+MediaTek sound card drivers are checking whether a DAI link is present
+and used on a board to assign the correct parameters and this is done
+by checking the codec DAI names at probe time.
 
-Fixes: cc7554954848 ("net: micrel: Change to receive timestamp in the frame for lan8841")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+If no real codec is present, assign the dummy codec to the DAI link
+to avoid NULL pointer during string comparison.
+
+Fixes: 4302187d955f ("ASoC: mediatek: common: add soundcard driver common code")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://msgid.link/r/20240313110147.1267793-5-angelogioacchino.delregno@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/mediatek/common/mtk-soundcard-driver.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 1f950c824418f..827db6a6ff397 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -4635,7 +4635,8 @@ static int lan8841_suspend(struct phy_device *phydev)
- 	struct kszphy_priv *priv = phydev->priv;
- 	struct kszphy_ptp_priv *ptp_priv = &priv->ptp_priv;
+diff --git a/sound/soc/mediatek/common/mtk-soundcard-driver.c b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+index a58e1e3674dec..000a086a8cf44 100644
+--- a/sound/soc/mediatek/common/mtk-soundcard-driver.c
++++ b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+@@ -22,7 +22,11 @@ static int set_card_codec_info(struct snd_soc_card *card,
  
--	ptp_cancel_worker_sync(ptp_priv->ptp_clock);
-+	if (ptp_priv->ptp_clock)
-+		ptp_cancel_worker_sync(ptp_priv->ptp_clock);
+ 	codec_node = of_get_child_by_name(sub_node, "codec");
+ 	if (!codec_node) {
+-		dev_dbg(dev, "%s no specified codec\n", dai_link->name);
++		dev_dbg(dev, "%s no specified codec: setting dummy.\n", dai_link->name);
++
++		dai_link->codecs = &snd_soc_dummy_dlc;
++		dai_link->num_codecs = 1;
++		dai_link->dynamic = 1;
+ 		return 0;
+ 	}
  
- 	return genphy_suspend(phydev);
- }
 -- 
 2.43.0
 
