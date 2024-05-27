@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904918D0DE1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876EF8D0C10
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1BAB1C21481
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7F0C1C2166C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD14F15FA60;
-	Mon, 27 May 2024 19:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A9A15FCFE;
+	Mon, 27 May 2024 19:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuWYPuL9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjKc20Gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3F717727;
-	Mon, 27 May 2024 19:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3628168C4;
+	Mon, 27 May 2024 19:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838488; cv=none; b=DXspZewZYLWINcEDV7qGLN2G3b7ux1vzcWw1QJqDmCiDEStptrddSGlFq/KA5ZdavcOUKvaEIi/35I+nmKtdqyq6jtDmEdcmzzdsIoLodmQD8uAMq5cVm0UYJyuimalp7izcdxJRF3IOFjSA/MqAJvIJFoHvjItCq/xuKcDx81U=
+	t=1716837349; cv=none; b=XX/hcNJyxWDI4AlxnQLedRt1scD7RBMAUzRfs0Hlby4ErzyIfLK6fHd+5wpfnuOnP49PzNy8PcXsz/DZIHNo8mNKLuTVYCLELRO/1Ea+bTq0QHmmiD/OK+HP8g9GKKgmAT2WL0rEV+emrCEbkTK9R2qMztTD4L3IosD4htsWYcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838488; c=relaxed/simple;
-	bh=jwb4LYiBq9kt/QKRSsOKNBFsocf9qcil9FSp77YFa2U=;
+	s=arc-20240116; t=1716837349; c=relaxed/simple;
+	bh=oAXh2dm/QJ/R/ytoSXgfh7GAN95ap9v2DbL9PnnujDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDwrociIsRTT1ZPZBtXcbvcO4/pDBRKTH18rXPrzpGn7CniTF/Va/7t/cWkzjpbTYuCeRfNMDl+CtBbWhlCVBlHGpMC5JoLUj3+iJCEX33Q5CreZ1YDHTsCs4gUOiLyMRm3EnoJyPcWaIdh2k+GiBsLegKz/OxDXyp2uge3BpgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuWYPuL9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E74AC2BBFC;
-	Mon, 27 May 2024 19:34:47 +0000 (UTC)
+	 MIME-Version; b=KDWcTHA/mzmj0gcxIHtpMCSn7IXhAJUPVnB/MO+7MBZVbGcM11RDCpMiHZGoqEBMKe2BCje5EpTFret2IJOsSsssoX416OOFRZb3y37dmrnq7asx0cdKgT72WqL8FlhUDJWvyyRjIYcBiP3BQG1dt5EKqj8B3iTMYoaAKaz5W2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjKc20Gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56042C2BBFC;
+	Mon, 27 May 2024 19:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838488;
-	bh=jwb4LYiBq9kt/QKRSsOKNBFsocf9qcil9FSp77YFa2U=;
+	s=korg; t=1716837349;
+	bh=oAXh2dm/QJ/R/ytoSXgfh7GAN95ap9v2DbL9PnnujDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uuWYPuL903uMibOjCCWkT85gKWBvnNo6mq5OjASNcs0ca7U8pVL4gkysujqKdYpxv
-	 0WfdapgNWfj1GDF0ZNP4gT7AVQALn1kWk377hBGMklF+GyGHMrxPDkvcd97W7am+OC
-	 +QibzEfDtcine+QEvdVaEismSqnIV8KRJVd1J3J8=
+	b=PjKc20GcUAvp80+7QtSUnmf/N6Fh0Q3Ng/UPSrjmql+egyJEcNnY1x8ZBLJRL4KcB
+	 B0sOTKJrCm+bNqkl/8HY9IPwZ32AGyHubxvOg6zSzoU48lYD3h6HSurD03FP73ljtF
+	 ZWMc7AxPv7MAXCe5AAHQoFrRl1tC/Q2/8y/jKUZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Robert Foss <rfoss@kernel.org>,
+	Bob Pearson <rpearsonhpe@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 412/493] drm/bridge: anx7625: Update audio status while detecting
+Subject: [PATCH 6.9 367/427] RDMA/rxe: Fix seg fault in rxe_comp_queue_pkt
 Date: Mon, 27 May 2024 20:56:54 +0200
-Message-ID: <20240527185643.778681793@linuxfoundation.org>
+Message-ID: <20240527185634.083917706@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit a665b4e60369867cddf50f37f16169a3e2f434ad ]
+[ Upstream commit 2b23b6097303ed0ba5f4bc036a1c07b6027af5c6 ]
 
-Previously, the audio status was not updated during detection, leading
-to a persistent audio despite hot plugging events. To resolve this
-issue, update the audio status during detection.
+In rxe_comp_queue_pkt() an incoming response packet skb is enqueued to the
+resp_pkts queue and then a decision is made whether to run the completer
+task inline or schedule it. Finally the skb is dereferenced to bump a 'hw'
+performance counter. This is wrong because if the completer task is
+already running in a separate thread it may have already processed the skb
+and freed it which can cause a seg fault.  This has been observed
+infrequently in testing at high scale.
 
-Fixes: 566fef1226c1 ("drm/bridge: anx7625: add HDMI audio function")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240416-anx7625-v3-1-f916ae31bdd7@chromium.org
+This patch fixes this by changing the order of enqueuing the packet until
+after the counter is accessed.
+
+Link: https://lore.kernel.org/r/20240329145513.35381-4-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Fixes: 0b1e5b99a48b ("IB/rxe: Add port protocol stats")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe_comp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 4ee5614a26236..c1191ef5e8e67 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -2479,15 +2479,22 @@ static void anx7625_bridge_atomic_disable(struct drm_bridge *bridge,
- 	mutex_unlock(&ctx->aux_lock);
- }
- 
-+static void
-+anx7625_audio_update_connector_status(struct anx7625_data *ctx,
-+				      enum drm_connector_status status);
-+
- static enum drm_connector_status
- anx7625_bridge_detect(struct drm_bridge *bridge)
+diff --git a/drivers/infiniband/sw/rxe/rxe_comp.c b/drivers/infiniband/sw/rxe/rxe_comp.c
+index b78b8c0856abd..c997b7cbf2a9e 100644
+--- a/drivers/infiniband/sw/rxe/rxe_comp.c
++++ b/drivers/infiniband/sw/rxe/rxe_comp.c
+@@ -131,12 +131,12 @@ void rxe_comp_queue_pkt(struct rxe_qp *qp, struct sk_buff *skb)
  {
- 	struct anx7625_data *ctx = bridge_to_anx7625(bridge);
- 	struct device *dev = ctx->dev;
-+	enum drm_connector_status status;
+ 	int must_sched;
  
- 	DRM_DEV_DEBUG_DRIVER(dev, "drm bridge detect\n");
+-	skb_queue_tail(&qp->resp_pkts, skb);
+-
+-	must_sched = skb_queue_len(&qp->resp_pkts) > 1;
++	must_sched = skb_queue_len(&qp->resp_pkts) > 0;
+ 	if (must_sched != 0)
+ 		rxe_counter_inc(SKB_TO_PKT(skb)->rxe, RXE_CNT_COMPLETER_SCHED);
  
--	return anx7625_sink_detect(ctx);
-+	status = anx7625_sink_detect(ctx);
-+	anx7625_audio_update_connector_status(ctx, status);
-+	return status;
- }
- 
- static struct edid *anx7625_bridge_get_edid(struct drm_bridge *bridge,
++	skb_queue_tail(&qp->resp_pkts, skb);
++
+ 	if (must_sched)
+ 		rxe_sched_task(&qp->comp.task);
+ 	else
 -- 
 2.43.0
 
