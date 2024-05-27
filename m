@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-47282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B61C8D0D5C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECC78D0B5C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405FF1F2205F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE75D28430D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1423D1607A8;
-	Mon, 27 May 2024 19:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E97626ACA;
+	Mon, 27 May 2024 19:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7+ssx87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Os0a77p7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B5F262BE;
-	Mon, 27 May 2024 19:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E050E1754B;
+	Mon, 27 May 2024 19:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838139; cv=none; b=FggQBRUZaVZ2zOYzos6c0UD7BW+0RfXD19xrRxJ+PNbv9kO1D3azvRUcSAcTBbJRPY550r38kKkK5k+rKkcdeqAM6SENfimrJNCcepsPzJyHgAJuwHPavB0wUjluB8uzH6Hd9p7Foc9jB0DKobpOPSdLzVchSrlaR4c6lFh6oMc=
+	t=1716836911; cv=none; b=REIVTveYhWazSZ7j//6+E2ZV7gd1tfaVch70N9krXuLplpb3aevW+tad5ey8JIvaJUp9/zUCBLpEB2+IeCVSbqQwZzq6WgTHAARstC6Tw6bKreMlk8x8U6SWrcFuloPd84pjVSfI4JnrXjEQUyRN6Td4pBCwlVdn3mEX9JuNnJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838139; c=relaxed/simple;
-	bh=ftPdcez4nZgeJ9UCg6hW7X8lBFw3MJUon4NweT5DcSw=;
+	s=arc-20240116; t=1716836911; c=relaxed/simple;
+	bh=eNpY8I4U5D8Sgs8wuW2QtlS/S7YxcHNMa4w0/HQZRm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KtI1GdAQ8jq0lu+X6TlkS0ubn/ThIp3kTdO49Wi+URAQbETQ6Fwnmd7Wv/PGE3lHqnUR0zROGSD65YgE5ZsTKD+ZLbHR/vWzw8XgIdTdh3tX5o6sn3cpNWU2CyQw9M9AoTdTgUplzdix+AEt960TjfrRHuOccFYU9+zLaxnoAvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7+ssx87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50744C2BBFC;
-	Mon, 27 May 2024 19:28:59 +0000 (UTC)
+	 MIME-Version; b=AaIBn5020J1teCfIK8jYq3eRm94o8cJPMkyTu8sDZRuUKuatyBC406OWRTk3GO/YkvWpIXtpAsc2NQrsGDwB9iT2dTdXeMckOd0qx8hrIdh+Nw9d+PxA5CdBgnyPaExXUti2lktfi7FD1iJufCSSha4QfHJufzsQneCU8Pr/3vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Os0a77p7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A01C2BBFC;
+	Mon, 27 May 2024 19:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838139;
-	bh=ftPdcez4nZgeJ9UCg6hW7X8lBFw3MJUon4NweT5DcSw=;
+	s=korg; t=1716836910;
+	bh=eNpY8I4U5D8Sgs8wuW2QtlS/S7YxcHNMa4w0/HQZRm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y7+ssx87gRcif555mFk/qOCFs5qjvgsxTKNd0mSnqsJtSBfygY6ET9j2if8KZi/vP
-	 wdNa8ash0uIE+DQ6p9cWtyWn18DlSuv7SJKBQjf7AkHGNpNZEcpRpb/DUhbTQvRwAI
-	 9V3QHpmomiuPIwIkoQSrA47zdpL45krzv2J1kRzI=
+	b=Os0a77p7iNBcTNQYmsB+EGFuuNB4yfJeQKn6uBRwLtYPDJRdrcVh/KEsTTIOnCQV+
+	 hy7S2Z7yXlCXSPsN5ooXfpwVHTmXLsk7kabXEgDoFuUqQEF8g+PFozliBOJxhizmAf
+	 ujiwsrlxrEfnqWTy2HSjZTRriGTbLhUgFo4GKMis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brendan Higgins <brendanhiggins@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	David Gow <davidgow@google.com>,
-	Rae Moar <rmoar@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Gao Xingwang <gaoxingwang1@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 281/493] kunit: Fix kthread reference
-Date: Mon, 27 May 2024 20:54:43 +0200
-Message-ID: <20240527185639.499704509@linuxfoundation.org>
+Subject: [PATCH 6.9 237/427] net: ipv6: fix wrong start position when receive hop-by-hop fragment
+Date: Mon, 27 May 2024 20:54:44 +0200
+Message-ID: <20240527185624.611654670@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: gaoxingwang <gaoxingwang1@huawei.com>
 
-[ Upstream commit f8aa1b98ce40184521ed95ec26cc115a255183b2 ]
+[ Upstream commit 1cd354fe1e4864eeaff62f66ee513080ec946f20 ]
 
-There is a race condition when a kthread finishes after the deadline and
-before the call to kthread_stop(), which may lead to use after free.
+In IPv6, ipv6_rcv_core will parse the hop-by-hop type extension header and increase skb->transport_header by one extension header length.
+But if there are more other extension headers like fragment header at this time, the skb->transport_header points to the second extension header,
+not the transport layer header or the first extension header.
 
-Cc: Brendan Higgins <brendanhiggins@google.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Fixes: adf505457032 ("kunit: fix UAF when run kfence test case test_gfpzero")
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Rae Moar <rmoar@google.com>
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-Link: https://lore.kernel.org/r/20240408074625.65017-3-mic@digikod.net
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+This will result in the start and nexthdrp variable not pointing to the same position in ipv6frag_thdr_trunced,
+and ipv6_skip_exthdr returning incorrect offset and frag_off.Sometimes,the length of the last sharded packet is smaller than the calculated incorrect offset, resulting in packet loss.
+We can use network header to offset and calculate the correct position to solve this problem.
+
+Fixes: 9d9e937b1c8b (ipv6/netfilter: Discard first fragment not including all headers)
+Signed-off-by: Gao Xingwang <gaoxingwang1@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/try-catch.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/ipv6/reassembly.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/kunit/try-catch.c b/lib/kunit/try-catch.c
-index f7825991d576a..d9d1df28cc52e 100644
---- a/lib/kunit/try-catch.c
-+++ b/lib/kunit/try-catch.c
-@@ -11,6 +11,7 @@
- #include <linux/completion.h>
- #include <linux/kernel.h>
- #include <linux/kthread.h>
-+#include <linux/sched/task.h>
- 
- #include "try-catch-impl.h"
- 
-@@ -65,13 +66,14 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
- 	try_catch->context = context;
- 	try_catch->try_completion = &try_completion;
- 	try_catch->try_result = 0;
--	task_struct = kthread_run(kunit_generic_run_threadfn_adapter,
--				  try_catch,
--				  "kunit_try_catch_thread");
-+	task_struct = kthread_create(kunit_generic_run_threadfn_adapter,
-+				     try_catch, "kunit_try_catch_thread");
- 	if (IS_ERR(task_struct)) {
- 		try_catch->catch(try_catch->context);
- 		return;
- 	}
-+	get_task_struct(task_struct);
-+	wake_up_process(task_struct);
- 
- 	time_remaining = wait_for_completion_timeout(&try_completion,
- 						     kunit_test_timeout());
-@@ -81,6 +83,7 @@ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context)
- 		kthread_stop(task_struct);
- 	}
- 
-+	put_task_struct(task_struct);
- 	exit_code = try_catch->try_result;
- 
- 	if (!exit_code)
+diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
+index acb4f119e11f0..148bf9e3131a1 100644
+--- a/net/ipv6/reassembly.c
++++ b/net/ipv6/reassembly.c
+@@ -369,7 +369,7 @@ static int ipv6_frag_rcv(struct sk_buff *skb)
+ 	 * the source of the fragment, with the Pointer field set to zero.
+ 	 */
+ 	nexthdr = hdr->nexthdr;
+-	if (ipv6frag_thdr_truncated(skb, skb_transport_offset(skb), &nexthdr)) {
++	if (ipv6frag_thdr_truncated(skb, skb_network_offset(skb) + sizeof(struct ipv6hdr), &nexthdr)) {
+ 		__IP6_INC_STATS(net, __in6_dev_get_safely(skb->dev),
+ 				IPSTATS_MIB_INHDRERRORS);
+ 		icmpv6_param_prob(skb, ICMPV6_HDR_INCOMP, 0);
 -- 
 2.43.0
 
