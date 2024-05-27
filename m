@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-46625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87CE38D0A84
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:01:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBFC8D0C95
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5727B2154C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:01:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 752661F22734
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC49160793;
-	Mon, 27 May 2024 19:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA1115FCFC;
+	Mon, 27 May 2024 19:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnhERFuI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ow/DKcgr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCE7160787;
-	Mon, 27 May 2024 19:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC07A168C4;
+	Mon, 27 May 2024 19:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836436; cv=none; b=RKTCUQ9vOCgDvcq/ww6cengHMebAC9hRhTqAzM82jC5551BSy8daz4eLIr1H/+N3yrrmNPQBb44W1gO/RhUvljzuFh0xqDgT60MWToXeUWMbgp9Ma8xkKmDlciQsNmm2qMD76dbXIJ8xgk860zWgqGEglr68zKlG7KxoDb385sI=
+	t=1716837668; cv=none; b=I7j6h77OY9YVBZgWt8bBvzWGXX2dKyklLr2CiLuCqcEksjAW7hyGUjFajLMmriyoL07VF9L7yLtyxDCmwGNcNhNLyD3NiWQDLtkD9DGzEmKpHM8chPa3duvCn0ptvdgQbVHNzEQPG8IQX1LdKdjvy0qWyZL8ueqf/2CZ6tSmJnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836436; c=relaxed/simple;
-	bh=AVhKPBZKUOWDjAZipbkTgFlv08o8/bnZ+A7p+/hfXrI=;
+	s=arc-20240116; t=1716837668; c=relaxed/simple;
+	bh=QOpU7zf1md/1+9kjPTJ+Qzj2/c9uKYLfrQKHuqUnD9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4LcOwevQtj9grkO2U89iez7j0KmSp6Ll1DnUvdehrs9VlthCJx1twVh2azSL1PAS+bSKcu/mJsytU2I+GyPl8ZAFs7HtF6RZoreP4A5eNwAkVIvUs/fzL/tQWft6F26xbE9E5Ed+EtA5Tnb+Srrl7t2j1jmNWY99j0Am3FCWNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnhERFuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65880C2BBFC;
-	Mon, 27 May 2024 19:00:36 +0000 (UTC)
+	 MIME-Version; b=Nix5jzUkSODFgNS3njwiolXe7+cHyk74j4WjWxAOWrrKtntvd+tscaM+Wt/EQwLNFN/2Rynoh/kc8za1JiCbYHJHL9XIDlN9dmxYDTZpB5Yd5douzYF9dPvGRwswtMjs6Wx1uZm39Ox05PImMAcT8wZorCzks8xLhPKhqST4GEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ow/DKcgr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F372C2BBFC;
+	Mon, 27 May 2024 19:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836436;
-	bh=AVhKPBZKUOWDjAZipbkTgFlv08o8/bnZ+A7p+/hfXrI=;
+	s=korg; t=1716837668;
+	bh=QOpU7zf1md/1+9kjPTJ+Qzj2/c9uKYLfrQKHuqUnD9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FnhERFuI0YuG5xY55dzCekNJgHUyuFc4IHK5SfKmAlbdX29jXh0wEIEtF4UFlAl2A
-	 gGZXqXw6oXq2lZf2WHThU+y8Al2G9CJYqFZf2aUMFIfuchC5A6d9Xc8C2X3hNrlHdI
-	 OFQq1CdfCUOfWe8wrjGD9+3TeBnOYHYzOLYQvH0A=
+	b=ow/DKcgrY9v6xkrv1ifBSQvdO0m9zj5ENz40f24B3vgPKedA/b/7Gc9YrWBTLBpLv
+	 xv0t+HqMuqFoR/FMClPJ/zNQPQ5BC60b7HcWVBOfvqf5dxOUu/19BZG+HpMqal2keA
+	 20ET6XjEbZAPcUJJIkKnljnGCuruVjYL0kv3jLLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Lancelot SIX <lancelot.six@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 054/427] crypto: x86/sha512-avx2 - add missing vzeroupper
+Subject: [PATCH 6.8 099/493] drm/amdkfd: Flush the process wq before creating a kfd_process
 Date: Mon, 27 May 2024 20:51:41 +0200
-Message-ID: <20240527185606.821659988@linuxfoundation.org>
+Message-ID: <20240527185633.748349276@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Lancelot SIX <lancelot.six@amd.com>
 
-[ Upstream commit 6a24fdfe1edbafacdacd53516654d99068f20eec ]
+[ Upstream commit f5b9053398e70a0c10aa9cb4dd5910ab6bc457c5 ]
 
-Since sha512_transform_rorx() uses ymm registers, execute vzeroupper
-before returning from it.  This is necessary to avoid reducing the
-performance of SSE code.
+There is a race condition when re-creating a kfd_process for a process.
+This has been observed when a process under the debugger executes
+exec(3).  In this scenario:
+- The process executes exec.
+ - This will eventually release the process's mm, which will cause the
+   kfd_process object associated with the process to be freed
+   (kfd_process_free_notifier decrements the reference count to the
+   kfd_process to 0).  This causes kfd_process_ref_release to enqueue
+   kfd_process_wq_release to the kfd_process_wq.
+- The debugger receives the PTRACE_EVENT_EXEC notification, and tries to
+  re-enable AMDGPU traps (KFD_IOC_DBG_TRAP_ENABLE).
+ - When handling this request, KFD tries to re-create a kfd_process.
+   This eventually calls kfd_create_process and kobject_init_and_add.
 
-Fixes: e01d69cb0195 ("crypto: sha512 - Optimized SHA512 x86_64 assembly routine using AVX instructions.")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+At this point the call to kobject_init_and_add can fail because the
+old kfd_process.kobj has not been freed yet by kfd_process_wq_release.
+
+This patch proposes to avoid this race by making sure to drain
+kfd_process_wq before creating a new kfd_process object.  This way, we
+know that any cleanup task is done executing when we reach
+kobject_init_and_add.
+
+Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/sha512-avx2-asm.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/x86/crypto/sha512-avx2-asm.S b/arch/x86/crypto/sha512-avx2-asm.S
-index f08496cd68708..24973f42c43ff 100644
---- a/arch/x86/crypto/sha512-avx2-asm.S
-+++ b/arch/x86/crypto/sha512-avx2-asm.S
-@@ -680,6 +680,7 @@ SYM_TYPED_FUNC_START(sha512_transform_rorx)
- 	pop	%r12
- 	pop	%rbx
- 
-+	vzeroupper
- 	RET
- SYM_FUNC_END(sha512_transform_rorx)
- 
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 58c1fe5421934..451bb058cc620 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -829,6 +829,14 @@ struct kfd_process *kfd_create_process(struct task_struct *thread)
+ 	if (process) {
+ 		pr_debug("Process already found\n");
+ 	} else {
++		/* If the process just called exec(3), it is possible that the
++		 * cleanup of the kfd_process (following the release of the mm
++		 * of the old process image) is still in the cleanup work queue.
++		 * Make sure to drain any job before trying to recreate any
++		 * resource for this process.
++		 */
++		flush_workqueue(kfd_process_wq);
++
+ 		process = create_process(thread);
+ 		if (IS_ERR(process))
+ 			goto out;
 -- 
 2.43.0
 
