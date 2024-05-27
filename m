@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-46705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397208D0AE8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB278D0D1A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB155B221B5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DFC51C21470
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A252F161338;
-	Mon, 27 May 2024 19:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C31615FCFC;
+	Mon, 27 May 2024 19:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KciAlLFZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vmkyl1dC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8F526AF2;
-	Mon, 27 May 2024 19:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424A5262BE;
+	Mon, 27 May 2024 19:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836641; cv=none; b=kTLDf5TbJoz7lOa4YMSghl+sLvSOw2HjRdjN5PY8McgggHD6FoRNay+pokxldWcdD70p87bsKZriYhCZxlj+8rflOUbXHIl+0sQjqqrx+DLYHAnHDSzZyuA28LleIYxtXkXg4blVzz3bU/VUwPWSpOvUXV+0XxTc9ohjGXJDaQg=
+	t=1716837978; cv=none; b=A6wFUyuveiHP8C0aWvjbLbU/G+T5D7CdZ4X/t7TC5DKmOFWC5KBhaAVo3qN0tdOb+M6uYUyk5JwhkIKbJde9RpWXUxZiIptrFrOA/n4AXnbQlcMTte7mheo3IWWr2N01zbTOg/EtTm8Ev8tsqDH9P9YUo1/2LMebGE9824M0NKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836641; c=relaxed/simple;
-	bh=P69qsF4YZg4DtAGGKihq//C3uwcNxmT698QpcCS7r6M=;
+	s=arc-20240116; t=1716837978; c=relaxed/simple;
+	bh=1g2E4Hwg2261a04yIzycm07Wg6HNqNtPgQvXpbYfNQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZoDZRsqaHWJqvOVkVZhoW1RbE4QfByX8vjeqeOzu941yMqplE5ZlQiHEeBdjH3LJuNqq8NSubjkIlUloELEmhBZBFN5GNj2xJyCCu/lcbXb2nZckuAW18mBSt8+OV87yjBYuc7dwJ3O6PnO7PITh8+2lOsewB2tyYonT/6XOFVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KciAlLFZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912CDC2BBFC;
-	Mon, 27 May 2024 19:04:00 +0000 (UTC)
+	 MIME-Version; b=qqYL7tn+Oi204J1bgZEKZJ9/NisRObu4fV+1U1qq4TiUgOnuBrwxSvaoiDExIPo8bh2dfHfvdvXCmeGWPw+17rmJBvbp1p0ursVQvRI4m7oG6JJ1SfI5KtVeL/R4COUSfAYiutXMYhEcrBY8WOG4sjMcpQ81B+4H/fcQ7FjcrGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vmkyl1dC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD54C2BBFC;
+	Mon, 27 May 2024 19:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836640;
-	bh=P69qsF4YZg4DtAGGKihq//C3uwcNxmT698QpcCS7r6M=;
+	s=korg; t=1716837978;
+	bh=1g2E4Hwg2261a04yIzycm07Wg6HNqNtPgQvXpbYfNQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KciAlLFZZlFseYOGGLkazxPUoIppPvJlM0nywkRftI3o6LyBKqiAN90hdsCAdZEpw
-	 dg6gDdfaBb85je4lTaII21SbCqh4WeaAop/odtvLqzoKAErEwdQg+NWxJKNcI+2uw0
-	 0mMICEUPvbGhdz5CSkSCNqcxxoVQcUdyw/vjohOA=
+	b=Vmkyl1dCyTNzx7YOKqISQI5HT9qd6cbPz7E2UjtnSwE5pbt5KmdlGEZw2AvfR6Inn
+	 32rPxyqTE4fOVcnbhdBbxvfy62XEO0+fO8cXpS4dOGCjIz0dqA8DpzPeCPRd6LCjjY
+	 uAw2Hzfrq3reRLejaQLviMiy2mGDZ18gbjNm3GMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 131/427] scsi: ufs: core: Perform read back after writing UTP_TASK_REQ_LIST_BASE_H
+Subject: [PATCH 6.8 176/493] wifi: iwlwifi: reconfigure TLC during HW restart
 Date: Mon, 27 May 2024 20:52:58 +0200
-Message-ID: <20240527185614.132832000@linuxfoundation.org>
+Message-ID: <20240527185636.107462641@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 408e28086f1c7a6423efc79926a43d7001902fae ]
+[ Upstream commit 96833fb3c7abfd57bb3ee2de2534c5a3f52b0838 ]
 
-Currently, the UTP_TASK_REQ_LIST_BASE_L/UTP_TASK_REQ_LIST_BASE_H regs are
-written to and then completed with an mb().
+Since the HW restart flow with multi-link is very similar to
+the initial association, we do need to reconfigure TLC there.
+Remove the check that prevented that.
 
-mb() ensures that the write completes, but completion doesn't mean that it
-isn't stored in a buffer somewhere. The recommendation for ensuring these
-bits have taken effect on the device is to perform a read back to force it
-to make it all the way to the device. This is documented in device-io.rst
-and a talk by Will Deacon on this can be seen over here:
-
-    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
-
-Let's do that to ensure the bits hit the device. Because the mb()'s purpose
-wasn't to add extra ordering (on top of the ordering guaranteed by
-writel()/readl()), it can safely be removed.
-
-Fixes: 88441a8d355d ("scsi: ufs: core: Add hibernation callbacks")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-7-181252004586@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: d2d0468f60cd ("wifi: iwlwifi: mvm: configure TLC on link activation")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320232419.a00adcfe381a.Ic798beccbb7b7d852dc976d539205353588853b0@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index a0f8e930167d7..1352f11c94bb6 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10400,7 +10400,7 @@ int ufshcd_system_restore(struct device *dev)
- 	 * are updated with the latest queue addresses. Only after
- 	 * updating these addresses, we can queue the new commands.
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 0aa54d33e3ba1..935cbe2026491 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -292,13 +292,8 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
+ 	 * this needs the phy context assigned (and in FW?), and we cannot
+ 	 * do it later because it needs to be initialized as soon as we're
+ 	 * able to TX on the link, i.e. when active.
+-	 *
+-	 * Firmware restart isn't quite correct yet for MLO, but we don't
+-	 * need to do it in that case anyway since it will happen from the
+-	 * normal station state callback.
  	 */
--	mb();
-+	ufshcd_readl(hba, REG_UTP_TASK_REQ_LIST_BASE_H);
+-	if (mvmvif->ap_sta &&
+-	    !test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status)) {
++	if (mvmvif->ap_sta) {
+ 		struct ieee80211_link_sta *link_sta;
  
- 	/* Resuming from hibernate, assume that link was OFF */
- 	ufshcd_set_link_off(hba);
+ 		rcu_read_lock();
 -- 
 2.43.0
 
