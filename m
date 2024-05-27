@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-46457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B768D0504
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:00:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E61B8D04BA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1DE4B2F757
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:53:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 900A91C20A4A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0002817839F;
-	Mon, 27 May 2024 14:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E2417B410;
+	Mon, 27 May 2024 14:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fLw4r4OS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gCowWLh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF993178397;
-	Mon, 27 May 2024 14:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1669F17B408;
+	Mon, 27 May 2024 14:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819620; cv=none; b=kXNMPDL4nTlU4hGn055Y7RSuJCGLkFl5E57A9lYpG4ALtTEMgj8x7XPzIX3Kgk8CemoGc17Kv9TIZEA5sImnu6yd1hkYsDHMTExPFlxZNae38C407CS14UE2WA5dmlRnOhqK0kh9EuEhqH0EOqD0AN6cJvZMef0UXeH0wVoJNpo=
+	t=1716819626; cv=none; b=ubZ92oPOrZKHjqOzCdtCxtOmohpEafVp8enuYIddwa5vZhytIdRvSRbgww7+3isPj602tZQTDo5+hhJKYYciYZxnpY2fPGSt93VB/xA1ndSt5r2vd5EFH2CsL8KBCPeIsSL7ZGYz6nJIaSlg7XgNF2O4/WqpnNMLe5ialVGYB90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819620; c=relaxed/simple;
-	bh=y1nyW9KTnoS/pONs0tNyp18LIyN43g3bsaZglcELK/k=;
+	s=arc-20240116; t=1716819626; c=relaxed/simple;
+	bh=HksO7wi2Tu4etRYRKkyII0g6QFyH1LvtCOoKVJ36MLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inXgqqvmDBgMDPkXLt8uQHgzexOXvWY6B6tc8OJ8hBiCTzll+pKvFOXiP2Hh01LikepQwO5Zcwayb2qO+h7YtGIKqRbbMyIPKZpuhX85vDqMRVALuSpMQvwZL6GqYdEV65cd5Odajm4FAcDga+zKZuNt+9yOgPSq7AK9SblZ37c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fLw4r4OS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121F9C4AF07;
-	Mon, 27 May 2024 14:20:18 +0000 (UTC)
+	 MIME-Version; b=gUPEMuXU+LTQOJj1SufUTLuzntPAcDdpqtg//1VAej+NfAUX4BkYzBVR1kWtxgSgd9bzhja32b2N/bvIoIWJ1wl8LUffALqB8zlAKFSLnnvl4dswVZprbEouFH3ZN9tsRTBQfq91UlrneUiBsflBsbiWpwlr6Mpiq0funBVqMoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gCowWLh2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3D5C2BBFC;
+	Mon, 27 May 2024 14:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819620;
-	bh=y1nyW9KTnoS/pONs0tNyp18LIyN43g3bsaZglcELK/k=;
+	s=k20201202; t=1716819626;
+	bh=HksO7wi2Tu4etRYRKkyII0g6QFyH1LvtCOoKVJ36MLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fLw4r4OSFREmw9iiFsgf/79N/dTNE3BsVaU1CIkHP7KstB2elW/dLjZb/D2VlNtfE
-	 IQoInUjxPeoMEYNi0x+SRgO5l2TNMDS83OpUtmwRXU074DZmNilGqgRvVojFuwspd7
-	 XXyLS3bZp2q2SgWjAurxtSMo1B6ka/d5wzXvXu2nG4c+WY94cEqU00SpNpp93/7pYc
-	 IqQbB10j5Q6rH4XetNWXnM7O9sO615i49LEUK8lzmQoarUVHPyDTRhAr3ksj9oFKWz
-	 a7gwMfnZJg2FqRX8vE4f3mDyjx7cpCTTwh7phWniJfO1E6CFa3CrNCy1r96oKwG4nf
-	 NbmgFNcRs0QqA==
+	b=gCowWLh2sXP/MWEQjNYGiFN4hrc5UeFPjw73TNCi9svpFlcJvzaOH/xuo2yVwjiMM
+	 EpfVhiLzOCEOrcVyAqu2XAtdUCUSctk5QvrPcwyhofOd0bN7KJ4VAmyQb8vtRCUZbB
+	 UJuIvmV3ySdF7P0SP8F/98Eo5iwR9liznem+h39XIQ79qnbDnmbW8GtuFbbJVj5Oac
+	 /4IYro19RRQTGqZbO1v2oq/vFeEBlj6GHjdrBIT6Dn0s1rcmfEXj5Bkp5oc3RJ6I6B
+	 g1sQy/ALWl1CI47X49/n0s+RhpbHBj8Jqdyab2bJ6cD9X4TQpDc23YwAOI9UG1xJBh
+	 sw6cIuEJHB/nQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manish Rangankar <mrangankar@marvell.com>,
-	Martin Hoyer <mhoyer@redhat.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Benjamin Tissoires <bentiss@kernel.org>,
+	Peter Hutterer <peter.hutterer@who-t.net>,
 	Sasha Levin <sashal@kernel.org>,
-	njavali@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 2/3] scsi: qedi: Fix crash while reading debugfs attribute
-Date: Mon, 27 May 2024 10:20:04 -0400
-Message-ID: <20240527142010.3855135-2-sashal@kernel.org>
+	jikos@kernel.org,
+	linux-input@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 3/3] HID: bpf: add in-tree HID-BPF fix for the HP Elite Presenter Mouse
+Date: Mon, 27 May 2024 10:20:05 -0400
+Message-ID: <20240527142010.3855135-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527142010.3855135-1-sashal@kernel.org>
 References: <20240527142010.3855135-1-sashal@kernel.org>
@@ -70,93 +67,92 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.315
 Content-Transfer-Encoding: 8bit
 
-From: Manish Rangankar <mrangankar@marvell.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit 28027ec8e32ecbadcd67623edb290dad61e735b5 ]
+[ Upstream commit 4e6d2a297dd5be26ad409b7a05b20bd033d1c95e ]
 
-The qedi_dbg_do_not_recover_cmd_read() function invokes sprintf() directly
-on a __user pointer, which results into the crash.
+Duplicate of commit 0db117359e47 ("HID: add quirk for 03f0:464a HP Elite
+Presenter Mouse"), but in a slightly better way.
 
-To fix this issue, use a small local stack buffer for sprintf() and then
-call simple_read_from_buffer(), which in turns make the copy_to_user()
-call.
+This time we actually change the application collection, making clearer
+for userspace what the second mouse is.
 
-BUG: unable to handle page fault for address: 00007f4801111000
-PGD 8000000864df6067 P4D 8000000864df6067 PUD 864df7067 PMD 846028067 PTE 0
-Oops: 0002 [#1] PREEMPT SMP PTI
-Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 06/15/2023
-RIP: 0010:memcpy_orig+0xcd/0x130
-RSP: 0018:ffffb7a18c3ffc40 EFLAGS: 00010202
-RAX: 00007f4801111000 RBX: 00007f4801111000 RCX: 000000000000000f
-RDX: 000000000000000f RSI: ffffffffc0bfd7a0 RDI: 00007f4801111000
-RBP: ffffffffc0bfd7a0 R08: 725f746f6e5f6f64 R09: 3d7265766f636572
-R10: ffffb7a18c3ffd08 R11: 0000000000000000 R12: 00007f4881110fff
-R13: 000000007fffffff R14: ffffb7a18c3ffca0 R15: ffffffffc0bfd7af
-FS:  00007f480118a740(0000) GS:ffff98e38af00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f4801111000 CR3: 0000000864b8e001 CR4: 00000000007706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body+0x1a/0x60
- ? page_fault_oops+0x183/0x510
- ? exc_page_fault+0x69/0x150
- ? asm_exc_page_fault+0x22/0x30
- ? memcpy_orig+0xcd/0x130
- vsnprintf+0x102/0x4c0
- sprintf+0x51/0x80
- qedi_dbg_do_not_recover_cmd_read+0x2f/0x50 [qedi 6bcfdeeecdea037da47069eca2ba717c84a77324]
- full_proxy_read+0x50/0x80
- vfs_read+0xa5/0x2e0
- ? folio_add_new_anon_rmap+0x44/0xa0
- ? set_pte_at+0x15/0x30
- ? do_pte_missing+0x426/0x7f0
- ksys_read+0xa5/0xe0
- do_syscall_64+0x58/0x80
- ? __count_memcg_events+0x46/0x90
- ? count_memcg_event_mm+0x3d/0x60
- ? handle_mm_fault+0x196/0x2f0
- ? do_user_addr_fault+0x267/0x890
- ? exc_page_fault+0x69/0x150
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7f4800f20b4d
+Note that having both hid-quirks fix and this HID-BPF fix is not a
+problem at all.
 
-Tested-by: Martin Hoyer <mhoyer@redhat.com>
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
-Link: https://lore.kernel.org/r/20240415072155.30840-1-mrangankar@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20240410-bpf_sources-v1-4-a8bf16033ef8@kernel.org
+Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_debugfs.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ .../hid/bpf/progs/HP__Elite-Presenter.bpf.c   | 58 +++++++++++++++++++
+ 1 file changed, 58 insertions(+)
+ create mode 100644 drivers/hid/bpf/progs/HP__Elite-Presenter.bpf.c
 
-diff --git a/drivers/scsi/qedi/qedi_debugfs.c b/drivers/scsi/qedi/qedi_debugfs.c
-index fd914ca4149a8..6bb5f2b31b881 100644
---- a/drivers/scsi/qedi/qedi_debugfs.c
-+++ b/drivers/scsi/qedi/qedi_debugfs.c
-@@ -136,15 +136,11 @@ static ssize_t
- qedi_dbg_do_not_recover_cmd_read(struct file *filp, char __user *buffer,
- 				 size_t count, loff_t *ppos)
- {
--	size_t cnt = 0;
--
--	if (*ppos)
--		return 0;
-+	char buf[64];
-+	int len;
- 
--	cnt = sprintf(buffer, "do_not_recover=%d\n", qedi_do_not_recover);
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	len = sprintf(buf, "do_not_recover=%d\n", qedi_do_not_recover);
-+	return simple_read_from_buffer(buffer, count, ppos, buf, len);
- }
- 
- static int
+diff --git a/drivers/hid/bpf/progs/HP__Elite-Presenter.bpf.c b/drivers/hid/bpf/progs/HP__Elite-Presenter.bpf.c
+new file mode 100644
+index 0000000000000..3d14bbb6f2762
+--- /dev/null
++++ b/drivers/hid/bpf/progs/HP__Elite-Presenter.bpf.c
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (c) 2023 Benjamin Tissoires
++ */
++
++#include "vmlinux.h"
++#include "hid_bpf.h"
++#include "hid_bpf_helpers.h"
++#include <bpf/bpf_tracing.h>
++
++#define VID_HP 0x03F0
++#define PID_ELITE_PRESENTER 0x464A
++
++HID_BPF_CONFIG(
++	HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_GENERIC, VID_HP, PID_ELITE_PRESENTER)
++);
++
++/*
++ * Already fixed as of commit 0db117359e47 ("HID: add quirk for 03f0:464a
++ * HP Elite Presenter Mouse") in the kernel, but this is a slightly better
++ * fix.
++ *
++ * The HP Elite Presenter Mouse HID Record Descriptor shows
++ * two mice (Report ID 0x1 and 0x2), one keypad (Report ID 0x5),
++ * two Consumer Controls (Report IDs 0x6 and 0x3).
++ * Prior to these fixes it registers one mouse, one keypad
++ * and one Consumer Control, and it was usable only as a
++ * digital laser pointer (one of the two mouses).
++ * We replace the second mouse collection with a pointer collection,
++ * allowing to use the device both as a mouse and a digital laser
++ * pointer.
++ */
++
++SEC("fmod_ret/hid_bpf_rdesc_fixup")
++int BPF_PROG(hid_fix_rdesc, struct hid_bpf_ctx *hctx)
++{
++	__u8 *data = hid_bpf_get_data(hctx, 0 /* offset */, 4096 /* size */);
++
++	if (!data)
++		return 0; /* EPERM check */
++
++	/* replace application mouse by application pointer on the second collection */
++	if (data[79] == 0x02)
++		data[79] = 0x01;
++
++	return 0;
++}
++
++SEC("syscall")
++int probe(struct hid_bpf_probe_args *ctx)
++{
++	ctx->retval = ctx->rdesc_size != 264;
++	if (ctx->retval)
++		ctx->retval = -EINVAL;
++
++	return 0;
++}
++
++char _license[] SEC("license") = "GPL";
 -- 
 2.43.0
 
