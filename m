@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59E68D0CCB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E40C8D0AC6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4166C1F23188
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A632FB21AE8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FECE16079A;
-	Mon, 27 May 2024 19:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3307F16079A;
+	Mon, 27 May 2024 19:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGNu3hlq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVDpPBci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0D215FA91;
-	Mon, 27 May 2024 19:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452C6161911;
+	Mon, 27 May 2024 19:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837786; cv=none; b=Ti0qDsZifPpqof18zkapOjSHRaVZT73BiZ4jELJ+LixeNI79tYL3iNbN39FlbonYPGykLxwjuYlOk1S/njMjk6VLY5iKmev5fw6ptmkjT6gbsWf0dkY/b9NLXsCZ/28UknaDEO6hPBrwShjOTGj9Okgfkt21hh6q8Dgi4VWQGy0=
+	t=1716836557; cv=none; b=TviQsug1IofGkN91eQ3KF80cv3H6Hl0odU1Tg7LL3TJkitCoTLMbGjWzoZUrVmojKU7BlCtRAojg9zx0hrb+5QZBUshVQzc+pHCbnmug95+7DtvRdHxLZGeRBjLH1BSvFY6BKpHcN+harge/i1NgypQkahQAhReq1ABsLeDtld4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837786; c=relaxed/simple;
-	bh=7KHY4BTf1gJ3m1LAPSut2xbzSmdsL116GDKMw7ddda8=;
+	s=arc-20240116; t=1716836557; c=relaxed/simple;
+	bh=gDDH2LtUiIoBbKP3sV5WKVtJF+7GeFqh2aY2gMV9Kv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WW174jlZqI6lnIkdOLE2pMlez0OIFUCtzgYE4jibrrSYAZpGGAb7LDfU5srYuIzCAUJmXwDmIOUNScjAUDMuMuq+vOcYoo1TFV9nMHsc2ayavXgoE/0Zc5gi09747fsvRBXkc9x92OIpnnj6IM8fouDJyKWFz3tcxFFqnHyJGrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGNu3hlq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92D0C2BBFC;
-	Mon, 27 May 2024 19:23:05 +0000 (UTC)
+	 MIME-Version; b=oxbclnD2N1sp16s/YOHnVuRcHYKEjjhrFtO914DhxnDTpxo4QhnVSJ9bGj+V/Tj4hbikVMNa7A93GOPO+JQxJwBumpWnJqDDNCsYGfVZOXgzkEVu2nJVjeiV3ExOj8T6V55i+pYjxXCpRinLJElx5SFYBF7KJXNaqVlnPlK+EqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVDpPBci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C506C32786;
+	Mon, 27 May 2024 19:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837786;
-	bh=7KHY4BTf1gJ3m1LAPSut2xbzSmdsL116GDKMw7ddda8=;
+	s=korg; t=1716836556;
+	bh=gDDH2LtUiIoBbKP3sV5WKVtJF+7GeFqh2aY2gMV9Kv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGNu3hlqL3H5Rc9nWciIbEmcqhZxux/n7wKEig1JdhIrMX/QzGRLZHl+BVYqSw6i7
-	 pMdBrjeEiC4Iwgd6MuwOHeqUVddD7Ex1yo8z06jl2d4YkSFccsI6coT/+1uKGQc5B4
-	 jV1o4Vn6UgUfWqEposVbjoPoYy6jJJ3LmNTucvnI=
+	b=PVDpPBciJktRLjOQ03IpVJxeBwGttS7zBH7lB84T89BMxTsL2grO9C2e8/KxtBf/l
+	 3yBHDnRZuiUxVvekkSin2ry1XYgmZemDJpo2YOLrC25Fk9gjaTrcUR8ENjE2OL3N1s
+	 mfAYd2ZAMejvmApXyFpZmSX5OB0jBCeSY9wMV+KQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 145/493] soc: mediatek: cmdq: Fix typo of CMDQ_JUMP_RELATIVE
-Date: Mon, 27 May 2024 20:52:27 +0200
-Message-ID: <20240527185635.186710140@linuxfoundation.org>
+Subject: [PATCH 6.9 101/427] wifi: iwlwifi: mvm: Do not warn on invalid link on scan complete
+Date: Mon, 27 May 2024 20:52:28 +0200
+Message-ID: <20240527185611.204856637@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit ed4d5ab179b9f0a60da87c650a31f1816db9b4b4 ]
+[ Upstream commit 1c78d39f4ede227e50e36165b3a76bc7c37ead02 ]
 
-For cmdq jump command, offset 0 means relative jump and offset 1
-means absolute jump. cmdq_pkt_jump() is absolute jump, so fix the
-typo of CMDQ_JUMP_RELATIVE in cmdq_pkt_jump().
+As it is possible that by the time the scan is completed the link was
+already removed.
 
-Fixes: 946f1792d3d7 ("soc: mediatek: cmdq: add jump function")
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240222154120.16959-2-chunkuang.hu@kernel.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 3a5a5cb06700 ("wifi: iwlwifi: mvm: Correctly report TSF data in scan complete")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.619d3574a757.I0523e92547f0288c8b0119b1fdc5e967a5a8956e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-cmdq-helper.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/mediatek/mtk-cmdq-helper.c b/drivers/soc/mediatek/mtk-cmdq-helper.c
-index b0cd071c4719b..0b2e5690dacfa 100644
---- a/drivers/soc/mediatek/mtk-cmdq-helper.c
-+++ b/drivers/soc/mediatek/mtk-cmdq-helper.c
-@@ -14,7 +14,8 @@
- #define CMDQ_POLL_ENABLE_MASK	BIT(0)
- #define CMDQ_EOC_IRQ_EN		BIT(0)
- #define CMDQ_REG_TYPE		1
--#define CMDQ_JUMP_RELATIVE	1
-+#define CMDQ_JUMP_RELATIVE	0
-+#define CMDQ_JUMP_ABSOLUTE	1
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 11559563ae381..22bc032cffc8b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -3171,8 +3171,13 @@ void iwl_mvm_rx_umac_scan_complete_notif(struct iwl_mvm *mvm,
+ 		struct iwl_mvm_vif_link_info *link_info =
+ 			scan_vif->link[mvm->scan_link_id];
  
- struct cmdq_instruction {
- 	union {
-@@ -397,7 +398,7 @@ int cmdq_pkt_jump(struct cmdq_pkt *pkt, dma_addr_t addr)
- 	struct cmdq_instruction inst = {};
+-		if (!WARN_ON(!link_info))
++		/* It is possible that by the time the scan is complete the link
++		 * was already removed and is not valid.
++		 */
++		if (link_info)
+ 			memcpy(info.tsf_bssid, link_info->bssid, ETH_ALEN);
++		else
++			IWL_DEBUG_SCAN(mvm, "Scan link is no longer valid\n");
  
- 	inst.op = CMDQ_CODE_JUMP;
--	inst.offset = CMDQ_JUMP_RELATIVE;
-+	inst.offset = CMDQ_JUMP_ABSOLUTE;
- 	inst.value = addr >>
- 		cmdq_get_shift_pa(((struct cmdq_client *)pkt->cl)->chan);
- 	return cmdq_pkt_append_command(pkt, inst);
+ 		ieee80211_scan_completed(mvm->hw, &info);
+ 		mvm->scan_vif = NULL;
 -- 
 2.43.0
 
