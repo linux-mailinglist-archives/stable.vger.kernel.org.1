@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91338D0B1E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27A08D0D4B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3379FB21C70
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF2C282492
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA2515FA85;
-	Mon, 27 May 2024 19:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1064415FD0F;
+	Mon, 27 May 2024 19:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yI8f5IBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5DxTsDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE32E1078F;
-	Mon, 27 May 2024 19:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40FD262BE;
+	Mon, 27 May 2024 19:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836768; cv=none; b=TAp8PkmrXZw0istQ+fvyKnfvL5QOPtgf3X8n79oLFMjEkTaV/GEdq1yImazq1XhioRC2VRRTCY2IqN+B9waVjU8zKRfvARvnRLG7RnbRTBbRJRk3Gdi7wWfbYjcLQdFz1oVw1geMD54WA4Mf7ey9DTu1Ux+RLwVW5Npv58YVmgo=
+	t=1716838097; cv=none; b=peBCeVD1GIfPXCkYYFCexpdg9lVpT4MAQ13lzfsW1JgpIbsUNAHkVmwGhBxm3HN9OtDwM6FCZItWBNFVcAjLZGAMEihtZJE45fQLvSY//LL7o3OzchLrZf8/XfAkNO5ClaesSw7i4nqLdboPQCzMDW4PsOdg5qVnZjJva1YQQU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836768; c=relaxed/simple;
-	bh=rPO4R2khrsQ4iLnvH+LVhthntoS0n56mUwutVZ0k/ds=;
+	s=arc-20240116; t=1716838097; c=relaxed/simple;
+	bh=/Laq/vcWqEL6pcP5L34OWmA7sXGdRSRyUqbbgXMagPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uY7XdAvSLL02WxIn7NFSxo2Lh0hesF67XsWgESWKo39Aq3dyPEDxHJ4wxV5gtbqasQsgjeFvW9XetUGGs3FvaRDFBs2ukax8nQyU0/FYO+L7MMh1gVmGFY/nivx4BtyPpTtF6IE9/42KvD9i7Sf84Cg1GnfC+W64N+1pHl/3lIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yI8f5IBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0005C2BBFC;
-	Mon, 27 May 2024 19:06:07 +0000 (UTC)
+	 MIME-Version; b=uI/Tl7wrbgxil+I3EJlDftop9aSzfRg4L8KpSXLnKNeLc/hoPwRN/ZUlds+3yf5KEoBHEMBMBbJCbMdrMOrL8k07tkKBkPN6Y/TwyyBq2DXT9NWZ9QBRecyDwfnS20/xJiD7v5jVnXzp7nBBojEDxsAY6qYIwA8FnT4SlbQ/4Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5DxTsDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18CFC2BBFC;
+	Mon, 27 May 2024 19:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836768;
-	bh=rPO4R2khrsQ4iLnvH+LVhthntoS0n56mUwutVZ0k/ds=;
+	s=korg; t=1716838097;
+	bh=/Laq/vcWqEL6pcP5L34OWmA7sXGdRSRyUqbbgXMagPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yI8f5IBAovkJOlZ54TgnurVgyD0fNIhAJS7CLqW1mzrDlrSUhmmaUz1AdZcUuXbZD
-	 h0QkzyHxrYJ90m/0iBXrAyBUvmbYLOvX3TrNT+KKuG5IBkBSn36CrN9SM5HK+EKTX1
-	 on7LH+dV/auPvL39cApNrrtbjiAHuMQj01yDmF6I=
+	b=d5DxTsDVdxovluDXMHBQquEX3B1ZUhH49g/YqMEQTzxsbIvLRkbHi53t4XMQ6WEMs
+	 pkxXANnnv2udXTTC2dz/npUYZK649odx1mz2vNOqLavHYKiqPVJhlbkg5PrpgRmAR2
+	 JBYebvpCJRjCinmBd794t51iT/ujj8afgSNSOT28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Xingui Yang <yangxingui@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 178/427] net: dsa: mv88e6xxx: Avoid EEPROM timeout without EEPROM on 88E6250-family switches
+Subject: [PATCH 6.8 223/493] scsi: libsas: Fix the failure of adding phy with zero-address to port
 Date: Mon, 27 May 2024 20:53:45 +0200
-Message-ID: <20240527185618.820877335@linuxfoundation.org>
+Message-ID: <20240527185637.599216572@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,174 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-[ Upstream commit e44894e2aa4eb311ceda134de8b6f51ff979211b ]
+[ Upstream commit 06036a0a5db34642c5dbe22021a767141f010b7a ]
 
-88E6250-family switches have the quirk that the EEPROM Running flag can
-get stuck at 1 when no EEPROM is connected, causing
-mv88e6xxx_g2_eeprom_wait() to time out. We still want to wait for the
-EEPROM however, to avoid interrupting a transfer and leaving the EEPROM
-in an invalid state.
+As of commit 7d1d86518118 ("[SCSI] libsas: fix false positive 'device
+attached' conditions"), reset the phy->entacted_sas_addr address to a
+zero-address when the link rate is less than 1.5G.
 
-The condition to wait for recommended by the hardware spec is the EEInt
-flag, however this flag is cleared on read, so before the hardware reset,
-is may have been cleared already even though the EEPROM has been read
-successfully.
+Currently we find that when a new device is attached, and the link rate is
+less than 1.5G, but the device type is not NO_DEVICE, for example: the link
+rate is SAS_PHY_RESET_IN_PROGRESS and the device type is stp. After setting
+the phy->entacted_sas_addr address to the zero address, the port will
+continue to be created for the phy with the zero-address, and other phys
+with the zero-address will be tried to be added to the new port:
 
-For this reason, we revive the mv88e6xxx_g1_wait_eeprom_done() function
-that was removed in commit 6ccf50d4d474
-("net: dsa: mv88e6xxx: Avoid EEPROM timeout when EEPROM is absent") in a
-slightly refactored form, and introduce a new
-mv88e6xxx_g1_wait_eeprom_done_prereset() that additionally handles this
-case by triggering another EEPROM reload that can be waited on.
+[562240.051197] sas: ex 500e004aaaaaaa1f phy19:U:0 attached: 0000000000000000 (no device)
+// phy19 is deleted but still on the parent port's phy_list
+[562240.062536] sas: ex 500e004aaaaaaa1f phy0 new device attached
+[562240.062616] sas: ex 500e004aaaaaaa1f phy00:U:5 attached: 0000000000000000 (stp)
+[562240.062680] port-7:7:0: trying to add phy phy-7:7:19 fails: it's already part of another port
 
-On other switch models without this quirk, mv88e6xxx_g2_eeprom_wait() is
-kept, as it avoids the additional reload.
+Therefore, it should be the same as sas_get_phy_attached_dev(). Only when
+device_type is SAS_PHY_UNUSED, sas_address is set to the 0 address.
 
-Fixes: 6ccf50d4d474 ("net: dsa: mv88e6xxx: Avoid EEPROM timeout when EEPROM is absent")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 7d1d86518118 ("[SCSI] libsas: fix false positive 'device attached' conditions")
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Link: https://lore.kernel.org/r/20240312141103.31358-5-yangxingui@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c    |  4 +-
- drivers/net/dsa/mv88e6xxx/global1.c | 89 +++++++++++++++++++++++++++++
- drivers/net/dsa/mv88e6xxx/global1.h |  2 +
- 3 files changed, 93 insertions(+), 2 deletions(-)
+ drivers/scsi/libsas/sas_expander.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index ab13c8bc199c0..5a202edfec371 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5028,8 +5028,8 @@ static const struct mv88e6xxx_ops mv88e6250_ops = {
- 	.watchdog_ops = &mv88e6250_watchdog_ops,
- 	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
- 	.pot_clear = mv88e6xxx_g2_pot_clear,
--	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
--	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
-+	.hardware_reset_pre = mv88e6250_g1_wait_eeprom_done_prereset,
-+	.hardware_reset_post = mv88e6xxx_g1_wait_eeprom_done,
- 	.reset = mv88e6250_g1_reset,
- 	.vtu_getnext = mv88e6185_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
-diff --git a/drivers/net/dsa/mv88e6xxx/global1.c b/drivers/net/dsa/mv88e6xxx/global1.c
-index 49444a72ff095..9820cd5967574 100644
---- a/drivers/net/dsa/mv88e6xxx/global1.c
-+++ b/drivers/net/dsa/mv88e6xxx/global1.c
-@@ -75,6 +75,95 @@ static int mv88e6xxx_g1_wait_init_ready(struct mv88e6xxx_chip *chip)
- 	return mv88e6xxx_g1_wait_bit(chip, MV88E6XXX_G1_STS, bit, 1);
- }
- 
-+static int mv88e6250_g1_eeprom_reload(struct mv88e6xxx_chip *chip)
-+{
-+	/* MV88E6185_G1_CTL1_RELOAD_EEPROM is also valid for 88E6250 */
-+	int bit = __bf_shf(MV88E6185_G1_CTL1_RELOAD_EEPROM);
-+	u16 val;
-+	int err;
-+
-+	err = mv88e6xxx_g1_read(chip, MV88E6XXX_G1_CTL1, &val);
-+	if (err)
-+		return err;
-+
-+	val |= MV88E6185_G1_CTL1_RELOAD_EEPROM;
-+
-+	err = mv88e6xxx_g1_write(chip, MV88E6XXX_G1_CTL1, val);
-+	if (err)
-+		return err;
-+
-+	return mv88e6xxx_g1_wait_bit(chip, MV88E6XXX_G1_CTL1, bit, 0);
-+}
-+
-+/* Returns 0 when done, -EBUSY when waiting, other negative codes on error */
-+static int mv88e6xxx_g1_is_eeprom_done(struct mv88e6xxx_chip *chip)
-+{
-+	u16 val;
-+	int err;
-+
-+	err = mv88e6xxx_g1_read(chip, MV88E6XXX_G1_STS, &val);
-+	if (err < 0) {
-+		dev_err(chip->dev, "Error reading status");
-+		return err;
-+	}
-+
-+	/* If the switch is still resetting, it may not
-+	 * respond on the bus, and so MDIO read returns
-+	 * 0xffff. Differentiate between that, and waiting for
-+	 * the EEPROM to be done by bit 0 being set.
-+	 */
-+	if (val == 0xffff || !(val & BIT(MV88E6XXX_G1_STS_IRQ_EEPROM_DONE)))
-+		return -EBUSY;
-+
-+	return 0;
-+}
-+
-+/* As the EEInt (EEPROM done) flag clears on read if the status register, this
-+ * function must be called directly after a hard reset or EEPROM ReLoad request,
-+ * or the done condition may have been missed
-+ */
-+int mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip)
-+{
-+	const unsigned long timeout = jiffies + 1 * HZ;
-+	int ret;
-+
-+	/* Wait up to 1 second for the switch to finish reading the
-+	 * EEPROM.
-+	 */
-+	while (time_before(jiffies, timeout)) {
-+		ret = mv88e6xxx_g1_is_eeprom_done(chip);
-+		if (ret != -EBUSY)
-+			return ret;
-+	}
-+
-+	dev_err(chip->dev, "Timeout waiting for EEPROM done");
-+	return -ETIMEDOUT;
-+}
-+
-+int mv88e6250_g1_wait_eeprom_done_prereset(struct mv88e6xxx_chip *chip)
-+{
-+	int ret;
-+
-+	ret = mv88e6xxx_g1_is_eeprom_done(chip);
-+	if (ret != -EBUSY)
-+		return ret;
-+
-+	/* Pre-reset, we don't know the state of the switch - when
-+	 * mv88e6xxx_g1_is_eeprom_done() returns -EBUSY, that may be because
-+	 * the switch is actually busy reading the EEPROM, or because
-+	 * MV88E6XXX_G1_STS_IRQ_EEPROM_DONE has been cleared by an unrelated
-+	 * status register read already.
-+	 *
-+	 * To account for the latter case, trigger another EEPROM reload for
-+	 * another chance at seeing the done flag.
-+	 */
-+	ret = mv88e6250_g1_eeprom_reload(chip);
-+	if (ret)
-+		return ret;
-+
-+	return mv88e6xxx_g1_wait_eeprom_done(chip);
-+}
-+
- /* Offset 0x01: Switch MAC Address Register Bytes 0 & 1
-  * Offset 0x02: Switch MAC Address Register Bytes 2 & 3
-  * Offset 0x03: Switch MAC Address Register Bytes 4 & 5
-diff --git a/drivers/net/dsa/mv88e6xxx/global1.h b/drivers/net/dsa/mv88e6xxx/global1.h
-index 1095261f5b490..3dbb7a1b8fe11 100644
---- a/drivers/net/dsa/mv88e6xxx/global1.h
-+++ b/drivers/net/dsa/mv88e6xxx/global1.h
-@@ -282,6 +282,8 @@ int mv88e6xxx_g1_set_switch_mac(struct mv88e6xxx_chip *chip, u8 *addr);
- int mv88e6185_g1_reset(struct mv88e6xxx_chip *chip);
- int mv88e6352_g1_reset(struct mv88e6xxx_chip *chip);
- int mv88e6250_g1_reset(struct mv88e6xxx_chip *chip);
-+int mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip);
-+int mv88e6250_g1_wait_eeprom_done_prereset(struct mv88e6xxx_chip *chip);
- 
- int mv88e6185_g1_ppu_enable(struct mv88e6xxx_chip *chip);
- int mv88e6185_g1_ppu_disable(struct mv88e6xxx_chip *chip);
+diff --git a/drivers/scsi/libsas/sas_expander.c b/drivers/scsi/libsas/sas_expander.c
+index f6e6db8b8aba9..e97f4e01a865a 100644
+--- a/drivers/scsi/libsas/sas_expander.c
++++ b/drivers/scsi/libsas/sas_expander.c
+@@ -239,8 +239,7 @@ static void sas_set_ex_phy(struct domain_device *dev, int phy_id,
+ 	/* help some expanders that fail to zero sas_address in the 'no
+ 	 * device' case
+ 	 */
+-	if (phy->attached_dev_type == SAS_PHY_UNUSED ||
+-	    phy->linkrate < SAS_LINK_RATE_1_5_GBPS)
++	if (phy->attached_dev_type == SAS_PHY_UNUSED)
+ 		memset(phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
+ 	else
+ 		memcpy(phy->attached_sas_addr, dr->attached_sas_addr, SAS_ADDR_SIZE);
 -- 
 2.43.0
 
