@@ -1,93 +1,90 @@
-Return-Path: <stable+bounces-46288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B268CFDDA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 12:07:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2808CFE33
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 12:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BA39B227BE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 10:07:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B19C51F2355F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 10:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA8713AA4D;
-	Mon, 27 May 2024 10:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7E313BAD4;
+	Mon, 27 May 2024 10:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gLndVvIH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XdH+e1ow"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qjwLXn6p"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028AE8830
-	for <stable@vger.kernel.org>; Mon, 27 May 2024 10:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3182F79E1;
+	Mon, 27 May 2024 10:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716804390; cv=none; b=pnSh0j4oLPiy7oO0mUolwia9qxknHTfRnh3hnzfs5DX4PY7imyTcMgUP9mSPtHam0cSNS9H1o0rlR5Y7JEJRA8livrjLBXku1CGuEQw0/2Q30dbzYVJGxPZB3+QF+BXT/KJ3sWg1bW/QqP+5DUSh2N27EWoVqDleTgpijypXk2U=
+	t=1716806228; cv=none; b=FpconmhDoEgnqGzSPoryyc9EfU2ORJPOK9T2B3wp4SsRJZnAUsV2mZbvv7RDmaV9jeHUDtB7/l+XQAUM0VZV7GGJth2MDnWHUtN8yEd0ULuK4kllkpRtiZcVqtiOWnuAnAQ8ga45NEH+9r73d6e1dBn3hRb5cyg10wu2Ko+W4dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716804390; c=relaxed/simple;
-	bh=s81Hp7fR7mtMdUe/8mJY+IkuwsfZvR041uPaXPXdv3A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=XapbGLn0+Oa6oaKitEurOiXFyTg1NUjBvs6Wf+efkKrLlpXD5D7j9W12MYYtA6RCeSPqpRH4znafocNyxdpElKlDwCjGECHJUSml/HiG2LiwhO1EsMgtfwOxWIKhc8kiepDujjqItj97E7Z0Nl3Hr7QoHcivQmKN1/8pkdaiDEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gLndVvIH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XdH+e1ow; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1716804387;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J06T3Dt3jm5Q9jl5C+QpzgdSZJHlI8MN+rNBRUfEuas=;
-	b=gLndVvIHQM1EXJc3/cD70rLZBZ9Se+CPfEABxksxNSMEnjyi0U8GHH6N9vbUFzkN0fjLTV
-	s4CwGeOtsKaC4lcjsLUBGQuI4xBJPNwntr7SQB/eo0L6xukdYZyf9yI85OCuqPaiBiL8R5
-	ZKN9dSVZZGZkAPXdPO0/W5YF4jyLPGRj+Ldn7q6lcNOIOcFOqhYhN7Ousd2JvpocdMqrHq
-	3Mzeu9STH+m30VADWkxw9M6FL7Wn2kaomWeLNC11ZUkF/0fAZYr4BHAybnAlhtVLJISu0B
-	Fp+sa6RbJUNIOehEZp2KOw0FnbQ4KxKDyH22T5Ic4SiISrk5dzX18EDpdeRvpA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1716804387;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J06T3Dt3jm5Q9jl5C+QpzgdSZJHlI8MN+rNBRUfEuas=;
-	b=XdH+e1owfPR96WdgAZjXUWvW1d+qnBDjhOFtoAYS19UZ6sU8eAp8GDEH8qcVoNp8dlaLiF
-	FCVCzOwfu7QYxnCg==
-To: Christian Heusel <christian@heusel.eu>
-Cc: regressions@lists.linux.dev, Tim Teichmann <teichmanntim@outlook.de>,
- x86@kernel.org, stable@vger.kernel.org
-Subject: Re: [REGRESSION][BISECTED] Scheduling errors with the AMD FX 8300 CPU
-In-Reply-To: <gtgsklvltu5pzeiqn7fwaktdsywk2re75unapgbcarlmqkya5a@mt7pi4j2f7b3>
-References: <7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk>
- <87r0dqdf0r.ffs@tglx>
- <gtgsklvltu5pzeiqn7fwaktdsywk2re75unapgbcarlmqkya5a@mt7pi4j2f7b3>
-Date: Mon, 27 May 2024 12:06:26 +0200
-Message-ID: <87h6ejd0wt.ffs@tglx>
+	s=arc-20240116; t=1716806228; c=relaxed/simple;
+	bh=s2RFCNIQELf5BIroDDeqZxI19isVpFZDp8clQgSgR/8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VTt7J0sgbDR/nh6OmVTiRfdlXtHxCGXOPHtsH5vyrwcoa2+xc4l9Wc6eTWxWATQTJoO9NP5bbO0XeQHgXiL7IqLvL/6IhkOH9OX+JQlhvhM3y56B4XKvxKA9ceR/PxHunqgnWHOaR8fYnZKdXkOGMOqhlax588hexb0clFRgivA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qjwLXn6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E712C4AF08;
+	Mon, 27 May 2024 10:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716806228;
+	bh=s2RFCNIQELf5BIroDDeqZxI19isVpFZDp8clQgSgR/8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=qjwLXn6pwdyZuZKn0X09RKT0yo2tfwNwLtUdeu6psId994G5I9uUjea9RntX/Z90M
+	 L3Jy/vAMr7wHUilkoVXyjwKBU8/wv3V5Zg3elqJU6XBnAfE6YoFDjTw1+cjr7TrK+v
+	 SqkNA95DzfbLfIbhd1VWe1bG0iQ/LLKTvbUzJEqDbPVUu/U+KAwNNvtXxMXNo8+BW9
+	 5lV0ZLfkpl5HiVjTka9Euft6vZwzpMkjMMJq+y04Z4M+C+ofmIq+PPIbDf2yNBbF1g
+	 yKBrMUc2FbbwkvpKC/F+Rk/5IMkmU2dVGhjLE9nxxJbe+c+8h6ORTU0pLRifH3+TiG
+	 3TwbsfxKbbcgw==
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3d02cc95096so445975b6e.0;
+        Mon, 27 May 2024 03:37:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXs4HCx3dZ0N5OGNt0xZ4TDxkh9E6Nm72eXoQApMAFJe3B8WDA0g9LoeJbTS/6Vz9KSLPEec7AXrW9t2Vnvcjl7feLvwFMDwh8OGuJxPd2YF1Zgi4IScvOB4FQ+pf3J7R4ccwvjzvdcMwuFvpA8CRngI7o0MYFKLadL9E1EnQ==
+X-Gm-Message-State: AOJu0YyHUYbvZyTsmnmzKKxGt7o+h6NMh3MZcfvJmFWoTjnHh+K9ve6K
+	NbwPzJf2YgJ/sI1D0o7/4e+nRLPX84ExNiCSJ7k6dLUVx9KlmIhG7jfPQ13wvzKoddhBj53ARpJ
+	82FHdKn5oUp/XbIUwLyGmDD2Rvsc=
+X-Google-Smtp-Source: AGHT+IF2FW+mgPtyJLUHni7RDf3OhqYbAMiUpR5ps+KWHwk0k4AocJmXcClKQue4FKMfLCG4jQFdnteBp+Lu/tVonkw=
+X-Received: by 2002:a05:6870:55d1:b0:24c:b092:fd38 with SMTP id
+ 586e51a60fabf-24cb0930422mr9859752fac.1.1716806227238; Mon, 27 May 2024
+ 03:37:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <171633159194.398195.10059732788629089925.stgit@dwillia2-xfh.jf.intel.com>
+ <0da7f58a-309f-4e25-b2f8-3bd80902341c@amd.com>
+In-Reply-To: <0da7f58a-309f-4e25-b2f8-3bd80902341c@amd.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 27 May 2024 12:36:53 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ia9ut_hRPWsX3vAhABKwPn4eV8rgDjNjCppHpxE1hg4w@mail.gmail.com>
+Message-ID: <CAJZ5v0ia9ut_hRPWsX3vAhABKwPn4eV8rgDjNjCppHpxE1hg4w@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: EINJ: Fix einj_dev release leak
+To: Ben Cheatham <benjamin.cheatham@amd.com>, Dan Williams <dan.j.williams@intel.com>
+Cc: rafael.j.wysocki@intel.com, stable@vger.kernel.org, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-acpi@vger.kernel.org, 
+	linux-cxl@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Christian!
-
-On Sat, May 25 2024 at 02:12, Christian Heusel wrote:
-> On 24/05/25 12:24AM, Thomas Gleixner wrote:
->> Can you please provide the full boot log as the information which leads
->> up to the symptom is obviously more interesting than the symptom itself.
+On Wed, May 22, 2024 at 3:40=E2=80=AFPM Ben Cheatham <benjamin.cheatham@amd=
+.com> wrote:
 >
-> I have attached the full dmesg of an example of a bad boot (from doing
-> the bisection), sorry that I missed that when putting together the
-> initial report!
+> On 5/21/24 5:46 PM, Dan Williams wrote:
+> > The platform driver conversion of EINJ mistakenly used
+> > platform_device_del() to unwind platform_device_register_full() at
+> > module exit. This leads to a small leak of one 'struct platform_device'
+> > instance per module load/unload cycle. Switch to
+> > platform_device_unregister() which performs both device_del() and final
+> > put_device().
+> >
+>
+> Reviewed-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
 
-Thanks for the data. Can you please provide the output of
-
-# cat /proc/cpuinfo
-
-from a working kernel?
-
-Thanks,
-
-        tglx
+Applied as 6.10-rc material, thanks!
 
