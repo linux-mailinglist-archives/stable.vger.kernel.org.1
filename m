@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-46618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F3C8D0A7C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4568D0C5F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74417B20EA1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 187E81C2114A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C101607A2;
-	Mon, 27 May 2024 19:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0998015FCE9;
+	Mon, 27 May 2024 19:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eS6K1hBw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rm50ijlC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE8F15FCF2;
-	Mon, 27 May 2024 19:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9C015A84C;
+	Mon, 27 May 2024 19:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836419; cv=none; b=jKga8H8Kh2ITUbpxu74TvBLbEbzRBwmcKCOOseFEWwvZmCqgRVNDFVo9Xc28G8VpuI2pqbW0n1IISsMeXKN6ndP5kXwNrCPGpIzHVXLxjKp58ARBlMeib0qna1sOdbXu+Kw/xRC8clPYz3+cdkLzC5RPAEz/yicSM9vlZNjlqbs=
+	t=1716837539; cv=none; b=ktaMM7jHmbPgCbbdyuZwxrvJ8ElDLCZ0tovsuXH8goqmxvmlXCwMwSfnJfp7v+UjWDrz/oNldSqEhSjlww4pH3DisoixjPOVSmulp1x6SWUvEe9XNjtDrukheE1sHU0SIttq7bRvqiyuyzsRQimOZVTtYGmOiAKc5/8RNaVnlSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836419; c=relaxed/simple;
-	bh=NpLR1xGBq3C0C3Tfmtj6D7XCHm2csqZL9/aLid3PlBc=;
+	s=arc-20240116; t=1716837539; c=relaxed/simple;
+	bh=WdZMcO2HC0MLQyVhUkr11APxx5pIaQppiSefEmAqKNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dt+SE0df24XezHOSw3PvNfzMbHQXug0/v0YSWicmDTpTrl9u81MjnuuLW9joFITN5omyZ9eQ62pk7ChNofxA9XDtYkTG3Sze+RyYuR3yNIXLmYh2lKOc/q8k6oUOuAtQZlxvzQwVvdfeaq7fAsurhS+kf9xpyqNcFdh/YKhgdzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eS6K1hBw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35F3C2BBFC;
-	Mon, 27 May 2024 19:00:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G41Mu2TerWa4ZeS+8zQ5BYbZ2MFFUy2e1v/akYW0T5wBtWX5zAaw8cR1N3siosqLjxLMZi0G85H31SK+QmcktrQ3Dvo/NXOtPa2dgpEcj6r6kmgqhbh6cy8aMeQIf2jqClmAZ5FNnHtx+Mq/zCDuQjwvQq2/2UVMGOnWuA3X8hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rm50ijlC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5225AC2BBFC;
+	Mon, 27 May 2024 19:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836419;
-	bh=NpLR1xGBq3C0C3Tfmtj6D7XCHm2csqZL9/aLid3PlBc=;
+	s=korg; t=1716837539;
+	bh=WdZMcO2HC0MLQyVhUkr11APxx5pIaQppiSefEmAqKNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eS6K1hBw7Tqn+wRNrJHJq81GLPt1q2UBBvuy6H021z0UE6JVX3L0gCYCLs9Hl2Z+Q
-	 o5JddwlCNcToh+QTXIpRJq8JgsxYFV9yuh3SJGRvYqq58qX26ZRGukimoj0mDjTCwc
-	 or34Vt3e+LD4Hr42fhARaUflDKtDzKdv7aWHfdCw=
+	b=rm50ijlCMuU8ky8LwaAKlgVnNLmgznFD8I+tv3m6U5VxV9FCF70cBzbgEGXFAFECU
+	 ROKOE0BAqjSTQMr1o8BmuFbqJdSkZpRneEUnYeCsD+L/zxUsfrq/Uo0+js6SXr4IB3
+	 FXNlqYKush18hM8i7hdPM1jY76m856QuTAH7wZWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Nixdorf <mixi@shadowice.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.9 005/427] Revert "arm64: fpsimd: Implement lazy restore for kernel mode FPSIMD"
-Date: Mon, 27 May 2024 20:50:52 +0200
-Message-ID: <20240527185602.272329157@linuxfoundation.org>
+	Prike Liang <Prike.Liang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 051/493] drm/amdgpu: Fix the ring buffer size for queue VM flush
+Date: Mon, 27 May 2024 20:50:53 +0200
+Message-ID: <20240527185630.848767542@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,75 +61,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Prike Liang <Prike.Liang@amd.com>
 
-commit b8995a18417088bb53f87c49d200ec72a9dd4ec1 upstream.
+[ Upstream commit fe93b0927bc58cb1d64230f45744e527d9d8482c ]
 
-This reverts commit 2632e25217696712681dd1f3ecc0d71624ea3b23.
+Here are the corrections needed for the queue ring buffer size
+calculation for the following cases:
+- Remove the KIQ VM flush ring usage.
+- Add the invalidate TLBs packet for gfx10 and gfx11 queue.
+- There's no VM flush and PFP sync, so remove the gfx9 real
+  ring and compute ring buffer usage.
 
-Johannes (and others) report data corruption with dm-crypt on Apple M1
-which has been bisected to this change. Revert the offending commit
-while we figure out what's going on.
-
-Cc: stable@vger.kernel.org
-Reported-by: Johannes Nixdorf <mixi@shadowice.org>
-Link: https://lore.kernel.org/all/D1B7GPIR9K1E.5JFV37G0YTIF@shadowice.org/
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/processor.h |    1 -
- arch/arm64/kernel/fpsimd.c         |   18 ------------------
- 2 files changed, 19 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 3 +--
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 3 +--
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c  | 2 --
+ 3 files changed, 2 insertions(+), 6 deletions(-)
 
---- a/arch/arm64/include/asm/processor.h
-+++ b/arch/arm64/include/asm/processor.h
-@@ -171,7 +171,6 @@ struct thread_struct {
- 	struct debug_info	debug;		/* debugging */
- 
- 	struct user_fpsimd_state	kernel_fpsimd_state;
--	unsigned int			kernel_fpsimd_cpu;
- #ifdef CONFIG_ARM64_PTR_AUTH
- 	struct ptrauth_keys_user	keys_user;
- #ifdef CONFIG_ARM64_PTR_AUTH_KERNEL
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1509,30 +1509,12 @@ void do_fpsimd_exc(unsigned long esr, st
- 
- static void fpsimd_load_kernel_state(struct task_struct *task)
- {
--	struct cpu_fp_state *last = this_cpu_ptr(&fpsimd_last_state);
--
--	/*
--	 * Elide the load if this CPU holds the most recent kernel mode
--	 * FPSIMD context of the current task.
--	 */
--	if (last->st == &task->thread.kernel_fpsimd_state &&
--	    task->thread.kernel_fpsimd_cpu == smp_processor_id())
--		return;
--
- 	fpsimd_load_state(&task->thread.kernel_fpsimd_state);
- }
- 
- static void fpsimd_save_kernel_state(struct task_struct *task)
- {
--	struct cpu_fp_state cpu_fp_state = {
--		.st		= &task->thread.kernel_fpsimd_state,
--		.to_save	= FP_STATE_FPSIMD,
--	};
--
- 	fpsimd_save_state(&task->thread.kernel_fpsimd_state);
--	fpsimd_bind_state_to_cpu(&cpu_fp_state);
--
--	task->thread.kernel_fpsimd_cpu = smp_processor_id();
- }
- 
- void fpsimd_thread_switch(struct task_struct *next)
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index dcdecb18b2306..42392a97daff2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -9194,7 +9194,7 @@ static const struct amdgpu_ring_funcs gfx_v10_0_ring_funcs_gfx = {
+ 		7 + /* PIPELINE_SYNC */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* VM_FLUSH */
++		4 + /* VM_FLUSH */
+ 		8 + /* FENCE for VM_FLUSH */
+ 		20 + /* GDS switch */
+ 		4 + /* double SWITCH_BUFFER,
+@@ -9285,7 +9285,6 @@ static const struct amdgpu_ring_funcs gfx_v10_0_ring_funcs_kiq = {
+ 		7 + /* gfx_v10_0_ring_emit_pipeline_sync */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* gfx_v10_0_ring_emit_vm_flush */
+ 		8 + 8 + 8, /* gfx_v10_0_ring_emit_fence_kiq x3 for user fence, vm fence */
+ 	.emit_ib_size =	7, /* gfx_v10_0_ring_emit_ib_compute */
+ 	.emit_ib = gfx_v10_0_ring_emit_ib_compute,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 0afe86bcc932b..6a6fc422e44da 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -6110,7 +6110,7 @@ static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_gfx = {
+ 		7 + /* PIPELINE_SYNC */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* VM_FLUSH */
++		4 + /* VM_FLUSH */
+ 		8 + /* FENCE for VM_FLUSH */
+ 		20 + /* GDS switch */
+ 		5 + /* COND_EXEC */
+@@ -6195,7 +6195,6 @@ static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_kiq = {
+ 		7 + /* gfx_v11_0_ring_emit_pipeline_sync */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* gfx_v11_0_ring_emit_vm_flush */
+ 		8 + 8 + 8, /* gfx_v11_0_ring_emit_fence_kiq x3 for user fence, vm fence */
+ 	.emit_ib_size =	7, /* gfx_v11_0_ring_emit_ib_compute */
+ 	.emit_ib = gfx_v11_0_ring_emit_ib_compute,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index 3bc6943365a4f..153932c1f64f3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -6991,7 +6991,6 @@ static const struct amdgpu_ring_funcs gfx_v9_0_ring_funcs_compute = {
+ 		7 + /* gfx_v9_0_ring_emit_pipeline_sync */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* gfx_v9_0_ring_emit_vm_flush */
+ 		8 + 8 + 8 + /* gfx_v9_0_ring_emit_fence x3 for user fence, vm fence */
+ 		7 + /* gfx_v9_0_emit_mem_sync */
+ 		5 + /* gfx_v9_0_emit_wave_limit for updating mmSPI_WCL_PIPE_PERCENT_GFX register */
+@@ -7029,7 +7028,6 @@ static const struct amdgpu_ring_funcs gfx_v9_0_ring_funcs_kiq = {
+ 		7 + /* gfx_v9_0_ring_emit_pipeline_sync */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* gfx_v9_0_ring_emit_vm_flush */
+ 		8 + 8 + 8, /* gfx_v9_0_ring_emit_fence_kiq x3 for user fence, vm fence */
+ 	.emit_ib_size =	7, /* gfx_v9_0_ring_emit_ib_compute */
+ 	.emit_fence = gfx_v9_0_ring_emit_fence_kiq,
+-- 
+2.43.0
+
 
 
 
