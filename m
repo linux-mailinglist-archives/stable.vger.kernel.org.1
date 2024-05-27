@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-47412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33228D0DDF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904918D0DE1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E579D1C2100E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1BAB1C21481
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5662815FA60;
-	Mon, 27 May 2024 19:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD14F15FA60;
+	Mon, 27 May 2024 19:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euVfisvu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuWYPuL9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166D617727;
-	Mon, 27 May 2024 19:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3F717727;
+	Mon, 27 May 2024 19:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838483; cv=none; b=Idd3VZ6RmZUMT5FzLiqy+ZgPcDBEnZUP6LI0P5zOPsXNOEZozIDTXMRGNZNNoSyPQCUsYs3u1dBp9m7DmoGhbikPQ7wKDarQiN1XurCa2lODcXDYlGTOEjc1S8+fHr/1eq9rEAWN2f6tFSHlCZ1AS1t379keHf/93P1QWluE+hA=
+	t=1716838488; cv=none; b=DXspZewZYLWINcEDV7qGLN2G3b7ux1vzcWw1QJqDmCiDEStptrddSGlFq/KA5ZdavcOUKvaEIi/35I+nmKtdqyq6jtDmEdcmzzdsIoLodmQD8uAMq5cVm0UYJyuimalp7izcdxJRF3IOFjSA/MqAJvIJFoHvjItCq/xuKcDx81U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838483; c=relaxed/simple;
-	bh=lL4SfcHlW2BCkb5h3jBkJNNQjji9wo+uUOq/S6ldrxQ=;
+	s=arc-20240116; t=1716838488; c=relaxed/simple;
+	bh=jwb4LYiBq9kt/QKRSsOKNBFsocf9qcil9FSp77YFa2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p62gQBxSwYmomIkBW4zRunxxrQXX8Qfj73DHXY3bYY6cMWxnlxlr9cgVcDNaGKn6Nm9fu9/QB10ptsejtBWR5a2NpehdCTbU3Ywvm88dRJwaVIyXcf+ZArpGLrlpMc0a9eCJsuyYbcftwttiK6r01hcKjceS52G5ROq78JOSYRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euVfisvu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B80C2BBFC;
-	Mon, 27 May 2024 19:34:42 +0000 (UTC)
+	 MIME-Version; b=XDwrociIsRTT1ZPZBtXcbvcO4/pDBRKTH18rXPrzpGn7CniTF/Va/7t/cWkzjpbTYuCeRfNMDl+CtBbWhlCVBlHGpMC5JoLUj3+iJCEX33Q5CreZ1YDHTsCs4gUOiLyMRm3EnoJyPcWaIdh2k+GiBsLegKz/OxDXyp2uge3BpgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuWYPuL9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E74AC2BBFC;
+	Mon, 27 May 2024 19:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838482;
-	bh=lL4SfcHlW2BCkb5h3jBkJNNQjji9wo+uUOq/S6ldrxQ=;
+	s=korg; t=1716838488;
+	bh=jwb4LYiBq9kt/QKRSsOKNBFsocf9qcil9FSp77YFa2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=euVfisvu2Dqll9U9Qg439iYbZR627W4/rE3K5JbWFN8QiR9hodAIftZ2yL8SR1nvn
-	 OUww3n0y12yfQ76an4p4+caM9s6tQnijDgbedyKFVUHeVE63wVwcGuO5+JFthxM0i0
-	 bKkIFSqEzm4dIipt9mxjcGzF5gJwbk5jXo+j3ioY=
+	b=uuWYPuL903uMibOjCCWkT85gKWBvnNo6mq5OjASNcs0ca7U8pVL4gkysujqKdYpxv
+	 0WfdapgNWfj1GDF0ZNP4gT7AVQALn1kWk377hBGMklF+GyGHMrxPDkvcd97W7am+OC
+	 +QibzEfDtcine+QEvdVaEismSqnIV8KRJVd1J3J8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
 	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 411/493] drm/panel: novatek-nt35950: Dont log an error when DSI host cant be found
-Date: Mon, 27 May 2024 20:56:53 +0200
-Message-ID: <20240527185643.737505391@linuxfoundation.org>
+Subject: [PATCH 6.8 412/493] drm/bridge: anx7625: Update audio status while detecting
+Date: Mon, 27 May 2024 20:56:54 +0200
+Message-ID: <20240527185643.778681793@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -62,50 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 5ff5505b9a2d827cae3f95dceba258c963138175 ]
+[ Upstream commit a665b4e60369867cddf50f37f16169a3e2f434ad ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+Previously, the audio status was not updated during detection, leading
+to a persistent audio despite hot plugging events. To resolve this
+issue, update the audio status during detection.
 
-Fixes: 623a3531e9cf ("drm/panel: Add driver for Novatek NT35950 DSI DriverIC panels")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Fixes: 566fef1226c1 ("drm/bridge: anx7625: add HDMI audio function")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
 Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-8-619a28148e5c@collabora.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20240416-anx7625-v3-1-f916ae31bdd7@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-novatek-nt35950.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35950.c b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-index 648ce92014265..028fdac293f77 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-@@ -556,10 +556,8 @@ static int nt35950_probe(struct mipi_dsi_device *dsi)
- 		}
- 		dsi_r_host = of_find_mipi_dsi_host_by_node(dsi_r);
- 		of_node_put(dsi_r);
--		if (!dsi_r_host) {
--			dev_err(dev, "Cannot get secondary DSI host\n");
--			return -EPROBE_DEFER;
--		}
-+		if (!dsi_r_host)
-+			return dev_err_probe(dev, -EPROBE_DEFER, "Cannot get secondary DSI host\n");
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 4ee5614a26236..c1191ef5e8e67 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -2479,15 +2479,22 @@ static void anx7625_bridge_atomic_disable(struct drm_bridge *bridge,
+ 	mutex_unlock(&ctx->aux_lock);
+ }
  
- 		nt->dsi[1] = mipi_dsi_device_register_full(dsi_r_host, info);
- 		if (!nt->dsi[1]) {
++static void
++anx7625_audio_update_connector_status(struct anx7625_data *ctx,
++				      enum drm_connector_status status);
++
+ static enum drm_connector_status
+ anx7625_bridge_detect(struct drm_bridge *bridge)
+ {
+ 	struct anx7625_data *ctx = bridge_to_anx7625(bridge);
+ 	struct device *dev = ctx->dev;
++	enum drm_connector_status status;
+ 
+ 	DRM_DEV_DEBUG_DRIVER(dev, "drm bridge detect\n");
+ 
+-	return anx7625_sink_detect(ctx);
++	status = anx7625_sink_detect(ctx);
++	anx7625_audio_update_connector_status(ctx, status);
++	return status;
+ }
+ 
+ static struct edid *anx7625_bridge_get_edid(struct drm_bridge *bridge,
 -- 
 2.43.0
 
