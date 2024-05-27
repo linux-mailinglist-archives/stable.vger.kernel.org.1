@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C428C8D0AE0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B758D0CEF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47FBEB21EE5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 825671F21671
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2929215FCE5;
-	Mon, 27 May 2024 19:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C380262BE;
+	Mon, 27 May 2024 19:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fS5QzHnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+i2NrLV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB310D518;
-	Mon, 27 May 2024 19:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E3415FA91;
+	Mon, 27 May 2024 19:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836623; cv=none; b=pIxbyLbg4i/6Wibxi0YVuJQiEMwcdcVZD+WGN+3Ne90ORLNa7GjeHBNJyiea8ge8oKW0icUkC5E0ZKHi6xlYQziF5g0wm/JO5lTcTKNdXWL7KMTXwIt7qniGX5nTgXsG7CD7H7TjjMXGBypQG05puEHTtWMw89mxBlZFg1P00yA=
+	t=1716837874; cv=none; b=Q6HMgBFLpDn6fA3IE4s8WcDylHE6e7BZzrjIpt7Og9EZbX2tGuc0fgu30cg+CFOw1JQu+9wNMNT242QniLVYKtf9vOglR3j+HGfaiLcGuYzJAz0I/an6Q9nJc+2Sh5uAYxDDCWGycSbEg/wx1qfq6RwtOcEEj9Ya+m0lmYEEylw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836623; c=relaxed/simple;
-	bh=AUsG1/mhlk/fIc1Jo/4iv4cJnIobAEZJFPOnwBNpv+4=;
+	s=arc-20240116; t=1716837874; c=relaxed/simple;
+	bh=lX6uhSRmdp4O+lCrsFXrr7MySbvK72/TjJ//8XJ++sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Stc1NP+g3QWwVg824oTt33P3+5dTHLIkmAaVLTaQ2cj480g3h2iuXUOpIC7L0prhjSraZA13v5oYlF5228F+LAojd8UsWok5FMhI8EcrjLS8wq1ee5wf8CYnKcyBSeXpozdBquNDEroRujKfTZHXcKp1JqHwZ1igM+C9nXuEb6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fS5QzHnr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16371C2BBFC;
-	Mon, 27 May 2024 19:03:42 +0000 (UTC)
+	 MIME-Version; b=Ne6+Andm/ct5IKhMopNDVLI5C0LI/WbAnZO4mt/StpB0Duo9WUyMQX4fJqEdlFU86SK8Ybvu0w42PGxnAiSfSmq8MMrA4ISslS7duJZH0egr344T4AYQIg/9mKY8fk7IyXNxPZCEd19Upyh4uhMazDy40tlGm7c8DaHPP2oh3VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+i2NrLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A82C32781;
+	Mon, 27 May 2024 19:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836623;
-	bh=AUsG1/mhlk/fIc1Jo/4iv4cJnIobAEZJFPOnwBNpv+4=;
+	s=korg; t=1716837873;
+	bh=lX6uhSRmdp4O+lCrsFXrr7MySbvK72/TjJ//8XJ++sk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fS5QzHnrZl9KnmPow8LscreGBxEhyrDhI7sflvbF12PjaCr2LCK7ZWEAStAqXOIFR
-	 iboEtwad5YbVNyT2D6rqQpLyUKYX9JTU69ZSVa2h0wguGWYzvHsFMWG8qmP1xqogIg
-	 E1vBXfvE1edpz+017Bl+el2AtunTJugrb7nLvsNQ=
+	b=k+i2NrLVvqisibsPIjVJassupKjRBvbYmPVT25amyy9Ol6cd3NIrThvw3oqIoCgoN
+	 k5EulGB1Hr2uSLkMim0f4yNBB7hlX0iAfPJJHteyg5R76yy3wW2SwlMudFfW4Tcc7e
+	 dQDQNAxqJ2ssEHPcFeB99uh0v3bAQ0iSw3HSx9NA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 125/427] x86/microcode/AMD: Avoid -Wformat warning with clang-15
-Date: Mon, 27 May 2024 20:52:52 +0200
-Message-ID: <20240527185613.586051481@linuxfoundation.org>
+Subject: [PATCH 6.8 171/493] wifi: iwlwifi: mvm: allocate STA links only for active links
+Date: Mon, 27 May 2024 20:52:53 +0200
+Message-ID: <20240527185635.945929504@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 9e11fc78e2df7a2649764413029441a0c897fb11 ]
+[ Upstream commit 62bdd97598f8be82a24f556f78336b05d1c3e84b ]
 
-Older versions of clang show a warning for amd.c after a fix for a gcc
-warning:
+For the mvm driver, data structures match what's in the firmware,
+we allocate FW IDs for them already etc. During link switch we
+already allocate/free the STA links appropriately, but initially
+we'd allocate them always. Fix this to allocate memory, a STA ID,
+etc. only for active links.
 
-  arch/x86/kernel/cpu/microcode/amd.c:478:47: error: format specifies type \
-    'unsigned char' but the argument has type 'u16' (aka 'unsigned short') [-Werror,-Wformat]
-                           "amd-ucode/microcode_amd_fam%02hhxh.bin", family);
-                                                       ~~~~~~        ^~~~~~
-                                                       %02hx
-
-In clang-16 and higher, this warning is disabled by default, but clang-15 is
-still supported, and it's trivial to avoid by adapting the types according
-to the range of the passed data and the format string.
-
-  [ bp: Massage commit message. ]
-
-Fixes: 2e9064faccd1 ("x86/microcode/amd: Fix snprintf() format string warning in W=1 build")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240405204919.1003409-1-arnd@kernel.org
+Fixes: 57974a55d995 ("wifi: iwlwifi: mvm: refactor iwl_mvm_mac_sta_state_common()")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.f2093ff73465.Ie891e1cc9c9df09ae22be6aad5c143e376f40f0e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index 13b45b9c806da..620f0af713ca2 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -465,7 +465,7 @@ static bool early_apply_microcode(u32 cpuid_1_eax, u32 old_rev, void *ucode, siz
- 	return !__apply_microcode_amd(mc);
- }
- 
--static bool get_builtin_microcode(struct cpio_data *cp, unsigned int family)
-+static bool get_builtin_microcode(struct cpio_data *cp, u8 family)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index 23e64a757cfe8..4ba1599ed71ca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -582,14 +582,14 @@ static int iwl_mvm_mld_alloc_sta_links(struct iwl_mvm *mvm,
+ 				       struct ieee80211_sta *sta)
  {
- 	char fw_name[36] = "amd-ucode/microcode_amd.bin";
- 	struct firmware fw;
+ 	struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
++	struct ieee80211_link_sta *link_sta;
+ 	unsigned int link_id;
+ 	int ret;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
+-	for (link_id = 0; link_id < ARRAY_SIZE(sta->link); link_id++) {
+-		if (!rcu_access_pointer(sta->link[link_id]) ||
+-		    mvm_sta->link[link_id])
++	for_each_sta_active_link(vif, sta, link_sta, link_id) {
++		if (WARN_ON(mvm_sta->link[link_id]))
+ 			continue;
+ 
+ 		ret = iwl_mvm_mld_alloc_sta_link(mvm, vif, sta, link_id);
 -- 
 2.43.0
 
