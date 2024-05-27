@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-46816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08C68D0B62
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD298D0D64
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 585CB1F21FF0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A53901F20FB3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E83C15FD04;
-	Mon, 27 May 2024 19:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A7815FCFC;
+	Mon, 27 May 2024 19:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTX75EGP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kajXb+xW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE94A1DFED;
-	Mon, 27 May 2024 19:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B26262BE;
+	Mon, 27 May 2024 19:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836928; cv=none; b=MnZMYgnzhFJJfml/NE8vW7E/paM/C56/IH81eJxnm6CJ7AbbP7aWDtYnPZYToBzk2iOxBQOGMjV/q9HDJHuXQD7+eAGHDrObKzubgiLzvN7n9FWg0qhn4kRW16SWo8Z83nSp0ZVgFrTWuB83rUl9Umf4Zo+AvFvc5CEtUpHbB3A=
+	t=1716838160; cv=none; b=rN2Ma2FAAxXmAq5MXG5+8M2kAsfzdiLozScoQOFnANfJTjrlhCHD2GZCkKZcsmTjjJU5sp8hGCwaS4bGPdsR/JBgnt9tLKhLPcQn0TkC47rm/sGaaPKGn7XzYCuV77L1T4dreND5696caXvgJMl9MTnXh/+ieHhQEwmZ9p6jXnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836928; c=relaxed/simple;
-	bh=RsdPAnxZQX41zbbSWAshGbtGFB38mP7fRyT7nXnGjf0=;
+	s=arc-20240116; t=1716838160; c=relaxed/simple;
+	bh=N573PKPvUwi4evaeNmeX7TG5MjNW/SQB12ptkw2x03U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbdpCn7LqCqrSULtXbElKaTFO0pYZR5cowpIrEZPNziEYG/sU/eo+nvvKPCkWkzJxwxD2vtTwq1/SYAm9tp+q0WLooxKn4AqC+MOpRHvraJdA4mcM/6WRzXtLKuRY/Gf9HWR3OrIXY1+b99LOfxl81sjBPVrB4KcvrGFgTCrFak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTX75EGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E5FC2BBFC;
-	Mon, 27 May 2024 19:08:48 +0000 (UTC)
+	 MIME-Version; b=L0O92qqHrNXtx7IEYTjJkSCktRYWleb7KZs1p0CNCYN/exJvJaE3rfolU2X+m0F2dBcRA3izW2LN63U6yjIXludxYZ2mVQocyCr7QoCm3SNhB9pOTpgYCZCZ3tnutc2L3sfYT/BjDfAIchWmRo96VBRPZjOVyFNOnUNHdvet4S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kajXb+xW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95301C2BBFC;
+	Mon, 27 May 2024 19:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836928;
-	bh=RsdPAnxZQX41zbbSWAshGbtGFB38mP7fRyT7nXnGjf0=;
+	s=korg; t=1716838159;
+	bh=N573PKPvUwi4evaeNmeX7TG5MjNW/SQB12ptkw2x03U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTX75EGPCef0m/IT3FHzizjtRsZSg8u+fR8Eai3PBH7sJfasU+/uxy2JBfYkb4khR
-	 CYlcf7OioMCc3UWTENFNoQgDsEuo2TBTOC4PYzyno71VoBBrI+2ZiGK6Ytm/kifZxw
-	 W8fKEQR6OcIdRj9yLCo0rnNyzLidAOh1YMQ9NNSo=
+	b=kajXb+xWBe3AoHlExbEci9otiuoDKnhqsWVM5ybedsDlN9ESjjGIIj4MOMeZcmWhW
+	 KB/+AT/KWHWlF/8LnxCGV9RfDbj3o0EI/jjRFN+u9dgxo2lPFgkbyMZZpC6CDOY4Vz
+	 GtKejLMdC7Pm/IC0RyxgdoBDlI6s5rvRWrn3+AmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jim Liu <JJLIU0@nuvoton.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 244/427] net: ethernet: cortina: Locking fixes
+Subject: [PATCH 6.8 289/493] gpio: nuvoton: Fix sgpio irq handle error
 Date: Mon, 27 May 2024 20:54:51 +0200
-Message-ID: <20240527185625.373677580@linuxfoundation.org>
+Message-ID: <20240527185639.768375111@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Jim Liu <jim.t90615@gmail.com>
 
-[ Upstream commit 812552808f7ff71133fc59768cdc253c5b8ca1bf ]
+[ Upstream commit 7f45fe2ea3b8c85787976293126a4a7133b107de ]
 
-This fixes a probably long standing problem in the Cortina
-Gemini ethernet driver: there are some paths in the code
-where the IRQ registers are written without taking the proper
-locks.
+The generic_handle_domain_irq() function calls irq_resolve_mapping().
+Thus delete a duplicative irq_find_mapping() call
+so that a stack trace and an RCU stall will be avoided.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509-gemini-ethernet-locking-v1-1-afd00a528b95@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c4f8457d17ce ("gpio: nuvoton: Add Nuvoton NPCM sgpio driver")
+Signed-off-by: Jim Liu <JJLIU0@nuvoton.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240506064244.1645922-1-JJLIU0@nuvoton.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-npcm-sgpio.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 705c3eb19cd3f..d1fbadbf86d4a 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1107,10 +1107,13 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	struct gemini_ethernet *geth = port->geth;
-+	unsigned long flags;
- 	u32 val, mask;
+diff --git a/drivers/gpio/gpio-npcm-sgpio.c b/drivers/gpio/gpio-npcm-sgpio.c
+index d31788b43abcc..2605706145434 100644
+--- a/drivers/gpio/gpio-npcm-sgpio.c
++++ b/drivers/gpio/gpio-npcm-sgpio.c
+@@ -434,7 +434,7 @@ static void npcm_sgpio_irq_handler(struct irq_desc *desc)
+ 	struct gpio_chip *gc = irq_desc_get_handler_data(desc);
+ 	struct irq_chip *ic = irq_desc_get_chip(desc);
+ 	struct npcm_sgpio *gpio = gpiochip_get_data(gc);
+-	unsigned int i, j, girq;
++	unsigned int i, j;
+ 	unsigned long reg;
  
- 	netdev_dbg(netdev, "%s device %d\n", __func__, netdev->dev_id);
+ 	chained_irq_enter(ic, desc);
+@@ -443,11 +443,9 @@ static void npcm_sgpio_irq_handler(struct irq_desc *desc)
+ 		const struct npcm_sgpio_bank *bank = &npcm_sgpio_banks[i];
  
-+	spin_lock_irqsave(&geth->irq_lock, flags);
-+
- 	mask = GMAC0_IRQ0_TXQ0_INTS << (6 * netdev->dev_id + txq);
+ 		reg = ioread8(bank_reg(gpio, bank, EVENT_STS));
+-		for_each_set_bit(j, &reg, 8) {
+-			girq = irq_find_mapping(gc->irq.domain,
+-						i * 8 + gpio->nout_sgpio + j);
+-			generic_handle_domain_irq(gc->irq.domain, girq);
+-		}
++		for_each_set_bit(j, &reg, 8)
++			generic_handle_domain_irq(gc->irq.domain,
++						  i * 8 + gpio->nout_sgpio + j);
+ 	}
  
- 	if (en)
-@@ -1119,6 +1122,8 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- 	val = readl(geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
- 	val = en ? val | mask : val & ~mask;
- 	writel(val, geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
-+
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
- }
- 
- static void gmac_tx_irq(struct net_device *netdev, unsigned int txq_num)
-@@ -1415,15 +1420,19 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	union gmac_rxdesc_3 word3;
- 	struct page *page = NULL;
- 	unsigned int page_offs;
-+	unsigned long flags;
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
- 	int frag_nr = 0;
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
- 	/* Reset interrupt as all packages until here are taken into account */
- 	writel(DEFAULT_Q0_INT_BIT << netdev->dev_id,
- 	       geth->base + GLOBAL_INTERRUPT_STATUS_1_REG);
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
-+
- 	r = rw.bits.rptr;
- 	w = rw.bits.wptr;
- 
-@@ -1726,10 +1735,9 @@ static irqreturn_t gmac_irq(int irq, void *data)
- 		gmac_update_hw_stats(netdev);
- 
- 	if (val & (GMAC0_RX_OVERRUN_INT_BIT << (netdev->dev_id * 8))) {
-+		spin_lock(&geth->irq_lock);
- 		writel(GMAC0_RXDERR_INT_BIT << (netdev->dev_id * 8),
- 		       geth->base + GLOBAL_INTERRUPT_STATUS_4_REG);
--
--		spin_lock(&geth->irq_lock);
- 		u64_stats_update_begin(&port->ir_stats_syncp);
- 		++port->stats.rx_fifo_errors;
- 		u64_stats_update_end(&port->ir_stats_syncp);
+ 	chained_irq_exit(ic, desc);
 -- 
 2.43.0
 
