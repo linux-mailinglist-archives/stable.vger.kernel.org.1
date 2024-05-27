@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4F08D0BAC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:11:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CE48D0DD3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1590F285614
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:11:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6FCD1C2141A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19FE15DBD8;
-	Mon, 27 May 2024 19:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD66415FCE9;
+	Mon, 27 May 2024 19:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjnnxzLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+thwm9I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE0717E90E;
-	Mon, 27 May 2024 19:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D38F17727;
+	Mon, 27 May 2024 19:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837112; cv=none; b=u0IzUVqFvuX5KW4fPVfL2FSmg5VRC498K53Vo9R04YWBNJ3HwnxjcNH8XSpbowGGqpu9b/qqBYwxM+Yr8ZTeHGquizN+uu+PJQ9liT6YV4iNNt3h9Xto5meGq2+3E+CF9jg4hUEh/NJMdGwF5ZBE8SBX6SGiZEWlvGFik5lZT/Q=
+	t=1716838452; cv=none; b=iq3tnTCmxlo2O1BerR97vYGt78oWN5joOPE1YxUtTeRMMPRK/Tgn8u0S9W564RiEBHbsEB4gwZFi/agzpwwGgzgC7gUNZppkkhF4vxU1094XlEwhJMtLDz0TclNbI8SNKzCdlC4QzYPo3zGFgQF8R8IWk0+l1eOIzERftTrv9H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837112; c=relaxed/simple;
-	bh=+fmCdDRRtwi2OVWXN5GNtva2gAZ9s8gsrB1j/GIzkg4=;
+	s=arc-20240116; t=1716838452; c=relaxed/simple;
+	bh=H8o679i++gP9AbeghMNam3w7BqUhkEQPVWDelTRo5Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DFweLaT/YPrqMEUDvkLgKAzA5jSMP4AI9ZNuInICHiQNsrGz0VrAUOP+AjSfm6hnq3WQ7LCdjg+Sox+nLikhALduiLolG0ZZQiQw0Lm7B8YVv9zoag9c4LiM9Z7wJD8Ca12suoOGRDPQIYsuQE6JWKUZvR1u7PJoumSi/k9R0Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjnnxzLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F07C2BBFC;
-	Mon, 27 May 2024 19:11:51 +0000 (UTC)
+	 MIME-Version; b=mi1YDCuhDXcF5AyjSZOP/E1GWup9l3lUj/M9Hy15kUrU7qchfaZxz/lq6MrQC1Onxc9fmgk4tWZMiRGyoyGSAXyjQNCsVSnABziFZnHKyOxEXkGOqvSOEu1jOOuzUBuNA5iw4gTXEHJVhXut+VRGsO+Q+echTBlg7L9PFhrhRek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+thwm9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A4FC2BBFC;
+	Mon, 27 May 2024 19:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837112;
-	bh=+fmCdDRRtwi2OVWXN5GNtva2gAZ9s8gsrB1j/GIzkg4=;
+	s=korg; t=1716838452;
+	bh=H8o679i++gP9AbeghMNam3w7BqUhkEQPVWDelTRo5Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JjnnxzLCCSb6WCJe9bnrNBD5PfYa+b0b/Vl/0ZHiViveXTdrObwKTTYS13T9azDAr
-	 /K9OVDtP9GeD66UuD51JecY6JzAXj43kisCsbF4oMB3chEeh6LocNymMglJvBASH1d
-	 6St0PZvVH4njRdxSZVi1bDRQN608Gl4UDClkdG04=
+	b=V+thwm9IH5KvcLMc/cQTDBo9ZMEWdRFT5ebzivwxkvFS9+hNUnnBN2XYphgBBGcsb
+	 rTxvq7z92OMl6o8CxDJb32mqvAlEpzZoJcQ38VgkQifk6j2XNS+9pFEy2ZJrmBx+1R
+	 CW67X9Chu91adZFp68FuRYV/bpIPvqBF0bXUXvVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Changhuang Liang <changhuang.liang@starfivetech.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 313/427] staging: media: starfive: Remove links when unregistering devices
-Date: Mon, 27 May 2024 20:56:00 +0200
-Message-ID: <20240527185631.074146698@linuxfoundation.org>
+Subject: [PATCH 6.8 359/493] drm/panel: atna33xc20: Fix unbalanced regulator in the case HPD doesnt assert
+Date: Mon, 27 May 2024 20:56:01 +0200
+Message-ID: <20240527185642.030646352@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 810dd605e917c716f6f83e6cd8ea23d9155d32a2 ]
+[ Upstream commit 5e842d55bad7794823a50f24fd645b58f2ef93ab ]
 
-Need to remove links when unregistering devices.
+When the atna33xc20 driver was first written the resume code never
+returned an error. If there was a problem waiting for HPD it just
+printed a warning and moved on. This changed in response to review
+feedback [1] on a future patch but I accidentally didn't account for
+rolling back the regulator enable in the error cases. Do so now.
 
-Fixes: ac7da4a73b10 ("media: staging: media: starfive: camss: Register devices")
+[1] https://lore.kernel.org/all/5f3cf3a6-1cc2-63e4-f76b-4ee686764705@linaro.org/
 
-Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 3b5765df375c ("drm/panel: atna33xc20: Take advantage of wait_hpd_asserted() in struct drm_dp_aux")
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240313-homestarpanel-regulator-v1-1-b8e3a336da12@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/starfive/camss/stf-camss.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../gpu/drm/panel/panel-samsung-atna33xc20.c  | 22 +++++++++++--------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/staging/media/starfive/camss/stf-camss.c b/drivers/staging/media/starfive/camss/stf-camss.c
-index a587f860101ae..323aa70fdeaf1 100644
---- a/drivers/staging/media/starfive/camss/stf-camss.c
-+++ b/drivers/staging/media/starfive/camss/stf-camss.c
-@@ -162,6 +162,12 @@ static int stfcamss_register_devs(struct stfcamss *stfcamss)
+diff --git a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
+index 76c2a8f6718c8..9c336c71562b9 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
++++ b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
+@@ -109,19 +109,17 @@ static int atana33xc20_resume(struct device *dev)
+ 		if (hpd_asserted < 0)
+ 			ret = hpd_asserted;
  
- static void stfcamss_unregister_devs(struct stfcamss *stfcamss)
- {
-+	struct stf_capture *cap_yuv = &stfcamss->captures[STF_CAPTURE_YUV];
-+	struct stf_isp_dev *isp_dev = &stfcamss->isp_dev;
+-		if (ret)
++		if (ret) {
+ 			dev_warn(dev, "Error waiting for HPD GPIO: %d\n", ret);
+-
+-		return ret;
+-	}
+-
+-	if (p->aux->wait_hpd_asserted) {
++			goto error;
++		}
++	} else if (p->aux->wait_hpd_asserted) {
+ 		ret = p->aux->wait_hpd_asserted(p->aux, HPD_MAX_US);
+ 
+-		if (ret)
++		if (ret) {
+ 			dev_warn(dev, "Controller error waiting for HPD: %d\n", ret);
+-
+-		return ret;
++			goto error;
++		}
+ 	}
+ 
+ 	/*
+@@ -133,6 +131,12 @@ static int atana33xc20_resume(struct device *dev)
+ 	 * right times.
+ 	 */
+ 	return 0;
 +
-+	media_entity_remove_links(&isp_dev->subdev.entity);
-+	media_entity_remove_links(&cap_yuv->video.vdev.entity);
++error:
++	drm_dp_dpcd_set_powered(p->aux, false);
++	regulator_disable(p->supply);
 +
- 	stf_isp_unregister(&stfcamss->isp_dev);
- 	stf_capture_unregister(stfcamss);
++	return ret;
  }
+ 
+ static int atana33xc20_disable(struct drm_panel *panel)
 -- 
 2.43.0
 
