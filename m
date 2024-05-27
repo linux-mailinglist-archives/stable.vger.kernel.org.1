@@ -1,170 +1,244 @@
-Return-Path: <stable+bounces-46270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2180B8CF738
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 03:08:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2978CF8DF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 07:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CCAEB20F42
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 01:08:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 048B4B20950
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 05:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FD520E6;
-	Mon, 27 May 2024 01:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2212C153;
+	Mon, 27 May 2024 05:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fx6Sy0Bx"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCB563B;
-	Mon, 27 May 2024 01:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1548F40
+	for <stable@vger.kernel.org>; Mon, 27 May 2024 05:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716772122; cv=none; b=M5JIru8bh9pj+EQzrhouhzz73nlNPOjiohTdy6Mr/DZJ580yA6YSJYdrDgQuRndNKwWnfqlC5DulxYBjIcQLYACGBt2h0FvZW2qDC14rc0SaL3ld5B88pDuCZlfbLdkz7BNmKGTSsVe8mu17xGAxkkphW1U1kiAnBl4iW92V0fE=
+	t=1716789092; cv=none; b=szXt4w+lf/McLkCgpHPUj7cfBwjRLlgo9lRrmzwDsChkIflfzwCZ3feCNoCt3rgG7cwfMX7SSr6aAZgGzqjog41Dkq3cP5mes1Lpt0qYNJy3GY6RNjB0VsDcUDv2Oi5llH7ujr8CMUiCc6CW8L2sueOhnKaE5hYsQoineZcZeQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716772122; c=relaxed/simple;
-	bh=aI+EFZH1rjfUKSaYYHxiFlWEFPTZhL+Hgux59hPbcqc=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=gfSQ145mHdtf5U5IVqEjo3IutpRiKtRB/GQjzD14AxJqWLJbYU28uK0gOZKYOsJYEKma4j9+g89o1jGZ7VPn2ny4v21135DEHk1v/Ov62garQ3trvxOUVVlhE0Lh57lViRRFgUn+QLJE50Vt1T9Qodbp2hNfjSp1eSuaT/5GW5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Vnctj3wKfzcd27;
-	Mon, 27 May 2024 09:07:09 +0800 (CST)
-Received: from kwepemm600009.china.huawei.com (unknown [7.193.23.164])
-	by mail.maildlp.com (Postfix) with ESMTPS id 44FEE14037D;
-	Mon, 27 May 2024 09:08:29 +0800 (CST)
-Received: from [10.174.176.73] (10.174.176.73) by
- kwepemm600009.china.huawei.com (7.193.23.164) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 27 May 2024 09:08:28 +0800
-Subject: Re: [PATCH AUTOSEL 6.9 02/15] md: Fix overflow in is_mddev_idle
-To: Sasha Levin <sashal@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-CC: Li Nan <linan122@huawei.com>, Song Liu <song@kernel.org>,
-	<axboe@kernel.dk>, <linux-raid@vger.kernel.org>,
-	<linux-block@vger.kernel.org>
-References: <20240526094152.3412316-1-sashal@kernel.org>
- <20240526094152.3412316-2-sashal@kernel.org>
-From: Yu Kuai <yukuai3@huawei.com>
-Message-ID: <217cd112-b5cb-9b6b-9dc9-b11490c2f137@huawei.com>
-Date: Mon, 27 May 2024 09:08:27 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	s=arc-20240116; t=1716789092; c=relaxed/simple;
+	bh=sNQApo+BM/3I9BrUX3kPhK+8S2ynY//C0EpxIBYGioQ=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DGNpOxLI8EmswRq/+cDTg/K9hIqPdF81ZBfNLYZ550M1Naf44e9W679fT5mUjZHbmFT6UMYuI7a84oThLhK+3mZDHAKaeO0HZMBM/uetKvggZwiyH6lWxePpE3Wxh5IChaLPGt94KaXrF5SZGiWqPB+Sd17tpR93NjKosV2h6TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fx6Sy0Bx; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716789090; x=1748325090;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=sNQApo+BM/3I9BrUX3kPhK+8S2ynY//C0EpxIBYGioQ=;
+  b=fx6Sy0BxYiGtxKOHWBQxMW9hlQX4REYi5wQBIqn9FpanHMBYkPIybgJX
+   FwPt7aHHd+V/jK0Eax2vQdXCKT4ztzEr79rCfjvQmVF0xYp4kTfwKUYAD
+   WhkmzFBHAs6psDb180K0mMmu8t894hJLz0wFVYpc/JDPsuATfo/jlp0n6
+   f4EnQ0rVDPafRxjKhWB6bG8HInMIRC348V5zSVEicdtC53Vx75pYCApmY
+   yHUu3DLNgL55WLkj7/LHsC7VIP/1f+VXp1YUoZXZWrEfVBep8RzFShVqE
+   iVGEGyWPUncwRIF3qAg0TGC4kgSouiOwQIWrRbuVcBdFGj24+Af/gkPmD
+   A==;
+X-CSE-ConnectionGUID: bmyAbOfzRyKGleYKXY+/iw==
+X-CSE-MsgGUID: qZIK0IZgRVqp9F5M3Ev9Og==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="38471664"
+X-IronPort-AV: E=Sophos;i="6.08,191,1712646000"; 
+   d="scan'208";a="38471664"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2024 22:51:29 -0700
+X-CSE-ConnectionGUID: 8EwKwr+xTt6sX3MUqvbBvA==
+X-CSE-MsgGUID: o7lmzRx6T8i1Xnw0cLUFIw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,191,1712646000"; 
+   d="scan'208";a="65441208"
+Received: from dut-2a59.iind.intel.com ([10.190.239.113])
+  by orviesa002.jf.intel.com with ESMTP; 26 May 2024 22:51:28 -0700
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+To: stable@vger.kernel.org
+Subject: [PATCH 6.1.y] drm/i915/audio: Fix audio time stamp programming for DP
+Date: Mon, 27 May 2024 11:15:47 +0530
+Message-Id: <20240527054547.3072037-1-chaitanya.kumar.borah@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2024051325-ipad-sturdily-5677@gregkh>
+References: <2024051325-ipad-sturdily-5677@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240526094152.3412316-2-sashal@kernel.org>
-Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemm600009.china.huawei.com (7.193.23.164)
 
-Hi,
+Intel hardware is capable of programming the Maud/Naud SDPs on its
+own based on real-time clocks. While doing so, it takes care
+of any deviations from the theoretical values. Programming the registers
+explicitly with static values can interfere with this logic. Therefore,
+let the HW decide the Maud and Naud SDPs on it's own.
 
-ÔÚ 2024/05/26 17:41, Sasha Levin Ð´µÀ:
-> From: Li Nan <linan122@huawei.com>
-> 
-> [ Upstream commit 3f9f231236ce7e48780d8a4f1f8cb9fae2df1e4e ]
-> 
-> UBSAN reports this problem:
-> 
->    UBSAN: Undefined behaviour in drivers/md/md.c:8175:15
->    signed integer overflow:
->    -2147483291 - 2072033152 cannot be represented in type 'int'
->    Call trace:
->     dump_backtrace+0x0/0x310
->     show_stack+0x28/0x38
->     dump_stack+0xec/0x15c
->     ubsan_epilogue+0x18/0x84
->     handle_overflow+0x14c/0x19c
->     __ubsan_handle_sub_overflow+0x34/0x44
->     is_mddev_idle+0x338/0x3d8
->     md_do_sync+0x1bb8/0x1cf8
->     md_thread+0x220/0x288
->     kthread+0x1d8/0x1e0
->     ret_from_fork+0x10/0x18
-> 
-> 'curr_events' will overflow when stat accum or 'sync_io' is greater than
-> INT_MAX.
-> 
-> Fix it by changing sync_io, last_events and curr_events to 64bit.
-> 
-> Signed-off-by: Li Nan <linan122@huawei.com>
-> Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-> Link: https://lore.kernel.org/r/20240117031946.2324519-2-linan666@huaweicloud.com
-> Signed-off-by: Song Liu <song@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.17
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8097
+Co-developed-by: Kai Vehmanen <kai.vehmanen@intel.com>
+Signed-off-by: Kai Vehmanen <kai.vehmanen@intel.com>
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Animesh Manna <animesh.manna@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240430091825.733499-1-chaitanya.kumar.borah@intel.com
+(cherry picked from commit 8e056b50d92ae7f4d6895d1c97a69a2a953cf97b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit c66b8356273c8d22498f88e4223af47a7bf8a23c)
+---
+ drivers/gpu/drm/i915/display/intel_audio.c | 116 ++-------------------
+ 1 file changed, 9 insertions(+), 107 deletions(-)
 
-Hi, please notice that this patch doesn't fix real issue expect for
-the ubsan warning, and this patch is reverted:
-> ---
->   drivers/md/md.c        | 7 ++++---
->   drivers/md/md.h        | 4 ++--
->   include/linux/blkdev.h | 2 +-
->   3 files changed, 7 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/md/md.c b/drivers/md/md.c
-> index e575e74aabf5e..c88b50a4be82f 100644
-> --- a/drivers/md/md.c
-> +++ b/drivers/md/md.c
-> @@ -8576,14 +8576,15 @@ static int is_mddev_idle(struct mddev *mddev, int init)
->   {
->   	struct md_rdev *rdev;
->   	int idle;
-> -	int curr_events;
-> +	long long curr_events;
->   
->   	idle = 1;
->   	rcu_read_lock();
->   	rdev_for_each_rcu(rdev, mddev) {
->   		struct gendisk *disk = rdev->bdev->bd_disk;
-> -		curr_events = (int)part_stat_read_accum(disk->part0, sectors) -
-> -			      atomic_read(&disk->sync_io);
-> +		curr_events =
-> +			(long long)part_stat_read_accum(disk->part0, sectors) -
-> +			atomic64_read(&disk->sync_io);
->   		/* sync IO will cause sync_io to increase before the disk_stats
->   		 * as sync_io is counted when a request starts, and
->   		 * disk_stats is counted when it completes.
-> diff --git a/drivers/md/md.h b/drivers/md/md.h
-> index 097d9dbd69b83..d0db98c0d33be 100644
-> --- a/drivers/md/md.h
-> +++ b/drivers/md/md.h
-> @@ -51,7 +51,7 @@ struct md_rdev {
->   
->   	sector_t sectors;		/* Device size (in 512bytes sectors) */
->   	struct mddev *mddev;		/* RAID array if running */
-> -	int last_events;		/* IO event timestamp */
-> +	long long last_events;		/* IO event timestamp */
->   
->   	/*
->   	 * If meta_bdev is non-NULL, it means that a separate device is
-> @@ -621,7 +621,7 @@ extern void mddev_unlock(struct mddev *mddev);
->   
->   static inline void md_sync_acct(struct block_device *bdev, unsigned long nr_sectors)
->   {
-> -	atomic_add(nr_sectors, &bdev->bd_disk->sync_io);
-> +	atomic64_add(nr_sectors, &bdev->bd_disk->sync_io);
->   }
->   
->   static inline void md_sync_acct_bio(struct bio *bio, unsigned long nr_sectors)
-> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-> index 69e7da33ca49a..f10fb01a629fb 100644
-> --- a/include/linux/blkdev.h
-> +++ b/include/linux/blkdev.h
-> @@ -174,7 +174,7 @@ struct gendisk {
->   	struct list_head slave_bdevs;
->   #endif
->   	struct timer_rand_state *random;
-> -	atomic_t sync_io;		/* RAID */
-> +	atomic64_t sync_io;		/* RAID */
->   	struct disk_events *ev;
->   
->   #ifdef CONFIG_BLK_DEV_ZONED
-> 
+diff --git a/drivers/gpu/drm/i915/display/intel_audio.c b/drivers/gpu/drm/i915/display/intel_audio.c
+index aacbc6da84ef..a5fa0682110a 100644
+--- a/drivers/gpu/drm/i915/display/intel_audio.c
++++ b/drivers/gpu/drm/i915/display/intel_audio.c
+@@ -73,19 +73,6 @@ struct intel_audio_funcs {
+ 				    const struct drm_connector_state *old_conn_state);
+ };
+ 
+-/* DP N/M table */
+-#define LC_810M	810000
+-#define LC_540M	540000
+-#define LC_270M	270000
+-#define LC_162M	162000
+-
+-struct dp_aud_n_m {
+-	int sample_rate;
+-	int clock;
+-	u16 m;
+-	u16 n;
+-};
+-
+ struct hdmi_aud_ncts {
+ 	int sample_rate;
+ 	int clock;
+@@ -93,60 +80,6 @@ struct hdmi_aud_ncts {
+ 	int cts;
+ };
+ 
+-/* Values according to DP 1.4 Table 2-104 */
+-static const struct dp_aud_n_m dp_aud_n_m[] = {
+-	{ 32000, LC_162M, 1024, 10125 },
+-	{ 44100, LC_162M, 784, 5625 },
+-	{ 48000, LC_162M, 512, 3375 },
+-	{ 64000, LC_162M, 2048, 10125 },
+-	{ 88200, LC_162M, 1568, 5625 },
+-	{ 96000, LC_162M, 1024, 3375 },
+-	{ 128000, LC_162M, 4096, 10125 },
+-	{ 176400, LC_162M, 3136, 5625 },
+-	{ 192000, LC_162M, 2048, 3375 },
+-	{ 32000, LC_270M, 1024, 16875 },
+-	{ 44100, LC_270M, 784, 9375 },
+-	{ 48000, LC_270M, 512, 5625 },
+-	{ 64000, LC_270M, 2048, 16875 },
+-	{ 88200, LC_270M, 1568, 9375 },
+-	{ 96000, LC_270M, 1024, 5625 },
+-	{ 128000, LC_270M, 4096, 16875 },
+-	{ 176400, LC_270M, 3136, 9375 },
+-	{ 192000, LC_270M, 2048, 5625 },
+-	{ 32000, LC_540M, 1024, 33750 },
+-	{ 44100, LC_540M, 784, 18750 },
+-	{ 48000, LC_540M, 512, 11250 },
+-	{ 64000, LC_540M, 2048, 33750 },
+-	{ 88200, LC_540M, 1568, 18750 },
+-	{ 96000, LC_540M, 1024, 11250 },
+-	{ 128000, LC_540M, 4096, 33750 },
+-	{ 176400, LC_540M, 3136, 18750 },
+-	{ 192000, LC_540M, 2048, 11250 },
+-	{ 32000, LC_810M, 1024, 50625 },
+-	{ 44100, LC_810M, 784, 28125 },
+-	{ 48000, LC_810M, 512, 16875 },
+-	{ 64000, LC_810M, 2048, 50625 },
+-	{ 88200, LC_810M, 1568, 28125 },
+-	{ 96000, LC_810M, 1024, 16875 },
+-	{ 128000, LC_810M, 4096, 50625 },
+-	{ 176400, LC_810M, 3136, 28125 },
+-	{ 192000, LC_810M, 2048, 16875 },
+-};
+-
+-static const struct dp_aud_n_m *
+-audio_config_dp_get_n_m(const struct intel_crtc_state *crtc_state, int rate)
+-{
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(dp_aud_n_m); i++) {
+-		if (rate == dp_aud_n_m[i].sample_rate &&
+-		    crtc_state->port_clock == dp_aud_n_m[i].clock)
+-			return &dp_aud_n_m[i];
+-	}
+-
+-	return NULL;
+-}
+-
+ static const struct {
+ 	int clock;
+ 	u32 config;
+@@ -392,48 +325,17 @@ static void
+ hsw_dp_audio_config_update(struct intel_encoder *encoder,
+ 			   const struct intel_crtc_state *crtc_state)
+ {
+-	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+-	struct i915_audio_component *acomp = dev_priv->display.audio.component;
++	struct drm_i915_private *i915 = to_i915(encoder->base.dev);
+ 	enum transcoder cpu_transcoder = crtc_state->cpu_transcoder;
+-	enum port port = encoder->port;
+-	const struct dp_aud_n_m *nm;
+-	int rate;
+-	u32 tmp;
+ 
+-	rate = acomp ? acomp->aud_sample_rate[port] : 0;
+-	nm = audio_config_dp_get_n_m(crtc_state, rate);
+-	if (nm)
+-		drm_dbg_kms(&dev_priv->drm, "using Maud %u, Naud %u\n", nm->m,
+-			    nm->n);
+-	else
+-		drm_dbg_kms(&dev_priv->drm, "using automatic Maud, Naud\n");
+-
+-	tmp = intel_de_read(dev_priv, HSW_AUD_CFG(cpu_transcoder));
+-	tmp &= ~AUD_CONFIG_N_VALUE_INDEX;
+-	tmp &= ~AUD_CONFIG_PIXEL_CLOCK_HDMI_MASK;
+-	tmp &= ~AUD_CONFIG_N_PROG_ENABLE;
+-	tmp |= AUD_CONFIG_N_VALUE_INDEX;
+-
+-	if (nm) {
+-		tmp &= ~AUD_CONFIG_N_MASK;
+-		tmp |= AUD_CONFIG_N(nm->n);
+-		tmp |= AUD_CONFIG_N_PROG_ENABLE;
+-	}
+-
+-	intel_de_write(dev_priv, HSW_AUD_CFG(cpu_transcoder), tmp);
+-
+-	tmp = intel_de_read(dev_priv, HSW_AUD_M_CTS_ENABLE(cpu_transcoder));
+-	tmp &= ~AUD_CONFIG_M_MASK;
+-	tmp &= ~AUD_M_CTS_M_VALUE_INDEX;
+-	tmp &= ~AUD_M_CTS_M_PROG_ENABLE;
+-
+-	if (nm) {
+-		tmp |= nm->m;
+-		tmp |= AUD_M_CTS_M_VALUE_INDEX;
+-		tmp |= AUD_M_CTS_M_PROG_ENABLE;
+-	}
+-
+-	intel_de_write(dev_priv, HSW_AUD_M_CTS_ENABLE(cpu_transcoder), tmp);
++	/* Enable time stamps. Let HW calculate Maud/Naud values */
++	intel_de_rmw(i915, HSW_AUD_CFG(cpu_transcoder),
++		     AUD_CONFIG_N_VALUE_INDEX |
++		     AUD_CONFIG_PIXEL_CLOCK_HDMI_MASK |
++		     AUD_CONFIG_UPPER_N_MASK |
++		     AUD_CONFIG_LOWER_N_MASK |
++		     AUD_CONFIG_N_PROG_ENABLE,
++		     AUD_CONFIG_N_VALUE_INDEX);
+ }
+ 
+ static void
+-- 
+2.25.1
+
 
