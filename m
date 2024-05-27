@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-47462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AB38D0E17
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:36:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EB48D0C18
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3CC2280E24
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0184C1F245F3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9591B1607AB;
-	Mon, 27 May 2024 19:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAA815FCE9;
+	Mon, 27 May 2024 19:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ya2riV0B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVvaicxp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547FA15FCFB;
-	Mon, 27 May 2024 19:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E98E168C4;
+	Mon, 27 May 2024 19:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838612; cv=none; b=Rlbj03V0RV2AQkDWAwgsdTgd3hADp4rIUl3EK3IsZcsrTkHII/7n5gThIy1gse3/Irf3DDEN1GW+4bYIf7UpQOXAQDL79kUh3cesMenSJGdm4wIyVZow/qS5lTAKRMH0ZOPAn6T3kjkPZb6+DWTXmWJUhpOY7UD3GIutqoe9kAg=
+	t=1716837370; cv=none; b=LE1M2f/qN8LZ03Aagv4g3WgPLYTFdMbMQIKQodJFjs2BjeTGTy+agzdhFonedjYb+0d3FSCiVK6pwSPv3+9ieAKBnud8pKa9QvcAyeaEJC/8wHnNLy76lOPtipGGMXKMMHhu9n3vcmQ88v9DHH0UDWDI93lLvCT43PrHf6dg00o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838612; c=relaxed/simple;
-	bh=/4Vvo/aXdERodqZwGYrPCHesqpsErddK5X2A+8ptGbo=;
+	s=arc-20240116; t=1716837370; c=relaxed/simple;
+	bh=1VQCEJaeHx9HaJtvDCFQVjKL/dVU1p2djppVVBuFkfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDJpsTWrYzz0+XOYvFA+HirR9L/tiIgz6eILBNXrRHTk20Q77Ki6PtmNVd36yrSY0dVzUr9vnH1mcfg8H601MK33Rz2Nhl88cWiWLNnZniOlt8tflK5ieBiGMMIP2pxkdGfetxa2RgegaKypuZLSZnSna4tZ4FyAYOKfAMb9+Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ya2riV0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE13FC2BBFC;
-	Mon, 27 May 2024 19:36:51 +0000 (UTC)
+	 MIME-Version; b=I4kkSBcr0gGX/JjuK1pBiVy1YebpFMShPJp8HJxTset5t3sOZ6CeBWa7cDgGAjxnGyTIpGELNJGFIGXDtbIZvl+0TwN2nHhEbi1Kg1qm0WfBnbM1JOB5QOUb9k6eNCvc1sVO2yxng32iPrRJ4MMtnJgyYuwNu3An08fg8QniCKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVvaicxp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9250C2BBFC;
+	Mon, 27 May 2024 19:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838612;
-	bh=/4Vvo/aXdERodqZwGYrPCHesqpsErddK5X2A+8ptGbo=;
+	s=korg; t=1716837370;
+	bh=1VQCEJaeHx9HaJtvDCFQVjKL/dVU1p2djppVVBuFkfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ya2riV0BFbb64TutzDA5DIKQCMsOb1EtIiqR80i4LWysFAFrMuOvhfmFkAGvnmqOj
-	 IKErTXG8FNoELnURdvtGZbar30Y9/xGcvNDy1LTAa9DlWjv35Z1uOheJAco96epVsG
-	 eZMwM3CfFt6CWo1L6gdWkp/pnFKV4q9JYnW1/rF0=
+	b=yVvaicxpd9q768N3iBZY6hllhzqZFQZprmqv3TAQKObTj+J2X728e/TqCitLo2q/d
+	 LDedbZ19ioGqvz6ylmj0p8YKyXXf3Jj+4ZyfpqbB4lUgvavvRkxib2jtoldUYkmgn2
+	 LtGPXjWqso+PhErRdaGbrVHKIPGottqyKJz/EV5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 460/493] clk: qcom: Fix SC_CAMCC_8280XP dependencies
+Subject: [PATCH 6.9 415/427] net: qrtr: ns: Fix module refcnt
 Date: Mon, 27 May 2024 20:57:42 +0200
-Message-ID: <20240527185645.245446255@linuxfoundation.org>
+Message-ID: <20240527185635.558502819@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Chris Lew <quic_clew@quicinc.com>
 
-[ Upstream commit e00f2540a581f8b8c165e5ae8afe52e4ad038550 ]
+[ Upstream commit fd76e5ccc48f9f54eb44909dd7c0b924005f1582 ]
 
-CONFIG_SC_GCC_8280XP depends on ARM64 but it is selected by
-CONFIG_SC_CAMCC_8280XP, which can be selected on ARM, resulting in a
-Kconfig warning.
+The qrtr protocol core logic and the qrtr nameservice are combined into
+a single module. Neither the core logic or nameservice provide much
+functionality by themselves; combining the two into a single module also
+prevents any possible issues that may stem from client modules loading
+inbetween qrtr and the ns.
 
-WARNING: unmet direct dependencies detected for SC_GCC_8280XP
-  Depends on [n]: COMMON_CLK [=y] && COMMON_CLK_QCOM [=y] && (ARM64 || COMPILE_TEST [=n])
-  Selected by [y]:
-  - SC_CAMCC_8280XP [=y] && COMMON_CLK [=y] && COMMON_CLK_QCOM [=y]
+Creating a socket takes two references to the module that owns the
+socket protocol. Since the ns needs to create the control socket, this
+creates a scenario where there are always two references to the qrtr
+module. This prevents the execution of 'rmmod' for qrtr.
 
-Add the same dependencies to CONFIG_SC_CAMCC_8280XP to resolve the
-warning.
+To resolve this, forcefully put the module refcount for the socket
+opened by the nameservice.
 
-Fixes: ff93872a9c61 ("clk: qcom: camcc-sc8280xp: Add sc8280xp CAMCC")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240318-fix-some-qcom-kconfig-deps-v1-1-ea0773e3df5a@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: a365023a76f2 ("net: qrtr: combine nameservice into main module")
+Reported-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Chris Lew <quic_clew@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ net/qrtr/ns.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
-index 2a9da0939377a..67f1151a3d2b0 100644
---- a/drivers/clk/qcom/Kconfig
-+++ b/drivers/clk/qcom/Kconfig
-@@ -439,6 +439,7 @@ config SC_CAMCC_7280
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index abb0c70ffc8b0..654a3cc0d3479 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -725,6 +725,24 @@ int qrtr_ns_init(void)
+ 	if (ret < 0)
+ 		goto err_wq;
  
- config SC_CAMCC_8280XP
- 	tristate "SC8280XP Camera Clock Controller"
-+	depends on ARM64 || COMPILE_TEST
- 	select SC_GCC_8280XP
- 	help
- 	  Support for the camera clock controller on Qualcomm Technologies, Inc
++	/* As the qrtr ns socket owner and creator is the same module, we have
++	 * to decrease the qrtr module reference count to guarantee that it
++	 * remains zero after the ns socket is created, otherwise, executing
++	 * "rmmod" command is unable to make the qrtr module deleted after the
++	 *  qrtr module is inserted successfully.
++	 *
++	 * However, the reference count is increased twice in
++	 * sock_create_kern(): one is to increase the reference count of owner
++	 * of qrtr socket's proto_ops struct; another is to increment the
++	 * reference count of owner of qrtr proto struct. Therefore, we must
++	 * decrement the module reference count twice to ensure that it keeps
++	 * zero after server's listening socket is created. Of course, we
++	 * must bump the module reference count twice as well before the socket
++	 * is closed.
++	 */
++	module_put(qrtr_ns.sock->ops->owner);
++	module_put(qrtr_ns.sock->sk->sk_prot_creator->owner);
++
+ 	return 0;
+ 
+ err_wq:
+@@ -739,6 +757,15 @@ void qrtr_ns_remove(void)
+ {
+ 	cancel_work_sync(&qrtr_ns.work);
+ 	destroy_workqueue(qrtr_ns.workqueue);
++
++	/* sock_release() expects the two references that were put during
++	 * qrtr_ns_init(). This function is only called during module remove,
++	 * so try_stop_module() has already set the refcnt to 0. Use
++	 * __module_get() instead of try_module_get() to successfully take two
++	 * references.
++	 */
++	__module_get(qrtr_ns.sock->ops->owner);
++	__module_get(qrtr_ns.sock->sk->sk_prot_creator->owner);
+ 	sock_release(qrtr_ns.sock);
+ }
+ EXPORT_SYMBOL_GPL(qrtr_ns_remove);
 -- 
 2.43.0
 
