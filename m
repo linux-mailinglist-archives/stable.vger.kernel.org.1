@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876EF8D0C10
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382058D0DE2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7F0C1C2166C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1C071F21DDC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A9A15FCFE;
-	Mon, 27 May 2024 19:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A44B15FCFB;
+	Mon, 27 May 2024 19:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjKc20Gc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RV/CMluo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3628168C4;
-	Mon, 27 May 2024 19:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3ED317727;
+	Mon, 27 May 2024 19:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837349; cv=none; b=XX/hcNJyxWDI4AlxnQLedRt1scD7RBMAUzRfs0Hlby4ErzyIfLK6fHd+5wpfnuOnP49PzNy8PcXsz/DZIHNo8mNKLuTVYCLELRO/1Ea+bTq0QHmmiD/OK+HP8g9GKKgmAT2WL0rEV+emrCEbkTK9R2qMztTD4L3IosD4htsWYcA=
+	t=1716838491; cv=none; b=U0mr56DtV6AU6UMNXY8ZE9Yv/bEh+YoL+6JF05FV4dZHQRjQVZG8196rGGBcEZus4wrPpamJCUBYhcwDOKTDki93tKa9PoSpgZ56UvJjttAtNU6rXIRUPTfaIfcHk18ekR10OkcCvB4/rRj5vobu4M4BwUiBnJalNrKbURJ9zdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837349; c=relaxed/simple;
-	bh=oAXh2dm/QJ/R/ytoSXgfh7GAN95ap9v2DbL9PnnujDQ=;
+	s=arc-20240116; t=1716838491; c=relaxed/simple;
+	bh=ONBEHZ+yu5U5iIzXtqDLvaLdkDdiZUaQR+bjJo/0dRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDWcTHA/mzmj0gcxIHtpMCSn7IXhAJUPVnB/MO+7MBZVbGcM11RDCpMiHZGoqEBMKe2BCje5EpTFret2IJOsSsssoX416OOFRZb3y37dmrnq7asx0cdKgT72WqL8FlhUDJWvyyRjIYcBiP3BQG1dt5EKqj8B3iTMYoaAKaz5W2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjKc20Gc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56042C2BBFC;
-	Mon, 27 May 2024 19:15:49 +0000 (UTC)
+	 MIME-Version; b=THFiFjxJ9VCmhm3/w90MVXNdFwVEvzycXpDbTvQPwnjwSfzpe3DHPI0NAtC6KIyfqKUZmuQyhF2jeqh9OTp+ym4Xf4gOvzxFk2c49bNQyG5olMABY/moqMFWMOyjx+M1ZtsWYJWK866vcj7iUoMZLKw7ot5X7PCC8Rz+sk2p1b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RV/CMluo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89402C2BBFC;
+	Mon, 27 May 2024 19:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837349;
-	bh=oAXh2dm/QJ/R/ytoSXgfh7GAN95ap9v2DbL9PnnujDQ=;
+	s=korg; t=1716838490;
+	bh=ONBEHZ+yu5U5iIzXtqDLvaLdkDdiZUaQR+bjJo/0dRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PjKc20GcUAvp80+7QtSUnmf/N6Fh0Q3Ng/UPSrjmql+egyJEcNnY1x8ZBLJRL4KcB
-	 B0sOTKJrCm+bNqkl/8HY9IPwZ32AGyHubxvOg6zSzoU48lYD3h6HSurD03FP73ljtF
-	 ZWMc7AxPv7MAXCe5AAHQoFrRl1tC/Q2/8y/jKUZc=
+	b=RV/CMluo5hyA4DQ7H7wM2HYrLunxujXBJXsOyqCJTJMWQ21wfczx7oUyGo0xNDSrt
+	 mU7O6V6BjsKZLtH+eawZM51zBCY4kmolPg6vYsCDETaXHSTLcEcGGOgLCoEpckpwHc
+	 Tt01KRV4rcaMdts+zG+EHFz6NJcHeTwEtBrDMQGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Pearson <rpearsonhpe@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Marek Vasut <marex@denx.de>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 367/427] RDMA/rxe: Fix seg fault in rxe_comp_queue_pkt
-Date: Mon, 27 May 2024 20:56:54 +0200
-Message-ID: <20240527185634.083917706@linuxfoundation.org>
+Subject: [PATCH 6.8 413/493] drm/panel: simple: Add missing Innolux G121X1-L03 format, flags, connector
+Date: Mon, 27 May 2024 20:56:55 +0200
+Message-ID: <20240527185643.811660966@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 2b23b6097303ed0ba5f4bc036a1c07b6027af5c6 ]
+[ Upstream commit 11ac72d033b9f577e8ba0c7a41d1c312bb232593 ]
 
-In rxe_comp_queue_pkt() an incoming response packet skb is enqueued to the
-resp_pkts queue and then a decision is made whether to run the completer
-task inline or schedule it. Finally the skb is dereferenced to bump a 'hw'
-performance counter. This is wrong because if the completer task is
-already running in a separate thread it may have already processed the skb
-and freed it which can cause a seg fault.  This has been observed
-infrequently in testing at high scale.
+The .bpc = 6 implies .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG ,
+add the missing bus_format. Add missing connector type and bus_flags
+as well.
 
-This patch fixes this by changing the order of enqueuing the packet until
-after the counter is accessed.
+Documentation [1] 1.4 GENERAL SPECIFICATI0NS indicates this panel is
+capable of both RGB 18bit/24bit panel, the current configuration uses
+18bit mode, .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG , .bpc = 6.
 
-Link: https://lore.kernel.org/r/20240329145513.35381-4-rpearsonhpe@gmail.com
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Fixes: 0b1e5b99a48b ("IB/rxe: Add port protocol stats")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Support for the 24bit mode would require another entry in panel-simple
+with .bus_format = MEDIA_BUS_FMT_RGB666_1X7X4_SPWG and .bpc = 8, which
+is out of scope of this fix.
+
+[1] https://www.distec.de/fileadmin/pdf/produkte/TFT-Displays/Innolux/G121X1-L03_Datasheet.pdf
+
+Fixes: f8fa17ba812b ("drm/panel: simple: Add support for Innolux G121X1-L03")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240328102746.17868-2-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_comp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_comp.c b/drivers/infiniband/sw/rxe/rxe_comp.c
-index b78b8c0856abd..c997b7cbf2a9e 100644
---- a/drivers/infiniband/sw/rxe/rxe_comp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_comp.c
-@@ -131,12 +131,12 @@ void rxe_comp_queue_pkt(struct rxe_qp *qp, struct sk_buff *skb)
- {
- 	int must_sched;
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 72fdab8adb088..228c5c48e1588 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2564,6 +2564,9 @@ static const struct panel_desc innolux_g121x1_l03 = {
+ 		.unprepare = 200,
+ 		.disable = 400,
+ 	},
++	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
  
--	skb_queue_tail(&qp->resp_pkts, skb);
--
--	must_sched = skb_queue_len(&qp->resp_pkts) > 1;
-+	must_sched = skb_queue_len(&qp->resp_pkts) > 0;
- 	if (must_sched != 0)
- 		rxe_counter_inc(SKB_TO_PKT(skb)->rxe, RXE_CNT_COMPLETER_SCHED);
- 
-+	skb_queue_tail(&qp->resp_pkts, skb);
-+
- 	if (must_sched)
- 		rxe_sched_task(&qp->comp.task);
- 	else
+ static const struct display_timing innolux_g156hce_l01_timings = {
 -- 
 2.43.0
 
