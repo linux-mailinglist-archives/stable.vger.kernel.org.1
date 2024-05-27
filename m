@@ -1,174 +1,116 @@
-Return-Path: <stable+bounces-46299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57828CFFCB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:17:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737838D0080
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82C86B23844
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 12:17:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 147311F23D9A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 12:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E7F15E5D1;
-	Mon, 27 May 2024 12:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B7015E5D6;
+	Mon, 27 May 2024 12:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kVO2pEnD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H2C+pWB0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B6613C3CA;
-	Mon, 27 May 2024 12:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB5715575E;
+	Mon, 27 May 2024 12:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716812230; cv=none; b=S9OWYQaf4uUHE+1lXKMLVhMNKhsvDgfpH/KUqvJXUj3YGxDOcXvt7CYpv2puqftjJL+7PQt89Utaby2OrhaJqcap2NE+ddiCmfReLJ7pnLoX0Qs+fBMb2uxpf8h9Bgu0Qs+0T/9Jzd8QGzsg3bmwiU5sErYrKanXIT38huTxjoI=
+	t=1716814553; cv=none; b=tAl1UOnLNCTGI7pgLDtoA3SdnOfZu+4FgRbT+dU7pFQdJJ1AKSycF4vBnu+LuWwtZEyqEKWthIzgt60lCaHSbqvwh3jdbpcVde/LI2wGEoVv3aT46y4eNkMsRqfxaKKS6q/z60r8V+hF2sz3UBKtBw2RCWNGUdCufcaXiShJU1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716812230; c=relaxed/simple;
-	bh=v7mwebxOX/a1s/ML0ZEls3SJ4IPgSe8KPM9vsKrPK9I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FS8xG5enWKMHCZkFqaXpAKqx8u0ZyY5RScgXgiksNxpVbEMk7kvuJw4AJdlDf0/acfLIWO2TMV1u/g6qi3bgCoQe80UYKPzhf8/6To54i7Gz2zhxnVhUjDk5i+7JulmYlxQp+e5m0+90Du90npW53LrOmRxLJgfQVaI0vlJbCas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kVO2pEnD; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1716814553; c=relaxed/simple;
+	bh=WIhj8ZlUhbORZnFlYZJT6FSSNy0cIwYmfFiWuKbPLNY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=SjqiGWFVNFtLHTOR1j9BB0Q7+OkNYddZ2qoHH8MuHJrDE72NUQkAy7bdiNQU0HBsVc0CLcAiZ5yQZaSp+34UR4BodnU4htOBxdcNj7toFE7Icf8aBUQXUkJccHkn6B0p92IqzBduNa5IaDKkK6SBbWtcsFZoqdD8l/q+T27iiEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H2C+pWB0; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716812228; x=1748348228;
+  t=1716814551; x=1748350551;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=v7mwebxOX/a1s/ML0ZEls3SJ4IPgSe8KPM9vsKrPK9I=;
-  b=kVO2pEnDjK9x6TH/ykKA6NnsnfD4DDNcIfUHHsP7VECYWIw74hhX/4b6
-   kRZq2VwflOUlrrPVjL4hP1pL6tciwyIfN/yVpd+/PWjewCsXAndy4TzHy
-   EkzL5YvgvkME2ilE/eOPAMUXpFLLWwgltsnUj/yPKI2EXd8l3XCFMk/wg
-   YRzNvW42nNAzMdKDK4GzGaUtgrOZ3f7HZOQmaOIuiBoGfUI7Msgr4cLVq
-   /dpocrA4oku7upUFQC//9x5JvReZbISm0+47Jfatmc8wTJGRej61Pdubv
-   J0lJC8Hp20B6cNaWdITb1mTgOb+YNJ0HT4sXpmPeHuQ6pm2x0HwffR9vD
-   g==;
-X-CSE-ConnectionGUID: 57/v2V0xRy6xdyc7HNT0UA==
-X-CSE-MsgGUID: SOu1kKn8RUOUKHA7hloO1A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="24253945"
+  bh=WIhj8ZlUhbORZnFlYZJT6FSSNy0cIwYmfFiWuKbPLNY=;
+  b=H2C+pWB0/cI4Dqxs89BLPRHwJXe1GeaO4PBRPongDb0iwizHrJYvrThE
+   ILoesjRzdB9lbLClc+8kpbNW64lCXY6vrSdnJNXzd9A5z10oa5iaRhfLO
+   rlV6sksAEYsKIANVYWB6dApDTovq4RDNNXPnZ47bHKF/Ss9Z58NIsBdNd
+   LVB4U5eCAjenG8i1mhEFd4RdI7UUutsDZOgO2VqeMnRy4mckv5WX3X9Ji
+   zFmyHMSTfE4/gUELu7RPZPjnSkojDKyUL7J+lRKbqwuHzi9GKvQyhQZVe
+   rli6+G3njKjUu9Mk9+TMYJBEXtWe0UXc0DDio0B+FHK5HRm3quiYWKqRp
+   A==;
+X-CSE-ConnectionGUID: +xfapkzxSqeU+KDI49rPjA==
+X-CSE-MsgGUID: +UXYoRdpQoeY9YnRwTV4jQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="23734068"
 X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="24253945"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 05:17:08 -0700
-X-CSE-ConnectionGUID: r5jiZ86jQhaITYpFAWV54g==
-X-CSE-MsgGUID: mgrFYRFzR2iM6Xu4Hio2ew==
+   d="scan'208";a="23734068"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 05:55:50 -0700
+X-CSE-ConnectionGUID: XMTbiM2bSSq6qNv4xtHhAg==
+X-CSE-MsgGUID: 1doX+hmwQf6IrRS9QSMc1A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="39289986"
-Received: from wentongw-optiplex-8070.sh.intel.com ([10.239.154.12])
-  by fmviesa004.fm.intel.com with ESMTP; 27 May 2024 05:17:05 -0700
-From: Wentong Wu <wentong.wu@intel.com>
-To: sakari.ailus@linux.intel.com,
-	tomas.winkler@intel.com,
-	gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org,
-	Wentong Wu <wentong.wu@intel.com>,
-	stable@vger.kernel.org,
-	Hao Yao <hao.yao@intel.com>,
-	Jason Chen <jason.z.chen@intel.com>
-Subject: [PATCH v3] mei: vsc: Don't stop/restart mei device during system suspend/resume
-Date: Mon, 27 May 2024 20:38:35 +0800
-Message-Id: <20240527123835.522384-1-wentong.wu@intel.com>
-X-Mailer: git-send-email 2.34.1
+   d="scan'208";a="34643614"
+Received: from unknown (HELO localhost) ([10.245.247.139])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 05:55:47 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] x86/of: Return consistent error type from x86_of_pci_irq_enable()
+Date: Mon, 27 May 2024 15:55:35 +0300
+Message-Id: <20240527125538.13620-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The dynamically created mei client device (mei csi) is used as one V4L2
-sub device of the whole video pipeline, and the V4L2 connection graph is
-built by software node. The mei_stop() and mei_restart() will delete the
-old mei csi client device and create a new mei client device, which will
-cause the software node information saved in old mei csi device lost and
-the whole video pipeline will be broken.
+x86_of_pci_irq_enable() returns PCIBIOS_* code received from
+pci_read_config_byte() directly and also -EINVAL which are not
+compatible error types. x86_of_pci_irq_enable() is used as
+(*pcibios_enable_irq) function which should not return PCIBIOS_* codes.
 
-Removing mei_stop()/mei_restart() during system suspend/resume can fix
-the issue above and won't impact hardware actual power saving logic.
+Convert the PCIBIOS_* return code from pci_read_config_byte() into
+normal errno using pcibios_err_to_errno().
 
-Fixes: f6085a96c973 ("mei: vsc: Unregister interrupt handler for system suspend")
-Cc: stable@vger.kernel.org # for 6.8+
-Reported-by: Hao Yao <hao.yao@intel.com>
-Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Jason Chen <jason.z.chen@intel.com>
-Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-
+Fixes: 96e0a0797eba ("x86: dtb: Add support for PCI devices backed by dtb nodes")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: stable@vger.kernel.org
 ---
-Changes since v2:
- - add change log which is not covered by v2, and no code change
+ arch/x86/kernel/devicetree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes since v1:
- - correct Fixes commit id in commit message, and no code change
-
----
- drivers/misc/mei/platform-vsc.c | 39 +++++++++++++--------------------
- 1 file changed, 15 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/misc/mei/platform-vsc.c b/drivers/misc/mei/platform-vsc.c
-index b543e6b9f3cf..1ec65d87488a 100644
---- a/drivers/misc/mei/platform-vsc.c
-+++ b/drivers/misc/mei/platform-vsc.c
-@@ -399,41 +399,32 @@ static void mei_vsc_remove(struct platform_device *pdev)
+diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
+index 8e3c53b4d070..64280879c68c 100644
+--- a/arch/x86/kernel/devicetree.c
++++ b/arch/x86/kernel/devicetree.c
+@@ -83,7 +83,7 @@ static int x86_of_pci_irq_enable(struct pci_dev *dev)
  
- static int mei_vsc_suspend(struct device *dev)
- {
--	struct mei_device *mei_dev = dev_get_drvdata(dev);
--	struct mei_vsc_hw *hw = mei_dev_to_vsc_hw(mei_dev);
-+	struct mei_device *mei_dev;
-+	int ret = 0;
- 
--	mei_stop(mei_dev);
-+	mei_dev = dev_get_drvdata(dev);
-+	if (!mei_dev)
-+		return -ENODEV;
- 
--	mei_disable_interrupts(mei_dev);
-+	mutex_lock(&mei_dev->device_lock);
- 
--	vsc_tp_free_irq(hw->tp);
-+	if (!mei_write_is_idle(mei_dev))
-+		ret = -EAGAIN;
- 
--	return 0;
-+	mutex_unlock(&mei_dev->device_lock);
-+
-+	return ret;
- }
- 
- static int mei_vsc_resume(struct device *dev)
- {
--	struct mei_device *mei_dev = dev_get_drvdata(dev);
--	struct mei_vsc_hw *hw = mei_dev_to_vsc_hw(mei_dev);
--	int ret;
--
--	ret = vsc_tp_request_irq(hw->tp);
--	if (ret)
+ 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_PIN, &pin);
+ 	if (ret)
 -		return ret;
--
--	ret = mei_restart(mei_dev);
--	if (ret)
--		goto err_free;
-+	struct mei_device *mei_dev;
++		return pcibios_err_to_errno(ret);
+ 	if (!pin)
+ 		return 0;
  
--	/* start timer if stopped in suspend */
--	schedule_delayed_work(&mei_dev->timer_work, HZ);
-+	mei_dev = dev_get_drvdata(dev);
-+	if (!mei_dev)
-+		return -ENODEV;
- 
- 	return 0;
--
--err_free:
--	vsc_tp_free_irq(hw->tp);
--
--	return ret;
- }
- 
- static DEFINE_SIMPLE_DEV_PM_OPS(mei_vsc_pm_ops, mei_vsc_suspend, mei_vsc_resume);
 -- 
-2.34.1
+2.39.2
 
 
