@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-46702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DEF8D0AE3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E18308D0CC1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 458981C21641
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94B03287440
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD3E161330;
-	Mon, 27 May 2024 19:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17CB1607A5;
+	Mon, 27 May 2024 19:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pe0slZ5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRYETYbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714FDD518;
-	Mon, 27 May 2024 19:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7015115FCFE;
+	Mon, 27 May 2024 19:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836633; cv=none; b=muWhR5Hq0sNoviIw7GuSyb4l1LYARJgHzU1zsZ+lrZlAHryub8/HOYy5C7YSQy36EgGwY9yzcWv4mfpKDxuQRYedUhzfB573Z4IVqEFG+KJuk6oyTkaOiD+0w6XmkUSxEP9ee7y8I7dZH7dwemBBLtWaaTNy3aDWm2Plb6a32dI=
+	t=1716837770; cv=none; b=dAZ2YqoS7ilVX7XeUBONbaLcoB1LjNjKOip3cr1/UJGcDD6l3izKds2L7wr9ziYnQtSjLewg3YBXpKLXRlnUbWHhlrCtEEGokjWUgQ8wPOwMDImQGmADQmx6Al1Z8sKOlBM+uEktFhjZjSZSqMlSxcrZHBC0j2E9x8+9/xxpC14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836633; c=relaxed/simple;
-	bh=X6MaW8uWxSDHh5/xBKiM4MSRwBhJ5PtqAgkRLbEVkYk=;
+	s=arc-20240116; t=1716837770; c=relaxed/simple;
+	bh=3/AutRcbiJjRpCFf1XF+NOy1LFk7KV8Zx4Gwcrpeb7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WN/R95USX27idOKcKJJccMJeKokHBdis7URq12+HXJS75IIQrKUTqKh/69pp7nFJnBhfj8dCZYHs25iYa1KeSlGm1dktVuyFC1tiAvW2DMFGoGGj2nC5Q8ii2fYfbRoE5XvsB5OEEvXUmleLy9H2aIP8PP1QdlB0kcj9MM4v6lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pe0slZ5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086C2C2BBFC;
-	Mon, 27 May 2024 19:03:52 +0000 (UTC)
+	 MIME-Version; b=LeXrw/RykpY6y1AjwhrBnSFRfk7Rfn3/iXmkAPdcjjAbN09tez/sWILELxheiW5dwlPQ47wYp4wQnH/m+fPcZ8FABqHMszI+dYdp2Ya/DLNpZKRJ//0lwbAM3Nph34kNIcq7m6Z7pUrFNxtAurihTUo0fwOeaN9BItEvwSWuIHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRYETYbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E29C2BBFC;
+	Mon, 27 May 2024 19:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836633;
-	bh=X6MaW8uWxSDHh5/xBKiM4MSRwBhJ5PtqAgkRLbEVkYk=;
+	s=korg; t=1716837770;
+	bh=3/AutRcbiJjRpCFf1XF+NOy1LFk7KV8Zx4Gwcrpeb7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pe0slZ5DR/gNDJlmsvFWj/rqHv2r+nfuVPv29zkORbcgbey1N23Ew+N12CLfbLCqL
-	 yEU/txze1dRGzRZ3n+cZYp11BUZ+uMh/w2dzEiV8tBDFx1iEGY4tMZSnoTCg6Ft4CJ
-	 j0tUKTNkntGqBtcSMQ4rVcR0ParDrXit1qBKLty4=
+	b=zRYETYbSnOe0ye8SqtyZrJ2sb/LkS0ZZkN2+ApkAFjoNR2LX7INA50oFMUVFkjZGw
+	 XMFFuJB7Xu6FWgROaD6ROFQl6QMPphNdcRLEtg8xMvducMkQhJsPox4xGhB+WsRD8t
+	 YVfr7hm+TWa3TOCZaX/XAOAhdanQw3GsiwSWVW7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <quentin@isovalent.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 093/427] bpftool: Fix missing pids during link show
-Date: Mon, 27 May 2024 20:52:20 +0200
-Message-ID: <20240527185610.441598407@linuxfoundation.org>
+Subject: [PATCH 6.8 139/493] crypto: octeontx2 - add missing check for dma_map_single
+Date: Mon, 27 May 2024 20:52:21 +0200
+Message-ID: <20240527185635.003884377@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit fe879bb42f8a6513ed18e9d22efb99cb35590201 ]
+[ Upstream commit 6a6d6a3a328a59ed0d8ae2e65696ef38e49133a0 ]
 
-Current 'bpftool link' command does not show pids, e.g.,
-  $ tools/build/bpftool/bpftool link
-  ...
-  4: tracing  prog 23
-        prog_type lsm  attach_type lsm_mac
-        target_obj_id 1  target_btf_id 31320
+Add check for dma_map_single() and return error if it fails in order
+to avoid invalid dma address.
 
-Hack the following change to enable normal libbpf debug output,
-#  --- a/tools/bpf/bpftool/pids.c
-#  +++ b/tools/bpf/bpftool/pids.c
-#  @@ -121,9 +121,9 @@ int build_obj_refs_table(struct hashmap **map, enum bpf_obj_type type)
-#          /* we don't want output polluted with libbpf errors if bpf_iter is not
-#           * supported
-#           */
-#  -       default_print = libbpf_set_print(libbpf_print_none);
-#  +       /* default_print = libbpf_set_print(libbpf_print_none); */
-#          err = pid_iter_bpf__load(skel);
-#  -       libbpf_set_print(default_print);
-#  +       /* libbpf_set_print(default_print); */
-
-Rerun the above bpftool command:
-  $ tools/build/bpftool/bpftool link
-  libbpf: prog 'iter': BPF program load failed: Permission denied
-  libbpf: prog 'iter': -- BEGIN PROG LOAD LOG --
-  0: R1=ctx() R10=fp0
-  ; struct task_struct *task = ctx->task; @ pid_iter.bpf.c:69
-  0: (79) r6 = *(u64 *)(r1 +8)          ; R1=ctx() R6_w=ptr_or_null_task_struct(id=1)
-  ; struct file *file = ctx->file; @ pid_iter.bpf.c:68
-  ...
-  ; struct bpf_link *link = (struct bpf_link *) file->private_data; @ pid_iter.bpf.c:103
-  80: (79) r3 = *(u64 *)(r8 +432)       ; R3_w=scalar() R8=ptr_file()
-  ; if (link->type == bpf_core_enum_value(enum bpf_link_type___local, @ pid_iter.bpf.c:105
-  81: (61) r1 = *(u32 *)(r3 +12)
-  R3 invalid mem access 'scalar'
-  processed 39 insns (limit 1000000) max_states_per_insn 0 total_states 3 peak_states 3 mark_read 2
-  -- END PROG LOAD LOG --
-  libbpf: prog 'iter': failed to load: -13
-  ...
-
-The 'file->private_data' returns a 'void' type and this caused subsequent 'link->type'
-(insn #81) failed in verification.
-
-To fix the issue, restore the previous BPF_CORE_READ so old kernels can also work.
-With this patch, the 'bpftool link' runs successfully with 'pids'.
-  $ tools/build/bpftool/bpftool link
-  ...
-  4: tracing  prog 23
-        prog_type lsm  attach_type lsm_mac
-        target_obj_id 1  target_btf_id 31320
-        pids systemd(1)
-
-Fixes: 44ba7b30e84f ("bpftool: Use a local copy of BPF_LINK_TYPE_PERF_EVENT in pid_iter.bpf.c")
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Quentin Monnet <quentin@isovalent.com>
-Reviewed-by: Quentin Monnet <quentin@isovalent.com>
-Link: https://lore.kernel.org/bpf/20240312023249.3776718-1-yonghong.song@linux.dev
+Fixes: e92971117c2c ("crypto: octeontx2 - add ctx_val workaround")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Bharat Bhushan <bbhushan2@marvell.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/skeleton/pid_iter.bpf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/marvell/octeontx2/cn10k_cpt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-index 26004f0c5a6ae..7bdbcac3cf628 100644
---- a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-+++ b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-@@ -102,8 +102,8 @@ int iter(struct bpf_iter__task_file *ctx)
- 				       BPF_LINK_TYPE_PERF_EVENT___local)) {
- 		struct bpf_link *link = (struct bpf_link *) file->private_data;
+diff --git a/drivers/crypto/marvell/octeontx2/cn10k_cpt.c b/drivers/crypto/marvell/octeontx2/cn10k_cpt.c
+index 79b4e74804f6d..6bfc59e677478 100644
+--- a/drivers/crypto/marvell/octeontx2/cn10k_cpt.c
++++ b/drivers/crypto/marvell/octeontx2/cn10k_cpt.c
+@@ -138,6 +138,10 @@ int cn10k_cpt_hw_ctx_init(struct pci_dev *pdev,
+ 		return -ENOMEM;
+ 	cptr_dma = dma_map_single(&pdev->dev, hctx, CN10K_CPT_HW_CTX_SIZE,
+ 				  DMA_BIDIRECTIONAL);
++	if (dma_mapping_error(&pdev->dev, cptr_dma)) {
++		kfree(hctx);
++		return -ENOMEM;
++	}
  
--		if (link->type == bpf_core_enum_value(enum bpf_link_type___local,
--						      BPF_LINK_TYPE_PERF_EVENT___local)) {
-+		if (BPF_CORE_READ(link, type) == bpf_core_enum_value(enum bpf_link_type___local,
-+								     BPF_LINK_TYPE_PERF_EVENT___local)) {
- 			e.has_bpf_cookie = true;
- 			e.bpf_cookie = get_bpf_cookie(link);
- 		}
+ 	cn10k_cpt_hw_ctx_set(hctx, 1);
+ 	er_ctx->hw_ctx = hctx;
 -- 
 2.43.0
 
