@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A2A8D0B91
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE648D0D91
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DDF82810A9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985CE282792
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443AD15DBD8;
-	Mon, 27 May 2024 19:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2426D16078C;
+	Mon, 27 May 2024 19:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNdW5ZKG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBzO1Cfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0355D17E90E;
-	Mon, 27 May 2024 19:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D685917727;
+	Mon, 27 May 2024 19:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837043; cv=none; b=u4qkd+2vTwpJHL8wOG03AaQaOWM4vnmzCHkZCqEdfLy3gA2ujAEpOsriH2GG7yhfDCTWlG1tce7u78cOGpQLGzX6TIvCGh30BgVecAfos6dPGQf+b1OSOCty7jlbQY2YPgYMpAg07Q2rbiSdPWTskZ3h372ioWh4SK//lsvL+Us=
+	t=1716838282; cv=none; b=LE40Eb231iW6vbmujL0oUX6JaO0nbSRcm94dB7Ewvv6ZbvDBlA0KgEUmf14EnaF/Rr4mdMHoencJPgT15PIwHSa9ZPxKUUZt2wQIMc9v4nIKTYob463/OIjZE6HbKHsOPgcvL6+ylzM9AhoBLbVRQn9+IxlpNoPpLIDKH9BLNpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837043; c=relaxed/simple;
-	bh=xxyZ79YceEx264L06C+1aNlEV4Ty4mZ8uP3VXvVmmeQ=;
+	s=arc-20240116; t=1716838282; c=relaxed/simple;
+	bh=y7ltu8d9q1H5QS/Ar6kVi0aZGyPMjduY1Y3OnBWMxkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzPlkwRAFTMUFL3yWiACq6mey4ZwFL2mtLCtaDvAojkmrb9bGauI8Ms1uD3BoPmjhjFNyhmbHECdShcz4VLcnah31pw1K8lrX89YJJsAixIeMTwpjp0EZnAgYMr2MxUkajowHSisDtB4wWBksA7YeCKjlFn+bRl5YyZZ8ElUNE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNdW5ZKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F93C2BBFC;
-	Mon, 27 May 2024 19:10:42 +0000 (UTC)
+	 MIME-Version; b=Yf0J8KQE9Z71eFkKOZSfZycMse+FW+rWyqOkpdwczRmYjbXU22781nhnSb2Fq8+hxJ2HG2F7sQrLc/WI7riYIEhP69f5Hls+X/Gbd92Gn2Qxk3XWfx+qcVU6JvlB2EzoEnHsyDoETi9qzjsRYZHolgX8fMr8bPjArhPhELJu0Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBzO1Cfk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147CCC2BBFC;
+	Mon, 27 May 2024 19:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837042;
-	bh=xxyZ79YceEx264L06C+1aNlEV4Ty4mZ8uP3VXvVmmeQ=;
+	s=korg; t=1716838282;
+	bh=y7ltu8d9q1H5QS/Ar6kVi0aZGyPMjduY1Y3OnBWMxkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNdW5ZKGiwwHccsWNh93K0SfMREzENpZSjwyRIegOx5JxxK/hTWYF0lGRjqP/TNQw
-	 HmosZoWIcVudhFA+JUxXQJzQsF5RbXGOqdDV2owDTgVDE/D48ImLt3T1ZB1em4O17Z
-	 NV0sDCOEg0x3ex9kqCw0EBHRyHq6/O3x+UtLROc0=
+	b=WBzO1CfkRPxCc0/a7KR1+3i+JHbpwi79WCaEozaAk/l4AS5lQNoywHRg7ZPctmfH4
+	 Pax00AuCRidEgcIJwXDaebNHny9ROzWq47zrF+RQL4Ft/b2jwEezTuKrxJMgN1jesr
+	 fH8qGd+KkM5ocygFr4njYcgeWVI34izhTE8C3hmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Korotkov <korotkov.maxim.s@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Rohan G Thomas <rohan.g.thomas@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 289/427] mtd: rawnand: hynix: fixed typo
+Subject: [PATCH 6.8 334/493] net: stmmac: Report taprio offload status
 Date: Mon, 27 May 2024 20:55:36 +0200
-Message-ID: <20240527185629.392964291@linuxfoundation.org>
+Message-ID: <20240527185641.197036046@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Korotkov <korotkov.maxim.s@gmail.com>
+From: Rohan G Thomas <rohan.g.thomas@intel.com>
 
-[ Upstream commit 6819db94e1cd3ce24a432f3616cd563ed0c4eaba ]
+[ Upstream commit 5ca63ffdb94ba2bac4c23c8609aabd7edd03c312 ]
 
-The function hynix_nand_rr_init() should probably return an error code.
-Judging by the usage, it seems that the return code is passed up
-the call stack.
-Right now, it always returns 0 and the function hynix_nand_cleanup()
-in hynix_nand_init() has never been called.
+Report taprio offload status. This includes per txq and global
+counters of window_drops and tx_overruns.
 
-Found by RASU JSC and Linux Verification Center (linuxtesting.org)
+Window_drops count include count of frames dropped because of
+queueMaxSDU setting and HLBF error. Transmission overrun counter
+inform the user application whether any packets are currently being
+transmitted on a particular queue during a gate-close event.DWMAC IPs
+takes care Transmission overrun won't happen hence this is always 0.
 
-Fixes: 626994e07480 ("mtd: nand: hynix: Add read-retry support for 1x nm MLC NANDs")
-
-Signed-off-by: Maxim Korotkov <korotkov.maxim.s@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240313102721.1991299-1-korotkov.maxim.s@gmail.com
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 36ac9e7f2e57 ("net: stmmac: move the EST lock to struct stmmac_priv")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/nand_hynix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 62 +++++++++++++++++--
+ 1 file changed, 58 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/nand_hynix.c b/drivers/mtd/nand/raw/nand_hynix.c
-index a74e64e0cfa32..c02e50608816a 100644
---- a/drivers/mtd/nand/raw/nand_hynix.c
-+++ b/drivers/mtd/nand/raw/nand_hynix.c
-@@ -401,7 +401,7 @@ static int hynix_nand_rr_init(struct nand_chip *chip)
- 	if (ret)
- 		pr_warn("failed to initialize read-retry infrastructure");
- 
--	return 0;
-+	return ret;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 07aa3a3089dc2..cce00719937db 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -937,8 +937,8 @@ static void tc_taprio_map_maxsdu_txq(struct stmmac_priv *priv,
+ 	}
  }
  
- static void hynix_nand_extract_oobsize(struct nand_chip *chip,
+-static int tc_setup_taprio(struct stmmac_priv *priv,
+-			   struct tc_taprio_qopt_offload *qopt)
++static int tc_taprio_configure(struct stmmac_priv *priv,
++			       struct tc_taprio_qopt_offload *qopt)
+ {
+ 	u32 size, wid = priv->dma_cap.estwid, dep = priv->dma_cap.estdep;
+ 	struct plat_stmmacenet_data *plat = priv->plat;
+@@ -990,8 +990,6 @@ static int tc_setup_taprio(struct stmmac_priv *priv,
+ 
+ 	if (qopt->cmd == TAPRIO_CMD_DESTROY)
+ 		goto disable;
+-	else if (qopt->cmd != TAPRIO_CMD_REPLACE)
+-		return -EOPNOTSUPP;
+ 
+ 	if (qopt->num_entries >= dep)
+ 		return -EINVAL;
+@@ -1102,6 +1100,11 @@ static int tc_setup_taprio(struct stmmac_priv *priv,
+ 		priv->plat->est->enable = false;
+ 		stmmac_est_configure(priv, priv, priv->plat->est,
+ 				     priv->plat->clk_ptp_rate);
++		/* Reset taprio status */
++		for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
++			priv->xstats.max_sdu_txq_drop[i] = 0;
++			priv->xstats.mtl_est_txq_hlbf[i] = 0;
++		}
+ 		mutex_unlock(&priv->plat->est->lock);
+ 	}
+ 
+@@ -1119,6 +1122,57 @@ static int tc_setup_taprio(struct stmmac_priv *priv,
+ 	return ret;
+ }
+ 
++static void tc_taprio_stats(struct stmmac_priv *priv,
++			    struct tc_taprio_qopt_offload *qopt)
++{
++	u64 window_drops = 0;
++	int i = 0;
++
++	for (i = 0; i < priv->plat->tx_queues_to_use; i++)
++		window_drops += priv->xstats.max_sdu_txq_drop[i] +
++				priv->xstats.mtl_est_txq_hlbf[i];
++	qopt->stats.window_drops = window_drops;
++
++	/* Transmission overrun doesn't happen for stmmac, hence always 0 */
++	qopt->stats.tx_overruns = 0;
++}
++
++static void tc_taprio_queue_stats(struct stmmac_priv *priv,
++				  struct tc_taprio_qopt_offload *qopt)
++{
++	struct tc_taprio_qopt_queue_stats *q_stats = &qopt->queue_stats;
++	int queue = qopt->queue_stats.queue;
++
++	q_stats->stats.window_drops = priv->xstats.max_sdu_txq_drop[queue] +
++				      priv->xstats.mtl_est_txq_hlbf[queue];
++
++	/* Transmission overrun doesn't happen for stmmac, hence always 0 */
++	q_stats->stats.tx_overruns = 0;
++}
++
++static int tc_setup_taprio(struct stmmac_priv *priv,
++			   struct tc_taprio_qopt_offload *qopt)
++{
++	int err = 0;
++
++	switch (qopt->cmd) {
++	case TAPRIO_CMD_REPLACE:
++	case TAPRIO_CMD_DESTROY:
++		err = tc_taprio_configure(priv, qopt);
++		break;
++	case TAPRIO_CMD_STATS:
++		tc_taprio_stats(priv, qopt);
++		break;
++	case TAPRIO_CMD_QUEUE_STATS:
++		tc_taprio_queue_stats(priv, qopt);
++		break;
++	default:
++		err = -EOPNOTSUPP;
++	}
++
++	return err;
++}
++
+ static int tc_setup_etf(struct stmmac_priv *priv,
+ 			struct tc_etf_qopt_offload *qopt)
+ {
 -- 
 2.43.0
 
