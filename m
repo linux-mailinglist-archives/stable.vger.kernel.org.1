@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-46842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002058D0B7D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7F98D0DA6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B02CB284A65
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C85E1C214C0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4D826ACA;
-	Mon, 27 May 2024 19:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E9915FCE9;
+	Mon, 27 May 2024 19:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vA7BkKjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmbYsOea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC00017E90E;
-	Mon, 27 May 2024 19:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E2B17727;
+	Mon, 27 May 2024 19:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836994; cv=none; b=NdzdfH9DH9vAuKGUhPSNOer0E1ufFEnX8p6q6MzLOl/3afyLQ5ZqqOWpqFGhOQFubNUNKeE7tb8fwylcUldXKJebRLo0zZn6Ze9nnHXNFhE52iqxlqU59w2lxd5C51nuWKlyVSKBSPe6L8jFSB1esWCz+NMpKmnFCkCxjxsVgcM=
+	t=1716838333; cv=none; b=UxnnA3jKLqg10xb/hWdOpqnhQv4avyOMImrN85v6L6A16E4jtgz1WRiN8+LM+jFuZyb2HmgGseF9SQe/j//Ml8sFostF7RBpj0y4HUqijYlroN0b6yPQmWi5iENViggJ76IUuSqNEIm4qbLlvQnIGfM5bhMnrncLTSamFEAW5U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836994; c=relaxed/simple;
-	bh=nNFcQ1ZF+Rx0eUOKg3T4yoS9wlhHHP1mQyGA7vXdvVY=;
+	s=arc-20240116; t=1716838333; c=relaxed/simple;
+	bh=d7bwFjlGOP6nmMK40veE+dk1LZioRYUz/v9Q7q1X2bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CW8dQznEhqoM4ExHa3Zr7ZcsRRG3kFIgMJ3Fxi0UWOGj15chhN9RmLSrX01DXwHdT4skxMP5aaekXd+cAOmiCLiGzVBgkb6Vimk0Vz5Qxd9LGpmxAhZOKVXR64i6hNWubeYEdm8x5HQjRMuyfHb5UkQX6bn+6zz31m07wNzxHK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vA7BkKjX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C20C32781;
-	Mon, 27 May 2024 19:09:54 +0000 (UTC)
+	 MIME-Version; b=MPjYiHRmqfEW0P0cpl7Q852/EjyxF9ig+Zb4hoV/5M9V7aTFWlUELs1pxOUA2XPz7/jNrbdn6itEh2aZSUcQNuxyOT6uUif4Qhi+kpZu4lFZ6sg3N3lgoud1T3s3bxHpJSmqFsdDsynWm8m8Bp+T6RwZ9fu1ZIkW9rgib5KZnzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmbYsOea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF42C2BBFC;
+	Mon, 27 May 2024 19:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836994;
-	bh=nNFcQ1ZF+Rx0eUOKg3T4yoS9wlhHHP1mQyGA7vXdvVY=;
+	s=korg; t=1716838333;
+	bh=d7bwFjlGOP6nmMK40veE+dk1LZioRYUz/v9Q7q1X2bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vA7BkKjXL9VfbpLGzOkFsn8JoEN3VKEPh0TkgmLQyCCJ12JoteW0l0tZ20+jmnI4E
-	 wNJ+g5PqLPM6aYpb2tkP1wXPxqi1W226sdSklSq5LMmwFTuNmUTeLyU1lMhJ2/mbfq
-	 fs4fAOAQSsHkCHBczfwhtlIHQseQRU/Y7ap/FxRw=
+	b=gmbYsOea4p0V2rhSIq74dx61cFkTa1F5HqSg7JgdTvl6Tmsm7oN6RupXVuKq3Kodq
+	 buew1blnYOVt6BiK4dETWMwyX2PvVnRc7tQnDKGYkusCAA2V9SlrfkRSJkTHugbCuj
+	 GIU3T8N58tTje2SweFjH4T0xVqiLqPGAUkaMXE5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 267/427] net: micrel: Fix receiving the timestamp in the frame for lan8841
+Subject: [PATCH 6.8 312/493] ipv6: sr: add missing seg6_local_exit
 Date: Mon, 27 May 2024 20:55:14 +0200
-Message-ID: <20240527185627.386334862@linuxfoundation.org>
+Message-ID: <20240527185640.501229000@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit aea27a92a41dae14843f92c79e9e42d8f570105c ]
+[ Upstream commit 3321687e321307629c71b664225b861ebf3e5753 ]
 
-The blamed commit started to use the ptp workqueue to get the second
-part of the timestamp. And when the port was set down, then this
-workqueue is stopped. But if the config option NETWORK_PHY_TIMESTAMPING
-is not enabled, then the ptp_clock is not initialized so then it would
-crash when it would try to access the delayed work.
-So then basically by setting up and then down the port, it would crash.
-The fix consists in checking if the ptp_clock is initialized and only
-then cancel the delayed work.
+Currently, we only call seg6_local_exit() in seg6_init() if
+seg6_local_init() failed. But forgot to call it in seg6_exit().
 
-Fixes: cc7554954848 ("net: micrel: Change to receive timestamp in the frame for lan8841")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240509131812.1662197-2-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/seg6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index ddb50a0e2bc82..87780465cd0d5 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -4676,7 +4676,8 @@ static int lan8841_suspend(struct phy_device *phydev)
- 	struct kszphy_priv *priv = phydev->priv;
- 	struct kszphy_ptp_priv *ptp_priv = &priv->ptp_priv;
- 
--	ptp_cancel_worker_sync(ptp_priv->ptp_clock);
-+	if (ptp_priv->ptp_clock)
-+		ptp_cancel_worker_sync(ptp_priv->ptp_clock);
- 
- 	return genphy_suspend(phydev);
- }
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 35508abd76f43..5423f1f2aa626 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -564,6 +564,7 @@ void seg6_exit(void)
+ 	seg6_hmac_exit();
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
++	seg6_local_exit();
+ 	seg6_iptunnel_exit();
+ #endif
+ 	unregister_pernet_subsys(&ip6_segments_ops);
 -- 
 2.43.0
 
