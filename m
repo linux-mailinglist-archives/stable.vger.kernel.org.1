@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0018D0BC8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D18E8D0DC7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CEA81F234DB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCFE5B20F31
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8B017E90E;
-	Mon, 27 May 2024 19:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300D115FA60;
+	Mon, 27 May 2024 19:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrBhuRc0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQfKMd32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2366A039;
-	Mon, 27 May 2024 19:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E083917727;
+	Mon, 27 May 2024 19:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837173; cv=none; b=Hk/vBgGl6h9NYyLghzHOSgU/G7Znw0pPbP8lejKskG+bjvi9gNucH6pdnpfoxQK8X3HLpx3O0jZoP3xZ2OnZnuWT8TC9OgOW/THRiHmjapxZ9TSfW0eRuoWLJJceKDh0jqX7U2fuWzh4oK8QnrYoY5CRhcQNKuuUQZwQ7j77eOw=
+	t=1716838419; cv=none; b=iysGqSg7obwtMrlOPC8UCsTHpg/7TiLN0ykgsnAuFSmd/xr3CEK9lu/0TTfPzkdkpMA8Lu90QS8E9cp1ynF2h04dIz7wLoTk5X60TGePLDm+z4vwhFp9HS+fuFX12kUTIOmQ0Fs6NaMQ34iBoG/mLo8aN8okyVTYntgyS6dVM6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837173; c=relaxed/simple;
-	bh=3LZplkpMttu/CIGk/GrUCt4fJr1DNO0i/9tpJbRwrus=;
+	s=arc-20240116; t=1716838419; c=relaxed/simple;
+	bh=fXEhE3WmfkqESkAj8soyoT0Uq4RC39sI3RZukWQIejI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ozMewPkw0Q8MdcbPx7s2VBghgXOoiNHwJK1xyNW2N4Swh9P6TWyxJ+JzYFyYnqNRyw8fuWDCluw01abjMfDBb3oleHmWUV/y5R6mpBqRXJwQnMQsH3ZsyHAdauxE7uc5LzxPs+zaOevGDcfFRyAuz84Hzl878v/+vjRpTjmKX48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrBhuRc0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E77C2BBFC;
-	Mon, 27 May 2024 19:12:52 +0000 (UTC)
+	 MIME-Version; b=VbTRIdk4QeDDAJ2hfFObFlEOJMawic8WHePszAmtaO4SHOwiPYYDF75RKJ+kfPC4sAnQkTB9Cq7W4AAdMjNNQqjFowGIjx/vuAYTMl4N0w/neJv8r+lDvUFaaciy7p7CLyZMnTIO0c74633baHXgpHCZfDFLaABzlOupwqVy2JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQfKMd32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77543C2BBFC;
+	Mon, 27 May 2024 19:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837173;
-	bh=3LZplkpMttu/CIGk/GrUCt4fJr1DNO0i/9tpJbRwrus=;
+	s=korg; t=1716838418;
+	bh=fXEhE3WmfkqESkAj8soyoT0Uq4RC39sI3RZukWQIejI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WrBhuRc0SYVJ99zQDMHy7UNGQqaBPVCD8RTtjVqcvKONyL504VGexrLoDBJOMZIfu
-	 eVksROrLIJLRqeJv3inZ4xvY4hItX0atwF770OYch5FqLX6Lz4tTm1ajpzIfM7DieO
-	 gPURdmSVn6zUBo8tXsIYHBeGSOOUgtkjeG8hvekQ=
+	b=LQfKMd32B3dwZhkpCpMpoqfRaFOEJ1JMrYWJrea4cscy/w4cJw7xy2B5sdZq4Q8Ls
+	 1qoIbXv3oqWsnCWbkROpC61XBaILBhAp++/pwfs32XENYPv6UVFv6Foha17soqKeKY
+	 GEB+hgmhnwpcNfSUxplyckPQlf7XSJ+nF6mG30gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Robert Foss <rfoss@kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 338/427] drm/bridge: anx7625: Update audio status while detecting
-Date: Mon, 27 May 2024 20:56:25 +0200
-Message-ID: <20240527185632.701328106@linuxfoundation.org>
+Subject: [PATCH 6.8 384/493] ASoC: Intel: avs: Fix ASRC module initialization
+Date: Mon, 27 May 2024 20:56:26 +0200
+Message-ID: <20240527185642.843495606@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit a665b4e60369867cddf50f37f16169a3e2f434ad ]
+[ Upstream commit 9d2e26f31c7cc3fa495c423af9b4902ec0dc7be3 ]
 
-Previously, the audio status was not updated during detection, leading
-to a persistent audio despite hot plugging events. To resolve this
-issue, update the audio status during detection.
+The ASRC module configuration consists of several reserved fields. Zero
+them out when initializing the module to avoid sending invalid data.
 
-Fixes: 566fef1226c1 ("drm/bridge: anx7625: add HDMI audio function")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240416-anx7625-v3-1-f916ae31bdd7@chromium.org
+Fixes: 274d79e51875 ("ASoC: Intel: avs: Configure modules according to their type")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://msgid.link/r/20240405090929.1184068-6-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ sound/soc/intel/avs/path.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 02bf450053076..59e9ad3499696 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -2469,15 +2469,22 @@ static void anx7625_bridge_atomic_disable(struct drm_bridge *bridge,
- 	mutex_unlock(&ctx->aux_lock);
- }
+diff --git a/sound/soc/intel/avs/path.c b/sound/soc/intel/avs/path.c
+index 3aa16ee8d34c1..2fae84727a3bd 100644
+--- a/sound/soc/intel/avs/path.c
++++ b/sound/soc/intel/avs/path.c
+@@ -367,6 +367,7 @@ static int avs_asrc_create(struct avs_dev *adev, struct avs_path_module *mod)
+ 	struct avs_tplg_module *t = mod->template;
+ 	struct avs_asrc_cfg cfg;
  
-+static void
-+anx7625_audio_update_connector_status(struct anx7625_data *ctx,
-+				      enum drm_connector_status status);
-+
- static enum drm_connector_status
- anx7625_bridge_detect(struct drm_bridge *bridge)
- {
- 	struct anx7625_data *ctx = bridge_to_anx7625(bridge);
- 	struct device *dev = ctx->dev;
-+	enum drm_connector_status status;
- 
- 	DRM_DEV_DEBUG_DRIVER(dev, "drm bridge detect\n");
- 
--	return anx7625_sink_detect(ctx);
-+	status = anx7625_sink_detect(ctx);
-+	anx7625_audio_update_connector_status(ctx, status);
-+	return status;
- }
- 
- static const struct drm_edid *anx7625_bridge_edid_read(struct drm_bridge *bridge,
++	memset(&cfg, 0, sizeof(cfg));
+ 	cfg.base.cpc = t->cfg_base->cpc;
+ 	cfg.base.ibs = t->cfg_base->ibs;
+ 	cfg.base.obs = t->cfg_base->obs;
 -- 
 2.43.0
 
