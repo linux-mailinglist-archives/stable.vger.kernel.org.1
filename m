@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-46681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A77E8D0ACF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83BA8D0CD6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CC1A1F229C8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22A211F23174
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E871607B9;
-	Mon, 27 May 2024 19:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3874016078C;
+	Mon, 27 May 2024 19:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVYgHL67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0m1VmWSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB36B1DFED;
-	Mon, 27 May 2024 19:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93E815FA91;
+	Mon, 27 May 2024 19:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836580; cv=none; b=KWhqVLfYXwVAkkCt2qVyVGKj5xqeCOvL7Hj4b3RRL3jcOt0LJ3p//+Y+O8wO8dokGrzG6ZQWHFILKOVbIu8093d7hFlKLpZ4XkQik3iVGb07pMVQesdi0fd8k5pa4XO987tgHuBps6TfAL8rxp8tA1I6UOcHkx+MtLOM6AEEyOY=
+	t=1716837812; cv=none; b=sewZNHK5HFE27Iy00O8/R2eQRB2MD+GVFALHszaeekFbk+6bjEaMxFKLjUiRDUqTsWj+2q8LLMfImHY1duUBjFh3/I0X4j4TCIJP8OhJ1J/Lc9ae60IuiDQpg6Joyf7RIUdCcQ724I4nC+x6Nm5qy4aYA3Ksp+C6mgjrv31IcWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836580; c=relaxed/simple;
-	bh=ZjLfQARKemWw47i1MkjTXnLRoxc+th4SAfF6JD6jfNI=;
+	s=arc-20240116; t=1716837812; c=relaxed/simple;
+	bh=9TO1TP/pIw5CIZbudxQbBUK9l0jE9TWGV1cDrJ2szkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0KfhH2JFAenO3sQfXtSTka9chhkd+Pd+zo1I1uwyz9PHscFBxMqPEzq1Wa9Pyu5bYSSTuLVIsCJh6XhOc2n5YFT+L86L/xA+xMW9gWLVFCBsggJoAM2YOGM3Dn48deCGUmQ30Kpg1sIKfF8CtJNw/3MqZNt1e931Sl3eCqWCHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVYgHL67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26550C2BBFC;
-	Mon, 27 May 2024 19:02:58 +0000 (UTC)
+	 MIME-Version; b=XsD+3ZLQqCzhZop1x67PQ/abWcnIo22UtWg9k666j08LLJvOSrw0I2LJjugNigePFBmt3gz/IPxx0cHyZqNmSf83tjTD9hdN/vLbb0+w7S5eCebkOXuP0QPwJ9YM4fP9bPg7zRqXgCHIOTi0yWBua3L7nIkSnttiPOr8PDI1x4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0m1VmWSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDDBC2BBFC;
+	Mon, 27 May 2024 19:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836579;
-	bh=ZjLfQARKemWw47i1MkjTXnLRoxc+th4SAfF6JD6jfNI=;
+	s=korg; t=1716837811;
+	bh=9TO1TP/pIw5CIZbudxQbBUK9l0jE9TWGV1cDrJ2szkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVYgHL67hZgRvPJ64uRoZJwXquC4tSu4PjuSrgbWwbnCedboJCuTXWYHisRYvI9+/
-	 P8uujxBUINzBvpE84+mux+iaCI7nHF+scM8cbVFX31hOoNkc0g0PPYhst0O6rEIfCC
-	 lVtSBCBtYi7+h+nPyHRKBbXoGr60LlzURLedtGAs=
+	b=0m1VmWSaepahpIJh8ZNdHYa5kMZdjZqmFiVaZmIUHX0w3a6FoJTvy8e+S/8thz4Cj
+	 ZWFo+KMd/pnH3yXT8Z2LrcphipYLs8Y9f97P+yTD38vSP0TfBRCPS8I2/IqjD1Ii4Q
+	 ppTVyMAOnA8VvDUZPG6uJj/OpD80xGOxtAa2G+m0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Qais Yousef <qyousef@layalina.io>,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 109/427] sched/fair: Add EAS checks before updating root_domain::overutilized
+Subject: [PATCH 6.8 154/493] soc: qcom: pmic_glink: Make client-lock non-sleeping
 Date: Mon, 27 May 2024 20:52:36 +0200
-Message-ID: <20240527185611.965412689@linuxfoundation.org>
+Message-ID: <20240527185635.462239861@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,150 +63,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit be3a51e68f2f1b17250ce40d8872c7645b7a2991 ]
+[ Upstream commit 9329933699b32d467a99befa20415c4b2172389a ]
 
-root_domain::overutilized is only used for EAS(energy aware scheduler)
-to decide whether to do load balance or not. It is not used if EAS
-not possible.
+The recently introduced commit '635ce0db8956 ("soc: qcom: pmic_glink:
+don't traverse clients list without a lock")' ensured that the clients
+list is not modified while traversed.
 
-Currently enqueue_task_fair and task_tick_fair accesses, sometime updates
-this field. In update_sd_lb_stats it is updated often. This causes cache
-contention due to true sharing and burns a lot of cycles. ::overload and
-::overutilized are part of the same cacheline. Updating it often invalidates
-the cacheline. That causes access to ::overload to slow down due to
-false sharing. Hence add EAS check before accessing/updating this field.
-EAS check is optimized at compile time or it is a static branch.
-Hence it shouldn't cost much.
+But the callback is made from the GLINK IRQ handler and as such this
+mutual exclusion can not be provided by a (sleepable) mutex.
 
-With the patch, both enqueue_task_fair and newidle_balance don't show
-up as hot routines in perf profile.
+Replace the mutex with a spinlock.
 
-  6.8-rc4:
-  7.18%  swapper          [kernel.vmlinux]              [k] enqueue_task_fair
-  6.78%  s                [kernel.vmlinux]              [k] newidle_balance
-
-  +patch:
-  0.14%  swapper          [kernel.vmlinux]              [k] enqueue_task_fair
-  0.00%  swapper          [kernel.vmlinux]              [k] newidle_balance
-
-While at it: trace_sched_overutilized_tp expect that second argument to
-be bool. So do a int to bool conversion for that.
-
-Fixes: 2802bf3cd936 ("sched/fair: Add over-utilization/tipping point indicator")
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
-Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20240307085725.444486-2-sshegde@linux.ibm.com
+Fixes: 635ce0db8956 ("soc: qcom: pmic_glink: don't traverse clients list without a lock")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240430-pmic-glink-sleep-while-atomic-v1-1-88fb493e8545@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 53 +++++++++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 19 deletions(-)
+ drivers/soc/qcom/pmic_glink.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index c62805dbd6088..213c94d027a4c 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6675,22 +6675,42 @@ static inline void hrtick_update(struct rq *rq)
- #ifdef CONFIG_SMP
- static inline bool cpu_overutilized(int cpu)
- {
--	unsigned long rq_util_min = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MIN);
--	unsigned long rq_util_max = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MAX);
-+	unsigned long  rq_util_min, rq_util_max;
-+
-+	if (!sched_energy_enabled())
-+		return false;
-+
-+	rq_util_min = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MIN);
-+	rq_util_max = uclamp_rq_get(cpu_rq(cpu), UCLAMP_MAX);
+diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
+index e85a12ec2aab1..823fd108fa039 100644
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -11,6 +11,7 @@
+ #include <linux/slab.h>
+ #include <linux/soc/qcom/pdr.h>
+ #include <linux/soc/qcom/pmic_glink.h>
++#include <linux/spinlock.h>
  
- 	/* Return true only if the utilization doesn't fit CPU's capacity */
- 	return !util_fits_cpu(cpu_util_cfs(cpu), rq_util_min, rq_util_max, cpu);
+ enum {
+ 	PMIC_GLINK_CLIENT_BATT = 0,
+@@ -36,7 +37,7 @@ struct pmic_glink {
+ 	unsigned int pdr_state;
+ 
+ 	/* serializing clients list updates */
+-	struct mutex client_lock;
++	spinlock_t client_lock;
+ 	struct list_head clients;
+ };
+ 
+@@ -58,10 +59,11 @@ static void _devm_pmic_glink_release_client(struct device *dev, void *res)
+ {
+ 	struct pmic_glink_client *client = (struct pmic_glink_client *)res;
+ 	struct pmic_glink *pg = client->pg;
++	unsigned long flags;
+ 
+-	mutex_lock(&pg->client_lock);
++	spin_lock_irqsave(&pg->client_lock, flags);
+ 	list_del(&client->node);
+-	mutex_unlock(&pg->client_lock);
++	spin_unlock_irqrestore(&pg->client_lock, flags);
  }
  
--static inline void update_overutilized_status(struct rq *rq)
-+static inline void set_rd_overutilized_status(struct root_domain *rd,
-+					      unsigned int status)
+ struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
+@@ -72,6 +74,7 @@ struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
  {
--	if (!READ_ONCE(rq->rd->overutilized) && cpu_overutilized(rq->cpu)) {
--		WRITE_ONCE(rq->rd->overutilized, SG_OVERUTILIZED);
--		trace_sched_overutilized_tp(rq->rd, SG_OVERUTILIZED);
--	}
-+	if (!sched_energy_enabled())
-+		return;
-+
-+	WRITE_ONCE(rd->overutilized, status);
-+	trace_sched_overutilized_tp(rd, !!status);
-+}
-+
-+static inline void check_update_overutilized_status(struct rq *rq)
-+{
-+	/*
-+	 * overutilized field is used for load balancing decisions only
-+	 * if energy aware scheduler is being used
-+	 */
-+	if (!sched_energy_enabled())
-+		return;
-+
-+	if (!READ_ONCE(rq->rd->overutilized) && cpu_overutilized(rq->cpu))
-+		set_rd_overutilized_status(rq->rd, SG_OVERUTILIZED);
+ 	struct pmic_glink_client *client;
+ 	struct pmic_glink *pg = dev_get_drvdata(dev->parent);
++	unsigned long flags;
+ 
+ 	client = devres_alloc(_devm_pmic_glink_release_client, sizeof(*client), GFP_KERNEL);
+ 	if (!client)
+@@ -84,12 +87,12 @@ struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
+ 	client->priv = priv;
+ 
+ 	mutex_lock(&pg->state_lock);
+-	mutex_lock(&pg->client_lock);
++	spin_lock_irqsave(&pg->client_lock, flags);
+ 
+ 	list_add(&client->node, &pg->clients);
+ 	client->pdr_notify(client->priv, pg->client_state);
+ 
+-	mutex_unlock(&pg->client_lock);
++	spin_unlock_irqrestore(&pg->client_lock, flags);
+ 	mutex_unlock(&pg->state_lock);
+ 
+ 	devres_add(dev, client);
+@@ -112,6 +115,7 @@ static int pmic_glink_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
+ 	struct pmic_glink_client *client;
+ 	struct pmic_glink_hdr *hdr;
+ 	struct pmic_glink *pg = dev_get_drvdata(&rpdev->dev);
++	unsigned long flags;
+ 
+ 	if (len < sizeof(*hdr)) {
+ 		dev_warn(pg->dev, "ignoring truncated message\n");
+@@ -120,12 +124,12 @@ static int pmic_glink_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
+ 
+ 	hdr = data;
+ 
+-	mutex_lock(&pg->client_lock);
++	spin_lock_irqsave(&pg->client_lock, flags);
+ 	list_for_each_entry(client, &pg->clients, node) {
+ 		if (client->id == le32_to_cpu(hdr->owner))
+ 			client->cb(data, len, client->priv);
+ 	}
+-	mutex_unlock(&pg->client_lock);
++	spin_unlock_irqrestore(&pg->client_lock, flags);
+ 
+ 	return 0;
  }
- #else
--static inline void update_overutilized_status(struct rq *rq) { }
-+static inline void check_update_overutilized_status(struct rq *rq) { }
- #endif
+@@ -165,6 +169,7 @@ static void pmic_glink_state_notify_clients(struct pmic_glink *pg)
+ {
+ 	struct pmic_glink_client *client;
+ 	unsigned int new_state = pg->client_state;
++	unsigned long flags;
  
- /* Runqueue only has SCHED_IDLE tasks enqueued */
-@@ -6791,7 +6811,7 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 	 * and the following generally works well enough in practice.
- 	 */
- 	if (!task_new)
--		update_overutilized_status(rq);
-+		check_update_overutilized_status(rq);
- 
- enqueue_throttle:
- 	assert_list_leaf_cfs_rq(rq);
-@@ -10608,19 +10628,14 @@ static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sd
- 		env->fbq_type = fbq_classify_group(&sds->busiest_stat);
- 
- 	if (!env->sd->parent) {
--		struct root_domain *rd = env->dst_rq->rd;
--
- 		/* update overload indicator if we are at root domain */
--		WRITE_ONCE(rd->overload, sg_status & SG_OVERLOAD);
-+		WRITE_ONCE(env->dst_rq->rd->overload, sg_status & SG_OVERLOAD);
- 
- 		/* Update over-utilization (tipping point, U >= 0) indicator */
--		WRITE_ONCE(rd->overutilized, sg_status & SG_OVERUTILIZED);
--		trace_sched_overutilized_tp(rd, sg_status & SG_OVERUTILIZED);
-+		set_rd_overutilized_status(env->dst_rq->rd,
-+					   sg_status & SG_OVERUTILIZED);
- 	} else if (sg_status & SG_OVERUTILIZED) {
--		struct root_domain *rd = env->dst_rq->rd;
--
--		WRITE_ONCE(rd->overutilized, SG_OVERUTILIZED);
--		trace_sched_overutilized_tp(rd, SG_OVERUTILIZED);
-+		set_rd_overutilized_status(env->dst_rq->rd, SG_OVERUTILIZED);
+ 	if (pg->client_state != SERVREG_SERVICE_STATE_UP) {
+ 		if (pg->pdr_state == SERVREG_SERVICE_STATE_UP && pg->ept)
+@@ -175,10 +180,10 @@ static void pmic_glink_state_notify_clients(struct pmic_glink *pg)
  	}
  
- 	update_idle_cpu_scan(env, sum_util);
-@@ -12621,7 +12636,7 @@ static void task_tick_fair(struct rq *rq, struct task_struct *curr, int queued)
- 		task_tick_numa(rq, curr);
- 
- 	update_misfit_status(curr, rq);
--	update_overutilized_status(task_rq(curr));
-+	check_update_overutilized_status(task_rq(curr));
- 
- 	task_tick_core(rq, curr);
+ 	if (new_state != pg->client_state) {
+-		mutex_lock(&pg->client_lock);
++		spin_lock_irqsave(&pg->client_lock, flags);
+ 		list_for_each_entry(client, &pg->clients, node)
+ 			client->pdr_notify(client->priv, new_state);
+-		mutex_unlock(&pg->client_lock);
++		spin_unlock_irqrestore(&pg->client_lock, flags);
+ 		pg->client_state = new_state;
+ 	}
  }
+@@ -265,7 +270,7 @@ static int pmic_glink_probe(struct platform_device *pdev)
+ 	pg->dev = &pdev->dev;
+ 
+ 	INIT_LIST_HEAD(&pg->clients);
+-	mutex_init(&pg->client_lock);
++	spin_lock_init(&pg->client_lock);
+ 	mutex_init(&pg->state_lock);
+ 
+ 	match_data = (unsigned long *)of_device_get_match_data(&pdev->dev);
 -- 
 2.43.0
 
