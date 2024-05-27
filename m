@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-47051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4568D0C5F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15AA68D0A7B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 187E81C2114A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8717F1F22894
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0998015FCE9;
-	Mon, 27 May 2024 19:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FCA15FCF2;
+	Mon, 27 May 2024 19:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rm50ijlC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzEqbWDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9C015A84C;
-	Mon, 27 May 2024 19:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82066DDA9;
+	Mon, 27 May 2024 19:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837539; cv=none; b=ktaMM7jHmbPgCbbdyuZwxrvJ8ElDLCZ0tovsuXH8goqmxvmlXCwMwSfnJfp7v+UjWDrz/oNldSqEhSjlww4pH3DisoixjPOVSmulp1x6SWUvEe9XNjtDrukheE1sHU0SIttq7bRvqiyuyzsRQimOZVTtYGmOiAKc5/8RNaVnlSk=
+	t=1716836421; cv=none; b=mLyz4sn6rPPCvmSSyb0vKRTyLN7kwUH+4vdWov0HL7Cv9qP1DZTZMMOSBNClnbseLX813l4Tf4Knf/Jh5fIKIe3c3zXoLsu7/MGdUuvmXdDE+RYWKy7NlOk5MNRSeiI9/4QUJGQBvfki97L/MXlwVQbAhiTwi1hat/D8C1gBwAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837539; c=relaxed/simple;
-	bh=WdZMcO2HC0MLQyVhUkr11APxx5pIaQppiSefEmAqKNk=;
+	s=arc-20240116; t=1716836421; c=relaxed/simple;
+	bh=Cb5tYots0ZpebM/hMNExZWN8iwtzbV2qWzRkRwVp4Bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G41Mu2TerWa4ZeS+8zQ5BYbZ2MFFUy2e1v/akYW0T5wBtWX5zAaw8cR1N3siosqLjxLMZi0G85H31SK+QmcktrQ3Dvo/NXOtPa2dgpEcj6r6kmgqhbh6cy8aMeQIf2jqClmAZ5FNnHtx+Mq/zCDuQjwvQq2/2UVMGOnWuA3X8hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rm50ijlC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5225AC2BBFC;
-	Mon, 27 May 2024 19:18:59 +0000 (UTC)
+	 MIME-Version; b=uAAojmkIjH5AeOF1zjzQXPEyLbL3Z0G6zdcLPM8akLq/rUsh1s0uNdZGedbsa1ulOu6s8HFcUm7TF09L/jBzHU8cpCisaeAy2BANV2vjK/kJoZ1Kai/Zvv9dq/oSmox9uelRwkYhjjPCvLWL7vPnGWavDGKnx1cXWmkUYafVkWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzEqbWDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1848EC2BBFC;
+	Mon, 27 May 2024 19:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837539;
-	bh=WdZMcO2HC0MLQyVhUkr11APxx5pIaQppiSefEmAqKNk=;
+	s=korg; t=1716836421;
+	bh=Cb5tYots0ZpebM/hMNExZWN8iwtzbV2qWzRkRwVp4Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rm50ijlCMuU8ky8LwaAKlgVnNLmgznFD8I+tv3m6U5VxV9FCF70cBzbgEGXFAFECU
-	 ROKOE0BAqjSTQMr1o8BmuFbqJdSkZpRneEUnYeCsD+L/zxUsfrq/Uo0+js6SXr4IB3
-	 FXNlqYKush18hM8i7hdPM1jY76m856QuTAH7wZWs=
+	b=RzEqbWDBrfKJ+SpOUSk7go5BDlEDF/gngGjrorNlxXUY10kzgfBtZG2Gwb+9aPOi4
+	 ha7pKKztLQW81kFloGdJoJ6pWt/S1LArVCIuB1tQDZDOTbcZAGNEWFqVdQohesqyS/
+	 KHDhJrVS2zGcSsptqmpS2VI1TiOitAzFLtNAN4L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 051/493] drm/amdgpu: Fix the ring buffer size for queue VM flush
+	Johannes Nixdorf <mixi@shadowice.org>,
+	Mark Brown <broonie@kernel.org>,
+	Dave Martin <Dave.Martin@arm.com>,
+	Janne Grunau <j@jannau.net>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Florian Klink <flokli@flokli.de>
+Subject: [PATCH 6.9 006/427] arm64/fpsimd: Avoid erroneous elide of user state reload
 Date: Mon, 27 May 2024 20:50:53 +0200
-Message-ID: <20240527185630.848767542@linuxfoundation.org>
+Message-ID: <20240527185602.383594825@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +64,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit fe93b0927bc58cb1d64230f45744e527d9d8482c ]
+commit e92bee9f861b466c676f0200be3e46af7bc4ac6b upstream.
 
-Here are the corrections needed for the queue ring buffer size
-calculation for the following cases:
-- Remove the KIQ VM flush ring usage.
-- Add the invalidate TLBs packet for gfx10 and gfx11 queue.
-- There's no VM flush and PFP sync, so remove the gfx9 real
-  ring and compute ring buffer usage.
+TIF_FOREIGN_FPSTATE is a 'convenience' flag that should reflect whether
+the current CPU holds the most recent user mode FP/SIMD state of the
+current task. It combines two conditions:
+- whether the current CPU's FP/SIMD state belongs to the task;
+- whether that state is the most recent associated with the task (as a
+  task may have executed on other CPUs as well).
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When a task is scheduled in and TIF_KERNEL_FPSTATE is set, it means the
+task was in a kernel mode NEON section when it was scheduled out, and so
+the kernel mode FP/SIMD state is restored. Since this implies that the
+current CPU is *not* holding the most recent user mode FP/SIMD state of
+the current task, the TIF_FOREIGN_FPSTATE flag is set too, so that the
+user mode FP/SIMD state is reloaded from memory when returning to
+userland.
+
+However, the task may be scheduled out after completing the kernel mode
+NEON section, but before returning to userland. When this happens, the
+TIF_FOREIGN_FPSTATE flag will not be preserved, but will be set as usual
+the next time the task is scheduled in, and will be based on the above
+conditions.
+
+This means that, rather than setting TIF_FOREIGN_FPSTATE when scheduling
+in a task with TIF_KERNEL_FPSTATE set, the underlying state should be
+updated so that TIF_FOREIGN_FPSTATE will assume the expected value as a
+result.
+
+So instead, call fpsimd_flush_cpu_state(), which takes care of this.
+
+Closes: https://lore.kernel.org/all/cb8822182231850108fa43e0446a4c7f@kernel.org
+Reported-by: Johannes Nixdorf <mixi@shadowice.org>
+Fixes: aefbab8e77eb ("arm64: fpsimd: Preserve/restore kernel mode NEON at context switch")
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Dave Martin <Dave.Martin@arm.com>
+Cc: Janne Grunau <j@jannau.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Tested-by: Janne Grunau <j@jannau.net>
+Tested-by: Johannes Nixdorf <mixi@shadowice.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240522091335.335346-2-ardb+git@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Cc: Florian Klink <flokli@flokli.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 3 +--
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 3 +--
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c  | 2 --
- 3 files changed, 2 insertions(+), 6 deletions(-)
+ arch/arm64/kernel/fpsimd.c |   44 ++++++++++++++++++++++----------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index dcdecb18b2306..42392a97daff2 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -9194,7 +9194,7 @@ static const struct amdgpu_ring_funcs gfx_v10_0_ring_funcs_gfx = {
- 		7 + /* PIPELINE_SYNC */
- 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
- 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
--		2 + /* VM_FLUSH */
-+		4 + /* VM_FLUSH */
- 		8 + /* FENCE for VM_FLUSH */
- 		20 + /* GDS switch */
- 		4 + /* double SWITCH_BUFFER,
-@@ -9285,7 +9285,6 @@ static const struct amdgpu_ring_funcs gfx_v10_0_ring_funcs_kiq = {
- 		7 + /* gfx_v10_0_ring_emit_pipeline_sync */
- 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
- 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
--		2 + /* gfx_v10_0_ring_emit_vm_flush */
- 		8 + 8 + 8, /* gfx_v10_0_ring_emit_fence_kiq x3 for user fence, vm fence */
- 	.emit_ib_size =	7, /* gfx_v10_0_ring_emit_ib_compute */
- 	.emit_ib = gfx_v10_0_ring_emit_ib_compute,
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 0afe86bcc932b..6a6fc422e44da 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -6110,7 +6110,7 @@ static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_gfx = {
- 		7 + /* PIPELINE_SYNC */
- 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
- 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
--		2 + /* VM_FLUSH */
-+		4 + /* VM_FLUSH */
- 		8 + /* FENCE for VM_FLUSH */
- 		20 + /* GDS switch */
- 		5 + /* COND_EXEC */
-@@ -6195,7 +6195,6 @@ static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_kiq = {
- 		7 + /* gfx_v11_0_ring_emit_pipeline_sync */
- 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
- 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
--		2 + /* gfx_v11_0_ring_emit_vm_flush */
- 		8 + 8 + 8, /* gfx_v11_0_ring_emit_fence_kiq x3 for user fence, vm fence */
- 	.emit_ib_size =	7, /* gfx_v11_0_ring_emit_ib_compute */
- 	.emit_ib = gfx_v11_0_ring_emit_ib_compute,
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index 3bc6943365a4f..153932c1f64f3 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -6991,7 +6991,6 @@ static const struct amdgpu_ring_funcs gfx_v9_0_ring_funcs_compute = {
- 		7 + /* gfx_v9_0_ring_emit_pipeline_sync */
- 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
- 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
--		2 + /* gfx_v9_0_ring_emit_vm_flush */
- 		8 + 8 + 8 + /* gfx_v9_0_ring_emit_fence x3 for user fence, vm fence */
- 		7 + /* gfx_v9_0_emit_mem_sync */
- 		5 + /* gfx_v9_0_emit_wave_limit for updating mmSPI_WCL_PIPE_PERCENT_GFX register */
-@@ -7029,7 +7028,6 @@ static const struct amdgpu_ring_funcs gfx_v9_0_ring_funcs_kiq = {
- 		7 + /* gfx_v9_0_ring_emit_pipeline_sync */
- 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
- 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
--		2 + /* gfx_v9_0_ring_emit_vm_flush */
- 		8 + 8 + 8, /* gfx_v9_0_ring_emit_fence_kiq x3 for user fence, vm fence */
- 	.emit_ib_size =	7, /* gfx_v9_0_ring_emit_ib_compute */
- 	.emit_fence = gfx_v9_0_ring_emit_fence_kiq,
--- 
-2.43.0
-
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1517,6 +1517,27 @@ static void fpsimd_save_kernel_state(str
+ 	fpsimd_save_state(&task->thread.kernel_fpsimd_state);
+ }
+ 
++/*
++ * Invalidate any task's FPSIMD state that is present on this cpu.
++ * The FPSIMD context should be acquired with get_cpu_fpsimd_context()
++ * before calling this function.
++ */
++static void fpsimd_flush_cpu_state(void)
++{
++	WARN_ON(!system_supports_fpsimd());
++	__this_cpu_write(fpsimd_last_state.st, NULL);
++
++	/*
++	 * Leaving streaming mode enabled will cause issues for any kernel
++	 * NEON and leaving streaming mode or ZA enabled may increase power
++	 * consumption.
++	 */
++	if (system_supports_sme())
++		sme_smstop();
++
++	set_thread_flag(TIF_FOREIGN_FPSTATE);
++}
++
+ void fpsimd_thread_switch(struct task_struct *next)
+ {
+ 	bool wrong_task, wrong_cpu;
+@@ -1534,7 +1555,7 @@ void fpsimd_thread_switch(struct task_st
+ 
+ 	if (test_tsk_thread_flag(next, TIF_KERNEL_FPSTATE)) {
+ 		fpsimd_load_kernel_state(next);
+-		set_tsk_thread_flag(next, TIF_FOREIGN_FPSTATE);
++		fpsimd_flush_cpu_state();
+ 	} else {
+ 		/*
+ 		 * Fix up TIF_FOREIGN_FPSTATE to correctly describe next's
+@@ -1825,27 +1846,6 @@ void fpsimd_flush_task_state(struct task
+ }
+ 
+ /*
+- * Invalidate any task's FPSIMD state that is present on this cpu.
+- * The FPSIMD context should be acquired with get_cpu_fpsimd_context()
+- * before calling this function.
+- */
+-static void fpsimd_flush_cpu_state(void)
+-{
+-	WARN_ON(!system_supports_fpsimd());
+-	__this_cpu_write(fpsimd_last_state.st, NULL);
+-
+-	/*
+-	 * Leaving streaming mode enabled will cause issues for any kernel
+-	 * NEON and leaving streaming mode or ZA enabled may increase power
+-	 * consumption.
+-	 */
+-	if (system_supports_sme())
+-		sme_smstop();
+-
+-	set_thread_flag(TIF_FOREIGN_FPSTATE);
+-}
+-
+-/*
+  * Save the FPSIMD state to memory and invalidate cpu view.
+  * This function must be called with preemption disabled.
+  */
 
 
 
