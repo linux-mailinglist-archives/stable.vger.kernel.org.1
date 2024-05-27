@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADF98D0A68
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F6B8D0C78
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CE481C214C4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E73C91C210BD
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CF71607B0;
-	Mon, 27 May 2024 18:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B06115FCFE;
+	Mon, 27 May 2024 19:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pxzbyLz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ub21jA5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E97915FCE6;
-	Mon, 27 May 2024 18:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB68D168C4;
+	Mon, 27 May 2024 19:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836373; cv=none; b=hWh7jr6mrgxvOVPQ16kGwydP+ONiqSlg4+m4ta0xXATk1nltZhEw8lrYyYZYEZJdOgPoojvBOv5BHT3vCqw9b5PZosQpZIL7cNO1FQiKkZOIuiLeqXm5rEZ9pp1DhtZuSAyufc9tc6T2QI9oDKBL00ebCNK/wUNkM5dpK+6Y6sE=
+	t=1716837602; cv=none; b=glLkfV4SZArzwUs8WJjUkAHKiL7qNWwnqeMpPHB7YWU9O3qek8QTWRXRmvh1PvESypIgvOB1IElj5SJ8kziPkxbBti4yDaX2oaJEbqtK6b63zw7TSqZiawJY9JPVuF+ps3Xz7RyKBvAlNjk1AOK8Cz5LCqYWTJIN7+fK+BorsYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836373; c=relaxed/simple;
-	bh=PH2laBc3FBGvAyEhbW5U38kL76GG+EEzxxWR2choQjI=;
+	s=arc-20240116; t=1716837602; c=relaxed/simple;
+	bh=XBuAuz4nGcRu7izVY0X3U7Vo6MargZgM7e8ZI49G+NY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZQ9PpGJ8jjqY8R2ZztNcWAqfqEw04Dk+K2ZkWb3sRbGx+LM15UmSjXINF9gpMrC731+CysxuDxeyznIYRU4JMTaEJeUe1+aUwkeSXSjKiQav/MsRtFuG5SkOavrZo9YeTCnjTBfHJYsEUCHIb+UBdQgHUvvV8KEZt47cXxt5YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pxzbyLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B509C2BBFC;
-	Mon, 27 May 2024 18:59:32 +0000 (UTC)
+	 MIME-Version; b=pY14wwJcBAdZBsVgrV0ONHC1Tp1SL0MFiffZW7ALyohPTf3GyLOIxfuEcjGAwogdnAQqHie+7sA6ivb3/o93vZsQEFoqV/TB3fHqkO9ymoCsatZPVL2LGCbf8vPZBtSo+pQD1WiRyxsYe4rCQNm0eRPLdSOygeEEbtI0CKctqo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ub21jA5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CB8C2BBFC;
+	Mon, 27 May 2024 19:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836372;
-	bh=PH2laBc3FBGvAyEhbW5U38kL76GG+EEzxxWR2choQjI=;
+	s=korg; t=1716837602;
+	bh=XBuAuz4nGcRu7izVY0X3U7Vo6MargZgM7e8ZI49G+NY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0pxzbyLzHxvij8EQOwTTX/n2tb7FiyHrSTb7mzBfD8kEyM1coyfr9xbZQ2t64YlWn
-	 Pmn44oAh0I7REUaUBxmy6G4qTqaY0Z524P4qUjzVXqCFfPYlzPgGIKpiJanFBS07JB
-	 ZLCM9lmAf0ZM7IfvAiJ45pMtae31B0eicoyGOe1A=
+	b=ub21jA5a/BJ3C74RyxAObEwM4k1XZAORcAZ6FEV0L6Zu2p90ZLnrkfNGuKIqoVnSa
+	 zujPATSdL4ThYOw8oEuLwyjM5q28asEaKDh0LbKwYgP7VkEvs6aHw9lGV4C1agbFuK
+	 bvJQhENTkPJCzRpqCwuCUD8LkxMe9AKpEFT+TY1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	"Bai, Shuangpeng" <sjb7183@psu.edu>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 028/427] nilfs2: fix use-after-free of timer for log writer thread
+	Jack Yu <jack.yu@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 073/493] ASoC: rt722-sdca: add headset microphone vrefo setting
 Date: Mon, 27 May 2024 20:51:15 +0200
-Message-ID: <20240527185604.290069336@linuxfoundation.org>
+Message-ID: <20240527185632.284755081@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Jack Yu <jack.yu@realtek.com>
 
-commit f5d4e04634c9cf68bdf23de08ada0bb92e8befe7 upstream.
+[ Upstream commit 140e0762ca055d1aa84b17847cde5d9e47f56f76 ]
 
-Patch series "nilfs2: fix log writer related issues".
+Add vrefo settings to fix jd and headset mic recording issue.
 
-This bug fix series covers three nilfs2 log writer-related issues,
-including a timer use-after-free issue and potential deadlock issue on
-unmount, and a potential freeze issue in event synchronization found
-during their analysis.  Details are described in each commit log.
-
-
-This patch (of 3):
-
-A use-after-free issue has been reported regarding the timer sc_timer on
-the nilfs_sc_info structure.
-
-The problem is that even though it is used to wake up a sleeping log
-writer thread, sc_timer is not shut down until the nilfs_sc_info structure
-is about to be freed, and is used regardless of the thread's lifetime.
-
-Fix this issue by limiting the use of sc_timer only while the log writer
-thread is alive.
-
-Link: https://lkml.kernel.org/r/20240520132621.4054-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20240520132621.4054-2-konishi.ryusuke@gmail.com
-Fixes: fdce895ea5dd ("nilfs2: change sc_timer from a pointer to an embedded one in struct nilfs_sc_info")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: "Bai, Shuangpeng" <sjb7183@psu.edu>
-Closes: https://groups.google.com/g/syzkaller/c/MK_LYqtt8ko/m/8rgdWeseAwAJ
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jack Yu <jack.yu@realtek.com>
+Link: https://msgid.link/r/727219ed45d3485ba8f4646700aaa8a8@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |   25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ sound/soc/codecs/rt722-sdca.c | 25 +++++++++++++++++++------
+ sound/soc/codecs/rt722-sdca.h |  3 +++
+ 2 files changed, 22 insertions(+), 6 deletions(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2124,8 +2124,10 @@ static void nilfs_segctor_start_timer(st
- {
- 	spin_lock(&sci->sc_state_lock);
- 	if (!(sci->sc_state & NILFS_SEGCTOR_COMMIT)) {
--		sci->sc_timer.expires = jiffies + sci->sc_interval;
--		add_timer(&sci->sc_timer);
-+		if (sci->sc_task) {
-+			sci->sc_timer.expires = jiffies + sci->sc_interval;
-+			add_timer(&sci->sc_timer);
-+		}
- 		sci->sc_state |= NILFS_SEGCTOR_COMMIT;
+diff --git a/sound/soc/codecs/rt722-sdca.c b/sound/soc/codecs/rt722-sdca.c
+index 4338cdb3a7917..9ff607984ea19 100644
+--- a/sound/soc/codecs/rt722-sdca.c
++++ b/sound/soc/codecs/rt722-sdca.c
+@@ -1438,9 +1438,12 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
+ 	int loop_check, chk_cnt = 100, ret;
+ 	unsigned int calib_status = 0;
+ 
+-	/* Read eFuse */
+-	rt722_sdca_index_write(rt722, RT722_VENDOR_SPK_EFUSE, RT722_DC_CALIB_CTRL,
+-		0x4808);
++	/* Config analog bias */
++	rt722_sdca_index_write(rt722, RT722_VENDOR_REG, RT722_ANALOG_BIAS_CTL3,
++		0xa081);
++	/* GE related settings */
++	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_GE_RELATED_CTL2,
++		0xa009);
+ 	/* Button A, B, C, D bypass mode */
+ 	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_UMP_HID_CTL4,
+ 		0xcf00);
+@@ -1474,9 +1477,6 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
+ 		if ((calib_status & 0x0040) == 0x0)
+ 			break;
  	}
- 	spin_unlock(&sci->sc_state_lock);
-@@ -2326,10 +2328,21 @@ int nilfs_construct_dsync_segment(struct
-  */
- static void nilfs_segctor_accept(struct nilfs_sc_info *sci)
- {
-+	bool thread_is_alive;
-+
- 	spin_lock(&sci->sc_state_lock);
- 	sci->sc_seq_accepted = sci->sc_seq_request;
-+	thread_is_alive = (bool)sci->sc_task;
- 	spin_unlock(&sci->sc_state_lock);
--	del_timer_sync(&sci->sc_timer);
-+
-+	/*
-+	 * This function does not race with the log writer thread's
-+	 * termination.  Therefore, deleting sc_timer, which should not be
-+	 * done after the log writer thread exits, can be done safely outside
-+	 * the area protected by sc_state_lock.
-+	 */
-+	if (thread_is_alive)
-+		del_timer_sync(&sci->sc_timer);
+-	/* Release HP-JD, EN_CBJ_TIE_GL/R open, en_osw gating auto done bit */
+-	rt722_sdca_index_write(rt722, RT722_VENDOR_REG, RT722_DIGITAL_MISC_CTRL4,
+-		0x0010);
+ 	/* Set ADC09 power entity floating control */
+ 	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_ADC0A_08_PDE_FLOAT_CTL,
+ 		0x2a12);
+@@ -1489,8 +1489,21 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
+ 	/* Set DAC03 and HP power entity floating control */
+ 	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_DAC03_HP_PDE_FLOAT_CTL,
+ 		0x4040);
++	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_ENT_FLOAT_CTRL_1,
++		0x4141);
++	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_FLOAT_CTRL_1,
++		0x0101);
+ 	/* Fine tune PDE40 latency */
+ 	regmap_write(rt722->regmap, 0x2f58, 0x07);
++	regmap_write(rt722->regmap, 0x2f03, 0x06);
++	/* MIC VRefo */
++	rt722_sdca_index_update_bits(rt722, RT722_VENDOR_REG,
++		RT722_COMBO_JACK_AUTO_CTL1, 0x0200, 0x0200);
++	rt722_sdca_index_update_bits(rt722, RT722_VENDOR_REG,
++		RT722_VREFO_GAT, 0x4000, 0x4000);
++	/* Release HP-JD, EN_CBJ_TIE_GL/R open, en_osw gating auto done bit */
++	rt722_sdca_index_write(rt722, RT722_VENDOR_REG, RT722_DIGITAL_MISC_CTRL4,
++		0x0010);
  }
  
- /**
-@@ -2355,7 +2368,7 @@ static void nilfs_segctor_notify(struct
- 			sci->sc_flush_request &= ~FLUSH_DAT_BIT;
+ int rt722_sdca_io_init(struct device *dev, struct sdw_slave *slave)
+diff --git a/sound/soc/codecs/rt722-sdca.h b/sound/soc/codecs/rt722-sdca.h
+index 44af8901352eb..2464361a7958c 100644
+--- a/sound/soc/codecs/rt722-sdca.h
++++ b/sound/soc/codecs/rt722-sdca.h
+@@ -69,6 +69,7 @@ struct rt722_sdca_dmic_kctrl_priv {
+ #define RT722_COMBO_JACK_AUTO_CTL2		0x46
+ #define RT722_COMBO_JACK_AUTO_CTL3		0x47
+ #define RT722_DIGITAL_MISC_CTRL4		0x4a
++#define RT722_VREFO_GAT				0x63
+ #define RT722_FSM_CTL				0x67
+ #define RT722_SDCA_INTR_REC			0x82
+ #define RT722_SW_CONFIG1			0x8a
+@@ -127,6 +128,8 @@ struct rt722_sdca_dmic_kctrl_priv {
+ #define RT722_UMP_HID_CTL6			0x66
+ #define RT722_UMP_HID_CTL7			0x67
+ #define RT722_UMP_HID_CTL8			0x68
++#define RT722_FLOAT_CTRL_1			0x70
++#define RT722_ENT_FLOAT_CTRL_1		0x76
  
- 		/* re-enable timer if checkpoint creation was not done */
--		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) &&
-+		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) && sci->sc_task &&
- 		    time_before(jiffies, sci->sc_timer.expires))
- 			add_timer(&sci->sc_timer);
- 	}
-@@ -2545,6 +2558,7 @@ static int nilfs_segctor_thread(void *ar
- 	int timeout = 0;
- 
- 	sci->sc_timer_task = current;
-+	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
- 
- 	/* start sync. */
- 	sci->sc_task = current;
-@@ -2612,6 +2626,7 @@ static int nilfs_segctor_thread(void *ar
-  end_thread:
- 	/* end sync. */
- 	sci->sc_task = NULL;
-+	timer_shutdown_sync(&sci->sc_timer);
- 	wake_up(&sci->sc_wait_task); /* for nilfs_segctor_kill_thread() */
- 	spin_unlock(&sci->sc_state_lock);
- 	return 0;
-@@ -2675,7 +2690,6 @@ static struct nilfs_sc_info *nilfs_segct
- 	INIT_LIST_HEAD(&sci->sc_gc_inodes);
- 	INIT_LIST_HEAD(&sci->sc_iput_queue);
- 	INIT_WORK(&sci->sc_iput_work, nilfs_iput_work_func);
--	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
- 
- 	sci->sc_interval = HZ * NILFS_SC_DEFAULT_TIMEOUT;
- 	sci->sc_mjcp_freq = HZ * NILFS_SC_DEFAULT_SR_FREQ;
-@@ -2754,7 +2768,6 @@ static void nilfs_segctor_destroy(struct
- 
- 	down_write(&nilfs->ns_segctor_sem);
- 
--	timer_shutdown_sync(&sci->sc_timer);
- 	kfree(sci);
- }
- 
+ /* Parameter & Verb control 01 (0x1a)(NID:20h) */
+ #define RT722_HIDDEN_REG_SW_RESET (0x1 << 14)
+-- 
+2.43.0
+
 
 
 
