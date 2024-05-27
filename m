@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D8A8D0B16
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEDD8D0D1F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77A9FB226E7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C290B282FAC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB0516079A;
-	Mon, 27 May 2024 19:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C51016078C;
+	Mon, 27 May 2024 19:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PI5NcUqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEM+vrL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC8B1754B;
-	Mon, 27 May 2024 19:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF906168C4;
+	Mon, 27 May 2024 19:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836750; cv=none; b=T0S9eNX8AG4oAUB6847RgvPYkZBBrJWXzudIvR5d+3uTOlz46CZLdteujXBQ9IKi00dGNpVuPhv9rDuFh1urPgDU7g9fm6JVLemM3cBRHEECFIU1kurxr1YMMTN7jUPHcVEEf/LrbQfddDzEwPB+hy0ZqRViYgWSKgu5L7F1Qfc=
+	t=1716837991; cv=none; b=YgAQf8Gp6vFLVPvaDzLojavON100PuhnUwi9Tw8EVTm3CA3YpdgPACtAhIKhWU/Y17CJDgC5PyJF4dBHQ9m7tIhGbZDSEzyvpuZSdK6r9kxkRDq9NdelWdDUR0qGtNPcwPhwmEMKGXLtNhg2An96mWsiGz3/5hazQCg+oU2HfIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836750; c=relaxed/simple;
-	bh=Iolbk4e944JGd2mxRJHb1weECeihcurNPCaLy3QtAKY=;
+	s=arc-20240116; t=1716837991; c=relaxed/simple;
+	bh=xLTUiq87pqAnmkOmPlHQAK5ECdcr3TjipwfCTCjsixk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UslShi8Y5YsLPnw2asu1p04Tbamypi/slxYWl9Z2kDDoBIIdHpP3tijJ0oSh1QW6SsJR5ZZNZwdR28kn5lm2Aq+IKffFnouRgiy1iKzTwcJYdQ3HfCIZ7udqBRVCq7oYBaXrYaXp4b84BOY8xRkTW6sDa8nHZii6AYo+bpmzc8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PI5NcUqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222C0C32781;
-	Mon, 27 May 2024 19:05:49 +0000 (UTC)
+	 MIME-Version; b=XoNBoEOE0Emiz42bKTvFhVfyX+dZD75XCItoqOZMUZU25ff5kZoQsalS2WqA8eLEcgT5D1DJagX0MfUw8cD4KMihy9qSlnT36XomqcueDshSnJtGFOhL/blw2stPF1ZVzWDZfkooDBMtQJtUtqzzu/y0SxOJR92Ax8/+v7O9GGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEM+vrL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CAEC2BBFC;
+	Mon, 27 May 2024 19:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836750;
-	bh=Iolbk4e944JGd2mxRJHb1weECeihcurNPCaLy3QtAKY=;
+	s=korg; t=1716837990;
+	bh=xLTUiq87pqAnmkOmPlHQAK5ECdcr3TjipwfCTCjsixk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PI5NcUqWJaLq1Yxq3Qcn5lPhWKnBXNY/BqmvPlVlewKJ/b3Bs/CE+zNidjz39i46i
-	 VWAqCidrC7erSYX+sxvp1IOiuE29qj/ybJ+d2sslwZd+VeoVtfJ60MRcAb+HoxeB64
-	 p4wJAN4V+8ef7BaO6zpnDjcxO/gfvhAM80iLuNvU=
+	b=yEM+vrL6vCa0UbPAy1JFG6moHYLIwxrqekM3/xQIGDgLlEGqP51H798ZlSe4hwZgt
+	 srxVbXpt5eDIcfpt2IIki5IyP/dxtC1AVfC5CrkJdTFTW/b9TDzl9FONMEOH293Ude
+	 oV7mfobnpefi8eexYWU3S7Pvilp01rhYAWEDzI+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Juergen Gross <jgross@suse.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 172/427] thermal/debugfs: Avoid excessive updates of trip point statistics
+Subject: [PATCH 6.8 217/493] x86/pat: Restructure _lookup_address_cpa()
 Date: Mon, 27 May 2024 20:53:39 +0200
-Message-ID: <20240527185618.332027297@linuxfoundation.org>
+Message-ID: <20240527185637.409334057@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 0a293c77580581c4b058eb40287acadac6ffd14a ]
+[ Upstream commit 02eac06b820c3eae73e5736ae62f986d37fed991 ]
 
-Since thermal_debug_update_temp() is called before invoking
-thermal_debug_tz_trip_down() for the trips that were crossed by the
-zone temperature on the way up, it updates the statistics for them
-as though the current zone temperature was above the low temperature
-of each of them.  However, if a given trip has just been crossed on the
-way down, the zone temperature is in fact below its low temperature,
-but this is handled by thermal_debug_tz_trip_down() running after the
-update of the trip statistics.
+Modify _lookup_address_cpa() to no longer use lookup_address(), but
+only lookup_address_in_pgd().
 
-The remedy is to call thermal_debug_update_temp() after
-thermal_debug_tz_trip_down() has been invoked for all of the
-trips in question, but then thermal_debug_tz_trip_up() needs to
-be adjusted, so it does not update the statistics for the trips
-that has just been crossed on the way up, as that will be taken
-care of by thermal_debug_update_temp() down the road.
+This is done in preparation of using lookup_address_in_pgd_attr().
 
-Modify the code accordingly.
+No functional change intended.
 
-Fixes: 7ef01f228c9f ("thermal/debugfs: Add thermal debugfs information for mitigation episodes")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240412151258.9171-4-jgross@suse.com
+Stable-dep-of: 5bc8b0f5dac0 ("x86/pat: Fix W^X violation false-positives when running as Xen PV guest")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_core.c    | 3 ++-
- drivers/thermal/thermal_debugfs.c | 7 -------
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 34a31bc720230..015d41a9a368b 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -431,7 +431,6 @@ static void update_temperature(struct thermal_zone_device *tz)
- 	trace_thermal_temperature(tz);
- 
- 	thermal_genl_sampling_temp(tz->id, temp);
--	thermal_debug_update_temp(tz);
- }
- 
- static void thermal_zone_device_check(struct work_struct *work)
-@@ -475,6 +474,8 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
- 	for_each_trip(tz, trip)
- 		handle_thermal_trip(tz, trip);
- 
-+	thermal_debug_update_temp(tz);
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index cd09ddd34eff8..9c1dccfd1f67f 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -744,11 +744,14 @@ EXPORT_SYMBOL_GPL(lookup_address);
+ static pte_t *_lookup_address_cpa(struct cpa_data *cpa, unsigned long address,
+ 				  unsigned int *level)
+ {
+-	if (cpa->pgd)
+-		return lookup_address_in_pgd(cpa->pgd + pgd_index(address),
+-					       address, level);
++	pgd_t *pgd;
 +
- 	monitor_thermal_zone(tz);
++	if (!cpa->pgd)
++		pgd = pgd_offset_k(address);
++	else
++		pgd = cpa->pgd + pgd_index(address);
+ 
+-	return lookup_address(address, level);
++	return lookup_address_in_pgd(pgd, address, level);
  }
  
-diff --git a/drivers/thermal/thermal_debugfs.c b/drivers/thermal/thermal_debugfs.c
-index 5693cc8b231aa..47ab95b3699e9 100644
---- a/drivers/thermal/thermal_debugfs.c
-+++ b/drivers/thermal/thermal_debugfs.c
-@@ -555,7 +555,6 @@ void thermal_debug_tz_trip_up(struct thermal_zone_device *tz,
- 	struct tz_episode *tze;
- 	struct tz_debugfs *tz_dbg;
- 	struct thermal_debugfs *thermal_dbg = tz->debugfs;
--	int temperature = tz->temperature;
- 	int trip_id = thermal_zone_trip_id(tz, trip);
- 	ktime_t now = ktime_get();
- 
-@@ -624,12 +623,6 @@ void thermal_debug_tz_trip_up(struct thermal_zone_device *tz,
- 
- 	tze = list_first_entry(&tz_dbg->tz_episodes, struct tz_episode, node);
- 	tze->trip_stats[trip_id].timestamp = now;
--	tze->trip_stats[trip_id].max = max(tze->trip_stats[trip_id].max, temperature);
--	tze->trip_stats[trip_id].min = min(tze->trip_stats[trip_id].min, temperature);
--	tze->trip_stats[trip_id].count++;
--	tze->trip_stats[trip_id].avg = tze->trip_stats[trip_id].avg +
--		(temperature - tze->trip_stats[trip_id].avg) /
--		tze->trip_stats[trip_id].count;
- 
- unlock:
- 	mutex_unlock(&thermal_dbg->lock);
+ /*
 -- 
 2.43.0
 
