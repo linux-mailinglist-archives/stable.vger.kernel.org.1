@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-46451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC8E88D04A1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:51:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653AA8D04A3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:51:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFEFC1C21757
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:51:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 886551C21679
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48AB15FA78;
-	Mon, 27 May 2024 14:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8299C16A374;
+	Mon, 27 May 2024 14:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctX7S3G8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHkyOwkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F71815FA6E;
-	Mon, 27 May 2024 14:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C26416A36D;
+	Mon, 27 May 2024 14:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819594; cv=none; b=AwRs1vXJLAL/XCWmK2AAzDYFZNN84BtBHIkcTah+uz73p+EoZToxJ23oZANKm+OJQAV2IvuzMrdpi5z7extFOJdX57u8k72kNlIB+kecD6HlQmHL4BgLWkTM9PfEAtBWwgqpIF+Q99cV1EQAGqCZ5Ct3S04usohi6SYQ/4yRnAE=
+	t=1716819596; cv=none; b=iYUmRkiZ7JmKukeHACi0RQbcF4pMY6FvyEQytJxJnM3AxSi4YEWG7+nA0mO9L+lx0FWiwQM7no7610lwdvahyZt/jX5AV4/rwRruOVDiEFqOA66LbGqvzTVffZFbVHCzuZUuekfbTbGjQXRGfwGCZcghiLtN9xdHvjr/z4PVBd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819594; c=relaxed/simple;
-	bh=g7hWoxNCaHqvGbk/5I6za8mFOy7/mGYOcDJsLdJZJgY=;
+	s=arc-20240116; t=1716819596; c=relaxed/simple;
+	bh=MzfH5GD/I+XedZP+pkC+1I0BrSvoEAyj/CFcV4FaBHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ixwDP2jV23cQXADZVi2TNv8kyJSpm6OWyPv2NuUsz28KaCUpN2vloER0q7K9n6eWmtn1U0yrI2FVe/Fu+ezwFnwivs27b2UFcoFphITRkXGh7DG07ruhIiXq+q4/muF9syLWfBYXctMx/qK6zcb/wK6PxC/t4r/YAcd1JIlvXHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctX7S3G8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E1CC32781;
-	Mon, 27 May 2024 14:19:52 +0000 (UTC)
+	 MIME-Version; b=MXJWL+wmpUeMNsaefm071I6Fp+A2SneXsaV1SiM9SjAWB4Vh4oJWBfFrIsRJ85Q4Yg8GCLscH0JI8DkT6G54u9ZtfNfQs/5LQKglAMf7c+bdOi1dS/h8RE8PI3bTYzQHixTCpvW2bFkOsQzPJi5Oi44hVN7ss1IeKl54JcCV1K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHkyOwkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13B5C2BBFC;
+	Mon, 27 May 2024 14:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819594;
-	bh=g7hWoxNCaHqvGbk/5I6za8mFOy7/mGYOcDJsLdJZJgY=;
+	s=k20201202; t=1716819596;
+	bh=MzfH5GD/I+XedZP+pkC+1I0BrSvoEAyj/CFcV4FaBHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctX7S3G8/hyn99S4rg1fs4Ln3TBo/WlLlc4927pk5B/zbqTtPZlsA3SikvqLBEYX0
-	 zl7SuOTIF547HHCDFJzPh1OsHcCG8kzYgCwLbK3i/GOKzVWvtsycilZRPp1nCP+hCy
-	 fzCTuF/JeYGHTJgJnGAk334TKdc9zf08hg389A0yz+I5aKG1YoDXqzy+HgX6uRlumE
-	 3C0AoVdiEaXdBiqOe3xCBAhzJju9KXzsrM5w2ErohM2DWYmCj0/uQkJgTwf2KsoCUU
-	 eb1p9KbCXiLQI5Ed4mSi5iiFky09wKogMIHK8PtZBqb2x/fbHtHQqv/ucO5QGWr1E5
-	 l5Z437+ANyWcw==
+	b=ZHkyOwkqn/8CpeNFKsa3KkvdGwP8tix/L3MfCFBBvLcKxykXV1Yf0Aspdm1h43Fd+
+	 +bPpJ15oWbEEZiMXPE7COulKXHD++y99+OVA6nWySEvxVCKMkXJZZI07Z3EHw4Hych
+	 KhHaPhcFV+PPwAHVs5xmhIFxbGwRmiaRSuII7qhlXYye8NEff+/kDg1fqn7wA3Y/AM
+	 L5Ap8r8ixlFFakhcXzbLf8rCJ4Uc36HIFuxtJKD7ZdSMEOOD0aNlDXesZYxthUnZ2G
+	 lPnBj0Fq8dE4o0VHPbG2ttTrN25pVYeavFjKe8P+gy7u8aYI+xJQmD3m4mkI08at4j
+	 p+vIPqNKA4CSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+Cc: Wander Lairson Costa <wander@redhat.com>,
+	Hu Chunyu <chuhu@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	mareklindner@neomailbox.ch,
-	a@unstable.cc,
-	davem@davemloft.net,
+	nhorman@tuxdriver.com,
+	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	b.a.t.m.a.n@lists.open-mesh.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/6] batman-adv: bypass empty buckets in batadv_purge_orig_ref()
-Date: Mon, 27 May 2024 10:19:39 -0400
-Message-ID: <20240527141950.3854993-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 3/6] drop_monitor: replace spin_lock by raw_spin_lock
+Date: Mon, 27 May 2024 10:19:40 -0400
+Message-ID: <20240527141950.3854993-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141950.3854993-1-sashal@kernel.org>
 References: <20240527141950.3854993-1-sashal@kernel.org>
@@ -72,108 +70,153 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.277
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 40dc8ab605894acae1473e434944924a22cfaaa0 ]
+[ Upstream commit f1e197a665c2148ebc25fe09c53689e60afea195 ]
 
-Many syzbot reports are pointing to soft lockups in
-batadv_purge_orig_ref() [1]
+trace_drop_common() is called with preemption disabled, and it acquires
+a spin_lock. This is problematic for RT kernels because spin_locks are
+sleeping locks in this configuration, which causes the following splat:
 
-Root cause is unknown, but we can avoid spending too much
-time there and perhaps get more interesting reports.
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 449, name: rcuc/47
+preempt_count: 1, expected: 0
+RCU nest depth: 2, expected: 2
+5 locks held by rcuc/47/449:
+ #0: ff1100086ec30a60 ((softirq_ctrl.lock)){+.+.}-{2:2}, at: __local_bh_disable_ip+0x105/0x210
+ #1: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: rt_spin_lock+0xbf/0x130
+ #2: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: __local_bh_disable_ip+0x11c/0x210
+ #3: ffffffffb394a160 (rcu_callback){....}-{0:0}, at: rcu_do_batch+0x360/0xc70
+ #4: ff1100086ee07520 (&data->lock){+.+.}-{2:2}, at: trace_drop_common.constprop.0+0xb5/0x290
+irq event stamp: 139909
+hardirqs last  enabled at (139908): [<ffffffffb1df2b33>] _raw_spin_unlock_irqrestore+0x63/0x80
+hardirqs last disabled at (139909): [<ffffffffb19bd03d>] trace_drop_common.constprop.0+0x26d/0x290
+softirqs last  enabled at (139892): [<ffffffffb07a1083>] __local_bh_enable_ip+0x103/0x170
+softirqs last disabled at (139898): [<ffffffffb0909b33>] rcu_cpu_kthread+0x93/0x1f0
+Preemption disabled at:
+[<ffffffffb1de786b>] rt_mutex_slowunlock+0xab/0x2e0
+CPU: 47 PID: 449 Comm: rcuc/47 Not tainted 6.9.0-rc2-rt1+ #7
+Hardware name: Dell Inc. PowerEdge R650/0Y2G81, BIOS 1.6.5 04/15/2022
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x8c/0xd0
+ dump_stack+0x14/0x20
+ __might_resched+0x21e/0x2f0
+ rt_spin_lock+0x5e/0x130
+ ? trace_drop_common.constprop.0+0xb5/0x290
+ ? skb_queue_purge_reason.part.0+0x1bf/0x230
+ trace_drop_common.constprop.0+0xb5/0x290
+ ? preempt_count_sub+0x1c/0xd0
+ ? _raw_spin_unlock_irqrestore+0x4a/0x80
+ ? __pfx_trace_drop_common.constprop.0+0x10/0x10
+ ? rt_mutex_slowunlock+0x26a/0x2e0
+ ? skb_queue_purge_reason.part.0+0x1bf/0x230
+ ? __pfx_rt_mutex_slowunlock+0x10/0x10
+ ? skb_queue_purge_reason.part.0+0x1bf/0x230
+ trace_kfree_skb_hit+0x15/0x20
+ trace_kfree_skb+0xe9/0x150
+ kfree_skb_reason+0x7b/0x110
+ skb_queue_purge_reason.part.0+0x1bf/0x230
+ ? __pfx_skb_queue_purge_reason.part.0+0x10/0x10
+ ? mark_lock.part.0+0x8a/0x520
+...
 
-[1]
+trace_drop_common() also disables interrupts, but this is a minor issue
+because we could easily replace it with a local_lock.
 
-watchdog: BUG: soft lockup - CPU#0 stuck for 27s! [kworker/u4:6:621]
-Modules linked in:
-irq event stamp: 6182794
- hardirqs last  enabled at (6182793): [<ffff8000801dae10>] __local_bh_enable_ip+0x224/0x44c kernel/softirq.c:386
- hardirqs last disabled at (6182794): [<ffff80008ad66a78>] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]
- hardirqs last disabled at (6182794): [<ffff80008ad66a78>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551
- softirqs last  enabled at (6182792): [<ffff80008aab71c4>] spin_unlock_bh include/linux/spinlock.h:396 [inline]
- softirqs last  enabled at (6182792): [<ffff80008aab71c4>] batadv_purge_orig_ref+0x114c/0x1228 net/batman-adv/originator.c:1287
- softirqs last disabled at (6182790): [<ffff80008aab61dc>] spin_lock_bh include/linux/spinlock.h:356 [inline]
- softirqs last disabled at (6182790): [<ffff80008aab61dc>] batadv_purge_orig_ref+0x164/0x1228 net/batman-adv/originator.c:1271
-CPU: 0 PID: 621 Comm: kworker/u4:6 Not tainted 6.8.0-rc7-syzkaller-g707081b61156 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-Workqueue: bat_events batadv_purge_orig
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : should_resched arch/arm64/include/asm/preempt.h:79 [inline]
- pc : __local_bh_enable_ip+0x228/0x44c kernel/softirq.c:388
- lr : __local_bh_enable_ip+0x224/0x44c kernel/softirq.c:386
-sp : ffff800099007970
-x29: ffff800099007980 x28: 1fffe00018fce1bd x27: dfff800000000000
-x26: ffff0000d2620008 x25: ffff0000c7e70de8 x24: 0000000000000001
-x23: 1fffe00018e57781 x22: dfff800000000000 x21: ffff80008aab71c4
-x20: ffff0001b40136c0 x19: ffff0000c72bbc08 x18: 1fffe0001a817bb0
-x17: ffff800125414000 x16: ffff80008032116c x15: 0000000000000001
-x14: 1fffe0001ee9d610 x13: 0000000000000000 x12: 0000000000000003
-x11: 0000000000000000 x10: 0000000000ff0100 x9 : 0000000000000000
-x8 : 00000000005e5789 x7 : ffff80008aab61dc x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : 0000000000000000
-x2 : 0000000000000006 x1 : 0000000000000080 x0 : ffff800125414000
-Call trace:
-  __daif_local_irq_enable arch/arm64/include/asm/irqflags.h:27 [inline]
-  arch_local_irq_enable arch/arm64/include/asm/irqflags.h:49 [inline]
-  __local_bh_enable_ip+0x228/0x44c kernel/softirq.c:386
-  __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:167 [inline]
-  _raw_spin_unlock_bh+0x3c/0x4c kernel/locking/spinlock.c:210
-  spin_unlock_bh include/linux/spinlock.h:396 [inline]
-  batadv_purge_orig_ref+0x114c/0x1228 net/batman-adv/originator.c:1287
-  batadv_purge_orig+0x20/0x70 net/batman-adv/originator.c:1300
-  process_one_work+0x694/0x1204 kernel/workqueue.c:2633
-  process_scheduled_works kernel/workqueue.c:2706 [inline]
-  worker_thread+0x938/0xef4 kernel/workqueue.c:2787
-  kthread+0x288/0x310 kernel/kthread.c:388
-  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.8.0-rc7-syzkaller-g707081b61156 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : arch_local_irq_enable+0x8/0xc arch/arm64/include/asm/irqflags.h:51
- lr : default_idle_call+0xf8/0x128 kernel/sched/idle.c:103
-sp : ffff800093a17d30
-x29: ffff800093a17d30 x28: dfff800000000000 x27: 1ffff00012742fb4
-x26: ffff80008ec9d000 x25: 0000000000000000 x24: 0000000000000002
-x23: 1ffff00011d93a74 x22: ffff80008ec9d3a0 x21: 0000000000000000
-x20: ffff0000c19dbc00 x19: ffff8000802d0fd8 x18: 1fffe00036804396
-x17: ffff80008ec9d000 x16: ffff8000802d089c x15: 0000000000000001
-x14: 1fffe00036805f10 x13: 0000000000000000 x12: 0000000000000003
-x11: 0000000000000001 x10: 0000000000000003 x9 : 0000000000000000
-x8 : 00000000000ce8d1 x7 : ffff8000804609e4 x6 : 0000000000000000
-x5 : 0000000000000001 x4 : 0000000000000001 x3 : ffff80008ad6aac0
-x2 : 0000000000000000 x1 : ffff80008aedea60 x0 : ffff800125436000
-Call trace:
-  __daif_local_irq_enable arch/arm64/include/asm/irqflags.h:27 [inline]
-  arch_local_irq_enable+0x8/0xc arch/arm64/include/asm/irqflags.h:49
-  cpuidle_idle_call kernel/sched/idle.c:170 [inline]
-  do_idle+0x1f0/0x4e8 kernel/sched/idle.c:312
-  cpu_startup_entry+0x5c/0x74 kernel/sched/idle.c:410
-  secondary_start_kernel+0x198/0x1c0 arch/arm64/kernel/smp.c:272
-  __secondary_switched+0xb8/0xbc arch/arm64/kernel/head.S:404
+Replace the spin_lock with raw_spin_lock to avoid sleeping in atomic
+context.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Reported-by: Hu Chunyu <chuhu@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/originator.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/drop_monitor.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index 38613487fb1b7..ba51b69ee3642 100644
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -1345,6 +1345,8 @@ void batadv_purge_orig_ref(struct batadv_priv *bat_priv)
- 	/* for all origins... */
- 	for (i = 0; i < hash->size; i++) {
- 		head = &hash->table[i];
-+		if (hlist_empty(head))
-+			continue;
- 		list_lock = &hash->list_locks[i];
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index feb946c954b65..b37465af47e4b 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -71,7 +71,7 @@ struct net_dm_hw_entries {
+ };
  
- 		spin_lock_bh(list_lock);
+ struct per_cpu_dm_data {
+-	spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
++	raw_spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
+ 					 * 'send_timer'
+ 					 */
+ 	union {
+@@ -165,9 +165,9 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
+ err:
+ 	mod_timer(&data->send_timer, jiffies + HZ / 10);
+ out:
+-	spin_lock_irqsave(&data->lock, flags);
++	raw_spin_lock_irqsave(&data->lock, flags);
+ 	swap(data->skb, skb);
+-	spin_unlock_irqrestore(&data->lock, flags);
++	raw_spin_unlock_irqrestore(&data->lock, flags);
+ 
+ 	if (skb) {
+ 		struct nlmsghdr *nlh = (struct nlmsghdr *)skb->data;
+@@ -222,7 +222,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
+ 
+ 	local_irq_save(flags);
+ 	data = this_cpu_ptr(&dm_cpu_data);
+-	spin_lock(&data->lock);
++	raw_spin_lock(&data->lock);
+ 	dskb = data->skb;
+ 
+ 	if (!dskb)
+@@ -256,7 +256,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
+ 	}
+ 
+ out:
+-	spin_unlock_irqrestore(&data->lock, flags);
++	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
+ 
+ static void trace_kfree_skb_hit(void *ignore, struct sk_buff *skb, void *location)
+@@ -315,9 +315,9 @@ net_dm_hw_reset_per_cpu_data(struct per_cpu_dm_data *hw_data)
+ 		mod_timer(&hw_data->send_timer, jiffies + HZ / 10);
+ 	}
+ 
+-	spin_lock_irqsave(&hw_data->lock, flags);
++	raw_spin_lock_irqsave(&hw_data->lock, flags);
+ 	swap(hw_data->hw_entries, hw_entries);
+-	spin_unlock_irqrestore(&hw_data->lock, flags);
++	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
+ 
+ 	return hw_entries;
+ }
+@@ -445,7 +445,7 @@ net_dm_hw_summary_probe(struct sk_buff *skb,
+ 	int i;
+ 
+ 	hw_data = this_cpu_ptr(&dm_hw_cpu_data);
+-	spin_lock_irqsave(&hw_data->lock, flags);
++	raw_spin_lock_irqsave(&hw_data->lock, flags);
+ 	hw_entries = hw_data->hw_entries;
+ 
+ 	if (!hw_entries)
+@@ -474,7 +474,7 @@ net_dm_hw_summary_probe(struct sk_buff *skb,
+ 	}
+ 
+ out:
+-	spin_unlock_irqrestore(&hw_data->lock, flags);
++	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
+ }
+ 
+ static const struct net_dm_alert_ops net_dm_alert_summary_ops = {
+@@ -1592,7 +1592,7 @@ static struct notifier_block dropmon_net_notifier = {
+ 
+ static void __net_dm_cpu_data_init(struct per_cpu_dm_data *data)
+ {
+-	spin_lock_init(&data->lock);
++	raw_spin_lock_init(&data->lock);
+ 	skb_queue_head_init(&data->drop_queue);
+ 	u64_stats_init(&data->stats.syncp);
+ }
 -- 
 2.43.0
 
