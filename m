@@ -1,80 +1,74 @@
-Return-Path: <stable+bounces-46309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D278D014B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:23:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD8C8D014D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3C8D1C23663
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 13:23:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 243C21F2172F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 13:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CA015EFBA;
-	Mon, 27 May 2024 13:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C7015ECF1;
+	Mon, 27 May 2024 13:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ixS9/vNG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BD9bC+wO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C5E15EFB1;
-	Mon, 27 May 2024 13:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4898613BAC2;
+	Mon, 27 May 2024 13:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716816175; cv=none; b=OHsoIG5MYJ8Jmx1Ujlf1Vd1f8IPFPjdL3UvIVVIxo50+NiTaYc/XNxVb4B43aNpGfpig6de+LZQ+rm+VvMaFB0I+GpSU+DfUJcekvCrKiFDugtPyT6F8Ch2r9Xo1gpmuKhXeSr3UQrpOVo8rvPcCDmcxOnYmtnB6eut8JLOpsxM=
+	t=1716816238; cv=none; b=UenbFu7colf3KmdJMdAVjnBPSTXvn1SmvdRQEt0taSG5L2k1Rg0SN6vDrmvr6B73vuxNG9M39umQB0uMoQwxRYzBHMu2gnT3YkewyyXax0Dl1buqNDWYwoBc3wvoyW2ZE1WdRdzEQeFr1okiIfqAvQVCyV2g79hdDuyoBpDM2cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716816175; c=relaxed/simple;
-	bh=bxzf+dpIkZaK3p2nCkES8kt9h76dLZ7ka4ApxGqVLcs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lYDN2065sD7X4tZdBGSdT8Ga0e5Nzc2YQxPnyklV1VQndVfGzyLAe46SR1EeGpXTEu7pnDiq7gVfYK7+rHZYdGVuqEHI3WMo/AFupJfa/tjrk526xnuxcvoRluMIaWeraSRG3OfcbXDf3zlNxmRWTk64jpuDeEnDMj7Ml4YyEGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ixS9/vNG; arc=none smtp.client-ip=192.198.163.17
+	s=arc-20240116; t=1716816238; c=relaxed/simple;
+	bh=m7ie1dyfFnb2OxuXU1La7yIKiGa6Do9hDeij+vyuSqA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=WumfFMJNXoGgnllZJTFw2mEMQ/tqeInvPan7mFTrrPTZK3kAMfg/roOwScPoDrnkqvD55qOOqbhasflNO0C4MbYnOXKxgobcHA3TjYHJqVJE/Dq8R6F4NUpkFlHu6uCvDrYvK4JWro8BWcn1IUSF6FIIGVxDbnGGJBDDzNw0bW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BD9bC+wO; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716816174; x=1748352174;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=bxzf+dpIkZaK3p2nCkES8kt9h76dLZ7ka4ApxGqVLcs=;
-  b=ixS9/vNGb2vEzHQaZuytwH55y/ZitWl/0ARDlnbUxRyK4jbWFlRKTcZH
-   o91cYOOKvuNjbbB3BrCGu2QEu8DJ6OnAeic8lm7ov9d6dlYmmn1B9Qu/w
-   jD9hWPoFCiU4qMYauKrwFPWmVxsDh+Hn9uuBVqKFfEWhJPQ18VS7bE/hI
-   g3zk+83fJJsYiD984Aaf51gVYhTRbsXWGM9VMlLd3Ya5CBbRQe9UDXJzh
-   y4IAt4pJnIg3YMoY9bcEise/BNv+cYP98KQD93vTk+qIg/VV0L810w5HC
-   ZKCtNmFagOIENJSUIgXaU3N9yJt2WSct94lE5Yoi3kvCI1jQwYNsqLcdc
-   w==;
-X-CSE-ConnectionGUID: VQ7T/7omR8OUHrluvXymSA==
-X-CSE-MsgGUID: qb6obiI5TZyXKrT3B60cRw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="13006495"
+  t=1716816238; x=1748352238;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=m7ie1dyfFnb2OxuXU1La7yIKiGa6Do9hDeij+vyuSqA=;
+  b=BD9bC+wOd8ekRe7w7ZO+EvxlyoTFJf5aFnHmdl1D7tWTPl2A20GApDl7
+   ZCDtUaUCAfglL+EcQ3YncBm9jFINYXG3qYgKsRvGgWuZ7rpQULtT8tWja
+   Vy+TKyhW9ISHhh6Us0ibdwCKSv7H1Rw0ln90Bcdw8HQxNXnx8Vgvd2U9z
+   Bp+6Ew3fRgGudZpo4j38WU4DwMzYESQ5sHo7GlHJyJO8aqb9uWZuCq7Bk
+   bMXUyYoNWrBQQq2EIf18kRCotyd9Q2R+Z4xafs0C4N/7pRchCCqGhtjRC
+   4C7E6xlUns273AeWgFrnTzrwpstI6IW+13hC2iEJ5wz9UCUvSCbP3og6M
+   Q==;
+X-CSE-ConnectionGUID: b45DK9YzRQq2QEehJ2H8Gw==
+X-CSE-MsgGUID: hi5j7d2TTw+Tg3KiUyZNhw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="24551754"
 X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="13006495"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 06:22:53 -0700
-X-CSE-ConnectionGUID: ie/nKjCFQbyEIYFjCcdN3A==
-X-CSE-MsgGUID: ZH9QaCHhT46PVNzkIFdfHg==
+   d="scan'208";a="24551754"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 06:23:57 -0700
+X-CSE-ConnectionGUID: AsNqHjAxSw6r7/+Wclu44Q==
+X-CSE-MsgGUID: X5N63FudRP2sClsQ7xI6cQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="34787315"
+   d="scan'208";a="34735392"
 Received: from unknown (HELO localhost) ([10.245.247.140])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 06:22:51 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 06:23:53 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Tony Luck <tony.luck@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	James Morse <james.morse@arm.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Robert Richter <rric@kernel.org>,
-	linux-edac@vger.kernel.org,
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Dmitry Baryshkov <dbaryshkov@gmail.com>,
+	linux-gpio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/2] EDAC/igen6: Convert PCIBIOS_* return codes to errnos
-Date: Mon, 27 May 2024 16:22:35 +0300
-Message-Id: <20240527132236.13875-2-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 1/2] gpio: amd8111: Convert PCIBIOS_* return codes to errnos
+Date: Mon, 27 May 2024 16:23:44 +0300
+Message-Id: <20240527132345.13956-1-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240527132236.13875-1-ilpo.jarvinen@linux.intel.com>
-References: <20240527132236.13875-1-ilpo.jarvinen@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,43 +78,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-errcmd_enable_error_reporting() uses pci_{read,write}_config_word()
-that return PCIBIOS_* codes. The return code is then returned all the
-way into the probe function igen6_probe() that returns it as is. The
-probe functions, however, should return normal errnos.
+amd_gpio_init() uses pci_read_config_dword() that returns PCIBIOS_*
+codes. The return code is then returned as is but amd_gpio_init() is
+a module init function that should return normal errnos.
 
 Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it from errcmd_enable_error_reporting().
+errno before returning it from amd_gpio_init().
 
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
+Fixes: f942a7de047d ("gpio: add a driver for GPIO pins found on AMD-8111 south bridge chips")
 Cc: stable@vger.kernel.org
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/edac/igen6_edac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-amd8111.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index cdd8480e7368..dbe9fe5f2ca6 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -800,7 +800,7 @@ static int errcmd_enable_error_reporting(bool enable)
+diff --git a/drivers/gpio/gpio-amd8111.c b/drivers/gpio/gpio-amd8111.c
+index 6f3ded619c8b..3377667a28de 100644
+--- a/drivers/gpio/gpio-amd8111.c
++++ b/drivers/gpio/gpio-amd8111.c
+@@ -195,8 +195,10 @@ static int __init amd_gpio_init(void)
  
- 	rc = pci_read_config_word(imc->pdev, ERRCMD_OFFSET, &errcmd);
- 	if (rc)
--		return rc;
-+		return pcibios_err_to_errno(rc);
- 
- 	if (enable)
- 		errcmd |= ERRCMD_CE | ERRSTS_UE;
-@@ -809,7 +809,7 @@ static int errcmd_enable_error_reporting(bool enable)
- 
- 	rc = pci_write_config_word(imc->pdev, ERRCMD_OFFSET, errcmd);
- 	if (rc)
--		return rc;
-+		return pcibios_err_to_errno(rc);
- 
- 	return 0;
- }
+ found:
+ 	err = pci_read_config_dword(pdev, 0x58, &gp.pmbase);
+-	if (err)
++	if (err) {
++		err = pcibios_err_to_errno(err);
+ 		goto out;
++	}
+ 	err = -EIO;
+ 	gp.pmbase &= 0x0000FF00;
+ 	if (gp.pmbase == 0)
 -- 
 2.39.2
 
