@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D37F8D0CDB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 003E88D0AD4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBCA328766A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9061E1F22976
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A1316078F;
-	Mon, 27 May 2024 19:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB2C161308;
+	Mon, 27 May 2024 19:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtQRA3qc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4viDN3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25533168C4;
-	Mon, 27 May 2024 19:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5721754B;
+	Mon, 27 May 2024 19:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837825; cv=none; b=Pydd50EMcqbk6l1ckWxCIGyrS/nEA/ae7smW14L8jysamTVNoUfhEdnuT5lgbQL3LLsI/jsADrCaLr1RQIJANY290r6ZWSw6cRM5HdVCUQVlxq3uUEQiQI8kCAeGq0g3x9OTYzNjms31L7ufI4G0mH5ejGoSefts34M3hQ8waac=
+	t=1716836592; cv=none; b=jMiJfLeA6dgO4Irl4gYU/rnBHGnRmmwjjikmDUrUDdfp8zl+q2uYEv9Bgn7VbGQ5nKK2ocfBMS/7XKWdiA75y6gSSPZnLwgiy1olZlmvgIDSezms9bUiEbIrGUKngnHBR+t8aD2+ItzCSN91pGLjLiKZeXJwyumfHwTRxzcCz2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837825; c=relaxed/simple;
-	bh=14LyUVF5+Sb8X73f2OkZ4S6Od1BZt5XGWLtgEvHu5Ko=;
+	s=arc-20240116; t=1716836592; c=relaxed/simple;
+	bh=1vosxzuqwiljRV/YSEv6SXb0Qi0TVjlsSuPhf3OyRQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPT/bP0oqfqYwvSKBOWieGjFY3TPW5ArptSl/DRA8q6JKSO2FU0Yfy28hmghRlV0t2za9fDpQmQ7utlLVWoD34tAf8sR1XL/4ZUcF7JdN4DKA2z8aQH4Z0W0kQLdopXcpzxpYPPJS5X/TiOZm1iW1j0iBsq24h4IHcROD8CRBrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtQRA3qc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3BDC32782;
-	Mon, 27 May 2024 19:23:44 +0000 (UTC)
+	 MIME-Version; b=Nh59dJwl6eZDSayiY/bGi+ltNJbSkvV3GbCQ3rNf4XxPj/fHoQTJzYgQj9/QOe3+V1WeyeBdR92p/+JctKqLKj8HLxgBfuAe0OYkVLBMOcpirmPhLCCrUnK+xs8+0rbth61+rB16412Xz5+rh2c0wMMvMWfhYAzlyw6MRUeeyQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4viDN3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B79C2BBFC;
+	Mon, 27 May 2024 19:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837825;
-	bh=14LyUVF5+Sb8X73f2OkZ4S6Od1BZt5XGWLtgEvHu5Ko=;
+	s=korg; t=1716836592;
+	bh=1vosxzuqwiljRV/YSEv6SXb0Qi0TVjlsSuPhf3OyRQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OtQRA3qcYfOc8G+tIjcthskkhYoOVqkwro0uIEObS5sD78t3IJPl/Rbv5cyyCezgi
-	 0q+ufgb1vIyVPUBTOpxyjD5oVKnOoJH8aKBqR+/zH5yYX54NDWl6zBVf3rbEBGk1ul
-	 KUXV7eeqGoRMFiL0m3lLssYGBZUhhAeFLSWP8h8k=
+	b=v4viDN3YI9tDksrptPHihMFeVUTtwVA7mNKArHsFTjJS8/YB/FGiQpie4ja7crxv5
+	 Zss45TbQTIQYwAPoyUzpv9RRKSIWpFBzhgi6tpbGv4l3nsCFB/dYhEcJX7tFoa0Fb2
+	 aFalMOZTlWrdC4t98OulaRDBokJn4RudfqKHKB08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0a3683a0a6fecf909244@syzkaller.appspotmail.com,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 158/493] block: refine the EOF check in blkdev_iomap_begin
-Date: Mon, 27 May 2024 20:52:40 +0200
-Message-ID: <20240527185635.577231649@linuxfoundation.org>
+Subject: [PATCH 6.9 114/427] ACPI: bus: Indicate support for IRQ ResourceSource thru _OSC
+Date: Mon, 27 May 2024 20:52:41 +0200
+Message-ID: <20240527185612.410807835@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 0c12028aec837f5a002009bbf68d179d506510e8 ]
+[ Upstream commit 403ad17c06509794fdf6e4d4b3070bd5b56e2a8e ]
 
-blkdev_iomap_begin rounds down the offset to the logical block size
-before stashing it in iomap->offset and checking that it still is
-inside the inode size.
+The ACPI IRQ mapping code supports parsing of ResourceSource,
+but this is not reported thru _OSC.
 
-Check the i_size check to the raw pos value so that we don't try a
-zero size write if iter->pos is unaligned.
+Fix this by setting bit 13 ("Interrupt ResourceSource support")
+when evaluating _OSC.
 
-Fixes: 487c607df790 ("block: use iomap for writes to block devices")
-Reported-by: syzbot+0a3683a0a6fecf909244@syzkaller.appspotmail.com
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Tested-by: syzbot+0a3683a0a6fecf909244@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/20240503081042.2078062-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: d44fa3d46079 ("ACPI: Add support for ResourceSource/IRQ domain mapping")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/fops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/bus.c   | 1 +
+ include/linux/acpi.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/block/fops.c b/block/fops.c
-index 0cf8cf72cdfa1..799821040601a 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -387,7 +387,7 @@ static int blkdev_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
- 
- 	iomap->bdev = bdev;
- 	iomap->offset = ALIGN_DOWN(offset, bdev_logical_block_size(bdev));
--	if (iomap->offset >= isize)
-+	if (offset >= isize)
- 		return -EIO;
- 	iomap->type = IOMAP_MAPPED;
- 	iomap->addr = iomap->offset;
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 0c48b603098a8..a87b10eef77df 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -323,6 +323,7 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_OVER_16_PSTATES_SUPPORT;
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_GED_SUPPORT;
++	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_IRQ_RESOURCE_SOURCE_SUPPORT;
+ 	if (IS_ENABLED(CONFIG_ACPI_PRMT))
+ 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PRM_SUPPORT;
+ 	if (IS_ENABLED(CONFIG_ACPI_FFH))
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index e77783e101c36..168201e4c7827 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -577,6 +577,7 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+ #define OSC_SB_OVER_16_PSTATES_SUPPORT		0x00000400
+ #define OSC_SB_GED_SUPPORT			0x00000800
+ #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
++#define OSC_SB_IRQ_RESOURCE_SOURCE_SUPPORT	0x00002000
+ #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
+ #define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00020000
+ #define OSC_SB_NATIVE_USB4_SUPPORT		0x00040000
 -- 
 2.43.0
 
