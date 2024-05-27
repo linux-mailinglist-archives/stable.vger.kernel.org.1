@@ -1,81 +1,83 @@
-Return-Path: <stable+bounces-47517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D4A8D1047
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 00:31:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 858148D1057
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 00:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9D0F1F2210F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 22:31:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6EB41C21229
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 22:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E0A167D97;
-	Mon, 27 May 2024 22:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C5B169382;
+	Mon, 27 May 2024 22:42:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BB815FD10;
-	Mon, 27 May 2024 22:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03B0169368;
+	Mon, 27 May 2024 22:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716849103; cv=none; b=Cg3cCsy62s6G7g1zwvqmpzEFqFHQS0fwPpPhzrSHDRpxG+7X6WfEPo7dsyhD3N8KPN5NIvKCwI90F7OEgZ6mRqQjamAPfj3t2TPrAxHoWBJjz5w11P4FZwFkroRg/bjP7Vf0USZHkSgyArlg3294MYsnXQYNapCEB5JLoe0UCF8=
+	t=1716849753; cv=none; b=VSOOZCVA1QmEmB3cgZnCbzLgqsJrB+WhqWXZF/1cv6A94zZrQx0rITmg8yY52NKdFzuOjN29ZELiixHVmFVqZAdD6ARaN6buF3n3VmkGD4nGh5AsZpCHHpaWSvXmCPCYVT3bmAUDOIrmdwJXfDnKYH0pqXT1jZ1a3WfenuGIYQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716849103; c=relaxed/simple;
-	bh=wkWViZB7Ah651duBPihx5UnuKf/7BzqehDIFlTgrTnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c2lX6KbTJHrD6n8fG18e+4wy5tYXYEFOls1ZLyj1d1gRQ0WlOjjsSW8OVNoADfiaRQu5kmvWSO03BHGozep9OqjAP7qgW1ZrYpAHj+UkLSEe1qQVDNHUJsDTIQNKmJUGTTpV1aluHn4KfWdujdq4n0jRjaKm6aHZ/S00bM0n43E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42C4C2BBFC;
-	Mon, 27 May 2024 22:31:41 +0000 (UTC)
-Date: Mon, 27 May 2024 18:31:39 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>, Ilkka
- =?UTF-8?B?TmF1bGFww6TDpA==?= <digirigawa@gmail.com>,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: Bug in Kernel 6.8.x, 6.9.x Causing Trace/Panic During
- Shutdown/Reboot
-Message-ID: <20240527183139.42b6123c@rorschach.local.home>
-In-Reply-To: <5b79732b-087c-411f-a477-9b837566673e@leemhuis.info>
-References: <CAE4VaREzY+a2PvQJYJbfh8DwB4OP7kucZG-e28H22xyWob1w_A@mail.gmail.com>
-	<5b79732b-087c-411f-a477-9b837566673e@leemhuis.info>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1716849753; c=relaxed/simple;
+	bh=VyOQIWPEbtuHOC1cQJVCNYPzGlSZqGH9Wpc+QOwHASY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XG3utdnZVGXkPHl5xFoGZ2ZFOzEMs33h/aOw1dzIc94TepJumY4/Vt4fI8BeyTW205yWy4fvI1JnVUkOTEa2yaZjD1JEZW/Z0WLpQ0rPJ9oRIPg7jb69i8SOLjPGGdO6bYf/t0l84yHE/JexdpeUH3gqItsGmsp48HYlGzEj6ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+Received: from i5e86193d.versanet.de ([94.134.25.61] helo=phil.lan)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1sBj2q-0005Os-ED; Tue, 28 May 2024 00:42:20 +0200
+From: Heiko Stuebner <heiko@sntech.de>
+To: Dragan Simic <dsimic@manjaro.org>,
+	linux-rockchip@lists.infradead.org
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	krzk+dt@kernel.org,
+	robh+dt@kernel.org,
+	Diederik de Haas <didi.debian@cknow.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: rockchip: Fix the DCDC_REG2 minimum voltage on Quartz64 Model B
+Date: Tue, 28 May 2024 00:42:15 +0200
+Message-Id: <171684956152.1783037.2786989707792820997.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <e70742ea2df432bf57b3f7de542d81ca22b0da2f.1716225483.git.dsimic@manjaro.org>
+References: <e70742ea2df432bf57b3f7de542d81ca22b0da2f.1716225483.git.dsimic@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, 24 May 2024 12:50:08 +0200
-"Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info> wrote:
+On Mon, 20 May 2024 19:20:28 +0200, Dragan Simic wrote:
+> Correct the specified regulator-min-microvolt value for the buck DCDC_REG2
+> regulator, which is part of the Rockchip RK809 PMIC, in the Pine64 Quartz64
+> Model B board dts.  According to the RK809 datasheet, version 1.01, this
+> regulator is capable of producing voltages as low as 0.5 V on its output,
+> instead of going down to 0.9 V only, which is additionally confirmed by the
+> regulator-min-microvolt values found in the board dts files for the other
+> supported boards that use the same RK809 PMIC.
+> 
+> [...]
 
-> > - Affected Versions: Before kernel version 6.8.10, the bug caused a
-> > quick display of a kernel trace dump before the shutdown/reboot
-> > completed. Starting from version 6.8.10 and continuing into version
-> > 6.9.0 and 6.9.1, this issue has escalated to a kernel panic,
-> > preventing the shutdown or reboot from completing and leaving the
-> > machine stuck.
+Applied, thanks!
 
-You state "Before kernel version 6.8.10, the bug caused ...". Does that
-mean that a bug was happening before v6.8.10? But did not cause a panic?
+[1/1] arm64: dts: rockchip: Fix the DCDC_REG2 minimum voltage on Quartz64 Model B
+      commit: d201c92bff90f3d3d0b079fc955378c15c0483cc
 
-I just noticed your second screen shot from your report, and it has:
-
- "cache_from_obj: Wrong slab cache, tracefs_inode_cache but object is from inode_cache"
-
-So somehow an tracefs_inode was allocated from the inode_cache and is
-now being freed by the tracefs_inode logic? Did this happen before
-6.8.10? If so, this code could just be triggering an issue from an
-unrelated bug.
-
-Thanks,
-
--- Steve
+Best regards,
+-- 
+Heiko Stuebner <heiko@sntech.de>
 
