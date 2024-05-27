@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-46962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E1A8D0BFB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E28A8D0BFD
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC02DB220B3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 203AF1F23F9A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C7B15FCF2;
-	Mon, 27 May 2024 19:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EA415FCF0;
+	Mon, 27 May 2024 19:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ic7KjU6h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbh26Ph3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D704A15FA85;
-	Mon, 27 May 2024 19:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D64E15DBD8;
+	Mon, 27 May 2024 19:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837303; cv=none; b=rRLlQ6IWkH0KLl2je9UEDlEJFXTfhhJzv691+okySottmVsI+OdlNiC22S7YyvHXzJCjKjXTP2e1Mp2iSikveE6Tl/D907KkeA90sY3EHLX2fsV2pw6DRP1ogc8EKRLSyC5x1DryDDm8fyjXUk17Nia/jINEp99FThOQDwlZxP0=
+	t=1716837309; cv=none; b=M/1ppWMcmEaWMZDIb3SuG1jJLD+ct3J9AvQazeSG83t6fQLbmKNnxENBdZL4+EbPVML4vy3z7OPInIiOFTMZHMQTUBl9ycrGmgbsOOcaoPU4MCI0Gr0zlVkWmoss96cSTOo/Jos+iCyFhHS4wrupVriK0Si1haTrGloXFPKutLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837303; c=relaxed/simple;
-	bh=/AIuGzMNWZJHscZ6EpeowurhI1+QyPhqKEWAWQoWDH0=;
+	s=arc-20240116; t=1716837309; c=relaxed/simple;
+	bh=h6XulrfaPscbKiqmCkC0CkQyvFqD/4PoXUqJ/68FPNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iyll+K62oRb0zpehtWdWiGf005s/J6ALda1gxMdO2RqUT/lFfeVvWUhTSpwxwMLNYTBG0xxmAFFuXq1465XeWA9D3NB/zFLJXcF1l1ZnjrU2rL1iM2Tl84w8AUHoi4QhMjZsSq8TUBzHo2nZ6U/QBwlmN+4OBqS5GkZtao4o4XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ic7KjU6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9B0C32781;
-	Mon, 27 May 2024 19:15:03 +0000 (UTC)
+	 MIME-Version; b=Cf+eu5+1FcH0qxpJgPDC7vxQUhNXkeJZSrEgO86OCdar6oS2PQ5rzNKRhYBcOMSYhuxF9wBVHkFglXi+1dpxz0bhBZKpUagsx551DdpnYCz40z549zxt7PRvcm5ApjIvzV/47M51hWnC6paQLmtZZBk/8RkTBqa1UuoWMwvrYFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbh26Ph3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E581DC2BBFC;
+	Mon, 27 May 2024 19:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837303;
-	bh=/AIuGzMNWZJHscZ6EpeowurhI1+QyPhqKEWAWQoWDH0=;
+	s=korg; t=1716837309;
+	bh=h6XulrfaPscbKiqmCkC0CkQyvFqD/4PoXUqJ/68FPNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ic7KjU6hl3E9xRDTEpj03IGztWIYysSALmur3ZP5V00hRUun62KXKbB8v+3K6iwD8
-	 JvyR6LTdOYSQkcfmurzswDkJe9CVcAeGpIxv3kJaMlKQbwFvFzfxlM6YEyPIewjzll
-	 ubSZoaQq/oBcPjNGhOJHPZIXOl3fjgdZXDoBi0P4=
+	b=nbh26Ph3hJA/43ATrzudlIYn2g7InYm6L7yuSOWi+6nFXYBR61YY6Znw+Ef8qx6vy
+	 JUMWakr2IJ/Ldgv3qhNb/s1WqqBNddzKxszi5RlGwIt48ycbtDry7q6seDIlXIZTQE
+	 ZGCn7pQbnGldQHfDcTvAEo2j6gLSorQ8Kxufs/ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klara Modin <klarasmodin@gmail.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Aleksandr Aprelkov <aaprelkov@usergate.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 389/427] iommu/amd: Enable Guest Translation after reading IOMMU feature register
-Date: Mon, 27 May 2024 20:57:16 +0200
-Message-ID: <20240527185634.765081969@linuxfoundation.org>
+Subject: [PATCH 6.9 390/427] sunrpc: removed redundant procp check
+Date: Mon, 27 May 2024 20:57:17 +0200
+Message-ID: <20240527185634.792243486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -67,62 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Aleksandr Aprelkov <aaprelkov@usergate.com>
 
-[ Upstream commit de111f6b4f6a3010020825d22a068f416bc29c95 ]
+[ Upstream commit a576f36971ab4097b6aa76433532aa1fb5ee2d3b ]
 
-Commit 8e0179733172 ("iommu/amd: Enable Guest Translation before
-registering devices") moved IOMMU Guest Translation (GT) enablement to
-early init path. It does feature check based on Global EFR value (got from
-ACPI IVRS table). Later it adjusts EFR value based on IOMMU feature
-register (late_iommu_features_init()).
+since vs_proc pointer is dereferenced before getting it's address there's
+no need to check for NULL.
 
-It seems in some systems BIOS doesn't set gloabl EFR value properly.
-This is causing mismatch. Hence move IOMMU GT enablement after
-late_iommu_features_init() so that it does check based on IOMMU EFR
-value.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 8e0179733172 ("iommu/amd: Enable Guest Translation before registering devices")
-Reported-by: Klara Modin <klarasmodin@gmail.com>
-Closes: https://lore.kernel.org/linux-iommu/333e6eb6-361c-4afb-8107-2573324bf689@gmail.com/
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Tested-by: Klara Modin <klarasmodin@gmail.com>
-Link: https://lore.kernel.org/r/20240506082039.7575-1-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 8e5b67731d08 ("SUNRPC: Add a callback to initialise server requests")
+Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sunrpc/svc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index ac6754a85f350..f440ca440d924 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -2097,6 +2097,8 @@ static int __init iommu_init_pci(struct amd_iommu *iommu)
- 			amd_iommu_max_glx_val = glxval;
- 		else
- 			amd_iommu_max_glx_val = min(amd_iommu_max_glx_val, glxval);
-+
-+		iommu_enable_gt(iommu);
- 	}
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index b33e429336fb7..2b4b1276d4e86 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1265,8 +1265,6 @@ svc_generic_init_request(struct svc_rqst *rqstp,
+ 	if (rqstp->rq_proc >= versp->vs_nproc)
+ 		goto err_bad_proc;
+ 	rqstp->rq_procinfo = procp = &versp->vs_proc[rqstp->rq_proc];
+-	if (!procp)
+-		goto err_bad_proc;
  
- 	if (check_feature(FEATURE_PPR) && alloc_ppr_log(iommu))
-@@ -2773,7 +2775,6 @@ static void early_enable_iommu(struct amd_iommu *iommu)
- 	iommu_enable_command_buffer(iommu);
- 	iommu_enable_event_buffer(iommu);
- 	iommu_set_exclusion_range(iommu);
--	iommu_enable_gt(iommu);
- 	iommu_enable_ga(iommu);
- 	iommu_enable_xt(iommu);
- 	iommu_enable_irtcachedis(iommu);
-@@ -2830,7 +2831,6 @@ static void early_enable_iommus(void)
- 			iommu_disable_irtcachedis(iommu);
- 			iommu_enable_command_buffer(iommu);
- 			iommu_enable_event_buffer(iommu);
--			iommu_enable_gt(iommu);
- 			iommu_enable_ga(iommu);
- 			iommu_enable_xt(iommu);
- 			iommu_enable_irtcachedis(iommu);
+ 	/* Initialize storage for argp and resp */
+ 	memset(rqstp->rq_argp, 0, procp->pc_argzero);
 -- 
 2.43.0
 
