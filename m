@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-46548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CBB8D079D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:08:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292A58D07A4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A2F81F21BB7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:08:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11368296392
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1386B16F26F;
-	Mon, 27 May 2024 15:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A8416F299;
+	Mon, 27 May 2024 15:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAOyBqeK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dSUUdrOP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C796816F269;
-	Mon, 27 May 2024 15:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6793C167289;
+	Mon, 27 May 2024 15:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825500; cv=none; b=Y12rQfDYITlFHcl3oI3WVH9SkZkEHfTDPHAz1ymVEAfixavBqrFQlnWiOpd+T52zYQabOnDlib2n7uW4/8Nsz7Q9M3HBUmmjJECCBpPc1swf7kTpNBWAxtq39t9i79lXsK/m3bawF3oIwtHu3g2i+56EfpIPX5O4g9t+aK2026w=
+	t=1716825504; cv=none; b=Es96Bl9k4N0kPVGYPR1l6sNDjEPFQVwknKscFuwfIOQ/Le+MoLCbnRKsSRYUccq6JQJ22Xcw6NF61LboMIwKI9D6yhpW51r+W92upbO2ApgkBjw7F3NtOZFZiFfIt5ETyi1ipFzst+B9TTwBdadHmYvBLNOEfoPb/KCeoe3XKXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825500; c=relaxed/simple;
-	bh=27bWrgDdeb62lVzoFAPV4+VUCQd6HL4QhkxOqbAeME0=;
+	s=arc-20240116; t=1716825504; c=relaxed/simple;
+	bh=+675MIHNbN9OSUKuccdTXAcdMyna4REx8+9EpCYYC+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hgfQj1eu2tKT9CyYVYTh4sTn2Q3v1JnwFukniyIajv3zHT2MELCSGppzHX7ym2Fz25FE6fkyZj6Hhs3GO0xkHvKPEsOhfEBo9cgnIddymwlUYJ71INP6pN3XOZfo5KkrNS8tAu17bo0bWjXto6nCvYxD6d8tOeTyGtdoyH3Jph8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAOyBqeK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB5AC4AF08;
-	Mon, 27 May 2024 15:58:19 +0000 (UTC)
+	 MIME-Version; b=FxsGXGn2dnlRPSaF5Be7FuU07WkwYNnY8AY9o7PEOcjuEeX9hhp3ynrVKhJKAaRpYSrIEWsGIjmCI61cGLNnY/YU9pIednmovOmJa3y4DA0ah3uMVs5dSZSYWHyB4BH3jY2Jo9Fezv0VwH/Jet1sbQJ2UyVQDiuZEre41/z2x5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dSUUdrOP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8133C4AF07;
+	Mon, 27 May 2024 15:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716825500;
-	bh=27bWrgDdeb62lVzoFAPV4+VUCQd6HL4QhkxOqbAeME0=;
+	s=k20201202; t=1716825504;
+	bh=+675MIHNbN9OSUKuccdTXAcdMyna4REx8+9EpCYYC+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAOyBqeKCIun3PWRTNZXEGNE6tZYp+OoGXznkEzPzAlf/rNZlZb+o/hT0b50mAIn5
-	 JiBY1Heui4kvy6v3WdvxySbefPpNqQHG1NBNDGg9tKZfo6cQ8sW8W+6llB63L4wDmW
-	 m1pTOyIA3MFSh1xv+hgTdgcQIL0Fnk6zkjzIFvrzuhPXmtCIG+50UVKvgG2WuTw3DE
-	 N25Ah/qYarlPxybsUhTPSJtA1m0fBDanVPKviV9FnPz7ToSqpRetlQYFwo442uQ5x+
-	 T26jc0PCi3+oK6BxUWvqEbRGmE6JErKS6TXajgKVuJmC0Zg5195Z/mqbHeE191JNJ6
-	 CsNmG/a5VnL3w==
+	b=dSUUdrOPlQfRZ6ESKc5FZKRF7H1NohbvG19pIBJQnu4ZhhCyF9KL7rwZsS/H3Nioa
+	 Str34Uo0P/WN/Pmj1Acgt8bRWV0DMV6cbjfHbqy9kF1/Vz4XZ8B8c5bq2sGBLNO7UU
+	 wSptMV7NbhQWFTox4StZHKoRzTtdSYZzIdjDbyjabiZV9f69UyzymS0UiPuWHA/bYQ
+	 DK5aSNqSXja4NL9GOqu4sIhUFJaMSoX9CujBVwqegqDTgbhIXLA72H72g1OkwW+iMt
+	 1CcP46rWqvxBSGJnObBpDYhBNfQ0mCLxxKPxgeNPgYUf1eEltYhqw7MLDnhX0+Xqho
+	 uKk5q6nTZzORQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Erico Nunes <nunes.erico@gmail.com>,
-	Qiang Yu <yuq825@gmail.com>,
+Cc: Zheyu Ma <zheyuma97@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	lima@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 3/6] drm/lima: mask irqs in timeout path before hard reset
-Date: Mon, 27 May 2024 11:57:53 -0400
-Message-ID: <20240527155808.3866107-3-sashal@kernel.org>
+	broonie@kernel.org,
+	hkallweit1@gmail.com,
+	gregkh@linuxfoundation.org,
+	mcgrof@kernel.org,
+	andriy.shevchenko@linux.intel.com,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 4/6] media: lgdt3306a: Add a check against null-pointer-def
+Date: Mon, 27 May 2024 11:57:54 -0400
+Message-ID: <20240527155808.3866107-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527155808.3866107-1-sashal@kernel.org>
 References: <20240527155808.3866107-1-sashal@kernel.org>
@@ -71,61 +70,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.160
 Content-Transfer-Encoding: 8bit
 
-From: Erico Nunes <nunes.erico@gmail.com>
+From: Zheyu Ma <zheyuma97@gmail.com>
 
-[ Upstream commit a421cc7a6a001b70415aa4f66024fa6178885a14 ]
+[ Upstream commit c1115ddbda9c930fba0fdd062e7a8873ebaf898d ]
 
-There is a race condition in which a rendering job might take just long
-enough to trigger the drm sched job timeout handler but also still
-complete before the hard reset is done by the timeout handler.
-This runs into race conditions not expected by the timeout handler.
-In some very specific cases it currently may result in a refcount
-imbalance on lima_pm_idle, with a stack dump such as:
+The driver should check whether the client provides the platform_data.
 
-[10136.669170] WARNING: CPU: 0 PID: 0 at drivers/gpu/drm/lima/lima_devfreq.c:205 lima_devfreq_record_idle+0xa0/0xb0
-...
-[10136.669459] pc : lima_devfreq_record_idle+0xa0/0xb0
-...
-[10136.669628] Call trace:
-[10136.669634]  lima_devfreq_record_idle+0xa0/0xb0
-[10136.669646]  lima_sched_pipe_task_done+0x5c/0xb0
-[10136.669656]  lima_gp_irq_handler+0xa8/0x120
-[10136.669666]  __handle_irq_event_percpu+0x48/0x160
-[10136.669679]  handle_irq_event+0x4c/0xc0
+The following log reveals it:
 
-We can prevent that race condition entirely by masking the irqs at the
-beginning of the timeout handler, at which point we give up on waiting
-for that job entirely.
-The irqs will be enabled again at the next hard reset which is already
-done as a recovery by the timeout handler.
+[   29.610324] BUG: KASAN: null-ptr-deref in kmemdup+0x30/0x40
+[   29.610730] Read of size 40 at addr 0000000000000000 by task bash/414
+[   29.612820] Call Trace:
+[   29.613030]  <TASK>
+[   29.613201]  dump_stack_lvl+0x56/0x6f
+[   29.613496]  ? kmemdup+0x30/0x40
+[   29.613754]  print_report.cold+0x494/0x6b7
+[   29.614082]  ? kmemdup+0x30/0x40
+[   29.614340]  kasan_report+0x8a/0x190
+[   29.614628]  ? kmemdup+0x30/0x40
+[   29.614888]  kasan_check_range+0x14d/0x1d0
+[   29.615213]  memcpy+0x20/0x60
+[   29.615454]  kmemdup+0x30/0x40
+[   29.615700]  lgdt3306a_probe+0x52/0x310
+[   29.616339]  i2c_device_probe+0x951/0xa90
 
-Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
-Reviewed-by: Qiang Yu <yuq825@gmail.com>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240405152951.1531555-4-nunes.erico@gmail.com
+Link: https://lore.kernel.org/linux-media/20220405095018.3993578-1-zheyuma97@gmail.com
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/lima/lima_sched.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/media/dvb-frontends/lgdt3306a.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/lima/lima_sched.c b/drivers/gpu/drm/lima/lima_sched.c
-index 2e817dbdcad75..a7572123fee15 100644
---- a/drivers/gpu/drm/lima/lima_sched.c
-+++ b/drivers/gpu/drm/lima/lima_sched.c
-@@ -421,6 +421,13 @@ static enum drm_gpu_sched_stat lima_sched_timedout_job(struct drm_sched_job *job
- 	struct lima_sched_task *task = to_lima_task(job);
- 	struct lima_device *ldev = pipe->ldev;
+diff --git a/drivers/media/dvb-frontends/lgdt3306a.c b/drivers/media/dvb-frontends/lgdt3306a.c
+index f6e83a38738dd..79174336faec2 100644
+--- a/drivers/media/dvb-frontends/lgdt3306a.c
++++ b/drivers/media/dvb-frontends/lgdt3306a.c
+@@ -2177,6 +2177,11 @@ static int lgdt3306a_probe(struct i2c_client *client,
+ 	struct dvb_frontend *fe;
+ 	int ret;
  
-+	/*
-+	 * The task might still finish while this timeout handler runs.
-+	 * To prevent a race condition on its completion, mask all irqs
-+	 * on the running core until the next hard reset completes.
-+	 */
-+	pipe->task_mask_irq(pipe);
++	if (!client->dev.platform_data) {
++		dev_err(&client->dev, "platform data is mandatory\n");
++		return -EINVAL;
++	}
 +
- 	if (!pipe->error)
- 		DRM_ERROR("lima job timeout\n");
- 
+ 	config = kmemdup(client->dev.platform_data,
+ 			 sizeof(struct lgdt3306a_config), GFP_KERNEL);
+ 	if (config == NULL) {
 -- 
 2.43.0
 
