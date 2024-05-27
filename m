@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-47357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D488D0DA8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89B278D0BB3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62A571F21B6E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEB03B2182F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD70D15FD0F;
-	Mon, 27 May 2024 19:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5032026AF2;
+	Mon, 27 May 2024 19:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBJnetA7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+nuHLcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4D91EEF7;
-	Mon, 27 May 2024 19:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D54117E90E;
+	Mon, 27 May 2024 19:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838338; cv=none; b=N9czpdiug/CaV3bUo81Hua0QSIOyy30p5z/DYQB0AX0sIhcONaq4wS/6f2gPv0oZufBZ3qtu1LcE1B9UERMxGidNTLuoehZD23+0rA23yI8jZiprPDCSji8GyD+fu4CnqQ60xSigxtjY9keyth3RjRo+2Q9PBIaAD+66p+AIv2w=
+	t=1716837132; cv=none; b=EAul/PzepuwbnW11GEVpR2aD0UaJaj7GdwfKhfLuKofvY+9nVzXjU5BxUngmcJiCVA1ldlOEX2qsy8Ewv57vVq0C+y5cL/gfZOnTFRzU4hCR5Mfe2axOz/XOU1PKbOrjKfag5yqfK3vg6W/jzrSH5X4STozsjbbWH/7Oi5lfGd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838338; c=relaxed/simple;
-	bh=ETnU3GoxeoQW0xkiqThsedzaqJWnW+H2U48dSC7rRnI=;
+	s=arc-20240116; t=1716837132; c=relaxed/simple;
+	bh=cUXm6diHtXBbkFlrcAhcev6u4BC8zMBufJiSaaeZCto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UoRBO523sV5rfeFlLapS6ZfV/5mVwpNTVDNxlsWIf33ltnKkQ3EpKrachGFbfsqC2W3aYGgVA8X6Cz5e62B/EUclyO7nME6jSFrDfp8KrClkHpDgDKd+6O3zOQdyxtz8FgzGAjJoSLcnP34WDe+3t23MhYJRoqgiM8UyHVNiXY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBJnetA7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32448C2BBFC;
-	Mon, 27 May 2024 19:32:18 +0000 (UTC)
+	 MIME-Version; b=YmKsgLca9oOmlTSxLPW5DZEL/APx7jQt/Da0SnhfXWDLNAN6enizLZF612+1dwqYGj7Q87NZtdLiGaR/qZnRc5mlTJMMeKA63ey3ES9s1nS7d0L/me9y9M76y/j5+4OJnuGtdYVJC8UDiXRgRy/8LnJb2fdJ/21TT+nh3AvjRhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+nuHLcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AD0C2BBFC;
+	Mon, 27 May 2024 19:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838338;
-	bh=ETnU3GoxeoQW0xkiqThsedzaqJWnW+H2U48dSC7rRnI=;
+	s=korg; t=1716837131;
+	bh=cUXm6diHtXBbkFlrcAhcev6u4BC8zMBufJiSaaeZCto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kBJnetA7iv9TauUxNytMJsOSbAo230p1D15YkKs8eI1VQFNxY3iR5DrE0m0aZM7Yw
-	 KH6ga1gU7+l4nERqJTypnXVoI0Cg2hnAQoA2EXb6HuwDhif4XPkmhxR8Qo1eZZC9HU
-	 C6tLkxQc+3qX76J23IgNtwnZ/i/BWswY8psszm0k=
+	b=o+nuHLcfdrUWItlkKN/ZYEr0qXmpXa9uURQCJlyFz7qtUV0GR3g8pFxgZ3Hyqgclb
+	 zWyeLlJlFb9EwKdDCmtF2h3LFhwOEtsmjeen10o8/ZwzYLrGD8J34SKtFcBZn9zNN5
+	 wiuelnsnqmHIJ2kXdPZ9cAyv/tta+gXIDrotnmIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 314/493] ipv6: sr: fix invalid unregister error path
-Date: Mon, 27 May 2024 20:55:16 +0200
-Message-ID: <20240527185640.560646833@linuxfoundation.org>
+Subject: [PATCH 6.9 270/427] Bluetooth: ISO: Make iso_get_sock_listen generic
+Date: Mon, 27 May 2024 20:55:17 +0200
+Message-ID: <20240527185627.631136990@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
 
-[ Upstream commit 160e9d2752181fcf18c662e74022d77d3164cd45 ]
+[ Upstream commit 311527e9dafdcae0c5a20d62f4f84ad01b33b5f4 ]
 
-The error path of seg6_init() is wrong in case CONFIG_IPV6_SEG6_LWTUNNEL
-is not defined. In that case if seg6_hmac_init() fails, the
-genl_unregister_family() isn't called.
+This makes iso_get_sock_listen more generic, to return matching socket
+in the state provided as argument.
 
-This issue exist since commit 46738b1317e1 ("ipv6: sr: add option to control
-lwtunnel support"), and commit 5559cea2d5aa ("ipv6: sr: fix possible
-use-after-free and null-ptr-deref") replaced unregister_pernet_subsys()
-with genl_unregister_family() in this error path.
-
-Fixes: 46738b1317e1 ("ipv6: sr: add option to control lwtunnel support")
-Reported-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240509131812.1662197-4-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: a5b862c6a221 ("Bluetooth: L2CAP: Fix div-by-zero in l2cap_le_flowctl_init()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/net/bluetooth/bluetooth.h |  2 +-
+ net/bluetooth/iso.c               | 75 +++++++++++++++++--------------
+ 2 files changed, 43 insertions(+), 34 deletions(-)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index c4ef96c8fdaca..a31521e270f78 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -551,6 +551,8 @@ int __init seg6_init(void)
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
- out_unregister_genl:
-+#endif
-+#if IS_ENABLED(CONFIG_IPV6_SEG6_LWTUNNEL) || IS_ENABLED(CONFIG_IPV6_SEG6_HMAC)
- 	genl_unregister_family(&seg6_genl_family);
- #endif
- out_unregister_pernet:
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index eaec5d6caa29d..b3228bd6cd6be 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -285,7 +285,7 @@ void bt_err_ratelimited(const char *fmt, ...);
+ 	bt_err_ratelimited("%s: " fmt, bt_dev_name(hdev), ##__VA_ARGS__)
+ 
+ /* Connection and socket states */
+-enum {
++enum bt_sock_state {
+ 	BT_CONNECTED = 1, /* Equal to TCP_ESTABLISHED to make net code happy */
+ 	BT_OPEN,
+ 	BT_BOUND,
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 6bed4aa8291de..6cb41f9d174e2 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -85,8 +85,9 @@ static void iso_sock_disconn(struct sock *sk);
+ 
+ typedef bool (*iso_sock_match_t)(struct sock *sk, void *data);
+ 
+-static struct sock *iso_get_sock_listen(bdaddr_t *src, bdaddr_t *dst,
+-					iso_sock_match_t match, void *data);
++static struct sock *iso_get_sock(bdaddr_t *src, bdaddr_t *dst,
++				 enum bt_sock_state state,
++				 iso_sock_match_t match, void *data);
+ 
+ /* ---- ISO timers ---- */
+ #define ISO_CONN_TIMEOUT	(HZ * 40)
+@@ -233,10 +234,11 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
+ 		 * terminated are not processed anymore.
+ 		 */
+ 		if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags)) {
+-			parent = iso_get_sock_listen(&hcon->src,
+-						     &hcon->dst,
+-						     iso_match_conn_sync_handle,
+-						     hcon);
++			parent = iso_get_sock(&hcon->src,
++					      &hcon->dst,
++					      BT_LISTEN,
++					      iso_match_conn_sync_handle,
++					      hcon);
+ 
+ 			if (parent) {
+ 				set_bit(BT_SK_PA_SYNC_TERM,
+@@ -581,22 +583,23 @@ static struct sock *__iso_get_sock_listen_by_sid(bdaddr_t *ba, bdaddr_t *bc,
+ 	return NULL;
+ }
+ 
+-/* Find socket listening:
++/* Find socket in given state:
+  * source bdaddr (Unicast)
+  * destination bdaddr (Broadcast only)
+  * match func - pass NULL to ignore
+  * match func data - pass -1 to ignore
+  * Returns closest match.
+  */
+-static struct sock *iso_get_sock_listen(bdaddr_t *src, bdaddr_t *dst,
+-					iso_sock_match_t match, void *data)
++static struct sock *iso_get_sock(bdaddr_t *src, bdaddr_t *dst,
++				 enum bt_sock_state state,
++				 iso_sock_match_t match, void *data)
+ {
+ 	struct sock *sk = NULL, *sk1 = NULL;
+ 
+ 	read_lock(&iso_sk_list.lock);
+ 
+ 	sk_for_each(sk, &iso_sk_list.head) {
+-		if (sk->sk_state != BT_LISTEN)
++		if (sk->sk_state != state)
+ 			continue;
+ 
+ 		/* Match Broadcast destination */
+@@ -1777,32 +1780,37 @@ static void iso_conn_ready(struct iso_conn *conn)
+ 						 HCI_EVT_LE_BIG_SYNC_ESTABILISHED);
+ 
+ 			/* Get reference to PA sync parent socket, if it exists */
+-			parent = iso_get_sock_listen(&hcon->src,
+-						     &hcon->dst,
+-						     iso_match_pa_sync_flag, NULL);
++			parent = iso_get_sock(&hcon->src, &hcon->dst,
++					      BT_LISTEN,
++					      iso_match_pa_sync_flag,
++					      NULL);
+ 			if (!parent && ev)
+-				parent = iso_get_sock_listen(&hcon->src,
+-							     &hcon->dst,
+-							     iso_match_big, ev);
++				parent = iso_get_sock(&hcon->src,
++						      &hcon->dst,
++						      BT_LISTEN,
++						      iso_match_big, ev);
+ 		} else if (test_bit(HCI_CONN_PA_SYNC_FAILED, &hcon->flags)) {
+ 			ev2 = hci_recv_event_data(hcon->hdev,
+ 						  HCI_EV_LE_PA_SYNC_ESTABLISHED);
+ 			if (ev2)
+-				parent = iso_get_sock_listen(&hcon->src,
+-							     &hcon->dst,
+-							     iso_match_sid, ev2);
++				parent = iso_get_sock(&hcon->src,
++						      &hcon->dst,
++						      BT_LISTEN,
++						      iso_match_sid, ev2);
+ 		} else if (test_bit(HCI_CONN_PA_SYNC, &hcon->flags)) {
+ 			ev3 = hci_recv_event_data(hcon->hdev,
+ 						  HCI_EVT_LE_BIG_INFO_ADV_REPORT);
+ 			if (ev3)
+-				parent = iso_get_sock_listen(&hcon->src,
+-							     &hcon->dst,
+-							     iso_match_sync_handle, ev3);
++				parent = iso_get_sock(&hcon->src,
++						      &hcon->dst,
++						      BT_LISTEN,
++						      iso_match_sync_handle,
++						      ev3);
+ 		}
+ 
+ 		if (!parent)
+-			parent = iso_get_sock_listen(&hcon->src,
+-							BDADDR_ANY, NULL, NULL);
++			parent = iso_get_sock(&hcon->src, BDADDR_ANY,
++					      BT_LISTEN, NULL, NULL);
+ 
+ 		if (!parent)
+ 			return;
+@@ -1923,8 +1931,8 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
+ 	 */
+ 	ev1 = hci_recv_event_data(hdev, HCI_EV_LE_PA_SYNC_ESTABLISHED);
+ 	if (ev1) {
+-		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr, iso_match_sid,
+-					 ev1);
++		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
++				  iso_match_sid, ev1);
+ 		if (sk && !ev1->status)
+ 			iso_pi(sk)->sync_handle = le16_to_cpu(ev1->handle);
+ 
+@@ -1934,12 +1942,12 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
+ 	ev2 = hci_recv_event_data(hdev, HCI_EVT_LE_BIG_INFO_ADV_REPORT);
+ 	if (ev2) {
+ 		/* Try to get PA sync listening socket, if it exists */
+-		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
+-						iso_match_pa_sync_flag, NULL);
++		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
++				  iso_match_pa_sync_flag, NULL);
+ 
+ 		if (!sk) {
+-			sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
+-						 iso_match_sync_handle, ev2);
++			sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
++					  iso_match_sync_handle, ev2);
+ 
+ 			/* If PA Sync is in process of terminating,
+ 			 * do not handle any more BIGInfo adv reports.
+@@ -1979,8 +1987,8 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
+ 		u8 *base;
+ 		struct hci_conn *hcon;
+ 
+-		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
+-					 iso_match_sync_handle_pa_report, ev3);
++		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
++				  iso_match_sync_handle_pa_report, ev3);
+ 		if (!sk)
+ 			goto done;
+ 
+@@ -2029,7 +2037,8 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
+ 			hcon->le_per_adv_data_len = 0;
+ 		}
+ 	} else {
+-		sk = iso_get_sock_listen(&hdev->bdaddr, BDADDR_ANY, NULL, NULL);
++		sk = iso_get_sock(&hdev->bdaddr, BDADDR_ANY,
++				  BT_LISTEN, NULL, NULL);
+ 	}
+ 
+ done:
 -- 
 2.43.0
 
