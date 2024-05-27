@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AA78D0BD0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B978D0DCE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26422861C8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DC77B20BD1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8BE6A039;
-	Mon, 27 May 2024 19:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFED15FA60;
+	Mon, 27 May 2024 19:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuCj3ECY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRmQY9up"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F077817E90E;
-	Mon, 27 May 2024 19:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFE117727;
+	Mon, 27 May 2024 19:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837195; cv=none; b=YNdZfxyxFAgFKYmV6TYU2tJWpuftJAYUZ/GVD8+Se990ci1Dd4rIAgNauUX6In7YTe6tDhf2o8HsPEDqiRpkZ6XeQSk/oGqzK07rbrETeMxP5/tp8GE1yLitRpV6lV2u/Y0rWdioWa8Y1ywPC/r1JlVMhcv8BAPSpfB/KNXRpZU=
+	t=1716838437; cv=none; b=K0vGd8eWnSP8bMrqqOPi49PhaVnTFDLiLOhm7ltQRstK2HFm2Xe5p6y1KwwuEld9NJ9m6d132VUq+YiqbUMRTR2Hk1budEA/n0K4bKw5iXADHcD0YNii158tT9Ae8VvD6//wbv24fn1Vy5To5XS7MvF1cpiJ0/Qeuw3s5AORXfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837195; c=relaxed/simple;
-	bh=eX7i1MUzJ0qV3sEbU0kOA6Ej8SgXD6nPB1lN9hBzxs4=;
+	s=arc-20240116; t=1716838437; c=relaxed/simple;
+	bh=U33fKBkTm+X3qhoJN4x3kqLfGLZzVaxcXEnIuUl8wLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ayGPj1u34lAMnfxClX0FX38CHixpJFjUIfc3+t6zmy84fkbE+Svlf7EG0cAhvP58uRjj3gQpRDuwXaDt9LCZh6XocYZKwCSzC90rm9n3F1V33Qe7dGEwjBFXZVlntEJ3U2iUh4LMprMJ9oayMj0NFwRtGGABA/J4cUnCvSGLRrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuCj3ECY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D35C2BBFC;
-	Mon, 27 May 2024 19:13:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eZqhOwcrQv0nhepWfedhNXdvCra6GH7ZJzDjAufFzYPhqVjy6YDWwdfIEvV9nzvaUE88Zqv4saj2jpyfw/5bZxHkIFPicznFg2M0izmuTzpi1t/DOAqkpeTPwQYaRQZHieZTa6L5MKhFkEY0V6Wi0GQPvOurAmjinBeeLsBg3jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRmQY9up; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E20CC2BBFC;
+	Mon, 27 May 2024 19:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837194;
-	bh=eX7i1MUzJ0qV3sEbU0kOA6Ej8SgXD6nPB1lN9hBzxs4=;
+	s=korg; t=1716838437;
+	bh=U33fKBkTm+X3qhoJN4x3kqLfGLZzVaxcXEnIuUl8wLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuCj3ECYgtr1b6Wb5q5bq41Dtm4Ewi6XbJBrK1sHk8UQq3nDLTgR7EIAhPxzHk8x5
-	 AZxxXx4StLsjKTNsp15XTi0FGqIyG3jvszFhA/kjPNLdgElXGrqqNrB4YgOlypQLpc
-	 YWbXtGHChtOZ88f/dvlu8zLWA2UldJC1O2MCgJH4=
+	b=pRmQY9upQXTVFuvIcCkmnqbdM2Xfd6RmFW5cmcZd0U8r4KU1ordZYLXiv5M3IZSk7
+	 cMF6S7XndtKXb7Y0OnXKndZnczQZ9o2hnojFbuAWm5oZFHOsrDMt8Fn9raCKKgzQlX
+	 csNQ4mEQqRjbRLttK0gjyP1sBF7qfPsNqouIsKMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 345/427] drm/edid: Parse topology block for all DispID structure v1.x
+Subject: [PATCH 6.8 390/493] media: radio-shark2: Avoid led_names truncations
 Date: Mon, 27 May 2024 20:56:32 +0200
-Message-ID: <20240527185633.172355922@linuxfoundation.org>
+Message-ID: <20240527185643.022152358@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +63,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit e0a200ab4b72afd581bd6f82fc1ef510a4fb5478 ]
+[ Upstream commit 1820e16a3019b6258e6009d34432946a6ddd0a90 ]
 
-DisplayID spec v1.3 revision history notes do claim that
-the toplogy block was added in v1.3 so requiring structure
-v1.2 would seem correct, but there is at least one EDID in
-edid.tv with a topology block and structure v1.0. And
-there are also EDIDs with DisplayID structure v1.3 which
-seems to be totally incorrect as DisplayID spec v1.3 lists
-structure v1.2 as the only legal value.
+Increase the size of led_names so it can fit any valid v4l2 device name.
 
-Unfortunately I couldn't find copies of DisplayID spec
-v1.0-v1.2 anywhere (even on vesa.org), so I'll have to
-go on empirical evidence alone.
+Fixes:
+drivers/media/radio/radio-shark2.c:197:17: warning: ‘%s’ directive output may be truncated writing up to 35 bytes into a region of size 32 [-Wformat-truncation=]
 
-We used to parse the topology block on all v1.x
-structures until the check for structure v2.0 was added.
-Let's go back to doing that as the evidence does suggest
-that there are DisplayIDs in the wild that would miss
-out on the topology stuff otherwise.
-
-Also toss out DISPLAY_ID_STRUCTURE_VER_12 entirely as
-it doesn't appear we can really use it for anything.
-
-I *think* we could technically skip all the structure
-version checks as the block tags shouldn't conflict
-between v2.0 and v1.x. But no harm in having a bit of
-extra sanity checks I guess.
-
-So far I'm not aware of any user reported regressions
-from overly strict check, but I do know that it broke
-igt/kms_tiled_display's fake DisplayID as that one
-gets generated with structure v1.0.
-
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Fixes: c5a486af9df7 ("drm/edid: parse Tiled Display Topology Data Block for DisplayID 2.0")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240410180139.21352-1-ville.syrjala@linux.intel.com
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_edid.c  | 2 +-
- include/drm/drm_displayid.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/radio/radio-shark2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 923c4423151c1..9064cdeb1319b 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -7324,7 +7324,7 @@ static void drm_parse_tiled_block(struct drm_connector *connector,
- static bool displayid_is_tiled_block(const struct displayid_iter *iter,
- 				     const struct displayid_block *block)
- {
--	return (displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_12 &&
-+	return (displayid_version(iter) < DISPLAY_ID_STRUCTURE_VER_20 &&
- 		block->tag == DATA_BLOCK_TILED_DISPLAY) ||
- 		(displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_20 &&
- 		 block->tag == DATA_BLOCK_2_TILED_DISPLAY_TOPOLOGY);
-diff --git a/include/drm/drm_displayid.h b/include/drm/drm_displayid.h
-index 566497eeb3b81..bc1f6b378195f 100644
---- a/include/drm/drm_displayid.h
-+++ b/include/drm/drm_displayid.h
-@@ -30,7 +30,6 @@ struct drm_edid;
- #define VESA_IEEE_OUI				0x3a0292
- 
- /* DisplayID Structure versions */
--#define DISPLAY_ID_STRUCTURE_VER_12		0x12
- #define DISPLAY_ID_STRUCTURE_VER_20		0x20
- 
- /* DisplayID Structure v1r2 Data Blocks */
+diff --git a/drivers/media/radio/radio-shark2.c b/drivers/media/radio/radio-shark2.c
+index f1c5c0a6a335c..e3e6aa87fe081 100644
+--- a/drivers/media/radio/radio-shark2.c
++++ b/drivers/media/radio/radio-shark2.c
+@@ -62,7 +62,7 @@ struct shark_device {
+ #ifdef SHARK_USE_LEDS
+ 	struct work_struct led_work;
+ 	struct led_classdev leds[NO_LEDS];
+-	char led_names[NO_LEDS][32];
++	char led_names[NO_LEDS][64];
+ 	atomic_t brightness[NO_LEDS];
+ 	unsigned long brightness_new;
+ #endif
 -- 
 2.43.0
 
