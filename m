@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-47231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0F28D0D25
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9976F8D0B55
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 364B5283578
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39E3BB22574
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C393515FCE9;
-	Mon, 27 May 2024 19:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BF51607AF;
+	Mon, 27 May 2024 19:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrTZr/bc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0hLUaWp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830B0168C4;
-	Mon, 27 May 2024 19:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A471A15DBD8;
+	Mon, 27 May 2024 19:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838006; cv=none; b=ZQjxhr+Xpz1DGOmIZSmBuVxM6bIIxstd4FcPE8dgGlefarKxNUH6QAk8VaG0tYRyDSpg6uaKMYC8N8EYEW66r+U+b+BGBF7t4tSn+2tdHg4aDAR7U4j9WcxE4PYu32KUxe8c5TTYggrI9ZuhD9Ax40JZowwFBksg0/HaA1nStCk=
+	t=1716836890; cv=none; b=el5kYZANwcN1w88h5v8NxK2MhnG7WbGW1VkjFm6YjHrA4coGHYXJlkqmxSCThdwfESvwoDbZW1OzCjGgvW8VXqwIEVouRuky5s344w17/LXYR1sPy43hvoyHohlV0S0iJ0K3TsmwuNVKVhewWaRi9oUI/kOM1lo9xHnet72WNKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838006; c=relaxed/simple;
-	bh=MwWeiIp+l+xciVBQMPxlGCbrL+13SL+g3DH4q6EmbFs=;
+	s=arc-20240116; t=1716836890; c=relaxed/simple;
+	bh=4It+bOnKXwMsKtWAqFYU3qjxUCnnVzASZxbehz60ZI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppiX5m+TlwD1Tfg1BQ9vvB67SpHCl80rdWKzBL61QBzOSu71qXdQYjh6CY/P+td0I4UZB8mDKAKyJidlXehNq/cpNFFiUOA+CF6ZSlkRVvQ1bQ3NPIaEN69p6PNHqKDNuaAOGX8P3Q2Y267x1KcVxUqe5fjgFfJowlm/IAxcSgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrTZr/bc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E76C2BBFC;
-	Mon, 27 May 2024 19:26:45 +0000 (UTC)
+	 MIME-Version; b=nSXvcxP+CdUnrLlyzpcClJvRBI3QrsfR4JRSfnifeddqakGoqpkr6+guyp5LrtJW527gRnGOZHdqxVp8vdFEN0roZj60wxWdUPrm4uwCC+4E6q3XwQbYd2RSZJdPFqCS1OyYqDN0AK8pgN1GRG4y6D7+3HPE3uyYVWo5GbnmCKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0hLUaWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC92C2BBFC;
+	Mon, 27 May 2024 19:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838006;
-	bh=MwWeiIp+l+xciVBQMPxlGCbrL+13SL+g3DH4q6EmbFs=;
+	s=korg; t=1716836890;
+	bh=4It+bOnKXwMsKtWAqFYU3qjxUCnnVzASZxbehz60ZI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mrTZr/bcQxYiBCLz2qVs+E7YWNgc/HW57/bUQM10fraGZDyjfVTG5L73tFkrTbL3E
-	 T7f2FwmX4+9gGc55MBpI9no+o3uNtGHMLbGylHm0Fx5wFQvFnWi63lgXE2i1xDZufu
-	 by8nFunZY36KxM9am6yQMxOXiXieZXKo5nMFsNVk=
+	b=T0hLUaWpLiNAY9Fr5o/VPlNSdxjhTfranq5nu62rPtfeGCadqQc+jtOIRtSDQ7ihO
+	 XHumqkeXM9LhG0zBqyshwQI0TPlVnV9EOUPwWLe+RuFuOeXk0Rie5MDCwipnb4JsbG
+	 L+F/whu68qDLbTml5+3MVjdnxc1qeRIbqqL0y9xM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 231/493] wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
+Subject: [PATCH 6.9 186/427] net: give more chances to rcu in netdev_wait_allrefs_any()
 Date: Mon, 27 May 2024 20:53:53 +0200
-Message-ID: <20240527185637.862293581@linuxfoundation.org>
+Message-ID: <20240527185619.590663096@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c511a9c12674d246916bb16c479d496b76983193 ]
+[ Upstream commit cd42ba1c8ac9deb9032add6adf491110e7442040 ]
 
-Clang Static Checker (scan-build) warns:
+This came while reviewing commit c4e86b4363ac ("net: add two more
+call_rcu_hurry()").
 
-drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
-Value stored to 'ret' is never read.
+Paolo asked if adding one synchronize_rcu() would help.
 
-Return 'ret' rather than 'count' when 'ret' stores an error code.
+While synchronize_rcu() does not help, making sure to call
+rcu_barrier() before msleep(wait) is definitely helping
+to make sure lazy call_rcu() are completed.
 
-Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240422034243.938962-1-suhui@nfschina.com
+Instead of waiting ~100 seconds in my tests, the ref_tracker
+splats occurs one time only, and netdev_wait_allrefs_any()
+latency is reduced to the strict minimum.
+
+Ideally we should audit our call_rcu() users to make sure
+no refcount (or cascading call_rcu()) is held too long,
+because rcu_barrier() is quite expensive.
+
+Fixes: 0e4be9e57e8c ("net: use exponential backoff in netdev_wait_allrefs")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/all/28bbf698-befb-42f6-b561-851c67f464aa@kernel.org/T/#m76d73ed6b03cd930778ac4d20a777f22a08d6824
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/debugfs_sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/dev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-index 394bf3c32abff..0f6de862c3a9b 100644
---- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-@@ -439,7 +439,7 @@ ath10k_dbg_sta_write_peer_debug_trigger(struct file *file,
- 	}
- out:
- 	mutex_unlock(&ar->conf_mutex);
--	return count;
-+	return ret ?: count;
- }
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 331848eca7d31..e8fb4ef8a85f8 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -10488,8 +10488,9 @@ static struct net_device *netdev_wait_allrefs_any(struct list_head *list)
+ 			rebroadcast_time = jiffies;
+ 		}
  
- static const struct file_operations fops_peer_debug_trigger = {
++		rcu_barrier();
++
+ 		if (!wait) {
+-			rcu_barrier();
+ 			wait = WAIT_REFS_MIN_MSECS;
+ 		} else {
+ 			msleep(wait);
 -- 
 2.43.0
 
