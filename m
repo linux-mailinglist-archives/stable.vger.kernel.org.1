@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682338D0D50
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BBAA8D0B64
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 993F11C20C35
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADFDC2844F3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F27516078C;
-	Mon, 27 May 2024 19:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BB861FCD;
+	Mon, 27 May 2024 19:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f05AY+/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmE0wRqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587BA262BE;
-	Mon, 27 May 2024 19:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403901078F;
+	Mon, 27 May 2024 19:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838110; cv=none; b=SEzOEbBdbgzXnG77FHJKwxnM0EmUsBWDAqSJ/OYI+M7A9sqOFmxmmetmsyW9SZ/KwL3OLLDgKmXvJq7LgLaa0uEn4aXzTHrH2LQ6t9ktsHyRGuZr87C6wP3MCDMHvayx+Bkob8RkN6BCXsUge3zWXCjYkEIP189/C2ZENiBHrO0=
+	t=1716836931; cv=none; b=VMdybSUip+o+zB6v6bDl153CMpaGUqGlVV54DU5euK1rDHK0il7gQbU7sPJd1kRhk7ljD2kmF20GnxDrO3oefs8L/po1u2H90cO0EKpeGi0KuTXSp3Alzm87VXvu9W6mh9pOsZrwSS/tw9Ho5B89JdUhJ+qrFmnen1FwNRSKwhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838110; c=relaxed/simple;
-	bh=TN6wfrr9JHodnFJHgbn/7JoKLmyr8+Mjow12FYLSQ5U=;
+	s=arc-20240116; t=1716836931; c=relaxed/simple;
+	bh=zuNLv8RoYkx8jy6Q/52wXjecCR1HnUiXSYmhyvOIP8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jly0FBXAOvtQZjt092tej52HeDqySiP2Z5UeXtNEi34lyMcsBvqnl7uP1iETtCnohuEeC2FUhJihaIn1z/9X+2W+Z6ld/HhmE2QCU8dhKCAMgR064NATbt+mGWN2qJKKsPRngOOnGiIg7kKXQLxqiGR7p55jX8ggSH3eZh9aiCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f05AY+/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5C7C2BBFC;
-	Mon, 27 May 2024 19:28:29 +0000 (UTC)
+	 MIME-Version; b=dowzYhUKVrkh4cLc3Zg5B+U4S0266huvMpk+9K/rWRc0qe9VafmzS4z870dNs3TlIGesqLeYs9qMI0NdDAV+eo8XNVjbrT4UbuMK4l4jNbzpdiAPi27PTEp/4fRm/9aXA54xPYGdtw5+cdyJd4lG2L1P1jlDxsPJ0vniLd9HnKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmE0wRqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9219C2BBFC;
+	Mon, 27 May 2024 19:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838110;
-	bh=TN6wfrr9JHodnFJHgbn/7JoKLmyr8+Mjow12FYLSQ5U=;
+	s=korg; t=1716836931;
+	bh=zuNLv8RoYkx8jy6Q/52wXjecCR1HnUiXSYmhyvOIP8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f05AY+/TdPK63jGlpP2guJd+Ww3NUNS+wiFlk77pM1cvO4hNz2Ct8k+55qhHE8DPV
-	 Yz9spwON3x7Xq9XGqyzyCOeD1pIFMylN/25rkRMpYjOmvyJbumKhft1BXbMftt+vZY
-	 52ZIlRZfEunV5sFENILWfKAnxv8EhJbtN512769I=
+	b=gmE0wRqcAs9gszKN7eNSXObWZaHT44N26cDOS64XrWefcr5r113h1xUoewc8Pf7L6
+	 k22fcLwolBzHDKx/2C7WZ3zIfYnrK59GdcEIhr0mWqeF1Du+X7fZnNHC3Pz8cLj5fN
+	 V6xJE9j+if/8gaobVoHXgVNib/6VwzeS/B1Kmeh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Monroe <chad@monroe.io>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 271/493] wifi: mt76: mt7996: fix size of txpower MCU command
-Date: Mon, 27 May 2024 20:54:33 +0200
-Message-ID: <20240527185639.146365516@linuxfoundation.org>
+Subject: [PATCH 6.9 227/427] net: usb: sr9700: stop lying about skb->truesize
+Date: Mon, 27 May 2024 20:54:34 +0200
+Message-ID: <20240527185623.691533684@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chad Monroe <chad@monroe.io>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 66ffcb9abae68625c704b247c7d15cbbc7837391 ]
+[ Upstream commit 05417aa9c0c038da2464a0c504b9d4f99814a23b ]
 
-Fixes issues with scanning and low power output at some rates.
+Some usb drivers set small skb->truesize and break
+core networking stacks.
 
-Fixes: f75e4779d215 ("wifi: mt76: mt7996: add txpower setting support")
-Signed-off-by: Chad Monroe <chad@monroe.io>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+In this patch, I removed one of the skb->truesize override.
+
+I also replaced one skb_clone() by an allocation of a fresh
+and small skb, to get minimally sized skbs, like we did
+in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
+in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
+stop lying about skb->truesize")
+
+Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240506143939.3673865-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 7 +++++--
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 1 +
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/usb/sr9700.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 9e70b960086ac..25ea81ecdab9b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -4468,7 +4468,7 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy)
- 		u8 band_idx;
- 	} __packed req = {
- 		.tag = cpu_to_le16(UNI_TXPOWER_POWER_LIMIT_TABLE_CTRL),
--		.len = cpu_to_le16(sizeof(req) + MT7996_SKU_RATE_NUM - 4),
-+		.len = cpu_to_le16(sizeof(req) + MT7996_SKU_PATH_NUM - 4),
- 		.power_ctrl_id = UNI_TXPOWER_POWER_LIMIT_TABLE_CTRL,
- 		.power_limit_type = TX_POWER_LIMIT_TABLE_RATE,
- 		.band_idx = phy->mt76->band_idx,
-@@ -4483,7 +4483,7 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy)
- 	mphy->txpower_cur = tx_power;
+diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
+index 3164451e1010c..0a662e42ed965 100644
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -421,19 +421,15 @@ static int sr9700_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			skb_pull(skb, 3);
+ 			skb->len = len;
+ 			skb_set_tail_pointer(skb, len);
+-			skb->truesize = len + sizeof(struct sk_buff);
+ 			return 2;
+ 		}
  
- 	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
--				 sizeof(req) + MT7996_SKU_RATE_NUM);
-+				 sizeof(req) + MT7996_SKU_PATH_NUM);
- 	if (!skb)
- 		return -ENOMEM;
+-		/* skb_clone is used for address align */
+-		sr_skb = skb_clone(skb, GFP_ATOMIC);
++		sr_skb = netdev_alloc_skb_ip_align(dev->net, len);
+ 		if (!sr_skb)
+ 			return 0;
  
-@@ -4507,6 +4507,9 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy)
- 	/* eht */
- 	skb_put_data(skb, &la.eht[0], sizeof(la.eht));
+-		sr_skb->len = len;
+-		sr_skb->data = skb->data + 3;
+-		skb_set_tail_pointer(sr_skb, len);
+-		sr_skb->truesize = len + sizeof(struct sk_buff);
++		skb_put(sr_skb, len);
++		memcpy(sr_skb->data, skb->data + 3, len);
+ 		usbnet_skb_return(dev, sr_skb);
  
-+	/* padding */
-+	skb_put_zero(skb, MT7996_SKU_PATH_NUM - MT7996_SKU_RATE_NUM);
-+
- 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
- 				     MCU_WM_UNI_CMD(TXPOWER), true);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 36d1f247d55aa..ddeb40d522c5a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -50,6 +50,7 @@
- #define MT7996_CFEND_RATE_11B		0x03	/* 11B LP, 11M */
- 
- #define MT7996_SKU_RATE_NUM		417
-+#define MT7996_SKU_PATH_NUM		494
- 
- #define MT7996_MAX_TWT_AGRT		16
- #define MT7996_MAX_STA_TWT_AGRT		8
+ 		skb_pull(skb, len + SR_RX_OVERHEAD);
 -- 
 2.43.0
 
