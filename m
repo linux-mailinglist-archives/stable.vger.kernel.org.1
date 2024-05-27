@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B328D0A9E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9223E8D0CA2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDF591F22993
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3EA41C20C0A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89AE1649CF;
-	Mon, 27 May 2024 19:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B3615FCFE;
+	Mon, 27 May 2024 19:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSFMyU5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHnRvelD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784CE15FA9F;
-	Mon, 27 May 2024 19:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63D1168C4;
+	Mon, 27 May 2024 19:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836470; cv=none; b=gJXZAHh40bCWRJiMvZ+IV4T6xDDT2K+cqecc1y98ccsI8AAOuRsJqb+KoGHhlBkEECnVq5uJlcYQVUMKb3cigVFUk9AVlDdSgaBoO9L0pJViuqi+h7Ok3rnDvbB3zFhSY6zFvPPF4IZn4ZLFKu+hfnTDNEsrDRc9BxdzdO7ZLzw=
+	t=1716837702; cv=none; b=CwS/VslYa9woZnUxZZYuvMpT7ROcJyJgKynvHQpx5cl4dPvy63enPNU7Unx8YuuOxlLgj7P5d3Gq9qe2LnIZaDzB1RfB1muUFDT1BjbsmSuoZDpa8Uqs0XUj9xDz+vp0q51xiRLNMLref6YBQb4H7eNKL7CYjU6iNhGCuLPqmxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836470; c=relaxed/simple;
-	bh=5f/6ptukhUQdHdy7ChWyklua1CyeJnmXBqGZcUm4kIE=;
+	s=arc-20240116; t=1716837702; c=relaxed/simple;
+	bh=lgsJW8Bpu7JdwnztrF8tULJdsB9ceJdzdBUJ+B3LmxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRadIM6t7evre/YN9GB+4OJ16HowTbx0tV5GlwDzkYiKqnAoVe1DRuyKwEVgicNfUOM+FlsBs97sf2pGrtg5Le2i6axhp3+728t6ETyTp+RcUMPXEFmh2dJfdS+i2p0XYfHV1E6uw/ujGXXys/lECqRHYWBSUJYHwvppqVv5LLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSFMyU5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43B2C2BBFC;
-	Mon, 27 May 2024 19:01:09 +0000 (UTC)
+	 MIME-Version; b=tPuWboqEeDl08T0tSI1du5vI2ejca/hV5jXL7M0eF6B67pgVxzGWKgD7wZaXtt7w8i5z7JQFOwd64A6ltUJ/7+e5+kGy6aNQLUpn1ulQEMDyd6xNfvUpEwQwrh2J6qGvbB9Qa0T/4s2BOwr7Za4NTFqpekDJqjKUHNp3vS0bZ+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHnRvelD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C24AC2BBFC;
+	Mon, 27 May 2024 19:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836470;
-	bh=5f/6ptukhUQdHdy7ChWyklua1CyeJnmXBqGZcUm4kIE=;
+	s=korg; t=1716837701;
+	bh=lgsJW8Bpu7JdwnztrF8tULJdsB9ceJdzdBUJ+B3LmxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSFMyU5zkzGcw5JPCQHYktZMiC0/IpA1vuHtBdhk5cmaWxHa7xKfVo+5oXqyvHmws
-	 /J2B1FYCz8HqqTIxRvfNaT5PfX1el0fyqAyXIdZawUcg2BGj5SbGlrrLkPcbKOwahm
-	 W0cxDDg2mB1MP+L8RXwAdTKHq4W43+Wucs3uorHk=
+	b=EHnRvelDwsyNQLPMNW2PNnIZOI7R37PU7SoSnjennpFVHf6Tj5oee40gXOW8JeuRK
+	 1oyt+GyjORax98k7WjNdKu+Wdtu9LTyhhSOIOxTxR2Kf68v4UcQ84kJnpVsTYig2Bk
+	 yrPmCcvkO92C/ltoRvaiZSYRxT7XVSxY27Q/NcLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 066/427] s390/mm: Re-enable the shared zeropage for !PV and !skeys KVM guests
+Subject: [PATCH 6.8 111/493] crypto: bcm - Fix pointer arithmetic
 Date: Mon, 27 May 2024 20:51:53 +0200
-Message-ID: <20240527185608.023711076@linuxfoundation.org>
+Message-ID: <20240527185634.155357095@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,371 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 06201e00ee3e4beacac48aab2b83eff64ebf0bc0 ]
+[ Upstream commit 2b3460cbf454c6b03d7429e9ffc4fe09322eb1a9 ]
 
-commit fa41ba0d08de ("s390/mm: avoid empty zero pages for KVM guests to
-avoid postcopy hangs") introduced an undesired side effect when combined
-with memory ballooning and VM migration: memory part of the inflated
-memory balloon will consume memory.
+In spu2_dump_omd() value of ptr is increased by ciph_key_len
+instead of hash_iv_len which could lead to going beyond the
+buffer boundaries.
+Fix this bug by changing ciph_key_len to hash_iv_len.
 
-Assuming we have a 100GiB VM and inflated the balloon to 40GiB. Our VM
-will consume ~60GiB of memory. If we now trigger a VM migration,
-hypervisors like QEMU will read all VM memory. As s390x does not support
-the shared zeropage, we'll end up allocating for all previously-inflated
-memory part of the memory balloon: 50 GiB. So we might easily
-(unexpectedly) crash the VM on the migration source.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Even worse, hypervisors like QEMU optimize for zeropage migration to not
-consume memory on the migration destination: when migrating a
-"page full of zeroes", on the migration destination they check whether the
-target memory is already zero (by reading the destination memory) and avoid
-writing to the memory to not allocate memory: however, s390x will also
-allocate memory here, implying that also on the migration destination, we
-will end up allocating all previously-inflated memory part of the memory
-balloon.
-
-This is especially bad if actual memory overcommit was not desired, when
-memory ballooning is used for dynamic VM memory resizing, setting aside
-some memory during boot that can be added later on demand. Alternatives
-like virtio-mem that would avoid this issue are not yet available on
-s390x.
-
-There could be ways to optimize some cases in user space: before reading
-memory in an anonymous private mapping on the migration source, check via
-/proc/self/pagemap if anything is already populated. Similarly check on
-the migration destination before reading. While that would avoid
-populating tables full of shared zeropages on all architectures, it's
-harder to get right and performant, and requires user space changes.
-
-Further, with posctopy live migration we must place a page, so there,
-"avoid touching memory to avoid allocating memory" is not really
-possible. (Note that a previously we would have falsely inserted
-shared zeropages into processes using UFFDIO_ZEROPAGE where
-mm_forbids_zeropage() would have actually forbidden it)
-
-PV is currently incompatible with memory ballooning, and in the common
-case, KVM guests don't make use of storage keys. Instead of zapping
-zeropages when enabling storage keys / PV, that turned out to be
-problematic in the past, let's do exactly the same we do with KSM pages:
-trigger unsharing faults to replace the shared zeropages by proper
-anonymous folios.
-
-What about added latency when enabling storage kes? Having a lot of
-zeropages in applicable environments (PV, legacy guests, unittests) is
-unexpected. Further, KSM could today already unshare the zeropages
-and unmerging KSM pages when enabling storage kets would unshare the
-KSM-placed zeropages in the same way, resulting in the same latency.
-
-[ agordeev: Fixed sparse and checkpatch complaints and error handling ]
-
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Fixes: fa41ba0d08de ("s390/mm: avoid empty zero pages for KVM guests to avoid postcopy hangs")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/r/20240411161441.910170-3-david@redhat.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/gmap.h        |   2 +-
- arch/s390/include/asm/mmu.h         |   5 +
- arch/s390/include/asm/mmu_context.h |   1 +
- arch/s390/include/asm/pgtable.h     |  16 ++-
- arch/s390/kvm/kvm-s390.c            |   4 +-
- arch/s390/mm/gmap.c                 | 165 +++++++++++++++++++++-------
- 6 files changed, 146 insertions(+), 47 deletions(-)
+ drivers/crypto/bcm/spu2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/gmap.h b/arch/s390/include/asm/gmap.h
-index 5cc46e0dde620..9725586f42597 100644
---- a/arch/s390/include/asm/gmap.h
-+++ b/arch/s390/include/asm/gmap.h
-@@ -146,7 +146,7 @@ int gmap_mprotect_notify(struct gmap *, unsigned long start,
+diff --git a/drivers/crypto/bcm/spu2.c b/drivers/crypto/bcm/spu2.c
+index 07989bb8c220a..3fdc64b5a65e7 100644
+--- a/drivers/crypto/bcm/spu2.c
++++ b/drivers/crypto/bcm/spu2.c
+@@ -495,7 +495,7 @@ static void spu2_dump_omd(u8 *omd, u16 hash_key_len, u16 ciph_key_len,
+ 	if (hash_iv_len) {
+ 		packet_log("  Hash IV Length %u bytes\n", hash_iv_len);
+ 		packet_dump("  hash IV: ", ptr, hash_iv_len);
+-		ptr += ciph_key_len;
++		ptr += hash_iv_len;
+ 	}
  
- void gmap_sync_dirty_log_pmd(struct gmap *gmap, unsigned long dirty_bitmap[4],
- 			     unsigned long gaddr, unsigned long vmaddr);
--int gmap_mark_unmergeable(void);
-+int s390_disable_cow_sharing(void);
- void s390_unlist_old_asce(struct gmap *gmap);
- int s390_replace_asce(struct gmap *gmap);
- void s390_uv_destroy_pfns(unsigned long count, unsigned long *pfns);
-diff --git a/arch/s390/include/asm/mmu.h b/arch/s390/include/asm/mmu.h
-index bb1b4bef1878b..4c2dc7abc2858 100644
---- a/arch/s390/include/asm/mmu.h
-+++ b/arch/s390/include/asm/mmu.h
-@@ -32,6 +32,11 @@ typedef struct {
- 	unsigned int uses_skeys:1;
- 	/* The mmu context uses CMM. */
- 	unsigned int uses_cmm:1;
-+	/*
-+	 * The mmu context allows COW-sharing of memory pages (KSM, zeropage).
-+	 * Note that COW-sharing during fork() is currently always allowed.
-+	 */
-+	unsigned int allow_cow_sharing:1;
- 	/* The gmaps associated with this context are allowed to use huge pages. */
- 	unsigned int allow_gmap_hpage_1m:1;
- } mm_context_t;
-diff --git a/arch/s390/include/asm/mmu_context.h b/arch/s390/include/asm/mmu_context.h
-index 929af18b09081..a7789a9f62186 100644
---- a/arch/s390/include/asm/mmu_context.h
-+++ b/arch/s390/include/asm/mmu_context.h
-@@ -35,6 +35,7 @@ static inline int init_new_context(struct task_struct *tsk,
- 	mm->context.has_pgste = 0;
- 	mm->context.uses_skeys = 0;
- 	mm->context.uses_cmm = 0;
-+	mm->context.allow_cow_sharing = 1;
- 	mm->context.allow_gmap_hpage_1m = 0;
- #endif
- 	switch (mm->context.asce_limit) {
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 60950e7a25f58..259c2439c2517 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -566,10 +566,20 @@ static inline pud_t set_pud_bit(pud_t pud, pgprot_t prot)
- }
- 
- /*
-- * In the case that a guest uses storage keys
-- * faults should no longer be backed by zero pages
-+ * As soon as the guest uses storage keys or enables PV, we deduplicate all
-+ * mapped shared zeropages and prevent new shared zeropages from getting
-+ * mapped.
-  */
--#define mm_forbids_zeropage mm_has_pgste
-+#define mm_forbids_zeropage mm_forbids_zeropage
-+static inline int mm_forbids_zeropage(struct mm_struct *mm)
-+{
-+#ifdef CONFIG_PGSTE
-+	if (!mm->context.allow_cow_sharing)
-+		return 1;
-+#endif
-+	return 0;
-+}
-+
- static inline int mm_uses_skeys(struct mm_struct *mm)
- {
- #ifdef CONFIG_PGSTE
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 7721eb522f43d..82e9631cd9efb 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -2631,9 +2631,7 @@ static int kvm_s390_handle_pv(struct kvm *kvm, struct kvm_pv_cmd *cmd)
- 		if (r)
- 			break;
- 
--		mmap_write_lock(current->mm);
--		r = gmap_mark_unmergeable();
--		mmap_write_unlock(current->mm);
-+		r = s390_disable_cow_sharing();
- 		if (r)
- 			break;
- 
-diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-index 12d22a7fa32fd..474a25ca5c48f 100644
---- a/arch/s390/mm/gmap.c
-+++ b/arch/s390/mm/gmap.c
-@@ -2549,41 +2549,6 @@ static inline void thp_split_mm(struct mm_struct *mm)
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
--/*
-- * Remove all empty zero pages from the mapping for lazy refaulting
-- * - This must be called after mm->context.has_pgste is set, to avoid
-- *   future creation of zero pages
-- * - This must be called after THP was disabled.
-- *
-- * mm contracts with s390, that even if mm were to remove a page table,
-- * racing with the loop below and so causing pte_offset_map_lock() to fail,
-- * it will never insert a page table containing empty zero pages once
-- * mm_forbids_zeropage(mm) i.e. mm->context.has_pgste is set.
-- */
--static int __zap_zero_pages(pmd_t *pmd, unsigned long start,
--			   unsigned long end, struct mm_walk *walk)
--{
--	unsigned long addr;
--
--	for (addr = start; addr != end; addr += PAGE_SIZE) {
--		pte_t *ptep;
--		spinlock_t *ptl;
--
--		ptep = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
--		if (!ptep)
--			break;
--		if (is_zero_pfn(pte_pfn(*ptep)))
--			ptep_xchg_direct(walk->mm, addr, ptep, __pte(_PAGE_INVALID));
--		pte_unmap_unlock(ptep, ptl);
--	}
--	return 0;
--}
--
--static const struct mm_walk_ops zap_zero_walk_ops = {
--	.pmd_entry	= __zap_zero_pages,
--	.walk_lock	= PGWALK_WRLOCK,
--};
--
- /*
-  * switch on pgstes for its userspace process (for kvm)
-  */
-@@ -2601,22 +2566,142 @@ int s390_enable_sie(void)
- 	mm->context.has_pgste = 1;
- 	/* split thp mappings and disable thp for future mappings */
- 	thp_split_mm(mm);
--	walk_page_range(mm, 0, TASK_SIZE, &zap_zero_walk_ops, NULL);
- 	mmap_write_unlock(mm);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(s390_enable_sie);
- 
--int gmap_mark_unmergeable(void)
-+static int find_zeropage_pte_entry(pte_t *pte, unsigned long addr,
-+				   unsigned long end, struct mm_walk *walk)
-+{
-+	unsigned long *found_addr = walk->private;
-+
-+	/* Return 1 of the page is a zeropage. */
-+	if (is_zero_pfn(pte_pfn(*pte))) {
-+		/*
-+		 * Shared zeropage in e.g., a FS DAX mapping? We cannot do the
-+		 * right thing and likely don't care: FAULT_FLAG_UNSHARE
-+		 * currently only works in COW mappings, which is also where
-+		 * mm_forbids_zeropage() is checked.
-+		 */
-+		if (!is_cow_mapping(walk->vma->vm_flags))
-+			return -EFAULT;
-+
-+		*found_addr = addr;
-+		return 1;
-+	}
-+	return 0;
-+}
-+
-+static const struct mm_walk_ops find_zeropage_ops = {
-+	.pte_entry	= find_zeropage_pte_entry,
-+	.walk_lock	= PGWALK_WRLOCK,
-+};
-+
-+/*
-+ * Unshare all shared zeropages, replacing them by anonymous pages. Note that
-+ * we cannot simply zap all shared zeropages, because this could later
-+ * trigger unexpected userfaultfd missing events.
-+ *
-+ * This must be called after mm->context.allow_cow_sharing was
-+ * set to 0, to avoid future mappings of shared zeropages.
-+ *
-+ * mm contracts with s390, that even if mm were to remove a page table,
-+ * and racing with walk_page_range_vma() calling pte_offset_map_lock()
-+ * would fail, it will never insert a page table containing empty zero
-+ * pages once mm_forbids_zeropage(mm) i.e.
-+ * mm->context.allow_cow_sharing is set to 0.
-+ */
-+static int __s390_unshare_zeropages(struct mm_struct *mm)
-+{
-+	struct vm_area_struct *vma;
-+	VMA_ITERATOR(vmi, mm, 0);
-+	unsigned long addr;
-+	vm_fault_t fault;
-+	int rc;
-+
-+	for_each_vma(vmi, vma) {
-+		/*
-+		 * We could only look at COW mappings, but it's more future
-+		 * proof to catch unexpected zeropages in other mappings and
-+		 * fail.
-+		 */
-+		if ((vma->vm_flags & VM_PFNMAP) || is_vm_hugetlb_page(vma))
-+			continue;
-+		addr = vma->vm_start;
-+
-+retry:
-+		rc = walk_page_range_vma(vma, addr, vma->vm_end,
-+					 &find_zeropage_ops, &addr);
-+		if (rc < 0)
-+			return rc;
-+		else if (!rc)
-+			continue;
-+
-+		/* addr was updated by find_zeropage_pte_entry() */
-+		fault = handle_mm_fault(vma, addr,
-+					FAULT_FLAG_UNSHARE | FAULT_FLAG_REMOTE,
-+					NULL);
-+		if (fault & VM_FAULT_OOM)
-+			return -ENOMEM;
-+		/*
-+		 * See break_ksm(): even after handle_mm_fault() returned 0, we
-+		 * must start the lookup from the current address, because
-+		 * handle_mm_fault() may back out if there's any difficulty.
-+		 *
-+		 * VM_FAULT_SIGBUS and VM_FAULT_SIGSEGV are unexpected but
-+		 * maybe they could trigger in the future on concurrent
-+		 * truncation. In that case, the shared zeropage would be gone
-+		 * and we can simply retry and make progress.
-+		 */
-+		cond_resched();
-+		goto retry;
-+	}
-+
-+	return 0;
-+}
-+
-+static int __s390_disable_cow_sharing(struct mm_struct *mm)
- {
-+	int rc;
-+
-+	if (!mm->context.allow_cow_sharing)
-+		return 0;
-+
-+	mm->context.allow_cow_sharing = 0;
-+
-+	/* Replace all shared zeropages by anonymous pages. */
-+	rc = __s390_unshare_zeropages(mm);
- 	/*
- 	 * Make sure to disable KSM (if enabled for the whole process or
- 	 * individual VMAs). Note that nothing currently hinders user space
- 	 * from re-enabling it.
- 	 */
--	return ksm_disable(current->mm);
-+	if (!rc)
-+		rc = ksm_disable(mm);
-+	if (rc)
-+		mm->context.allow_cow_sharing = 1;
-+	return rc;
-+}
-+
-+/*
-+ * Disable most COW-sharing of memory pages for the whole process:
-+ * (1) Disable KSM and unmerge/unshare any KSM pages.
-+ * (2) Disallow shared zeropages and unshare any zerpages that are mapped.
-+ *
-+ * Not that we currently don't bother with COW-shared pages that are shared
-+ * with parent/child processes due to fork().
-+ */
-+int s390_disable_cow_sharing(void)
-+{
-+	int rc;
-+
-+	mmap_write_lock(current->mm);
-+	rc = __s390_disable_cow_sharing(current->mm);
-+	mmap_write_unlock(current->mm);
-+	return rc;
- }
--EXPORT_SYMBOL_GPL(gmap_mark_unmergeable);
-+EXPORT_SYMBOL_GPL(s390_disable_cow_sharing);
- 
- /*
-  * Enable storage key handling from now on and initialize the storage
-@@ -2685,7 +2770,7 @@ int s390_enable_skey(void)
- 		goto out_up;
- 
- 	mm->context.uses_skeys = 1;
--	rc = gmap_mark_unmergeable();
-+	rc = __s390_disable_cow_sharing(mm);
- 	if (rc) {
- 		mm->context.uses_skeys = 0;
- 		goto out_up;
+ 	if (ciph_iv_len) {
 -- 
 2.43.0
 
