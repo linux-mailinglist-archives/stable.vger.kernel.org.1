@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-46726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D6A8D0AFF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:05:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E86E58D0B0C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25A22B223C6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:05:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A50D7282D7A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FBB1078F;
-	Mon, 27 May 2024 19:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE3E61FD6;
+	Mon, 27 May 2024 19:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSVYprj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xEHLoER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EC417E90E;
-	Mon, 27 May 2024 19:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A73B1DFED;
+	Mon, 27 May 2024 19:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836700; cv=none; b=GBp/hMQtPUagIRRiMaZRD1Wwd5uPbzdbql1sv8r4GlsUoKlPJivoGkhz7qdKnj35jebEsMQCibE22cnURCVqhXy3hvTPlSEdzn3705DSziwJpzUiTQuc42zVGc7hwtdETEsvdz0O+0OxjaiY7TAMvz1MqVNTHxNXWJf38sJ+Rpc=
+	t=1716836730; cv=none; b=ojsSk/bjvbY0vVwhWxC532C7mXZ8Eenh6umpzZUug8JS3gibZRkzVTt4L6stHcPF8eJ1U40DHSxXp4PYMRe7B706sgmPLEIAbWHs330G6wT/I5reVB6+LhzVZ+j+jcF6Bxkx0ffOWmF7QOHzuITLN/xWrnE1UsTLhwzuTdhrMCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836700; c=relaxed/simple;
-	bh=cNc/xYLJaDiFFd2ogOVryBS8aGXljyO1TY5a1DjvDjs=;
+	s=arc-20240116; t=1716836730; c=relaxed/simple;
+	bh=rNKid9Aw+HKHjpAM7kiqXg8WQyMrIt4xlulIhrAwAVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pi0S9NetoqVBJVTw1z17bFPhdvI/aSLW+qPR/Ysk3jpfO1PUfB6UrjuD0GsbWKg51WKy53YEHnlfTjLTZdqbz9/2jY+d5bd5CxRyKreUq/jYHBscqE1IMHk8+4qKKPc0isAG0r53Lvu6cnusugLh0g3WCOgqTdB9695TUYk7G+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSVYprj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7AFC2BBFC;
-	Mon, 27 May 2024 19:05:00 +0000 (UTC)
+	 MIME-Version; b=Xdm/Wu4obLWbLSdUzb8BY2JHw2WyT29rnOF29YEspfFMG35Zb5xaI25SJltKVmbyKmYr+/8N8wcKRPLhLCQvZ33NLjWfcY0pvUKnT4EUxarAsy1t18fMQ1ayo5hLr6YYsto3pLo37a4hyzjyBeEBpGDl+meMzhgf7Wx0fFpC1PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xEHLoER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BD9C2BBFC;
+	Mon, 27 May 2024 19:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836700;
-	bh=cNc/xYLJaDiFFd2ogOVryBS8aGXljyO1TY5a1DjvDjs=;
+	s=korg; t=1716836730;
+	bh=rNKid9Aw+HKHjpAM7kiqXg8WQyMrIt4xlulIhrAwAVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uSVYprj/4NU/ltWEK/UJzhpUsaJYhlFF6doipX7yJ+118HE+3AtV5UFlwgsGYJWyj
-	 vRU/icGNUE2UgkSjb1lXdvsdKD6f3MP01SKmFrWvOSQQ8zaFvM9GlKBxfCMe9cMKjz
-	 nRhOMNzKyOl5AxvujSKNB7iXXCLp802nR69FucDI=
+	b=1xEHLoERQ9wqx/Nh09GPLqndw6SD9T7wB6vjEaq44qj/wmKVA9pLdwUT5Z8Ym3Oez
+	 5HMndS0MdAMnSYDpUv/XrDR7jnrxuLePKKDq71cTH8ccGWij9QDYz2iiALF/5In0s0
+	 X9I1stUy0V/yIbKlnAsN+uRrCgwyWEkw8ZuhiloM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 137/427] irqchip/alpine-msi: Fix off-by-one in allocation error path
-Date: Mon, 27 May 2024 20:53:04 +0200
-Message-ID: <20240527185614.699145581@linuxfoundation.org>
+Subject: [PATCH 6.9 138/427] irqchip/loongson-pch-msi: Fix off-by-one on allocation error path
+Date: Mon, 27 May 2024 20:53:05 +0200
+Message-ID: <20240527185614.772067607@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -68,34 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Zenghui Yu <yuzenghui@huawei.com>
 
-[ Upstream commit ff3669a71afa06208de58d6bea1cc49d5e3fcbd1 ]
+[ Upstream commit b327708798809328f21da8dc14cc8883d1e8a4b3 ]
 
-When alpine_msix_gic_domain_alloc() fails, there is an off-by-one in the
-number of interrupts to be freed.
+When pch_msi_parent_domain_alloc() returns an error, there is an off-by-one
+in the number of interrupts to be freed.
 
-Fix it by passing the number of successfully allocated interrupts, instead
-of the relative index of the last allocated one.
+Fix it by passing the number of successfully allocated interrupts, instead of the
+relative index of the last allocated one.
 
-Fixes: 3841245e8498 ("irqchip/alpine-msi: Fix freeing of interrupts on allocation error path")
+Fixes: 632dcc2c75ef ("irqchip: Add Loongson PCH MSI controller")
 Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240327142305.1048-1-yuzenghui@huawei.com
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Link: https://lore.kernel.org/r/20240327142334.1098-1-yuzenghui@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-alpine-msi.c | 2 +-
+ drivers/irqchip/irq-loongson-pch-msi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-alpine-msi.c b/drivers/irqchip/irq-alpine-msi.c
-index 9c8b1349ee17b..a1430ab60a8a3 100644
---- a/drivers/irqchip/irq-alpine-msi.c
-+++ b/drivers/irqchip/irq-alpine-msi.c
-@@ -165,7 +165,7 @@ static int alpine_msix_middle_domain_alloc(struct irq_domain *domain,
- 	return 0;
+diff --git a/drivers/irqchip/irq-loongson-pch-msi.c b/drivers/irqchip/irq-loongson-pch-msi.c
+index 6e1e1f011bb29..dd4d699170f4e 100644
+--- a/drivers/irqchip/irq-loongson-pch-msi.c
++++ b/drivers/irqchip/irq-loongson-pch-msi.c
+@@ -136,7 +136,7 @@ static int pch_msi_middle_domain_alloc(struct irq_domain *domain,
  
- err_sgi:
+ err_hwirq:
+ 	pch_msi_free_hwirq(priv, hwirq, nr_irqs);
 -	irq_domain_free_irqs_parent(domain, virq, i - 1);
 +	irq_domain_free_irqs_parent(domain, virq, i);
- 	alpine_msix_free_sgi(priv, sgi, nr_irqs);
+ 
  	return err;
  }
 -- 
