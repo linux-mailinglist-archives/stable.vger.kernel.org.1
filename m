@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6684E8D0579
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:11:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74798D0494
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:49:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72529B2EC93
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:49:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48F9F1F21081
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179DF168C20;
-	Mon, 27 May 2024 14:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB52D16EC1C;
+	Mon, 27 May 2024 14:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mcW5E8s2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RPckxprn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86EB168C17;
-	Mon, 27 May 2024 14:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8316D168C3D;
+	Mon, 27 May 2024 14:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819574; cv=none; b=J7G/I2A3VTZ2CdXO18W58OECKnFIkKXs0yyGAX1LbvLbUJvQO1mvMzo055FWZbXRgQpMher5bXbNY/ZxutYLPro/Pqo3cQrfZbDx/zKKN5F2qaLGEO53DtzR2MphHtv9qwSp3KNitZX3ayHqPMlxtM1C8IGhY0FRQZybAl68s3w=
+	t=1716819576; cv=none; b=QvaFG9bQAB+DbYxYO/UczXqZUZBE1LehcqdKL1UbQawzzTCWwBVINuftpgTb89hh7/tpbuuGRO1AR4blOTicByNMG6c0YS7ursv/OUu2X5Rq3Zr9E+1hzxWILwwnwPzG/zT5tGVKbmTT1P7yJjIJpExXMBSB1N/K08W/3UxZp3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819574; c=relaxed/simple;
-	bh=NXAqXjPE/NMeldOeBm2byS+kMVIl+2R4hN11reIED+8=;
+	s=arc-20240116; t=1716819576; c=relaxed/simple;
+	bh=fIgHyz1SU66HH2/03OqanKPPWhz+SgylrApj4NM5RgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J75Va3haYz76bKfe7BZNOxdGiMaVTf3OmbYkFBa+8WxRyz3y8VYMCjvCifp4bsgsAcXxoBFDqiu3QKlxhG5+1nCQ7LbH820w4VN1a12dNVqv6OQDgokkTk1YlEvodGgrkID5s3HZ9meQNtc6j99Ojintmzdzft3MBrDrxrQynrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mcW5E8s2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA90C4AF07;
-	Mon, 27 May 2024 14:19:33 +0000 (UTC)
+	 MIME-Version; b=eEEp4owmY7RWcJIIfiQ6O/GRBGuN1BS+FiY/OQmldHxFrTrSPksvB66m3U9H936RF4B9KvOseG+t/KWtM5YmdoJ+5nBKC7YgyssMStzyd5ivLd2kWCT/f/Ar41fq4/Desftwc14YQnt0/vJyu68GXH8EiEpwDRjLUIqXG8mffG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RPckxprn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3001EC32781;
+	Mon, 27 May 2024 14:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819574;
-	bh=NXAqXjPE/NMeldOeBm2byS+kMVIl+2R4hN11reIED+8=;
+	s=k20201202; t=1716819576;
+	bh=fIgHyz1SU66HH2/03OqanKPPWhz+SgylrApj4NM5RgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mcW5E8s26bu1SzTB5vPd9qEDDs5CCw2L00DUsHYfxDGXbNSWij21l/DqMQcYju1Xe
-	 7ESALwDZVCrNEH6vrDagwM+bkpYuNRO0KWDI5O+zqc9+jyjfYZ2weE8xhhfiugNcVy
-	 i3UwQk7+Y7JpGCvTrxjrM3Zce5AXnpJOdRoEOVNnfV+PqEgAqF3vmnUW7LR3BmLzNS
-	 dZeMaD4waN69MViFYpCKEI/8nSDb/kYVv4+0Mgb81GJ/NGJL98OQGogxA1x86GFKlb
-	 RV+Pvh2w8UYF41wAr0+z1mC3Oxk8SDZHIZMZtkaYXWiIDsgQgg+WLqG9mKZQWShZgH
-	 XEJHnxjZ3Gh0A==
+	b=RPckxprn9gcamZ+jlku57qFWjgtptS+/ldsYB/qvF8HDmNSv9jyyf8Dn0q67Ylqxc
+	 0XIw1ntX95Hd7ryKRlZMxRwa+B08iSnxHocuKBzX7PkgZenAgL/PZzU0QBJXrjJU2U
+	 D6MOOK/s9UKnf0ia9NKHXg0N6aR0r4BXeMaDiHTSdiHkLU2toDNLETAJyd02gWl/f8
+	 7HvtQL6Nk+TCmVpB7YgLqRI0zoTRwUxUaPtrt6HbaNF3xfYyZQ+H5VTJ+f9jNF8sk3
+	 yOE2tkyVYsyemiNvJ8/nQqNvmq6VmiMAhJs/JteZh0BQyQTGWwU1efH04n4NStNsS5
+	 U7D9gM+RaggiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sean O'Brien <seobrien@chromium.org>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Takashi Iwai <tiwai@suse.de>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 10/13] HID: Add quirk for Logitech Casa touchpad
-Date: Mon, 27 May 2024 10:18:47 -0400
-Message-ID: <20240527141901.3854691-10-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 11/13] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
+Date: Mon, 27 May 2024 10:18:48 -0400
+Message-ID: <20240527141901.3854691-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141901.3854691-1-sashal@kernel.org>
 References: <20240527141901.3854691-1-sashal@kernel.org>
@@ -67,54 +66,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.218
 Content-Transfer-Encoding: 8bit
 
-From: Sean O'Brien <seobrien@chromium.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit dd2c345a94cfa3873cc20db87387ee509c345c1b ]
+[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
 
-This device sometimes doesn't send touch release signals when moving
-from >=4 fingers to <4 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
-of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
+Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
+and Nvidia, and the backlight can't be adjusted properly unless
+acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
+present and loaded, this doesn't work as expected at all.
 
-MT_QUIRK_FORCE_MULTI_INPUT is not necessary for this device, but does no
-harm.
+For making it working as default, add the corresponding quirk entry
+with a DMI matching "LENOVO" "82UX".
 
-Signed-off-by: Sean O'Brien <seobrien@chromium.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-multitouch.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 0732fe6c7a853..9f3f7588fe46d 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -765,6 +765,7 @@
- #define USB_DEVICE_ID_LOGITECH_AUDIOHUB 0x0a0e
- #define USB_DEVICE_ID_LOGITECH_T651	0xb00c
- #define USB_DEVICE_ID_LOGITECH_DINOVO_EDGE_KBD	0xb309
-+#define USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD	0xbb00
- #define USB_DEVICE_ID_LOGITECH_C007	0xc007
- #define USB_DEVICE_ID_LOGITECH_C077	0xc077
- #define USB_DEVICE_ID_LOGITECH_RECEIVER	0xc101
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 8dcd636daf270..e7b047421f3d9 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1998,6 +1998,12 @@ static const struct hid_device_id mt_devices[] = {
- 			   USB_VENDOR_ID_LENOVO,
- 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
- 
-+	/* Logitech devices */
-+	{ .driver_data = MT_CLS_NSMU,
-+		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
-+			USB_VENDOR_ID_LOGITECH,
-+			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
-+
- 	/* MosArt panels */
- 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ASUS,
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index a5cb9e1d48bcc..338e1f44906a9 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -341,6 +341,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Lenovo Slim 7 16ARH7 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_native,
+ 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
 -- 
 2.43.0
 
