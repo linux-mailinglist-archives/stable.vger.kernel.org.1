@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-47348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6EA8D0D9E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A5E8D0B7B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CA8C1C2156F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A8C6284A0B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667E713AD05;
-	Mon, 27 May 2024 19:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD3C26ACA;
+	Mon, 27 May 2024 19:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdudTdlS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fb0GZkgm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BE017727;
-	Mon, 27 May 2024 19:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F3A17E90E;
+	Mon, 27 May 2024 19:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838318; cv=none; b=jRCMeLLcELS9xezS4oVYLGuna3Sylh0YBmnoQME/cT70H5qS4L/x0sEhbpJoEo9MrIcjk2Fn2b7bAO9+huuQLZgK1Qo5A4F5tFmGcRTElgIOnUAOOHqN+EWcLs0RIB+Sm0cYbfS6K1vrn9BoByxl1K71qo6L7FjZQ3xDDDXT4G8=
+	t=1716836989; cv=none; b=obMz4Gp/rrLt9CzJJKy7cIbnNW68qn66Ggb+aLZqyLBAQkjMSdZFnm8iT3pEVYcbGlbJ6h62W3yAms+ek5vBIgpsEYUZgpTkYkNDT2lmLmjfQa5Pw/EDXAby3mKmAfODX4VGZZg3CLwmJ5FrpBhXgll2YkMl9DkrrxY64UntVyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838318; c=relaxed/simple;
-	bh=NfVmApfkV2Ttb9fzN5BELGHj83YC1YZ9tWIIzGLK3pM=;
+	s=arc-20240116; t=1716836989; c=relaxed/simple;
+	bh=+xRDzPapW3nLENGLL3nsLD3cMo/NQbteP8UVuwYqcqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGNhX2SzXdL+KpRbHKl1FPVlQi9mWGWp5l2Pr2hEihuStQh5f/KVgtSI3ftuQ2ikbfxj+I7oD20DCYvjHI2MXwo9lTj8mxKPjexoNW9uq7Pxeq+2vXCYU9lxCMer+76kqZC/qIJGD0kZcPqNbnIUH6ebD8ThjfkZntOJxDSCaGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdudTdlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75EFC2BBFC;
-	Mon, 27 May 2024 19:31:57 +0000 (UTC)
+	 MIME-Version; b=NZFftGFlK1Lk6n7p0Uqc37aX/Nyr6KDU7ggUg6xv8a3YrW6uqY8YVTDyKsyQNY6o+MvRaIfxp3rOaJrRMjh7Sk/iC5uL36py0uvrX0JWCMP6v0Oh9yb+Q5BcAeoMWFCcIYEqYz58eLgd0M+/MLED1dKLrV6zw4JuE4dMYEEgJI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fb0GZkgm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACA6C2BBFC;
+	Mon, 27 May 2024 19:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838318;
-	bh=NfVmApfkV2Ttb9fzN5BELGHj83YC1YZ9tWIIzGLK3pM=;
+	s=korg; t=1716836989;
+	bh=+xRDzPapW3nLENGLL3nsLD3cMo/NQbteP8UVuwYqcqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MdudTdlSz9GT2TtItW1lCOFXK2lL6rUAdA0dbNkre+Vrbhrw40169zP0CikCFO8hv
-	 xWVR4Z+v8FqwbwUCeN4TXJt4BTukdnhBUc78WGIHLaE9q3bSpn9xBn79aiRth2WQJk
-	 MHNDiYvVz1RI+txBdBXBggLAg1uv+MFBfvg+2OIs=
+	b=Fb0GZkgmZk7N8UUN9VNo0Q11z1wpOaCX9R4iDLdonxPMWg+kqnrbsJd95b2faeNi5
+	 wLs/tOg6oj79dXBoAZ3wbtFUlunTfhHwTjD9foQ4fwWFfPuBOcJY6Iv1ozOAkPq5kn
+	 6yn1agMqIJz2h+ICw0+A/Xqb1ZX0P7kToA/Lh6L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Steve Glendinning <steve.glendinning@shawell.net>,
-	UNGLinuxDriver@microchip.com,
-	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 310/493] net: usb: smsc95xx: stop lying about skb->truesize
+Subject: [PATCH 6.9 265/427] mptcp: fix full TCP keep-alive support
 Date: Mon, 27 May 2024 20:55:12 +0200
-Message-ID: <20240527185640.433825533@linuxfoundation.org>
+Message-ID: <20240527185627.197848586@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +64,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit d50729f1d60bca822ef6d9c1a5fb28d486bd7593 ]
+[ Upstream commit bd11dc4fb969ec148e50cd87f88a78246dbc4d0b ]
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+SO_KEEPALIVE support has been added a while ago, as part of a series
+"adding SOL_SOCKET" support. To have a full control of this keep-alive
+feature, it is important to also support TCP_KEEP* socket options at the
+SOL_TCP level.
 
-In this patch, I removed one of the skb->truesize override.
+Supporting them on the setsockopt() part is easy, it is just a matter of
+remembering each value in the MPTCP sock structure, and calling
+tcp_sock_set_keep*() helpers on each subflow. If the value is not
+modified (0), calling these helpers will not do anything. For the
+getsockopt() part, the corresponding value from the MPTCP sock structure
+or the default one is simply returned. All of this is very similar to
+other TCP_* socket options supported by MPTCP.
 
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
+It looks important for kernels supporting SO_KEEPALIVE, to also support
+TCP_KEEP* options as well: some apps seem to (wrongly) consider that if
+the former is supported, the latter ones will be supported as well. But
+also, not having this simple and isolated change is preventing MPTCP
+support in some apps, and libraries like GoLang [1]. This is why this
+patch is seen as a fix.
 
-v3: also fix a sparse error ( https://lore.kernel.org/oe-kbuild-all/202405091310.KvncIecx-lkp@intel.com/ )
-v2: leave the skb_trim() game because smsc95xx_rx_csum_offload()
-    needs the csum part. (Jakub)
-    While we are it, use get_unaligned() in smsc95xx_rx_csum_offload().
-
-Fixes: 2f7ca802bdae ("net: Add SMSC LAN9500 USB2.0 10/100 ethernet adapter driver")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steve Glendinning <steve.glendinning@shawell.net>
-Cc: UNGLinuxDriver@microchip.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509083313.2113832-1-edumazet@google.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/383
+Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
+Link: https://github.com/golang/go/issues/56539 [1]
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240514011335.176158-3-martineau@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/smsc95xx.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ net/mptcp/protocol.h |  3 +++
+ net/mptcp/sockopt.c  | 58 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 2fa46baa589e5..cbea246664795 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -1810,9 +1810,11 @@ static int smsc95xx_reset_resume(struct usb_interface *intf)
- 
- static void smsc95xx_rx_csum_offload(struct sk_buff *skb)
- {
--	skb->csum = *(u16 *)(skb_tail_pointer(skb) - 2);
-+	u16 *csum_ptr = (u16 *)(skb_tail_pointer(skb) - 2);
-+
-+	skb->csum = (__force __wsum)get_unaligned(csum_ptr);
- 	skb->ip_summed = CHECKSUM_COMPLETE;
--	skb_trim(skb, skb->len - 2);
-+	skb_trim(skb, skb->len - 2); /* remove csum */
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index a10ebf3ee10a1..9d1ee199490bb 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -308,6 +308,9 @@ struct mptcp_sock {
+ 			free_first:1,
+ 			rcvspace_init:1;
+ 	u32		notsent_lowat;
++	int		keepalive_cnt;
++	int		keepalive_idle;
++	int		keepalive_intvl;
+ 	struct work_struct work;
+ 	struct sk_buff  *ooo_last_skb;
+ 	struct rb_root  out_of_order_queue;
+diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+index 08b7be2b1b69e..19ee684f9e401 100644
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -622,6 +622,31 @@ static int mptcp_setsockopt_sol_tcp_congestion(struct mptcp_sock *msk, sockptr_t
+ 	return ret;
  }
  
- static int smsc95xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
-@@ -1870,25 +1872,22 @@ static int smsc95xx_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 				if (dev->net->features & NETIF_F_RXCSUM)
- 					smsc95xx_rx_csum_offload(skb);
- 				skb_trim(skb, skb->len - 4); /* remove fcs */
--				skb->truesize = size + sizeof(struct sk_buff);
++static int __mptcp_setsockopt_set_val(struct mptcp_sock *msk, int max,
++				      int (*set_val)(struct sock *, int),
++				      int *msk_val, int val)
++{
++	struct mptcp_subflow_context *subflow;
++	int err = 0;
++
++	mptcp_for_each_subflow(msk, subflow) {
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int ret;
++
++		lock_sock(ssk);
++		ret = set_val(ssk, val);
++		err = err ? : ret;
++		release_sock(ssk);
++	}
++
++	if (!err) {
++		*msk_val = val;
++		sockopt_seq_inc(msk);
++	}
++
++	return err;
++}
++
+ static int __mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, int val)
+ {
+ 	struct mptcp_subflow_context *subflow;
+@@ -818,6 +843,22 @@ static int mptcp_setsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 	case TCP_NODELAY:
+ 		ret = __mptcp_setsockopt_sol_tcp_nodelay(msk, val);
+ 		break;
++	case TCP_KEEPIDLE:
++		ret = __mptcp_setsockopt_set_val(msk, MAX_TCP_KEEPIDLE,
++						 &tcp_sock_set_keepidle_locked,
++						 &msk->keepalive_idle, val);
++		break;
++	case TCP_KEEPINTVL:
++		ret = __mptcp_setsockopt_set_val(msk, MAX_TCP_KEEPINTVL,
++						 &tcp_sock_set_keepintvl,
++						 &msk->keepalive_intvl, val);
++		break;
++	case TCP_KEEPCNT:
++		ret = __mptcp_setsockopt_set_val(msk, MAX_TCP_KEEPCNT,
++						 &tcp_sock_set_keepcnt,
++						 &msk->keepalive_cnt,
++						 val);
++		break;
+ 	default:
+ 		ret = -ENOPROTOOPT;
+ 	}
+@@ -1320,6 +1361,8 @@ static int mptcp_put_int_option(struct mptcp_sock *msk, char __user *optval,
+ static int mptcp_getsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 				    char __user *optval, int __user *optlen)
+ {
++	struct sock *sk = (void *)msk;
++
+ 	switch (optname) {
+ 	case TCP_ULP:
+ 	case TCP_CONGESTION:
+@@ -1338,6 +1381,18 @@ static int mptcp_getsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->cork);
+ 	case TCP_NODELAY:
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->nodelay);
++	case TCP_KEEPIDLE:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    msk->keepalive_idle ? :
++					    READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_keepalive_time) / HZ);
++	case TCP_KEEPINTVL:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    msk->keepalive_intvl ? :
++					    READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_keepalive_intvl) / HZ);
++	case TCP_KEEPCNT:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    msk->keepalive_cnt ? :
++					    READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_keepalive_probes));
+ 	case TCP_NOTSENT_LOWAT:
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->notsent_lowat);
+ 	}
+@@ -1455,6 +1510,9 @@ static void sync_socket_options(struct mptcp_sock *msk, struct sock *ssk)
+ 		tcp_set_congestion_control(ssk, msk->ca_name, false, true);
+ 	__tcp_sock_set_cork(ssk, !!msk->cork);
+ 	__tcp_sock_set_nodelay(ssk, !!msk->nodelay);
++	tcp_sock_set_keepidle_locked(ssk, msk->keepalive_idle);
++	tcp_sock_set_keepintvl(ssk, msk->keepalive_intvl);
++	tcp_sock_set_keepcnt(ssk, msk->keepalive_cnt);
  
- 				return 1;
- 			}
- 
--			ax_skb = skb_clone(skb, GFP_ATOMIC);
-+			ax_skb = netdev_alloc_skb_ip_align(dev->net, size);
- 			if (unlikely(!ax_skb)) {
- 				netdev_warn(dev->net, "Error allocating skb\n");
- 				return 0;
- 			}
- 
--			ax_skb->len = size;
--			ax_skb->data = packet;
--			skb_set_tail_pointer(ax_skb, size);
-+			skb_put(ax_skb, size);
-+			memcpy(ax_skb->data, packet, size);
- 
- 			if (dev->net->features & NETIF_F_RXCSUM)
- 				smsc95xx_rx_csum_offload(ax_skb);
- 			skb_trim(ax_skb, ax_skb->len - 4); /* remove fcs */
--			ax_skb->truesize = size + sizeof(struct sk_buff);
- 
- 			usbnet_skb_return(dev, ax_skb);
- 		}
+ 	inet_assign_bit(TRANSPARENT, ssk, inet_test_bit(TRANSPARENT, sk));
+ 	inet_assign_bit(FREEBIND, ssk, inet_test_bit(FREEBIND, sk));
 -- 
 2.43.0
 
