@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-47410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E408D0DDD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F008D0C0A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B51A02814AE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 767551C203F4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E6D15FA9F;
-	Mon, 27 May 2024 19:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5A615FD1E;
+	Mon, 27 May 2024 19:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyrdhihn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwpc9TvM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BE817727;
-	Mon, 27 May 2024 19:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD58715EFC3;
+	Mon, 27 May 2024 19:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838478; cv=none; b=LpPhypr+Vl9cIH/eIqvFySzXOkCdPEf0ALcOUvNm29hLcfLQjpHbw8vUrzTICFbwWqTngxWcrRjj2Dq4IiMhGmUaeOU3NHRIhnwwYu741Q7DMZ265U36PO6L9pQGOJILOsQXRXFZpcDXR6d6lsxaUuezKlKeao+0pt9sIg9qArI=
+	t=1716837337; cv=none; b=j/y5G3UHQmX9hSAJHwt3Vq5Am4QhhubaOlNnPOO6qK5qGJnYc938mbhf9EhYvNXYbowjCcEPibhxq6z5Gl8MYcL/dOUyZ4TSrzRqagVn5KtLOi5MHzSuoF8uLRJZyCILGMnH+/MiiagSpOOZzjiOHojQ6oP0kT/7CcFyP5ef12U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838478; c=relaxed/simple;
-	bh=khUmEWB5mnzHybK9K0DHjc/NvOTomgQgb9c6Sj0qn8A=;
+	s=arc-20240116; t=1716837337; c=relaxed/simple;
+	bh=V6qvy1E6got5D0HK+KEpoY0NcLYnGqEQwuAmf0OHug0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JtG/NH7Vq12H5aroO1yk46hl2aUevg/p0t+Xp7IMRuB20TkNaTXFIOg70Y0DaK+VrAEjrtJG21327XStVYTb/BIi33kJZiaoyw4FVzh2AY5Dv21gM8u+H0fFwg02oECqrJn0VkbRD4KGL6VYaYM8QVfuekT0N/0eNDoxLRkBeLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyrdhihn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887A8C2BBFC;
-	Mon, 27 May 2024 19:34:37 +0000 (UTC)
+	 MIME-Version; b=JoWZc+rBDhLwyCBK1WbthDVZi2KzmlOlICfvEtO+DL+0LdTuZJzbcYEPuks/Mx24pooAc41maGolWvILbComhllaOGpSv42sD1Nj99YSpRYUQSP1lpetVrLTacmVusZntVG8zqJmoN+dOatglsrTyUfGQX+GWGmQ2/O12ZXFMMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwpc9TvM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA84C2BBFC;
+	Mon, 27 May 2024 19:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838477;
-	bh=khUmEWB5mnzHybK9K0DHjc/NvOTomgQgb9c6Sj0qn8A=;
+	s=korg; t=1716837336;
+	bh=V6qvy1E6got5D0HK+KEpoY0NcLYnGqEQwuAmf0OHug0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zyrdhihnev9aZ90Kc31j/SFhgF03QMXvZmsiZyoAX4k0V4tgxfIPZHUJyxPSGDDlG
-	 pnloV1ch4uAEEUNoK7JD7bzmHViEsTFPir7pWAbEwPbjJ+JdUyyjMg3re0q20/ZAO+
-	 P/wl9eGWil2bpp9JMZOr32OwM+CgNTXa0hN2rqJs=
+	b=iwpc9TvMgdatuKLOr1X1eER6y2fnr/nHeP94KqFbV5xBT1lEzwx14K8/ROTOszSuM
+	 0D71U3vhM/Miua+l0MCu5octgw20n2b0YljEY5te9lhArRf9+I+xmjiDlPdMqXrP7R
+	 bENdtjN1BfLi1iUKjGv9LdcM2fI3Mep/Tb6vNrWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 409/493] drm/bridge: tc358775: Dont log an error when DSI host cant be found
+Subject: [PATCH 6.9 364/427] clk: qcom: clk-alpha-pll: remove invalid Stromer register offset
 Date: Mon, 27 May 2024 20:56:51 +0200
-Message-ID: <20240527185643.661936660@linuxfoundation.org>
+Message-ID: <20240527185633.985391108@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 272377aa0e3dddeec3f568c8bb9d12c7a79d8ef5 ]
+[ Upstream commit 4f2bc4acbb1916b8cd2ce4bb3ba7b1cd7cb705fa ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+The offset of the CONFIG_CTL_U register defined for the Stromer
+PLL is wrong. It is not aligned on a 4 bytes boundary which might
+causes errors in regmap operations.
 
-Fixes: b26975593b17 ("display/drm/bridge: TC358775 DSI/LVDS driver")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-6-619a28148e5c@collabora.com
+Maybe the intention behind of using the 0xff value was to indicate
+that the register is not implemented in the PLL, but this is not
+verified anywhere in the code. Moreover, this value is not used
+even in other register offset arrays despite that those PLLs also
+have unimplemented registers.
+
+Additionally, on the Stromer PLLs the current code only touches
+the CONFIG_CTL_U register if the result of pll_has_64bit_config()
+is true which condition is not affected by the change.
+
+Due to the reasons above, simply remove the CONFIG_CTL_U entry
+from the Stromer specific array.
+
+Fixes: e47a4f55f240 ("clk: qcom: clk-alpha-pll: Add support for Stromer PLLs")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240311-alpha-pll-stromer-cleanup-v1-1-f7c0c5607cca@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358775.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/tc358775.c
-index 90a89d70d8328..fea4f00a20f83 100644
---- a/drivers/gpu/drm/bridge/tc358775.c
-+++ b/drivers/gpu/drm/bridge/tc358775.c
-@@ -610,10 +610,8 @@ static int tc_attach_host(struct tc_data *tc)
- 						};
- 
- 	host = of_find_mipi_dsi_host_by_node(tc->host_node);
--	if (!host) {
--		dev_err(dev, "failed to find dsi host\n");
--		return -EPROBE_DEFER;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
- 
- 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
- 	if (IS_ERR(dsi)) {
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index 8a412ef47e163..734a73f322b3a 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -213,7 +213,6 @@ const u8 clk_alpha_pll_regs[][PLL_OFF_MAX_REGS] = {
+ 		[PLL_OFF_USER_CTL] = 0x18,
+ 		[PLL_OFF_USER_CTL_U] = 0x1c,
+ 		[PLL_OFF_CONFIG_CTL] = 0x20,
+-		[PLL_OFF_CONFIG_CTL_U] = 0xff,
+ 		[PLL_OFF_TEST_CTL] = 0x30,
+ 		[PLL_OFF_TEST_CTL_U] = 0x34,
+ 		[PLL_OFF_STATUS] = 0x28,
 -- 
 2.43.0
 
