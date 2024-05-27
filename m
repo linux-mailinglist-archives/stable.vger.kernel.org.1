@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-46345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F898D0321
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:19:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6CC8D0323
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84B751C218C8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:19:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A74129EC90
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D00715FA6A;
-	Mon, 27 May 2024 14:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A37316EC18;
+	Mon, 27 May 2024 14:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UY0cZgor"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDJ9xO3n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E3716EBE3;
-	Mon, 27 May 2024 14:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C4D15FA6E;
+	Mon, 27 May 2024 14:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819185; cv=none; b=HcYxDrCio7uICjZkAwcYWqQ8Jj4h+ZlVEsKi6g4LJWJxy9FvAQ6ypoB18s7qj5Jh9QTZYTyYZkZHd6T4LAIUDAuh4Fae3TcnPbs26vXq+2nWLdhO6U0SHTjNmnAIucgQviJgcTme+oDtvCA+mjavHb+EYPjv8b/JZ6P9jiv5HhM=
+	t=1716819186; cv=none; b=VFIH+jYAf3tz9ZSkLjM3tAuaZKWFB4OtenuafVBdawW0RMwmcEbx7HeuiTZZikCMnIvMRdOrbSFeWgpNG2F7K2c+oCHn40pLBMJzJETTWSsERZj8wDUPTcEY9t29HWXDs9f7Xaf+9BIuRve6Go3q3HA4/1lVXTnmWFPY6uvRcmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819185; c=relaxed/simple;
-	bh=gT3PUxRsUL+n6n4zrXENoJgzxNiIqZwJ8cCv7JfCF08=;
+	s=arc-20240116; t=1716819186; c=relaxed/simple;
+	bh=1xfgRIVTjnEJ9mqKKZUTuPHwr2AWg4Eieq31YncZaKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKabxNcD0kX2tLorc/fWHrIpNPs53Ta9w5xU8oaqY5x5+vLSiclJtLuP+PMt4VhfKNB14SFGrSCZVLq7fLWLjd6P5QhmBKB9IPqzXmHmvF3kPEcAP3t25/bndLIwqQJw5xrhGAiGNfsvl6uqrehtCtmHUgG4A+3xG1qzTuf1tvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UY0cZgor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A12C32789;
-	Mon, 27 May 2024 14:13:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NE+dxWeMfA0oEtAH7HQucV9UBFG+iXxITxZ2+FXYY/aiQmVdsI2J1My2+altW9V9kA05Gi2ACymsNYXNwTMmgN+ddqpCvLxrn8EvBlqFAlA6lY74heHntKEGQoIWxd2KAM/Lm3pB0AecRWhAgjp0+kgGScgEoP3sGo0Jo2wsqc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDJ9xO3n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C86DC32781;
+	Mon, 27 May 2024 14:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819185;
-	bh=gT3PUxRsUL+n6n4zrXENoJgzxNiIqZwJ8cCv7JfCF08=;
+	s=k20201202; t=1716819186;
+	bh=1xfgRIVTjnEJ9mqKKZUTuPHwr2AWg4Eieq31YncZaKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UY0cZgorTHnzQpnYN41e+Eb9ZJgpDMjxLI3IW1IqfHuZp4lHQe8RF4tNEHGSpnxcO
-	 37zI8sdUibYM45mul9UjzHqbDFdfnR4r3pvY57CoM37E5Z9boWQ+cZD4sJ+jfd5wUV
-	 NIWns8gZVUJll8fvvexv0N1TLo8APh9AXSKUnSnjt4NrpIjMqX3t8LWVukSzulj+Bu
-	 CEvAf7ZNniE4FJnS8OMzg12FwX0EuDzs4m/AMzAVxlhZ/0J6r08luMddBRHW7BFC1o
-	 rYtavUyoZyeVgU8G6TAbrdyI4IsGLKYmL2zgQaoRiWyXugg9Qvu3barIdLtjD5vR3h
-	 KAChQN7/FZ14A==
+	b=HDJ9xO3njbHrPDgzhxOJxurzQk3yMsynCbtZ05wr10SnEUAlKDu2xBfnorU+rI/0n
+	 LjKfv90AHwgZ/uS0R/gB2sta4IaEw9hJorVDCHBr7ctxqlz6uTVtkk9b65cO/rYFrs
+	 p/iKRxrZ1zJwwOkE1cx8Geul3NB8HpcDhMEa/BkXDG27aeb9y4WqgrO9rCA+BSlged
+	 Y7BMExpsZUagyyugVLwVNpHmvyOfH4GTGJR4H6yvUyoW4R6tK1hAX+ydaCKKGa0JmN
+	 j2Czq5oisQ++itGMmHOeinyTGB2bKDuNbi247a90Oxlr0Z4TWkVwZGQoxAtD6m8U6/
+	 l2mCnNKcH9Wcg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Lingbo Kong <quic_lingbok@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 25/35] netpoll: Fix race condition in netpoll_owner_active
-Date: Mon, 27 May 2024 10:11:30 -0400
-Message-ID: <20240527141214.3844331-25-sashal@kernel.org>
+	kvalo@kernel.org,
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.9 26/35] wifi: ath12k: fix the problem that down grade phy mode operation
+Date: Mon, 27 May 2024 10:11:31 -0400
+Message-ID: <20240527141214.3844331-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
 References: <20240527141214.3844331-1-sashal@kernel.org>
@@ -63,55 +64,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Lingbo Kong <quic_lingbok@quicinc.com>
 
-[ Upstream commit c2e6a872bde9912f1a7579639c5ca3adf1003916 ]
+[ Upstream commit bf76b144fe53c7f0de9e294947d903fc7724776f ]
 
-KCSAN detected a race condition in netpoll:
+Currently, when using WCN7850 or QCN9274 as AP, ath12k always performs down
+grade phy mode operation regardless of whether the firmware supports EHT
+capability or not and then vdev will start in HE mode. When stations that
+support EHT capability try to connect to the AP, the AP will set phy mode
+to EHT after receiving the association request packet, and then send
+WMI_PEER_ASSOC_CMDID command to firmware, AP’s firmware will crash.
 
-	BUG: KCSAN: data-race in net_rx_action / netpoll_send_skb
-	write (marked) to 0xffff8881164168b0 of 4 bytes by interrupt on cpu 10:
-	net_rx_action (./include/linux/netpoll.h:90 net/core/dev.c:6712 net/core/dev.c:6822)
-<snip>
-	read to 0xffff8881164168b0 of 4 bytes by task 1 on cpu 2:
-	netpoll_send_skb (net/core/netpoll.c:319 net/core/netpoll.c:345 net/core/netpoll.c:393)
-	netpoll_send_udp (net/core/netpoll.c:?)
-<snip>
-	value changed: 0x0000000a -> 0xffffffff
+This is because when the ath12k_mac_copy_sband_iftype_data() function
+handles EHT capability, it does not copy the EHT capability into the
+iftype[band][type] array according to the interface type. So, interface
+type should not be used as an index to get eht_cap in
+ath12k_mac_check_down_grade_phy_mode() function.
 
-This happens because netpoll_owner_active() needs to check if the
-current CPU is the owner of the lock, touching napi->poll_owner
-non atomically. The ->poll_owner field contains the current CPU holding
-the lock.
+To address this issue, use types_mask to select the eht_cap in
+ath12k_mac_check_down_grade_phy_mode() function.
 
-Use an atomic read to check if the poll owner is the current CPU.
+This patch affects QCN9274 and WCN7850 because they have the same issue.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240429100437.3487432-1-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Hostapd log:
+wlo1: STA 02:03:7f:37:12:34 IEEE 802.11: Could not set STA to kernel driver
+
+Kernel log:
+[270894.816076] ath12k_pci 0000:03:00.0: failed to send WMI_PEER_SET_PARAM cmd
+[270894.816111] ath12k_pci 0000:03:00.0: failed to setup peer SMPS for vdev 0: -108
+[270894.816122] ath12k_pci 0000:03:00.0: Failed to associate station: 02:03:7f:37:12:34
+[270894.843389] ieee80211 phy5: Hardware restart was requested
+[270894.843517] ath12k_pci 0000:03:00.0: failed to lookup peer 02:03:7f:37:12:34 on vdev 0
+[270894.843616] ath12k_pci 0000:03:00.0: failed to send WMI_PEER_DELETE cmd
+[270894.843650] ath12k_pci 0000:03:00.0: failed to delete peer vdev_id 0 addr 02:03:7f:37:12:34 ret -108
+[270894.843663] ath12k_pci 0000:03:00.0: Failed to delete peer: 02:03:7f:37:12:34 for VDEV: 0
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240425083837.5340-1-quic_lingbok@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 543007f159f99..55bcacf67df3b 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -316,7 +316,7 @@ static int netpoll_owner_active(struct net_device *dev)
- 	struct napi_struct *napi;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 52a5fb8b03e9a..82ef4d4da681e 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -6286,14 +6286,24 @@ ath12k_mac_check_down_grade_phy_mode(struct ath12k *ar,
+ 				     enum nl80211_band band,
+ 				     enum nl80211_iftype type)
+ {
+-	struct ieee80211_sta_eht_cap *eht_cap;
++	struct ieee80211_sta_eht_cap *eht_cap = NULL;
+ 	enum wmi_phy_mode down_mode;
++	int n = ar->mac.sbands[band].n_iftype_data;
++	int i;
++	struct ieee80211_sband_iftype_data *data;
  
- 	list_for_each_entry_rcu(napi, &dev->napi_list, dev_list) {
--		if (napi->poll_owner == smp_processor_id())
-+		if (READ_ONCE(napi->poll_owner) == smp_processor_id())
- 			return 1;
- 	}
- 	return 0;
+ 	if (mode < MODE_11BE_EHT20)
+ 		return mode;
+ 
+-	eht_cap = &ar->mac.iftype[band][type].eht_cap;
+-	if (eht_cap->has_eht)
++	data = ar->mac.iftype[band];
++	for (i = 0; i < n; i++) {
++		if (data[i].types_mask & BIT(type)) {
++			eht_cap = &data[i].eht_cap;
++			break;
++		}
++	}
++
++	if (eht_cap && eht_cap->has_eht)
+ 		return mode;
+ 
+ 	switch (mode) {
 -- 
 2.43.0
 
