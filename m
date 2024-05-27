@@ -1,66 +1,62 @@
-Return-Path: <stable+bounces-46484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316948D06BD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:53:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0788D06BF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48AEE1C202DC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:53:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1B601F236D4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0DD15EFC4;
-	Mon, 27 May 2024 15:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F71D15F311;
+	Mon, 27 May 2024 15:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENJ1YXr1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="laRt2/bJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E961717E8E2;
-	Mon, 27 May 2024 15:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543A915F306;
+	Mon, 27 May 2024 15:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825132; cv=none; b=M/CuggOCcbaSdUfkNc2itHWGijw4PwJnfIzpin3YvqoT83BJuqeFSpO4bEqnCKy4fajqtvTSCYMv2tfN01hZg8fQFLsOZ9U7lLZ1WoNXrzjYf7Sg7D+hOtHF6fLCz2HAvNOTvOFFFw2v27CMxldvVVcys58AjfganZ+figd2Ck4=
+	t=1716825134; cv=none; b=Gh3pbdAv6nbJNhpSOXazj9+JyyBou0LIlchPQ1nZYcS5lRdY0Uw92IYtvRvtjI28JxOp5AHU/t6vHwQEGagh1IaY++ccDFKKOQpAw5sFetxIrJasXrWNtJvVmN9wPed9RZPzf292yalTWd91LPoyDoefVT8rYXd2NCMMqZMxJeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825132; c=relaxed/simple;
-	bh=Wls7pWzHp29cJlP1fBzxbPRrtJUxPMYNrWPeMV/p5hM=;
+	s=arc-20240116; t=1716825134; c=relaxed/simple;
+	bh=4qGzyDgggI9vY/tAHYyyyh3GGYNJZYIMcr3Sj0JRccw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZWv9qqdSnoQtTGOvrMWIqSV/BHF0HiKZ7v7AJoTEkggGSdPzDxHfEgrovFKRhYNkxDTG06OYm6SqBUQgRkdcgX9i5g9UTD87e3fLU8Royb0nolCLm9EF9tXcYu+b3Oc/qAtj5NMBFPXle8YLU8hNW7F25IzinE84t1fdfIDeFGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENJ1YXr1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12409C32781;
-	Mon, 27 May 2024 15:52:09 +0000 (UTC)
+	 MIME-Version; b=RL31BjP1m2hQFvPeapo8I66XMhY71pnqBfJpA0oWvmhlQhw0tbmvVb1T3ItIlA2AtvzHPThTxtKOZsJNkaBiFhx4QcdFk8NQxAdkQH8Uy7s61UqOJ+uIJmtHLCVbUZteJKlTAKKF+RKBba+NE1fakkGhcn4/bxipWsNwgjcEKIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=laRt2/bJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDF8C4AF07;
+	Mon, 27 May 2024 15:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716825131;
-	bh=Wls7pWzHp29cJlP1fBzxbPRrtJUxPMYNrWPeMV/p5hM=;
+	s=k20201202; t=1716825133;
+	bh=4qGzyDgggI9vY/tAHYyyyh3GGYNJZYIMcr3Sj0JRccw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENJ1YXr1HsXDHpguh/9ljWFsbR+NpsEcr7sjmhaEzWJ+7Al6MzdGP5tBDN81laaoJ
-	 Fxix3QptCZxygdnHaPOrWxFtE5gXKEg8JAU3qiv5QlEWAi8GzTjOvtYhJX46uGr7mf
-	 OOGtR2A1xudEAMiqoIulg64hLc1GJ1xCBmYue9qdURPUcNedTMiKPTMFdgip28lkqx
-	 7srbmYb3W3076JS6jNs1ollL1Qo5ObLHi3uGxDA7v6Ao1o6oauaxLsY4/4xXhOy8tl
-	 nB9OkNU3KV6FWozF8N4bstndP0/8DoZCPgbtTpbMt/TA8n6p4PWDm/jOrJb3FaZ1F5
-	 oYnppy4ljm96g==
+	b=laRt2/bJqQ9keB9HdlBAcaJ5cB9yQnMkwT1NXj9JGuNihY1KvjOWMnE+yEBVs86DY
+	 iDnNOQnrjJBkTFi+8+4GFA02JsTuOe3mxshQs+VMnOhdIOD/cu+D89UogDC4pcmwy1
+	 z2oVYFq7P9OMWLUwnLBdHPoRngvjZPkCeU+7cUEQTG1F19t+HWh17Se+QQGu4nueZG
+	 RbmMkKrs3gpJNPyH9+yg89aMuMPWsX+RFUq8I1P8ti0wrEAgdf2UG6ot33kxCQVo9F
+	 l9ffkujHJkgwbSyewqWGLKfdTp/osvYjtfSLz2QiTpjZA02Wc+jkd6JZ3fmf2JD3Av
+	 dgsBrrxsBEzIg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Erico Nunes <nunes.erico@gmail.com>,
+	Qiang Yu <yuq825@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	ckeepax@opensource.cirrus.com,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 09/23] ASoC: Intel: sof_sdw: add quirk for Dell SKU 0C0F
-Date: Mon, 27 May 2024 11:50:10 -0400
-Message-ID: <20240527155123.3863983-9-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	dri-devel@lists.freedesktop.org,
+	lima@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.9 10/23] drm/lima: add mask irq callback to gp and pp
+Date: Mon, 27 May 2024 11:50:11 -0400
+Message-ID: <20240527155123.3863983-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527155123.3863983-1-sashal@kernel.org>
 References: <20240527155123.3863983-1-sashal@kernel.org>
@@ -75,44 +71,143 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Erico Nunes <nunes.erico@gmail.com>
 
-[ Upstream commit b10cb955c6c0b8dbd9a768166d71cc12680b7fdf ]
+[ Upstream commit 49c13b4d2dd4a831225746e758893673f6ae961c ]
 
-The JD1 jack detection doesn't seem to work, use JD2.
-Also use the 4 speaker configuration.
+This is needed because we want to reset those devices in device-agnostic
+code such as lima_sched.
+In particular, masking irqs will be useful before a hard reset to
+prevent race conditions.
 
-Link: https://github.com/thesofproject/linux/issues/4900
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20240411220347.131267-5-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240405152951.1531555-2-nunes.erico@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/lima/lima_bcast.c | 12 ++++++++++++
+ drivers/gpu/drm/lima/lima_bcast.h |  3 +++
+ drivers/gpu/drm/lima/lima_gp.c    |  8 ++++++++
+ drivers/gpu/drm/lima/lima_pp.c    | 18 ++++++++++++++++++
+ drivers/gpu/drm/lima/lima_sched.h |  1 +
+ 5 files changed, 42 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index f4f08e9031506..76ed72716b3ca 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -429,6 +429,16 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					RT711_JD2 |
- 					SOF_SDW_FOUR_SPK),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0C0F")
-+		},
-+		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					RT711_JD2 |
-+					SOF_SDW_FOUR_SPK),
-+	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
+diff --git a/drivers/gpu/drm/lima/lima_bcast.c b/drivers/gpu/drm/lima/lima_bcast.c
+index fbc43f243c54d..6d000504e1a4e 100644
+--- a/drivers/gpu/drm/lima/lima_bcast.c
++++ b/drivers/gpu/drm/lima/lima_bcast.c
+@@ -43,6 +43,18 @@ void lima_bcast_suspend(struct lima_ip *ip)
+ 
+ }
+ 
++int lima_bcast_mask_irq(struct lima_ip *ip)
++{
++	bcast_write(LIMA_BCAST_BROADCAST_MASK, 0);
++	bcast_write(LIMA_BCAST_INTERRUPT_MASK, 0);
++	return 0;
++}
++
++int lima_bcast_reset(struct lima_ip *ip)
++{
++	return lima_bcast_hw_init(ip);
++}
++
+ int lima_bcast_init(struct lima_ip *ip)
+ {
+ 	int i;
+diff --git a/drivers/gpu/drm/lima/lima_bcast.h b/drivers/gpu/drm/lima/lima_bcast.h
+index 465ee587bceb2..cd08841e47879 100644
+--- a/drivers/gpu/drm/lima/lima_bcast.h
++++ b/drivers/gpu/drm/lima/lima_bcast.h
+@@ -13,4 +13,7 @@ void lima_bcast_fini(struct lima_ip *ip);
+ 
+ void lima_bcast_enable(struct lima_device *dev, int num_pp);
+ 
++int lima_bcast_mask_irq(struct lima_ip *ip);
++int lima_bcast_reset(struct lima_ip *ip);
++
+ #endif
+diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
+index 6b354e2fb61d4..e15295071533b 100644
+--- a/drivers/gpu/drm/lima/lima_gp.c
++++ b/drivers/gpu/drm/lima/lima_gp.c
+@@ -233,6 +233,13 @@ static void lima_gp_task_mmu_error(struct lima_sched_pipe *pipe)
+ 	lima_sched_pipe_task_done(pipe);
+ }
+ 
++static void lima_gp_task_mask_irq(struct lima_sched_pipe *pipe)
++{
++	struct lima_ip *ip = pipe->processor[0];
++
++	gp_write(LIMA_GP_INT_MASK, 0);
++}
++
+ static int lima_gp_task_recover(struct lima_sched_pipe *pipe)
+ {
+ 	struct lima_ip *ip = pipe->processor[0];
+@@ -365,6 +372,7 @@ int lima_gp_pipe_init(struct lima_device *dev)
+ 	pipe->task_error = lima_gp_task_error;
+ 	pipe->task_mmu_error = lima_gp_task_mmu_error;
+ 	pipe->task_recover = lima_gp_task_recover;
++	pipe->task_mask_irq = lima_gp_task_mask_irq;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/lima/lima_pp.c b/drivers/gpu/drm/lima/lima_pp.c
+index d0d2db0ef1ce8..a4a2ffe6527c2 100644
+--- a/drivers/gpu/drm/lima/lima_pp.c
++++ b/drivers/gpu/drm/lima/lima_pp.c
+@@ -429,6 +429,9 @@ static void lima_pp_task_error(struct lima_sched_pipe *pipe)
+ 
+ 		lima_pp_hard_reset(ip);
+ 	}
++
++	if (pipe->bcast_processor)
++		lima_bcast_reset(pipe->bcast_processor);
+ }
+ 
+ static void lima_pp_task_mmu_error(struct lima_sched_pipe *pipe)
+@@ -437,6 +440,20 @@ static void lima_pp_task_mmu_error(struct lima_sched_pipe *pipe)
+ 		lima_sched_pipe_task_done(pipe);
+ }
+ 
++static void lima_pp_task_mask_irq(struct lima_sched_pipe *pipe)
++{
++	int i;
++
++	for (i = 0; i < pipe->num_processor; i++) {
++		struct lima_ip *ip = pipe->processor[i];
++
++		pp_write(LIMA_PP_INT_MASK, 0);
++	}
++
++	if (pipe->bcast_processor)
++		lima_bcast_mask_irq(pipe->bcast_processor);
++}
++
+ static struct kmem_cache *lima_pp_task_slab;
+ static int lima_pp_task_slab_refcnt;
+ 
+@@ -468,6 +485,7 @@ int lima_pp_pipe_init(struct lima_device *dev)
+ 	pipe->task_fini = lima_pp_task_fini;
+ 	pipe->task_error = lima_pp_task_error;
+ 	pipe->task_mmu_error = lima_pp_task_mmu_error;
++	pipe->task_mask_irq = lima_pp_task_mask_irq;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/lima/lima_sched.h b/drivers/gpu/drm/lima/lima_sched.h
+index 6bd4f3b701091..85b23ba901d53 100644
+--- a/drivers/gpu/drm/lima/lima_sched.h
++++ b/drivers/gpu/drm/lima/lima_sched.h
+@@ -80,6 +80,7 @@ struct lima_sched_pipe {
+ 	void (*task_error)(struct lima_sched_pipe *pipe);
+ 	void (*task_mmu_error)(struct lima_sched_pipe *pipe);
+ 	int (*task_recover)(struct lima_sched_pipe *pipe);
++	void (*task_mask_irq)(struct lima_sched_pipe *pipe);
+ 
+ 	struct work_struct recover_work;
+ };
 -- 
 2.43.0
 
