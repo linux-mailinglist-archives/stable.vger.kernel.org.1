@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-47478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BEA8D0E2A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88EEC8D0C05
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82291F21AD9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:37:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AB141F24124
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F731607AB;
-	Mon, 27 May 2024 19:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014C81607A2;
+	Mon, 27 May 2024 19:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2mb/kqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTkG0k2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1224D61FDF;
-	Mon, 27 May 2024 19:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B009A160783;
+	Mon, 27 May 2024 19:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838654; cv=none; b=EcCDE+zrV7vjR5PIX78GYAPZYmI86thZiyI3lLn1B8gi/zOxb193hmgI/HJ497CddNaR55GO0ASzZ0XxbaQPYx54GE3uB+tK/A17pEKvTOuL+UCa+Ev+1vs1U+SdljRQSfFWFDZswhkJI0efIKNeKG6Yj80v8SPpyT1/DcgLySY=
+	t=1716837323; cv=none; b=Gf5mHjQv37D9GY3FxltwwpcQGA+UXcQZLH5RGrUq0QU2mTZfRmWs50E1N8NOBp2FJA4JmSVk5b+2FZ/d4Q+F1Wkvnp3Z5YHLEF7mxFrw21J/ILPQJYGAJGx2ibVGcNOpkZW4Iytpi1SApT8i4VhkPuZRyJFgdOm4B0pWD7jiWiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838654; c=relaxed/simple;
-	bh=aw1XKAT2iHOlPeK2i7VDDMadj6UL0LYHLwBkjajEFLo=;
+	s=arc-20240116; t=1716837323; c=relaxed/simple;
+	bh=Jo1V8WmUB5dNWmR2qabwCXi2YSIdP2On1Vw2oHqQYTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j1mQyClD+BKb8w0g3ab1jXeXAGVPK0Fd/9TacUHL4yE31hhwg4OuLqB1UvxI9wJYUpg5pE9KA2hRxApunieULZlRgwttyEaqQTyxrmi5vB4sUFpZzLNgYokgzFgrB62NfCyQ/vLWZTOylQTUVSsaQsw24lINy0t30H7Xi+j1KQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2mb/kqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C222C2BBFC;
-	Mon, 27 May 2024 19:37:33 +0000 (UTC)
+	 MIME-Version; b=OW1ET/0iKCKIi57Csc/Pgont6dVmyXBvKpbmX1G3ldj8KVBBhaixCwtFyGYhne3zd5Y2ZEi1gwZw3l3hQvE7PU1gs6ByO2yEwvu4FA+gupC+MVuP/7CK9ydaDo2jsBfLWbE7F0u6WoK0fRhtjc9HTLYPP/KcIM3PDQShn7QRkVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTkG0k2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AF3C2BBFC;
+	Mon, 27 May 2024 19:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838653;
-	bh=aw1XKAT2iHOlPeK2i7VDDMadj6UL0LYHLwBkjajEFLo=;
+	s=korg; t=1716837323;
+	bh=Jo1V8WmUB5dNWmR2qabwCXi2YSIdP2On1Vw2oHqQYTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2mb/kqmOFpHvsU89Hx7CQrSWefd4CPhZ1zXVWmo6PXbva719DeCPMOCebVEDABBU
-	 KzVd0G85ha9/1gNIVJC98bUcUo1vRiTNUZAROpd6yBOEmovmF+ftsXPlOxNsqkRd5m
-	 7l86RJj3BpMGjFtOvRPwQqsw6YbRTdsi1VCgEZjU=
+	b=HTkG0k2ebnNgcTxca3sskKwd4k3O+sOjzzhzvEe/ZZRgrxMv+uCoe1caW1Qm6PSfy
+	 i58Yf8GYvgZ4j7/RgPKoCOhakYiKaBBrrkBvULejKpd+7Yukip3xR3E5UUyQKprnPR
+	 NFbT15jXKsfkBHtKoC6HzOppwTzOnMcQaaHJaLmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 439/493] clk: renesas: r8a779a0: Fix CANFD parent clock
-Date: Mon, 27 May 2024 20:57:21 +0200
-Message-ID: <20240527185644.623549916@linuxfoundation.org>
+Subject: [PATCH 6.9 395/427] dax/bus.c: use the right locking mode (read vs write) in size_show
+Date: Mon, 27 May 2024 20:57:22 +0200
+Message-ID: <20240527185634.941981460@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Vishal Verma <vishal.l.verma@intel.com>
 
-[ Upstream commit 3b23118bdbd898dc2f4de8f549d598d492c42ba8 ]
+[ Upstream commit 2acf04532d6d655d8c3b2ee4ddeb320107043086 ]
 
-According to Figure 52A.1 ("RS-CANFD Module Block Diagram (in classical
-CAN mode)") in the R-Car V3U Series User’s Manual Rev. 0.5, the parent
-clock for the CANFD peripheral module clock is the S3D2 clock.
+In size_show(), the dax_dev_rwsem only needs a read lock, but was
+acquiring a write lock.  Change it to down_read_interruptible() so it
+doesn't unnecessarily hold a write lock.
 
-Fixes: 9b621b6adff53346 ("clk: renesas: r8a779a0: Add CANFD module clock")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/aef9300f44c9141b1465343f91c5cc7303249b6e.1713279523.git.geert+renesas@glider.be
+Link: https://lkml.kernel.org/r/20240430-vv-dax_abi_fixes-v3-4-e3dcd755774c@intel.com
+Fixes: c05ae9d85b47 ("dax/bus.c: replace driver-core lock usage by a local rwsem")
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r8a779a0-cpg-mssr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dax/bus.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/renesas/r8a779a0-cpg-mssr.c b/drivers/clk/renesas/r8a779a0-cpg-mssr.c
-index 4c2872f45387f..ff3f85e906fe1 100644
---- a/drivers/clk/renesas/r8a779a0-cpg-mssr.c
-+++ b/drivers/clk/renesas/r8a779a0-cpg-mssr.c
-@@ -139,7 +139,7 @@ static const struct mssr_mod_clk r8a779a0_mod_clks[] __initconst = {
- 	DEF_MOD("avb3",		214,	R8A779A0_CLK_S3D2),
- 	DEF_MOD("avb4",		215,	R8A779A0_CLK_S3D2),
- 	DEF_MOD("avb5",		216,	R8A779A0_CLK_S3D2),
--	DEF_MOD("canfd0",	328,	R8A779A0_CLK_CANFD),
-+	DEF_MOD("canfd0",	328,	R8A779A0_CLK_S3D2),
- 	DEF_MOD("csi40",	331,	R8A779A0_CLK_CSI0),
- 	DEF_MOD("csi41",	400,	R8A779A0_CLK_CSI0),
- 	DEF_MOD("csi42",	401,	R8A779A0_CLK_CSI0),
+diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
+index 0011a6e6a8f2a..f24b67c64d5ec 100644
+--- a/drivers/dax/bus.c
++++ b/drivers/dax/bus.c
+@@ -937,11 +937,11 @@ static ssize_t size_show(struct device *dev,
+ 	unsigned long long size;
+ 	int rc;
+ 
+-	rc = down_write_killable(&dax_dev_rwsem);
++	rc = down_read_interruptible(&dax_dev_rwsem);
+ 	if (rc)
+ 		return rc;
+ 	size = dev_dax_size(dev_dax);
+-	up_write(&dax_dev_rwsem);
++	up_read(&dax_dev_rwsem);
+ 
+ 	return sysfs_emit(buf, "%llu\n", size);
+ }
 -- 
 2.43.0
 
