@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-47052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908A98D0C61
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459EC8D0A7D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D04228436B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3C4D1F223A8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96372160783;
-	Mon, 27 May 2024 19:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4995F15FCFC;
+	Mon, 27 May 2024 19:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkkEWSrB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6+ZSria"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5324015FD07;
-	Mon, 27 May 2024 19:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E9017E8F5;
+	Mon, 27 May 2024 19:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837542; cv=none; b=BGs3wQAb2Db8EXiajNnMHG/Cd67ESja4lc2D20NQJZodeUiZdf8OkOErmcx6IAd8Pl5laTfonXl0/mAW1HPd+HIpg8ly/wksAO8iNQ7VAzdzk9u7B0wPlAV/w1buvJNCH/HuvonvraDtCnPoBajbzr7B22tEo98h7HoLYxyOK7w=
+	t=1716836424; cv=none; b=DPTGEoe5yLhaNb+Aete2mBLacXUpvdlbxSW+Q620re5L9n/LkgejS6IBE3GbuzRxTJC+/fRApZoxG0OYemMnSPOpBBjxSJT07atwQLQLsqUhMtEIoQ35wERjxFvg8pB0sIH9Lz9RFyEZM2n06d1Qc4XhCdBgSPw0039q1lyfNUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837542; c=relaxed/simple;
-	bh=nBbpsGyElEmHzHyVTgMdDR8X/2Ij9qIJun/Pn8jwEW4=;
+	s=arc-20240116; t=1716836424; c=relaxed/simple;
+	bh=d4p79zdtoa4a313bF/B+tWhT0sKlN59Mktau491PO6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SFtdyKWH9wgw4qFaCOquDSBaarMJk25IZ213pVnV0VcvMP1fyApi8wD9hkmKPTTHKD3V/t/N36b+eIvXbm7dU95agO0M0GNZAMqsNVmdFI5VOWxzuZjGUC1Y3IzitPzBqx+cODNdi1zyrV0Q1JIEqkIaVkzThHQUrNeS26zQjcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkkEWSrB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A6BC32782;
-	Mon, 27 May 2024 19:19:01 +0000 (UTC)
+	 MIME-Version; b=bFQ0jnOkAuBX5KCdb1lTW9XRd8ViK8mHx2FoEfALPbJzOY6BCIMIspoJs41cAsN/nbcCz4dXEMmJjVYe5aknjdVKQFOxJrHhBB3EM8Td6z2GNGfT2KTaIV2Qv+9munezv1k86r6/diX41fOQadnj68snhmIR2RBNHnsCEEqcgo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6+ZSria; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909D3C2BBFC;
+	Mon, 27 May 2024 19:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837542;
-	bh=nBbpsGyElEmHzHyVTgMdDR8X/2Ij9qIJun/Pn8jwEW4=;
+	s=korg; t=1716836423;
+	bh=d4p79zdtoa4a313bF/B+tWhT0sKlN59Mktau491PO6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkkEWSrBxWqQRVvEW10j56YfeVCcvNRSDSJ/Msh+rFbP6Rm62LMqMfZ1LWA0Y39EH
-	 Uwdaj3m97fnjo9ISN3AHleXpgCQUJ96eQWWLjmG+vvFGUECQFpXsOwESJBYqgjviNQ
-	 Tp+IIEGSghE+qTxA/HZr+dqGyWrHK+dlGZcffWfQ=
+	b=b6+ZSriaKDkQ8xYuLi0kDHt3Kc8pNT10lfIRoJRCl6bUWPpakfGRIS3Ln8VUpY/gG
+	 nrd2x38tlC54FvtYtg+zjUIRcLb3XAfaYm1cqbda75Xzjm2LFoSoENcCNlzT/THWQl
+	 /f+dm1ebj5E2iuY5ZzSQEEAz3SX8v8euX+GT1lpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Xiao <Jack.Xiao@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 052/493] drm/amdgpu/mes: fix use-after-free issue
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.9 007/427] Reapply "arm64: fpsimd: Implement lazy restore for kernel mode FPSIMD"
 Date: Mon, 27 May 2024 20:50:54 +0200
-Message-ID: <20240527185630.907694016@linuxfoundation.org>
+Message-ID: <20240527185602.507389437@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +58,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Xiao <Jack.Xiao@amd.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit 948255282074d9367e01908b3f5dcf8c10fc9c3d ]
+commit f481bb32d60e45fb3d19ea68ce79c5629f3fc3a0 upstream.
 
-Delete fence fallback timer to fix the ramdom
-use-after-free issue.
+This reverts commit b8995a18417088bb53f87c49d200ec72a9dd4ec1.
 
-v2: move to amdgpu_mes.c
+Ard managed to reproduce the dm-crypt corruption problem and got to the
+bottom of it, so re-apply the problematic patch in preparation for
+fixing things properly.
 
-Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
-Acked-by: Lijo Lazar <lijo.lazar@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/include/asm/processor.h |    1 +
+ arch/arm64/kernel/fpsimd.c         |   18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-index da48b6da01072..420e5bc44e306 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -1129,6 +1129,7 @@ void amdgpu_mes_remove_ring(struct amdgpu_device *adev,
- 		return;
+--- a/arch/arm64/include/asm/processor.h
++++ b/arch/arm64/include/asm/processor.h
+@@ -171,6 +171,7 @@ struct thread_struct {
+ 	struct debug_info	debug;		/* debugging */
  
- 	amdgpu_mes_remove_hw_queue(adev, ring->hw_queue_id);
-+	del_timer_sync(&ring->fence_drv.fallback_timer);
- 	amdgpu_ring_fini(ring);
- 	kfree(ring);
+ 	struct user_fpsimd_state	kernel_fpsimd_state;
++	unsigned int			kernel_fpsimd_cpu;
+ #ifdef CONFIG_ARM64_PTR_AUTH
+ 	struct ptrauth_keys_user	keys_user;
+ #ifdef CONFIG_ARM64_PTR_AUTH_KERNEL
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1509,12 +1509,30 @@ void do_fpsimd_exc(unsigned long esr, st
+ 
+ static void fpsimd_load_kernel_state(struct task_struct *task)
+ {
++	struct cpu_fp_state *last = this_cpu_ptr(&fpsimd_last_state);
++
++	/*
++	 * Elide the load if this CPU holds the most recent kernel mode
++	 * FPSIMD context of the current task.
++	 */
++	if (last->st == &task->thread.kernel_fpsimd_state &&
++	    task->thread.kernel_fpsimd_cpu == smp_processor_id())
++		return;
++
+ 	fpsimd_load_state(&task->thread.kernel_fpsimd_state);
  }
--- 
-2.43.0
-
+ 
+ static void fpsimd_save_kernel_state(struct task_struct *task)
+ {
++	struct cpu_fp_state cpu_fp_state = {
++		.st		= &task->thread.kernel_fpsimd_state,
++		.to_save	= FP_STATE_FPSIMD,
++	};
++
+ 	fpsimd_save_state(&task->thread.kernel_fpsimd_state);
++	fpsimd_bind_state_to_cpu(&cpu_fp_state);
++
++	task->thread.kernel_fpsimd_cpu = smp_processor_id();
+ }
+ 
+ /*
 
 
 
