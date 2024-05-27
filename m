@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-47244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4108D0D35
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C8C8D0B2C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43D02283B77
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B3D31C20B65
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61D016078C;
-	Mon, 27 May 2024 19:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0751DFED;
+	Mon, 27 May 2024 19:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9Va82Tk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mwhvs6st"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E64262BE;
-	Mon, 27 May 2024 19:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C60E17E90E;
+	Mon, 27 May 2024 19:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838039; cv=none; b=s/kQq3mxnvRPkHv0McsCVr0HeTY4wCLBOif28BnZHoZSJFzVKfBTWbkfY1cGATUGQtzZaVCGuAuOmI5urD+D0TyBJeqmi6/D6I1BMSVhY0lfYON21+i9b5ChBhmQNCjxlkty8MZpV7rjvshqmZvRo+gCEURHZ1+f5D/lPVWmTQo=
+	t=1716836812; cv=none; b=oWpphjOnmGBBiy7kb3NspgpFFDoZE0KereUamL1n6ahPCnzgfMPjTdvCdGb6LKg2UO/L3WveI+ET34CbyfQssUQ4AR5gkpMjr84OtMX+Zpty9Ec4rxvXRSsrG9cW/pkEXAJl0QFdlG9rd5h0mNfL95UVloO/VO1TIoFSRZ9SlzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838039; c=relaxed/simple;
-	bh=sYA6PciNsu7J1IGdyHa7GwKmG9f4zvWWbp6asomQCe8=;
+	s=arc-20240116; t=1716836812; c=relaxed/simple;
+	bh=ybaDnizHIu2aLTYS+opCpEPbUNLKlSXO4dJlDAI6QzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1kqqTnfnvm6fQIoRGUrLfEDoaz6+C8xLVIUjlhjeIV5BXMRAOylpeFrIy5AJD7eHFETwgRaHGNgsRW7CdTrS5z38cMdAxyzaTBMXMhAdjx74x+Fd81SkqTflzqEJ/WrXVB+A0Vo/f+MsJRB2qlZUZeEvRJR9vt/aIH8khcN9xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9Va82Tk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E103C2BBFC;
-	Mon, 27 May 2024 19:27:19 +0000 (UTC)
+	 MIME-Version; b=WGC0mW7Cz08bUKUtZh8IhdiFKr2BL0ixTPw0JCQ0xTVHTVY7vr6pfWLJgEC+wf/M+awVC9D3X4A4YJTunnxlQj8VDs/Wh9lJ4RZmd3dakmRN/8ewlreubIWLAKLAfu9OOe3z63oEAYAB4qVZ5rQMltI4iJ8QPAbwY1nwn0pAdFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mwhvs6st; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3205C2BBFC;
+	Mon, 27 May 2024 19:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838039;
-	bh=sYA6PciNsu7J1IGdyHa7GwKmG9f4zvWWbp6asomQCe8=;
+	s=korg; t=1716836812;
+	bh=ybaDnizHIu2aLTYS+opCpEPbUNLKlSXO4dJlDAI6QzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9Va82Tk/zIAwO/oHdjzLX4ZFYCu4c+SkWf0qEGfnR0wUxVACfr53JTWPs7cSDuz+
-	 2peTANWRD8RA8NV8tK5balnrSA19ZWLrXNqbkqQgXTk5QEW4jHuVcyeGKJ5Bwh8Rn2
-	 61A//xjU1Sy4j4YmKeIRPHRgcIw/TBt79fHoW+bw=
+	b=Mwhvs6stQDq3diQz0SDOSqbkGTJRTyitPEp+DltzhgPOjqubcE+QX+MqnSoVolr87
+	 55p6osZT2EnI7ymGkObB6oPgSmv439sJ3D8+th0hH+uQdMZRyp9DV+VrIZOoLM3d5G
+	 ci/VlT0f9VSnIk+C6LpxFvvhvKF/lvvpu4bZY25M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 243/493] tcp: avoid premature drops in tcp_add_backlog()
+Subject: [PATCH 6.9 198/427] wifi: mt76: mt7603: add wpdma tx eof flag for PSE client reset
 Date: Mon, 27 May 2024 20:54:05 +0200
-Message-ID: <20240527185638.253523231@linuxfoundation.org>
+Message-ID: <20240527185620.722003520@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit ec00ed472bdb7d0af840da68c8c11bff9f4d9caa ]
+[ Upstream commit 21de5f72260b4246e2415bc900c18139bc52ea80 ]
 
-While testing TCP performance with latest trees,
-I saw suspect SOCKET_BACKLOG drops.
+This flag is needed for the PSE client reset. Fixes watchdog reset issues.
 
-tcp_add_backlog() computes its limit with :
-
-    limit = (u32)READ_ONCE(sk->sk_rcvbuf) +
-            (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
-    limit += 64 * 1024;
-
-This does not take into account that sk->sk_backlog.len
-is reset only at the very end of __release_sock().
-
-Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
-sk_rcvbuf in normal conditions.
-
-We should double sk->sk_rcvbuf contribution in the formula
-to absorb bubbles in the backlog, which happen more often
-for very fast flows.
-
-This change maintains decent protection against abuses.
-
-Fixes: c377411f2494 ("net: sk_add_backlog() take rmem_alloc into account")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240423125620.3309458-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c677dda16523 ("wifi: mt76: mt7603: improve watchdog reset reliablity")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 68a065c0e5081..abd47159d7e4d 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -2000,7 +2000,7 @@ int tcp_v4_early_demux(struct sk_buff *skb)
- bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 		     enum skb_drop_reason *reason)
- {
--	u32 limit, tail_gso_size, tail_gso_segs;
-+	u32 tail_gso_size, tail_gso_segs;
- 	struct skb_shared_info *shinfo;
- 	const struct tcphdr *th;
- 	struct tcphdr *thtail;
-@@ -2009,6 +2009,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	bool fragstolen;
- 	u32 gso_segs;
- 	u32 gso_size;
-+	u64 limit;
- 	int delta;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index cf21d06257e53..dc8a77f0a1cc4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1393,6 +1393,7 @@ void mt7603_pse_client_reset(struct mt7603_dev *dev)
+ 		   MT_CLIENT_RESET_TX_R_E_2_S);
  
- 	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
-@@ -2106,7 +2107,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	__skb_push(skb, hdrlen);
- 
- no_coalesce:
--	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
-+	/* sk->sk_backlog.len is reset only at the end of __release_sock().
-+	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
-+	 * sk_rcvbuf in normal conditions.
-+	 */
-+	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
-+
-+	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
- 
- 	/* Only socket owner can try to collapse/prune rx queues
- 	 * to reduce memory overhead, so add a little headroom here.
-@@ -2114,6 +2121,8 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	 */
- 	limit += 64 * 1024;
- 
-+	limit = min_t(u64, limit, UINT_MAX);
-+
- 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
- 		bh_unlock_sock(sk);
- 		*reason = SKB_DROP_REASON_SOCKET_BACKLOG;
+ 	/* Start PSE client TX abort */
++	mt76_set(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_FORCE_TX_EOF);
+ 	mt76_set(dev, addr, MT_CLIENT_RESET_TX_R_E_1);
+ 	mt76_poll_msec(dev, addr, MT_CLIENT_RESET_TX_R_E_1_S,
+ 		       MT_CLIENT_RESET_TX_R_E_1_S, 500);
 -- 
 2.43.0
 
