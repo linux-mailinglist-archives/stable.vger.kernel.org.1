@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-47303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECE88D0D71
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D30788D0B4F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73B8A2814A0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7342E1F21EED
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AF715FD0F;
-	Mon, 27 May 2024 19:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBB2160783;
+	Mon, 27 May 2024 19:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzTrL5lQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moBG6nqg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9350C262BE;
-	Mon, 27 May 2024 19:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8D46A039;
+	Mon, 27 May 2024 19:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838193; cv=none; b=s6VJheTMyUOj1xlEsSnOce9r4To9YgdqRiba2YE6sKUWkCgR1E5Ut4W3yxnw+e4al5X9aZvYP1digeaRdiakxnu3OWIzCcH/FC63W9TT2AeX7xcGQZxAzrXEwI+7HzxgSi+4EURYp1MjJBMaly4lehvJNSPTopY8OvOy/PtQ8L4=
+	t=1716836878; cv=none; b=cxe8zHMOBa5XcImZjpMMaILK/GehJiT8hjrF4S1lglgB2sU0ds5/MHPppasyEQs4a68SqS9FJihekSTTevyarelmzuc5/Pfdn+0AcYujcWLwfwn16oz59t3mD2wTMj7NVLMCw0oexK1/+QhwzhQ3Vk/yYMltSqoN9uvost57vPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838193; c=relaxed/simple;
-	bh=IzrnfSfW+dlg1rxVni7Q8jcafDzF/cOKf0xxEBNtLtY=;
+	s=arc-20240116; t=1716836878; c=relaxed/simple;
+	bh=AwK3Gdda18GvybnK51hvxHUzLj37bvpbljUhJYO/FYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cQ1ryjiv0X4xsk2CBtQcHzrVCyWSWVnDD21lWSL6n+kFBGyca3mQr0Nq2+LRpMC2zJnkoUZ4kMpYrLkjW3mOlyDUmoVTJNb4JrT9XS5TZ0IarryMtnQ9t85Xau9dej7qJXiJlGZTxZTiBOV9hyANmY3rxxJYSmDlJPBFBbeDPvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzTrL5lQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2237DC2BBFC;
-	Mon, 27 May 2024 19:29:52 +0000 (UTC)
+	 MIME-Version; b=lIMb4+lyaIBo4DvCcGQgeZqLZmrti29jTTYDMcRPBQPAgmO4oAfvo/cf5kgqX64D3kOiCli+76V084KKABWIY4LyxDAizdCD84s+oMEOhu76G4rsmEvaO56LYPwVIzjJobfOWQhJImUCanYJFfPK09qUO1RN6gXmI6kP6yM2K+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moBG6nqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8322FC32781;
+	Mon, 27 May 2024 19:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838193;
-	bh=IzrnfSfW+dlg1rxVni7Q8jcafDzF/cOKf0xxEBNtLtY=;
+	s=korg; t=1716836877;
+	bh=AwK3Gdda18GvybnK51hvxHUzLj37bvpbljUhJYO/FYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzTrL5lQeG3/I/OE1XKSBhrYhH58xEDJC1ueyP9x/Hf1q4os5sTCQOp8uTPl5RxGL
-	 7dwp1rtyEtlAV4eqokygTOfTvfQpc/HhMrJpIRrxCa61CdcE3uGqHdsq8f/ASBeXH5
-	 3pzsGUjXTFdGgu0Sq+1ZEEWcAFnrPGEy7E5ir7ok=
+	b=moBG6nqgysE0+9djIrP65qd/K+PnwA2P5xtdRY8rjcCzcsBViXooR0KqOkaN/jdHP
+	 OWn3DvG4HL5Ba5lzz8qo0nkX7i71cJ9PVK779MjPhX+SY3c26TG/0/SLpBHdHUMD5I
+	 7LXRL3U/XwTZN5GhX444/4yX9kinsZGbzyLokVZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	George Stark <gnstark@salutedevices.com>,
+	Jim Liu <JJLIU0@nuvoton.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 265/493] pwm: meson: Use mul_u64_u64_div_u64() for frequency calculating
-Date: Mon, 27 May 2024 20:54:27 +0200
-Message-ID: <20240527185638.958357182@linuxfoundation.org>
+Subject: [PATCH 6.9 221/427] gpio: nuvoton: Fix sgpio irq handle error
+Date: Mon, 27 May 2024 20:54:28 +0200
+Message-ID: <20240527185623.189157608@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Stark <gnstark@salutedevices.com>
+From: Jim Liu <jim.t90615@gmail.com>
 
-[ Upstream commit 32c44e1fa921aebf8a5ef9f778534a30aab39313 ]
+[ Upstream commit 7f45fe2ea3b8c85787976293126a4a7133b107de ]
 
-While calculating frequency for the given period u64 numbers are
-multiplied before division what can lead to overflow in theory so use
-secure mul_u64_u64_div_u64() which handles overflow correctly.
+The generic_handle_domain_irq() function calls irq_resolve_mapping().
+Thus delete a duplicative irq_find_mapping() call
+so that a stack trace and an RCU stall will be avoided.
 
-Fixes: 329db102a26d ("pwm: meson: make full use of common clock framework")
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: George Stark <gnstark@salutedevices.com>
-Link: https://lore.kernel.org/r/20240425171253.2752877-4-gnstark@salutedevices.com
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: c4f8457d17ce ("gpio: nuvoton: Add Nuvoton NPCM sgpio driver")
+Signed-off-by: Jim Liu <JJLIU0@nuvoton.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240506064244.1645922-1-JJLIU0@nuvoton.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-meson.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-npcm-sgpio.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pwm/pwm-meson.c b/drivers/pwm/pwm-meson.c
-index 6fefa80af0a4c..52ac3277f4204 100644
---- a/drivers/pwm/pwm-meson.c
-+++ b/drivers/pwm/pwm-meson.c
-@@ -177,7 +177,7 @@ static int meson_pwm_calc(struct pwm_chip *chip, struct pwm_device *pwm,
+diff --git a/drivers/gpio/gpio-npcm-sgpio.c b/drivers/gpio/gpio-npcm-sgpio.c
+index d31788b43abcc..2605706145434 100644
+--- a/drivers/gpio/gpio-npcm-sgpio.c
++++ b/drivers/gpio/gpio-npcm-sgpio.c
+@@ -434,7 +434,7 @@ static void npcm_sgpio_irq_handler(struct irq_desc *desc)
+ 	struct gpio_chip *gc = irq_desc_get_handler_data(desc);
+ 	struct irq_chip *ic = irq_desc_get_chip(desc);
+ 	struct npcm_sgpio *gpio = gpiochip_get_data(gc);
+-	unsigned int i, j, girq;
++	unsigned int i, j;
+ 	unsigned long reg;
  
- 	dev_dbg(pwmchip_parent(chip), "fin_freq: %ld Hz\n", fin_freq);
+ 	chained_irq_enter(ic, desc);
+@@ -443,11 +443,9 @@ static void npcm_sgpio_irq_handler(struct irq_desc *desc)
+ 		const struct npcm_sgpio_bank *bank = &npcm_sgpio_banks[i];
  
--	cnt = div_u64(fin_freq * period, NSEC_PER_SEC);
-+	cnt = mul_u64_u64_div_u64(fin_freq, period, NSEC_PER_SEC);
- 	if (cnt > 0xffff) {
- 		dev_err(pwmchip_parent(chip), "unable to get period cnt\n");
- 		return -EINVAL;
-@@ -192,7 +192,7 @@ static int meson_pwm_calc(struct pwm_chip *chip, struct pwm_device *pwm,
- 		channel->hi = 0;
- 		channel->lo = cnt;
- 	} else {
--		duty_cnt = div_u64(fin_freq * duty, NSEC_PER_SEC);
-+		duty_cnt = mul_u64_u64_div_u64(fin_freq, duty, NSEC_PER_SEC);
+ 		reg = ioread8(bank_reg(gpio, bank, EVENT_STS));
+-		for_each_set_bit(j, &reg, 8) {
+-			girq = irq_find_mapping(gc->irq.domain,
+-						i * 8 + gpio->nout_sgpio + j);
+-			generic_handle_domain_irq(gc->irq.domain, girq);
+-		}
++		for_each_set_bit(j, &reg, 8)
++			generic_handle_domain_irq(gc->irq.domain,
++						  i * 8 + gpio->nout_sgpio + j);
+ 	}
  
- 		dev_dbg(pwmchip_parent(chip), "duty=%llu duty_cnt=%u\n", duty, duty_cnt);
- 
+ 	chained_irq_exit(ic, desc);
 -- 
 2.43.0
 
