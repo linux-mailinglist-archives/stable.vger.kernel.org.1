@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0828D0AAA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953838D0CAA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F7D2817AF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F581C21346
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E00161327;
-	Mon, 27 May 2024 19:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D59015FCFC;
+	Mon, 27 May 2024 19:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXSddCTj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgOEbaXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4431116131A;
-	Mon, 27 May 2024 19:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9D8168C4;
+	Mon, 27 May 2024 19:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836493; cv=none; b=I9eTbWziXzvj2kj2hm76vW+dIytAX3KTXt9lCMbMgoWPEE5vWyzEgmQ3xCsdGU7ER/RcR4JmgUh68jQw7Nb+nofGK/qMSDNviVzZE+/1fvTkjOyyOhlWI/unSMPQLB8rgoRYQ5/92SOvOo9/NRWK3rqcoeHmX2DjvD4cPH5PXGA=
+	t=1716837724; cv=none; b=A2fzPHe0GP6cu4eyXjS8YsYNmuUPi1TyInf/uQNmr4UNC96nhn0RB7Xzv93DxNST1/QtPZLdcQCR6ImxOkbbQ6Wo4qSBVdhb039JBmbKaA5drkvDKH22SIVLNg2iXtxdRsF9B+e2fhs1WCq0zshYg5OKWNpBzK4qCcZpdfQ+pj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836493; c=relaxed/simple;
-	bh=vSgyyhzOQBJmJeZ4yj5BPdzcwFPcufp7pbNUNdErlMM=;
+	s=arc-20240116; t=1716837724; c=relaxed/simple;
+	bh=EzTl35ojTe0aklXUxA4jinrU4iwnc3qvddSoT4cRz7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/LUjcFKvXWtUxC8uCjWZq0VDvqdAzftxYwRK0H7v9g7wxH0LQnzQb3/jEoDG8gx3p9uPfwY8VWUMuiNAKOKC/RGHQCrdtzPaa8ByObgpqEvZ4l/Mwhtecwfi7RDr+/gv5ubCWUE0IjwMUWb/+7MSzQC/51wsTwI3ugY/UV2rMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXSddCTj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD36BC32781;
-	Mon, 27 May 2024 19:01:32 +0000 (UTC)
+	 MIME-Version; b=qpRojzUggJGubCIpVewOdlwjS0ldUu2mOqahhTvjwgdE8v53eENSMOAdaxMkK1SpAno0kLW526DcbxPz+AEXW13CodNM0r2eMJ/lf6R52Jf5mPEPWWNjKaAxTERhchn7UVkXEeF/iB6mUuYhUd9AIFj5DxRLxc3wJzFIkZNqUkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgOEbaXM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663CAC2BBFC;
+	Mon, 27 May 2024 19:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836493;
-	bh=vSgyyhzOQBJmJeZ4yj5BPdzcwFPcufp7pbNUNdErlMM=;
+	s=korg; t=1716837724;
+	bh=EzTl35ojTe0aklXUxA4jinrU4iwnc3qvddSoT4cRz7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXSddCTjGIszlXkcAvs20U7zRs5HPf1G6TCPuCBbsAGgqxsWPmYiHCm9BR6eg2dwe
-	 uf0pQP4orEX4ni6YJaxbbh0/TyAu3wmzAJ4oSNKkt74xcltIjZpyZP5BSuDvnOVIMG
-	 aUg0ohJ5P7pxJ83JjCYygfd2bRiGqYog1IYpXyaM=
+	b=bgOEbaXMykkV0PS5wItveqvOLgnAtq90vkTZ1dy/srLawGYyRMf2/SDxh+pnNCC4E
+	 KtKI/pKTSKJnimu6FHVlQkpQ17KxY/Od2G5qtIa2K6BGO9ALKGPicy+b3tm4JFaT1K
+	 Tlrh2/KtrahF6t0FdOqahN0Z/uREEvNJdWc1y3QU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
+	Eric Biggers <ebiggers@google.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 074/427] null_blk: Fix missing mutex_destroy() at module removal
+Subject: [PATCH 6.8 119/493] crypto: x86/nh-avx2 - add missing vzeroupper
 Date: Mon, 27 May 2024 20:52:01 +0200
-Message-ID: <20240527185608.741731012@linuxfoundation.org>
+Message-ID: <20240527185634.395831535@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 07d1b99825f40f9c0d93e6b99d79a08d0717bac1 ]
+[ Upstream commit 4ad096cca942959871d8ff73826d30f81f856f6e ]
 
-When a mutex lock is not used any more, the function mutex_destroy
-should be called to mark the mutex lock uninitialized.
+Since nh_avx2() uses ymm registers, execute vzeroupper before returning
+from it.  This is necessary to avoid reducing the performance of SSE
+code.
 
-Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240425171635.4227-1-yanjun.zhu@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 0f961f9f670e ("crypto: x86/nhpoly1305 - add AVX2 accelerated NHPoly1305")
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/crypto/nh-avx2-x86_64.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index ed33cf7192d21..eed63f95e89d0 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2113,6 +2113,8 @@ static void __exit null_exit(void)
- 
- 	if (tag_set.ops)
- 		blk_mq_free_tag_set(&tag_set);
-+
-+	mutex_destroy(&lock);
- }
- 
- module_init(null_init);
+diff --git a/arch/x86/crypto/nh-avx2-x86_64.S b/arch/x86/crypto/nh-avx2-x86_64.S
+index ef73a3ab87263..791386d9a83aa 100644
+--- a/arch/x86/crypto/nh-avx2-x86_64.S
++++ b/arch/x86/crypto/nh-avx2-x86_64.S
+@@ -154,5 +154,6 @@ SYM_TYPED_FUNC_START(nh_avx2)
+ 	vpaddq		T1, T0, T0
+ 	vpaddq		T4, T0, T0
+ 	vmovdqu		T0, (HASH)
++	vzeroupper
+ 	RET
+ SYM_FUNC_END(nh_avx2)
 -- 
 2.43.0
 
