@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13598D0AA5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F738D0CAB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CDB028160D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 610FDB207D5
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A871160862;
-	Mon, 27 May 2024 19:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD9A15FCFC;
+	Mon, 27 May 2024 19:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXDRctLA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bryxSz+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC63F1DFED;
-	Mon, 27 May 2024 19:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6F4168C4;
+	Mon, 27 May 2024 19:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836487; cv=none; b=hJjcnIXEGE0M+/vQ21v8g7k1gF82eaEslvLiqxNmCOKImsEeScu9vXEio8zp2SGKRSbKrOEibg+p+yXJE2spr6NHvn36oMlZjv993ZqNCo2VayW6DCdIPl6ufUvyKVlrNV1ClfzaIvBbadbyW52IkwTHiY8k79XOaRpJanIRiQ4=
+	t=1716837722; cv=none; b=pmX7iXkZPFOctzzL/KNCKZvQ3xQkZv5fDBaPXe1i5ebZw0kGKnomcaHOu+HtrHTOaL08Ree1Z/YuLsvt6SUS/0ewc2nSPq0Cqd6a42kMuLMSWCcqdtjwhNyJbNnLxR7ZwWxVkX1TwNftJBy92XCxeEEfSUkGtu/STIht8JO8gC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836487; c=relaxed/simple;
-	bh=KwQNfu/2lU1CUrHe2CMJGsGHVv0QiUbQ+OhvpihZshI=;
+	s=arc-20240116; t=1716837722; c=relaxed/simple;
+	bh=MFZwJu+cBKps+90lmQ8nAw1tHApCoLKOcegSwoMndPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lwv7cJGoKGeBCBE28yZthNas7QYDmSVylBFynwhYCWHsa0B09SjL9gla8ieOns7L9lFDZLYlSXMpEOrRlt1WJfMrlDxBn61k35pTMLw7jntfJLxH+/4bs4dqxq+X0JXz9EeZkHGJghYiE+yu41hHctyJRGV7CNX4nBDaUyWhc2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXDRctLA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552E1C2BBFC;
-	Mon, 27 May 2024 19:01:27 +0000 (UTC)
+	 MIME-Version; b=JbWv/OQuhrIqmwIrTrvB5LPF1aUQ548XNfdhfVAXRSuNZnGCE4It+G3X6RumIrUQiNCYd8hqD5dj4uDmgyVMW1q+z2LEJaHmU156g7jo1SuS+Q4HPdXjmAp/7P+dbWF6NTiczelIXA7qr4iSf0lMCSi0I3BLSbKqTFK1R9bQAc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bryxSz+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E371AC2BBFC;
+	Mon, 27 May 2024 19:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836487;
-	bh=KwQNfu/2lU1CUrHe2CMJGsGHVv0QiUbQ+OhvpihZshI=;
+	s=korg; t=1716837722;
+	bh=MFZwJu+cBKps+90lmQ8nAw1tHApCoLKOcegSwoMndPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXDRctLAwKx+la+r63B0o2jlo88EVUWSmk30ftOzfmIv3veULETRB460hN+vNCD3K
-	 MrRDoRjebf/VF3oNfLEeBL0Yb2A0wbMRrqPEhYb9pJzvgbFJWCMyjyIPwVxwyaHMCs
-	 2nLML4x9XkwRyn3Kkdgj/TIA6CUqXtFctHFqNwA8=
+	b=bryxSz+zSMbvzighXs/oK7OhY+ZaD5GF4CWB9kTZacvX2TeGzePK7fJdGDhxdan4W
+	 +Dl88vnVOw8UqCQpqhq6EZSqJu65tcV/TBaoiInhnvApy/vrCev6ghSKWspjKu9ZOm
+	 Y/CZpByTVYqEBJu2gRaNu6mZMmLwLvY+3xMCY0wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 073/427] soc: mediatek: cmdq: Fix typo of CMDQ_JUMP_RELATIVE
+Subject: [PATCH 6.8 118/493] crypto: ccp - drop platform ifdef checks
 Date: Mon, 27 May 2024 20:52:00 +0200
-Message-ID: <20240527185608.672580224@linuxfoundation.org>
+Message-ID: <20240527185634.369084832@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit ed4d5ab179b9f0a60da87c650a31f1816db9b4b4 ]
+[ Upstream commit 42c2d7d02977ef09d434b1f5b354f5bc6c1027ab ]
 
-For cmdq jump command, offset 0 means relative jump and offset 1
-means absolute jump. cmdq_pkt_jump() is absolute jump, so fix the
-typo of CMDQ_JUMP_RELATIVE in cmdq_pkt_jump().
+When both ACPI and OF are disabled, the dev_vdata variable is unused:
 
-Fixes: 946f1792d3d7 ("soc: mediatek: cmdq: add jump function")
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240222154120.16959-2-chunkuang.hu@kernel.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+drivers/crypto/ccp/sp-platform.c:33:34: error: unused variable 'dev_vdata' [-Werror,-Wunused-const-variable]
+
+This is not a useful configuration, and there is not much point in saving
+a few bytes when only one of the two is enabled, so just remove all
+these ifdef checks and rely on of_match_node() and acpi_match_device()
+returning NULL when these subsystems are disabled.
+
+Fixes: 6c5063434098 ("crypto: ccp - Add ACPI support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-cmdq-helper.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/crypto/ccp/sp-platform.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-cmdq-helper.c b/drivers/soc/mediatek/mtk-cmdq-helper.c
-index b0cd071c4719b..0b2e5690dacfa 100644
---- a/drivers/soc/mediatek/mtk-cmdq-helper.c
-+++ b/drivers/soc/mediatek/mtk-cmdq-helper.c
-@@ -14,7 +14,8 @@
- #define CMDQ_POLL_ENABLE_MASK	BIT(0)
- #define CMDQ_EOC_IRQ_EN		BIT(0)
- #define CMDQ_REG_TYPE		1
--#define CMDQ_JUMP_RELATIVE	1
-+#define CMDQ_JUMP_RELATIVE	0
-+#define CMDQ_JUMP_ABSOLUTE	1
+diff --git a/drivers/crypto/ccp/sp-platform.c b/drivers/crypto/ccp/sp-platform.c
+index 4733012377601..ff6ceb4feee04 100644
+--- a/drivers/crypto/ccp/sp-platform.c
++++ b/drivers/crypto/ccp/sp-platform.c
+@@ -39,44 +39,38 @@ static const struct sp_dev_vdata dev_vdata[] = {
+ 	},
+ };
  
- struct cmdq_instruction {
- 	union {
-@@ -397,7 +398,7 @@ int cmdq_pkt_jump(struct cmdq_pkt *pkt, dma_addr_t addr)
- 	struct cmdq_instruction inst = {};
+-#ifdef CONFIG_ACPI
+ static const struct acpi_device_id sp_acpi_match[] = {
+ 	{ "AMDI0C00", (kernel_ulong_t)&dev_vdata[0] },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, sp_acpi_match);
+-#endif
  
- 	inst.op = CMDQ_CODE_JUMP;
--	inst.offset = CMDQ_JUMP_RELATIVE;
-+	inst.offset = CMDQ_JUMP_ABSOLUTE;
- 	inst.value = addr >>
- 		cmdq_get_shift_pa(((struct cmdq_client *)pkt->cl)->chan);
- 	return cmdq_pkt_append_command(pkt, inst);
+-#ifdef CONFIG_OF
+ static const struct of_device_id sp_of_match[] = {
+ 	{ .compatible = "amd,ccp-seattle-v1a",
+ 	  .data = (const void *)&dev_vdata[0] },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, sp_of_match);
+-#endif
+ 
+ static struct sp_dev_vdata *sp_get_of_version(struct platform_device *pdev)
+ {
+-#ifdef CONFIG_OF
+ 	const struct of_device_id *match;
+ 
+ 	match = of_match_node(sp_of_match, pdev->dev.of_node);
+ 	if (match && match->data)
+ 		return (struct sp_dev_vdata *)match->data;
+-#endif
++
+ 	return NULL;
+ }
+ 
+ static struct sp_dev_vdata *sp_get_acpi_version(struct platform_device *pdev)
+ {
+-#ifdef CONFIG_ACPI
+ 	const struct acpi_device_id *match;
+ 
+ 	match = acpi_match_device(sp_acpi_match, &pdev->dev);
+ 	if (match && match->driver_data)
+ 		return (struct sp_dev_vdata *)match->driver_data;
+-#endif
++
+ 	return NULL;
+ }
+ 
+@@ -212,12 +206,8 @@ static int sp_platform_resume(struct platform_device *pdev)
+ static struct platform_driver sp_platform_driver = {
+ 	.driver = {
+ 		.name = "ccp",
+-#ifdef CONFIG_ACPI
+ 		.acpi_match_table = sp_acpi_match,
+-#endif
+-#ifdef CONFIG_OF
+ 		.of_match_table = sp_of_match,
+-#endif
+ 	},
+ 	.probe = sp_platform_probe,
+ 	.remove_new = sp_platform_remove,
 -- 
 2.43.0
 
