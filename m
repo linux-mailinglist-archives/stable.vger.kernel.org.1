@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-47428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE768D0DEF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8F98D0BF3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF6A11C21389
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B40C21F23D8A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9931607B1;
-	Mon, 27 May 2024 19:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AC615ECFF;
+	Mon, 27 May 2024 19:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gwn0aclx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WetRpieP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C404535A4;
-	Mon, 27 May 2024 19:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E476717E90E;
+	Mon, 27 May 2024 19:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838524; cv=none; b=b7l0Um7/hc8nXzpkLdcEX1L0A9d44VYbnbkUjwngB66Sp4f3gsnUHEzVtlOzCmLLKRYULMlP2tPg61mBDYKLPkZkvYIzQ0tLnNb9iLpzrzpLRXqdlIaUCb7vU32hz5+r0Gdwv4r+7iIpciRfFZNGZxboe2d/nOhY7rujm0QfkFc=
+	t=1716837283; cv=none; b=czXZy8RX8QiqDT+rGHGPn/nlntFzYLXCsExZT5KOIozZmjKCaGB/eUZBin8mV55wRS7d8/7eWYlJMlJOZ9KLQJXy7oJsao0OXEaq7BFA6n7kehRrN0WhHZB+tpIwvKd3CEpQXQ6fRPJAFJz60Jwf14JpXFRsSc4WLt8G8h8v57Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838524; c=relaxed/simple;
-	bh=Qo2YHEZKJgmXlNhLGwCe+YhQsVO/hbDvJs+DcOTtEpw=;
+	s=arc-20240116; t=1716837283; c=relaxed/simple;
+	bh=3MNtDGYyPGRR8CUiBKEeLqz8chF2IpxrPAAipOEl3qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmuFWigbXZbvhXmoMva8OAjlTtiayoZ98SyElm8qF9Hqr8qF4abxVxvrhwVkT/uRaDZn0VOaXn7P/5brQ7K9x3GwMqcpLpX2nZ9K4KrrySOy9TG7UGi/sk4FOYj91NwJKN5WVjpzCqizlGNNBNJwvc/Jca7zyBv6Y0GIjMr0K4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gwn0aclx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0268DC2BBFC;
-	Mon, 27 May 2024 19:35:23 +0000 (UTC)
+	 MIME-Version; b=SJqJdyxgu/f0LvZVWSYcajHr57hg1cVMMDHlezOXPAwpqjxWui+Q0/y8jDpPtSrY4YoDrO5xOs7HXJjxK14sfjFtqHdSYQlQHJXf0cFXgS9RpPbU5PGHGPGwhOcAvIXrsOjQOWyCG3Qf2Q6FZDycm5RVC4su/k3mn/9GkqKmVco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WetRpieP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B31AC2BBFC;
+	Mon, 27 May 2024 19:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838524;
-	bh=Qo2YHEZKJgmXlNhLGwCe+YhQsVO/hbDvJs+DcOTtEpw=;
+	s=korg; t=1716837282;
+	bh=3MNtDGYyPGRR8CUiBKEeLqz8chF2IpxrPAAipOEl3qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gwn0aclx+QoJsMY0B6aafLgNmdppwvPJEL4FILpCXCc6m2y4zeNVuDCi+h13ne9dL
-	 FiBTBXHLTTBqrgKZF0L2OB22P0xTYyCzUBvWPqPetlvVUJRh73p5qhfVAxHVy+706a
-	 qpm9tkHqkqtWXd4/MxuppP5ZLWBzv0gfBqElbnNM=
+	b=WetRpiePruKrEOu9vwbwkUN6R4e2Ok2dFOM20WulMeu/W9BNftRs1WnuIGhtsVZ1W
+	 w/Awg5Bd2hnEFUGnUnXc3r+f9Q8MfxMd9eYWfSE8Y2fRIcqmOll2z16Fox9RzZGTIw
+	 Fg8A/ePVyZmINn6gjgpHtSOIR3EqbwoMNVTENBXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 425/493] iommu: Undo pasid attachment only for the devices that have succeeded
-Date: Mon, 27 May 2024 20:57:07 +0200
-Message-ID: <20240527185644.195137786@linuxfoundation.org>
+Subject: [PATCH 6.9 381/427] x86/insn: Add VEX versions of VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS
+Date: Mon, 27 May 2024 20:57:08 +0200
+Message-ID: <20240527185634.518593704@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit b025dea63cded0d82bccd591fa105d39efc6435d ]
+[ Upstream commit b8000264348979b60dbe479255570a40e1b3a097 ]
 
-There is no error handling now in __iommu_set_group_pasid(), it relies on
-its caller to loop all the devices to undo the pasid attachment. This is
-not self-contained and has drawbacks. It would result in unnecessary
-remove_dev_pasid() calls on the devices that have not been attached to the
-new domain. But the remove_dev_pasid() callback would get the new domain
-from the group->pasid_array. So for such devices, the iommu driver won't
-find the attachment under the domain, hence unable to do cleanup. This may
-not be a real problem today. But it depends on the implementation of the
-underlying iommu driver. e.g. the intel iommu driver would warn for such
-devices. Such warnings are unnecessary.
+The x86 instruction decoder is used not only for decoding kernel
+instructions. It is also used by perf uprobes (user space probes) and by
+perf tools Intel Processor Trace decoding. Consequently, it needs to
+support instructions executed by user space also.
 
-To solve the above problem, it is necessary to handle the error within
-__iommu_set_group_pasid(). It only loops the devices that have attached
-to the new domain, and undo it.
+Intel Architecture Instruction Set Extensions and Future Features manual
+number 319433-044 of May 2021, documented VEX versions of instructions
+VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS, but the opcode map has them
+listed as EVEX only.
 
-Fixes: 16603704559c ("iommu: Add attach/detach_dev_pasid iommu interfaces")
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20240328122958.83332-2-yi.l.liu@intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Remove EVEX-only (ev) annotation from instructions VPDPBUSD, VPDPBUSDS,
+VPDPWSSD and VPDPWSSDS, which allows them to be decoded with either a VEX
+or EVEX prefix.
+
+Fixes: 0153d98f2dd6 ("x86/insn: Add misc instructions to x86 instruction decoder")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240502105853.5338-4-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ arch/x86/lib/x86-opcode-map.txt       | 8 ++++----
+ tools/arch/x86/lib/x86-opcode-map.txt | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index ad33161f2374b..e606d250d1d55 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -3510,15 +3510,26 @@ EXPORT_SYMBOL_GPL(iommu_group_dma_owner_claimed);
- static int __iommu_set_group_pasid(struct iommu_domain *domain,
- 				   struct iommu_group *group, ioasid_t pasid)
- {
--	struct group_device *device;
--	int ret = 0;
-+	struct group_device *device, *last_gdev;
-+	int ret;
- 
- 	for_each_group_device(group, device) {
- 		ret = domain->ops->set_dev_pasid(domain, device->dev, pasid);
- 		if (ret)
--			break;
-+			goto err_revert;
- 	}
- 
-+	return 0;
-+
-+err_revert:
-+	last_gdev = device;
-+	for_each_group_device(group, device) {
-+		const struct iommu_ops *ops = dev_iommu_ops(device->dev);
-+
-+		if (device == last_gdev)
-+			break;
-+		ops->remove_dev_pasid(device->dev, pasid);
-+	}
- 	return ret;
- }
- 
-@@ -3576,10 +3587,8 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
- 	}
- 
- 	ret = __iommu_set_group_pasid(domain, group, pasid);
--	if (ret) {
--		__iommu_remove_group_pasid(group, pasid);
-+	if (ret)
- 		xa_erase(&group->pasid_array, pasid);
--	}
- out_unlock:
- 	mutex_unlock(&group->mutex);
- 	return ret;
+diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
+index 84ffe9e528e78..da9347552be69 100644
+--- a/arch/x86/lib/x86-opcode-map.txt
++++ b/arch/x86/lib/x86-opcode-map.txt
+@@ -698,10 +698,10 @@ AVXcode: 2
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+ 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
+-50: vpdpbusd Vx,Hx,Wx (66),(ev)
+-51: vpdpbusds Vx,Hx,Wx (66),(ev)
+-52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
+-53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
++50: vpdpbusd Vx,Hx,Wx (66)
++51: vpdpbusds Vx,Hx,Wx (66)
++52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
++53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
+ 54: vpopcntb/w Vx,Wx (66),(ev)
+ 55: vpopcntd/q Vx,Wx (66),(ev)
+ 58: vpbroadcastd Vx,Wx (66),(v)
+diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
+index 84ffe9e528e78..da9347552be69 100644
+--- a/tools/arch/x86/lib/x86-opcode-map.txt
++++ b/tools/arch/x86/lib/x86-opcode-map.txt
+@@ -698,10 +698,10 @@ AVXcode: 2
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+ 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
+-50: vpdpbusd Vx,Hx,Wx (66),(ev)
+-51: vpdpbusds Vx,Hx,Wx (66),(ev)
+-52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
+-53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
++50: vpdpbusd Vx,Hx,Wx (66)
++51: vpdpbusds Vx,Hx,Wx (66)
++52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
++53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
+ 54: vpopcntb/w Vx,Wx (66),(ev)
+ 55: vpopcntd/q Vx,Wx (66),(ev)
+ 58: vpbroadcastd Vx,Wx (66),(v)
 -- 
 2.43.0
 
