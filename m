@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-47439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39E08D0DFC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 350C38D0BD8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82E16281BC0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4D1228591D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B179535A4;
-	Mon, 27 May 2024 19:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6328C1754B;
+	Mon, 27 May 2024 19:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ol04nIP/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gspLKoa4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDBC17727;
-	Mon, 27 May 2024 19:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2224A17E90E;
+	Mon, 27 May 2024 19:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838552; cv=none; b=UsxBMoAFbYtdprOw+PP7dr0Y6iCXrbk8wKCeGVrof1q7ElO9hyOjtQQvi9u/gbeuqKpqYJsc06724UlVUv+DciIrbZs4TqMmeYiP1kpJWmfRhfYQ3qA2U49RNpr9+2p5jRpyvJs2Mj7gI1mMxTiJ3c6MyeLyd48QG+TJoB0qoTw=
+	t=1716837215; cv=none; b=SQ34BE+rKsWHZvIJBL8ptialKrSemtCnDs/Y6DeGi4mP5KFiVyHNSe6krLIs535luCkYbSeT5O452Y4zY3wMyq5rXX0CXCLWrvB/JO2fnktWZY4+cpQc0ulSdzZDq34vgc2tJqjwh4BU6tmpke8nCjF/3tbcG0XnsErkkKUVKPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838552; c=relaxed/simple;
-	bh=8AGymlFH+ZLlrFEzJ5P1SnSDrzJyd01WElJ+4A6JsYk=;
+	s=arc-20240116; t=1716837215; c=relaxed/simple;
+	bh=umYKObinYUHrICYhmQAIIVa7wE3teQYhlpgILj1eA8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YTadcJ3DvWxgAPiZ9x2oI7+TeOz70BOkGJ23XSE4stM5C9DcBQB4trrc7vG+s+nFlvHolrfHmcpXFDObCqqaV57lI/u85314cOQU1CpVP+X96/+1bdXrefC/HmB0bZzNi649y956DSvbFwqbx5beoySVnMtWpD74/0G0YwFxVCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ol04nIP/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B893C2BBFC;
-	Mon, 27 May 2024 19:35:52 +0000 (UTC)
+	 MIME-Version; b=NE9rxsifK6KJcc3k/0h9eT6ZjfUomaBo9Q+G8x8Rezkpt0RMGr3TRN9WW/ejDMb5xNWLDgJ4K1/iit+lWZmbC40vbp8d26E/Q/q/1P7dvIrokU2hVCJONJx/NLZqaj1n3QRH0ZOzzBSX1j498YgFJQG7DWRootSgIJuT0za3BgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gspLKoa4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7F4C2BBFC;
+	Mon, 27 May 2024 19:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838552;
-	bh=8AGymlFH+ZLlrFEzJ5P1SnSDrzJyd01WElJ+4A6JsYk=;
+	s=korg; t=1716837215;
+	bh=umYKObinYUHrICYhmQAIIVa7wE3teQYhlpgILj1eA8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ol04nIP/yk90aMCviUVdMNQVirs4nFe/6I8mg4hnIcmysg41iS4rIULkVS3AY0K0N
-	 5Niiz8f3iFcNEUyAkBGSoC6VrB6oGZ+pnJElElw+hQFvp0eGMqpYFx3NVQqiia4i5z
-	 PqyXLV+DS+j04YUlxRbzzi/d+2SDSuyRX/0Zfg7Q=
+	b=gspLKoa4DzOJX0RvJgK8zx1ae/AWiXn3BY0IO895i79n83r5vmjYY0c3jrnZDmTQF
+	 zWzHN0+535oakIAUyO7F9MGTgtqxPFXDv23Dp2EIV3tPotlThyUQkVhwMPbcOg8k8P
+	 zGeSpoXP2U0qbyTY1BXCpfddAX5WL/ICe/Y1QKVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 397/493] media: i2c: et8ek8: Dont strip remove function when driver is builtin
-Date: Mon, 27 May 2024 20:56:39 +0200
-Message-ID: <20240527185643.259267649@linuxfoundation.org>
+Subject: [PATCH 6.9 353/427] iommu: Undo pasid attachment only for the devices that have succeeded
+Date: Mon, 27 May 2024 20:56:40 +0200
+Message-ID: <20240527185633.537447296@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Yi Liu <yi.l.liu@intel.com>
 
-[ Upstream commit 545b215736c5c4b354e182d99c578a472ac9bfce ]
+[ Upstream commit b025dea63cded0d82bccd591fa105d39efc6435d ]
 
-Using __exit for the remove function results in the remove callback
-being discarded with CONFIG_VIDEO_ET8EK8=y. When such a device gets
-unbound (e.g. using sysfs or hotplug), the driver is just removed
-without the cleanup being performed. This results in resource leaks. Fix
-it by compiling in the remove callback unconditionally.
+There is no error handling now in __iommu_set_group_pasid(), it relies on
+its caller to loop all the devices to undo the pasid attachment. This is
+not self-contained and has drawbacks. It would result in unnecessary
+remove_dev_pasid() calls on the devices that have not been attached to the
+new domain. But the remove_dev_pasid() callback would get the new domain
+from the group->pasid_array. So for such devices, the iommu driver won't
+find the attachment under the domain, hence unable to do cleanup. This may
+not be a real problem today. But it depends on the implementation of the
+underlying iommu driver. e.g. the intel iommu driver would warn for such
+devices. Such warnings are unnecessary.
 
-This also fixes a W=1 modpost warning:
+To solve the above problem, it is necessary to handle the error within
+__iommu_set_group_pasid(). It only loops the devices that have attached
+to the new domain, and undo it.
 
-	WARNING: modpost: drivers/media/i2c/et8ek8/et8ek8: section mismatch in reference: et8ek8_i2c_driver+0x10 (section: .data) -> et8ek8_remove (section: .exit.text)
-
-Fixes: c5254e72b8ed ("[media] media: Driver for Toshiba et8ek8 5MP sensor")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 16603704559c ("iommu: Add attach/detach_dev_pasid iommu interfaces")
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20240328122958.83332-2-yi.l.liu@intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/et8ek8/et8ek8_driver.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/iommu.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/i2c/et8ek8/et8ek8_driver.c b/drivers/media/i2c/et8ek8/et8ek8_driver.c
-index f548b1bb75fb9..e932d25ca7b3a 100644
---- a/drivers/media/i2c/et8ek8/et8ek8_driver.c
-+++ b/drivers/media/i2c/et8ek8/et8ek8_driver.c
-@@ -1475,7 +1475,7 @@ static int et8ek8_probe(struct i2c_client *client)
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index a95a483def2d2..659a77f7bb833 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -3317,15 +3317,26 @@ EXPORT_SYMBOL_GPL(iommu_group_dma_owner_claimed);
+ static int __iommu_set_group_pasid(struct iommu_domain *domain,
+ 				   struct iommu_group *group, ioasid_t pasid)
+ {
+-	struct group_device *device;
+-	int ret = 0;
++	struct group_device *device, *last_gdev;
++	int ret;
+ 
+ 	for_each_group_device(group, device) {
+ 		ret = domain->ops->set_dev_pasid(domain, device->dev, pasid);
+ 		if (ret)
+-			break;
++			goto err_revert;
+ 	}
+ 
++	return 0;
++
++err_revert:
++	last_gdev = device;
++	for_each_group_device(group, device) {
++		const struct iommu_ops *ops = dev_iommu_ops(device->dev);
++
++		if (device == last_gdev)
++			break;
++		ops->remove_dev_pasid(device->dev, pasid);
++	}
  	return ret;
  }
  
--static void __exit et8ek8_remove(struct i2c_client *client)
-+static void et8ek8_remove(struct i2c_client *client)
- {
- 	struct v4l2_subdev *subdev = i2c_get_clientdata(client);
- 	struct et8ek8_sensor *sensor = to_et8ek8_sensor(subdev);
-@@ -1517,7 +1517,7 @@ static struct i2c_driver et8ek8_i2c_driver = {
- 		.of_match_table	= et8ek8_of_table,
- 	},
- 	.probe		= et8ek8_probe,
--	.remove		= __exit_p(et8ek8_remove),
-+	.remove		= et8ek8_remove,
- 	.id_table	= et8ek8_id_table,
- };
+@@ -3383,10 +3394,8 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
+ 	}
  
+ 	ret = __iommu_set_group_pasid(domain, group, pasid);
+-	if (ret) {
+-		__iommu_remove_group_pasid(group, pasid);
++	if (ret)
+ 		xa_erase(&group->pasid_array, pasid);
+-	}
+ out_unlock:
+ 	mutex_unlock(&group->mutex);
+ 	return ret;
 -- 
 2.43.0
 
