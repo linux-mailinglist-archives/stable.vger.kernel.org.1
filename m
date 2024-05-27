@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-47093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B5E8D0C8E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA0A8D0AB6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81A911C21230
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DCDCB2190C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83EE160783;
-	Mon, 27 May 2024 19:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC16F15FD0F;
+	Mon, 27 May 2024 19:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMWGjFUa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCo7MUoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E17168C4;
-	Mon, 27 May 2024 19:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB3B15FCE0;
+	Mon, 27 May 2024 19:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837653; cv=none; b=tgglTbcIbNtk6gCAySFTnRyk2r2pGz0J6FwKvrkswqc9XXa2y08InYM27huNzCMmf5KvghCUnLSZsIl/Zf301gl9h6WyypuBLDLJBSRslgOlFc+I1pPjFGMjrVAGkCtfhjTpMV33EUT6UQFAdCkmygblouiIeY9rb4vPXp1mycQ=
+	t=1716836518; cv=none; b=MYKEcg/uxikOOm/tCUn7UWnT9/Oqh90kjnHunJNMC6wGWnHCBiJMXUhTEbIpnKyHUKMWVtQLkY10asZjdIS538FDcqYgRl9n7fbKpAz3rB/1wrFRQmBBSo3KPbFqLmixrZGZh7XnFRKEwbRTu8Sluqn2VQO+ZikTkJCD8tXfXQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837653; c=relaxed/simple;
-	bh=PlOttVY5sp6isk5522uAUXxPYnv5PxR2dvUqpUIa8Ac=;
+	s=arc-20240116; t=1716836518; c=relaxed/simple;
+	bh=Abcg8WDcXCnqgpiitvY6B51GSIHsiDvfSgqXr+ihhJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rr2J6QIqrBt/FuulA0r8seOnLbvhYBLRz0XoYmuvt7cRNnZcPX6syLKMhL84U+HHWZdEVNid9mceFq8hppQe3yfgMRZ2PRdGSVm7VbBpeHZvzYj99cfDNb4rH0GeuAYudmNVx8kAkSjPvy5VJ6A3sVjwhIgVbM1l2zm8PzNPOnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMWGjFUa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD13C2BBFC;
-	Mon, 27 May 2024 19:20:52 +0000 (UTC)
+	 MIME-Version; b=A7TyCjkkFH4oEdcWYbTUUG1qdDqEgwRnybP0G9u8mk1Yy50+rBPJm689/LHFiCpQzeO93HpS1H2fhJBRefKyhA3MsXdPXdDFf3RCFJXipyyF55lK7uROAki1ztEI3rxr17L76j3Lg9Hh5PUvrOdHbGH/vWSuQXEyMOspuFh5eM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCo7MUoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BDBC2BBFC;
+	Mon, 27 May 2024 19:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837653;
-	bh=PlOttVY5sp6isk5522uAUXxPYnv5PxR2dvUqpUIa8Ac=;
+	s=korg; t=1716836518;
+	bh=Abcg8WDcXCnqgpiitvY6B51GSIHsiDvfSgqXr+ihhJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMWGjFUaT+ADTI8xRMVnFqmh1zPNOhCKzk2Kls4cBh4hMdMTBJKi5g4Gjr+hTk3jR
-	 9wqt8fBRiXLEECvmQuuT7dvLbaTuWijouIs16WqtZhBz3SvVx6LK/CtSHZtGNoFDX2
-	 WIicDxWDG2APkrmm8XeH9CB7CJ7D3Gt/2JvYEfLg=
+	b=KCo7MUohVsZIBfX9h8l077mRl8YaODRJ193IPIqEHrbrM8Q2vK5vBi37u0VfqoUqn
+	 GAsBWd6ITP5icQkND6c7WQM/417F6E2gWilruKdJzB0sPB0Gz7Riws8jVeuuTJ5Ok6
+	 pOUbLgs+44TJ69lPIEwxm7wG1NBTFQ7hxhrHYbQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Brian Kubisiak <brian@kubisiak.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 093/493] drm/amd/display: Ensure that dmcub support flag is set for DCN20
+Subject: [PATCH 6.9 048/427] ecryptfs: Fix buffer size for tag 66 packet
 Date: Mon, 27 May 2024 20:51:35 +0200
-Message-ID: <20240527185633.452304287@linuxfoundation.org>
+Message-ID: <20240527185606.210796411@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Brian Kubisiak <brian@kubisiak.com>
 
-[ Upstream commit be53bd4f00aa4c7db9f41116224c027b4cfce8e3 ]
+[ Upstream commit 85a6a1aff08ec9f5b929d345d066e2830e8818e5 ]
 
-In the DCN20 resource initialization, ensure that DMCUB support starts
-configured as true.
+The 'TAG 66 Packet Format' description is missing the cipher code and
+checksum fields that are packed into the message packet. As a result,
+the buffer allocated for the packet is 3 bytes too small and
+write_tag_66_packet() will write up to 3 bytes past the end of the
+buffer.
 
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix this by increasing the size of the allocation so the whole packet
+will always fit in the buffer.
+
+This fixes the below kasan slab-out-of-bounds bug:
+
+  BUG: KASAN: slab-out-of-bounds in ecryptfs_generate_key_packet_set+0x7d6/0xde0
+  Write of size 1 at addr ffff88800afbb2a5 by task touch/181
+
+  CPU: 0 PID: 181 Comm: touch Not tainted 6.6.13-gnu #1 4c9534092be820851bb687b82d1f92a426598dc6
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2/GNU Guix 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4c/0x70
+   print_report+0xc5/0x610
+   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
+   ? kasan_complete_mode_report_info+0x44/0x210
+   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
+   kasan_report+0xc2/0x110
+   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
+   __asan_store1+0x62/0x80
+   ecryptfs_generate_key_packet_set+0x7d6/0xde0
+   ? __pfx_ecryptfs_generate_key_packet_set+0x10/0x10
+   ? __alloc_pages+0x2e2/0x540
+   ? __pfx_ovl_open+0x10/0x10 [overlay 30837f11141636a8e1793533a02e6e2e885dad1d]
+   ? dentry_open+0x8f/0xd0
+   ecryptfs_write_metadata+0x30a/0x550
+   ? __pfx_ecryptfs_write_metadata+0x10/0x10
+   ? ecryptfs_get_lower_file+0x6b/0x190
+   ecryptfs_initialize_file+0x77/0x150
+   ecryptfs_create+0x1c2/0x2f0
+   path_openat+0x17cf/0x1ba0
+   ? __pfx_path_openat+0x10/0x10
+   do_filp_open+0x15e/0x290
+   ? __pfx_do_filp_open+0x10/0x10
+   ? __kasan_check_write+0x18/0x30
+   ? _raw_spin_lock+0x86/0xf0
+   ? __pfx__raw_spin_lock+0x10/0x10
+   ? __kasan_check_write+0x18/0x30
+   ? alloc_fd+0xf4/0x330
+   do_sys_openat2+0x122/0x160
+   ? __pfx_do_sys_openat2+0x10/0x10
+   __x64_sys_openat+0xef/0x170
+   ? __pfx___x64_sys_openat+0x10/0x10
+   do_syscall_64+0x60/0xd0
+   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+  RIP: 0033:0x7f00a703fd67
+  Code: 25 00 00 41 00 3d 00 00 41 00 74 37 64 8b 04 25 18 00 00 00 85 c0 75 5b 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 85 00 00 00 48 83 c4 68 5d 41 5c c3 0f 1f
+  RSP: 002b:00007ffc088e30b0 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+  RAX: ffffffffffffffda RBX: 00007ffc088e3368 RCX: 00007f00a703fd67
+  RDX: 0000000000000941 RSI: 00007ffc088e48d7 RDI: 00000000ffffff9c
+  RBP: 00007ffc088e48d7 R08: 0000000000000001 R09: 0000000000000000
+  R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000941
+  R13: 0000000000000000 R14: 00007ffc088e48d7 R15: 00007f00a7180040
+   </TASK>
+
+  Allocated by task 181:
+   kasan_save_stack+0x2f/0x60
+   kasan_set_track+0x29/0x40
+   kasan_save_alloc_info+0x25/0x40
+   __kasan_kmalloc+0xc5/0xd0
+   __kmalloc+0x66/0x160
+   ecryptfs_generate_key_packet_set+0x6d2/0xde0
+   ecryptfs_write_metadata+0x30a/0x550
+   ecryptfs_initialize_file+0x77/0x150
+   ecryptfs_create+0x1c2/0x2f0
+   path_openat+0x17cf/0x1ba0
+   do_filp_open+0x15e/0x290
+   do_sys_openat2+0x122/0x160
+   __x64_sys_openat+0xef/0x170
+   do_syscall_64+0x60/0xd0
+   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Fixes: dddfa461fc89 ("[PATCH] eCryptfs: Public key; packet management")
+Signed-off-by: Brian Kubisiak <brian@kubisiak.com>
+Link: https://lore.kernel.org/r/5j2q56p6qkhezva6b2yuqfrsurmvrrqtxxzrnp3wqu7xrz22i7@hoecdztoplbl
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ecryptfs/keystore.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
-index f9c5bc624be30..f81f6110913d3 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
-@@ -2451,6 +2451,7 @@ static bool dcn20_resource_construct(
- 	dc->caps.post_blend_color_processing = true;
- 	dc->caps.force_dp_tps4_for_cp2520 = true;
- 	dc->caps.extended_aux_timeout_support = true;
-+	dc->caps.dmcub_support = true;
- 
- 	/* Color pipeline capabilities */
- 	dc->caps.color.dpp.dcn_arch = 1;
+diff --git a/fs/ecryptfs/keystore.c b/fs/ecryptfs/keystore.c
+index 3fe41964c0d8d..7f9f68c00ef63 100644
+--- a/fs/ecryptfs/keystore.c
++++ b/fs/ecryptfs/keystore.c
+@@ -300,9 +300,11 @@ write_tag_66_packet(char *signature, u8 cipher_code,
+ 	 *         | Key Identifier Size      | 1 or 2 bytes |
+ 	 *         | Key Identifier           | arbitrary    |
+ 	 *         | File Encryption Key Size | 1 or 2 bytes |
++	 *         | Cipher Code              | 1 byte       |
+ 	 *         | File Encryption Key      | arbitrary    |
++	 *         | Checksum                 | 2 bytes      |
+ 	 */
+-	data_len = (5 + ECRYPTFS_SIG_SIZE_HEX + crypt_stat->key_size);
++	data_len = (8 + ECRYPTFS_SIG_SIZE_HEX + crypt_stat->key_size);
+ 	*packet = kmalloc(data_len, GFP_KERNEL);
+ 	message = *packet;
+ 	if (!message) {
 -- 
 2.43.0
 
