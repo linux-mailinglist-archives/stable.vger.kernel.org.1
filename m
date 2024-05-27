@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BBAA8D0B64
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BC48D0D51
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADFDC2844F3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0513280F48
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BB861FCD;
-	Mon, 27 May 2024 19:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBF415FD0F;
+	Mon, 27 May 2024 19:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmE0wRqc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRIKZWXK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403901078F;
-	Mon, 27 May 2024 19:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDC3262BE;
+	Mon, 27 May 2024 19:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836931; cv=none; b=VMdybSUip+o+zB6v6bDl153CMpaGUqGlVV54DU5euK1rDHK0il7gQbU7sPJd1kRhk7ljD2kmF20GnxDrO3oefs8L/po1u2H90cO0EKpeGi0KuTXSp3Alzm87VXvu9W6mh9pOsZrwSS/tw9Ho5B89JdUhJ+qrFmnen1FwNRSKwhE=
+	t=1716838113; cv=none; b=YJCvKUHh+PkQT3G8LAWcWWbIkBy+EZLrfAqJrRcLvuzqoyGryYZkL09kUbM8um1AT9S6KipX0KRK818SZ0JkYng6kbYdOG4Vn6/eOelvDjUJcFz6AbdGSLAqPF+knO+8GIvjp3r24CT5AUYpRDKjBfTtVp1GhCxVlWUtoWIR7hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836931; c=relaxed/simple;
-	bh=zuNLv8RoYkx8jy6Q/52wXjecCR1HnUiXSYmhyvOIP8c=;
+	s=arc-20240116; t=1716838113; c=relaxed/simple;
+	bh=KepidD+b73R9ix/SUIvIwVfyCuKyMDMP/pRhuisa1iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dowzYhUKVrkh4cLc3Zg5B+U4S0266huvMpk+9K/rWRc0qe9VafmzS4z870dNs3TlIGesqLeYs9qMI0NdDAV+eo8XNVjbrT4UbuMK4l4jNbzpdiAPi27PTEp/4fRm/9aXA54xPYGdtw5+cdyJd4lG2L1P1jlDxsPJ0vniLd9HnKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmE0wRqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9219C2BBFC;
-	Mon, 27 May 2024 19:08:50 +0000 (UTC)
+	 MIME-Version; b=rr80Pz/ZPB+tRIL7ny2U/GTE8aibADgGMdea2gxz+L3756K5jqZ02R4+M7+UNjV2d7gDPh9bhbMeAxyXwP9+Ee1mKX5v2LpXEFCbCT8sghCB4AqME8o/8+1j+Q4Skk91QMFL8npNTMgbr0I3xvRFd3THt5rIknO22SDsurEJ+KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRIKZWXK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E376C2BBFC;
+	Mon, 27 May 2024 19:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836931;
-	bh=zuNLv8RoYkx8jy6Q/52wXjecCR1HnUiXSYmhyvOIP8c=;
+	s=korg; t=1716838112;
+	bh=KepidD+b73R9ix/SUIvIwVfyCuKyMDMP/pRhuisa1iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmE0wRqcAs9gszKN7eNSXObWZaHT44N26cDOS64XrWefcr5r113h1xUoewc8Pf7L6
-	 k22fcLwolBzHDKx/2C7WZ3zIfYnrK59GdcEIhr0mWqeF1Du+X7fZnNHC3Pz8cLj5fN
-	 V6xJE9j+if/8gaobVoHXgVNib/6VwzeS/B1Kmeh0=
+	b=MRIKZWXKnDOHiQduqSUyVdZfikR5Jd/upFy+AjSMhw4EfmDTg1O/OtLWL3/IhQnpH
+	 sAO+WnzDlmEXY90B324UbZPZCeGDROvmhab2nevvF1RadAy/aUEBrm+FdYm9k+z9QB
+	 e3hvHsa9JpopS/c5eMRS0H2aSmwBE4J78Y58Xzpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 227/427] net: usb: sr9700: stop lying about skb->truesize
+Subject: [PATCH 6.8 272/493] wifi: mt76: mt7925: ensure 4-byte alignment for suspend & wow command
 Date: Mon, 27 May 2024 20:54:34 +0200
-Message-ID: <20240527185623.691533684@linuxfoundation.org>
+Message-ID: <20240527185639.180751579@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 05417aa9c0c038da2464a0c504b9d4f99814a23b ]
+[ Upstream commit fa46bd62c9a8ab195d9c5108a91abf0680fec10e ]
 
-Some usb drivers set small skb->truesize and break
-core networking stacks.
+Before sending suspend & wow command to FW, its length should be
+4-bytes alignd.
 
-In this patch, I removed one of the skb->truesize override.
-
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
-
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240506143939.3673865-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/sr9700.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.h      | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index 3164451e1010c..0a662e42ed965 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -421,19 +421,15 @@ static int sr9700_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			skb_pull(skb, 3);
- 			skb->len = len;
- 			skb_set_tail_pointer(skb, len);
--			skb->truesize = len + sizeof(struct sk_buff);
- 			return 2;
- 		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index ae19174b46ee5..5809555a909d7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -2524,6 +2524,7 @@ int mt76_connac_mcu_set_hif_suspend(struct mt76_dev *dev, bool suspend)
+ 			__le16 tag;
+ 			__le16 len;
+ 			u8 suspend;
++			u8 pad[7];
+ 		} __packed hif_suspend;
+ 	} req = {
+ 		.hif_suspend = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 2cf39276118eb..1599338e06310 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -535,7 +535,7 @@ struct mt7925_wow_pattern_tlv {
+ 	u8 offset;
+ 	u8 mask[MT76_CONNAC_WOW_MASK_MAX_LEN];
+ 	u8 pattern[MT76_CONNAC_WOW_PATTEN_MAX_LEN];
+-	u8 rsv[4];
++	u8 rsv[7];
+ } __packed;
  
--		/* skb_clone is used for address align */
--		sr_skb = skb_clone(skb, GFP_ATOMIC);
-+		sr_skb = netdev_alloc_skb_ip_align(dev->net, len);
- 		if (!sr_skb)
- 			return 0;
- 
--		sr_skb->len = len;
--		sr_skb->data = skb->data + 3;
--		skb_set_tail_pointer(sr_skb, len);
--		sr_skb->truesize = len + sizeof(struct sk_buff);
-+		skb_put(sr_skb, len);
-+		memcpy(sr_skb->data, skb->data + 3, len);
- 		usbnet_skb_return(dev, sr_skb);
- 
- 		skb_pull(skb, len + SR_RX_OVERHEAD);
+ static inline enum connac3_mcu_cipher_type
 -- 
 2.43.0
 
