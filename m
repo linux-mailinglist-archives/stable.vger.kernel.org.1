@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DE78D0C2B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC1D8D0E27
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 741C6B229B9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 773D31F21401
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586BD168C4;
-	Mon, 27 May 2024 19:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFB5160880;
+	Mon, 27 May 2024 19:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqIdC/Jr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u22vZ22n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FDC1863F;
-	Mon, 27 May 2024 19:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0EA15FCF0;
+	Mon, 27 May 2024 19:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837403; cv=none; b=B3SfqU6DY5CgQUeRMYOIl1HOAvcamVEZjppvbPlZQDknsA3zfhWTefpB39MA/CcuOiZ4vcgcN21uAHMm0n3G9xbmnUbnJ7epifcpSHTe4D6Uakn1uRrh7n5jYE4JBBiyoI5nBZIxWEO5HVtNuN/78qgI0dFZVzOYk3/j4UBIpEk=
+	t=1716838648; cv=none; b=HeLR/yE5q/s+U+u5t44oa/+zGmyP8z1/bc/uap8ebN0ckccrfgY1o+cVr86gGAGUWdrAAoXZuav1Kf70CubwSg6Y2sgU5ZGbRaGMYCszEYYeQSv7Xj2mH3rUzOzYXEpX0FD2Os5p7XikE8EqGzDmlGvWTn8ZwzJTE6Ca40XE0j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837403; c=relaxed/simple;
-	bh=Mpo2sFmU+MHmROoNcsKdsghXNqfVklfW63vCg/LNIdg=;
+	s=arc-20240116; t=1716838648; c=relaxed/simple;
+	bh=89FeXCuC7W5ClLjKxzTxUGZxeZ/0ycraZpGEjiwx5RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qck0fW9/pLl0QAIs1P2d3T6ixHpYMB+SbC8ON3kJLwP18x8izood2Y6SJ1H2V372JFbQtg/LdO8WT1BEKcVOH6JdmNvJk42tQ9sYP2imx0ZpnWuuFMhI7Zwqoq8DB6AEL9kl5SwbFjM/Ib8JKKUpSE9L1CBlaK/y0Toj19wf4yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqIdC/Jr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0641C2BBFC;
-	Mon, 27 May 2024 19:16:42 +0000 (UTC)
+	 MIME-Version; b=rhRZge5bTzC8gMjtMGc0SDeWg4oMkT5xoDRszg3+jzzoSm/KyQFCqmnjoNXjOoRVDLOgIlhXD4JwELaCux+rE+4on0yPJ3dmtSNC8VsbMz0sgl+3USzSIF/1SLc2Sii+SFhVCEI6lTbmkpmjbRJNPb1TMP1gx5azN2z3x8JqUk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u22vZ22n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552A1C2BBFC;
+	Mon, 27 May 2024 19:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837403;
-	bh=Mpo2sFmU+MHmROoNcsKdsghXNqfVklfW63vCg/LNIdg=;
+	s=korg; t=1716838648;
+	bh=89FeXCuC7W5ClLjKxzTxUGZxeZ/0ycraZpGEjiwx5RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqIdC/JrAgmu2m23xZvl3YHvZ429wpXT+ObJXutKSpLe+xUt/j1eHcMTOJJQoeUpc
-	 caryQUflYGn7uyu1EsNWIzTs4zwSSGg6tjDVNh5aEHokgB5Z9cmwkjDdv551f5kUXy
-	 yLBLDI+OCc+bigIXjLPffo0/ftGYvtfb4RrMi6Lo=
+	b=u22vZ22nOeektUkr72Hwu3rnlCkI3WvC3R/Zgi2dtsbsswgkZNvvUBe91yuAeV4oA
+	 9ZkyM4QtZ2auPuIK3MqyzbYytolBu3EJXWv+vh+DcTK6guBes3Sb1Fc+LReULbvNLI
+	 fwQwmJu2Ax2rQtLX7IREVndgVKyx4gZnSWXC/n1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Wang Yao <wangyao@lemote.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 427/427] Revert "selftests/sgx: Include KHDR_INCLUDES in Makefile"
-Date: Mon, 27 May 2024 20:57:54 +0200
-Message-ID: <20240527185635.911134140@linuxfoundation.org>
+Subject: [PATCH 6.8 473/493] modules: Drop the .export_symbol section from the final modules
+Date: Mon, 27 May 2024 20:57:55 +0200
+Message-ID: <20240527185645.627134892@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuah Khan <skhan@linuxfoundation.org>
+From: Wang Yao <wangyao@lemote.com>
 
-[ Upstream commit 3da164023582969280df17636a9d829752787b1c ]
+[ Upstream commit 8fe51b45c5645c259f759479c374648e9dfeaa03 ]
 
-This reverts commit 2c3b8f8f37c6c0c926d584cf4158db95e62b960c.
+Commit ddb5cdbafaaa ("kbuild: generate KSYMTAB entries by modpost")
+forget drop the .export_symbol section from the final modules.
 
-The framework change to add D_GNU_SOURCE to KHDR_INCLUDES
-to Makefile, lib.mk, and kselftest_harness.h is reverted
-as it is causing build failures and warnings.
-
-Revert this change as this change depends on the framework
-change.
-
-Reported-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: ddb5cdbafaaa ("kbuild: generate KSYMTAB entries by modpost")
+Signed-off-by: Wang Yao <wangyao@lemote.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/sgx/Makefile    | 2 +-
- tools/testing/selftests/sgx/sigstruct.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ scripts/module.lds.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/sgx/Makefile b/tools/testing/selftests/sgx/Makefile
-index 26ea30fae23ca..867f88ce2570a 100644
---- a/tools/testing/selftests/sgx/Makefile
-+++ b/tools/testing/selftests/sgx/Makefile
-@@ -12,7 +12,7 @@ OBJCOPY := $(CROSS_COMPILE)objcopy
- endif
+diff --git a/scripts/module.lds.S b/scripts/module.lds.S
+index bf5bcf2836d81..89ff01a22634f 100644
+--- a/scripts/module.lds.S
++++ b/scripts/module.lds.S
+@@ -13,6 +13,7 @@ SECTIONS {
+ 	/DISCARD/ : {
+ 		*(.discard)
+ 		*(.discard.*)
++		*(.export_symbol)
+ 	}
  
- INCLUDES := -I$(top_srcdir)/tools/include
--HOST_CFLAGS := -Wall -Werror $(KHDR_INCLUDES) -g $(INCLUDES) -fPIC
-+HOST_CFLAGS := -Wall -Werror -g $(INCLUDES) -fPIC
- HOST_LDFLAGS := -z noexecstack -lcrypto
- ENCL_CFLAGS += -Wall -Werror -static-pie -nostdlib -ffreestanding -fPIE \
- 	       -fno-stack-protector -mrdrnd $(INCLUDES)
-diff --git a/tools/testing/selftests/sgx/sigstruct.c b/tools/testing/selftests/sgx/sigstruct.c
-index 200034a0fee51..d73b29becf5b0 100644
---- a/tools/testing/selftests/sgx/sigstruct.c
-+++ b/tools/testing/selftests/sgx/sigstruct.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*  Copyright(c) 2016-20 Intel Corporation. */
- 
-+#define _GNU_SOURCE
- #include <assert.h>
- #include <getopt.h>
- #include <stdbool.h>
+ 	__ksymtab		0 : { *(SORT(___ksymtab+*)) }
 -- 
 2.43.0
 
