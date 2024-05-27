@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E088D0B3A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31398D0D22
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 066E71C2168E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C90428344C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFED61FCD;
-	Mon, 27 May 2024 19:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3034A15FCFC;
+	Mon, 27 May 2024 19:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvRFvxZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o320/nbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A30E17E90E;
-	Mon, 27 May 2024 19:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32A8168C4;
+	Mon, 27 May 2024 19:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836845; cv=none; b=QIQld/5qA/MziFzd1N1IjoRqBjjpUEZcn8zJdNqVI3GKI+UoLerIfh3tZuBF5XKFV/0CWecovtJhqYrMR4O5CwoV/4h2g0rrvHsqhwfMR4xtWj8rTuQgAzHk3CjKEH1/RQP/Tqtf13GIAlgh1YtUmXr2038786sGShndiHxpAq0=
+	t=1716837999; cv=none; b=RfRLHvO83L+q8nBCx4OQiLqxX49Cvz/Eruqop7eli5gxGr3vbXc3pLjR7ZQoKjGnuyrhAhRcKW1iNkJSYMoI3+UCqqMfs8KBJCXa2oe69yHCshzREf3IkclbIzBqB0hrJN47YxdAfyihHIGb25isZTcngj5xkTqn8nkg22yEHWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836845; c=relaxed/simple;
-	bh=2ILGVIO+xylAKl33c/n2QWJ9xkOTpID0q9Qz6pDfgz8=;
+	s=arc-20240116; t=1716837999; c=relaxed/simple;
+	bh=jeghYqdqwl8mNV1omy2ucLMaSaKixAsL40uHfnA5GiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCCLfgVIRvkGAueNNTvZsgCakv6mA01g/8yHHdlITl6niNJ16s+2l3x5D6fyklUm6+WgNHpH8caXSV13HTs/7CDfqe+l1e3TqQ5BL+dvzv0Z9Rb8EQbf2t3HvaDROyo8P/GsGzUDtGe1CuTDkU9y4nyKJQwv2m+ijSPYhszMr/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvRFvxZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51E3C2BBFC;
-	Mon, 27 May 2024 19:07:24 +0000 (UTC)
+	 MIME-Version; b=LXy2BU44e7PHl1iaaoJV3dxJPrxrbcwR9SrJ10rY/zyVC7Dx4zBCE1BQCU1eeRYgfdsMfHlvealGayAPn9PWBNvwhVWMjXR+VYHl5DrwShw1IlWUL465nwDRnky3eaKdcuqxZFgMg/D6IiB3VcD1yhfK759AI0+EhES+Yyaa0yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o320/nbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782A4C2BBFC;
+	Mon, 27 May 2024 19:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836845;
-	bh=2ILGVIO+xylAKl33c/n2QWJ9xkOTpID0q9Qz6pDfgz8=;
+	s=korg; t=1716837998;
+	bh=jeghYqdqwl8mNV1omy2ucLMaSaKixAsL40uHfnA5GiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvRFvxZLXzjPPLWLTTP0T6xWOAiDSYIPUr5tZSpSlbFBOM2omQbSxwvrawSWt1XOP
-	 maEdahN606jnP2KME0fvm0IwkfdUHG5IsWjjp0sVzLdwHHvRymi9KqlEfcKIRkyS9G
-	 lVxApct8HhssHw37UprQQjxCDlOfm8eIlL/FUZ7w=
+	b=o320/nbS3aN86/ia+DljDYPa6XbvvWT2s3V0aEYHAy2iMnlLDe6vX8kH8uGovnDuV
+	 SKrjk5BPz7JGEvV0hcketwCRuHaa/mjU5MNMr+eZKRikRdak+ruqXTIJLYG64WbbQE
+	 JFugpcjDyPSZv7YcEmh4X2+PWw9wtc7czbpa9JvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Will Deacon <will@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 183/427] drivers/perf: hisi_pcie: Fix out-of-bound access when valid event group
+Subject: [PATCH 6.8 228/493] thermal/drivers/tsens: Fix null pointer dereference
 Date: Mon, 27 May 2024 20:53:50 +0200
-Message-ID: <20240527185619.315632792@linuxfoundation.org>
+Message-ID: <20240527185637.761918181@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 77fce82678ea5fd51442e62febec2004f79e041b ]
+[ Upstream commit d998ddc86a27c92140b9f7984ff41e3d1d07a48f ]
 
-The perf tool allows users to create event groups through following
-cmd [1], but the driver does not check whether the array index is out of
-bounds when writing data to the event_group array. If the number of events
-in an event_group is greater than HISI_PCIE_MAX_COUNTERS, the memory write
-overflow of event_group array occurs.
+compute_intercept_slope() is called from calibrate_8960() (in tsens-8960.c)
+as compute_intercept_slope(priv, p1, NULL, ONE_PT_CALIB) which lead to null
+pointer dereference (if DEBUG or DYNAMIC_DEBUG set).
+Fix this bug by adding null pointer check.
 
-Add array index check to fix the possible array out of bounds violation,
-and return directly when write new events are written to array bounds.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-There are 9 different events in an event_group.
-[1] perf stat -e '{pmu/event1/, ... ,pmu/event9/}'
-
-Fixes: 8404b0fbc7fb ("drivers/perf: hisi: Add driver for HiSilicon PCIe PMU")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240425124627.13764-2-hejunhao3@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: dfc1193d4dbd ("thermal/drivers/tsens: Replace custom 8960 apis with generic apis")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20240411114021.12203-1-amishin@t-argos.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hisi_pcie_pmu.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/thermal/qcom/tsens.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/perf/hisilicon/hisi_pcie_pmu.c b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-index 5d1f0e9fdb08d..dba3991256586 100644
---- a/drivers/perf/hisilicon/hisi_pcie_pmu.c
-+++ b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-@@ -350,15 +350,27 @@ static bool hisi_pcie_pmu_validate_event_group(struct perf_event *event)
- 			return false;
+diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
+index 6d7c16ccb44dc..4edee8d929a75 100644
+--- a/drivers/thermal/qcom/tsens.c
++++ b/drivers/thermal/qcom/tsens.c
+@@ -264,7 +264,7 @@ void compute_intercept_slope(struct tsens_priv *priv, u32 *p1,
+ 	for (i = 0; i < priv->num_sensors; i++) {
+ 		dev_dbg(priv->dev,
+ 			"%s: sensor%d - data_point1:%#x data_point2:%#x\n",
+-			__func__, i, p1[i], p2[i]);
++			__func__, i, p1[i], p2 ? p2[i] : 0);
  
- 		for (num = 0; num < counters; num++) {
-+			/*
-+			 * If we find a related event, then it's a valid group
-+			 * since we don't need to allocate a new counter for it.
-+			 */
- 			if (hisi_pcie_pmu_cmp_event(event_group[num], sibling))
- 				break;
- 		}
- 
-+		/*
-+		 * Otherwise it's a new event but if there's no available counter,
-+		 * fail the check since we cannot schedule all the events in
-+		 * the group simultaneously.
-+		 */
-+		if (num == HISI_PCIE_MAX_COUNTERS)
-+			return false;
-+
- 		if (num == counters)
- 			event_group[counters++] = sibling;
- 	}
- 
--	return counters <= HISI_PCIE_MAX_COUNTERS;
-+	return true;
- }
- 
- static int hisi_pcie_pmu_event_init(struct perf_event *event)
+ 		if (!priv->sensor[i].slope)
+ 			priv->sensor[i].slope = SLOPE_DEFAULT;
 -- 
 2.43.0
 
