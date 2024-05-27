@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C4C8D0C9F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 440528D0A93
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F05286719
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75B931C21637
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E0715FCFC;
-	Mon, 27 May 2024 19:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7D8160784;
+	Mon, 27 May 2024 19:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5p2CmIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3Vdo+gR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A45168C4;
-	Mon, 27 May 2024 19:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A55115FA8C;
+	Mon, 27 May 2024 19:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837694; cv=none; b=FUye9xo7Jp6LnmFQ2+ZSh8sih3xh5DPswuDjcry/IJs1z+RRVnvF6g6MSV2FpE0rQcSXtJn9YbVqAYumefcAOvKWQUdv6LJVjX/seUXOfoh7v5CqCDpHnytRA6eUgsxtMvGqMPAB0i4W2Sk/e9OukgMrZPFR+wapsE8ud02uszg=
+	t=1716836460; cv=none; b=JymSWo35f1Ju2FoWwCBWM65EYQXl3dTTViAlwBHgDTRAFK2IwIAIh+eIxDTA/AGfLV1Hrfeufa2bGSQfrOdzAPczB7PsoRnbuoemyu81qeu+TCcuv1Y40kTaOA8sQy8jqm9N3wa0V6wrePJmN2XD/VVvG7eCgrxsY1D0t0biug0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837694; c=relaxed/simple;
-	bh=UHavKZO4PEqLn8Pjpn+6N3EMTfjwkc6LcNYuKlFHxCo=;
+	s=arc-20240116; t=1716836460; c=relaxed/simple;
+	bh=MIy8J3pIvysAR9oCBGy5wcOZsLDjf9lJuPc+rknwT/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cq9/COAVWWmvtGha2Zq0ksxEw2LFpc8nV3Ei0Xu/AAdVWsO8zRzOPOHO0gHWlB5AeFvZ6Zd6wQQaRjrwlQ5D31SpGgvu6jHOygXkmZ4b610dClr4DMEqZMEg+AlAK6uKndjImV2FCEc2XZxhLirmExM3LVZVyJxN02n94qCBMho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5p2CmIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF66C2BBFC;
-	Mon, 27 May 2024 19:21:33 +0000 (UTC)
+	 MIME-Version; b=Zwc8Wp0SqZJlNnuXjiNYyzFX4oMIaHEk1C7OpoEV4FWZcqQwKcqaEuZIpYH8uu4Yutx+MoU+vIc0VwnVSobT6bQuSwohrrMcaKM17/jxZD9RrR3BrI5KTrjcHKBZ6UEbIYO9qeGaPkQT7aMPnZY0VhIjMkR1IRSGZSIByrjzxz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3Vdo+gR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E1CC2BBFC;
+	Mon, 27 May 2024 19:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837694;
-	bh=UHavKZO4PEqLn8Pjpn+6N3EMTfjwkc6LcNYuKlFHxCo=;
+	s=korg; t=1716836459;
+	bh=MIy8J3pIvysAR9oCBGy5wcOZsLDjf9lJuPc+rknwT/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5p2CmILwj8s6fBRIehq9iLRy1WVPjCoS204kRHTc2VyASlG1Dt3ub21t/NfA12LH
-	 zlrnKMbAirHaSUVZySV0MD1Qbry/YY+hg0qozJp2gj6Dy6gAqdy6ltd0AMkcf5kLX5
-	 BM7u5lRDFIkpuEzK0Tw9yQ404qQTy0EeCCGI/cRo=
+	b=q3Vdo+gRa2VeKdqryWeOyzEEvhayvL8yzp2lIycFrAJ5B4xZHJsq2VsThf1MYwnoC
+	 uihES/rKiW1MsyE5MooLZs+8Y/Lk06tY8vNAmuHxYYb73tRq+boMQnObHPA4+K/O26
+	 ns8AgXvNeBQJ8SQj75P2x4r7kfoDeM4qrQc8wVc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 108/493] epoll: be better about file lifetimes
+Subject: [PATCH 6.9 063/427] shmem: Fix shmem_rename2()
 Date: Mon, 27 May 2024 20:51:50 +0200
-Message-ID: <20240527185634.056918751@linuxfoundation.org>
+Message-ID: <20240527185607.812770881@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 4efaa5acf0a1d2b5947f98abb3acf8bfd966422b ]
+[ Upstream commit ad191eb6d6942bb835a0b20b647f7c53c1d99ca4 ]
 
-epoll can call out to vfs_poll() with a file pointer that may race with
-the last 'fput()'. That would make f_count go down to zero, and while
-the ep->mtx locking means that the resulting file pointer tear-down will
-be blocked until the poll returns, it means that f_count is already
-dead, and any use of it won't actually get a reference to the file any
-more: it's dead regardless.
+When renaming onto an existing directory entry, user space expects
+the replacement entry to have the same directory offset as the
+original one.
 
-Make sure we have a valid ref on the file pointer before we call down to
-vfs_poll() from the epoll routines.
-
-Link: https://lore.kernel.org/lkml/0000000000002d631f0615918f1e@google.com/
-Reported-by: syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://gitlab.alpinelinux.org/alpine/aports/-/issues/15966
+Fixes: a2e459555c5f ("shmem: stable directory offsets")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20240415152057.4605-4-cel@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ fs/libfs.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 3534d36a14740..c5a9a483fb538 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -875,6 +875,34 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- 	return res;
- }
- 
-+/*
-+ * The ffd.file pointer may be in the process of being torn down due to
-+ * being closed, but we may not have finished eventpoll_release() yet.
+diff --git a/fs/libfs.c b/fs/libfs.c
+index c392a6edd3930..b635ee5adbcce 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -366,6 +366,9 @@ int simple_offset_empty(struct dentry *dentry)
+  *
+  * Caller provides appropriate serialization.
+  *
++ * User space expects the directory offset value of the replaced
++ * (new) directory entry to be unchanged after a rename.
 + *
-+ * Normally, even with the atomic_long_inc_not_zero, the file may have
-+ * been free'd and then gotten re-allocated to something else (since
-+ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
-+ *
-+ * But for epoll, users hold the ep->mtx mutex, and as such any file in
-+ * the process of being free'd will block in eventpoll_release_file()
-+ * and thus the underlying file allocation will not be free'd, and the
-+ * file re-use cannot happen.
-+ *
-+ * For the same reason we can avoid a rcu_read_lock() around the
-+ * operation - 'ffd.file' cannot go away even if the refcount has
-+ * reached zero (but we must still not call out to ->poll() functions
-+ * etc).
-+ */
-+static struct file *epi_fget(const struct epitem *epi)
-+{
-+	struct file *file;
-+
-+	file = epi->ffd.file;
-+	if (!atomic_long_inc_not_zero(&file->f_count))
-+		file = NULL;
-+	return file;
-+}
-+
- /*
-  * Differs from ep_eventpoll_poll() in that internal callers already have
-  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
-@@ -883,14 +911,22 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- static __poll_t ep_item_poll(const struct epitem *epi, poll_table *pt,
- 				 int depth)
+  * Returns zero on success, a negative errno value on failure.
+  */
+ int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+@@ -373,8 +376,14 @@ int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
  {
--	struct file *file = epi->ffd.file;
-+	struct file *file = epi_fget(epi);
- 	__poll_t res;
+ 	struct offset_ctx *old_ctx = old_dir->i_op->get_offset_ctx(old_dir);
+ 	struct offset_ctx *new_ctx = new_dir->i_op->get_offset_ctx(new_dir);
++	long new_offset = dentry2offset(new_dentry);
  
-+	/*
-+	 * We could return EPOLLERR | EPOLLHUP or something, but let's
-+	 * treat this more as "file doesn't exist, poll didn't happen".
-+	 */
-+	if (!file)
-+		return 0;
+ 	simple_offset_remove(old_ctx, old_dentry);
 +
- 	pt->_key = epi->event.events;
- 	if (!is_file_epoll(file))
- 		res = vfs_poll(file, pt);
- 	else
- 		res = __ep_eventpoll_poll(file, pt, depth);
-+	fput(file);
- 	return res & epi->event.events;
++	if (new_offset) {
++		offset_set(new_dentry, 0);
++		return simple_offset_replace(new_ctx, old_dentry, new_offset);
++	}
+ 	return simple_offset_add(new_ctx, old_dentry);
  }
  
 -- 
