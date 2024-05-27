@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-46878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DBC8D0BA2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:11:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40A58D0DD4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB10BB20A73
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:11:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126F91C21197
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5642326AF2;
-	Mon, 27 May 2024 19:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ED515FA60;
+	Mon, 27 May 2024 19:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLx2Rmcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDqkOSql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1570D17E90E;
-	Mon, 27 May 2024 19:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3005C17727;
+	Mon, 27 May 2024 19:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837086; cv=none; b=CVNAq1tENJ0ZlBKG046gDNpZFbJJ+EudKXF6F/80zs+7APHBiBVl+qeebh7ENFOTjN87E1sHkdEMrNq5PhBAhnzyxTvoX+UlvaK2zL6qRVVBDTLZO05v/K4fm0O+33zIaDFdLWLbvCTp3iWYa4auHb3fiaXHfN6OcXsbdhoVdpU=
+	t=1716838455; cv=none; b=GPZ8X96EWQfkbk2apuo4VmWpCf8ygslOJXPH82RJuBbUhW9g699boAy8LhwDd/baDw2DMJ+koVnL9H+W79eHUAhojq9Q4lZhU2jXhsPun05ullTD/qOhPSBYWMfJBdWhVaUNvUeUYksHIf2u7jsSeo+Gls6TVqbwmWHnx0XBYCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837086; c=relaxed/simple;
-	bh=8skkggTJr5T9Ud8PKR5EJJ2pkfBRL1oTvR8AXdV2a8U=;
+	s=arc-20240116; t=1716838455; c=relaxed/simple;
+	bh=kxaRwhvTcwLDK+6n66Rg/F4etVIwN1Ch4fUz/WrhOGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAF6qBIT6OlWtKUhf6vFoaQDlwBU2JO/sUZzZ2c7hr3u6T/mUQduXff8tJesztDW6VzZajdHuiV1+sVDSqgnpSzzGfKpHPgI9To98XbjCGQdlsEk0K0wHE6np6bVlT8oWth8q2F/rnc3Fz5W1AETkSwsnhh1ajcBgMULpeqWo2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLx2Rmcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF0AC2BBFC;
-	Mon, 27 May 2024 19:11:25 +0000 (UTC)
+	 MIME-Version; b=Rm57PPFRFnUQlxnVhmtymWaSVsz3OpFRXvj8qQn/BZ/noBpj6Lg/41FI7jzeRolrqmkNRWysywxuiKr0/JAYtoHWj2C2Rb5wNJkGPXaLnW5i2xhpAzP+mR7c66rz77JqBYUUjCC6o1orOYQNlKano0KbbuP7oGamEgzrV1WBUlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDqkOSql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C18C2BBFC;
+	Mon, 27 May 2024 19:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837086;
-	bh=8skkggTJr5T9Ud8PKR5EJJ2pkfBRL1oTvR8AXdV2a8U=;
+	s=korg; t=1716838455;
+	bh=kxaRwhvTcwLDK+6n66Rg/F4etVIwN1Ch4fUz/WrhOGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLx2RmcwOuSgYW5+ydJ3XeY3n+L5rMSw9utE5K832hCr+boZNggzNGr5mU9Gce/op
-	 J4kl06seM9a4xbS8cPvAD4KzXI9M6A638ayr1r6OAmZrSXBMthXNMe2PUK81jlgDw5
-	 1s4jkAYlL+HzTCoW2mOqe4bcKhxyGQa/3A70XP6g=
+	b=cDqkOSql4c+lK051xnIp0R8XTAI92LF9BC5PVdyayjJeUF4SjKYthpRJJCHV3LpSk
+	 zRVIzYoTttiBXgkjkgbNCKrB6ShBVfs69YnTKwHY/iO9MPVV1kXx6aYVINKHJ/Kdnk
+	 rVU/rLpPao13yOY2C8K8jVM5cVBBZr2kF+iubrfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 304/427] ASoC: SOF: Intel: mtl: Implement firmware boot state check
-Date: Mon, 27 May 2024 20:55:51 +0200
-Message-ID: <20240527185630.469091920@linuxfoundation.org>
+Subject: [PATCH 6.8 350/493] drm/bridge: Fix improper bridge init order with pre_enable_prev_first
+Date: Mon, 27 May 2024 20:55:52 +0200
+Message-ID: <20240527185641.735650420@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +64,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Jagan Teki <jagan@amarulasolutions.com>
 
-[ Upstream commit 6b1c1c47e76f0161bda2b1ac2e86a219fe70244f ]
+[ Upstream commit e18aeeda0b6905c333df5a0566b99f5c84426098 ]
 
-With the corrected rom_status_reg values we can now add a check for target
-boot status for firmware booting.
-With the check now we can identify failed firmware boots (IMR boots) and
-we can use the fallback to purge boot the DSP.
+For a given bridge pipeline if any bridge sets pre_enable_prev_first
+flag then the pre_enable for the previous bridge will be called before
+pre_enable of this bridge and opposite is done for post_disable.
 
-Fixes: 064520e8aeaa ("ASoC: SOF: Intel: Add support for MeteorLake (MTL)")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://msgid.link/r/20240403105210.17949-6-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+These are the potential bridge flags to alter bridge init order in order
+to satisfy the MIPI DSI host and downstream panel or bridge to function.
+However the existing pre_enable_prev_first logic with associated bridge
+ordering has broken for both pre_enable and post_disable calls.
+
+[pre_enable]
+
+The altered bridge ordering has failed if two consecutive bridges on a
+given pipeline enables the pre_enable_prev_first flag.
+
+Example:
+- Panel
+- Bridge 1
+- Bridge 2 pre_enable_prev_first
+- Bridge 3
+- Bridge 4 pre_enable_prev_first
+- Bridge 5 pre_enable_prev_first
+- Bridge 6
+- Encoder
+
+In this example, Bridge 4 and Bridge 5 have pre_enable_prev_first.
+
+The logic looks for a bridge which enabled pre_enable_prev_first flag
+on each iteration and assigned the previou bridge to limit pointer
+if the bridge doesn't enable pre_enable_prev_first flags.
+
+If control found Bridge 2 is pre_enable_prev_first then the iteration
+looks for Bridge 3 and found it is not pre_enable_prev_first and assigns
+it's previous Bridge 4 to limit pointer and calls pre_enable of Bridge 3
+and Bridge 2 and assign iter pointer with limit which is Bridge 4.
+
+Here is the actual problem, for the next iteration control look for
+Bridge 5 instead of Bridge 4 has iter pointer in previous iteration
+moved to Bridge 4 so this iteration skips the Bridge 4. The iteration
+found Bridge 6 doesn't pre_enable_prev_first flags so the limit assigned
+to Encoder. From next iteration Encoder skips as it is the last bridge
+for reverse order pipeline.
+
+So, the resulting pre_enable bridge order would be,
+- Panel, Bridge 1, Bridge 3, Bridge 2, Bridge 6, Bridge 5.
+
+This patch fixes this by assigning limit to next pointer instead of
+previous bridge since the iteration always looks for bridge that does
+NOT request prev so assigning next makes sure the last bridge on a
+given iteration what exactly the limit bridge is.
+
+So, the resulting pre_enable bridge order with fix would be,
+- Panel, Bridge 1, Bridge 3, Bridge 2, Bridge 6, Bridge 5, Bridge 4,
+  Encoder.
+
+[post_disable]
+
+The altered bridge ordering has failed if two consecutive bridges on a
+given pipeline enables the pre_enable_prev_first flag.
+
+Example:
+- Panel
+- Bridge 1
+- Bridge 2 pre_enable_prev_first
+- Bridge 3
+- Bridge 4 pre_enable_prev_first
+- Bridge 5 pre_enable_prev_first
+- Bridge 6
+- Encoder
+
+In this example Bridge 5 and Bridge 4 have pre_enable_prev_first.
+
+The logic looks for a bridge which enabled pre_enable_prev_first flags
+on each iteration and assigned the previou bridge to next and next to
+limit pointer if the bridge does enable pre_enable_prev_first flag.
+
+If control starts from Bridge 6 then it found next Bridge 5 is
+pre_enable_prev_first and immediately the next assigned to previous
+Bridge 6 and limit assignments to next Bridge 6 and call post_enable
+of Bridge 6 even though the next consecutive Bridge 5 is enabled with
+pre_enable_prev_first. This clearly misses the logic to find the state
+of next conducive bridge as everytime the next and limit assigns
+previous bridge if given bridge enabled pre_enable_prev_first.
+
+So, the resulting post_disable bridge order would be,
+- Encoder, Bridge 6, Bridge 5, Bridge 4, Bridge 3, Bridge 2, Bridge 1,
+  Panel.
+
+This patch fixes this by assigning next with previou bridge only if the
+bridge doesn't enable pre_enable_prev_first flag and the next further
+assign it to limit. This way we can find the bridge that NOT requested
+prev to disable last.
+
+So, the resulting pre_enable bridge order with fix would be,
+- Encoder, Bridge 4, Bridge 5, Bridge 6, Bridge 2, Bridge 3, Bridge 1,
+  Panel.
+
+Validated the bridge init ordering by incorporating dummy bridges in
+the sun6i-mipi-dsi pipeline
+
+Fixes: 4fb912e5e190 ("drm/bridge: Introduce pre_enable_prev_first to alter bridge init order")
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+Tested-by: Michael Trimarchi <michael@amarulasolutions.com>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230328170752.1102347-1-jagan@amarulasolutions.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/mtl.c | 37 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 32 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_bridge.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/intel/mtl.c b/sound/soc/sof/intel/mtl.c
-index fbd7cf77e8174..05023763080d9 100644
---- a/sound/soc/sof/intel/mtl.c
-+++ b/sound/soc/sof/intel/mtl.c
-@@ -439,7 +439,7 @@ int mtl_dsp_cl_init(struct snd_sof_dev *sdev, int stream_tag, bool imr_boot)
- {
- 	struct sof_intel_hda_dev *hda = sdev->pdata->hw_pdata;
- 	const struct sof_intel_dsp_desc *chip = hda->desc;
--	unsigned int status;
-+	unsigned int status, target_status;
- 	u32 ipc_hdr, flags;
- 	char *dump_msg;
- 	int ret;
-@@ -485,13 +485,40 @@ int mtl_dsp_cl_init(struct snd_sof_dev *sdev, int stream_tag, bool imr_boot)
- 
- 	mtl_enable_ipc_interrupts(sdev);
- 
-+	if (chip->rom_status_reg == MTL_DSP_ROM_STS) {
-+		/*
-+		 * Workaround: when the ROM status register is pointing to
-+		 * the SRAM window (MTL_DSP_ROM_STS) the platform cannot catch
-+		 * ROM_INIT_DONE because of a very short timing window.
-+		 * Follow the recommendations and skip target state waiting.
-+		 */
-+		return 0;
-+	}
+diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+index 4f6f8c662d3fe..ac502ea20089b 100644
+--- a/drivers/gpu/drm/drm_bridge.c
++++ b/drivers/gpu/drm/drm_bridge.c
+@@ -687,11 +687,17 @@ void drm_atomic_bridge_chain_post_disable(struct drm_bridge *bridge,
+ 				 */
+ 				list_for_each_entry_from(next, &encoder->bridge_chain,
+ 							 chain_node) {
+-					if (next->pre_enable_prev_first) {
++					if (!next->pre_enable_prev_first) {
+ 						next = list_prev_entry(next, chain_node);
+ 						limit = next;
+ 						break;
+ 					}
 +
- 	/*
--	 * ACE workaround: don't wait for ROM INIT.
--	 * The platform cannot catch ROM_INIT_DONE because of a very short
--	 * timing window. Follow the recommendations and skip this part.
-+	 * step 7:
-+	 * - Cold/Full boot: wait for ROM init to proceed to download the firmware
-+	 * - IMR boot: wait for ROM firmware entered (firmware booted up from IMR)
- 	 */
-+	if (imr_boot)
-+		target_status = FSR_STATE_FW_ENTERED;
-+	else
-+		target_status = FSR_STATE_INIT_DONE;
++					if (list_is_last(&next->chain_node,
++							 &encoder->bridge_chain)) {
++						limit = next;
++						break;
++					}
+ 				}
  
--	return 0;
-+	ret = snd_sof_dsp_read_poll_timeout(sdev, HDA_DSP_BAR,
-+					chip->rom_status_reg, status,
-+					(FSR_TO_STATE_CODE(status) == target_status),
-+					HDA_DSP_REG_POLL_INTERVAL_US,
-+					chip->rom_init_timeout *
-+					USEC_PER_MSEC);
-+
-+	if (!ret)
-+		return 0;
-+
-+	if (hda->boot_iteration == HDA_FW_BOOT_ATTEMPTS)
-+		dev_err(sdev->dev,
-+			"%s: timeout with rom_status_reg (%#x) read\n",
-+			__func__, chip->rom_status_reg);
- 
- err:
- 	flags = SOF_DBG_DUMP_PCI | SOF_DBG_DUMP_MBOX | SOF_DBG_DUMP_OPTIONAL;
+ 				/* Call these bridges in reverse order */
+@@ -774,7 +780,7 @@ void drm_atomic_bridge_chain_pre_enable(struct drm_bridge *bridge,
+ 					/* Found first bridge that does NOT
+ 					 * request prev to be enabled first
+ 					 */
+-					limit = list_prev_entry(next, chain_node);
++					limit = next;
+ 					break;
+ 				}
+ 			}
 -- 
 2.43.0
 
