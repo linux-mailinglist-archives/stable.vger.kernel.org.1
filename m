@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-46937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C53C8D0BE2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94838D0DB3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB361285FF2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAB091C2105B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF261754B;
-	Mon, 27 May 2024 19:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100FB15FA60;
+	Mon, 27 May 2024 19:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCkm9daL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7EZ+02R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9EA17E90E;
-	Mon, 27 May 2024 19:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C406E17727;
+	Mon, 27 May 2024 19:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837240; cv=none; b=GP80KsXcQmA6Y/8ahauPXdbUKiV4BZ1XP2QZJ+PH5v54GriZ0A9x76edcplnUPjXRsPHBctRWaHa8u28BicvqJ7jJZ/Imi1vd7ZqmbZBMEYd/j74WwOWItyzVJVgGDFHCvqhWkLEuVL0fx0MyPQIH4IlJFrYFUA7PRormTxbdc4=
+	t=1716838369; cv=none; b=E3QEUm0+KbeeR643WsQwc1xTRinUncEKwAn0yve+nucVsqSC8eoLUEZp4ETSHmWRwJHA2goEYMFYp899EvZq1N49VPPsil2FTQwBmksCIW8cT1jy/+1ZvHkfdEGXWFio0gIKwx3e0HDc+reDmdz2hnUmhKaucaE2PYpLvtIDGQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837240; c=relaxed/simple;
-	bh=Xr21Fc+LEPYLo0GMBzU9u1y8bnJL1XA4+Xt9GIcGqn0=;
+	s=arc-20240116; t=1716838369; c=relaxed/simple;
+	bh=jiWSFjRH56O1YjdBWWMEaoi9p6+tqbxVSIkOa7cZ+Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCH5f1KwjB1J+xcXLKxEIqByIwW6ljd4sXm2iP4+H143WShce7/fnt1aMa25SUdzxq1f6g1mFsYU7nVwBM48i/X4sO5uhjJzKC47i5dDHfi6truNBeAciW/JMU5WCfeKIkHSzEPTFNpPgD+VcGeUcT7r+ZT8SfSaujN5dzo1W7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCkm9daL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7810C2BBFC;
-	Mon, 27 May 2024 19:13:59 +0000 (UTC)
+	 MIME-Version; b=fdjKeF80kbpIaX9oto0l178RnyBdzOt65hIFuS09419a6wszscQA2rj9Q6DbUxtTI4u/hvnZYnyA9meDUk6OyNmQhMA+UA+gtHJZ9V5u8PR1xxzj1D5+ITh1wJ2ahxGjUYpJYPrb55xYrDoJW+DD0OzVYUJjZFi7gEaLiyI4haY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7EZ+02R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7B0C2BBFC;
+	Mon, 27 May 2024 19:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837240;
-	bh=Xr21Fc+LEPYLo0GMBzU9u1y8bnJL1XA4+Xt9GIcGqn0=;
+	s=korg; t=1716838369;
+	bh=jiWSFjRH56O1YjdBWWMEaoi9p6+tqbxVSIkOa7cZ+Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCkm9daLSz5HFPq5xqkvDOruVXfqWPbPKr3BVkfJ+SOWh3ifQBZ96QJtpsSn3sBP1
-	 Pdhm+QwfWXANItR6RVSpTLz7WXQ667AiVUIq2xkN8vA3XO0sSAgFjcInGvJjaplGfV
-	 Jj2Lg1I44BsRixhFkE94mREoHBj3rMdJsiqhVyr0=
+	b=B7EZ+02RZVIMX1qNTbVbIbk4h1RzfFlOAE1H9pjdh3fIFjGsUK+9f0XBHB6x8UfxR
+	 cbsdAUylIvGPBZhupMbGRYhb/eu1755ATIwUbE9rWFlvxLI6qKcGzk1McRStfIDbF8
+	 0/pQqFbAYVwLN0Ep3AEaDzQoBAHwuiVDEgqsPGz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Rob Herring <robh@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 322/427] media: dt-bindings: ovti,ov2680: Fix the power supply names
+Subject: [PATCH 6.8 367/493] ASoC: mediatek: Assign dummy when codec not specified for a DAI link
 Date: Mon, 27 May 2024 20:56:09 +0200
-Message-ID: <20240527185631.680296890@linuxfoundation.org>
+Message-ID: <20240527185642.290489123@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit e2f6ea61b6f3e4ebbb7dff857eea6220c18cd17b ]
+[ Upstream commit 5f39231888c63f0a7708abc86b51b847476379d8 ]
 
-The original .txt bindings had the OV2680 power supply names correct,
-but the transition from .txt to yaml spelled them incorrectly.
+MediaTek sound card drivers are checking whether a DAI link is present
+and used on a board to assign the correct parameters and this is done
+by checking the codec DAI names at probe time.
 
-Fix the OV2680 power supply names as the original .txt bindings
-as these are the names used by the OV2680 driver and in devicetree.
+If no real codec is present, assign the dummy codec to the DAI link
+to avoid NULL pointer during string comparison.
 
-Fixes: 57226cd8c8bf ("media: dt-bindings: ov2680: convert bindings to yaml")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 4302187d955f ("ASoC: mediatek: common: add soundcard driver common code")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://msgid.link/r/20240313110147.1267793-5-angelogioacchino.delregno@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/media/i2c/ovti,ov2680.yaml        | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ sound/soc/mediatek/common/mtk-soundcard-driver.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-index cf456f8d9ddcb..c87677f5e2a25 100644
---- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-@@ -37,15 +37,15 @@ properties:
-       active low.
-     maxItems: 1
+diff --git a/sound/soc/mediatek/common/mtk-soundcard-driver.c b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+index a58e1e3674dec..000a086a8cf44 100644
+--- a/sound/soc/mediatek/common/mtk-soundcard-driver.c
++++ b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+@@ -22,7 +22,11 @@ static int set_card_codec_info(struct snd_soc_card *card,
  
--  dovdd-supply:
-+  DOVDD-supply:
-     description:
-       Definition of the regulator used as interface power supply.
+ 	codec_node = of_get_child_by_name(sub_node, "codec");
+ 	if (!codec_node) {
+-		dev_dbg(dev, "%s no specified codec\n", dai_link->name);
++		dev_dbg(dev, "%s no specified codec: setting dummy.\n", dai_link->name);
++
++		dai_link->codecs = &snd_soc_dummy_dlc;
++		dai_link->num_codecs = 1;
++		dai_link->dynamic = 1;
+ 		return 0;
+ 	}
  
--  avdd-supply:
-+  AVDD-supply:
-     description:
-       Definition of the regulator used as analog power supply.
- 
--  dvdd-supply:
-+  DVDD-supply:
-     description:
-       Definition of the regulator used as digital power supply.
- 
-@@ -59,9 +59,9 @@ required:
-   - reg
-   - clocks
-   - clock-names
--  - dovdd-supply
--  - avdd-supply
--  - dvdd-supply
-+  - DOVDD-supply
-+  - AVDD-supply
-+  - DVDD-supply
-   - reset-gpios
-   - port
- 
-@@ -82,9 +82,9 @@ examples:
-                 clock-names = "xvclk";
-                 reset-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
- 
--                dovdd-supply = <&sw2_reg>;
--                dvdd-supply = <&sw2_reg>;
--                avdd-supply = <&reg_peri_3p15v>;
-+                DOVDD-supply = <&sw2_reg>;
-+                DVDD-supply = <&sw2_reg>;
-+                AVDD-supply = <&reg_peri_3p15v>;
- 
-                 port {
-                         ov2680_to_mipi: endpoint {
 -- 
 2.43.0
 
