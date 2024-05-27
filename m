@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-47216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD15E8D0D15
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2ABD8D0B11
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD971F21489
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E816283040
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1EA15FD04;
-	Mon, 27 May 2024 19:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB9C17E90E;
+	Mon, 27 May 2024 19:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlYYpyHq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FP+Wu5eu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174EB168C4;
-	Mon, 27 May 2024 19:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8291754B;
+	Mon, 27 May 2024 19:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837968; cv=none; b=o1t4WxFUdCataN6zFM5DPLvlEK3ZgqkPvH9FSbGHaEmZ8LoykeXD/xuPLDmY6dCAovqpb2QTuVDuYrvOEM2tXhYckVVSYEMZ0WbYUL0Tp/9GmaWqKcTbsTDnxgvE8ahYCOBNAyaii9dMtK8AJXLLzNV0e7QGj/G/dSJ/zQL/HQM=
+	t=1716836740; cv=none; b=kF7fOHFlMzNW/HJllvJhWxDnFHO4l0UeY7Era/jFnzp+y9NnlY51ec0/MIgQ3agszPbNxidvgW/Iy4ZHbrXkHMW9a74QqClT0rrGOPMMbojx6wSGIeOPvmNtMPNgTAK48aJYCzSxpKz7W5F/7LbllPqlZherSRo0MmOX/I54R68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837968; c=relaxed/simple;
-	bh=ZD95hLP+p2HcEdhUlB34Y6eBV+jMnoxpFldzs7ijYoI=;
+	s=arc-20240116; t=1716836740; c=relaxed/simple;
+	bh=L73a5UijfhYnjBoJH8/6LkAy+ESjRj+kdI+Wzcvh8TU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbCTqA1H57rt6RzFjE2T3Hr0teM7ebX36ktD9xi1ckgZx9vL2aHVsxYkTRequmn29V66n0DBuGuFLnwoz04PkuJbiAZZzBquT9/vVydAhZpu2de9cN3iV3sQYEjNwJbMzs0cYcOPrspWHbyFwoMOo/yvIvwXYVsce/hMlkrMsV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlYYpyHq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0927C2BBFC;
-	Mon, 27 May 2024 19:26:07 +0000 (UTC)
+	 MIME-Version; b=YRAanrhyXcDEQWFI8C4Hxk8AM+mGX3xRUj2mqSe2SrhX278ZvHWg7PdH1k1iygw5Mvgzhg7p+JJKUHlcU91xoOhq+EMo34lHaZRG2mAbIk53XFNNFtMDdybC8su74ewh9TzLYCpGChnatkSHCYi8Es1TlSdA7K3TqzK1v69d+9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FP+Wu5eu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C34C2BBFC;
+	Mon, 27 May 2024 19:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837968;
-	bh=ZD95hLP+p2HcEdhUlB34Y6eBV+jMnoxpFldzs7ijYoI=;
+	s=korg; t=1716836740;
+	bh=L73a5UijfhYnjBoJH8/6LkAy+ESjRj+kdI+Wzcvh8TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlYYpyHqjB7f8ldZrdMJy1uQxjtrnFrbj+RPosiG34LPHZOvd+MY06HsL70lgRF9X
-	 qQcewOZXRdnYlvLlbtu5IEbJ1kytchw/0/tZ49cq7r6KIi6ZxBs2X0Gu1/1o/5M8w/
-	 fWlw6VDd+K1TSLguGRRqCOk1kKouUQCyrViJl0wM=
+	b=FP+Wu5euwCqvDH9B2OJCXud3xG2ae8JrQTRfNUwH8hPMQ+JZ67Cx9xBDPDaemLe8k
+	 +XywW0in18MCehLAGDE3Qc3WC68v9tA7AWBSeKcjKNud2kQwd/LSDEsWlk49RxucD0
+	 JqpqFy+ZM7SQu13nOnokAFZLW4OwPd24uk8S3MUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 213/493] selftests/bpf: Fix umount cgroup2 error in test_sockmap
+Subject: [PATCH 6.9 168/427] gfs2: Remove ill-placed consistency check
 Date: Mon, 27 May 2024 20:53:35 +0200
-Message-ID: <20240527185637.281995548@linuxfoundation.org>
+Message-ID: <20240527185618.033340222@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit d75142dbeb2bd1587b9cc19f841578f541275a64 ]
+[ Upstream commit 59f60005797b4018d7b46620037e0c53d690795e ]
 
-This patch fixes the following "umount cgroup2" error in test_sockmap.c:
+This consistency check was originally added by commit 9287c6452d2b1
+("gfs2: Fix occasional glock use-after-free").  It is ill-placed in
+gfs2_glock_free() because if it holds there, it must equally hold in
+__gfs2_glock_put() already.  Either way, the check doesn't seem
+necessary anymore.
 
- (cgroup_helpers.c:353: errno: Device or resource busy) umount cgroup2
-
-Cgroup fd cg_fd should be closed before cleanup_cgroup_environment().
-
-Fixes: 13a5f3ffd202 ("bpf: Selftests, sockmap test prog run without setting cgroup")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/0399983bde729708773416b8488bac2cd5e022b8.1712639568.git.tanggeliang@kylinos.cn
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: d98779e68772 ("gfs2: Fix potential glock use-after-free on unmount")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/glock.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 024a0faafb3be..43612de44fbf5 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -2104,9 +2104,9 @@ int main(int argc, char **argv)
- 		free(options.whitelist);
- 	if (options.blacklist)
- 		free(options.blacklist);
-+	close(cg_fd);
- 	if (cg_created)
- 		cleanup_cgroup_environment();
--	close(cg_fd);
- 	return err;
- }
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 385561cd4f4c7..5d5b3235d4e59 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -170,7 +170,6 @@ void gfs2_glock_free(struct gfs2_glock *gl)
+ {
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
  
+-	gfs2_glock_assert_withdraw(gl, atomic_read(&gl->gl_revokes) == 0);
+ 	rhashtable_remove_fast(&gl_hash_table, &gl->gl_node, ht_parms);
+ 	smp_mb();
+ 	wake_up_glock(gl);
 -- 
 2.43.0
 
