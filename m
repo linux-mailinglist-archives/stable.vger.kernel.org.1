@@ -1,90 +1,133 @@
-Return-Path: <stable+bounces-46289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2808CFE33
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 12:37:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1213D8CFE6D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 12:55:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B19C51F2355F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 10:37:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCC7928160A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 10:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7E313BAD4;
-	Mon, 27 May 2024 10:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83DB13B5A8;
+	Mon, 27 May 2024 10:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qjwLXn6p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxIxBJm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3182F79E1;
-	Mon, 27 May 2024 10:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71D626AFA
+	for <stable@vger.kernel.org>; Mon, 27 May 2024 10:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716806228; cv=none; b=FpconmhDoEgnqGzSPoryyc9EfU2ORJPOK9T2B3wp4SsRJZnAUsV2mZbvv7RDmaV9jeHUDtB7/l+XQAUM0VZV7GGJth2MDnWHUtN8yEd0ULuK4kllkpRtiZcVqtiOWnuAnAQ8ga45NEH+9r73d6e1dBn3hRb5cyg10wu2Ko+W4dU=
+	t=1716807350; cv=none; b=VNx2B3ye9Ahwpo2NBcCmItIMytKiKPMv9HBAvJ6LRpDcd4B9AmRkXpj5IOuBJtIEIzHkU9sr5NWJVlcnViG5T3rOApTaWbga6t3bDHmGOpTFdLh5kzALkj1LI8vJplZ1rMXMN9hRdGOGhCjqaQsTuOXU+E087MxPVejtxbR7RZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716806228; c=relaxed/simple;
-	bh=s2RFCNIQELf5BIroDDeqZxI19isVpFZDp8clQgSgR/8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VTt7J0sgbDR/nh6OmVTiRfdlXtHxCGXOPHtsH5vyrwcoa2+xc4l9Wc6eTWxWATQTJoO9NP5bbO0XeQHgXiL7IqLvL/6IhkOH9OX+JQlhvhM3y56B4XKvxKA9ceR/PxHunqgnWHOaR8fYnZKdXkOGMOqhlax588hexb0clFRgivA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qjwLXn6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E712C4AF08;
-	Mon, 27 May 2024 10:37:08 +0000 (UTC)
+	s=arc-20240116; t=1716807350; c=relaxed/simple;
+	bh=Gxc2vcuaAfDYtORF4dt4i4LR7bnGOk2xqRktMHBfsn0=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=kuqBTfyZ6A64sT5ObBp/MvFrgDX+B2dgzqafifquKL62ZomL70+VBIQiPJ+eIgadLyPRxymrRMlzU7DEBisZ6WXRyoTjOQDaOXx3tuIP4oZGurCRoi7EW6ZieQ3Av590dZn8aOHVT0artM+RcOjMl1reygzsdTJEbvygGr6SaFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxIxBJm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9D2C2BBFC;
+	Mon, 27 May 2024 10:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716806228;
-	bh=s2RFCNIQELf5BIroDDeqZxI19isVpFZDp8clQgSgR/8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qjwLXn6pwdyZuZKn0X09RKT0yo2tfwNwLtUdeu6psId994G5I9uUjea9RntX/Z90M
-	 L3Jy/vAMr7wHUilkoVXyjwKBU8/wv3V5Zg3elqJU6XBnAfE6YoFDjTw1+cjr7TrK+v
-	 SqkNA95DzfbLfIbhd1VWe1bG0iQ/LLKTvbUzJEqDbPVUu/U+KAwNNvtXxMXNo8+BW9
-	 5lV0ZLfkpl5HiVjTka9Euft6vZwzpMkjMMJq+y04Z4M+C+ofmIq+PPIbDf2yNBbF1g
-	 yKBrMUc2FbbwkvpKC/F+Rk/5IMkmU2dVGhjLE9nxxJbe+c+8h6ORTU0pLRifH3+TiG
-	 3TwbsfxKbbcgw==
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3d02cc95096so445975b6e.0;
-        Mon, 27 May 2024 03:37:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXs4HCx3dZ0N5OGNt0xZ4TDxkh9E6Nm72eXoQApMAFJe3B8WDA0g9LoeJbTS/6Vz9KSLPEec7AXrW9t2Vnvcjl7feLvwFMDwh8OGuJxPd2YF1Zgi4IScvOB4FQ+pf3J7R4ccwvjzvdcMwuFvpA8CRngI7o0MYFKLadL9E1EnQ==
-X-Gm-Message-State: AOJu0YyHUYbvZyTsmnmzKKxGt7o+h6NMh3MZcfvJmFWoTjnHh+K9ve6K
-	NbwPzJf2YgJ/sI1D0o7/4e+nRLPX84ExNiCSJ7k6dLUVx9KlmIhG7jfPQ13wvzKoddhBj53ARpJ
-	82FHdKn5oUp/XbIUwLyGmDD2Rvsc=
-X-Google-Smtp-Source: AGHT+IF2FW+mgPtyJLUHni7RDf3OhqYbAMiUpR5ps+KWHwk0k4AocJmXcClKQue4FKMfLCG4jQFdnteBp+Lu/tVonkw=
-X-Received: by 2002:a05:6870:55d1:b0:24c:b092:fd38 with SMTP id
- 586e51a60fabf-24cb0930422mr9859752fac.1.1716806227238; Mon, 27 May 2024
- 03:37:07 -0700 (PDT)
+	s=k20201202; t=1716807350;
+	bh=Gxc2vcuaAfDYtORF4dt4i4LR7bnGOk2xqRktMHBfsn0=;
+	h=Date:To:Cc:From:Subject:From;
+	b=PxIxBJm2n+5/fv8X7NjRW3aheC72G459avOXJAi1Zl972zzcDNS1MjF8NVJ2lNO0c
+	 8rPpPa3NmnobH+ChZIatURHAJF9AcbvTof+8S824Lg5wiKLusTo2LadKRdf95ND5En
+	 oTeaPxUFseTXZjFOejErCDLVKER5EqPqzspd2W1YfKMoVNooi7Suf6JjlBGUhqu9z5
+	 5Lk86hjyO4bQivxsfM6z8Pbdz4i36BbOPTBq+H9XTHgv2/t8UlExleOKgwDpDKtQ4x
+	 yyp2nx42R/2vQf3Jn+NEThd6lVM+quhY8+CTT/Qydvtvx+XqCmyTi3/Ba6eBH21fS9
+	 qZ9QZfmAJ2x3w==
+Message-ID: <bd8c16fd-d640-448b-a75c-09a565fa9c89@kernel.org>
+Date: Mon, 27 May 2024 12:55:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <171633159194.398195.10059732788629089925.stgit@dwillia2-xfh.jf.intel.com>
- <0da7f58a-309f-4e25-b2f8-3bd80902341c@amd.com>
-In-Reply-To: <0da7f58a-309f-4e25-b2f8-3bd80902341c@amd.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 27 May 2024 12:36:53 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0ia9ut_hRPWsX3vAhABKwPn4eV8rgDjNjCppHpxE1hg4w@mail.gmail.com>
-Message-ID: <CAJZ5v0ia9ut_hRPWsX3vAhABKwPn4eV8rgDjNjCppHpxE1hg4w@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: EINJ: Fix einj_dev release leak
-To: Ben Cheatham <benjamin.cheatham@amd.com>, Dan Williams <dan.j.williams@intel.com>
-Cc: rafael.j.wysocki@intel.com, stable@vger.kernel.org, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-acpi@vger.kernel.org, 
-	linux-cxl@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+Content-Language: en-GB
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+From: Matthieu Baerts <matttbe@kernel.org>
+Subject: Are the 'FAILED' notifications always sent?
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 22, 2024 at 3:40=E2=80=AFPM Ben Cheatham <benjamin.cheatham@amd=
-.com> wrote:
->
-> On 5/21/24 5:46 PM, Dan Williams wrote:
-> > The platform driver conversion of EINJ mistakenly used
-> > platform_device_del() to unwind platform_device_register_full() at
-> > module exit. This leads to a small leak of one 'struct platform_device'
-> > instance per module load/unload cycle. Switch to
-> > platform_device_unregister() which performs both device_del() and final
-> > put_device().
-> >
->
-> Reviewed-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+Hi Sasha,
 
-Applied as 6.10-rc material, thanks!
+Thank you for the recent backports linked to MPTCP.
+
+Recently, I noticed that two patches [1] [2] with the same "Fixes" tag
+-- but without "Cc: stable", sorry for that -- have been backported to
+different stable versions. That's good, thank you!
+
+The first patch made its way to v5.15, while the second one went up to
+v6.8, but not to older stable versions. I understand it didn't go
+further because of other conflicts, and I'm ready to help to fix them.
+
+I just wanted to know if it is normal I didn't get any 'FAILED'
+notifications like the ones Greg send [3]: I rely on them to know which
+patches have been treated by the Stable team, but had conflicts. Will I
+get these notifications later (no hurry), or should I not rely on them
+to track fixes that could not be backported?
+
+Cheers,
+Matt
+
+[1]
+https://lore.kernel.org/mptcp/20240514011335.176158-2-martineau@kernel.org/
+[2]
+https://lore.kernel.org/mptcp/20240514011335.176158-3-martineau@kernel.org/
+[3] 'FAILED: patch "[PATCH] (...)" failed to apply to x.y-stable tree'
+-- 
+Sponsored by the NGI0 Core fund.
+
 
