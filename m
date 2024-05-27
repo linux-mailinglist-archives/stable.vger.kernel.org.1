@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2E18D0D9A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8841F8D0B9B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF01EB212F4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42DAB285162
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F83415FA9F;
-	Mon, 27 May 2024 19:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2158155CA7;
+	Mon, 27 May 2024 19:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9EnJUXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eF35FRPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D07262BE;
-	Mon, 27 May 2024 19:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F817E90E;
+	Mon, 27 May 2024 19:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838308; cv=none; b=tHaIKBGqbd4d7oobShomhh10mniZ3htnn9SRFk5noKMoA7YbP8FKiOtre/S4QwaL0OeATaTRJAgzu6bDyIQLWH64MBYsu/TvAeFaaD5HzURuZZfVGbcOrwbEn5WzcBwHfZRcnB6zsEuuMF86wUFblVDNDnx4bv7DaqUBIhhfXvI=
+	t=1716837068; cv=none; b=l7CbzBTq27OmlTDItvMXD3hjdRdnnip1emcBc/iBL/fPmYfJ9FYbYt2EljWwV+fFpavgLR+bsLTrPs0EkrrWgaanFgN6GRLSsVKzNo8CoRbaWiBEEptgs4PQ01CjzPGUlg5p7LpmLLCxGKQQ7WILW7Cpp0yNHQWqeufUuG5DnwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838308; c=relaxed/simple;
-	bh=8jTGDWWWVkGYiWEU/9YY3TcLaHXtcdc9T2aPyGvQhR4=;
+	s=arc-20240116; t=1716837068; c=relaxed/simple;
+	bh=tw8KNhAPpoXf6wt7A3otFuLMDhHKiW/zJig1qN3LQOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7J9K0p9GTLW7fgAqt+VGDtWGeCAE16RiUyMeRW0jk9BtFQz6x/3upuTSva1zykmHhadtABOt6EYruiGfjB0WdeCHt33IGZrzAsVKRuQQDXfl70LBKYwfTKhSN0fC/OyeGSzzhvAMbIEUvXTzneiyfmqVMtcACEt0xCQBthCFSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9EnJUXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA22C2BBFC;
-	Mon, 27 May 2024 19:31:47 +0000 (UTC)
+	 MIME-Version; b=dZCAd851R8VDctKNn5BNbYrsWxzBapvYepjquwymr1t5d3+JgN+zTzSuo468YeOhOYXusWiWTZbOB4SMx2i04C3n1NI2p1GjMMi1xSzImnVQmrph2jpbYbO4iE5SSTV10TPyaaUaLlMYIyydc4sZ58ZHvDYoXVNw2xMTN2JDD7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eF35FRPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF3AC2BBFC;
+	Mon, 27 May 2024 19:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838307;
-	bh=8jTGDWWWVkGYiWEU/9YY3TcLaHXtcdc9T2aPyGvQhR4=;
+	s=korg; t=1716837068;
+	bh=tw8KNhAPpoXf6wt7A3otFuLMDhHKiW/zJig1qN3LQOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9EnJUXJ5LI8LdGBayAGZOJVMEIN4kQ8uXTzpRROcW73wVqfTKfiyKcRVrtY4lOwe
-	 iR1/Sa4i+3aY574nVFiwIrXQcx1LJC3Q63s0jTuyrmfgR7hteGSRx6JUss66ECVa1I
-	 huXc2ksmI5uBY+vFZAxhzX5hsdVxWFvC7lXbYLrU=
+	b=eF35FRPks+PaQQRMO3XC6Zo2UJv4fbdN0pzKbvHF6RzFhwebXYLAIbTp9a6lM+My/
+	 53Z0UXvONMqu26QcPp7MNWQ5h9u21U0vt/Yhb4IBuucxEiVb0CtyVkAYnMRYoazThl
+	 yMpO49Tx31tdid+tvRCTTkSpd6Tjvoc5gGbrXL8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 342/493] Bluetooth: Remove usage of the deprecated ida_simple_xx() API
-Date: Mon, 27 May 2024 20:55:44 +0200
-Message-ID: <20240527185641.459277745@linuxfoundation.org>
+Subject: [PATCH 6.9 298/427] drm/mediatek: Init `ddp_comp` with devm_kcalloc()
+Date: Mon, 27 May 2024 20:55:45 +0200
+Message-ID: <20240527185630.069770638@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 9c16d0c8d93e3d2a95c5ed927b061f244db75579 ]
+[ Upstream commit 01a2c5123e27b3c4685bf2fc4c2e879f6e0c7b33 ]
 
-ida_alloc() and ida_free() should be preferred to the deprecated
-ida_simple_get() and ida_simple_remove().
+In the case where `conn_routes` is true we allocate an extra slot in
+the `ddp_comp` array but mtk_drm_crtc_create() never seemed to
+initialize it in the test case I ran. For me, this caused a later
+crash when we looped through the array in mtk_drm_crtc_mode_valid().
+This showed up for me when I booted with `slub_debug=FZPUA` which
+poisons the memory initially. Without `slub_debug` I couldn't
+reproduce, presumably because the later code handles the value being
+NULL and in most cases (not guaranteed in all cases) the memory the
+allocator returned started out as 0.
 
-Note that the upper limit of ida_simple_get() is exclusive, but the one of
-ida_alloc_max() is inclusive. So a -1 has been added when needed.
+It really doesn't hurt to initialize the array with devm_kcalloc()
+since the array is small and the overhead of initting a handful of
+elements to 0 is small. In general initting memory to zero is a safer
+practice and usually it's suggested to only use the non-initting alloc
+functions if you really need to.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 84a4bb6548a2 ("Bluetooth: HCI: Remove HCI_AMP support")
+Let's switch the function to use an allocation function that zeros the
+memory. For me, this avoids the crash.
+
+Fixes: 01389b324c97 ("drm/mediatek: Add connector dynamic selection capability")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240328092248.1.I2e73c38c0f264ee2fa4a09cdd83994e37ba9f541@changeid/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 9 +++++----
- net/bluetooth/hci_sock.c | 4 ++--
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index befe645d3f9bf..101ea9137dfef 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2609,10 +2609,11 @@ int hci_register_dev(struct hci_dev *hdev)
- 	 */
- 	switch (hdev->dev_type) {
- 	case HCI_PRIMARY:
--		id = ida_simple_get(&hci_index_ida, 0, HCI_MAX_ID, GFP_KERNEL);
-+		id = ida_alloc_max(&hci_index_ida, HCI_MAX_ID - 1, GFP_KERNEL);
- 		break;
- 	case HCI_AMP:
--		id = ida_simple_get(&hci_index_ida, 1, HCI_MAX_ID, GFP_KERNEL);
-+		id = ida_alloc_range(&hci_index_ida, 1, HCI_MAX_ID - 1,
-+				     GFP_KERNEL);
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -2711,7 +2712,7 @@ int hci_register_dev(struct hci_dev *hdev)
- 	destroy_workqueue(hdev->workqueue);
- 	destroy_workqueue(hdev->req_workqueue);
- err:
--	ida_simple_remove(&hci_index_ida, hdev->id);
-+	ida_free(&hci_index_ida, hdev->id);
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index a04499c4f9ca2..29207b2756c14 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -1009,10 +1009,10 @@ int mtk_drm_crtc_create(struct drm_device *drm_dev,
  
- 	return error;
- }
-@@ -2793,7 +2794,7 @@ void hci_release_dev(struct hci_dev *hdev)
- 	hci_dev_unlock(hdev);
- 
- 	ida_destroy(&hdev->unset_handle_ida);
--	ida_simple_remove(&hci_index_ida, hdev->id);
-+	ida_free(&hci_index_ida, hdev->id);
- 	kfree_skb(hdev->sent_cmd);
- 	kfree_skb(hdev->req_skb);
- 	kfree_skb(hdev->recv_event);
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 3f5f0932330d2..703b84bd48d5b 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -101,7 +101,7 @@ static bool hci_sock_gen_cookie(struct sock *sk)
- 	int id = hci_pi(sk)->cookie;
- 
- 	if (!id) {
--		id = ida_simple_get(&sock_cookie_ida, 1, 0, GFP_KERNEL);
-+		id = ida_alloc_min(&sock_cookie_ida, 1, GFP_KERNEL);
- 		if (id < 0)
- 			id = 0xffffffff;
- 
-@@ -119,7 +119,7 @@ static void hci_sock_free_cookie(struct sock *sk)
- 
- 	if (id) {
- 		hci_pi(sk)->cookie = 0xffffffff;
--		ida_simple_remove(&sock_cookie_ida, id);
-+		ida_free(&sock_cookie_ida, id);
- 	}
- }
+ 	mtk_crtc->mmsys_dev = priv->mmsys_dev;
+ 	mtk_crtc->ddp_comp_nr = path_len;
+-	mtk_crtc->ddp_comp = devm_kmalloc_array(dev,
+-						mtk_crtc->ddp_comp_nr + (conn_routes ? 1 : 0),
+-						sizeof(*mtk_crtc->ddp_comp),
+-						GFP_KERNEL);
++	mtk_crtc->ddp_comp = devm_kcalloc(dev,
++					  mtk_crtc->ddp_comp_nr + (conn_routes ? 1 : 0),
++					  sizeof(*mtk_crtc->ddp_comp),
++					  GFP_KERNEL);
+ 	if (!mtk_crtc->ddp_comp)
+ 		return -ENOMEM;
  
 -- 
 2.43.0
