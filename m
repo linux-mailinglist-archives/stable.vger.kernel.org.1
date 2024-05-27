@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A868D0E33
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E028D0C07
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04828281D98
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:37:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53C261C2155E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D6D1607B2;
-	Mon, 27 May 2024 19:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3C216130A;
+	Mon, 27 May 2024 19:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="benRKdVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNjSpW8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7E661FDF;
-	Mon, 27 May 2024 19:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB6B161302;
+	Mon, 27 May 2024 19:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838674; cv=none; b=fxIl355q0ixrBE15zG+az0NImRm+FJZiz2FiBbbFHurMtngmFidzvapqfFQdWqChaXfj7LcQbbrBuQtI1e12qap/MuiFhS6hDUXEkdlvhvzGmvAr3WazxsFQHbVhbuDtwg4SSTLPPhmsQlDGBavTle2zTpNTLoz/92qGOno//ZA=
+	t=1716837326; cv=none; b=GqLEz0yVof5Atk2KJ8AM4wqIlbG4qlzBCLqOcTYGjzpRIgniXkNbVm5XLZd5PFa3V2MDBMLA9MBjD7MyjWhAQJYt6M+uJag1bAcoIVtPjD0PnBWFXuWkE/9wB1NUVDaixQx7/R8bdh0q7c76XjNByM2EfCw+nastpj4xPsIKc8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838674; c=relaxed/simple;
-	bh=hYk9Zwsc95JeuQQZJ8AFqTcEYolv4Zsb3Rn52WrGJ5M=;
+	s=arc-20240116; t=1716837326; c=relaxed/simple;
+	bh=MOimMQdEwXibqU45fKzdEdiLPnL2mMaeXvIW5j+ping=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O12yLjxlmTfovJPx11lDC8Y/yHwsaaUc50rDtkybBpm7ZKEyLs/+cTBDQKf8I/cokJmTADVw+pU6CLYWDGr1wP8PHmDoyNQokiJNsuqvgCHMTRfaJriG2lA2tqaOSJoMmAgJMd9Fo6jE4nhwV50I1RM7SvMrTFwmGYuZdbiH2kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=benRKdVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D8DC32781;
-	Mon, 27 May 2024 19:37:53 +0000 (UTC)
+	 MIME-Version; b=t2sSgrTmPnYW9rO/3BFTjUmvyFE0Ntrie9lUmKHOWuXgJc8wDfOu/ak+Zd3RVTmjFfEK9kU38FkPlrgxb1UEYdjLRAU5tJyQh334dYEFYXCqHg1Y4iZPmpWmiydR4SEqnHTclcfh7UWpTze1olesRCLNmRF/hOwPz7hrU00xdEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNjSpW8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59F0C2BBFC;
+	Mon, 27 May 2024 19:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838674;
-	bh=hYk9Zwsc95JeuQQZJ8AFqTcEYolv4Zsb3Rn52WrGJ5M=;
+	s=korg; t=1716837326;
+	bh=MOimMQdEwXibqU45fKzdEdiLPnL2mMaeXvIW5j+ping=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=benRKdVCB/X18hlDHJO2Pf7BPW8pcWZ2bg3l3YE22+rYx8/Vdb8kq69lfPhjYioh9
-	 ZfXAcyCoMUr4ekE9qLnblXRdID0p/dPVJfRL6XZlCkCqd2HWA8EZQLHJ9IgB/sinh+
-	 0YB/7I8913cLj4hDQpTfOQjkeIfMmlsDqRvs6c3U=
+	b=pNjSpW8alwbehYbeK6LLopyUAPsqQSKLwzRiANdxQRLFWMG49l8wtgdkVi5HwMe95
+	 ElTcbLF9RbFyxWMn9SdibQbvrPZD5V34h7RSLgp4GRhWm5WtBOvxdoDUauTI/TuMcA
+	 c8z8cOPvhg5ZcCUeCz/XlAgflCBSh8tBiFTlWa1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 441/493] lib/test_hmm.c: handle src_pfns and dst_pfns allocation failure
+Subject: [PATCH 6.9 396/427] ext4: fix potential unnitialized variable
 Date: Mon, 27 May 2024 20:57:23 +0200
-Message-ID: <20240527185644.682141913@linuxfoundation.org>
+Message-ID: <20240527185634.971886005@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c2af060d1c18beaec56351cf9c9bcbbc5af341a3 ]
+[ Upstream commit 3f4830abd236d0428e50451e1ecb62e14c365e9b ]
 
-The kcalloc() in dmirror_device_evict_chunk() will return null if the
-physical memory has run out.  As a result, if src_pfns or dst_pfns is
-dereferenced, the null pointer dereference bug will happen.
+Smatch complains "err" can be uninitialized in the caller.
 
-Moreover, the device is going away.  If the kcalloc() fails, the pages
-mapping a chunk could not be evicted.  So add a __GFP_NOFAIL flag in
-kcalloc().
+    fs/ext4/indirect.c:349 ext4_alloc_branch()
+    error: uninitialized symbol 'err'.
 
-Finally, as there is no need to have physically contiguous memory, Switch
-kcalloc() to kvcalloc() in order to avoid failing allocations.
+Set the error to zero on the success path.
 
-Link: https://lkml.kernel.org/r/20240312005905.9939-1-duoming@zju.edu.cn
-Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Cc: Jérôme Glisse <jglisse@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/363a4673-0fb8-4adf-b4fb-90a499077276@moroto.mountain
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_hmm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ext4/mballoc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 717dcb8301273..b823ba7cb6a15 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1226,8 +1226,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 	unsigned long *src_pfns;
- 	unsigned long *dst_pfns;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 12b3f196010b8..714f83632e3f9 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -6113,6 +6113,7 @@ ext4_mb_new_blocks_simple(struct ext4_allocation_request *ar, int *errp)
+ 	ext4_mb_mark_bb(sb, block, 1, true);
+ 	ar->len = 1;
  
--	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
--	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
-+	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
- 
- 	migrate_device_range(src_pfns, start_pfn, npages);
- 	for (i = 0; i < npages; i++) {
-@@ -1250,8 +1250,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 	}
- 	migrate_device_pages(src_pfns, dst_pfns, npages);
- 	migrate_device_finalize(src_pfns, dst_pfns, npages);
--	kfree(src_pfns);
--	kfree(dst_pfns);
-+	kvfree(src_pfns);
-+	kvfree(dst_pfns);
++	*errp = 0;
+ 	return block;
  }
  
- /* Removes free pages from the free list so they can't be re-allocated */
 -- 
 2.43.0
 
