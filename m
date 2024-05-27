@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-46610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8868D0A73
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CF08D0C84
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B16EA1C214FD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003651F226A7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1AE160797;
-	Mon, 27 May 2024 18:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5556315FD01;
+	Mon, 27 May 2024 19:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYjCtFGF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DR7i1SEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDE515FD19;
-	Mon, 27 May 2024 18:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DDC15EFC3;
+	Mon, 27 May 2024 19:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836399; cv=none; b=LV9TBUqPkx3PXnEskYT62FOOqtEuuNjNa4yjVoWGoPjdqRpDFEjS5QmzukecAUY0RvtYnEoKcRlKt2RdGQn3VQdQnhewsUyUCAPOT4buMimYbuNOxSVd1BiwN5pff1rvhta8BXiX/C3APgNF+okb2Z4THldUCb2Ao07/eGgnoFM=
+	t=1716837633; cv=none; b=hcNTYOxIxfoKTcfbzQqyEHihy5XiUNpitdAGlYc3Sep75xslv0heIaVT+OLs5UsMdVjhBz8JHNMDraoBx0QLHDWBe1lBwnBc4+GxFuMPLBGA35+ifBblEgyfOgsa36Mt10W8a85hztBcCpCvA3UPErxPhrXISzn/rlEqem+klXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836399; c=relaxed/simple;
-	bh=7TwIqVTxLUTYpVkW5UkJv8CG+Skee59wYErDDF7wd3Y=;
+	s=arc-20240116; t=1716837633; c=relaxed/simple;
+	bh=Dx236jsBTf/fST+TGdMwbl3HXvellZiT7QGNvPVzMpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P3b3Oy228Y8lb6dBmNqPuguzIMhuRrKwv5HqFXG6wHiVrQCgscP/qHEQDigDZ/Af0SuxaS+ewPNVu5C0h06jRpq3d4e6JSQ1CKN50/5UesjoRlmUuA8/qdThWkcNHlP8n1KWGUomiHcMGrwY9bMrv5gtHhjFTW1+6WcrDITAcUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYjCtFGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A287C2BBFC;
-	Mon, 27 May 2024 18:59:58 +0000 (UTC)
+	 MIME-Version; b=eqa1DAuWp50WgvrwwAXu0Ug8sajb6kNReO/7JGVqZEX7Tt6YWdNYm+D2h/dxLQIu/Duhx+3vrv/DT3G+ez9Vx86IaLIipy1h8G9etVhw6JI9KShwAW05pyvJYrLTv2sy0HIUCfrBZslDoOgPDpLW+X6zuuGnHKZGw0sX3SLbxVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DR7i1SEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9FEC2BBFC;
+	Mon, 27 May 2024 19:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836398;
-	bh=7TwIqVTxLUTYpVkW5UkJv8CG+Skee59wYErDDF7wd3Y=;
+	s=korg; t=1716837632;
+	bh=Dx236jsBTf/fST+TGdMwbl3HXvellZiT7QGNvPVzMpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYjCtFGFJbw6w0UIliCYs2vAb4uSuJT+6DOs9/NPwPJXyeSZoPZ8Ucxqoiv73Gw2Q
-	 kLiqdv1sfNSO5Phio2uN7XDGpUz7FCFb8/5s895xUDncoaBRW1l8WAnzVEMCAbCYh0
-	 SsX35ztCHfxJZ1nKj+M0rndLEjC7uNqnnWeb+LH8=
+	b=DR7i1SEQnytfVklMpSFdIU+DEiQHkLBHx1TvXoyKX8Sd2c1jk0sG0j4bZ4TMiTtr/
+	 q2YXrlEki/zqW840UimUcoJOqr7Opg+tJ673MkqCW4tpihmKS9+LHCmsCggi5iPFI7
+	 EbO/jcI2QidN5dMIVk6NLLqf5Lw2CXsXiCfI7FCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Chi <andy.chi@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.9 037/427] ALSA: hda/realtek: fix mute/micmute LEDs dont work for ProBook 440/460 G11.
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 082/493] EDAC/versal: Do not register for NOC errors
 Date: Mon, 27 May 2024 20:51:24 +0200
-Message-ID: <20240527185605.118701826@linuxfoundation.org>
+Message-ID: <20240527185632.878636026@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Chi <andy.chi@canonical.com>
+From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
 
-commit b3b6f125da2773cbc681316842afba63ca9869aa upstream.
+[ Upstream commit edbe59428eb0da09958769326a6566d4c9242ae7 ]
 
-HP ProBook 440/460 G11 needs ALC236_FIXUP_HP_GPIO_LED quirk to
-make mic-mute/audio-mute working.
+The NOC errors are not handled in the driver. Remove the request for
+registration.
 
-Signed-off-by: Andy Chi <andy.chi@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240523061832.607500-1-andy.chi@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240425121942.26378-2-shubhrajyoti.datta@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/edac/versal_edac.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10180,8 +10180,11 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c89, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c8d, "HP ProBook 440 G11", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c8e, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c90, "HP EliteBook 640", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c91, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+diff --git a/drivers/edac/versal_edac.c b/drivers/edac/versal_edac.c
+index a840c6922e5b9..4d5b68b6be673 100644
+--- a/drivers/edac/versal_edac.c
++++ b/drivers/edac/versal_edac.c
+@@ -1006,8 +1006,7 @@ static int mc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	rc = xlnx_register_event(PM_NOTIFY_CB, VERSAL_EVENT_ERROR_PMC_ERR1,
+-				 XPM_EVENT_ERROR_MASK_DDRMC_CR | XPM_EVENT_ERROR_MASK_DDRMC_NCR |
+-				 XPM_EVENT_ERROR_MASK_NOC_CR | XPM_EVENT_ERROR_MASK_NOC_NCR,
++				 XPM_EVENT_ERROR_MASK_DDRMC_CR | XPM_EVENT_ERROR_MASK_DDRMC_NCR,
+ 				 false, err_callback, mci);
+ 	if (rc) {
+ 		if (rc == -EACCES)
+@@ -1044,8 +1043,6 @@ static int mc_remove(struct platform_device *pdev)
+ 
+ 	xlnx_unregister_event(PM_NOTIFY_CB, VERSAL_EVENT_ERROR_PMC_ERR1,
+ 			      XPM_EVENT_ERROR_MASK_DDRMC_CR |
+-			      XPM_EVENT_ERROR_MASK_NOC_CR |
+-			      XPM_EVENT_ERROR_MASK_NOC_NCR |
+ 			      XPM_EVENT_ERROR_MASK_DDRMC_NCR, err_callback, mci);
+ 	edac_mc_del_mc(&pdev->dev);
+ 	edac_mc_free(mci);
+-- 
+2.43.0
+
 
 
 
