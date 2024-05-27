@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-46591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3118D0A5C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 20:59:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DBC8D0A6B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C249D1F2251E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:59:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBA89B216B3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFB4160795;
-	Mon, 27 May 2024 18:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4696E1607B8;
+	Mon, 27 May 2024 18:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bN454au0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGKs9CyW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CBC15FA96;
-	Mon, 27 May 2024 18:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037C715FCE6;
+	Mon, 27 May 2024 18:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836350; cv=none; b=OpYgXSP7VgF32AlknnwR/QZBCS7iG3XGiSq0sOjvNjTt5qz36J2islD9O1p8xWn8OVRpqA5u482QAaqEgYltuoLy697KDMcVCsmUd3jIpGAJFOSfZLST3VGHbPWW3wL9in34ueAQjLHLtm+FEgobOW/hgP4l5x/w4+/4UMEt9ZU=
+	t=1716836378; cv=none; b=EZ2FbjjUITesm1MkmwEAel4PKNHmbt7D/bW8Vl3mUJNo2XDl3iM/k9JD8rTaTJZtGMT/nJs6jBMGUbirCA9ufHUA8hLxq0qtLN5nUlwkrqulvTU4/JWEl+tUQQfn6K8FHbl9P6E3cXt6Q0Hbr3a81qvmpn2xgaASmJjqmDDoCa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836350; c=relaxed/simple;
-	bh=DzvQoUo8gT2P8wgRbSBI2/3Ps03luKe4oMe86CuAC3E=;
+	s=arc-20240116; t=1716836378; c=relaxed/simple;
+	bh=JfVBuYZpWp2qyg+gOz0lS4TqrE87g80SVeHfS0+lK20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pameKZkMdiroGRJbYs12r1kj3Xx+SwFF1XKd2zhAi/nzUR2QCiP3YytJDjydxiPnT6s5DRZ4iolHl/em3viAP0uEXIC13tVxowUpGOwjY+uCSiSVlLa0ppYb2SB5gOo06doZLGez2Qvb27gbPgbRS7lQac+CkERs1Td8EtotsRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bN454au0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B72C2BBFC;
-	Mon, 27 May 2024 18:59:09 +0000 (UTC)
+	 MIME-Version; b=N2EbJX6QGiFWUHoVsNryGEYtPU/87Vtg/HxszBXh8fMeErfB8HQsS1woGOWrtHHbNNEH0aTBa9jstMroKk1RFvuamsWk70jChBUdFEMOWaBU2/lsBm03/kNDP1pAiWFhkGheAgiPFwaWv2FH8MFfyvTfbRN3QcLcXM/yTHGvCss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGKs9CyW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB61C2BBFC;
+	Mon, 27 May 2024 18:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836350;
-	bh=DzvQoUo8gT2P8wgRbSBI2/3Ps03luKe4oMe86CuAC3E=;
+	s=korg; t=1716836377;
+	bh=JfVBuYZpWp2qyg+gOz0lS4TqrE87g80SVeHfS0+lK20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bN454au06lVLWF43XY4inlkQhLtvymLJgZ3onJHQ7WihExgfyOd0+CDCpe9JMKwzK
-	 PKSlIOvuitRD00j/0jHktk46ejs62dlF4sZzG0DYRcgcb7XxUb0zYKcwQ8AKa+kfVv
-	 DMwWR86vLha+e57LlE9noNDewpbp28/NyBmQwXoU=
+	b=MGKs9CyW1arph9fcv7J9x805QKE8ftok9zgiSVu8vFadBsxO3nMMUz6x23Ni4us66
+	 7MZKzoHOKI6RV661BtIhEFC4HOCanqdlkkcx5mXFN6M2v1IHB+BNGwa9NhWIc3KLsB
+	 LQ5wFtanhIJnBlSPJGtJ3/IlrR8Z0x874MMN3T9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.9 002/427] selftests/ftrace: Fix BTFARG testcase to check fprobe is enabled correctly
-Date: Mon, 27 May 2024 20:50:49 +0200
-Message-ID: <20240527185601.971914836@linuxfoundation.org>
+Subject: [PATCH 6.9 003/427] selftests/ftrace: Fix checkbashisms errors
+Date: Mon, 27 May 2024 20:50:50 +0200
+Message-ID: <20240527185602.050394262@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -67,33 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 2fd3ef1b9265eda7f53b9506f1ebfb67eb6435a2 upstream.
+commit b07b7e2fd51840c7dfffa98c4344ab36195bb8dc upstream.
 
-Since the dynevent/add_remove_btfarg.tc test case forgets to ensure that
-fprobe is enabled for some structure field access tests which uses the
-fprobe, it fails if CONFIG_FPROBE=n or CONFIG_FPROBE_EVENTS=n.
-Fixes it to ensure the fprobe events are supported.
+Fix the below checkbashisms errors. Because of these errors, these tests
+will fail on dash shell.
 
-Fixes: d892d3d3d885 ("selftests/ftrace: Add BTF fields access testcases")
+possible bashism in test.d/kprobe/kretprobe_entry_arg.tc line 14 ('function' is useless):
+function streq() {
+possible bashism in test.d/dynevent/fprobe_entry_arg.tc line 14 ('function' is useless):
+function streq() {
+
+Fixes: f6e2253a617c ("selftests/ftrace: Add test cases for entry args at function exit")
 Cc: stable@vger.kernel.org
 Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/ftrace/test.d/dynevent/fprobe_entry_arg.tc        | 2 +-
+ .../selftests/ftrace/test.d/kprobe/kretprobe_entry_arg.tc       | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc
-+++ b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc
-@@ -53,7 +53,7 @@ fi
+diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_entry_arg.tc b/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_entry_arg.tc
+index d183b8a8ecf8..1e251ce2998e 100644
+--- a/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_entry_arg.tc
++++ b/tools/testing/selftests/ftrace/test.d/dynevent/fprobe_entry_arg.tc
+@@ -11,7 +11,7 @@ echo 1 > events/tests/enable
+ echo > trace
+ cat trace > /dev/null
  
- echo > dynamic_events
+-function streq() {
++streq() {
+ 	test $1 = $2
+ }
  
--if [ "$FIELDS" ] ; then
-+if [ "$FIELDS" -a "$FPROBES" ] ; then
- echo "t:tpevent ${TP2} obj_size=s->object_size" >> dynamic_events
- echo "f:fpevent ${TP3}%return path=\$retval->name:string" >> dynamic_events
- echo "t:tpevent2 ${TP4} p->se.group_node.next->prev" >> dynamic_events
+diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_entry_arg.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_entry_arg.tc
+index 53b82f36a1d0..e50470b53164 100644
+--- a/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_entry_arg.tc
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_entry_arg.tc
+@@ -11,7 +11,7 @@ echo 1 > events/kprobes/enable
+ echo > trace
+ cat trace > /dev/null
+ 
+-function streq() {
++streq() {
+ 	test $1 = $2
+ }
+ 
+-- 
+2.45.1
+
 
 
 
