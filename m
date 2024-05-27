@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE5D8D0D8F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B0F8D0B8F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 347AB2822B5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E49F1C214DB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEADA13AD05;
-	Mon, 27 May 2024 19:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EA015ECFF;
+	Mon, 27 May 2024 19:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBtFnTHr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eumjT52/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C39B17727;
-	Mon, 27 May 2024 19:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D2117E90E;
+	Mon, 27 May 2024 19:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838276; cv=none; b=r39w+9194mq8rszH33x6JnoFOtiIsAJTrOX4QpQSeChRBuri+nxBDRJf1E0RNlZOlur36PRC5Z74jbD5PooCz2qm9n8FuviYk/C58fR+B4XoPDOOeOEyp5Dg3CSg+uxWfuMYMkhfRT6+EjOmiUApZ068k8VOoQBqDf0qomdsChM=
+	t=1716837038; cv=none; b=I9dwu2wPAuadt9hjURuvkVCq8O9PmV0P4sXXrkOT5LdFE8tjEo3ZwvtCCAkLjdB0UzFlJcYEOAuaZ6CajJCoHPCg1+2bbtcq7R23eMEm/xvQSDTzx75pZmJjFqRDXNNPJrGOA09xcbL3x1RvA1utOWcONTRuF74kW6qm3BAH0fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838276; c=relaxed/simple;
-	bh=UtrZYvwysGE5wqz9EIHUqs2M9TxAiYDhm+HTa9+EEn4=;
+	s=arc-20240116; t=1716837038; c=relaxed/simple;
+	bh=4310eRFM+jHm59xIGJJ1PV/klx3v24uYmCmsHQqmJwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b2T9TcrntNFAhjWTVviYz/ErFzaTviVDYGQmsvJIcnvIz87p7N+soXl3oyOQMBTjpJBXsYwoXumu7Np8Ov1MkxWiKbgJvwCryc5DXdzjCBUYdXdKycT4zExKI5qHk0C+KV+h0d6thiNjVb5FZPa03GlicHaM+G3Ha/lgLRaUIi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBtFnTHr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317B5C2BBFC;
-	Mon, 27 May 2024 19:31:16 +0000 (UTC)
+	 MIME-Version; b=HvHxA8eX2iiKsLsLA0pNhFMoQv5I6vVpVpnnAT0FD6GO2pToOJSSEOnMk4oTopnqFIURCBCHbkScK626uPJPue0Ht4g767Tg5YWbdYPgWq8nrJnvkQVaLAvnCxESl1JR4rReATd0C2F5sWvvTfIwKZVePRGi0fnc7GGmTYkUdXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eumjT52/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4E4C2BBFC;
+	Mon, 27 May 2024 19:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838276;
-	bh=UtrZYvwysGE5wqz9EIHUqs2M9TxAiYDhm+HTa9+EEn4=;
+	s=korg; t=1716837037;
+	bh=4310eRFM+jHm59xIGJJ1PV/klx3v24uYmCmsHQqmJwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBtFnTHrnqTidbpgC4kKb0eKFFs05Ve7DsrrG+/6ylbuaBA4oVFq8kjn4Uii1lnef
-	 BR64HAtD1HYDfCLqK7ezJXXRMUMXKPXZ5Qya844kOZeGnSBtXGvsMtFwhEz4wEMKEC
-	 bM4JEy0yacf1uPrCULCdjNYaC2/T+0YfCEeAPC0o=
+	b=eumjT52/Iw4xVDBAeeJ+pZ9U+Pbu5PF1jS3KWsqfznHWR2+y+uNX6p8QUGkPcgXhc
+	 vq0JVgPzZz37PIO3EI+ok5TVphjVogSv2j+Dl9Ft7QBcogN4QgzKLqa1UzzdYQ5b2i
+	 K1uy6qit37KhEjGxCzLvhTPyRc9wOyv7KDDkuJrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 332/493] net: stmmac: Offload queueMaxSDU from tc-taprio
+Subject: [PATCH 6.9 287/427] ASoC: Intel: avs: ssm4567: Do not ignore route checks
 Date: Mon, 27 May 2024 20:55:34 +0200
-Message-ID: <20240527185641.128958730@linuxfoundation.org>
+Message-ID: <20240527185629.247598235@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,160 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@intel.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit c5c3e1bfc9e0ee72af528df8d773980f4855938a ]
+[ Upstream commit e6719d48ba6329536c459dcee5a571e535687094 ]
 
-Add support for configuring queueMaxSDU. As DWMAC IPs doesn't support
-queueMaxSDU table handle this in the SW. The maximum 802.3 frame size
-that is allowed to be transmitted by any queue is queueMaxSDU +
-16 bytes (i.e. 6 bytes SA + 6 bytes DA + 4 bytes FCS).
+A copy-paste from intel/boards/skl_nau88l25_ssm4567.c made the avs's
+equivalent disable route checks as well. Such behavior is not desired.
 
-Inspired from intel i225 driver.
-
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 36ac9e7f2e57 ("net: stmmac: move the EST lock to struct stmmac_priv")
+Fixes: 69ea14efe99b ("ASoC: Intel: avs: Add ssm4567 machine board")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://msgid.link/r/20240308090502.2136760-4-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/common.h  |  1 +
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 22 ++++++++++++++++
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 25 +++++++++++++++++++
- include/linux/stmmac.h                        |  1 +
- 4 files changed, 49 insertions(+)
+ sound/soc/intel/avs/boards/ssm4567.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index 5a1d46dcd5de0..2706761955fea 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -225,6 +225,7 @@ struct stmmac_extra_stats {
- 	unsigned long mtl_est_hlbf;
- 	unsigned long mtl_est_btre;
- 	unsigned long mtl_est_btrlm;
-+	unsigned long max_sdu_txq_drop[MTL_MAX_TX_QUEUES];
- 	/* per queue statistics */
- 	struct stmmac_txq_stats txq_stats[MTL_MAX_TX_QUEUES];
- 	struct stmmac_rxq_stats rxq_stats[MTL_MAX_RX_QUEUES];
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 83b732c30c1bb..12f4c0da838da 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2491,6 +2491,13 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 		if (!xsk_tx_peek_desc(pool, &xdp_desc))
- 			break;
+diff --git a/sound/soc/intel/avs/boards/ssm4567.c b/sound/soc/intel/avs/boards/ssm4567.c
+index d6f7f046c24e5..f634261e4f604 100644
+--- a/sound/soc/intel/avs/boards/ssm4567.c
++++ b/sound/soc/intel/avs/boards/ssm4567.c
+@@ -172,7 +172,6 @@ static int avs_ssm4567_probe(struct platform_device *pdev)
+ 	card->dapm_routes = card_base_routes;
+ 	card->num_dapm_routes = ARRAY_SIZE(card_base_routes);
+ 	card->fully_routed = true;
+-	card->disable_route_checks = true;
  
-+		if (priv->plat->est && priv->plat->est->enable &&
-+		    priv->plat->est->max_sdu[queue] &&
-+		    xdp_desc.len > priv->plat->est->max_sdu[queue]) {
-+			priv->xstats.max_sdu_txq_drop[queue]++;
-+			continue;
-+		}
-+
- 		if (likely(priv->extend_desc))
- 			tx_desc = (struct dma_desc *)(tx_q->dma_etx + entry);
- 		else if (tx_q->tbs & STMMAC_TBS_AVAIL)
-@@ -4485,6 +4492,13 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 			return stmmac_tso_xmit(skb, dev);
- 	}
- 
-+	if (priv->plat->est && priv->plat->est->enable &&
-+	    priv->plat->est->max_sdu[queue] &&
-+	    skb->len > priv->plat->est->max_sdu[queue]){
-+		priv->xstats.max_sdu_txq_drop[queue]++;
-+		goto max_sdu_err;
-+	}
-+
- 	if (unlikely(stmmac_tx_avail(priv, queue) < nfrags + 1)) {
- 		if (!netif_tx_queue_stopped(netdev_get_tx_queue(dev, queue))) {
- 			netif_tx_stop_queue(netdev_get_tx_queue(priv->dev,
-@@ -4702,6 +4716,7 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- dma_map_err:
- 	netdev_err(priv->dev, "Tx DMA map failed\n");
-+max_sdu_err:
- 	dev_kfree_skb(skb);
- 	priv->xstats.tx_dropped++;
- 	return NETDEV_TX_OK;
-@@ -4858,6 +4873,13 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
- 	if (stmmac_tx_avail(priv, queue) < STMMAC_TX_THRESH(priv))
- 		return STMMAC_XDP_CONSUMED;
- 
-+	if (priv->plat->est && priv->plat->est->enable &&
-+	    priv->plat->est->max_sdu[queue] &&
-+	    xdpf->len > priv->plat->est->max_sdu[queue]) {
-+		priv->xstats.max_sdu_txq_drop[queue]++;
-+		return STMMAC_XDP_CONSUMED;
-+	}
-+
- 	if (likely(priv->extend_desc))
- 		tx_desc = (struct dma_desc *)(tx_q->dma_etx + entry);
- 	else if (tx_q->tbs & STMMAC_TBS_AVAIL)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 26fa33e5ec34f..07aa3a3089dc2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -915,6 +915,28 @@ struct timespec64 stmmac_calc_tas_basetime(ktime_t old_base_time,
- 	return time;
- }
- 
-+static void tc_taprio_map_maxsdu_txq(struct stmmac_priv *priv,
-+				     struct tc_taprio_qopt_offload *qopt)
-+{
-+	struct plat_stmmacenet_data *plat = priv->plat;
-+	u32 num_tc = qopt->mqprio.qopt.num_tc;
-+	u32 offset, count, i, j;
-+
-+	/* QueueMaxSDU received from the driver corresponds to the Linux traffic
-+	 * class. Map queueMaxSDU per Linux traffic class to DWMAC Tx queues.
-+	 */
-+	for (i = 0; i < num_tc; i++) {
-+		if (!qopt->max_sdu[i])
-+			continue;
-+
-+		offset = qopt->mqprio.qopt.offset[i];
-+		count = qopt->mqprio.qopt.count[i];
-+
-+		for (j = offset; j < offset + count; j++)
-+			plat->est->max_sdu[j] = qopt->max_sdu[i] + ETH_HLEN - ETH_TLEN;
-+	}
-+}
-+
- static int tc_setup_taprio(struct stmmac_priv *priv,
- 			   struct tc_taprio_qopt_offload *qopt)
- {
-@@ -1045,6 +1067,8 @@ static int tc_setup_taprio(struct stmmac_priv *priv,
- 
- 	priv->plat->est->ter = qopt->cycle_time_extension;
- 
-+	tc_taprio_map_maxsdu_txq(priv, qopt);
-+
- 	if (fpe && !priv->dma_cap.fpesel) {
- 		mutex_unlock(&priv->plat->est->lock);
- 		return -EOPNOTSUPP;
-@@ -1126,6 +1150,7 @@ static int tc_query_caps(struct stmmac_priv *priv,
- 			return -EOPNOTSUPP;
- 
- 		caps->gate_mask_per_txq = true;
-+		caps->supports_queue_max_sdu = true;
- 
- 		return 0;
- 	}
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index dee5ad6e48c5a..dfa1828cd756a 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -127,6 +127,7 @@ struct stmmac_est {
- 	u32 gcl_unaligned[EST_GCL];
- 	u32 gcl[EST_GCL];
- 	u32 gcl_size;
-+	u32 max_sdu[MTL_MAX_TX_QUEUES];
- };
- 
- struct stmmac_rxq_cfg {
+ 	ret = snd_soc_fixup_dai_links_platform_name(card, pname);
+ 	if (ret)
 -- 
 2.43.0
 
