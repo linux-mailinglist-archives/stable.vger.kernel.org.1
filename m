@@ -1,67 +1,63 @@
-Return-Path: <stable+bounces-46478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6B88D06A1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:52:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F818D06A9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E15CC288AA3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:52:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 262CD1C2230B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3765373478;
-	Mon, 27 May 2024 15:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCD7155C88;
+	Mon, 27 May 2024 15:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zuol8982"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1llqXXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBACE17E8EC;
-	Mon, 27 May 2024 15:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C056B13AD05;
+	Mon, 27 May 2024 15:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825107; cv=none; b=ufbOOyvsQNeYYg0gLzo78nwtZ4ChNLCh+Jubf2F0Yq0qCujT41bU+vaPQMLRmp4YY5OwJuYTWU0m2gC5rDl0jo347qrDI9KNBEQM7cy0hGgIeAJO0w/NEQjMGc+CSI58APYSKJ7KsyznM6uKwjLaXIqrIftPxPLfPnuWxWRw2lk=
+	t=1716825108; cv=none; b=SsQzVGpzdpG5JDNg9GgWZg/2KLzsVQjk7tElwCgL6Pe6oyieE/2XqMMEW1KoG1kZG0FEEAOTjG0b+2gA9YtUbRXoFraB4l35tiJarYUhlJduX0BMYoFhCaxYwyB9puC/hKBBiGHbXbWy+MQBUXHqtE5S9rnbo0gl0gRw1g/LgeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825107; c=relaxed/simple;
-	bh=mX5Apq4HueNKh2Lka3LyHKzCw9/ATmUlhhIHaGKdgUs=;
+	s=arc-20240116; t=1716825108; c=relaxed/simple;
+	bh=j2rKURWHsVnV6Ucey0Bt0igo2eVco9EQuuWG5rZz4V4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bawEdpXduF8ZhvwsKcBmuUHh+lx1oEeFlgX1mTnA9WAiQ6QXddyLXB8oxO8YizyrJ5FZpVG5kwbkwNM8Tlb2gAxsH6upMzzA8cwTlg8vrJh8mh7bW0JioG1b1IuEIVlWGb5qG5bJV4t+jeN8DbVqTFTdHkgJkuYgxHu93exCug4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zuol8982; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8486C32781;
-	Mon, 27 May 2024 15:51:44 +0000 (UTC)
+	 MIME-Version; b=kX1nXgiWc5sOPIWAkS9ceF9p75xYEvp+kKtzGlDq+UB6SAVA/ekHshZwpON7dmb86nqhKkuOFKn4k5R/Wrugd+o1I7Y+G/nspIXCdjLZZwfe0aC9H2tIh+7DTR21wTRmL/wBoYuikZptO3utD9/O2FExPNtQIsv6wNPoVLYzvpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1llqXXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA49C2BBFC;
+	Mon, 27 May 2024 15:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716825106;
-	bh=mX5Apq4HueNKh2Lka3LyHKzCw9/ATmUlhhIHaGKdgUs=;
+	s=k20201202; t=1716825108;
+	bh=j2rKURWHsVnV6Ucey0Bt0igo2eVco9EQuuWG5rZz4V4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zuol8982ekg+5COYR6QoZYsZPIxTKDI4Ur9tyAd8PbKFNCBWGRPlNCUHb3kitTRZ/
-	 YP7I00HNLq+k/ZurEW1Oo5y9q1z9Wfwr+IzBbUQYacRHAieSf//7ywj7GqOWgDzfcs
-	 +i9Ms+glxo1efTnTz+/ABYfpIhdslXyrqVD1Xz9dCuceCAmBTb+oR5ZlexmCKINS3B
-	 fuak5PBEEZw9T8aQUbYZbEDm9EggSgOWdRPpdW9KmO7k7VuuWL8+YANg63oNYHjrrF
-	 Y1jeR7L9G0Lss5leF0yrXmZ2tW13Rqx0yerQ9Bbo+XlTm9Wf22pm5bxWYhCUbtwDuV
-	 dsY49MdVMnAaw==
+	b=b1llqXXViRopiOmh21n+DKij66OdegYaZ2RLGkpB2oagknI/Ovyur5uC9J4clazZH
+	 SviEBqhVNsvGQB6Wq2cfPeyP7nepAIare3kamx1zpQO9g6RRIAxjkAO9bkDDfGznyJ
+	 2YlRNCMIy1GpZn/E1XIT4JLQLkxFwGOQFctIIIFpsqrPF+OAu6ARBG/w5nKchvohrs
+	 JmytXZugnW9epma6eStzu7EwEBEl8agEozD3Wh4H0m5wu8BqcSX/otDdgMcUjjsWSq
+	 uCU8ZONbpSuYt/H+Pjv35RLIFZLTyHqKoyKWeZBR1fzvdKcjLsaYtd7t3tsxXPlKbg
+	 s3FKiu2uKL5Og==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Brent Lu <brent.lu@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Stefan Berger <stefanb@linux.ibm.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kuninori.morimoto.gx@renesas.com,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 03/23] ASoC: Intel: sof_cs42l42: rename BT offload quirk
-Date: Mon, 27 May 2024 11:50:04 -0400
-Message-ID: <20240527155123.3863983-3-sashal@kernel.org>
+	roberto.sassu@huawei.com,
+	dmitry.kasatkin@gmail.com,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 04/23] ima: Fix use-after-free on a dentry's dname.name
+Date: Mon, 27 May 2024 11:50:05 -0400
+Message-ID: <20240527155123.3863983-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527155123.3863983-1-sashal@kernel.org>
 References: <20240527155123.3863983-1-sashal@kernel.org>
@@ -76,54 +72,119 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: Brent Lu <brent.lu@intel.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-[ Upstream commit 109896246a5311aa05692ecf38c0d71e1837fe23 ]
+[ Upstream commit be84f32bb2c981ca670922e047cdde1488b233de ]
 
-Rename the quirk in preparation for future changes: common quriks will
-be defined and handled in board helper module.
+->d_name.name can change on rename and the earlier value can be freed;
+there are conditions sufficient to stabilize it (->d_lock on dentry,
+->d_lock on its parent, ->i_rwsem exclusive on the parent's inode,
+rename_lock), but none of those are met at any of the sites. Take a stable
+snapshot of the name instead.
 
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Brent Lu <brent.lu@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20240325221059.206042-7-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/all/20240202182732.GE2087318@ZenIV/
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_cs42l42.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ security/integrity/ima/ima_api.c          | 16 ++++++++++++----
+ security/integrity/ima/ima_template_lib.c | 17 ++++++++++++++---
+ 2 files changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_cs42l42.c b/sound/soc/intel/boards/sof_cs42l42.c
-index 323b86c42ef95..330d596b2eb6d 100644
---- a/sound/soc/intel/boards/sof_cs42l42.c
-+++ b/sound/soc/intel/boards/sof_cs42l42.c
-@@ -34,7 +34,7 @@
- #define SOF_CS42L42_NUM_HDMIDEV_MASK		(GENMASK(9, 7))
- #define SOF_CS42L42_NUM_HDMIDEV(quirk)	\
- 	(((quirk) << SOF_CS42L42_NUM_HDMIDEV_SHIFT) & SOF_CS42L42_NUM_HDMIDEV_MASK)
--#define SOF_BT_OFFLOAD_PRESENT			BIT(25)
-+#define SOF_CS42L42_BT_OFFLOAD_PRESENT		BIT(25)
- #define SOF_CS42L42_SSP_BT_SHIFT		26
- #define SOF_CS42L42_SSP_BT_MASK			(GENMASK(28, 26))
- #define SOF_CS42L42_SSP_BT(quirk)	\
-@@ -268,7 +268,7 @@ static int sof_audio_probe(struct platform_device *pdev)
+diff --git a/security/integrity/ima/ima_api.c b/security/integrity/ima/ima_api.c
+index b37d043d5748c..1856981e33df3 100644
+--- a/security/integrity/ima/ima_api.c
++++ b/security/integrity/ima/ima_api.c
+@@ -245,8 +245,8 @@ int ima_collect_measurement(struct ima_iint_cache *iint, struct file *file,
+ 	const char *audit_cause = "failed";
+ 	struct inode *inode = file_inode(file);
+ 	struct inode *real_inode = d_real_inode(file_dentry(file));
+-	const char *filename = file->f_path.dentry->d_name.name;
+ 	struct ima_max_digest_data hash;
++	struct name_snapshot filename;
+ 	struct kstat stat;
+ 	int result = 0;
+ 	int length;
+@@ -317,9 +317,13 @@ int ima_collect_measurement(struct ima_iint_cache *iint, struct file *file,
+ 		if (file->f_flags & O_DIRECT)
+ 			audit_cause = "failed(directio)";
  
- 	ctx->ssp_codec = sof_cs42l42_quirk & SOF_CS42L42_SSP_CODEC_MASK;
++		take_dentry_name_snapshot(&filename, file->f_path.dentry);
++
+ 		integrity_audit_msg(AUDIT_INTEGRITY_DATA, inode,
+-				    filename, "collect_data", audit_cause,
+-				    result, 0);
++				    filename.name.name, "collect_data",
++				    audit_cause, result, 0);
++
++		release_dentry_name_snapshot(&filename);
+ 	}
+ 	return result;
+ }
+@@ -432,6 +436,7 @@ void ima_audit_measurement(struct ima_iint_cache *iint,
+  */
+ const char *ima_d_path(const struct path *path, char **pathbuf, char *namebuf)
+ {
++	struct name_snapshot filename;
+ 	char *pathname = NULL;
  
--	if (sof_cs42l42_quirk & SOF_BT_OFFLOAD_PRESENT)
-+	if (sof_cs42l42_quirk & SOF_CS42L42_BT_OFFLOAD_PRESENT)
- 		ctx->bt_offload_present = true;
+ 	*pathbuf = __getname();
+@@ -445,7 +450,10 @@ const char *ima_d_path(const struct path *path, char **pathbuf, char *namebuf)
+ 	}
  
- 	/* update dai_link */
-@@ -306,7 +306,7 @@ static const struct platform_device_id board_ids[] = {
- 		.driver_data = (kernel_ulong_t)(SOF_CS42L42_SSP_CODEC(0) |
- 				SOF_CS42L42_SSP_AMP(1) |
- 				SOF_CS42L42_NUM_HDMIDEV(4) |
--				SOF_BT_OFFLOAD_PRESENT |
-+				SOF_CS42L42_BT_OFFLOAD_PRESENT |
- 				SOF_CS42L42_SSP_BT(2)),
- 	},
- 	{ }
+ 	if (!pathname) {
+-		strscpy(namebuf, path->dentry->d_name.name, NAME_MAX);
++		take_dentry_name_snapshot(&filename, path->dentry);
++		strscpy(namebuf, filename.name.name, NAME_MAX);
++		release_dentry_name_snapshot(&filename);
++
+ 		pathname = namebuf;
+ 	}
+ 
+diff --git a/security/integrity/ima/ima_template_lib.c b/security/integrity/ima/ima_template_lib.c
+index 6cd0add524cdc..3b2cb8f1002e6 100644
+--- a/security/integrity/ima/ima_template_lib.c
++++ b/security/integrity/ima/ima_template_lib.c
+@@ -483,7 +483,10 @@ static int ima_eventname_init_common(struct ima_event_data *event_data,
+ 				     bool size_limit)
+ {
+ 	const char *cur_filename = NULL;
++	struct name_snapshot filename;
+ 	u32 cur_filename_len = 0;
++	bool snapshot = false;
++	int ret;
+ 
+ 	BUG_ON(event_data->filename == NULL && event_data->file == NULL);
+ 
+@@ -496,7 +499,10 @@ static int ima_eventname_init_common(struct ima_event_data *event_data,
+ 	}
+ 
+ 	if (event_data->file) {
+-		cur_filename = event_data->file->f_path.dentry->d_name.name;
++		take_dentry_name_snapshot(&filename,
++					  event_data->file->f_path.dentry);
++		snapshot = true;
++		cur_filename = filename.name.name;
+ 		cur_filename_len = strlen(cur_filename);
+ 	} else
+ 		/*
+@@ -505,8 +511,13 @@ static int ima_eventname_init_common(struct ima_event_data *event_data,
+ 		 */
+ 		cur_filename_len = IMA_EVENT_NAME_LEN_MAX;
+ out:
+-	return ima_write_template_field_data(cur_filename, cur_filename_len,
+-					     DATA_FMT_STRING, field_data);
++	ret = ima_write_template_field_data(cur_filename, cur_filename_len,
++					    DATA_FMT_STRING, field_data);
++
++	if (snapshot)
++		release_dentry_name_snapshot(&filename);
++
++	return ret;
+ }
+ 
+ /*
 -- 
 2.43.0
 
