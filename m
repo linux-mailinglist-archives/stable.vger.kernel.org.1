@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-47328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A6B8D0D8A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3CC8D0B8A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC0A8281C22
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 422961F21C75
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9A115FA9F;
-	Mon, 27 May 2024 19:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DC06A039;
+	Mon, 27 May 2024 19:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQ/+Bvf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pn3680Mr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4FE17727;
-	Mon, 27 May 2024 19:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6754D17E90E;
+	Mon, 27 May 2024 19:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838264; cv=none; b=r+eUiGBrJsZoh3xzK4ulOca+HhRptBJp5KsCOBRGFWB11L23OvJ7Xq2wqj5P8IZ2fMhT2b35UCNhn0K2vNOLAElfDr6T1gUFD/UcuomI8ilVN7eAZzGdEng08JCZo/wRTgVwaaX81dYeJIcestqGV4buSGNTvnq+vISqrlqm5/s=
+	t=1716837025; cv=none; b=X1lE4I1JsPzJi2DtIQafhZTqj6myDBF9O2emb50yEFT1GaYigA2KbSfhttj4MEwh2bqPIAk10ZlL2P2Chxi13r/scrEIQuUO6IEWVkxv/bZRAbqhr2Akfh/ZBHq47Q3KtvX86M9NH+IKlQVJzX/C6QRLSLU0ALHz/6ktg17AcqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838264; c=relaxed/simple;
-	bh=f5DvIUotpr112/eLozPycO2O3vEACfmnSLBIbb/vG9I=;
+	s=arc-20240116; t=1716837025; c=relaxed/simple;
+	bh=BlGYgpZti3gd4/Y9hZqnc5teXTrLH59HpG3qQYtIsDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ii+dJRrYRTjnkoHk2oW35V6di0wbrmdxYx4wvOLUzFacML9ef7aFOqYlVsrloibAoLXx9YsuHAjMabKms0FnZELdbi6/JSohXLkOOCzn978rYeby5KiRwzGECCk3w9sHlM/YmLoC6HZqv0W/SdYJitNlP2So+FeUFqkyReEWsaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQ/+Bvf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83436C2BBFC;
-	Mon, 27 May 2024 19:31:03 +0000 (UTC)
+	 MIME-Version; b=lFf1opT8FucUm2gu13ZPpl1cTjOg84AhsplhLuROwRyd/+3zrZ2oB+MACvGbAaX/NgNoeOo30usgfXbVpTu6PysD6FGl7WVpitA7PqkNMwTE4fAZrMuOZVHYLmx/79PugDrM7tTmkWgB8PA2EiBzfJu0dMpTAR+KKWZrRpU1Mno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pn3680Mr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC759C2BBFC;
+	Mon, 27 May 2024 19:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838263;
-	bh=f5DvIUotpr112/eLozPycO2O3vEACfmnSLBIbb/vG9I=;
+	s=korg; t=1716837025;
+	bh=BlGYgpZti3gd4/Y9hZqnc5teXTrLH59HpG3qQYtIsDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQ/+Bvf8nu3kwPxo2gTn19JJjRUSuHbY3h/8IYCsSMluPViAvZUwYMi7psdMq2q8n
-	 cxmk6ImS1YI3LwNNULoCC5GOBJELWQNqVry4fDH6EBBHvDHqy9QCa/sLHVF45UGMmI
-	 giaQzr69vp6VO4zZPixMEjTfCcs5G7uE70JbXG/A=
+	b=pn3680Mr1kag+lTI3XGJLwog8US/IR8GaCIcOtmAXE7UH/x3mrz3/bS3ojRbeMd1D
+	 YMBALYSP2E8Z6mRHQnFLETi9dtq+gD+V4vOcsVEQeQvSV5+ifY+qYmzV7joH053O7h
+	 qf9mzvQ7de69BnhVa7nYzFkkNzKgHL1tHQVfLykU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Liu Ying <victor.liu@nxp.com>,
+	Marek Vasut <marex@denx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 327/493] mptcp: cleanup writer wake-up
+Subject: [PATCH 6.9 282/427] drm/lcdif: Do not disable clocks on already suspended hardware
 Date: Mon, 27 May 2024 20:55:29 +0200
-Message-ID: <20240527185640.964506938@linuxfoundation.org>
+Message-ID: <20240527185628.868804163@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 037db6ea57da7a134a8183dead92d64ef92babee ]
+[ Upstream commit 172695f145fb4798ab605e8a73f6e87711930124 ]
 
-After commit 5cf92bbadc58 ("mptcp: re-enable sndbuf autotune"), the
-MPTCP_NOSPACE bit is redundant: it is always set and cleared together with
-SOCK_NOSPACE.
+In case the LCDIF is enabled in DT but unused, the clocks used by the
+LCDIF are not enabled. Those clocks may even have a use count of 0 in
+case there are no other users of those clocks. This can happen e.g. in
+case the LCDIF drives HDMI bridge which has no panel plugged into the
+HDMI connector.
 
-Let's drop the first and always relay on the latter, dropping a bunch
-of useless code.
+Do not attempt to disable clocks in the suspend callback and re-enable
+clocks in the resume callback unless the LCDIF is enabled and was in
+use before the system entered suspend, otherwise the driver might end
+up trying to disable clocks which are already disabled with use count
+0, and would trigger a warning from clock core about this condition.
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bd11dc4fb969 ("mptcp: fix full TCP keep-alive support")
+Note that the lcdif_rpm_suspend() and lcdif_rpm_resume() functions
+internally perform the clocks disable and enable operations and act
+as runtime PM hooks too.
+
+Reviewed-by: Liu Ying <victor.liu@nxp.com>
+Fixes: 9db35bb349a0 ("drm: lcdif: Add support for i.MX8MP LCDIF variant")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240226082644.32603-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 15 +++------------
- net/mptcp/protocol.h | 16 ++++++----------
- 2 files changed, 9 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/mxsfb/lcdif_drv.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 74c1faec271d1..fcd85adc621c1 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1687,15 +1687,6 @@ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool
- 	}
+diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+index ea10bf81582e9..0f895b8a99d62 100644
+--- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
++++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
+@@ -343,6 +343,9 @@ static int __maybe_unused lcdif_suspend(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (pm_runtime_suspended(dev))
++		return 0;
++
+ 	return lcdif_rpm_suspend(dev);
  }
  
--static void mptcp_set_nospace(struct sock *sk)
--{
--	/* enable autotune */
--	set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
--
--	/* will be cleared on avail space */
--	set_bit(MPTCP_NOSPACE, &mptcp_sk(sk)->flags);
--}
--
- static int mptcp_disconnect(struct sock *sk, int flags);
- 
- static int mptcp_sendmsg_fastopen(struct sock *sk, struct msghdr *msg,
-@@ -1869,7 +1860,7 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 		continue;
- 
- wait_for_memory:
--		mptcp_set_nospace(sk);
-+		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
- 		__mptcp_push_pending(sk, msg->msg_flags);
- 		ret = sk_stream_wait_memory(sk, &timeo);
- 		if (ret)
-@@ -3944,8 +3935,8 @@ static __poll_t mptcp_check_writeable(struct mptcp_sock *msk)
- 	if (sk_stream_is_writeable(sk))
- 		return EPOLLOUT | EPOLLWRNORM;
- 
--	mptcp_set_nospace(sk);
--	smp_mb__after_atomic(); /* msk->flags is changed by write_space cb */
-+	set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-+	smp_mb__after_atomic(); /* NOSPACE is changed by mptcp_write_space() */
- 	if (sk_stream_is_writeable(sk))
- 		return EPOLLOUT | EPOLLWRNORM;
- 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 07f6242afc1ae..6b83869ef7938 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -113,10 +113,9 @@
- #define MPTCP_RST_TRANSIENT	BIT(0)
- 
- /* MPTCP socket atomic flags */
--#define MPTCP_NOSPACE		1
--#define MPTCP_WORK_RTX		2
--#define MPTCP_FALLBACK_DONE	4
--#define MPTCP_WORK_CLOSE_SUBFLOW 5
-+#define MPTCP_WORK_RTX		1
-+#define MPTCP_FALLBACK_DONE	2
-+#define MPTCP_WORK_CLOSE_SUBFLOW 3
- 
- /* MPTCP socket release cb flags */
- #define MPTCP_PUSH_PENDING	1
-@@ -792,12 +791,9 @@ static inline bool mptcp_data_fin_enabled(const struct mptcp_sock *msk)
- 
- static inline void mptcp_write_space(struct sock *sk)
+@@ -350,7 +353,8 @@ static int __maybe_unused lcdif_resume(struct device *dev)
  {
--	if (sk_stream_is_writeable(sk)) {
--		/* pairs with memory barrier in mptcp_poll */
--		smp_mb();
--		if (test_and_clear_bit(MPTCP_NOSPACE, &mptcp_sk(sk)->flags))
--			sk_stream_write_space(sk);
--	}
-+	/* pairs with memory barrier in mptcp_poll */
-+	smp_mb();
-+	sk_stream_write_space(sk);
- }
+ 	struct drm_device *drm = dev_get_drvdata(dev);
  
- static inline void __mptcp_sync_sndbuf(struct sock *sk)
+-	lcdif_rpm_resume(dev);
++	if (!pm_runtime_suspended(dev))
++		lcdif_rpm_resume(dev);
+ 
+ 	return drm_mode_config_helper_resume(drm);
+ }
 -- 
 2.43.0
 
