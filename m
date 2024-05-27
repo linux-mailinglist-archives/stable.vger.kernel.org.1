@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-46740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B75F8D0B10
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07388D0D14
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CFA11C21653
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4182A1F2184C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5077315FD01;
-	Mon, 27 May 2024 19:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5341607B7;
+	Mon, 27 May 2024 19:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSlC8dQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hoMkFnY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD8A17E90E;
-	Mon, 27 May 2024 19:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A267168C4;
+	Mon, 27 May 2024 19:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836738; cv=none; b=FgGyE8rk4XV5+j9WVyETnMdBViH3Wh95Omf/i+npYYvqCmTIjkoi+XiMjgwBsjz8jRnpCre5Fcnyy1Cq1C5m6QqyIkvWC8Cfj29D8BvTvY/oOJPwPaPCZZ7j506Zzyr42En4SsdmZtBpY2gZrJQLXxAOGmUDXv4g53PnokaAA3Q=
+	t=1716837965; cv=none; b=fhZH4TU4bweM2sX4MAgpzH99IdL3vcRpC9cFi/XFYoXBIW0r5KetkmsBWHAEayeK64TnspS9M7NgTYeRw5nW7YrE5MO25Oaogsq+mIA3YbobGZGw68bcjeSWBgg/zgvGaHIKw8BsSy9VTCkg6DpdNBMW9NxjZiZEtZlVb3cGG7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836738; c=relaxed/simple;
-	bh=K8PpnrJq3J6Re+CcLYdZhmteBDgfiSj6XoGTZUWALyM=;
+	s=arc-20240116; t=1716837965; c=relaxed/simple;
+	bh=oaYgcQgxa8Qunh96MmjaCfJkdJfe5c6DqEYyDr2Yj5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p77pP2nbAD+TJog3+UB+PHwI1KtwVHcNPHXbZydFr4yA7250sy30qM+y1GXE1qiykIMyeblVO90sUFfgLPLu2ylfOg84wg/WJvr9tNkitsNJdKUc9fwtA70gB8v8xT4cNMSuIfrcEzDl8bODA7i+fNBfrDM8Ra6878v3xDd2F1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSlC8dQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4242BC32782;
-	Mon, 27 May 2024 19:05:37 +0000 (UTC)
+	 MIME-Version; b=SrMovyk5t3gXM2SThlePqXqphLJei6Ev6UuTEFWo4iV0HPgMj7kkwc1KKJBxaN9Chnmxy4w0ycfzjJUJ/5SdJ+K2WUBXY2Fj3qAfhWIT9TLMYq6Y3YgTk6tB5TjYYBhP7sPYvvH2ZhGNid9U0hPh6ElYMsAHzKL3a/jr+fZTRF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hoMkFnY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3ADC2BBFC;
+	Mon, 27 May 2024 19:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836737;
-	bh=K8PpnrJq3J6Re+CcLYdZhmteBDgfiSj6XoGTZUWALyM=;
+	s=korg; t=1716837965;
+	bh=oaYgcQgxa8Qunh96MmjaCfJkdJfe5c6DqEYyDr2Yj5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSlC8dQVytLteEkQKS9jIiyTtWA1JGbMdAMNP5XoO6mpEEjFeN/yPSbg8ct7aGVA0
-	 uSEZPuKnizl9a2cmNTf7DK1bvPVp8Npejy7UvFK1YdgiD1wJOr7TTUkNoe/sR07KAz
-	 +TX29ECIwbrfAeOJT1vXkRDH8chi8Oa5w6u1NBp8=
+	b=hoMkFnY3kITR/69acALmRkH8Uv0cgNeyaFhMrONVQnL7ULp8AE4fxh9jiCru6eEnP
+	 hNzpyGhxcJRuNHlCCLg+/6I8ggfBqqBDblLSsqffxpjFMyu6sztOMW3aAmr8gg9xiK
+	 65IME7Sk8YFPSM9ZLUh4XddPaHvSWDmLiqWMcAHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 167/427] wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
+Subject: [PATCH 6.8 212/493] x86/boot/64: Clear most of CR4 in startup_64(), except PAE, MCE and LA57
 Date: Mon, 27 May 2024 20:53:34 +0200
-Message-ID: <20240527185617.958801562@linuxfoundation.org>
+Message-ID: <20240527185637.248032914@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit c511a9c12674d246916bb16c479d496b76983193 ]
+[ Upstream commit a0025f587c685e5ff842fb0194036f2ca0b6eaf4 ]
 
-Clang Static Checker (scan-build) warns:
+The early 64-bit boot code must be entered with a 1:1 mapping of the
+bootable image, but it cannot operate without a 1:1 mapping of all the
+assets in memory that it accesses, and therefore, it creates such
+mappings for all known assets upfront, and additional ones on demand
+when a page fault happens on a memory address.
 
-drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
-Value stored to 'ret' is never read.
+These mappings are created with the global bit G set, as the flags used
+to create page table descriptors are based on __PAGE_KERNEL_LARGE_EXEC
+defined by the core kernel, even though the context where these mappings
+are used is very different.
 
-Return 'ret' rather than 'count' when 'ret' stores an error code.
+This means that the TLB maintenance carried out by the decompressor is
+not sufficient if it is entered with CR4.PGE enabled, which has been
+observed to happen with the stage0 bootloader of project Oak. While this
+is a dubious practice if no global mappings are being used to begin
+with, the decompressor is clearly at fault here for creating global
+mappings and not performing the appropriate TLB maintenance.
 
-Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240422034243.938962-1-suhui@nfschina.com
+Since commit:
+
+  f97b67a773cd84b ("x86/decompressor: Only call the trampoline when changing paging levels")
+
+CR4 is no longer modified by the decompressor if no change in the number
+of paging levels is needed. Before that, CR4 would always be set to a
+consistent value with PGE cleared.
+
+So let's reinstate a simplified version of the original logic to put CR4
+into a known state, and preserve the PAE, MCE and LA57 bits, none of
+which can be modified freely at this point (PAE and LA57 cannot be
+changed while running in long mode, and MCE cannot be cleared when
+running under some hypervisors).
+
+This effectively clears PGE and works around the project Oak bug.
+
+Fixes: f97b67a773cd84b ("x86/decompressor: Only call the trampoline when ...")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20240410151354.506098-2-ardb+git@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/debugfs_sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/compressed/head_64.S | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-index 394bf3c32abff..0f6de862c3a9b 100644
---- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
-@@ -439,7 +439,7 @@ ath10k_dbg_sta_write_peer_debug_trigger(struct file *file,
- 	}
- out:
- 	mutex_unlock(&ar->conf_mutex);
--	return count;
-+	return ret ?: count;
- }
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index bf4a10a5794f1..1dcb794c5479e 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -398,6 +398,11 @@ SYM_CODE_START(startup_64)
+ 	call	sev_enable
+ #endif
  
- static const struct file_operations fops_peer_debug_trigger = {
++	/* Preserve only the CR4 bits that must be preserved, and clear the rest */
++	movq	%cr4, %rax
++	andl	$(X86_CR4_PAE | X86_CR4_MCE | X86_CR4_LA57), %eax
++	movq	%rax, %cr4
++
+ 	/*
+ 	 * configure_5level_paging() updates the number of paging levels using
+ 	 * a trampoline in 32-bit addressable memory if the current number does
 -- 
 2.43.0
 
