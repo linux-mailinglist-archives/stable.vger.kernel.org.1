@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A247E8D0B0B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:05:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B7E8D0D11
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41E9A1F229E5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:05:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D8ABB20D30
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7FD6A039;
-	Mon, 27 May 2024 19:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F307B16078F;
+	Mon, 27 May 2024 19:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OeSOm/Ic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdrlBk00"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF111DFED;
-	Mon, 27 May 2024 19:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2608168C4;
+	Mon, 27 May 2024 19:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836724; cv=none; b=cdYgZHu17sbPM6TjTuEt1Q1qdN2zJJnnBElgrGARHFFICiOJzOKqFgNGQOLK4Pdt2JUqPdbfrwpQ5GR3ydPg6lj8s4x2NUzPZPU3YqIrHCZnguRXyiu4wxGMQxtT7TwKlITOvOpcEF28vbF0wVN2XkCAnQDkBKyg+USq/M3nL3w=
+	t=1716837952; cv=none; b=iE9H3Ke6x0Sin56tMWJKuWdmlpx9s4W0R9uju5QLaCdWajaK1Y7VTtP6Q/vUftKcvpzoi2of+8Tl6o7+sD3PuZAusMh3UarrOxi9FOVwHsytaVJhALn/AhuzsKcJQtygPVX3fkeZeAB+bzoTjOdDdb5/ydiQA2T7zsGs0X+CG6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836724; c=relaxed/simple;
-	bh=H3O5s0SkAi4ZpJTyA1frMkD+DDzShXYCN4kRS0ekM+M=;
+	s=arc-20240116; t=1716837952; c=relaxed/simple;
+	bh=2J3DrBeOWC7QOaMwMBOeeOoCy2SCGGYlCCt3RbHzp6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5KUjndWRI5RNmCj2g7Yodc1U4lhPPh/V64GXSxx0ymydq9VwtdSGyWbDSR4/23n9mbJaeAcgN8vQg8llKYq46DJg8W+tMoXlGCICI4sKcr1QKd1wQoEndWVYX4PY48tJVOeqm7R0bFoXndOOBjHEIb3KCC6rqG7phpv7iU2KVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OeSOm/Ic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5036FC2BBFC;
-	Mon, 27 May 2024 19:05:24 +0000 (UTC)
+	 MIME-Version; b=AYZsntBjhruzeWIK5td3YWgI31CUaMj3YWd9mCp3JWgSt3eid3iRzMUkDhq/lJZuPjJId3AgS558Bqov4vzu5TEJP5FDaqXydmlL8ypASkD34QHKxMn3rCMFet+dZxyi3ARXPXY+vP9oderC5WyQCdJYALLc1kBHELa744EqUMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdrlBk00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7E1C2BBFC;
+	Mon, 27 May 2024 19:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836724;
-	bh=H3O5s0SkAi4ZpJTyA1frMkD+DDzShXYCN4kRS0ekM+M=;
+	s=korg; t=1716837952;
+	bh=2J3DrBeOWC7QOaMwMBOeeOoCy2SCGGYlCCt3RbHzp6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OeSOm/IcDoJiWfBnw3S+YsLvoKNTiRvUHZCOvMqTkZPIJwRGre2j24GrL8cQ5X4z0
-	 heovXdziYCoRtnKQFbZu0g4SsjqAIox19qIpsKjAacTYnHwTgHTDvkvHMWENUUapD0
-	 tbZ2bcf2Vs/rQ+PCsUQ5d0QqzYig/NJzdxHHwkHc=
+	b=RdrlBk00jYt3pkV4bPaUc2xvu6me1JkGt81H7Os/5IEsmsf1J6/OuJ8NmvfzdFJun
+	 U7rvanYFtOYiTz0nqeTyDqjYhd+UVNVezSpGleimwYtt+kjWJb8iBHByA+XbaGh+vX
+	 hO0tFvdfQ85mnLtPgv5JQIon94L8pDyg17LtxsZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 163/427] thermal/drivers/mediatek/lvts_thermal: Add coeff for mt8192
+Subject: [PATCH 6.8 208/493] ACPI: disable -Wstringop-truncation
 Date: Mon, 27 May 2024 20:53:30 +0200
-Message-ID: <20240527185617.582539309@linuxfoundation.org>
+Message-ID: <20240527185637.125814316@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 7954c92ede882b0dfd52a5db90291a4151b44c1a ]
+[ Upstream commit a3403d304708f60565582d60af4316289d0316a0 ]
 
-In order for lvts_raw_to_temp to function properly on mt8192,
-temperature coefficients for mt8192 need to be added.
+gcc -Wstringop-truncation warns about copying a string that results in a
+missing nul termination:
 
-Fixes: 288732242db4 ("thermal/drivers/mediatek/lvts_thermal: Add mt8192 support")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240416-lvts_thermal-v2-1-f8a36882cc53@chromium.org
+drivers/acpi/acpica/tbfind.c: In function 'acpi_tb_find_table':
+drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified bound 6 equals destination size [-Werror=stringop-truncation]
+   60 |         strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/acpi/acpica/tbfind.c:61:9: error: 'strncpy' specified bound 8 equals destination size [-Werror=stringop-truncation]
+   61 |         strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The code works as intended, and the warning could be addressed by using
+a memcpy(), but turning the warning off for this file works equally well
+and may be easier to merge.
+
+Fixes: 47c08729bf1c ("ACPICA: Fix for LoadTable operator, input strings")
+Link: https://lore.kernel.org/lkml/CAJZ5v0hoUfv54KW7y4223Mn9E7D4xvR7whRFNLTBqCZMUxT50Q@mail.gmail.com/#t
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/acpica/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
-index fd4bd650c77a6..4e5c213a89225 100644
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -1530,11 +1530,15 @@ static const struct lvts_data mt7988_lvts_ap_data = {
- static const struct lvts_data mt8192_lvts_mcu_data = {
- 	.lvts_ctrl	= mt8192_lvts_mcu_data_ctrl,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt8192_lvts_mcu_data_ctrl),
-+	.temp_factor	= LVTS_COEFF_A_MT8195,
-+	.temp_offset	= LVTS_COEFF_B_MT8195,
- };
+diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
+index 30f3fc13c29d1..8d18af396de92 100644
+--- a/drivers/acpi/acpica/Makefile
++++ b/drivers/acpi/acpica/Makefile
+@@ -5,6 +5,7 @@
  
- static const struct lvts_data mt8192_lvts_ap_data = {
- 	.lvts_ctrl	= mt8192_lvts_ap_data_ctrl,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt8192_lvts_ap_data_ctrl),
-+	.temp_factor	= LVTS_COEFF_A_MT8195,
-+	.temp_offset	= LVTS_COEFF_B_MT8195,
- };
+ ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
+ ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
++CFLAGS_tbfind.o 		+= $(call cc-disable-warning, stringop-truncation)
  
- static const struct lvts_data mt8195_lvts_mcu_data = {
+ # use acpi.o to put all files here into acpi.o modparam namespace
+ obj-y	+= acpi.o
 -- 
 2.43.0
 
