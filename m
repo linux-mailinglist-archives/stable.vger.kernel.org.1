@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-46969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EEC8D0C05
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8540B8D0E31
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AB141F24124
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7FD21C21599
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014C81607A2;
-	Mon, 27 May 2024 19:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8291607AB;
+	Mon, 27 May 2024 19:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTkG0k2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFahT9ZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B009A160783;
-	Mon, 27 May 2024 19:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1C261FDF;
+	Mon, 27 May 2024 19:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837323; cv=none; b=Gf5mHjQv37D9GY3FxltwwpcQGA+UXcQZLH5RGrUq0QU2mTZfRmWs50E1N8NOBp2FJA4JmSVk5b+2FZ/d4Q+F1Wkvnp3Z5YHLEF7mxFrw21J/ILPQJYGAJGx2ibVGcNOpkZW4Iytpi1SApT8i4VhkPuZRyJFgdOm4B0pWD7jiWiA=
+	t=1716838671; cv=none; b=oIfsx+B5K/g3EXsQqKY21EFlvzxu3xF4ofDmtpoDZFIUfaREL/G6sGefJfHiJh2hkwDDOLnzoStJMBdA0MDwnn+fCGbAkoIS25EBZQju1h7mMZ+ygCk9Zw7x8/3KztHuVbEUo5sghmkk/y5aN7tShhmscxed3GQNOktmvpm5lM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837323; c=relaxed/simple;
-	bh=Jo1V8WmUB5dNWmR2qabwCXi2YSIdP2On1Vw2oHqQYTs=;
+	s=arc-20240116; t=1716838671; c=relaxed/simple;
+	bh=Dlq3By1VQbl91H0fXgDW5p/vbOS0UlRXiqcF1xpUVBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OW1ET/0iKCKIi57Csc/Pgont6dVmyXBvKpbmX1G3ldj8KVBBhaixCwtFyGYhne3zd5Y2ZEi1gwZw3l3hQvE7PU1gs6ByO2yEwvu4FA+gupC+MVuP/7CK9ydaDo2jsBfLWbE7F0u6WoK0fRhtjc9HTLYPP/KcIM3PDQShn7QRkVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTkG0k2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AF3C2BBFC;
-	Mon, 27 May 2024 19:15:23 +0000 (UTC)
+	 MIME-Version; b=BTP7z6gICtcdmoGNilrPIJ/vQCH+iPWmeoffoeYsE1toB5AELAx9PF6ZLyrgw+F0CI46++0P+m78jnJYTcMogY/8v9Hj0+502JQhCTU5u/Bgln8omwSxuB+7QykdQ/i+SAgN7jO9gzbjaxqNtwQ8FpHpjIILfthFexYrg3bLK6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFahT9ZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340AEC2BBFC;
+	Mon, 27 May 2024 19:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837323;
-	bh=Jo1V8WmUB5dNWmR2qabwCXi2YSIdP2On1Vw2oHqQYTs=;
+	s=korg; t=1716838671;
+	bh=Dlq3By1VQbl91H0fXgDW5p/vbOS0UlRXiqcF1xpUVBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTkG0k2ebnNgcTxca3sskKwd4k3O+sOjzzhzvEe/ZZRgrxMv+uCoe1caW1Qm6PSfy
-	 i58Yf8GYvgZ4j7/RgPKoCOhakYiKaBBrrkBvULejKpd+7Yukip3xR3E5UUyQKprnPR
-	 NFbT15jXKsfkBHtKoC6HzOppwTzOnMcQaaHJaLmU=
+	b=zFahT9ZEaqVPBI/9J/FVfetm5EoqYKMFae0gy8qXTw/Cg9wQZrB2xlPnZO+82PGIq
+	 RC73X4t30G0j9ImzPl9Zg+Dlsyb4tY2LEqr+NKIsBuPbd5zlPXKd6I4310uQKTDz7c
+	 FEpsLQ2RIM6FL4dOrFADjFJ0z7NOn3Lyaev8cAeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 395/427] dax/bus.c: use the right locking mode (read vs write) in size_show
+Subject: [PATCH 6.8 440/493] clk: renesas: r9a07g043: Add clock and reset entry for PLIC
 Date: Mon, 27 May 2024 20:57:22 +0200
-Message-ID: <20240527185634.941981460@linuxfoundation.org>
+Message-ID: <20240527185644.652896542@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Verma <vishal.l.verma@intel.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 2acf04532d6d655d8c3b2ee4ddeb320107043086 ]
+[ Upstream commit 44019387fce230beda35b83da3a2c9fc5787704e ]
 
-In size_show(), the dax_dev_rwsem only needs a read lock, but was
-acquiring a write lock.  Change it to down_read_interruptible() so it
-doesn't unnecessarily hold a write lock.
+Add the missing clock and reset entry for PLIC. Also add
+R9A07G043_NCEPLIC_ACLK to the critical clocks list.
 
-Link: https://lkml.kernel.org/r/20240430-vv-dax_abi_fixes-v3-4-e3dcd755774c@intel.com
-Fixes: c05ae9d85b47 ("dax/bus.c: replace driver-core lock usage by a local rwsem")
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240403200952.633084-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dax/bus.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/renesas/r9a07g043-cpg.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index 0011a6e6a8f2a..f24b67c64d5ec 100644
---- a/drivers/dax/bus.c
-+++ b/drivers/dax/bus.c
-@@ -937,11 +937,11 @@ static ssize_t size_show(struct device *dev,
- 	unsigned long long size;
- 	int rc;
+diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
+index 075ade0925d45..9ad7ceb3ab1ba 100644
+--- a/drivers/clk/renesas/r9a07g043-cpg.c
++++ b/drivers/clk/renesas/r9a07g043-cpg.c
+@@ -265,6 +265,10 @@ static struct rzg2l_mod_clk r9a07g043_mod_clks[] = {
+ 				0x5a8, 1),
+ 	DEF_MOD("tsu_pclk",	R9A07G043_TSU_PCLK, R9A07G043_CLK_TSU,
+ 				0x5ac, 0),
++#ifdef CONFIG_RISCV
++	DEF_MOD("nceplic_aclk",	R9A07G043_NCEPLIC_ACLK, R9A07G043_CLK_P1,
++				0x608, 0),
++#endif
+ };
  
--	rc = down_write_killable(&dax_dev_rwsem);
-+	rc = down_read_interruptible(&dax_dev_rwsem);
- 	if (rc)
- 		return rc;
- 	size = dev_dax_size(dev_dax);
--	up_write(&dax_dev_rwsem);
-+	up_read(&dax_dev_rwsem);
+ static struct rzg2l_reset r9a07g043_resets[] = {
+@@ -318,6 +322,10 @@ static struct rzg2l_reset r9a07g043_resets[] = {
+ 	DEF_RST(R9A07G043_ADC_PRESETN, 0x8a8, 0),
+ 	DEF_RST(R9A07G043_ADC_ADRST_N, 0x8a8, 1),
+ 	DEF_RST(R9A07G043_TSU_PRESETN, 0x8ac, 0),
++#ifdef CONFIG_RISCV
++	DEF_RST(R9A07G043_NCEPLIC_ARESETN, 0x908, 0),
++#endif
++
+ };
  
- 	return sysfs_emit(buf, "%llu\n", size);
- }
+ static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
+@@ -327,6 +335,7 @@ static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
+ #endif
+ #ifdef CONFIG_RISCV
+ 	MOD_CLK_BASE + R9A07G043_IAX45_CLK,
++	MOD_CLK_BASE + R9A07G043_NCEPLIC_ACLK,
+ #endif
+ 	MOD_CLK_BASE + R9A07G043_DMAC_ACLK,
+ };
 -- 
 2.43.0
 
