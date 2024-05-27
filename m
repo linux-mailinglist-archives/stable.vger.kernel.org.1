@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-46956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45818D0BF4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D0F8D0DF2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E605F1C20918
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 767341C21682
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA2615EFC3;
-	Mon, 27 May 2024 19:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C521515FCF0;
+	Mon, 27 May 2024 19:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmbxLtpc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8n4jKHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF63E17E90E;
-	Mon, 27 May 2024 19:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7EC262BE;
+	Mon, 27 May 2024 19:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837288; cv=none; b=X3fH4sk1sXBuvEwzeuwX3hB9F8u3QpzRsM4TNvKEhIYotq5cAyp1UN2gqZTiA5+NR1FMmDBrkH8cDyTKsGx9XwZVF/4853/9fp31r1X+RAEe+qjig3k7Co6WqTTop2cz3xc4haSmBkxI4OcwOp4URNQkhxJllUPZvQZKgf17bN4=
+	t=1716838533; cv=none; b=juB+uOkG1z7NHtDxkrytjWWfMiEBMoUfIHiHWiF3IseV15+qYWHz1fVorbieLmh+JK1wBoihZXu5vzWqEqaY0peC3ZC69lKVLJtuF7g1K4G7M2gdnSkh/FlwMxw+OGnDK3s4o6Pc7DyFLtU4tcsj2md/Sb/UW8erwSxqslMDh5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837288; c=relaxed/simple;
-	bh=J+eyzz/ym8sjNNG8KRrD4QoJa4hm0P+YvU3ay8Oku1c=;
+	s=arc-20240116; t=1716838533; c=relaxed/simple;
+	bh=jl/kVG5ik7DVu5TEW+tV0hAVyaKJ2vv2KJ2eRr8vYgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q7dzU2vgx6X79qzdX1vtgxjw7K3tdKrXDDPn6fL0tXOQCjPCsmK+ABfIN8wsN6Ub6wQEFTO4SvqkJdE2zo8kNn6x/FagZBAxW9CHWCU9OgPE2wtfe5ipInOvoGv+nz9bROY6G2eWEFCKNuPX9x+Q6xLyr+eOiM1uGTIikh/R58U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmbxLtpc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853D7C2BBFC;
-	Mon, 27 May 2024 19:14:47 +0000 (UTC)
+	 MIME-Version; b=m3bh96rpDgX+XXLk+6ZuERyMH43H4cp/1Qi8Q4bhtvWpu4n7iY0UnMA2lPmRSdu74bA4l7w0MJAS0mZ7eMNINvDGSiu9t9AUcaUAMrKfsdcmdIWcn3OlTQmQZf4tmRpG702vgC5x6GlXXfcVBEtcP8Z+vT0uhJyLlFLlSpe3lm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8n4jKHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA459C2BBFC;
+	Mon, 27 May 2024 19:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837287;
-	bh=J+eyzz/ym8sjNNG8KRrD4QoJa4hm0P+YvU3ay8Oku1c=;
+	s=korg; t=1716838532;
+	bh=jl/kVG5ik7DVu5TEW+tV0hAVyaKJ2vv2KJ2eRr8vYgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmbxLtpceDr474tOuKdyLtC+tSaqNE5YNbj99KhI24QjZqv75N1ZaaH6pezy009qc
-	 yc9EVoFgnU/jqR6oY0bfKzs9ufwJk68dFVdvIcn7anwkrp3d+nsvyxM6G9pNeuAmxV
-	 CtweUYa0XKVMteRGgDehuGOaOOF1TJskAPWAcKKY=
+	b=s8n4jKHgSUi+AFvyabkdhC+mBMP0yiD/l/esHmRmkkNxNdUHUIzw2T1M6nFZIofxr
+	 daWBnQ2wySer8/bcaGsh64kmohMz7/EjDVfd9YK/NcmHalE93377mlDMxzVp32/SYe
+	 3iYier4XCYeTEJew2xegfFnOToIHOozFRjjOSBpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Long Li <longli@microsoft.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 383/427] RDMA/mana_ib: Introduce helpers to create and destroy mana queues
+Subject: [PATCH 6.8 428/493] RDMA/hns: Fix UAF for cq async event
 Date: Mon, 27 May 2024 20:57:10 +0200
-Message-ID: <20240527185634.590641344@linuxfoundation.org>
+Message-ID: <20240527185644.282115144@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 46f5be7cd4bceb3a503c544b3dab7b75fe4bb96b ]
+[ Upstream commit a942ec2745ca864cd8512142100e4027dc306a42 ]
 
-Intoduce helpers to work with mana ib queues (struct mana_ib_queue).
-A queue always consists of umem, gdma_region, and id.
-A queue can become a WQ or a CQ.
+The refcount of CQ is not protected by locks. When CQ asynchronous
+events and CQ destruction are concurrent, CQ may have been released,
+which will cause UAF.
 
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://lore.kernel.org/r/1711483688-24358-2-git-send-email-kotaranov@linux.microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
+Use the xa_lock() to protect the CQ refcount.
+
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-6-huangjunxian6@hisilicon.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: f79edef79b6a ("RDMA/mana_ib: boundary check before installing cq callbacks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mana/main.c    | 43 ++++++++++++++++++++++++++++
- drivers/infiniband/hw/mana/mana_ib.h | 10 +++++++
- 2 files changed, 53 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_cq.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-index 71e33feee61bb..4524c6b807487 100644
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -237,6 +237,49 @@ void mana_ib_dealloc_ucontext(struct ib_ucontext *ibcontext)
- 		ibdev_dbg(ibdev, "Failed to destroy doorbell page %d\n", ret);
- }
+diff --git a/drivers/infiniband/hw/hns/hns_roce_cq.c b/drivers/infiniband/hw/hns/hns_roce_cq.c
+index 1b6d16af8c12b..2517c972c651a 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_cq.c
++++ b/drivers/infiniband/hw/hns/hns_roce_cq.c
+@@ -151,7 +151,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 		return ret;
+ 	}
  
-+int mana_ib_create_queue(struct mana_ib_dev *mdev, u64 addr, u32 size,
-+			 struct mana_ib_queue *queue)
-+{
-+	struct ib_umem *umem;
-+	int err;
-+
-+	queue->umem = NULL;
-+	queue->id = INVALID_QUEUE_ID;
-+	queue->gdma_region = GDMA_INVALID_DMA_REGION;
-+
-+	umem = ib_umem_get(&mdev->ib_dev, addr, size, IB_ACCESS_LOCAL_WRITE);
-+	if (IS_ERR(umem)) {
-+		err = PTR_ERR(umem);
-+		ibdev_dbg(&mdev->ib_dev, "Failed to get umem, %d\n", err);
-+		return err;
+-	ret = xa_err(xa_store(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
++	ret = xa_err(xa_store_irq(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to xa_store CQ, ret = %d.\n", ret);
+ 		goto err_put;
+@@ -164,7 +164,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 	return 0;
+ 
+ err_xa:
+-	xa_erase(&cq_table->array, hr_cq->cqn);
++	xa_erase_irq(&cq_table->array, hr_cq->cqn);
+ err_put:
+ 	hns_roce_table_put(hr_dev, &cq_table->table, hr_cq->cqn);
+ 
+@@ -183,7 +183,7 @@ static void free_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 		dev_err(dev, "DESTROY_CQ failed (%d) for CQN %06lx\n", ret,
+ 			hr_cq->cqn);
+ 
+-	xa_erase(&cq_table->array, hr_cq->cqn);
++	xa_erase_irq(&cq_table->array, hr_cq->cqn);
+ 
+ 	/* Waiting interrupt process procedure carried out */
+ 	synchronize_irq(hr_dev->eq_table.eq[hr_cq->vector].irq);
+@@ -477,13 +477,6 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
+ 	struct ib_event event;
+ 	struct ib_cq *ibcq;
+ 
+-	hr_cq = xa_load(&hr_dev->cq_table.array,
+-			cqn & (hr_dev->caps.num_cqs - 1));
+-	if (!hr_cq) {
+-		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
+-		return;
+-	}
+-
+ 	if (event_type != HNS_ROCE_EVENT_TYPE_CQ_ID_INVALID &&
+ 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_ACCESS_ERROR &&
+ 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_OVERFLOW) {
+@@ -492,7 +485,16 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
+ 		return;
+ 	}
+ 
+-	refcount_inc(&hr_cq->refcount);
++	xa_lock(&hr_dev->cq_table.array);
++	hr_cq = xa_load(&hr_dev->cq_table.array,
++			cqn & (hr_dev->caps.num_cqs - 1));
++	if (hr_cq)
++		refcount_inc(&hr_cq->refcount);
++	xa_unlock(&hr_dev->cq_table.array);
++	if (!hr_cq) {
++		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
++		return;
 +	}
-+
-+	err = mana_ib_create_zero_offset_dma_region(mdev, umem, &queue->gdma_region);
-+	if (err) {
-+		ibdev_dbg(&mdev->ib_dev, "Failed to create dma region, %d\n", err);
-+		goto free_umem;
-+	}
-+	queue->umem = umem;
-+
-+	ibdev_dbg(&mdev->ib_dev,
-+		  "create_dma_region ret %d gdma_region 0x%llx\n",
-+		  err, queue->gdma_region);
-+
-+	return 0;
-+free_umem:
-+	ib_umem_release(umem);
-+	return err;
-+}
-+
-+void mana_ib_destroy_queue(struct mana_ib_dev *mdev, struct mana_ib_queue *queue)
-+{
-+	/* Ignore return code as there is not much we can do about it.
-+	 * The error message is printed inside.
-+	 */
-+	mana_ib_gd_destroy_dma_region(mdev, queue->gdma_region);
-+	ib_umem_release(queue->umem);
-+}
-+
- static int
- mana_ib_gd_first_dma_region(struct mana_ib_dev *dev,
- 			    struct gdma_context *gc,
-diff --git a/drivers/infiniband/hw/mana/mana_ib.h b/drivers/infiniband/hw/mana/mana_ib.h
-index f83390eebb7d7..859fd3bfc764f 100644
---- a/drivers/infiniband/hw/mana/mana_ib.h
-+++ b/drivers/infiniband/hw/mana/mana_ib.h
-@@ -45,6 +45,12 @@ struct mana_ib_adapter_caps {
- 	u32 max_inline_data_size;
- };
  
-+struct mana_ib_queue {
-+	struct ib_umem *umem;
-+	u64 gdma_region;
-+	u64 id;
-+};
-+
- struct mana_ib_dev {
- 	struct ib_device ib_dev;
- 	struct gdma_dev *gdma_dev;
-@@ -169,6 +175,10 @@ int mana_ib_create_dma_region(struct mana_ib_dev *dev, struct ib_umem *umem,
- int mana_ib_gd_destroy_dma_region(struct mana_ib_dev *dev,
- 				  mana_handle_t gdma_region);
- 
-+int mana_ib_create_queue(struct mana_ib_dev *mdev, u64 addr, u32 size,
-+			 struct mana_ib_queue *queue);
-+void mana_ib_destroy_queue(struct mana_ib_dev *mdev, struct mana_ib_queue *queue);
-+
- struct ib_wq *mana_ib_create_wq(struct ib_pd *pd,
- 				struct ib_wq_init_attr *init_attr,
- 				struct ib_udata *udata);
+ 	ibcq = &hr_cq->ib_cq;
+ 	if (ibcq->event_handler) {
 -- 
 2.43.0
 
