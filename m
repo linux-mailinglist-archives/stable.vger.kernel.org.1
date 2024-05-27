@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D960B8D0C12
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8A68D0DE3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16E111C21361
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48151B20C81
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C51415FA91;
-	Mon, 27 May 2024 19:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAAE535A4;
+	Mon, 27 May 2024 19:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhveV8jF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oji59yBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB997347E;
-	Mon, 27 May 2024 19:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D75C17727;
+	Mon, 27 May 2024 19:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837355; cv=none; b=a7QodRmBXMWgnVe9qPysBrV3XxpjURdDLMdYttqLBq5DxBp3Z4GvGsDlIx9qSMFQHn01yrfPsjfKH5m1KS/qzpcm+an+XgQR7tl7FpjZSXuHuzFKcDNHDDYtCfdlk9hwQi0dUpD523HGyCZz2LiGXB7KVZfgNF7UTlgjWTef8EY=
+	t=1716838493; cv=none; b=mB38bpKwWRhGOIu84+rjShvx3IpJx4vE7XRsMNsWzqCUL5UEGDrb9fD+Q8wHsvTx3jsqeXGzQctwvs3cLzsThpsBG3RukQsip01xcLZynPUvJkx6SfXYphfyxCPA0cG80FWHoV3w7E88K4m6yJGKWqOJSWhicZxj3/lLNGzavAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837355; c=relaxed/simple;
-	bh=EgCiQBBEzmmf3NhhQ+I17gCOk3Y8qViqQ7RZTV/VJqg=;
+	s=arc-20240116; t=1716838493; c=relaxed/simple;
+	bh=IPPGRrwqMRzZIM2d1RWkT/IDJ5CuwWM9kyji5RYeU3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqs2DuIwF3iLV16s0n6SnatMW5qNIgeBRhGdaSogdwfDsH2f7KWV1iWN6s0D3V2d2q+gREw74yMbrbUpvm9Gb36M8WbSRESVlpjJuAwBipq4RJH38oiGLJi0BWb63CozoQK7NbjfD6YkBnD5Isqx2E3UMvvUO4j4JIv7Be5Vexs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhveV8jF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D3DC2BBFC;
-	Mon, 27 May 2024 19:15:54 +0000 (UTC)
+	 MIME-Version; b=IhdzEKSNkk38wWnAqv/anIxqibC23K+Q2PaEIAfaHDlWXvEJ3d2skfAUlcKDs21EO0oIBt94UhKE3RstuQenBNL2HHRO8CViFR6n6iP68xOiWPnCVz0vOmFFXJF4ne9BETH03g4O0BFBcN5Kkc3Rtt5v7eULCc53pKVB1Cbk80c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oji59yBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E248C2BBFC;
+	Mon, 27 May 2024 19:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837354;
-	bh=EgCiQBBEzmmf3NhhQ+I17gCOk3Y8qViqQ7RZTV/VJqg=;
+	s=korg; t=1716838493;
+	bh=IPPGRrwqMRzZIM2d1RWkT/IDJ5CuwWM9kyji5RYeU3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NhveV8jFkunamxSg9NBQG5Gjsnmq3kEPk9pPT5B3a+1EgPENFRNDuh6MApmhKZrPF
-	 umx4qL+flL6slCeHGlL1n2egW3Xb3i9jEkR6kYY+SIXqT5MXg1IX02Aat4Fyc3w//r
-	 SP/w4XlUOdp2dM20F2BhtxAXogYdaFCaO1J15FYY=
+	b=Oji59yBGZIXAK8l42MJ1nzh5ylc836SrNkxI/yn/BZlsjXVBCiKS1+HQ0cGalMYAy
+	 juR48RDT/F2uxVflGrqs4fdkfmXbS57oW2cIj2GzifjBpvm4FT9KDL3+eMPs6KAmix
+	 OGQLKiieieKu49DwRM7AvvFGNzfAmhhNcDrpr3cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Pearson <rpearsonhpe@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 369/427] RDMA/rxe: Fix incorrect rxe_put in error path
+Subject: [PATCH 6.8 414/493] ALSA: hda: cs35l41: Remove Speaker ID for Lenovo Legion slim 7 16ARHA7
 Date: Mon, 27 May 2024 20:56:56 +0200
-Message-ID: <20240527185634.143993834@linuxfoundation.org>
+Message-ID: <20240527185643.843704534@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 8776618dbbd1b6f210b31509507e1aad461d6435 ]
+[ Upstream commit 4a1a8065f5d3565677347d34a908ff2d0803b14f ]
 
-In rxe_send() a ref is taken on the qp to keep it alive until the
-kfree_skb() has a chance to call the skb destructor rxe_skb_tx_dtor()
-which drops the reference. If the packet has an incorrect protocol the
-error path just calls kfree_skb() which will call the destructor which
-will drop the ref. Currently the driver also calls rxe_put() which is
-incorrect. Additionally since the packets sent to rxe_send() are under the
-control of the driver and it only ever produces IPV4 or IPV6 packets the
-simplest fix is to remove all the code in this block.
+These laptops do not have _DSD and must be added by configuration
+table, however, the initial entries for them are incorrect:
+Neither laptop contains a Speaker ID GPIO.
+This issue would not affect audio playback, but may affect which files
+are loaded when loading firmware.
 
-Link: https://lore.kernel.org/r/20240329145513.35381-12-rpearsonhpe@gmail.com
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Fixes: 9eb7f8e44d13 ("IB/rxe: Move refcounting earlier in rxe_send()")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: b67a7dc418aa ("ALSA: hda/realtek: Add sound quirks for Lenovo Legion slim 7 16ARHA7 models")
+
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Message-ID: <20240411110813.330483-8-sbinding@opensource.cirrus.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_net.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ sound/pci/hda/cs35l41_hda_property.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_net.c b/drivers/infiniband/sw/rxe/rxe_net.c
-index cd59666158b18..e5827064ab1e2 100644
---- a/drivers/infiniband/sw/rxe/rxe_net.c
-+++ b/drivers/infiniband/sw/rxe/rxe_net.c
-@@ -366,18 +366,10 @@ static int rxe_send(struct sk_buff *skb, struct rxe_pkt_info *pkt)
- 	rxe_get(pkt->qp);
- 	atomic_inc(&pkt->qp->skb_out);
- 
--	if (skb->protocol == htons(ETH_P_IP)) {
-+	if (skb->protocol == htons(ETH_P_IP))
- 		err = ip_local_out(dev_net(skb_dst(skb)->dev), skb->sk, skb);
--	} else if (skb->protocol == htons(ETH_P_IPV6)) {
-+	else
- 		err = ip6_local_out(dev_net(skb_dst(skb)->dev), skb->sk, skb);
--	} else {
--		rxe_dbg_qp(pkt->qp, "Unknown layer 3 protocol: %d\n",
--				skb->protocol);
--		atomic_dec(&pkt->qp->skb_out);
--		rxe_put(pkt->qp);
--		kfree_skb(skb);
--		return -EINVAL;
--	}
- 
- 	if (unlikely(net_xmit_eval(err))) {
- 		rxe_dbg_qp(pkt->qp, "error sending packet: %d\n", err);
+diff --git a/sound/pci/hda/cs35l41_hda_property.c b/sound/pci/hda/cs35l41_hda_property.c
+index 4d1f8734d13f3..c2067e8083c0f 100644
+--- a/sound/pci/hda/cs35l41_hda_property.c
++++ b/sound/pci/hda/cs35l41_hda_property.c
+@@ -99,8 +99,8 @@ static const struct cs35l41_config cs35l41_config_table[] = {
+ 	{ "10431F62", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 0, 0, 0 },
+ 	{ "10433A60", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
+ 	{ "17AA386F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
+-	{ "17AA3877", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+-	{ "17AA3878", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
++	{ "17AA3877", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
++	{ "17AA3878", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
+ 	{ "17AA38A9", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
+ 	{ "17AA38AB", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 2, -1, 0, 0, 0 },
+ 	{ "17AA38B4", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
 -- 
 2.43.0
 
