@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-46696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF688D0ADD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B468D0CE9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F006D1C2158F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A06FF2875A4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B29161314;
-	Mon, 27 May 2024 19:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D751607B1;
+	Mon, 27 May 2024 19:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OStqidG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10uae6hD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D731AD518;
-	Mon, 27 May 2024 19:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801B71607AA;
+	Mon, 27 May 2024 19:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836618; cv=none; b=uMquMYaGtIRCYLt31wYQw5oJvx1w7aPWm1nO0OHgChCC+tE97B5ptiT/tWMIPVhiPZFFWJ1LKzbB6ZBUWUhEsxAwUpV+6m7raMqjzpsrc7XVHACJnErXNIp6rSv9jBeeK5ET53wJu/SpB4QLVPrTskCOg1DF3qs5L2BhftjZ8cI=
+	t=1716837855; cv=none; b=EpRL7Ce+3o2awfvEg1LIMdEUjdnIgaB8rLhdiMndgQub/3VeDPJPPlU9qIuotAIAXChHrRVHNnGDKS46IjrJiJdFcZyvhRm5IJYN/PY+cbHyqCvAicV4WF54r9+kUGs4D9L4sxUX03Vq5LUbWmyIRgpVgCb/ps9UE2flsAKtmh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836618; c=relaxed/simple;
-	bh=oLP21jpOf4sdHZpPtex5PxYk19XtKD4Ts/LV5PMqoeU=;
+	s=arc-20240116; t=1716837855; c=relaxed/simple;
+	bh=DqmXxHPg2vhXcZr4ol+YOuxnQmWxcuC3T58GsdwSkSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1wpyhrkL6FelGpJQ9GiqbMF8l5wN9WI/36eShdnMDR68QdI61WJBtlgcDt4Zneiw/hpouXeRibgZaJEHRwdPcuCBpMCunRc+4kn5UubWXHSUeV8L+jZbPjp1e6BNj0dp5ByaEGPjQdIDOnWyoI+chRW0OtGCti1KUWIJPMtypc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OStqidG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CEBC2BBFC;
-	Mon, 27 May 2024 19:03:37 +0000 (UTC)
+	 MIME-Version; b=e4yqGjjbxThpDSHmMwmuDC/dqyGWz9/zxSkYsPfEM5BVF8QVO6+TUObk/yXkR9lxf3WJfJXQ1XFhUbsMVNX7xF7ZNjyapZLeSQy96ZC9aFG7bRX/mUNZCy8EwuKtqt3z1UK3fAN+uEQ0hlFj91+G/IPMzDGj2+9zRBUH1M99JC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10uae6hD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16996C32781;
+	Mon, 27 May 2024 19:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836618;
-	bh=oLP21jpOf4sdHZpPtex5PxYk19XtKD4Ts/LV5PMqoeU=;
+	s=korg; t=1716837855;
+	bh=DqmXxHPg2vhXcZr4ol+YOuxnQmWxcuC3T58GsdwSkSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OStqidG2gnJXLZpR0GC2YPM5uIdDMe2tNSv8FHj5tUbwyiEHcKGlTIFn/oPGoqTcF
-	 aFVCqoeAzjo+7msFW/NIGCNiiULcHtJylRKPpkFtdaX+PV8U/9CQ8WJgHGXC/08c1G
-	 p+gTMCMfo6Op/hl4Xu2gXc+crN9jP/1TM2v4eK/o=
+	b=10uae6hDSWKtCR5+/zBg7dF19i4vmGAt7yCfYzs9w53Df1Fj7ZSpvsU+UMlZ/64po
+	 /DC8zJsate5uXQzdM9fKXPn/g9GBafYryDI9nNXKfJ5qsRFqNgIZBpT92NCy7Kr3Hh
+	 faXlW5jOZVFHVdAaBhO6iFtDsGdEWa9pes9wTkX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 123/427] bpf: Pack struct bpf_fib_lookup
-Date: Mon, 27 May 2024 20:52:50 +0200
-Message-ID: <20240527185613.370057376@linuxfoundation.org>
+Subject: [PATCH 6.8 169/493] wifi: ieee80211: fix ieee80211_mle_basic_sta_prof_size_ok()
+Date: Mon, 27 May 2024 20:52:51 +0200
+Message-ID: <20240527185635.890739495@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f91717007217d975aa975ddabd91ae1a107b9bff ]
+[ Upstream commit c121514df0daa800cc500dc2738e0b8a1c54af98 ]
 
-The struct bpf_fib_lookup is supposed to be of size 64. A recent commit
-59b418c7063d ("bpf: Add a check for struct bpf_fib_lookup size") added
-a static assertion to check this property so that future changes to the
-structure will not accidentally break this assumption.
+If there was a possibility of an MLE basic STA profile without
+subelements, we might reject it because we account for the one
+octet for sta_info_len twice (it's part of itself, and in the
+fixed portion). Like in ieee80211_mle_reconf_sta_prof_size_ok,
+subtract 1 to adjust that.
 
-As it immediately turned out, on some 32-bit arm systems, when AEABI=n,
-the total size of the structure was equal to 68, see [1]. This happened
-because the bpf_fib_lookup structure contains a union of two 16-bit
-fields:
+When reading the elements we did take this into account, and
+since there are always elements, this never really mattered.
 
-    union {
-            __u16 tot_len;
-            __u16 mtu_result;
-    };
-
-which was supposed to compile to a 16-bit-aligned 16-bit field. On the
-aforementioned setups it was instead both aligned and padded to 32-bits.
-
-Declare this inner union as __attribute__((packed, aligned(2))) such
-that it always is of size 2 and is aligned to 16 bits.
-
-  [1] https://lore.kernel.org/all/CA+G9fYtsoP51f-oP_Sp5MOq-Ffv8La2RztNpwvE6+R1VtFiLrw@mail.gmail.com/#t
-
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: e1850ea9bd9e ("bpf: bpf_fib_lookup return MTU value as output when looked up")
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240403123303.1452184-1-aspsk@isovalent.com
+Fixes: 7b6f08771bf6 ("wifi: ieee80211: Support validating ML station profile length")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240318184907.00bb0b20ed60.I8c41dd6fc14c4b187ab901dea15ade73c79fb98c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       | 2 +-
- tools/include/uapi/linux/bpf.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/ieee80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 3c42b9f1bada3..bcd84985faf48 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -7150,7 +7150,7 @@ struct bpf_fib_lookup {
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 83c4d060a5596..b69771a2e4e74 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -5145,7 +5145,7 @@ static inline bool ieee80211_mle_basic_sta_prof_size_ok(const u8 *data,
+ 		info_len += 1;
  
- 		/* output: MTU value */
- 		__u16	mtu_result;
--	};
-+	} __attribute__((packed, aligned(2)));
- 	/* input: L3 device index for lookup
- 	 * output: device index from FIB lookup
- 	 */
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 3c42b9f1bada3..bcd84985faf48 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -7150,7 +7150,7 @@ struct bpf_fib_lookup {
+ 	return prof->sta_info_len >= info_len &&
+-	       fixed + prof->sta_info_len <= len;
++	       fixed + prof->sta_info_len - 1 <= len;
+ }
  
- 		/* output: MTU value */
- 		__u16	mtu_result;
--	};
-+	} __attribute__((packed, aligned(2)));
- 	/* input: L3 device index for lookup
- 	 * output: device index from FIB lookup
- 	 */
+ /**
 -- 
 2.43.0
 
