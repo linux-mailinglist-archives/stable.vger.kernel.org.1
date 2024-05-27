@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-47401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40A58D0DD4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D778D0BA3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126F91C21197
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9C641F219E2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ED515FA60;
-	Mon, 27 May 2024 19:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E612515DBD8;
+	Mon, 27 May 2024 19:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDqkOSql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="da4/RoZv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3005C17727;
-	Mon, 27 May 2024 19:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EF017E90E;
+	Mon, 27 May 2024 19:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838455; cv=none; b=GPZ8X96EWQfkbk2apuo4VmWpCf8ygslOJXPH82RJuBbUhW9g699boAy8LhwDd/baDw2DMJ+koVnL9H+W79eHUAhojq9Q4lZhU2jXhsPun05ullTD/qOhPSBYWMfJBdWhVaUNvUeUYksHIf2u7jsSeo+Gls6TVqbwmWHnx0XBYCY=
+	t=1716837088; cv=none; b=YILkblbOmH4dHdEs/309TN7q8U3T+h4H3k5LVfgpQi4NyF2v17B+nwMhspG1up/UifDy9yIsK4bhMk97YMnueS2Bz+EOVdNqaLY0u66SkDsTIqAqxs0h74gJAgl4MfLihzl08oP6cTc5cdnQLyyjYe2baK5U4bsn2UCSBhVklyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838455; c=relaxed/simple;
-	bh=kxaRwhvTcwLDK+6n66Rg/F4etVIwN1Ch4fUz/WrhOGE=;
+	s=arc-20240116; t=1716837088; c=relaxed/simple;
+	bh=Z41lnDo7t6wKuthNYBwcU1IgILOV0B9eHyTjcwoQ8KQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rm57PPFRFnUQlxnVhmtymWaSVsz3OpFRXvj8qQn/BZ/noBpj6Lg/41FI7jzeRolrqmkNRWysywxuiKr0/JAYtoHWj2C2Rb5wNJkGPXaLnW5i2xhpAzP+mR7c66rz77JqBYUUjCC6o1orOYQNlKano0KbbuP7oGamEgzrV1WBUlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDqkOSql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C18C2BBFC;
-	Mon, 27 May 2024 19:34:14 +0000 (UTC)
+	 MIME-Version; b=QctGWIOpOOK+hmo+ZQKVESOuwjBBya9fhW/cOfyEYSIAyVmJbnugFu/H2ybmz+nBjqMBY96TIagbmRUSxqqdL3edXBxrb3eF7YYdlJ7UDdd5LZWfjTqMoTDQfJXmZsySU1eQZ22pFIBpAAgu+9xeCrxGfEsm816fBMD1ebDSxHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=da4/RoZv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D60C2BBFC;
+	Mon, 27 May 2024 19:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838455;
-	bh=kxaRwhvTcwLDK+6n66Rg/F4etVIwN1Ch4fUz/WrhOGE=;
+	s=korg; t=1716837088;
+	bh=Z41lnDo7t6wKuthNYBwcU1IgILOV0B9eHyTjcwoQ8KQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDqkOSql4c+lK051xnIp0R8XTAI92LF9BC5PVdyayjJeUF4SjKYthpRJJCHV3LpSk
-	 zRVIzYoTttiBXgkjkgbNCKrB6ShBVfs69YnTKwHY/iO9MPVV1kXx6aYVINKHJ/Kdnk
-	 rVU/rLpPao13yOY2C8K8jVM5cVBBZr2kF+iubrfw=
+	b=da4/RoZvjK9PauYcB0wL4Cwu3ozjvuI1jux+g5E/cMh1FfCUk+OcBTjguBXUUhAyk
+	 kAghRCPRvi9g5CR9RlbnrMNQu9X/YaCHjLdC3DJyDa/cuwAbeWk8Y6CM6jg1L/Yaxg
+	 a94+UwgesyoAWIZHabsPmOBVv7mNL4hSynvn37g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jagan Teki <jagan@amarulasolutions.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 350/493] drm/bridge: Fix improper bridge init order with pre_enable_prev_first
+Subject: [PATCH 6.9 305/427] fbdev: sisfb: hide unused variables
 Date: Mon, 27 May 2024 20:55:52 +0200
-Message-ID: <20240527185641.735650420@linuxfoundation.org>
+Message-ID: <20240527185630.535127506@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,156 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jagan Teki <jagan@amarulasolutions.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e18aeeda0b6905c333df5a0566b99f5c84426098 ]
+[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
 
-For a given bridge pipeline if any bridge sets pre_enable_prev_first
-flag then the pre_enable for the previous bridge will be called before
-pre_enable of this bridge and opposite is done for post_disable.
+Building with W=1 shows that a couple of variables in this driver are only
+used in certain configurations:
 
-These are the potential bridge flags to alter bridge init order in order
-to satisfy the MIPI DSI host and downstream panel or bridge to function.
-However the existing pre_enable_prev_first logic with associated bridge
-ordering has broken for both pre_enable and post_disable calls.
+drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
+  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
+  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
+  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
+  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
+  184 | static const unsigned char SiS_Part2CLVX_2[] = {
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
+  176 | static const unsigned char SiS_Part2CLVX_1[] = {
+      |                            ^~~~~~~~~~~~~~~
 
-[pre_enable]
+This started showing up after the definitions were moved into the
+source file from the header, which was not flagged by the compiler.
+Move the definition into the appropriate #ifdef block that already
+exists next to them.
 
-The altered bridge ordering has failed if two consecutive bridges on a
-given pipeline enables the pre_enable_prev_first flag.
-
-Example:
-- Panel
-- Bridge 1
-- Bridge 2 pre_enable_prev_first
-- Bridge 3
-- Bridge 4 pre_enable_prev_first
-- Bridge 5 pre_enable_prev_first
-- Bridge 6
-- Encoder
-
-In this example, Bridge 4 and Bridge 5 have pre_enable_prev_first.
-
-The logic looks for a bridge which enabled pre_enable_prev_first flag
-on each iteration and assigned the previou bridge to limit pointer
-if the bridge doesn't enable pre_enable_prev_first flags.
-
-If control found Bridge 2 is pre_enable_prev_first then the iteration
-looks for Bridge 3 and found it is not pre_enable_prev_first and assigns
-it's previous Bridge 4 to limit pointer and calls pre_enable of Bridge 3
-and Bridge 2 and assign iter pointer with limit which is Bridge 4.
-
-Here is the actual problem, for the next iteration control look for
-Bridge 5 instead of Bridge 4 has iter pointer in previous iteration
-moved to Bridge 4 so this iteration skips the Bridge 4. The iteration
-found Bridge 6 doesn't pre_enable_prev_first flags so the limit assigned
-to Encoder. From next iteration Encoder skips as it is the last bridge
-for reverse order pipeline.
-
-So, the resulting pre_enable bridge order would be,
-- Panel, Bridge 1, Bridge 3, Bridge 2, Bridge 6, Bridge 5.
-
-This patch fixes this by assigning limit to next pointer instead of
-previous bridge since the iteration always looks for bridge that does
-NOT request prev so assigning next makes sure the last bridge on a
-given iteration what exactly the limit bridge is.
-
-So, the resulting pre_enable bridge order with fix would be,
-- Panel, Bridge 1, Bridge 3, Bridge 2, Bridge 6, Bridge 5, Bridge 4,
-  Encoder.
-
-[post_disable]
-
-The altered bridge ordering has failed if two consecutive bridges on a
-given pipeline enables the pre_enable_prev_first flag.
-
-Example:
-- Panel
-- Bridge 1
-- Bridge 2 pre_enable_prev_first
-- Bridge 3
-- Bridge 4 pre_enable_prev_first
-- Bridge 5 pre_enable_prev_first
-- Bridge 6
-- Encoder
-
-In this example Bridge 5 and Bridge 4 have pre_enable_prev_first.
-
-The logic looks for a bridge which enabled pre_enable_prev_first flags
-on each iteration and assigned the previou bridge to next and next to
-limit pointer if the bridge does enable pre_enable_prev_first flag.
-
-If control starts from Bridge 6 then it found next Bridge 5 is
-pre_enable_prev_first and immediately the next assigned to previous
-Bridge 6 and limit assignments to next Bridge 6 and call post_enable
-of Bridge 6 even though the next consecutive Bridge 5 is enabled with
-pre_enable_prev_first. This clearly misses the logic to find the state
-of next conducive bridge as everytime the next and limit assigns
-previous bridge if given bridge enabled pre_enable_prev_first.
-
-So, the resulting post_disable bridge order would be,
-- Encoder, Bridge 6, Bridge 5, Bridge 4, Bridge 3, Bridge 2, Bridge 1,
-  Panel.
-
-This patch fixes this by assigning next with previou bridge only if the
-bridge doesn't enable pre_enable_prev_first flag and the next further
-assign it to limit. This way we can find the bridge that NOT requested
-prev to disable last.
-
-So, the resulting pre_enable bridge order with fix would be,
-- Encoder, Bridge 4, Bridge 5, Bridge 6, Bridge 2, Bridge 3, Bridge 1,
-  Panel.
-
-Validated the bridge init ordering by incorporating dummy bridges in
-the sun6i-mipi-dsi pipeline
-
-Fixes: 4fb912e5e190 ("drm/bridge: Introduce pre_enable_prev_first to alter bridge init order")
-Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
-Tested-by: Michael Trimarchi <michael@amarulasolutions.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230328170752.1102347-1-jagan@amarulasolutions.com
+Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_bridge.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/sis/init301.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-index 4f6f8c662d3fe..ac502ea20089b 100644
---- a/drivers/gpu/drm/drm_bridge.c
-+++ b/drivers/gpu/drm/drm_bridge.c
-@@ -687,11 +687,17 @@ void drm_atomic_bridge_chain_post_disable(struct drm_bridge *bridge,
- 				 */
- 				list_for_each_entry_from(next, &encoder->bridge_chain,
- 							 chain_node) {
--					if (next->pre_enable_prev_first) {
-+					if (!next->pre_enable_prev_first) {
- 						next = list_prev_entry(next, chain_node);
- 						limit = next;
- 						break;
- 					}
-+
-+					if (list_is_last(&next->chain_node,
-+							 &encoder->bridge_chain)) {
-+						limit = next;
-+						break;
-+					}
- 				}
+diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
+index a8fb41f1a2580..09329072004f4 100644
+--- a/drivers/video/fbdev/sis/init301.c
++++ b/drivers/video/fbdev/sis/init301.c
+@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
+ };
  
- 				/* Call these bridges in reverse order */
-@@ -774,7 +780,7 @@ void drm_atomic_bridge_chain_pre_enable(struct drm_bridge *bridge,
- 					/* Found first bridge that does NOT
- 					 * request prev to be enabled first
- 					 */
--					limit = list_prev_entry(next, chain_node);
-+					limit = next;
- 					break;
- 				}
- 			}
+ /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
+-
++#ifdef CONFIG_FB_SIS_315
+ static const unsigned char SiS_Part2CLVX_1[] = {
+     0x00,0x00,
+     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
+@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+     0xFF,0xFF,
+ };
+ 
+-#ifdef CONFIG_FB_SIS_315
+ /* 661 et al LCD data structure (2.03.00) */
+ static const unsigned char SiS_LCDStruct661[] = {
+     /* 1024x768 */
 -- 
 2.43.0
 
