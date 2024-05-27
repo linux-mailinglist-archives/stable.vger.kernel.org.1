@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-46908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5A88D0BC5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2444E8D0DC2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77E381F23396
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4B23281EFE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B097D15FD04;
-	Mon, 27 May 2024 19:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C54C15FCF0;
+	Mon, 27 May 2024 19:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBcf60Tg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sc5d0wTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6D217E90E;
-	Mon, 27 May 2024 19:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3DC17727;
+	Mon, 27 May 2024 19:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837165; cv=none; b=UGxMrnSX/dDsrHSt63nNl+vsy2HoabaWQMhNSJDdjxSclFokek52Y/3IW7j5fJIrBhwCOwO2h+djS4xz2XgwzH6xUU3RWvvawIIvopTqjykRKMtsZEUu2DjRNPccZ57Cbu9LhpIWI1ifHdIdUU3Y6sHkdT6ZepJ7fz4g4Y2UNXk=
+	t=1716838411; cv=none; b=SA25XvDOrDHvB/GY4x4huQsWQMf6BjGjg/QkLqeEFT+zzs7bA99mt8Vv23Ox6MGnJ7CPKw4Fto/Qp8DBWxy84I6I6MX2pD/87PkLfhVwm8/a8iInVuR7RYiQ00LxxOUOVe4IBwyIrfs05pUIKSXhJLoVWc2l3owUQod9mLM8BTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837165; c=relaxed/simple;
-	bh=jcb1mabQ332I/TRlyIxIOV6ygtbBP8cwbMHjZ1O8NN8=;
+	s=arc-20240116; t=1716838411; c=relaxed/simple;
+	bh=xmVxuCIKP7jU963rxgXeHb/9+XupyXNQhFG5RsfSr1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=isiLAJkL9S0iYFE+lK2IPGt9pXTzV6WdqhdLsqjgh9HhjzrijXfvYIQ/gBrccT2/5PqD+n0RIMboNQF5sc5nXzpRbq5W9YloY5k5rwlKhd4YSHv7j1g/yraqG8go8X/d+5B0LLMes9G/KZoQgjFrI7FTZFDhdhskfAibHoX9M3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBcf60Tg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035C3C2BBFC;
-	Mon, 27 May 2024 19:12:44 +0000 (UTC)
+	 MIME-Version; b=qLAwYpJABhcUBvXTNFnYK+Ev/gsvb0IyAxSfIU1pDIzwUd5O/Qi5SFSZbODBUzfSgXAJnUxnMq6N6jWTY/5tP0VU1HKSNr2lBrrcEu44iwLNmTKTIV65G7OYtumWOAe1HAu+KMZGMoXZBU5mqOkD/NEDbUDBDb5ZaNlg8AcxmUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sc5d0wTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51A9C2BBFC;
+	Mon, 27 May 2024 19:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837165;
-	bh=jcb1mabQ332I/TRlyIxIOV6ygtbBP8cwbMHjZ1O8NN8=;
+	s=korg; t=1716838411;
+	bh=xmVxuCIKP7jU963rxgXeHb/9+XupyXNQhFG5RsfSr1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBcf60TgXvkNQgBGoca4X45XNLvxLycE2PlMDaojGHu1+WFy8cOA3psGXf6k3t/4r
-	 XxTiCc5LH6wu+YnMMQx9IGzbmj78yPkzrFCZPqCbY/5mV7Zmr91Z0qssRa9EKC7I6T
-	 ea5sJGvsz6tO/6Lzq4dlbwLKagY0mHF6SwuChTr4=
+	b=sc5d0wTtlniw4qJb/dDgSpGfKvYSkTJdohjZBkc5DeAZTSccNauSRswh7DQetl/cn
+	 fkhpc7RUiKSwkk9KcNyVxjKmonYWTUxHkDwoTvucH5cBlQz8N/NhMyniOHU8cNOPeX
+	 oN8pael4KPuGDZgI11I8YS0xsBdOQkSRWwKqvt58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 335/427] drm/bridge: tc358775: Dont log an error when DSI host cant be found
-Date: Mon, 27 May 2024 20:56:22 +0200
-Message-ID: <20240527185632.521624023@linuxfoundation.org>
+Subject: [PATCH 6.8 381/493] fbdev: sisfb: hide unused variables
+Date: Mon, 27 May 2024 20:56:23 +0200
+Message-ID: <20240527185642.736092400@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 272377aa0e3dddeec3f568c8bb9d12c7a79d8ef5 ]
+[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+Building with W=1 shows that a couple of variables in this driver are only
+used in certain configurations:
 
-Fixes: b26975593b17 ("display/drm/bridge: TC358775 DSI/LVDS driver")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-6-619a28148e5c@collabora.com
+drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
+  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
+  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
+  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
+  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
+  184 | static const unsigned char SiS_Part2CLVX_2[] = {
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
+  176 | static const unsigned char SiS_Part2CLVX_1[] = {
+      |                            ^~~~~~~~~~~~~~~
+
+This started showing up after the definitions were moved into the
+source file from the header, which was not flagged by the compiler.
+Move the definition into the appropriate #ifdef block that already
+exists next to them.
+
+Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358775.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/sis/init301.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/tc358775.c
-index 90a89d70d8328..fea4f00a20f83 100644
---- a/drivers/gpu/drm/bridge/tc358775.c
-+++ b/drivers/gpu/drm/bridge/tc358775.c
-@@ -610,10 +610,8 @@ static int tc_attach_host(struct tc_data *tc)
- 						};
+diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
+index a8fb41f1a2580..09329072004f4 100644
+--- a/drivers/video/fbdev/sis/init301.c
++++ b/drivers/video/fbdev/sis/init301.c
+@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
+ };
  
- 	host = of_find_mipi_dsi_host_by_node(tc->host_node);
--	if (!host) {
--		dev_err(dev, "failed to find dsi host\n");
--		return -EPROBE_DEFER;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
+ /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
+-
++#ifdef CONFIG_FB_SIS_315
+ static const unsigned char SiS_Part2CLVX_1[] = {
+     0x00,0x00,
+     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
+@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+     0xFF,0xFF,
+ };
  
- 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
- 	if (IS_ERR(dsi)) {
+-#ifdef CONFIG_FB_SIS_315
+ /* 661 et al LCD data structure (2.03.00) */
+ static const unsigned char SiS_LCDStruct661[] = {
+     /* 1024x768 */
 -- 
 2.43.0
 
