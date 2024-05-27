@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-47417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394C98D0DE4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D258D0BE8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8A8728156A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56D611C20FF0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853B915FA9F;
-	Mon, 27 May 2024 19:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F07F1754B;
+	Mon, 27 May 2024 19:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cym9bizf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efMcjejS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4506E17727;
-	Mon, 27 May 2024 19:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9EF17E90E;
+	Mon, 27 May 2024 19:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838496; cv=none; b=d2W6nq2R5LVATsboFuQuhSWcWInqZclhiUEmFpR6lN3QI3SZKXlnPKSFq7G6A7HEEsHWlVXFx2f9tkOFDmAxlxipG2nNMZTVmrAbem11FQ8fx+PEKMVtu9EHn58Ak781/fR9RPHVasjNuoYeG92+6XYBw2oS6a5l93zTAmghvlo=
+	t=1716837255; cv=none; b=ZMuZ3SW6FUol/w90oeS+rDp8tnx90JP7FdA+Nvf3ab+lrvhNYUad1OtW5rzaknAoUzm24pXtrJpNozpyvaGmea/oF2PNiurrrYbn38QyHdScoQKy8wLZaPDfdMBQI2utYsvKQ0A89ymiF/aebYNvj+3INjbjcGkjuQKfaxI3STs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838496; c=relaxed/simple;
-	bh=UgcxdaO4viOfejkz+NFGdQu6yq36OUa+3XSNuUL2FI0=;
+	s=arc-20240116; t=1716837255; c=relaxed/simple;
+	bh=E3CyKUVotkzY4ndun1244uPDf7VV2hlRK2j50E1dmfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXl/uy+DVR+dJSmQ11/L/+OkfByb2DmH+gXtiNrFtXsaCTdLoCMCb4JfkkJn178c6+bqqZc1n8IxrCSNCUVjA2hEhnwMcFcVfHLl4oiJg+lD7dHio4oT8594ltcLaqsffttXLhYDSuOPxiXg4CHTv1zbQm+QcQQNoMsYtECWKMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cym9bizf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D1CC2BBFC;
-	Mon, 27 May 2024 19:34:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gW/fVHYGmMfXctnJfniltaR3rVu0IHNVZynEzNUXk6DJ+rzOEgKYEQn9cPSay1rf+90zEdJEKKa4jO8Er0ycOEGDkZMd/p6Xkx50oObhNXbnrVNwDbesQLAGKF7WFYF7dUk0/KV/yGEi24uXZ9ouzMlAg5sz2rd2X6Z+Le8URK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efMcjejS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C4BC2BBFC;
+	Mon, 27 May 2024 19:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838496;
-	bh=UgcxdaO4viOfejkz+NFGdQu6yq36OUa+3XSNuUL2FI0=;
+	s=korg; t=1716837255;
+	bh=E3CyKUVotkzY4ndun1244uPDf7VV2hlRK2j50E1dmfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cym9bizfSgl40iifMBuLn2CCY6/P6mQJyKrMv9AFoJjqhcxpUlOUuzgKyIWEjnTSP
-	 YIXtuPkMVkGSv7+MdLB7Po/+qQgUca8UgUaSVPwxP3HvIRjWR6WjfAlFykTKvUa2zi
-	 HjLeBnBK3O6jQD9dV6L88uFjZcfssx+INQQjM12o=
+	b=efMcjejSoIyKR1PyVZ1N2U/OOW8m+WfdxfsR8eK01cF9Dshmx9uFtgUWxOZseEgTq
+	 iy0q1/50koc5QTvvYQm2f5DLJ5b5uieyMXfh4uNW0zS/bmoyO6rbVh8SV8yZLxNFxM
+	 QRVzRq9TBE6uqn5GaCstRhhAE735GKpYwMDFJk/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 415/493] drm/mipi-dsi: use correct return type for the DSC functions
-Date: Mon, 27 May 2024 20:56:57 +0200
-Message-ID: <20240527185643.873201915@linuxfoundation.org>
+Subject: [PATCH 6.9 371/427] clk: renesas: r8a779a0: Fix CANFD parent clock
+Date: Mon, 27 May 2024 20:56:58 +0200
+Message-ID: <20240527185634.207264474@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit de1c705c50326acaceaf1f02bc5bf6f267c572bd ]
+[ Upstream commit 3b23118bdbd898dc2f4de8f549d598d492c42ba8 ]
 
-The functions mipi_dsi_compression_mode() and
-mipi_dsi_picture_parameter_set() return 0-or-error rather than a buffer
-size. Follow example of other similar MIPI DSI functions and use int
-return type instead of size_t.
+According to Figure 52A.1 ("RS-CANFD Module Block Diagram (in classical
+CAN mode)") in the R-Car V3U Series User’s Manual Rev. 0.5, the parent
+clock for the CANFD peripheral module clock is the S3D2 clock.
 
-Fixes: f4dea1aaa9a1 ("drm/dsi: add helpers for DSI compression mode and PPS packets")
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240408-lg-sw43408-panel-v5-2-4e092da22991@linaro.org
+Fixes: 9b621b6adff53346 ("clk: renesas: r8a779a0: Add CANFD module clock")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/aef9300f44c9141b1465343f91c5cc7303249b6e.1713279523.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_mipi_dsi.c | 6 +++---
- include/drm/drm_mipi_dsi.h     | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/clk/renesas/r8a779a0-cpg-mssr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
-index 843a6dbda93a0..52a93149363b4 100644
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -654,7 +654,7 @@ EXPORT_SYMBOL(mipi_dsi_set_maximum_return_packet_size);
-  *
-  * Return: 0 on success or a negative error code on failure.
-  */
--ssize_t mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable)
-+int mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable)
- {
- 	/* Note: Needs updating for non-default PPS or algorithm */
- 	u8 tx[2] = { enable << 0, 0 };
-@@ -679,8 +679,8 @@ EXPORT_SYMBOL(mipi_dsi_compression_mode);
-  *
-  * Return: 0 on success or a negative error code on failure.
-  */
--ssize_t mipi_dsi_picture_parameter_set(struct mipi_dsi_device *dsi,
--				       const struct drm_dsc_picture_parameter_set *pps)
-+int mipi_dsi_picture_parameter_set(struct mipi_dsi_device *dsi,
-+				   const struct drm_dsc_picture_parameter_set *pps)
- {
- 	struct mipi_dsi_msg msg = {
- 		.channel = dsi->channel,
-diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-index c0aec0d4d664e..3011d33eccbd2 100644
---- a/include/drm/drm_mipi_dsi.h
-+++ b/include/drm/drm_mipi_dsi.h
-@@ -241,9 +241,9 @@ int mipi_dsi_shutdown_peripheral(struct mipi_dsi_device *dsi);
- int mipi_dsi_turn_on_peripheral(struct mipi_dsi_device *dsi);
- int mipi_dsi_set_maximum_return_packet_size(struct mipi_dsi_device *dsi,
- 					    u16 value);
--ssize_t mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable);
--ssize_t mipi_dsi_picture_parameter_set(struct mipi_dsi_device *dsi,
--				       const struct drm_dsc_picture_parameter_set *pps);
-+int mipi_dsi_compression_mode(struct mipi_dsi_device *dsi, bool enable);
-+int mipi_dsi_picture_parameter_set(struct mipi_dsi_device *dsi,
-+				   const struct drm_dsc_picture_parameter_set *pps);
- 
- ssize_t mipi_dsi_generic_write(struct mipi_dsi_device *dsi, const void *payload,
- 			       size_t size);
+diff --git a/drivers/clk/renesas/r8a779a0-cpg-mssr.c b/drivers/clk/renesas/r8a779a0-cpg-mssr.c
+index 4c2872f45387f..ff3f85e906fe1 100644
+--- a/drivers/clk/renesas/r8a779a0-cpg-mssr.c
++++ b/drivers/clk/renesas/r8a779a0-cpg-mssr.c
+@@ -139,7 +139,7 @@ static const struct mssr_mod_clk r8a779a0_mod_clks[] __initconst = {
+ 	DEF_MOD("avb3",		214,	R8A779A0_CLK_S3D2),
+ 	DEF_MOD("avb4",		215,	R8A779A0_CLK_S3D2),
+ 	DEF_MOD("avb5",		216,	R8A779A0_CLK_S3D2),
+-	DEF_MOD("canfd0",	328,	R8A779A0_CLK_CANFD),
++	DEF_MOD("canfd0",	328,	R8A779A0_CLK_S3D2),
+ 	DEF_MOD("csi40",	331,	R8A779A0_CLK_CSI0),
+ 	DEF_MOD("csi41",	400,	R8A779A0_CLK_CSI0),
+ 	DEF_MOD("csi42",	401,	R8A779A0_CLK_CSI0),
 -- 
 2.43.0
 
