@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915B88D0CD1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B848D0AC9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB6A61C20BBB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C83F1F2244B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BCD15FD01;
-	Mon, 27 May 2024 19:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2991667F2;
+	Mon, 27 May 2024 19:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LH0dzeXb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUifmXVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C5B15EFC3;
-	Mon, 27 May 2024 19:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1A915ECFF;
+	Mon, 27 May 2024 19:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837798; cv=none; b=VnMy2NISrfIqFKl/lnet9rl+XTUFmgSi7DxvCQ05YspK1C5ZsM1YtJk4uHRzd20EpWfZ8PsZ0EAPBik3KkYmKcwMZ4rlAygkciQD6tKMx+3GRRzQz3qSWpu81/KBJZGFIR0VKPyxFaVu6cxJKaOYFpVEQIVTln5gJfkkVbGgaKQ=
+	t=1716836564; cv=none; b=YkSyI5WPUF8bXvXv3LM+3qj2zqSYrqh0zdY0vCvB8QHz5eAzddjox1gnMn3gOYx6PVSf5TMo8T2Va19rEi0Eu5YYeezS/tNN8CXBT1lb5IEZHNtC0e1SZe5rspueCdKXl8R9WNaOXAsY0Vd3S9cuYAddC+64ZyvziwTzcbRCvD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837798; c=relaxed/simple;
-	bh=gfSWm/6Jv7MA2HUc+cnFuo+8GQv2SkNF3DaV/YPNmzk=;
+	s=arc-20240116; t=1716836564; c=relaxed/simple;
+	bh=OVgE7XL0N1rsoWYrOyUNd7wW9HWkskPkrWNjbsoHFYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbRYO0XUochMP3rbdCQ19JrRh272z+V6iTVxzbxuS5nWay/H9dsiasNerEYV9OOePIuf+dvGN+NdhBBLEmCbmaSnTMGZpo6c/3KKpCkhBmLWcMsRZji2T57LLviybZF7p0+bDuUrCChzVIylHLtyAcY5KTEJ1NSlRshfVuAL9gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LH0dzeXb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C62C2BBFC;
-	Mon, 27 May 2024 19:23:18 +0000 (UTC)
+	 MIME-Version; b=KJpU3KpSwmbEpZ+RGhqlynIr8UiKHJFYKrPf9M5R1na4vA9cQ8IBZNwAa0nPPgB2QK0lmknvVLiAFN3YAeyaKLpSCuVAg/h9vZwhr1sWchppAm7afwwhDcqG6TVHz/FHtOezi7uH8OQ56V240cnLpbtCKVxiJON8nDPaHN1cwRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUifmXVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA85AC4AF0A;
+	Mon, 27 May 2024 19:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837798;
-	bh=gfSWm/6Jv7MA2HUc+cnFuo+8GQv2SkNF3DaV/YPNmzk=;
+	s=korg; t=1716836564;
+	bh=OVgE7XL0N1rsoWYrOyUNd7wW9HWkskPkrWNjbsoHFYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LH0dzeXb2UwKECV+y9qDoGpr3Dx96PfbjgrQxkdCz6L5rW+3G8ra5i9LvvUt13PCO
-	 r1gLQanUei1N0OVAwuonxq+wJEQ9F0Z9V+Quy1xjANGp3cbI7dK/wzp3SJmzWK2SCx
-	 TwoRRHdpL8ahjKNH7InyYLwrRTvXbyhn/upQDedY=
+	b=UUifmXVQUs44e6WPU77D+h2QDCntAg/LDeaxlbTltfb5aHY+7caDgBqX774WM9S1y
+	 zZhYd3Q3cf2wsb/Ltx3IAWNh1nsxHKnJ7RZdtkj3Eosvp6RULC65rqsiUK+w6kKLoP
+	 otrkRK0yUNuptlvCijdPp+FPHRRSAg3fRtkDNnns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 149/493] hwrng: stm32 - put IP into RPM suspend on failure
+Subject: [PATCH 6.9 104/427] wifi: iwlwifi: mvm: fix active link counting during recovery
 Date: Mon, 27 May 2024 20:52:31 +0200
-Message-ID: <20240527185635.311716320@linuxfoundation.org>
+Message-ID: <20240527185611.466217454@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit da62ed5c019cc48648f37c7a07e6a56cf637a795 ]
+[ Upstream commit 9737da2f00d6409ae48a79d4dddd9362b230aa31 ]
 
-In case of an irrecoverable failure, put the IP into RPM suspend
-to avoid RPM imbalance. I did not trigger this case, but it seems
-it should be done based on reading the code.
+During recovery, the chanctx_conf in mac80211 is still non-NULL even
+though the channel context has not yet been assigned again. In that
+case, the real count is actually lower.
 
-Fixes: b17bc6eb7c2b ("hwrng: stm32 - rework error handling in stm32_rng_read()")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Switch to instead count the phy_ctx assignment and ensure that the
+assignment is cleared at the start of recovery.
+
+Fixes: 12bacfc2c065 ("wifi: iwlwifi: handle eSR transitions")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320232419.55f37339e7d1.I57006568a90ffb7a1232def1b2f3264dea711ba6@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/stm32-rng.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 20 ++++++++-----------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/char/hw_random/stm32-rng.c b/drivers/char/hw_random/stm32-rng.c
-index 1cc61ef8ee54c..b6182f86d8a4b 100644
---- a/drivers/char/hw_random/stm32-rng.c
-+++ b/drivers/char/hw_random/stm32-rng.c
-@@ -220,7 +220,8 @@ static int stm32_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
- 				if (err && i > RNG_NB_RECOVER_TRIES) {
- 					dev_err((struct device *)priv->rng.priv,
- 						"Couldn't recover from seed error\n");
--					return -ENOTRECOVERABLE;
-+					retval = -ENOTRECOVERABLE;
-+					goto exit_rpm;
- 				}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 084314bf6f369..d18304ac126cd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -189,17 +189,13 @@ static void iwl_mvm_mld_mac_remove_interface(struct ieee80211_hw *hw,
+ 	mutex_unlock(&mvm->mutex);
+ }
  
- 				continue;
-@@ -238,7 +239,8 @@ static int stm32_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
- 			if (err && i > RNG_NB_RECOVER_TRIES) {
- 				dev_err((struct device *)priv->rng.priv,
- 					"Couldn't recover from seed error");
--				return -ENOTRECOVERABLE;
-+				retval = -ENOTRECOVERABLE;
-+				goto exit_rpm;
- 			}
+-static unsigned int iwl_mvm_mld_count_active_links(struct ieee80211_vif *vif)
++static unsigned int iwl_mvm_mld_count_active_links(struct iwl_mvm_vif *mvmvif)
+ {
+ 	unsigned int n_active = 0;
+ 	int i;
  
- 			continue;
-@@ -250,6 +252,7 @@ static int stm32_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
- 		max -= sizeof(u32);
+ 	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
+-		struct ieee80211_bss_conf *link_conf;
+-
+-		link_conf = link_conf_dereference_protected(vif, i);
+-		if (link_conf &&
+-		    rcu_access_pointer(link_conf->chanctx_conf))
++		if (mvmvif->link[i] && mvmvif->link[i]->phy_ctxt)
+ 			n_active++;
  	}
  
-+exit_rpm:
- 	pm_runtime_mark_last_busy((struct device *) priv->rng.priv);
- 	pm_runtime_put_sync_autosuspend((struct device *) priv->rng.priv);
+@@ -245,18 +241,18 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
+ {
+ 	u16 *phy_ctxt_id = (u16 *)ctx->drv_priv;
+ 	struct iwl_mvm_phy_ctxt *phy_ctxt = &mvm->phy_ctxts[*phy_ctxt_id];
+-	unsigned int n_active = iwl_mvm_mld_count_active_links(vif);
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
++	unsigned int n_active = iwl_mvm_mld_count_active_links(mvmvif);
+ 	unsigned int link_id = link_conf->link_id;
+ 	int ret;
  
+-	/* if the assigned one was not counted yet, count it now */
+-	if (!rcu_access_pointer(link_conf->chanctx_conf))
+-		n_active++;
+-
+ 	if (WARN_ON_ONCE(!mvmvif->link[link_id]))
+ 		return -EINVAL;
+ 
++	/* if the assigned one was not counted yet, count it now */
++	if (!mvmvif->link[link_id]->phy_ctxt)
++		n_active++;
++
+ 	/* mac parameters such as HE support can change at this stage
+ 	 * For sta, need first to configure correct state from drv_sta_state
+ 	 * and only after that update mac config.
+@@ -416,7 +412,7 @@ __iwl_mvm_mld_unassign_vif_chanctx(struct iwl_mvm *mvm,
+ 
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	unsigned int n_active = iwl_mvm_mld_count_active_links(vif);
++	unsigned int n_active = iwl_mvm_mld_count_active_links(mvmvif);
+ 	unsigned int link_id = link_conf->link_id;
+ 
+ 	/* shouldn't happen, but verify link_id is valid before accessing */
 -- 
 2.43.0
 
