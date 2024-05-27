@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE5A8D0CC8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE228D0AC4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDBCE1C210E3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 493691F229A9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4AF160784;
-	Mon, 27 May 2024 19:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8BB61FD6;
+	Mon, 27 May 2024 19:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKsj5D4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9afQvJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D23F15FA91;
-	Mon, 27 May 2024 19:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45CE1667E2;
+	Mon, 27 May 2024 19:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837783; cv=none; b=slhNQQWj6+g0lbKOeAbpZlsDRih7ziHhbSx086d0UK8S8gWLJ5k3MukZ7pmKFvPchY8NGSPZ4v5SwqQ+blQXODq5h/cB8DAg3pRpSArH0HAlEVXdDa+CUD9BZxrd31djKuJdUprw8ce7dDfe9ZAcVMWGueyGxWb+cl2FIHcNPvg=
+	t=1716836554; cv=none; b=NoO+FF8eYNSEUqhYqoLoo9AIeqiB9ezKMHIAGcI32pBzftXAXoruC4xNioQw9zfT4rXmDSGQNsb/cLMvjG1mIvrEf3PMZIsDKHrN0FjR/gL0sFGJMiMDRTXwP4T6OIlmn9QdwgneRdIVKFP6wxLBYhepXXO6MTMfp3AvOgzdorI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837783; c=relaxed/simple;
-	bh=odwx+2jDo2l7+i1iqQniDzd/3FenZsvfuxPWVCuA0ew=;
+	s=arc-20240116; t=1716836554; c=relaxed/simple;
+	bh=DePCuo7XFu/F0pWsHZw5UumxYkw2UKL9pTpbXv3VzyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiZAaIuy79RtOxZUOCzRGUt6ib2UFwohf+8bh2WHGUxjytlRAI8q3TgkBQBHFzFD9ymWRiiQvAMyYYCyTB5NkVnN9HI7Nnx7J0MkLyE7XgF5bpYaz0dnZ17ly7rJpWMtNRmcveaAdw6cyNnUjP0Pt9X9dT0nHVr2wbFo+YyALNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKsj5D4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32031C2BBFC;
-	Mon, 27 May 2024 19:23:03 +0000 (UTC)
+	 MIME-Version; b=uIjkR1viEqjtNFSETCbh0T7D3J2PsytL5knhfHQ3+ASTLcGIU0HdDlUANMxiN0Lko3y0i0OYsTKtVtrOoRDfTeqXHtD/C3E3bOImXlllT6vn8z09ZJbIH8GmX9b5lppbLldbv3K6XGpA0gm1jRLlVcYDOuA+aPDNL76uZjXAdGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9afQvJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1549C32782;
+	Mon, 27 May 2024 19:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837783;
-	bh=odwx+2jDo2l7+i1iqQniDzd/3FenZsvfuxPWVCuA0ew=;
+	s=korg; t=1716836554;
+	bh=DePCuo7XFu/F0pWsHZw5UumxYkw2UKL9pTpbXv3VzyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKsj5D4TWRxjaQXh3q74xiCfnKbNrEi+xwLfz8gR+HJGjq5ujLkckkA1J6Dk1IC70
-	 Vov5liLYBs7ZJgoTUqt8xyVYVLx8fqlDrK5tonjKAlzbFUsLx5/vByIJIvVMC73Vw7
-	 ADCGOXdOmc3VgfnbKljEg+lwbzk75jecCtLDGyVc=
+	b=u9afQvJBFWNdfDYmTGhN9ZvYzHceVuAaF28XT/RHO6wgR2u1/0sVg+lGH0Gtb3PRZ
+	 e/Y1XxrtzkhAjH5tNgfNZSjKPJ9YQDEQKiGvkpj2fc/eLy6gG0TWkyk9Zlboj/NW2q
+	 3vwG9i2/ypBhWzqgkVyaEFQL/Q8crzchKm+fzQSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 144/493] firmware: qcom: scm: Fix __scm and waitq completion variable initialization
-Date: Mon, 27 May 2024 20:52:26 +0200
-Message-ID: <20240527185635.155339425@linuxfoundation.org>
+Subject: [PATCH 6.9 100/427] wifi: cfg80211: ignore non-TX BSSs in per-STA profile
+Date: Mon, 27 May 2024 20:52:27 +0200
+Message-ID: <20240527185611.130332861@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 2e4955167ec5c04534cebea9e8273a907e7a75e1 ]
+[ Upstream commit 97f8df4db4c8ef50b659d8b228c1f42fe111e7c8 ]
 
-It is possible qcom_scm_is_available() gives wrong indication that
-if __scm is initialized while __scm->dev is not and similar issue
-is also possible with __scm->waitq_comp.
+If a non-TX BSS is included in a per-STA profile, then we cannot set
+transmitted_bss for it. Even worse, if we do things properly we should
+be configuring both bssid_index and max_bssid_indicator correctly. We do
+not actually have both pieces of information (and, some APs currently
+do not include either).
 
-Fix this appropriately by the use of release barrier and read barrier
-that will make sure if __scm is initialized so, is all of its field
-variable.
+So, ignore any per-STA profile where the RNR says that the BSS is not
+transmitted. Also fix transmitted_bss to never be set for per-STA
+profiles.
 
-Fixes: d0f6fa7ba2d6 ("firmware: qcom: scm: Convert SCM to platform driver")
-Fixes: 6bf325992236 ("firmware: qcom: scm: Add wait-queue handling logic")
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Link: https://lore.kernel.org/r/1711034642-22860-4-git-send-email-quic_mojha@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This fixes issues where mac80211 was setting the reference BSSID to an
+incorrect value.
+
+Fixes: 2481b5da9c6b ("wifi: cfg80211: handle BSS data contained in ML probe responses")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240318184907.6a0babed655a.Iad447fea417c63f683da793556b97c31d07a4aab@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_scm.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/wireless/scan.c | 47 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 38 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index ca381cb2ee979..29c24578ad2bf 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -1713,7 +1713,7 @@ static int qcom_scm_qseecom_init(struct qcom_scm *scm)
-  */
- bool qcom_scm_is_available(void)
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 5a5dd3ce497fc..9b0dbcd6cf79a 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -2207,12 +2207,16 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
+ 	tmp.pub.use_for = data->use_for;
+ 	tmp.pub.cannot_use_reasons = data->cannot_use_reasons;
+ 
+-	if (data->bss_source != BSS_SOURCE_DIRECT) {
++	switch (data->bss_source) {
++	case BSS_SOURCE_MBSSID:
+ 		tmp.pub.transmitted_bss = data->source_bss;
++		fallthrough;
++	case BSS_SOURCE_STA_PROFILE:
+ 		ts = bss_from_pub(data->source_bss)->ts;
+ 		tmp.pub.bssid_index = data->bssid_index;
+ 		tmp.pub.max_bssid_indicator = data->max_bssid_indicator;
+-	} else {
++		break;
++	case BSS_SOURCE_DIRECT:
+ 		ts = jiffies;
+ 
+ 		if (channel->band == NL80211_BAND_60GHZ) {
+@@ -2227,6 +2231,7 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
+ 				regulatory_hint_found_beacon(wiphy, channel,
+ 							     gfp);
+ 		}
++		break;
+ 	}
+ 
+ 	/*
+@@ -2655,6 +2660,7 @@ struct tbtt_info_iter_data {
+ 	u8 param_ch_count;
+ 	u32 use_for;
+ 	u8 mld_id, link_id;
++	bool non_tx;
+ };
+ 
+ static enum cfg80211_rnr_iter_ret
+@@ -2665,14 +2671,20 @@ cfg802121_mld_ap_rnr_iter(void *_data, u8 type,
+ 	const struct ieee80211_rnr_mld_params *mld_params;
+ 	struct tbtt_info_iter_data *data = _data;
+ 	u8 link_id;
++	bool non_tx = false;
+ 
+ 	if (type == IEEE80211_TBTT_INFO_TYPE_TBTT &&
+ 	    tbtt_info_len >= offsetofend(struct ieee80211_tbtt_info_ge_11,
+-					 mld_params))
+-		mld_params = (void *)(tbtt_info +
+-				      offsetof(struct ieee80211_tbtt_info_ge_11,
+-					       mld_params));
+-	else if (type == IEEE80211_TBTT_INFO_TYPE_MLD &&
++					 mld_params)) {
++		const struct ieee80211_tbtt_info_ge_11 *tbtt_info_ge_11 =
++			(void *)tbtt_info;
++
++		non_tx = (tbtt_info_ge_11->bss_params &
++			  (IEEE80211_RNR_TBTT_PARAMS_MULTI_BSSID |
++			   IEEE80211_RNR_TBTT_PARAMS_TRANSMITTED_BSSID)) ==
++			 IEEE80211_RNR_TBTT_PARAMS_MULTI_BSSID;
++		mld_params = &tbtt_info_ge_11->mld_params;
++	} else if (type == IEEE80211_TBTT_INFO_TYPE_MLD &&
+ 		 tbtt_info_len >= sizeof(struct ieee80211_rnr_mld_params))
+ 		mld_params = (void *)tbtt_info;
+ 	else
+@@ -2691,6 +2703,7 @@ cfg802121_mld_ap_rnr_iter(void *_data, u8 type,
+ 	data->param_ch_count =
+ 		le16_get_bits(mld_params->params,
+ 			      IEEE80211_RNR_MLD_PARAMS_BSS_CHANGE_COUNT);
++	data->non_tx = non_tx;
+ 
+ 	if (type == IEEE80211_TBTT_INFO_TYPE_TBTT)
+ 		data->use_for = NL80211_BSS_USE_FOR_ALL;
+@@ -2702,7 +2715,7 @@ cfg802121_mld_ap_rnr_iter(void *_data, u8 type,
+ static u8
+ cfg80211_rnr_info_for_mld_ap(const u8 *ie, size_t ielen, u8 mld_id, u8 link_id,
+ 			     const struct ieee80211_neighbor_ap_info **ap_info,
+-			     u8 *param_ch_count)
++			     u8 *param_ch_count, bool *non_tx)
  {
--	return !!__scm;
-+	return !!READ_ONCE(__scm);
+ 	struct tbtt_info_iter_data data = {
+ 		.mld_id = mld_id,
+@@ -2713,6 +2726,7 @@ cfg80211_rnr_info_for_mld_ap(const u8 *ie, size_t ielen, u8 mld_id, u8 link_id,
+ 
+ 	*ap_info = data.ap_info;
+ 	*param_ch_count = data.param_ch_count;
++	*non_tx = data.non_tx;
+ 
+ 	return data.use_for;
  }
- EXPORT_SYMBOL_GPL(qcom_scm_is_available);
+@@ -2892,6 +2906,7 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
+ 		ssize_t profile_len;
+ 		u8 param_ch_count;
+ 		u8 link_id, use_for;
++		bool non_tx;
  
-@@ -1794,10 +1794,12 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 	if (!scm)
- 		return -ENOMEM;
+ 		if (!ieee80211_mle_basic_sta_prof_size_ok((u8 *)mle->sta_prof[i],
+ 							  mle->sta_prof_len[i]))
+@@ -2937,10 +2952,24 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
+ 						       tx_data->ielen,
+ 						       mld_id, link_id,
+ 						       &ap_info,
+-						       &param_ch_count);
++						       &param_ch_count,
++						       &non_tx);
+ 		if (!use_for)
+ 			continue;
  
-+	scm->dev = &pdev->dev;
- 	ret = qcom_scm_find_dload_address(&pdev->dev, &scm->dload_mode_addr);
- 	if (ret < 0)
- 		return ret;
++		/*
++		 * As of 802.11be_D5.0, the specification does not give us any
++		 * way of discovering both the MaxBSSID and the Multiple-BSSID
++		 * Index. It does seem like the Multiple-BSSID Index element
++		 * may be provided, but section 9.4.2.45 explicitly forbids
++		 * including a Multiple-BSSID Element (in this case without any
++		 * subelements).
++		 * Without both pieces of information we cannot calculate the
++		 * reference BSSID, so simply ignore the BSS.
++		 */
++		if (non_tx)
++			continue;
++
+ 		/* We could sanity check the BSSID is included */
  
-+	init_completion(&scm->waitq_comp);
- 	mutex_init(&scm->scm_bw_lock);
- 
- 	scm->path = devm_of_icc_get(&pdev->dev, NULL);
-@@ -1829,10 +1831,8 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	__scm = scm;
--	__scm->dev = &pdev->dev;
--
--	init_completion(&__scm->waitq_comp);
-+	/* Let all above stores be available after this */
-+	smp_store_release(&__scm, scm);
- 
- 	irq = platform_get_irq_optional(pdev, 0);
- 	if (irq < 0) {
+ 		if (!ieee80211_operating_class_to_band(ap_info->op_class,
 -- 
 2.43.0
 
