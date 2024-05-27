@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-46764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FBA78D0B28
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEE18D0D30
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614041C215D1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42451F21412
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F4126ACA;
-	Mon, 27 May 2024 19:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F36616079A;
+	Mon, 27 May 2024 19:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4zJWvCs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZQwnBlL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825241078F;
-	Mon, 27 May 2024 19:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23EF15FA91;
+	Mon, 27 May 2024 19:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836799; cv=none; b=nPrm0w7D0pkYdmmV3lK2P6BCWVZFgnt5vF+uCHVpCC1OFF+qZWta+RHdwEA34zXMyyL+kWPH5kETRIGFgAs2Jpr4reAtPVvSzyMrTyU8+aMFBkGAhpB6oWT9GNLejohIpm3Z48XPf2pJSP8oje7501VtTjSh7Px/0WWvXyzKfwY=
+	t=1716838026; cv=none; b=N4TGco1LJ7wkRZT0gpWF6P0DW1M443aXg00hYQ9OCEp5KZXdwvqeA8eFIExa6qiX/kVdsXMUl2nRQsy+kfiwU9u5Pv8yOeKb7y2hqQDKpI/b4jG3rDa32wFhrZTMpPpKnInN4zQ6faG/cpFsts4H+PMt/gyQxchl5O+UalnAOy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836799; c=relaxed/simple;
-	bh=fo1IyFyxkVzdAMDwAHimlVKJHW1ooNV7J7BhMx+2sKY=;
+	s=arc-20240116; t=1716838026; c=relaxed/simple;
+	bh=JVvUprFIdbVZhlj+MC1ztlU6sFe13pAgmwKr5un6GbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PuTElmzRIjwnb+Z9YRWrmggUuGouADpv69E4uXssY8ulnxBIvwYxLWhZLOYXXQj6ekTrBa8ioM8daaBUBosaeMnTUA2vx0aUJeKrSTxzLIzWcO6eMjQfBZRLiy4ehmIxA8mEDMrN2bblTGZaMLmA3vJOlNNrOQPKNPbbCtXQmyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4zJWvCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09023C2BBFC;
-	Mon, 27 May 2024 19:06:38 +0000 (UTC)
+	 MIME-Version; b=jW7L27vEErwu0oo5LpLidmslCIUSdA7iwuXOcdaSu4rSF7CGTRNlXMxf/6OfgUNlDwbopfsSPPFhpe/cN+D0vJgGmJC6G4HpcSfCXbe9IZB1/ZoTUUPpwTzETfKuNIpQHx6fGsAIVoc+no9bUR+dFjje/ZPKCxV50P/RiZ7yvbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZQwnBlL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F68C2BBFC;
+	Mon, 27 May 2024 19:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836799;
-	bh=fo1IyFyxkVzdAMDwAHimlVKJHW1ooNV7J7BhMx+2sKY=;
+	s=korg; t=1716838026;
+	bh=JVvUprFIdbVZhlj+MC1ztlU6sFe13pAgmwKr5un6GbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4zJWvCs4a+Eqk4WYsQCpFHkx6NL7We5Oe2a9RzhCF0CMoSWFC7+yHghTklBqMo5k
-	 0RxEfWiLkoz8tNX96/4ub0kbvK2EmkcNIxiCA5FoHFt+UV8fw/fxcwrCkGWJO7M3gJ
-	 rCZzTaghm9wF/EmV0NuEXfqmg82zucAmyW8P2+7A=
+	b=xZQwnBlLhgl1FP+8/82mSGzhQQa2/KEP90LpzxiErkAlIDyKMtB9JjVJu1Z2NT0v7
+	 TBt3q6/Z3n3KK2g7sSa0PR9YJ+Nivh7AWiULFFwT9UytZEbVQrFBzjETJdH45+GLxb
+	 4D0p1jwugaAHY6R2pss+IZCCRi8diMa/R0MzS2ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	George Stark <gnstark@salutedevices.com>,
+	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+	Stanley Chu <stanley.chu@mediatek.com>,
+	Can Guo <quic_cang@quicinc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 193/427] pwm: meson: Use mul_u64_u64_div_u64() for frequency calculating
+Subject: [PATCH 6.8 238/493] scsi: ufs: core: mcq: Fix ufshcd_mcq_sqe_search()
 Date: Mon, 27 May 2024 20:54:00 +0200
-Message-ID: <20240527185620.259438974@linuxfoundation.org>
+Message-ID: <20240527185638.085184893@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Stark <gnstark@salutedevices.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 32c44e1fa921aebf8a5ef9f778534a30aab39313 ]
+[ Upstream commit 3c5d0dce8ce0a2781ac306b9ad1492b005ecbab5 ]
 
-While calculating frequency for the given period u64 numbers are
-multiplied before division what can lead to overflow in theory so use
-secure mul_u64_u64_div_u64() which handles overflow correctly.
+Fix the calculation of the utrd pointer. This patch addresses the following
+Coverity complaint:
 
-Fixes: 329db102a26d ("pwm: meson: make full use of common clock framework")
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: George Stark <gnstark@salutedevices.com>
-Link: https://lore.kernel.org/r/20240425171253.2752877-4-gnstark@salutedevices.com
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+CID 1538170: (#1 of 1): Extra sizeof expression (SIZEOF_MISMATCH)
+suspicious_pointer_arithmetic: Adding sq_head_slot * 32UL /* sizeof (struct
+utp_transfer_req_desc) */ to pointer hwq->sqe_base_addr of type struct
+utp_transfer_req_desc * is suspicious because adding an integral value to
+this pointer automatically scales that value by the size, 32 bytes, of the
+pointed-to type, struct utp_transfer_req_desc. Most likely, the
+multiplication by sizeof (struct utp_transfer_req_desc) in this expression
+is extraneous and should be eliminated.
+
+Cc: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+Cc: Stanley Chu <stanley.chu@mediatek.com>
+Cc: Can Guo <quic_cang@quicinc.com>
+Fixes: 8d7290348992 ("scsi: ufs: mcq: Add supporting functions for MCQ abort")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240410000751.1047758-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-meson.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufs-mcq.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-meson.c b/drivers/pwm/pwm-meson.c
-index b5d5fe4669993..e12b6ff70baba 100644
---- a/drivers/pwm/pwm-meson.c
-+++ b/drivers/pwm/pwm-meson.c
-@@ -175,7 +175,7 @@ static int meson_pwm_calc(struct pwm_chip *chip, struct pwm_device *pwm,
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index c873fd8239427..7ae3096814282 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -597,8 +597,7 @@ static bool ufshcd_mcq_sqe_search(struct ufs_hba *hba,
+ 	addr = le64_to_cpu(cmd_desc_base_addr) & CQE_UCD_BA;
  
- 	dev_dbg(pwmchip_parent(chip), "fin_freq: %ld Hz\n", fin_freq);
- 
--	cnt = div_u64(fin_freq * period, NSEC_PER_SEC);
-+	cnt = mul_u64_u64_div_u64(fin_freq, period, NSEC_PER_SEC);
- 	if (cnt > 0xffff) {
- 		dev_err(pwmchip_parent(chip), "unable to get period cnt\n");
- 		return -EINVAL;
-@@ -190,7 +190,7 @@ static int meson_pwm_calc(struct pwm_chip *chip, struct pwm_device *pwm,
- 		channel->hi = 0;
- 		channel->lo = cnt;
- 	} else {
--		duty_cnt = div_u64(fin_freq * duty, NSEC_PER_SEC);
-+		duty_cnt = mul_u64_u64_div_u64(fin_freq, duty, NSEC_PER_SEC);
- 
- 		dev_dbg(pwmchip_parent(chip), "duty=%llu duty_cnt=%u\n", duty, duty_cnt);
- 
+ 	while (sq_head_slot != hwq->sq_tail_slot) {
+-		utrd = hwq->sqe_base_addr +
+-				sq_head_slot * sizeof(struct utp_transfer_req_desc);
++		utrd = hwq->sqe_base_addr + sq_head_slot;
+ 		match = le64_to_cpu(utrd->command_desc_base_addr) & CQE_UCD_BA;
+ 		if (addr == match) {
+ 			ufshcd_mcq_nullify_sqe(utrd);
 -- 
 2.43.0
 
