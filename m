@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465278D0AC2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE5A8D0CC8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02C7E281975
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDBCE1C210E3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D851667CB;
-	Mon, 27 May 2024 19:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4AF160784;
+	Mon, 27 May 2024 19:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ki71Rxfi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKsj5D4T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A5B1667CE;
-	Mon, 27 May 2024 19:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D23F15FA91;
+	Mon, 27 May 2024 19:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836552; cv=none; b=Nr5utZ23n+07zNKKjbdB1W4Elg6D4pMG6jo27AOU+azwq81d13NwYIaTdenkMUr0hDh5AnEa0z+GeIXOWhAsnXjXGRpqRTveMWhYIfmZBMTTBL5RaOvli4jKQYT4FgYSWErCn2DHNfOutkdbyRozATU5ALufHQ4kxF8Cf57JSgA=
+	t=1716837783; cv=none; b=slhNQQWj6+g0lbKOeAbpZlsDRih7ziHhbSx086d0UK8S8gWLJ5k3MukZ7pmKFvPchY8NGSPZ4v5SwqQ+blQXODq5h/cB8DAg3pRpSArH0HAlEVXdDa+CUD9BZxrd31djKuJdUprw8ce7dDfe9ZAcVMWGueyGxWb+cl2FIHcNPvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836552; c=relaxed/simple;
-	bh=Cs+gbqK+uNjoncZ9os07ySdSBO1AddWCNvylR4OUA00=;
+	s=arc-20240116; t=1716837783; c=relaxed/simple;
+	bh=odwx+2jDo2l7+i1iqQniDzd/3FenZsvfuxPWVCuA0ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViExwyu7aQdyEapAtW+qRSYvdTGqqCD2Eh3YSxIZxMmROP2wD4HLPwV+ctGgWMJzO3KRmPACuhddAusCbqO/3marza3wiSnlHETAdC2hEk6TqCpQryamm68o7wVKMujtTzs2+VlSp6HjK2BD2Xx/UzCHGtJN/sa10csCbSMME7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ki71Rxfi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A00C2BBFC;
-	Mon, 27 May 2024 19:02:31 +0000 (UTC)
+	 MIME-Version; b=hiZAaIuy79RtOxZUOCzRGUt6ib2UFwohf+8bh2WHGUxjytlRAI8q3TgkBQBHFzFD9ymWRiiQvAMyYYCyTB5NkVnN9HI7Nnx7J0MkLyE7XgF5bpYaz0dnZ17ly7rJpWMtNRmcveaAdw6cyNnUjP0Pt9X9dT0nHVr2wbFo+YyALNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKsj5D4T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32031C2BBFC;
+	Mon, 27 May 2024 19:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836551;
-	bh=Cs+gbqK+uNjoncZ9os07ySdSBO1AddWCNvylR4OUA00=;
+	s=korg; t=1716837783;
+	bh=odwx+2jDo2l7+i1iqQniDzd/3FenZsvfuxPWVCuA0ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ki71RxfiQVfvMwsAN+6teIzAn/tIh+40EC4Yg6y4laZjSObXFIsV9nPafFVnEmE8L
-	 dP8ifsrFgvpRwq0AwsW1U3pdsfMbwrgnzhAwIJxuCkzDhGT553E7Nq/odWCiql7lKy
-	 kr8cuMecOd0+393qgf87MSuSInXQ468hMilYiMdc=
+	b=GKsj5D4TWRxjaQXh3q74xiCfnKbNrEi+xwLfz8gR+HJGjq5ujLkckkA1J6Dk1IC70
+	 Vov5liLYBs7ZJgoTUqt8xyVYVLx8fqlDrK5tonjKAlzbFUsLx5/vByIJIvVMC73Vw7
+	 ADCGOXdOmc3VgfnbKljEg+lwbzk75jecCtLDGyVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 099/427] wifi: ieee80211: fix ieee80211_mle_basic_sta_prof_size_ok()
+Subject: [PATCH 6.8 144/493] firmware: qcom: scm: Fix __scm and waitq completion variable initialization
 Date: Mon, 27 May 2024 20:52:26 +0200
-Message-ID: <20240527185611.045665117@linuxfoundation.org>
+Message-ID: <20240527185635.155339425@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-[ Upstream commit c121514df0daa800cc500dc2738e0b8a1c54af98 ]
+[ Upstream commit 2e4955167ec5c04534cebea9e8273a907e7a75e1 ]
 
-If there was a possibility of an MLE basic STA profile without
-subelements, we might reject it because we account for the one
-octet for sta_info_len twice (it's part of itself, and in the
-fixed portion). Like in ieee80211_mle_reconf_sta_prof_size_ok,
-subtract 1 to adjust that.
+It is possible qcom_scm_is_available() gives wrong indication that
+if __scm is initialized while __scm->dev is not and similar issue
+is also possible with __scm->waitq_comp.
 
-When reading the elements we did take this into account, and
-since there are always elements, this never really mattered.
+Fix this appropriately by the use of release barrier and read barrier
+that will make sure if __scm is initialized so, is all of its field
+variable.
 
-Fixes: 7b6f08771bf6 ("wifi: ieee80211: Support validating ML station profile length")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240318184907.00bb0b20ed60.I8c41dd6fc14c4b187ab901dea15ade73c79fb98c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: d0f6fa7ba2d6 ("firmware: qcom: scm: Convert SCM to platform driver")
+Fixes: 6bf325992236 ("firmware: qcom: scm: Add wait-queue handling logic")
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Link: https://lore.kernel.org/r/1711034642-22860-4-git-send-email-quic_mojha@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/qcom/qcom_scm.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 3385a2cc5b099..ac5be38d8aaf0 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -5302,7 +5302,7 @@ static inline bool ieee80211_mle_basic_sta_prof_size_ok(const u8 *data,
- 		info_len += 1;
- 
- 	return prof->sta_info_len >= info_len &&
--	       fixed + prof->sta_info_len <= len;
-+	       fixed + prof->sta_info_len - 1 <= len;
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index ca381cb2ee979..29c24578ad2bf 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -1713,7 +1713,7 @@ static int qcom_scm_qseecom_init(struct qcom_scm *scm)
+  */
+ bool qcom_scm_is_available(void)
+ {
+-	return !!__scm;
++	return !!READ_ONCE(__scm);
  }
+ EXPORT_SYMBOL_GPL(qcom_scm_is_available);
  
- /**
+@@ -1794,10 +1794,12 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	if (!scm)
+ 		return -ENOMEM;
+ 
++	scm->dev = &pdev->dev;
+ 	ret = qcom_scm_find_dload_address(&pdev->dev, &scm->dload_mode_addr);
+ 	if (ret < 0)
+ 		return ret;
+ 
++	init_completion(&scm->waitq_comp);
+ 	mutex_init(&scm->scm_bw_lock);
+ 
+ 	scm->path = devm_of_icc_get(&pdev->dev, NULL);
+@@ -1829,10 +1831,8 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	__scm = scm;
+-	__scm->dev = &pdev->dev;
+-
+-	init_completion(&__scm->waitq_comp);
++	/* Let all above stores be available after this */
++	smp_store_release(&__scm, scm);
+ 
+ 	irq = platform_get_irq_optional(pdev, 0);
+ 	if (irq < 0) {
 -- 
 2.43.0
 
