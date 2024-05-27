@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-46354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696EF8D033F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:21:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C49A8D0341
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A92129F6FC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:21:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0B891C21134
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4710E16FF3E;
-	Mon, 27 May 2024 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9F716FF59;
+	Mon, 27 May 2024 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tnpCaEUF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JIVV015V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0009315FD04;
-	Mon, 27 May 2024 14:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3D316FF52;
+	Mon, 27 May 2024 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819217; cv=none; b=MJUIt/90QUZ82Qb97X/C2rHHnzx+vexUaA0KzUVCFZd4v0M0j1HxvixAhlbSqP9TNDm4BJU5TnBhKRcYD68E6T1UFyGGvA/iyw3uLQXtesuPLfvVcS79x1i1AhmtdcagJZ0x/HiEinXi17ofDs8Zu3JXZBIDM5YwcFKRpB+aqFw=
+	t=1716819218; cv=none; b=Lmzv5KmL5wLk0Z1et1X01LVXxXYCvwOZi+aN37WHZ8gn5DZS1bZbo/XKz2qYko8HTDscz3RRjNheXms51Ms5C6Ne5aYxTNwOnJ4wm2Wp+imK+3pvhSsr8soV2NdLsVMeJ0GVhQj3GKnxsxlexTZgXWWKp+iRTsRlieU8k1WLF10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819217; c=relaxed/simple;
-	bh=+V0FDSzG+6YYenFIDE+4ZYoVCvKbhYefr+hUGjhfkAc=;
+	s=arc-20240116; t=1716819218; c=relaxed/simple;
+	bh=UUX6FM7FevEjcmk/Q+b3AHxsD6DcfXw/QHAtxiCn7Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDesMTXxpviGMhLZzqgN8ze5E+2wl30vrTpbTopAYdNzS+zFOPLm4oLPH2M0T8x1RRfSkCFCOTrUTPtzzqxbomNW/2Sh02DZwFBe1dWho53m/+qbahgp5Atqe5C9mUIY84SYj6K5+d2xuiwEQpjXouzk+vnMXmCikZKVq2ma+Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tnpCaEUF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5076BC2BBFC;
-	Mon, 27 May 2024 14:13:35 +0000 (UTC)
+	 MIME-Version; b=I7VCTRE4OxcRERKOdp08tjFkWIln2ZW0CmwWVzCIHhsNpiVq1ZOmJAoMVc+qPD+wFWKuUutAa9h42Fj4JE9DQFeAAn8QI60CLunjbaF/56eMG2aqS8OfCJm6T6JGIu5yXg8CKv7XF9lMufHr9ybREGl+QWT1ASlEA5OGf1qxJ8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JIVV015V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B91C2BBFC;
+	Mon, 27 May 2024 14:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819216;
-	bh=+V0FDSzG+6YYenFIDE+4ZYoVCvKbhYefr+hUGjhfkAc=;
+	s=k20201202; t=1716819218;
+	bh=UUX6FM7FevEjcmk/Q+b3AHxsD6DcfXw/QHAtxiCn7Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnpCaEUFduQ0GSAKbIL3JAF/bxp9CIJ6EqVHCRBiHnO0Nu4gHnQUyLT30gZ4g5LwD
-	 dJ8wAtAqDRjToh+dHSQmgoE5X+FGeE+VKDjvWSO9D/Ay+cWyK1ncS/QEkcHbU94NLm
-	 KCbFsJudzazN1Z9lCBefMkefZsovfoQXCztb4gFXI7hhteJw1xNpy/V0x8f/pVhWK7
-	 j9tDeF0zubhjYKoNho2r4WaDPWsqiM9AYmiidIrxzVRFJNaNvQs2OUB4QxYKfac50W
-	 sfnclI0EoBeLjfMJQe3XVzV1vcqBiZe2Lk8WtnehU0Xl94Xzyaqzblf1COb1rJDN0T
-	 lp4O05bix2Yqw==
+	b=JIVV015Vflbg+7VOdkP5vELeb4zFTzPwrFoRUw+B5RN3HjBEl2bxKwWDeG/0Vuiph
+	 aRCfYNK/Gqmm1OLgfQ3hjQ8ulFLqvAnOsmykXrNuIB7tNMbw+aLcZpLOxjz+a84SVy
+	 n8m3ULzR+vFHbAYiLZbKAQRvPB/Q+hi/SCFoPRNIEWQoxl2Cw/WDyqbw+z4CgcGB72
+	 9owRDPUwmmuu6Q53s+F7ICj8uiY0NiI71diubFKBq8jUw5AOvlxWHeLhIAoHvz50dH
+	 KSiLzBSPQkzR1f1DV6z87o690+wYkEacTkYPlSV6QyRSFTcj11/D9K2X1jmL4G3qUk
+	 lCjCHQTvlyjWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Arinzon <darinzon@amazon.com>,
-	Shahar Itzko <itzko@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Uri Arev <me@wantyapps.xyz>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	shayagr@amazon.com,
-	akiyano@amazon.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	kheib@redhat.com,
-	bigeasy@linutronix.de,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 34/35] net: ena: Add validation for completion descriptors consistency
-Date: Mon, 27 May 2024 10:11:39 -0400
-Message-ID: <20240527141214.3844331-34-sashal@kernel.org>
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 35/35] Bluetooth: ath3k: Fix multiple issues reported by checkpatch.pl
+Date: Mon, 27 May 2024 10:11:40 -0400
+Message-ID: <20240527141214.3844331-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
 References: <20240527141214.3844331-1-sashal@kernel.org>
@@ -74,137 +67,188 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: David Arinzon <darinzon@amazon.com>
+From: Uri Arev <me@wantyapps.xyz>
 
-[ Upstream commit b37b98a3a0c1198bafe8c2d9ce0bc845b4e7a9a7 ]
+[ Upstream commit 68aa21054ec3a1a313af90a5f95ade16c3326d20 ]
 
-Validate that `first` flag is set only for the first
-descriptor in multi-buffer packets.
-In case of an invalid descriptor, a reset will occur.
-A new reset reason for RX data corruption has been added.
+This fixes some CHECKs reported by the checkpatch script.
 
-Signed-off-by: Shahar Itzko <itzko@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240512134637.25299-4-darinzon@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Issues reported in ath3k.c:
+-------
+ath3k.c
+-------
+CHECK: Please don't use multiple blank lines
++
++
+
+CHECK: Blank lines aren't necessary after an open brace '{'
++static const struct usb_device_id ath3k_blist_tbl[] = {
++
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_load_firmware(struct usb_device *udev,
++                               const struct firmware *firmware)
+
+CHECK: Alignment should match open parenthesis
++               err = usb_bulk_msg(udev, pipe, send_buf, size,
++                                       &len, 3000);
+
+CHECK: Unnecessary parentheses around 'len != size'
++               if (err || (len != size)) {
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_get_version(struct usb_device *udev,
++                       struct ath3k_version *version)
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_load_fwfile(struct usb_device *udev,
++               const struct firmware *firmware)
+
+CHECK: Alignment should match open parenthesis
++               err = usb_bulk_msg(udev, pipe, send_buf, size,
++                                       &len, 3000);
+
+CHECK: Unnecessary parentheses around 'len != size'
++               if (err || (len != size)) {
+
+CHECK: Blank lines aren't necessary after an open brace '{'
++       switch (fw_version.ref_clock) {
++
+
+CHECK: Alignment should match open parenthesis
++       snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
++               le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_probe(struct usb_interface *intf,
++                       const struct usb_device_id *id)
+
+CHECK: Alignment should match open parenthesis
++                       BT_ERR("Firmware file \"%s\" not found",
++                                                       ATH3K_FIRMWARE);
+
+CHECK: Alignment should match open parenthesis
++               BT_ERR("Firmware file \"%s\" request failed (err=%d)",
++                                               ATH3K_FIRMWARE, ret);
+
+total: 0 errors, 0 warnings, 14 checks, 540 lines checked
+
+Signed-off-by: Uri Arev <me@wantyapps.xyz>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_eth_com.c | 37 ++++++++++++++-----
- drivers/net/ethernet/amazon/ena/ena_netdev.c  |  2 +
- .../net/ethernet/amazon/ena/ena_regs_defs.h   |  1 +
- 3 files changed, 30 insertions(+), 10 deletions(-)
+ drivers/bluetooth/ath3k.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_eth_com.c b/drivers/net/ethernet/amazon/ena/ena_eth_com.c
-index 933e619b3a313..4c6e07aa4bbb5 100644
---- a/drivers/net/ethernet/amazon/ena/ena_eth_com.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_eth_com.c
-@@ -229,30 +229,43 @@ static struct ena_eth_io_rx_cdesc_base *
- 		idx * io_cq->cdesc_entry_size_in_bytes);
+diff --git a/drivers/bluetooth/ath3k.c b/drivers/bluetooth/ath3k.c
+index 88262d3a93923..ce97b336fbfb8 100644
+--- a/drivers/bluetooth/ath3k.c
++++ b/drivers/bluetooth/ath3k.c
+@@ -3,7 +3,6 @@
+  * Copyright (c) 2008-2009 Atheros Communications Inc.
+  */
+ 
+-
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+@@ -128,7 +127,6 @@ MODULE_DEVICE_TABLE(usb, ath3k_table);
+  * for AR3012
+  */
+ static const struct usb_device_id ath3k_blist_tbl[] = {
+-
+ 	/* Atheros AR3012 with sflash firmware*/
+ 	{ USB_DEVICE(0x0489, 0xe04e), .driver_info = BTUSB_ATH3012 },
+ 	{ USB_DEVICE(0x0489, 0xe04d), .driver_info = BTUSB_ATH3012 },
+@@ -202,7 +200,7 @@ static inline void ath3k_log_failed_loading(int err, int len, int size,
+ #define TIMEGAP_USEC_MAX	100
+ 
+ static int ath3k_load_firmware(struct usb_device *udev,
+-				const struct firmware *firmware)
++			       const struct firmware *firmware)
+ {
+ 	u8 *send_buf;
+ 	int len = 0;
+@@ -237,9 +235,9 @@ static int ath3k_load_firmware(struct usb_device *udev,
+ 		memcpy(send_buf, firmware->data + sent, size);
+ 
+ 		err = usb_bulk_msg(udev, pipe, send_buf, size,
+-					&len, 3000);
++				   &len, 3000);
+ 
+-		if (err || (len != size)) {
++		if (err || len != size) {
+ 			ath3k_log_failed_loading(err, len, size, count);
+ 			goto error;
+ 		}
+@@ -262,7 +260,7 @@ static int ath3k_get_state(struct usb_device *udev, unsigned char *state)
  }
  
--static u16 ena_com_cdesc_rx_pkt_get(struct ena_com_io_cq *io_cq,
--					   u16 *first_cdesc_idx)
-+static int ena_com_cdesc_rx_pkt_get(struct ena_com_io_cq *io_cq,
-+				    u16 *first_cdesc_idx,
-+				    u16 *num_descs)
+ static int ath3k_get_version(struct usb_device *udev,
+-			struct ath3k_version *version)
++			     struct ath3k_version *version)
  {
-+	u16 count = io_cq->cur_rx_pkt_cdesc_count, head_masked;
- 	struct ena_eth_io_rx_cdesc_base *cdesc;
--	u16 count = 0, head_masked;
- 	u32 last = 0;
+ 	return usb_control_msg_recv(udev, 0, ATH3K_GETVERSION,
+ 				    USB_TYPE_VENDOR | USB_DIR_IN, 0, 0,
+@@ -271,7 +269,7 @@ static int ath3k_get_version(struct usb_device *udev,
+ }
  
- 	do {
-+		u32 status;
-+
- 		cdesc = ena_com_get_next_rx_cdesc(io_cq);
- 		if (!cdesc)
- 			break;
-+		status = READ_ONCE(cdesc->status);
+ static int ath3k_load_fwfile(struct usb_device *udev,
+-		const struct firmware *firmware)
++			     const struct firmware *firmware)
+ {
+ 	u8 *send_buf;
+ 	int len = 0;
+@@ -310,8 +308,8 @@ static int ath3k_load_fwfile(struct usb_device *udev,
+ 		memcpy(send_buf, firmware->data + sent, size);
  
- 		ena_com_cq_inc_head(io_cq);
-+		if (unlikely((status & ENA_ETH_IO_RX_CDESC_BASE_FIRST_MASK) >>
-+		    ENA_ETH_IO_RX_CDESC_BASE_FIRST_SHIFT && count != 0)) {
-+			struct ena_com_dev *dev = ena_com_io_cq_to_ena_dev(io_cq);
-+
-+			netdev_err(dev->net_device,
-+				   "First bit is on in descriptor #%d on q_id: %d, req_id: %u\n",
-+				   count, io_cq->qid, cdesc->req_id);
-+			return -EFAULT;
-+		}
- 		count++;
--		last = (READ_ONCE(cdesc->status) & ENA_ETH_IO_RX_CDESC_BASE_LAST_MASK) >>
--		       ENA_ETH_IO_RX_CDESC_BASE_LAST_SHIFT;
-+		last = (status & ENA_ETH_IO_RX_CDESC_BASE_LAST_MASK) >>
-+			ENA_ETH_IO_RX_CDESC_BASE_LAST_SHIFT;
- 	} while (!last);
- 
- 	if (last) {
- 		*first_cdesc_idx = io_cq->cur_rx_pkt_cdesc_start_idx;
--		count += io_cq->cur_rx_pkt_cdesc_count;
- 
- 		head_masked = io_cq->head & (io_cq->q_depth - 1);
- 
-+		*num_descs = count;
- 		io_cq->cur_rx_pkt_cdesc_count = 0;
- 		io_cq->cur_rx_pkt_cdesc_start_idx = head_masked;
- 
-@@ -260,11 +273,11 @@ static u16 ena_com_cdesc_rx_pkt_get(struct ena_com_io_cq *io_cq,
- 			   "ENA q_id: %d packets were completed. first desc idx %u descs# %d\n",
- 			   io_cq->qid, *first_cdesc_idx, count);
- 	} else {
--		io_cq->cur_rx_pkt_cdesc_count += count;
--		count = 0;
-+		io_cq->cur_rx_pkt_cdesc_count = count;
-+		*num_descs = 0;
+ 		err = usb_bulk_msg(udev, pipe, send_buf, size,
+-					&len, 3000);
+-		if (err || (len != size)) {
++				   &len, 3000);
++		if (err || len != size) {
+ 			ath3k_log_failed_loading(err, len, size, count);
+ 			kfree(send_buf);
+ 			return err;
+@@ -425,7 +423,6 @@ static int ath3k_load_syscfg(struct usb_device *udev)
  	}
  
--	return count;
-+	return 0;
+ 	switch (fw_version.ref_clock) {
+-
+ 	case ATH3K_XTAL_FREQ_26M:
+ 		clk_value = 26;
+ 		break;
+@@ -441,7 +438,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
+ 	}
+ 
+ 	snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
+-		le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
++		 le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
+ 
+ 	ret = request_firmware(&firmware, filename, &udev->dev);
+ 	if (ret < 0) {
+@@ -456,7 +453,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
  }
  
- static int ena_com_create_meta(struct ena_com_io_sq *io_sq,
-@@ -539,10 +552,14 @@ int ena_com_rx_pkt(struct ena_com_io_cq *io_cq,
- 	u16 cdesc_idx = 0;
- 	u16 nb_hw_desc;
- 	u16 i = 0;
-+	int rc;
+ static int ath3k_probe(struct usb_interface *intf,
+-			const struct usb_device_id *id)
++		       const struct usb_device_id *id)
+ {
+ 	const struct firmware *firmware;
+ 	struct usb_device *udev = interface_to_usbdev(intf);
+@@ -505,10 +502,10 @@ static int ath3k_probe(struct usb_interface *intf,
+ 	if (ret < 0) {
+ 		if (ret == -ENOENT)
+ 			BT_ERR("Firmware file \"%s\" not found",
+-							ATH3K_FIRMWARE);
++			       ATH3K_FIRMWARE);
+ 		else
+ 			BT_ERR("Firmware file \"%s\" request failed (err=%d)",
+-							ATH3K_FIRMWARE, ret);
++			       ATH3K_FIRMWARE, ret);
+ 		return ret;
+ 	}
  
- 	WARN(io_cq->direction != ENA_COM_IO_QUEUE_DIRECTION_RX, "wrong Q type");
- 
--	nb_hw_desc = ena_com_cdesc_rx_pkt_get(io_cq, &cdesc_idx);
-+	rc = ena_com_cdesc_rx_pkt_get(io_cq, &cdesc_idx, &nb_hw_desc);
-+	if (unlikely(rc != 0))
-+		return -EFAULT;
-+
- 	if (nb_hw_desc == 0) {
- 		ena_rx_ctx->descs = nb_hw_desc;
- 		return 0;
-diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-index be5acfa41ee0c..8db05f7544f90 100644
---- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-@@ -1347,6 +1347,8 @@ static int ena_clean_rx_irq(struct ena_ring *rx_ring, struct napi_struct *napi,
- 	if (rc == -ENOSPC) {
- 		ena_increase_stat(&rx_ring->rx_stats.bad_desc_num, 1, &rx_ring->syncp);
- 		ena_reset_device(adapter, ENA_REGS_RESET_TOO_MANY_RX_DESCS);
-+	} else if (rc == -EFAULT) {
-+		ena_reset_device(adapter, ENA_REGS_RESET_RX_DESCRIPTOR_MALFORMED);
- 	} else {
- 		ena_increase_stat(&rx_ring->rx_stats.bad_req_id, 1,
- 				  &rx_ring->syncp);
-diff --git a/drivers/net/ethernet/amazon/ena/ena_regs_defs.h b/drivers/net/ethernet/amazon/ena/ena_regs_defs.h
-index 2c3d6a77ea79f..a2efebafd686a 100644
---- a/drivers/net/ethernet/amazon/ena/ena_regs_defs.h
-+++ b/drivers/net/ethernet/amazon/ena/ena_regs_defs.h
-@@ -22,6 +22,7 @@ enum ena_regs_reset_reason_types {
- 	ENA_REGS_RESET_GENERIC                      = 13,
- 	ENA_REGS_RESET_MISS_INTERRUPT               = 14,
- 	ENA_REGS_RESET_SUSPECTED_POLL_STARVATION    = 15,
-+	ENA_REGS_RESET_RX_DESCRIPTOR_MALFORMED	    = 16,
- };
- 
- /* ena_registers offsets */
 -- 
 2.43.0
 
