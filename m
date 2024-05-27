@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0E18D0C79
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADF98D0A68
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 410F5B21A8C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CE481C214C4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FD915FA91;
-	Mon, 27 May 2024 19:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CF71607B0;
+	Mon, 27 May 2024 18:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K29o3GVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pxzbyLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB92168C4;
-	Mon, 27 May 2024 19:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E97915FCE6;
+	Mon, 27 May 2024 18:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837600; cv=none; b=d+BBpmVZswmuafpEGiJBYdGJaXRH4x1zhJeU9icbqyvVWgtZGc8FuFbeXl1UiVvZr5mY6gCi2y+KV00cV1I3oz7344OrEK/tWO1q6bQljSJGrISxip6FMl+ZvPIrUMKC4YgIwVgDzv9kcObcoX+1Sr3oWroItkXNvmoxXTJ/saU=
+	t=1716836373; cv=none; b=hWh7jr6mrgxvOVPQ16kGwydP+ONiqSlg4+m4ta0xXATk1nltZhEw8lrYyYZYEZJdOgPoojvBOv5BHT3vCqw9b5PZosQpZIL7cNO1FQiKkZOIuiLeqXm5rEZ9pp1DhtZuSAyufc9tc6T2QI9oDKBL00ebCNK/wUNkM5dpK+6Y6sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837600; c=relaxed/simple;
-	bh=RpoFn2Qz5SG4BTHO4M6wrKtM81zJKkaV0WTUC6t7eoI=;
+	s=arc-20240116; t=1716836373; c=relaxed/simple;
+	bh=PH2laBc3FBGvAyEhbW5U38kL76GG+EEzxxWR2choQjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCJo+qiz5ria6VuY5tC8Wv8w+D4S5NqyXU0vofVMQlHkUdN2zniUxiPGGJDnZENGhkAU3na92ubb0oakehzPHYK7Riy/MeaXARCPPLxcdWPlAe/2TSvzsmU77UsdokKQlifw6IY9+HGQsfzfhvzRAromGMnmPLv7kCRsfZYjv64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K29o3GVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90D6C2BBFC;
-	Mon, 27 May 2024 19:19:59 +0000 (UTC)
+	 MIME-Version; b=lZQ9PpGJ8jjqY8R2ZztNcWAqfqEw04Dk+K2ZkWb3sRbGx+LM15UmSjXINF9gpMrC731+CysxuDxeyznIYRU4JMTaEJeUe1+aUwkeSXSjKiQav/MsRtFuG5SkOavrZo9YeTCnjTBfHJYsEUCHIb+UBdQgHUvvV8KEZt47cXxt5YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pxzbyLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B509C2BBFC;
+	Mon, 27 May 2024 18:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837600;
-	bh=RpoFn2Qz5SG4BTHO4M6wrKtM81zJKkaV0WTUC6t7eoI=;
+	s=korg; t=1716836372;
+	bh=PH2laBc3FBGvAyEhbW5U38kL76GG+EEzxxWR2choQjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K29o3GVqlAhf3ujhFeeKj8PqycabFtZcB+jA7T77FJ59lUue+oEQ/JLl1Q3l8PEy4
-	 /7mQq73JDj7/ErdsHF9QKlVvcwY2QmYTjumpSTej6wB2PfThgry2DmzLrR/iBfi3rO
-	 s16uALn51nzUN36AVCMXeYu48zDS2X0CbIhpE63o=
+	b=0pxzbyLzHxvij8EQOwTTX/n2tb7FiyHrSTb7mzBfD8kEyM1coyfr9xbZQ2t64YlWn
+	 Pmn44oAh0I7REUaUBxmy6G4qTqaY0Z524P4qUjzVXqCFfPYlzPgGIKpiJanFBS07JB
+	 ZLCM9lmAf0ZM7IfvAiJ45pMtae31B0eicoyGOe1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Yu <jack.yu@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 072/493] ASoC: rt722-sdca: modify channel number to support 4 channels
-Date: Mon, 27 May 2024 20:51:14 +0200
-Message-ID: <20240527185632.226280553@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	"Bai, Shuangpeng" <sjb7183@psu.edu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 028/427] nilfs2: fix use-after-free of timer for log writer thread
+Date: Mon, 27 May 2024 20:51:15 +0200
+Message-ID: <20240527185604.290069336@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Yu <jack.yu@realtek.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit cb9946971d7cb717b726710e1a9fa4ded00b9135 ]
+commit f5d4e04634c9cf68bdf23de08ada0bb92e8befe7 upstream.
 
-Channel numbers of dmic supports 4 channels, modify channels_max
-regarding to this issue.
+Patch series "nilfs2: fix log writer related issues".
 
-Signed-off-by: Jack Yu <jack.yu@realtek.com>
-Link: https://msgid.link/r/6a9b1d1fb2ea4f04b2157799f04053b1@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug fix series covers three nilfs2 log writer-related issues,
+including a timer use-after-free issue and potential deadlock issue on
+unmount, and a potential freeze issue in event synchronization found
+during their analysis.  Details are described in each commit log.
+
+
+This patch (of 3):
+
+A use-after-free issue has been reported regarding the timer sc_timer on
+the nilfs_sc_info structure.
+
+The problem is that even though it is used to wake up a sleeping log
+writer thread, sc_timer is not shut down until the nilfs_sc_info structure
+is about to be freed, and is used regardless of the thread's lifetime.
+
+Fix this issue by limiting the use of sc_timer only while the log writer
+thread is alive.
+
+Link: https://lkml.kernel.org/r/20240520132621.4054-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240520132621.4054-2-konishi.ryusuke@gmail.com
+Fixes: fdce895ea5dd ("nilfs2: change sc_timer from a pointer to an embedded one in struct nilfs_sc_info")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: "Bai, Shuangpeng" <sjb7183@psu.edu>
+Closes: https://groups.google.com/g/syzkaller/c/MK_LYqtt8ko/m/8rgdWeseAwAJ
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt722-sdca.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/segment.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/rt722-sdca.c b/sound/soc/codecs/rt722-sdca.c
-index 0e1c65a20392a..4338cdb3a7917 100644
---- a/sound/soc/codecs/rt722-sdca.c
-+++ b/sound/soc/codecs/rt722-sdca.c
-@@ -1329,7 +1329,7 @@ static struct snd_soc_dai_driver rt722_sdca_dai[] = {
- 		.capture = {
- 			.stream_name = "DP6 DMic Capture",
- 			.channels_min = 1,
--			.channels_max = 2,
-+			.channels_max = 4,
- 			.rates = RT722_STEREO_RATES,
- 			.formats = RT722_FORMATS,
- 		},
--- 
-2.43.0
-
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2124,8 +2124,10 @@ static void nilfs_segctor_start_timer(st
+ {
+ 	spin_lock(&sci->sc_state_lock);
+ 	if (!(sci->sc_state & NILFS_SEGCTOR_COMMIT)) {
+-		sci->sc_timer.expires = jiffies + sci->sc_interval;
+-		add_timer(&sci->sc_timer);
++		if (sci->sc_task) {
++			sci->sc_timer.expires = jiffies + sci->sc_interval;
++			add_timer(&sci->sc_timer);
++		}
+ 		sci->sc_state |= NILFS_SEGCTOR_COMMIT;
+ 	}
+ 	spin_unlock(&sci->sc_state_lock);
+@@ -2326,10 +2328,21 @@ int nilfs_construct_dsync_segment(struct
+  */
+ static void nilfs_segctor_accept(struct nilfs_sc_info *sci)
+ {
++	bool thread_is_alive;
++
+ 	spin_lock(&sci->sc_state_lock);
+ 	sci->sc_seq_accepted = sci->sc_seq_request;
++	thread_is_alive = (bool)sci->sc_task;
+ 	spin_unlock(&sci->sc_state_lock);
+-	del_timer_sync(&sci->sc_timer);
++
++	/*
++	 * This function does not race with the log writer thread's
++	 * termination.  Therefore, deleting sc_timer, which should not be
++	 * done after the log writer thread exits, can be done safely outside
++	 * the area protected by sc_state_lock.
++	 */
++	if (thread_is_alive)
++		del_timer_sync(&sci->sc_timer);
+ }
+ 
+ /**
+@@ -2355,7 +2368,7 @@ static void nilfs_segctor_notify(struct
+ 			sci->sc_flush_request &= ~FLUSH_DAT_BIT;
+ 
+ 		/* re-enable timer if checkpoint creation was not done */
+-		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) &&
++		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) && sci->sc_task &&
+ 		    time_before(jiffies, sci->sc_timer.expires))
+ 			add_timer(&sci->sc_timer);
+ 	}
+@@ -2545,6 +2558,7 @@ static int nilfs_segctor_thread(void *ar
+ 	int timeout = 0;
+ 
+ 	sci->sc_timer_task = current;
++	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
+ 
+ 	/* start sync. */
+ 	sci->sc_task = current;
+@@ -2612,6 +2626,7 @@ static int nilfs_segctor_thread(void *ar
+  end_thread:
+ 	/* end sync. */
+ 	sci->sc_task = NULL;
++	timer_shutdown_sync(&sci->sc_timer);
+ 	wake_up(&sci->sc_wait_task); /* for nilfs_segctor_kill_thread() */
+ 	spin_unlock(&sci->sc_state_lock);
+ 	return 0;
+@@ -2675,7 +2690,6 @@ static struct nilfs_sc_info *nilfs_segct
+ 	INIT_LIST_HEAD(&sci->sc_gc_inodes);
+ 	INIT_LIST_HEAD(&sci->sc_iput_queue);
+ 	INIT_WORK(&sci->sc_iput_work, nilfs_iput_work_func);
+-	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
+ 
+ 	sci->sc_interval = HZ * NILFS_SC_DEFAULT_TIMEOUT;
+ 	sci->sc_mjcp_freq = HZ * NILFS_SC_DEFAULT_SR_FREQ;
+@@ -2754,7 +2768,6 @@ static void nilfs_segctor_destroy(struct
+ 
+ 	down_write(&nilfs->ns_segctor_sem);
+ 
+-	timer_shutdown_sync(&sci->sc_timer);
+ 	kfree(sci);
+ }
+ 
 
 
 
