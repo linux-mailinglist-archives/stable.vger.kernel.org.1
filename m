@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E778D0A9D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4B48D0CA1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99E711F228ED
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7032E1C2136B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D4B1607A4;
-	Mon, 27 May 2024 19:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBCE15FD01;
+	Mon, 27 May 2024 19:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTbVhlUz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2d9aNo9j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23BA1649CF;
-	Mon, 27 May 2024 19:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C852168C4;
+	Mon, 27 May 2024 19:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836467; cv=none; b=ISv3rxKGv84lfkpYHbYD7tPY1gMmk4ai6pT6Mgilx05Nwt1WiBn86OMKs4/hMQqI/0/3HRYpbq8S6juTnZsujS32naFHkiuhz1mgVE1LXWXLnd0HSXkSjSX0EzvXMS5fuZL2DO6snF1XOt97YSGLq5g+TwJqc1t+Mij3ayhM2Gg=
+	t=1716837699; cv=none; b=SuGTqpX2E705X3QB0lk53HMTJEvNb4wKY2M4E/4zull7EMBwbjFLw8w5xKvYDLIopXo4ZV9k3oS36QpGEiloWms8NY/ELj4E3rx4TtCpEufW0zfPiaMBYFAsO3O4OXe8CYFDjH476yRmRl3RVMkhadlKYNlH7hsrleeRAT4es08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836467; c=relaxed/simple;
-	bh=rGmm249ugBwmReqA54twkdn/ONrIOJFBzEWUDsI8Cjs=;
+	s=arc-20240116; t=1716837699; c=relaxed/simple;
+	bh=7Mvs2jUwpIfrQr5Iy2wjPpT4d+k1j/9IeAu803HPPSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTH/0VxNVaPefIi+0l6VQPg1DBtB8J3YtHHbJfE0f2c4gOzardGFBS2sXMl3Zrd0Jko4/PXFW6R5l23qyAQicDsoeTAa8d34eZBQ+6cQieaqvGRFylF/j8JSRzd2O6UwuxfG14VJrRfezrRsah4gyzjD9xPsaWceML6tgxRTlA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTbVhlUz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD7BC32781;
-	Mon, 27 May 2024 19:01:07 +0000 (UTC)
+	 MIME-Version; b=kl+J13TIRLZdNQz/NIv7yNbNn3Cy2yD8aOJEogL8sSt+acUMQqVlFOLO4ZUP2f04G2yWnMo98/gZHS184ewx/tBAW/pO288b4Z19Fve8Cwq9fnSG0n0vNqt7XZ2kvjcy+oqJqttDeaHnitx6rwBc/M7t6WiQiSnQf1R2+TVZT+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2d9aNo9j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59C8C2BBFC;
+	Mon, 27 May 2024 19:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836467;
-	bh=rGmm249ugBwmReqA54twkdn/ONrIOJFBzEWUDsI8Cjs=;
+	s=korg; t=1716837699;
+	bh=7Mvs2jUwpIfrQr5Iy2wjPpT4d+k1j/9IeAu803HPPSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PTbVhlUztnS9UkTFbbOLyN+xQZoQoSjyVB1Dd4ePMcRLyyWOb7qm+k0Uh4HJ6yzgX
-	 Q0/xtCPaFIDSx+G+3rVK8zojOslJPa3L2CmIDu0kJ9/9KpdVICF+PH8MjdGi+RBtpR
-	 iViCKU2RK7VlV/F3wlwgKFfL+q2DiCX/YX/U5Knk=
+	b=2d9aNo9jPRU5Z/tH83abIS8UET01Tb9nx3gIYhDLZypLY7kJbOrJWDulYToYgd7qa
+	 16t+C3+N/s6n8zY9nmbVigtatxzw4AMKRnjc8KD3RfAydPpwGiR4by8DZ1quThAsMf
+	 ygYQY9IQSNcfZVdYQaaI4lut7ZJY7rUTkHPtwL7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Eric Sandeen <sandeen@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 065/427] mm/userfaultfd: Do not place zeropages when zeropages are disallowed
+Subject: [PATCH 6.8 110/493] openpromfs: finish conversion to the new mount API
 Date: Mon, 27 May 2024 20:51:52 +0200
-Message-ID: <20240527185607.957399010@linuxfoundation.org>
+Message-ID: <20240527185634.124387257@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 90a7592da14951bd21f74a53246ba30955a648aa ]
+[ Upstream commit 8f27829974b025d4df2e78894105d75e3bf349f0 ]
 
-s390x must disable shared zeropages for processes running VMs, because
-the VMs could end up making use of "storage keys" or protected
-virtualization, which are incompatible with shared zeropages.
+The original mount API conversion inexplicably left out the change
+from ->remount_fs to ->reconfigure; do that now.
 
-Yet, with userfaultfd it is possible to insert shared zeropages into
-such processes. Let's fallback to simply allocating a fresh zeroed
-anonymous folio and insert that instead.
-
-mm_forbids_zeropage() was introduced in commit 593befa6ab74 ("mm: introduce
-mm_forbids_zeropage function"), briefly before userfaultfd went
-upstream.
-
-Note that we don't want to fail the UFFDIO_ZEROPAGE request like we do
-for hugetlb, it would be rather unexpected. Further, we also
-cannot really indicated "not supported" to user space ahead of time: it
-could be that the MM disallows zeropages after userfaultfd was already
-registered.
-
-[ agordeev: Fixed checkpatch complaints ]
-
-Fixes: c1a4de99fada ("userfaultfd: mcopy_atomic|mfill_zeropage: UFFDIO_COPY|UFFDIO_ZEROPAGE preparation")
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20240411161441.910170-2-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 7ab2fa7693c3 ("vfs: Convert openpromfs to use the new mount API")
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Link: https://lore.kernel.org/r/90b968aa-c979-420f-ba37-5acc3391b28f@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/userfaultfd.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ fs/openpromfs/inode.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 3c3539c573e7f..829f7b1089fc6 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -316,6 +316,38 @@ static int mfill_atomic_pte_copy(pmd_t *dst_pmd,
- 	goto out;
+diff --git a/fs/openpromfs/inode.c b/fs/openpromfs/inode.c
+index c4b65a6d41cc3..5cf1809d47bdb 100644
+--- a/fs/openpromfs/inode.c
++++ b/fs/openpromfs/inode.c
+@@ -355,10 +355,10 @@ static struct inode *openprom_iget(struct super_block *sb, ino_t ino)
+ 	return inode;
  }
  
-+static int mfill_atomic_pte_zeroed_folio(pmd_t *dst_pmd,
-+					 struct vm_area_struct *dst_vma,
-+					 unsigned long dst_addr)
-+{
-+	struct folio *folio;
-+	int ret = -ENOMEM;
-+
-+	folio = vma_alloc_zeroed_movable_folio(dst_vma, dst_addr);
-+	if (!folio)
-+		return ret;
-+
-+	if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
-+		goto out_put;
-+
-+	/*
-+	 * The memory barrier inside __folio_mark_uptodate makes sure that
-+	 * zeroing out the folio become visible before mapping the page
-+	 * using set_pte_at(). See do_anonymous_page().
-+	 */
-+	__folio_mark_uptodate(folio);
-+
-+	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
-+				       &folio->page, true, 0);
-+	if (ret)
-+		goto out_put;
-+
-+	return 0;
-+out_put:
-+	folio_put(folio);
-+	return ret;
-+}
-+
- static int mfill_atomic_pte_zeropage(pmd_t *dst_pmd,
- 				     struct vm_area_struct *dst_vma,
- 				     unsigned long dst_addr)
-@@ -324,6 +356,9 @@ static int mfill_atomic_pte_zeropage(pmd_t *dst_pmd,
- 	spinlock_t *ptl;
- 	int ret;
+-static int openprom_remount(struct super_block *sb, int *flags, char *data)
++static int openpromfs_reconfigure(struct fs_context *fc)
+ {
+-	sync_filesystem(sb);
+-	*flags |= SB_NOATIME;
++	sync_filesystem(fc->root->d_sb);
++	fc->sb_flags |= SB_NOATIME;
+ 	return 0;
+ }
  
-+	if (mm_forbids_zeropage(dst_vma->vm_mm))
-+		return mfill_atomic_pte_zeroed_folio(dst_pmd, dst_vma, dst_addr);
-+
- 	_dst_pte = pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
- 					 dst_vma->vm_page_prot));
- 	ret = -EAGAIN;
+@@ -366,7 +366,6 @@ static const struct super_operations openprom_sops = {
+ 	.alloc_inode	= openprom_alloc_inode,
+ 	.free_inode	= openprom_free_inode,
+ 	.statfs		= simple_statfs,
+-	.remount_fs	= openprom_remount,
+ };
+ 
+ static int openprom_fill_super(struct super_block *s, struct fs_context *fc)
+@@ -415,6 +414,7 @@ static int openpromfs_get_tree(struct fs_context *fc)
+ 
+ static const struct fs_context_operations openpromfs_context_ops = {
+ 	.get_tree	= openpromfs_get_tree,
++	.reconfigure	= openpromfs_reconfigure,
+ };
+ 
+ static int openpromfs_init_fs_context(struct fs_context *fc)
 -- 
 2.43.0
 
