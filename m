@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD08D8D0CCF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0455A8D0AC8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991732876DC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DBC6B21C3C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DFF15FD04;
-	Mon, 27 May 2024 19:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20EB167268;
+	Mon, 27 May 2024 19:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZAZ/igQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5j7HqTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356BE15EFC3;
-	Mon, 27 May 2024 19:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B74615ECFF;
+	Mon, 27 May 2024 19:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837796; cv=none; b=o9JPQSYAMXII4X3Z3RZm6++qb5QmeGTkDNexdLtfSWzfr2azK62rvDY9Cpd5CiYItDscKBea04YcBZ+ZS6F/P19nCXtvemos96PD8nlp/qKJmzYBTRVWkwLCfjYZFQQttsag9HxOgoAuWwDJaEJB9+CUDtuAkTP3Uo/DMAm9Twg=
+	t=1716836562; cv=none; b=edZuMInbFMH1WoYqZNy9CA3B8tOJPjgAiSNOSC0GtxuW/AlF57O3SZ4fqRimudBZs4QrheiUVicy/CfUTHngWINSZ2K3Nggu7G0PVQ47zlHiHbFvD6+1wQLDBGOTcgVwEV9kaZXpEXTqcTw2kzvXys8PsPR6XlWTuB5eDt6T2zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837796; c=relaxed/simple;
-	bh=QxrsMTxIu9AveLLpzfGep58pYikIOx3qf77zOnHIg2U=;
+	s=arc-20240116; t=1716836562; c=relaxed/simple;
+	bh=tlDq7ge+4cNtzpAMg6paAxmOc+lZCP6jiaxtKIQ+fCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EgjL4KYbYjsZbXHvh/H5GWuNpILhqz8jgGeFHxEw6htEqji5yRSVdpuOi6+ey8Rq7gMdaHKH+MTTFzKKV7HxMxQOR11GAvk/vqX4kK+/2LpnhUrLXiifDkZ/3WN++AOicD7zUQ6AxldH5aHrRgr2DMbZ8aSnK93fMlkNvUcgIeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZAZ/igQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD947C32786;
-	Mon, 27 May 2024 19:23:15 +0000 (UTC)
+	 MIME-Version; b=moQZqDMaWfnNf4xSFCI711t12yactf/5xlx2Dd6yrA1K8rDth6LyL8ubDlG06lz7xlVrLXAFGN3/0344SN4IHI6Mi4kYJEOCgs2y4ImpWAjuzrnLCFza5r8H7z2Fj1mdSN8XLbvUAwRE6wlfGM1IxviB/9ZqDTAY10UjhF1IGl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5j7HqTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCEBC2BBFC;
+	Mon, 27 May 2024 19:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837796;
-	bh=QxrsMTxIu9AveLLpzfGep58pYikIOx3qf77zOnHIg2U=;
+	s=korg; t=1716836561;
+	bh=tlDq7ge+4cNtzpAMg6paAxmOc+lZCP6jiaxtKIQ+fCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZAZ/igQNAogJNfWWzhmNY6tb5ds055HRNAUh+QsWy95AX1Hrn2bK6IaV6sHe2crN
-	 iX23aZPehGyb1WiuTsrb9fyDSkareKeYMtCwJ02gOmen6A2v40FwqL7iEmrk8gc88A
-	 DdbhJAjl3FBTEJvdoncb3ytvGix3YvzkhL216TtU=
+	b=m5j7HqTdmitSL0EuTXv8F5zIMZRrl9Ud9d3UqYKaQFnubw7NorEYQE1XZIMLxSy1S
+	 vKrUZXojKd643ChQSSgRjBxSaxY6RpmSyFy+8lYz6anT4tQG7OZz1KDylyd5Nccw+w
+	 mJhiAsoDTN8tJ1kxrr4UrU4kWxNPQsM4El5u95aE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ayala Beker <ayala.beker@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 148/493] hwrng: stm32 - use logical OR in conditional
+Subject: [PATCH 6.9 103/427] wifi: mac80211: dont select link ID if not provided in scan request
 Date: Mon, 27 May 2024 20:52:30 +0200
-Message-ID: <20240527185635.280878757@linuxfoundation.org>
+Message-ID: <20240527185611.367119691@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Ayala Beker <ayala.beker@intel.com>
 
-[ Upstream commit 31b57788a5024d3a114b28dad224a93831b90b5f ]
+[ Upstream commit 80b0aacd1ad046b46d471cf8ed6203bbd777f988 ]
 
-The conditional is used to check whether err is non-zero OR whether
-reg variable is non-zero after clearing bits from it. This should be
-done using logical OR, not bitwise OR, fix it.
+If scan request doesn't include a link ID to be used for TSF
+reporting, don't select it as it might become inactive before
+scan is actually started by the driver.
+Instead, let the driver select one of the active links.
 
-Fixes: 6b85a7e141cb ("hwrng: stm32 - implement STM32MP13x support")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: cbde0b49f276 ("wifi: mac80211: Extend support for scanning while MLO connected")
+Signed-off-by: Ayala Beker <ayala.beker@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320091155.a6b643a15755.Ic28ed9a611432387b7f85e9ca9a97a4ce34a6e0f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/stm32-rng.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/scan.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/char/hw_random/stm32-rng.c b/drivers/char/hw_random/stm32-rng.c
-index 379bc245c5202..1cc61ef8ee54c 100644
---- a/drivers/char/hw_random/stm32-rng.c
-+++ b/drivers/char/hw_random/stm32-rng.c
-@@ -353,7 +353,7 @@ static int stm32_rng_init(struct hwrng *rng)
- 	err = readl_relaxed_poll_timeout_atomic(priv->base + RNG_SR, reg,
- 						reg & RNG_SR_DRDY,
- 						10, 100000);
--	if (err | (reg & ~RNG_SR_DRDY)) {
-+	if (err || (reg & ~RNG_SR_DRDY)) {
- 		clk_disable_unprepare(priv->clk);
- 		dev_err((struct device *)priv->rng.priv,
- 			"%s: timeout:%x SR: %x!\n", __func__, err, reg);
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index 73850312580f7..3da1c5c450358 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -708,19 +708,11 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
+ 		return -EBUSY;
+ 
+ 	/* For an MLO connection, if a link ID was specified, validate that it
+-	 * is indeed active. If no link ID was specified, select one of the
+-	 * active links.
++	 * is indeed active.
+ 	 */
+-	if (ieee80211_vif_is_mld(&sdata->vif)) {
+-		if (req->tsf_report_link_id >= 0) {
+-			if (!(sdata->vif.active_links &
+-			      BIT(req->tsf_report_link_id)))
+-				return -EINVAL;
+-		} else {
+-			req->tsf_report_link_id =
+-				__ffs(sdata->vif.active_links);
+-		}
+-	}
++	if (ieee80211_vif_is_mld(&sdata->vif) && req->tsf_report_link_id >= 0 &&
++	    !(sdata->vif.active_links & BIT(req->tsf_report_link_id)))
++		return -EINVAL;
+ 
+ 	if (!__ieee80211_can_leave_ch(sdata))
+ 		return -EBUSY;
 -- 
 2.43.0
 
