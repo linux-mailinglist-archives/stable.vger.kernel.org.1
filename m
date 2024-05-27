@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-47411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20DA98D0DDE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A585C8D0C0F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51FFE1C2152E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58E2D282085
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93A915FCFB;
-	Mon, 27 May 2024 19:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C5E15FA91;
+	Mon, 27 May 2024 19:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTaZ/OAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2Ld5sSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7860A17727;
-	Mon, 27 May 2024 19:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478BA168C4;
+	Mon, 27 May 2024 19:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838480; cv=none; b=MFehDWjOV2MSH46kwhmOnRQYWSsiPbHI+tDIOClTwa55MZuYBxR5sWa+cNKUuoRiy/8bnATJW30ww+7UPT9lgCkb8H/KFofrj/iigE5OlS2h4waddw6MOkuQbqRbgrHsP7MNtsBcBwgv97fhOic9V4HfgPoaw51G5+PgZiC2YrQ=
+	t=1716837347; cv=none; b=WqpEqcVtkSfhyU1BqKQXl0S9xAFOjXZ0fEo9ch3d3uCowAZIQgfG9hr8yL34yoj9kYvcEzkEt2QYBm32merb+dUkdyiPcnNxjJyBrXIk72tKIPQDwy3xVnUOltX6XORsLti/25hLLVcZSjMwOj4dnq8KQf8YLYY2OBhPjX+qy90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838480; c=relaxed/simple;
-	bh=0cKHjPX+RPhwdJDBttPU/8Bui1gK/YGhtKekzrRoyCY=;
+	s=arc-20240116; t=1716837347; c=relaxed/simple;
+	bh=weSP6I2qKVIExnrblybRabxdgRv69uEGvquUSTDItgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ATs6orFTdVKYpgxWX4Nj2wPriwRwkV8fFTF07k69HxTlXFY/0dZj6GB77ca2txOX6zLjgdv8AAWKf3/VOcaK39KWqqQcNHHqYxUmNRy7zZ2h7HBuhSEJsQDA4Odos/N1mvxunpHrlmO+ebGssmShy3ZMKjXUwlLO2ZY0MkzmYAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTaZ/OAj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E829C2BBFC;
-	Mon, 27 May 2024 19:34:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uEZVTxTzKxZokM6sKUdrukDiONM/18iHOg43oeD7jf3Rhwg9gXiIrLYXuos3jTOessy12ZJhuZMBqPivIUE9Q0OvXuXfIn0Dbp6uUQea6OYfpqIBnh8Xg31Ja/tdK8TB42zr6pLpiqU+AXxAA8+4P7Y2TKFnjq+BAWmfdaBwCVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2Ld5sSJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C602AC2BBFC;
+	Mon, 27 May 2024 19:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838480;
-	bh=0cKHjPX+RPhwdJDBttPU/8Bui1gK/YGhtKekzrRoyCY=;
+	s=korg; t=1716837347;
+	bh=weSP6I2qKVIExnrblybRabxdgRv69uEGvquUSTDItgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTaZ/OAjktUHGDNM7lmmRQWlnN7WrK23BTJEic3v1SuGAWuHMZqtmAHzIexbZF/Ar
-	 Z20SWGi2nkA+y4dVT9SezhAkawOCyw3+0B5ELBlY3GxzSlgyJHMPFXiNUOKnc0smRZ
-	 hAR0yOEE3oYmo4lOD2HZ4ehxgXg53r3hy8mP6BSA=
+	b=B2Ld5sSJ0QQUidwg/sbDp/KaYwFiScu2iYeUpqkEe6BuKJravJDOcWYtNWpLQFnU+
+	 F0kIhUlRz7jh0xOZShxazG9WrYobzoZQFnkrJpVGrcho+NiiLtRlnZSrMcHmQwrnDt
+	 +YvxXRyqfa14gOM/nQLCJYA5ga8AKID/C1fVclYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 410/493] drm/bridge: dpc3433: Dont log an error when DSI host cant be found
-Date: Mon, 27 May 2024 20:56:52 +0200
-Message-ID: <20240527185643.701894014@linuxfoundation.org>
+Subject: [PATCH 6.9 366/427] clk: samsung: gs101: propagate PERIC1 USI SPI clock rate
+Date: Mon, 27 May 2024 20:56:53 +0200
+Message-ID: <20240527185634.054378061@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +65,188 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 24f4f575214de776539d346b99b8717bffa8ebba ]
+[ Upstream commit 7cf0324ba0bc61a8c360d23d284e06d2994b1fef ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+When SPI transfer is being prepared, the spi-s3c64xx driver will call
+clk_set_rate() to change the rate of SPI source clock (IPCLK). But IPCLK
+is a gate (leaf) clock, so it must propagate the rate change up the
+clock tree, so that corresponding MUX/DIV clocks can actually change
+their values. Add CLK_SET_RATE_PARENT flag to corresponding clocks for
+all USI instances in GS101 PERIC1: USI{0, 9, 10, 11, 12, 13}. This change
+involves the following clocks:
 
-Also move the "failed to attach" error message so that it's only printed
-when the devm_mipi_dsi_attach() call fails.
+PERIC1 USI*:
 
-Fixes: 6352cd451ddb ("drm: bridge: Add TI DLPC3433 DSI to DMD bridge")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-7-619a28148e5c@collabora.com
+    Clock                              Div range    MUX Selection
+    -------------------------------------------------------------------
+    gout_peric1_peric1_top0_ipclk_*    -            -
+    dout_peric1_usi*_usi               /1..16       -
+    mout_peric1_usi*_usi_user          -            {24.5 MHz, 400 MHz}
+
+With input clock of 400 MHz this scheme provides the following IPCLK
+rate range, for each USI block:
+
+    PERIC1 USI*:       1.5 MHz ... 400 MHz
+
+Accounting for internal /4 divider in SPI blocks, and because the max
+SPI frequency is limited at 50 MHz, it gives us next SPI SCK rates:
+
+    PERIC1 USI_SPI*:   384 KHz ... 49.9 MHz
+
+Which shall be fine for the applications of the SPI bus.
+
+Note that with this we allow the reparenting of the MUX_USIx clocks to
+OSCCLK. Each instance of the USI IP has its own MUX_USI clock, thus the
+reparenting of a MUX_USI clock corresponds to a single instance of the
+USI IP. The datasheet mentions OSCCLK just in the low-power mode
+context, but the downstream driver reparents too the MUX_USI clocks to
+OSCCLK. Follow the downstream driver and do the same.
+
+Fixes: 2999e786d7e9 ("clk: samsung: gs101: add support for cmu_peric1")
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Acked-by: André Draszik <andre.draszik@linaro.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20240419100915.2168573-3-tudor.ambarus@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-dlpc3433.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/clk/samsung/clk-gs101.c | 90 ++++++++++++++++++---------------
+ 1 file changed, 48 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-dlpc3433.c b/drivers/gpu/drm/bridge/ti-dlpc3433.c
-index ca3348109bcd2..6b559e0713012 100644
---- a/drivers/gpu/drm/bridge/ti-dlpc3433.c
-+++ b/drivers/gpu/drm/bridge/ti-dlpc3433.c
-@@ -319,12 +319,11 @@ static int dlpc_host_attach(struct dlpc *dlpc)
- 		.channel = 0,
- 		.node = NULL,
- 	};
-+	int ret;
+diff --git a/drivers/clk/samsung/clk-gs101.c b/drivers/clk/samsung/clk-gs101.c
+index 76d4d0fa1168a..bd3c1b02715b5 100644
+--- a/drivers/clk/samsung/clk-gs101.c
++++ b/drivers/clk/samsung/clk-gs101.c
+@@ -3239,47 +3239,53 @@ static const struct samsung_mux_clock peric1_mux_clks[] __initconst = {
+ 	MUX(CLK_MOUT_PERIC1_I3C_USER,
+ 	    "mout_peric1_i3c_user", mout_peric1_nonbususer_p,
+ 	    PLL_CON0_MUX_CLKCMU_PERIC1_I3C_USER, 4, 1),
+-	MUX(CLK_MOUT_PERIC1_USI0_USI_USER,
+-	    "mout_peric1_usi0_usi_user", mout_peric1_nonbususer_p,
+-	    PLL_CON0_MUX_CLKCMU_PERIC1_USI0_USI_USER, 4, 1),
+-	MUX(CLK_MOUT_PERIC1_USI10_USI_USER,
+-	    "mout_peric1_usi10_usi_user", mout_peric1_nonbususer_p,
+-	    PLL_CON0_MUX_CLKCMU_PERIC1_USI10_USI_USER, 4, 1),
+-	MUX(CLK_MOUT_PERIC1_USI11_USI_USER,
+-	    "mout_peric1_usi11_usi_user", mout_peric1_nonbususer_p,
+-	    PLL_CON0_MUX_CLKCMU_PERIC1_USI11_USI_USER, 4, 1),
+-	MUX(CLK_MOUT_PERIC1_USI12_USI_USER,
+-	    "mout_peric1_usi12_usi_user", mout_peric1_nonbususer_p,
+-	    PLL_CON0_MUX_CLKCMU_PERIC1_USI12_USI_USER, 4, 1),
+-	MUX(CLK_MOUT_PERIC1_USI13_USI_USER,
+-	    "mout_peric1_usi13_usi_user", mout_peric1_nonbususer_p,
+-	    PLL_CON0_MUX_CLKCMU_PERIC1_USI13_USI_USER, 4, 1),
+-	MUX(CLK_MOUT_PERIC1_USI9_USI_USER,
+-	    "mout_peric1_usi9_usi_user", mout_peric1_nonbususer_p,
+-	    PLL_CON0_MUX_CLKCMU_PERIC1_USI9_USI_USER, 4, 1),
++	nMUX(CLK_MOUT_PERIC1_USI0_USI_USER,
++	     "mout_peric1_usi0_usi_user", mout_peric1_nonbususer_p,
++	     PLL_CON0_MUX_CLKCMU_PERIC1_USI0_USI_USER, 4, 1),
++	nMUX(CLK_MOUT_PERIC1_USI10_USI_USER,
++	     "mout_peric1_usi10_usi_user", mout_peric1_nonbususer_p,
++	     PLL_CON0_MUX_CLKCMU_PERIC1_USI10_USI_USER, 4, 1),
++	nMUX(CLK_MOUT_PERIC1_USI11_USI_USER,
++	     "mout_peric1_usi11_usi_user", mout_peric1_nonbususer_p,
++	     PLL_CON0_MUX_CLKCMU_PERIC1_USI11_USI_USER, 4, 1),
++	nMUX(CLK_MOUT_PERIC1_USI12_USI_USER,
++	     "mout_peric1_usi12_usi_user", mout_peric1_nonbususer_p,
++	     PLL_CON0_MUX_CLKCMU_PERIC1_USI12_USI_USER, 4, 1),
++	nMUX(CLK_MOUT_PERIC1_USI13_USI_USER,
++	     "mout_peric1_usi13_usi_user", mout_peric1_nonbususer_p,
++	     PLL_CON0_MUX_CLKCMU_PERIC1_USI13_USI_USER, 4, 1),
++	nMUX(CLK_MOUT_PERIC1_USI9_USI_USER,
++	     "mout_peric1_usi9_usi_user", mout_peric1_nonbususer_p,
++	     PLL_CON0_MUX_CLKCMU_PERIC1_USI9_USI_USER, 4, 1),
+ };
  
- 	host = of_find_mipi_dsi_host_by_node(dlpc->host_node);
--	if (!host) {
--		DRM_DEV_ERROR(dev, "failed to find dsi host\n");
--		return -EPROBE_DEFER;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
+ static const struct samsung_div_clock peric1_div_clks[] __initconst = {
+ 	DIV(CLK_DOUT_PERIC1_I3C, "dout_peric1_i3c", "mout_peric1_i3c_user",
+ 	    CLK_CON_DIV_DIV_CLK_PERIC1_I3C, 0, 4),
+-	DIV(CLK_DOUT_PERIC1_USI0_USI,
+-	    "dout_peric1_usi0_usi", "mout_peric1_usi0_usi_user",
+-	    CLK_CON_DIV_DIV_CLK_PERIC1_USI0_USI, 0, 4),
+-	DIV(CLK_DOUT_PERIC1_USI10_USI,
+-	    "dout_peric1_usi10_usi", "mout_peric1_usi10_usi_user",
+-	    CLK_CON_DIV_DIV_CLK_PERIC1_USI10_USI, 0, 4),
+-	DIV(CLK_DOUT_PERIC1_USI11_USI,
+-	    "dout_peric1_usi11_usi", "mout_peric1_usi11_usi_user",
+-	    CLK_CON_DIV_DIV_CLK_PERIC1_USI11_USI, 0, 4),
+-	DIV(CLK_DOUT_PERIC1_USI12_USI,
+-	    "dout_peric1_usi12_usi", "mout_peric1_usi12_usi_user",
+-	    CLK_CON_DIV_DIV_CLK_PERIC1_USI12_USI, 0, 4),
+-	DIV(CLK_DOUT_PERIC1_USI13_USI,
+-	    "dout_peric1_usi13_usi", "mout_peric1_usi13_usi_user",
+-	    CLK_CON_DIV_DIV_CLK_PERIC1_USI13_USI, 0, 4),
+-	DIV(CLK_DOUT_PERIC1_USI9_USI,
+-	    "dout_peric1_usi9_usi", "mout_peric1_usi9_usi_user",
+-	    CLK_CON_DIV_DIV_CLK_PERIC1_USI9_USI, 0, 4),
++	DIV_F(CLK_DOUT_PERIC1_USI0_USI,
++	      "dout_peric1_usi0_usi", "mout_peric1_usi0_usi_user",
++	      CLK_CON_DIV_DIV_CLK_PERIC1_USI0_USI, 0, 4,
++	      CLK_SET_RATE_PARENT, 0),
++	DIV_F(CLK_DOUT_PERIC1_USI10_USI,
++	      "dout_peric1_usi10_usi", "mout_peric1_usi10_usi_user",
++	      CLK_CON_DIV_DIV_CLK_PERIC1_USI10_USI, 0, 4,
++	      CLK_SET_RATE_PARENT, 0),
++	DIV_F(CLK_DOUT_PERIC1_USI11_USI,
++	      "dout_peric1_usi11_usi", "mout_peric1_usi11_usi_user",
++	      CLK_CON_DIV_DIV_CLK_PERIC1_USI11_USI, 0, 4,
++	      CLK_SET_RATE_PARENT, 0),
++	DIV_F(CLK_DOUT_PERIC1_USI12_USI,
++	      "dout_peric1_usi12_usi", "mout_peric1_usi12_usi_user",
++	      CLK_CON_DIV_DIV_CLK_PERIC1_USI12_USI, 0, 4,
++	      CLK_SET_RATE_PARENT, 0),
++	DIV_F(CLK_DOUT_PERIC1_USI13_USI,
++	      "dout_peric1_usi13_usi", "mout_peric1_usi13_usi_user",
++	      CLK_CON_DIV_DIV_CLK_PERIC1_USI13_USI, 0, 4,
++	      CLK_SET_RATE_PARENT, 0),
++	DIV_F(CLK_DOUT_PERIC1_USI9_USI,
++	      "dout_peric1_usi9_usi", "mout_peric1_usi9_usi_user",
++	      CLK_CON_DIV_DIV_CLK_PERIC1_USI9_USI, 0, 4,
++	      CLK_SET_RATE_PARENT, 0),
+ };
  
- 	dlpc->dsi = mipi_dsi_device_register_full(host, &info);
- 	if (IS_ERR(dlpc->dsi)) {
-@@ -336,7 +335,11 @@ static int dlpc_host_attach(struct dlpc *dlpc)
- 	dlpc->dsi->format = MIPI_DSI_FMT_RGB565;
- 	dlpc->dsi->lanes = dlpc->dsi_lanes;
- 
--	return devm_mipi_dsi_attach(dev, dlpc->dsi);
-+	ret = devm_mipi_dsi_attach(dev, dlpc->dsi);
-+	if (ret)
-+		DRM_DEV_ERROR(dev, "failed to attach dsi host\n");
-+
-+	return ret;
- }
- 
- static int dlpc3433_probe(struct i2c_client *client)
-@@ -367,10 +370,8 @@ static int dlpc3433_probe(struct i2c_client *client)
- 	drm_bridge_add(&dlpc->bridge);
- 
- 	ret = dlpc_host_attach(dlpc);
--	if (ret) {
--		DRM_DEV_ERROR(dev, "failed to attach dsi host\n");
-+	if (ret)
- 		goto err_remove_bridge;
--	}
- 
- 	return 0;
- 
+ static const struct samsung_gate_clock peric1_gate_clks[] __initconst = {
+@@ -3314,27 +3320,27 @@ static const struct samsung_gate_clock peric1_gate_clks[] __initconst = {
+ 	GATE(CLK_GOUT_PERIC1_PERIC1_TOP0_IPCLK_1,
+ 	     "gout_peric1_peric1_top0_ipclk_1", "dout_peric1_usi0_usi",
+ 	     CLK_CON_GAT_GOUT_BLK_PERIC1_UID_PERIC1_TOP0_IPCLKPORT_IPCLK_1,
+-	     21, 0, 0),
++	     21, CLK_SET_RATE_PARENT, 0),
+ 	GATE(CLK_GOUT_PERIC1_PERIC1_TOP0_IPCLK_2,
+ 	     "gout_peric1_peric1_top0_ipclk_2", "dout_peric1_usi9_usi",
+ 	     CLK_CON_GAT_GOUT_BLK_PERIC1_UID_PERIC1_TOP0_IPCLKPORT_IPCLK_2,
+-	     21, 0, 0),
++	     21, CLK_SET_RATE_PARENT, 0),
+ 	GATE(CLK_GOUT_PERIC1_PERIC1_TOP0_IPCLK_3,
+ 	     "gout_peric1_peric1_top0_ipclk_3", "dout_peric1_usi10_usi",
+ 	     CLK_CON_GAT_GOUT_BLK_PERIC1_UID_PERIC1_TOP0_IPCLKPORT_IPCLK_3,
+-	     21, 0, 0),
++	     21, CLK_SET_RATE_PARENT, 0),
+ 	GATE(CLK_GOUT_PERIC1_PERIC1_TOP0_IPCLK_4,
+ 	     "gout_peric1_peric1_top0_ipclk_4", "dout_peric1_usi11_usi",
+ 	     CLK_CON_GAT_GOUT_BLK_PERIC1_UID_PERIC1_TOP0_IPCLKPORT_IPCLK_4,
+-	     21, 0, 0),
++	     21, CLK_SET_RATE_PARENT, 0),
+ 	GATE(CLK_GOUT_PERIC1_PERIC1_TOP0_IPCLK_5,
+ 	     "gout_peric1_peric1_top0_ipclk_5", "dout_peric1_usi12_usi",
+ 	     CLK_CON_GAT_GOUT_BLK_PERIC1_UID_PERIC1_TOP0_IPCLKPORT_IPCLK_5,
+-	     21, 0, 0),
++	     21, CLK_SET_RATE_PARENT, 0),
+ 	GATE(CLK_GOUT_PERIC1_PERIC1_TOP0_IPCLK_6,
+ 	     "gout_peric1_peric1_top0_ipclk_6", "dout_peric1_usi13_usi",
+ 	     CLK_CON_GAT_GOUT_BLK_PERIC1_UID_PERIC1_TOP0_IPCLKPORT_IPCLK_6,
+-	     21, 0, 0),
++	     21, CLK_SET_RATE_PARENT, 0),
+ 	GATE(CLK_GOUT_PERIC1_PERIC1_TOP0_IPCLK_8,
+ 	     "gout_peric1_peric1_top0_ipclk_8", "dout_peric1_i3c",
+ 	     CLK_CON_GAT_GOUT_BLK_PERIC1_UID_PERIC1_TOP0_IPCLKPORT_IPCLK_8,
 -- 
 2.43.0
 
