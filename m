@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-47152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0468D0CD4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2188D0ACB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDB57B2085D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B694281F9D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F6115FCFE;
-	Mon, 27 May 2024 19:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E0115FCF5;
+	Mon, 27 May 2024 19:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2AS+OKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mF+y0Jww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49365168C4;
-	Mon, 27 May 2024 19:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C247F15FD01;
+	Mon, 27 May 2024 19:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837804; cv=none; b=qsqYhURLTNorV8Mim99Um1iVmg6CIbL9ZNuqrs+n+zeFQH7BBCy6/0VACYP2qpAhBJmSU0LXePypBEBIrlw63pnTyCmQ4Ft00VCdbrsZdDJinbgwnVHixMYOuxdXX/6NI4Yqk3n3Xyov9DzWDx5hsKyOQ3WxUxogYZgF5acpL64=
+	t=1716836569; cv=none; b=jLsknVdADfZV4qalm2GpQBDEAHsAHBKI5/poPyOiqySkYBu3WT+rN2wB4PvVef+5PX9igrxkUF9Lw97uUiBEb976yERDLHAoMM8Mh5lxI8JL/jA0/iKtShY8JZ2VO7gon+LXBad17H5cwD5lUCooTpnIBQu+JYnzh5FcJJYTBTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837804; c=relaxed/simple;
-	bh=TuWxy1FFIiiuUYzb41eQ7txirMqpyFQKs9ppDZiYcnw=;
+	s=arc-20240116; t=1716836569; c=relaxed/simple;
+	bh=A7V0rOcefwpMv9RTw01EqdC5VZ3n74ESiqX+GksXNp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QV/EN0WhmfnCQk6oUk4R3v8fgC92niG9LYy93ax30yIfF4glGz/0yZ4BkpQzjPMXM/WFnxjN6kXpGzW0YFpU4ALkUVsSrFYLaohkTiPiL9MiaMAG7tM4cwi3NikZuUQGJQbSFfIZZBOQ9uSR5uoMrLV1TXKsIJXj171bh+6xAnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2AS+OKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D735BC2BBFC;
-	Mon, 27 May 2024 19:23:23 +0000 (UTC)
+	 MIME-Version; b=eUp6cU4H2mAtZo7q6pR3DSPjFpLUJjiz2rx4JgJDj6znAFMm7nGX1lZ2n90A74CktT2UMh9yDjyvXEC7sEAiGMaG/lICb5HBfBoC7xzouajn5QlPtFrs7ELAynR7NbmwfNz6hc7Kybielw0TIUXiUs2FCYNHpw9hbiVLsiGEoq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mF+y0Jww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7010C2BBFC;
+	Mon, 27 May 2024 19:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837804;
-	bh=TuWxy1FFIiiuUYzb41eQ7txirMqpyFQKs9ppDZiYcnw=;
+	s=korg; t=1716836569;
+	bh=A7V0rOcefwpMv9RTw01EqdC5VZ3n74ESiqX+GksXNp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2AS+OKcF/4+aqbXZNq/2GU37RFtcAP/0wIoTBBbldkhgp6VOlq/Ec/h76Xpc1l5r
-	 4wK0wzhGq3FADzaMT5whjlZEWR1JwogWEWamshclKmpd5G2Y2TkwYuNjWB4r2Mr2+S
-	 D4tu61mcGXscAfOX0chWAuKVDG9Yao8BjMX/Icjw=
+	b=mF+y0JwwZbxr+pBeClIkIwDa1tPXLtJb+3wiw3TrRKjvLp4Ityo/M95Z+5/N/io4A
+	 ++ze02OxEiLvmkEH2fmDSeLwpNZf5sn/NZTJ/tRmGyM0MQJxGc3Dzi2wPP3sqhKbub
+	 s1dTtJvE4a4hALCFGz9LOwkk25r47Ck5+rtLo7rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 151/493] kunit/fortify: Fix mismatched kvalloc()/vfree() usage
+Subject: [PATCH 6.9 106/427] wifi: iwlwifi: mvm: select STA mask only for active links
 Date: Mon, 27 May 2024 20:52:33 +0200
-Message-ID: <20240527185635.368514130@linuxfoundation.org>
+Message-ID: <20240527185611.695848778@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 998b18072ceb0613629c256b409f4d299829c7ec ]
+[ Upstream commit 2783ab506eaa36dbef40bda0f96eb49fe149790e ]
 
-The kv*() family of tests were accidentally freeing with vfree() instead
-of kvfree(). Use kvfree() instead.
+During reconfig, we might send keys, but those should be only
+sent to already active link stations. Iterate only active ones
+to fix that issue.
 
-Fixes: 9124a2640148 ("kunit/fortify: Validate __alloc_size attribute results")
-Link: https://lore.kernel.org/r/20240425230619.work.299-kees@kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: aea99650f731 ("wifi: iwlwifi: mvm: set STA mask for keys in MLO")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320232419.c6818d1c6033.I6357f05c55ef111002ddc169287eb356ca0c1b21@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/fortify_kunit.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/lib/fortify_kunit.c b/lib/fortify_kunit.c
-index 2e4fedc816210..7830a9e64ead7 100644
---- a/lib/fortify_kunit.c
-+++ b/lib/fortify_kunit.c
-@@ -229,28 +229,28 @@ DEFINE_ALLOC_SIZE_TEST_PAIR(vmalloc)
- 									\
- 	checker((expected_pages) * PAGE_SIZE,				\
- 		kvmalloc((alloc_pages) * PAGE_SIZE, gfp),		\
--		vfree(p));						\
-+		kvfree(p));						\
- 	checker((expected_pages) * PAGE_SIZE,				\
- 		kvmalloc_node((alloc_pages) * PAGE_SIZE, gfp, NUMA_NO_NODE), \
--		vfree(p));						\
-+		kvfree(p));						\
- 	checker((expected_pages) * PAGE_SIZE,				\
- 		kvzalloc((alloc_pages) * PAGE_SIZE, gfp),		\
--		vfree(p));						\
-+		kvfree(p));						\
- 	checker((expected_pages) * PAGE_SIZE,				\
- 		kvzalloc_node((alloc_pages) * PAGE_SIZE, gfp, NUMA_NO_NODE), \
--		vfree(p));						\
-+		kvfree(p));						\
- 	checker((expected_pages) * PAGE_SIZE,				\
- 		kvcalloc(1, (alloc_pages) * PAGE_SIZE, gfp),		\
--		vfree(p));						\
-+		kvfree(p));						\
- 	checker((expected_pages) * PAGE_SIZE,				\
- 		kvcalloc((alloc_pages) * PAGE_SIZE, 1, gfp),		\
--		vfree(p));						\
-+		kvfree(p));						\
- 	checker((expected_pages) * PAGE_SIZE,				\
- 		kvmalloc_array(1, (alloc_pages) * PAGE_SIZE, gfp),	\
--		vfree(p));						\
-+		kvfree(p));						\
- 	checker((expected_pages) * PAGE_SIZE,				\
- 		kvmalloc_array((alloc_pages) * PAGE_SIZE, 1, gfp),	\
--		vfree(p));						\
-+		kvfree(p));						\
- 									\
- 	prev_size = (expected_pages) * PAGE_SIZE;			\
- 	orig = kvmalloc(prev_size, gfp);				\
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index 4ba1599ed71ca..dffdd00f8ab62 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -9,7 +9,9 @@
+ u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 			   int filter_link_id)
+ {
++	struct ieee80211_link_sta *link_sta;
+ 	struct iwl_mvm_sta *mvmsta;
++	struct ieee80211_vif *vif;
+ 	unsigned int link_id;
+ 	u32 result = 0;
+ 
+@@ -17,26 +19,27 @@ u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 		return 0;
+ 
+ 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
++	vif = mvmsta->vif;
+ 
+ 	/* it's easy when the STA is not an MLD */
+ 	if (!sta->valid_links)
+ 		return BIT(mvmsta->deflink.sta_id);
+ 
+ 	/* but if it is an MLD, get the mask of all the FW STAs it has ... */
+-	for (link_id = 0; link_id < ARRAY_SIZE(mvmsta->link); link_id++) {
+-		struct iwl_mvm_link_sta *link_sta;
++	for_each_sta_active_link(vif, sta, link_sta, link_id) {
++		struct iwl_mvm_link_sta *mvm_link_sta;
+ 
+ 		/* unless we have a specific link in mind */
+ 		if (filter_link_id >= 0 && link_id != filter_link_id)
+ 			continue;
+ 
+-		link_sta =
++		mvm_link_sta =
+ 			rcu_dereference_check(mvmsta->link[link_id],
+ 					      lockdep_is_held(&mvm->mutex));
+ 		if (!link_sta)
+ 			continue;
+ 
+-		result |= BIT(link_sta->sta_id);
++		result |= BIT(mvm_link_sta->sta_id);
+ 	}
+ 
+ 	return result;
 -- 
 2.43.0
 
