@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-46945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3F98D0BEA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3848D0DE7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18929285AD2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7FF4B20D86
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69A26A039;
-	Mon, 27 May 2024 19:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF0313AD05;
+	Mon, 27 May 2024 19:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtOwNoYn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9RovcqH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FA917E90E;
-	Mon, 27 May 2024 19:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0FC17727;
+	Mon, 27 May 2024 19:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837260; cv=none; b=G9RilGO++UO9Rdn0Crunwmz5L5nGS/Uequ/VUqzSctE1HqWYm1tVrZHSu2rxL3QlorFeVshkf5s45E6JFZG3FTnHzzkLQ0q+Er3gNGxTsMMjmKtqG3FODLUYdkBJ9W43ZzH6oFZ8cD7WNpNQFF5hfqt7+lYVNyDp/yj19UtWuBw=
+	t=1716838503; cv=none; b=f3SonAjXPbErVVVTb6lOZcJ4srPtap6vYdJNZ6Wm6F9ERyWDRSBPKGLOkA/365inmJgsGmUFeF/plmk3bb7BoN+W6CtKz+5Bmp7zdmQb6q2tmio9q7cKSqKBEoQhAIOY+7+O79GjAUJ4jCG0Wcfm/ELpFaECQZC+nSKziEb6NZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837260; c=relaxed/simple;
-	bh=nkNZpNxtSWn/yDmUoltT1sxPxx7WIIpqbVjZq2Pi+lQ=;
+	s=arc-20240116; t=1716838503; c=relaxed/simple;
+	bh=bY2F+Z83RmnGR/eEZihjho52PdS/DPCzObMKglFcqrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iq0OG+w5k0VINNzLmY62Jsv5CSgSTMzznrwTHWq3G+m+OAoxpLkh32NCMhUEP6+vK6YauMG6ZCUxzGpHNtRdi9xbv6h6qC+i9HxRXKY3EBDIkFi4GwD5t1tZuir4iziY4MoW7WkTgeqNcByQYUl+NQec9cuB2HWy+LGPveh+r2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtOwNoYn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AEAC2BBFC;
-	Mon, 27 May 2024 19:14:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C2ch5Ri8SmR1L9sCuvnKID8qzEjkmShzsceqzV+oGA3IcsMVUKb4sj5uOQ9TLuGo16kPQpRnbH2/WThDN4313XV6tVTWHcbEP4exQ6uK850IHnIe+hMZDX/ryU0j5JWFFhDfXafPz3q/mDmz/pCp/QS0hwzjcciWvVOGUUydPLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9RovcqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFC5C2BBFC;
+	Mon, 27 May 2024 19:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837260;
-	bh=nkNZpNxtSWn/yDmUoltT1sxPxx7WIIpqbVjZq2Pi+lQ=;
+	s=korg; t=1716838503;
+	bh=bY2F+Z83RmnGR/eEZihjho52PdS/DPCzObMKglFcqrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtOwNoYno+cxSwhwyuS1s4L1O3h0xgJjxs/jfevz53jXZSjHLgISxpAKvlnD4zrJO
-	 gunwfdUKgsgsAA72xyFVOEwp5ZnW1je+EbRqJMPAYHN+ceJf8snZRz2GjjXnfGF8/h
-	 ShLsab9spZEjpC0BkJw/APDP1+eLMouNy/a9GgOQ=
+	b=o9RovcqHXGgLM80w48UE9Qqr5wTud/5b4OKS4MEFG4DXJl7m4dbj06/od/Yq14AKG
+	 1U8PZk/QrnSpH/eZ44W9pP+kuPuSa+lnp8B4zbeXWOA3pc8Eq13a3vVdH9CAg1AoMK
+	 wHidHfJnvEyXrZRWJkv1t+NTdK23QQGV345/hoNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 373/427] lib/test_hmm.c: handle src_pfns and dst_pfns allocation failure
+Subject: [PATCH 6.8 418/493] drm/edid: Parse topology block for all DispID structure v1.x
 Date: Mon, 27 May 2024 20:57:00 +0200
-Message-ID: <20240527185634.272059402@linuxfoundation.org>
+Message-ID: <20240527185643.962264650@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +64,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit c2af060d1c18beaec56351cf9c9bcbbc5af341a3 ]
+[ Upstream commit e0a200ab4b72afd581bd6f82fc1ef510a4fb5478 ]
 
-The kcalloc() in dmirror_device_evict_chunk() will return null if the
-physical memory has run out.  As a result, if src_pfns or dst_pfns is
-dereferenced, the null pointer dereference bug will happen.
+DisplayID spec v1.3 revision history notes do claim that
+the toplogy block was added in v1.3 so requiring structure
+v1.2 would seem correct, but there is at least one EDID in
+edid.tv with a topology block and structure v1.0. And
+there are also EDIDs with DisplayID structure v1.3 which
+seems to be totally incorrect as DisplayID spec v1.3 lists
+structure v1.2 as the only legal value.
 
-Moreover, the device is going away.  If the kcalloc() fails, the pages
-mapping a chunk could not be evicted.  So add a __GFP_NOFAIL flag in
-kcalloc().
+Unfortunately I couldn't find copies of DisplayID spec
+v1.0-v1.2 anywhere (even on vesa.org), so I'll have to
+go on empirical evidence alone.
 
-Finally, as there is no need to have physically contiguous memory, Switch
-kcalloc() to kvcalloc() in order to avoid failing allocations.
+We used to parse the topology block on all v1.x
+structures until the check for structure v2.0 was added.
+Let's go back to doing that as the evidence does suggest
+that there are DisplayIDs in the wild that would miss
+out on the topology stuff otherwise.
 
-Link: https://lkml.kernel.org/r/20240312005905.9939-1-duoming@zju.edu.cn
-Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Cc: Jérôme Glisse <jglisse@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Also toss out DISPLAY_ID_STRUCTURE_VER_12 entirely as
+it doesn't appear we can really use it for anything.
+
+I *think* we could technically skip all the structure
+version checks as the block tags shouldn't conflict
+between v2.0 and v1.x. But no harm in having a bit of
+extra sanity checks I guess.
+
+So far I'm not aware of any user reported regressions
+from overly strict check, but I do know that it broke
+igt/kms_tiled_display's fake DisplayID as that one
+gets generated with structure v1.0.
+
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Fixes: c5a486af9df7 ("drm/edid: parse Tiled Display Topology Data Block for DisplayID 2.0")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240410180139.21352-1-ville.syrjala@linux.intel.com
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_hmm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/drm_edid.c  | 2 +-
+ include/drm/drm_displayid.h | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 717dcb8301273..b823ba7cb6a15 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1226,8 +1226,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 	unsigned long *src_pfns;
- 	unsigned long *dst_pfns;
+diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+index 69c68804023ff..9ef9a70a836c7 100644
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -7345,7 +7345,7 @@ static void drm_parse_tiled_block(struct drm_connector *connector,
+ static bool displayid_is_tiled_block(const struct displayid_iter *iter,
+ 				     const struct displayid_block *block)
+ {
+-	return (displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_12 &&
++	return (displayid_version(iter) < DISPLAY_ID_STRUCTURE_VER_20 &&
+ 		block->tag == DATA_BLOCK_TILED_DISPLAY) ||
+ 		(displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_20 &&
+ 		 block->tag == DATA_BLOCK_2_TILED_DISPLAY_TOPOLOGY);
+diff --git a/include/drm/drm_displayid.h b/include/drm/drm_displayid.h
+index 566497eeb3b81..bc1f6b378195f 100644
+--- a/include/drm/drm_displayid.h
++++ b/include/drm/drm_displayid.h
+@@ -30,7 +30,6 @@ struct drm_edid;
+ #define VESA_IEEE_OUI				0x3a0292
  
--	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
--	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
-+	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
+ /* DisplayID Structure versions */
+-#define DISPLAY_ID_STRUCTURE_VER_12		0x12
+ #define DISPLAY_ID_STRUCTURE_VER_20		0x20
  
- 	migrate_device_range(src_pfns, start_pfn, npages);
- 	for (i = 0; i < npages; i++) {
-@@ -1250,8 +1250,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 	}
- 	migrate_device_pages(src_pfns, dst_pfns, npages);
- 	migrate_device_finalize(src_pfns, dst_pfns, npages);
--	kfree(src_pfns);
--	kfree(dst_pfns);
-+	kvfree(src_pfns);
-+	kvfree(dst_pfns);
- }
- 
- /* Removes free pages from the free list so they can't be re-allocated */
+ /* DisplayID Structure v1r2 Data Blocks */
 -- 
 2.43.0
 
