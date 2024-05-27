@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-47284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53EF8D0D5E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 435108D0B5D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 899C21F20FB3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 755181C20FD3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8471816078F;
-	Mon, 27 May 2024 19:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B002215ECFF;
+	Mon, 27 May 2024 19:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVmnHBUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZhSEB80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C1E15FA91;
-	Mon, 27 May 2024 19:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBE01754B;
+	Mon, 27 May 2024 19:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838145; cv=none; b=XimtE5FcMZH18eEanjhXTzUQhyqVTgBPL697AnplBF0zNDTdMeNd1a6oeIQ8H0kcaTXmxustfQIMEUH6IGADqqSJNmTxfum3WrbXvKderip1fvJV01zVBnGqE1OLqD6g7WDpVVfaGaZ+abnS6vrlG5Xhxo+u8dMJ6BUt7kUfO/s=
+	t=1716836913; cv=none; b=Kh/FHy1ljlbDqu8EtHkh+/4njX1EeWVD9yDuSjGT0pHFlSNvsvlUF3ciEg07thxv4srMx8xyw/BB7rV2aQprfHnC6dcUsqcvSema5MJpquPo8K80WOX+mqgibMEUYfYiAhyBA/bFyIOrciDe9DTP6qBOuWTr4rzb3HZspBewXxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838145; c=relaxed/simple;
-	bh=1WgC4IilniYf0SgOU36OaTCKopIDloRSoKXn0E1Q9Ns=;
+	s=arc-20240116; t=1716836913; c=relaxed/simple;
+	bh=6tgxYTqzO7n+VmkDc+AEXkBxmYMiGhBFuQGv9PfrVmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzfZjr/68LegLpjUPBlQYXzpRLhQ5r2hqbG+HVRPcdOxkRG699k9U98ez51BfS32txOVzM5wf0ixlcp4VO1lMCGYwD5d61JXL5LYgNAVwaL9FPV8KYb3JoVlx/9KUisgYEU21YsdGtKeBgT+8MpemVS9o2KZXL1ihCSCa8qCvhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVmnHBUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B00C2BBFC;
-	Mon, 27 May 2024 19:29:04 +0000 (UTC)
+	 MIME-Version; b=rdkNs6NMurCQgPsml6/VbW8HumCeqIb41tiRu4h88xoUR+QcjiVAAR2/LRNAzI39iRflopSCn3ZBbw8wiUUEV6IdbNPTjSxQb+/1nS4vqU3YPxBtDXgdnQbTRF2rSWtmXXsjz73x+qnGPisirERDtKxvsG44A181FfTD5KM4COM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZhSEB80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03461C2BBFC;
+	Mon, 27 May 2024 19:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838144;
-	bh=1WgC4IilniYf0SgOU36OaTCKopIDloRSoKXn0E1Q9Ns=;
+	s=korg; t=1716836913;
+	bh=6tgxYTqzO7n+VmkDc+AEXkBxmYMiGhBFuQGv9PfrVmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVmnHBUBzcdytoPm9neDpptH3y2u4ShVouS4N8QYwHpG2cq9PArm1yICqihn9B7vU
-	 EYU04AVDe8bNGl52zJRpi4QkGrfm1UlbrZzasStBSrzI+GvrVBTIgdzmj1D83e0aMh
-	 0XC6lipFuMYeDuyZTc03XEKPE7JvBWAQAY6FxH9c=
+	b=XZhSEB80FrGLqFxVkGj/Im0gCEvijBnBlyElwtkiIgjGVaUpLr8rz/gnnNiQf3IVm
+	 ccSeJ97x7z9p38RS1MlK+PkuyHotZbwMbAHHEnTMAfBZAsoqky5Ll+2O3x1zlhDcwf
+	 nkUbYwzAvNL4jBiTqytCoJIIQOEvryUhnPwFTtl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nico Pache <npache@redhat.com>,
-	Scott Mayhew <smayhew@redhat.com>,
-	Rae Moar <rmoar@google.com>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 283/493] kunit: bail out early in __kunit_test_suites_init() if there are no suites to test
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Erhard Furtner <erhard_f@mailbox.org>
+Subject: [PATCH 6.9 238/427] eth: sungem: remove .ndo_poll_controller to avoid deadlocks
 Date: Mon, 27 May 2024 20:54:45 +0200
-Message-ID: <20240527185639.567521831@linuxfoundation.org>
+Message-ID: <20240527185624.702311084@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 5496b9b77d7420652202b73cf036e69760be5deb ]
+[ Upstream commit ac0a230f719b02432d8c7eba7615ebd691da86f4 ]
 
-Commit c72a870926c2 added a mutex to prevent kunit tests from running
-concurrently.  Unfortunately that mutex gets locked during module load
-regardless of whether the module actually has any kunit tests.  This
-causes a problem for kunit tests that might need to load other kernel
-modules (e.g. gss_krb5_test loading the camellia module).
+Erhard reports netpoll warnings from sungem:
 
-So check to see if there are actually any tests to run before locking
-the kunit_run_lock mutex.
+  netpoll_send_skb_on_dev(): eth0 enabled interrupts in poll (gem_start_xmit+0x0/0x398)
+  WARNING: CPU: 1 PID: 1 at net/core/netpoll.c:370 netpoll_send_skb+0x1fc/0x20c
 
-Fixes: c72a870926c2 ("kunit: add ability to run tests after boot using debugfs")
-Reported-by: Nico Pache <npache@redhat.com>
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Reviewed-by: Rae Moar <rmoar@google.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+gem_poll_controller() disables interrupts, which may sleep.
+We can't sleep in netpoll, it has interrupts disabled completely.
+Strangely, gem_poll_controller() doesn't even poll the completions,
+and instead acts as if an interrupt has fired so it just schedules
+NAPI and exits. None of this has been necessary for years, since
+netpoll invokes NAPI directly.
+
+Fixes: fe09bb619096 ("sungem: Spring cleaning and GRO support")
+Reported-and-tested-by: Erhard Furtner <erhard_f@mailbox.org>
+Link: https://lore.kernel.org/all/20240428125306.2c3080ef@legion
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240508134504.3560956-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/test.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/sun/sungem.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-index 1d1475578515c..b8514dbb337c0 100644
---- a/lib/kunit/test.c
-+++ b/lib/kunit/test.c
-@@ -712,6 +712,9 @@ int __kunit_test_suites_init(struct kunit_suite * const * const suites, int num_
- {
- 	unsigned int i;
+diff --git a/drivers/net/ethernet/sun/sungem.c b/drivers/net/ethernet/sun/sungem.c
+index 9bd1df8308d24..d3a2fbb14140e 100644
+--- a/drivers/net/ethernet/sun/sungem.c
++++ b/drivers/net/ethernet/sun/sungem.c
+@@ -949,17 +949,6 @@ static irqreturn_t gem_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
  
-+	if (num_suites == 0)
-+		return 0;
-+
- 	if (!kunit_enabled() && num_suites > 0) {
- 		pr_info("kunit: disabled\n");
- 		return 0;
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-static void gem_poll_controller(struct net_device *dev)
+-{
+-	struct gem *gp = netdev_priv(dev);
+-
+-	disable_irq(gp->pdev->irq);
+-	gem_interrupt(gp->pdev->irq, dev);
+-	enable_irq(gp->pdev->irq);
+-}
+-#endif
+-
+ static void gem_tx_timeout(struct net_device *dev, unsigned int txqueue)
+ {
+ 	struct gem *gp = netdev_priv(dev);
+@@ -2839,9 +2828,6 @@ static const struct net_device_ops gem_netdev_ops = {
+ 	.ndo_change_mtu		= gem_change_mtu,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ 	.ndo_set_mac_address    = gem_set_mac_address,
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-	.ndo_poll_controller    = gem_poll_controller,
+-#endif
+ };
+ 
+ static int gem_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 -- 
 2.43.0
 
