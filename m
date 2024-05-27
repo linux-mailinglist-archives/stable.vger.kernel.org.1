@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-47274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B08A8D0D53
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CFB8D0B80
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC3B31C20F62
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3402284A6F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0879E16078C;
-	Mon, 27 May 2024 19:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6DE26AF2;
+	Mon, 27 May 2024 19:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uE7GkiAY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpuN9m7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC03B262BE;
-	Mon, 27 May 2024 19:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3AD17E90E;
+	Mon, 27 May 2024 19:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838118; cv=none; b=CguU6EGMxyPeyj05+Z40CvtdbiXFgMiK+sDhnDdlMW6c7cFN58kcBR8SJJ+csqWuuyl1FpZiFvK//dT0zpO1ZRuGsqvRlwEAU0nrU0+Tc28i9nnmKCzBfth3EMe0F+EBwIi8y3KJEluiewqP30Us6uVrERaAqNar/p/X7llEfKM=
+	t=1716837002; cv=none; b=GpgtmI3b+sShc8Y/Cl8gteJw2YP8dl1nEb3S8mkTsyyScwnLFUBSpu6MpbkAxl9HIS6IEiJdBTyYy4x1hKO7L2orGTe3gZBfI46Wv3oQzQX+qS2qElrNpp1iqfeuaLlSePmE9Q3hRpO4cLMykZ4zFdqFXyjKuEvPxBmvcIkjvXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838118; c=relaxed/simple;
-	bh=Bq01vfZ63inoYRXc7dpNuwKZVGBKub5DoCiO4rC47dc=;
+	s=arc-20240116; t=1716837002; c=relaxed/simple;
+	bh=vW9gzegt78S+MTNc1qZxH0bZxGIABcPO+/nu2L92fO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/taCbxy7re3CfxqsvDVqAqvlgTJuCRlEFT8i/HtW5teSB2CyO3kFFIP0qkAYapk8YKXlnf1Gs2mVSu5HtHpeJkabzSrG+RTLsWVs0peD0/i5JYK9VgHv12oTOi+5HB9exsidvUXJ8HlSG7Dyq+qJfKcX0BAGu0+V89X4+NQYzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uE7GkiAY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B175C2BBFC;
-	Mon, 27 May 2024 19:28:37 +0000 (UTC)
+	 MIME-Version; b=KtUglWKlYgthuqM/l+fkTXNJTk4mtaFzSpIXVZG2QH3Tn5GDu0C5aVLgTmqyMoZMMExGIY3Ilz09IE5RbJ0Nr9ZleRDyIxLwj7SqmVfsNUKMCZBG2wo4wUAO7MhJvgCaJ5b12CUkIEnQhJ1a4eAedJa+2wiuxcf+18OC+3t2x+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpuN9m7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A13C2BBFC;
+	Mon, 27 May 2024 19:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838118;
-	bh=Bq01vfZ63inoYRXc7dpNuwKZVGBKub5DoCiO4rC47dc=;
+	s=korg; t=1716837002;
+	bh=vW9gzegt78S+MTNc1qZxH0bZxGIABcPO+/nu2L92fO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uE7GkiAYPoVnE+8nXPTXoOjlQt5mw04PAeXmRJ4zT3Xg903jP2elj9jDwWTnCv01y
-	 0eUveq8q8tqxr1fdFijsKygU09TzeB4o5LOePyhX1lL/Tabsw2l4S7kNqUdSFVG3Op
-	 tYDNU1dsP2UtOTXJgR1Kjv6kSIstmUvuwmlk58jg=
+	b=JpuN9m7DeVEyt6ypOR8F/zPFpqN/fcMv4W0o6vpix7AjXwn8bVJ8Tq5DqBM1o6BXU
+	 2H7zJEtMKvibwr/3gxjjT5gkRD1e5BZcY835WtIBrhCXq4gvnGxKs5yr8mUmXYcY+4
+	 mbsScKDz5TK5zOPr7uY/zq04EedgfsK2hrDNlwRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Howard Hsu <howard-yh.hsu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 274/493] wifi: mt76: mt7996: fix potential memory leakage when reading chip temperature
-Date: Mon, 27 May 2024 20:54:36 +0200
-Message-ID: <20240527185639.249987646@linuxfoundation.org>
+Subject: [PATCH 6.9 230/427] m68k: Move ARCH_HAS_CPU_CACHE_ALIASING
+Date: Mon, 27 May 2024 20:54:37 +0200
+Message-ID: <20240527185623.968481813@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Howard Hsu <howard-yh.hsu@mediatek.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 474b9412f33be87076b40a49756662594598a85e ]
+[ Upstream commit c66b7b950bbf45eadcdee467e53f80568f4a0a7f ]
 
-Without this commit, reading chip temperature will cause memory leakage.
+Move the recently added ARCH_HAS_CPU_CACHE_ALIASING to restore
+alphabetical sort order.
 
-Fixes: 6879b2e94172 ("wifi: mt76: mt7996: add thermal sensor device support")
-Reported-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 8690bbcf3b7010b3 ("Introduce cpu_dcache_is_aliasing() across all architectures")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/r/4574ad6cc1117e4b5d29812c165bf7f6e5b60773.1714978406.git.geert@linux-m68k.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/m68k/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 25ea81ecdab9b..10d13fa45c5a1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -3733,6 +3733,7 @@ int mt7996_mcu_get_temperature(struct mt7996_phy *phy)
- 	} __packed * res;
- 	struct sk_buff *skb;
- 	int ret;
-+	u32 temp;
- 
- 	ret = mt76_mcu_send_and_get_msg(&phy->dev->mt76, MCU_WM_UNI_CMD(THERMAL),
- 					&req, sizeof(req), true, &skb);
-@@ -3740,8 +3741,10 @@ int mt7996_mcu_get_temperature(struct mt7996_phy *phy)
- 		return ret;
- 
- 	res = (void *)skb->data;
-+	temp = le32_to_cpu(res->temperature);
-+	dev_kfree_skb(skb);
- 
--	return le32_to_cpu(res->temperature);
-+	return temp;
- }
- 
- int mt7996_mcu_set_thermal_throttling(struct mt7996_phy *phy, u8 state)
+diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
+index 6ffa295851945..99837d4e8c977 100644
+--- a/arch/m68k/Kconfig
++++ b/arch/m68k/Kconfig
+@@ -3,8 +3,8 @@ config M68K
+ 	bool
+ 	default y
+ 	select ARCH_32BIT_OFF_T
+-	select ARCH_HAS_CPU_CACHE_ALIASING
+ 	select ARCH_HAS_BINFMT_FLAT
++	select ARCH_HAS_CPU_CACHE_ALIASING
+ 	select ARCH_HAS_CPU_FINALIZE_INIT if MMU
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DMA_PREP_COHERENT if M68K_NONCOHERENT_DMA && !COLDFIRE
 -- 
 2.43.0
 
