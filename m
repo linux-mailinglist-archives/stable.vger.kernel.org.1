@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-46776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA57C8D0B34
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EFC8D0D3C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85D4C2815EC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D51A41C214E8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2044061FCD;
-	Mon, 27 May 2024 19:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AFB15FCFC;
+	Mon, 27 May 2024 19:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5Ce+Hzd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqK90Vs7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D381917E90E;
-	Mon, 27 May 2024 19:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF6E262BE;
+	Mon, 27 May 2024 19:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836829; cv=none; b=bWjzojJiqqHOk4SZ2ZN4A42KmbtSKuyhS5vcMcXxr5FPJ2dT8g62fMcSZw18UNRK5XPoph8ZXfy2UYD68jKIgZa0IX23iJ5RUgNyF//iUZK/Z7DKp5NqL7MFiv8GXWC+Hs9x7DOXB968EqL3ygZrc181rQ0SBXHCpEol5QGlSRw=
+	t=1716838058; cv=none; b=ScsC65C3xmmcJzM6MHYk0GULKV0aulCK81Pl/DkjJv3iojISG3YS3rgPaNCIFvYUcqMxUp6Th4xArMtRv5viV/n8I8zrpxV+WJGaRRCHAL0o5tUmQ60ovidXDm4DSBEC8h8tVUX87NgMwc3kdxOHLpv10kv+mW7wNCzmaQZ6XZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836829; c=relaxed/simple;
-	bh=PQQEnlEZaHqJMDtAuLCkqcQOgItp3QeboKpZs0pna1g=;
+	s=arc-20240116; t=1716838058; c=relaxed/simple;
+	bh=wZMfHncxWMPKSKWwiTBOjovTMtvVOFg6sglVNU9pGJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAPkmYcUBOnHUwdEJgKSRZoqelsfP9uv1CFjwUhDWi7XtmIg0HhZc2F/tutxNYy3jaRxRgL8ddgmiw2sSTmdIL7XRo8P7nR2p2cVyZ1Z2706DuSTSaTY/x3PpxZtXL8f/hzPUj+fscuY91Wv1dIX8sSQfdAGO0nSoWHbT12afpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5Ce+Hzd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6764DC2BBFC;
-	Mon, 27 May 2024 19:07:09 +0000 (UTC)
+	 MIME-Version; b=XsvY8rmYMFm/jMB0DytSJG/b8aP+qjZdUECMXQN/nnmghyyDen4Z00t8u4LGDMxTsOQ18PlttJ1PwyHTrriEreSV/u3v52icO1ivp/HUy/I/BPPs78KEjgWOYYqFha4hps6UkyKo0I/TlMM+8j5M2MBDtnGfZacvd0ErGfxf9U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqK90Vs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F444C32781;
+	Mon, 27 May 2024 19:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836829;
-	bh=PQQEnlEZaHqJMDtAuLCkqcQOgItp3QeboKpZs0pna1g=;
+	s=korg; t=1716838058;
+	bh=wZMfHncxWMPKSKWwiTBOjovTMtvVOFg6sglVNU9pGJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K5Ce+HzdeKjaNqjhQ8ThyrDuwtAt/+wsN1Qaivvxe037KmBJacxji2V9i7v7ppCb5
-	 8eJ1No2NLCGS8aUt29+P+QpitjpSQBilB1OYM5p1SgoVdbjxIYoda+MAPvV+AlOcey
-	 KKuHK83Wh1qKWgohqulpGWMi2+/pRuaeRfPVrYUY=
+	b=hqK90Vs7lZJ0kuDcBEcMSYOPbYQHJneZCqbyUkmNmfO+9KYreCfmJ/kapg8NxWGc2
+	 0MiTRlYntdHzVNKmf/RIFpZXIV/6FnkmA3617Fm9OHjfnAIYiLnygvS9HomQzTE376
+	 QFKCaVf18r/bvWzaZ4DRf4XKZ/WayamccLZayE+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Junhao He <hejunhao3@huawei.com>,
+	Hao Chen <chenhao418@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 204/427] wifi: mt76: connac: use muar idx 0xe for non-mt799x as well
+Subject: [PATCH 6.8 249/493] drivers/perf: hisi: hns3: Fix out-of-bound access when valid event group
 Date: Mon, 27 May 2024 20:54:11 +0200
-Message-ID: <20240527185621.372491672@linuxfoundation.org>
+Message-ID: <20240527185638.447449499@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Junhao He <hejunhao3@huawei.com>
 
-[ Upstream commit 64bfcdbe025699d3d81ec11af24bd4895c0f6ddd ]
+[ Upstream commit 81bdd60a3d1d3b05e6cc6674845afb1694dd3a0e ]
 
-This is expected by the firmware of older chipsets as well, though it may
-not have been as strongly required as on mt799x
+The perf tool allows users to create event groups through following
+cmd [1], but the driver does not check whether the array index is out
+of bounds when writing data to the event_group array. If the number of
+events in an event_group is greater than HNS3_PMU_MAX_HW_EVENTS, the
+memory write overflow of event_group array occurs.
 
-Fixes: 098428c400ff ("wifi: mt76: connac: set correct muar_idx for mt799x chipsets")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Add array index check to fix the possible array out of bounds violation,
+and return directly when write new events are written to array bounds.
+
+There are 9 different events in an event_group.
+[1] perf stat -e '{pmu/event1/, ... ,pmu/event9/}
+
+Fixes: 66637ab137b4 ("drivers/perf: hisi: add driver for HNS3 PMU")
+Signed-off-by: Junhao He <hejunhao3@huawei.com>
+Signed-off-by: Hao Chen <chenhao418@huawei.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Link: https://lore.kernel.org/r/20240425124627.13764-3-hejunhao3@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/perf/hisilicon/hns3_pmu.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 990738a23eee5..fb8bd50eb7de8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -283,7 +283,7 @@ __mt76_connac_mcu_alloc_sta_req(struct mt76_dev *dev, struct mt76_vif *mvif,
- 	};
- 	struct sk_buff *skb;
+diff --git a/drivers/perf/hisilicon/hns3_pmu.c b/drivers/perf/hisilicon/hns3_pmu.c
+index 16869bf5bf4cc..cbdd53b0a0342 100644
+--- a/drivers/perf/hisilicon/hns3_pmu.c
++++ b/drivers/perf/hisilicon/hns3_pmu.c
+@@ -1085,15 +1085,27 @@ static bool hns3_pmu_validate_event_group(struct perf_event *event)
+ 			return false;
  
--	if (is_mt799x(dev) && wcid && !wcid->sta)
-+	if (wcid && !wcid->sta)
- 		hdr.muar_idx = 0xe;
+ 		for (num = 0; num < counters; num++) {
++			/*
++			 * If we find a related event, then it's a valid group
++			 * since we don't need to allocate a new counter for it.
++			 */
+ 			if (hns3_pmu_cmp_event(event_group[num], sibling))
+ 				break;
+ 		}
  
- 	mt76_connac_mcu_get_wlan_idx(dev, wcid, &hdr.wlan_idx_lo,
++		/*
++		 * Otherwise it's a new event but if there's no available counter,
++		 * fail the check since we cannot schedule all the events in
++		 * the group simultaneously.
++		 */
++		if (num == HNS3_PMU_MAX_HW_EVENTS)
++			return false;
++
+ 		if (num == counters)
+ 			event_group[counters++] = sibling;
+ 	}
+ 
+-	return counters <= HNS3_PMU_MAX_HW_EVENTS;
++	return true;
+ }
+ 
+ static u32 hns3_pmu_get_filter_condition(struct perf_event *event)
 -- 
 2.43.0
 
