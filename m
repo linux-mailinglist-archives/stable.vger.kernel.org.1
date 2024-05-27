@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-47085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CF08D0C84
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2778D0CBC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003651F226A7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F00721C20F53
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5556315FD01;
-	Mon, 27 May 2024 19:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF4316079B;
+	Mon, 27 May 2024 19:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DR7i1SEQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6kATTkg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DDC15EFC3;
-	Mon, 27 May 2024 19:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F127315FCE9;
+	Mon, 27 May 2024 19:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837633; cv=none; b=hcNTYOxIxfoKTcfbzQqyEHihy5XiUNpitdAGlYc3Sep75xslv0heIaVT+OLs5UsMdVjhBz8JHNMDraoBx0QLHDWBe1lBwnBc4+GxFuMPLBGA35+ifBblEgyfOgsa36Mt10W8a85hztBcCpCvA3UPErxPhrXISzn/rlEqem+klXg=
+	t=1716837758; cv=none; b=erQTfzWNAeYXNE/S5OtZRY9Oa6h+is/qqij+HOoDGpurPPLMzgIB5mLHEHlXIKlTquTuS9pDS7oX3cgxYrqyXOgHaBgnwRi9Tuh8dHNabBZ9W2QDj8RZi8vgUxRszl8Li0fmlfcI8wlB3repK3KGm8hZC8Qa1vRXT5lLLRYu3uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837633; c=relaxed/simple;
-	bh=Dx236jsBTf/fST+TGdMwbl3HXvellZiT7QGNvPVzMpA=;
+	s=arc-20240116; t=1716837758; c=relaxed/simple;
+	bh=NcM+f1zhOT5KOulgixBMqXhfk0I1LbhbH7kvrQTqcvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqa1DAuWp50WgvrwwAXu0Ug8sajb6kNReO/7JGVqZEX7Tt6YWdNYm+D2h/dxLQIu/Duhx+3vrv/DT3G+ez9Vx86IaLIipy1h8G9etVhw6JI9KShwAW05pyvJYrLTv2sy0HIUCfrBZslDoOgPDpLW+X6zuuGnHKZGw0sX3SLbxVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DR7i1SEQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9FEC2BBFC;
-	Mon, 27 May 2024 19:20:32 +0000 (UTC)
+	 MIME-Version; b=i9G6/oDVq4EEZjeNIU1Ae/GOJahe0+FTToqBPDAZDE1QG12cweARBEDqA93qM2EiaU7F8+jHdjNwOUMoLzSLSpNB4yrWYqMYS+szM4NJu+BeR0l2pPSXEsy7N+c3EtlfoVGynzT88HTzMIfCCVe6z5ugEp99lv4716qMqzBW0k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6kATTkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8848DC2BBFC;
+	Mon, 27 May 2024 19:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837632;
-	bh=Dx236jsBTf/fST+TGdMwbl3HXvellZiT7QGNvPVzMpA=;
+	s=korg; t=1716837757;
+	bh=NcM+f1zhOT5KOulgixBMqXhfk0I1LbhbH7kvrQTqcvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DR7i1SEQnytfVklMpSFdIU+DEiQHkLBHx1TvXoyKX8Sd2c1jk0sG0j4bZ4TMiTtr/
-	 q2YXrlEki/zqW840UimUcoJOqr7Opg+tJ673MkqCW4tpihmKS9+LHCmsCggi5iPFI7
-	 EbO/jcI2QidN5dMIVk6NLLqf5Lw2CXsXiCfI7FCg=
+	b=Z6kATTkgAtJ8hoNEfIMHRwwBWqDDx1P6Q5pFytA31/VN/3IxonDfbNykGeoPSwojS
+	 f11JIchNb1N9BeYF/Tbpb1Wg/xHLDSDjp8jqWy5omkKK8TnnthJ25AOKxpP9X3aGsG
+	 DV46Jsj4+xO8nOcbLrUjpsXrjLfdbcu0OBfFOz20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Peter Colberg <peter.colberg@intel.com>,
+	Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 082/493] EDAC/versal: Do not register for NOC errors
-Date: Mon, 27 May 2024 20:51:24 +0200
-Message-ID: <20240527185632.878636026@linuxfoundation.org>
+Subject: [PATCH 6.8 083/493] fpga: dfl-pci: add PCI subdevice ID for Intel D5005 card
+Date: Mon, 27 May 2024 20:51:25 +0200
+Message-ID: <20240527185632.938190159@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -66,44 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+From: Peter Colberg <peter.colberg@intel.com>
 
-[ Upstream commit edbe59428eb0da09958769326a6566d4c9242ae7 ]
+[ Upstream commit bb1dbeceb1c20cfd81271e1bd69892ebd1ee38e0 ]
 
-The NOC errors are not handled in the driver. Remove the request for
-registration.
+Add PCI subdevice ID for the Intel D5005 Stratix 10 FPGA card as
+used with the Open FPGA Stack (OFS) FPGA Interface Manager (FIM).
 
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240425121942.26378-2-shubhrajyoti.datta@amd.com
+Unlike the Intel D5005 PAC FIM which exposed a separate PCI device ID,
+the OFS FIM reuses the same device ID for all DFL-based FPGA cards
+and differentiates on the subdevice ID. The subdevice ID values were
+chosen as the numeric part of the FPGA card names in hexadecimal.
+
+Signed-off-by: Peter Colberg <peter.colberg@intel.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
+Acked-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20240422230257.1959-1-peter.colberg@intel.com
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/versal_edac.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/fpga/dfl-pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/edac/versal_edac.c b/drivers/edac/versal_edac.c
-index a840c6922e5b9..4d5b68b6be673 100644
---- a/drivers/edac/versal_edac.c
-+++ b/drivers/edac/versal_edac.c
-@@ -1006,8 +1006,7 @@ static int mc_probe(struct platform_device *pdev)
- 	}
- 
- 	rc = xlnx_register_event(PM_NOTIFY_CB, VERSAL_EVENT_ERROR_PMC_ERR1,
--				 XPM_EVENT_ERROR_MASK_DDRMC_CR | XPM_EVENT_ERROR_MASK_DDRMC_NCR |
--				 XPM_EVENT_ERROR_MASK_NOC_CR | XPM_EVENT_ERROR_MASK_NOC_NCR,
-+				 XPM_EVENT_ERROR_MASK_DDRMC_CR | XPM_EVENT_ERROR_MASK_DDRMC_NCR,
- 				 false, err_callback, mci);
- 	if (rc) {
- 		if (rc == -EACCES)
-@@ -1044,8 +1043,6 @@ static int mc_remove(struct platform_device *pdev)
- 
- 	xlnx_unregister_event(PM_NOTIFY_CB, VERSAL_EVENT_ERROR_PMC_ERR1,
- 			      XPM_EVENT_ERROR_MASK_DDRMC_CR |
--			      XPM_EVENT_ERROR_MASK_NOC_CR |
--			      XPM_EVENT_ERROR_MASK_NOC_NCR |
- 			      XPM_EVENT_ERROR_MASK_DDRMC_NCR, err_callback, mci);
- 	edac_mc_del_mc(&pdev->dev);
- 	edac_mc_free(mci);
+diff --git a/drivers/fpga/dfl-pci.c b/drivers/fpga/dfl-pci.c
+index 98b8fd16183e4..80cac3a5f9767 100644
+--- a/drivers/fpga/dfl-pci.c
++++ b/drivers/fpga/dfl-pci.c
+@@ -78,6 +78,7 @@ static void cci_pci_free_irq(struct pci_dev *pcidev)
+ #define PCIE_DEVICE_ID_SILICOM_PAC_N5011	0x1001
+ #define PCIE_DEVICE_ID_INTEL_DFL		0xbcce
+ /* PCI Subdevice ID for PCIE_DEVICE_ID_INTEL_DFL */
++#define PCIE_SUBDEVICE_ID_INTEL_D5005		0x138d
+ #define PCIE_SUBDEVICE_ID_INTEL_N6000		0x1770
+ #define PCIE_SUBDEVICE_ID_INTEL_N6001		0x1771
+ #define PCIE_SUBDEVICE_ID_INTEL_C6100		0x17d4
+@@ -101,6 +102,8 @@ static struct pci_device_id cci_pcie_id_tbl[] = {
+ 	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_PAC_D5005_VF),},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_SILICOM_DENMARK, PCIE_DEVICE_ID_SILICOM_PAC_N5010),},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_SILICOM_DENMARK, PCIE_DEVICE_ID_SILICOM_PAC_N5011),},
++	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL,
++			PCI_VENDOR_ID_INTEL, PCIE_SUBDEVICE_ID_INTEL_D5005),},
+ 	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL,
+ 			PCI_VENDOR_ID_INTEL, PCIE_SUBDEVICE_ID_INTEL_N6000),},
+ 	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL_VF,
 -- 
 2.43.0
 
