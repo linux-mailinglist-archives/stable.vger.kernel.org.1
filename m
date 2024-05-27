@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC52F8D0B1A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CFF8D0D49
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 875F828374B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0688D1F212F0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9A126ACA;
-	Mon, 27 May 2024 19:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3802016079A;
+	Mon, 27 May 2024 19:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dwiYUuA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BboFJD1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4B91078F;
-	Mon, 27 May 2024 19:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5FD262BE;
+	Mon, 27 May 2024 19:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836763; cv=none; b=rlh62idIPglHuFqIlZTHv16e1/58gqRDrbWGS/vCvREVK+PmbxhiJ0tLde8kGcy3vaIIISlutvsuAxj7pvFyNDdRc2R4UhF58RP4dNbQiV92SazdI2IT+PP3P8rIu5yOn5Y4kFGL9VKsGdDJWDeLvjECNCotHNDtcxr3NnuqO0Q=
+	t=1716838092; cv=none; b=bU+kyVAirP0pMehJoD30n/7axAbpbpXaFMnUJSK7qUNWworNMqZZP1w+LqotcSb9C1r5rAVUPIO2hDt9wzrugeDT9HfLGLONBFNIJuH+cw1pp3Xvn3XgNA1/5zqH/RbQvQOukL7f0yQxIm1mZxYudal27581qCTcA+f7C2qdYAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836763; c=relaxed/simple;
-	bh=MW1RHBaPr1p1fN8R/8eGpzxvmLgk4AxFh90wdGhuUS0=;
+	s=arc-20240116; t=1716838092; c=relaxed/simple;
+	bh=7Awt9Ru4gDnvmUgcxbOCPWgbh2fzmVL9ZCVpCUtXIkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d14eu/PdMV7wwoQPYMWFRVJh9Nrd3CDvn2xbFeltn6UZr4a0bkISLEe5lu8rTCzbhh98rLVPKpeDyThuaKNXu+nB3E6BOvODQTqOB04HE2TVdco8Fu3hbL8sFq3aOvQNjcpHr/U+NRxwrchRT3vtSU0L7thRN5iWz6zxrtULzVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dwiYUuA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FBDC2BBFC;
-	Mon, 27 May 2024 19:06:02 +0000 (UTC)
+	 MIME-Version; b=kthWLgRo4BCtPdxnuWmVjl6AvTm+6YH20dHlcbacfR+hmjOql43azEqaCMOdAij6KxlI0QNdvwnCM1X98BTlF5AAhuLYMUCQgF0yR16I3cIrjiXaX2DUBcEx5JPi4kPRzogBFmtpx9pBLxShHNejzpiZncG08oq2XyOO7qE6WVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BboFJD1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76061C2BBFC;
+	Mon, 27 May 2024 19:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836763;
-	bh=MW1RHBaPr1p1fN8R/8eGpzxvmLgk4AxFh90wdGhuUS0=;
+	s=korg; t=1716838091;
+	bh=7Awt9Ru4gDnvmUgcxbOCPWgbh2fzmVL9ZCVpCUtXIkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dwiYUuA0EYx2Cr6L2wDFLnyQ1h7U2SB9phUJUEno/jLvREi1Q92keaoLVhDobslJ
-	 KuD8BKAvSg9ey9Rzz0kla8AkV9f2d8a/lMHkuAdZVnQmFckgtHRGmWRYld8C04442k
-	 RNLcHlHaf6G3eJp2QXHWPsTktbV6Bn81TnzjQXIU=
+	b=BboFJD1zZvam4gTy3ePkkuh8ZPwwsTteZiLEDQ8nURlwZzrvwZYxqaflsEtaGRhJC
+	 m818HtvSjppiIKEZOSxbdloGTZuzoDw49yya3bCQW6ZIu3SpOFOYCXFj0FWvhTEZ7g
+	 pwh4cU2MkwM2cayD+eLgDlGH2/I6aDb6fZ4Yrmwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongqin Liu <yongqin.liu@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 176/427] wifi: ath10k: populate board data for WCN3990
+Subject: [PATCH 6.8 221/493] cppc_cpufreq: Fix possible null pointer dereference
 Date: Mon, 27 May 2024 20:53:43 +0200
-Message-ID: <20240527185618.666092561@linuxfoundation.org>
+Message-ID: <20240527185637.534571122@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit f1f1b5b055c9f27a2f90fd0f0521f5920e9b3c18 ]
+[ Upstream commit cf7de25878a1f4508c69dc9f6819c21ba177dbfe ]
 
-Specify board data size (and board.bin filename) for the WCN3990
-platform.
+cppc_cpufreq_get_rate() and hisi_cppc_cpufreq_get_rate() can be called from
+different places with various parameters. So cpufreq_cpu_get() can return
+null as 'policy' in some circumstances.
+Fix this bug by adding null return check.
 
-Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
-Fixes: 03a72288c546 ("ath10k: wmi: add hw params entry for wcn3990")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240130-wcn3990-board-fw-v1-1-738f7c19a8c8@linaro.org
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: a28b2bfc099c ("cppc_cpufreq: replace per-cpu data array with a list")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/core.c      | 3 +++
- drivers/net/wireless/ath/ath10k/hw.h        | 1 +
- drivers/net/wireless/ath/ath10k/targaddrs.h | 3 +++
- 3 files changed, 7 insertions(+)
+ drivers/cpufreq/cppc_cpufreq.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 9ce6f49ab2614..fa5e2e6518313 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -720,6 +720,9 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.max_spatial_stream = 4,
- 		.fw = {
- 			.dir = WCN3990_HW_1_0_FW_DIR,
-+			.board = WCN3990_HW_1_0_BOARD_DATA_FILE,
-+			.board_size = WCN3990_BOARD_DATA_SZ,
-+			.board_ext_size = WCN3990_BOARD_EXT_DATA_SZ,
- 		},
- 		.sw_decrypt_mcast_mgmt = true,
- 		.rx_desc_ops = &wcn3990_rx_desc_ops,
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 93c0730919966..9aa2d821b5078 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -133,6 +133,7 @@ enum qca9377_chip_id_rev {
- /* WCN3990 1.0 definitions */
- #define WCN3990_HW_1_0_DEV_VERSION	ATH10K_HW_WCN3990
- #define WCN3990_HW_1_0_FW_DIR		ATH10K_FW_DIR "/WCN3990/hw1.0"
-+#define WCN3990_HW_1_0_BOARD_DATA_FILE "board.bin"
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index 64420d9cfd1ed..15f1d41920a33 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -741,10 +741,15 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ {
+ 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct cppc_cpudata *cpu_data = policy->driver_data;
++	struct cppc_cpudata *cpu_data;
+ 	u64 delivered_perf;
+ 	int ret;
  
- #define ATH10K_FW_FILE_BASE		"firmware"
- #define ATH10K_FW_API_MAX		6
-diff --git a/drivers/net/wireless/ath/ath10k/targaddrs.h b/drivers/net/wireless/ath/ath10k/targaddrs.h
-index ec556bb88d658..ba37e6c7ced08 100644
---- a/drivers/net/wireless/ath/ath10k/targaddrs.h
-+++ b/drivers/net/wireless/ath/ath10k/targaddrs.h
-@@ -491,4 +491,7 @@ struct host_interest {
- #define QCA4019_BOARD_DATA_SZ	  12064
- #define QCA4019_BOARD_EXT_DATA_SZ 0
- 
-+#define WCN3990_BOARD_DATA_SZ	  26328
-+#define WCN3990_BOARD_EXT_DATA_SZ 0
++	if (!policy)
++		return -ENODEV;
 +
- #endif /* __TARGADDRS_H__ */
++	cpu_data = policy->driver_data;
++
+ 	cpufreq_cpu_put(policy);
+ 
+ 	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
+@@ -822,10 +827,15 @@ static struct cpufreq_driver cppc_cpufreq_driver = {
+ static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu)
+ {
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct cppc_cpudata *cpu_data = policy->driver_data;
++	struct cppc_cpudata *cpu_data;
+ 	u64 desired_perf;
+ 	int ret;
+ 
++	if (!policy)
++		return -ENODEV;
++
++	cpu_data = policy->driver_data;
++
+ 	cpufreq_cpu_put(policy);
+ 
+ 	ret = cppc_get_desired_perf(cpu, &desired_perf);
 -- 
 2.43.0
 
