@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-46614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE80F8D0A77
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B018D0C99
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E07F01C2161A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27DFC1F22667
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870EF15FA9F;
-	Mon, 27 May 2024 19:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFDB15FD04;
+	Mon, 27 May 2024 19:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glqEKiYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nf09C6eq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D9F1DFED;
-	Mon, 27 May 2024 19:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D367168C4;
+	Mon, 27 May 2024 19:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836409; cv=none; b=dA9w/2/LaUadnu0lQ3uO/HfSAOwvt4HiAMxHnWbrnl5qgo4lYRnBP0U6eLNBhoTg35UdIg8uJNpGMWv11sufIRH2k/qCFC32BI3RapzrM010Zl4Y3TzctmZRe1YD166QYNdMHLmMR+CNUJUA8XMOy0QQMDnGUkYGQJL4vchXmg0=
+	t=1716837679; cv=none; b=hiGzPyaRnMs7t1UxuA3yoikQngvyDIRKwA7kkCYT8ePSIT6qvISYOO9wAkZYfac323Vh0lFv3V0CFhNFp0pByvAs7gZ+PwXS8ByQp5vMWdpRMGDtjdyQzWPYjwkO33YA+UZQRn2MEYsJ9uEOENy6pPMweDp22/pt/+EvyrahwPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836409; c=relaxed/simple;
-	bh=N3qkXrXahVFeZjpf2v1n1lNsgoCKoFQ8MSFhvEHuggA=;
+	s=arc-20240116; t=1716837679; c=relaxed/simple;
+	bh=P3PXk84rzvp/6qEkg9InCL9tzP9sV/+hTsJLE2855r4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHN6ai3JU3i7/zlxAjXKv+kj5ELTaSkE42Hy4p5WSRhAcPN8veHdae0Q4Oag9w8Myyto1C4YJzWe91X/pEsRB1vqZw7Uoi5CjPv2xWVZSnc1DLa2lcYU4/mC19LjIqDI8VTAw99xiGh0xicsUloacXLh1kx+nCErPHHsGZ6e2uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glqEKiYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCAAC2BBFC;
-	Mon, 27 May 2024 19:00:08 +0000 (UTC)
+	 MIME-Version; b=PXavBY+K1mIVo5rlKNytpUOt3JKt5ZVMk1MavAeJ73DBi2IZwTnJ5WRvStve2Y7C1S5io4VFXMm4G7q9xPMzfpwvVkrp2UZa6l/lKyciOeYekZ9CS9drqhpn2sw1tNmwTiMSU8KkUjH/XqBXh7hCeyhAK1kqvhpjhgg0/cRjHvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nf09C6eq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A583FC2BBFC;
+	Mon, 27 May 2024 19:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836408;
-	bh=N3qkXrXahVFeZjpf2v1n1lNsgoCKoFQ8MSFhvEHuggA=;
+	s=korg; t=1716837679;
+	bh=P3PXk84rzvp/6qEkg9InCL9tzP9sV/+hTsJLE2855r4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glqEKiYk0J5xflMAWCmSPk/tMBFVAX2mqKzC9RtIFXASoHE7lb6IbyBHgqi8MKXQI
-	 rapF83hnSPwAe8UtdNWkO+IWhz4LwuZNQeUlcuwDU1Nllcgqcor8UTsit3pbBmnGNG
-	 8kN99ywf30TwXsVlYXMCO3bxbLZL/Dc3rbBOpA7c=
+	b=Nf09C6eq2J5rSQs5+odxae4tm2CV8ETqCgB2y2P+7Hh15ICqLsDULqHjIM2ziymWt
+	 +fJWo/Dat1Nx295LZJ4K2W+oa4b5fOY/+PgxfMPq1GmM55fU4jOA+2gVxjXkAa8UC1
+	 Fu3DTUOD9Vt/l01ovDYCo+QepQnvdOzVaDVZRS6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.9 040/427] ALSA: Fix deadlocks with kctl removals at disconnection
+	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 085/493] ALSA: emu10k1: make E-MU FPGA writes potentially more reliable
 Date: Mon, 27 May 2024 20:51:27 +0200
-Message-ID: <20240527185605.422855727@linuxfoundation.org>
+Message-ID: <20240527185633.065708574@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-commit 87988a534d8e12f2e6fc01fe63e6c1925dc5307c upstream.
+[ Upstream commit 15c7e87aa88f0ab2d51c2e2123b127a6d693ca21 ]
 
-In snd_card_disconnect(), we set card->shutdown flag at the beginning,
-call callbacks and do sync for card->power_ref_sleep waiters at the
-end.  The callback may delete a kctl element, and this can lead to a
-deadlock when the device was in the suspended state.  Namely:
+We did not delay after the second strobe signal, so another immediately
+following access could potentially corrupt the written value.
 
-* A process waits for the power up at snd_power_ref_and_wait() in
-  snd_ctl_info() or read/write() inside card->controls_rwsem.
+This is a purely speculative fix with no supporting evidence, but after
+taking out the spinlocks around the writes, it seems plausible that a
+modern processor could be actually too fast. Also, it's just cleaner to
+be consistent.
 
-* The system gets disconnected meanwhile, and the driver tries to
-  delete a kctl via snd_ctl_remove*(); it tries to take
-  card->controls_rwsem again, but this is already locked by the
-  above.  Since the sleeper isn't woken up, this deadlocks.
-
-An easy fix is to wake up sleepers before processing the driver
-disconnect callbacks but right after setting the card->shutdown flag.
-Then all sleepers will abort immediately, and the code flows again.
-
-So, basically this patch moves the wait_event() call at the right
-timing.  While we're at it, just to be sure, call wait_event_all()
-instead of wait_event(), although we don't use exclusive events on
-this queue for now.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218816
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://lore.kernel.org/r/20240510101424.6279-1-tiwai@suse.de
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Message-ID: <20240428093716.3198666-7-oswald.buddenhagen@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/init.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ sound/pci/emu10k1/io.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/core/init.c
-+++ b/sound/core/init.c
-@@ -516,6 +516,14 @@ void snd_card_disconnect(struct snd_card
- 		}
- 	}
- 
-+#ifdef CONFIG_PM
-+	/* wake up sleepers here before other callbacks for avoiding potential
-+	 * deadlocks with other locks (e.g. in kctls);
-+	 * then this notifies the shutdown and sleepers would abort immediately
-+	 */
-+	wake_up_all(&card->power_sleep);
-+#endif
-+
- 	/* notify all connected devices about disconnection */
- 	/* at this point, they cannot respond to any calls except release() */
- 
-@@ -543,7 +551,6 @@ void snd_card_disconnect(struct snd_card
- 	}
- 
- #ifdef CONFIG_PM
--	wake_up(&card->power_sleep);
- 	snd_power_sync_ref(card);
- #endif
+diff --git a/sound/pci/emu10k1/io.c b/sound/pci/emu10k1/io.c
+index 74df2330015f6..5cb8acf5b158c 100644
+--- a/sound/pci/emu10k1/io.c
++++ b/sound/pci/emu10k1/io.c
+@@ -285,6 +285,7 @@ static void snd_emu1010_fpga_write_locked(struct snd_emu10k1 *emu, u32 reg, u32
+ 	outw(value, emu->port + A_GPIO);
+ 	udelay(10);
+ 	outw(value | 0x80 , emu->port + A_GPIO);  /* High bit clocks the value into the fpga. */
++	udelay(10);
  }
+ 
+ void snd_emu1010_fpga_write(struct snd_emu10k1 *emu, u32 reg, u32 value)
+-- 
+2.43.0
+
 
 
 
