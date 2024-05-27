@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-47323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2883F8D0D85
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE08B8D0BB1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D37A028177E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:30:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991D52853A3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DA015FCE9;
-	Mon, 27 May 2024 19:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3312726ACA;
+	Mon, 27 May 2024 19:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0T2+EV/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxpDzZ34"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6E31EEF7;
-	Mon, 27 May 2024 19:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E456C17E90E;
+	Mon, 27 May 2024 19:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838251; cv=none; b=X8y0e/0H2QnZN2T6bBoEVS7gEWzCnMqGwUzxSLExORgZ9AVqTQawuN6yPP7VaA/0cB7/gllxbxPYiLLKojbZoMQJA7C0KLCtY14p7aeegNcW7ssukzKhsz45Z4u9R8XmIgz61RQMUf4loLh5SsigmKAmR+gM50KKED3a31tOza8=
+	t=1716837127; cv=none; b=PjyWZiuYIbfskrZomj8n/KLBOuq07fpb4HKDGUc1aEDvjLTM9VC12oolnoy4rGE2k9B6CWCJxCHLfQSTduVQYmAmVkmuZ2iwW8XYKvBoIHY+tgWQDXKzvu+dK9wRtrHyS0sB+trseKD/ZGfNW14BqOI8axViuhcJ8L5yVlc5dOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838251; c=relaxed/simple;
-	bh=Fo0p1+PxisyUQ8V6tiOS5ddmRzV8q5kIo6NaOdbNza8=;
+	s=arc-20240116; t=1716837127; c=relaxed/simple;
+	bh=yeJaWIFz80pvd5PVcaGbXhgjURd7ZlC4pTPUKVKVOyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQO677zFABqQYaPPkLmv1Cl1SjeB0N6+8Hvj9sbAwdhkI4sUjHSKAu+DvnHBDKYRt+ji/eAp9DQzK2RXvVl1lxUlai8UUHr0TObMZir9yh08QOtgivzQWJkQahub7BTVvagFYw1uOl7ghEbCCPuRt+T2AR0jGPzP3s0+Gs6BSbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0T2+EV/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28289C2BBFC;
-	Mon, 27 May 2024 19:30:50 +0000 (UTC)
+	 MIME-Version; b=a9x4L8VRiblvX5Kt5y/2WiZmpMWjB3PofhOv8C+PsFm0lPz0fZ/Wv2MbquLzEy04AtKyKgUKrted01DEF97y/olbUNDFky1KYAeMos+KA2bVGZaNTofwwmb1IDggBQxedaf+cfnmyAiULq3mNcujkBsK7CzNDSma6lGNKC6Yh9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxpDzZ34; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CF2C2BBFC;
+	Mon, 27 May 2024 19:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838250;
-	bh=Fo0p1+PxisyUQ8V6tiOS5ddmRzV8q5kIo6NaOdbNza8=;
+	s=korg; t=1716837126;
+	bh=yeJaWIFz80pvd5PVcaGbXhgjURd7ZlC4pTPUKVKVOyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0T2+EV/bH8oJk9TW5Jtf84LYrBXMOfkk9Rj95uLixM319boWcLLnwfFyiQ99lN2E
-	 Z1HJ3H278X4KHjdsTYHpZsRDy3YZx89dMpVEM4XOHnPahQ694nv3TxO4vCkF9ugzax
-	 hz4KuwGDsyjW1vmkZTzHsU8bpw4PmNbu6KTsbeTM=
+	b=DxpDzZ346UvybpTFDoAkSPTH9RSD/TViZAc0rLf8lrNfWfcvFaKeiCRgP0sFgcT0W
+	 m+1xwgV4QkGSatDBDjuPeLpGorJ/T/xofulWWTtrKjtwW+cTurNpOzwCMi1vx3vvNt
+	 LzbEOCiGbT4GMirgNDXxE3ilr8CylkEqSDU6F/ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 323/493] ax25: Fix reference count leak issue of net_device
+Subject: [PATCH 6.9 278/427] drm/omapdrm: Fix console by implementing fb_dirty
 Date: Mon, 27 May 2024 20:55:25 +0200
-Message-ID: <20240527185640.835474924@linuxfoundation.org>
+Message-ID: <20240527185628.468723272@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 36e56b1b002bb26440403053f19f9e1a8bc075b2 ]
+[ Upstream commit 632bac50544c0929ced9eed41e7d04c08adecbb0 ]
 
-There is a reference count leak issue of the object "net_device" in
-ax25_dev_device_down(). When the ax25 device is shutting down, the
-ax25_dev_device_down() drops the reference count of net_device one
-or zero times depending on if we goto unlock_put or not, which will
-cause memory leak.
+The framebuffer console stopped updating with commit f231af498c29
+("drm/fb-helper: Disconnect damage worker from update logic").
 
-In order to solve the above issue, decrease the reference count of
-net_device after dev->ax25_ptr is set to null.
+Let's fix the issue by implementing fb_dirty similar to what was done
+with commit 039a72ce7e57 ("drm/i915/fbdev: Implement fb_dirty for intel
+custom fb helper").
 
-Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/7ce3b23a40d9084657ba1125432f0ecc380cbc80.1715247018.git.duoming@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f231af498c29 ("drm/fb-helper: Disconnect damage worker from update logic")
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240228063540.4444-2-tony@atomide.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ax25/ax25_dev.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpu/drm/omapdrm/omap_fbdev.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
-index 52ccc37d5687a..c9d55b99a7a57 100644
---- a/net/ax25/ax25_dev.c
-+++ b/net/ax25/ax25_dev.c
-@@ -118,15 +118,10 @@ void ax25_dev_device_down(struct net_device *dev)
- 	list_for_each_entry(s, &ax25_dev_list, list) {
- 		if (s == ax25_dev) {
- 			list_del(&s->list);
--			goto unlock_put;
-+			break;
- 		}
- 	}
--	dev->ax25_ptr = NULL;
--	spin_unlock_bh(&ax25_dev_lock);
--	ax25_dev_put(ax25_dev);
--	return;
+diff --git a/drivers/gpu/drm/omapdrm/omap_fbdev.c b/drivers/gpu/drm/omapdrm/omap_fbdev.c
+index 6b08b137af1ad..7c5af3de1e727 100644
+--- a/drivers/gpu/drm/omapdrm/omap_fbdev.c
++++ b/drivers/gpu/drm/omapdrm/omap_fbdev.c
+@@ -238,8 +238,20 @@ static int omap_fbdev_create(struct drm_fb_helper *helper,
+ 	return ret;
+ }
  
--unlock_put:
- 	dev->ax25_ptr = NULL;
- 	spin_unlock_bh(&ax25_dev_lock);
- 	netdev_put(dev, &ax25_dev->dev_tracker);
++static int omap_fbdev_dirty(struct drm_fb_helper *helper, struct drm_clip_rect *clip)
++{
++	if (!(clip->x1 < clip->x2 && clip->y1 < clip->y2))
++		return 0;
++
++	if (helper->fb->funcs->dirty)
++		return helper->fb->funcs->dirty(helper->fb, NULL, 0, 0, clip, 1);
++
++	return 0;
++}
++
+ static const struct drm_fb_helper_funcs omap_fb_helper_funcs = {
+ 	.fb_probe = omap_fbdev_create,
++	.fb_dirty = omap_fbdev_dirty,
+ };
+ 
+ static struct drm_fb_helper *get_fb(struct fb_info *fbi)
 -- 
 2.43.0
 
