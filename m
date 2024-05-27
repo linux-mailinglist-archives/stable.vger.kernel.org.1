@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018F98D0CAE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039418D0AAF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD7481F226A7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 962B6B217ED
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B3F15FCE9;
-	Mon, 27 May 2024 19:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13EF161320;
+	Mon, 27 May 2024 19:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgIq+6an"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSr1Eg2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56F8168C4;
-	Mon, 27 May 2024 19:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E341607A2;
+	Mon, 27 May 2024 19:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837732; cv=none; b=ugKJPpHf9HVRFkt0zcdmqGKi4ulmqTeSnDkSN8D1soVu4nL84h73TNghUafOGg1KGKIxJoytBCbap7ZTpRipvN8Edp4jkLZYTtIXUqSdmnLUJDLe6GuvNcTVLNCGA2p0RIY04aaf8kudfKBRbPTVgo46NLxQcjPkDrQo4wTTBDM=
+	t=1716836500; cv=none; b=JOHl+sQFMYCj39H/VWIYyo0SSDgJs4WI6MozMDG4wqLm8tSMZVCKw8V3frT8FgpvGQ0OiD82pTCN1y0H4jAXSs5FWMw4J5q8jB5bzHUZleNV5/4QZUjWnVtNPW/quKrlu/WxQHAyvhFcnoTEfoTCyDwj8i5mXPOHnbaFwauNpDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837732; c=relaxed/simple;
-	bh=8Y9akUizmVnSFY2KlkgOrthiogYxP0mFuFnP0YWt8ls=;
+	s=arc-20240116; t=1716836500; c=relaxed/simple;
+	bh=7vmYiLDKh20P66cgMSucEChIReizXubV846HAQPljFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OC4h9Y+Lp5kmVUT0PbrjQ8cn+hBmUHSC7Tfjl6IymP51YP2gXPinltFpzSvgO1YL9c96eReVBg9Pi3Wh/U7wusKmcZduJyS6Ab1CCvA2E0syHqNph4JBRG7yiwKZoOxCoPvBHngi/isk+hZ2q45ynEfmV8JyZKWqxZtq7Fi60wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgIq+6an; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F73C2BBFC;
-	Mon, 27 May 2024 19:22:12 +0000 (UTC)
+	 MIME-Version; b=FfHudcPW8v6XfTzOw49ydGs7I6V/9wA3j1DRyc4fC9zNGqZyVmNWozcVNNu0ftolve2iIsNKE38aLuSEjE1A2ZyQTXcFAKzBrLUwFXzxIAQaBwkaemek4smMzWiu/bdHXzZMxwjXwo7plxRkx9+GJNMSXZg5uzaht3AIpcHXQSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSr1Eg2y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABCCC2BBFC;
+	Mon, 27 May 2024 19:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837732;
-	bh=8Y9akUizmVnSFY2KlkgOrthiogYxP0mFuFnP0YWt8ls=;
+	s=korg; t=1716836500;
+	bh=7vmYiLDKh20P66cgMSucEChIReizXubV846HAQPljFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgIq+6an99AXbiaCWVibmxpoh6kbux8q9WXkU14ojPy2OwuXfbvQwQOzzd1uGRloe
-	 7VP3eY6cVDAV3UMhi7F2j3koFTubk6xgqux60kKz4IlSx0jz5SJX65GfchrFU+u9C2
-	 Odmav4erxhootfm5S8n6gytjCoHQRR3GfwoPYhAU=
+	b=iSr1Eg2yqL0Thgwywx/Fmw16KINBChM05YNMYDFx3iArss2tCimAaWYf6AfLF2ehg
+	 DaMyF9X8ubhkAvSrrmdc6q2mg2A0IslO4A7YCr4PBNQOyQNfLD0E5CJf1vagxEl0z/
+	 La2krdjHwaYdw2BF5Pdb2akcGBd12Qr3fd6R4NAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Marek Vasut <marex@denx.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 122/493] s390/cio: fix tracepoint subchannel type field
+Subject: [PATCH 6.9 077/427] hwrng: stm32 - put IP into RPM suspend on failure
 Date: Mon, 27 May 2024 20:52:04 +0200
-Message-ID: <20240527185634.488050860@linuxfoundation.org>
+Message-ID: <20240527185608.986117807@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 8692a24d0fae19f674d51726d179ad04ba95d958 ]
+[ Upstream commit da62ed5c019cc48648f37c7a07e6a56cf637a795 ]
 
-The subchannel-type field "st" of s390_cio_stsch and s390_cio_msch
-tracepoints is incorrectly filled with the subchannel-enabled SCHIB
-value "ena". Fix this by assigning the correct value.
+In case of an irrecoverable failure, put the IP into RPM suspend
+to avoid RPM imbalance. I did not trigger this case, but it seems
+it should be done based on reading the code.
 
-Fixes: d1de8633d96a ("s390 cio: Rewrite trace point class s390_class_schib")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: b17bc6eb7c2b ("hwrng: stm32 - rework error handling in stm32_rng_read()")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/hw_random/stm32-rng.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/cio/trace.h b/drivers/s390/cio/trace.h
-index 86993de253451..a4c5c6736b310 100644
---- a/drivers/s390/cio/trace.h
-+++ b/drivers/s390/cio/trace.h
-@@ -50,7 +50,7 @@ DECLARE_EVENT_CLASS(s390_class_schib,
- 		__entry->devno = schib->pmcw.dev;
- 		__entry->schib = *schib;
- 		__entry->pmcw_ena = schib->pmcw.ena;
--		__entry->pmcw_st = schib->pmcw.ena;
-+		__entry->pmcw_st = schib->pmcw.st;
- 		__entry->pmcw_dnv = schib->pmcw.dnv;
- 		__entry->pmcw_dev = schib->pmcw.dev;
- 		__entry->pmcw_lpm = schib->pmcw.lpm;
+diff --git a/drivers/char/hw_random/stm32-rng.c b/drivers/char/hw_random/stm32-rng.c
+index 1cc61ef8ee54c..b6182f86d8a4b 100644
+--- a/drivers/char/hw_random/stm32-rng.c
++++ b/drivers/char/hw_random/stm32-rng.c
+@@ -220,7 +220,8 @@ static int stm32_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
+ 				if (err && i > RNG_NB_RECOVER_TRIES) {
+ 					dev_err((struct device *)priv->rng.priv,
+ 						"Couldn't recover from seed error\n");
+-					return -ENOTRECOVERABLE;
++					retval = -ENOTRECOVERABLE;
++					goto exit_rpm;
+ 				}
+ 
+ 				continue;
+@@ -238,7 +239,8 @@ static int stm32_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
+ 			if (err && i > RNG_NB_RECOVER_TRIES) {
+ 				dev_err((struct device *)priv->rng.priv,
+ 					"Couldn't recover from seed error");
+-				return -ENOTRECOVERABLE;
++				retval = -ENOTRECOVERABLE;
++				goto exit_rpm;
+ 			}
+ 
+ 			continue;
+@@ -250,6 +252,7 @@ static int stm32_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
+ 		max -= sizeof(u32);
+ 	}
+ 
++exit_rpm:
+ 	pm_runtime_mark_last_busy((struct device *) priv->rng.priv);
+ 	pm_runtime_put_sync_autosuspend((struct device *) priv->rng.priv);
+ 
 -- 
 2.43.0
 
