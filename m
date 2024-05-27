@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-47325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 952858D0D87
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:30:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53C08D0B89
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6BCC1C21346
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:30:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C4CF1F215AB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE5A15FA60;
-	Mon, 27 May 2024 19:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3274126ACA;
+	Mon, 27 May 2024 19:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLVU8yv1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wf9g4mGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7F117727;
-	Mon, 27 May 2024 19:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EB117E90E;
+	Mon, 27 May 2024 19:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838255; cv=none; b=gYFPmbK238/TEt3xMApu/wZKpH1QspL22iSxfdDQwiLRSG3oTUSdH4hOKGjaoh+GEH166e07S76dN1x8j/v9U6LMnX1cOyQcWSVViPMJahAyEo93RCAVl0kU9nPN9qpo0AoWndUsE+uLtlE6lQB44HXAEO+KOtwn5nAQn7X9+ek=
+	t=1716837023; cv=none; b=F8q7Ypph68GWrfLCI2NiHIrMOf9MSj03xJKz5414VAPuTqON0Bb65MtBmK7fM7Kg7D5KXRDBsnPKYz4NGEKriR7zeSg+eV6o7nbOw8tAGjgWsfbaXU40n1ox/aGniQqH3TTGwPQT+VJK3JDpnAQL0z5rvmOCLlBXSouJYOkVf20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838255; c=relaxed/simple;
-	bh=zh0TQE8uVSafsVciF8PXypBHmXTxvVmRLVV3nIzjWxU=;
+	s=arc-20240116; t=1716837023; c=relaxed/simple;
+	bh=+nnSYcOU6+U8/qCTQHZ3jJC2XSyFrcfyKlWQLCyKbDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V47JJ9597l5cYRAC8h6DE8lrFhdkxDbQPL1xXepXNofpg/EqkCIvbKfLZFjOxw+DNjvwZP+OGBWkRC43bhGMSnd2OLkJqIpaR/hhvZNGrRNTN9KWDhPfcEA95Q5IEYS3JkTPCsImytfP1bVtFSBWoSWs+eSio2S6ijWX2OaNo0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLVU8yv1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64059C2BBFC;
-	Mon, 27 May 2024 19:30:55 +0000 (UTC)
+	 MIME-Version; b=RBAqTVtBInhdqQ3ix9OgRCBgI3Ez0KKyi3cw1DQrctJ4jWq0GSkiQdYVbXoyMJcSJKaiVtZKrHfYO/eTKc5nshap6oX7JRb+kswkqXwU20o+VNAj2LnTGeLEBJDz4+joonmQJBT5WaUotmYR59m70l+sVwGvlJZM1phlf6f5M4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wf9g4mGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3381DC2BBFC;
+	Mon, 27 May 2024 19:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838255;
-	bh=zh0TQE8uVSafsVciF8PXypBHmXTxvVmRLVV3nIzjWxU=;
+	s=korg; t=1716837022;
+	bh=+nnSYcOU6+U8/qCTQHZ3jJC2XSyFrcfyKlWQLCyKbDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLVU8yv1y7aKFacxK45pjonXRYzyMZGleb3NKKP4N8iX2ZLo63xjUB+tqHNDFhlAJ
-	 OKBt/iiFKLboHTMYVVURkhnxyOdFb0vASypg+8lqCcjd79pYaeBetldoIzptMw1iB+
-	 nBaGNb62eedhVAwDi45bpLxwmHcygFVir3CmHsKA=
+	b=wf9g4mGmDeQz5AMlTvTPbxZIhdvpGtrEWQl4WfL45lBoROr1eaZ/SomKxcL3Cajni
+	 rI+DVVJES1sv7vfLlBLPIa/9oIkRkfU2omrNq0YNmhAByuAyq+OVUdznxkcEZJERpR
+	 CT4OWUkYrvdDCtpBWaIHF+a7YTU35F9UsR+nQZi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Chris Down <chris@chrisdown.name>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 325/493] net: fec: remove .ndo_poll_controller to avoid deadlocks
-Date: Mon, 27 May 2024 20:55:27 +0200
-Message-ID: <20240527185640.897230375@linuxfoundation.org>
+Subject: [PATCH 6.9 281/427] dev_printk: Add and use dev_no_printk()
+Date: Mon, 27 May 2024 20:55:28 +0200
+Message-ID: <20240527185628.768817359@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit c2e0c58b25a0a0c37ec643255558c5af4450c9f5 ]
+[ Upstream commit c26ec799042a3888935d59b599f33e41efedf5f8 ]
 
-There is a deadlock issue found in sungem driver, please refer to the
-commit ac0a230f719b ("eth: sungem: remove .ndo_poll_controller to avoid
-deadlocks"). The root cause of the issue is that netpoll is in atomic
-context and disable_irq() is called by .ndo_poll_controller interface
-of sungem driver, however, disable_irq() might sleep. After analyzing
-the implementation of fec_poll_controller(), the fec driver should have
-the same issue. Due to the fec driver uses NAPI for TX completions, the
-.ndo_poll_controller is unnecessary to be implemented in the fec driver,
-so fec_poll_controller() can be safely removed.
+When printk-indexing is enabled, each dev_printk() invocation emits a
+pi_entry structure.  This is even true when the dev_printk() is
+protected by an always-false check, as is typically the case for debug
+messages: while the actual code to print the message is optimized out by
+the compiler, the pi_entry structure is still emitted.
 
-Fixes: 7f5c6addcdc0 ("net/fec: add poll controller function for fec nic")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://lore.kernel.org/r/20240511062009.652918-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Avoid emitting pi_entry structures for unavailable dev_printk() kernel
+messages by:
+  1. Introducing a dev_no_printk() helper, mimicked after the existing
+     no_printk() helper, which calls _dev_printk() instead of
+     dev_printk(),
+  2. Replacing all "if (0) dev_printk(...)" constructs by calls to the
+     new helper.
+
+This reduces the size of an arm64 defconfig kernel with
+CONFIG_PRINTK_INDEX=y by 957 KiB.
+
+Fixes: ad7d61f159db7397 ("printk: index: Add indexing support to dev_printk")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Chris Down <chris@chrisdown.name>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/8583d54f1687c801c6cda8edddf2cf0344c6e883.1709127473.git.geert+renesas@glider.be
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 26 -----------------------
- 1 file changed, 26 deletions(-)
+ include/linux/dev_printk.h | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 8decb1b072c5e..e92a830330590 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3678,29 +3678,6 @@ fec_set_mac_address(struct net_device *ndev, void *p)
- 	return 0;
- }
+diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
+index 6bfe70decc9fb..ae80a303c216b 100644
+--- a/include/linux/dev_printk.h
++++ b/include/linux/dev_printk.h
+@@ -129,6 +129,16 @@ void _dev_info(const struct device *dev, const char *fmt, ...)
+ 		_dev_printk(level, dev, fmt, ##__VA_ARGS__);		\
+ 	})
  
--#ifdef CONFIG_NET_POLL_CONTROLLER
--/**
-- * fec_poll_controller - FEC Poll controller function
-- * @dev: The FEC network adapter
-- *
-- * Polled functionality used by netconsole and others in non interrupt mode
-- *
-- */
--static void fec_poll_controller(struct net_device *dev)
--{
--	int i;
--	struct fec_enet_private *fep = netdev_priv(dev);
--
--	for (i = 0; i < FEC_IRQ_NUM; i++) {
--		if (fep->irq[i] > 0) {
--			disable_irq(fep->irq[i]);
--			fec_enet_interrupt(fep->irq[i], dev);
--			enable_irq(fep->irq[i]);
--		}
--	}
--}
--#endif
--
- static inline void fec_enet_set_netdev_features(struct net_device *netdev,
- 	netdev_features_t features)
- {
-@@ -4007,9 +3984,6 @@ static const struct net_device_ops fec_netdev_ops = {
- 	.ndo_tx_timeout		= fec_timeout,
- 	.ndo_set_mac_address	= fec_set_mac_address,
- 	.ndo_eth_ioctl		= phy_do_ioctl_running,
--#ifdef CONFIG_NET_POLL_CONTROLLER
--	.ndo_poll_controller	= fec_poll_controller,
--#endif
- 	.ndo_set_features	= fec_set_features,
- 	.ndo_bpf		= fec_enet_bpf,
- 	.ndo_xdp_xmit		= fec_enet_xdp_xmit,
++/*
++ * Dummy dev_printk for disabled debugging statements to use whilst maintaining
++ * gcc's format checking.
++ */
++#define dev_no_printk(level, dev, fmt, ...)				\
++	({								\
++		if (0)							\
++			_dev_printk(level, dev, fmt, ##__VA_ARGS__);	\
++	})
++
+ /*
+  * #defines for all the dev_<level> macros to prefix with whatever
+  * possible use of #define dev_fmt(fmt) ...
+@@ -158,10 +168,7 @@ void _dev_info(const struct device *dev, const char *fmt, ...)
+ 	dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
+ #else
+ #define dev_dbg(dev, fmt, ...)						\
+-({									\
+-	if (0)								\
+-		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
+-})
++	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
+ #endif
+ 
+ #ifdef CONFIG_PRINTK
+@@ -247,20 +254,14 @@ do {									\
+ } while (0)
+ #else
+ #define dev_dbg_ratelimited(dev, fmt, ...)				\
+-do {									\
+-	if (0)								\
+-		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
+-} while (0)
++	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
+ #endif
+ 
+ #ifdef VERBOSE_DEBUG
+ #define dev_vdbg	dev_dbg
+ #else
+ #define dev_vdbg(dev, fmt, ...)						\
+-({									\
+-	if (0)								\
+-		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
+-})
++	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
+ #endif
+ 
+ /*
 -- 
 2.43.0
 
