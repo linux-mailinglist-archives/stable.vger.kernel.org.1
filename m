@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9F78D0E38
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:38:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747F98D0E3D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3099BB20AEE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:38:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 173781F210F8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865901607AB;
-	Mon, 27 May 2024 19:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEAE1607AB;
+	Mon, 27 May 2024 19:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uE7aF6vF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PA1nbuyj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456D761FDF;
-	Mon, 27 May 2024 19:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C38361FDF;
+	Mon, 27 May 2024 19:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838687; cv=none; b=FyqBWFrd0q3ZvPUjCW0RZwaIn/E0ROgOl9gK8wzyM/s+BCwP6SIrsq0r71xVRhRBE3Ax9LYZVdY2+90gAwGwDFA1ijAzdIda0+TClwm/OotMcp7E8g7H3X+w4zVwDqUchUtEcljToQTtDCHxOL5AhLdH8bUz0boCF9hRMESsHag=
+	t=1716838697; cv=none; b=Ftg53I0CJGYT9Fq1toBQyF4gl9A0B43RQp2rz964i/JtaQ0RATUYfbhnToyheKis1xxRXFPKoxL6ci2RxB3rygfbjf5H7WgB9prM2mWV7afF141DV7IUxViL5xKg6Lv0Cn6pG4AQFKnZGC/rm3rBUvS7Gch11Zw/yjr/DGShDRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838687; c=relaxed/simple;
-	bh=MxME2JMpAZtTx648bJiAOunlSmGyMJR8eI3D5rBpXIs=;
+	s=arc-20240116; t=1716838697; c=relaxed/simple;
+	bh=Lsv/31KQ61hrPqcqWHBAF8CwCscSS1XczKLapxFxJcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTHwkbWc7hH8gunkZdHjmdzYJ6Ri5+I02wruXPD7OQBMEozuCn9p3h+otGZTC0s/FZ9mitzVlDtVqRmmRuNNFNUC/8ZOYpKCZD8ipJnDWJpINzAtocDyTE+G5CNqUXvcfBtflFfoXWGK+EMeFIL8Md23J13AANcUeLDLkoNMDgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uE7aF6vF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B34C2BBFC;
-	Mon, 27 May 2024 19:38:06 +0000 (UTC)
+	 MIME-Version; b=JHMh8RjhifyVLWkPGLmA7F/RHZt9xF++gRBpfX6xkGe3604OZz/9cDG5pkNwuRMdhCLmf++VVAlB8Qb9+qVqrNkkbUsTrgbGv7H70bvp5M9nP4n3tRfQaNV5yCDpCH2xWDv3hETz8uVzM+tObzV1cvd0jgQ3nSBP9kmtQmi9kaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PA1nbuyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E50C2BBFC;
+	Mon, 27 May 2024 19:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838687;
-	bh=MxME2JMpAZtTx648bJiAOunlSmGyMJR8eI3D5rBpXIs=;
+	s=korg; t=1716838697;
+	bh=Lsv/31KQ61hrPqcqWHBAF8CwCscSS1XczKLapxFxJcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uE7aF6vFbDVaHKJaaYxVDeqtiJDdg5KC8rI3loTUUf46NbqsUWRLVqTureWm/d6Qv
-	 7vScs3i8jzCxzTBZwDWu1r5zgYvdbuT9EWe/ZCi+sTsoygEfFyWbH7OJf3gqvlYlXp
-	 +wiQRzvZimGACYwzjSYqoRhLTnxxtqsYZiqC5ALU=
+	b=PA1nbuyjENLRlbAjoaM4dkiIn+b9ZdnjC20W6+YQ8k6mc4AEWFbrXsUlj0xa/f0bV
+	 VlXpvt4yDY06x/VhFt/0IM2/K9yiZ+ElH+BT6nh9tucCdxeile91fgK/V3WBmfTL0c
+	 Buq0G0r+m+9zBGWIIHPFoENMM+9NjJMB8HW6SfU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Bursov <vitaly@bursov.com>,
+	Qixin Liao <liaoqixin@huawei.com>,
+	Cheng Yu <serein.chengyu@huawei.com>,
+	Zhang Qiao <zhangqiao22@huawei.com>,
 	Ingo Molnar <mingo@kernel.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
 	Vincent Guittot <vincent.guittot@linaro.org>,
-	Valentin Schneider <vschneid@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 482/493] sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level
-Date: Mon, 27 May 2024 20:58:04 +0200
-Message-ID: <20240527185645.908349326@linuxfoundation.org>
+Subject: [PATCH 6.8 483/493] sched/core: Fix incorrect initialization of the burst parameter in cpu_max_write()
+Date: Mon, 27 May 2024 20:58:05 +0200
+Message-ID: <20240527185645.937066376@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -69,61 +69,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vitalii Bursov <vitaly@bursov.com>
+From: Cheng Yu <serein.chengyu@huawei.com>
 
-[ Upstream commit a1fd0b9d751f840df23ef0e75b691fc00cfd4743 ]
+[ Upstream commit 49217ea147df7647cb89161b805c797487783fc0 ]
 
-Change relax_domain_level checks so that it would be possible
-to include or exclude all domains from newidle balancing.
+In the cgroup v2 CPU subsystem, assuming we have a
+cgroup named 'test', and we set cpu.max and cpu.max.burst:
 
-This matches the behavior described in the documentation:
+    # echo 1000000 > /sys/fs/cgroup/test/cpu.max
+    # echo 1000000 > /sys/fs/cgroup/test/cpu.max.burst
 
-  -1   no request. use system default or follow request of others.
-   0   no search.
-   1   search siblings (hyperthreads in a core).
+then we check cpu.max and cpu.max.burst:
 
-"2" enables levels 0 and 1, level_max excludes the last (level_max)
-level, and level_max+1 includes all levels.
+    # cat /sys/fs/cgroup/test/cpu.max
+    1000000 100000
+    # cat /sys/fs/cgroup/test/cpu.max.burst
+    1000000
 
-Fixes: 1d3504fcf560 ("sched, cpuset: customize sched domains, core")
-Signed-off-by: Vitalii Bursov <vitaly@bursov.com>
+Next we set cpu.max again and check cpu.max and
+cpu.max.burst:
+
+    # echo 2000000 > /sys/fs/cgroup/test/cpu.max
+    # cat /sys/fs/cgroup/test/cpu.max
+    2000000 100000
+
+    # cat /sys/fs/cgroup/test/cpu.max.burst
+    1000
+
+... we find that the cpu.max.burst value changed unexpectedly.
+
+In cpu_max_write(), the unit of the burst value returned
+by tg_get_cfs_burst() is microseconds, while in cpu_max_write(),
+the burst unit used for calculation should be nanoseconds,
+which leads to the bug.
+
+To fix it, get the burst value directly from tg->cfs_bandwidth.burst.
+
+Fixes: f4183717b370 ("sched/fair: Introduce the burstable CFS controller")
+Reported-by: Qixin Liao <liaoqixin@huawei.com>
+Signed-off-by: Cheng Yu <serein.chengyu@huawei.com>
+Signed-off-by: Zhang Qiao <zhangqiao22@huawei.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lore.kernel.org/r/bd6de28e80073c79466ec6401cdeae78f0d4423d.1714488502.git.vitaly@bursov.com
+Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20240424132438.514720-1-serein.chengyu@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c  | 2 +-
- kernel/sched/topology.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 927bef3a598ad..6d6e540bacbfb 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -2948,7 +2948,7 @@ bool current_cpuset_is_being_rebound(void)
- static int update_relax_domain_level(struct cpuset *cs, s64 val)
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 9116bcc903467..d3aef6283931e 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -11381,7 +11381,7 @@ static ssize_t cpu_max_write(struct kernfs_open_file *of,
  {
- #ifdef CONFIG_SMP
--	if (val < -1 || val >= sched_domain_level_max)
-+	if (val < -1 || val > sched_domain_level_max + 1)
- 		return -EINVAL;
- #endif
+ 	struct task_group *tg = css_tg(of_css(of));
+ 	u64 period = tg_get_cfs_period(tg);
+-	u64 burst = tg_get_cfs_burst(tg);
++	u64 burst = tg->cfs_bandwidth.burst;
+ 	u64 quota;
+ 	int ret;
  
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 10d1391e74161..4fdab14953fc9 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1468,7 +1468,7 @@ static void set_domain_attribute(struct sched_domain *sd,
- 	} else
- 		request = attr->relax_domain_level;
- 
--	if (sd->level > request) {
-+	if (sd->level >= request) {
- 		/* Turn off idle balance on this domain: */
- 		sd->flags &= ~(SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
- 	}
 -- 
 2.43.0
 
