@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-47239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DEE18D0D30
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 113FA8D0B29
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42451F21412
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 436FA1C21527
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F36616079A;
-	Mon, 27 May 2024 19:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C2026AF2;
+	Mon, 27 May 2024 19:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZQwnBlL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITfFLdO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23EF15FA91;
-	Mon, 27 May 2024 19:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6572617E90E;
+	Mon, 27 May 2024 19:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838026; cv=none; b=N4TGco1LJ7wkRZT0gpWF6P0DW1M443aXg00hYQ9OCEp5KZXdwvqeA8eFIExa6qiX/kVdsXMUl2nRQsy+kfiwU9u5Pv8yOeKb7y2hqQDKpI/b4jG3rDa32wFhrZTMpPpKnInN4zQ6faG/cpFsts4H+PMt/gyQxchl5O+UalnAOy0=
+	t=1716836802; cv=none; b=ihcAWXmwmpSZ1iKfXG4EgDG2MGIf6+2gQ43X1+7lY4RAAVRS4HO1w3mT9kHnaIAol4tgp4UGjaJniG8UMoeEpofYwsd4ZWTyxcGWvSSO7AN8m2A9SoIf7JH7fT/2xY+Ks0InXJEatb7uDfRTeoESN1A08ZYKpAt4JXs4LMAx9mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838026; c=relaxed/simple;
-	bh=JVvUprFIdbVZhlj+MC1ztlU6sFe13pAgmwKr5un6GbI=;
+	s=arc-20240116; t=1716836802; c=relaxed/simple;
+	bh=CfNoznnSdwUXc6UckrD7tNn7Bgoc1cDsrzhaYEhkL78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jW7L27vEErwu0oo5LpLidmslCIUSdA7iwuXOcdaSu4rSF7CGTRNlXMxf/6OfgUNlDwbopfsSPPFhpe/cN+D0vJgGmJC6G4HpcSfCXbe9IZB1/ZoTUUPpwTzETfKuNIpQHx6fGsAIVoc+no9bUR+dFjje/ZPKCxV50P/RiZ7yvbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZQwnBlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F68C2BBFC;
-	Mon, 27 May 2024 19:27:06 +0000 (UTC)
+	 MIME-Version; b=dENc7I4Oc+qoFdQhhiGyC0Qk8Gikejjf3PCunXgUDGfIhVghdbjttWyRAgUMEFZtfzAP/nVWbHajE4pPBNjsMIVww9w4bFcmcbAwMS7swAuczAqLtkT9RQOwzOlUkVk+yv6Zh2Up4F92BPphaqwZQbJQN/XCU+twXlDvxq4WUAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITfFLdO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE53C2BBFC;
+	Mon, 27 May 2024 19:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838026;
-	bh=JVvUprFIdbVZhlj+MC1ztlU6sFe13pAgmwKr5un6GbI=;
+	s=korg; t=1716836801;
+	bh=CfNoznnSdwUXc6UckrD7tNn7Bgoc1cDsrzhaYEhkL78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZQwnBlLhgl1FP+8/82mSGzhQQa2/KEP90LpzxiErkAlIDyKMtB9JjVJu1Z2NT0v7
-	 TBt3q6/Z3n3KK2g7sSa0PR9YJ+Nivh7AWiULFFwT9UytZEbVQrFBzjETJdH45+GLxb
-	 4D0p1jwugaAHY6R2pss+IZCCRi8diMa/R0MzS2ts=
+	b=ITfFLdO1Lz1v6FMvN7cVe9o52LT36K836iCK9BJk6vQvdG0k9D/ei5OW9z9TlqQBY
+	 PKIQmK+AH2qgrbkpmt/yQlEuHzwvs+Lrdi8JZLLD/gmQI1ebae+vilaEyoV/6y2kCm
+	 /ZPzJ2Pk7V7qrmy4Y25/JntN8R9hfX3OIdh1LYu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
-	Stanley Chu <stanley.chu@mediatek.com>,
-	Can Guo <quic_cang@quicinc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+838346b979830606c854@syzkaller.appspotmail.com,
+	Stanislav Fomichev <sdf@google.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 238/493] scsi: ufs: core: mcq: Fix ufshcd_mcq_sqe_search()
-Date: Mon, 27 May 2024 20:54:00 +0200
-Message-ID: <20240527185638.085184893@linuxfoundation.org>
+Subject: [PATCH 6.9 194/427] bpf: Add BPF_PROG_TYPE_CGROUP_SKB attach type enforcement in BPF_LINK_CREATE
+Date: Mon, 27 May 2024 20:54:01 +0200
+Message-ID: <20240527185620.365282198@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit 3c5d0dce8ce0a2781ac306b9ad1492b005ecbab5 ]
+[ Upstream commit 543576ec15b17c0c93301ac8297333c7b6e84ac7 ]
 
-Fix the calculation of the utrd pointer. This patch addresses the following
-Coverity complaint:
+bpf_prog_attach uses attach_type_to_prog_type to enforce proper
+attach type for BPF_PROG_TYPE_CGROUP_SKB. link_create uses
+bpf_prog_get and relies on bpf_prog_attach_check_attach_type
+to properly verify prog_type <> attach_type association.
 
-CID 1538170: (#1 of 1): Extra sizeof expression (SIZEOF_MISMATCH)
-suspicious_pointer_arithmetic: Adding sq_head_slot * 32UL /* sizeof (struct
-utp_transfer_req_desc) */ to pointer hwq->sqe_base_addr of type struct
-utp_transfer_req_desc * is suspicious because adding an integral value to
-this pointer automatically scales that value by the size, 32 bytes, of the
-pointed-to type, struct utp_transfer_req_desc. Most likely, the
-multiplication by sizeof (struct utp_transfer_req_desc) in this expression
-is extraneous and should be eliminated.
+Add missing attach_type enforcement for the link_create case.
+Otherwise, it's currently possible to attach cgroup_skb prog
+types to other cgroup hooks.
 
-Cc: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-Cc: Stanley Chu <stanley.chu@mediatek.com>
-Cc: Can Guo <quic_cang@quicinc.com>
-Fixes: 8d7290348992 ("scsi: ufs: mcq: Add supporting functions for MCQ abort")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240410000751.1047758-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: af6eea57437a ("bpf: Implement bpf_link-based cgroup BPF program attachment")
+Link: https://lore.kernel.org/bpf/0000000000004792a90615a1dde0@google.com/
+Reported-by: syzbot+838346b979830606c854@syzkaller.appspotmail.com
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20240426231621.2716876-2-sdf@google.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/bpf/syscall.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index c873fd8239427..7ae3096814282 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -597,8 +597,7 @@ static bool ufshcd_mcq_sqe_search(struct ufs_hba *hba,
- 	addr = le64_to_cpu(cmd_desc_base_addr) & CQE_UCD_BA;
- 
- 	while (sq_head_slot != hwq->sq_tail_slot) {
--		utrd = hwq->sqe_base_addr +
--				sq_head_slot * sizeof(struct utp_transfer_req_desc);
-+		utrd = hwq->sqe_base_addr + sq_head_slot;
- 		match = le64_to_cpu(utrd->command_desc_base_addr) & CQE_UCD_BA;
- 		if (addr == match) {
- 			ufshcd_mcq_nullify_sqe(utrd);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index c287925471f68..cb61d8880dbe0 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3985,6 +3985,11 @@ static int bpf_prog_attach_check_attach_type(const struct bpf_prog *prog,
+ 			 * check permissions at attach time.
+ 			 */
+ 			return -EPERM;
++
++		ptype = attach_type_to_prog_type(attach_type);
++		if (prog->type != ptype)
++			return -EINVAL;
++
+ 		return prog->enforce_expected_attach_type &&
+ 			prog->expected_attach_type != attach_type ?
+ 			-EINVAL : 0;
 -- 
 2.43.0
 
