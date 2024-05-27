@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-46723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF958D0AFB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:05:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050B58D0D03
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E83A1F229A7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:05:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4EB62876BF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A957E15FCE9;
-	Mon, 27 May 2024 19:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E8116078C;
+	Mon, 27 May 2024 19:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NtQDXJE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbCegG9m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6779217E90E;
-	Mon, 27 May 2024 19:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D8B168C4;
+	Mon, 27 May 2024 19:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836693; cv=none; b=YrJp1CDg/xG0joASMZsfvMUvQM0YeoBlS+beg0ZJGZRA5/HBQa8aGlnS8AnzmAJiWHmXRnfpoqvliPAU21TMMebJHVxx0qJ+8lSfElxfFyI+IillLr59GCBVhd/lChSoCdmYTBTEwTfLp/OwVTRpJgemoWMhCRG2H0QIO19/Tt8=
+	t=1716837922; cv=none; b=D9zvgjR9G2tjWTGs6yagS+ucgoo3MrPUvvIrmSrbOUQ4PSj5thuCXtFziZaZ7WKnzZgmrVQsuMw4IS2KxLwcnhRN7S/sJU3crmH4QCLHKENnki5m6Hls6QqtvlM3d/GU4Uav6bS8OVGeha0VO/GTpOLNZzS5FqnfqlO9eQ9cZTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836693; c=relaxed/simple;
-	bh=8j3lePxQGDQaJZu5zDH7dcLmZp2tapadsGKD5D1hDxk=;
+	s=arc-20240116; t=1716837922; c=relaxed/simple;
+	bh=Ox25diVOEsonZ+aLqSPqTUmgTcM/YAa5+oXQsGNSaPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqCweC5v/KVJ1SjyUtBFykjIxKVfTl/pPz8OYLyzAgrWlaNBWbn34WBLdBEi81eJuaEqgfmoOAKOfJ08yc8rM2r35NfrTfkB2EyuNkpySoqz+Y3otMWkqnxvdgGGECNeT4IK3DUsUZVirKmBtUh2Ryf741fopTQVkbeGM4NFZL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NtQDXJE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEC8C2BBFC;
-	Mon, 27 May 2024 19:04:52 +0000 (UTC)
+	 MIME-Version; b=aYf3kTIrqjQkOClJPWuGaacBkjZL5NlWqpFdFKcwxg3DlDzK47XEYi983CJPMfqnTAvxWGB5tPnh6EKl0JBU02I9ISJoFCN81D7Q5JhFyt692PnU1pSu/RXw8rLUpi6w513liaK5QCRv4F0R85NlDlYK8Wdm4Bm6SJ4++TqlW7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbCegG9m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A51C2BBFC;
+	Mon, 27 May 2024 19:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836692;
-	bh=8j3lePxQGDQaJZu5zDH7dcLmZp2tapadsGKD5D1hDxk=;
+	s=korg; t=1716837921;
+	bh=Ox25diVOEsonZ+aLqSPqTUmgTcM/YAa5+oXQsGNSaPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NtQDXJE4H8PzApm5qA0tD6Ddq4HEkfHJHAmRgu6WOm7R04RYKOVJTyxDiZhiS5bP
-	 uaGO3ByOXW8NFdFk+9QsuQL8YbBOkY6r5MCgLlorXbbpmPjwgzWqK8Rf+OSMceVBk1
-	 vf1/IqlTHH4F57E2a3cspdWKXFE6wnRi++27vjjw=
+	b=AbCegG9moXElIXSSGB2z/zsvky7w3pEKEsH8Aky8wC+2lhrV/fqyEyGk3YJx4PbcC
+	 7eC4FN/PLRCsZWXT0op1xLanIe4W1CWGjPzsaKpTYT1AwR4VyNQD32UEkaxRfiVem1
+	 11Z7gu1MMTN+P8fk4EW51OCKPcoGo2O0wPbfGwD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stafford Horne <shorne@gmail.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 152/427] openrisc: traps: Dont send signals to kernel mode threads
+Subject: [PATCH 6.8 197/493] scsi: ufs: qcom: Perform read back after writing unipro mode
 Date: Mon, 27 May 2024 20:53:19 +0200
-Message-ID: <20240527185616.699993615@linuxfoundation.org>
+Message-ID: <20240527185636.794177542@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stafford Horne <shorne@gmail.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit c88cfb5cea5f8f9868ef02cc9ce9183a26dcf20f ]
+[ Upstream commit 823150ecf04f958213cf3bf162187cd1a91c885c ]
 
-OpenRISC exception handling sends signals to user processes on floating
-point exceptions and trap instructions (for debugging) among others.
-There is a bug where the trap handling logic may send signals to kernel
-threads, we should not send these signals to kernel threads, if that
-happens we treat it as an error.
+Currently, the QUNIPRO_SEL bit is written to and then an mb() is used to
+ensure that completes before continuing.
 
-This patch adds conditions to die if the kernel receives these
-exceptions in kernel mode code.
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-Fixes: 27267655c531 ("openrisc: Support floating point user api")
-Signed-off-by: Stafford Horne <shorne@gmail.com>
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+
+But, there's really no reason to even ensure completion before
+continuing. The only requirement here is that this write is ordered to this
+endpoint (which readl()/writel() guarantees already). For that reason the
+mb() can be dropped altogether without anything forcing completion.
+
+Fixes: f06fcc7155dc ("scsi: ufs-qcom: add QUniPro hardware support and power optimizations")
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-4-181252004586@redhat.com
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/openrisc/kernel/traps.c | 48 ++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 19 deletions(-)
+ drivers/ufs/host/ufs-qcom.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/openrisc/kernel/traps.c b/arch/openrisc/kernel/traps.c
-index 9370888c9a7e3..90554a5558fbc 100644
---- a/arch/openrisc/kernel/traps.c
-+++ b/arch/openrisc/kernel/traps.c
-@@ -180,29 +180,39 @@ asmlinkage void unhandled_exception(struct pt_regs *regs, int ea, int vector)
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 8aa55ed45d8e0..cef410f31f449 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -284,9 +284,6 @@ static void ufs_qcom_select_unipro_mode(struct ufs_qcom_host *host)
  
- asmlinkage void do_fpe_trap(struct pt_regs *regs, unsigned long address)
- {
--	int code = FPE_FLTUNK;
--	unsigned long fpcsr = regs->fpcsr;
+ 	if (host->hw_ver.major >= 0x05)
+ 		ufshcd_rmwl(host->hba, QUNIPRO_G4_SEL, 0, REG_UFS_CFG0);
 -
--	if (fpcsr & SPR_FPCSR_IVF)
--		code = FPE_FLTINV;
--	else if (fpcsr & SPR_FPCSR_OVF)
--		code = FPE_FLTOVF;
--	else if (fpcsr & SPR_FPCSR_UNF)
--		code = FPE_FLTUND;
--	else if (fpcsr & SPR_FPCSR_DZF)
--		code = FPE_FLTDIV;
--	else if (fpcsr & SPR_FPCSR_IXF)
--		code = FPE_FLTRES;
--
--	/* Clear all flags */
--	regs->fpcsr &= ~SPR_FPCSR_ALLF;
--
--	force_sig_fault(SIGFPE, code, (void __user *)regs->pc);
-+	if (user_mode(regs)) {
-+		int code = FPE_FLTUNK;
-+		unsigned long fpcsr = regs->fpcsr;
-+
-+		if (fpcsr & SPR_FPCSR_IVF)
-+			code = FPE_FLTINV;
-+		else if (fpcsr & SPR_FPCSR_OVF)
-+			code = FPE_FLTOVF;
-+		else if (fpcsr & SPR_FPCSR_UNF)
-+			code = FPE_FLTUND;
-+		else if (fpcsr & SPR_FPCSR_DZF)
-+			code = FPE_FLTDIV;
-+		else if (fpcsr & SPR_FPCSR_IXF)
-+			code = FPE_FLTRES;
-+
-+		/* Clear all flags */
-+		regs->fpcsr &= ~SPR_FPCSR_ALLF;
-+
-+		force_sig_fault(SIGFPE, code, (void __user *)regs->pc);
-+	} else {
-+		pr_emerg("KERNEL: Illegal fpe exception 0x%.8lx\n", regs->pc);
-+		die("Die:", regs, SIGFPE);
-+	}
+-	/* make sure above configuration is applied before we return */
+-	mb();
  }
  
- asmlinkage void do_trap(struct pt_regs *regs, unsigned long address)
- {
--	force_sig_fault(SIGTRAP, TRAP_BRKPT, (void __user *)regs->pc);
-+	if (user_mode(regs)) {
-+		force_sig_fault(SIGTRAP, TRAP_BRKPT, (void __user *)regs->pc);
-+	} else {
-+		pr_emerg("KERNEL: Illegal trap exception 0x%.8lx\n", regs->pc);
-+		die("Die:", regs, SIGILL);
-+	}
- }
- 
- asmlinkage void do_unaligned_access(struct pt_regs *regs, unsigned long address)
+ /*
 -- 
 2.43.0
 
