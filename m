@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-47435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 528BA8D0DF8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A06E8D0BD7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84CB51C2173C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90AB8B21DBE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4BE15FCF0;
-	Mon, 27 May 2024 19:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAC0155CA7;
+	Mon, 27 May 2024 19:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5WCdt3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1AfM+KYh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A4517727;
-	Mon, 27 May 2024 19:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA93017E90E;
+	Mon, 27 May 2024 19:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838542; cv=none; b=qloJytIh31PdH5YEdBy46Cy2uUQBLEmK8hcCxeqnuw2PpaUnTVN7aA4OS/DVNuNxj+W4cRpTV65OXdzMtcQF5ZTgEsMSo6MSPmYGUJjB4xxWAtlSkxkrvx+EVxdRLCm/gKek4RLlnsN0Og17i59QldMWFhZ7Rpu9uHpRN2ujldw=
+	t=1716837212; cv=none; b=CEr4Vg0nbscUwISl56YLgwh7/kZVdX+wHUeqh464cxod+DNSktidhapZudbnsT2DQNZ4Ru+3HmWs25TLRM3XEUPnLHUMHOxKIzjYNRAOFJ+MlyYWZZfw6wqGQLKbgLF825vyYlODOmSoAfOx5gKvXW4AbBeSZaXLVDasrn8puF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838542; c=relaxed/simple;
-	bh=Zbp82yHssFYgUYgWA/AYteX66HZheTkHkYx5Q6wXxmk=;
+	s=arc-20240116; t=1716837212; c=relaxed/simple;
+	bh=DV5kxkxTrpcK7qKygeU3eeeGCdw1JauFlQM2atrTx6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vi3e5mRIkHDip2gjhK8ddvQctdCz4mUzsKZHSTZAgwNuz4hgJyCYIQBx58ueboOw7hx5wo4td8iV3ZNuEhx43+XkaKBqWt3aapLaBNRkI5x4RIlnnn30tkSAfoVd2eoziuX/O3m7d0wBBHwJIjIQO+yrO4m0hrl24oCfoGBdRCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5WCdt3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F86C2BBFC;
-	Mon, 27 May 2024 19:35:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LjVpiulGqxVLIbWuoxflVCY+8BBMT1ucOtwfZIJTEm72NBiMeXAp3aFpov/1VPU+2pX0fp92TlBmwfuosHjzjLCh2ltZNMDFvGw98mcfWgyX3/ajuHRnJA0+yjQtSr6e/mEyt7GG6xllgSWeiYvOT1J3zsY7x4+BSOJHNjGa8mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1AfM+KYh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F90EC2BBFC;
+	Mon, 27 May 2024 19:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838542;
-	bh=Zbp82yHssFYgUYgWA/AYteX66HZheTkHkYx5Q6wXxmk=;
+	s=korg; t=1716837212;
+	bh=DV5kxkxTrpcK7qKygeU3eeeGCdw1JauFlQM2atrTx6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5WCdt3rr7GjXp5iYxjQkZhCGuNyKE1Z04NygixbYQQTEcF+NYs5tk/jSmt+xecc1
-	 DwDNrUmTdbrOTAN6Fpj5rvhhKcI1df9xuBYGrnfHekeFMH/tkmxAk5URnWDnWG6dwh
-	 McJ8WYWNMUKfS0RJA0kMQGKwewc27vMK0ASNOWHA=
+	b=1AfM+KYhJlmDI+ZvBu66JaQ3Ln3V0cFDCxFS21vLA4pAjEERAP2wTKXl+tXdNnjbd
+	 dSEaSmHn+LZ8+k+3iR/dojn4zOyLm3JEhohyU2t07QsCxXlQkHXGS4IfgLaN4Injhg
+	 +qTklvh7mGr/H6UmaIAac4cicc47ShXnjmSzezNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Rob Herring <robh@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 396/493] media: dt-bindings: ovti,ov2680: Fix the power supply names
-Date: Mon, 27 May 2024 20:56:38 +0200
-Message-ID: <20240527185643.227001095@linuxfoundation.org>
+Subject: [PATCH 6.9 352/427] clk: mediatek: pllfh: Dont log error for missing fhctl node
+Date: Mon, 27 May 2024 20:56:39 +0200
+Message-ID: <20240527185633.484189614@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit e2f6ea61b6f3e4ebbb7dff857eea6220c18cd17b ]
+[ Upstream commit bb7b3c8e7180f36de75cdea200ab7127f93f58cc ]
 
-The original .txt bindings had the OV2680 power supply names correct,
-but the transition from .txt to yaml spelled them incorrectly.
+Support for fhctl clocks in apmixedsys was introduced at a later point
+and to this moment only one mt6795 based platform has a fhctl DT node
+present. Therefore the fhctl support in apmixedsys should be seen as
+optional and not cause an error when it is missing.
 
-Fix the OV2680 power supply names as the original .txt bindings
-as these are the names used by the OV2680 driver and in devicetree.
+Change the message's log level to warning. The warning level is chosen
+so that it will still alert the fact that fhctl support might be
+unintentionally missing, but without implying that this is necessarily
+an issue.
 
-Fixes: 57226cd8c8bf ("media: dt-bindings: ov2680: convert bindings to yaml")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Even if the FHCTL DT nodes are added to all current platforms moving
+forward, since those changes won't be backported, this ensures stable
+kernel releases won't have live with this error.
+
+Fixes: d7964de8a8ea ("clk: mediatek: Add new clock driver to handle FHCTL hardware")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20240308-mtk-fhctl-no-node-error-v1-1-51e446eb149a@collabora.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/media/i2c/ovti,ov2680.yaml        | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/clk/mediatek/clk-pllfh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-index cf456f8d9ddcb..c87677f5e2a25 100644
---- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-@@ -37,15 +37,15 @@ properties:
-       active low.
-     maxItems: 1
+diff --git a/drivers/clk/mediatek/clk-pllfh.c b/drivers/clk/mediatek/clk-pllfh.c
+index 3a2b3f90be25d..094ec8a26d668 100644
+--- a/drivers/clk/mediatek/clk-pllfh.c
++++ b/drivers/clk/mediatek/clk-pllfh.c
+@@ -68,7 +68,7 @@ void fhctl_parse_dt(const u8 *compatible_node, struct mtk_pllfh_data *pllfhs,
  
--  dovdd-supply:
-+  DOVDD-supply:
-     description:
-       Definition of the regulator used as interface power supply.
+ 	node = of_find_compatible_node(NULL, NULL, compatible_node);
+ 	if (!node) {
+-		pr_err("cannot find \"%s\"\n", compatible_node);
++		pr_warn("cannot find \"%s\"\n", compatible_node);
+ 		return;
+ 	}
  
--  avdd-supply:
-+  AVDD-supply:
-     description:
-       Definition of the regulator used as analog power supply.
- 
--  dvdd-supply:
-+  DVDD-supply:
-     description:
-       Definition of the regulator used as digital power supply.
- 
-@@ -59,9 +59,9 @@ required:
-   - reg
-   - clocks
-   - clock-names
--  - dovdd-supply
--  - avdd-supply
--  - dvdd-supply
-+  - DOVDD-supply
-+  - AVDD-supply
-+  - DVDD-supply
-   - reset-gpios
-   - port
- 
-@@ -82,9 +82,9 @@ examples:
-                 clock-names = "xvclk";
-                 reset-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
- 
--                dovdd-supply = <&sw2_reg>;
--                dvdd-supply = <&sw2_reg>;
--                avdd-supply = <&reg_peri_3p15v>;
-+                DOVDD-supply = <&sw2_reg>;
-+                DVDD-supply = <&sw2_reg>;
-+                AVDD-supply = <&reg_peri_3p15v>;
- 
-                 port {
-                         ov2680_to_mipi: endpoint {
 -- 
 2.43.0
 
