@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-46949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B618D0BEE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390D68D0DEC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A81AB22018
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C942FB20CDE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947FE15DBD8;
-	Mon, 27 May 2024 19:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFE615FCFB;
+	Mon, 27 May 2024 19:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNNVyfak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQz6tCYh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B1B17E90E;
-	Mon, 27 May 2024 19:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB73262BE;
+	Mon, 27 May 2024 19:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837270; cv=none; b=CeSwt61FGms2d8a5uvq+nztQDLg1/fXPJ4XpJ/mXSQNg8pwQsByZ+ybK0n2KNO5WOwhX5Rq8Jn4TXstEdT8IXTn0C/e0fdmMVHRMXx3wQVIOz1UIhMVc+9+oMmJ57dJzxs1rn+tY8lj4rAVDDUkUUpn7i0JmJc1afA77zxc2ygg=
+	t=1716838517; cv=none; b=bNm00vALqA/4/sP1VDkLQe8f+7MSpmbzECe1tVQaiOLyg646lWa4tueW/ojoxRV2P5SmomSzIzC/oIC6HjvG0JKo0Ek99tkdA665OnaExqHOBvJbiql4PGG8H3K7NyeMec1RZi0z1G/VrLxLs+1lm4ZD+25hFHO8DeV6j6oyDSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837270; c=relaxed/simple;
-	bh=NOPwyZkO5svMpY9NwHGTUl460ec4biREHs+nDMw0ybc=;
+	s=arc-20240116; t=1716838517; c=relaxed/simple;
+	bh=OAeQbCFK3AOq37dwitME1o3GruZTLcg62NVUjxT1dHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZX1kyv0Rty56DxsNnaAa9aGzJRc3b6w6yJ1DiWXeBjeuiS4HTSZRxVpl7gLDRibclGJpwgHO49HgLsiH+nv/etbQX2rrQJHyYVBfuZpIMJuRhzpTtmZRmuIZbmGOi3I7S23259CbaW+vW66y/EiLaJ8EY9HCe+xVnqZgDWlPgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNNVyfak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC780C2BBFC;
-	Mon, 27 May 2024 19:14:29 +0000 (UTC)
+	 MIME-Version; b=fsvxfHl8W+5V/XZh6GNUIovZgpG+XiV+r5J9OiJAlNPc0ZuweWitUId6VSxtEP2jxtRNY5KlTqbwYKVHOMYChLUrDuCXiHeUfTJQ/pvJ7+CY6NXghn3v1nQjZz81o2AXsD0dB4Z2n+fx+ElNPDeuAj71PLL7MxaMIS9OREGmQZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQz6tCYh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B85EC2BBFC;
+	Mon, 27 May 2024 19:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837270;
-	bh=NOPwyZkO5svMpY9NwHGTUl460ec4biREHs+nDMw0ybc=;
+	s=korg; t=1716838516;
+	bh=OAeQbCFK3AOq37dwitME1o3GruZTLcg62NVUjxT1dHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNNVyfaknwziqtbtxDKAVASHzjuo5YO2OwdIQGyPUEM8AY34EMVkVRDB8oApj9O31
-	 1Epc9sAN/tn73QtS1lfHf8IR4HRIJpB1iLmZzRiucGR6+AD7r1HhgziZyHgLFV3Msa
-	 lN/BwBJXtq92dECv2Dp5jbdbDbzniAzfdTmOmGTY=
+	b=AQz6tCYhaEGE7hkno/M3pH4xdoCAZTbmhZCb2dRhrUfmLt3WfYDGek3ViWgH29tMB
+	 SvFdSQZ2o87A/5zaVe80WcB4plh6adeQQZXSw9lnSsb/jdUj7xEmK2Vmdo38GTSF6h
+	 0uoCRB1fhT0rXHbGqsuVVsBZDPVasWK7gbbXyDd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 377/427] clk: qcom: dispcc-sm8550: fix DisplayPort clocks
+Subject: [PATCH 6.8 422/493] RDMA/mlx5: Change check for cacheable mkeys
 Date: Mon, 27 May 2024 20:57:04 +0200
-Message-ID: <20240527185634.398126852@linuxfoundation.org>
+Message-ID: <20240527185644.103659157@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit e90b5139da8465a15c3820b4b67ca9468dce93b4 ]
+[ Upstream commit 8c1185fef68cc603b954fece2a434c9f851d6a86 ]
 
-On SM8550 DisplayPort link clocks use frequency tables inherited from
-the vendor kernel, it is not applicable in the upstream kernel. Drop
-frequency tables and use clk_byte2_ops for those clocks.
+umem can be NULL for user application mkeys in some cases. Therefore
+umem can't be used for checking if the mkey is cacheable and it is
+changed for checking a flag that indicates it. Also make sure that
+all mkeys which are not returned to the cache will be destroyed.
 
-This fixes frequency selection in the OPP core (which otherwise attempts
-to use invalid 810 KHz as DP link rate), also fixing the following
-message:
-msm-dp-display ae90000.displayport-controller: _opp_config_clk_single: failed to set clock rate: -22
-
-Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240424-dispcc-dp-clocks-v2-3-b44038f3fa96@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: dd1b913fb0d0 ("RDMA/mlx5: Cache all user cacheable mkeys on dereg MR flow")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Link: https://lore.kernel.org/r/2690bc5c6896bcb937f89af16a1ff0343a7ab3d0.1712140377.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8550.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h |  1 +
+ drivers/infiniband/hw/mlx5/mr.c      | 32 +++++++++++++++++++---------
+ 2 files changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
-index 3672c73ac11c6..38ecea805503d 100644
---- a/drivers/clk/qcom/dispcc-sm8550.c
-+++ b/drivers/clk/qcom/dispcc-sm8550.c
-@@ -345,26 +345,17 @@ static struct clk_rcg2 disp_cc_mdss_dptx0_aux_clk_src = {
- 	},
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 989968ba74153..79ebafecca22a 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -646,6 +646,7 @@ struct mlx5_ib_mkey {
+ 	/* Cacheable user Mkey must hold either a rb_key or a cache_ent. */
+ 	struct mlx5r_cache_rb_key rb_key;
+ 	struct mlx5_cache_ent *cache_ent;
++	u8 cacheable : 1;
  };
  
--static const struct freq_tbl ftbl_disp_cc_mdss_dptx0_link_clk_src[] = {
--	F(162000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
--	F(270000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
--	F(540000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
--	F(810000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
--	{ }
--};
+ #define MLX5_IB_MTT_PRESENT (MLX5_IB_MTT_READ | MLX5_IB_MTT_WRITE)
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index a8ee2ca1f4a17..7f7b1f59b5f05 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -1158,6 +1158,7 @@ static struct mlx5_ib_mr *alloc_cacheable_mr(struct ib_pd *pd,
+ 		if (IS_ERR(mr))
+ 			return mr;
+ 		mr->mmkey.rb_key = rb_key;
++		mr->mmkey.cacheable = true;
+ 		return mr;
+ 	}
+ 
+@@ -1168,6 +1169,7 @@ static struct mlx5_ib_mr *alloc_cacheable_mr(struct ib_pd *pd,
+ 	mr->ibmr.pd = pd;
+ 	mr->umem = umem;
+ 	mr->page_shift = order_base_2(page_size);
++	mr->mmkey.cacheable = true;
+ 	set_mr_fields(dev, mr, umem->length, access_flags, iova);
+ 
+ 	return mr;
+@@ -1835,6 +1837,23 @@ static int cache_ent_find_and_store(struct mlx5_ib_dev *dev,
+ 	return ret;
+ }
+ 
++static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
++{
++	struct mlx5_ib_dev *dev = to_mdev(mr->ibmr.device);
++	struct mlx5_cache_ent *ent = mr->mmkey.cache_ent;
++
++	if (mr->mmkey.cacheable && !mlx5r_umr_revoke_mr(mr) && !cache_ent_find_and_store(dev, mr))
++		return 0;
++
++	if (ent) {
++		spin_lock_irq(&ent->mkeys_queue.lock);
++		ent->in_use--;
++		mr->mmkey.cache_ent = NULL;
++		spin_unlock_irq(&ent->mkeys_queue.lock);
++	}
++	return destroy_mkey(dev, mr);
++}
++
+ int mlx5_ib_dereg_mr(struct ib_mr *ibmr, struct ib_udata *udata)
+ {
+ 	struct mlx5_ib_mr *mr = to_mmr(ibmr);
+@@ -1880,16 +1899,9 @@ int mlx5_ib_dereg_mr(struct ib_mr *ibmr, struct ib_udata *udata)
+ 	}
+ 
+ 	/* Stop DMA */
+-	if (mr->umem && mlx5r_umr_can_load_pas(dev, mr->umem->length))
+-		if (mlx5r_umr_revoke_mr(mr) ||
+-		    cache_ent_find_and_store(dev, mr))
+-			mr->mmkey.cache_ent = NULL;
 -
- static struct clk_rcg2 disp_cc_mdss_dptx0_link_clk_src = {
- 	.cmd_rcgr = 0x8170,
- 	.mnd_width = 0,
- 	.hid_width = 5,
- 	.parent_map = disp_cc_parent_map_7,
--	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data) {
- 		.name = "disp_cc_mdss_dptx0_link_clk_src",
- 		.parent_data = disp_cc_parent_data_7,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_7),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_byte2_ops,
- 	},
- };
+-	if (!mr->mmkey.cache_ent) {
+-		rc = destroy_mkey(to_mdev(mr->ibmr.device), mr);
+-		if (rc)
+-			return rc;
+-	}
++	rc = mlx5_revoke_mr(mr);
++	if (rc)
++		return rc;
  
-@@ -418,13 +409,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_link_clk_src = {
- 	.mnd_width = 0,
- 	.hid_width = 5,
- 	.parent_map = disp_cc_parent_map_3,
--	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data) {
- 		.name = "disp_cc_mdss_dptx1_link_clk_src",
- 		.parent_data = disp_cc_parent_data_3,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_byte2_ops,
- 	},
- };
- 
-@@ -478,13 +468,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx2_link_clk_src = {
- 	.mnd_width = 0,
- 	.hid_width = 5,
- 	.parent_map = disp_cc_parent_map_3,
--	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data) {
- 		.name = "disp_cc_mdss_dptx2_link_clk_src",
- 		.parent_data = disp_cc_parent_data_3,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_byte2_ops,
- 	},
- };
- 
-@@ -538,13 +527,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx3_link_clk_src = {
- 	.mnd_width = 0,
- 	.hid_width = 5,
- 	.parent_map = disp_cc_parent_map_3,
--	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data) {
- 		.name = "disp_cc_mdss_dptx3_link_clk_src",
- 		.parent_data = disp_cc_parent_data_3,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_byte2_ops,
- 	},
- };
- 
+ 	if (mr->umem) {
+ 		bool is_odp = is_odp_mr(mr);
 -- 
 2.43.0
 
