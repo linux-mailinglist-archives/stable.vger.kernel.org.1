@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27A08D0D4B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 883268D0B1C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF2C282492
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 431022837A7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1064415FD0F;
-	Mon, 27 May 2024 19:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB5015FCE9;
+	Mon, 27 May 2024 19:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5DxTsDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxS4JFg7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40FD262BE;
-	Mon, 27 May 2024 19:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC7C1078F;
+	Mon, 27 May 2024 19:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838097; cv=none; b=peBCeVD1GIfPXCkYYFCexpdg9lVpT4MAQ13lzfsW1JgpIbsUNAHkVmwGhBxm3HN9OtDwM6FCZItWBNFVcAjLZGAMEihtZJE45fQLvSY//LL7o3OzchLrZf8/XfAkNO5ClaesSw7i4nqLdboPQCzMDW4PsOdg5qVnZjJva1YQQU8=
+	t=1716836771; cv=none; b=kWVqaeFWDj0nU6WkUiS8D0b+5n9Of/k0QBamyKGUaJ5AdUjGP4jAayKx0HybPex1iOr/5tD8mx2Lpzekgi0qGPiXQWnk8uZBHwe01kNrEMS/rYUwil6ET5QAn0YXYKYQeVIno3wgq0m/alYfAKGo/zCIeGwnhutNMqXT5iXaLeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838097; c=relaxed/simple;
-	bh=/Laq/vcWqEL6pcP5L34OWmA7sXGdRSRyUqbbgXMagPk=;
+	s=arc-20240116; t=1716836771; c=relaxed/simple;
+	bh=wVL9Ym44VWpQLXxfGd+vB2XcoOCOCnTUOkicJ08PpCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uI/Tl7wrbgxil+I3EJlDftop9aSzfRg4L8KpSXLnKNeLc/hoPwRN/ZUlds+3yf5KEoBHEMBMBbJCbMdrMOrL8k07tkKBkPN6Y/TwyyBq2DXT9NWZ9QBRecyDwfnS20/xJiD7v5jVnXzp7nBBojEDxsAY6qYIwA8FnT4SlbQ/4Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5DxTsDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18CFC2BBFC;
-	Mon, 27 May 2024 19:28:16 +0000 (UTC)
+	 MIME-Version; b=Ib5BbX5cYTuKCZcJ4tdyxU8QuOntZxqkIGcZBPOup7U63nX+4EvOVuXTa3nuScZEaHcrrGUbP49oT+0G6GqmPQYjUHeb3JKD/eyjuQe1GxVXAOkp/FJqvAaxSu17dcnL7haCRV/m6PITRIHiBGhE+vJtXBNkzTXnKu4L0b3jDEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxS4JFg7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5D4C2BBFC;
+	Mon, 27 May 2024 19:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838097;
-	bh=/Laq/vcWqEL6pcP5L34OWmA7sXGdRSRyUqbbgXMagPk=;
+	s=korg; t=1716836770;
+	bh=wVL9Ym44VWpQLXxfGd+vB2XcoOCOCnTUOkicJ08PpCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5DxTsDVdxovluDXMHBQquEX3B1ZUhH49g/YqMEQTzxsbIvLRkbHi53t4XMQ6WEMs
-	 pkxXANnnv2udXTTC2dz/npUYZK649odx1mz2vNOqLavHYKiqPVJhlbkg5PrpgRmAR2
-	 JBYebvpCJRjCinmBd794t51iT/ujj8afgSNSOT28=
+	b=TxS4JFg7XO9yXUMrpYEgRdS9ecU2C47NFDS1Tvjm8lT/o47fcRAnrFQFpBqboRINs
+	 S6nvCbNv8gJ35kJE9j894sbwmefGj5nHyIVulHiGGwEpHpCFSK8a9La/DpBcSBnn9y
+	 160TZYH1fgTgan0SZOrKSir4nSRF9VAas7yMoKGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 223/493] scsi: libsas: Fix the failure of adding phy with zero-address to port
-Date: Mon, 27 May 2024 20:53:45 +0200
-Message-ID: <20240527185637.599216572@linuxfoundation.org>
+Subject: [PATCH 6.9 179/427] tcp: avoid premature drops in tcp_add_backlog()
+Date: Mon, 27 May 2024 20:53:46 +0200
+Message-ID: <20240527185618.935552157@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 06036a0a5db34642c5dbe22021a767141f010b7a ]
+[ Upstream commit ec00ed472bdb7d0af840da68c8c11bff9f4d9caa ]
 
-As of commit 7d1d86518118 ("[SCSI] libsas: fix false positive 'device
-attached' conditions"), reset the phy->entacted_sas_addr address to a
-zero-address when the link rate is less than 1.5G.
+While testing TCP performance with latest trees,
+I saw suspect SOCKET_BACKLOG drops.
 
-Currently we find that when a new device is attached, and the link rate is
-less than 1.5G, but the device type is not NO_DEVICE, for example: the link
-rate is SAS_PHY_RESET_IN_PROGRESS and the device type is stp. After setting
-the phy->entacted_sas_addr address to the zero address, the port will
-continue to be created for the phy with the zero-address, and other phys
-with the zero-address will be tried to be added to the new port:
+tcp_add_backlog() computes its limit with :
 
-[562240.051197] sas: ex 500e004aaaaaaa1f phy19:U:0 attached: 0000000000000000 (no device)
-// phy19 is deleted but still on the parent port's phy_list
-[562240.062536] sas: ex 500e004aaaaaaa1f phy0 new device attached
-[562240.062616] sas: ex 500e004aaaaaaa1f phy00:U:5 attached: 0000000000000000 (stp)
-[562240.062680] port-7:7:0: trying to add phy phy-7:7:19 fails: it's already part of another port
+    limit = (u32)READ_ONCE(sk->sk_rcvbuf) +
+            (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
+    limit += 64 * 1024;
 
-Therefore, it should be the same as sas_get_phy_attached_dev(). Only when
-device_type is SAS_PHY_UNUSED, sas_address is set to the 0 address.
+This does not take into account that sk->sk_backlog.len
+is reset only at the very end of __release_sock().
 
-Fixes: 7d1d86518118 ("[SCSI] libsas: fix false positive 'device attached' conditions")
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Link: https://lore.kernel.org/r/20240312141103.31358-5-yangxingui@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
+sk_rcvbuf in normal conditions.
+
+We should double sk->sk_rcvbuf contribution in the formula
+to absorb bubbles in the backlog, which happen more often
+for very fast flows.
+
+This change maintains decent protection against abuses.
+
+Fixes: c377411f2494 ("net: sk_add_backlog() take rmem_alloc into account")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240423125620.3309458-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libsas/sas_expander.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv4/tcp_ipv4.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/libsas/sas_expander.c b/drivers/scsi/libsas/sas_expander.c
-index f6e6db8b8aba9..e97f4e01a865a 100644
---- a/drivers/scsi/libsas/sas_expander.c
-+++ b/drivers/scsi/libsas/sas_expander.c
-@@ -239,8 +239,7 @@ static void sas_set_ex_phy(struct domain_device *dev, int phy_id,
- 	/* help some expanders that fail to zero sas_address in the 'no
- 	 * device' case
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index e0cef75f85fb9..92511b7fd5249 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -2001,7 +2001,7 @@ int tcp_v4_early_demux(struct sk_buff *skb)
+ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
+ 		     enum skb_drop_reason *reason)
+ {
+-	u32 limit, tail_gso_size, tail_gso_segs;
++	u32 tail_gso_size, tail_gso_segs;
+ 	struct skb_shared_info *shinfo;
+ 	const struct tcphdr *th;
+ 	struct tcphdr *thtail;
+@@ -2010,6 +2010,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
+ 	bool fragstolen;
+ 	u32 gso_segs;
+ 	u32 gso_size;
++	u64 limit;
+ 	int delta;
+ 
+ 	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
+@@ -2107,7 +2108,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
+ 	__skb_push(skb, hdrlen);
+ 
+ no_coalesce:
+-	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
++	/* sk->sk_backlog.len is reset only at the end of __release_sock().
++	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
++	 * sk_rcvbuf in normal conditions.
++	 */
++	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
++
++	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
+ 
+ 	/* Only socket owner can try to collapse/prune rx queues
+ 	 * to reduce memory overhead, so add a little headroom here.
+@@ -2115,6 +2122,8 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
  	 */
--	if (phy->attached_dev_type == SAS_PHY_UNUSED ||
--	    phy->linkrate < SAS_LINK_RATE_1_5_GBPS)
-+	if (phy->attached_dev_type == SAS_PHY_UNUSED)
- 		memset(phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
- 	else
- 		memcpy(phy->attached_sas_addr, dr->attached_sas_addr, SAS_ADDR_SIZE);
+ 	limit += 64 * 1024;
+ 
++	limit = min_t(u64, limit, UINT_MAX);
++
+ 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
+ 		bh_unlock_sock(sk);
+ 		*reason = SKB_DROP_REASON_SOCKET_BACKLOG;
 -- 
 2.43.0
 
