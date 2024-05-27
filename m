@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-46971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4D38D0C08
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19C78D0E34
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 395C1280C1E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81BC11F21A4D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1003D15FA91;
-	Mon, 27 May 2024 19:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2131A1607AB;
+	Mon, 27 May 2024 19:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hdr+I13P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1cZn3pN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18681863F;
-	Mon, 27 May 2024 19:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A0961FDF;
+	Mon, 27 May 2024 19:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837328; cv=none; b=KZ1wPuZx8nyZtErbTxwzazshg+yFWm6EoNpsZz83/0H/neurS83gwOdXpzbDiaESpaGdAwNsdQHtUo5iUZh6LGMjWCjFWn59CEKGJ+CnhmDkbwBsCSWwl9SHl6mjl7iQ7rVyVa3HXg0KqAGw135l1PzpWZuSzEz8bJOwfFX0C5k=
+	t=1716838676; cv=none; b=stMMzW/etnX2X3F8qjsclmdLla0yWFkvV9NWMJKWEXmQfZhfWubLv249mKTr+tYpHMxvnUNhYc9KJXAqHYmZs/HPQwVrsH5ija+5E9dYJpfi7aO2wCFPk3ejFgUf9QUynlEOOWBDQ+QR0AYx6yK4RIF1PnNdHhxK+YS/5Sy8d/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837328; c=relaxed/simple;
-	bh=yIOfJZSgpwGy828iKf5Hjlys1YuXKF46WCmB9X4PQAA=;
+	s=arc-20240116; t=1716838676; c=relaxed/simple;
+	bh=S4dujCP0o7DL3Wmuy+uY2uv4O9Azl5PbBkN5rXjcnaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Js6JoxNjkPESYYAcsQ5VNuwJOiUx/A+JfQq7ael4AJA5pZNUNCyYwfTG2sz4YjwMNqgnagMg2QXM3y4wOy6fgMM1h8fsp5UXQ8cijxCqu0AFbzhbBvQ9vASDOf7CUMwJDVGVd7t/LrupmoE92Fm4yyyPUWu8ZwpdetG6ir8BfU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hdr+I13P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A3FC2BBFC;
-	Mon, 27 May 2024 19:15:28 +0000 (UTC)
+	 MIME-Version; b=vB/+GNKGTGFUKw8cfrX6JAB9B3aB6v5nCQ4V6XlNGvSnh9ULJpmsa0cJ33HhM5HamQ0pu5+EkagYk+m9tpodn3qz2nMjeraXtx4jOhxCkp7FXrspFfF+9i849+ZZ4KZzdE7I7LU/1ajXg+wadm/vDGGJf3nn6SV3pQJmzYGblV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1cZn3pN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC0EC2BBFC;
+	Mon, 27 May 2024 19:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837328;
-	bh=yIOfJZSgpwGy828iKf5Hjlys1YuXKF46WCmB9X4PQAA=;
+	s=korg; t=1716838676;
+	bh=S4dujCP0o7DL3Wmuy+uY2uv4O9Azl5PbBkN5rXjcnaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hdr+I13Pauc/UqdAnrSWQ+vcdUOXkQeU2t4NeyKjGpL1cssR185XpPsYlh7XO3t4t
-	 k3Z+z597OF96jA+WrFxf+f7ux7oagVsG+OKvbxbfFj3h1uQi/JaFZHgfmOF36xGFrG
-	 Dxxt5QUVtOdFWc/9qx1anq1AJochHHxhdpIs0y2c=
+	b=d1cZn3pNDz5Vjia331a9ygjDFD0Liw88ad/JJV48wgSpRo5fYHA6PK9mQ/OHfIXeV
+	 Wz9oO6rsSZgkKmYWbPey7w3wj07mxPKN9uF4gBesLGEnxUjDvpZTSBmlUoQ7zl6URE
+	 CzMZ17UgAhP/h5JyHVMe+Zv/m+goCUMX2qeZJzdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Nanyong Sun <sunnanyong@huawei.com>,
+	Rik van Riel <riel@surriel.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 397/427] ext4: remove the redundant folio_wait_stable()
+Subject: [PATCH 6.8 442/493] mm/ksm: fix ksm exec support for prctl
 Date: Mon, 27 May 2024 20:57:24 +0200
-Message-ID: <20240527185635.002478021@linuxfoundation.org>
+Message-ID: <20240527185644.712586539@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +68,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit df0b5afc62f3368d657a8fe4a8d393ac481474c2 ]
+[ Upstream commit 3a9e567ca45fb5280065283d10d9a11f0db61d2b ]
 
-__filemap_get_folio() with FGP_WRITEBEGIN parameter has already wait
-for stable folio, so remove the redundant folio_wait_stable() in
-ext4_da_write_begin(), it was left over from the commit cc883236b792
-("ext4: drop unnecessary journal handle in delalloc write") that
-removed the retry getting page logic.
+Patch series "mm/ksm: fix ksm exec support for prctl", v4.
 
-Fixes: cc883236b792 ("ext4: drop unnecessary journal handle in delalloc write")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240419023005.2719050-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+commit 3c6f33b7273a ("mm/ksm: support fork/exec for prctl") inherits
+MMF_VM_MERGE_ANY flag when a task calls execve().  However, it doesn't
+create the mm_slot, so ksmd will not try to scan this task.  The first
+patch fixes the issue.
+
+The second patch refactors to prepare for the third patch.  The third
+patch extends the selftests of ksm to verfity the deduplication really
+happens after fork/exec inherits ths KSM setting.
+
+This patch (of 3):
+
+commit 3c6f33b7273a ("mm/ksm: support fork/exec for prctl") inherits
+MMF_VM_MERGE_ANY flag when a task calls execve().  Howerver, it doesn't
+create the mm_slot, so ksmd will not try to scan this task.
+
+To fix it, allocate and add the mm_slot to ksm_mm_head in __bprm_mm_init()
+when the mm has MMF_VM_MERGE_ANY flag.
+
+Link: https://lkml.kernel.org/r/20240328111010.1502191-1-tujinjiang@huawei.com
+Link: https://lkml.kernel.org/r/20240328111010.1502191-2-tujinjiang@huawei.com
+Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Stefan Roesch <shr@devkernel.io>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/exec.c           | 11 +++++++++++
+ include/linux/ksm.h | 13 +++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 537803250ca9a..6de6bf57699be 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -2887,9 +2887,6 @@ static int ext4_da_write_begin(struct file *file, struct address_space *mapping,
- 	if (IS_ERR(folio))
- 		return PTR_ERR(folio);
+diff --git a/fs/exec.c b/fs/exec.c
+index 5ee2545c3e183..f11cfd7bce0b1 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -67,6 +67,7 @@
+ #include <linux/time_namespace.h>
+ #include <linux/user_events.h>
+ #include <linux/rseq.h>
++#include <linux/ksm.h>
  
--	/* In case writeback began while the folio was unlocked */
--	folio_wait_stable(folio);
--
- #ifdef CONFIG_FS_ENCRYPTION
- 	ret = ext4_block_write_begin(folio, pos, len, ext4_da_get_block_prep);
- #else
+ #include <linux/uaccess.h>
+ #include <asm/mmu_context.h>
+@@ -267,6 +268,14 @@ static int __bprm_mm_init(struct linux_binprm *bprm)
+ 		goto err_free;
+ 	}
+ 
++	/*
++	 * Need to be called with mmap write lock
++	 * held, to avoid race with ksmd.
++	 */
++	err = ksm_execve(mm);
++	if (err)
++		goto err_ksm;
++
+ 	/*
+ 	 * Place the stack at the largest stack address the architecture
+ 	 * supports. Later, we'll move this to an appropriate place. We don't
+@@ -288,6 +297,8 @@ static int __bprm_mm_init(struct linux_binprm *bprm)
+ 	bprm->p = vma->vm_end - sizeof(void *);
+ 	return 0;
+ err:
++	ksm_exit(mm);
++err_ksm:
+ 	mmap_write_unlock(mm);
+ err_free:
+ 	bprm->vma = NULL;
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index 401348e9f92b4..7e2b1de3996ac 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -59,6 +59,14 @@ static inline int ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+ 	return 0;
+ }
+ 
++static inline int ksm_execve(struct mm_struct *mm)
++{
++	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags))
++		return __ksm_enter(mm);
++
++	return 0;
++}
++
+ static inline void ksm_exit(struct mm_struct *mm)
+ {
+ 	if (test_bit(MMF_VM_MERGEABLE, &mm->flags))
+@@ -107,6 +115,11 @@ static inline int ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+ 	return 0;
+ }
+ 
++static inline int ksm_execve(struct mm_struct *mm)
++{
++	return 0;
++}
++
+ static inline void ksm_exit(struct mm_struct *mm)
+ {
+ }
 -- 
 2.43.0
 
