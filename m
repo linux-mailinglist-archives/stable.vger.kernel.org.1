@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D528D0CD8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B38858D0AD0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C47F2B20A86
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709DA281721
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1671A160783;
-	Mon, 27 May 2024 19:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE37160862;
+	Mon, 27 May 2024 19:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QrjjarsU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyBMeIIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F7115FCE9;
-	Mon, 27 May 2024 19:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADA31DFED;
+	Mon, 27 May 2024 19:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837814; cv=none; b=ixXbh1CKQoFkp6OnbC28+OaQWOjlggG2H7pcqVfDmSklnMrvMV+h+MphZT1bnGfY5d4XKfbegPPTW2mCPohSSFg/PfH/T2UCBnV2o0yRDiYgWFdwbJTTIIHcxuUTG0cvPUvJt7y8gsQTl9Sn9ETq/iQO7OXDaRJ9rJEsr8Tceog=
+	t=1716836582; cv=none; b=dvHT8nzeeDmt8Rcs3yYzg0k+KYiYzd0K5vy0F3JgzBw86cXra6DNvGyY5cuogHjdfIMlRbfrdPRKGpFymm744jsUPv5EfSqETYm2ZUFonfiH8nAThzQL8GpymeWJ+rnz8LbKiPp6lQKV+lwFzDQ5kocDd9g1nTCxsqd+4jCSrdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837814; c=relaxed/simple;
-	bh=q3KWIXWiLsIk24cCXSJmCtnOb3ZaV4hLU/iTkDl/EbA=;
+	s=arc-20240116; t=1716836582; c=relaxed/simple;
+	bh=NOov26tKIYYUF9lfxCcD0RkHGOz3OTLe3hAWSuXVc7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ssbdwyymc/hTCum6otAqginK93TMUrBDZIO5lWIgPwXaa76cu76xlifSHId35IqNZFsbIghuZPV8S1Tew4Or842Ux5lQ7apV6PUDQzq99ew57xOPieofqRXxGNEoYzcF6c2hARUkoWixpDUe9byDxQhGA4r+2IDRy9diEhemUDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QrjjarsU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627B9C2BBFC;
-	Mon, 27 May 2024 19:23:34 +0000 (UTC)
+	 MIME-Version; b=W1bqBXdbLITHe5nSki0FHURDROUgdQuRwWQbX0AoEteVMFarIckvmZGEYr3DzOuIAF+KKAinL1Wn4E1pVUXLv2K8l37xXV0X05ApdzN2BXVDXiTv5lGSH5/o6z9K9GH9ZjNhum4G3dcWtcoTBpLhw6J/6bilQCSC9dlPRwx67II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyBMeIIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A514CC2BBFC;
+	Mon, 27 May 2024 19:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837814;
-	bh=q3KWIXWiLsIk24cCXSJmCtnOb3ZaV4hLU/iTkDl/EbA=;
+	s=korg; t=1716836582;
+	bh=NOov26tKIYYUF9lfxCcD0RkHGOz3OTLe3hAWSuXVc7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QrjjarsUo39bMvOKcCM9SF7LnB9MshCTRrrjazeJ3LbZ13B4EbpRt0wN0698wPkso
-	 4gLcs0mXmt1F9/O6PkehqzDO3K0z97pAnYbIYqLKyudAm5409KoFY5tfH3IlSEKtGE
-	 RzmjaQtoBMU2atccvuln0VVCOTNZjBUz5R8dg340=
+	b=MyBMeIIF9nYRAHE8pQapq9IwnsjK9SfLdqnd6ynKrUTCzg7u/274CKcTmjcAnWAOg
+	 JFATBmThBN9DMdhkpB4AkHL+DRANgh3Al+ubez9J8WoAJOvdQZkleQqCoSxWksgKnw
+	 SKMkO68NduWpC/4bBgCT0wL5ZA8k0PDakNYm8bJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Kees Cook <keescook@chromium.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 155/493] lkdtm: Disable CFI checking for perms functions
+Subject: [PATCH 6.9 110/427] ACPI: bus: Indicate support for _TFP thru _OSC
 Date: Mon, 27 May 2024 20:52:37 +0200
-Message-ID: <20240527185635.488691080@linuxfoundation.org>
+Message-ID: <20240527185612.055894016@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit fb28a8862dc4b5bf8e44578338f35d9c6c68339d ]
+[ Upstream commit 95d43290f1e476b3be782dd17642e452d0436266 ]
 
-The EXEC_RODATA test plays a lot of tricks to live in the .rodata section,
-and once again ran into objtool's (completely reasonable) assumptions
-that executable code should live in an executable section. However, this
-manifested only under CONFIG_CFI_CLANG=y, as one of the .cfi_sites was
-pointing into the .rodata section.
+The ACPI thermal driver already uses the _TPF ACPI method to retrieve
+precise sampling time values, but this is not reported thru _OSC.
 
-Since we're testing non-CFI execution properties in perms.c (and
-rodata.c), we can disable CFI for the involved functions, and remove the
-CFI arguments from rodata.c entirely.
+Fix this by setting bit 9 ("Fast Thermal Sampling support") when
+evaluating _OSC.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202308301532.d7acf63e-oliver.sang@intel.com
-Fixes: 6342a20efbd8 ("objtool: Add elf_create_section_pair()")
-Link: https://lore.kernel.org/r/20240430234953.work.760-kees@kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: a2ee7581afd5 ("ACPI: thermal: Add Thermal fast Sampling Period (_TFP) support")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lkdtm/Makefile | 2 +-
- drivers/misc/lkdtm/perms.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/bus.c   | 2 ++
+ include/linux/acpi.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
-index 95ef971b5e1cb..b28701138b4bc 100644
---- a/drivers/misc/lkdtm/Makefile
-+++ b/drivers/misc/lkdtm/Makefile
-@@ -19,7 +19,7 @@ KASAN_SANITIZE_rodata.o			:= n
- KCSAN_SANITIZE_rodata.o			:= n
- KCOV_INSTRUMENT_rodata.o		:= n
- OBJECT_FILES_NON_STANDARD_rodata.o	:= y
--CFLAGS_REMOVE_rodata.o			+= $(CC_FLAGS_LTO) $(RETHUNK_CFLAGS)
-+CFLAGS_REMOVE_rodata.o			+= $(CC_FLAGS_LTO) $(RETHUNK_CFLAGS) $(CC_FLAGS_CFI)
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index d9fa730416f19..9c13a4e43fa82 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -316,6 +316,8 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+ 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PAD_SUPPORT;
+ 	if (IS_ENABLED(CONFIG_ACPI_PROCESSOR))
+ 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PPC_OST_SUPPORT;
++	if (IS_ENABLED(CONFIG_ACPI_THERMAL))
++		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_FAST_THERMAL_SAMPLING_SUPPORT;
  
- OBJCOPYFLAGS :=
- OBJCOPYFLAGS_rodata_objcopy.o	:= \
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index b93404d656509..5b861dbff27e9 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -61,7 +61,7 @@ static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
- 	return fdesc;
- }
- 
--static noinline void execute_location(void *dst, bool write)
-+static noinline __nocfi void execute_location(void *dst, bool write)
- {
- 	void (*func)(void);
- 	func_desc_t fdesc;
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_HOTPLUG_OST_SUPPORT;
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 34829f2c517ac..51bdd9e08f6da 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -573,6 +573,7 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+ #define OSC_SB_CPCV2_SUPPORT			0x00000040
+ #define OSC_SB_PCLPI_SUPPORT			0x00000080
+ #define OSC_SB_OSLPI_SUPPORT			0x00000100
++#define OSC_SB_FAST_THERMAL_SAMPLING_SUPPORT	0x00000200
+ #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
+ #define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
+ #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
 -- 
 2.43.0
 
