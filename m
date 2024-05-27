@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-46755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901918D0B20
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 870188D0CF7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFB12B21ED6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42D1F28761B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401C115DBD8;
-	Mon, 27 May 2024 19:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947A616078C;
+	Mon, 27 May 2024 19:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOZxfNAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqmSbbGC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11D81078F;
-	Mon, 27 May 2024 19:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EA9168C4;
+	Mon, 27 May 2024 19:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836776; cv=none; b=Dyv7NfsqRRD+JaZQcfo5bncnurT3FCcHrtykekMkBYIqxRpsIlxEqGhB+GXyqZI1SMewj6bcjt7+5d19/hNGaaZR+tuuvVss2ny7GrqekveBYbg4PqXNOCODAtiSQegqp3/2M8x3EDlKiTK7p47LfhGVthSpUCBRyqs9jhx3rpI=
+	t=1716837891; cv=none; b=YmksciU/1ENXxJ20847MRFm4EfPW+P9joE68rXDPaTomuOYhinrA8+JDv4Opta/UVzGi/yO/+H4MsREi0eVuZahz9l27+z/A5HUmZGxtzbPea/vPjln+AmILjLbnsZV0clm5RiYZoKS8ng5+DZbNNj7be/s5Nxuab10JmQO/PXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836776; c=relaxed/simple;
-	bh=V/vcQke4KTZQm9tzOQxmSRxHsfnueQR2+WCcC1OEHDw=;
+	s=arc-20240116; t=1716837891; c=relaxed/simple;
+	bh=LslLf36W1hJ/r4s6pxUAbH1EJIZdHtTPeymKKSl/MHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LR/ANZxPzJjXklLZ+mgLKjZ3mmSmGVHfSSbPfXwE341ifvt0JUbaDrpsqdjr8I2HsonFNwGc4gaDSnqzxlCf6Xej7Qjy0KI8LnRwVdY9a11ljOmf0Rfv6ARyVJd1Png9FVLPNyrOweMdE1Q1oE0eSiXqbYPtiha0idMQMp3GKUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOZxfNAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F31C2BBFC;
-	Mon, 27 May 2024 19:06:15 +0000 (UTC)
+	 MIME-Version; b=r0hFLu/7HUkzVTN2gcFNWM997tQTPH/Xpomd4SA5RhlFqje5ldVRqbPUfXeTe0HKTmSIbvuF10tfPRMAHAd9yPtGrSVqudY9rOIl66ebjBZgkUPpR/pLH+NhsSCHs9+cTuIFAmOWNSOuhU182pNgXyL290VyYWBSkWxsHaf3Hd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqmSbbGC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED3FC2BBFC;
+	Mon, 27 May 2024 19:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836775;
-	bh=V/vcQke4KTZQm9tzOQxmSRxHsfnueQR2+WCcC1OEHDw=;
+	s=korg; t=1716837891;
+	bh=LslLf36W1hJ/r4s6pxUAbH1EJIZdHtTPeymKKSl/MHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOZxfNAA/uufHT/6EG/c/0hWpD0S7VzJ++7Vi95RYpFGT9kiFOtP37yyBt2ExixFc
-	 BQZRa+z53Igtud4xpjNgefvR9KPsaTY/Huurk9aSJ0x24TP+SFlMa5oOobu6esPTYg
-	 gsUEgfxfOzbwlGwJm65zP2UAEWgxODhN341miZkE=
+	b=VqmSbbGCgx2rCtj2/cBKJ3QOvryLNRGtH5kvkGABZDM9Dj7kgrPeB2NdRvJcLUGJf
+	 fDwUlpMKMeiU8JQ3JrismZOLVWOYTNw2rsFx9kKkUPb5y0i0IvRnhBG3IbNNsSfivQ
+	 cJ43PDIvh5Qg0STQ14OV1PNdxM67D21YSNCUC/Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 141/427] gfs2: Fix "ignore unlock failures after withdraw"
+Subject: [PATCH 6.8 186/493] mlx5: avoid truncating error message
 Date: Mon, 27 May 2024 20:53:08 +0200
-Message-ID: <20240527185615.048988898@linuxfoundation.org>
+Message-ID: <20240527185636.432797357@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5d9231111966b6c5a65016d58dcbeab91055bc91 ]
+[ Upstream commit b324a960354b872431d25959ad384ab66a7116ec ]
 
-Commit 3e11e53041502 tries to suppress dlm_lock() lock conversion errors
-that occur when the lockspace has already been released.
+clang warns that one error message is too long for its destination buffer:
 
-It does that by setting and checking the SDF_SKIP_DLM_UNLOCK flag.  This
-conflicts with the intended meaning of the SDF_SKIP_DLM_UNLOCK flag, so
-check whether the lockspace is still allocated instead.
+drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c:1876:4: error: 'snprintf' will always be truncated; specified size is 80, but format string expands to at least 94 [-Werror,-Wformat-truncation-non-kprintf]
 
-(Given the current DLM API, checking for this kind of error after the
-fact seems easier that than to make sure that the lockspace is still
-allocated before calling dlm_lock().  Changing the DLM API so that users
-maintain the lockspace references themselves would be an option.)
+Reword it to be a bit shorter so it always fits.
 
-Fixes: 3e11e53041502 ("GFS2: ignore unlock failures after withdraw")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 70f0302b3f20 ("net/mlx5: Bridge, implement mdb offload")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Link: https://lore.kernel.org/r/20240326223825.4084412-5-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 4 +++-
- fs/gfs2/util.c  | 1 -
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 34540f9d011ca..385561cd4f4c7 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -802,11 +802,13 @@ __acquires(&gl->gl_lockref.lock)
- 	}
- 
- 	if (sdp->sd_lockstruct.ls_ops->lm_lock)	{
-+		struct lm_lockstruct *ls = &sdp->sd_lockstruct;
-+
- 		/* lock_dlm */
- 		ret = sdp->sd_lockstruct.ls_ops->lm_lock(gl, target, lck_flags);
- 		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
- 		    target == LM_ST_UNLOCKED &&
--		    test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags)) {
-+		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
- 			finish_xmote(gl, target);
- 			gfs2_glock_queue_work(gl, 0);
- 		} else if (ret) {
-diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
-index f52141ce94853..fc3ecb180ac53 100644
---- a/fs/gfs2/util.c
-+++ b/fs/gfs2/util.c
-@@ -350,7 +350,6 @@ int gfs2_withdraw(struct gfs2_sbd *sdp)
- 			fs_err(sdp, "telling LM to unmount\n");
- 			lm->lm_unmount(sdp);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
+index 1b9bc32efd6fa..c5ea1d1d2b035 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
+@@ -1874,7 +1874,7 @@ int mlx5_esw_bridge_port_mdb_add(struct net_device *dev, u16 vport_num, u16 esw_
+ 				 "Failed to lookup bridge port vlan metadata to create MDB (MAC=%pM,vid=%u,vport=%u)\n",
+ 				 addr, vid, vport_num);
+ 			NL_SET_ERR_MSG_FMT_MOD(extack,
+-					       "Failed to lookup bridge port vlan metadata to create MDB (MAC=%pM,vid=%u,vport=%u)\n",
++					       "Failed to lookup vlan metadata for MDB (MAC=%pM,vid=%u,vport=%u)\n",
+ 					       addr, vid, vport_num);
+ 			return -EINVAL;
  		}
--		set_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags);
- 		fs_err(sdp, "File system withdrawn\n");
- 		dump_stack();
- 		clear_bit(SDF_WITHDRAW_IN_PROG, &sdp->sd_flags);
 -- 
 2.43.0
 
