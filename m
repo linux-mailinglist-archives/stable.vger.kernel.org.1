@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22F28D0A65
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33B18D0C77
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74CF81F225C6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C1F6284B44
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A9A1607AA;
-	Mon, 27 May 2024 18:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D71B15FCE9;
+	Mon, 27 May 2024 19:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLQ9/SOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qX6Hgha4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C0015FCFC;
-	Mon, 27 May 2024 18:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFED6168C4;
+	Mon, 27 May 2024 19:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836365; cv=none; b=vBc1gDJwOj6cFnjCo5gLq2B4+548R1KZZ8aqja6cmec5cWRlcHu8rCb5tbs1qT1ReG8XVG404LUN232JaWj8sfZM5pdB3h4TxZb8B/C88q2b6wLpFu6OV3mHA1pP7zyo8Rjj688C2rGJgEYTi4kVfUih2MKLZPJj+NZ9w8dW3Uo=
+	t=1716837597; cv=none; b=VK/+zYmBtUL7+Io8qMltXspocG8JJQciW2eT6j0GFisjAF0goqeAf/S9xJ41H5JqAuWXtsR1yrxE60zGVYIj+zqapMMnY9APYUv/+0zZJ6X06thUqfDlgQiAuaphCeWol4jmWRBl4HvJACcXWV4D1n9O1IqZVNtwJeVHyIyxmOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836365; c=relaxed/simple;
-	bh=/oXz8Qk14dYfhFl7+4P/C+0glsJNv2Ux/GphCrg4tQU=;
+	s=arc-20240116; t=1716837597; c=relaxed/simple;
+	bh=PcEnB6XPElmC02zqkkcClYMs2ZeIXTUwXSm09gRVrpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T+y90WaE4un2mIzua1p9NNzV2OXIf80k9DH3ZjTOqWigka9fLFzn4jWVHI0QJVEyn2FtN7widVZBRvia8sjtB5gI9iugHBtVWg7t6hqBcaeLGEG+/15U+EoRRrFVVfwCWMxGzEzy3gHYnCzysMIJ74l4bAJpL05mLHliVIqpFs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLQ9/SOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A22C2BBFC;
-	Mon, 27 May 2024 18:59:24 +0000 (UTC)
+	 MIME-Version; b=DrNknaY3xHGosPJ2TxgZeNNA/KaL8nd7X0UXWf2iIKJtw3glh6D4Boh6FKgW6qqmfoyf8pTgYdHhi/Xc9lGJ7FSJyFc1Fhjep6CqZXTGOpp4eb0TzRbwfJvdhJKX3BAXy1EDYEqCLPZMUVV4snCrwxQ/T7rgxeX6IRmL0vvD6HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qX6Hgha4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E20C2BBFC;
+	Mon, 27 May 2024 19:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836365;
-	bh=/oXz8Qk14dYfhFl7+4P/C+0glsJNv2Ux/GphCrg4tQU=;
+	s=korg; t=1716837597;
+	bh=PcEnB6XPElmC02zqkkcClYMs2ZeIXTUwXSm09gRVrpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLQ9/SOqA2evejNYmSFBOCIrQFIkKAgv+wb8gPVI82ALcRIacgv5InJGa6qMALVsi
-	 XZoDCXNOO/ElG/Hywfmo2yj0kBLyAPcO4d41xgnMkyOBBYBHAssm07XNvPcA3w2KLY
-	 xKvjF1XFxGwMaaWwYEChQqYqbmKaLlwDWeYGbQK0=
+	b=qX6Hgha4FxOhdSBdxVRJEo3cUNN7uafdl8GnP3PM7aeNbZFAzD8PUmmhzQIj93yQr
+	 1Uy1338iAV55N0hMXmWVuVfzedOQXgrs4EbbLPzEgB4lq4YNhPJT7rzMV6JNdSUjaF
+	 FBb/7cUn0BkQol4JenBKgsqbPNKFHoB5e4hol1wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.9 025/427] net: smc91x: Fix m68k kernel compilation for ColdFire CPU
-Date: Mon, 27 May 2024 20:51:12 +0200
-Message-ID: <20240527185604.031930594@linuxfoundation.org>
+	Derek Fang <derek.fang@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 071/493] ASoC: dt-bindings: rt5645: add cbj sleeve gpio property
+Date: Mon, 27 May 2024 20:51:13 +0200
+Message-ID: <20240527185632.165309993@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Derek Fang <derek.fang@realtek.com>
 
-commit 5eefb477d21a26183bc3499aeefa991198315a2d upstream.
+[ Upstream commit 306b38e3fa727d22454a148a364123709e356600 ]
 
-Compiling the m68k kernel with support for the ColdFire CPU family fails
-with the following error:
+Add an optional gpio property to control external CBJ circuits
+to avoid some electric noise caused by sleeve/ring2 contacts floating.
 
-In file included from drivers/net/ethernet/smsc/smc91x.c:80:
-drivers/net/ethernet/smsc/smc91x.c: In function ‘smc_reset’:
-drivers/net/ethernet/smsc/smc91x.h:160:40: error: implicit declaration of function ‘_swapw’; did you mean ‘swap’? [-Werror=implicit-function-declaration]
-  160 | #define SMC_outw(lp, v, a, r)   writew(_swapw(v), (a) + (r))
-      |                                        ^~~~~~
-drivers/net/ethernet/smsc/smc91x.h:904:25: note: in expansion of macro ‘SMC_outw’
-  904 |                         SMC_outw(lp, x, ioaddr, BANK_SELECT);           \
-      |                         ^~~~~~~~
-drivers/net/ethernet/smsc/smc91x.c:250:9: note: in expansion of macro ‘SMC_SELECT_BANK’
-  250 |         SMC_SELECT_BANK(lp, 2);
-      |         ^~~~~~~~~~~~~~~
-cc1: some warnings being treated as errors
+Signed-off-by: Derek Fang <derek.fang@realtek.com>
 
-The function _swapw() was removed in commit d97cf70af097 ("m68k: use
-asm-generic/io.h for non-MMU io access functions"), but is still used in
-drivers/net/ethernet/smsc/smc91x.h.
-
-Use ioread16be() and iowrite16be() to resolve the error.
-
-Cc: stable@vger.kernel.org
-Fixes: d97cf70af097 ("m68k: use asm-generic/io.h for non-MMU io access functions")
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240510113054.186648-2-thorsten.blum@toblux.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://msgid.link/r/20240408091057.14165-2-derek.fang@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/smsc/smc91x.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/sound/rt5645.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/ethernet/smsc/smc91x.h
-+++ b/drivers/net/ethernet/smsc/smc91x.h
-@@ -156,8 +156,8 @@ static inline void mcf_outsw(void *a, un
- 		writew(*wp++, a);
- }
+diff --git a/Documentation/devicetree/bindings/sound/rt5645.txt b/Documentation/devicetree/bindings/sound/rt5645.txt
+index 41a62fd2ae1ff..c1fa379f5f3ea 100644
+--- a/Documentation/devicetree/bindings/sound/rt5645.txt
++++ b/Documentation/devicetree/bindings/sound/rt5645.txt
+@@ -20,6 +20,11 @@ Optional properties:
+   a GPIO spec for the external headphone detect pin. If jd-mode = 0,
+   we will get the JD status by getting the value of hp-detect-gpios.
  
--#define SMC_inw(a, r)		_swapw(readw((a) + (r)))
--#define SMC_outw(lp, v, a, r)	writew(_swapw(v), (a) + (r))
-+#define SMC_inw(a, r)		ioread16be((a) + (r))
-+#define SMC_outw(lp, v, a, r)	iowrite16be(v, (a) + (r))
- #define SMC_insw(a, r, p, l)	mcf_insw(a + r, p, l)
- #define SMC_outsw(a, r, p, l)	mcf_outsw(a + r, p, l)
++- cbj-sleeve-gpios:
++  a GPIO spec to control the external combo jack circuit to tie the sleeve/ring2
++  contacts to the ground or floating. It could avoid some electric noise from the
++  active speaker jacks.
++
+ - realtek,in2-differential
+   Boolean. Indicate MIC2 input are differential, rather than single-ended.
  
+@@ -68,6 +73,7 @@ codec: rt5650@1a {
+ 	compatible = "realtek,rt5650";
+ 	reg = <0x1a>;
+ 	hp-detect-gpios = <&gpio 19 0>;
++	cbj-sleeve-gpios = <&gpio 20 0>;
+ 	interrupt-parent = <&gpio>;
+ 	interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+ 	realtek,dmic-en = "true";
+-- 
+2.43.0
+
 
 
 
