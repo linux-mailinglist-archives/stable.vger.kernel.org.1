@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-46658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614C38D0AB5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE81E8D0CD7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92EBD1C20B33
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88B0D287371
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847A5161904;
-	Mon, 27 May 2024 19:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9561E15FCFC;
+	Mon, 27 May 2024 19:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S48h1I+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s10KUvch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418F715FCFB;
-	Mon, 27 May 2024 19:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5169015FCE9;
+	Mon, 27 May 2024 19:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836521; cv=none; b=l5icptpz3HF7ZBfkiZ5crVn/i95kV+Pq3By+nfEeeD+HrTgZyxRtL6+8TkIHFmgzhFB4Xl2rXRrQUZOvr2R2Px06+l7Y7mTmBIcOp0Aos+GHZqJ904xW2NCLsJ/1oQupXinSL8wpSZ4m5tMfNBPFuA1j5ZtgkIQzm4PeNI6zOl4=
+	t=1716837817; cv=none; b=mxHmMY3A73FRfmVdhUiI52vla7xjEmu5z8CKKJFWyrrocq2vXf0HnzWFELSTjdviIVO/ewAas7Kkv54nbtj7TTEfBo+i1pYe7cVUMAEcoQJVo8W9xH/rknz8Icqmtp4qHZCRSk/o9PIykT5uIf48vszlULh3vI9u1iCqX7B/1lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836521; c=relaxed/simple;
-	bh=+QUpV39nzMPafkA6/M9FOAz33uiI3J7WriqZjqR71f0=;
+	s=arc-20240116; t=1716837817; c=relaxed/simple;
+	bh=4cmPmWwci5qvLOhcXNMT+JRccvLnsfS/BhSvz11tDSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tu9XMCrHURuiaEUnivlMZ7O1+1vQ08ZY6RkInf8LrwraqOLshgEh/qd1PofTctRrZfTZ2PzOL70NQ5DpTKOJB2MNmwHBZhGnZwaXHdYykjaDuPqW+7DvjzWOM+YxM7nycMztYPmtVjxHhcZ50ekmRThH2xeV03mTtUpq7rA15QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S48h1I+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB0CC2BBFC;
-	Mon, 27 May 2024 19:02:00 +0000 (UTC)
+	 MIME-Version; b=M5F+fWWk0YVijPmxp4hZ/KSYsKyR2F7WQu2U4xIrsJhChckAZynrDj2ig05hTp/evg23IYwsye0M6ZxnB7hsPZ83iOldSFHKwgE3j/L+BnmyD+A44tmzZktxv1DEndFXSFng+uUCND8zfvm2qC6dI5QMAjEfI+FHhzy6Bq8PAYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s10KUvch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8CCC2BBFC;
+	Mon, 27 May 2024 19:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836521;
-	bh=+QUpV39nzMPafkA6/M9FOAz33uiI3J7WriqZjqR71f0=;
+	s=korg; t=1716837817;
+	bh=4cmPmWwci5qvLOhcXNMT+JRccvLnsfS/BhSvz11tDSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S48h1I+RFzsnHf+tfGBIINp+TSl4nh4gK/GFlrCX8sTHOjocIQ6DSefrDjYuSqoY6
-	 3hdhHpfweYOMJXUNUwyDHXPYTEirmQD7Eh3fsgw1F+DRTy2GHehWm45xMbTadnZ5VK
-	 Oee8h0Jj1TqBTI6PKZOUjGKH7pAeDfOUGT3yHnOs=
+	b=s10KUvchK7xziW0bT3bU5YHr5zS+dzTLpdFm+CD22D7z882/8NavchQuG6ZgmOe4I
+	 SprYlIi05yegWNwfuREXqYEP4Z9cGki5CM4+P+of39u5tcx1rDTy4W6YU6owkTKzd/
+	 1lEkoCNb6NRLWgbOz14rZgmLQTsMTyUtJOZSoZPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
+	Jan Kara <jack@suse.cz>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 084/427] kunit/fortify: Fix replaced failure path to unbreak __alloc_size
+Subject: [PATCH 6.8 129/493] libfs: Define a minimum directory offset
 Date: Mon, 27 May 2024 20:52:11 +0200
-Message-ID: <20240527185609.600516232@linuxfoundation.org>
+Message-ID: <20240527185634.710170103@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 74df22453c51392476117d7330bf02cee6e987cf ]
+[ Upstream commit 7beea725a8ca412c6190090ce7c3a13b169592a1 ]
 
-The __alloc_size annotation for kmemdup() was getting disabled under
-KUnit testing because the replaced fortify_panic macro implementation
-was using "return NULL" as a way to survive the sanity checking. But
-having the chance to return NULL invalidated __alloc_size, so kmemdup
-was not passing the __builtin_dynamic_object_size() tests any more:
+This value is used in several places, so make it a symbolic
+constant.
 
-[23:26:18] [PASSED] fortify_test_alloc_size_kmalloc_const
-[23:26:19]     # fortify_test_alloc_size_kmalloc_dynamic: EXPECTATION FAILED at lib/fortify_kunit.c:265
-[23:26:19]     Expected __builtin_dynamic_object_size(p, 1) == expected, but
-[23:26:19]         __builtin_dynamic_object_size(p, 1) == -1 (0xffffffffffffffff)
-[23:26:19]         expected == 11 (0xb)
-[23:26:19] __alloc_size() not working with __bdos on kmemdup("hello there", len, gfp)
-[23:26:19] [FAILED] fortify_test_alloc_size_kmalloc_dynamic
-
-Normal builds were not affected: __alloc_size continued to work there.
-
-Use a zero-sized allocation instead, which allows __alloc_size to
-behave.
-
-Fixes: 4ce615e798a7 ("fortify: Provide KUnit counters for failure testing")
-Fixes: fa4a3f86d498 ("fortify: Add KUnit tests for runtime overflows")
-Link: https://lore.kernel.org/r/20240501232937.work.532-kees@kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/170820142741.6328.12428356024575347885.stgit@91.116.238.104.host.secureserver.net
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 23cdd0eed3f1 ("libfs: Fix simple_offset_rename_exchange()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fortify-string.h | 3 ++-
- lib/fortify_kunit.c            | 6 +++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ fs/libfs.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/fortify-string.h b/include/linux/fortify-string.h
-index 6aeebe0a67770..6eaa190d0083c 100644
---- a/include/linux/fortify-string.h
-+++ b/include/linux/fortify-string.h
-@@ -734,7 +734,8 @@ __FORTIFY_INLINE void *kmemdup(const void * const POS0 p, size_t size, gfp_t gfp
- 	if (__compiletime_lessthan(p_size, size))
- 		__read_overflow();
- 	if (p_size < size)
--		fortify_panic(FORTIFY_FUNC_kmemdup, FORTIFY_READ, p_size, size, NULL);
-+		fortify_panic(FORTIFY_FUNC_kmemdup, FORTIFY_READ, p_size, size,
-+			      __real_kmemdup(p, 0, gfp));
- 	return __real_kmemdup(p, size, gfp);
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 752e24c669d97..f0045db739df8 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -240,6 +240,11 @@ const struct inode_operations simple_dir_inode_operations = {
+ };
+ EXPORT_SYMBOL(simple_dir_inode_operations);
+ 
++/* 0 is '.', 1 is '..', so always start with offset 2 or more */
++enum {
++	DIR_OFFSET_MIN	= 2,
++};
++
+ static void offset_set(struct dentry *dentry, u32 offset)
+ {
+ 	dentry->d_fsdata = (void *)((uintptr_t)(offset));
+@@ -261,9 +266,7 @@ void simple_offset_init(struct offset_ctx *octx)
+ {
+ 	xa_init_flags(&octx->xa, XA_FLAGS_ALLOC1);
+ 	lockdep_set_class(&octx->xa.xa_lock, &simple_offset_xa_lock);
+-
+-	/* 0 is '.', 1 is '..', so always start with offset 2 */
+-	octx->next_offset = 2;
++	octx->next_offset = DIR_OFFSET_MIN;
  }
  
-diff --git a/lib/fortify_kunit.c b/lib/fortify_kunit.c
-index 86c1b1a6e2c89..fdba0eaf19a59 100644
---- a/lib/fortify_kunit.c
-+++ b/lib/fortify_kunit.c
-@@ -917,19 +917,19 @@ static void kmemdup_test(struct kunit *test)
+ /**
+@@ -276,7 +279,7 @@ void simple_offset_init(struct offset_ctx *octx)
+  */
+ int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry)
+ {
+-	static const struct xa_limit limit = XA_LIMIT(2, U32_MAX);
++	static const struct xa_limit limit = XA_LIMIT(DIR_OFFSET_MIN, U32_MAX);
+ 	u32 offset;
+ 	int ret;
  
- 	/* Out of bounds by 1 byte. */
- 	copy = kmemdup(src, len + 1, GFP_KERNEL);
--	KUNIT_EXPECT_NULL(test, copy);
-+	KUNIT_EXPECT_PTR_EQ(test, copy, ZERO_SIZE_PTR);
- 	KUNIT_EXPECT_EQ(test, fortify_read_overflows, 1);
- 	kfree(copy);
+@@ -481,7 +484,7 @@ static int offset_readdir(struct file *file, struct dir_context *ctx)
+ 		return 0;
  
- 	/* Way out of bounds. */
- 	copy = kmemdup(src, len * 2, GFP_KERNEL);
--	KUNIT_EXPECT_NULL(test, copy);
-+	KUNIT_EXPECT_PTR_EQ(test, copy, ZERO_SIZE_PTR);
- 	KUNIT_EXPECT_EQ(test, fortify_read_overflows, 2);
- 	kfree(copy);
- 
- 	/* Starting offset causing out of bounds. */
- 	copy = kmemdup(src + 1, len, GFP_KERNEL);
--	KUNIT_EXPECT_NULL(test, copy);
-+	KUNIT_EXPECT_PTR_EQ(test, copy, ZERO_SIZE_PTR);
- 	KUNIT_EXPECT_EQ(test, fortify_read_overflows, 3);
- 	kfree(copy);
- }
+ 	/* In this case, ->private_data is protected by f_pos_lock */
+-	if (ctx->pos == 2)
++	if (ctx->pos == DIR_OFFSET_MIN)
+ 		file->private_data = NULL;
+ 	else if (file->private_data == ERR_PTR(-ENOENT))
+ 		return 0;
 -- 
 2.43.0
 
