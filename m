@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-47041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F166D8D0C54
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF258D0C8D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD461283AD8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:18:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9DE6286365
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D45115FCE9;
-	Mon, 27 May 2024 19:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86C615FCFC;
+	Mon, 27 May 2024 19:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYjGOyl+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdA3x5F0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D03C168C4;
-	Mon, 27 May 2024 19:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775AE168C4;
+	Mon, 27 May 2024 19:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837514; cv=none; b=LtTHE9mag0FhieMyDVHujq7P/Ath2oAvwROSnH+/h5wxVQ3zs/62+BiIZTlYknXNPyBTlpbhmh3jnmzSejfNGJSCp4DtUxc9QQXVgSwhvnoFQVRAKfprV89HubfU3FeWf8weqnnVZ4+e7Ba7wASwDxE1T+GE8d5tpodsxmY/GQs=
+	t=1716837648; cv=none; b=ahZhoIe27GuXxFwS+LwyEWc/oq3N9egLtiovOyRsCfET3dsia/yDzS66WIVH+KQh5ZcQsM7rywZ5fV/nlK5Vt2uiA6RNfYYz86bHuMgs15f4VhSZuaYON85UYBJXnyCGeioVngJG+pPRSbfGPMr7pBJT9B/ciqiGLXKH1SQrFV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837514; c=relaxed/simple;
-	bh=oiMzzDuALkkolELyxKtgD+YizMUg9bhje431PKM8U+4=;
+	s=arc-20240116; t=1716837648; c=relaxed/simple;
+	bh=yl6MdbfESLGKTJOUMqFuZ3UFyEKvoXMEB1hHN4SnzX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVmxIvcLkH0bUhFB51mraNqZZuw3+1xKAUtLsscpzoyKs/kw1zct0UKu5eNpwku5uJMboWwZGdbfcZuStM0PJQ8++NwRaGSbVEy8K0jKW1k20GJgjwY6m62tYswAczlD5SgEWDtpwQeqM32K3qwV2cYxaxURcs6w7lpj1svfgPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYjGOyl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A09AC2BBFC;
-	Mon, 27 May 2024 19:18:33 +0000 (UTC)
+	 MIME-Version; b=GKoaz1489dYl/GcR27+dGH18ZUWkjNGcdlUt6gajihW9d36HLFS0H2SNzStIWzfynAl3ouUv6RVWwdxPbNX2hG4F9g8ZKu1v9d+Snq6kFLYZ46J6HHV8WV2hQiYoUB3Wnm010Pu4Hic3f96F9J+VP+dqBd1eQlCSeyXI8QpPmG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdA3x5F0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AC6C2BBFC;
+	Mon, 27 May 2024 19:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837513;
-	bh=oiMzzDuALkkolELyxKtgD+YizMUg9bhje431PKM8U+4=;
+	s=korg; t=1716837648;
+	bh=yl6MdbfESLGKTJOUMqFuZ3UFyEKvoXMEB1hHN4SnzX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYjGOyl+AdG8jDIFVGF+0TMITY4HPHV3DvVq6AZxoJnv1IrpzTiKXCBHbaDcQpCEn
-	 2ClMnbZu/1t8OdXi3BN0u0zBoF9tgynUqKduC7EcdXnN0RGFJk7kSANSD2PbVo4jU+
-	 h5Ujoqj7Dgqs06QVFWZ+sRCtnu1IPT7qvOvJCKa4=
+	b=OdA3x5F0JwEg5Fzyqv26edovkKFFXAr24sjJ0js0S5Ud/3A9r7K7CGG+Sjwc487Zb
+	 mO3NkK4rBwAklAgJMHMVkeJvMhmsIHSWeehuqhHM0RUQxdSQy9F2AA2Chge+9DvJ5h
+	 16XnYZpxQCfGeTHA4PGRrdYVharf+eFX8FDOF7Qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Pereira <nf.pereira@outlook.pt>,
-	Jiri Kosina <jkosina@suse.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 039/493] HID: nintendo: Fix N64 controller being identified as mouse
-Date: Mon, 27 May 2024 20:50:41 +0200
-Message-ID: <20240527185630.023022695@linuxfoundation.org>
+Subject: [PATCH 6.8 040/493] dmaengine: xilinx: xdma: Clarify kdoc in XDMA driver
+Date: Mon, 27 May 2024 20:50:42 +0200
+Message-ID: <20240527185630.085319039@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -66,49 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nuno Pereira <nf.pereira@outlook.pt>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 8db8c77059e75a0f418b10ede39dd82a9eb031fa ]
+[ Upstream commit 7a71c6dc21d5ae83ab27c39a67845d6d23ac271f ]
 
-This patch is regarding the recent addition of support for the NSO
-controllers to hid-nintendo. All controllers are working correctly with the
-exception of the N64 controller, which is being identified as a mouse by
-udev. This results in the joystick controlling the mouse cursor and the
-controller not being detected by games.
+Clarify the kernel doc of xdma_fill_descs(), especially how big chunks
+will be handled.
 
-The reason for this is because the N64's C buttons have been attributed to
-BTN_FORWARD, BTN_BACK, BTN_LEFT, BTN_RIGHT, which are buttons typically
-attributed to mice.
-
-This patch changes those buttons to controller buttons, making the
-controller be correctly identified as such.
-
-Signed-off-by: Nuno Pereira <nf.pereira@outlook.pt>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://lore.kernel.org/stable/20240327-digigram-xdma-fixes-v1-3-45f4a52c0283%40bootlin.com
+Link: https://lore.kernel.org/r/20240327-digigram-xdma-fixes-v1-3-45f4a52c0283@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-nintendo.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/dma/xilinx/xdma.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
-index ccc4032fb2b03..4b2c81b49b80e 100644
---- a/drivers/hid/hid-nintendo.c
-+++ b/drivers/hid/hid-nintendo.c
-@@ -481,10 +481,10 @@ static const struct joycon_ctlr_button_mapping n64con_button_mappings[] = {
- 	{ BTN_TR,		JC_BTN_R,	},
- 	{ BTN_TR2,		JC_BTN_LSTICK,	}, /* ZR */
- 	{ BTN_START,		JC_BTN_PLUS,	},
--	{ BTN_FORWARD,		JC_BTN_Y,	}, /* C UP */
--	{ BTN_BACK,		JC_BTN_ZR,	}, /* C DOWN */
--	{ BTN_LEFT,		JC_BTN_X,	}, /* C LEFT */
--	{ BTN_RIGHT,		JC_BTN_MINUS,	}, /* C RIGHT */
-+	{ BTN_SELECT,		JC_BTN_Y,	}, /* C UP */
-+	{ BTN_X,		JC_BTN_ZR,	}, /* C DOWN */
-+	{ BTN_Y,		JC_BTN_X,	}, /* C LEFT */
-+	{ BTN_C,		JC_BTN_MINUS,	}, /* C RIGHT */
- 	{ BTN_MODE,		JC_BTN_HOME,	},
- 	{ BTN_Z,		JC_BTN_CAP,	},
- 	{ /* sentinel */ },
+diff --git a/drivers/dma/xilinx/xdma.c b/drivers/dma/xilinx/xdma.c
+index 5a3a3293b21b5..313b217388fe9 100644
+--- a/drivers/dma/xilinx/xdma.c
++++ b/drivers/dma/xilinx/xdma.c
+@@ -554,12 +554,14 @@ static void xdma_synchronize(struct dma_chan *chan)
+ }
+ 
+ /**
+- * xdma_fill_descs - Fill hardware descriptors with contiguous memory block addresses
+- * @sw_desc: tx descriptor state container
+- * @src_addr: Value for a ->src_addr field of a first descriptor
+- * @dst_addr: Value for a ->dst_addr field of a first descriptor
+- * @size: Total size of a contiguous memory block
+- * @filled_descs_num: Number of filled hardware descriptors for corresponding sw_desc
++ * xdma_fill_descs() - Fill hardware descriptors for one contiguous memory chunk.
++ *		       More than one descriptor will be used if the size is bigger
++ *		       than XDMA_DESC_BLEN_MAX.
++ * @sw_desc: Descriptor container
++ * @src_addr: First value for the ->src_addr field
++ * @dst_addr: First value for the ->dst_addr field
++ * @size: Size of the contiguous memory block
++ * @filled_descs_num: Index of the first descriptor to take care of in @sw_desc
+  */
+ static inline u32 xdma_fill_descs(struct xdma_desc *sw_desc, u64 src_addr,
+ 				  u64 dst_addr, u32 size, u32 filled_descs_num)
 -- 
 2.43.0
 
