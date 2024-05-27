@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-47197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7858D0D02
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DB58D0AFC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E59E1F21111
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:25:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E2A4B223BB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C07515FCFC;
-	Mon, 27 May 2024 19:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FF615FCFC;
+	Mon, 27 May 2024 19:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8XwPQbs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrgSjQEr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A85D168C4;
-	Mon, 27 May 2024 19:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D202A17E90E;
+	Mon, 27 May 2024 19:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837919; cv=none; b=kRqPygajtlSj8YciA6WdKwUgM6gmbivzDjZMJEPs2XcHkN+/0EmQZEG1L+Do27TTfFx3iFEcNrnp2ipRxuE7I43R9yiEJCvLwTVeuMQDYl6t+q0Q7xuT1/3PXd5ZCn1ieY3FT5wMwThx+XcqI79IR92cTEDqhczk7wdWk4K6KyY=
+	t=1716836690; cv=none; b=HTTTtfqA+UEqnJNA5RtO1B+tfekDBTLLO/quAodPbuuRr8n4N3PptOjxV2DPEuAf3pEcgs7nLPj9dftbYfqbK+Ts3kqSZzp+X3POiN/Ti3gYrA0bJ9qnBjhHWV0+0gsv62ywYDOS32bVGoHB08ogWiIkOC1Zuzjy42COx4Vc1VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837919; c=relaxed/simple;
-	bh=WWVkWGdDTAw5JVOV4bES0W6BvWfzpemIgJGcuLU3DKc=;
+	s=arc-20240116; t=1716836690; c=relaxed/simple;
+	bh=LpQ0cHaBlzZ2JwpfgMc0T0tsrMME+ABT4roSQ3VWnkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JRWTVv7eTQXxI+KjGoEZlJmswf9dIv2q/q2hr2I50ck4BNACxMG1XoXLHmOgT/X0gwv8jCOKJmORuQ6dBE1pzwOF8L6bdL4MP67A68vksfHmQKJCW9XJRRytif5IfMFZp3hexPC45lKcaA6FWtzjCd2KHL4HdYMmmspUihFUyX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8XwPQbs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CAFC2BBFC;
-	Mon, 27 May 2024 19:25:18 +0000 (UTC)
+	 MIME-Version; b=mAJ24N3gFsndQl5cEoyWCyFcr+IWPQgfmUwWcth/nhvAzvmxF/SQ/L5gBelrr0P+Nal/yLKy2/RwR/UEgzOy/SKnO47z7qmdYAARlIJVp/OJAWMAzya5bnO2NDQE88rpfveqgI4acSSB1lt31lMpJ7HfceBP0YBUvB4vl0lb1VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrgSjQEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038F6C2BBFC;
+	Mon, 27 May 2024 19:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837919;
-	bh=WWVkWGdDTAw5JVOV4bES0W6BvWfzpemIgJGcuLU3DKc=;
+	s=korg; t=1716836690;
+	bh=LpQ0cHaBlzZ2JwpfgMc0T0tsrMME+ABT4roSQ3VWnkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8XwPQbsGZx16vOejp65i4YOFWXv0BiORrG2C1NzQvJVcimFyho5KbxzN7ctoAVOE
-	 h8HsnDQNG1be8fESPpfwudm/n+b7q5sLENK3qc/u/e2+IsMNTcWnR3gv5wZQJ9K+yl
-	 qmuWXc9qwCzLf++/xSftiaiHhjASPLv3Jv+Qdu24=
+	b=rrgSjQErDnFmKii0NRJIHqnOUhQRr6C+9zRep0Bznu1ck731arTdFojfw2CSotR5x
+	 dQ4hMFY9pmcXH/mkrAA86K2bhrp/yEwjnaRx4gBNX3ti+Wc6d1aTjBdBJrclA1husM
+	 xq2xnHjArjJ6sdbT7rnzX00l/qgE6fjrOA922gzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Can Guo <quic_cang@quicinc.com>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Stafford Horne <shorne@gmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 196/493] scsi: ufs: qcom: Perform read back after writing REG_UFS_SYS1CLK_1US
+Subject: [PATCH 6.9 151/427] openrisc: Use do_kernel_power_off()
 Date: Mon, 27 May 2024 20:53:18 +0200
-Message-ID: <20240527185636.755320668@linuxfoundation.org>
+Message-ID: <20240527185616.519864786@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Stafford Horne <shorne@gmail.com>
 
-[ Upstream commit a862fafa263aea0f427d51aca6ff7fd9eeaaa8bd ]
+[ Upstream commit c94195a34e09dacfe2feef03602c911e82f49994 ]
 
-Currently after writing to REG_UFS_SYS1CLK_1US a mb() is used to ensure
-that write has gone through to the device.
+After commit 14c5678720bd ("power: reset: syscon-poweroff: Use
+devm_register_sys_off_handler(POWER_OFF)") setting up of pm_power_off
+was removed from the driver, this causes OpenRISC platforms using
+syscon-poweroff to no longer shutdown.
 
-mb() ensures that the write completes, but completion doesn't mean that it
-isn't stored in a buffer somewhere. The recommendation for ensuring this
-bit has taken effect on the device is to perform a read back to force it to
-make it all the way to the device. This is documented in device-io.rst and
-a talk by Will Deacon on this can be seen over here:
+The kernel now supports chained power-off handlers. Use
+do_kernel_power_off() that invokes chained power-off handlers.  All
+architectures have moved away from using pm_power_off except OpenRISC.
 
-    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+This patch migrates openrisc to use do_kernel_power_off() instead of the
+legacy pm_power_off().
 
-Let's do that to ensure the bit hits the device. Because the mb()'s purpose
-wasn't to add extra ordering (on top of the ordering guaranteed by
-writel()/readl()), it can safely be removed.
-
-Fixes: f06fcc7155dc ("scsi: ufs-qcom: add QUniPro hardware support and power optimizations")
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-2-181252004586@redhat.com
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 14c5678720bd ("power: reset: syscon-poweroff: Use devm_register_sys_off_handler(POWER_OFF)")
+Signed-off-by: Stafford Horne <shorne@gmail.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/openrisc/kernel/process.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index bcbcf758925be..8aa55ed45d8e0 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -507,7 +507,7 @@ static int ufs_qcom_cfg_timers(struct ufs_hba *hba, u32 gear,
- 		 * make sure above write gets applied before we return from
- 		 * this function.
- 		 */
--		mb();
-+		ufshcd_readl(hba, REG_UFS_SYS1CLK_1US);
- 	}
+diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
+index 86e02929f3ace..3c27d1c727189 100644
+--- a/arch/openrisc/kernel/process.c
++++ b/arch/openrisc/kernel/process.c
+@@ -65,7 +65,7 @@ void machine_restart(char *cmd)
+ }
  
- 	return 0;
+ /*
+- * This is used if pm_power_off has not been set by a power management
++ * This is used if a sys-off handler was not set by a power management
+  * driver, in this case we can assume we are on a simulator.  On
+  * OpenRISC simulators l.nop 1 will trigger the simulator exit.
+  */
+@@ -89,10 +89,8 @@ void machine_halt(void)
+ void machine_power_off(void)
+ {
+ 	printk(KERN_INFO "*** MACHINE POWER OFF ***\n");
+-	if (pm_power_off != NULL)
+-		pm_power_off();
+-	else
+-		default_power_off();
++	do_kernel_power_off();
++	default_power_off();
+ }
+ 
+ /*
 -- 
 2.43.0
 
