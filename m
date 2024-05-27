@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-47295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E061A8D0D69
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C57C38D0B68
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E0681C212E2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6529E1F20F0A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4CE16078F;
-	Mon, 27 May 2024 19:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC646A039;
+	Mon, 27 May 2024 19:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJbBkNt3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaXlUT2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E53262BE;
-	Mon, 27 May 2024 19:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0CF17E90E;
+	Mon, 27 May 2024 19:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838173; cv=none; b=J97BvHPuHumgx+kg2F0skp6YS3xMPQaSuSTruFgSwNInZnnki6U+lhzZvPqs/nqV7rGv31ckWQ/RCNYBj8aTlYOLIo7dXSRmd/lErBnucpfim3zWXzxaSXed7N59e6NBYD7OIkCARxeiEwGGLQVUzr4Cc4SMa7Kz3I6SmsOGZBc=
+	t=1716836941; cv=none; b=masLrqyCJCIkrszk1LJmRKIziWyt6romRFlxVZmW0V4zYp72+5828kpCMzFLNnCWTsty1O5iWvf1vSMu+hzcqwEQJlsJWYJ646JL8X4QrgtIAYJmmTIGvE1teb5WrxJczhr+jbNep0Xe0+Tr8xrX3CgAin9g3YL20ypdduQJVTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838173; c=relaxed/simple;
-	bh=hmwDLfZ2Gltj2UAL+eIZuUGlExktg+TMS7PoV1EyfNo=;
+	s=arc-20240116; t=1716836941; c=relaxed/simple;
+	bh=/jw8BuDvZ0MEuOwQyUpQ9K6gfj5ViRvGUuuwIFh99ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2r6hhcGoD6aLp+I2oIl3NPqHjQu7PfTlHjHcmGiGbdn0Seo7oqD7jUexXNvgnVOO/II53XIBFf8Ake2h6S+Z8gBhEpT2DVTMbKHAqr6p5lajMzTxn+5lNQsG4AArsxg+ep/apwX0IX6qAvSoQpO7u+bgynbIv/Oel5hYQDrKqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJbBkNt3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FBDC2BBFC;
-	Mon, 27 May 2024 19:29:32 +0000 (UTC)
+	 MIME-Version; b=WVus19qNM0S6po49u1WIs95hmkI9CfRaSKRlYyZPhRrQKwOuxzIt9cyck6RLjS0RvRLn0Am9h62U/OaRfNm+LFTtEuhK9rzIk8gdiyRequjI1OrkvlD+6cThBPhYyBW1IJnsruxtDNPIu9LCmhfZHgaAS5ctNsFE+Kgzpo2Ghb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaXlUT2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCA8C2BBFC;
+	Mon, 27 May 2024 19:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838172;
-	bh=hmwDLfZ2Gltj2UAL+eIZuUGlExktg+TMS7PoV1EyfNo=;
+	s=korg; t=1716836941;
+	bh=/jw8BuDvZ0MEuOwQyUpQ9K6gfj5ViRvGUuuwIFh99ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJbBkNt3jI0+oPP13b9ygmqR7aR68WyOQkwf66ESH9T3lMO8dmTkIN6uFWG0ez9de
-	 mTrAL81ToF5woT8o63lV0wqqrRHXuP5HkktHm13Q2m8WIw/HhP+M3CLP0JMjUGLCAv
-	 +wofebL5woBWv7jovfoA1zSAErvWKwFJXiYpBWVA=
+	b=uaXlUT2o8dG1/nxpyHXfby0CxwQ6WlguHgXcqVx7M650MJSFdZVT+nKCgWOzWuiz5
+	 Ch+r8RionE4WHQ2s9N2Ud0KQ2K3rRGHnyEWTIO2SVQpApr2pYA3uoLfYaoZm94Q0qJ
+	 I3TiPgl6xlJZdA3JZ0rY4ibTa+6l7lA9imR2tY8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 293/493] usb: aqc111: stop lying about skb->truesize
+Subject: [PATCH 6.9 248/427] ipv6: sr: add missing seg6_local_exit
 Date: Mon, 27 May 2024 20:54:55 +0200
-Message-ID: <20240527185639.886883198@linuxfoundation.org>
+Message-ID: <20240527185625.718528142@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 9aad6e45c4e7d16b2bb7c3794154b828fb4384b4 ]
+[ Upstream commit 3321687e321307629c71b664225b861ebf3e5753 ]
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+Currently, we only call seg6_local_exit() in seg6_init() if
+seg6_local_init() failed. But forgot to call it in seg6_exit().
 
-I replace one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
-
-Fixes: 361459cd9642 ("net: usb: aqc111: Implement RX data path")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240506135546.3641185-1-edumazet@google.com
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240509131812.1662197-2-liuhangbin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ net/ipv6/seg6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 7b8afa589a53c..284375f662f1e 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1141,17 +1141,15 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			continue;
- 		}
- 
--		/* Clone SKB */
--		new_skb = skb_clone(skb, GFP_ATOMIC);
-+		new_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
- 
- 		if (!new_skb)
- 			goto err;
- 
--		new_skb->len = pkt_len;
-+		skb_put(new_skb, pkt_len);
-+		memcpy(new_skb->data, skb->data, pkt_len);
- 		skb_pull(new_skb, AQ_RX_HW_PAD);
--		skb_set_tail_pointer(new_skb, new_skb->len);
- 
--		new_skb->truesize = SKB_TRUESIZE(new_skb->len);
- 		if (aqc111_data->rx_checksum)
- 			aqc111_rx_checksum(new_skb, pkt_desc);
- 
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 35508abd76f43..5423f1f2aa626 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -564,6 +564,7 @@ void seg6_exit(void)
+ 	seg6_hmac_exit();
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
++	seg6_local_exit();
+ 	seg6_iptunnel_exit();
+ #endif
+ 	unregister_pernet_subsys(&ip6_segments_ops);
 -- 
 2.43.0
 
