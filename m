@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914778D0E24
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EFAB8D0C27
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 125EAB2176F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:37:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B3FA283BF8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE3B160877;
-	Mon, 27 May 2024 19:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4838D15FD11;
+	Mon, 27 May 2024 19:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLIgKNzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjECls9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7D615FCF0;
-	Mon, 27 May 2024 19:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C26168C4;
+	Mon, 27 May 2024 19:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838641; cv=none; b=XoRXQ1ojCJDwxp+sLfZ7x+8ETuY6gw3LWTPc9053Ka3ESrm0D756mooOsVG7RbGstP0AC/sCeeJ08TEMnAX4DBACQjcJ5bDiP9pmJk/sK9X5Sl4svEMUjPhXGmDF9mReuqo24rX76wZapbBhSew1Kl63zzXMRcpAllgH4tXTdgw=
+	t=1716837398; cv=none; b=Nzjt1DMOFF1TuRK/ptUL6mFqJUtyfhR37bmjco/GFDBFcnsNRxgS6jPYr3XyPkHoA1wb2hnP6ALlnL91d4sZkW31JJhp+uCUety8hYgricrNFPKaoRLpa0P9+45WkmKGORuh4/6h4aGNWUG9eGT/0L7tVZ0FLVKif7LEi8bJGsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838641; c=relaxed/simple;
-	bh=naJ7JPCwL5yRPVojOzk5/Ep4zve9tSj6GQoajNwd7Ao=;
+	s=arc-20240116; t=1716837398; c=relaxed/simple;
+	bh=LmgSl6nOwHG2wQ+PgeuyhplsegZMjS/52OXVIibf4hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FgRj5wUHthP/X4029XY31M9/tFDnGmPz2VaXR+H8/MMEJQdkQFdCaUQbtvUufUhet+Xnve3L7UTGbYp6eNLzjQy8nwGZdrgicbTtDl6wQWEsBMzcy9VFnzlzajR/J5gsfNo4jnwAq/c/cPhiy1KICKqD1IftbV8r1BJ6S8Nyy5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLIgKNzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC167C2BBFC;
-	Mon, 27 May 2024 19:37:20 +0000 (UTC)
+	 MIME-Version; b=oCXX/lZFs/PjkIxNfhfvY15z1Vqv9koaGpJplM6CYu1pO8DkIhFp9XrGsDCs0BADUGojKDcpqN7Me8+M8ylT88Vni7Lju8A35Y6hAWr5VEh6qkvlGgxy0FlqhhCJw0cMplgI9w7SnbfxgeRa/wjXU3giYW+e9vZflfWx8ATxZfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjECls9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9068AC32781;
+	Mon, 27 May 2024 19:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838641;
-	bh=naJ7JPCwL5yRPVojOzk5/Ep4zve9tSj6GQoajNwd7Ao=;
+	s=korg; t=1716837397;
+	bh=LmgSl6nOwHG2wQ+PgeuyhplsegZMjS/52OXVIibf4hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VLIgKNzM2yFOfIoxPchKEdanVAb98R8xmj1AebxRs6LIxEcOrBc53jAT4FbMAuYZ5
-	 3MwB5Ana1+OvoVdZ1DQqXzWnnPK/8UhJslD93Zd7E6DY1dwgD6oIuuDRHKEXKiGPou
-	 Kuvwp2hBY9LSzvAwoQPI8Di0V5IPiQu+3Qx+ZaCk=
+	b=zjECls9PRfci6/Vnr7gHUCYxhcQnK9Ko/QzAX1XnO31hPgWoOwAakiSba0Ny/Dh5T
+	 zWG+gwzJO52sazHnVkKNBfIKSrpP5LJGuPhzXTg4t0H2Df/uB1mXJUdgwyPJFljLrc
+	 Naty7vOG9tsFa9bhpp32tIsH3QF3Bens7mOKQzSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>,
-	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Tom Parkin <tparkin@katalix.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 470/493] samples/landlock: Fix incorrect free in populate_ruleset_net
+Subject: [PATCH 6.9 425/427] l2tp: fix ICMP error handling for UDP-encap sockets
 Date: Mon, 27 May 2024 20:57:52 +0200
-Message-ID: <20240527185645.542082699@linuxfoundation.org>
+Message-ID: <20240527185635.857875647@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+From: Tom Parkin <tparkin@katalix.com>
 
-[ Upstream commit 42212936d9d811c7cf6efc4804747a6c417aafd4 ]
+[ Upstream commit 6e828dc60e509b79ef09882264952f341cb58425 ]
 
-Pointer env_port_name changes after strsep(). Memory allocated via
-strdup() will not be freed if landlock_add_rule() returns non-zero value.
+Since commit a36e185e8c85
+("udp: Handle ICMP errors for tunnels with same destination port on both endpoints")
+UDP's handling of ICMP errors has allowed for UDP-encap tunnels to
+determine socket associations in scenarios where the UDP hash lookup
+could not.
 
-Fixes: 5e990dcef12e ("samples/landlock: Support TCP restrictions")
-Signed-off-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Reviewed-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Link: https://lore.kernel.org/r/20240326095625.3576164-1-ivanov.mikhail1@huawei-partners.com
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Subsequently, commit d26796ae58940
+("udp: check udp sock encap_type in __udp_lib_err")
+subtly tweaked the approach such that UDP ICMP error handling would be
+skipped for any UDP socket which has encapsulation enabled.
+
+In the case of L2TP tunnel sockets using UDP-encap, this latter
+modification effectively broke ICMP error reporting for the L2TP
+control plane.
+
+To a degree this isn't catastrophic inasmuch as the L2TP control
+protocol defines a reliable transport on top of the underlying packet
+switching network which will eventually detect errors and time out.
+
+However, paying attention to the ICMP error reporting allows for more
+timely detection of errors in L2TP userspace, and aids in debugging
+connectivity issues.
+
+Reinstate ICMP error handling for UDP encap L2TP tunnels:
+
+ * implement struct udp_tunnel_sock_cfg .encap_err_rcv in order to allow
+   the L2TP code to handle ICMP errors;
+
+ * only implement error-handling for tunnels which have a managed
+   socket: unmanaged tunnels using a kernel socket have no userspace to
+   report errors back to;
+
+ * flag the error on the socket, which allows for userspace to get an
+   error such as -ECONNREFUSED back from sendmsg/recvmsg;
+
+ * pass the error into ip[v6]_icmp_error() which allows for userspace to
+   get extended error information via. MSG_ERRQUEUE.
+
+Fixes: d26796ae5894 ("udp: check udp sock encap_type in __udp_lib_err")
+Signed-off-by: Tom Parkin <tparkin@katalix.com>
+Link: https://lore.kernel.org/r/20240513172248.623261-1-tparkin@katalix.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/landlock/sandboxer.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/l2tp/l2tp_core.c | 44 +++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 33 insertions(+), 11 deletions(-)
 
-diff --git a/samples/landlock/sandboxer.c b/samples/landlock/sandboxer.c
-index 08596c0ef0707..e6c59f688573a 100644
---- a/samples/landlock/sandboxer.c
-+++ b/samples/landlock/sandboxer.c
-@@ -151,7 +151,7 @@ static int populate_ruleset_net(const char *const env_var, const int ruleset_fd,
- 				const __u64 allowed_access)
- {
- 	int ret = 1;
--	char *env_port_name, *strport;
-+	char *env_port_name, *env_port_name_next, *strport;
- 	struct landlock_net_port_attr net_port = {
- 		.allowed_access = allowed_access,
- 		.port = 0,
-@@ -163,7 +163,8 @@ static int populate_ruleset_net(const char *const env_var, const int ruleset_fd,
- 	env_port_name = strdup(env_port_name);
- 	unsetenv(env_var);
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 8d21ff25f1602..4a0fb8731eee9 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -887,22 +887,20 @@ static int l2tp_udp_recv_core(struct l2tp_tunnel *tunnel, struct sk_buff *skb)
+ 	return 1;
+ }
  
--	while ((strport = strsep(&env_port_name, ENV_DELIMITER))) {
-+	env_port_name_next = env_port_name;
-+	while ((strport = strsep(&env_port_name_next, ENV_DELIMITER))) {
- 		net_port.port = atoi(strport);
- 		if (landlock_add_rule(ruleset_fd, LANDLOCK_RULE_NET_PORT,
- 				      &net_port, 0)) {
+-/* UDP encapsulation receive handler. See net/ipv4/udp.c.
+- * Return codes:
+- * 0 : success.
+- * <0: error
+- * >0: skb should be passed up to userspace as UDP.
++/* UDP encapsulation receive and error receive handlers.
++ * See net/ipv4/udp.c for details.
++ *
++ * Note that these functions are called from inside an
++ * RCU-protected region, but without the socket being locked.
++ *
++ * Hence we use rcu_dereference_sk_user_data to access the
++ * tunnel data structure rather the usual l2tp_sk_to_tunnel
++ * accessor function.
+  */
+ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct l2tp_tunnel *tunnel;
+ 
+-	/* Note that this is called from the encap_rcv hook inside an
+-	 * RCU-protected region, but without the socket being locked.
+-	 * Hence we use rcu_dereference_sk_user_data to access the
+-	 * tunnel data structure rather the usual l2tp_sk_to_tunnel
+-	 * accessor function.
+-	 */
+ 	tunnel = rcu_dereference_sk_user_data(sk);
+ 	if (!tunnel)
+ 		goto pass_up;
+@@ -919,6 +917,29 @@ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ }
+ EXPORT_SYMBOL_GPL(l2tp_udp_encap_recv);
+ 
++static void l2tp_udp_encap_err_recv(struct sock *sk, struct sk_buff *skb, int err,
++				    __be16 port, u32 info, u8 *payload)
++{
++	struct l2tp_tunnel *tunnel;
++
++	tunnel = rcu_dereference_sk_user_data(sk);
++	if (!tunnel || tunnel->fd < 0)
++		return;
++
++	sk->sk_err = err;
++	sk_error_report(sk);
++
++	if (ip_hdr(skb)->version == IPVERSION) {
++		if (inet_test_bit(RECVERR, sk))
++			return ip_icmp_error(sk, skb, err, port, info, payload);
++#if IS_ENABLED(CONFIG_IPV6)
++	} else {
++		if (inet6_test_bit(RECVERR6, sk))
++			return ipv6_icmp_error(sk, skb, err, port, info, payload);
++#endif
++	}
++}
++
+ /************************************************************************
+  * Transmit handling
+  ***********************************************************************/
+@@ -1493,6 +1514,7 @@ int l2tp_tunnel_register(struct l2tp_tunnel *tunnel, struct net *net,
+ 			.sk_user_data = tunnel,
+ 			.encap_type = UDP_ENCAP_L2TPINUDP,
+ 			.encap_rcv = l2tp_udp_encap_recv,
++			.encap_err_rcv = l2tp_udp_encap_err_recv,
+ 			.encap_destroy = l2tp_udp_encap_destroy,
+ 		};
+ 
 -- 
 2.43.0
 
