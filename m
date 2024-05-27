@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-46896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD4D8D0BB4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 071C28D0BC3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 422DB1F21A8C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9195D1F23408
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D181826ACA;
-	Mon, 27 May 2024 19:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF59A15FCF1;
+	Mon, 27 May 2024 19:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icuoAROI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wabdxrr6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905C517E90E;
-	Mon, 27 May 2024 19:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC0217E90E;
+	Mon, 27 May 2024 19:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837134; cv=none; b=mG/NIdqCqaDsoUWoDW66Plwkak95eEJ+1LrzoXdMPV33H6vwuwflWY3husq3RVS7CKngCCXp5A8OwSrxTHU+m5PqmdxzbfoI7S1zFWJ4fyYN0LppKxjBZYicp29pqQ7tNZEARFY5HXQwwCzAnj1y+RvqXggLFOaHLaKgwZEv4sk=
+	t=1716837162; cv=none; b=eSiHVxg9ZUXKFT2TQdcgMMN3oXTjvWu58MrRZw6rTe1bSnDztluv9iQ+o5AII3MrMOcGktEQNLu5w4yvKPgc7jOt5R5ZEKbFMf8PPFwApyknNG43HtzTockG/E+C7NqvxTGgjiY0ReGR0yyuKMgqhE9VX7aw433/jXrlIgbIPZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837134; c=relaxed/simple;
-	bh=toZnJGdjfZWtalC0DAmUwtOLdc0rNqI0dP0VZLIXNb8=;
+	s=arc-20240116; t=1716837162; c=relaxed/simple;
+	bh=CXW7Y1MTZnk1eO/wtu6dIzQnSMhjIpapW29azKIDTGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iji0Lexgk+Vu+qIhKQ7XFSL1UNkwRgTL6uQqO38KGtsDwuKMSCV93+ocoz5wYGSutn7uxokbiKOQi/YvRS7ferUxOnysziiuQy/XdISr4dxoLGCHTdct8cn4W75q6ut52qOIltiMtdWD2lPYmFdLTc1MrcYunZ+YBkKwZ7ZEnVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icuoAROI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FB9C2BBFC;
-	Mon, 27 May 2024 19:12:14 +0000 (UTC)
+	 MIME-Version; b=O6Qy/ShEWtMuooFeAfQrNPbZw8ff5q3jNTtbE6zG8Zo60AJQxq3Afhc0WUZcSLt5938CAWZ/v3GnndFYo3y5jDJW85yl6J+l2oP8nMOOYUTxhKMycCxLZH0YAemU4htVVPAbdEYl+BsXmsBiIQzqshgm4V5bRcsJRm+29JY1JPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wabdxrr6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE88C2BBFC;
+	Mon, 27 May 2024 19:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837134;
-	bh=toZnJGdjfZWtalC0DAmUwtOLdc0rNqI0dP0VZLIXNb8=;
+	s=korg; t=1716837162;
+	bh=CXW7Y1MTZnk1eO/wtu6dIzQnSMhjIpapW29azKIDTGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icuoAROIjas2SVZNHzpfJF5JvqYpwNfNK4mn0nMJdL7d9uu9Xrq2cvypNxilayxjp
-	 TX7O+CdfuuP7feAWTi+JoxqoHRQEa0+3Wxug3NN9F/I4RI7rLAIq0xnGgmVr6RT3qx
-	 gCjTNuv/ADovVhOexdnK5FVjTJDKm9B3i5zye+TM=
+	b=Wabdxrr6uZzhsteutcKgnawnW+HD5B0bvzMLsrlN9+SN6pcgE/68tjkJFdhk/lKri
+	 pOdzn+wcYyHYJVk7fo7Z/0zZsY9d9bGSy+R1Y63QScZztgRz+j6BqXBScUKsakAJIS
+	 cE+Rhp4etYEaxjQfPP21bsHOXpADUmVd+dr75pOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Robert Foss <rfoss@kernel.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 316/427] drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference
-Date: Mon, 27 May 2024 20:56:03 +0200
-Message-ID: <20240527185631.283064794@linuxfoundation.org>
+Subject: [PATCH 6.9 317/427] platform/x86: xiaomi-wmi: Fix race condition when reporting key events
+Date: Mon, 27 May 2024 20:56:04 +0200
+Message-ID: <20240527185631.355312808@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -66,41 +67,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 935a92a1c400285545198ca2800a4c6c519c650a ]
+[ Upstream commit 290680c2da8061e410bcaec4b21584ed951479af ]
 
-In cdns_mhdp_atomic_enable(), the return value of drm_mode_duplicate() is
-assigned to mhdp_state->current_mode, and there is a dereference of it in
-drm_mode_set_name(), which will lead to a NULL pointer dereference on
-failure of drm_mode_duplicate().
+Multiple WMI events can be received concurrently, so multiple instances
+of xiaomi_wmi_notify() can be active at the same time. Since the input
+device is shared between those handlers, the key input sequence can be
+disturbed.
 
-Fix this bug add a check of mhdp_state->current_mode.
+Fix this by protecting the key input sequence with a mutex.
 
-Fixes: fb43aa0acdfd ("drm: bridge: Add support for Cadence MHDP8546 DPI/DP bridge")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240408125810.21899-1-amishin@t-argos.ru
+Compile-tested only.
+
+Fixes: edb73f4f0247 ("platform/x86: wmi: add Xiaomi WMI key driver")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20240402143059.8456-2-W_Armin@gmx.de
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/x86/xiaomi-wmi.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-index e226acc5c15e1..8a91ef0ae0651 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
-@@ -2059,6 +2059,9 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
- 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
+diff --git a/drivers/platform/x86/xiaomi-wmi.c b/drivers/platform/x86/xiaomi-wmi.c
+index 54a2546bb93bf..be80f0bda9484 100644
+--- a/drivers/platform/x86/xiaomi-wmi.c
++++ b/drivers/platform/x86/xiaomi-wmi.c
+@@ -2,8 +2,10 @@
+ /* WMI driver for Xiaomi Laptops */
  
- 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
-+	if (!mhdp_state->current_mode)
-+		return;
+ #include <linux/acpi.h>
++#include <linux/device.h>
+ #include <linux/input.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/wmi.h>
+ 
+ #include <uapi/linux/input-event-codes.h>
+@@ -20,12 +22,21 @@
+ 
+ struct xiaomi_wmi {
+ 	struct input_dev *input_dev;
++	struct mutex key_lock;	/* Protects the key event sequence */
+ 	unsigned int key_code;
+ };
+ 
++static void xiaomi_mutex_destroy(void *data)
++{
++	struct mutex *lock = data;
 +
- 	drm_mode_set_name(mhdp_state->current_mode);
++	mutex_destroy(lock);
++}
++
+ static int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
+ {
+ 	struct xiaomi_wmi *data;
++	int ret;
  
- 	dev_dbg(mhdp->dev, "%s: Enabling mode %s\n", __func__, mode->name);
+ 	if (wdev == NULL || context == NULL)
+ 		return -EINVAL;
+@@ -35,6 +46,11 @@ static int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
+ 		return -ENOMEM;
+ 	dev_set_drvdata(&wdev->dev, data);
+ 
++	mutex_init(&data->key_lock);
++	ret = devm_add_action_or_reset(&wdev->dev, xiaomi_mutex_destroy, &data->key_lock);
++	if (ret < 0)
++		return ret;
++
+ 	data->input_dev = devm_input_allocate_device(&wdev->dev);
+ 	if (data->input_dev == NULL)
+ 		return -ENOMEM;
+@@ -59,10 +75,12 @@ static void xiaomi_wmi_notify(struct wmi_device *wdev, union acpi_object *dummy)
+ 	if (data == NULL)
+ 		return;
+ 
++	mutex_lock(&data->key_lock);
+ 	input_report_key(data->input_dev, data->key_code, 1);
+ 	input_sync(data->input_dev);
+ 	input_report_key(data->input_dev, data->key_code, 0);
+ 	input_sync(data->input_dev);
++	mutex_unlock(&data->key_lock);
+ }
+ 
+ static const struct wmi_device_id xiaomi_wmi_id_table[] = {
 -- 
 2.43.0
 
