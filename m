@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8971A8D0B2E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E628D0D36
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB2781C214EB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 032CA1F21F7B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2017E26ACA;
-	Mon, 27 May 2024 19:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECC415FD0F;
+	Mon, 27 May 2024 19:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRGpGh5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIJ6Z7N5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08C217E90E;
-	Mon, 27 May 2024 19:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB90262BE;
+	Mon, 27 May 2024 19:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836814; cv=none; b=gcemYhOxIvWwoyZOOc87njjHoCbr9Mh9wVapfk12cSdhIoPIvEN26zq9bojlmJImtkOmLxeVA6PToMYgapAubet9frxg4FCqmncX940yR5NeahdkytuLGLwyooVSFu79lP2s/l8LsWuMRZsheRcp7HaVo+cWKGHtxixLXbCv+bE=
+	t=1716838042; cv=none; b=tqD46lxNlCTH+qtFRYyqz24PVyWtdCKSE8bEc3Yd9X01WZ33i0YWt0wwaDAliaKp75GwYp/7duJF/WOgLUeUqN3gnc4+lE1Isy8i2KiB3tCuSGjpEzXEVSsH30wuuJeVWx7pr632hes8VgGzSkl9GefQ3jQowKdTjhFt5t10qQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836814; c=relaxed/simple;
-	bh=tYYo/cByGVNI7Gg4BpvjN+IVen7jUNkjA8qmG3f3QUc=;
+	s=arc-20240116; t=1716838042; c=relaxed/simple;
+	bh=VNAArefKWp5eldadxbL7j7YrwpoChqGcLzSFUbAAJ+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YkZpnesG39k8Q/Am4LbPw+D9bc0pIDRSWPplbjmhwd0cL6NiqgupiFHOb+7FX4K6SJTuN92MB1872X85/fNI0+g4lfbfywUj935jDvsyeaclvPYayvURX4kj7yJV49aBZijdHz7TvYuz/PfcCV9ialVbVb41XQJCV5hAq1KIErw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRGpGh5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F9FC2BBFC;
-	Mon, 27 May 2024 19:06:54 +0000 (UTC)
+	 MIME-Version; b=Ctvvg0lE8C+HbCXmETIP4OebUQx4K/H42vDPJP96czOzx1LAwtKVPIVfzy+PJkuqY88UMdD9NmSjCsITbYlb2TcxeceY6qxTOEBD4cIZrSLm2KRn5xRHjXjCTSEALSC7Wht24BqH0CWm1tl1aTsAu9p9/QaCFrkHeb9YW7x10as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIJ6Z7N5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65DAC2BBFC;
+	Mon, 27 May 2024 19:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836814;
-	bh=tYYo/cByGVNI7Gg4BpvjN+IVen7jUNkjA8qmG3f3QUc=;
+	s=korg; t=1716838042;
+	bh=VNAArefKWp5eldadxbL7j7YrwpoChqGcLzSFUbAAJ+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRGpGh5wqv2acklNhysU/c479R3MMdHs3gTwl3iaJF19zkBPtbQZ24bP23Is5PMfP
-	 pAovoSRfzipER0txFm0ie0XG3odw9q5gWCt3w4bxG4hgl+szfs5BulEjBw2qNKmoi8
-	 HsovbdIRritm6XqnLafyB39+x48Ip2878hFOKXiU=
+	b=fIJ6Z7N5rYXlCM6OqSc5mfPY9yKwP3h+h1bEsoBATpGXUltXbTgINPYeSV1vqgquo
+	 LutGOs5OM4mt1wjFRLIh/xGmoRKQRd5fRhsniPbgBtNdBNCzsMKP8F0s46e5Uvq90f
+	 joPx1v4pX2fO/QwWil2zQlYBrx5x2FFy0Mf/DdF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 199/427] wifi: mt76: connac: check for null before dereferencing
+Subject: [PATCH 6.8 244/493] thermal/debugfs: Create records for cdev states as they get used
 Date: Mon, 27 May 2024 20:54:06 +0200
-Message-ID: <20240527185620.839227149@linuxfoundation.org>
+Message-ID: <20240527185638.288213918@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit cb47c7be0e93dd5acda078163799401ac3a78e10 ]
+[ Upstream commit f4ae18fcb652c6cccc834ded525ac37f91d5cdb1 ]
 
-The wcid can be NULL. It should be checked for validity before
-dereferencing it to avoid crash.
+Because thermal_debug_cdev_state_update() only creates a duration record
+for the old state of a cooling device, if its new state is used for the
+first time, there will be no record for it and cdev_dt_seq_show() will
+not print the duration information for it even though it contains code
+to compute the duration value in that case.
 
-Fixes: 098428c400ff ("wifi: mt76: connac: set correct muar_idx for mt799x chipsets")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Address this by making thermal_debug_cdev_state_update() create a
+duration record for the new state if there is none.
+
+Fixes: 755113d76786 ("thermal/debugfs: Add thermal cooling device debugfs information")
+Reported-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Tested-by: Lukasz Luba <lukasz.luba@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/thermal_debugfs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index af0c2b2aacb00..7af60eebe517a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -283,7 +283,7 @@ __mt76_connac_mcu_alloc_sta_req(struct mt76_dev *dev, struct mt76_vif *mvif,
- 	};
- 	struct sk_buff *skb;
+diff --git a/drivers/thermal/thermal_debugfs.c b/drivers/thermal/thermal_debugfs.c
+index 47ab95b3699e9..2891d2ab4875c 100644
+--- a/drivers/thermal/thermal_debugfs.c
++++ b/drivers/thermal/thermal_debugfs.c
+@@ -435,6 +435,14 @@ void thermal_debug_cdev_state_update(const struct thermal_cooling_device *cdev,
+ 	}
  
--	if (is_mt799x(dev) && !wcid->sta)
-+	if (is_mt799x(dev) && wcid && !wcid->sta)
- 		hdr.muar_idx = 0xe;
+ 	cdev_dbg->current_state = new_state;
++
++	/*
++	 * Create a record for the new state if it is not there, so its
++	 * duration will be printed by cdev_dt_seq_show() as expected if it
++	 * runs before the next state transition.
++	 */
++	thermal_debugfs_cdev_record_get(thermal_dbg, cdev_dbg->durations, new_state);
++
+ 	transition = (old_state << 16) | new_state;
  
- 	mt76_connac_mcu_get_wlan_idx(dev, wcid, &hdr.wlan_idx_lo,
+ 	/*
 -- 
 2.43.0
 
