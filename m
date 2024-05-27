@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D038D0ADA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2654E8D0CC0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A514EB224AD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF282873CE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136E815FCF0;
-	Mon, 27 May 2024 19:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC611607B2;
+	Mon, 27 May 2024 19:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LslM40Jt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERVnW7YS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6777D518;
-	Mon, 27 May 2024 19:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F004B15FD04;
+	Mon, 27 May 2024 19:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836606; cv=none; b=XBOWEXYPeGFUuMpeeX2t59wPE1Z+ZQ5S2+66YI65xiu02IVsmFzCuMyqP6rJKXIUJx3CffDMeCzhDOcHw0KR5tPcSwHz2wLllbnIt+avy4WH2VeUCZRuG0Izm/pKG6VQtiwnKdfBJMw1/y8G9hR3Qe+TK1XHuwxMBTwVKmryy6Q=
+	t=1716837768; cv=none; b=Ld69cE+TqRwoT+2LbWAPnkzBwCeQlcvM4NUubP5rl7yquJv2L4YbrywyFs1yiDZaPJkxW5ZQb+2+1DCC10pWJGlmpndkS7frRMwr7RUEsQLcOMe6ocE3MKRb3bL6GfCVxe34NmMcHT6c1gVtbsrsD2hRQIsU0ajnnMBLONfm4nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836606; c=relaxed/simple;
-	bh=26fOH7Z1GlvvlbQvbwX4wBiuqGyhs38zj5RWvKpMLY0=;
+	s=arc-20240116; t=1716837768; c=relaxed/simple;
+	bh=dF9tuzo1TTIas3vPa4wXhIZK9gKZobfbCoXv2eP/Z2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfywF65yn3H92HkVJUfD9nTPaM1AultM3JfLbX7RyE6TG9cXH3NJZChMGBg3kq7CQ7vuK7VgA4sCJ/MAu40f2r/IGZ3M049eSPT2s0o7ipOdte0Rk3KZi7sadlmK2qYwMjd8CB9Ilx/FlqJTWYBExXd1Em0VzMFD3Vuu4p4U2tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LslM40Jt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4829FC2BBFC;
-	Mon, 27 May 2024 19:03:25 +0000 (UTC)
+	 MIME-Version; b=mz6vJHyNMIDk2Spu9gLSQkDK6eq2EqvGh5cKtfTH/DmffNnb7tiPV3DkbDb/2MJ1NBnktSuwYda0zVhRKf2s5XNC8FEwVJoR9S+Jb1GA8EtaYG56IsNDt3xZqicodiAJnlAXKXHcRNPtuaUR1uYQ7SvxSKd3W090LRSfMK7acps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERVnW7YS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819F1C2BBFC;
+	Mon, 27 May 2024 19:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836605;
-	bh=26fOH7Z1GlvvlbQvbwX4wBiuqGyhs38zj5RWvKpMLY0=;
+	s=korg; t=1716837767;
+	bh=dF9tuzo1TTIas3vPa4wXhIZK9gKZobfbCoXv2eP/Z2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LslM40JtbHKf1Fn6my98KNkgWQI+1IAbeo7VRt1ZpoXxlo3eHUNnaTIT0mgYu9evS
-	 Eszu79dudFAks1uFZsMeZmScnsxq4l9K4NcomDoHKqvUv1EyN7gQKwtRs7XLtPMUhi
-	 pSGPauCt4OV9rjfzFoCp6Fl/hPcVVVeoUJq7HO7k=
+	b=ERVnW7YSL5JBWf+eviyNXu4BvuFOlgERLOo274MdzaPrSQ1HPw4Zd3dWxyBZEPqc2
+	 MJiL0tpG1f2P+72realgBU+cb3xumxjhNAcow5vsLHPcWlee3AzoxvhJ/Asy9ti1c4
+	 58g9zmdWKsFH5fmyJ5CwA4OM2a8bYrcl8BD4q2Uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 092/427] wifi: ath11k: dont force enable power save on non-running vdevs
-Date: Mon, 27 May 2024 20:52:19 +0200
-Message-ID: <20240527185610.306105869@linuxfoundation.org>
+Subject: [PATCH 6.8 138/493] s390/mm: Re-enable the shared zeropage for !PV and !skeys KVM guests
+Date: Mon, 27 May 2024 20:52:20 +0200
+Message-ID: <20240527185634.973640317@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +63,371 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 01296b39d3515f20a1db64d3c421c592b1e264a0 ]
+[ Upstream commit 06201e00ee3e4beacac48aab2b83eff64ebf0bc0 ]
 
-Currently we force enable power save on non-running vdevs, this results
-in unexpected ping latency in below scenarios:
-	1. disable power save from userspace.
-	2. trigger suspend/resume.
+commit fa41ba0d08de ("s390/mm: avoid empty zero pages for KVM guests to
+avoid postcopy hangs") introduced an undesired side effect when combined
+with memory ballooning and VM migration: memory part of the inflated
+memory balloon will consume memory.
 
-With step 1 power save is disabled successfully and we get a good latency:
+Assuming we have a 100GiB VM and inflated the balloon to 40GiB. Our VM
+will consume ~60GiB of memory. If we now trigger a VM migration,
+hypervisors like QEMU will read all VM memory. As s390x does not support
+the shared zeropage, we'll end up allocating for all previously-inflated
+memory part of the memory balloon: 50 GiB. So we might easily
+(unexpectedly) crash the VM on the migration source.
 
-PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
-64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=5.13 ms
-64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=5.45 ms
-64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=5.99 ms
-64 bytes from 192.168.1.1: icmp_seq=4 ttl=64 time=6.34 ms
-64 bytes from 192.168.1.1: icmp_seq=5 ttl=64 time=4.47 ms
-64 bytes from 192.168.1.1: icmp_seq=6 ttl=64 time=6.45 ms
+Even worse, hypervisors like QEMU optimize for zeropage migration to not
+consume memory on the migration destination: when migrating a
+"page full of zeroes", on the migration destination they check whether the
+target memory is already zero (by reading the destination memory) and avoid
+writing to the memory to not allocate memory: however, s390x will also
+allocate memory here, implying that also on the migration destination, we
+will end up allocating all previously-inflated memory part of the memory
+balloon.
 
-While after step 2, the latency becomes much larger:
+This is especially bad if actual memory overcommit was not desired, when
+memory ballooning is used for dynamic VM memory resizing, setting aside
+some memory during boot that can be added later on demand. Alternatives
+like virtio-mem that would avoid this issue are not yet available on
+s390x.
 
-PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
-64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=17.7 ms
-64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=15.0 ms
-64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=14.3 ms
-64 bytes from 192.168.1.1: icmp_seq=4 ttl=64 time=16.5 ms
-64 bytes from 192.168.1.1: icmp_seq=5 ttl=64 time=20.1 ms
+There could be ways to optimize some cases in user space: before reading
+memory in an anonymous private mapping on the migration source, check via
+/proc/self/pagemap if anything is already populated. Similarly check on
+the migration destination before reading. While that would avoid
+populating tables full of shared zeropages on all architectures, it's
+harder to get right and performant, and requires user space changes.
 
-The reason is, with step 2, power save is force enabled due to vdev not
-running, although mac80211 was trying to disable it to honor userspace
-configuration:
+Further, with posctopy live migration we must place a page, so there,
+"avoid touching memory to avoid allocating memory" is not really
+possible. (Note that a previously we would have falsely inserted
+shared zeropages into processes using UFFDIO_ZEROPAGE where
+mm_forbids_zeropage() would have actually forbidden it)
 
-ath11k_pci 0000:03:00.0: wmi cmd sta powersave mode psmode 1 vdev id 0
-Call Trace:
- ath11k_wmi_pdev_set_ps_mode
- ath11k_mac_op_bss_info_changed
- ieee80211_bss_info_change_notify
- ieee80211_reconfig
- ieee80211_resume
- wiphy_resume
+PV is currently incompatible with memory ballooning, and in the common
+case, KVM guests don't make use of storage keys. Instead of zapping
+zeropages when enabling storage keys / PV, that turned out to be
+problematic in the past, let's do exactly the same we do with KSM pages:
+trigger unsharing faults to replace the shared zeropages by proper
+anonymous folios.
 
-This logic is taken from ath10k where it was added due to below comment:
+What about added latency when enabling storage kes? Having a lot of
+zeropages in applicable environments (PV, legacy guests, unittests) is
+unexpected. Further, KSM could today already unshare the zeropages
+and unmerging KSM pages when enabling storage kets would unshare the
+KSM-placed zeropages in the same way, resulting in the same latency.
 
-	Firmware doesn't behave nicely and consumes more power than
-	necessary if PS is disabled on a non-started vdev.
+[ agordeev: Fixed sparse and checkpatch complaints and error handling ]
 
-However we don't know whether such an issue also occurs to ath11k firmware
-or not. But even if it does, it's not appropriate because it goes against
-userspace, even cfg/mac80211 don't know we have enabled it in fact.
-
-Remove it to fix this issue. In this way we not only get a better latency,
-but also, and the most important, keeps the consistency between userspace
-and kernel/driver. The biggest price for that would be the power consumption,
-which is not that important, compared with the consistency.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Fixes: b2beffa7d9a6 ("ath11k: enable 802.11 power save mode in station mode")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240309113115.11498-1-quic_bqiang@quicinc.com
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Fixes: fa41ba0d08de ("s390/mm: avoid empty zero pages for KVM guests to avoid postcopy hangs")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/r/20240411161441.910170-3-david@redhat.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ arch/s390/include/asm/gmap.h        |   2 +-
+ arch/s390/include/asm/mmu.h         |   5 +
+ arch/s390/include/asm/mmu_context.h |   1 +
+ arch/s390/include/asm/pgtable.h     |  16 ++-
+ arch/s390/kvm/kvm-s390.c            |   4 +-
+ arch/s390/mm/gmap.c                 | 165 +++++++++++++++++++++-------
+ 6 files changed, 146 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 9f4bf41a3d41e..2fca415322aec 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1231,14 +1231,7 @@ static int ath11k_mac_vif_setup_ps(struct ath11k_vif *arvif)
+diff --git a/arch/s390/include/asm/gmap.h b/arch/s390/include/asm/gmap.h
+index 5cc46e0dde620..9725586f42597 100644
+--- a/arch/s390/include/asm/gmap.h
++++ b/arch/s390/include/asm/gmap.h
+@@ -146,7 +146,7 @@ int gmap_mprotect_notify(struct gmap *, unsigned long start,
  
- 	enable_ps = arvif->ps;
+ void gmap_sync_dirty_log_pmd(struct gmap *gmap, unsigned long dirty_bitmap[4],
+ 			     unsigned long gaddr, unsigned long vmaddr);
+-int gmap_mark_unmergeable(void);
++int s390_disable_cow_sharing(void);
+ void s390_unlist_old_asce(struct gmap *gmap);
+ int s390_replace_asce(struct gmap *gmap);
+ void s390_uv_destroy_pfns(unsigned long count, unsigned long *pfns);
+diff --git a/arch/s390/include/asm/mmu.h b/arch/s390/include/asm/mmu.h
+index bb1b4bef1878b..4c2dc7abc2858 100644
+--- a/arch/s390/include/asm/mmu.h
++++ b/arch/s390/include/asm/mmu.h
+@@ -32,6 +32,11 @@ typedef struct {
+ 	unsigned int uses_skeys:1;
+ 	/* The mmu context uses CMM. */
+ 	unsigned int uses_cmm:1;
++	/*
++	 * The mmu context allows COW-sharing of memory pages (KSM, zeropage).
++	 * Note that COW-sharing during fork() is currently always allowed.
++	 */
++	unsigned int allow_cow_sharing:1;
+ 	/* The gmaps associated with this context are allowed to use huge pages. */
+ 	unsigned int allow_gmap_hpage_1m:1;
+ } mm_context_t;
+diff --git a/arch/s390/include/asm/mmu_context.h b/arch/s390/include/asm/mmu_context.h
+index 929af18b09081..a7789a9f62186 100644
+--- a/arch/s390/include/asm/mmu_context.h
++++ b/arch/s390/include/asm/mmu_context.h
+@@ -35,6 +35,7 @@ static inline int init_new_context(struct task_struct *tsk,
+ 	mm->context.has_pgste = 0;
+ 	mm->context.uses_skeys = 0;
+ 	mm->context.uses_cmm = 0;
++	mm->context.allow_cow_sharing = 1;
+ 	mm->context.allow_gmap_hpage_1m = 0;
+ #endif
+ 	switch (mm->context.asce_limit) {
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 12a7b86789259..0a7055518ba20 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -566,10 +566,20 @@ static inline pud_t set_pud_bit(pud_t pud, pgprot_t prot)
+ }
  
--	if (!arvif->is_started) {
--		/* mac80211 can update vif powersave state while disconnected.
--		 * Firmware doesn't behave nicely and consumes more power than
--		 * necessary if PS is disabled on a non-started vdev. Hence
--		 * force-enable PS for non-running vdevs.
--		 */
--		psmode = WMI_STA_PS_MODE_ENABLED;
--	} else if (enable_ps) {
-+	if (enable_ps) {
- 		psmode = WMI_STA_PS_MODE_ENABLED;
- 		param = WMI_STA_PS_PARAM_INACTIVITY_TIME;
+ /*
+- * In the case that a guest uses storage keys
+- * faults should no longer be backed by zero pages
++ * As soon as the guest uses storage keys or enables PV, we deduplicate all
++ * mapped shared zeropages and prevent new shared zeropages from getting
++ * mapped.
+  */
+-#define mm_forbids_zeropage mm_has_pgste
++#define mm_forbids_zeropage mm_forbids_zeropage
++static inline int mm_forbids_zeropage(struct mm_struct *mm)
++{
++#ifdef CONFIG_PGSTE
++	if (!mm->context.allow_cow_sharing)
++		return 1;
++#endif
++	return 0;
++}
++
+ static inline int mm_uses_skeys(struct mm_struct *mm)
+ {
+ #ifdef CONFIG_PGSTE
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index ea63ac7698891..7c17be6ad4802 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -2631,9 +2631,7 @@ static int kvm_s390_handle_pv(struct kvm *kvm, struct kvm_pv_cmd *cmd)
+ 		if (r)
+ 			break;
  
+-		mmap_write_lock(current->mm);
+-		r = gmap_mark_unmergeable();
+-		mmap_write_unlock(current->mm);
++		r = s390_disable_cow_sharing();
+ 		if (r)
+ 			break;
+ 
+diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
+index 41a4a60c5e651..3b57837f3e914 100644
+--- a/arch/s390/mm/gmap.c
++++ b/arch/s390/mm/gmap.c
+@@ -2547,41 +2547,6 @@ static inline void thp_split_mm(struct mm_struct *mm)
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+-/*
+- * Remove all empty zero pages from the mapping for lazy refaulting
+- * - This must be called after mm->context.has_pgste is set, to avoid
+- *   future creation of zero pages
+- * - This must be called after THP was disabled.
+- *
+- * mm contracts with s390, that even if mm were to remove a page table,
+- * racing with the loop below and so causing pte_offset_map_lock() to fail,
+- * it will never insert a page table containing empty zero pages once
+- * mm_forbids_zeropage(mm) i.e. mm->context.has_pgste is set.
+- */
+-static int __zap_zero_pages(pmd_t *pmd, unsigned long start,
+-			   unsigned long end, struct mm_walk *walk)
+-{
+-	unsigned long addr;
+-
+-	for (addr = start; addr != end; addr += PAGE_SIZE) {
+-		pte_t *ptep;
+-		spinlock_t *ptl;
+-
+-		ptep = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+-		if (!ptep)
+-			break;
+-		if (is_zero_pfn(pte_pfn(*ptep)))
+-			ptep_xchg_direct(walk->mm, addr, ptep, __pte(_PAGE_INVALID));
+-		pte_unmap_unlock(ptep, ptl);
+-	}
+-	return 0;
+-}
+-
+-static const struct mm_walk_ops zap_zero_walk_ops = {
+-	.pmd_entry	= __zap_zero_pages,
+-	.walk_lock	= PGWALK_WRLOCK,
+-};
+-
+ /*
+  * switch on pgstes for its userspace process (for kvm)
+  */
+@@ -2599,22 +2564,142 @@ int s390_enable_sie(void)
+ 	mm->context.has_pgste = 1;
+ 	/* split thp mappings and disable thp for future mappings */
+ 	thp_split_mm(mm);
+-	walk_page_range(mm, 0, TASK_SIZE, &zap_zero_walk_ops, NULL);
+ 	mmap_write_unlock(mm);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(s390_enable_sie);
+ 
+-int gmap_mark_unmergeable(void)
++static int find_zeropage_pte_entry(pte_t *pte, unsigned long addr,
++				   unsigned long end, struct mm_walk *walk)
++{
++	unsigned long *found_addr = walk->private;
++
++	/* Return 1 of the page is a zeropage. */
++	if (is_zero_pfn(pte_pfn(*pte))) {
++		/*
++		 * Shared zeropage in e.g., a FS DAX mapping? We cannot do the
++		 * right thing and likely don't care: FAULT_FLAG_UNSHARE
++		 * currently only works in COW mappings, which is also where
++		 * mm_forbids_zeropage() is checked.
++		 */
++		if (!is_cow_mapping(walk->vma->vm_flags))
++			return -EFAULT;
++
++		*found_addr = addr;
++		return 1;
++	}
++	return 0;
++}
++
++static const struct mm_walk_ops find_zeropage_ops = {
++	.pte_entry	= find_zeropage_pte_entry,
++	.walk_lock	= PGWALK_WRLOCK,
++};
++
++/*
++ * Unshare all shared zeropages, replacing them by anonymous pages. Note that
++ * we cannot simply zap all shared zeropages, because this could later
++ * trigger unexpected userfaultfd missing events.
++ *
++ * This must be called after mm->context.allow_cow_sharing was
++ * set to 0, to avoid future mappings of shared zeropages.
++ *
++ * mm contracts with s390, that even if mm were to remove a page table,
++ * and racing with walk_page_range_vma() calling pte_offset_map_lock()
++ * would fail, it will never insert a page table containing empty zero
++ * pages once mm_forbids_zeropage(mm) i.e.
++ * mm->context.allow_cow_sharing is set to 0.
++ */
++static int __s390_unshare_zeropages(struct mm_struct *mm)
++{
++	struct vm_area_struct *vma;
++	VMA_ITERATOR(vmi, mm, 0);
++	unsigned long addr;
++	vm_fault_t fault;
++	int rc;
++
++	for_each_vma(vmi, vma) {
++		/*
++		 * We could only look at COW mappings, but it's more future
++		 * proof to catch unexpected zeropages in other mappings and
++		 * fail.
++		 */
++		if ((vma->vm_flags & VM_PFNMAP) || is_vm_hugetlb_page(vma))
++			continue;
++		addr = vma->vm_start;
++
++retry:
++		rc = walk_page_range_vma(vma, addr, vma->vm_end,
++					 &find_zeropage_ops, &addr);
++		if (rc < 0)
++			return rc;
++		else if (!rc)
++			continue;
++
++		/* addr was updated by find_zeropage_pte_entry() */
++		fault = handle_mm_fault(vma, addr,
++					FAULT_FLAG_UNSHARE | FAULT_FLAG_REMOTE,
++					NULL);
++		if (fault & VM_FAULT_OOM)
++			return -ENOMEM;
++		/*
++		 * See break_ksm(): even after handle_mm_fault() returned 0, we
++		 * must start the lookup from the current address, because
++		 * handle_mm_fault() may back out if there's any difficulty.
++		 *
++		 * VM_FAULT_SIGBUS and VM_FAULT_SIGSEGV are unexpected but
++		 * maybe they could trigger in the future on concurrent
++		 * truncation. In that case, the shared zeropage would be gone
++		 * and we can simply retry and make progress.
++		 */
++		cond_resched();
++		goto retry;
++	}
++
++	return 0;
++}
++
++static int __s390_disable_cow_sharing(struct mm_struct *mm)
+ {
++	int rc;
++
++	if (!mm->context.allow_cow_sharing)
++		return 0;
++
++	mm->context.allow_cow_sharing = 0;
++
++	/* Replace all shared zeropages by anonymous pages. */
++	rc = __s390_unshare_zeropages(mm);
+ 	/*
+ 	 * Make sure to disable KSM (if enabled for the whole process or
+ 	 * individual VMAs). Note that nothing currently hinders user space
+ 	 * from re-enabling it.
+ 	 */
+-	return ksm_disable(current->mm);
++	if (!rc)
++		rc = ksm_disable(mm);
++	if (rc)
++		mm->context.allow_cow_sharing = 1;
++	return rc;
++}
++
++/*
++ * Disable most COW-sharing of memory pages for the whole process:
++ * (1) Disable KSM and unmerge/unshare any KSM pages.
++ * (2) Disallow shared zeropages and unshare any zerpages that are mapped.
++ *
++ * Not that we currently don't bother with COW-shared pages that are shared
++ * with parent/child processes due to fork().
++ */
++int s390_disable_cow_sharing(void)
++{
++	int rc;
++
++	mmap_write_lock(current->mm);
++	rc = __s390_disable_cow_sharing(current->mm);
++	mmap_write_unlock(current->mm);
++	return rc;
+ }
+-EXPORT_SYMBOL_GPL(gmap_mark_unmergeable);
++EXPORT_SYMBOL_GPL(s390_disable_cow_sharing);
+ 
+ /*
+  * Enable storage key handling from now on and initialize the storage
+@@ -2683,7 +2768,7 @@ int s390_enable_skey(void)
+ 		goto out_up;
+ 
+ 	mm->context.uses_skeys = 1;
+-	rc = gmap_mark_unmergeable();
++	rc = __s390_disable_cow_sharing(mm);
+ 	if (rc) {
+ 		mm->context.uses_skeys = 0;
+ 		goto out_up;
 -- 
 2.43.0
 
