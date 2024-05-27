@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057A48D0A5A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 20:59:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9CB18D0C6E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95D2FB21561
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:59:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 575461F22276
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21EB15FA8C;
-	Mon, 27 May 2024 18:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56F215A84C;
+	Mon, 27 May 2024 19:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRaNcRed"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQH8Dc2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C7F15FD19;
-	Mon, 27 May 2024 18:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94033168C4;
+	Mon, 27 May 2024 19:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836345; cv=none; b=RWH9FkLKp/3+kvKEhBNsYNZnf8k7AUqcyrT+MsHCyE+L52dUsZpXLb2kUENeGKoaiDhYUP2WQnA3eNT+E9gVlnQYgHhTQstfa257rgiSCzxXOetHlPbIsYYYr5YVUvz6GwptxRGzxWKre+vt55ty4G99UyMx8sUZfP+R8ODl0qU=
+	t=1716837574; cv=none; b=rEO4Zccxdr0wBmSRvNhwZwYvFBzbO9OqmdDvpwTHRNtJ49XmI0aW2/lYPqByc5IHQqBdpLx7DBfL0pKWQZiiUgFuMemub8EcPnb1WNmi2Kv0uWL0lZ3uvr583CUVMXWDII1/nYXwI2YijkuVGBjaJTYr492TCC004PSkQx3xsSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836345; c=relaxed/simple;
-	bh=e3V/VD1hbrbelJlf0xIIC+LdljQjVRHbZsnuYwMOxuE=;
+	s=arc-20240116; t=1716837574; c=relaxed/simple;
+	bh=8aVOomUMFjH8eqJqRAuFo+h6DjxaOgBsGKwP8YKdo6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OkL5SYxDfL1Lfwu9hstImUEm/7hun6pHLUFs0S9itPr18DArQpmP1wDDnB0J0w5YlcNB8Q7tHweDnWvBBW9cybCA93N1UB5E5sSt1Kub/qKvDP3ThNU1kSRLdydrdMpu0377B7cr5RHjeipYlMfC/ZuO/R6fqL+ekm6pcWAcVOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRaNcRed; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67B4C2BBFC;
-	Mon, 27 May 2024 18:59:04 +0000 (UTC)
+	 MIME-Version; b=ptCppxxf1TL2ATRJUZY9NcD0gzdkYXQnbjNLCd+eqHK/QyMdPEW3A4BGIrJbL/zTDS5AZ3Nma02oUSJkjkhbXseEGC2cdsa9CuxF6JcJ+/YE04UU5DAw9dW+7/2DgbLpPK8skO7FFwZVy+JAIaKWCxh8RbxzUK/vJTZCA4Kp1/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQH8Dc2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFE6C2BBFC;
+	Mon, 27 May 2024 19:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836345;
-	bh=e3V/VD1hbrbelJlf0xIIC+LdljQjVRHbZsnuYwMOxuE=;
+	s=korg; t=1716837574;
+	bh=8aVOomUMFjH8eqJqRAuFo+h6DjxaOgBsGKwP8YKdo6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRaNcRedTHAD6/yYMEuHZItPR3kJQg90vrW0aHbcS5rBUhLu/D+VwNoAg1qh+yqzT
-	 Tf9MThe8rB8H44RHymuurHIaQ8IxhslUhqLYHVDy0FcYqsjghX/UCw/+4G2o0sGecH
-	 /1c5+ZTPdh/GBJHQ/X3JoiF/GlhJi24vBupVIZ9Q=
+	b=rQH8Dc2VSFpB24l248Uo2rWzER3DZCiK62jn4rCSA74LYtK14ePl83qq9pPAC4jL7
+	 aLU3LToZGKVVMkPMa/3O/ZlGhD9K6IMcWAuRm0IfQpHKyqttYAtCATi61vt7pbLgaR
+	 ND5qzhK4FPI4Oj3v7Aov06Ao60ZIgFyVjiw37xaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ken Milmore <ken.milmore@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.9 018/427] r8169: Fix possible ring buffer corruption on fragmented Tx packets.
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 063/493] regulator: irq_helpers: duplicate IRQ name
 Date: Mon, 27 May 2024 20:51:05 +0200
-Message-ID: <20240527185603.446690863@linuxfoundation.org>
+Message-ID: <20240527185631.649664150@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ken Milmore <ken.milmore@gmail.com>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-commit c71e3a5cffd5309d7f84444df03d5b72600cc417 upstream.
+[ Upstream commit 7ab681ddedd4b6dd2b047c74af95221c5f827e1d ]
 
-An issue was found on the RTL8125b when transmitting small fragmented
-packets, whereby invalid entries were inserted into the transmit ring
-buffer, subsequently leading to calls to dma_unmap_single() with a null
-address.
+The regulator IRQ helper requires caller to provide pointer to IRQ name
+which is kept in memory by caller. All other data passed to the helper
+in the regulator_irq_desc structure is copied. This can cause some
+confusion and unnecessary complexity.
 
-This was caused by rtl8169_start_xmit() not noticing changes to nr_frags
-which may occur when small packets are padded (to work around hardware
-quirks) in rtl8169_tso_csum_v2().
+Make the regulator_irq_helper() to copy also the provided IRQ name
+information so caller can discard the name after the call to
+regulator_irq_helper() completes.
 
-To fix this, postpone inspecting nr_frags until after any padding has been
-applied.
-
-Fixes: 9020845fb5d6 ("r8169: improve rtl8169_start_xmit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ken Milmore <ken.milmore@gmail.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/27ead18b-c23d-4f49-a020-1fc482c5ac95@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://msgid.link/r/ZhJMuUYwaZbBXFGP@drtxq0yyyyyyyyyyyyydy-3.rev.dnainternet.fi
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/regulator/irq_helpers.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4335,11 +4335,11 @@ static void rtl8169_doorbell(struct rtl8
- static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
- 				      struct net_device *dev)
- {
--	unsigned int frags = skb_shinfo(skb)->nr_frags;
- 	struct rtl8169_private *tp = netdev_priv(dev);
- 	unsigned int entry = tp->cur_tx % NUM_TX_DESC;
- 	struct TxDesc *txd_first, *txd_last;
- 	bool stop_queue, door_bell;
-+	unsigned int frags;
- 	u32 opts[2];
+diff --git a/drivers/regulator/irq_helpers.c b/drivers/regulator/irq_helpers.c
+index fe7ae0f3f46af..5ab1a0befe12f 100644
+--- a/drivers/regulator/irq_helpers.c
++++ b/drivers/regulator/irq_helpers.c
+@@ -352,6 +352,9 @@ void *regulator_irq_helper(struct device *dev,
  
- 	if (unlikely(!rtl_tx_slots_avail(tp))) {
-@@ -4362,6 +4362,7 @@ static netdev_tx_t rtl8169_start_xmit(st
+ 	h->irq = irq;
+ 	h->desc = *d;
++	h->desc.name = devm_kstrdup(dev, d->name, GFP_KERNEL);
++	if (!h->desc.name)
++		return ERR_PTR(-ENOMEM);
  
- 	txd_first = tp->TxDescArray + entry;
- 
-+	frags = skb_shinfo(skb)->nr_frags;
- 	if (frags) {
- 		if (rtl8169_xmit_frags(tp, skb, opts, entry))
- 			goto err_dma_1;
+ 	ret = init_rdev_state(dev, h, rdev, common_errs, per_rdev_errs,
+ 			      rdev_amount);
+-- 
+2.43.0
+
 
 
 
