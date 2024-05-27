@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4F68D0D16
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B75F8D0B10
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 247B1B20D0B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CFA11C21653
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EED1607B0;
-	Mon, 27 May 2024 19:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5077315FD01;
+	Mon, 27 May 2024 19:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qz3mBDXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSlC8dQV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0485A168C4;
-	Mon, 27 May 2024 19:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD8A17E90E;
+	Mon, 27 May 2024 19:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837963; cv=none; b=HOIw6SFQFZpCcnIQAbr1IvW3Ic9VPa4wvBgHZeIitry6u7QG/GitGBjIpgDBHqsx/QGJRoRh17ft7zCTHqXpK7VyBpg0Mr/gOHsP2qv/l8NwpHFPiLSL2i4LuSR3boRiZli7c1JYhCTkrXSZqnzouHo+X2EK0FnGmvrZNljgHP8=
+	t=1716836738; cv=none; b=FgGyE8rk4XV5+j9WVyETnMdBViH3Wh95Omf/i+npYYvqCmTIjkoi+XiMjgwBsjz8jRnpCre5Fcnyy1Cq1C5m6QqyIkvWC8Cfj29D8BvTvY/oOJPwPaPCZZ7j506Zzyr42En4SsdmZtBpY2gZrJQLXxAOGmUDXv4g53PnokaAA3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837963; c=relaxed/simple;
-	bh=PSPlWaCYJIwwWOPqy57GIEpiiTWxpceUww3ZGjKyOQ4=;
+	s=arc-20240116; t=1716836738; c=relaxed/simple;
+	bh=K8PpnrJq3J6Re+CcLYdZhmteBDgfiSj6XoGTZUWALyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQoCF7L2kUG4PenOZNgtW9EcnIKyr1BhfwYRkp3sVNH3Y9gTzbHnEl2BOWvv3VBXrSMqguLYuesK36QmZ2UqQlfuWzlf/KSQogVx9vkuLEdlhVyxHry9h86KVXw3uKUxOoh6pyHYh3bLaSbc12Km3xcDONX9ZZKmK8cYba6wP0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qz3mBDXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF2EC2BBFC;
-	Mon, 27 May 2024 19:26:02 +0000 (UTC)
+	 MIME-Version; b=p77pP2nbAD+TJog3+UB+PHwI1KtwVHcNPHXbZydFr4yA7250sy30qM+y1GXE1qiykIMyeblVO90sUFfgLPLu2ylfOg84wg/WJvr9tNkitsNJdKUc9fwtA70gB8v8xT4cNMSuIfrcEzDl8bODA7i+fNBfrDM8Ra6878v3xDd2F1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSlC8dQV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4242BC32782;
+	Mon, 27 May 2024 19:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837962;
-	bh=PSPlWaCYJIwwWOPqy57GIEpiiTWxpceUww3ZGjKyOQ4=;
+	s=korg; t=1716836737;
+	bh=K8PpnrJq3J6Re+CcLYdZhmteBDgfiSj6XoGTZUWALyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qz3mBDXBFPzNU+pjVlinQBGR6yr5Y6VxKa+PiSfHbyHJehxxYsW6iiwDNT3FB2Crt
-	 Sdgb44+L/gHpWKCwLn+ZC21nuN0EuqmMgb1oXHo9VTDvcfW+s13XDp/06wFgmN+3AM
-	 QAQX4YtlImmAvWWjIMTYq30qODsyXv9LLc5pLRqM=
+	b=gSlC8dQVytLteEkQKS9jIiyTtWA1JGbMdAMNP5XoO6mpEEjFeN/yPSbg8ct7aGVA0
+	 uSEZPuKnizl9a2cmNTf7DK1bvPVp8Npejy7UvFK1YdgiD1wJOr7TTUkNoe/sR07KAz
+	 +TX29ECIwbrfAeOJT1vXkRDH8chi8Oa5w6u1NBp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Will Deacon <will@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 211/493] arm64: Remove unnecessary irqflags alternative.h include
-Date: Mon, 27 May 2024 20:53:33 +0200
-Message-ID: <20240527185637.215927704@linuxfoundation.org>
+Subject: [PATCH 6.9 167/427] wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
+Date: Mon, 27 May 2024 20:53:34 +0200
+Message-ID: <20240527185617.958801562@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 98631c4904bf6380834c8585ce50451f00eb5389 ]
+[ Upstream commit c511a9c12674d246916bb16c479d496b76983193 ]
 
-Since commit 20af807d806d ("arm64: Avoid cpus_have_const_cap() for
-ARM64_HAS_GIC_PRIO_MASKING"), the alternative.h include is not used,
-so remove it.
+Clang Static Checker (scan-build) warns:
 
-Fixes: 20af807d806d ("arm64: Avoid cpus_have_const_cap() for ARM64_HAS_GIC_PRIO_MASKING")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240314063819.2636445-1-ruanjinjie@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
+Value stored to 'ret' is never read.
+
+Return 'ret' rather than 'count' when 'ret' stores an error code.
+
+Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240422034243.938962-1-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/irqflags.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/debugfs_sta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/irqflags.h b/arch/arm64/include/asm/irqflags.h
-index 0a7186a93882d..d4d7451c2c129 100644
---- a/arch/arm64/include/asm/irqflags.h
-+++ b/arch/arm64/include/asm/irqflags.h
-@@ -5,7 +5,6 @@
- #ifndef __ASM_IRQFLAGS_H
- #define __ASM_IRQFLAGS_H
+diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+index 394bf3c32abff..0f6de862c3a9b 100644
+--- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
++++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+@@ -439,7 +439,7 @@ ath10k_dbg_sta_write_peer_debug_trigger(struct file *file,
+ 	}
+ out:
+ 	mutex_unlock(&ar->conf_mutex);
+-	return count;
++	return ret ?: count;
+ }
  
--#include <asm/alternative.h>
- #include <asm/barrier.h>
- #include <asm/ptrace.h>
- #include <asm/sysreg.h>
+ static const struct file_operations fops_peer_debug_trigger = {
 -- 
 2.43.0
 
