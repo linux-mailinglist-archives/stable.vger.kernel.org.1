@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CB58D0BB8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489A08D0DB9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31BFD1C216AC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0429328184A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD5A6A039;
-	Mon, 27 May 2024 19:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942F915FA60;
+	Mon, 27 May 2024 19:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a691Pwup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Id15NOg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B97717E90E;
-	Mon, 27 May 2024 19:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5349B17727;
+	Mon, 27 May 2024 19:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837142; cv=none; b=ZYNifocTmytcZjy2LcnBgDDhhxhy8WffrC8fp192Ngzoq838uTyo2sh+qHrvgll11/xCWRSEZyP7HnPoukP+RQ13+Cm/fnw/B4fY9ZDNRFAO6RQv/CvB8blBhNeTxA/ekl3AUjVnocq1glinGzhmwnX6p3Ia7Jmsu9wajPD508c=
+	t=1716838385; cv=none; b=g/l/p1Fe/oQDdB5jMR/K6+mGikkfUYer4feTvhRUZsDOkztBdY/VxoDaOjbm7trfnYhCB36+ksTfduUo26Wgb78pWXAc/iqPhAwWfTB72afP6uZpmMKuY+vJc3Q5v8FK9jNq7L6UE5PBxl9PYooZGAHOb9yN3ux71dv/6G5HtZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837142; c=relaxed/simple;
-	bh=upod/bHbKVLjnwoAyzeFYKOeRxhB80u7Y5/pItAeg0w=;
+	s=arc-20240116; t=1716838385; c=relaxed/simple;
+	bh=Cn43QCI0Nz+WIAQAuEuPI3MujVG8aO6w1u1b6JZgbr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZdtUG9HmOVBKzR5EPOOhBO0xuPy8HqW3J94lAb3/fGprogNq/5gnB8MprxzyqbWKPwDA8j7tOmhW0vEGQR2g8Ob+5Zd59YI8yWIV9wVEhyckwLrz6LKBBH4yDURR3bRGhabuNC+YXrWHHjuAV85NNn+Wj8YNgp9Iv5YUQFWAykw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a691Pwup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A2CC2BBFC;
-	Mon, 27 May 2024 19:12:21 +0000 (UTC)
+	 MIME-Version; b=ashCyzOU93eUgEdfcLiezU2zqkDrVny2aVv/hjybeYI2kjyjxqQz1l+d1WsnAgS1CtZVquZv5+TXaQz3L8fLC9CCLQVOEvQTsNedDiDyNcTNZjA0ArjK7uXh6YTKjK+K3til0U3SZ7HLmjhwsqAShdMi8gpQw9fawN3JdxBtlRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Id15NOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86ACEC2BBFC;
+	Mon, 27 May 2024 19:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837142;
-	bh=upod/bHbKVLjnwoAyzeFYKOeRxhB80u7Y5/pItAeg0w=;
+	s=korg; t=1716838384;
+	bh=Cn43QCI0Nz+WIAQAuEuPI3MujVG8aO6w1u1b6JZgbr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a691Pwupzq+00AGVu4MwpoSrugtvdRtk5XLXhXtLoNfFc9C8csoo+6oeGpyVWID2W
-	 ggrbfsU5EU0VFBE+r6XblD9bPbE3dGTnmx2r0o4dAOfFu/5cR+k2oAo47UZFsjfPqT
-	 zVvVPzAWe1i7ONNq8RlZV5+sfdHQ6v6mmILBmjaw=
+	b=2Id15NOgdFjtPdJb0j4A5/5pBPnFF0TBy4mQLZmga0uYhyo3EOfaNEXrAgLpCkIGE
+	 p52cni2BM696LqKeO4LpR1x6hJyq4VyUESxdsh0EkpAcpRtLje8SR7EK3tWPJ6JmBf
+	 ZfcTIK+O30L7H5mAcRuJ5GQmVav0RLK7/xeyAbOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huai-Yuan Liu <qq810974084@gmail.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 327/427] drm/arm/malidp: fix a possible null pointer dereference
+Subject: [PATCH 6.8 372/493] drm/meson: vclk: fix calculation of 59.94 fractional rates
 Date: Mon, 27 May 2024 20:56:14 +0200
-Message-ID: <20240527185632.005534707@linuxfoundation.org>
+Message-ID: <20240527185642.440990163@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huai-Yuan Liu <qq810974084@gmail.com>
+From: Christian Hewitt <christianshewitt@gmail.com>
 
-[ Upstream commit a1f95aede6285dba6dd036d907196f35ae3a11ea ]
+[ Upstream commit bfbc68e4d8695497f858a45a142665e22a512ea3 ]
 
-In malidp_mw_connector_reset, new memory is allocated with kzalloc, but
-no check is performed. In order to prevent null pointer dereferencing,
-ensure that mw_state is checked before calling
-__drm_atomic_helper_connector_reset.
+Playing 4K media with 59.94 fractional rate (typically VP9) causes the screen to lose
+sync with the following error reported in the system log:
 
-Fixes: 8cbc5caf36ef ("drm: mali-dp: Add writeback connector")
-Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240407063053.5481-1-qq810974084@gmail.com
+[   89.610280] Fatal Error, invalid HDMI vclk freq 593406
+
+Modetest shows the following:
+
+3840x2160 59.94 3840 4016 4104 4400 2160 2168 2178 2250 593407 flags: xxxx, xxxx,
+drm calculated value -------------------------------------^
+
+Change the fractional rate calculation to stop DIV_ROUND_CLOSEST rounding down which
+results in vclk freq failing to match correctly.
+
+Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240109230704.4120561-1-christianshewitt@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240109230704.4120561-1-christianshewitt@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/arm/malidp_mw.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/arm/malidp_mw.c b/drivers/gpu/drm/arm/malidp_mw.c
-index 626709bec6f5f..2577f0cef8fcd 100644
---- a/drivers/gpu/drm/arm/malidp_mw.c
-+++ b/drivers/gpu/drm/arm/malidp_mw.c
-@@ -72,7 +72,10 @@ static void malidp_mw_connector_reset(struct drm_connector *connector)
- 		__drm_atomic_helper_connector_destroy_state(connector->state);
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index 2a82119eb58ed..2a942dc6a6dc2 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+ 				 FREQ_1000_1001(params[i].pixel_freq));
+ 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
+ 				 i, params[i].phy_freq,
+-				 FREQ_1000_1001(params[i].phy_freq/10)*10);
++				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
+ 		/* Match strict frequency */
+ 		if (phy_freq == params[i].phy_freq &&
+ 		    vclk_freq == params[i].vclk_freq)
+ 			return MODE_OK;
+ 		/* Match 1000/1001 variant */
+-		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
++		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
+ 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
+ 			return MODE_OK;
+ 	}
+@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
  
- 	kfree(connector->state);
--	__drm_atomic_helper_connector_reset(connector, &mw_state->base);
-+	connector->state = NULL;
-+
-+	if (mw_state)
-+		__drm_atomic_helper_connector_reset(connector, &mw_state->base);
- }
- 
- static enum drm_connector_status
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+ 		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
++		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
+ 		    (vclk_freq == params[freq].vclk_freq ||
+ 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
+ 			if (vclk_freq != params[freq].vclk_freq)
 -- 
 2.43.0
 
