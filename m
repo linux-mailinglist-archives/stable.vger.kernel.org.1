@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5788D0BC0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C388D0DBD
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5779C285F34
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D3D5B213F2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF5D15DBD8;
-	Mon, 27 May 2024 19:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97B213AD05;
+	Mon, 27 May 2024 19:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9DtJw4D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvhETcXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC3A17E90E;
-	Mon, 27 May 2024 19:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9657217727;
+	Mon, 27 May 2024 19:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837152; cv=none; b=TCS5Dj6SzdVS/IEUL5fgB0z3v9+B3ku2uTVR6qM7GSekSmQv6M8+KMqBKFLZfMg47NogjSm7kQltnR666x66Yos/SkTB+Yh73k6+A7IpMx37A7Lv0wR67qmfuvSDClR8358V+xamUqfnX+Q2Ws02hXTX+KCz6tDOuOiRYdjyWkQ=
+	t=1716838395; cv=none; b=NPE7FFD32Ori1y1hlyJT/v4CkV1fbtI7F9RjBNK1mGMUlGes0SqB0SV00rthssOO8AMBVgGkaCT1Ag1s0zeDt31sct8NPfytcDdDumrrrI8oQED9HXnZzgzuiAB6Bb7MxM7+VUDhOvkPHIy/qi6votR1o1lkW4gYZC9QmuG9zCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837152; c=relaxed/simple;
-	bh=46CwIsBC26I1DRsuEAZJEjJVUpujsHpQZVFtw3d32DU=;
+	s=arc-20240116; t=1716838395; c=relaxed/simple;
+	bh=SLveVY67oqrNZUg98dT+OenlfAcErMk0R1pMViK5Flg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EBBhsD6b6tnjeuWcm25qfl81uiFSgjMj4nGEPwfxonvhTD2L8vAftgcPAYkbznp2D0/iWugRm4cMlFwgUbQl1E5AdLE3yEfrVSwYWTdM1s88RYg5IkiNA5qNbP6Tz4W+5buohVzI3E7JPsH82ZRp9fDw5G+pU6MCscrq7AlMzcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9DtJw4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074A6C2BBFC;
-	Mon, 27 May 2024 19:12:31 +0000 (UTC)
+	 MIME-Version; b=RZF+8bnBa1RRCF0lRvl5kmC8nr1Sik4GDmQYpwl/h7D5dWFLE0K7XFoetqMIFcc8c9VlZNlQ+mgVORa2VQUxGMpXZg+13hm/vQWkggwgUND42B0g7N5DRUptlSBG0nfoevN0wrJvu73mojF926gL+1R8FSmA67yaM03L83Grs14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvhETcXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2C7C2BBFC;
+	Mon, 27 May 2024 19:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837152;
-	bh=46CwIsBC26I1DRsuEAZJEjJVUpujsHpQZVFtw3d32DU=;
+	s=korg; t=1716838395;
+	bh=SLveVY67oqrNZUg98dT+OenlfAcErMk0R1pMViK5Flg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9DtJw4DaL+OJrbxwXV5ZyDjARxLRERzqSKbxWxVLUv3Xcpn2QGlE0ADcZi5qAoN6
-	 kMf0P4akawRYVm8FotrrltvZ6BFzXJ+Cdo+vBGTGRtZp/xBTFl/tJxQgnVniU2rPqf
-	 pqtMzHMR+7m+Bu+FtocVACSThkbV5v81oPJeFAqo=
+	b=BvhETcXCPA0vLhUna78d3cQpLihbvaZ9DVtbzLOx4IvAGsHRyCEfJB9ZSEg3fYhjd
+	 FXdEHidcY91wI8TqgcMZSyDL8KBqKPop8P7AhKckAtXgWcbAWA46rK1jwFKvEJB6gW
+	 +bFxpIzX+J7Ee1Qlg3G+HELCdcEqv1SjXFYHbHlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 331/427] drm/bridge: icn6211: Dont log an error when DSI host cant be found
+Subject: [PATCH 6.8 376/493] powerpc/fsl-soc: hide unused const variable
 Date: Mon, 27 May 2024 20:56:18 +0200
-Message-ID: <20240527185632.249728831@linuxfoundation.org>
+Message-ID: <20240527185642.577500673@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 275fafe58faa7fdb10fa245412696ecef676aac5 ]
+[ Upstream commit 01acaf3aa75e1641442cc23d8fe0a7bb4226efb1 ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+vmpic_msi_feature is only used conditionally, which triggers a rare
+-Werror=unused-const-variable= warning with gcc:
 
-Fixes: 8dde6f7452a1 ("drm: bridge: icn6211: Add I2C configuration support")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-2-619a28148e5c@collabora.com
+arch/powerpc/sysdev/fsl_msi.c:567:37: error: 'vmpic_msi_feature' defined but not used [-Werror=unused-const-variable=]
+  567 | static const struct fsl_msi_feature vmpic_msi_feature =
+
+Hide this one in the same #ifdef as the reference so we can turn on
+the warning by default.
+
+Fixes: 305bcf26128e ("powerpc/fsl-soc: use CONFIG_EPAPR_PARAVIRT for hcalls")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240403080702.3509288-2-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/chipone-icn6211.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/powerpc/sysdev/fsl_msi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/chipone-icn6211.c b/drivers/gpu/drm/bridge/chipone-icn6211.c
-index 82d23e4df09eb..ff3284b6b1a37 100644
---- a/drivers/gpu/drm/bridge/chipone-icn6211.c
-+++ b/drivers/gpu/drm/bridge/chipone-icn6211.c
-@@ -563,10 +563,8 @@ static int chipone_dsi_host_attach(struct chipone *icn)
+diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
+index 558ec68d768e6..60a2c5925161a 100644
+--- a/arch/powerpc/sysdev/fsl_msi.c
++++ b/arch/powerpc/sysdev/fsl_msi.c
+@@ -566,10 +566,12 @@ static const struct fsl_msi_feature ipic_msi_feature = {
+ 	.msiir_offset = 0x38,
+ };
  
- 	host = of_find_mipi_dsi_host_by_node(host_node);
- 	of_node_put(host_node);
--	if (!host) {
--		dev_err(dev, "failed to find dsi host\n");
--		return -EPROBE_DEFER;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
++#ifdef CONFIG_EPAPR_PARAVIRT
+ static const struct fsl_msi_feature vmpic_msi_feature = {
+ 	.fsl_pic_ip = FSL_PIC_IP_VMPIC,
+ 	.msiir_offset = 0,
+ };
++#endif
  
- 	dsi = mipi_dsi_device_register_full(host, &info);
- 	if (IS_ERR(dsi)) {
+ static const struct of_device_id fsl_of_msi_ids[] = {
+ 	{
 -- 
 2.43.0
 
