@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-47178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183398D0CF1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 666678D0AB2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FBA9B20D0C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9819B1C21303
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E3915FD04;
-	Mon, 27 May 2024 19:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6DC161338;
+	Mon, 27 May 2024 19:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAMFKrZ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbhnXiTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62366262BE;
-	Mon, 27 May 2024 19:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9DD15FCF2;
+	Mon, 27 May 2024 19:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837871; cv=none; b=Tst0WzfekUqHBUbcbGu2rPtCYd0dq+Mafroplg1i64DeoWhEvkggIILBRyTYcpZJvAoGRZu6nYkLJGbXYpf1xS/Cuzk2WMDIxVpqHwooy3ytZD5AKBQNGpkXcN5AitZ8+cY3fGmpFN/EYSY8koc7uwcDSdXxMIOe82Tl3y1OnoE=
+	t=1716836511; cv=none; b=JzcnPq0bzcezMvN/5o3IdRAG5LEearPc39aSYplACZ5Vz7dihAghcrxGChbb0ykQZvFaorb4qNatpk0AaVQODSXYKEWhdvESOsxB2kKgwB//V96DiFyC96BOS0MFAirNvSx1KMryOHGxVjN5EYz9kLZxJ0MGnkG7mhtPOLeBlTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837871; c=relaxed/simple;
-	bh=Sb4hrVPVvzq1hoW4TbVfqh8cqn1XQy7O39pNFEmebK8=;
+	s=arc-20240116; t=1716836511; c=relaxed/simple;
+	bh=xV7p5AO1VFiv8hWcRNQyfBc+K5ZGqcRkt6+qc2K+7P8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCG6wptt2qngTRqeRbICpLk3Y1oBn1EVLAbogAaGmUVpxVHLoxciLFKB8rkrtjIeUGf5VCRP0A4NNsFMQsLHv4cgMC22E2GcwyZu4n73mQCCdEb0ivsUTStkF+2RY0MckqJdUEhvXzETT6UXSU8Kp7XF1q8ZsqUvMwPOAWNdv0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAMFKrZ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED813C2BBFC;
-	Mon, 27 May 2024 19:24:30 +0000 (UTC)
+	 MIME-Version; b=RVFjLQ7DGl7aFl/9dx9u/vRRTXIpTJEh/V7QkcA4EkY9iEX7CtavJAr6On5lx4Gh+B0iPGt+KnWi8qqQtPEH7cp5aK+P+QqHvJAvFErHdI5HeNRnoyKcU1TvMXYhTjE3pkUumHiYD2GHuC9B5FZB4u0KVlwCH6bmNWHWMZzZp+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbhnXiTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B27C2BBFC;
+	Mon, 27 May 2024 19:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837871;
-	bh=Sb4hrVPVvzq1hoW4TbVfqh8cqn1XQy7O39pNFEmebK8=;
+	s=korg; t=1716836510;
+	bh=xV7p5AO1VFiv8hWcRNQyfBc+K5ZGqcRkt6+qc2K+7P8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAMFKrZ7F1aqHQOAjXtzGPtk9LQt6KFSn4pKptJQj8sI588SjlkHZqJtp/aEDzdms
-	 fn4XCQHX7xH/pJv/g7Tbn8bmszpWM34eRamjRv0LCbtE7ngBOAhO1xC05uSEvqmGhB
-	 Bu/CratXWEyiZ5A8FkpKF9XzAoC6BH/Q15hBcgAE=
+	b=JbhnXiTUn+YIlQq+8i3pPiOgN8Cwu1QqBlUhxgxA5qhyNN43kqYDvY7ZEmWxRLlRH
+	 hm7GKlLd7WJ90UtBrUjRZESElcRw/JOQGGXh3IY3xFiTOMFpFSKitLhY7dXPbHJgfd
+	 PL7Ku3t+wHUQdIjF+R44iLt+yc4XSz+/LgI6WBvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 126/493] ARM: configs: sunxi: Enable DRM_DW_HDMI
+Subject: [PATCH 6.9 081/427] io_uring/net: fix sendzc lazy wake polling
 Date: Mon, 27 May 2024 20:52:08 +0200
-Message-ID: <20240527185634.617371443@linuxfoundation.org>
+Message-ID: <20240527185609.289497264@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit deff401b14e2d832b25b55862ad6c73378fe034e ]
+[ Upstream commit ef42b85a5609cd822ca0a68dd2bef2b12b5d1ca3 ]
 
-Commit 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper
-module") turned the DRM_DW_HDMI dependency of DRM_SUN8I_DW_HDMI into a
-depends on which ended up disabling the driver in the defconfig. Make
-sure it's still enabled.
+SEND[MSG]_ZC produces multiple CQEs via notifications, LAZY_WAKE doesn't
+handle it and so disable LAZY_WAKE for sendzc polling. It should be
+fine, sends are not likely to be polled in the first place.
 
-Fixes: 4fc8cb47fcfd ("drm/display: Move HDMI helpers into display-helper module")
-Reported-by: Mark Brown <broonie@kernel.org>
-Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://lore.kernel.org/r/20240403-fix-dw-hdmi-kconfig-v1-5-afbc4a835c38@kernel.org
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Fixes: 6ce4a93dbb5b ("io_uring/poll: use IOU_F_TWQ_LAZY_WAKE for wakeups")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/5b360fb352d91e3aec751d75c87dfb4753a084ee.1714488419.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/configs/sunxi_defconfig | 1 +
+ io_uring/net.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
-index bddc82f789421..a83d29fed1756 100644
---- a/arch/arm/configs/sunxi_defconfig
-+++ b/arch/arm/configs/sunxi_defconfig
-@@ -110,6 +110,7 @@ CONFIG_DRM_PANEL_LVDS=y
- CONFIG_DRM_PANEL_SIMPLE=y
- CONFIG_DRM_PANEL_EDP=y
- CONFIG_DRM_SIMPLE_BRIDGE=y
-+CONFIG_DRM_DW_HDMI=y
- CONFIG_DRM_LIMA=y
- CONFIG_FB_SIMPLE=y
- CONFIG_BACKLIGHT_CLASS_DEVICE=y
+diff --git a/io_uring/net.c b/io_uring/net.c
+index 4afb475d41974..3896e6220d0bf 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1041,6 +1041,7 @@ int io_send_zc_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	struct io_kiocb *notif;
+ 
+ 	zc->done_io = 0;
++	req->flags |= REQ_F_POLL_NO_LAZY;
+ 
+ 	if (unlikely(READ_ONCE(sqe->__pad2[0]) || READ_ONCE(sqe->addr3)))
+ 		return -EINVAL;
 -- 
 2.43.0
 
