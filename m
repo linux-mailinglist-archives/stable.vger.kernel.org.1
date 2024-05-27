@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-47422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044338D0DE9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 689268D0BEB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3CBF28141F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 205702860CB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203DD15FCFB;
-	Mon, 27 May 2024 19:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9216B155CA7;
+	Mon, 27 May 2024 19:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFQL4Rc8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SF5YVlDt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D267317727;
-	Mon, 27 May 2024 19:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5033A17E90E;
+	Mon, 27 May 2024 19:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838508; cv=none; b=XR+ptKC26/aecHArSCMEHpAPMjvXT0Ifz/Cak5ym9kbRiZX65zf8FS89sl1n4/G2rzWOPUhtLxgKc7d3QLqv4ncEH8mG2JeEbA40LAjmKWhzE/xpv5UarqQFMy73IN9sJs5pVDJSgB59GsN2uVEe4mivyRdjM4mj+hhEePCp3UU=
+	t=1716837265; cv=none; b=BIfHsNk27k9xV2PeOhYnE3bT7hgRA4GXqH7qPOvW3gynfyYjjVTCZ1psB0m6mVpqbMBWTR0ExAhfm1WsSaEUQqPFTdtq367e75zns0o1w0XcRh+vgV4JZOSaSqsBCfXmPqb1y5BIU1BOY4N7TyfCAnnDQKvIak+bCOSG6r6g76E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838508; c=relaxed/simple;
-	bh=anWsHkJR8TnB5L/AkZt0063d3TRcUjEuzdYPKq0DAoc=;
+	s=arc-20240116; t=1716837265; c=relaxed/simple;
+	bh=YoJY07WqbcSCwu/lxW6JSihXRniPoR6wtXZPB6ipg9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSrLYMrDrwwMUUasggwQe03KpnB0UONQD6EJ/Af/r1MC2zzb531xf7+daPJvRg1MnN7Ad19XqoW5W55QAKFc6cTeRzMbe0+J/oGbKNqRZyiwc3YkaPZJoy+b+AM7KWqURnsw6g3ODPvbJotGnheEBUAf0VTRwehgr8unX+0WO+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFQL4Rc8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADE8C2BBFC;
-	Mon, 27 May 2024 19:35:08 +0000 (UTC)
+	 MIME-Version; b=DbtndjOqcmHDdH+KjavEvv+Nsyl/8RbBJ2jkAlthgmCKOA5acCGWLu+zNRKcfr0M7ZQes1+gI0/8yVPJIvWudjN9xqCqU0lbC69vBek7wvrncTza/2Zrg39UUfV5aJ/e62Mkq1W65jOBdNFeEDQMASCkWPGWwY7qQF+hcNqSwG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SF5YVlDt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE68AC2BBFC;
+	Mon, 27 May 2024 19:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838508;
-	bh=anWsHkJR8TnB5L/AkZt0063d3TRcUjEuzdYPKq0DAoc=;
+	s=korg; t=1716837265;
+	bh=YoJY07WqbcSCwu/lxW6JSihXRniPoR6wtXZPB6ipg9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zFQL4Rc8mtLMx37R0LaLQBK6SkCa9Ozbz4lOb+WcSC71zhbpfJkvIZSo7Z80eXxnR
-	 KtAV4TyIYHG58maNJTn9c+Ue/LURU8J9XcR0GUFjBreLixtGGDOSsXL2wQtY9n3kAN
-	 u1LYdZHQQYayckJ9YJ8Bv5daxdt9YwYTYIqtIdrQ=
+	b=SF5YVlDtBy0Br1kqgk9EjAMHji2MTZAXBSlzenBugbeVnt2XCWWp/TqrsyHQOngK6
+	 iqykW5d2MaIIagagzpxYyi/GX/vRG/66hZjYUJFqXuQRs0qKE1rjgR5f2fnF1VtHhJ
+	 JIqKkrc2RPk2CfNCOV2PsRjEGUVI+lYbs9wUw1AA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaewon Kim <jaewon02.kim@samsung.com>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 420/493] clk: samsung: exynosautov9: fix wrong pll clock id value
+Subject: [PATCH 6.9 375/427] clk: qcom: dispcc-sm8450: fix DisplayPort clocks
 Date: Mon, 27 May 2024 20:57:02 +0200
-Message-ID: <20240527185644.036427631@linuxfoundation.org>
+Message-ID: <20240527185634.333469286@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaewon Kim <jaewon02.kim@samsung.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 04ee3a0b44e3d18cf6b0c712d14b98624877fd26 ]
+[ Upstream commit e801038a02ce1e8c652a0b668dd233a4ee48aeb7 ]
 
-All PLL id values of CMU_TOP were incorrectly set to FOUT_SHARED0_PLL.
-It modified to the correct PLL clock id value.
+On SM8450 DisplayPort link clocks use frequency tables inherited from
+the vendor kernel, it is not applicable in the upstream kernel. Drop
+frequency tables and use clk_byte2_ops for those clocks.
 
-Fixes: 6587c62f69dc ("clk: samsung: add top clock support for Exynos Auto v9 SoC")
-Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Link: https://lore.kernel.org/r/20240328091000.17660-1-jaewon02.kim@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This fixes frequency selection in the OPP core (which otherwise attempts
+to use invalid 810 KHz as DP link rate), also fixing the following
+message:
+msm-dp-display ae90000.displayport-controller: _opp_config_clk_single: failed to set clock rate: -22
+
+Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240424-dispcc-dp-clocks-v2-1-b44038f3fa96@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/samsung/clk-exynosautov9.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/dispcc-sm8450.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/clk/samsung/clk-exynosautov9.c b/drivers/clk/samsung/clk-exynosautov9.c
-index e9c06eb93e666..f04bacacab2cb 100644
---- a/drivers/clk/samsung/clk-exynosautov9.c
-+++ b/drivers/clk/samsung/clk-exynosautov9.c
-@@ -352,13 +352,13 @@ static const struct samsung_pll_clock top_pll_clks[] __initconst = {
- 	/* CMU_TOP_PURECLKCOMP */
- 	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared0_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED0, PLL_CON3_PLL_SHARED0, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared1_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED1_PLL, "fout_shared1_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED1, PLL_CON3_PLL_SHARED1, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared2_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED2_PLL, "fout_shared2_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED2, PLL_CON3_PLL_SHARED2, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared3_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED3_PLL, "fout_shared3_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED3, PLL_CON3_PLL_SHARED3, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared4_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED4_PLL, "fout_shared4_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED4, PLL_CON3_PLL_SHARED4, NULL),
+diff --git a/drivers/clk/qcom/dispcc-sm8450.c b/drivers/clk/qcom/dispcc-sm8450.c
+index 92e9c4e7b13dc..49bb4f58c3915 100644
+--- a/drivers/clk/qcom/dispcc-sm8450.c
++++ b/drivers/clk/qcom/dispcc-sm8450.c
+@@ -309,26 +309,17 @@ static struct clk_rcg2 disp_cc_mdss_dptx0_aux_clk_src = {
+ 	},
+ };
+ 
+-static const struct freq_tbl ftbl_disp_cc_mdss_dptx0_link_clk_src[] = {
+-	F(162000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	F(270000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	F(540000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	F(810000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	{ }
+-};
+-
+ static struct clk_rcg2 disp_cc_mdss_dptx0_link_clk_src = {
+ 	.cmd_rcgr = 0x819c,
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = disp_cc_parent_map_3,
+-	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data) {
+ 		.name = "disp_cc_mdss_dptx0_link_clk_src",
+ 		.parent_data = disp_cc_parent_data_3,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_byte2_ops,
+ 	},
+ };
+ 
+@@ -382,13 +373,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_link_clk_src = {
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = disp_cc_parent_map_3,
+-	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data) {
+ 		.name = "disp_cc_mdss_dptx1_link_clk_src",
+ 		.parent_data = disp_cc_parent_data_3,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_byte2_ops,
+ 	},
+ };
+ 
+@@ -442,13 +432,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx2_link_clk_src = {
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = disp_cc_parent_map_3,
+-	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data) {
+ 		.name = "disp_cc_mdss_dptx2_link_clk_src",
+ 		.parent_data = disp_cc_parent_data_3,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_byte2_ops,
+ 	},
+ };
+ 
+@@ -502,13 +491,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx3_link_clk_src = {
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = disp_cc_parent_map_3,
+-	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data) {
+ 		.name = "disp_cc_mdss_dptx3_link_clk_src",
+ 		.parent_data = disp_cc_parent_data_3,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_byte2_ops,
+ 	},
  };
  
 -- 
