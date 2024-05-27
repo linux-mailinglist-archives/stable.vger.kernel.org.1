@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-47113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934EA8D0CA3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 644AA8D0CA5
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C52E01C20F2A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 965B51C2138D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCCB15FA91;
-	Mon, 27 May 2024 19:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD6415FA91;
+	Mon, 27 May 2024 19:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+zm3mVR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zmXykM5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F20A168C4;
-	Mon, 27 May 2024 19:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B295168C4;
+	Mon, 27 May 2024 19:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837704; cv=none; b=hCIOn0PQcEesQXx1SULnhEyDbqkdKdzHLBCAhNwZM1h5U/nWJUJVDhQDlpxOR87Kl6MeeVs1f4Q42sPpX8cSVhtOyqHOAEAnvF51DYVeKt6Y7TPipu9yZjgvrj3pUMxMOcvXR2nkoOtjg5XKv7rOjbd9HuWLHfJCSctrO4ItH5E=
+	t=1716837709; cv=none; b=GAux/vV+u+pY4QNlHXardmljL385vNg2AfO+Vnbx30doZ0LrVmnaWAm1FbxDbmNCbbupZXAoaJGP68U/8XNsLA/zzmE+Z/eHl4xtVLM8zwCyPcxskzx8OfFNc53hx26gNqy2KW6VM0VYHJJBJo9ZklOxeLRNJgvdY/xhNVeDK+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837704; c=relaxed/simple;
-	bh=7ejpEelsC30G6u5cQF7Swof/Xo+uWF3fkzGyW+nqkl4=;
+	s=arc-20240116; t=1716837709; c=relaxed/simple;
+	bh=Z+1Ihfln+g+XLwKZGWziGatHafQkjRWp6XgTfKFGLr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NkHT3McDrziwHG8zl1epmPdvyoYkUQMtSF1ezmHZRj71lI7aWj3zXqG0sCdw0xdb5v5nkXI6fT1aut6dN3cGQUB3a4JU6/KAfA4NsTMDpWCxLKSvs0gOrCiKLnehCwnIssn+q7RZYi2DXTirVMODbHgfbN6sl8O3s49YBBBAZ+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+zm3mVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166C4C2BBFC;
-	Mon, 27 May 2024 19:21:43 +0000 (UTC)
+	 MIME-Version; b=ZjOy8QKGxL7ZD/SvdkdfsY2aVIT5S8oGx4+PCjyl++gTwgTGmGtuw7EFxozchl2DlCdv4fikF46YFSwAfGAeWCOMNIkPMbOoTOoHPIzZsM5o3KcfGZ3kPZZZVnoGRuO7M8OU2vct+nElfByVolhtWPDZ+Ko97uIo7yVqKCKuFwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zmXykM5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D453C2BBFC;
+	Mon, 27 May 2024 19:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837704;
-	bh=7ejpEelsC30G6u5cQF7Swof/Xo+uWF3fkzGyW+nqkl4=;
+	s=korg; t=1716837709;
+	bh=Z+1Ihfln+g+XLwKZGWziGatHafQkjRWp6XgTfKFGLr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+zm3mVRTJJv6PYuw5hRV9iOFAJYgk7wdPU/jVMLylJYk2jzNEjf3XDKix6rztbet
-	 FPCbfoDhBgJwuOzhUFN3dRTCj2u8AyX8XBrNWttpbRNKZ/fDkrq/F+Z2mtdTJ0vXwc
-	 QG0aR+nCVxI9xCjvboQTVNvuTGjy9eK76EwwOXvY=
+	b=zmXykM5hUptWQsG2W6SZ7Ky7w1IEqFlzjcjd0YCrsuRmOwfwVy8EUalgLr+BkIS/z
+	 oD9P9cvIdm5tMfCojPm0NC3Pvjzu7icCAFdpfH0pLjJTT+Pr17tzfUWl9iEn4A5/FG
+	 3kN7fSc3lVxb6pTw3fQvnuLmGFoZR3g1UFMEqYRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Oliver Glitta <glittao@gmail.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Daniel Latypov <dlatypov@google.com>,
+	Marco Elver <elver@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 112/493] firmware: qcom: qcm: fix unused qcom_scm_qseecom_allowlist
-Date: Mon, 27 May 2024 20:51:54 +0200
-Message-ID: <20240527185634.191822712@linuxfoundation.org>
+Subject: [PATCH 6.8 113/493] mm/slub, kunit: Use inverted data to corrupt kmem cache
+Date: Mon, 27 May 2024 20:51:55 +0200
+Message-ID: <20240527185634.223861337@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -62,46 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit e478c5fb6aa10af7b7edbff69bc8aef6fbb5f0ed ]
+[ Upstream commit b1080c667b3b2c8c38a7fa83ca5567124887abae ]
 
-For !OF builds, the qcom_scm_qseecom_allowlist is unused:
+Two failure patterns are seen randomly when running slub_kunit tests with
+CONFIG_SLAB_FREELIST_RANDOM and CONFIG_SLAB_FREELIST_HARDENED enabled.
 
-  drivers/firmware/qcom/qcom_scm.c:1652:34: error: ‘qcom_scm_qseecom_allowlist’ defined but not used [-Werror=unused-const-variable=]
+Pattern 1:
+     # test_clobber_zone: pass:1 fail:0 skip:0 total:1
+     ok 1 test_clobber_zone
+     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:72
+     Expected 3 == slab_errors, but
+         slab_errors == 0 (0x0)
+     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:84
+     Expected 2 == slab_errors, but
+         slab_errors == 0 (0x0)
+     # test_next_pointer: pass:0 fail:1 skip:0 total:1
+     not ok 2 test_next_pointer
 
-Fixes: 00b1248606ba ("firmware: qcom_scm: Add support for Qualcomm Secure Execution Environment SCM interface")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311191654.S4wlVUrz-lkp@intel.com/
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
-Link: https://lore.kernel.org/r/20231120185623.338608-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+In this case, test_next_pointer() overwrites p[s->offset], but the data
+at p[s->offset] is already 0x12.
+
+Pattern 2:
+     ok 1 test_clobber_zone
+     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:72
+     Expected 3 == slab_errors, but
+         slab_errors == 2 (0x2)
+     # test_next_pointer: pass:0 fail:1 skip:0 total:1
+     not ok 2 test_next_pointer
+
+In this case, p[s->offset] has a value other than 0x12, but one of the
+expected failures is nevertheless missing.
+
+Invert data instead of writing a fixed value to corrupt the cache data
+structures to fix the problem.
+
+Fixes: 1f9f78b1b376 ("mm/slub, kunit: add a KUnit test for SLUB debugging functionality")
+Cc: Oliver Glitta <glittao@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+CC: Daniel Latypov <dlatypov@google.com>
+Cc: Marco Elver <elver@google.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_scm.c | 2 +-
+ lib/slub_kunit.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index 90283f160a228..ca381cb2ee979 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -1624,7 +1624,7 @@ EXPORT_SYMBOL_GPL(qcom_scm_qseecom_app_send);
-  * We do not yet support re-entrant calls via the qseecom interface. To prevent
-  + any potential issues with this, only allow validated machines for now.
-  */
--static const struct of_device_id qcom_scm_qseecom_allowlist[] = {
-+static const struct of_device_id qcom_scm_qseecom_allowlist[] __maybe_unused = {
- 	{ .compatible = "lenovo,thinkpad-x13s", },
- 	{ }
- };
+diff --git a/lib/slub_kunit.c b/lib/slub_kunit.c
+index d4a3730b08fa7..4ce9604388069 100644
+--- a/lib/slub_kunit.c
++++ b/lib/slub_kunit.c
+@@ -55,7 +55,7 @@ static void test_next_pointer(struct kunit *test)
+ 
+ 	ptr_addr = (unsigned long *)(p + s->offset);
+ 	tmp = *ptr_addr;
+-	p[s->offset] = 0x12;
++	p[s->offset] = ~p[s->offset];
+ 
+ 	/*
+ 	 * Expecting three errors.
 -- 
 2.43.0
 
