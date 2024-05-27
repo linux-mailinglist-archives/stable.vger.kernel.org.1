@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625C98D0B4D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BECE88D0D71
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C959283EA7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73B8A2814A0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D2217E90E;
-	Mon, 27 May 2024 19:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AF715FD0F;
+	Mon, 27 May 2024 19:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUFlajIw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzTrL5lQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3E215FD04;
-	Mon, 27 May 2024 19:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9350C262BE;
+	Mon, 27 May 2024 19:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836875; cv=none; b=j3RVHDzgnlvpIhFff+Sxlt9TElOWkyevbaX8gn76dHZO0btMQqENTrLXSPAUWXB+tIQ26+jSTULX7SJPqpZRjZ86wtylEEra4hOLZDX2tGilAN3TSdKx+0wIbJfQfBCFPE9wXcJKDE9mvY05RhC/LYP3VUSlUDt1gnuS37cFSZM=
+	t=1716838193; cv=none; b=s6VJheTMyUOj1xlEsSnOce9r4To9YgdqRiba2YE6sKUWkCgR1E5Ut4W3yxnw+e4al5X9aZvYP1digeaRdiakxnu3OWIzCcH/FC63W9TT2AeX7xcGQZxAzrXEwI+7HzxgSi+4EURYp1MjJBMaly4lehvJNSPTopY8OvOy/PtQ8L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836875; c=relaxed/simple;
-	bh=WDj2G4CvoyyJNd7QF78dcu5rt/tK2M1AGJhHMfonP5c=;
+	s=arc-20240116; t=1716838193; c=relaxed/simple;
+	bh=IzrnfSfW+dlg1rxVni7Q8jcafDzF/cOKf0xxEBNtLtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwCjG6LOiwkIp4MIXDjWHAAI9Y0gG8GpTKvn4DtL2cCAfXjLgo3qSHIeSFujTME95z1a3BI+lPJnDnmwwvX22Wb9oe2rDccjIlmgKaLu5bzzcaC0WAUhUZT8Z9n+vm3HPbLj2tdT5jYSeDZezcxowjr9XxPjeHwSx9X98Ejnqzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUFlajIw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63ABC2BBFC;
-	Mon, 27 May 2024 19:07:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cQ1ryjiv0X4xsk2CBtQcHzrVCyWSWVnDD21lWSL6n+kFBGyca3mQr0Nq2+LRpMC2zJnkoUZ4kMpYrLkjW3mOlyDUmoVTJNb4JrT9XS5TZ0IarryMtnQ9t85Xau9dej7qJXiJlGZTxZTiBOV9hyANmY3rxxJYSmDlJPBFBbeDPvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzTrL5lQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2237DC2BBFC;
+	Mon, 27 May 2024 19:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836875;
-	bh=WDj2G4CvoyyJNd7QF78dcu5rt/tK2M1AGJhHMfonP5c=;
+	s=korg; t=1716838193;
+	bh=IzrnfSfW+dlg1rxVni7Q8jcafDzF/cOKf0xxEBNtLtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IUFlajIwcyHVGvzXGAbWclD1l7V2uP8HT4DoKD5DwHqkF7nOWQv4xDLveSOtxR1mp
-	 iqqnXfa1W1DJYOg/itvr1YsZRakxEiTfAnGFBklKfilI0J8hhsCcyQgaVj4IcgJ0TQ
-	 5doRyk85+VLMwO/Mp5DjG26QlKravLhmcEFXXMV4=
+	b=nzTrL5lQeG3/I/OE1XKSBhrYhH58xEDJC1ueyP9x/Hf1q4os5sTCQOp8uTPl5RxGL
+	 7dwp1rtyEtlAV4eqokygTOfTvfQpc/HhMrJpIRrxCa61CdcE3uGqHdsq8f/ASBeXH5
+	 3pzsGUjXTFdGgu0Sq+1ZEEWcAFnrPGEy7E5ir7ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	George Stark <gnstark@salutedevices.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 220/427] scsi: qla2xxx: Fix debugfs output for fw_resource_count
+Subject: [PATCH 6.8 265/493] pwm: meson: Use mul_u64_u64_div_u64() for frequency calculating
 Date: Mon, 27 May 2024 20:54:27 +0200
-Message-ID: <20240527185623.099579454@linuxfoundation.org>
+Message-ID: <20240527185638.958357182@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Himanshu Madhani <himanshu.madhani@oracle.com>
+From: George Stark <gnstark@salutedevices.com>
 
-[ Upstream commit 998d09c5ef6183bd8137d1a892ba255b15978bb4 ]
+[ Upstream commit 32c44e1fa921aebf8a5ef9f778534a30aab39313 ]
 
-DebugFS output for fw_resource_count shows:
+While calculating frequency for the given period u64 numbers are
+multiplied before division what can lead to overflow in theory so use
+secure mul_u64_u64_div_u64() which handles overflow correctly.
 
-estimate exchange used[0] high water limit [1945] n        estimate iocb2 used [0] high water limit [5141]
-        estimate exchange2 used[0] high water limit [1945]
-
-Which shows incorrect display due to missing newline in seq_print().
-
-[mkp: fix checkpatch warning about space before newline]
-
-Fixes: 5f63a163ed2f ("scsi: qla2xxx: Fix exchange oversubscription for management commands")
-Signed-off-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Link: https://lore.kernel.org/r/20240426020056.3639406-1-himanshu.madhani@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 329db102a26d ("pwm: meson: make full use of common clock framework")
+Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: George Stark <gnstark@salutedevices.com>
+Link: https://lore.kernel.org/r/20240425171253.2752877-4-gnstark@salutedevices.com
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_dfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-meson.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
-index 55ff3d7482b3e..a1545dad0c0ce 100644
---- a/drivers/scsi/qla2xxx/qla_dfs.c
-+++ b/drivers/scsi/qla2xxx/qla_dfs.c
-@@ -274,7 +274,7 @@ qla_dfs_fw_resource_cnt_show(struct seq_file *s, void *unused)
- 		seq_printf(s, "Driver: estimate iocb used [%d] high water limit [%d]\n",
- 			   iocbs_used, ha->base_qpair->fwres.iocbs_limit);
+diff --git a/drivers/pwm/pwm-meson.c b/drivers/pwm/pwm-meson.c
+index 6fefa80af0a4c..52ac3277f4204 100644
+--- a/drivers/pwm/pwm-meson.c
++++ b/drivers/pwm/pwm-meson.c
+@@ -177,7 +177,7 @@ static int meson_pwm_calc(struct pwm_chip *chip, struct pwm_device *pwm,
  
--		seq_printf(s, "estimate exchange used[%d] high water limit [%d] n",
-+		seq_printf(s, "estimate exchange used[%d] high water limit [%d]\n",
- 			   exch_used, ha->base_qpair->fwres.exch_limit);
+ 	dev_dbg(pwmchip_parent(chip), "fin_freq: %ld Hz\n", fin_freq);
  
- 		if (ql2xenforce_iocb_limit == 2) {
+-	cnt = div_u64(fin_freq * period, NSEC_PER_SEC);
++	cnt = mul_u64_u64_div_u64(fin_freq, period, NSEC_PER_SEC);
+ 	if (cnt > 0xffff) {
+ 		dev_err(pwmchip_parent(chip), "unable to get period cnt\n");
+ 		return -EINVAL;
+@@ -192,7 +192,7 @@ static int meson_pwm_calc(struct pwm_chip *chip, struct pwm_device *pwm,
+ 		channel->hi = 0;
+ 		channel->lo = cnt;
+ 	} else {
+-		duty_cnt = div_u64(fin_freq * duty, NSEC_PER_SEC);
++		duty_cnt = mul_u64_u64_div_u64(fin_freq, duty, NSEC_PER_SEC);
+ 
+ 		dev_dbg(pwmchip_parent(chip), "duty=%llu duty_cnt=%u\n", duty, duty_cnt);
+ 
 -- 
 2.43.0
 
