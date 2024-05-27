@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A878D0E26
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13DE78D0C2B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B6521C21714
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:37:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 741C6B229B9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9053016086C;
-	Mon, 27 May 2024 19:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586BD168C4;
+	Mon, 27 May 2024 19:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkXtYvYw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqIdC/Jr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFCF15FCF0;
-	Mon, 27 May 2024 19:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FDC1863F;
+	Mon, 27 May 2024 19:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838646; cv=none; b=nB8M65Yu85WHfumQxdryEeMhL3eJh5pcG9GoasCz1yMc0jJP7tVdGbL144fApsAGAtv0oJwNuBC4y5uIX1Zn74S4sD5AvMQ+BqqljE54NJz7FIF4Fy0Bi+P1+XnHr0Ry61XK+osNhd1DR0DsE3SQQbm1Qbh/R7a30SzzttcrohE=
+	t=1716837403; cv=none; b=B3SfqU6DY5CgQUeRMYOIl1HOAvcamVEZjppvbPlZQDknsA3zfhWTefpB39MA/CcuOiZ4vcgcN21uAHMm0n3G9xbmnUbnJ7epifcpSHTe4D6Uakn1uRrh7n5jYE4JBBiyoI5nBZIxWEO5HVtNuN/78qgI0dFZVzOYk3/j4UBIpEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838646; c=relaxed/simple;
-	bh=19mOqV70eHdXTEy1+U68uiH/EtAyu6eKHlaz68oW1cw=;
+	s=arc-20240116; t=1716837403; c=relaxed/simple;
+	bh=Mpo2sFmU+MHmROoNcsKdsghXNqfVklfW63vCg/LNIdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOLljKTMPqLgYRqmRiQKlIp0rzPpSqj8KLn6h918wkuV+bep/ybpzvXkDTXV8u1a38fTMfKd7tqVAG1hpzLxgMz6H1br0p00JaVmzfuvNM3qvEHd0emTDMoREowXjqFQHFCg3WTR7gvp/hg9wVAz8LB7gweAHP00eD6e6ggpZ7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkXtYvYw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2C5C2BBFC;
-	Mon, 27 May 2024 19:37:25 +0000 (UTC)
+	 MIME-Version; b=Qck0fW9/pLl0QAIs1P2d3T6ixHpYMB+SbC8ON3kJLwP18x8izood2Y6SJ1H2V372JFbQtg/LdO8WT1BEKcVOH6JdmNvJk42tQ9sYP2imx0ZpnWuuFMhI7Zwqoq8DB6AEL9kl5SwbFjM/Ib8JKKUpSE9L1CBlaK/y0Toj19wf4yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqIdC/Jr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0641C2BBFC;
+	Mon, 27 May 2024 19:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838646;
-	bh=19mOqV70eHdXTEy1+U68uiH/EtAyu6eKHlaz68oW1cw=;
+	s=korg; t=1716837403;
+	bh=Mpo2sFmU+MHmROoNcsKdsghXNqfVklfW63vCg/LNIdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkXtYvYw12kl+umreeAa4UsYIwJOEalLYxYsepWxYr7GX7xv1IUtrusJXemeu3C81
-	 OXc8TwJjqSzLTUd0oIduOaBwzZEfYRwiOPO1hvCIcYrqH+bn6G3OEOQ/zpv4CFsZ6T
-	 oZHqmA09rWfi1YKACnrP4AeXxlhlq8PpHVZGtT1k=
+	b=nqIdC/JrAgmu2m23xZvl3YHvZ429wpXT+ObJXutKSpLe+xUt/j1eHcMTOJJQoeUpc
+	 caryQUflYGn7uyu1EsNWIzTs4zwSSGg6tjDVNh5aEHokgB5Z9cmwkjDdv551f5kUXy
+	 yLBLDI+OCc+bigIXjLPffo0/ftGYvtfb4RrMi6Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Beau Belgrave <beaub@linux.microsoft.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Mark Brown <broonie@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 472/493] tracing/user_events: Fix non-spaced field matching
+Subject: [PATCH 6.9 427/427] Revert "selftests/sgx: Include KHDR_INCLUDES in Makefile"
 Date: Mon, 27 May 2024 20:57:54 +0200
-Message-ID: <20240527185645.599283752@linuxfoundation.org>
+Message-ID: <20240527185635.911134140@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beau Belgrave <beaub@linux.microsoft.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
 
-[ Upstream commit bd125a084091396f3e796bb3dc009940d9771811 ]
+[ Upstream commit 3da164023582969280df17636a9d829752787b1c ]
 
-When the ABI was updated to prevent same name w/different args, it
-missed an important corner case when fields don't end with a space.
-Typically, space is used for fields to help separate them, like
-"u8 field1; u8 field2". If no spaces are used, like
-"u8 field1;u8 field2", then the parsing works for the first time.
-However, the match check fails on a subsequent register, leading to
-confusion.
+This reverts commit 2c3b8f8f37c6c0c926d584cf4158db95e62b960c.
 
-This is because the match check uses argv_split() and assumes that all
-fields will be split upon the space. When spaces are used, we get back
-{ "u8", "field1;" }, without spaces we get back { "u8", "field1;u8" }.
-This causes a mismatch, and the user program gets back -EADDRINUSE.
+The framework change to add D_GNU_SOURCE to KHDR_INCLUDES
+to Makefile, lib.mk, and kselftest_harness.h is reverted
+as it is causing build failures and warnings.
 
-Add a method to detect this case before calling argv_split(). If found
-force a space after the field separator character ';'. This ensures all
-cases work properly for matching.
+Revert this change as this change depends on the framework
+change.
 
-With this fix, the following are all treated as matching:
-u8 field1;u8 field2
-u8 field1; u8 field2
-u8 field1;\tu8 field2
-u8 field1;\nu8 field2
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240423162338.292-2-beaub@linux.microsoft.com
-
-Fixes: ba470eebc2f6 ("tracing/user_events: Prevent same name but different args event")
-Signed-off-by: Beau Belgrave <beaub@linux.microsoft.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_user.c | 76 +++++++++++++++++++++++++++++++-
- 1 file changed, 75 insertions(+), 1 deletion(-)
+ tools/testing/selftests/sgx/Makefile    | 2 +-
+ tools/testing/selftests/sgx/sigstruct.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events_user.c b/kernel/trace/trace_events_user.c
-index fce5ed5fec50f..704de62f7ae16 100644
---- a/kernel/trace/trace_events_user.c
-+++ b/kernel/trace/trace_events_user.c
-@@ -1923,6 +1923,80 @@ static int user_event_trace_register(struct user_event *user)
- 	return ret;
- }
+diff --git a/tools/testing/selftests/sgx/Makefile b/tools/testing/selftests/sgx/Makefile
+index 26ea30fae23ca..867f88ce2570a 100644
+--- a/tools/testing/selftests/sgx/Makefile
++++ b/tools/testing/selftests/sgx/Makefile
+@@ -12,7 +12,7 @@ OBJCOPY := $(CROSS_COMPILE)objcopy
+ endif
  
-+/*
-+ * Counts how many ';' without a trailing space are in the args.
-+ */
-+static int count_semis_no_space(char *args)
-+{
-+	int count = 0;
-+
-+	while ((args = strchr(args, ';'))) {
-+		args++;
-+
-+		if (!isspace(*args))
-+			count++;
-+	}
-+
-+	return count;
-+}
-+
-+/*
-+ * Copies the arguments while ensuring all ';' have a trailing space.
-+ */
-+static char *insert_space_after_semis(char *args, int count)
-+{
-+	char *fixed, *pos;
-+	int len;
-+
-+	len = strlen(args) + count;
-+	fixed = kmalloc(len + 1, GFP_KERNEL);
-+
-+	if (!fixed)
-+		return NULL;
-+
-+	pos = fixed;
-+
-+	/* Insert a space after ';' if there is no trailing space. */
-+	while (*args) {
-+		*pos = *args++;
-+
-+		if (*pos++ == ';' && !isspace(*args))
-+			*pos++ = ' ';
-+	}
-+
-+	*pos = '\0';
-+
-+	return fixed;
-+}
-+
-+static char **user_event_argv_split(char *args, int *argc)
-+{
-+	char **split;
-+	char *fixed;
-+	int count;
-+
-+	/* Count how many ';' without a trailing space */
-+	count = count_semis_no_space(args);
-+
-+	/* No fixup is required */
-+	if (!count)
-+		return argv_split(GFP_KERNEL, args, argc);
-+
-+	/* We must fixup 'field;field' to 'field; field' */
-+	fixed = insert_space_after_semis(args, count);
-+
-+	if (!fixed)
-+		return NULL;
-+
-+	/* We do a normal split afterwards */
-+	split = argv_split(GFP_KERNEL, fixed, argc);
-+
-+	/* We can free since argv_split makes a copy */
-+	kfree(fixed);
-+
-+	return split;
-+}
-+
- /*
-  * Parses the event name, arguments and flags then registers if successful.
-  * The name buffer lifetime is owned by this method for success cases only.
-@@ -1946,7 +2020,7 @@ static int user_event_parse(struct user_event_group *group, char *name,
- 		return -EPERM;
+ INCLUDES := -I$(top_srcdir)/tools/include
+-HOST_CFLAGS := -Wall -Werror $(KHDR_INCLUDES) -g $(INCLUDES) -fPIC
++HOST_CFLAGS := -Wall -Werror -g $(INCLUDES) -fPIC
+ HOST_LDFLAGS := -z noexecstack -lcrypto
+ ENCL_CFLAGS += -Wall -Werror -static-pie -nostdlib -ffreestanding -fPIE \
+ 	       -fno-stack-protector -mrdrnd $(INCLUDES)
+diff --git a/tools/testing/selftests/sgx/sigstruct.c b/tools/testing/selftests/sgx/sigstruct.c
+index 200034a0fee51..d73b29becf5b0 100644
+--- a/tools/testing/selftests/sgx/sigstruct.c
++++ b/tools/testing/selftests/sgx/sigstruct.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*  Copyright(c) 2016-20 Intel Corporation. */
  
- 	if (args) {
--		argv = argv_split(GFP_KERNEL, args, &argc);
-+		argv = user_event_argv_split(args, &argc);
- 
- 		if (!argv)
- 			return -ENOMEM;
++#define _GNU_SOURCE
+ #include <assert.h>
+ #include <getopt.h>
+ #include <stdbool.h>
 -- 
 2.43.0
 
