@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-47019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CCE8D0C3E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:17:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0C38D0C40
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF1A81F24BD4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:17:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB7302829BC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB5315FA91;
-	Mon, 27 May 2024 19:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAF515A84C;
+	Mon, 27 May 2024 19:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqmdmheT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WS9veLuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC126168C4;
-	Mon, 27 May 2024 19:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE51E168C4;
+	Mon, 27 May 2024 19:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837452; cv=none; b=dA36fFACTftSevSS8Qczjf4N4CZnSffglUTNYlqVgiIA/RazJqcOB3GZcLtCHiJi0Z73qLKiFFNuXWrKn47mX/yF4CTXLCBT4OhcY6l96HrnwfNv8kaDctK1xKiDhYfkFS3xeVsAIMSgc35I81a7GeepSup8lmv7jyRwsYuQO7E=
+	t=1716837461; cv=none; b=QJsW+KW6aZ8O+eRT7aOBH5FLwtk893B/LDe4vP2/O+Uz4hweUTR8vDxhNMslHNLR4BHksRTJ7pthqako6qrMIWLRxcI7cfIWXuBd/f048kXLNDWqvbpkyUsSbll3vcnmKGG/eoDWfEY7i63JPAHp5n0P+GG7AnsNkG/tVJsypzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837452; c=relaxed/simple;
-	bh=ze7QeFIJ8L0syFUsOHDfS6VBkcyRdm1/2Bq3MKpLN+g=;
+	s=arc-20240116; t=1716837461; c=relaxed/simple;
+	bh=PJpwb/acKnxI6u9YOszAQz1QO0P4MiBZvP2NKWYBgsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOsroXh3DAYGgS6xuN7tJtsKcmq4/C/UCV+594y9o847r2KlOZA57MCb2e8OY2drzxGZrCudQ375tdwurBN3FAp/hJvkSr9Lm0sFI5NPsrwwZ569BBk3LgvU0KInk7Y7Kt81TlY3av8+RKF9MmHNEGzYSWsqXhVuiMtblx6sowc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqmdmheT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4172EC2BBFC;
-	Mon, 27 May 2024 19:17:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P3cIwulGwGEyGF1iyck/dQBtRFz7uDwOk9ASUDaa4bKUksifdB1hd4bLpmf46bll+9XLFdhd7sLg77it91JFFK6wgBT8JsV3JS9b4iwaIx6xKqiTaZPISaeG6+Z8b2uq0KiMBZh9uTKSJg9WT9UUjwlEBuKnkravKTjr0aA/6GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WS9veLuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D04C2BBFC;
+	Mon, 27 May 2024 19:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837452;
-	bh=ze7QeFIJ8L0syFUsOHDfS6VBkcyRdm1/2Bq3MKpLN+g=;
+	s=korg; t=1716837461;
+	bh=PJpwb/acKnxI6u9YOszAQz1QO0P4MiBZvP2NKWYBgsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqmdmheTCibUSYMW2TEBi6mtz+Nane+4t44+deuHxgaNtDITOVNyC6xqX5ASu8N0W
-	 kSQaGkEPmsd1/tdwACPgo96nHrOhUFLl7M1jXYsE2PBbBbbO5AMmfwffrrGlliJpEW
-	 pBheTYgjw6YHzduk904GPwHNtIbAiPo0/sMC9Tx4=
+	b=WS9veLuSyWBiFx9r0syZMbPFuc69zSzELQjcu087LdwpV+nTg5gxwaqObGKebOQd+
+	 MMUTPUzRbdtawuAMQIjJsrXZUkSFrEon/ehHcF556PoqJ0teyhMm9jGXD+7Md3TRXz
+	 CaGf9U/jUjluWhmEcWl4Z+nadoR9ziSYe0GsV4aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.8 019/493] net: mana: Fix the extra HZ in mana_hwc_send_request
-Date: Mon, 27 May 2024 20:50:21 +0200
-Message-ID: <20240527185628.422170058@linuxfoundation.org>
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.8 020/493] tools/latency-collector: Fix -Wformat-security compile warns
+Date: Mon, 27 May 2024 20:50:22 +0200
+Message-ID: <20240527185628.519584307@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -61,42 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
 
-commit 9c91c7fadb1771dcc2815c5271d14566366d05c5 upstream.
+commit df73757cf8f66fa54c4721c53b0916af3c4d9818 upstream.
 
-Commit 62c1bff593b7 added an extra HZ along with msecs_to_jiffies.
-This patch fixes that.
+Fix the following -Wformat-security compile warnings adding missing
+format arguments:
+
+latency-collector.c: In function ‘show_available’:
+latency-collector.c:938:17: warning: format not a string literal and
+no format arguments [-Wformat-security]
+  938 |                 warnx(no_tracer_msg);
+      |                 ^~~~~
+
+latency-collector.c:943:17: warning: format not a string literal and
+no format arguments [-Wformat-security]
+  943 |                 warnx(no_latency_tr_msg);
+      |                 ^~~~~
+
+latency-collector.c: In function ‘find_default_tracer’:
+latency-collector.c:986:25: warning: format not a string literal and
+no format arguments [-Wformat-security]
+  986 |                         errx(EXIT_FAILURE, no_tracer_msg);
+      |
+                         ^~~~
+latency-collector.c: In function ‘scan_arguments’:
+latency-collector.c:1881:33: warning: format not a string literal and
+no format arguments [-Wformat-security]
+ 1881 |                                 errx(EXIT_FAILURE, no_tracer_msg);
+      |                                 ^~~~
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240404011009.32945-1-skhan@linuxfoundation.org
 
 Cc: stable@vger.kernel.org
-Fixes: 62c1bff593b7 ("net: mana: Configure hwc timeout from hardware")
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Link: https://lore.kernel.org/r/1716185104-31658-1-git-send-email-schakrabarti@linux.microsoft.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e23db805da2df ("tracing/tools: Add the latency-collector to tools directory")
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/hw_channel.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/tracing/latency/latency-collector.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -848,7 +848,7 @@ int mana_hwc_send_request(struct hw_chan
+--- a/tools/tracing/latency/latency-collector.c
++++ b/tools/tracing/latency/latency-collector.c
+@@ -935,12 +935,12 @@ static void show_available(void)
  	}
  
- 	if (!wait_for_completion_timeout(&ctx->comp_event,
--					 (msecs_to_jiffies(hwc->hwc_timeout) * HZ))) {
-+					 (msecs_to_jiffies(hwc->hwc_timeout)))) {
- 		dev_err(hwc->dev, "HWC: Request timed out!\n");
- 		err = -ETIMEDOUT;
- 		goto out;
+ 	if (!tracers) {
+-		warnx(no_tracer_msg);
++		warnx("%s", no_tracer_msg);
+ 		return;
+ 	}
+ 
+ 	if (!found) {
+-		warnx(no_latency_tr_msg);
++		warnx("%s", no_latency_tr_msg);
+ 		tracefs_list_free(tracers);
+ 		return;
+ 	}
+@@ -983,7 +983,7 @@ static const char *find_default_tracer(v
+ 	for (i = 0; relevant_tracers[i]; i++) {
+ 		valid = tracer_valid(relevant_tracers[i], &notracer);
+ 		if (notracer)
+-			errx(EXIT_FAILURE, no_tracer_msg);
++			errx(EXIT_FAILURE, "%s", no_tracer_msg);
+ 		if (valid)
+ 			return relevant_tracers[i];
+ 	}
+@@ -1878,7 +1878,7 @@ static void scan_arguments(int argc, cha
+ 			}
+ 			valid = tracer_valid(current_tracer, &notracer);
+ 			if (notracer)
+-				errx(EXIT_FAILURE, no_tracer_msg);
++				errx(EXIT_FAILURE, "%s", no_tracer_msg);
+ 			if (!valid)
+ 				errx(EXIT_FAILURE,
+ "The tracer %s is not supported by your kernel!\n", current_tracer);
 
 
 
