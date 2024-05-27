@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-46849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EDD8D0B85
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B948D0D59
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1959E1F2191A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 396961C2148E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC68E26AF2;
-	Mon, 27 May 2024 19:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1D315FD0F;
+	Mon, 27 May 2024 19:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNY9Z4JD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHEIftT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B2A17E90E;
-	Mon, 27 May 2024 19:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE2415FA91;
+	Mon, 27 May 2024 19:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837012; cv=none; b=BSCXBEe7v2wAFv1+8pBFBy49t0Tevdfn7WIJARn0toN14Nas2PkipBzTUWddllMAkEsIrf841M9XU6kbO4jZ2Yye+VvPFtl+ghsUcfi5VmUEZtdUL76tO7W80ZFp3C42pzSTLBzOTUP/sQfAFfmzWHb6RtDhEUFVIBPRPNsYoQ0=
+	t=1716838132; cv=none; b=QULxNVVLrLiZGYvJ1x/4IGUazZ5WfZko0uGRIPzFsjVgwgQOR6RS4z6Pwyn0LLKqVPwnRxzG2inWuSFMlGZr1igaWtqybb+ZF95AEHu32MpmhKAnBuWuLmlHeL0GTnX6sQSRWcvRw9IUhel4fHHO6hhjwZQKkbxAteDWqAo28vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837012; c=relaxed/simple;
-	bh=ZWwZTSBAcnbHueNoNjqWCitg3HWY1CukNUhzj+Yzidw=;
+	s=arc-20240116; t=1716838132; c=relaxed/simple;
+	bh=zdx5SlhMCGyySCMQKDI2PIrxzQul/RGo16WkVla2olY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EVMksUm49i/nCdBhsj0tZ7BLQgWLGJ9f7O2vaRPv3u5QoRW7M22t8bo3l4cKP8rLYNHg6QkYmWThVXqHxp64PNlqLVtzDqHr9ELUOs6GBI6E4IaFn3lZ6xxtP+/TvUSt0kVybhpAE9UONfa0qfHBZXniFWa6RC2TOIbmk4dVjH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNY9Z4JD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B093C2BBFC;
-	Mon, 27 May 2024 19:10:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fOYRWPXXovkyEUtvRxGafn+C7ANXRQ5oie4yqc6JnX2CGz29GWEAX0t+uQpW8r4zN0FzAhPO+2VEBMLNNjsH8ZVpaOZa8I75jQ8am2H4MHT5iB7deRpb0JMCIPnkLv0tQwNbzPYEdw9uWSm1BoxAKGUuYLRIpiVizM6kfVIIrI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHEIftT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC91C2BBFC;
+	Mon, 27 May 2024 19:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837012;
-	bh=ZWwZTSBAcnbHueNoNjqWCitg3HWY1CukNUhzj+Yzidw=;
+	s=korg; t=1716838132;
+	bh=zdx5SlhMCGyySCMQKDI2PIrxzQul/RGo16WkVla2olY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNY9Z4JDmjOIArTC55dKz/hZH5I7spmAGwHHgmuqb8NPyVe+NxhQNbw8mkyI3zxav
-	 kisZgFxzDpC/VPHIqS5xEDM40ad2h5qJjCtWPw0Yddurq1ab89S3tFQ3kyua5z9yIL
-	 CEuHrSdqCFW/KMOh1+TdaQ5sygFXBZm/IVCoroWI=
+	b=PHEIftT3pzLMq4WBW+3z29qu9pLm9K5YHvhe5U2b1xCBgml98tEo6317X/k5xZA/Z
+	 f9tS4fmpel3brXrmy5DnFmML6KHw9nG+01Bsru7hdULjWhXR3uK7K+/9iLB/GaUdNs
+	 /1S6OwSM/9IAHN63jnn1otIHY5K3sOntm9tjYjHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Colledge <joel.colledge@linbit.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 234/427] dm-delay: fix hung task introduced by kthread mode
+Subject: [PATCH 6.8 279/493] selftests/resctrl: fix clang build failure: use LOCAL_HDRS
 Date: Mon, 27 May 2024 20:54:41 +0200
-Message-ID: <20240527185624.330361898@linuxfoundation.org>
+Message-ID: <20240527185639.430953328@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Colledge <joel.colledge@linbit.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit d14646f23300a5fc85be867bafdc0702c2002789 ]
+[ Upstream commit d8171aa4ca72f1a67bf3c14c59441d63c1d2585f ]
 
-If the worker thread is not woken due to a bio, then it is not woken at
-all. This causes the hung task check to trigger. This occurs, for
-instance, when no bios are submitted. Also when a delay of 0 is
-configured, delay_bio() returns without waking the worker.
+First of all, in order to build with clang at all, one must first apply
+Valentin Obst's build fix for LLVM [1]. Once that is done, then when
+building with clang, via:
 
-Prevent the hung task check from triggering by creating the thread with
-kthread_run() instead of using kthread_create() directly.
+    make LLVM=1 -C tools/testing/selftests
 
-Fixes: 70bbeb29fab0 ("dm delay: for short delays, use kthread instead of timers and wq")
-Signed-off-by: Joel Colledge <joel.colledge@linbit.com>
-Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+...the following error occurs:
+
+   clang: error: cannot specify -o when generating multiple output files
+
+This is because clang, unlike gcc, won't accept invocations of this
+form:
+
+    clang file1.c header2.h
+
+Fix this by using selftests/lib.mk facilities for tracking local header
+file dependencies: add them to LOCAL_HDRS, leaving only the .c files to
+be passed to the compiler.
+
+[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
+
+Fixes: 8e289f454289 ("selftests/resctrl: Add resctrl.h into build deps")
+Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-delay.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/resctrl/Makefile | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-delay.c b/drivers/md/dm-delay.c
-index eec0daa4b227a..4ba12d5369949 100644
---- a/drivers/md/dm-delay.c
-+++ b/drivers/md/dm-delay.c
-@@ -269,8 +269,7 @@ static int delay_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 		 * In case of small requested delays, use kthread instead of
- 		 * timers and workqueue to achieve better latency.
- 		 */
--		dc->worker = kthread_create(&flush_worker_fn, dc,
--					    "dm-delay-flush-worker");
-+		dc->worker = kthread_run(&flush_worker_fn, dc, "dm-delay-flush-worker");
- 		if (IS_ERR(dc->worker)) {
- 			ret = PTR_ERR(dc->worker);
- 			dc->worker = NULL;
+diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
+index 2deac2031de9e..021863f86053a 100644
+--- a/tools/testing/selftests/resctrl/Makefile
++++ b/tools/testing/selftests/resctrl/Makefile
+@@ -5,6 +5,8 @@ CFLAGS += $(KHDR_INCLUDES)
+ 
+ TEST_GEN_PROGS := resctrl_tests
+ 
++LOCAL_HDRS += $(wildcard *.h)
++
+ include ../lib.mk
+ 
+-$(OUTPUT)/resctrl_tests: $(wildcard *.[ch])
++$(OUTPUT)/resctrl_tests: $(wildcard *.c)
 -- 
 2.43.0
 
