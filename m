@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-47116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110D08D0CA6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303F78D0AA1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF46E2868ED
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA81C1F226EE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5988215FCFE;
-	Mon, 27 May 2024 19:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DEA1607BC;
+	Mon, 27 May 2024 19:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jxklf6q8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wk9z0mcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A81168C4;
-	Mon, 27 May 2024 19:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE961DFED;
+	Mon, 27 May 2024 19:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837712; cv=none; b=iyuRx1cMoBdbs1C6GnptxLKgEcPk2FxMcwC8jHTOgktnhaKcMQJDr2yFYZqCculjXtz0FA8gTklPpwizONM9t/UO/QlB8sXRTKk3PmhkE2WuUPyaUAVBiWU+ifPqPjxskS0par7to7l4CocXclF9WMDYD+Bxdw9avdz04Bo52fI=
+	t=1716836480; cv=none; b=WhVynqf/ZQLHQBKtKAB4DqSlhDqT1gb1KLVPTsAKsrOczkHZqxqWWLghrFnBl0+KrJvrMQWiJtpjL6Tfk7uQyq3uXbhB5COjEHaCsC67LiMm0jDiTcCsKmEWsAp4DRyy4kN0mB8LQTraK2SuD/hcGuaKswhZGjWQunwwu2LEeOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837712; c=relaxed/simple;
-	bh=TUmW+e+/MzlSwlcM4dFPSGRL+1GEtvTktKxR8s0zrcc=;
+	s=arc-20240116; t=1716836480; c=relaxed/simple;
+	bh=ojIyI5xawvynEo463ouyG2O6X5SJi/BNiXRZuG5UAQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rdlwyd/9fnhpOMg/SwJwqLKfu4/eEFM1tCrC/tHLM/GLWRBYxuV6TQ9Fj6dISxCnmwbLVzu21XDX9XfgLCJBxEoWdewa9urtsPuXfa+tSS9KNdfoSD9iASd40LIJe8PdDpaE4/9pvNXSU6jZosCJ+2Fak6dt2pQMtQcby/epATo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jxklf6q8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD55C2BBFC;
-	Mon, 27 May 2024 19:21:51 +0000 (UTC)
+	 MIME-Version; b=amFhGauGHmk61ODZ6eZLNDijFbEhDqltZ0jL3PZwJXf1+brzplWioHNvsNlcTslUhL2SdEesismFru6ab/k/4CcX2KSDL0sItbAwbb8GN4Iz8g3q2lHpb8Z1OxOXdcl+TGuy3CoRDea33wMHQx+VV4oG1sDePJKaK23Bqj6pnbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wk9z0mcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3FDC2BBFC;
+	Mon, 27 May 2024 19:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837712;
-	bh=TUmW+e+/MzlSwlcM4dFPSGRL+1GEtvTktKxR8s0zrcc=;
+	s=korg; t=1716836480;
+	bh=ojIyI5xawvynEo463ouyG2O6X5SJi/BNiXRZuG5UAQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jxklf6q83RZS6fzQ8/ksRig/j+Mbhg4s7mEENR7j9PvvIWYGM5bDvNX5AvJuXjFLq
-	 Jztt4lQSt+XfZO/HB0LmFFFi/PN2mUOXedPcgBFeWAP1vl57c9Z2I1lL13EY0dWVB2
-	 Hvwof75w0petEZpsPFEZ4O6eealtI4IWJbi2oso0=
+	b=Wk9z0mcSG8zm3XInCSNC7AjLq3RkNTTnXFqOcer0rOV8E148UdQme9TAFZ7BhbCeU
+	 0fvKR6Iq0fSsrh8KlgGlny/kBLfJNuLdmj/ujUUTNEmsc/rZUw54nP207dc56B6cvU
+	 zU7RK+QPBeDJP6kjLeTWUJj3sxCMGOZe0QN2LNzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 114/493] firmware: raspberrypi: Use correct device for DMA mappings
-Date: Mon, 27 May 2024 20:51:56 +0200
-Message-ID: <20240527185634.253160082@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Xilin Wu <wuxilin123@gmail.com>
+Subject: [PATCH 6.9 070/427] soc: qcom: pmic_glink: dont traverse clients list without a lock
+Date: Mon, 27 May 2024 20:51:57 +0200
+Message-ID: <20240527185608.338492692@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit df518a0ae1b982a4dcf2235464016c0c4576a34d ]
+[ Upstream commit 635ce0db89567ba62f64b79e8c6664ba3eff6516 ]
 
-The buffer used to transfer data over the mailbox interface is mapped
-using the client's device. This is incorrect, as the device performing
-the DMA transfer is the mailbox itself. Fix it by using the mailbox
-controller device instead.
+Take the client_lock before traversing the clients list at the
+pmic_glink_state_notify_clients() function. This is required to keep the
+list traversal safe from concurrent modification.
 
-This requires including the mailbox_controller.h header to dereference
-the mbox_chan and mbox_controller structures. The header is not meant to
-be included by clients. This could be fixed by extending the client API
-with a function to access the controller's device.
-
-Fixes: 4e3d60656a72 ("ARM: bcm2835: Add the Raspberry Pi firmware driver")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Tested-by: Ivan T. Ivanov <iivanov@suse.de>
-Link: https://lore.kernel.org/r/20240326195807.15163-3-laurent.pinchart@ideasonboard.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Tested-by: Xilin Wu <wuxilin123@gmail.com> # on QCS8550 AYN Odin 2
+Link: https://lore.kernel.org/r/20240403-pmic-glink-fix-clients-v2-1-aed4e02baacc@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/raspberrypi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/soc/qcom/pmic_glink.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
-index 322aada20f742..ac34876a97f8b 100644
---- a/drivers/firmware/raspberrypi.c
-+++ b/drivers/firmware/raspberrypi.c
-@@ -9,6 +9,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/kref.h>
- #include <linux/mailbox_client.h>
-+#include <linux/mailbox_controller.h>
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_platform.h>
-@@ -97,8 +98,8 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 	if (size & 3)
- 		return -EINVAL;
+diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
+index f913e9bd57ed4..2b2cdf4796542 100644
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -115,10 +115,12 @@ static int pmic_glink_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
  
--	buf = dma_alloc_coherent(fw->cl.dev, PAGE_ALIGN(size), &bus_addr,
--				 GFP_ATOMIC);
-+	buf = dma_alloc_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size),
-+				 &bus_addr, GFP_ATOMIC);
- 	if (!buf)
- 		return -ENOMEM;
+ 	hdr = data;
  
-@@ -126,7 +127,7 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 		ret = -EINVAL;
++	mutex_lock(&pg->client_lock);
+ 	list_for_each_entry(client, &pg->clients, node) {
+ 		if (client->id == le32_to_cpu(hdr->owner))
+ 			client->cb(data, len, client->priv);
+ 	}
++	mutex_unlock(&pg->client_lock);
+ 
+ 	return 0;
+ }
+@@ -168,8 +170,10 @@ static void pmic_glink_state_notify_clients(struct pmic_glink *pg)
  	}
  
--	dma_free_coherent(fw->cl.dev, PAGE_ALIGN(size), buf, bus_addr);
-+	dma_free_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size), buf, bus_addr);
- 
- 	return ret;
+ 	if (new_state != pg->client_state) {
++		mutex_lock(&pg->client_lock);
+ 		list_for_each_entry(client, &pg->clients, node)
+ 			client->pdr_notify(client->priv, new_state);
++		mutex_unlock(&pg->client_lock);
+ 		pg->client_state = new_state;
+ 	}
  }
 -- 
 2.43.0
