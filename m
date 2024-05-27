@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-46992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1828D0C1D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84F48D0E20
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BE33283837
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA4891C215A0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3866F15EFC3;
-	Mon, 27 May 2024 19:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8BD16086C;
+	Mon, 27 May 2024 19:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z23bzKJ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lif47KEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9D0168C4;
-	Mon, 27 May 2024 19:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F023615FCF0;
+	Mon, 27 May 2024 19:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837383; cv=none; b=dZF2He6ukLOqFO22C2ArxqOfQpI2vAOiDHaaKBcxnyDn/iINt13xYBlM+iyU46Ht2B4h9VYQ/Var1JRQJYJEdOwktXvFEAyvAy78A0xR3pHy7aUYFotazo972odjGyW7BZMzdMvReOwddHCGs6hkT5fZHN9qmkAYWnK0LxcHeVI=
+	t=1716838631; cv=none; b=o/Mwj0UVb2QRUasTxIajNjUXOYyaH/YdaOx3j8aJOfJmVNLkK86RtghmBqGAKLsSvNeO8wOGK5rIn8x/rFq1mwS0fL4dtCn8Ay0VmbXQe7OAF1pqhP+csIQu1w5J1aAOfhJTQFHJHqhqRLZc7aIhwp/X+kXGNaSafHIV4PEZvIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837383; c=relaxed/simple;
-	bh=NhV41s+PcMPqQ4xIPa7vQlKQ8EiLiSSgr3EauR2zAkQ=;
+	s=arc-20240116; t=1716838631; c=relaxed/simple;
+	bh=J/QK+GKs+xtdNnjYoHAHgus+R2LlgX0uXkWGhNKSqDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDxIyMeUpenG45qcxUen/5xEbMkE6J6Ppd77gUuCaNKPEdHQLCiVSO93rKJ4RTacx+CUsCMIybUjee8zcOoq7sSS5MVQEahkJtAjxocZBS9edRiQImOVYDcn0JflSp8HYKg2Wc5N/fFBEpraTWE3sZ2fhls8/vbtwj5eY2uO93g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z23bzKJ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2ACC32781;
-	Mon, 27 May 2024 19:16:22 +0000 (UTC)
+	 MIME-Version; b=S3Xa2HFRWBE8EEdngGBa+UuEdFt5TcBuz/vL1eI2UT/v3Bw83VJiPfGThssTXUaIMX1klD0icL1zmMXOMYftj0E0NFe5AD2Cy0+Zf+RKaSRtvhf5hH8CwctAPcnxqn0bU5vJ+kUBdw+JMlqEYs2gNjAT3gVwOItHDZ04g+WBny0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lif47KEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81272C2BBFC;
+	Mon, 27 May 2024 19:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837382;
-	bh=NhV41s+PcMPqQ4xIPa7vQlKQ8EiLiSSgr3EauR2zAkQ=;
+	s=korg; t=1716838630;
+	bh=J/QK+GKs+xtdNnjYoHAHgus+R2LlgX0uXkWGhNKSqDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z23bzKJ2flFbUkooBFLn/Q4rUG0VEmPSi1SxENhZb73WSMT7zEvMDnWr3p8kgEe7G
-	 Zso1RUtE0Pr7fTP9Pkv2JFFl2u/rJjbUD82aGSvw6rGo+bqFmIL3AO0dBv11n6NMFV
-	 /lsub8iySzHZs/lK/dPF6W9uW5S9rn9pYiHvvvCg=
+	b=Lif47KEML2wY+JbBAJMAcE3mjtl+n5MOqqvFgnFcVVZuF9JPGCcKmHDfP5aiW8ov5
+	 h/tlS9Zb0vwJF7DWSAVfXs8ejwQw9IbHuBAF12mo9vFubL6OQG+pxiVOqtw5HJ1NZm
+	 jMyNIifAiCZTD/rUYit2YQROd5eQyCvslTwxcG4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Bursov <vitaly@bursov.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Valentin Schneider <vschneid@redhat.com>,
+	SeongJae Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 420/427] sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level
-Date: Mon, 27 May 2024 20:57:47 +0200
-Message-ID: <20240527185635.701379961@linuxfoundation.org>
+Subject: [PATCH 6.8 466/493] selftests/damon/_damon_sysfs: check errors from nr_schemes file reads
+Date: Mon, 27 May 2024 20:57:48 +0200
+Message-ID: <20240527185645.422726240@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Bursov <vitaly@bursov.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit a1fd0b9d751f840df23ef0e75b691fc00cfd4743 ]
+[ Upstream commit 732b8815c079199d29b0426d9372bb098c63cdc7 ]
 
-Change relax_domain_level checks so that it would be possible
-to include or exclude all domains from newidle balancing.
+DAMON context staging method in _damon_sysfs.py is not checking the
+returned error from nr_schemes file read.  Check it.
 
-This matches the behavior described in the documentation:
-
-  -1   no request. use system default or follow request of others.
-   0   no search.
-   1   search siblings (hyperthreads in a core).
-
-"2" enables levels 0 and 1, level_max excludes the last (level_max)
-level, and level_max+1 includes all levels.
-
-Fixes: 1d3504fcf560 ("sched, cpuset: customize sched domains, core")
-Signed-off-by: Vitalii Bursov <vitaly@bursov.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lore.kernel.org/r/bd6de28e80073c79466ec6401cdeae78f0d4423d.1714488502.git.vitaly@bursov.com
+Link: https://lkml.kernel.org/r/20240503180318.72798-3-sj@kernel.org
+Fixes: f5f0e5a2bef9 ("selftests/damon/_damon_sysfs: implement kdamonds start function")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c  | 2 +-
- kernel/sched/topology.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/damon/_damon_sysfs.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 4237c8748715d..da24187c4e025 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -2948,7 +2948,7 @@ bool current_cpuset_is_being_rebound(void)
- static int update_relax_domain_level(struct cpuset *cs, s64 val)
- {
- #ifdef CONFIG_SMP
--	if (val < -1 || val >= sched_domain_level_max)
-+	if (val < -1 || val > sched_domain_level_max + 1)
- 		return -EINVAL;
- #endif
- 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 99ea5986038ce..3127c9b30af18 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1468,7 +1468,7 @@ static void set_domain_attribute(struct sched_domain *sd,
- 	} else
- 		request = attr->relax_domain_level;
- 
--	if (sd->level > request) {
-+	if (sd->level >= request) {
- 		/* Turn off idle balance on this domain: */
- 		sd->flags &= ~(SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
- 	}
+diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
+index e98cf4b6a4b76..f9fead3d0f018 100644
+--- a/tools/testing/selftests/damon/_damon_sysfs.py
++++ b/tools/testing/selftests/damon/_damon_sysfs.py
+@@ -241,6 +241,8 @@ class DamonCtx:
+         nr_schemes_file = os.path.join(
+                 self.sysfs_dir(), 'schemes', 'nr_schemes')
+         content, err = read_file(nr_schemes_file)
++        if err is not None:
++            return err
+         if int(content) != len(self.schemes):
+             err = write_file(nr_schemes_file, '%d' % len(self.schemes))
+             if err != None:
 -- 
 2.43.0
 
