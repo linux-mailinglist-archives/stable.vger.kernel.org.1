@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-46384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABFA8D03B8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D5A8D03BB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C2C428A8EB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:31:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31AA828B5B1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C906A181D10;
-	Mon, 27 May 2024 14:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552CE181CFF;
+	Mon, 27 May 2024 14:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJTpAyUl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qaNRgyYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8315C181D06;
-	Mon, 27 May 2024 14:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FC916C451;
+	Mon, 27 May 2024 14:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819330; cv=none; b=JJpYFuHdYFIhGQyaxO2svEMcdpJ29D3sYFdU3uqWe8N9tJxulrGnbmmLT4L+ZEL0fpnTHx7nxMxyk9irl1df6gWJYCZGQE+TUIkkZ/4/ATzk75u7/kfulMzrPdWfRYXYFvruA5y7zLk0B75oJdi4vzoiHzW34NEKdL6LEbnLQ+0=
+	t=1716819332; cv=none; b=MYG7Udq1jsQTwkdyLiLFMYy/NWlmMKJaasxHcb2Sfyr4nG+9llhUHG8N8VMDQY6XY2yzwQPrP2Sv8AS1VfAVNWnO+mWNjhyMX4GNnq0vk6KTQIk3qZ6YJCzImteXF3dkhhG2Q/zYamHUlU4ZheCgrQf6y651LgWn0s5ZM+tb0AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819330; c=relaxed/simple;
-	bh=s+lIrPPcCGvUZL3PbI5a5ZKTRpmk/nMe5exqy1s372s=;
+	s=arc-20240116; t=1716819332; c=relaxed/simple;
+	bh=UUX6FM7FevEjcmk/Q+b3AHxsD6DcfXw/QHAtxiCn7Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o3IlJzS9QtMWBpBcGWWim6Iz+4qdNOsruexyGcR7n1fYcCDLKBKNE6lJEbTJ46obd44xX2Y8o+o0pMas8+3wO9sOPMIr6J5zHeOvFVXxKF5LhTx5j7Id/RsEeDBVG6GOO0M7FlkRHgxJj33Pedq7dhUAirw4rI1xTsuxHhI3Hzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJTpAyUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E595CC4AF07;
-	Mon, 27 May 2024 14:15:28 +0000 (UTC)
+	 MIME-Version; b=gn+my+LRfsr/phxncgRXwn/yY9R4Zhe5LiTvvdPMemtigNCZ59Y2Cl796UxBBn+i4qZi39Db9k29+hKMq5SX7MPsXY7y4m3xM5VhWKoKO11cryA0Wz/oFX0kSCsp6e79DuiRhCpLBxZJEE0Fj+nN9BH1tdr46mfAvc2dv8JQrPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qaNRgyYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6728C4AF08;
+	Mon, 27 May 2024 14:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819330;
-	bh=s+lIrPPcCGvUZL3PbI5a5ZKTRpmk/nMe5exqy1s372s=;
+	s=k20201202; t=1716819331;
+	bh=UUX6FM7FevEjcmk/Q+b3AHxsD6DcfXw/QHAtxiCn7Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJTpAyUlmTcOPgbv1Iom/IegijQaR5HVZ+AbGJ8bNP7MO29GhlKvTBgcIdAx17N4o
-	 RcTnRaZ7lj5M/Cv99jze9spVWDMdGmXhZEMXtvJUUMsqhllTRl2xStgywWBobFghDR
-	 c36k1nCMd7xn9TUD3fukt5ULLUz+jgVpwOSO3GyyczE59tdsXr3aCsCY5zdUB0GVpy
-	 5dJnD/vvvp/rFMXuv+8ibHbgPYNaGB8EJHFz3nqOwSgzAwH1v+P0OztutvfRioTGta
-	 2Wp/i5nVNSllOQu3K3KQUo4705Udignf0M6EwRBbQ+wHoq6vnRAz7eCs9mMuv8UMh4
-	 iPa6fzlvjZRUA==
+	b=qaNRgyYmxTegceBTF3oSqlDfnYqx2VX9xYx4cmfMs9MZAaGyIwQdl9Mj0TdaOB+7r
+	 JTq0XIj90YUkkHk6jdVFahpHOUOdhnQGgVmyl5cEOfErA1xn7t5l9lswFXujccZobl
+	 3QUgkUBb8B7Y7p9bAkcsvl4SCmO0EShEWMkvHXRiUDKzaHK3YeyZ3hXTtDpffQFrz5
+	 A7mBn9Te742/g7EcJ0WEzWCJoBOLpWtKBbySvQb7KtC5llQ9jcvhehis4baw1xC9q4
+	 r9o2nejqwfamiTeUGQCKYxozxCz0eKaGk/wNVw5KUQz2ZmNEfRP8RL4MV9xL8bEbh0
+	 xdbS72O4Pju+w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
+Cc: Uri Arev <me@wantyapps.xyz>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 29/30] selftests: net: fix timestamp not arriving in cmsg_time.sh
-Date: Mon, 27 May 2024 10:13:38 -0400
-Message-ID: <20240527141406.3852821-29-sashal@kernel.org>
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 30/30] Bluetooth: ath3k: Fix multiple issues reported by checkpatch.pl
+Date: Mon, 27 May 2024 10:13:39 -0400
+Message-ID: <20240527141406.3852821-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141406.3852821-1-sashal@kernel.org>
 References: <20240527141406.3852821-1-sashal@kernel.org>
@@ -70,85 +67,188 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.11
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Uri Arev <me@wantyapps.xyz>
 
-[ Upstream commit 2d3b8dfd82d76b1295167c6453d683ab99e50794 ]
+[ Upstream commit 68aa21054ec3a1a313af90a5f95ade16c3326d20 ]
 
-On slow machines the SND timestamp sometimes doesn't arrive before
-we quit. The test only waits as long as the packet delay, so it's
-easy for a race condition to happen.
+This fixes some CHECKs reported by the checkpatch script.
 
-Double the wait but do a bit of polling, once the SND timestamp
-arrives there's no point to wait any longer.
+Issues reported in ath3k.c:
+-------
+ath3k.c
+-------
+CHECK: Please don't use multiple blank lines
++
++
 
-This fixes the "TXTIME abs" failures on debug kernels, like:
+CHECK: Blank lines aren't necessary after an open brace '{'
++static const struct usb_device_id ath3k_blist_tbl[] = {
++
 
-   Case ICMPv4  - TXTIME abs returned '', expected 'OK'
+CHECK: Alignment should match open parenthesis
++static int ath3k_load_firmware(struct usb_device *udev,
++                               const struct firmware *firmware)
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240510005705.43069-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+CHECK: Alignment should match open parenthesis
++               err = usb_bulk_msg(udev, pipe, send_buf, size,
++                                       &len, 3000);
+
+CHECK: Unnecessary parentheses around 'len != size'
++               if (err || (len != size)) {
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_get_version(struct usb_device *udev,
++                       struct ath3k_version *version)
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_load_fwfile(struct usb_device *udev,
++               const struct firmware *firmware)
+
+CHECK: Alignment should match open parenthesis
++               err = usb_bulk_msg(udev, pipe, send_buf, size,
++                                       &len, 3000);
+
+CHECK: Unnecessary parentheses around 'len != size'
++               if (err || (len != size)) {
+
+CHECK: Blank lines aren't necessary after an open brace '{'
++       switch (fw_version.ref_clock) {
++
+
+CHECK: Alignment should match open parenthesis
++       snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
++               le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
+
+CHECK: Alignment should match open parenthesis
++static int ath3k_probe(struct usb_interface *intf,
++                       const struct usb_device_id *id)
+
+CHECK: Alignment should match open parenthesis
++                       BT_ERR("Firmware file \"%s\" not found",
++                                                       ATH3K_FIRMWARE);
+
+CHECK: Alignment should match open parenthesis
++               BT_ERR("Firmware file \"%s\" request failed (err=%d)",
++                                               ATH3K_FIRMWARE, ret);
+
+total: 0 errors, 0 warnings, 14 checks, 540 lines checked
+
+Signed-off-by: Uri Arev <me@wantyapps.xyz>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/cmsg_sender.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/bluetooth/ath3k.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/tools/testing/selftests/net/cmsg_sender.c b/tools/testing/selftests/net/cmsg_sender.c
-index c79e65581dc37..161db24e3c409 100644
---- a/tools/testing/selftests/net/cmsg_sender.c
-+++ b/tools/testing/selftests/net/cmsg_sender.c
-@@ -333,16 +333,17 @@ static const char *cs_ts_info2str(unsigned int info)
- 	return "unknown";
- }
+diff --git a/drivers/bluetooth/ath3k.c b/drivers/bluetooth/ath3k.c
+index 88262d3a93923..ce97b336fbfb8 100644
+--- a/drivers/bluetooth/ath3k.c
++++ b/drivers/bluetooth/ath3k.c
+@@ -3,7 +3,6 @@
+  * Copyright (c) 2008-2009 Atheros Communications Inc.
+  */
  
--static void
-+static unsigned long
- cs_read_cmsg(int fd, struct msghdr *msg, char *cbuf, size_t cbuf_sz)
+-
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+@@ -128,7 +127,6 @@ MODULE_DEVICE_TABLE(usb, ath3k_table);
+  * for AR3012
+  */
+ static const struct usb_device_id ath3k_blist_tbl[] = {
+-
+ 	/* Atheros AR3012 with sflash firmware*/
+ 	{ USB_DEVICE(0x0489, 0xe04e), .driver_info = BTUSB_ATH3012 },
+ 	{ USB_DEVICE(0x0489, 0xe04d), .driver_info = BTUSB_ATH3012 },
+@@ -202,7 +200,7 @@ static inline void ath3k_log_failed_loading(int err, int len, int size,
+ #define TIMEGAP_USEC_MAX	100
+ 
+ static int ath3k_load_firmware(struct usb_device *udev,
+-				const struct firmware *firmware)
++			       const struct firmware *firmware)
  {
- 	struct sock_extended_err *see;
- 	struct scm_timestamping *ts;
-+	unsigned long ts_seen = 0;
- 	struct cmsghdr *cmsg;
- 	int i, err;
+ 	u8 *send_buf;
+ 	int len = 0;
+@@ -237,9 +235,9 @@ static int ath3k_load_firmware(struct usb_device *udev,
+ 		memcpy(send_buf, firmware->data + sent, size);
  
- 	if (!opt.ts.ena)
--		return;
-+		return 0;
- 	msg->msg_control = cbuf;
- 	msg->msg_controllen = cbuf_sz;
+ 		err = usb_bulk_msg(udev, pipe, send_buf, size,
+-					&len, 3000);
++				   &len, 3000);
  
-@@ -396,8 +397,11 @@ cs_read_cmsg(int fd, struct msghdr *msg, char *cbuf, size_t cbuf_sz)
- 			printf(" %5s ts%d %lluus\n",
- 			       cs_ts_info2str(see->ee_info),
- 			       i, rel_time);
-+			ts_seen |= 1 << see->ee_info;
+-		if (err || (len != size)) {
++		if (err || len != size) {
+ 			ath3k_log_failed_loading(err, len, size, count);
+ 			goto error;
  		}
- 	}
-+
-+	return ts_seen;
+@@ -262,7 +260,7 @@ static int ath3k_get_state(struct usb_device *udev, unsigned char *state)
  }
  
- static void ca_set_sockopts(int fd)
-@@ -509,10 +513,16 @@ int main(int argc, char *argv[])
- 	err = ERN_SUCCESS;
+ static int ath3k_get_version(struct usb_device *udev,
+-			struct ath3k_version *version)
++			     struct ath3k_version *version)
+ {
+ 	return usb_control_msg_recv(udev, 0, ATH3K_GETVERSION,
+ 				    USB_TYPE_VENDOR | USB_DIR_IN, 0, 0,
+@@ -271,7 +269,7 @@ static int ath3k_get_version(struct usb_device *udev,
+ }
  
- 	if (opt.ts.ena) {
--		/* Make sure all timestamps have time to loop back */
--		usleep(opt.txtime.delay);
-+		unsigned long seen;
-+		int i;
+ static int ath3k_load_fwfile(struct usb_device *udev,
+-		const struct firmware *firmware)
++			     const struct firmware *firmware)
+ {
+ 	u8 *send_buf;
+ 	int len = 0;
+@@ -310,8 +308,8 @@ static int ath3k_load_fwfile(struct usb_device *udev,
+ 		memcpy(send_buf, firmware->data + sent, size);
  
--		cs_read_cmsg(fd, &msg, cbuf, sizeof(cbuf));
-+		/* Make sure all timestamps have time to loop back */
-+		for (i = 0; i < 40; i++) {
-+			seen = cs_read_cmsg(fd, &msg, cbuf, sizeof(cbuf));
-+			if (seen & (1 << SCM_TSTAMP_SND))
-+				break;
-+			usleep(opt.txtime.delay / 20);
-+		}
+ 		err = usb_bulk_msg(udev, pipe, send_buf, size,
+-					&len, 3000);
+-		if (err || (len != size)) {
++				   &len, 3000);
++		if (err || len != size) {
+ 			ath3k_log_failed_loading(err, len, size, count);
+ 			kfree(send_buf);
+ 			return err;
+@@ -425,7 +423,6 @@ static int ath3k_load_syscfg(struct usb_device *udev)
  	}
  
- err_out:
+ 	switch (fw_version.ref_clock) {
+-
+ 	case ATH3K_XTAL_FREQ_26M:
+ 		clk_value = 26;
+ 		break;
+@@ -441,7 +438,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
+ 	}
+ 
+ 	snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
+-		le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
++		 le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
+ 
+ 	ret = request_firmware(&firmware, filename, &udev->dev);
+ 	if (ret < 0) {
+@@ -456,7 +453,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
+ }
+ 
+ static int ath3k_probe(struct usb_interface *intf,
+-			const struct usb_device_id *id)
++		       const struct usb_device_id *id)
+ {
+ 	const struct firmware *firmware;
+ 	struct usb_device *udev = interface_to_usbdev(intf);
+@@ -505,10 +502,10 @@ static int ath3k_probe(struct usb_interface *intf,
+ 	if (ret < 0) {
+ 		if (ret == -ENOENT)
+ 			BT_ERR("Firmware file \"%s\" not found",
+-							ATH3K_FIRMWARE);
++			       ATH3K_FIRMWARE);
+ 		else
+ 			BT_ERR("Firmware file \"%s\" request failed (err=%d)",
+-							ATH3K_FIRMWARE, ret);
++			       ATH3K_FIRMWARE, ret);
+ 		return ret;
+ 	}
+ 
 -- 
 2.43.0
 
