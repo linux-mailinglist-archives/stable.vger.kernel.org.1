@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-46858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C998D0B8E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E43F08D0D8E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C7601F21C69
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13E7C1C2126C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93856A039;
-	Mon, 27 May 2024 19:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624FD15FCE9;
+	Mon, 27 May 2024 19:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9NU1iDc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIiX7a5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D2817E90E;
-	Mon, 27 May 2024 19:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2BD17727;
+	Mon, 27 May 2024 19:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837035; cv=none; b=BWRSQzahSLxX6we2MEGMS83pI2gKG2chq6W8cv6X0XJR9zT840VdK83Pl7hK0h7vn9XYPmtt2z49y0oZTuAZ/Dshl9/jGOuBF4nhm/0/kRsjRkHwsL/1ZlSEzDGeoYf66hqZ/9ad0HgHe+kqj4l2YCdNQJtSjTPtnqmQfQ6djzc=
+	t=1716838274; cv=none; b=LyRBoUXku3GciX46xMc8nJoJBpCFr45nNI8FhIluZvP+vLOUe/O4N4uBogLdRLXd9+JMzMd7cneV6sorSrzsKUbmxX/Cynq/7T2cRik3OjeVlGZQhNTjHIQEBLPBzd9vdVilCkXeemCeyo/KCyr4ZAEzbO563mrx9wkVk4WyQX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837035; c=relaxed/simple;
-	bh=Q3w0m/FVeO1JkNm14QbeHbGp7A/Ve1LZ472QD3iUs7I=;
+	s=arc-20240116; t=1716838274; c=relaxed/simple;
+	bh=k4+6K0UGZFWF1VTT5oV4zpTVWvHf9RuTAiYOvR5eWo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1KKc5/LtXQugEXLO3fZaKsSsOcv77M5ytvjzWS+5OgSQbKDlU/TV0+jbYXoPG7oNluMW9rcVvfQJgsuh7X0s+qWwfOsxis58/LWwTtegbO5MYrwQ1tP0WOJEB9I6f5e2IWiRi/c5je4GqzcDsiiqN4M5HtzsV+ctfDwRfWnu/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9NU1iDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D8EC2BBFC;
-	Mon, 27 May 2024 19:10:34 +0000 (UTC)
+	 MIME-Version; b=cf8CYa6E0N/IAc/VMsafnK5pIiaWYpmM6GqmFTTYdtNmzW1efgWK7iGKqi7TWbMKcV0uF1m/IuS8vfGGPLsZWiof8YPJwV22u6wVkQSZLyYA2AmMmsi2x6nXGT7JHsZiKgboKVlnrPJzV9mkaCFSXLYiDUwa0wyxL8FaxMQcCck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIiX7a5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C68C2BBFC;
+	Mon, 27 May 2024 19:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837035;
-	bh=Q3w0m/FVeO1JkNm14QbeHbGp7A/Ve1LZ472QD3iUs7I=;
+	s=korg; t=1716838274;
+	bh=k4+6K0UGZFWF1VTT5oV4zpTVWvHf9RuTAiYOvR5eWo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9NU1iDcGnrQ0wPa1eAYNVJjDAo2XaeJd8OMHCVkYARerrJyOPLdbiv3gYmJniTkV
-	 eykMwYjlTZtM/Jf4ovs9z4570BEAU0AyJ1YzYCNaDh2KL+042JLRk5KRljYArR36pB
-	 jDFm4ySVtrn+ismBUc68b5NrvJ/8YMlTNTUdC9cw=
+	b=RIiX7a5rXpAuZY/+7pFkA2ia53tuf1BCTcMvbuWqj9I05YeVomYU8Ct6BFZHIoPNw
+	 j2vv5q63lHuXguq95ab9E+3TpzK+keayr1GBnRVsCIBd4c3eLiXAveLLTk+UrWv4xV
+	 zepgdinconFnlCbiBJm9M/nyp6GuCpA2IzFw17AE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 286/427] ASoC: Intel: Disable route checks for Skylake boards
+Subject: [PATCH 6.8 331/493] mptcp: fix full TCP keep-alive support
 Date: Mon, 27 May 2024 20:55:33 +0200
-Message-ID: <20240527185629.170085060@linuxfoundation.org>
+Message-ID: <20240527185641.095973740@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,211 +64,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 0cb3b7fd530b8c107443218ce6db5cb6e7b5dbe1 ]
+[ Upstream commit bd11dc4fb969ec148e50cd87f88a78246dbc4d0b ]
 
-Topology files that are propagated to the world and utilized by the
-skylake-driver carry shortcomings in their SectionGraphs.
+SO_KEEPALIVE support has been added a while ago, as part of a series
+"adding SOL_SOCKET" support. To have a full control of this keep-alive
+feature, it is important to also support TCP_KEEP* socket options at the
+SOL_TCP level.
 
-Since commit daa480bde6b3 ("ASoC: soc-core: tidyup for
-snd_soc_dapm_add_routes()") route checks are no longer permissive. Probe
-failures for Intel boards have been partially addressed by commit
-a22ae72b86a4 ("ASoC: soc-core: disable route checks for legacy devices")
-and its follow up but only skl_nau88l25_ssm4567.c is patched. Fix the
-problem for the rest of the boards.
+Supporting them on the setsockopt() part is easy, it is just a matter of
+remembering each value in the MPTCP sock structure, and calling
+tcp_sock_set_keep*() helpers on each subflow. If the value is not
+modified (0), calling these helpers will not do anything. For the
+getsockopt() part, the corresponding value from the MPTCP sock structure
+or the default one is simply returned. All of this is very similar to
+other TCP_* socket options supported by MPTCP.
 
-Link: https://lore.kernel.org/all/20200309192744.18380-1-pierre-louis.bossart@linux.intel.com/
-Fixes: daa480bde6b3 ("ASoC: soc-core: tidyup for snd_soc_dapm_add_routes()")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://msgid.link/r/20240308090502.2136760-2-cezary.rojewski@intel.com
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+It looks important for kernels supporting SO_KEEPALIVE, to also support
+TCP_KEEP* options as well: some apps seem to (wrongly) consider that if
+the former is supported, the latter ones will be supported as well. But
+also, not having this simple and isolated change is preventing MPTCP
+support in some apps, and libraries like GoLang [1]. This is why this
+patch is seen as a fix.
+
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/383
+Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
+Link: https://github.com/golang/go/issues/56539 [1]
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240514011335.176158-3-martineau@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bxt_da7219_max98357a.c       | 1 +
- sound/soc/intel/boards/bxt_rt298.c                  | 1 +
- sound/soc/intel/boards/glk_rt5682_max98357a.c       | 2 ++
- sound/soc/intel/boards/kbl_da7219_max98357a.c       | 1 +
- sound/soc/intel/boards/kbl_da7219_max98927.c        | 4 ++++
- sound/soc/intel/boards/kbl_rt5660.c                 | 1 +
- sound/soc/intel/boards/kbl_rt5663_max98927.c        | 2 ++
- sound/soc/intel/boards/kbl_rt5663_rt5514_max98927.c | 1 +
- sound/soc/intel/boards/skl_hda_dsp_generic.c        | 2 ++
- sound/soc/intel/boards/skl_nau88l25_max98357a.c     | 1 +
- sound/soc/intel/boards/skl_rt286.c                  | 1 +
- 11 files changed, 17 insertions(+)
+ net/mptcp/protocol.h |  3 +++
+ net/mptcp/sockopt.c  | 58 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+)
 
-diff --git a/sound/soc/intel/boards/bxt_da7219_max98357a.c b/sound/soc/intel/boards/bxt_da7219_max98357a.c
-index 540f7a29310a9..3fe3f38c6cb69 100644
---- a/sound/soc/intel/boards/bxt_da7219_max98357a.c
-+++ b/sound/soc/intel/boards/bxt_da7219_max98357a.c
-@@ -768,6 +768,7 @@ static struct snd_soc_card broxton_audio_card = {
- 	.dapm_routes = audio_map,
- 	.num_dapm_routes = ARRAY_SIZE(audio_map),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = bxt_card_late_probe,
- };
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 2f17f295d7c8b..5f4c10c41c77d 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -306,6 +306,9 @@ struct mptcp_sock {
+ 			free_first:1,
+ 			rcvspace_init:1;
+ 	u32		notsent_lowat;
++	int		keepalive_cnt;
++	int		keepalive_idle;
++	int		keepalive_intvl;
+ 	struct work_struct work;
+ 	struct sk_buff  *ooo_last_skb;
+ 	struct rb_root  out_of_order_queue;
+diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+index b0a61ec8c2448..47aa826ba5fea 100644
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -622,6 +622,31 @@ static int mptcp_setsockopt_sol_tcp_congestion(struct mptcp_sock *msk, sockptr_t
+ 	return ret;
+ }
  
-diff --git a/sound/soc/intel/boards/bxt_rt298.c b/sound/soc/intel/boards/bxt_rt298.c
-index c0eb65c14aa97..afc499be8db26 100644
---- a/sound/soc/intel/boards/bxt_rt298.c
-+++ b/sound/soc/intel/boards/bxt_rt298.c
-@@ -574,6 +574,7 @@ static struct snd_soc_card broxton_rt298 = {
- 	.dapm_routes = broxton_rt298_map,
- 	.num_dapm_routes = ARRAY_SIZE(broxton_rt298_map),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = bxt_card_late_probe,
++static int __mptcp_setsockopt_set_val(struct mptcp_sock *msk, int max,
++				      int (*set_val)(struct sock *, int),
++				      int *msk_val, int val)
++{
++	struct mptcp_subflow_context *subflow;
++	int err = 0;
++
++	mptcp_for_each_subflow(msk, subflow) {
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int ret;
++
++		lock_sock(ssk);
++		ret = set_val(ssk, val);
++		err = err ? : ret;
++		release_sock(ssk);
++	}
++
++	if (!err) {
++		*msk_val = val;
++		sockopt_seq_inc(msk);
++	}
++
++	return err;
++}
++
+ static int __mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, int val)
+ {
+ 	struct mptcp_subflow_context *subflow;
+@@ -818,6 +843,22 @@ static int mptcp_setsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 	case TCP_NODELAY:
+ 		ret = __mptcp_setsockopt_sol_tcp_nodelay(msk, val);
+ 		break;
++	case TCP_KEEPIDLE:
++		ret = __mptcp_setsockopt_set_val(msk, MAX_TCP_KEEPIDLE,
++						 &tcp_sock_set_keepidle_locked,
++						 &msk->keepalive_idle, val);
++		break;
++	case TCP_KEEPINTVL:
++		ret = __mptcp_setsockopt_set_val(msk, MAX_TCP_KEEPINTVL,
++						 &tcp_sock_set_keepintvl,
++						 &msk->keepalive_intvl, val);
++		break;
++	case TCP_KEEPCNT:
++		ret = __mptcp_setsockopt_set_val(msk, MAX_TCP_KEEPCNT,
++						 &tcp_sock_set_keepcnt,
++						 &msk->keepalive_cnt,
++						 val);
++		break;
+ 	default:
+ 		ret = -ENOPROTOOPT;
+ 	}
+@@ -1320,6 +1361,8 @@ static int mptcp_put_int_option(struct mptcp_sock *msk, char __user *optval,
+ static int mptcp_getsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 				    char __user *optval, int __user *optlen)
+ {
++	struct sock *sk = (void *)msk;
++
+ 	switch (optname) {
+ 	case TCP_ULP:
+ 	case TCP_CONGESTION:
+@@ -1338,6 +1381,18 @@ static int mptcp_getsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->cork);
+ 	case TCP_NODELAY:
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->nodelay);
++	case TCP_KEEPIDLE:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    msk->keepalive_idle ? :
++					    READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_keepalive_time) / HZ);
++	case TCP_KEEPINTVL:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    msk->keepalive_intvl ? :
++					    READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_keepalive_intvl) / HZ);
++	case TCP_KEEPCNT:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    msk->keepalive_cnt ? :
++					    READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_keepalive_probes));
+ 	case TCP_NOTSENT_LOWAT:
+ 		return mptcp_put_int_option(msk, optval, optlen, msk->notsent_lowat);
+ 	}
+@@ -1455,6 +1510,9 @@ static void sync_socket_options(struct mptcp_sock *msk, struct sock *ssk)
+ 		tcp_set_congestion_control(ssk, msk->ca_name, false, true);
+ 	__tcp_sock_set_cork(ssk, !!msk->cork);
+ 	__tcp_sock_set_nodelay(ssk, !!msk->nodelay);
++	tcp_sock_set_keepidle_locked(ssk, msk->keepalive_idle);
++	tcp_sock_set_keepintvl(ssk, msk->keepalive_intvl);
++	tcp_sock_set_keepcnt(ssk, msk->keepalive_cnt);
  
- };
-diff --git a/sound/soc/intel/boards/glk_rt5682_max98357a.c b/sound/soc/intel/boards/glk_rt5682_max98357a.c
-index 657e4658234ce..4098b2d32f9bc 100644
---- a/sound/soc/intel/boards/glk_rt5682_max98357a.c
-+++ b/sound/soc/intel/boards/glk_rt5682_max98357a.c
-@@ -649,6 +649,8 @@ static int geminilake_audio_probe(struct platform_device *pdev)
- 	card = &glk_audio_card_rt5682_m98357a;
- 	card->dev = &pdev->dev;
- 	snd_soc_card_set_drvdata(card, ctx);
-+	if (!snd_soc_acpi_sof_parent(&pdev->dev))
-+		card->disable_route_checks = true;
- 
- 	/* override platform name, if required */
- 	mach = pdev->dev.platform_data;
-diff --git a/sound/soc/intel/boards/kbl_da7219_max98357a.c b/sound/soc/intel/boards/kbl_da7219_max98357a.c
-index a5d8965303a88..9dbc15f9d1c9b 100644
---- a/sound/soc/intel/boards/kbl_da7219_max98357a.c
-+++ b/sound/soc/intel/boards/kbl_da7219_max98357a.c
-@@ -639,6 +639,7 @@ static struct snd_soc_card kabylake_audio_card_da7219_m98357a = {
- 	.dapm_routes = kabylake_map,
- 	.num_dapm_routes = ARRAY_SIZE(kabylake_map),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = kabylake_card_late_probe,
- };
- 
-diff --git a/sound/soc/intel/boards/kbl_da7219_max98927.c b/sound/soc/intel/boards/kbl_da7219_max98927.c
-index 98c11ec0adc01..e662da5af83b5 100644
---- a/sound/soc/intel/boards/kbl_da7219_max98927.c
-+++ b/sound/soc/intel/boards/kbl_da7219_max98927.c
-@@ -1036,6 +1036,7 @@ static struct snd_soc_card kbl_audio_card_da7219_m98927 = {
- 	.codec_conf = max98927_codec_conf,
- 	.num_configs = ARRAY_SIZE(max98927_codec_conf),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = kabylake_card_late_probe,
- };
- 
-@@ -1054,6 +1055,7 @@ static struct snd_soc_card kbl_audio_card_max98927 = {
- 	.codec_conf = max98927_codec_conf,
- 	.num_configs = ARRAY_SIZE(max98927_codec_conf),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = kabylake_card_late_probe,
- };
- 
-@@ -1071,6 +1073,7 @@ static struct snd_soc_card kbl_audio_card_da7219_m98373 = {
- 	.codec_conf = max98373_codec_conf,
- 	.num_configs = ARRAY_SIZE(max98373_codec_conf),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = kabylake_card_late_probe,
- };
- 
-@@ -1088,6 +1091,7 @@ static struct snd_soc_card kbl_audio_card_max98373 = {
- 	.codec_conf = max98373_codec_conf,
- 	.num_configs = ARRAY_SIZE(max98373_codec_conf),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = kabylake_card_late_probe,
- };
- 
-diff --git a/sound/soc/intel/boards/kbl_rt5660.c b/sound/soc/intel/boards/kbl_rt5660.c
-index 30e0aca161cd5..894d127c482a3 100644
---- a/sound/soc/intel/boards/kbl_rt5660.c
-+++ b/sound/soc/intel/boards/kbl_rt5660.c
-@@ -518,6 +518,7 @@ static struct snd_soc_card kabylake_audio_card_rt5660 = {
- 	.dapm_routes = kabylake_rt5660_map,
- 	.num_dapm_routes = ARRAY_SIZE(kabylake_rt5660_map),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = kabylake_card_late_probe,
- };
- 
-diff --git a/sound/soc/intel/boards/kbl_rt5663_max98927.c b/sound/soc/intel/boards/kbl_rt5663_max98927.c
-index 9071b1f1cbd00..646e8ff8e9619 100644
---- a/sound/soc/intel/boards/kbl_rt5663_max98927.c
-+++ b/sound/soc/intel/boards/kbl_rt5663_max98927.c
-@@ -966,6 +966,7 @@ static struct snd_soc_card kabylake_audio_card_rt5663_m98927 = {
- 	.codec_conf = max98927_codec_conf,
- 	.num_configs = ARRAY_SIZE(max98927_codec_conf),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = kabylake_card_late_probe,
- };
- 
-@@ -982,6 +983,7 @@ static struct snd_soc_card kabylake_audio_card_rt5663 = {
- 	.dapm_routes = kabylake_5663_map,
- 	.num_dapm_routes = ARRAY_SIZE(kabylake_5663_map),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = kabylake_card_late_probe,
- };
- 
-diff --git a/sound/soc/intel/boards/kbl_rt5663_rt5514_max98927.c b/sound/soc/intel/boards/kbl_rt5663_rt5514_max98927.c
-index 178fe9c37df62..924d5d1de03ac 100644
---- a/sound/soc/intel/boards/kbl_rt5663_rt5514_max98927.c
-+++ b/sound/soc/intel/boards/kbl_rt5663_rt5514_max98927.c
-@@ -791,6 +791,7 @@ static struct snd_soc_card kabylake_audio_card = {
- 	.codec_conf = max98927_codec_conf,
- 	.num_configs = ARRAY_SIZE(max98927_codec_conf),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = kabylake_card_late_probe,
- };
- 
-diff --git a/sound/soc/intel/boards/skl_hda_dsp_generic.c b/sound/soc/intel/boards/skl_hda_dsp_generic.c
-index 6e172719c9795..4aa7fd2a05e46 100644
---- a/sound/soc/intel/boards/skl_hda_dsp_generic.c
-+++ b/sound/soc/intel/boards/skl_hda_dsp_generic.c
-@@ -227,6 +227,8 @@ static int skl_hda_audio_probe(struct platform_device *pdev)
- 	ctx->common_hdmi_codec_drv = mach->mach_params.common_hdmi_codec_drv;
- 
- 	hda_soc_card.dev = &pdev->dev;
-+	if (!snd_soc_acpi_sof_parent(&pdev->dev))
-+		hda_soc_card.disable_route_checks = true;
- 
- 	if (mach->mach_params.dmic_num > 0) {
- 		snprintf(hda_soc_components, sizeof(hda_soc_components),
-diff --git a/sound/soc/intel/boards/skl_nau88l25_max98357a.c b/sound/soc/intel/boards/skl_nau88l25_max98357a.c
-index 0e7025834594a..e4630c33176e2 100644
---- a/sound/soc/intel/boards/skl_nau88l25_max98357a.c
-+++ b/sound/soc/intel/boards/skl_nau88l25_max98357a.c
-@@ -654,6 +654,7 @@ static struct snd_soc_card skylake_audio_card = {
- 	.dapm_routes = skylake_map,
- 	.num_dapm_routes = ARRAY_SIZE(skylake_map),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = skylake_card_late_probe,
- };
- 
-diff --git a/sound/soc/intel/boards/skl_rt286.c b/sound/soc/intel/boards/skl_rt286.c
-index c59c60e280916..9a80442749081 100644
---- a/sound/soc/intel/boards/skl_rt286.c
-+++ b/sound/soc/intel/boards/skl_rt286.c
-@@ -523,6 +523,7 @@ static struct snd_soc_card skylake_rt286 = {
- 	.dapm_routes = skylake_rt286_map,
- 	.num_dapm_routes = ARRAY_SIZE(skylake_rt286_map),
- 	.fully_routed = true,
-+	.disable_route_checks = true,
- 	.late_probe = skylake_card_late_probe,
- };
- 
+ 	inet_assign_bit(TRANSPARENT, ssk, inet_test_bit(TRANSPARENT, sk));
+ 	inet_assign_bit(FREEBIND, ssk, inet_test_bit(FREEBIND, sk));
 -- 
 2.43.0
 
