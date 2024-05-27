@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-46443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C838D0528
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:03:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308EE8D048B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCABDB3325B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:48:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7C591F2144F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F06115FA6C;
-	Mon, 27 May 2024 14:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1284B167DB3;
+	Mon, 27 May 2024 14:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrswxXR0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6P9pAIN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE448167296;
-	Mon, 27 May 2024 14:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF583167D9A;
+	Mon, 27 May 2024 14:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819567; cv=none; b=tfDQxzviIo+n4tsa5plIiGb4wbPr5zRj1u8THl9BAReU+EqO6cYv1Rl16WT6ocW35Cn9wqZk8/PfzuatQNrtSbd2l2OtGSFK4ZJ3eLEeJ8BmC0SXxYhc92YO4JfOC0yWUEvMuQCUE07fAOIVHBPxZ7ZspeaHU+vK659on76+Ob0=
+	t=1716819571; cv=none; b=lTS3TdVRUr1F3datnCLRBOwjKuKlW7nbz9WGBuLM/9gxSb8FFJDa32kS332o7c/zQBmsf0Tx941GDr7GSrEJztKm29dtiFbF+ZtEis9daxFcmv4VLbbsw16dCAVKYbvChPdmDw75EZFtxJgdCvc/QVoEokvPIOkXucZBfSFadyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819567; c=relaxed/simple;
-	bh=J8uClXr1sJc5Omn1C8LtHID4JkPQqEiIvsApn4DMkQM=;
+	s=arc-20240116; t=1716819571; c=relaxed/simple;
+	bh=sCvrPt4WIobpFxpQmj0P7zdxczqjn5m5qnrJFzhjgTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYz9KCqXQAroEgZIOw+pOX0umg8qtXW1QbjJvcxA7SxL9+YjCaToodbi7jcrS/wGDz4claFphtjfCCjeFitUhnss5rVL32SF10VjtA/AVWKhvb0QrFUNVCJS93rHph79zyEzH6/thBsn8D1EPapAPtAFbnPUiebRN+PVw2W1uMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrswxXR0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED31C2BBFC;
-	Mon, 27 May 2024 14:19:26 +0000 (UTC)
+	 MIME-Version; b=KsdKKLAaj+P4sqdmChvIsnS/4UPnItCtrTYaGTLCO+K6ImI69jAZUqYOZFlK4WHUYRNKZGjNog3H3Mw7NJIdl95+g/MsM2gTmUbR3FrwC6rqaWfbaL+qZLDRnsthgvQeQHKEI0uLQQYiSDjBVjMBi1u76mJI3xZntkSX8jbzuDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6P9pAIN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52011C2BBFC;
+	Mon, 27 May 2024 14:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819567;
-	bh=J8uClXr1sJc5Omn1C8LtHID4JkPQqEiIvsApn4DMkQM=;
+	s=k20201202; t=1716819570;
+	bh=sCvrPt4WIobpFxpQmj0P7zdxczqjn5m5qnrJFzhjgTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrswxXR0RZhbhgBYYQavbK/lpX8qqYK0K1QajttWXSu41xFEr9JLorwbtxTXPOx0b
-	 j3SxR7KJz2ibJhO8y7FfQg9XnFkHcf8GTPajgA5N89DIkfqSsvQafWhKDC5CeBQd6L
-	 0DQkjnN4nNYZFaiDVqauH3Q+1JoqeGQsmc8PRLlgQfaUfOt2GB2CRabiHpaz7JgyFC
-	 pQtP/vMhQwPKMK8kLlXrT2AQCRH47v2MXyaWrktVNxe71D77eWRK25uArHNst5JjiN
-	 tv7A/ubRHVpQUR8fjGvOqazOWIatyp6tIif67u1cIN307YeAVedPJLJ5NOskf9Y8VJ
-	 yHKhls6EK327Q==
+	b=g6P9pAINNo07ZnUuMnjN6VyZxNCQUYbEdNrhvTqBy3SmyN0L5oQLZdDYsss8yM58X
+	 zMvAXgCtVb0n8tsk2wW+aWhApelV8f0JL97vJ7uEkdoN8eZNNZ02H6+C/KeLyvpRnc
+	 7AWwne/uQeHVhDyFOVyv8m7/u25qh5a5CLmpQCBFubtLQJ4AOlPM6ox/fuRcNoBTeo
+	 ARPQizpsvkksxzNuZ+yM5E+K0ugkrfzbvb0iOwyC/P4VKLDJxGvUQPhim2Ls+E4PA9
+	 y4/115iMrTslwf6j8yJ6ABq45ZiYxNgughGkYdOw86cPkpyfBtycKafg1d7ZrELynK
+	 1KRFpxlVEDJbw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manish Rangankar <mrangankar@marvell.com>,
-	Martin Hoyer <mhoyer@redhat.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Kunwu Chan <chentao@kylinos.cn>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	njavali@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 07/13] scsi: qedi: Fix crash while reading debugfs attribute
-Date: Mon, 27 May 2024 10:18:44 -0400
-Message-ID: <20240527141901.3854691-7-sashal@kernel.org>
+	catalin.marinas@arm.com,
+	shuah@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 08/13] kselftest: arm64: Add a null pointer check
+Date: Mon, 27 May 2024 10:18:45 -0400
+Message-ID: <20240527141901.3854691-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141901.3854691-1-sashal@kernel.org>
 References: <20240527141901.3854691-1-sashal@kernel.org>
@@ -70,93 +69,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.218
 Content-Transfer-Encoding: 8bit
 
-From: Manish Rangankar <mrangankar@marvell.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 28027ec8e32ecbadcd67623edb290dad61e735b5 ]
+[ Upstream commit 80164282b3620a3cb73de6ffda5592743e448d0e ]
 
-The qedi_dbg_do_not_recover_cmd_read() function invokes sprintf() directly
-on a __user pointer, which results into the crash.
+There is a 'malloc' call, which can be unsuccessful.
+This patch will add the malloc failure checking
+to avoid possible null dereference and give more information
+about test fail reasons.
 
-To fix this issue, use a small local stack buffer for sprintf() and then
-call simple_read_from_buffer(), which in turns make the copy_to_user()
-call.
-
-BUG: unable to handle page fault for address: 00007f4801111000
-PGD 8000000864df6067 P4D 8000000864df6067 PUD 864df7067 PMD 846028067 PTE 0
-Oops: 0002 [#1] PREEMPT SMP PTI
-Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 06/15/2023
-RIP: 0010:memcpy_orig+0xcd/0x130
-RSP: 0018:ffffb7a18c3ffc40 EFLAGS: 00010202
-RAX: 00007f4801111000 RBX: 00007f4801111000 RCX: 000000000000000f
-RDX: 000000000000000f RSI: ffffffffc0bfd7a0 RDI: 00007f4801111000
-RBP: ffffffffc0bfd7a0 R08: 725f746f6e5f6f64 R09: 3d7265766f636572
-R10: ffffb7a18c3ffd08 R11: 0000000000000000 R12: 00007f4881110fff
-R13: 000000007fffffff R14: ffffb7a18c3ffca0 R15: ffffffffc0bfd7af
-FS:  00007f480118a740(0000) GS:ffff98e38af00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f4801111000 CR3: 0000000864b8e001 CR4: 00000000007706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body+0x1a/0x60
- ? page_fault_oops+0x183/0x510
- ? exc_page_fault+0x69/0x150
- ? asm_exc_page_fault+0x22/0x30
- ? memcpy_orig+0xcd/0x130
- vsnprintf+0x102/0x4c0
- sprintf+0x51/0x80
- qedi_dbg_do_not_recover_cmd_read+0x2f/0x50 [qedi 6bcfdeeecdea037da47069eca2ba717c84a77324]
- full_proxy_read+0x50/0x80
- vfs_read+0xa5/0x2e0
- ? folio_add_new_anon_rmap+0x44/0xa0
- ? set_pte_at+0x15/0x30
- ? do_pte_missing+0x426/0x7f0
- ksys_read+0xa5/0xe0
- do_syscall_64+0x58/0x80
- ? __count_memcg_events+0x46/0x90
- ? count_memcg_event_mm+0x3d/0x60
- ? handle_mm_fault+0x196/0x2f0
- ? do_user_addr_fault+0x267/0x890
- ? exc_page_fault+0x69/0x150
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7f4800f20b4d
-
-Tested-by: Martin Hoyer <mhoyer@redhat.com>
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
-Link: https://lore.kernel.org/r/20240415072155.30840-1-mrangankar@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240423082102.2018886-1-chentao@kylinos.cn
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_debugfs.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ tools/testing/selftests/arm64/tags/tags_test.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/scsi/qedi/qedi_debugfs.c b/drivers/scsi/qedi/qedi_debugfs.c
-index 42f5afb60055c..6e724f47ab9e8 100644
---- a/drivers/scsi/qedi/qedi_debugfs.c
-+++ b/drivers/scsi/qedi/qedi_debugfs.c
-@@ -120,15 +120,11 @@ static ssize_t
- qedi_dbg_do_not_recover_cmd_read(struct file *filp, char __user *buffer,
- 				 size_t count, loff_t *ppos)
- {
--	size_t cnt = 0;
--
--	if (*ppos)
--		return 0;
-+	char buf[64];
-+	int len;
+diff --git a/tools/testing/selftests/arm64/tags/tags_test.c b/tools/testing/selftests/arm64/tags/tags_test.c
+index 5701163460ef7..955f87c1170d7 100644
+--- a/tools/testing/selftests/arm64/tags/tags_test.c
++++ b/tools/testing/selftests/arm64/tags/tags_test.c
+@@ -6,6 +6,7 @@
+ #include <stdint.h>
+ #include <sys/prctl.h>
+ #include <sys/utsname.h>
++#include "../../kselftest.h"
  
--	cnt = sprintf(buffer, "do_not_recover=%d\n", qedi_do_not_recover);
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	len = sprintf(buf, "do_not_recover=%d\n", qedi_do_not_recover);
-+	return simple_read_from_buffer(buffer, count, ppos, buf, len);
- }
- 
- static int
+ #define SHIFT_TAG(tag)		((uint64_t)(tag) << 56)
+ #define SET_TAG(ptr, tag)	(((uint64_t)(ptr) & ~SHIFT_TAG(0xff)) | \
+@@ -21,6 +22,9 @@ int main(void)
+ 	if (prctl(PR_SET_TAGGED_ADDR_CTRL, PR_TAGGED_ADDR_ENABLE, 0, 0, 0) == 0)
+ 		tbi_enabled = 1;
+ 	ptr = (struct utsname *)malloc(sizeof(*ptr));
++	if (!ptr)
++		ksft_exit_fail_msg("Failed to allocate utsname buffer\n");
++
+ 	if (tbi_enabled)
+ 		tag = 0x42;
+ 	ptr = (struct utsname *)SET_TAG(ptr, tag);
 -- 
 2.43.0
 
