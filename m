@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-46717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5628D0AF4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A668D0CFE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9E39B2255E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D621CB203FD
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350E815FD04;
-	Mon, 27 May 2024 19:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6596715FCFC;
+	Mon, 27 May 2024 19:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5HBzAzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSf+vrtx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80E81078F;
-	Mon, 27 May 2024 19:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234B0168C4;
+	Mon, 27 May 2024 19:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836678; cv=none; b=A9ufpWY5rJFKpsGCfqDM86Rcb7Q4olYgl9qGF8qRYAe6++SvKAc3e8PILaqPvw9iwhAkjXjyiOV2jLbZuULR2+orYNtxp3itFFDd9zzSWeVe6XcRV8qDtBYyFEYx5w6jDAXwnM3siFgxF9YDYd4GJ8GW5ebSR29eNzDvQNLu/W4=
+	t=1716837909; cv=none; b=FJocMCnChGcj+05dSLIM3SVYyTfR+ICgww8x6onskU1NivhTvzEtbg/5E7uV8ChuSIwDQ+5ZWPqjkEVmbgZfFZ6H8fOfhBWjEkzl5u3gC3PFYqBy1onHE8wFtpG/niiFn8vm2RNBw5X49sUOy4uRY8H6PFbEdQjOWjv1Qf4Mtzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836678; c=relaxed/simple;
-	bh=wpwCmWWebkQCyPf9OOrz0ZKl1HraSmKJobsHmAKeMI8=;
+	s=arc-20240116; t=1716837909; c=relaxed/simple;
+	bh=qOI7sc3+MoRv8CRgDDsk/sqHexesgQHN8P8QdeYxVPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/qKVq43LRCfapKMG6r035mspOZbmGxDyt+qzH04TJngA1pxTZ/4RKPaD5zBPE/jn39aIjM6rcW3ZpLwLxS+MP9m1TG+x8WwYqkABHL66oMwcPJULDApWiXM71M/jOvbnmYGexPQF5lvUjj6SqYgkT5vG+lSCGKpaSEHSC6l9bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5HBzAzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2966DC2BBFC;
-	Mon, 27 May 2024 19:04:37 +0000 (UTC)
+	 MIME-Version; b=sOFWtyZaubRmj62a5mGWyRmI+HSK1de1bxVnKMRofs6Pbv5+MykRU09keOcxvbVDEpDGNBFUktos03TfDcs+8g4EhM93sox3FUIZc5gZkcNYXBUduE2ecLsrKEqkFOCH4tO7jcgc4HvPq9s24p+IdRyrr6aI8OWNBxYXySQD4v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSf+vrtx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8A5C2BBFC;
+	Mon, 27 May 2024 19:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836677;
-	bh=wpwCmWWebkQCyPf9OOrz0ZKl1HraSmKJobsHmAKeMI8=;
+	s=korg; t=1716837909;
+	bh=qOI7sc3+MoRv8CRgDDsk/sqHexesgQHN8P8QdeYxVPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5HBzAzX9i9QtAUWG8UCbQ8nFDm/UBj+qSGWfl+6DDbPpWhXI0ZFIjO1nlEBJi5N9
-	 s8DWQilrjidenT8zIX3sM3sxfFbG/Hjm2VqVZaH2Zg/Y+YqWwdWrnfU3QrEmLshx2L
-	 W6pfXX6kQSfp0DPpaLMMsEQ2JwPGMC1+DYMAOeaU=
+	b=zSf+vrtxRA1A9LAtg2tWg5y3DPDzVf8OSNAxM6v+mqrzZwjPpeELvb/Wr15WlFJRh
+	 yBCv4R+vvk/Og4VXOK6aKT02Owfaxejcvl91e+9Xnt8ta7JaIoVK6ffok2ppdzKI0T
+	 PK2zLjpDNfia16mZJ9VKYE+j5ZHcxjxZD1Wv0ZL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lizhe <sensor1010@163.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Anton Protopopov <aspsk@isovalent.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 146/427] cpufreq: exit() callback is optional
-Date: Mon, 27 May 2024 20:53:13 +0200
-Message-ID: <20240527185615.533116746@linuxfoundation.org>
+Subject: [PATCH 6.8 192/493] bpf: Pack struct bpf_fib_lookup
+Date: Mon, 27 May 2024 20:53:14 +0200
+Message-ID: <20240527185636.628054022@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Anton Protopopov <aspsk@isovalent.com>
 
-[ Upstream commit b8f85833c05730d631576008daaa34096bc7f3ce ]
+[ Upstream commit f91717007217d975aa975ddabd91ae1a107b9bff ]
 
-The exit() callback is optional and shouldn't be called without checking
-a valid pointer first.
+The struct bpf_fib_lookup is supposed to be of size 64. A recent commit
+59b418c7063d ("bpf: Add a check for struct bpf_fib_lookup size") added
+a static assertion to check this property so that future changes to the
+structure will not accidentally break this assumption.
 
-Also, we must clear freq_table pointer even if the exit() callback isn't
-present.
+As it immediately turned out, on some 32-bit arm systems, when AEABI=n,
+the total size of the structure was equal to 68, see [1]. This happened
+because the bpf_fib_lookup structure contains a union of two 16-bit
+fields:
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Fixes: 91a12e91dc39 ("cpufreq: Allow light-weight tear down and bring up of CPUs")
-Fixes: f339f3541701 ("cpufreq: Rearrange locking in cpufreq_remove_dev()")
-Reported-by: Lizhe <sensor1010@163.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+    union {
+            __u16 tot_len;
+            __u16 mtu_result;
+    };
+
+which was supposed to compile to a 16-bit-aligned 16-bit field. On the
+aforementioned setups it was instead both aligned and padded to 32-bits.
+
+Declare this inner union as __attribute__((packed, aligned(2))) such
+that it always is of size 2 and is aligned to 16 bits.
+
+  [1] https://lore.kernel.org/all/CA+G9fYtsoP51f-oP_Sp5MOq-Ffv8La2RztNpwvE6+R1VtFiLrw@mail.gmail.com/#t
+
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: e1850ea9bd9e ("bpf: bpf_fib_lookup return MTU value as output when looked up")
+Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240403123303.1452184-1-aspsk@isovalent.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ include/uapi/linux/bpf.h       | 2 +-
+ tools/include/uapi/linux/bpf.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 66e10a19d76ab..fd9c3ed21f49c 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -1679,10 +1679,13 @@ static void __cpufreq_offline(unsigned int cpu, struct cpufreq_policy *policy)
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 754e68ca8744c..83f31916e2635 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -7040,7 +7040,7 @@ struct bpf_fib_lookup {
+ 
+ 		/* output: MTU value */
+ 		__u16	mtu_result;
+-	};
++	} __attribute__((packed, aligned(2)));
+ 	/* input: L3 device index for lookup
+ 	 * output: device index from FIB lookup
  	 */
- 	if (cpufreq_driver->offline) {
- 		cpufreq_driver->offline(policy);
--	} else if (cpufreq_driver->exit) {
--		cpufreq_driver->exit(policy);
--		policy->freq_table = NULL;
-+		return;
- 	}
-+
-+	if (cpufreq_driver->exit)
-+		cpufreq_driver->exit(policy);
-+
-+	policy->freq_table = NULL;
- }
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 7f24d898efbb4..a12f597a1c47f 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -7039,7 +7039,7 @@ struct bpf_fib_lookup {
  
- static int cpufreq_offline(unsigned int cpu)
-@@ -1740,7 +1743,7 @@ static void cpufreq_remove_dev(struct device *dev, struct subsys_interface *sif)
- 	}
- 
- 	/* We did light-weight exit earlier, do full tear down now */
--	if (cpufreq_driver->offline)
-+	if (cpufreq_driver->offline && cpufreq_driver->exit)
- 		cpufreq_driver->exit(policy);
- 
- 	up_write(&policy->rwsem);
+ 		/* output: MTU value */
+ 		__u16	mtu_result;
+-	};
++	} __attribute__((packed, aligned(2)));
+ 	/* input: L3 device index for lookup
+ 	 * output: device index from FIB lookup
+ 	 */
 -- 
 2.43.0
 
