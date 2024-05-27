@@ -1,160 +1,101 @@
-Return-Path: <stable+bounces-46470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3704D8D05A4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:15:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F388D05B5
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C79AE1F2705D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:14:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC8801F27159
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EECC161930;
-	Mon, 27 May 2024 14:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F70161B58;
+	Mon, 27 May 2024 15:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z1E/BMBm"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZqUrYaCR";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XhigBucf"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C948161331;
-	Mon, 27 May 2024 14:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99436161B7C
+	for <stable@vger.kernel.org>; Mon, 27 May 2024 15:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716821831; cv=none; b=AvcrPTYp0bTk96pqUoRp8us78JCdP0PwYo6WZYCZ7FbsGFMfGeoxtnmZsxZGy65KrrikDEmTFK8PzJTFDHxra9dKonqycYo5f1n4PR668kCXxRs2tjR6/7Hh40DNIcXzEntrvhv8n8hNhl61m3dycAY+rAaPO07jSmaI+7zyQy0=
+	t=1716822068; cv=none; b=B9lTT9AybnVpUxzaK+0/Tgq4PTultCaskdT5bPKme72TjJ3Pd/sP6QbeILVLF4odH8wmIOSUpZetWPHTJhfEytjDBzBcv2NLDSYPXWmYyWDiRBUQNPQj7tIqqooiNrp+caATYlfXEPKTg+wNpo78omvtBsEnoY54xbDYBazr/6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716821831; c=relaxed/simple;
-	bh=anwxSewuYppnpNpMRH71PAQfXd/+GYXNJoF3P+nqe34=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=TVfBFcW+unspPzadjFhNIhhP9sC1ZRMXRGSRH20N5asQB7J6Jh74CqHs9F30l4516hK1Nl1IEl3d8mpmw5VqwL0kfl829Yh4EMU0fI1awiTF57K/aaozjAI3WAEHwX3jhw8Xdymi/942dTNploHutpwnKeeXay9R65AQiXlkKdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z1E/BMBm; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716821830; x=1748357830;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=anwxSewuYppnpNpMRH71PAQfXd/+GYXNJoF3P+nqe34=;
-  b=Z1E/BMBmxrBTKdRBoV5tpn3pusSVRNufrrzHWQKPNRXEVuoW2e0gTFHA
-   Fee8haKSKuqcEILJNVapHsVB6sgQ8Tyv7HVhrTE8oJ/pAcAUdDGbTmAw0
-   IvyMmGeSdrazB9HJTF6Rgad+IXmsqHrzfo2dSAZza7NSGqyK1oOzqWUWD
-   baSkMbASxV48viiCQzfg3AXEFUW7BR1RCs9GALfpN/IFnMwEiKmTXv/i3
-   Hl5vaW9Uoo5lINCqdcVx+tPFfbmIFpNfMauXRGp08662NYCtvy+F0VqQe
-   k97dDmJA1hFSXlFc9mYq+Tx8Mze3rra2zzJS2FZHNPdye8UsBKfE27GOv
-   g==;
-X-CSE-ConnectionGUID: 82zxdn2xTxeP/c20Epnsvg==
-X-CSE-MsgGUID: i5XIEIwgRSCaMzU2xsCY9w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="11715418"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="11715418"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:57:09 -0700
-X-CSE-ConnectionGUID: vIoPr/bnQ+mlO+fYA48sLw==
-X-CSE-MsgGUID: tyWK4F2TR2GXjCyiin5UKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="39192759"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.140])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:57:05 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 27 May 2024 17:57:02 +0300 (EEST)
-To: Dan Carpenter <dan.carpenter@linaro.org>
-cc: Linus Walleij <linus.walleij@linaro.org>, 
-    Bartosz Golaszewski <brgl@bgdev.pl>, 
-    Dmitry Baryshkov <dbaryshkov@gmail.com>, linux-gpio@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] gpio: amd8111: Convert PCIBIOS_* return codes to
- errnos
-In-Reply-To: <50e1c6a7-f583-4b5b-997b-2e505b3df0ec@moroto.mountain>
-Message-ID: <8ca1b7a8-5abb-e7b7-2e08-ec8c8edccdcb@linux.intel.com>
-References: <20240527132345.13956-1-ilpo.jarvinen@linux.intel.com> <09f2f3ac-94a7-43d3-8c43-0d264a1d9c65@moroto.mountain> <7d475c6c-8bbf-86f4-b2d8-8bc11cb9043e@linux.intel.com> <50e1c6a7-f583-4b5b-997b-2e505b3df0ec@moroto.mountain>
+	s=arc-20240116; t=1716822068; c=relaxed/simple;
+	bh=EVhJcjl6XAhszzrgGYGIKJav7WyG+0MSoyHN3ppak2c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DJdBW7rts6kpYoSWZyYAwOsuv36CBXLiS2t6pemsqGhhQrKAepx/0Bb5rl0FPVS92yEyxgkYA7JbPZCL3m3HD2WTmLxWkrs619A7wnFWDwPsc819Q6ZAWbaiYv/6fIuv/tlYXoAnhqS+lSW84H40u3+Jl1AxerZSVuoU+rzMr/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZqUrYaCR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XhigBucf; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1716822064;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q6HJNxD8+WmFeUBZh0tEce3JmTfcscnrPTvYzZD7Xyw=;
+	b=ZqUrYaCRFIlJLZLHXcpIvwu/iB4Hi0uJ+OzCAx60qZp5VxSjiWqrWNvUqw6hCvJKUL0NRl
+	/zR29lREaoans2H2HRbr8l9Cqkcmv2/a+/QybD2pF3EX9pRIMJduRa8BQ/j2x+VEAKnHn9
+	51PfRmU9p+XjOVL1t2KpiPV8e4UgcV7kfFSUjvxanqqT0cxBtSKSq3D4fgBTpgCJeCTF8+
+	INo2xztxdZ2ts5SDzGde6IjkjragLUHbxxP/xwno/X6uKF2X9kWDpJA12FvJw4si2bGUYx
+	artD50+4TKa+kSp7rXmHTIg4B8zG5PYyR8ugAmKN0dLlB1pLEZ/o6XgDz6jQog==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1716822064;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q6HJNxD8+WmFeUBZh0tEce3JmTfcscnrPTvYzZD7Xyw=;
+	b=XhigBucfPdhUpvxdfsy92Tk4uMTfZ8+prclZhlZNMplVHT+2ErQeIm3pQCMmeB9/XZrz+z
+	96XWwLZunaTrhVAw==
+To: Tim Teichmann <teichmanntim@outlook.de>, Christian Heusel
+ <christian@heusel.eu>
+Cc: regressions@lists.linux.dev, x86@kernel.org, stable@vger.kernel.org
+Subject: Re: [REGRESSION][BISECTED] Scheduling errors with the AMD FX 8300 CPU
+In-Reply-To: <PR3PR02MB6012CB03006F1EEE8E8B5D69B3F02@PR3PR02MB6012.eurprd02.prod.outlook.com>
+References: <7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk>
+ <87r0dqdf0r.ffs@tglx>
+ <gtgsklvltu5pzeiqn7fwaktdsywk2re75unapgbcarlmqkya5a@mt7pi4j2f7b3>
+ <87h6ejd0wt.ffs@tglx>
+ <PR3PR02MB6012CB03006F1EEE8E8B5D69B3F02@PR3PR02MB6012.eurprd02.prod.outlook.com>
+Date: Mon, 27 May 2024 17:01:04 +0200
+Message-ID: <874jajcn9r.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-2079346626-1716821822=:1006"
+Content-Type: text/plain
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Tim!
 
---8323328-2079346626-1716821822=:1006
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+On Mon, May 27 2024 at 14:35, Tim Teichmann wrote:
+> On 27/05/2024 12:06, Thomas Gleixner wrote:
+>> Christian! On Sat, May 25 2024 at 02:12, Christian Heusel wrote:
+>>> On 24/05/25 12:24AM, Thomas Gleixner wrote:
+>>>> Can you please provide the full boot log as the information which 
+>>>> leads up to the symptom is obviously more interesting than the 
+>>>> symptom itself. 
+>>> I have attached the full dmesg of an example of a bad boot (from 
+>>> doing the bisection), sorry that I missed that when putting together 
+>>> the initial report! 
+>> Thanks for the data. Can you please provide the output of # cat 
+>> /proc/cpuinfo from a working kernel? Thanks, tglx 
+>
+> Right here is the output of
 
-On Mon, 27 May 2024, Dan Carpenter wrote:
-> On Mon, May 27, 2024 at 05:11:32PM +0300, Ilpo J=E4rvinen wrote:
-> > On Mon, 27 May 2024, Dan Carpenter wrote:
-> >=20
-> > > On Mon, May 27, 2024 at 04:23:44PM +0300, Ilpo J=E4rvinen wrote:
-> > > > diff --git a/drivers/gpio/gpio-amd8111.c b/drivers/gpio/gpio-amd811=
-1.c
-> > > > index 6f3ded619c8b..3377667a28de 100644
-> > > > --- a/drivers/gpio/gpio-amd8111.c
-> > > > +++ b/drivers/gpio/gpio-amd8111.c
-> > > > @@ -195,8 +195,10 @@ static int __init amd_gpio_init(void)
-> > > > =20
-> > > >  found:
-> > > >  =09err =3D pci_read_config_dword(pdev, 0x58, &gp.pmbase);
-> > > > -=09if (err)
-> > > > +=09if (err) {
-> > > > +=09=09err =3D pcibios_err_to_errno(err);
-> > >=20
-> > > The patch is correct, but is the CC to stable necessary?  Is this a r=
-eal
-> > > concern?
-> > >=20
-> > > Most callers don't check.  Linus Torvalds, once said something to the
-> > > effect that if your PCI bus starts failing, there isn't anything the
-> > > operating system can do, so checking is pointless.  The only fix is t=
-o
-> > > buy new hardware.  There was a hotpluggable PCI back in the day but I
-> > > don't think it exists any more.
-> >=20
-> > I don't mind if the CC stable isn't there.
->=20
-> I don't mind either way.  I was hoping you were going to say it was for
-> some new hotswap hardware Intel was working on.
+Thanks for this. Can you also provide the output of:
 
-That's not exactly the correct answer but I'm auditing all these because=20
-I have a sinister plan to convert the PCI accessors away from returning=20
-PCIBIOS_* codes and push the conversion down into real PCIBIOS interface=20
-under arch/x86/pci where they'd be immediately converted into errnos.
+# cpuid -r
 
-As the by-product of the audit, I see all these cases where the return
-type is incorrect so I've created a fix for each where the return type=20
-confusion propagates.
+please?
 
-> Smatch deletes all the failure paths from the pci_read_ functions
-> because otherwise you end up with a lot of warnings that no one cares
-> about.  Uninitialized variables mostly?
+Thanks,
 
-Please note that there's a difference between ignoring errors entirely and=
-=20
-returning wrong value (type) on errors.
-
-At this point, I've already ignored many many cases where the value type=20
-confusion does not propagate because of my main goal which is anyway to=20
-eventually get rid of having to deal with PCIBIOS_* codes in any generic=20
-code.
-
-If a PCIBIOS_* return code somehow leaks into userspace where errno would=
-=20
-be expected, it could confuse userspace (e.g., one case unrelated to=20
-module init functions I found is sysfs show function returning positive in=
-=20
-case of error which has obviously different meaning from the caller's=20
-point of view).
-
-In case of module init, do_module_init() checks for ret > 0 and prints=20
-warning + stacktrace, however, it does not attempt to correct the return=20
-code so I think the positive code still leaks into userspace.
-
---=20
- i.
-
---8323328-2079346626-1716821822=:1006--
+        tglx
 
