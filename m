@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED22C8D0DB2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F8E8D0BE1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A6631C2094F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EC3828620A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADF513AD05;
-	Mon, 27 May 2024 19:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DFB15ECFF;
+	Mon, 27 May 2024 19:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtZh3keT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0tv63fU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4970517727;
-	Mon, 27 May 2024 19:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CD517E90E;
+	Mon, 27 May 2024 19:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838367; cv=none; b=NqNCQH1mgdpcGiNYVyvDwlp+H6v8THNBoPAs5qefx2FQhoMR2XL8gF4SmbE/QB0e+AjEfnaiTQ+vpWAzRKe+2iUooQCpb5OW/mDg5vJie9f9tSDr/Ms+C9sChHLGzRIopxpi9Lo1JFNLzpxMysve/0u4rqkDNIpepuzM1OCPAYc=
+	t=1716837237; cv=none; b=aV9a4AVZ3JKHXbe6DFhgq+tBD9YzRX7vPGoCFjDJGOejY14s7gWTckRNijGuvIcX1H3UxoCka6o3VAUAHZBzViPu4gJf8cDn+nzL2/ml5UXrsdGaV7gpJCwhxLFODmb7AMMy0tYhcstMe/mZOH/s2AfsMKEZ+qjLW3Fu9DrXD88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838367; c=relaxed/simple;
-	bh=jnV8Frh46TKX6J9ZFlmXHiNi9uNDSOem8JgGbbNXAIk=;
+	s=arc-20240116; t=1716837237; c=relaxed/simple;
+	bh=8pUmjX5tJBpLxxR9EzK3nQpdm/v9kpMuPbfrm7DY3zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqIg1oKTqm+S9HZHa4gOagumzxELOK2p2TfwwjFF+aTVVPWdU0RZ7FvUmneYmsIbBB4LqZDyg14pVRt5WFtb2/lR5PLuqhXH09gnaPT9saj2Wdbxk5viLo9fy1KmAfIAYOQ/lPMPdwHKy5lFe4HoEeg7nYY7bzSAnPQ6/BRM08U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtZh3keT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F66C2BBFC;
-	Mon, 27 May 2024 19:32:46 +0000 (UTC)
+	 MIME-Version; b=f7vmwjbdXvMDbg3PdcTdV2qNMqp8N2MWR6Qn/nBMIx6yF9Yg7EAquFzewiUwFTYEKzGL/xu8m6FGviTuvCU4TgPVjsTs8NTyMeLix2tWxsLQkATsKE7heNt0RRdM4UhXWzNYqfgfNgYT7JXVe/9re0xOfvKKUwhbQ9n2EbkuJ/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0tv63fU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC57C2BBFC;
+	Mon, 27 May 2024 19:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838367;
-	bh=jnV8Frh46TKX6J9ZFlmXHiNi9uNDSOem8JgGbbNXAIk=;
+	s=korg; t=1716837237;
+	bh=8pUmjX5tJBpLxxR9EzK3nQpdm/v9kpMuPbfrm7DY3zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LtZh3keTKzv/uThyT/Qh22ZtNRH9J1SPnKEETswIq1UR7hLo8Q7CVL2ttaDASrttV
-	 DQfEH85QKpIAacSQk/l1WK17fcASX05XYb9FPDTAU6PBpQgT3LtNuDUN1vvxWo313A
-	 yiMx+m2Wgpkkrh7vE81qhvaZzFEdb88mzsAhsFZQ=
+	b=G0tv63fU53ZUR0s3klNghfkyz8RcHEdxWwsi/S/4TftxJuMZp6l/DumTKZwGYwHvZ
+	 lyfNRlV/p5fvvuJxPxkw22HoaOR0Fs9u2fpQTbQEfMl7UaRzp4hXDsF3P+WbAIFPgA
+	 3YQqwqNEm0L5Vp2uQ2I+t+X4vHV8rUHHIx7l8PzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Robson <donald.robson@imgtec.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Matt Coster <matt.coster@imgtec.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 366/493] drm/imagination: avoid -Woverflow warning
+Subject: [PATCH 6.9 321/427] media: ipu3-cio2: Request IRQ earlier
 Date: Mon, 27 May 2024 20:56:08 +0200
-Message-ID: <20240527185642.258869843@linuxfoundation.org>
+Message-ID: <20240527185631.612757611@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 07b9d0144fff9af08b8dcd0ae134510bfd539e42 ]
+[ Upstream commit a069f79bfa6ec1ea0744981ea8425c8a25322579 ]
 
-The array size calculation in pvr_vm_mips_fini() appears to be incorrect based on
-taking the size of the pointer rather than the size of the array, which manifests
-as a warning about signed integer overflow:
+Call devm_request_irq() before registering the async notifier, as otherwise
+it would be possible to use the device before the interrupts could be
+delivered to the driver.
 
-In file included from include/linux/kernel.h:16,
-                 from drivers/gpu/drm/imagination/pvr_rogue_fwif.h:10,
-                 from drivers/gpu/drm/imagination/pvr_ccb.h:7,
-                 from drivers/gpu/drm/imagination/pvr_device.h:7,
-                 from drivers/gpu/drm/imagination/pvr_vm_mips.c:4:
-drivers/gpu/drm/imagination/pvr_vm_mips.c: In function 'pvr_vm_mips_fini':
-include/linux/array_size.h:11:25: error: overflow in conversion from 'long unsigned int' to 'int' changes value from '18446744073709551615' to '-1' [-Werror=overflow]
-   11 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
-      |                         ^
-drivers/gpu/drm/imagination/pvr_vm_mips.c:106:24: note: in expansion of macro 'ARRAY_SIZE'
-  106 |         for (page_nr = ARRAY_SIZE(mips_data->pt_pages) - 1; page_nr >= 0; page_nr--) {
-      |                        ^~~~~~~~~~
-
-Just use the number of array elements directly here, and in the corresponding
-init function for consistency.
-
-Fixes: 927f3e0253c1 ("drm/imagination: Implement MIPS firmware processor and MMU support")
-Reviewed-by: Donald Robson <donald.robson@imgtec.com>
-Link: https://lore.kernel.org/lkml/9df9e4f87727399928c068dbbf614c9895ae15f9.camel@imgtec.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Fixes: c2a6a07afe4a ("media: intel-ipu3: cio2: add new MIPI-CSI2 driver")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imagination/pvr_vm_mips.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/pci/intel/ipu3/ipu3-cio2.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/imagination/pvr_vm_mips.c b/drivers/gpu/drm/imagination/pvr_vm_mips.c
-index b7fef3c797e6c..4f99b4af871c0 100644
---- a/drivers/gpu/drm/imagination/pvr_vm_mips.c
-+++ b/drivers/gpu/drm/imagination/pvr_vm_mips.c
-@@ -46,7 +46,7 @@ pvr_vm_mips_init(struct pvr_device *pvr_dev)
- 	if (!mips_data)
- 		return -ENOMEM;
+diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2.c b/drivers/media/pci/intel/ipu3/ipu3-cio2.c
+index c42adc5a408db..00090e7f5f9da 100644
+--- a/drivers/media/pci/intel/ipu3/ipu3-cio2.c
++++ b/drivers/media/pci/intel/ipu3/ipu3-cio2.c
+@@ -1752,11 +1752,6 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
  
--	for (page_nr = 0; page_nr < ARRAY_SIZE(mips_data->pt_pages); page_nr++) {
-+	for (page_nr = 0; page_nr < PVR_MIPS_PT_PAGE_COUNT; page_nr++) {
- 		mips_data->pt_pages[page_nr] = alloc_page(GFP_KERNEL | __GFP_ZERO);
- 		if (!mips_data->pt_pages[page_nr]) {
- 			err = -ENOMEM;
-@@ -102,7 +102,7 @@ pvr_vm_mips_fini(struct pvr_device *pvr_dev)
- 	int page_nr;
+ 	v4l2_async_nf_init(&cio2->notifier, &cio2->v4l2_dev);
  
- 	vunmap(mips_data->pt);
--	for (page_nr = ARRAY_SIZE(mips_data->pt_pages) - 1; page_nr >= 0; page_nr--) {
-+	for (page_nr = PVR_MIPS_PT_PAGE_COUNT - 1; page_nr >= 0; page_nr--) {
- 		dma_unmap_page(from_pvr_device(pvr_dev)->dev,
- 			       mips_data->pt_dma_addr[page_nr], PAGE_SIZE, DMA_TO_DEVICE);
+-	/* Register notifier for subdevices we care */
+-	r = cio2_parse_firmware(cio2);
+-	if (r)
+-		goto fail_clean_notifier;
+-
+ 	r = devm_request_irq(dev, pci_dev->irq, cio2_irq, IRQF_SHARED,
+ 			     CIO2_NAME, cio2);
+ 	if (r) {
+@@ -1764,6 +1759,11 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
+ 		goto fail_clean_notifier;
+ 	}
+ 
++	/* Register notifier for subdevices we care */
++	r = cio2_parse_firmware(cio2);
++	if (r)
++		goto fail_clean_notifier;
++
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_allow(dev);
  
 -- 
 2.43.0
