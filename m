@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-47233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EF88D0D27
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F918D0B56
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E09428350F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC0391F21C71
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BBE15FCE9;
-	Mon, 27 May 2024 19:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCBD1607B8;
+	Mon, 27 May 2024 19:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="163X+w9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubZiKKCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9112F168C4;
-	Mon, 27 May 2024 19:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA551607B2;
+	Mon, 27 May 2024 19:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838011; cv=none; b=GXXWs0rSvRac9js3q8zFAkKImCzLdsYVQ8RocuiJBXNwPXiIWlMM0prEpnFcxQ1+bo7LcTXz1Bm4sa4so1shKVdR+hZQK+f99G8/sSLQT+5YAy4yMnV7QYm+K6L/WDbARcx29SXkIeI4R5Tl7HddexDOekV840bbR5XsSYBlcLI=
+	t=1716836895; cv=none; b=RRM+hhOb/7/BqPvUfq5WnM4O0Bsu8Eld5DiY8TJm9iPqJGvyqftv+TUxVHEOtTGM6HeWP/kwmadBrcSP0zNeQXLbRgz/x1dGKFxAqhTfr86JEEdKlLpOb6NYRDiK5i8MxHYWWrtvT7c+L/VmBBMGAU9wJxqb7ke38JNWLKR0Zpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838011; c=relaxed/simple;
-	bh=nO5Va0mAvC687xRQ/WjHg51z/+2yekqUbTWNLGaurAs=;
+	s=arc-20240116; t=1716836895; c=relaxed/simple;
+	bh=AJk4n4E1+N5CuE724zwHbONNd/k3FGbEARnbH08ekZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sg2YzMFQmil8SUTkziziBzAehG/ZNZdYcmNu9Fc2SZ1tVVVu8j30na97tF3hj751WUX6l6AO2B9na+zLlEwEXXuYQIK5pltgEJSdYWoZk++tIidgYutjn/22AbTyF1JKIGnXf/8HbVi/DnufqqLYT8uEGmMbMTsqX81mpCX32+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=163X+w9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A692C2BBFC;
-	Mon, 27 May 2024 19:26:51 +0000 (UTC)
+	 MIME-Version; b=DBoH3mKVHcJ0pHPBbQu4evibp1of3eQHYLEUEbrwqIJbNJ4rQMG75jCzhcNQeuNctTI8HLlDJ9M3Pg5Rgb8oOT31TJ5wMecf55iE1KskQJcbidQyaeDdPiwYB5dveFPGau0yF887NYGGc1wDTW0G+W/ER/aR2+Z1LmGFfafWkjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubZiKKCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B24C2BBFC;
+	Mon, 27 May 2024 19:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838011;
-	bh=nO5Va0mAvC687xRQ/WjHg51z/+2yekqUbTWNLGaurAs=;
+	s=korg; t=1716836895;
+	bh=AJk4n4E1+N5CuE724zwHbONNd/k3FGbEARnbH08ekZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=163X+w9eSxghWIKHLMkr+nbkYL+hph/2l62EUmLdvqxTUPTOFgsI5i/pSZRq799ux
-	 8ni1TrhKMsitYE/prupAGYsc5BYv9FzlF2qW5SJYU1jmG9deJh5LuAbeDSgo+/OMt7
-	 jFJI6nAq0LYcYrGQrAZBbLwHYbuO9yFKZvk112vU=
+	b=ubZiKKCRwgTXIpchlRzYEFtcBq+oe3C+k9W50hGS9u/qXDNZz+hGSNx30M1zVaHr5
+	 2HLiTyxnK6uZo2+k5/B8R39hezWWgXoIltGOeaUMAOhRfLOjuUw/O4QORXXoMdeAbX
+	 qI/LWx4YASP9mofARHJZBDFR+2uTHuZOAUOjLWwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 233/493] gfs2: Fix potential glock use-after-free on unmount
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Christian Lamparter <chunkeey@gmail.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
+Subject: [PATCH 6.9 188/427] wifi: carl9170: add a proper sanity check for endpoints
 Date: Mon, 27 May 2024 20:53:55 +0200
-Message-ID: <20240527185637.930797040@linuxfoundation.org>
+Message-ID: <20240527185619.812600068@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,229 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit d98779e687726d8f8860f1c54b5687eec5f63a73 ]
+[ Upstream commit b6dd09b3dac89b45d1ea3e3bd035a3859c0369a0 ]
 
-When a DLM lockspace is released and there ares still locks in that
-lockspace, DLM will unlock those locks automatically.  Commit
-fb6791d100d1b started exploiting this behavior to speed up filesystem
-unmount: gfs2 would simply free glocks it didn't want to unlock and then
-release the lockspace.  This didn't take the bast callbacks for
-asynchronous lock contention notifications into account, which remain
-active until until a lock is unlocked or its lockspace is released.
+Syzkaller reports [1] hitting a warning which is caused by presence
+of a wrong endpoint type at the URB sumbitting stage. While there
+was a check for a specific 4th endpoint, since it can switch types
+between bulk and interrupt, other endpoints are trusted implicitly.
+Similar warning is triggered in a couple of other syzbot issues [2].
 
-To prevent those callbacks from accessing deallocated objects, put the
-glocks that should not be unlocked on the sd_dead_glocks list, release
-the lockspace, and only then free those glocks.
+Fix the issue by doing a comprehensive check of all endpoints
+taking into account difference between high- and full-speed
+configuration.
 
-As an additional measure, ignore unexpected ast and bast callbacks if
-the receiving glock is dead.
+[1] Syzkaller report:
+...
+WARNING: CPU: 0 PID: 4721 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+...
+Call Trace:
+ <TASK>
+ carl9170_usb_send_rx_irq_urb+0x273/0x340 drivers/net/wireless/ath/carl9170/usb.c:504
+ carl9170_usb_init_device drivers/net/wireless/ath/carl9170/usb.c:939 [inline]
+ carl9170_usb_firmware_finish drivers/net/wireless/ath/carl9170/usb.c:999 [inline]
+ carl9170_usb_firmware_step2+0x175/0x240 drivers/net/wireless/ath/carl9170/usb.c:1028
+ request_firmware_work_func+0x130/0x240 drivers/base/firmware_loader/main.c:1107
+ process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
+ worker_thread+0x669/0x1090 kernel/workqueue.c:2436
+ kthread+0x2e8/0x3a0 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+ </TASK>
 
-Fixes: fb6791d100d1b ("GFS2: skip dlm_unlock calls in unmount")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: David Teigland <teigland@redhat.com>
+[2] Related syzkaller crashes:
+Link: https://syzkaller.appspot.com/bug?extid=e394db78ae0b0032cb4d
+Link: https://syzkaller.appspot.com/bug?extid=9468df99cb63a4a4c4e1
+
+Reported-and-tested-by: syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
+Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Acked-By: Christian Lamparter <chunkeey@gmail.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240422183355.3785-1-n.zhandarovich@fintech.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c      | 35 ++++++++++++++++++++++++++++++++---
- fs/gfs2/glock.h      |  1 +
- fs/gfs2/incore.h     |  1 +
- fs/gfs2/lock_dlm.c   | 32 ++++++++++++++++++++++----------
- fs/gfs2/ops_fstype.c |  1 +
- fs/gfs2/super.c      |  3 ---
- 6 files changed, 57 insertions(+), 16 deletions(-)
+ drivers/net/wireless/ath/carl9170/usb.c | 32 +++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 5d5b3235d4e59..1bf0d751ece0a 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -166,18 +166,45 @@ static bool glock_blocked_by_withdraw(struct gfs2_glock *gl)
- 	return true;
- }
- 
--void gfs2_glock_free(struct gfs2_glock *gl)
-+static void __gfs2_glock_free(struct gfs2_glock *gl)
- {
--	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
--
- 	rhashtable_remove_fast(&gl_hash_table, &gl->gl_node, ht_parms);
- 	smp_mb();
- 	wake_up_glock(gl);
- 	call_rcu(&gl->gl_rcu, gfs2_glock_dealloc);
-+}
-+
-+void gfs2_glock_free(struct gfs2_glock *gl) {
-+	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
-+
-+	__gfs2_glock_free(gl);
- 	if (atomic_dec_and_test(&sdp->sd_glock_disposal))
- 		wake_up(&sdp->sd_kill_wait);
- }
- 
-+void gfs2_glock_free_later(struct gfs2_glock *gl) {
-+	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
-+
-+	spin_lock(&lru_lock);
-+	list_add(&gl->gl_lru, &sdp->sd_dead_glocks);
-+	spin_unlock(&lru_lock);
-+	if (atomic_dec_and_test(&sdp->sd_glock_disposal))
-+		wake_up(&sdp->sd_kill_wait);
-+}
-+
-+static void gfs2_free_dead_glocks(struct gfs2_sbd *sdp)
-+{
-+	struct list_head *list = &sdp->sd_dead_glocks;
-+
-+	while(!list_empty(list)) {
-+		struct gfs2_glock *gl;
-+
-+		gl = list_first_entry(list, struct gfs2_glock, gl_lru);
-+		list_del_init(&gl->gl_lru);
-+		__gfs2_glock_free(gl);
-+	}
-+}
-+
- /**
-  * gfs2_glock_hold() - increment reference count on glock
-  * @gl: The glock to hold
-@@ -2226,6 +2253,8 @@ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp)
- 	wait_event_timeout(sdp->sd_kill_wait,
- 			   atomic_read(&sdp->sd_glock_disposal) == 0,
- 			   HZ * 600);
-+	gfs2_lm_unmount(sdp);
-+	gfs2_free_dead_glocks(sdp);
- 	glock_hash_walk(dump_glock_func, sdp);
- }
- 
-diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
-index 0114f3e0ebe01..86987a59a0580 100644
---- a/fs/gfs2/glock.h
-+++ b/fs/gfs2/glock.h
-@@ -252,6 +252,7 @@ void gfs2_gl_dq_holders(struct gfs2_sbd *sdp);
- void gfs2_glock_thaw(struct gfs2_sbd *sdp);
- void gfs2_glock_add_to_lru(struct gfs2_glock *gl);
- void gfs2_glock_free(struct gfs2_glock *gl);
-+void gfs2_glock_free_later(struct gfs2_glock *gl);
- 
- int __init gfs2_glock_init(void);
- void gfs2_glock_exit(void);
-diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index 95a334d64da2a..60abd7050c998 100644
---- a/fs/gfs2/incore.h
-+++ b/fs/gfs2/incore.h
-@@ -838,6 +838,7 @@ struct gfs2_sbd {
- 	/* For quiescing the filesystem */
- 	struct gfs2_holder sd_freeze_gh;
- 	struct mutex sd_freeze_mutex;
-+	struct list_head sd_dead_glocks;
- 
- 	char sd_fsname[GFS2_FSNAME_LEN + 3 * sizeof(int) + 2];
- 	char sd_table_name[GFS2_FSNAME_LEN];
-diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-index d1ac5d0679ea6..e028e55e67d95 100644
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -121,6 +121,11 @@ static void gdlm_ast(void *arg)
- 	struct gfs2_glock *gl = arg;
- 	unsigned ret = gl->gl_state;
- 
-+	/* If the glock is dead, we only react to a dlm_unlock() reply. */
-+	if (__lockref_is_dead(&gl->gl_lockref) &&
-+	    gl->gl_lksb.sb_status != -DLM_EUNLOCK)
-+		return;
-+
- 	gfs2_update_reply_times(gl);
- 	BUG_ON(gl->gl_lksb.sb_flags & DLM_SBF_DEMOTED);
- 
-@@ -171,6 +176,9 @@ static void gdlm_bast(void *arg, int mode)
- {
- 	struct gfs2_glock *gl = arg;
- 
-+	if (__lockref_is_dead(&gl->gl_lockref))
-+		return;
-+
- 	switch (mode) {
- 	case DLM_LOCK_EX:
- 		gfs2_glock_cb(gl, LM_ST_UNLOCKED);
-@@ -291,8 +299,12 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
- 	int error;
- 
--	if (gl->gl_lksb.sb_lkid == 0)
--		goto out_free;
-+	BUG_ON(!__lockref_is_dead(&gl->gl_lockref));
-+
-+	if (gl->gl_lksb.sb_lkid == 0) {
-+		gfs2_glock_free(gl);
-+		return;
-+	}
- 
- 	clear_bit(GLF_BLOCKING, &gl->gl_flags);
- 	gfs2_glstats_inc(gl, GFS2_LKS_DCOUNT);
-@@ -300,13 +312,17 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 	gfs2_update_request_times(gl);
- 
- 	/* don't want to call dlm if we've unmounted the lock protocol */
--	if (test_bit(DFL_UNMOUNT, &ls->ls_recover_flags))
--		goto out_free;
-+	if (test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
-+		gfs2_glock_free(gl);
-+		return;
-+	}
- 	/* don't want to skip dlm_unlock writing the lvb when lock has one */
- 
- 	if (test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags) &&
--	    !gl->gl_lksb.sb_lvbptr)
--		goto out_free;
-+	    !gl->gl_lksb.sb_lvbptr) {
-+		gfs2_glock_free_later(gl);
-+		return;
-+	}
- 
- again:
- 	error = dlm_unlock(ls->ls_dlm, gl->gl_lksb.sb_lkid, DLM_LKF_VALBLK,
-@@ -321,10 +337,6 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 		       gl->gl_name.ln_type,
- 		       (unsigned long long)gl->gl_name.ln_number, error);
+diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
+index c4edf83559410..a3e03580cd9ff 100644
+--- a/drivers/net/wireless/ath/carl9170/usb.c
++++ b/drivers/net/wireless/ath/carl9170/usb.c
+@@ -1069,6 +1069,38 @@ static int carl9170_usb_probe(struct usb_interface *intf,
+ 			ar->usb_ep_cmd_is_bulk = true;
  	}
--	return;
--
--out_free:
--	gfs2_glock_free(gl);
- }
  
- static void gdlm_cancel(struct gfs2_glock *gl)
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index 1281e60be6390..db0df091a6a76 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -136,6 +136,7 @@ static struct gfs2_sbd *init_sbd(struct super_block *sb)
- 	atomic_set(&sdp->sd_log_in_flight, 0);
- 	init_waitqueue_head(&sdp->sd_log_flush_wait);
- 	mutex_init(&sdp->sd_freeze_mutex);
-+	INIT_LIST_HEAD(&sdp->sd_dead_glocks);
++	/* Verify that all expected endpoints are present */
++	if (ar->usb_ep_cmd_is_bulk) {
++		u8 bulk_ep_addr[] = {
++			AR9170_USB_EP_RX | USB_DIR_IN,
++			AR9170_USB_EP_TX | USB_DIR_OUT,
++			AR9170_USB_EP_CMD | USB_DIR_OUT,
++			0};
++		u8 int_ep_addr[] = {
++			AR9170_USB_EP_IRQ | USB_DIR_IN,
++			0};
++		if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
++		    !usb_check_int_endpoints(intf, int_ep_addr))
++			err = -ENODEV;
++	} else {
++		u8 bulk_ep_addr[] = {
++			AR9170_USB_EP_RX | USB_DIR_IN,
++			AR9170_USB_EP_TX | USB_DIR_OUT,
++			0};
++		u8 int_ep_addr[] = {
++			AR9170_USB_EP_IRQ | USB_DIR_IN,
++			AR9170_USB_EP_CMD | USB_DIR_OUT,
++			0};
++		if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
++		    !usb_check_int_endpoints(intf, int_ep_addr))
++			err = -ENODEV;
++	}
++
++	if (err) {
++		carl9170_free(ar);
++		return err;
++	}
++
+ 	usb_set_intfdata(intf, ar);
+ 	SET_IEEE80211_DEV(ar->hw, &intf->dev);
  
- 	return sdp;
- 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index e5f79466340d2..2d780b4701a23 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -646,10 +646,7 @@ static void gfs2_put_super(struct super_block *sb)
- 	gfs2_gl_hash_clear(sdp);
- 	truncate_inode_pages_final(&sdp->sd_aspace);
- 	gfs2_delete_debugfs_file(sdp);
--	/*  Unmount the locking protocol  */
--	gfs2_lm_unmount(sdp);
- 
--	/*  At this point, we're through participating in the lockspace  */
- 	gfs2_sys_fs_del(sdp);
- 	free_sbd(sdp);
- }
 -- 
 2.43.0
 
