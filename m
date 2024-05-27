@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-46601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C19C48D0A69
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275668D0A6A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D6822820B3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1DE4282485
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CAC15FD0F;
-	Mon, 27 May 2024 18:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A3415FCE9;
+	Mon, 27 May 2024 18:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLhOOcJp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UC4ikuuE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861FC15FA85;
-	Mon, 27 May 2024 18:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882A015FCE6;
+	Mon, 27 May 2024 18:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836375; cv=none; b=QgPkJombktcFr7ug5kzXFyxAwurA/Lh5xFJxnfoiiy3G8dJxCu8fBW0uUgj1/ByNBLPMMKtFU7/vXHfU9j1zdt3AIrxVqSofDmUhUmGWLfDbS3FthSqM2/gJexMVUJX+xTL/geFNavbpXmXTYoN3jaM9LIneGFX0K1m4qLdhhbk=
+	t=1716836380; cv=none; b=p3oHFmE+WhomUmQxswHnywqPpGAPvTZkmpy8eyQ4zaGuJHGHlaiW1mRKGThOlxNCr/ez4v1d+bl2dYDVWWLtR+s4zb8npH/f72UAISgFfS0Dke5lqyo0AEtXPMBCkT5nMAeOYZZl3O9H4n1VLH6GfVKVGY+FV29Ll5si+I6beg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836375; c=relaxed/simple;
-	bh=TV/aJtxmzhe5sndcwp9I7tp8vb02iD1p6qKaqNhLNnc=;
+	s=arc-20240116; t=1716836380; c=relaxed/simple;
+	bh=Twp0g3AAgK61rjho50QxntfVPMU+a2L4YBZtkvo5zUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvt6waEZntroBThA2KWmd/gQxQ/z/Ku+R4WY2wXPLih6zfKKvzINvR2sk0dt4waI2KlaIxObN/ty1PfHzZCZ32fW5+oUDVMwujt4R+gNPNwKAhEnll+d6SzxqblEVo5kv1ske6GPX+ZX9qOTWzHrxkuudrK5gXD6sD4xnT6e6g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLhOOcJp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D13DC2BBFC;
-	Mon, 27 May 2024 18:59:34 +0000 (UTC)
+	 MIME-Version; b=YHHNfe3ah+q9BYDvTydwpocQaMT4jePr8P0pI9+XMeMoKPzD2j9XZ1cHxCxR0GJUtNLtffaBJxqAGQEhOehpEzsY+F2Ol98CmwbBc8pkc8XbcsbKygOTCN45p5D/fEL+MwF5oO1eaLyItuBTYbbqmj0bcqx5LQagoKeWR+Dk9aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UC4ikuuE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC35C2BBFC;
+	Mon, 27 May 2024 18:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836375;
-	bh=TV/aJtxmzhe5sndcwp9I7tp8vb02iD1p6qKaqNhLNnc=;
+	s=korg; t=1716836380;
+	bh=Twp0g3AAgK61rjho50QxntfVPMU+a2L4YBZtkvo5zUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLhOOcJpq0eYQ3G+lQZp5KWpTiPNLdjJcpW3SQ0rfzlubS/sAbK4K1YL8s08vRxzI
-	 J3I3OAPYxGR6FhSw+kwlTW0JRZRyp4j+lIW/xC8bNPFXUn9IoSqKT9XR+KQpZhsA4E
-	 vuapzKnPRQv+Kdi4lvkPPEenZUpYcfSDwmOKhUSw=
+	b=UC4ikuuEB6fjlVNCVLULECZIE6hyyBIp5AtPXoTPuHXVpwdRjJkXrvbNNAO84JYY6
+	 mTer3wdNvqfo0XR/ibSmQPUQ5B13RvBTkWpavUM7ZdXFBC90bcKuz/EA9WHtfeT7Tl
+	 a/1PgAev+iGrEwf6AlA+JDMGhWMP7BmIbATvO6BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com,
 	"Bai, Shuangpeng" <sjb7183@psu.edu>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 029/427] nilfs2: fix unexpected freezing of nilfs_segctor_sync()
-Date: Mon, 27 May 2024 20:51:16 +0200
-Message-ID: <20240527185604.427963021@linuxfoundation.org>
+Subject: [PATCH 6.9 030/427] nilfs2: fix potential hang in nilfs_detach_log_writer()
+Date: Mon, 27 May 2024 20:51:17 +0200
+Message-ID: <20240527185604.518194158@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -68,81 +69,109 @@ Content-Transfer-Encoding: 8bit
 
 From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 936184eadd82906992ff1f5ab3aada70cce44cee upstream.
+commit eb85dace897c5986bc2f36b3c783c6abb8a4292e upstream.
 
-A potential and reproducible race issue has been identified where
-nilfs_segctor_sync() would block even after the log writer thread writes a
-checkpoint, unless there is an interrupt or other trigger to resume log
-writing.
+Syzbot has reported a potential hang in nilfs_detach_log_writer() called
+during nilfs2 unmount.
 
-This turned out to be because, depending on the execution timing of the
-log writer thread running in parallel, the log writer thread may skip
-responding to nilfs_segctor_sync(), which causes a call to schedule()
-waiting for completion within nilfs_segctor_sync() to lose the opportunity
-to wake up.
+Analysis revealed that this is because nilfs_segctor_sync(), which
+synchronizes with the log writer thread, can be called after
+nilfs_segctor_destroy() terminates that thread, as shown in the call trace
+below:
 
-The reason why waking up the task waiting in nilfs_segctor_sync() may be
-skipped is that updating the request generation issued using a shared
-sequence counter and adding an wait queue entry to the request wait queue
-to the log writer, are not done atomically.  There is a possibility that
-log writing and request completion notification by nilfs_segctor_wakeup()
-may occur between the two operations, and in that case, the wait queue
-entry is not yet visible to nilfs_segctor_wakeup() and the wake-up of
-nilfs_segctor_sync() will be carried over until the next request occurs.
+nilfs_detach_log_writer
+  nilfs_segctor_destroy
+    nilfs_segctor_kill_thread  --> Shut down log writer thread
+    flush_work
+      nilfs_iput_work_func
+        nilfs_dispose_list
+          iput
+            nilfs_evict_inode
+              nilfs_transaction_commit
+                nilfs_construct_segment (if inode needs sync)
+                  nilfs_segctor_sync  --> Attempt to synchronize with
+                                          log writer thread
+                           *** DEADLOCK ***
 
-Fix this issue by performing these two operations simultaneously within
-the lock section of sc_state_lock.  Also, following the memory barrier
-guidelines for event waiting loops, move the call to set_current_state()
-in the same location into the event waiting loop to ensure that a memory
-barrier is inserted just before the event condition determination.
+Fix this issue by changing nilfs_segctor_sync() so that the log writer
+thread returns normally without synchronizing after it terminates, and by
+forcing tasks that are already waiting to complete once after the thread
+terminates.
 
-Link: https://lkml.kernel.org/r/20240520132621.4054-3-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+The skipped inode metadata flushout will then be processed together in the
+subsequent cleanup work in nilfs_segctor_destroy().
+
+Link: https://lkml.kernel.org/r/20240520132621.4054-4-konishi.ryusuke@gmail.com
 Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e3973c409251e136fdd0
 Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
 Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segment.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ fs/nilfs2/segment.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
 --- a/fs/nilfs2/segment.c
 +++ b/fs/nilfs2/segment.c
-@@ -2174,19 +2174,28 @@ static int nilfs_segctor_sync(struct nil
- 	struct nilfs_segctor_wait_request wait_req;
- 	int err = 0;
- 
--	spin_lock(&sci->sc_state_lock);
- 	init_wait(&wait_req.wq);
- 	wait_req.err = 0;
- 	atomic_set(&wait_req.done, 0);
-+	init_waitqueue_entry(&wait_req.wq, current);
-+
-+	/*
-+	 * To prevent a race issue where completion notifications from the
-+	 * log writer thread are missed, increment the request sequence count
-+	 * "sc_seq_request" and insert a wait queue entry using the current
-+	 * sequence number into the "sc_wait_request" queue at the same time
-+	 * within the lock section of "sc_state_lock".
-+	 */
-+	spin_lock(&sci->sc_state_lock);
- 	wait_req.seq = ++sci->sc_seq_request;
-+	add_wait_queue(&sci->sc_wait_request, &wait_req.wq);
- 	spin_unlock(&sci->sc_state_lock);
- 
--	init_waitqueue_entry(&wait_req.wq, current);
--	add_wait_queue(&sci->sc_wait_request, &wait_req.wq);
--	set_current_state(TASK_INTERRUPTIBLE);
- 	wake_up(&sci->sc_wait_daemon);
- 
+@@ -2196,6 +2196,14 @@ static int nilfs_segctor_sync(struct nil
  	for (;;) {
-+		set_current_state(TASK_INTERRUPTIBLE);
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 
++		/*
++		 * Synchronize only while the log writer thread is alive.
++		 * Leave flushing out after the log writer thread exits to
++		 * the cleanup work in nilfs_segctor_destroy().
++		 */
++		if (!sci->sc_task)
++			break;
 +
  		if (atomic_read(&wait_req.done)) {
  			err = wait_req.err;
  			break;
+@@ -2211,7 +2219,7 @@ static int nilfs_segctor_sync(struct nil
+ 	return err;
+ }
+ 
+-static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err)
++static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err, bool force)
+ {
+ 	struct nilfs_segctor_wait_request *wrq, *n;
+ 	unsigned long flags;
+@@ -2219,7 +2227,7 @@ static void nilfs_segctor_wakeup(struct
+ 	spin_lock_irqsave(&sci->sc_wait_request.lock, flags);
+ 	list_for_each_entry_safe(wrq, n, &sci->sc_wait_request.head, wq.entry) {
+ 		if (!atomic_read(&wrq->done) &&
+-		    nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq)) {
++		    (force || nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq))) {
+ 			wrq->err = err;
+ 			atomic_set(&wrq->done, 1);
+ 		}
+@@ -2368,7 +2376,7 @@ static void nilfs_segctor_notify(struct
+ 	if (mode == SC_LSEG_SR) {
+ 		sci->sc_state &= ~NILFS_SEGCTOR_COMMIT;
+ 		sci->sc_seq_done = sci->sc_seq_accepted;
+-		nilfs_segctor_wakeup(sci, err);
++		nilfs_segctor_wakeup(sci, err, false);
+ 		sci->sc_flush_request = 0;
+ 	} else {
+ 		if (mode == SC_FLUSH_FILE)
+@@ -2752,6 +2760,13 @@ static void nilfs_segctor_destroy(struct
+ 		|| sci->sc_seq_request != sci->sc_seq_done);
+ 	spin_unlock(&sci->sc_state_lock);
+ 
++	/*
++	 * Forcibly wake up tasks waiting in nilfs_segctor_sync(), which can
++	 * be called from delayed iput() via nilfs_evict_inode() and can race
++	 * with the above log writer thread termination.
++	 */
++	nilfs_segctor_wakeup(sci, 0, true);
++
+ 	if (flush_work(&sci->sc_iput_work))
+ 		flag = true;
+ 
 
 
 
