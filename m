@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-47335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE648D0D91
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4ACB8D0B92
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985CE282792
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11CA41C216BC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2426D16078C;
-	Mon, 27 May 2024 19:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D77F6A039;
+	Mon, 27 May 2024 19:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBzO1Cfk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7SkzSei"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D685917727;
-	Mon, 27 May 2024 19:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D12417E90E;
+	Mon, 27 May 2024 19:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838282; cv=none; b=LE40Eb231iW6vbmujL0oUX6JaO0nbSRcm94dB7Ewvv6ZbvDBlA0KgEUmf14EnaF/Rr4mdMHoencJPgT15PIwHSa9ZPxKUUZt2wQIMc9v4nIKTYob463/OIjZE6HbKHsOPgcvL6+ylzM9AhoBLbVRQn9+IxlpNoPpLIDKH9BLNpo=
+	t=1716837048; cv=none; b=oSLa0oh9pzjTeB+YINmyNUH/qnHjHrQmtKTGd7HGN66lBXf3aX8qCBVQ92W4r3A8XaoezIzkKXdAAkBuwdftCG2lgW184U9ZjGxtWJWKj3i7t6ZYnQF2xwq1GRBaOLx7FPGXJi0VS1UR1uSfTUPQmAlEN37Sg21fvkPB+Z9kEmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838282; c=relaxed/simple;
-	bh=y7ltu8d9q1H5QS/Ar6kVi0aZGyPMjduY1Y3OnBWMxkg=;
+	s=arc-20240116; t=1716837048; c=relaxed/simple;
+	bh=VrZRC7XD9eCPuMTtgaRqOB6b9COozdUmWsHyCRl6+Dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yf0J8KQE9Z71eFkKOZSfZycMse+FW+rWyqOkpdwczRmYjbXU22781nhnSb2Fq8+hxJ2HG2F7sQrLc/WI7riYIEhP69f5Hls+X/Gbd92Gn2Qxk3XWfx+qcVU6JvlB2EzoEnHsyDoETi9qzjsRYZHolgX8fMr8bPjArhPhELJu0Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBzO1Cfk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147CCC2BBFC;
-	Mon, 27 May 2024 19:31:21 +0000 (UTC)
+	 MIME-Version; b=QnTG0gokP/k1k3P1yuctiB0NH/72Nfrf+8OTLAn6if3d1M5yqy4z/UGL+kVfQ8gdd+32XDy2ccM2VQFH7QNvzYLuvdfTrUMKZMvuR9adiQad9LRBEJWbcA9lBnuv+pAOLOvbQXzg+ZHixtZU4tKa0kzC4jXb+SFbuQAIdcBrh8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7SkzSei; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A003FC2BBFC;
+	Mon, 27 May 2024 19:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838282;
-	bh=y7ltu8d9q1H5QS/Ar6kVi0aZGyPMjduY1Y3OnBWMxkg=;
+	s=korg; t=1716837048;
+	bh=VrZRC7XD9eCPuMTtgaRqOB6b9COozdUmWsHyCRl6+Dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WBzO1CfkRPxCc0/a7KR1+3i+JHbpwi79WCaEozaAk/l4AS5lQNoywHRg7ZPctmfH4
-	 Pax00AuCRidEgcIJwXDaebNHny9ROzWq47zrF+RQL4Ft/b2jwEezTuKrxJMgN1jesr
-	 fH8qGd+KkM5ocygFr4njYcgeWVI34izhTE8C3hmk=
+	b=n7SkzSei0iKmEekrxIghtsA0sho9Mh7o/EjoUstl3uo0R1f8ysa77lBXo6yyBFc1w
+	 eER7oZ9mgX/QP5cx8UB6srfMqv5kDwywPebyKofUrre1GNQ5e9jZ+htER88i9ettfL
+	 rExWefeAYyEM0+dIQEpQ8JCFPV6JIgko6ymeooMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Donald Robson <donald.robson@imgtec.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Matt Coster <matt.coster@imgtec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 334/493] net: stmmac: Report taprio offload status
-Date: Mon, 27 May 2024 20:55:36 +0200
-Message-ID: <20240527185641.197036046@linuxfoundation.org>
+Subject: [PATCH 6.9 290/427] drm/imagination: avoid -Woverflow warning
+Date: Mon, 27 May 2024 20:55:37 +0200
+Message-ID: <20240527185629.483915157@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5ca63ffdb94ba2bac4c23c8609aabd7edd03c312 ]
+[ Upstream commit 07b9d0144fff9af08b8dcd0ae134510bfd539e42 ]
 
-Report taprio offload status. This includes per txq and global
-counters of window_drops and tx_overruns.
+The array size calculation in pvr_vm_mips_fini() appears to be incorrect based on
+taking the size of the pointer rather than the size of the array, which manifests
+as a warning about signed integer overflow:
 
-Window_drops count include count of frames dropped because of
-queueMaxSDU setting and HLBF error. Transmission overrun counter
-inform the user application whether any packets are currently being
-transmitted on a particular queue during a gate-close event.DWMAC IPs
-takes care Transmission overrun won't happen hence this is always 0.
+In file included from include/linux/kernel.h:16,
+                 from drivers/gpu/drm/imagination/pvr_rogue_fwif.h:10,
+                 from drivers/gpu/drm/imagination/pvr_ccb.h:7,
+                 from drivers/gpu/drm/imagination/pvr_device.h:7,
+                 from drivers/gpu/drm/imagination/pvr_vm_mips.c:4:
+drivers/gpu/drm/imagination/pvr_vm_mips.c: In function 'pvr_vm_mips_fini':
+include/linux/array_size.h:11:25: error: overflow in conversion from 'long unsigned int' to 'int' changes value from '18446744073709551615' to '-1' [-Werror=overflow]
+   11 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+      |                         ^
+drivers/gpu/drm/imagination/pvr_vm_mips.c:106:24: note: in expansion of macro 'ARRAY_SIZE'
+  106 |         for (page_nr = ARRAY_SIZE(mips_data->pt_pages) - 1; page_nr >= 0; page_nr--) {
+      |                        ^~~~~~~~~~
 
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 36ac9e7f2e57 ("net: stmmac: move the EST lock to struct stmmac_priv")
+Just use the number of array elements directly here, and in the corresponding
+init function for consistency.
+
+Fixes: 927f3e0253c1 ("drm/imagination: Implement MIPS firmware processor and MMU support")
+Reviewed-by: Donald Robson <donald.robson@imgtec.com>
+Link: https://lore.kernel.org/lkml/9df9e4f87727399928c068dbbf614c9895ae15f9.camel@imgtec.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 62 +++++++++++++++++--
- 1 file changed, 58 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/imagination/pvr_vm_mips.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 07aa3a3089dc2..cce00719937db 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -937,8 +937,8 @@ static void tc_taprio_map_maxsdu_txq(struct stmmac_priv *priv,
- 	}
- }
+diff --git a/drivers/gpu/drm/imagination/pvr_vm_mips.c b/drivers/gpu/drm/imagination/pvr_vm_mips.c
+index b7fef3c797e6c..4f99b4af871c0 100644
+--- a/drivers/gpu/drm/imagination/pvr_vm_mips.c
++++ b/drivers/gpu/drm/imagination/pvr_vm_mips.c
+@@ -46,7 +46,7 @@ pvr_vm_mips_init(struct pvr_device *pvr_dev)
+ 	if (!mips_data)
+ 		return -ENOMEM;
  
--static int tc_setup_taprio(struct stmmac_priv *priv,
--			   struct tc_taprio_qopt_offload *qopt)
-+static int tc_taprio_configure(struct stmmac_priv *priv,
-+			       struct tc_taprio_qopt_offload *qopt)
- {
- 	u32 size, wid = priv->dma_cap.estwid, dep = priv->dma_cap.estdep;
- 	struct plat_stmmacenet_data *plat = priv->plat;
-@@ -990,8 +990,6 @@ static int tc_setup_taprio(struct stmmac_priv *priv,
+-	for (page_nr = 0; page_nr < ARRAY_SIZE(mips_data->pt_pages); page_nr++) {
++	for (page_nr = 0; page_nr < PVR_MIPS_PT_PAGE_COUNT; page_nr++) {
+ 		mips_data->pt_pages[page_nr] = alloc_page(GFP_KERNEL | __GFP_ZERO);
+ 		if (!mips_data->pt_pages[page_nr]) {
+ 			err = -ENOMEM;
+@@ -102,7 +102,7 @@ pvr_vm_mips_fini(struct pvr_device *pvr_dev)
+ 	int page_nr;
  
- 	if (qopt->cmd == TAPRIO_CMD_DESTROY)
- 		goto disable;
--	else if (qopt->cmd != TAPRIO_CMD_REPLACE)
--		return -EOPNOTSUPP;
+ 	vunmap(mips_data->pt);
+-	for (page_nr = ARRAY_SIZE(mips_data->pt_pages) - 1; page_nr >= 0; page_nr--) {
++	for (page_nr = PVR_MIPS_PT_PAGE_COUNT - 1; page_nr >= 0; page_nr--) {
+ 		dma_unmap_page(from_pvr_device(pvr_dev)->dev,
+ 			       mips_data->pt_dma_addr[page_nr], PAGE_SIZE, DMA_TO_DEVICE);
  
- 	if (qopt->num_entries >= dep)
- 		return -EINVAL;
-@@ -1102,6 +1100,11 @@ static int tc_setup_taprio(struct stmmac_priv *priv,
- 		priv->plat->est->enable = false;
- 		stmmac_est_configure(priv, priv, priv->plat->est,
- 				     priv->plat->clk_ptp_rate);
-+		/* Reset taprio status */
-+		for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
-+			priv->xstats.max_sdu_txq_drop[i] = 0;
-+			priv->xstats.mtl_est_txq_hlbf[i] = 0;
-+		}
- 		mutex_unlock(&priv->plat->est->lock);
- 	}
- 
-@@ -1119,6 +1122,57 @@ static int tc_setup_taprio(struct stmmac_priv *priv,
- 	return ret;
- }
- 
-+static void tc_taprio_stats(struct stmmac_priv *priv,
-+			    struct tc_taprio_qopt_offload *qopt)
-+{
-+	u64 window_drops = 0;
-+	int i = 0;
-+
-+	for (i = 0; i < priv->plat->tx_queues_to_use; i++)
-+		window_drops += priv->xstats.max_sdu_txq_drop[i] +
-+				priv->xstats.mtl_est_txq_hlbf[i];
-+	qopt->stats.window_drops = window_drops;
-+
-+	/* Transmission overrun doesn't happen for stmmac, hence always 0 */
-+	qopt->stats.tx_overruns = 0;
-+}
-+
-+static void tc_taprio_queue_stats(struct stmmac_priv *priv,
-+				  struct tc_taprio_qopt_offload *qopt)
-+{
-+	struct tc_taprio_qopt_queue_stats *q_stats = &qopt->queue_stats;
-+	int queue = qopt->queue_stats.queue;
-+
-+	q_stats->stats.window_drops = priv->xstats.max_sdu_txq_drop[queue] +
-+				      priv->xstats.mtl_est_txq_hlbf[queue];
-+
-+	/* Transmission overrun doesn't happen for stmmac, hence always 0 */
-+	q_stats->stats.tx_overruns = 0;
-+}
-+
-+static int tc_setup_taprio(struct stmmac_priv *priv,
-+			   struct tc_taprio_qopt_offload *qopt)
-+{
-+	int err = 0;
-+
-+	switch (qopt->cmd) {
-+	case TAPRIO_CMD_REPLACE:
-+	case TAPRIO_CMD_DESTROY:
-+		err = tc_taprio_configure(priv, qopt);
-+		break;
-+	case TAPRIO_CMD_STATS:
-+		tc_taprio_stats(priv, qopt);
-+		break;
-+	case TAPRIO_CMD_QUEUE_STATS:
-+		tc_taprio_queue_stats(priv, qopt);
-+		break;
-+	default:
-+		err = -EOPNOTSUPP;
-+	}
-+
-+	return err;
-+}
-+
- static int tc_setup_etf(struct stmmac_priv *priv,
- 			struct tc_etf_qopt_offload *qopt)
- {
 -- 
 2.43.0
 
