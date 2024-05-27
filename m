@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-46677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2188D0ACB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F00118D0CD3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B694281F9D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D0D61C20BA2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E0115FCF5;
-	Mon, 27 May 2024 19:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A249160784;
+	Mon, 27 May 2024 19:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mF+y0Jww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yknoSjHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C247F15FD01;
-	Mon, 27 May 2024 19:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD42315FCFC;
+	Mon, 27 May 2024 19:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836569; cv=none; b=jLsknVdADfZV4qalm2GpQBDEAHsAHBKI5/poPyOiqySkYBu3WT+rN2wB4PvVef+5PX9igrxkUF9Lw97uUiBEb976yERDLHAoMM8Mh5lxI8JL/jA0/iKtShY8JZ2VO7gon+LXBad17H5cwD5lUCooTpnIBQu+JYnzh5FcJJYTBTg=
+	t=1716837807; cv=none; b=gzkWxiSm7qqpVrTm+XTjPD09rmmBjf9TTkiM1IbIdC4+pql8XMBumCRXnpTyQ7SkugFeXHJ8Ad9qezpLbnnwBU25JppHH/T+PJs8Jx4Jb6EHjCbGAy8tWoSDxEwicAk//MS0C3hGLBmbWnUTFXNVb/AukmomNU7j9rXdHaTStgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836569; c=relaxed/simple;
-	bh=A7V0rOcefwpMv9RTw01EqdC5VZ3n74ESiqX+GksXNp8=;
+	s=arc-20240116; t=1716837807; c=relaxed/simple;
+	bh=sKHV4IklCwvMivi0fqvX9x/JX4UFro3TSPx3oNF1atY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUp6cU4H2mAtZo7q6pR3DSPjFpLUJjiz2rx4JgJDj6znAFMm7nGX1lZ2n90A74CktT2UMh9yDjyvXEC7sEAiGMaG/lICb5HBfBoC7xzouajn5QlPtFrs7ELAynR7NbmwfNz6hc7Kybielw0TIUXiUs2FCYNHpw9hbiVLsiGEoq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mF+y0Jww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7010C2BBFC;
-	Mon, 27 May 2024 19:02:48 +0000 (UTC)
+	 MIME-Version; b=NBRHF6WJQ+kfp6PVqaLkLvRNJVIWI424h+T2zXulyripOLZd0VJ/609mPoi7df5sqF1k5oHjy0u8Mz3RNi4PRvl1e7GqSwtBbOqHZr1FHv/FagdWjTOfjmfqNyPSY4UwT5ddiOu9lRVYRiLXDBDffEq86kD8fefLvyAS6arWeNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yknoSjHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E210C2BBFC;
+	Mon, 27 May 2024 19:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836569;
-	bh=A7V0rOcefwpMv9RTw01EqdC5VZ3n74ESiqX+GksXNp8=;
+	s=korg; t=1716837806;
+	bh=sKHV4IklCwvMivi0fqvX9x/JX4UFro3TSPx3oNF1atY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mF+y0JwwZbxr+pBeClIkIwDa1tPXLtJb+3wiw3TrRKjvLp4Ityo/M95Z+5/N/io4A
-	 ++ze02OxEiLvmkEH2fmDSeLwpNZf5sn/NZTJ/tRmGyM0MQJxGc3Dzi2wPP3sqhKbub
-	 s1dTtJvE4a4hALCFGz9LOwkk25r47Ck5+rtLo7rk=
+	b=yknoSjHMQg8KSIDFScNIFp8sXD50c7tqc+cFVxeJo98hfuaBhl6gGmrpC+M0ZXry0
+	 CFEd3bWO60wXz2rg7VzV65YrXB/yA+vlqPiXm1Re0KHXoUHF1XPisFC0R3ckPTjGph
+	 X07DyrKiMkQivkHikLwshfBHbKyyHwfxc6iKjl4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 106/427] wifi: iwlwifi: mvm: select STA mask only for active links
-Date: Mon, 27 May 2024 20:52:33 +0200
-Message-ID: <20240527185611.695848778@linuxfoundation.org>
+Subject: [PATCH 6.8 152/493] io_uring/net: remove dependency on REQ_F_PARTIAL_IO for sr->done_io
+Date: Mon, 27 May 2024 20:52:34 +0200
+Message-ID: <20240527185635.405192773@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 2783ab506eaa36dbef40bda0f96eb49fe149790e ]
+[ Upstream commit 9817ad85899fb695f875610fb743cb18cf087582 ]
 
-During reconfig, we might send keys, but those should be only
-sent to already active link stations. Iterate only active ones
-to fix that issue.
+Ensure that prep handlers always initialize sr->done_io before any
+potential failure conditions, and with that, we now it's always been
+set even for the failure case.
 
-Fixes: aea99650f731 ("wifi: iwlwifi: mvm: set STA mask for keys in MLO")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240320232419.c6818d1c6033.I6357f05c55ef111002ddc169287eb356ca0c1b21@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+With that, we don't need to use the REQ_F_PARTIAL_IO flag to gate on that.
+Additionally, we should not overwrite req->cqe.res unless sr->done_io is
+actually positive.
+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: ef42b85a5609 ("io_uring/net: fix sendzc lazy wake polling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ io_uring/net.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 4ba1599ed71ca..dffdd00f8ab62 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -9,7 +9,9 @@
- u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 			   int filter_link_id)
+diff --git a/io_uring/net.c b/io_uring/net.c
+index 46ea09e1e3829..d193b87d0a03b 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -359,6 +359,8 @@ int io_sendmsg_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
  {
-+	struct ieee80211_link_sta *link_sta;
- 	struct iwl_mvm_sta *mvmsta;
-+	struct ieee80211_vif *vif;
- 	unsigned int link_id;
- 	u32 result = 0;
+ 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
  
-@@ -17,26 +19,27 @@ u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 		return 0;
++	sr->done_io = 0;
++
+ 	if (req->opcode == IORING_OP_SEND) {
+ 		if (READ_ONCE(sqe->__pad3[0]))
+ 			return -EINVAL;
+@@ -381,7 +383,6 @@ int io_sendmsg_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	if (req->ctx->compat)
+ 		sr->msg_flags |= MSG_CMSG_COMPAT;
+ #endif
+-	sr->done_io = 0;
+ 	return 0;
+ }
  
- 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
-+	vif = mvmsta->vif;
+@@ -603,6 +604,8 @@ int io_recvmsg_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ {
+ 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
  
- 	/* it's easy when the STA is not an MLD */
- 	if (!sta->valid_links)
- 		return BIT(mvmsta->deflink.sta_id);
++	sr->done_io = 0;
++
+ 	if (unlikely(sqe->file_index || sqe->addr2))
+ 		return -EINVAL;
  
- 	/* but if it is an MLD, get the mask of all the FW STAs it has ... */
--	for (link_id = 0; link_id < ARRAY_SIZE(mvmsta->link); link_id++) {
--		struct iwl_mvm_link_sta *link_sta;
-+	for_each_sta_active_link(vif, sta, link_sta, link_id) {
-+		struct iwl_mvm_link_sta *mvm_link_sta;
+@@ -639,7 +642,6 @@ int io_recvmsg_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	if (req->ctx->compat)
+ 		sr->msg_flags |= MSG_CMSG_COMPAT;
+ #endif
+-	sr->done_io = 0;
+ 	sr->nr_multishot_loops = 0;
+ 	return 0;
+ }
+@@ -1019,6 +1021,8 @@ int io_send_zc_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	struct io_ring_ctx *ctx = req->ctx;
+ 	struct io_kiocb *notif;
  
- 		/* unless we have a specific link in mind */
- 		if (filter_link_id >= 0 && link_id != filter_link_id)
- 			continue;
++	zc->done_io = 0;
++
+ 	if (unlikely(READ_ONCE(sqe->__pad2[0]) || READ_ONCE(sqe->addr3)))
+ 		return -EINVAL;
+ 	/* we don't support IOSQE_CQE_SKIP_SUCCESS just yet */
+@@ -1071,8 +1075,6 @@ int io_send_zc_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	if (zc->msg_flags & MSG_DONTWAIT)
+ 		req->flags |= REQ_F_NOWAIT;
  
--		link_sta =
-+		mvm_link_sta =
- 			rcu_dereference_check(mvmsta->link[link_id],
- 					      lockdep_is_held(&mvm->mutex));
- 		if (!link_sta)
- 			continue;
+-	zc->done_io = 0;
+-
+ #ifdef CONFIG_COMPAT
+ 	if (req->ctx->compat)
+ 		zc->msg_flags |= MSG_CMSG_COMPAT;
+@@ -1318,7 +1320,7 @@ void io_sendrecv_fail(struct io_kiocb *req)
+ {
+ 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
  
--		result |= BIT(link_sta->sta_id);
-+		result |= BIT(mvm_link_sta->sta_id);
- 	}
+-	if (req->flags & REQ_F_PARTIAL_IO)
++	if (sr->done_io)
+ 		req->cqe.res = sr->done_io;
  
- 	return result;
+ 	if ((req->flags & REQ_F_NEED_CLEANUP) &&
 -- 
 2.43.0
 
