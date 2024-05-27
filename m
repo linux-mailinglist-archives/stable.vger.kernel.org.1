@@ -1,182 +1,119 @@
-Return-Path: <stable+bounces-46347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A3B8D0328
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:19:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E30D8D02D1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2909F1F26222
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:19:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DBC01C20A77
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6167B15FA7B;
-	Mon, 27 May 2024 14:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C36015ECF9;
+	Mon, 27 May 2024 14:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MqI7gwa/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="btIVkH8V"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DF215F413;
-	Mon, 27 May 2024 14:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2479F1640B;
+	Mon, 27 May 2024 14:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819194; cv=none; b=G6IxK28wtbTBkNqTUBNp+ZsPSbjJREd44Xuc/pLSZ1DOesUAomEOyFDaHGJFnf41D7i2cw0yrxo6dTTFzYeY0G2vLMzkeM4kf+N/mfd9/4SaBxNtLrbGYuHhCIbgKpltXozsVwkOSvGfj5laAaWJNM8puaVCwyeigKaIoArUD9Y=
+	t=1716819100; cv=none; b=RMPKH1+r8XvfeZ8c3ZNE1/leElgf6g6e/HMrgmASf9q1H3Az8+lHKbkIlQ7iTqQwVNKONGluiPuHZ2LdLjQIylRby5IuDrgJVqsGkO0Y8nP0fqmiJpAJatK8SQh7wC241UaKMTIWnk74qqqFmozyc1o83hxQOwkKKqUZrPRhcjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819194; c=relaxed/simple;
-	bh=x3V+F4/2QeO/JDxzdGbicGzEx4qIlmPs3Ym+NTYFZQE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXq9OF4XNsWCLEnuG99/7I16Py3GQqf4LiiUPcUFV4Zps9vWsqz+FAPuPD5aP3FildUUpH13ULHwc9/qwFQa3sBq9WH5MlCxflIQ6ub2BNoRnmJ1aNjMM4XLq749wzlDvQz7DjUoiUdxXEJzOJXNB/73EhAeeGO5PawPomeZMNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MqI7gwa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051B4C2BBFC;
-	Mon, 27 May 2024 14:13:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819194;
-	bh=x3V+F4/2QeO/JDxzdGbicGzEx4qIlmPs3Ym+NTYFZQE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MqI7gwa/aaYYapPYmn7ZK8TJiG53I9DF15SZVF4ArDBlNxpyD4rtIQ3hOvdlPW9R9
-	 2gOHmWYpazCwFs+Cc+l9CBt+EJpwcm5knT4eVgEq7wQFIhfB+91+ncm0TVOZjc6Za2
-	 mlf53jRfIIx5Ce0XgBoDWkSCRV6Rjhr86bPPl6LWgxaDF3PsqtILQyqjaRBNCg6qe0
-	 rWO02l6i73eXBYa3lAgePGaY2+J2PySdELWppLVcSQu1Jh0dXDOhghZwhVYZq8ViW8
-	 okfpQCdXgK20alYvb/hzy4rPTesuT3GZ8P7lKJE6IfPWr3Tvbr0u9xYxtvJJSkAEJJ
-	 o2LMCZqQx0wsw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Leon Yen <leon.yen@mediatek.com>,
-	Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	deren.wu@mediatek.com,
-	horms@kernel.org,
-	sean.wang@mediatek.com,
-	kernel@mattwhitlock.name,
-	wang.zhao@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.9 27/35] wifi: mt76: mt7921s: fix potential hung tasks during chip recovery
-Date: Mon, 27 May 2024 10:11:32 -0400
-Message-ID: <20240527141214.3844331-27-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
-References: <20240527141214.3844331-1-sashal@kernel.org>
+	s=arc-20240116; t=1716819100; c=relaxed/simple;
+	bh=o5hbqwBIk7hbVfK+3GoDhFtKqh6k+H303kYL9/uP8BU=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=bxRUPK9iJVCtXIUwrGuOpyQ8vj9QgU8SKS51PQAc2GoAubCUBlfKs4N5WeFmjfOaiNM1fnjEM4y4J0ofn6QAqxhm94PRZbFagRoq6cAqt8PUzUI0II2aIda5rkVqDImSoGO5MGDMqRxrexVLCSDZTaR940W6aKlEJB5eg6mI7GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=btIVkH8V; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716819100; x=1748355100;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=o5hbqwBIk7hbVfK+3GoDhFtKqh6k+H303kYL9/uP8BU=;
+  b=btIVkH8VG3nLkoluYtHKtpqtNocofhWbTYqn3SSi5k0AsqkdNY2Y6Mdx
+   mavajyB6uW31yeGxAk70SJdJOQbNzqWoIGLQhr40pxLerX4TAO5dI+BGO
+   gELXg3nRlcc21gDfrCOfTLPK05eHDIaCtI5bEDB/0hprbcih2aptPZTKP
+   ftvXweCQgTLHiNIEPStlqU1Ms5xEYPxEcJ4V0CPjKbLieUfswm4JOV2pY
+   w1HvMUsGjWMMbuZzlBywKieM19hGlPlg/RfKXSkoh4ScMmW31QhqqXafK
+   ItNqdplFIwaoaYK9Q11stCDjv5bYPmhJj1FXPMHQA8TlYQMxDTmghbLyR
+   w==;
+X-CSE-ConnectionGUID: Zd8Ki25gTKOdKGmKgylV0g==
+X-CSE-MsgGUID: sVVEbBwxQ8SPHSAbEMIciQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13085578"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
+   d="scan'208";a="13085578"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:11:39 -0700
+X-CSE-ConnectionGUID: Zhuq5rPFQmKHqU+Ja7y81A==
+X-CSE-MsgGUID: CZN/hKapTWO683lguzJlNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
+   d="scan'208";a="65990651"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.140])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:11:36 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 27 May 2024 17:11:32 +0300 (EEST)
+To: Dan Carpenter <dan.carpenter@linaro.org>
+cc: Linus Walleij <linus.walleij@linaro.org>, 
+    Bartosz Golaszewski <brgl@bgdev.pl>, 
+    Dmitry Baryshkov <dbaryshkov@gmail.com>, linux-gpio@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] gpio: amd8111: Convert PCIBIOS_* return codes to
+ errnos
+In-Reply-To: <09f2f3ac-94a7-43d3-8c43-0d264a1d9c65@moroto.mountain>
+Message-ID: <7d475c6c-8bbf-86f4-b2d8-8bc11cb9043e@linux.intel.com>
+References: <20240527132345.13956-1-ilpo.jarvinen@linux.intel.com> <09f2f3ac-94a7-43d3-8c43-0d264a1d9c65@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.2
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323328-1881005345-1716819092=:1006"
 
-From: Leon Yen <leon.yen@mediatek.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-[ Upstream commit ecf0b2b8a37c8464186620bef37812a117ff6366 ]
+--8323328-1881005345-1716819092=:1006
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-During chip recovery (e.g. chip reset), there is a possible situation that
-kernel worker reset_work is holding the lock and waiting for kernel thread
-stat_worker to be parked, while stat_worker is waiting for the release of
-the same lock.
-It causes a deadlock resulting in the dumping of hung tasks messages and
-possible rebooting of the device.
+On Mon, 27 May 2024, Dan Carpenter wrote:
 
-This patch prevents the execution of stat_worker during the chip recovery.
+> On Mon, May 27, 2024 at 04:23:44PM +0300, Ilpo J=E4rvinen wrote:
+> > diff --git a/drivers/gpio/gpio-amd8111.c b/drivers/gpio/gpio-amd8111.c
+> > index 6f3ded619c8b..3377667a28de 100644
+> > --- a/drivers/gpio/gpio-amd8111.c
+> > +++ b/drivers/gpio/gpio-amd8111.c
+> > @@ -195,8 +195,10 @@ static int __init amd_gpio_init(void)
+> > =20
+> >  found:
+> >  =09err =3D pci_read_config_dword(pdev, 0x58, &gp.pmbase);
+> > -=09if (err)
+> > +=09if (err) {
+> > +=09=09err =3D pcibios_err_to_errno(err);
+>=20
+> The patch is correct, but is the CC to stable necessary?  Is this a real
+> concern?
+>=20
+> Most callers don't check.  Linus Torvalds, once said something to the
+> effect that if your PCI bus starts failing, there isn't anything the
+> operating system can do, so checking is pointless.  The only fix is to
+> buy new hardware.  There was a hotpluggable PCI back in the day but I
+> don't think it exists any more.
 
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  | 2 --
- drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 2 --
- drivers/net/wireless/mediatek/mt76/sdio.c            | 3 ++-
- 4 files changed, 4 insertions(+), 5 deletions(-)
+I don't mind if the CC stable isn't there.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 867e14f6b93a0..73e42ef429837 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -663,6 +663,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 	int i, ret;
- 
- 	dev_dbg(dev->mt76.dev, "chip reset\n");
-+	set_bit(MT76_RESET, &dev->mphy.state);
- 	dev->hw_full_reset = true;
- 	ieee80211_stop_queues(hw);
- 
-@@ -691,6 +692,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 	}
- 
- 	dev->hw_full_reset = false;
-+	clear_bit(MT76_RESET, &dev->mphy.state);
- 	pm->suspended = false;
- 	ieee80211_wake_queues(hw);
- 	ieee80211_iterate_active_interfaces(hw,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index c866144ff0613..031ba9aaa4e2f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -64,7 +64,6 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
- 	mt76_wr(dev, dev->irq_map->host_irq_enable, 0);
- 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
- 
--	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
-@@ -115,7 +114,6 @@ int mt7921e_mac_reset(struct mt792x_dev *dev)
- 
- 	err = __mt7921_start(&dev->phy);
- out:
--	clear_bit(MT76_RESET, &dev->mphy.state);
- 
- 	local_bh_disable();
- 	napi_enable(&dev->mt76.tx_napi);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index 389eb0903807e..1f77cf71ca701 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -98,7 +98,6 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
- 	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
- 	mt76_txq_schedule_all(&dev->mphy);
- 	mt76_worker_disable(&dev->mt76.tx_worker);
--	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
-@@ -135,7 +134,6 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
- 
- 	err = __mt7921_start(&dev->phy);
- out:
--	clear_bit(MT76_RESET, &dev->mphy.state);
- 
- 	mt76_worker_enable(&dev->mt76.tx_worker);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
-index 3e88798df0178..a4ed00eebc483 100644
---- a/drivers/net/wireless/mediatek/mt76/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/sdio.c
-@@ -499,7 +499,8 @@ static void mt76s_tx_status_data(struct mt76_worker *worker)
- 	dev = container_of(sdio, struct mt76_dev, sdio);
- 
- 	while (true) {
--		if (test_bit(MT76_REMOVED, &dev->phy.state))
-+		if (test_bit(MT76_RESET, &dev->phy.state) ||
-+		    test_bit(MT76_REMOVED, &dev->phy.state))
- 			break;
- 
- 		if (!dev->drv->tx_status_data(dev, &update))
--- 
-2.43.0
 
+--=20
+ i.
+
+--8323328-1881005345-1716819092=:1006--
 
