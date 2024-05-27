@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-47202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BA68D0D07
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0829D8D0B00
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803341F219CF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:25:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AD8E1F229A7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A2415FA91;
-	Mon, 27 May 2024 19:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0D015EFC3;
+	Mon, 27 May 2024 19:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zs1d3LpE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktJQPwQe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77289168C4;
-	Mon, 27 May 2024 19:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2BD17E90E;
+	Mon, 27 May 2024 19:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837932; cv=none; b=ZEKPguh89V4QXDEfqlha27ghGGrcZXcxrYgdTT1jCHqrGaIVRp2swFIfAYEWfwyLuGVdOLrV8zGsc41+uy8jqQWBAq83tgZrJlB7EmkV1OMAND0ZTlK2l9kIvgSskWgyydb3ImjdTw5EXKV4uMmOA1Y4YhAqiBEntlXeaVLme0Q=
+	t=1716836706; cv=none; b=GzjiikCmXjro81U/DwuMqo+oicgTsgvZMwC2q+eC2KBQ0593fhWrla6kOXgJxGPrMOks+stY27Et3yCeK7E3xODFs++50YUNngBW0KLdT2Lz7K1nz0oKxJJJtggzHLVrtGfOHP43BTvbYCTtQxShNAYjYB034qRddgvwjycJa1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837932; c=relaxed/simple;
-	bh=+gzN+LnLgtwV5pOykCC2X3CZh7kHEeSXPeXHlyXViEs=;
+	s=arc-20240116; t=1716836706; c=relaxed/simple;
+	bh=r/1qOnrFNgNjRdHHhOWYWZJlosquBT9PguyamenhGdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hnp5izkOn5qcmO1kJ4N9lIJQEMUCVLo8uD669o3KNn5p7UY1t0JqRkRjmi0LppYBKcRIzGc5zSNr55GWOdSdPqJxEcGUwkSWKFHnxvZj979GPW5NOeJtPIC59WpApDhzxETBrdCbltVfjToitz+o6jjCa2voIgRY1uOdwRvCrps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zs1d3LpE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F475C2BBFC;
-	Mon, 27 May 2024 19:25:31 +0000 (UTC)
+	 MIME-Version; b=ETzxI68XzMxZkMPCwqhhRart8zyQhX/YYN2yqifXrvNj0q5NT2a95I8IM3ziCd317VQOhr8v1gvOuB8iAoVaBopCj1ee7LnnJhQoYxH7WGFV6+sRsGJx4hnHjY/hNTB+EIlO0nm3uWm+ADiN6QFdnl3Mwf+Evir1jbV2wmRC7iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktJQPwQe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE01CC2BBFC;
+	Mon, 27 May 2024 19:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837932;
-	bh=+gzN+LnLgtwV5pOykCC2X3CZh7kHEeSXPeXHlyXViEs=;
+	s=korg; t=1716836706;
+	bh=r/1qOnrFNgNjRdHHhOWYWZJlosquBT9PguyamenhGdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zs1d3LpEhn2RrHKr+gxcKBnM56J1JVHEsoNBF4N5IbCEq2T/LqZvT+CZGXXC6AIAi
-	 1Ma1wW2t4eEA83KgUCOBroDw+tDZ+iMqn3R+/5VhW70xXqsnUYFba4gdQir1WhlHED
-	 f6ZEalddbDkrROrVCmnxDIr7V3tfnL5nzJnineIM=
+	b=ktJQPwQe2M7BjGlJ/esKALpIXo000O71t6nkLPv4PBp/oL1oXRyMEhcjvi8THrBKv
+	 1f6rHsOTvEtI9vby7p/6IF6K8t0WIxPLiiUCsxxbyhg70c5wv35UndpHgNz2NEBPur
+	 s1ELv4W7Rfwliyy7Jrov9sozxCQqL61Fox1GmlSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 200/493] scsi: ufs: core: Perform read back after writing UTP_TASK_REQ_LIST_BASE_H
-Date: Mon, 27 May 2024 20:53:22 +0200
-Message-ID: <20240527185636.877352630@linuxfoundation.org>
+Subject: [PATCH 6.9 156/427] wifi: iwlwifi: mvm: calculate EMLSR mode after connection
+Date: Mon, 27 May 2024 20:53:23 +0200
+Message-ID: <20240527185617.068357564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +62,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 408e28086f1c7a6423efc79926a43d7001902fae ]
+[ Upstream commit 9c6921121961cc0cecccb95652be6d98116f854b ]
 
-Currently, the UTP_TASK_REQ_LIST_BASE_L/UTP_TASK_REQ_LIST_BASE_H regs are
-written to and then completed with an mb().
+The function iwl_mvm_can_enter_esr() is (among others) calculating
+if EMLSR mode is disabled due to BT coex by calling
+iwl_mvm_bt_coex_calculate_esr_mode(), then stores the decision in
+mvmvif::esr_disable_reason.
+But there is no need to calculate this every time iwl_mvm_can_enter_esr
+is called. Fix this by calculating it once after authorization,
+and in iwl_mvm_can_enter_esr only check mvmvif::esr_disable_reason.
 
-mb() ensures that the write completes, but completion doesn't mean that it
-isn't stored in a buffer somewhere. The recommendation for ensuring these
-bits have taken effect on the device is to perform a read back to force it
-to make it all the way to the device. This is documented in device-io.rst
-and a talk by Will Deacon on this can be seen over here:
-
-    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
-
-Let's do that to ensure the bits hit the device. Because the mb()'s purpose
-wasn't to add extra ordering (on top of the ordering guaranteed by
-writel()/readl()), it can safely be removed.
-
-Fixes: 88441a8d355d ("scsi: ufs: core: Add hibernation callbacks")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-7-181252004586@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240416134215.a767e243366e.I3b32d36cda23f67dc103a28a9bdccb0039d22574@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 585ba158233f ("wifi: iwlwifi: mvm: don't always disable EMLSR due to BT coex")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/coex.c | 10 ++++-----
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 21 +++++++++++++++++++
+ .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 13 ++++--------
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  9 +++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |  4 ++--
+ 5 files changed, 35 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 4a07a18cf835d..16dc63632e720 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10353,7 +10353,7 @@ int ufshcd_system_restore(struct device *dev)
- 	 * are updated with the latest queue addresses. Only after
- 	 * updating these addresses, we can queue the new commands.
- 	 */
--	mb();
-+	ufshcd_readl(hba, REG_UTP_TASK_REQ_LIST_BASE_H);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
+index 2a28e611088d6..5416e41189657 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
+@@ -281,7 +281,7 @@ static void iwl_mvm_bt_coex_enable_esr(struct iwl_mvm *mvm,
+  * This function receives the LB link id and checks if eSR should be
+  * enabled or disabled (due to BT coex)
+  */
+-bool
++static bool
+ iwl_mvm_bt_coex_calculate_esr_mode(struct iwl_mvm *mvm,
+ 				   struct ieee80211_vif *vif,
+ 				   int link_id, int primary_link)
+@@ -338,9 +338,9 @@ iwl_mvm_bt_coex_calculate_esr_mode(struct iwl_mvm *mvm,
+ 	return wifi_loss_rate <= IWL_MVM_BT_COEX_WIFI_LOSS_THRESH;
+ }
  
- 	/* Resuming from hibernate, assume that link was OFF */
- 	ufshcd_set_link_off(hba);
+-void iwl_mvm_bt_coex_update_vif_esr(struct iwl_mvm *mvm,
+-				    struct ieee80211_vif *vif,
+-				    int link_id)
++void iwl_mvm_bt_coex_update_link_esr(struct iwl_mvm *mvm,
++				     struct ieee80211_vif *vif,
++				     int link_id)
+ {
+ 	unsigned long usable_links = ieee80211_vif_usable_links(vif);
+ 	int primary_link = iwl_mvm_mld_get_primary_link(mvm, vif,
+@@ -402,7 +402,7 @@ static void iwl_mvm_bt_notif_per_link(struct iwl_mvm *mvm,
+ 		return;
+ 	}
+ 
+-	iwl_mvm_bt_coex_update_vif_esr(mvm, vif, link_id);
++	iwl_mvm_bt_coex_update_link_esr(mvm, vif, link_id);
+ 
+ 	if (fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_COEX_SCHEMA_2))
+ 		min_ag_for_static_smps = BT_VERY_HIGH_TRAFFIC;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 5d937d647d98d..2425c22e83f4a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3789,6 +3789,24 @@ iwl_mvm_sta_state_auth_to_assoc(struct ieee80211_hw *hw,
+ 	return callbacks->update_sta(mvm, vif, sta);
+ }
+ 
++static void iwl_mvm_bt_coex_update_vif_esr(struct iwl_mvm *mvm,
++					   struct ieee80211_vif *vif)
++{
++	unsigned long usable_links = ieee80211_vif_usable_links(vif);
++	u8 link_id;
++
++	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
++		struct ieee80211_bss_conf *link_conf =
++			link_conf_dereference_protected(vif, link_id);
++
++		if (WARN_ON_ONCE(!link_conf))
++			return;
++
++		if (link_conf->chanreq.oper.chan->band == NL80211_BAND_2GHZ)
++			iwl_mvm_bt_coex_update_link_esr(mvm, vif, link_id);
++	}
++}
++
+ static int
+ iwl_mvm_sta_state_assoc_to_authorized(struct iwl_mvm *mvm,
+ 				      struct ieee80211_vif *vif,
+@@ -3816,6 +3834,9 @@ iwl_mvm_sta_state_assoc_to_authorized(struct iwl_mvm *mvm,
+ 		callbacks->mac_ctxt_changed(mvm, vif, false);
+ 		iwl_mvm_mei_host_associated(mvm, vif, mvm_sta);
+ 
++		/* Calculate eSR mode due to BT coex */
++		iwl_mvm_bt_coex_update_vif_esr(mvm, vif);
++
+ 		/* when client is authorized (AP station marked as such),
+ 		 * try to enable more links
+ 		 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 7a2a18f8b86e2..6ae8406ceb889 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -1294,13 +1294,13 @@ static bool iwl_mvm_can_enter_esr(struct iwl_mvm *mvm,
+ 				  unsigned long desired_links)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	int primary_link = iwl_mvm_mld_get_primary_link(mvm, vif,
+-							desired_links);
++	u16 usable_links = ieee80211_vif_usable_links(vif);
+ 	const struct wiphy_iftype_ext_capab *ext_capa;
+ 	bool ret = true;
+ 	int link_id;
+ 
+-	if (primary_link < 0)
++	if (!ieee80211_vif_is_mld(vif) || !vif->cfg.assoc ||
++	    hweight16(usable_links) <= 1)
+ 		return false;
+ 
+ 	if (!(vif->cfg.eml_cap & IEEE80211_EML_CAP_EMLSR_SUPP))
+@@ -1323,12 +1323,7 @@ static bool iwl_mvm_can_enter_esr(struct iwl_mvm *mvm,
+ 		if (link_conf->chanreq.oper.chan->band != NL80211_BAND_2GHZ)
+ 			continue;
+ 
+-		ret = iwl_mvm_bt_coex_calculate_esr_mode(mvm, vif, link_id,
+-							 primary_link);
+-		// Mark eSR as disabled for the next time
+-		if (!ret)
+-			mvmvif->esr_disable_reason |= IWL_MVM_ESR_DISABLE_COEX;
+-		break;
++		return !(mvmvif->esr_disable_reason & IWL_MVM_ESR_DISABLE_COEX);
+ 	}
+ 
+ 	return ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 609565fadfefe..7bf838b5bd98d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -2141,12 +2141,9 @@ bool iwl_mvm_bt_coex_is_tpc_allowed(struct iwl_mvm *mvm,
+ u8 iwl_mvm_bt_coex_get_single_ant_msk(struct iwl_mvm *mvm, u8 enabled_ants);
+ u8 iwl_mvm_bt_coex_tx_prio(struct iwl_mvm *mvm, struct ieee80211_hdr *hdr,
+ 			   struct ieee80211_tx_info *info, u8 ac);
+-bool iwl_mvm_bt_coex_calculate_esr_mode(struct iwl_mvm *mvm,
+-					struct ieee80211_vif *vif,
+-					int link_id, int primary_link);
+-void iwl_mvm_bt_coex_update_vif_esr(struct iwl_mvm *mvm,
+-				    struct ieee80211_vif *vif,
+-				    int link_id);
++void iwl_mvm_bt_coex_update_link_esr(struct iwl_mvm *mvm,
++				     struct ieee80211_vif *vif,
++				     int link_id);
+ 
+ /* beacon filtering */
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index b1add7942c5bf..395aef04f691f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+@@ -889,8 +889,8 @@ iwl_mvm_stat_iterator_all_links(struct iwl_mvm *mvm,
+ 
+ 		if (link_info->phy_ctxt &&
+ 		    link_info->phy_ctxt->channel->band == NL80211_BAND_2GHZ)
+-			iwl_mvm_bt_coex_update_vif_esr(mvm, bss_conf->vif,
+-						       link_id);
++			iwl_mvm_bt_coex_update_link_esr(mvm, bss_conf->vif,
++							link_id);
+ 
+ 		/* make sure that beacon statistics don't go backwards with TCM
+ 		 * request to clear statistics
 -- 
 2.43.0
 
