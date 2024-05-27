@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-47241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A566F8D0D32
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199758D0B2B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3191BB20DAF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C43CF281F08
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F7C16078C;
-	Mon, 27 May 2024 19:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59225155CA7;
+	Mon, 27 May 2024 19:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbybRnm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnPI3U3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A6615FCE9;
-	Mon, 27 May 2024 19:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192C417E90E;
+	Mon, 27 May 2024 19:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838031; cv=none; b=Xud/qphqO0bRqSq8BrAJa5rI5m5JXM/9fuz/fogl2Qg32CTduZgMmgvHTscD7W87fkmM0aEbn6hcbmsN6SXV67vabla7UUpNosXf69reOo0uHODAAc6lArXFj/WIbPQiJi2AqEkyCYDx2N2WSPkLD0AyuNWJ/DWfV47z7/7tB/w=
+	t=1716836807; cv=none; b=fzLfsPHaa1MDx0w0cTUfVouiyLiHHQW+DzP9VHpMydqQx9TVLjfAp9jaR5rD4+29yHFwkKKZmuqS6G3EisqEua0QMZ6rh3pdWrqpy+HNq7NgAYJY0Z1HI/mAnAMi9TImQCpggF/jxRNtLmYtJZS2oGnLV09VyM6+U2Ugwg/MTFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838031; c=relaxed/simple;
-	bh=hN9ZK1MqoIo0ZoM9gi+N6WkqYtCJ822h+z/+yEuOoqQ=;
+	s=arc-20240116; t=1716836807; c=relaxed/simple;
+	bh=rCE8lrPPz+O59vKIdmXqHMozhn6INqUoHawZKJWeI6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTvyEHgVpDXCc6osKIP1WR0H9NJupfyAO3OAUIg4XPhp57a8qnmWQox0B1mODuR74dSu0zz7y33VcBAID7jKk6unqStfCENpDoMQR3oY5UksVSYqSJx8MbSC3uhoQ0wqAzzkA4juOi8Ix0/Ndiy7uf1yBryr2PbRlWr+r+kbz5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbybRnm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C625C2BBFC;
-	Mon, 27 May 2024 19:27:11 +0000 (UTC)
+	 MIME-Version; b=HtiQbh13ikhGhc4fxGWaGTL9dL/Ha1LnKYyFovm7KU8eQkhl9H8kzoRzS34h3xetow+NV2wZG3C5PAHiwQPuCmL/fQraSvI+mgN6IVMolf66HychIBap+CG+RkOhloFTen/7YKkoIXChmlRjQN2qa2uH5xzV5nqKU9cdt5o4p9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnPI3U3X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2ECBC2BBFC;
+	Mon, 27 May 2024 19:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838031;
-	bh=hN9ZK1MqoIo0ZoM9gi+N6WkqYtCJ822h+z/+yEuOoqQ=;
+	s=korg; t=1716836807;
+	bh=rCE8lrPPz+O59vKIdmXqHMozhn6INqUoHawZKJWeI6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kbybRnm427W1IhuW3pc5cIWvBkhQfeNfjq8jzZ3K5S7/vqPDcicqf+IFaHog8PW5Z
-	 rtB+Mh1NUFHu2NgzBYRGXUHCM/NJHUWV0CJvrAgjVe2kdxDeZhoczAB5t6dFPmYXct
-	 aiztpQKVWBAxIRt4AogSDC3RkVfRNMfhDnhfnQH4=
+	b=rnPI3U3XwNESsZqAOa9vsEydhWZNSHVFLYmIbb841AcTKeL7iRqxLtoOY27YDkE30
+	 8eJ4h4/vi0T0UBLvwG6UvWtAWKwujqWnZ2kcREqXcjnSkcH/Ye2LTD7GMdHAAOFfji
+	 KschjwjRfrAKVGcQ8YC/5GPmrgh5BGlzHteE+Sg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongqin Liu <yongqin.liu@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 240/493] wifi: ath10k: populate board data for WCN3990
-Date: Mon, 27 May 2024 20:54:02 +0200
-Message-ID: <20240527185638.150072176@linuxfoundation.org>
+Subject: [PATCH 6.9 196/427] Revert "sh: Handle calling csum_partial with misaligned data"
+Date: Mon, 27 May 2024 20:54:03 +0200
+Message-ID: <20240527185620.543256607@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit f1f1b5b055c9f27a2f90fd0f0521f5920e9b3c18 ]
+[ Upstream commit b5319c96292ff877f6b58d349acf0a9dc8d3b454 ]
 
-Specify board data size (and board.bin filename) for the WCN3990
-platform.
+This reverts commit cadc4e1a2b4d20d0cc0e81f2c6ba0588775e54e5.
 
-Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
-Fixes: 03a72288c546 ("ath10k: wmi: add hw params entry for wcn3990")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240130-wcn3990-board-fw-v1-1-738f7c19a8c8@linaro.org
+Commit cadc4e1a2b4d ("sh: Handle calling csum_partial with misaligned
+data") causes bad checksum calculations on unaligned data. Reverting
+it fixes the problem.
+
+    # Subtest: checksum
+    # module: checksum_kunit
+    1..5
+    # test_csum_fixed_random_inputs: ASSERTION FAILED at lib/checksum_kunit.c:500
+    Expected ( u64)result == ( u64)expec, but
+        ( u64)result == 53378 (0xd082)
+        ( u64)expec == 33488 (0x82d0)
+    # test_csum_fixed_random_inputs: pass:0 fail:1 skip:0 total:1
+    not ok 1 test_csum_fixed_random_inputs
+    # test_csum_all_carry_inputs: ASSERTION FAILED at lib/checksum_kunit.c:525
+    Expected ( u64)result == ( u64)expec, but
+        ( u64)result == 65281 (0xff01)
+        ( u64)expec == 65280 (0xff00)
+    # test_csum_all_carry_inputs: pass:0 fail:1 skip:0 total:1
+    not ok 2 test_csum_all_carry_inputs
+    # test_csum_no_carry_inputs: ASSERTION FAILED at lib/checksum_kunit.c:573
+    Expected ( u64)result == ( u64)expec, but
+        ( u64)result == 65535 (0xffff)
+        ( u64)expec == 65534 (0xfffe)
+    # test_csum_no_carry_inputs: pass:0 fail:1 skip:0 total:1
+    not ok 3 test_csum_no_carry_inputs
+    # test_ip_fast_csum: pass:1 fail:0 skip:0 total:1
+    ok 4 test_ip_fast_csum
+    # test_csum_ipv6_magic: pass:1 fail:0 skip:0 total:1
+    ok 5 test_csum_ipv6_magic
+ # checksum: pass:2 fail:3 skip:0 total:5
+ # Totals: pass:2 fail:3 skip:0 total:5
+not ok 22 checksum
+
+Fixes: cadc4e1a2b4d ("sh: Handle calling csum_partial with misaligned data")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20240324231804.841099-1-linux@roeck-us.net
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/core.c      | 3 +++
- drivers/net/wireless/ath/ath10k/hw.h        | 1 +
- drivers/net/wireless/ath/ath10k/targaddrs.h | 3 +++
- 3 files changed, 7 insertions(+)
+ arch/sh/lib/checksum.S | 67 ++++++++++++------------------------------
+ 1 file changed, 18 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 0032f8aa892ff..4e3736d7aff77 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -720,6 +720,9 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.max_spatial_stream = 4,
- 		.fw = {
- 			.dir = WCN3990_HW_1_0_FW_DIR,
-+			.board = WCN3990_HW_1_0_BOARD_DATA_FILE,
-+			.board_size = WCN3990_BOARD_DATA_SZ,
-+			.board_ext_size = WCN3990_BOARD_EXT_DATA_SZ,
- 		},
- 		.sw_decrypt_mcast_mgmt = true,
- 		.rx_desc_ops = &wcn3990_rx_desc_ops,
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 93c0730919966..9aa2d821b5078 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -133,6 +133,7 @@ enum qca9377_chip_id_rev {
- /* WCN3990 1.0 definitions */
- #define WCN3990_HW_1_0_DEV_VERSION	ATH10K_HW_WCN3990
- #define WCN3990_HW_1_0_FW_DIR		ATH10K_FW_DIR "/WCN3990/hw1.0"
-+#define WCN3990_HW_1_0_BOARD_DATA_FILE "board.bin"
+diff --git a/arch/sh/lib/checksum.S b/arch/sh/lib/checksum.S
+index 3e07074e00981..06fed5a21e8ba 100644
+--- a/arch/sh/lib/checksum.S
++++ b/arch/sh/lib/checksum.S
+@@ -33,7 +33,8 @@
+  */
  
- #define ATH10K_FW_FILE_BASE		"firmware"
- #define ATH10K_FW_API_MAX		6
-diff --git a/drivers/net/wireless/ath/ath10k/targaddrs.h b/drivers/net/wireless/ath/ath10k/targaddrs.h
-index ec556bb88d658..ba37e6c7ced08 100644
---- a/drivers/net/wireless/ath/ath10k/targaddrs.h
-+++ b/drivers/net/wireless/ath/ath10k/targaddrs.h
-@@ -491,4 +491,7 @@ struct host_interest {
- #define QCA4019_BOARD_DATA_SZ	  12064
- #define QCA4019_BOARD_EXT_DATA_SZ 0
+ /*	
+- * asmlinkage __wsum csum_partial(const void *buf, int len, __wsum sum);
++ * unsigned int csum_partial(const unsigned char *buf, int len,
++ *                           unsigned int sum);
+  */
  
-+#define WCN3990_BOARD_DATA_SZ	  26328
-+#define WCN3990_BOARD_EXT_DATA_SZ 0
-+
- #endif /* __TARGADDRS_H__ */
+ .text
+@@ -45,31 +46,11 @@ ENTRY(csum_partial)
+ 	   * Fortunately, it is easy to convert 2-byte alignment to 4-byte
+ 	   * alignment for the unrolled loop.
+ 	   */
++	mov	r5, r1
+ 	mov	r4, r0
+-	tst	#3, r0		! Check alignment.
+-	bt/s	2f		! Jump if alignment is ok.
+-	 mov	r4, r7		! Keep a copy to check for alignment
++	tst	#2, r0		! Check alignment.
++	bt	2f		! Jump if alignment is ok.
+ 	!
+-	tst	#1, r0		! Check alignment.
+-	bt	21f		! Jump if alignment is boundary of 2bytes.
+-
+-	! buf is odd
+-	tst	r5, r5
+-	add	#-1, r5
+-	bt	9f
+-	mov.b	@r4+, r0
+-	extu.b	r0, r0
+-	addc	r0, r6		! t=0 from previous tst
+-	mov	r6, r0
+-	shll8	r6
+-	shlr16	r0
+-	shlr8	r0
+-	or	r0, r6
+-	mov	r4, r0
+-	tst	#2, r0
+-	bt	2f
+-21:
+-	! buf is 2 byte aligned (len could be 0)
+ 	add	#-2, r5		! Alignment uses up two bytes.
+ 	cmp/pz	r5		!
+ 	bt/s	1f		! Jump if we had at least two bytes.
+@@ -77,17 +58,16 @@ ENTRY(csum_partial)
+ 	bra	6f
+ 	 add	#2, r5		! r5 was < 2.  Deal with it.
+ 1:
++	mov	r5, r1		! Save new len for later use.
+ 	mov.w	@r4+, r0
+ 	extu.w	r0, r0
+ 	addc	r0, r6
+ 	bf	2f
+ 	add	#1, r6
+ 2:
+-	! buf is 4 byte aligned (len could be 0)
+-	mov	r5, r1
+ 	mov	#-5, r0
+-	shld	r0, r1
+-	tst	r1, r1
++	shld	r0, r5
++	tst	r5, r5
+ 	bt/s	4f		! if it's =0, go to 4f
+ 	 clrt
+ 	.align	2
+@@ -109,31 +89,30 @@ ENTRY(csum_partial)
+ 	addc	r0, r6
+ 	addc	r2, r6
+ 	movt	r0
+-	dt	r1
++	dt	r5
+ 	bf/s	3b
+ 	 cmp/eq	#1, r0
+-	! here, we know r1==0
+-	addc	r1, r6			! add carry to r6
++	! here, we know r5==0
++	addc	r5, r6			! add carry to r6
+ 4:
+-	mov	r5, r0
++	mov	r1, r0
+ 	and	#0x1c, r0
+ 	tst	r0, r0
+-	bt	6f
+-	! 4 bytes or more remaining
+-	mov	r0, r1
+-	shlr2	r1
++	bt/s	6f
++	 mov	r0, r5
++	shlr2	r5
+ 	mov	#0, r2
+ 5:
+ 	addc	r2, r6
+ 	mov.l	@r4+, r2
+ 	movt	r0
+-	dt	r1
++	dt	r5
+ 	bf/s	5b
+ 	 cmp/eq	#1, r0
+ 	addc	r2, r6
+-	addc	r1, r6		! r1==0 here, so it means add carry-bit
++	addc	r5, r6		! r5==0 here, so it means add carry-bit
+ 6:
+-	! 3 bytes or less remaining
++	mov	r1, r5
+ 	mov	#3, r0
+ 	and	r0, r5
+ 	tst	r5, r5
+@@ -159,16 +138,6 @@ ENTRY(csum_partial)
+ 	mov	#0, r0
+ 	addc	r0, r6
+ 9:
+-	! Check if the buffer was misaligned, if so realign sum
+-	mov	r7, r0
+-	tst	#1, r0
+-	bt	10f
+-	mov	r6, r0
+-	shll8	r6
+-	shlr16	r0
+-	shlr8	r0
+-	or	r0, r6
+-10:
+ 	rts
+ 	 mov	r6, r0
+ 
 -- 
 2.43.0
 
