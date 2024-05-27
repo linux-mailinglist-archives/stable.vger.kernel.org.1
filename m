@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E278D0CED
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C4F8D0AF0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 532901C213EB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D3FAB2252E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBEF1607A4;
-	Mon, 27 May 2024 19:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D3115FCF0;
+	Mon, 27 May 2024 19:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRJ1bpw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orjv6QqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1CD262BE;
-	Mon, 27 May 2024 19:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CAC1078F;
+	Mon, 27 May 2024 19:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837866; cv=none; b=eIa8wAZbzg63PQrNDC8Mhegn/8+uYsiEJ3JE2OPOEEaMjTcOlh57GqIIcmaIl5EPJcCchGeO0tJBMxC+QoltTW2MIYPUbmZypfJ6ZaGMKa7pyJXKo+fraAZt2S0VWbGYIb2B+9a9XZb94LiKsLEbkrjEnU8F/z3vN5HdPg+54o0=
+	t=1716836665; cv=none; b=TQKTAOKv4GzyyVcSlKeQi1KYJh+0Pl7zdELnal9HFOdAZ467IzPD0kdKNaKaJdhgu+4X3Ld1I9TH/GU7V8h74/ZNxGJnAml0WNSby1cGr3ecqQB1ktywoIsIjUgRi0XxenWHQ1OCt4dh0+SYwo7Puh9BJmLsUrpdrzuj0Alvz6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837866; c=relaxed/simple;
-	bh=FBsz68IHjCAhmBPKQs4+mmBcmNYjbSeUsVB7blP5Ckc=;
+	s=arc-20240116; t=1716836665; c=relaxed/simple;
+	bh=SzNjURK/GVg1zllD753La0ul2M/xNJF1DDgwgGEE4D8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHOgIiOfhg9qnv0xDviEOo7Xls0YyZuLuqfgF+Z1tlJv4OkQ9XyQHE7Nicphyss6driMkzWShg6pwcuWeZ2ug9l6051ssP3rUKx49K/60392NC6aSWsStrzw072Q8qKK/XAqLgVmdc3aiugdaVbf6ds3QNNVMFDfx3lDzwELKBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRJ1bpw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AEEC2BBFC;
-	Mon, 27 May 2024 19:24:25 +0000 (UTC)
+	 MIME-Version; b=JkoVzTbCcbCslKtVlmvhzYOwwo2aabPk/YUqrF48g2LOoI7ot0r1Wzw2rnM3oHVN11ZtdqLfmPKJR8SkCeuBuvirzXKsBDe66X7zTzlRqTRNBMIzta9phybWj2ZaB/r6CCY4NgTvBoDgLpqL7x81ekfKjqb43+YJfW+Rw7l5/FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orjv6QqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F17C2BBFC;
+	Mon, 27 May 2024 19:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837866;
-	bh=FBsz68IHjCAhmBPKQs4+mmBcmNYjbSeUsVB7blP5Ckc=;
+	s=korg; t=1716836665;
+	bh=SzNjURK/GVg1zllD753La0ul2M/xNJF1DDgwgGEE4D8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRJ1bpw3ukLVOqzYy0Q+slQk8oLxfMeWhDjRFfwezbBTbu2idrxvihmpDKZBGJjTI
-	 DJXqU7taa9XJu96gaTxMKzk/ZnlNZgbMU5O8K5gkn7EMg+Kwzi1Tu7ZjxP5Ct1O/56
-	 BnX1j+S7rGL47E+LRAHQ4q5E744A5CT+FRX4t324=
+	b=orjv6QqKmt3ASYTrVs2iboA16+ID02WlsMG9zT1f1NUJwOA/nfBVN3Xa8e8IvxADR
+	 GWFy2G3QdimehHnPWif4xTcbYeO22JQkAp6+cY9Ad1cJALO/884hf8botCega914Ow
+	 gZ2AZvWltyeiCD6bu/o6z+vU8iakxZ2hqiV37mCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 134/493] libfs: Add simple_offset_rename() API
+Subject: [PATCH 6.9 089/427] block: support to account io_ticks precisely
 Date: Mon, 27 May 2024 20:52:16 +0200
-Message-ID: <20240527185634.851133262@linuxfoundation.org>
+Message-ID: <20240527185610.058342996@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 5a1a25be995e1014abd01600479915683e356f5c ]
+[ Upstream commit 99dc422335d8b2bd4d105797241d3e715bae90e9 ]
 
-I'm about to fix a tmpfs rename bug that requires the use of
-internal simple_offset helpers that are not available in mm/shmem.c
+Currently, io_ticks is accounted based on sampling, specifically
+update_io_ticks() will always account io_ticks by 1 jiffies from
+bdev_start_io_acct()/blk_account_io_start(), and the result can be
+inaccurate, for example(HZ is 250):
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://lore.kernel.org/r/20240415152057.4605-3-cel@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: ad191eb6d694 ("shmem: Fix shmem_rename2()")
+Test script:
+fio -filename=/dev/sda -bs=4k -rw=write -direct=1 -name=test -thinktime=4ms
+
+Test result: util is about 90%, while the disk is really idle.
+
+This behaviour is introduced by commit 5b18b5a73760 ("block: delete
+part_round_stats and switch to less precise counting"), however, there
+was a key point that is missed that this patch also improve performance
+a lot:
+
+Before the commit:
+part_round_stats:
+  if (part->stamp != now)
+   stats |= 1;
+
+  part_in_flight()
+  -> there can be lots of task here in 1 jiffies.
+  part_round_stats_single()
+   __part_stat_add()
+  part->stamp = now;
+
+After the commit:
+update_io_ticks:
+  stamp = part->bd_stamp;
+  if (time_after(now, stamp))
+   if (try_cmpxchg())
+    __part_stat_add()
+    -> only one task can reach here in 1 jiffies.
+
+Hence in order to account io_ticks precisely, we only need to know if
+there are IO inflight at most once in one jiffies. Noted that for
+rq-based device, iterating tags should not be used here because
+'tags->lock' is grabbed in blk_mq_find_and_get_req(), hence
+part_stat_lock_inc/dec() and part_in_flight() is used to trace inflight.
+The additional overhead is quite little:
+
+ - per cpu add/dec for each IO for rq-based device;
+ - per cpu sum for each jiffies;
+
+And it's verified by null-blk that there are no performance degration
+under heavy IO pressure.
+
+Fixes: 5b18b5a73760 ("block: delete part_round_stats and switch to less precise counting")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240509123717.3223892-2-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/libfs.c         | 21 +++++++++++++++++++++
- include/linux/fs.h |  2 ++
- mm/shmem.c         |  3 +--
- 3 files changed, 24 insertions(+), 2 deletions(-)
+ block/blk-core.c  | 9 +++++----
+ block/blk-merge.c | 2 ++
+ block/blk-mq.c    | 4 ++++
+ block/blk.h       | 1 +
+ block/genhd.c     | 2 +-
+ 5 files changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index c9516f3e14bb7..bb6731fa63059 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -356,6 +356,27 @@ int simple_offset_empty(struct dentry *dentry)
- 	return ret;
+diff --git a/block/blk-core.c b/block/blk-core.c
+index b795ac177281a..6fcf8ed5fc1f1 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -987,10 +987,11 @@ void update_io_ticks(struct block_device *part, unsigned long now, bool end)
+ 	unsigned long stamp;
+ again:
+ 	stamp = READ_ONCE(part->bd_stamp);
+-	if (unlikely(time_after(now, stamp))) {
+-		if (likely(try_cmpxchg(&part->bd_stamp, &stamp, now)))
+-			__part_stat_add(part, io_ticks, end ? now - stamp : 1);
+-	}
++	if (unlikely(time_after(now, stamp)) &&
++	    likely(try_cmpxchg(&part->bd_stamp, &stamp, now)) &&
++	    (end || part_in_flight(part)))
++		__part_stat_add(part, io_ticks, now - stamp);
++
+ 	if (part->bd_partno) {
+ 		part = bdev_whole(part);
+ 		goto again;
+diff --git a/block/blk-merge.c b/block/blk-merge.c
+index 4e3483a16b757..ae61a9c2fc93c 100644
+--- a/block/blk-merge.c
++++ b/block/blk-merge.c
+@@ -779,6 +779,8 @@ static void blk_account_io_merge_request(struct request *req)
+ 	if (blk_do_io_stat(req)) {
+ 		part_stat_lock();
+ 		part_stat_inc(req->part, merges[op_stat_group(req_op(req))]);
++		part_stat_local_dec(req->part,
++				    in_flight[op_is_write(req_op(req))]);
+ 		part_stat_unlock();
+ 	}
+ }
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 32afb87efbd0e..5ac2087b05630 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -997,6 +997,8 @@ static inline void blk_account_io_done(struct request *req, u64 now)
+ 		update_io_ticks(req->part, jiffies, true);
+ 		part_stat_inc(req->part, ios[sgrp]);
+ 		part_stat_add(req->part, nsecs[sgrp], now - req->start_time_ns);
++		part_stat_local_dec(req->part,
++				    in_flight[op_is_write(req_op(req))]);
+ 		part_stat_unlock();
+ 	}
+ }
+@@ -1019,6 +1021,8 @@ static inline void blk_account_io_start(struct request *req)
+ 
+ 		part_stat_lock();
+ 		update_io_ticks(req->part, jiffies, false);
++		part_stat_local_inc(req->part,
++				    in_flight[op_is_write(req_op(req))]);
+ 		part_stat_unlock();
+ 	}
+ }
+diff --git a/block/blk.h b/block/blk.h
+index d9f584984bc44..da5dbc6b13068 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -357,6 +357,7 @@ static inline bool blk_do_io_stat(struct request *rq)
  }
  
-+/**
-+ * simple_offset_rename - handle directory offsets for rename
-+ * @old_dir: parent directory of source entry
-+ * @old_dentry: dentry of source entry
-+ * @new_dir: parent_directory of destination entry
-+ * @new_dentry: dentry of destination
-+ *
-+ * Caller provides appropriate serialization.
-+ *
-+ * Returns zero on success, a negative errno value on failure.
-+ */
-+int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
-+			 struct inode *new_dir, struct dentry *new_dentry)
-+{
-+	struct offset_ctx *old_ctx = old_dir->i_op->get_offset_ctx(old_dir);
-+	struct offset_ctx *new_ctx = new_dir->i_op->get_offset_ctx(new_dir);
-+
-+	simple_offset_remove(old_ctx, old_dentry);
-+	return simple_offset_add(new_ctx, old_dentry);
-+}
-+
- /**
-  * simple_offset_rename_exchange - exchange rename with directory offsets
-  * @old_dir: parent of dentry being moved
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 3350f875ca91c..10e32c8ef1e9c 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3268,6 +3268,8 @@ void simple_offset_init(struct offset_ctx *octx);
- int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry);
- void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry);
- int simple_offset_empty(struct dentry *dentry);
-+int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
-+			 struct inode *new_dir, struct dentry *new_dentry);
- int simple_offset_rename_exchange(struct inode *old_dir,
- 				  struct dentry *old_dentry,
- 				  struct inode *new_dir,
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 0e951fe9f44cc..935f3647bb3a1 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3434,8 +3434,7 @@ static int shmem_rename2(struct mnt_idmap *idmap,
- 			return error;
+ void update_io_ticks(struct block_device *part, unsigned long now, bool end);
++unsigned int part_in_flight(struct block_device *part);
+ 
+ static inline void req_set_nomerge(struct request_queue *q, struct request *req)
+ {
+diff --git a/block/genhd.c b/block/genhd.c
+index 52a4521df067b..345d80ab9791b 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -118,7 +118,7 @@ static void part_stat_read_all(struct block_device *part,
  	}
+ }
  
--	simple_offset_remove(shmem_get_offset_ctx(old_dir), old_dentry);
--	error = simple_offset_add(shmem_get_offset_ctx(new_dir), old_dentry);
-+	error = simple_offset_rename(old_dir, old_dentry, new_dir, new_dentry);
- 	if (error)
- 		return error;
- 
+-static unsigned int part_in_flight(struct block_device *part)
++unsigned int part_in_flight(struct block_device *part)
+ {
+ 	unsigned int inflight = 0;
+ 	int cpu;
 -- 
 2.43.0
 
