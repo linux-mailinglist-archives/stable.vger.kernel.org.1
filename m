@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-47058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD0D8D0C68
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C03F8D0A49
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 20:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00882B21C01
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A983B21043
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E2915FD01;
-	Mon, 27 May 2024 19:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9F615FD1B;
+	Mon, 27 May 2024 18:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdP8bPUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1m9pY48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0186415EFC3;
-	Mon, 27 May 2024 19:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3913115FD01;
+	Mon, 27 May 2024 18:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837558; cv=none; b=hEfzZcqT/skqIc1a1K1uJ4lBGUcQIv3Smbpf2kyJRZUABaCIzP//t0G2nZqsP3343+ULKFd+KH0T4/Dfp73ju8GGptuIQ2H8IdwB2VaOOyWtEdmbwuJW38pyTR+1osptQxt42U5aJHCluy6xoWkXYToK6zu9qEkjSxrGBWUAkAw=
+	t=1716836332; cv=none; b=RMHCqesCcYGFqd+8MEwp2VRj8udQO9lqEh5bJmS6rlPZYfTDGE571izH0tjF+MGWQvIgVj+S+07aStYrNqLiQ66uPO8xvsldb1exVEi9uiyoNfAjt5HLYiVHhIaq4phMgHXKIMB1ox7+UkqO64jdbYq0mPnhvXCVCnut2/pk4Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837558; c=relaxed/simple;
-	bh=XtrSDH8xE6j73gKfuFUw/daXKQLPqDaCKNAKaG4MhdM=;
+	s=arc-20240116; t=1716836332; c=relaxed/simple;
+	bh=FJP1J6ZsneHlLdYb1mYQdmk8t8xd1XCau/ErAd2I748=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qyrU8cnNingGgWqc/ikX5FtZyUI8nigmlVFZ92F61xJP5BszZfMRM7chfP+8AIJsdsCJZCMotWujr8CJqK8mdj0PrQhypZNfw47f4GGKTii/Uju+wYTRD1DR7CBXEgPMjAt4VpCaNPTAZ+wL2YwdbonCFZeAm4K28eH+m8VPP8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdP8bPUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1A4C2BBFC;
-	Mon, 27 May 2024 19:19:17 +0000 (UTC)
+	 MIME-Version; b=uNo3ng7+nvhJYxXzrI+ZY+CyOwUcp8aKUlm0ThN1bwmLnPlKb8sd13Qtqp1CmvyCbYxC+kjN1UBLWHEEkj217xkypJRQcMREz05PVOtTiUI45ORoUQdbFi2N56ENg9hbpRrBuXIg55pTmlWZzYeY2FT4+FgPdRl83IdzwI/sSAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1m9pY48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C0AC2BBFC;
+	Mon, 27 May 2024 18:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837557;
-	bh=XtrSDH8xE6j73gKfuFUw/daXKQLPqDaCKNAKaG4MhdM=;
+	s=korg; t=1716836332;
+	bh=FJP1J6ZsneHlLdYb1mYQdmk8t8xd1XCau/ErAd2I748=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rdP8bPUUrM8ai3a9hyQxX1WE19HfwdtOSs2nbSoVCU+FG/q6kp4M6mxm+XaL2EzYt
-	 7bSuMwJviVfbiQXJv2UpLDxSio7/6UiZMFMGmzpNfSWou6Jr4LWy1Ur9MoVfeLvFp7
-	 /raF68GDFgprluBwkWZYUWamGLguhxrECg1Dmdf8=
+	b=r1m9pY48hakk1G9w32zQB3b3U3H1zsfH0wpyB2JzRjRLRcTtZZ6QVFr1fNK2x1W3T
+	 q1dj2Xcp8qa1LOYRyErBmqv9wKfyf+xM9emoeoH/uyglMDg0BXxX6So4h0Szl7yrkh
+	 XwaS6CIQf9XFOHHAkKEZbCrQA6AGx1Vx+pu5iiZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 058/493] selftests: sud_test: return correct emulated syscall value on RISC-V
+	stable <stable@kernel.org>,
+	Pin-yen Lin <treapking@chromium.org>
+Subject: [PATCH 6.9 013/427] serial: 8520_mtk: Set RTS on shutdown for Rx in-band wakeup
 Date: Mon, 27 May 2024 20:51:00 +0200
-Message-ID: <20240527185631.314909281@linuxfoundation.org>
+Message-ID: <20240527185602.993741078@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit 17c67ed752d6a456602b3dbb25c5ae4d3de5deab ]
+commit 4244f830a56058ee0670d80e7ac9fd7c982eb480 upstream.
 
-Currently, the sud_test expects the emulated syscall to return the
-emulated syscall number. This assumption only works on architectures
-were the syscall calling convention use the same register for syscall
-number/syscall return value. This is not the case for RISC-V and thus
-the return value must be also emulated using the provided ucontext.
+When Rx in-band wakeup is enabled, set RTS to true in mtk8250_shutdown()
+so the connected device can still send message and trigger IRQ when the
+system is suspended.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lore.kernel.org/r/20231206134438.473166-1-cleger@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 18c9d4a3c249 ("serial: When UART is suspended, set RTS to false")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Link: https://lore.kernel.org/r/20240424130619.2924456-1-treapking@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/syscall_user_dispatch/sud_test.c     | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/tty/serial/8250/8250_mtk.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-index b5d592d4099e8..d975a67673299 100644
---- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-+++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-@@ -158,6 +158,20 @@ static void handle_sigsys(int sig, siginfo_t *info, void *ucontext)
+--- a/drivers/tty/serial/8250/8250_mtk.c
++++ b/drivers/tty/serial/8250/8250_mtk.c
+@@ -209,15 +209,19 @@ static int mtk8250_startup(struct uart_p
  
- 	/* In preparation for sigreturn. */
- 	SYSCALL_DISPATCH_OFF(glob_sel);
+ static void mtk8250_shutdown(struct uart_port *port)
+ {
+-#ifdef CONFIG_SERIAL_8250_DMA
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	struct mtk8250_data *data = port->private_data;
++	int irq = data->rx_wakeup_irq;
+ 
++#ifdef CONFIG_SERIAL_8250_DMA
+ 	if (up->dma)
+ 		data->rx_status = DMA_RX_SHUTDOWN;
+ #endif
+ 
+-	return serial8250_do_shutdown(port);
++	serial8250_do_shutdown(port);
 +
-+	/*
-+	 * The tests for argument handling assume that `syscall(x) == x`. This
-+	 * is a NOP on x86 because the syscall number is passed in %rax, which
-+	 * happens to also be the function ABI return register.  Other
-+	 * architectures may need to swizzle the arguments around.
-+	 */
-+#if defined(__riscv)
-+/* REG_A7 is not defined in libc headers */
-+# define REG_A7 (REG_A0 + 7)
-+
-+	((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A0] =
-+			((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A7];
-+#endif
++	if (irq >= 0)
++		serial8250_do_set_mctrl(&up->port, TIOCM_RTS);
  }
  
- TEST(dispatch_and_return)
--- 
-2.43.0
-
+ static void mtk8250_disable_intrs(struct uart_8250_port *up, int mask)
 
 
 
