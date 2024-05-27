@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D13D8D0E46
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:38:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9F78D0E38
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B5C7B20AEE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:38:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3099BB20AEE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2E81607BA;
-	Mon, 27 May 2024 19:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865901607AB;
+	Mon, 27 May 2024 19:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNQMXmWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uE7aF6vF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7E361FDF;
-	Mon, 27 May 2024 19:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456D761FDF;
+	Mon, 27 May 2024 19:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838718; cv=none; b=LBbksxzSuAbDm9FvqL+yBlbdEfZvOvXJ4S9OYJyIfpA7FPbj2AH5nGYmBJ9+0l3i3GezScP6f2pnOSzPdYhj3AVcQQYY7kuY5jJtF2cb0ShXQ5E9o9EZjuaeWnV2aFF+1mAHXvd5nRVaJtPBrmp/NlXd0DGRbOB83ERYulcyhQ8=
+	t=1716838687; cv=none; b=FyqBWFrd0q3ZvPUjCW0RZwaIn/E0ROgOl9gK8wzyM/s+BCwP6SIrsq0r71xVRhRBE3Ax9LYZVdY2+90gAwGwDFA1ijAzdIda0+TClwm/OotMcp7E8g7H3X+w4zVwDqUchUtEcljToQTtDCHxOL5AhLdH8bUz0boCF9hRMESsHag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838718; c=relaxed/simple;
-	bh=qOKT+d++txsEunqUw1nMQsZa2Bfcivzd5zP8msWjZRg=;
+	s=arc-20240116; t=1716838687; c=relaxed/simple;
+	bh=MxME2JMpAZtTx648bJiAOunlSmGyMJR8eI3D5rBpXIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZmgqaGboHaLlUF1ZG5tNFWREnOOcemx22WtVVHhK1hHCCcbqEf+TOGl+SKqo2+XTWwJvFZG8cQVtpju/MAP0ASDz+7vWr05+FY6j4LKvlcs3BoKvv96+oIOA8gC9SXRjvHg8ZLlpclC/FHP75gHxYsZ+/l7EuX/PIcNRgVQ1ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNQMXmWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98139C2BBFC;
-	Mon, 27 May 2024 19:38:37 +0000 (UTC)
+	 MIME-Version; b=dTHwkbWc7hH8gunkZdHjmdzYJ6Ri5+I02wruXPD7OQBMEozuCn9p3h+otGZTC0s/FZ9mitzVlDtVqRmmRuNNFNUC/8ZOYpKCZD8ipJnDWJpINzAtocDyTE+G5CNqUXvcfBtflFfoXWGK+EMeFIL8Md23J13AANcUeLDLkoNMDgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uE7aF6vF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B34C2BBFC;
+	Mon, 27 May 2024 19:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838717;
-	bh=qOKT+d++txsEunqUw1nMQsZa2Bfcivzd5zP8msWjZRg=;
+	s=korg; t=1716838687;
+	bh=MxME2JMpAZtTx648bJiAOunlSmGyMJR8eI3D5rBpXIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNQMXmWjJeQEzR6H7DuTp4A/LlgU44FYS8GC6+/tfCzNjjmCY2dYPkJetGkdcpYL1
-	 yUJULpSnEe0wJQyuSiuQNQfZQM0crqL+LvBYPmUfTBMdi5tZ4BBl7/tBJjHikpMffT
-	 LmfEU60ILMXgaXrc8SLULrLaSsGRClaoJFuqkIe8=
+	b=uE7aF6vFbDVaHKJaaYxVDeqtiJDdg5KC8rI3loTUUf46NbqsUWRLVqTureWm/d6Qv
+	 7vScs3i8jzCxzTBZwDWu1r5zgYvdbuT9EWe/ZCi+sTsoygEfFyWbH7OJf3gqvlYlXp
+	 +wiQRzvZimGACYwzjSYqoRhLTnxxtqsYZiqC5ALU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neil Horman <nhorman@tuxdriver.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vitalii Bursov <vitaly@bursov.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Valentin Schneider <vschneid@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 481/493] af_packet: do not call packet_read_pending() from tpacket_destruct_skb()
-Date: Mon, 27 May 2024 20:58:03 +0200
-Message-ID: <20240527185645.880770291@linuxfoundation.org>
+Subject: [PATCH 6.8 482/493] sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level
+Date: Mon, 27 May 2024 20:58:04 +0200
+Message-ID: <20240527185645.908349326@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -69,46 +69,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vitalii Bursov <vitaly@bursov.com>
 
-[ Upstream commit 581073f626e387d3e7eed55c48c8495584ead7ba ]
+[ Upstream commit a1fd0b9d751f840df23ef0e75b691fc00cfd4743 ]
 
-trafgen performance considerably sank on hosts with many cores
-after the blamed commit.
+Change relax_domain_level checks so that it would be possible
+to include or exclude all domains from newidle balancing.
 
-packet_read_pending() is very expensive, and calling it
-in af_packet fast path defeats Daniel intent in commit
-b013840810c2 ("packet: use percpu mmap tx frame pending refcount")
+This matches the behavior described in the documentation:
 
-tpacket_destruct_skb() makes room for one packet, we can immediately
-wakeup a producer, no need to completely drain the tx ring.
+  -1   no request. use system default or follow request of others.
+   0   no search.
+   1   search siblings (hyperthreads in a core).
 
-Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Neil Horman <nhorman@tuxdriver.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240515163358.4105915-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+"2" enables levels 0 and 1, level_max excludes the last (level_max)
+level, and level_max+1 includes all levels.
+
+Fixes: 1d3504fcf560 ("sched, cpuset: customize sched domains, core")
+Signed-off-by: Vitalii Bursov <vitaly@bursov.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Link: https://lore.kernel.org/r/bd6de28e80073c79466ec6401cdeae78f0d4423d.1714488502.git.vitaly@bursov.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/cgroup/cpuset.c  | 2 +-
+ kernel/sched/topology.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index e6a8701a38dbe..91c9dc0108a2d 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2522,8 +2522,7 @@ static void tpacket_destruct_skb(struct sk_buff *skb)
- 		ts = __packet_set_timestamp(po, ph, skb);
- 		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 927bef3a598ad..6d6e540bacbfb 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2948,7 +2948,7 @@ bool current_cpuset_is_being_rebound(void)
+ static int update_relax_domain_level(struct cpuset *cs, s64 val)
+ {
+ #ifdef CONFIG_SMP
+-	if (val < -1 || val >= sched_domain_level_max)
++	if (val < -1 || val > sched_domain_level_max + 1)
+ 		return -EINVAL;
+ #endif
  
--		if (!packet_read_pending(&po->tx_ring))
--			complete(&po->skb_completion);
-+		complete(&po->skb_completion);
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 10d1391e74161..4fdab14953fc9 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1468,7 +1468,7 @@ static void set_domain_attribute(struct sched_domain *sd,
+ 	} else
+ 		request = attr->relax_domain_level;
+ 
+-	if (sd->level > request) {
++	if (sd->level >= request) {
+ 		/* Turn off idle balance on this domain: */
+ 		sd->flags &= ~(SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
  	}
- 
- 	sock_wfree(skb);
 -- 
 2.43.0
 
