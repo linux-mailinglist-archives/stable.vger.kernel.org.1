@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-46335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE258D0300
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 885328D0303
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5F51C211DC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:16:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9C591C2191A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEAA416C866;
-	Mon, 27 May 2024 14:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890E516D309;
+	Mon, 27 May 2024 14:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KxxBzwe4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGXHnzsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825C516C85E;
-	Mon, 27 May 2024 14:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEB416D305;
+	Mon, 27 May 2024 14:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819162; cv=none; b=D5K2kRN3i6tOZMZDYO2IqQRIAKXA+wA28yBrfWU6V0uas/zqxdrrpFztqa0JdQxWg79wwTd/Nd/1LAmD0tOdGrELOYZtQJVv9wgkVES2nW3OIlzl7ocP04b9QPaVnqTXJF1xvvlt0VEQHObX3YoGv/PNBiht6GVpx22nCft7ALE=
+	t=1716819164; cv=none; b=U8/F5Uw42GUSzei8d8yF2xS/O/wx7z3RfwTQsi5R1kC/AbBWsM0Ah5Te0irfC8zg9qeKHL4nLwgPMt7FS39h7IOdmnxcWEoGYcOhn0OB598SmjruwC946g0+OO1xDtyUwxVZrtyHURSoI4C/+0ecxA1wjxuqGS+JEBmwjCD93vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819162; c=relaxed/simple;
-	bh=UxCmQlH0tjLybE8f7wAdmWzcYOVcm9y1eLC9puEBDxw=;
+	s=arc-20240116; t=1716819164; c=relaxed/simple;
+	bh=tNphdjirBb9tdMxisUu7AmYR16l1TQhNBoK7qKrb16g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUv1ek29i/ReL69k/BlFBTJPLcfI5KWY7gayVec1wEXIL2SoYWZQodA0M3jm4y/Ky4qmT9fvH8pfLknMyQtF3An8xumOiOPprAsSp95gJWSdwkMZIqgRe0xempyq3GJES85Kl+hQ/XoOhVL15MxjTeOQSdqZ3grbZ3BByi+bS2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KxxBzwe4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAF2C2BBFC;
-	Mon, 27 May 2024 14:12:40 +0000 (UTC)
+	 MIME-Version; b=RBeA8DAgj0Nwwu0kDs4y1HM/4Y3sV7qzh/i9luN1AOVL1dasdM4JG241nbxVlYqXJc4YeZFl1Pxlwktz/RPU4T3LvArBn8NfxC8juQqqeH+dbSBXBtaA5q18y04PgX9QDHuqdRzKzbNEm178ZxNImpq6SLdTBTlsgt4GWv+nZw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGXHnzsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FCBC4AF08;
+	Mon, 27 May 2024 14:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819162;
-	bh=UxCmQlH0tjLybE8f7wAdmWzcYOVcm9y1eLC9puEBDxw=;
+	s=k20201202; t=1716819163;
+	bh=tNphdjirBb9tdMxisUu7AmYR16l1TQhNBoK7qKrb16g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxxBzwe4sLYX2Z4oNwGJA7zGMA1A8gYKtSvVdrbQSOyF7K9IG5XCV+2XuG4sbLLL/
-	 FUEORnavkxtyRmAUhjBU8kmH717klFAc6v65NMaUR9+SlHY4tdb+H160+WXuZxpWwR
-	 4yBtc2YGfBB+spOKs+tJvTzaLhxQdFfxwpFaFqAZYRig2OikH/Fn1LSVRyJHmNVEx3
-	 zivdH1dtHuc42BkyEvyxvcI9p5QdLfknTFJx0W8Kf1FTcuHnvSl6TYyap02BBfB6ub
-	 +0UO1xKFQRe1uAZJFNZCR/16RCP1KKMxTerTSpsvfA6AraI0tcvv8ywAVU00nOfomZ
-	 TzLiKVbQNe+9w==
+	b=XGXHnzsA6TziWXWjCc+aoFgqrO+0g6PY65cCZZFiSBYe5sDA0D8+k+UuqaRlES3Ai
+	 itv15fdtGNbCbrfMueO3EF62e5iRR+7jUDZHdXDQfgUJ+cSvKPpuuFQpHYnJWpWs2S
+	 Rlp67Ix/1H6BCyMociVieF8GOemwKKBkvL4sncy6Uevn7ln3j1G1Vnlfss3M30srNy
+	 mFXziUW4I4qiGGFrf47iZD4afw7ZfJ75xHaM0IqSUdysRYlSyomdGBd4i5d+J9xp8I
+	 OIgV6+pY2f9E/2dLaboe9urMAcaah5i2PVjxGZNm8VFjoyJRvvYTN+eEqg5bFqal78
+	 /tHjQBvv8qg7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+Cc: Manish Rangankar <mrangankar@marvell.com>,
+	Martin Hoyer <mhoyer@redhat.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.9 15/35] wifi: ath12k: fix kernel crash during resume
-Date: Mon, 27 May 2024 10:11:20 -0400
-Message-ID: <20240527141214.3844331-15-sashal@kernel.org>
+	njavali@marvell.com,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 16/35] scsi: qedi: Fix crash while reading debugfs attribute
+Date: Mon, 27 May 2024 10:11:21 -0400
+Message-ID: <20240527141214.3844331-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
 References: <20240527141214.3844331-1-sashal@kernel.org>
@@ -68,223 +70,93 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Manish Rangankar <mrangankar@marvell.com>
 
-[ Upstream commit 303c017821d88ebad887814114d4e5966d320b28 ]
+[ Upstream commit 28027ec8e32ecbadcd67623edb290dad61e735b5 ]
 
-Currently during resume, QMI target memory is not properly handled, resulting
-in kernel crash in case DMA remap is not supported:
+The qedi_dbg_do_not_recover_cmd_read() function invokes sprintf() directly
+on a __user pointer, which results into the crash.
 
-BUG: Bad page state in process kworker/u16:54  pfn:36e80
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x36e80
-page dumped because: nonzero _refcount
+To fix this issue, use a small local stack buffer for sprintf() and then
+call simple_read_from_buffer(), which in turns make the copy_to_user()
+call.
+
+BUG: unable to handle page fault for address: 00007f4801111000
+PGD 8000000864df6067 P4D 8000000864df6067 PUD 864df7067 PMD 846028067 PTE 0
+Oops: 0002 [#1] PREEMPT SMP PTI
+Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 06/15/2023
+RIP: 0010:memcpy_orig+0xcd/0x130
+RSP: 0018:ffffb7a18c3ffc40 EFLAGS: 00010202
+RAX: 00007f4801111000 RBX: 00007f4801111000 RCX: 000000000000000f
+RDX: 000000000000000f RSI: ffffffffc0bfd7a0 RDI: 00007f4801111000
+RBP: ffffffffc0bfd7a0 R08: 725f746f6e5f6f64 R09: 3d7265766f636572
+R10: ffffb7a18c3ffd08 R11: 0000000000000000 R12: 00007f4881110fff
+R13: 000000007fffffff R14: ffffb7a18c3ffca0 R15: ffffffffc0bfd7af
+FS:  00007f480118a740(0000) GS:ffff98e38af00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f4801111000 CR3: 0000000864b8e001 CR4: 00000000007706e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
 Call Trace:
- bad_page
- free_page_is_bad_report
- __free_pages_ok
- __free_pages
- dma_direct_free
- dma_free_attrs
- ath12k_qmi_free_target_mem_chunk
- ath12k_qmi_msg_mem_request_cb
+ <TASK>
+ ? __die_body+0x1a/0x60
+ ? page_fault_oops+0x183/0x510
+ ? exc_page_fault+0x69/0x150
+ ? asm_exc_page_fault+0x22/0x30
+ ? memcpy_orig+0xcd/0x130
+ vsnprintf+0x102/0x4c0
+ sprintf+0x51/0x80
+ qedi_dbg_do_not_recover_cmd_read+0x2f/0x50 [qedi 6bcfdeeecdea037da47069eca2ba717c84a77324]
+ full_proxy_read+0x50/0x80
+ vfs_read+0xa5/0x2e0
+ ? folio_add_new_anon_rmap+0x44/0xa0
+ ? set_pte_at+0x15/0x30
+ ? do_pte_missing+0x426/0x7f0
+ ksys_read+0xa5/0xe0
+ do_syscall_64+0x58/0x80
+ ? __count_memcg_events+0x46/0x90
+ ? count_memcg_event_mm+0x3d/0x60
+ ? handle_mm_fault+0x196/0x2f0
+ ? do_user_addr_fault+0x267/0x890
+ ? exc_page_fault+0x69/0x150
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+RIP: 0033:0x7f4800f20b4d
 
-The reason is:
-Once ath12k module is loaded, firmware sends memory request to host. In case
-DMA remap not supported, ath12k refuses the first request due to failure in
-allocating with large segment size:
-
-ath12k_pci 0000:04:00.0: qmi firmware request memory request
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 7077888
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 8454144
-ath12k_pci 0000:04:00.0: qmi dma allocation failed (7077888 B type 1), will try later with small size
-ath12k_pci 0000:04:00.0: qmi delays mem_request 2
-ath12k_pci 0000:04:00.0: qmi firmware request memory request
-
-Later firmware comes back with more but small segments and allocation
-succeeds:
-
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 262144
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 524288
-ath12k_pci 0000:04:00.0: qmi mem seg type 4 size 65536
-ath12k_pci 0000:04:00.0: qmi mem seg type 1 size 524288
-
-Now ath12k is working. If suspend is triggered, firmware will be reloaded
-during resume. As same as before, firmware requests two large segments at
-first. In ath12k_qmi_msg_mem_request_cb() segment count and size are
-assigned:
-
-	ab->qmi.mem_seg_count == 2
-	ab->qmi.target_mem[0].size == 7077888
-	ab->qmi.target_mem[1].size == 8454144
-
-Then allocation failed like before and ath12k_qmi_free_target_mem_chunk()
-is called to free all allocated segments. Note the first segment is skipped
-because its v.addr is cleared due to allocation failure:
-
-	chunk->v.addr = dma_alloc_coherent()
-
-Also note that this leaks that segment because it has not been freed.
-
-While freeing the second segment, a size of 8454144 is passed to
-dma_free_coherent(). However remember that this segment is allocated at
-the first time firmware is loaded, before suspend. So its real size is
-524288, much smaller than 8454144. As a result kernel found we are freeing
-some memory which is in use and thus crashed.
-
-So one possible fix would be to free those segments during suspend. This
-works because with them freed, ath12k_qmi_free_target_mem_chunk() does
-nothing: all segment addresses are NULL so dma_free_coherent() is not called.
-
-But note that ath11k has similar logic but never hits this issue. Reviewing
-code there shows the luck comes from QMI memory reuse logic. So the decision
-is to port it to ath12k. Like in ath11k, the crash is avoided by adding
-prev_size to target_mem_chunk structure and caching real segment size in it,
-then prev_size instead of current size is passed to dma_free_coherent(),
-no unexpected memory is freed now.
-
-Also reuse m3 buffer.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240419034034.2842-1-quic_bqiang@quicinc.com
+Tested-by: Martin Hoyer <mhoyer@redhat.com>
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
+Link: https://lore.kernel.org/r/20240415072155.30840-1-mrangankar@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c |  1 -
- drivers/net/wireless/ath/ath12k/qmi.c  | 29 +++++++++++++++++++++-----
- drivers/net/wireless/ath/ath12k/qmi.h  |  2 ++
- 3 files changed, 26 insertions(+), 6 deletions(-)
+ drivers/scsi/qedi/qedi_debugfs.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 391b6fb2bd426..bff4598de4035 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1132,7 +1132,6 @@ static void ath12k_core_reset(struct work_struct *work)
- 						ATH12K_RECOVER_START_TIMEOUT_HZ);
- 
- 	ath12k_hif_power_down(ab);
--	ath12k_qmi_free_resource(ab);
- 	ath12k_hif_power_up(ab);
- 
- 	ath12k_dbg(ab, ATH12K_DBG_BOOT, "reset started\n");
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 92845ffff44ad..4964fd7e4cd72 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -2325,8 +2325,9 @@ static void ath12k_qmi_free_target_mem_chunk(struct ath12k_base *ab)
- 	for (i = 0; i < ab->qmi.mem_seg_count; i++) {
- 		if (!ab->qmi.target_mem[i].v.addr)
- 			continue;
-+
- 		dma_free_coherent(ab->dev,
--				  ab->qmi.target_mem[i].size,
-+				  ab->qmi.target_mem[i].prev_size,
- 				  ab->qmi.target_mem[i].v.addr,
- 				  ab->qmi.target_mem[i].paddr);
- 		ab->qmi.target_mem[i].v.addr = NULL;
-@@ -2352,6 +2353,20 @@ static int ath12k_qmi_alloc_target_mem_chunk(struct ath12k_base *ab)
- 		case M3_DUMP_REGION_TYPE:
- 		case PAGEABLE_MEM_REGION_TYPE:
- 		case CALDB_MEM_REGION_TYPE:
-+			/* Firmware reloads in recovery/resume.
-+			 * In such cases, no need to allocate memory for FW again.
-+			 */
-+			if (chunk->v.addr) {
-+				if (chunk->prev_type == chunk->type &&
-+				    chunk->prev_size == chunk->size)
-+					goto this_chunk_done;
-+
-+				/* cannot reuse the existing chunk */
-+				dma_free_coherent(ab->dev, chunk->prev_size,
-+						  chunk->v.addr, chunk->paddr);
-+				chunk->v.addr = NULL;
-+			}
-+
- 			chunk->v.addr = dma_alloc_coherent(ab->dev,
- 							   chunk->size,
- 							   &chunk->paddr,
-@@ -2370,6 +2385,10 @@ static int ath12k_qmi_alloc_target_mem_chunk(struct ath12k_base *ab)
- 					    chunk->type, chunk->size);
- 				return -ENOMEM;
- 			}
-+
-+			chunk->prev_type = chunk->type;
-+			chunk->prev_size = chunk->size;
-+this_chunk_done:
- 			break;
- 		default:
- 			ath12k_warn(ab, "memory type %u not supported\n",
-@@ -2675,10 +2694,6 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- 	size_t m3_len;
- 	int ret;
- 
--	if (m3_mem->vaddr)
--		/* m3 firmware buffer is already available in the DMA buffer */
--		return 0;
+diff --git a/drivers/scsi/qedi/qedi_debugfs.c b/drivers/scsi/qedi/qedi_debugfs.c
+index 8deb2001dc2ff..37eed6a278164 100644
+--- a/drivers/scsi/qedi/qedi_debugfs.c
++++ b/drivers/scsi/qedi/qedi_debugfs.c
+@@ -120,15 +120,11 @@ static ssize_t
+ qedi_dbg_do_not_recover_cmd_read(struct file *filp, char __user *buffer,
+ 				 size_t count, loff_t *ppos)
+ {
+-	size_t cnt = 0;
 -
- 	if (ab->fw.m3_data && ab->fw.m3_len > 0) {
- 		/* firmware-N.bin had a m3 firmware file so use that */
- 		m3_data = ab->fw.m3_data;
-@@ -2700,6 +2715,9 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- 		m3_len = fw->size;
- 	}
+-	if (*ppos)
+-		return 0;
++	char buf[64];
++	int len;
  
-+	if (m3_mem->vaddr)
-+		goto skip_m3_alloc;
-+
- 	m3_mem->vaddr = dma_alloc_coherent(ab->dev,
- 					   m3_len, &m3_mem->paddr,
- 					   GFP_KERNEL);
-@@ -2710,6 +2728,7 @@ static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- 		goto out;
- 	}
+-	cnt = sprintf(buffer, "do_not_recover=%d\n", qedi_do_not_recover);
+-	cnt = min_t(int, count, cnt - *ppos);
+-	*ppos += cnt;
+-	return cnt;
++	len = sprintf(buf, "do_not_recover=%d\n", qedi_do_not_recover);
++	return simple_read_from_buffer(buffer, count, ppos, buf, len);
+ }
  
-+skip_m3_alloc:
- 	memcpy(m3_mem->vaddr, m3_data, m3_len);
- 	m3_mem->size = m3_len;
- 
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.h b/drivers/net/wireless/ath/ath12k/qmi.h
-index 6ee33c9851c6b..f34263d4bee88 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.h
-+++ b/drivers/net/wireless/ath/ath12k/qmi.h
-@@ -96,6 +96,8 @@ struct ath12k_qmi_event_msg {
- struct target_mem_chunk {
- 	u32 size;
- 	u32 type;
-+	u32 prev_size;
-+	u32 prev_type;
- 	dma_addr_t paddr;
- 	union {
- 		void __iomem *ioaddr;
+ static int
 -- 
 2.43.0
 
