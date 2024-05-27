@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-47188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF4E8D0CFA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10588D0B22
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D0AFB203FA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A752B21EF6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EDD15FCE9;
-	Mon, 27 May 2024 19:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B873A61FD6;
+	Mon, 27 May 2024 19:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4C6drCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnZqJlP7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66523168C4;
-	Mon, 27 May 2024 19:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766DF1078F;
+	Mon, 27 May 2024 19:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837896; cv=none; b=kie/TleZDt070l6Os8TbCqOGwXsBy3FqRWtYgWYn4uCL9whFRR6t1JgGPW7Saj3HA6dHz5zXfxf3r4ayobFVQbS1oCCF7yYlgu5mg6wwOm62kjmos9z9GZHAmSIZgLShON/dHsBMuOkSOQTlb4kqMQ0nQlsdx0pcxYoHNJF6Vjo=
+	t=1716836781; cv=none; b=jZQG+ZdH6UrEQDHoHqaX4wVNRez2bE/2mgkvyjkKkjJuHRrqSqnREUC6X1owo8I6UgtnQqAzTbkNDFyKsxigpGrSEW3i1ZHqJolkEeg65VV789qgvrmCI4Vj6nxPwiKYtn30skQL+pW/bq2qyyIfiGJP2MUoElvNiJR2akQetB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837896; c=relaxed/simple;
-	bh=hw27nk9rMuH4+E4L2smE+N6xhVnX+F/TFPxbbtDlYrA=;
+	s=arc-20240116; t=1716836781; c=relaxed/simple;
+	bh=IPUFSjqVjE+NHSu5ce6WebTLJucaoGLoYtsiLwz37aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jaD2BWuEzB2+9TqWzpL/74b1A7eNOPNJ0iHtLMo3vnBuu775q9aEn8SmEwNeO5PC3TaLlckcWqWf9gOOLltiKt7AoHP7aZ+mpZDzTn7Gu1oqSy5PrLKcuSpPRfKeZZ1zarJVbB2PRabBEuSmZihO/u2mYJCeFvNdyx3qbR/xIoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4C6drCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F115BC2BBFC;
-	Mon, 27 May 2024 19:24:55 +0000 (UTC)
+	 MIME-Version; b=HZMqChMT1hrylFj7sZoU1uEqEjhgoIfUCowDexVeg72/K4OCdzzVRTZRQLApcK0sx+WbD39GQiP3U2z8rKbZ7N7vR5NRh0evFLx/q2F7XPBPLvFPmLFBCAl4p3glVFJl/5QspxLqFoZClWGsZHEYq2gj+nTTRpT+UOGPuBnRyOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnZqJlP7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5C4C2BBFC;
+	Mon, 27 May 2024 19:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837896;
-	bh=hw27nk9rMuH4+E4L2smE+N6xhVnX+F/TFPxbbtDlYrA=;
+	s=korg; t=1716836781;
+	bh=IPUFSjqVjE+NHSu5ce6WebTLJucaoGLoYtsiLwz37aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4C6drCiRo/lBTbbssQ55v+qrr+CkPQWy41opyIw0M+ZweAqOf0SL3K+J1kuN7MYz
-	 VdC9TSlh3V1sedoaCg+pksQqc8yoKyGDlB80R98DP9aJKFDQoedEp79AbUtPscFuDr
-	 I3Tz9uMK5U8lmdS/AET6BzK887o15gHRXWdxGTyg=
+	b=lnZqJlP70oc20OBTXiHMSsPP+xYgkGD743CRcypZYiskJcgwy06E50aHTVDLb1uxz
+	 AuAp/ElhzKRcPycRdwiZOU+6OQzI9l/X/yBiv7cUMRIw5fJrEDsairlR5gKv2d7e9F
+	 eQwcfdTqX/JdRSsQN8NNlGmXQDV2pg73NqehINTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 188/493] bitops: add missing prototype check
+Subject: [PATCH 6.9 143/427] x86/boot/64: Clear most of CR4 in startup_64(), except PAE, MCE and LA57
 Date: Mon, 27 May 2024 20:53:10 +0200
-Message-ID: <20240527185636.506043458@linuxfoundation.org>
+Message-ID: <20240527185615.223343174@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 72cc1980a0ef3ccad0d539e7dace63d0d7d432a4 ]
+[ Upstream commit a0025f587c685e5ff842fb0194036f2ca0b6eaf4 ]
 
-Commit 8238b4579866 ("wait_on_bit: add an acquire memory barrier") added
-a new bitop, test_bit_acquire(), with proper wrapping in order to try to
-optimize it at compile-time, but missed the list of bitops used for
-checking their prototypes a bit below.
-The functions added have consistent prototypes, so that no more changes
-are required and no functional changes take place.
+The early 64-bit boot code must be entered with a 1:1 mapping of the
+bootable image, but it cannot operate without a 1:1 mapping of all the
+assets in memory that it accesses, and therefore, it creates such
+mappings for all known assets upfront, and additional ones on demand
+when a page fault happens on a memory address.
 
-Fixes: 8238b4579866 ("wait_on_bit: add an acquire memory barrier")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+These mappings are created with the global bit G set, as the flags used
+to create page table descriptors are based on __PAGE_KERNEL_LARGE_EXEC
+defined by the core kernel, even though the context where these mappings
+are used is very different.
+
+This means that the TLB maintenance carried out by the decompressor is
+not sufficient if it is entered with CR4.PGE enabled, which has been
+observed to happen with the stage0 bootloader of project Oak. While this
+is a dubious practice if no global mappings are being used to begin
+with, the decompressor is clearly at fault here for creating global
+mappings and not performing the appropriate TLB maintenance.
+
+Since commit:
+
+  f97b67a773cd84b ("x86/decompressor: Only call the trampoline when changing paging levels")
+
+CR4 is no longer modified by the decompressor if no change in the number
+of paging levels is needed. Before that, CR4 would always be set to a
+consistent value with PGE cleared.
+
+So let's reinstate a simplified version of the original logic to put CR4
+into a known state, and preserve the PAE, MCE and LA57 bits, none of
+which can be modified freely at this point (PAE and LA57 cannot be
+changed while running in long mode, and MCE cannot be cleared when
+running under some hypervisors).
+
+This effectively clears PGE and works around the project Oak bug.
+
+Fixes: f97b67a773cd84b ("x86/decompressor: Only call the trampoline when ...")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20240410151354.506098-2-ardb+git@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bitops.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/boot/compressed/head_64.S | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-index 2ba557e067fe6..f7f5a783da2aa 100644
---- a/include/linux/bitops.h
-+++ b/include/linux/bitops.h
-@@ -80,6 +80,7 @@ __check_bitop_pr(__test_and_set_bit);
- __check_bitop_pr(__test_and_clear_bit);
- __check_bitop_pr(__test_and_change_bit);
- __check_bitop_pr(test_bit);
-+__check_bitop_pr(test_bit_acquire);
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index bf4a10a5794f1..1dcb794c5479e 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -398,6 +398,11 @@ SYM_CODE_START(startup_64)
+ 	call	sev_enable
+ #endif
  
- #undef __check_bitop_pr
- 
++	/* Preserve only the CR4 bits that must be preserved, and clear the rest */
++	movq	%cr4, %rax
++	andl	$(X86_CR4_PAE | X86_CR4_MCE | X86_CR4_LA57), %eax
++	movq	%rax, %cr4
++
+ 	/*
+ 	 * configure_5level_paging() updates the number of paging levels using
+ 	 * a trampoline in 32-bit addressable memory if the current number does
 -- 
 2.43.0
 
