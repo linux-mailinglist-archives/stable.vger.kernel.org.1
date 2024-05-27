@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3948D0BF0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324928D0DEE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A0511C20C40
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62D191C215A0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A01E15DBD8;
-	Mon, 27 May 2024 19:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8264216078C;
+	Mon, 27 May 2024 19:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1MWq/Gh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5mPn4dI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3AF17E90E;
-	Mon, 27 May 2024 19:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7621EEF7;
+	Mon, 27 May 2024 19:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837275; cv=none; b=D7kU4/A2hVVYOwKybr0ZgHn1k/jn75hfIvtM8DuX1MAp1xOR0+/CFj5awr9TcBSO/UbgUk5z4XIHZSJfIhtJIWBTLADlaDEQnE+OeYjG2ZT3DR97vfBw+YG8MJik/xUdDsQAGGKsA3hdpsV9tOWMvRPOIBdEdpI/Rqw5oH42sDI=
+	t=1716838522; cv=none; b=u7XSqn1Wfp0nX9SQiewSJ9eYOwW2gcC8fOE53he8o73KOgwoPfPnuGC3ooO/Nyls2S/KEcgJZ7IOWpS2wge4QnFoGPxedxDwQpcd3VyICEQuBmvZwZxmi4x+2KFBwgDfQ4VirdvokQl26Uuj7v1+hLJGxUtPjpHzOvElrvcVTQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837275; c=relaxed/simple;
-	bh=koga89g09DwPvTIDOxM4B8ST7RXMKN1v6i+AgHVppDE=;
+	s=arc-20240116; t=1716838522; c=relaxed/simple;
+	bh=bLN9iCDZI0HJWP1J6h7SEvW57LcDrchLjYRPUsLJJH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WK3NKpRMfwnTK4TrtUDgKExkgFjwh92vwxGrGPsafzRsqOPrGRY/fpBvdb64mNkauPOtut1HqM/MbG8O0aYHh+D7YnildpD/FtrA/5/huYKyjtvdd7CpBbGqFicgGX87WgsP8EKxO4fQu7+ZPPRvChXyuOaVC9oP5/g6HxliSYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1MWq/Gh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E498BC2BBFC;
-	Mon, 27 May 2024 19:14:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kOo/nHePkV6OXNEaq6LhmYzwuH/M7DfrNpMmp1mIoxPTivvUfHx1Xfs/6jdIVMZencfcQBY9F4pbs5fVDq7S03Vyrn7Aup+g6cUoATZ4QcjUPNmSGyZgXWPOmnbZdDNUrertPcZxZy6+XTlF6fl39cpo19tXbgTpp1W/jrKkBdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5mPn4dI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77716C2BBFC;
+	Mon, 27 May 2024 19:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837275;
-	bh=koga89g09DwPvTIDOxM4B8ST7RXMKN1v6i+AgHVppDE=;
+	s=korg; t=1716838521;
+	bh=bLN9iCDZI0HJWP1J6h7SEvW57LcDrchLjYRPUsLJJH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1MWq/GhV3M7RiAydK9NfC+HWIwpAOZHTbPs2gFfPQWRCZbczE5I1z3AeWwfDSDXP
-	 uM6HAtmNjiv4BBdk4DHsS4CjE2XINIhXXkRH5XbkbqmXfgWUnBb+lttlaysRj0Gi4R
-	 Ij1qsVE/lbCC7CxzZs/2I1QUICDmeCjvyFwQne4w=
+	b=V5mPn4dI5/3Gw8Ft+HgSGpRNwYQCS01uubKLP8H/eNMUnSpSpulR/q3FGkd4907+8
+	 4p8C7COkN2hZXY2k7HkQKXtocM5b+Mzdmf4VbX33xID4nh2jgpBwdr80pPfpemyM1g
+	 p0hqGxC2zCqMdOxKNqsG2DS95Qg3oYzFhD8nJv+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Marc Gonzalez <mgonzalez@freebox.fr>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 379/427] clk: qcom: mmcc-msm8998: fix venus clock issue
+Subject: [PATCH 6.8 424/493] clk: mediatek: pllfh: Dont log error for missing fhctl node
 Date: Mon, 27 May 2024 20:57:06 +0200
-Message-ID: <20240527185634.459384075@linuxfoundation.org>
+Message-ID: <20240527185644.159310797@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Gonzalez <mgonzalez@freebox.fr>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit e20ae5ae9f0c843aded4f06f3d1cab7384789e92 ]
+[ Upstream commit bb7b3c8e7180f36de75cdea200ab7127f93f58cc ]
 
-Right now, msm8998 video decoder (venus) is non-functional:
+Support for fhctl clocks in apmixedsys was introduced at a later point
+and to this moment only one mt6795 based platform has a fhctl DT node
+present. Therefore the fhctl support in apmixedsys should be seen as
+optional and not cause an error when it is missing.
 
-$ time mpv --hwdec=v4l2m2m-copy --vd-lavc-software-fallback=no --vo=null --no-audio --untimed --length=30 --quiet demo-480.webm
- (+) Video --vid=1 (*) (vp9 854x480 29.970fps)
-     Audio --aid=1 --alang=eng (*) (opus 2ch 48000Hz)
-[ffmpeg/video] vp9_v4l2m2m: output VIDIOC_REQBUFS failed: Connection timed out
-[ffmpeg/video] vp9_v4l2m2m: no v4l2 output context's buffers
-[ffmpeg/video] vp9_v4l2m2m: can't configure decoder
-Could not open codec.
-Software decoding fallback is disabled.
-Exiting... (Quit)
+Change the message's log level to warning. The warning level is chosen
+so that it will still alert the fact that fhctl support might be
+unintentionally missing, but without implying that this is necessarily
+an issue.
 
-Bryan O'Donoghue suggested the proper fix:
-- Set required register offsets in venus GDSC structs.
-- Set HW_CTRL flag.
+Even if the FHCTL DT nodes are added to all current platforms moving
+forward, since those changes won't be backported, this ensures stable
+kernel releases won't have live with this error.
 
-$ time mpv --hwdec=v4l2m2m-copy --vd-lavc-software-fallback=no --vo=null --no-audio --untimed --length=30 --quiet demo-480.webm
- (+) Video --vid=1 (*) (vp9 854x480 29.970fps)
-     Audio --aid=1 --alang=eng (*) (opus 2ch 48000Hz)
-[ffmpeg/video] vp9_v4l2m2m: VIDIOC_G_FMT ioctl
-[ffmpeg/video] vp9_v4l2m2m: VIDIOC_G_FMT ioctl
-...
-Using hardware decoding (v4l2m2m-copy).
-VO: [null] 854x480 nv12
-Exiting... (End of file)
-real	0m3.315s
-user	0m1.277s
-sys	0m0.453s
-
-NOTES:
-
-GDSC = Globally Distributed Switch Controller
-
-Use same code as mmcc-msm8996 with:
-s/venus_gdsc/video_top_gdsc/
-s/venus_core0_gdsc/video_subcore0_gdsc/
-s/venus_core1_gdsc/video_subcore1_gdsc/
-
-https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/include/dt-bindings/clock/msm-clocks-hwio-8996.h
-https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/include/dt-bindings/clock/msm-clocks-hwio-8998.h
-
-0x1024 = MMSS_VIDEO GDSCR (undocumented)
-0x1028 = MMSS_VIDEO_CORE_CBCR
-0x1030 = MMSS_VIDEO_AHB_CBCR
-0x1034 = MMSS_VIDEO_AXI_CBCR
-0x1038 = MMSS_VIDEO_MAXI_CBCR
-0x1040 = MMSS_VIDEO_SUBCORE0 GDSCR (undocumented)
-0x1044 = MMSS_VIDEO_SUBCORE1 GDSCR (undocumented)
-0x1048 = MMSS_VIDEO_SUBCORE0_CBCR
-0x104c = MMSS_VIDEO_SUBCORE1_CBCR
-
-Fixes: d14b15b5931c2b ("clk: qcom: Add MSM8998 Multimedia Clock Controller (MMCC) driver")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://lore.kernel.org/r/ff4e2e34-a677-4c39-8c29-83655c5512ae@freebox.fr
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: d7964de8a8ea ("clk: mediatek: Add new clock driver to handle FHCTL hardware")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20240308-mtk-fhctl-no-node-error-v1-1-51e446eb149a@collabora.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-msm8998.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/clk/mediatek/clk-pllfh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
-index 1180e48c687ac..275fb3b71ede4 100644
---- a/drivers/clk/qcom/mmcc-msm8998.c
-+++ b/drivers/clk/qcom/mmcc-msm8998.c
-@@ -2535,6 +2535,8 @@ static struct clk_branch vmem_ahb_clk = {
+diff --git a/drivers/clk/mediatek/clk-pllfh.c b/drivers/clk/mediatek/clk-pllfh.c
+index 3a2b3f90be25d..094ec8a26d668 100644
+--- a/drivers/clk/mediatek/clk-pllfh.c
++++ b/drivers/clk/mediatek/clk-pllfh.c
+@@ -68,7 +68,7 @@ void fhctl_parse_dt(const u8 *compatible_node, struct mtk_pllfh_data *pllfhs,
  
- static struct gdsc video_top_gdsc = {
- 	.gdscr = 0x1024,
-+	.cxcs = (unsigned int []){ 0x1028, 0x1034, 0x1038 },
-+	.cxc_count = 3,
- 	.pd = {
- 		.name = "video_top",
- 	},
-@@ -2543,20 +2545,26 @@ static struct gdsc video_top_gdsc = {
+ 	node = of_find_compatible_node(NULL, NULL, compatible_node);
+ 	if (!node) {
+-		pr_err("cannot find \"%s\"\n", compatible_node);
++		pr_warn("cannot find \"%s\"\n", compatible_node);
+ 		return;
+ 	}
  
- static struct gdsc video_subcore0_gdsc = {
- 	.gdscr = 0x1040,
-+	.cxcs = (unsigned int []){ 0x1048 },
-+	.cxc_count = 1,
- 	.pd = {
- 		.name = "video_subcore0",
- 	},
- 	.parent = &video_top_gdsc.pd,
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = HW_CTRL,
- };
- 
- static struct gdsc video_subcore1_gdsc = {
- 	.gdscr = 0x1044,
-+	.cxcs = (unsigned int []){ 0x104c },
-+	.cxc_count = 1,
- 	.pd = {
- 		.name = "video_subcore1",
- 	},
- 	.parent = &video_top_gdsc.pd,
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = HW_CTRL,
- };
- 
- static struct gdsc mdss_gdsc = {
 -- 
 2.43.0
 
