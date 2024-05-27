@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-46926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A06E8D0BD7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39E08D0DFC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90AB8B21DBE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82E16281BC0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAC0155CA7;
-	Mon, 27 May 2024 19:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B179535A4;
+	Mon, 27 May 2024 19:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1AfM+KYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ol04nIP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA93017E90E;
-	Mon, 27 May 2024 19:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDBC17727;
+	Mon, 27 May 2024 19:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837212; cv=none; b=CEr4Vg0nbscUwISl56YLgwh7/kZVdX+wHUeqh464cxod+DNSktidhapZudbnsT2DQNZ4Ru+3HmWs25TLRM3XEUPnLHUMHOxKIzjYNRAOFJ+MlyYWZZfw6wqGQLKbgLF825vyYlODOmSoAfOx5gKvXW4AbBeSZaXLVDasrn8puF0=
+	t=1716838552; cv=none; b=UsxBMoAFbYtdprOw+PP7dr0Y6iCXrbk8wKCeGVrof1q7ElO9hyOjtQQvi9u/gbeuqKpqYJsc06724UlVUv+DciIrbZs4TqMmeYiP1kpJWmfRhfYQ3qA2U49RNpr9+2p5jRpyvJs2Mj7gI1mMxTiJ3c6MyeLyd48QG+TJoB0qoTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837212; c=relaxed/simple;
-	bh=DV5kxkxTrpcK7qKygeU3eeeGCdw1JauFlQM2atrTx6Q=;
+	s=arc-20240116; t=1716838552; c=relaxed/simple;
+	bh=8AGymlFH+ZLlrFEzJ5P1SnSDrzJyd01WElJ+4A6JsYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LjVpiulGqxVLIbWuoxflVCY+8BBMT1ucOtwfZIJTEm72NBiMeXAp3aFpov/1VPU+2pX0fp92TlBmwfuosHjzjLCh2ltZNMDFvGw98mcfWgyX3/ajuHRnJA0+yjQtSr6e/mEyt7GG6xllgSWeiYvOT1J3zsY7x4+BSOJHNjGa8mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1AfM+KYh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F90EC2BBFC;
-	Mon, 27 May 2024 19:13:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YTadcJ3DvWxgAPiZ9x2oI7+TeOz70BOkGJ23XSE4stM5C9DcBQB4trrc7vG+s+nFlvHolrfHmcpXFDObCqqaV57lI/u85314cOQU1CpVP+X96/+1bdXrefC/HmB0bZzNi649y956DSvbFwqbx5beoySVnMtWpD74/0G0YwFxVCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ol04nIP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B893C2BBFC;
+	Mon, 27 May 2024 19:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837212;
-	bh=DV5kxkxTrpcK7qKygeU3eeeGCdw1JauFlQM2atrTx6Q=;
+	s=korg; t=1716838552;
+	bh=8AGymlFH+ZLlrFEzJ5P1SnSDrzJyd01WElJ+4A6JsYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1AfM+KYhJlmDI+ZvBu66JaQ3Ln3V0cFDCxFS21vLA4pAjEERAP2wTKXl+tXdNnjbd
-	 dSEaSmHn+LZ8+k+3iR/dojn4zOyLm3JEhohyU2t07QsCxXlQkHXGS4IfgLaN4Injhg
-	 +qTklvh7mGr/H6UmaIAac4cicc47ShXnjmSzezNM=
+	b=ol04nIP/yk90aMCviUVdMNQVirs4nFe/6I8mg4hnIcmysg41iS4rIULkVS3AY0K0N
+	 5Niiz8f3iFcNEUyAkBGSoC6VrB6oGZ+pnJElElw+hQFvp0eGMqpYFx3NVQqiia4i5z
+	 PqyXLV+DS+j04YUlxRbzzi/d+2SDSuyRX/0Zfg7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 352/427] clk: mediatek: pllfh: Dont log error for missing fhctl node
+Subject: [PATCH 6.8 397/493] media: i2c: et8ek8: Dont strip remove function when driver is builtin
 Date: Mon, 27 May 2024 20:56:39 +0200
-Message-ID: <20240527185633.484189614@linuxfoundation.org>
+Message-ID: <20240527185643.259267649@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit bb7b3c8e7180f36de75cdea200ab7127f93f58cc ]
+[ Upstream commit 545b215736c5c4b354e182d99c578a472ac9bfce ]
 
-Support for fhctl clocks in apmixedsys was introduced at a later point
-and to this moment only one mt6795 based platform has a fhctl DT node
-present. Therefore the fhctl support in apmixedsys should be seen as
-optional and not cause an error when it is missing.
+Using __exit for the remove function results in the remove callback
+being discarded with CONFIG_VIDEO_ET8EK8=y. When such a device gets
+unbound (e.g. using sysfs or hotplug), the driver is just removed
+without the cleanup being performed. This results in resource leaks. Fix
+it by compiling in the remove callback unconditionally.
 
-Change the message's log level to warning. The warning level is chosen
-so that it will still alert the fact that fhctl support might be
-unintentionally missing, but without implying that this is necessarily
-an issue.
+This also fixes a W=1 modpost warning:
 
-Even if the FHCTL DT nodes are added to all current platforms moving
-forward, since those changes won't be backported, this ensures stable
-kernel releases won't have live with this error.
+	WARNING: modpost: drivers/media/i2c/et8ek8/et8ek8: section mismatch in reference: et8ek8_i2c_driver+0x10 (section: .data) -> et8ek8_remove (section: .exit.text)
 
-Fixes: d7964de8a8ea ("clk: mediatek: Add new clock driver to handle FHCTL hardware")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20240308-mtk-fhctl-no-node-error-v1-1-51e446eb149a@collabora.com
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: c5254e72b8ed ("[media] media: Driver for Toshiba et8ek8 5MP sensor")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-pllfh.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/et8ek8/et8ek8_driver.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-pllfh.c b/drivers/clk/mediatek/clk-pllfh.c
-index 3a2b3f90be25d..094ec8a26d668 100644
---- a/drivers/clk/mediatek/clk-pllfh.c
-+++ b/drivers/clk/mediatek/clk-pllfh.c
-@@ -68,7 +68,7 @@ void fhctl_parse_dt(const u8 *compatible_node, struct mtk_pllfh_data *pllfhs,
+diff --git a/drivers/media/i2c/et8ek8/et8ek8_driver.c b/drivers/media/i2c/et8ek8/et8ek8_driver.c
+index f548b1bb75fb9..e932d25ca7b3a 100644
+--- a/drivers/media/i2c/et8ek8/et8ek8_driver.c
++++ b/drivers/media/i2c/et8ek8/et8ek8_driver.c
+@@ -1475,7 +1475,7 @@ static int et8ek8_probe(struct i2c_client *client)
+ 	return ret;
+ }
  
- 	node = of_find_compatible_node(NULL, NULL, compatible_node);
- 	if (!node) {
--		pr_err("cannot find \"%s\"\n", compatible_node);
-+		pr_warn("cannot find \"%s\"\n", compatible_node);
- 		return;
- 	}
+-static void __exit et8ek8_remove(struct i2c_client *client)
++static void et8ek8_remove(struct i2c_client *client)
+ {
+ 	struct v4l2_subdev *subdev = i2c_get_clientdata(client);
+ 	struct et8ek8_sensor *sensor = to_et8ek8_sensor(subdev);
+@@ -1517,7 +1517,7 @@ static struct i2c_driver et8ek8_i2c_driver = {
+ 		.of_match_table	= et8ek8_of_table,
+ 	},
+ 	.probe		= et8ek8_probe,
+-	.remove		= __exit_p(et8ek8_remove),
++	.remove		= et8ek8_remove,
+ 	.id_table	= et8ek8_id_table,
+ };
  
 -- 
 2.43.0
