@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-47143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88C58D0CC7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 465278D0AC2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163611C20AB9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02C7E281975
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB2A15FD11;
-	Mon, 27 May 2024 19:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D851667CB;
+	Mon, 27 May 2024 19:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+PwQgv2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ki71Rxfi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A72F168C4;
-	Mon, 27 May 2024 19:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A5B1667CE;
+	Mon, 27 May 2024 19:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837781; cv=none; b=jN289qh0m2RLW6GczZff9n0mulNHrFhtgL7vtv4yk0jn5Cd8f8jG718Ewq3rTcqGjB/H5PsZwexn+Sc0nyc0mDQmvcVeDeyBFW+w1RNS4U8xxKWNQd6Cff6V6B60RCMGvPMN7FoxMU2nwRWf9NZ1eWeqq5BsRAQvJyG40uFerVw=
+	t=1716836552; cv=none; b=Nr5utZ23n+07zNKKjbdB1W4Elg6D4pMG6jo27AOU+azwq81d13NwYIaTdenkMUr0hDh5AnEa0z+GeIXOWhAsnXjXGRpqRTveMWhYIfmZBMTTBL5RaOvli4jKQYT4FgYSWErCn2DHNfOutkdbyRozATU5ALufHQ4kxF8Cf57JSgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837781; c=relaxed/simple;
-	bh=rtZVAXClLNyONWJqzXXfb/R8ivmVbZdmel8w0MKbwcI=;
+	s=arc-20240116; t=1716836552; c=relaxed/simple;
+	bh=Cs+gbqK+uNjoncZ9os07ySdSBO1AddWCNvylR4OUA00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBJVsyFXlF3KBq+xNrXQZQnUd5O3KKSS9j6iqK+f6kjOkB7Ovtsb2+dO4gzqRf4lwGzxtOnK2PxBqwqPPMEPJDZqKAYCn6AsgM+mgrPtN8oVkynpQWUzVAejYNNVfAv3kUe6/pZIdHAx6qrovvYFDJmlZADVU0jDqUUThUEiX9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+PwQgv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E1BC2BBFC;
-	Mon, 27 May 2024 19:23:00 +0000 (UTC)
+	 MIME-Version; b=ViExwyu7aQdyEapAtW+qRSYvdTGqqCD2Eh3YSxIZxMmROP2wD4HLPwV+ctGgWMJzO3KRmPACuhddAusCbqO/3marza3wiSnlHETAdC2hEk6TqCpQryamm68o7wVKMujtTzs2+VlSp6HjK2BD2Xx/UzCHGtJN/sa10csCbSMME7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ki71Rxfi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A00C2BBFC;
+	Mon, 27 May 2024 19:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837781;
-	bh=rtZVAXClLNyONWJqzXXfb/R8ivmVbZdmel8w0MKbwcI=;
+	s=korg; t=1716836551;
+	bh=Cs+gbqK+uNjoncZ9os07ySdSBO1AddWCNvylR4OUA00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+PwQgv2urBf8gHmkU2DEYUWFu83K/7yyXoE8O7IheUC8pnlLsBBcV0srFHTUOfEP
-	 pkkiYK7W96wRo6McUl/rnIhczo6f8OQkXlQdFqtW15aaytN1jr4B4PlEQ0o6lGTi1z
-	 GAZTB6e8wZNUbz7CRX6NqrD1pnr96VX5VMGfhgJ8=
+	b=ki71RxfiQVfvMwsAN+6teIzAn/tIh+40EC4Yg6y4laZjSObXFIsV9nPafFVnEmE8L
+	 dP8ifsrFgvpRwq0AwsW1U3pdsfMbwrgnzhAwIJxuCkzDhGT553E7Nq/odWCiql7lKy
+	 kr8cuMecOd0+393qgf87MSuSInXQ468hMilYiMdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Xilin Wu <wuxilin123@gmail.com>
-Subject: [PATCH 6.8 143/493] soc: qcom: pmic_glink: notify clients about the current state
-Date: Mon, 27 May 2024 20:52:25 +0200
-Message-ID: <20240527185635.122613547@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 099/427] wifi: ieee80211: fix ieee80211_mle_basic_sta_prof_size_ok()
+Date: Mon, 27 May 2024 20:52:26 +0200
+Message-ID: <20240527185611.045665117@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d6cbce2cd354c9a37a558f290a8f1dfd20584f99 ]
+[ Upstream commit c121514df0daa800cc500dc2738e0b8a1c54af98 ]
 
-In case the client is registered after the pmic-glink recived a response
-from the Protection Domain mapper, it is going to miss the notification
-about the state. Notify clients about the current state upon
-registration.
+If there was a possibility of an MLE basic STA profile without
+subelements, we might reject it because we account for the one
+octet for sta_info_len twice (it's part of itself, and in the
+fixed portion). Like in ieee80211_mle_reconf_sta_prof_size_ok,
+subtract 1 to adjust that.
 
-Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Tested-by: Xilin Wu <wuxilin123@gmail.com> # on QCS8550 AYN Odin 2
-Link: https://lore.kernel.org/r/20240403-pmic-glink-fix-clients-v2-2-aed4e02baacc@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+When reading the elements we did take this into account, and
+since there are always elements, this never really mattered.
+
+Fixes: 7b6f08771bf6 ("wifi: ieee80211: Support validating ML station profile length")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240318184907.00bb0b20ed60.I8c41dd6fc14c4b187ab901dea15ade73c79fb98c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pmic_glink.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/ieee80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
-index 2b2cdf4796542..e85a12ec2aab1 100644
---- a/drivers/soc/qcom/pmic_glink.c
-+++ b/drivers/soc/qcom/pmic_glink.c
-@@ -83,9 +83,14 @@ struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
- 	client->pdr_notify = pdr;
- 	client->priv = priv;
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 3385a2cc5b099..ac5be38d8aaf0 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -5302,7 +5302,7 @@ static inline bool ieee80211_mle_basic_sta_prof_size_ok(const u8 *data,
+ 		info_len += 1;
  
-+	mutex_lock(&pg->state_lock);
- 	mutex_lock(&pg->client_lock);
-+
- 	list_add(&client->node, &pg->clients);
-+	client->pdr_notify(client->priv, pg->client_state);
-+
- 	mutex_unlock(&pg->client_lock);
-+	mutex_unlock(&pg->state_lock);
+ 	return prof->sta_info_len >= info_len &&
+-	       fixed + prof->sta_info_len <= len;
++	       fixed + prof->sta_info_len - 1 <= len;
+ }
  
- 	devres_add(dev, client);
- 
+ /**
 -- 
 2.43.0
 
