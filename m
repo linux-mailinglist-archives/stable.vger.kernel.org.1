@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-47088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F3E8D0C89
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3118D0A5C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 20:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAF8EB203FA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C249D1F2251E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D7D15FCFE;
-	Mon, 27 May 2024 19:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFB4160795;
+	Mon, 27 May 2024 18:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppod9vrV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bN454au0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9914168C4;
-	Mon, 27 May 2024 19:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CBC15FA96;
+	Mon, 27 May 2024 18:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837640; cv=none; b=mJSlUWzRePA4brAdyREemCuZS5Ws8s8GhrSldyTvRlTPSU9vcP2u3g4nnwB5uoBKvq7spGT7JCSxnce8p1UCw/W2sV8drv4CGmI3qEPKhr5V/RBDRzvlfAGdUT+TOYLUXxDAfhYTrFBwYV0opHf22mYWmXBKedY/JSC+3amKjHM=
+	t=1716836350; cv=none; b=OpYgXSP7VgF32AlknnwR/QZBCS7iG3XGiSq0sOjvNjTt5qz36J2islD9O1p8xWn8OVRpqA5u482QAaqEgYltuoLy697KDMcVCsmUd3jIpGAJFOSfZLST3VGHbPWW3wL9in34ueAQjLHLtm+FEgobOW/hgP4l5x/w4+/4UMEt9ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837640; c=relaxed/simple;
-	bh=GdbZTlE+UlecxzjEn4DXs9UK1mOABY3i7vi48p6r+6g=;
+	s=arc-20240116; t=1716836350; c=relaxed/simple;
+	bh=DzvQoUo8gT2P8wgRbSBI2/3Ps03luKe4oMe86CuAC3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFm7jO0wZCJ1399TElxj3FELxCYCyD+enFlD3+C8KMojelLZQRCFNQsXSgxrlHpDz84LX929/0TOZ0VMkXlwl2WSpzqfztjAfg2p15AqBY85P49A4eGIqGTdi10mWZgAPJAhdCKlG45/nwS+egStiub6RjhI5jY8TiDfwpnhrk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppod9vrV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E27BC2BBFC;
-	Mon, 27 May 2024 19:20:40 +0000 (UTC)
+	 MIME-Version; b=pameKZkMdiroGRJbYs12r1kj3Xx+SwFF1XKd2zhAi/nzUR2QCiP3YytJDjydxiPnT6s5DRZ4iolHl/em3viAP0uEXIC13tVxowUpGOwjY+uCSiSVlLa0ppYb2SB5gOo06doZLGez2Qvb27gbPgbRS7lQac+CkERs1Td8EtotsRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bN454au0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B72C2BBFC;
+	Mon, 27 May 2024 18:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837640;
-	bh=GdbZTlE+UlecxzjEn4DXs9UK1mOABY3i7vi48p6r+6g=;
+	s=korg; t=1716836350;
+	bh=DzvQoUo8gT2P8wgRbSBI2/3Ps03luKe4oMe86CuAC3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppod9vrV9iqikc+jonCOkRPJIzXYJNFLO7Y5TsNY7vFk20+g89hrLuuTLl9ufKHJH
-	 GacWRioiL6yN3PzQEaKD1+t6ypcsLDh3IJo7IV1Buz/9WPSLHgv8FQdqhIYGs/a+lf
-	 UtvY//3mlialRdeBkB9/oIWwBl5qg6mPe9LiyqWc=
+	b=bN454au06lVLWF43XY4inlkQhLtvymLJgZ3onJHQ7WihExgfyOd0+CDCpe9JMKwzK
+	 PKSlIOvuitRD00j/0jHktk46ejs62dlF4sZzG0DYRcgcb7XxUb0zYKcwQ8AKa+kfVv
+	 DMwWR86vLha+e57LlE9noNDewpbp28/NyBmQwXoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Ashton <joshua@froggi.es>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 047/493] drm/amd/display: Set color_mgmt_changed to true on unsuspend
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.9 002/427] selftests/ftrace: Fix BTFARG testcase to check fprobe is enabled correctly
 Date: Mon, 27 May 2024 20:50:49 +0200
-Message-ID: <20240527185630.569701194@linuxfoundation.org>
+Message-ID: <20240527185601.971914836@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Ashton <joshua@froggi.es>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 2eb9dd497a698dc384c0dd3e0311d541eb2e13dd ]
+commit 2fd3ef1b9265eda7f53b9506f1ebfb67eb6435a2 upstream.
 
-Otherwise we can end up with a frame on unsuspend where color management
-is not applied when userspace has not committed themselves.
+Since the dynevent/add_remove_btfarg.tc test case forgets to ensure that
+fprobe is enabled for some structure field access tests which uses the
+fprobe, it fails if CONFIG_FPROBE=n or CONFIG_FPROBE_EVENTS=n.
+Fixes it to ensure the fprobe events are supported.
 
-Fixes re-applying color management on Steam Deck/Gamescope on S3 resume.
-
-Signed-off-by: Joshua Ashton <joshua@froggi.es>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d892d3d3d885 ("selftests/ftrace: Add BTF fields access testcases")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 9044214dfdbdf..c4ba397f8cef5 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3010,6 +3010,7 @@ static int dm_resume(void *handle)
- 			dc_stream_release(dm_new_crtc_state->stream);
- 			dm_new_crtc_state->stream = NULL;
- 		}
-+		dm_new_crtc_state->base.color_mgmt_changed = true;
- 	}
+--- a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc
++++ b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_btfarg.tc
+@@ -53,7 +53,7 @@ fi
  
- 	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
--- 
-2.43.0
-
+ echo > dynamic_events
+ 
+-if [ "$FIELDS" ] ; then
++if [ "$FIELDS" -a "$FPROBES" ] ; then
+ echo "t:tpevent ${TP2} obj_size=s->object_size" >> dynamic_events
+ echo "f:fpevent ${TP3}%return path=\$retval->name:string" >> dynamic_events
+ echo "t:tpevent2 ${TP4} p->se.group_node.next->prev" >> dynamic_events
 
 
 
