@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-47131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D53F8D0CB9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEAD8D0A81
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332B71F20F3E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93211F22783
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FF115FCFE;
-	Mon, 27 May 2024 19:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE2C160784;
+	Mon, 27 May 2024 19:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDQTEea6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZgGIQju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559D9168C4;
-	Mon, 27 May 2024 19:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A46E15FD1A;
+	Mon, 27 May 2024 19:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837750; cv=none; b=TXfxAW6b1/ERoW8cA8TOf7XaLZofhCPtylBcBnWe7rW4MzSPNQJi8PWVJV79EHskZtqFVXNR+f0EDKToi4ufpvk477isqLy0GAiqIJHtniNLXYi1HQIIPPSJSZ+5E+97qhvxM8KVYlwR6f/OBDvYWd2NbMR6DUt28mYBD1wDG3g=
+	t=1716836434; cv=none; b=M1LBZ91K8CUcBmN+4xGKoCplChuYycjGWMHuxUUHW41htdIm6R/OLGEuUKt6Q/X34NXx0982Xh4iOIDBAj87JNWKlcmL7c6zIAp6wwrMAvAAU/+izoQ3VMUR5Xpv35hPCfuhsblk4RmSAJO/wcGZrQCU633aCSF/jSzGZ10FUIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837750; c=relaxed/simple;
-	bh=yihpeV8JqqaMlGZGDJzKTIYJd/ZWOBjccj+ZrLqzDB4=;
+	s=arc-20240116; t=1716836434; c=relaxed/simple;
+	bh=9WVSUnZKExRGio9Au9Zs5Qs3qrH/4dTVs9FkaurDISc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dgb9MgMiCMu7cQ8kLKF0md+c+Vnrfiy7xuCX3sfnLmY3B3/8mqYfMmQ71LHi3Om96mpi0sKHm6KuM29HPBprNmB+74nbN3M14c8lapj2wgWWCz2NuiJeCGSvMyNTKUA7jWQKeE8zHQ8YA+rwV+xh8w4b64VuLGkB0h0ldVuB4w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDQTEea6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1463C2BBFC;
-	Mon, 27 May 2024 19:22:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fhv3Fie+lkbOPYHCQmOc91sHdo9GyBscQEaD4gELJFPge/HC9OSCXX/ps9M42nGBcTJkri+9+0msV/Ac1QHQB/qBAz7mQyNETiGU/SjsZ+WjjBLdg7cSfBtaeWm+wqkL5xwZhOb8S+OCTF+eg1Uj6cFRMJJ16U/cMb0o0/munhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZgGIQju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B4DC2BBFC;
+	Mon, 27 May 2024 19:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837750;
-	bh=yihpeV8JqqaMlGZGDJzKTIYJd/ZWOBjccj+ZrLqzDB4=;
+	s=korg; t=1716836434;
+	bh=9WVSUnZKExRGio9Au9Zs5Qs3qrH/4dTVs9FkaurDISc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDQTEea6dM58ckGf2wz64n/llwtvEm1h8/+0ryNs/uz2qcfCaceiWQ6avL+5o7c5x
-	 7fVRwbhtkiITw1R31k+rkg9HEQzGrnfVvf5QsC+HtLsR12vDl/VU5md9HTfHPZ4YFO
-	 AbWSwjnFkuc/Krk363D8VlOq3il9AV0GTNyAvIiI=
+	b=JZgGIQjuUblhdgF+t5uo0Fltac1amyfYb7MfbAru9vn8rPeT1DYuGiN4vjiOGridn
+	 qf7n08Rvr4A3jtoPH6Bv5CfMrzQsmUF2Ucr2eAXTuTOLmP4FHeHvm6Nv+sTuxLJQ/4
+	 iu4/EMUPuIiJUINa5D8/UAoDTx/FarDUSLnp3C/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	kernel test robot <lkp@intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 090/493] ALSA: hda: intel-dsp-config: harden I2C/I2S codec detection
+Subject: [PATCH 6.9 045/427] firmware: qcom: qcm: fix unused qcom_scm_qseecom_allowlist
 Date: Mon, 27 May 2024 20:51:32 +0200
-Message-ID: <20240527185633.315506331@linuxfoundation.org>
+Message-ID: <20240527185605.952417447@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +65,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 79ac4c1443eaec0d09355307043a9149287f23c1 ]
+[ Upstream commit e478c5fb6aa10af7b7edbff69bc8aef6fbb5f0ed ]
 
-The SOF driver is selected whenever specific I2C/I2S HIDs are reported
-as 'present' in the ACPI DSDT. In some cases, an HID is reported but
-the hardware does not actually rely on I2C/I2S.  This false positive
-leads to an invalid selection of the SOF driver and as a result an
-invalid topology is loaded.
+For !OF builds, the qcom_scm_qseecom_allowlist is unused:
 
-This patch hardens the detection with a check that the NHLT table is
-consistent with the report of an I2S-based codec in DSDT. This table
-should expose at least one SSP endpoint configured for an I2S-codec
-connection.
+  drivers/firmware/qcom/qcom_scm.c:1652:34: error: ‘qcom_scm_qseecom_allowlist’ defined but not used [-Werror=unused-const-variable=]
 
-Tested on Huawei Matebook D14 (NBLB-WAX9N) using an HDaudio codec with
-an invalid ES8336 ACPI HID reported:
-
-[    7.858249] snd_hda_intel 0000:00:1f.3: DSP detected with PCI class/subclass/prog-if info 0x040380
-[    7.858312] snd_hda_intel 0000:00:1f.3: snd_intel_dsp_find_config: no valid SSP found for HID ESSX8336, skipped
-
-Reported-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Tested-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Closes: https://github.com/thesofproject/linux/issues/4934
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Message-ID: <20240426152818.38443-1-pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 00b1248606ba ("firmware: qcom_scm: Add support for Qualcomm Secure Execution Environment SCM interface")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311191654.S4wlVUrz-lkp@intel.com/
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
+Link: https://lore.kernel.org/r/20231120185623.338608-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/intel-dsp-config.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ drivers/firmware/qcom/qcom_scm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
-index 6a384b922e4fa..d1f6cdcf1866e 100644
---- a/sound/hda/intel-dsp-config.c
-+++ b/sound/hda/intel-dsp-config.c
-@@ -557,9 +557,32 @@ static const struct config_entry *snd_intel_dsp_find_config
- 		if (table->codec_hid) {
- 			int i;
- 
--			for (i = 0; i < table->codec_hid->num_codecs; i++)
--				if (acpi_dev_present(table->codec_hid->codecs[i], NULL, -1))
-+			for (i = 0; i < table->codec_hid->num_codecs; i++) {
-+				struct nhlt_acpi_table *nhlt;
-+				bool ssp_found = false;
-+
-+				if (!acpi_dev_present(table->codec_hid->codecs[i], NULL, -1))
-+					continue;
-+
-+				nhlt = intel_nhlt_init(&pci->dev);
-+				if (!nhlt) {
-+					dev_warn(&pci->dev, "%s: NHLT table not found, skipped HID %s\n",
-+						 __func__, table->codec_hid->codecs[i]);
-+					continue;
-+				}
-+
-+				if (intel_nhlt_has_endpoint_type(nhlt, NHLT_LINK_SSP) &&
-+				    intel_nhlt_ssp_endpoint_mask(nhlt, NHLT_DEVICE_I2S))
-+					ssp_found = true;
-+
-+				intel_nhlt_free(nhlt);
-+
-+				if (ssp_found)
- 					break;
-+
-+				dev_warn(&pci->dev, "%s: no valid SSP found for HID %s, skipped\n",
-+					 __func__, table->codec_hid->codecs[i]);
-+			}
- 			if (i == table->codec_hid->num_codecs)
- 				continue;
- 		}
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index 90283f160a228..ca381cb2ee979 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -1624,7 +1624,7 @@ EXPORT_SYMBOL_GPL(qcom_scm_qseecom_app_send);
+  * We do not yet support re-entrant calls via the qseecom interface. To prevent
+  + any potential issues with this, only allow validated machines for now.
+  */
+-static const struct of_device_id qcom_scm_qseecom_allowlist[] = {
++static const struct of_device_id qcom_scm_qseecom_allowlist[] __maybe_unused = {
+ 	{ .compatible = "lenovo,thinkpad-x13s", },
+ 	{ }
+ };
 -- 
 2.43.0
 
