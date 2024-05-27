@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-47406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E3E8D0DD9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A358D8D0C13
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0F602810CF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 413CC1F24550
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B03C15FA60;
-	Mon, 27 May 2024 19:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ED615FA85;
+	Mon, 27 May 2024 19:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tORUpDyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVqmqNqV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1899217727;
-	Mon, 27 May 2024 19:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71563168C4;
+	Mon, 27 May 2024 19:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838468; cv=none; b=i1C6dmrAQGZ3+t2VNetxcjFjUzC+1r6YV2nk785VIBQU2ApQUIdlLLSLI2GsbCqvFHx2tUcUkzBJwvfyoqQN72VUu+kwCBVQt2ESAutzqxtHrM64uauaXW3odKpzHtfO11B7n2xtts7q8Dz5b6s10V+QEQ0E9cB/ag+alBEiYms=
+	t=1716837357; cv=none; b=SUUHJgeIW00y26eizxUAXwf4RNMT3xtZ2xEW71Ljcl/AcDbs9yhm2aHXoAH6BiOohEyHxTTFm+lEAzg11rlmyTCahWzQCO1KckB8tYlB7R93p75wiTbVIC1n4rrTmsFcvL0RzE4vicWBKF3XCRAwfUZmORnKiXyS9Iaqy6qV17I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838468; c=relaxed/simple;
-	bh=NnrpeJKnMJ8S6OJ7YHX04QMMDI2nNs/l8s1KqiaeFqY=;
+	s=arc-20240116; t=1716837357; c=relaxed/simple;
+	bh=K5iXjIZNYeAJvBJ6Eontl67GmAI0eepfP5EcaFbn84Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jbuPnDM+Qu9CPNYsuBFqjB2EM8mbYxT6El10degnPefwLgyXI37WXFg2tWFViojaU+RxfiRUFFbIjHQT+JsBooMXocJ2xw8CuLvdqao3PYEvcDWHJXePP1YWhCCc5wtkg4FpiswnqWhWlyPSQoVpxWQTqk75bHVH2hr6EpDaWYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tORUpDyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6906EC2BBFC;
-	Mon, 27 May 2024 19:34:27 +0000 (UTC)
+	 MIME-Version; b=ED4edrfJRhqu9thiHdnRUUGDCZrzXHqe6C3Fg3ddU7ziJYkAvWY6DzfqqZ32LFdia2TuIhIoMdMTvAfAwqNEOAh7QK7QBPVqA2NHf0dXa83hcQZM96dgRozHv7AnCoakYICtqr5GbWhZTP1+WciePYrKBmgTotkAdlEthKtN7yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVqmqNqV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DCAC2BBFC;
+	Mon, 27 May 2024 19:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838467;
-	bh=NnrpeJKnMJ8S6OJ7YHX04QMMDI2nNs/l8s1KqiaeFqY=;
+	s=korg; t=1716837357;
+	bh=K5iXjIZNYeAJvBJ6Eontl67GmAI0eepfP5EcaFbn84Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tORUpDywGZ3diRN9JCGn35GsSSPs9RocXh0EgAE2wX3YQpnAyQrm7u7GBy6i2mrtV
-	 G8Jnyk4tf1/PDeijOlr4vBz49/ZzDiL6AMx0uaydOTZPTiWXvTFp8EyGdYG8PG/oWn
-	 dB+OjbwuBIqWPs59Sb50V1q933HAgC31PamI6/G4=
+	b=yVqmqNqVhKun4OzNKb5t4SFP5YYIXqZeOHL4p+VLKLsh0jMRRsmfNe7IUusAFJKRj
+	 wvBEwh3pniCGoX4AdZEE49AV5V+DYoVpe0Q97tYI2rsLz+3hE/J52NOoZajIVBWUdx
+	 M3X1QCOThg96tuaycgU+O4a5dZ7KmDumhVq2ACGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 405/493] drm/bridge: icn6211: Dont log an error when DSI host cant be found
+Subject: [PATCH 6.9 360/427] RDMA/hns: Use complete parentheses in macros
 Date: Mon, 27 May 2024 20:56:47 +0200
-Message-ID: <20240527185643.534345869@linuxfoundation.org>
+Message-ID: <20240527185633.854510497@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 275fafe58faa7fdb10fa245412696ecef676aac5 ]
+[ Upstream commit 4125269bb9b22e1d8cdf4412c81be8074dbc61ca ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+Use complete parentheses to ensure that macro expansion does
+not produce unexpected results.
 
-Fixes: 8dde6f7452a1 ("drm: bridge: icn6211: Add I2C configuration support")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-2-619a28148e5c@collabora.com
+Fixes: a25d13cbe816 ("RDMA/hns: Add the interfaces to support multi hop addressing for the contexts in hip08")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-10-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/chipone-icn6211.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/chipone-icn6211.c b/drivers/gpu/drm/bridge/chipone-icn6211.c
-index 82d23e4df09eb..ff3284b6b1a37 100644
---- a/drivers/gpu/drm/bridge/chipone-icn6211.c
-+++ b/drivers/gpu/drm/bridge/chipone-icn6211.c
-@@ -563,10 +563,8 @@ static int chipone_dsi_host_attach(struct chipone *icn)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.h b/drivers/infiniband/hw/hns/hns_roce_hem.h
+index 6fb51db9682b8..9c415b2541af8 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.h
+@@ -57,16 +57,16 @@ enum {
+ };
  
- 	host = of_find_mipi_dsi_host_by_node(host_node);
- 	of_node_put(host_node);
--	if (!host) {
--		dev_err(dev, "failed to find dsi host\n");
--		return -EPROBE_DEFER;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
+ #define check_whether_bt_num_3(type, hop_num) \
+-	(type < HEM_TYPE_MTT && hop_num == 2)
++	((type) < HEM_TYPE_MTT && (hop_num) == 2)
  
- 	dsi = mipi_dsi_device_register_full(host, &info);
- 	if (IS_ERR(dsi)) {
+ #define check_whether_bt_num_2(type, hop_num) \
+-	((type < HEM_TYPE_MTT && hop_num == 1) || \
+-	(type >= HEM_TYPE_MTT && hop_num == 2))
++	(((type) < HEM_TYPE_MTT && (hop_num) == 1) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == 2))
+ 
+ #define check_whether_bt_num_1(type, hop_num) \
+-	((type < HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0) || \
+-	(type >= HEM_TYPE_MTT && hop_num == 1) || \
+-	(type >= HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0))
++	(((type) < HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == 1) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0))
+ 
+ struct hns_roce_hem {
+ 	void *buf;
 -- 
 2.43.0
 
