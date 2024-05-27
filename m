@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-46315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806D68D0168
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:26:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83A48D016D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B61628A501
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 13:26:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DEE01F24884
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 13:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B5215ECF4;
-	Mon, 27 May 2024 13:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5606C15EFB1;
+	Mon, 27 May 2024 13:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y2D54uTW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S8B7pcjp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6174715E5CC;
-	Mon, 27 May 2024 13:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2BE15ECFD;
+	Mon, 27 May 2024 13:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716816387; cv=none; b=d9kGHB6m8F4WiO1XZUZUqGWULiuUVKMpf6+x8rFwuRIUbKbADMUexJLEDmnP4v7jZ2gKWz4B7Gk1N6psy7o3DbEl8DlL4or3Yyd+DaylXecDTW95AEJF7zX7vx8TAgF/HrHRouCkuAU4QdALOpOJWEOVi6jrXfVV2capMJ382yo=
+	t=1716816436; cv=none; b=B+0lG6r+XZqPj2fZ/ZfmJZ46sn1sFPEjnDNPYFLvOgt0GG8JvybMJpjkVr1H1dkETiP0QSo8rBftfN0aAFsmkO6Eq2uZxr2BjSfkLTh7ica2NnMztN7d/9kOUcwsKOpPp2LvuwP5vSJJ+MSGK1gEGreZBGhoV7Lw13A8Kh1veDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716816387; c=relaxed/simple;
-	bh=CItaBbgg6JwWwi5IdRPDwkpBgMhptPIUuGPvIV9glqM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=WxZ7vZOYCHzn1Rly0XAfaQPmOAolYzrYenQWOELXnSB8sb2YhaVP06VmETAR5Tky6cYHdLk+TgVZMxaFGgVE22x44YEMyrP9Wah2GR30I9KxrlkjB0DnWxJHeoNFJzBAEfbanXhUcYH1oP2Tb9u4+5frAfl4hGvCU4xa9PCQeiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y2D54uTW; arc=none smtp.client-ip=192.198.163.7
+	s=arc-20240116; t=1716816436; c=relaxed/simple;
+	bh=wvKfF7CTGkILCYXaRxLo0BRYhRmTr1qU9enaps1pCtI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=l1qjkTjE1WY3ETsYMSBANzDwNMF/sFat3/5oFiPPmfvjjC8iaRY5SxElZr8AEZVJSykrvnafLd2V/khlSZk00jADq6Sif13Du6MYSfg6LMuqzRy5uiIQtsm7HGSSfrFrctIE1HSK+g3QgiDTdigXQ48GBb6ZaoBml9aZ4xbaUmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S8B7pcjp; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716816386; x=1748352386;
+  t=1716816435; x=1748352435;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=CItaBbgg6JwWwi5IdRPDwkpBgMhptPIUuGPvIV9glqM=;
-  b=Y2D54uTWEhAAjwR8xjgIK7aRmWRnQFytgdGO1/mfIh1yB7PyixBFhRyO
-   8jJ6Elcv8UiwJyKzMcFuKE2OqUFigOVeI+ECIF7x6RNecwu3LXSdHHQUN
-   aVtCH1URzmM6fiIQh3zgUrh/1B0I4DqrZQ1DTfINwJDjvKtAxopCZw6BJ
-   xovAv3Cyffq0sKX0HNfPQbe2Fvd/KQ6yqFz6iw4A2R69uxZm8mkkNCT/Z
-   KRAb8NsVbntx/hWbcN187wsIZWJu0f1ubEJOQ9E5lVlNSu+IDp4ssGtDv
-   BX3UUK/WBeoIoxBzsfbAePtDluBVfGYPMlj/DDkdU/TuxFqteioMlJ8Rt
-   A==;
-X-CSE-ConnectionGUID: L7kohyR4RR2LmZPP2IaXyQ==
-X-CSE-MsgGUID: kpf9QdxaQfOIi2JCUoaxCg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="38520316"
+  bh=wvKfF7CTGkILCYXaRxLo0BRYhRmTr1qU9enaps1pCtI=;
+  b=S8B7pcjpn/vYnLpnbZpyta0K6D1GEvMUuLZ5q7FHtyHWCN/g4LwzU8jT
+   I8XiFRRuFx7tcTc8Z/AArcnIyEwC2Lu45R9K6vvH9zoZHEmEh31q4GXyH
+   rYvL19AWULEpSeqwlW3dFKm73cc9KnU4ZfnXCUy50XMa+H56qvntOCb/W
+   0NeOpCfnk203brSmBw88DXCsZuG7Uo8qkmmaCf4ZyRPgXhPbn149OA2WV
+   B/inU7fUzAk/OQzYbPgHDEPBRoNey+sNouTlM0tngq2ke8dnp/2x8CThq
+   EMHAcmencl4D/of/85NtYcKUZX2LuhfwfX+DG/NK7Aojsc5tECJM+8Fn3
+   Q==;
+X-CSE-ConnectionGUID: 9VjXVEgHTxycoXmeR3L1HA==
+X-CSE-MsgGUID: wQekaMZDS26Q6ONroRgW1w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="13360158"
 X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="38520316"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 06:26:26 -0700
-X-CSE-ConnectionGUID: yB0ThovoSDu9Ib2iOE5ENg==
-X-CSE-MsgGUID: ZGSNm+4qS4+b4kH9UZ9xVQ==
+   d="scan'208";a="13360158"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 06:27:14 -0700
+X-CSE-ConnectionGUID: /os+K9DuQBOnhPvFbYJ2mw==
+X-CSE-MsgGUID: 4kE1KxpaTKW4Su4ifoDNdQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="39206646"
+   d="scan'208";a="39558544"
 Received: from unknown (HELO localhost) ([10.245.247.140])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 06:26:23 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 06:27:11 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Michael Buesch <mb@bu3sch.de>,
-	Andrew Morton <akpm@osdl.org>,
-	linux-crypto@vger.kernel.org,
+To: Pavel Machek <pavel@ucw.cz>,
+	Lee Jones <lee@kernel.org>,
+	Dave Hansen <dave@sr71.net>,
+	Richard Purdie <rpurdie@linux.intel.com>,
+	linux-leds@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/1] hwrng: amd - Convert PCIBIOS_* return codes to errnos
-Date: Mon, 27 May 2024 16:26:15 +0300
-Message-Id: <20240527132615.14170-1-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 1/1] leds: ss4200: Convert PCIBIOS_* return codes to errnos
+Date: Mon, 27 May 2024 16:27:00 +0300
+Message-Id: <20240527132700.14260-1-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -79,36 +79,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-amd_rng_mod_init() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is then returned as is but amd_rng_mod_init() is
-a module_init() function that should return normal errnos.
+ich7_lpc_probe() uses pci_read_config_dword() that returns PCIBIOS_*
+codes. The error handling code assumes incorrectly it's a normal errno
+and checks for < 0. The return code is returned from the probe function
+as is but probe functions should return normal errnos.
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it.
+Remove < 0 from the check and convert PCIBIOS_* returns code using
+pcibios_err_to_errno() into normal errno before returning it.
 
-Fixes: 96d63c0297cc ("[PATCH] Add AMD HW RNG driver")
+Fixes: a328e95b82c1 ("leds: LED driver for Intel NAS SS4200 series (v5)")
 Cc: stable@vger.kernel.org
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/char/hw_random/amd-rng.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/leds/leds-ss4200.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/hw_random/amd-rng.c b/drivers/char/hw_random/amd-rng.c
-index 86162a13681e..9a24d19236dc 100644
---- a/drivers/char/hw_random/amd-rng.c
-+++ b/drivers/char/hw_random/amd-rng.c
-@@ -143,8 +143,10 @@ static int __init amd_rng_mod_init(void)
+diff --git a/drivers/leds/leds-ss4200.c b/drivers/leds/leds-ss4200.c
+index fcaa34706b6c..2ef9fc7371bd 100644
+--- a/drivers/leds/leds-ss4200.c
++++ b/drivers/leds/leds-ss4200.c
+@@ -356,8 +356,10 @@ static int ich7_lpc_probe(struct pci_dev *dev,
  
- found:
- 	err = pci_read_config_dword(pdev, 0x58, &pmbase);
--	if (err)
-+	if (err) {
-+		err = pcibios_err_to_errno(err);
- 		goto put_dev;
+ 	nas_gpio_pci_dev = dev;
+ 	status = pci_read_config_dword(dev, PMBASE, &g_pm_io_base);
+-	if (status)
++	if (status) {
++		status = pcibios_err_to_errno(status);
+ 		goto out;
 +	}
+ 	g_pm_io_base &= 0x00000ff80;
  
- 	pmbase &= 0x0000FF00;
- 	if (pmbase == 0) {
+ 	status = pci_read_config_dword(dev, GPIO_CTRL, &gc);
+@@ -369,8 +371,9 @@ static int ich7_lpc_probe(struct pci_dev *dev,
+ 	}
+ 
+ 	status = pci_read_config_dword(dev, GPIO_BASE, &nas_gpio_io_base);
+-	if (0 > status) {
++	if (status) {
+ 		dev_info(&dev->dev, "Unable to read GPIOBASE.\n");
++		status = pcibios_err_to_errno(status);
+ 		goto out;
+ 	}
+ 	dev_dbg(&dev->dev, ": GPIOBASE = 0x%08x\n", nas_gpio_io_base);
 -- 
 2.39.2
 
