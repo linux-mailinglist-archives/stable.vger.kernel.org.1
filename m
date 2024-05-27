@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-47171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC9B8D0CE6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF688D0ADD
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCAD62875CC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F006D1C2158F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B4D16079B;
-	Mon, 27 May 2024 19:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B29161314;
+	Mon, 27 May 2024 19:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApZ0lSpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OStqidG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7E815FCFC;
-	Mon, 27 May 2024 19:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D731AD518;
+	Mon, 27 May 2024 19:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837853; cv=none; b=WVKyyB4bp8YywS722JwiC/kmt7lX+LX8MnzOu8IKddPUuNWzFWQep0VqkLNn6dT37kPaj0jP9CkRthO1+WZ7qilrpLgtsp8ccUadn9zDclPuyrqQGaxDfyTDoah1DWiZyZhYReq2lH/KCfgPdAfbS5oRogJMlOLhXUmx/gwbifU=
+	t=1716836618; cv=none; b=uMquMYaGtIRCYLt31wYQw5oJvx1w7aPWm1nO0OHgChCC+tE97B5ptiT/tWMIPVhiPZFFWJ1LKzbB6ZBUWUhEsxAwUpV+6m7raMqjzpsrc7XVHACJnErXNIp6rSv9jBeeK5ET53wJu/SpB4QLVPrTskCOg1DF3qs5L2BhftjZ8cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837853; c=relaxed/simple;
-	bh=9GMZeknBZnZRoQWriG0demUMh1PZNX4Ll4jc+Yq5ies=;
+	s=arc-20240116; t=1716836618; c=relaxed/simple;
+	bh=oLP21jpOf4sdHZpPtex5PxYk19XtKD4Ts/LV5PMqoeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZDPA51lXJsuJlmulbBcJ2OmMZKzaR51QfzHCHWcqFVIINopt/y/wFEJQVpRAwcf7cgggMffQoW7kxSJnP2ftipx8/IUIWBda2/CLcqF1o2CdCm1wzxUpPDr3b9NKmPaC+TebrbGtICOpish6Q0tMwoNgKZmIIuCBHeq+Es6oso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApZ0lSpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3CCC32781;
-	Mon, 27 May 2024 19:24:12 +0000 (UTC)
+	 MIME-Version; b=T1wpyhrkL6FelGpJQ9GiqbMF8l5wN9WI/36eShdnMDR68QdI61WJBtlgcDt4Zneiw/hpouXeRibgZaJEHRwdPcuCBpMCunRc+4kn5UubWXHSUeV8L+jZbPjp1e6BNj0dp5ByaEGPjQdIDOnWyoI+chRW0OtGCti1KUWIJPMtypc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OStqidG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CEBC2BBFC;
+	Mon, 27 May 2024 19:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837852;
-	bh=9GMZeknBZnZRoQWriG0demUMh1PZNX4Ll4jc+Yq5ies=;
+	s=korg; t=1716836618;
+	bh=oLP21jpOf4sdHZpPtex5PxYk19XtKD4Ts/LV5PMqoeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ApZ0lSptaba7tyYF3EQbN349KTxzsLddaHl4SQ/12kb7Efhb8h1JEa/5MvGWiYru8
-	 y/DFm8qwCtfuk/3t7P1AOmJ7JoOrcKpU5q/alf8zYYw6brqZvW3pBefSK2jgUd9Eqs
-	 4sf+dyNBxsZef+/JfDpmB9LMSU70CMNep9KirJuM=
+	b=OStqidG2gnJXLZpR0GC2YPM5uIdDMe2tNSv8FHj5tUbwyiEHcKGlTIFn/oPGoqTcF
+	 aFVCqoeAzjo+7msFW/NIGCNiiULcHtJylRKPpkFtdaX+PV8U/9CQ8WJgHGXC/08c1G
+	 p+gTMCMfo6Op/hl4Xu2gXc+crN9jP/1TM2v4eK/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixiong Wei <weiguixiong@bytedance.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Anton Protopopov <aspsk@isovalent.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 168/493] x86/boot: Ignore relocations in .notes sections in walk_relocs() too
+Subject: [PATCH 6.9 123/427] bpf: Pack struct bpf_fib_lookup
 Date: Mon, 27 May 2024 20:52:50 +0200
-Message-ID: <20240527185635.854889864@linuxfoundation.org>
+Message-ID: <20240527185613.370057376@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixiong Wei <weiguixiong@bytedance.com>
+From: Anton Protopopov <aspsk@isovalent.com>
 
-[ Upstream commit 76e9762d66373354b45c33b60e9a53ef2a3c5ff2 ]
+[ Upstream commit f91717007217d975aa975ddabd91ae1a107b9bff ]
 
-Commit:
+The struct bpf_fib_lookup is supposed to be of size 64. A recent commit
+59b418c7063d ("bpf: Add a check for struct bpf_fib_lookup size") added
+a static assertion to check this property so that future changes to the
+structure will not accidentally break this assumption.
 
-  aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
+As it immediately turned out, on some 32-bit arm systems, when AEABI=n,
+the total size of the structure was equal to 68, see [1]. This happened
+because the bpf_fib_lookup structure contains a union of two 16-bit
+fields:
 
-... only started ignoring the .notes sections in print_absolute_relocs(),
-but the same logic should also by applied in walk_relocs() to avoid
-such relocations.
+    union {
+            __u16 tot_len;
+            __u16 mtu_result;
+    };
 
-[ mingo: Fixed various typos in the changelog, removed extra curly braces from the code. ]
+which was supposed to compile to a 16-bit-aligned 16-bit field. On the
+aforementioned setups it was instead both aligned and padded to 32-bits.
 
-Fixes: aaa8736370db ("x86, relocs: Ignore relocations in .notes section")
-Fixes: 5ead97c84fa7 ("xen: Core Xen implementation")
-Fixes: da1a679cde9b ("Add /sys/kernel/notes")
-Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20240317150547.24910-1-weiguixiong@bytedance.com
+Declare this inner union as __attribute__((packed, aligned(2))) such
+that it always is of size 2 and is aligned to 16 bits.
+
+  [1] https://lore.kernel.org/all/CA+G9fYtsoP51f-oP_Sp5MOq-Ffv8La2RztNpwvE6+R1VtFiLrw@mail.gmail.com/#t
+
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: e1850ea9bd9e ("bpf: bpf_fib_lookup return MTU value as output when looked up")
+Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240403123303.1452184-1-aspsk@isovalent.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/tools/relocs.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/uapi/linux/bpf.h       | 2 +-
+ tools/include/uapi/linux/bpf.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
-index b029fb81ebeee..e7a44a7f617fb 100644
---- a/arch/x86/tools/relocs.c
-+++ b/arch/x86/tools/relocs.c
-@@ -746,6 +746,15 @@ static void walk_relocs(int (*process)(struct section *sec, Elf_Rel *rel,
- 		if (!(sec_applies->shdr.sh_flags & SHF_ALLOC)) {
- 			continue;
- 		}
-+
-+		/*
-+		 * Do not perform relocations in .notes sections; any
-+		 * values there are meant for pre-boot consumption (e.g.
-+		 * startup_xen).
-+		 */
-+		if (sec_applies->shdr.sh_type == SHT_NOTE)
-+			continue;
-+
- 		sh_symtab = sec_symtab->symtab;
- 		sym_strtab = sec_symtab->link->strtab;
- 		for (j = 0; j < sec->shdr.sh_size/sizeof(Elf_Rel); j++) {
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 3c42b9f1bada3..bcd84985faf48 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -7150,7 +7150,7 @@ struct bpf_fib_lookup {
+ 
+ 		/* output: MTU value */
+ 		__u16	mtu_result;
+-	};
++	} __attribute__((packed, aligned(2)));
+ 	/* input: L3 device index for lookup
+ 	 * output: device index from FIB lookup
+ 	 */
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 3c42b9f1bada3..bcd84985faf48 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -7150,7 +7150,7 @@ struct bpf_fib_lookup {
+ 
+ 		/* output: MTU value */
+ 		__u16	mtu_result;
+-	};
++	} __attribute__((packed, aligned(2)));
+ 	/* input: L3 device index for lookup
+ 	 * output: device index from FIB lookup
+ 	 */
 -- 
 2.43.0
 
