@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-47191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5288D0CFC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0563B8D0AF1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF7C71F20FE2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:25:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B6F21F229AE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EDE15FD01;
-	Mon, 27 May 2024 19:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29BA15FCE5;
+	Mon, 27 May 2024 19:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BK0EtN4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1Y/ndcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0635F168C4;
-	Mon, 27 May 2024 19:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5701078F;
+	Mon, 27 May 2024 19:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837904; cv=none; b=fPn8/COjVgAR1qfC39WQ0gAHrtA8udgfbgbg8006XvVFmV+052qEX8LBR9yXyEMme4s6lQQeR6zIeXOllG1F4eeCkFMtONZlM8MJOh+TJxboi3fkt85YIsFXVINdn6s5hOmjzGSt2i68NNZXj1mC1tmDJ8cOEVpUB7hy00b3c+c=
+	t=1716836674; cv=none; b=jySDQdvZhpTRaCNPLZtzwOzegv5CZR/i/Buzi8WzLz6BayyTnqUT9qsUFMrjMDE9O8PuweKdXQ/JupCfvqRFXffe0kmRMO2FyWcDf9WLh2vFUhJeAEMatzzSQ+fEtKUkrwc3xu9L/f8x86JxLree+JulzyyiPYeRV/Hk/XVgaBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837904; c=relaxed/simple;
-	bh=LJgVjqujfkb//1MhwqZywfN+wJmzDWpkZsmZ44C1gGU=;
+	s=arc-20240116; t=1716836674; c=relaxed/simple;
+	bh=OE/yyHuKs4BX4bij+7NhVG6IUMLLlJrap7fY6YEKVAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQK+EKkY4sfd+UL/yClOwHLKpNSN3iaoKrCV/qiWCiSPSwmVJ89rseldu/7WXDN8e08Kfm2EBTIxKu18zEdvKtZiHRDZgDUyYs2SuA3UKKEUzxqE4tePaJCZj6bbV3HTCKga+Zp9LRYxo0zfQkuo6RbNp6lYz0SIcjtE2uGI8bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BK0EtN4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E05BC2BBFC;
-	Mon, 27 May 2024 19:25:03 +0000 (UTC)
+	 MIME-Version; b=CQiL41e6F03lO6F9N/z+hQ86WeMmlAqFZqacZAH0Sou84t/pxGZlIK9xbL8cJoexmeQeo9kk+l5rHWUdA9vqzZjGeFnQlFeS2q1ai/yw3KipXc4LwFdYhwYnbmS5yGFtngSbwi14V/CSy3cpVr13z8e5NyBo5YH5gNnCdBnX4o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1Y/ndcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC62C2BBFC;
+	Mon, 27 May 2024 19:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837903;
-	bh=LJgVjqujfkb//1MhwqZywfN+wJmzDWpkZsmZ44C1gGU=;
+	s=korg; t=1716836674;
+	bh=OE/yyHuKs4BX4bij+7NhVG6IUMLLlJrap7fY6YEKVAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BK0EtN4JKB8JakdfzV8s8M0+AJcvC7oypTdF9/W8fH18l2Bzc8M2kzNOr/+wJel+B
-	 leUBfYbRKZk9kAlrYHptXUgpzP55J+yZL3C50SmUwFXcTOK2bLS+mYkt/mnnuBeRR+
-	 q0r8IdpfWEEPv8B2pcEaE5/EU9X/pP7PjMTTTIhw=
+	b=Y1Y/ndcZbUL+6ST+C9qYwsgI/M6Ky8UYQ4Z1PaHP0RAK2IapO85FcplYCrBmzUl5x
+	 b1MWpzWzeBDLOs64ix3/4PQB2Z3IADe5qsBMQZKiTamSJK70vdXLsJnHa0wf1Ka12z
+	 PnRcCcs7uk0UazXDigL329gGdIzipN1w6iMASKgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kees Cook <keescook@chromium.org>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Hechao Li <hli@netflix.com>,
+	Tycho Andersen <tycho@tycho.pizza>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 190/493] wifi: carl9170: re-fix fortified-memset warning
+Subject: [PATCH 6.9 145/427] tcp: increase the default TCP scaling ratio
 Date: Mon, 27 May 2024 20:53:12 +0200
-Message-ID: <20240527185636.568483835@linuxfoundation.org>
+Message-ID: <20240527185615.413380920@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Hechao Li <hli@netflix.com>
 
-[ Upstream commit 066afafc10c9476ee36c47c9062527a17e763901 ]
+[ Upstream commit 697a6c8cec03c2299f850fa50322641a8bf6b915 ]
 
-The carl9170_tx_release() function sometimes triggers a fortified-memset
-warning in my randconfig builds:
+After commit dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale"),
+we noticed an application-level timeout due to reduced throughput.
 
-In file included from include/linux/string.h:254,
-                 from drivers/net/wireless/ath/carl9170/tx.c:40:
-In function 'fortify_memset_chk',
-    inlined from 'carl9170_tx_release' at drivers/net/wireless/ath/carl9170/tx.c:283:2,
-    inlined from 'kref_put' at include/linux/kref.h:65:3,
-    inlined from 'carl9170_tx_put_skb' at drivers/net/wireless/ath/carl9170/tx.c:342:9:
-include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  493 |                         __write_overflow_field(p_size_field, size);
+Before the commit, for a client that sets SO_RCVBUF to 65k, it takes
+around 22 seconds to transfer 10M data. After the commit, it takes 40
+seconds. Because our application has a 30-second timeout, this
+regression broke the application.
 
-Kees previously tried to avoid this by using memset_after(), but it seems
-this does not fully address the problem. I noticed that the memset_after()
-here is done on a different part of the union (status) than the original
-cast was from (rate_driver_data), which may confuse the compiler.
+The reason that it takes longer to transfer data is that
+tp->scaling_ratio is initialized to a value that results in ~0.25 of
+rcvbuf. In our case, SO_RCVBUF is set to 65536 by the application, which
+translates to 2 * 65536 = 131,072 bytes in rcvbuf and hence a ~28k
+initial receive window.
 
-Unfortunately, the memset_after() trick does not work on driver_rates[]
-because that is part of an anonymous struct, and I could not get
-struct_group() to do this either. Using two separate memset() calls
-on the two members does address the warning though.
+Later, even though the scaling_ratio is updated to a more accurate
+skb->len/skb->truesize, which is ~0.66 in our environment, the window
+stays at ~0.25 * rcvbuf. This is because tp->window_clamp does not
+change together with the tp->scaling_ratio update when autotuning is
+disabled due to SO_RCVBUF. As a result, the window size is capped at the
+initial window_clamp, which is also ~0.25 * rcvbuf, and never grows
+bigger.
 
-Fixes: fb5f6a0e8063b ("mac80211: Use memset_after() to clear tx status")
-Link: https://lore.kernel.org/lkml/20230623152443.2296825-1-arnd@kernel.org/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240328135509.3755090-2-arnd@kernel.org
+Most modern applications let the kernel do autotuning, and benefit from
+the increased scaling_ratio. But there are applications such as kafka
+that has a default setting of SO_RCVBUF=64k.
+
+This patch increases the initial scaling_ratio from ~25% to 50% in order
+to make it backward compatible with the original default
+sysctl_tcp_adv_win_scale for applications setting SO_RCVBUF.
+
+Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
+Signed-off-by: Hechao Li <hli@netflix.com>
+Reviewed-by: Tycho Andersen <tycho@tycho.pizza>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/netdev/20240402215405.432863-1-hli@netflix.com/
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/carl9170/tx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/tcp.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/carl9170/tx.c b/drivers/net/wireless/ath/carl9170/tx.c
-index 6bb9aa2bfe654..88ef6e023f826 100644
---- a/drivers/net/wireless/ath/carl9170/tx.c
-+++ b/drivers/net/wireless/ath/carl9170/tx.c
-@@ -280,7 +280,8 @@ static void carl9170_tx_release(struct kref *ref)
- 	 * carl9170_tx_fill_rateinfo() has filled the rate information
- 	 * before we get to this point.
- 	 */
--	memset_after(&txinfo->status, 0, rates);
-+	memset(&txinfo->pad, 0, sizeof(txinfo->pad));
-+	memset(&txinfo->rate_driver_data, 0, sizeof(txinfo->rate_driver_data));
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 6ae35199d3b3c..2bcf30381d75f 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1539,11 +1539,10 @@ static inline int tcp_space_from_win(const struct sock *sk, int win)
+ 	return __tcp_space_from_win(tcp_sk(sk)->scaling_ratio, win);
+ }
  
- 	if (atomic_read(&ar->tx_total_queued))
- 		ar->tx_schedule = true;
+-/* Assume a conservative default of 1200 bytes of payload per 4K page.
++/* Assume a 50% default for skb->len/skb->truesize ratio.
+  * This may be adjusted later in tcp_measure_rcv_mss().
+  */
+-#define TCP_DEFAULT_SCALING_RATIO ((1200 << TCP_RMEM_TO_WIN_SCALE) / \
+-				   SKB_TRUESIZE(4096))
++#define TCP_DEFAULT_SCALING_RATIO (1 << (TCP_RMEM_TO_WIN_SCALE - 1))
+ 
+ static inline void tcp_scaling_ratio_init(struct sock *sk)
+ {
 -- 
 2.43.0
 
