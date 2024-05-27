@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-46324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E068D02E1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:13:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03558D02E4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:13:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 842831F23909
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:13:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952E429AC57
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B3E15FA72;
-	Mon, 27 May 2024 14:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2CF15FCE5;
+	Mon, 27 May 2024 14:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uDXLWkD1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F5oo4M3H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F187B15FA68;
-	Mon, 27 May 2024 14:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DD215ECF9;
+	Mon, 27 May 2024 14:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819143; cv=none; b=d2Ta3v+mUsK1ePcfwxX6875+1lehEcQiDE/nwDar6bjQMJ7TCrZGqEWG2zr0yCxQR+HaR1INRu325A5DZ47zXFwsS//6T5K+OAwCuFhgRpPLjMexx7lnHezmTXRefKXPLq/8VtI/jwEPIeclidLPAKPErzvd1+54fkhjAeSU58I=
+	t=1716819144; cv=none; b=atjg8Gd06jY7YR9eBp0pkqQKSmUUNz93huo7jIBqbGaQRh/7DkQUEpDzMsg3BlU0emPCe+mjqLGRmCX9Ys/E/9GcmIZ+bRhLT5tzKH6YEyBNjvp+7IhGY3UtxnZRWw7aUDTmsYXVNvpD/rf7LfBo8sLyMOBmor6eqJUlR19UmfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819143; c=relaxed/simple;
-	bh=HrTEdUzVuB12p0SLte4yR5sIXNZvCTC49ZZH/0a3r8o=;
+	s=arc-20240116; t=1716819144; c=relaxed/simple;
+	bh=qtUaOLSbwTNDTzTLaCz5ajMkhHijKLEk06TAQkcmFgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPgW371rU8wNKzlixRtIBfaXvhHZfRTIf3BP0RKf8PVna7qy560beEcQfraaW4YgihZ/s7N6uCiAT5A8rVszgRlfLnvIXq+RNuqRtDrc6aAFV0SOcptCBAZBDvK3h7aEdF1uBGgxJ9QJsSstYg7cPT2vmbOIDJRa+xyqDBLntkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uDXLWkD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E51C2BBFC;
-	Mon, 27 May 2024 14:12:21 +0000 (UTC)
+	 MIME-Version; b=XPWy14wXIFvXjvmz/E8a6AVhjFW0CXbydssPaH4NNRti7QF/tqLYTw7jSkqVsZCu4vRNd74w9aAUKg1jqUmkHvBwcyIWFClJli4A1h9d7gp5/+bdEIWCYA3tOaaCgPguamdwxyVA2cuQ5HNQP6m/sTEF6M6cg8Q9KU8XGt3J+r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F5oo4M3H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159EEC4AF0A;
+	Mon, 27 May 2024 14:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819142;
-	bh=HrTEdUzVuB12p0SLte4yR5sIXNZvCTC49ZZH/0a3r8o=;
+	s=k20201202; t=1716819144;
+	bh=qtUaOLSbwTNDTzTLaCz5ajMkhHijKLEk06TAQkcmFgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDXLWkD1nmVnKXp9ts/EVvNEYh1mEPHky2W+KngWs3JRsJkNIWPUew6yZRxrybl8B
-	 LdPY4/yfTxj1o9ZBeJegJ9WCKPnUKL4O4zYcricgmHlkwHSXTQz7lBHlPcepUP4Hm2
-	 38wdT6p1ToPz5cpQFY0CKpDn82ABIa0zsqufnYzC4a/PwVV0E4lYbFa0nJeTnyuHF6
-	 WqlsNkiEV2BbqXU+ppP2d9rZiS/28peJqL0wf7SKgFNtubqQ/MZ2xoAD08auyQPMv8
-	 C4Ex3jxRmKAakheC/q5A9aF8hIFE+aYY10OL6XflJtgVGh/WBGlHvLoYBB1jQX1JpT
-	 4lbcyfC4g5mWA==
+	b=F5oo4M3HQ9b+Oi22QtTjNApliqwFgFoYd1FT883a/W86KWKRMvJvLeBWRwaUeqyj2
+	 /8t8/ZY3uz7Yc9OEUIhTltjmuL36iWljpk2n+D+o7U/DdDwDUtD0Hl8OVs50e4Lu46
+	 4u0sf/6dJ6OyXAehFWotR5OsXQ4kEPpVdGH0NrMWW/3An3k4qQepA1dCViZpulXNT7
+	 ux5zVbW255D6sxdWrUYjZ5jQsO60wN2g0MRKK4MIq9zOcvoMvtB+C5QZHUO+/EGfwk
+	 fql/zrjceeaDzH0RHJ9YzzR+8Bw9HJZFQT2CTv/75iYZ0cCeNnPPMMmmH6WjNsA+lC
+	 ejVqhd/lmpc3w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com,
-	Andrii Nakryiko <andrii@kernel.org>,
+Cc: Jian Wen <wenjianhn@gmail.com>,
+	Jian Wen <wenjian1@xiaomi.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 04/35] bpf: Avoid kfree_rcu() under lock in bpf_lpm_trie.
-Date: Mon, 27 May 2024 10:11:09 -0400
-Message-ID: <20240527141214.3844331-4-sashal@kernel.org>
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 05/35] devlink: use kvzalloc() to allocate devlink instance resources
+Date: Mon, 27 May 2024 10:11:10 -0400
+Message-ID: <20240527141214.3844331-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
 References: <20240527141214.3844331-1-sashal@kernel.org>
@@ -67,100 +70,84 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Jian Wen <wenjianhn@gmail.com>
 
-[ Upstream commit 59f2f841179aa6a0899cb9cf53659149a35749b7 ]
+[ Upstream commit 730fffce4fd2eb7a0be2d0b6cd7e55e9194d76d5 ]
 
-syzbot reported the following lock sequence:
-cpu 2:
-  grabs timer_base lock
-    spins on bpf_lpm lock
+During live migration of a virtual machine, the SR-IOV VF need to be
+re-registered. It may fail when the memory is badly fragmented.
 
-cpu 1:
-  grab rcu krcp lock
-    spins on timer_base lock
+The related log is as follows.
 
-cpu 0:
-  grab bpf_lpm lock
-    spins on rcu krcp lock
+    kernel: hv_netvsc 6045bdaa-c0d1-6045-bdaa-c0d16045bdaa eth0: VF slot 1 added
+...
+    kernel: kworker/0:0: page allocation failure: order:7, mode:0x40dc0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO), nodemask=(null),cpuset=/,mems_allowed=0
+    kernel: CPU: 0 PID: 24006 Comm: kworker/0:0 Tainted: G            E     5.4...x86_64 #1
+    kernel: Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS 090008  12/07/2018
+    kernel: Workqueue: events work_for_cpu_fn
+    kernel: Call Trace:
+    kernel: dump_stack+0x8b/0xc8
+    kernel: warn_alloc+0xff/0x170
+    kernel: __alloc_pages_slowpath+0x92c/0xb2b
+    kernel: ? get_page_from_freelist+0x1d4/0x1140
+    kernel: __alloc_pages_nodemask+0x2f9/0x320
+    kernel: alloc_pages_current+0x6a/0xb0
+    kernel: kmalloc_order+0x1e/0x70
+    kernel: kmalloc_order_trace+0x26/0xb0
+    kernel: ? __switch_to_asm+0x34/0x70
+    kernel: __kmalloc+0x276/0x280
+    kernel: ? _raw_spin_unlock_irqrestore+0x1e/0x40
+    kernel: devlink_alloc+0x29/0x110
+    kernel: mlx5_devlink_alloc+0x1a/0x20 [mlx5_core]
+    kernel: init_one+0x1d/0x650 [mlx5_core]
+    kernel: local_pci_probe+0x46/0x90
+    kernel: work_for_cpu_fn+0x1a/0x30
+    kernel: process_one_work+0x16d/0x390
+    kernel: worker_thread+0x1d3/0x3f0
+    kernel: kthread+0x105/0x140
+    kernel: ? max_active_store+0x80/0x80
+    kernel: ? kthread_bind+0x20/0x20
+    kernel: ret_from_fork+0x3a/0x50
 
-bpf_lpm lock can be the same.
-timer_base lock can also be the same due to timer migration.
-but rcu krcp lock is always per-cpu, so it cannot be the same lock.
-Hence it's a false positive.
-To avoid lockdep complaining move kfree_rcu() after spin_unlock.
-
-Reported-by: syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240329171439.37813-1-alexei.starovoitov@gmail.com
+Signed-off-by: Jian Wen <wenjian1@xiaomi.com>
+Link: https://lore.kernel.org/r/20240327082128.942818-1-wenjian1@xiaomi.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/devlink/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 050fe1ebf0f7d..d0febf07051ed 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -308,6 +308,7 @@ static long trie_update_elem(struct bpf_map *map,
- {
- 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
- 	struct lpm_trie_node *node, *im_node = NULL, *new_node = NULL;
-+	struct lpm_trie_node *free_node = NULL;
- 	struct lpm_trie_node __rcu **slot;
- 	struct bpf_lpm_trie_key_u8 *key = _key;
- 	unsigned long irq_flags;
-@@ -382,7 +383,7 @@ static long trie_update_elem(struct bpf_map *map,
- 			trie->n_entries--;
- 
- 		rcu_assign_pointer(*slot, new_node);
--		kfree_rcu(node, rcu);
-+		free_node = node;
- 
- 		goto out;
- 	}
-@@ -429,6 +430,7 @@ static long trie_update_elem(struct bpf_map *map,
- 	}
- 
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
-+	kfree_rcu(free_node, rcu);
- 
- 	return ret;
+diff --git a/net/devlink/core.c b/net/devlink/core.c
+index 7f0b093208d75..f49cd83f1955f 100644
+--- a/net/devlink/core.c
++++ b/net/devlink/core.c
+@@ -314,7 +314,7 @@ static void devlink_release(struct work_struct *work)
+ 	mutex_destroy(&devlink->lock);
+ 	lockdep_unregister_key(&devlink->lock_key);
+ 	put_device(devlink->dev);
+-	kfree(devlink);
++	kvfree(devlink);
  }
-@@ -437,6 +439,7 @@ static long trie_update_elem(struct bpf_map *map,
- static long trie_delete_elem(struct bpf_map *map, void *_key)
- {
- 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
-+	struct lpm_trie_node *free_node = NULL, *free_parent = NULL;
- 	struct bpf_lpm_trie_key_u8 *key = _key;
- 	struct lpm_trie_node __rcu **trim, **trim2;
- 	struct lpm_trie_node *node, *parent;
-@@ -506,8 +509,8 @@ static long trie_delete_elem(struct bpf_map *map, void *_key)
- 		else
- 			rcu_assign_pointer(
- 				*trim2, rcu_access_pointer(parent->child[0]));
--		kfree_rcu(parent, rcu);
--		kfree_rcu(node, rcu);
-+		free_parent = parent;
-+		free_node = node;
- 		goto out;
- 	}
  
-@@ -521,10 +524,12 @@ static long trie_delete_elem(struct bpf_map *map, void *_key)
- 		rcu_assign_pointer(*trim, rcu_access_pointer(node->child[1]));
- 	else
- 		RCU_INIT_POINTER(*trim, NULL);
--	kfree_rcu(node, rcu);
-+	free_node = node;
+ void devlink_put(struct devlink *devlink)
+@@ -420,7 +420,7 @@ struct devlink *devlink_alloc_ns(const struct devlink_ops *ops,
+ 	if (!devlink_reload_actions_valid(ops))
+ 		return NULL;
  
- out:
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
-+	kfree_rcu(free_parent, rcu);
-+	kfree_rcu(free_node, rcu);
+-	devlink = kzalloc(sizeof(*devlink) + priv_size, GFP_KERNEL);
++	devlink = kvzalloc(struct_size(devlink, priv, priv_size), GFP_KERNEL);
+ 	if (!devlink)
+ 		return NULL;
  
- 	return ret;
+@@ -455,7 +455,7 @@ struct devlink *devlink_alloc_ns(const struct devlink_ops *ops,
+ 	return devlink;
+ 
+ err_xa_alloc:
+-	kfree(devlink);
++	kvfree(devlink);
+ 	return NULL;
  }
+ EXPORT_SYMBOL_GPL(devlink_alloc_ns);
 -- 
 2.43.0
 
