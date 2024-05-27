@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-46762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A045D8D0B26
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03428D0D2E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C9962839EB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63DF61F20F98
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850396A039;
-	Mon, 27 May 2024 19:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E5D15FD04;
+	Mon, 27 May 2024 19:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkdT+7AY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlfre8c6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449A317E90E;
-	Mon, 27 May 2024 19:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24AB15FA91;
+	Mon, 27 May 2024 19:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836794; cv=none; b=opUJIHMrB3XD0abvUyLY+a8zppLApeVBvuMk/gVseXHEM6mVi90+KRQaLZMvgBb5hCsbJY2yppMC/91wo6I9krYPHVl3K29lIb0s/zMogS6Y/qbdETC39ccT+m4PhIAD30IYua1DiB2bhujgSHfYaEwPx9MsIHA5/pLSatomrBs=
+	t=1716838021; cv=none; b=KGsulswnwFJiYHMRrczMwJfdZ5GQSvx0dsUMmF4WWACWNlRBIdSd6eCpurbrewLj4Ayulf833WfR2mJ3PTf9+z8l5TevhItkHWNAP4T2AZCTCtiL4yOxnvkSp5Vlv5E07FT4uKh3kVO9+w7ixqXgJ/cM6xG13Yhmcsh+ti2w9G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836794; c=relaxed/simple;
-	bh=Nni1Bhc2wjhvFTvIr7Y7HW0HmrRDhvuSfZglcyrbmvM=;
+	s=arc-20240116; t=1716838021; c=relaxed/simple;
+	bh=W4scv2E/7gs3KbSyL87GmkVN5wDBLdx4NSqJ+tByKgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rd/5ME4flhRtBzK+2aQl+a9BD40Lclez4g2uu04Xe/53UrtHNd3QYe+k+6kyh+lyiurlmog0ASWWj0nTNM6Dh1UuVJ0ZqR8AAfc82gcly/SoECZs28/TzP7aAZ2+BmCh8bSu1ddEf4FMbqB4ISwjqKfosWCAgOnXukc49WrYHYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkdT+7AY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4E2C2BBFC;
-	Mon, 27 May 2024 19:06:33 +0000 (UTC)
+	 MIME-Version; b=cxfj31lVwdbWzAa1uFfYtOx7cFWVmQtfvXc95L1nkXaHs6BZ+yvZwvX9x0W2a44Dunmp6Tv1eiOEaT9AlniMv0Vr+rlit/5eZ7x2N+FaxQUQKltdg13rePqZNHYBwQwuht8Q2ubC3GtO6Hp79GFjIWwfiA8FPOoLPlh63i6jR80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlfre8c6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F37C32782;
+	Mon, 27 May 2024 19:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836793;
-	bh=Nni1Bhc2wjhvFTvIr7Y7HW0HmrRDhvuSfZglcyrbmvM=;
+	s=korg; t=1716838021;
+	bh=W4scv2E/7gs3KbSyL87GmkVN5wDBLdx4NSqJ+tByKgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PkdT+7AY+tLFooFxTLgQZum05rgs9c4HhzcNoerfagqyWYcR4BRuIxKUqa3kBGOeO
-	 Uz/qrG8iZMQOoIltfD+INSYKqwScVOSQ8PLb+zx5kcH3yUWRHq0bsqHPMpzUVTswOr
-	 bZcHg5Eb1TF+IENp8hqEhhdQcm4/QyacmA4X+SPQ=
+	b=hlfre8c6qaiNxyTlKDp2rwgX1+qyDje/OQd319NFn0VXxcNPyMyBZB3/UpsjvZ1Hy
+	 OzHSN1PO6vh8gnIa6ImlXEyy4bEf0QLNPWabgmBBPh78lAfsLeCQmx+5WGly3gLAnJ
+	 OwlzyD7blCnlaShA8fQOMQNcpMJCClcsWr5mBx+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
-Subject: [PATCH 6.9 191/427] wifi: ar5523: enable proper endpoint verification
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 236/493] thermal/debugfs: Avoid excessive updates of trip point statistics
 Date: Mon, 27 May 2024 20:53:58 +0200
-Message-ID: <20240527185620.079763770@linuxfoundation.org>
+Message-ID: <20240527185638.014537807@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit e120b6388d7d88635d67dcae6483f39c37111850 ]
+[ Upstream commit 0a293c77580581c4b058eb40287acadac6ffd14a ]
 
-Syzkaller reports [1] hitting a warning about an endpoint in use
-not having an expected type to it.
+Since thermal_debug_update_temp() is called before invoking
+thermal_debug_tz_trip_down() for the trips that were crossed by the
+zone temperature on the way up, it updates the statistics for them
+as though the current zone temperature was above the low temperature
+of each of them.  However, if a given trip has just been crossed on the
+way down, the zone temperature is in fact below its low temperature,
+but this is handled by thermal_debug_tz_trip_down() running after the
+update of the trip statistics.
 
-Fix the issue by checking for the existence of all proper
-endpoints with their according types intact.
+The remedy is to call thermal_debug_update_temp() after
+thermal_debug_tz_trip_down() has been invoked for all of the
+trips in question, but then thermal_debug_tz_trip_up() needs to
+be adjusted, so it does not update the statistics for the trips
+that has just been crossed on the way up, as that will be taken
+care of by thermal_debug_update_temp() down the road.
 
-Sadly, this patch has not been tested on real hardware.
+Modify the code accordingly.
 
-[1] Syzkaller report:
-------------[ cut here ]------------
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 0 PID: 3643 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-...
-Call Trace:
- <TASK>
- ar5523_cmd+0x41b/0x780 drivers/net/wireless/ath/ar5523/ar5523.c:275
- ar5523_cmd_read drivers/net/wireless/ath/ar5523/ar5523.c:302 [inline]
- ar5523_host_available drivers/net/wireless/ath/ar5523/ar5523.c:1376 [inline]
- ar5523_probe+0x14b0/0x1d10 drivers/net/wireless/ath/ar5523/ar5523.c:1655
- usb_probe_interface+0x30f/0x7f0 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:560 [inline]
- really_probe+0x249/0xb90 drivers/base/dd.c:639
- __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
- driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
- __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
- bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
- __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
- bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
- device_add+0xbd9/0x1e90 drivers/base/core.c:3517
- usb_set_configuration+0x101d/0x1900 drivers/usb/core/message.c:2170
- usb_generic_driver_probe+0xbe/0x100 drivers/usb/core/generic.c:238
- usb_probe_device+0xd8/0x2c0 drivers/usb/core/driver.c:293
- call_driver_probe drivers/base/dd.c:560 [inline]
- really_probe+0x249/0xb90 drivers/base/dd.c:639
- __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
- driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
- __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
- bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
- __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
- bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
- device_add+0xbd9/0x1e90 drivers/base/core.c:3517
- usb_new_device.cold+0x685/0x10ad drivers/usb/core/hub.c:2573
- hub_port_connect drivers/usb/core/hub.c:5353 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5497 [inline]
- port_event drivers/usb/core/hub.c:5653 [inline]
- hub_event+0x26cb/0x45d0 drivers/usb/core/hub.c:5735
- process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
- worker_thread+0x669/0x1090 kernel/workqueue.c:2436
- kthread+0x2e8/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:306
- </TASK>
-
-Reported-and-tested-by: syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
-Fixes: b7d572e1871d ("ar5523: Add new driver")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240408121425.29392-1-n.zhandarovich@fintech.ru
+Fixes: 7ef01f228c9f ("thermal/debugfs: Add thermal debugfs information for mitigation episodes")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ar5523/ar5523.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/thermal/thermal_core.c    | 3 ++-
+ drivers/thermal/thermal_debugfs.c | 7 -------
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-index 815f8f599f5d1..5a55db349cb57 100644
---- a/drivers/net/wireless/ath/ar5523/ar5523.c
-+++ b/drivers/net/wireless/ath/ar5523/ar5523.c
-@@ -1594,6 +1594,20 @@ static int ar5523_probe(struct usb_interface *intf,
- 	struct ar5523 *ar;
- 	int error = -ENOMEM;
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index dfaa6341694a0..1818901d37ca8 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -432,7 +432,6 @@ static void update_temperature(struct thermal_zone_device *tz)
+ 	trace_thermal_temperature(tz);
  
-+	static const u8 bulk_ep_addr[] = {
-+		AR5523_CMD_TX_PIPE | USB_DIR_OUT,
-+		AR5523_DATA_TX_PIPE | USB_DIR_OUT,
-+		AR5523_CMD_RX_PIPE | USB_DIR_IN,
-+		AR5523_DATA_RX_PIPE | USB_DIR_IN,
-+		0};
+ 	thermal_genl_sampling_temp(tz->id, temp);
+-	thermal_debug_update_temp(tz);
+ }
+ 
+ static void thermal_zone_device_check(struct work_struct *work)
+@@ -476,6 +475,8 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
+ 	for_each_trip(tz, trip)
+ 		handle_thermal_trip(tz, trip);
+ 
++	thermal_debug_update_temp(tz);
 +
-+	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr)) {
-+		dev_err(&dev->dev,
-+			"Could not find all expected endpoints\n");
-+		error = -ENODEV;
-+		goto out;
-+	}
-+
- 	/*
- 	 * Load firmware if the device requires it.  This will return
- 	 * -ENXIO on success and we'll get called back afer the usb
+ 	monitor_thermal_zone(tz);
+ }
+ 
+diff --git a/drivers/thermal/thermal_debugfs.c b/drivers/thermal/thermal_debugfs.c
+index 5693cc8b231aa..47ab95b3699e9 100644
+--- a/drivers/thermal/thermal_debugfs.c
++++ b/drivers/thermal/thermal_debugfs.c
+@@ -555,7 +555,6 @@ void thermal_debug_tz_trip_up(struct thermal_zone_device *tz,
+ 	struct tz_episode *tze;
+ 	struct tz_debugfs *tz_dbg;
+ 	struct thermal_debugfs *thermal_dbg = tz->debugfs;
+-	int temperature = tz->temperature;
+ 	int trip_id = thermal_zone_trip_id(tz, trip);
+ 	ktime_t now = ktime_get();
+ 
+@@ -624,12 +623,6 @@ void thermal_debug_tz_trip_up(struct thermal_zone_device *tz,
+ 
+ 	tze = list_first_entry(&tz_dbg->tz_episodes, struct tz_episode, node);
+ 	tze->trip_stats[trip_id].timestamp = now;
+-	tze->trip_stats[trip_id].max = max(tze->trip_stats[trip_id].max, temperature);
+-	tze->trip_stats[trip_id].min = min(tze->trip_stats[trip_id].min, temperature);
+-	tze->trip_stats[trip_id].count++;
+-	tze->trip_stats[trip_id].avg = tze->trip_stats[trip_id].avg +
+-		(temperature - tze->trip_stats[trip_id].avg) /
+-		tze->trip_stats[trip_id].count;
+ 
+ unlock:
+ 	mutex_unlock(&thermal_dbg->lock);
 -- 
 2.43.0
 
