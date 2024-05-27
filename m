@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80098D0BC7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8DA8D0DC4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79C8D1F23497
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FD151C21198
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3672215DBD8;
-	Mon, 27 May 2024 19:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E05215FA9F;
+	Mon, 27 May 2024 19:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fc5Uw2Bm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SsmoExb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA66317E90E;
-	Mon, 27 May 2024 19:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D4B17727;
+	Mon, 27 May 2024 19:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837171; cv=none; b=AerPl/nO/9X3GRumKD/NoRPbat34NcQNu7r0qlutni0VXFl3Y+FYJz75PEZrxadFNPEW43DPK6H7iwTFTmSz+0J1u099huBYQv0iOklJh+oFhklPsQ6bmK60SwwtMevfVnrwDDSBM60mJON05FGKDD4r0cHna/64HrdFCVLgGfc=
+	t=1716838413; cv=none; b=Ju8Qrfkd0aPOmi6WFG1EKbQ7QQUXMpGlC05nV7kQmUp2MuQpKYybCrcNwAPBCl4MBDPTm5/zVCUOFy52c01CD8455af3iL6z9KRzClsUybAq0USUMcUxF3oCsiwLLzp7v7rUd94zAmYGzEm1/B++A8Iu6vPalo1fJCAO5nSZ1EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837171; c=relaxed/simple;
-	bh=k+3GOm06ypxjNAmu0u2ZGlSrqWl0UI+ieTmcazBEVXw=;
+	s=arc-20240116; t=1716838413; c=relaxed/simple;
+	bh=uv2KRC9edr+Zo4iOGEZoCoxmik0fnPi48/7s5HUFb44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C1OiiGqUXonm3pZQMb7LjQ02gyqqix+avd4x40JCx0MR6cKjta1jz42TGuUQFvMIZspr7/FOCfr7NuO9Ni/QDx2LXblyrIkVO5DlqWcfVWOFZDgtWyGSoG06NqEzj+xgiU5SKyNBpqPMyWu8CMUapx50AGpOUg23sZpw+OL5s9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fc5Uw2Bm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE73C2BBFC;
-	Mon, 27 May 2024 19:12:50 +0000 (UTC)
+	 MIME-Version; b=XSZUBFStIfclAtIqT94qvBn8jO3vWRCTXFolGUKWj/WZbrn3dvmpDWmJWaDUPI0MtKwY2mXe7PQSzPMGiTSDKrm1SJZ+Vnu80n8eMMbFjCcHRjbZwWZyK3hyE8/WfvofnziT+JyBsL3mxgdE9XpLjc8yR9eIEuLUNjMLcyq41/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SsmoExb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B901C2BBFC;
+	Mon, 27 May 2024 19:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837170;
-	bh=k+3GOm06ypxjNAmu0u2ZGlSrqWl0UI+ieTmcazBEVXw=;
+	s=korg; t=1716838413;
+	bh=uv2KRC9edr+Zo4iOGEZoCoxmik0fnPi48/7s5HUFb44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fc5Uw2BmssimLX6X8MiHToiza6O1KDljz1utzT1pXkeaswsXxQ4FnmvO5QUVnkJ2t
-	 bMuaC11ABXPZSNSOvY3IF3bCXtwTGsoy3JMLZtazOWo8wbH+/L5Nk6MYj3s/Pl7G+j
-	 xKeY3tIRAuPCI7Wc6xVX6rSb7vccnBYdHdiEg8nY=
+	b=1SsmoExb7pL+FzZMs9UisbeRDemEZwtneBn6wbuYUlSjgTBcaMw4rBOIWI02c5UEu
+	 +4rnK07RC3xxp73q5a6wXeSa2jkxDom5+R8IuIajQQjoO1gU9EWnJZlTMQdeC/fEgz
+	 unTxsPi0DAfKsIcyqdoyMcEgcVVpX+nU7Wtqka7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Tianchen Ding <dtcccc@linux.alibaba.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 337/427] drm/panel: novatek-nt35950: Dont log an error when DSI host cant be found
+Subject: [PATCH 6.8 382/493] selftests: cgroup: skip test_cgcore_lesser_ns_open when cgroup2 mounted without nsdelegate
 Date: Mon, 27 May 2024 20:56:24 +0200
-Message-ID: <20240527185632.642401239@linuxfoundation.org>
+Message-ID: <20240527185642.770886140@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,224 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Tianchen Ding <dtcccc@linux.alibaba.com>
 
-[ Upstream commit 5ff5505b9a2d827cae3f95dceba258c963138175 ]
+[ Upstream commit 4793cb599b1bdc3d356f0374c2c99ffe890ae876 ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+The test case test_cgcore_lesser_ns_open only tasks effect when cgroup2
+is mounted with "nsdelegate" mount option. If it misses this option, or
+is remounted without "nsdelegate", the test case will fail. For example,
+running bpf/test_cgroup_storage first, and then run cgroup/test_core will
+fail on test_cgcore_lesser_ns_open. Skip it if "nsdelegate" is not
+detected in cgroup2 mount options.
 
-Fixes: 623a3531e9cf ("drm/panel: Add driver for Novatek NT35950 DSI DriverIC panels")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-8-619a28148e5c@collabora.com
+Fixes: bf35a7879f1d ("selftests: cgroup: Test open-time cgroup namespace usage for migration checks")
+Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-novatek-nt35950.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tools/testing/selftests/cgroup/cgroup_util.c        | 8 +++++---
+ tools/testing/selftests/cgroup/cgroup_util.h        | 2 +-
+ tools/testing/selftests/cgroup/test_core.c          | 7 ++++++-
+ tools/testing/selftests/cgroup/test_cpu.c           | 2 +-
+ tools/testing/selftests/cgroup/test_cpuset.c        | 2 +-
+ tools/testing/selftests/cgroup/test_freezer.c       | 2 +-
+ tools/testing/selftests/cgroup/test_hugetlb_memcg.c | 2 +-
+ tools/testing/selftests/cgroup/test_kill.c          | 2 +-
+ tools/testing/selftests/cgroup/test_kmem.c          | 2 +-
+ tools/testing/selftests/cgroup/test_memcontrol.c    | 2 +-
+ tools/testing/selftests/cgroup/test_zswap.c         | 2 +-
+ 11 files changed, 20 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35950.c b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-index 648ce92014265..028fdac293f77 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-@@ -556,10 +556,8 @@ static int nt35950_probe(struct mipi_dsi_device *dsi)
- 		}
- 		dsi_r_host = of_find_mipi_dsi_host_by_node(dsi_r);
- 		of_node_put(dsi_r);
--		if (!dsi_r_host) {
--			dev_err(dev, "Cannot get secondary DSI host\n");
--			return -EPROBE_DEFER;
--		}
-+		if (!dsi_r_host)
-+			return dev_err_probe(dev, -EPROBE_DEFER, "Cannot get secondary DSI host\n");
+diff --git a/tools/testing/selftests/cgroup/cgroup_util.c b/tools/testing/selftests/cgroup/cgroup_util.c
+index 0340d4ca8f51c..432db923bced0 100644
+--- a/tools/testing/selftests/cgroup/cgroup_util.c
++++ b/tools/testing/selftests/cgroup/cgroup_util.c
+@@ -195,10 +195,10 @@ int cg_write_numeric(const char *cgroup, const char *control, long value)
+ 	return cg_write(cgroup, control, buf);
+ }
  
- 		nt->dsi[1] = mipi_dsi_device_register_full(dsi_r_host, info);
- 		if (!nt->dsi[1]) {
+-int cg_find_unified_root(char *root, size_t len)
++int cg_find_unified_root(char *root, size_t len, bool *nsdelegate)
+ {
+ 	char buf[10 * PAGE_SIZE];
+-	char *fs, *mount, *type;
++	char *fs, *mount, *type, *options;
+ 	const char delim[] = "\n\t ";
+ 
+ 	if (read_text("/proc/self/mounts", buf, sizeof(buf)) <= 0)
+@@ -211,12 +211,14 @@ int cg_find_unified_root(char *root, size_t len)
+ 	for (fs = strtok(buf, delim); fs; fs = strtok(NULL, delim)) {
+ 		mount = strtok(NULL, delim);
+ 		type = strtok(NULL, delim);
+-		strtok(NULL, delim);
++		options = strtok(NULL, delim);
+ 		strtok(NULL, delim);
+ 		strtok(NULL, delim);
+ 
+ 		if (strcmp(type, "cgroup2") == 0) {
+ 			strncpy(root, mount, len);
++			if (nsdelegate)
++				*nsdelegate = !!strstr(options, "nsdelegate");
+ 			return 0;
+ 		}
+ 	}
+diff --git a/tools/testing/selftests/cgroup/cgroup_util.h b/tools/testing/selftests/cgroup/cgroup_util.h
+index 1df7f202214af..89e8519fb2719 100644
+--- a/tools/testing/selftests/cgroup/cgroup_util.h
++++ b/tools/testing/selftests/cgroup/cgroup_util.h
+@@ -21,7 +21,7 @@ static inline int values_close(long a, long b, int err)
+ 	return abs(a - b) <= (a + b) / 100 * err;
+ }
+ 
+-extern int cg_find_unified_root(char *root, size_t len);
++extern int cg_find_unified_root(char *root, size_t len, bool *nsdelegate);
+ extern char *cg_name(const char *root, const char *name);
+ extern char *cg_name_indexed(const char *root, const char *name, int index);
+ extern char *cg_control(const char *cgroup, const char *control);
+diff --git a/tools/testing/selftests/cgroup/test_core.c b/tools/testing/selftests/cgroup/test_core.c
+index 80aa6b2373b96..a5672a91d273c 100644
+--- a/tools/testing/selftests/cgroup/test_core.c
++++ b/tools/testing/selftests/cgroup/test_core.c
+@@ -18,6 +18,8 @@
+ #include "../kselftest.h"
+ #include "cgroup_util.h"
+ 
++static bool nsdelegate;
++
+ static int touch_anon(char *buf, size_t size)
+ {
+ 	int fd;
+@@ -775,6 +777,9 @@ static int test_cgcore_lesser_ns_open(const char *root)
+ 	pid_t pid;
+ 	int status;
+ 
++	if (!nsdelegate)
++		return KSFT_SKIP;
++
+ 	cg_test_a = cg_name(root, "cg_test_a");
+ 	cg_test_b = cg_name(root, "cg_test_b");
+ 
+@@ -862,7 +867,7 @@ int main(int argc, char *argv[])
+ 	char root[PATH_MAX];
+ 	int i, ret = EXIT_SUCCESS;
+ 
+-	if (cg_find_unified_root(root, sizeof(root)))
++	if (cg_find_unified_root(root, sizeof(root), &nsdelegate))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 
+ 	if (cg_read_strstr(root, "cgroup.subtree_control", "memory"))
+diff --git a/tools/testing/selftests/cgroup/test_cpu.c b/tools/testing/selftests/cgroup/test_cpu.c
+index 24020a2c68dcd..186bf96f6a284 100644
+--- a/tools/testing/selftests/cgroup/test_cpu.c
++++ b/tools/testing/selftests/cgroup/test_cpu.c
+@@ -700,7 +700,7 @@ int main(int argc, char *argv[])
+ 	char root[PATH_MAX];
+ 	int i, ret = EXIT_SUCCESS;
+ 
+-	if (cg_find_unified_root(root, sizeof(root)))
++	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 
+ 	if (cg_read_strstr(root, "cgroup.subtree_control", "cpu"))
+diff --git a/tools/testing/selftests/cgroup/test_cpuset.c b/tools/testing/selftests/cgroup/test_cpuset.c
+index b061ed1e05b4d..4034d14ba69ac 100644
+--- a/tools/testing/selftests/cgroup/test_cpuset.c
++++ b/tools/testing/selftests/cgroup/test_cpuset.c
+@@ -249,7 +249,7 @@ int main(int argc, char *argv[])
+ 	char root[PATH_MAX];
+ 	int i, ret = EXIT_SUCCESS;
+ 
+-	if (cg_find_unified_root(root, sizeof(root)))
++	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 
+ 	if (cg_read_strstr(root, "cgroup.subtree_control", "cpuset"))
+diff --git a/tools/testing/selftests/cgroup/test_freezer.c b/tools/testing/selftests/cgroup/test_freezer.c
+index 8845353aca53b..8730645d363a7 100644
+--- a/tools/testing/selftests/cgroup/test_freezer.c
++++ b/tools/testing/selftests/cgroup/test_freezer.c
+@@ -827,7 +827,7 @@ int main(int argc, char *argv[])
+ 	char root[PATH_MAX];
+ 	int i, ret = EXIT_SUCCESS;
+ 
+-	if (cg_find_unified_root(root, sizeof(root)))
++	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+ 		switch (tests[i].fn(root)) {
+diff --git a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+index f0fefeb4cc24c..856f9508ea562 100644
+--- a/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
++++ b/tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+@@ -214,7 +214,7 @@ int main(int argc, char **argv)
+ 		return ret;
+ 	}
+ 
+-	if (cg_find_unified_root(root, sizeof(root)))
++	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 
+ 	switch (test_hugetlb_memcg(root)) {
+diff --git a/tools/testing/selftests/cgroup/test_kill.c b/tools/testing/selftests/cgroup/test_kill.c
+index 6153690319c9c..0e5bb6c7307a5 100644
+--- a/tools/testing/selftests/cgroup/test_kill.c
++++ b/tools/testing/selftests/cgroup/test_kill.c
+@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
+ 	char root[PATH_MAX];
+ 	int i, ret = EXIT_SUCCESS;
+ 
+-	if (cg_find_unified_root(root, sizeof(root)))
++	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+ 		switch (tests[i].fn(root)) {
+diff --git a/tools/testing/selftests/cgroup/test_kmem.c b/tools/testing/selftests/cgroup/test_kmem.c
+index c82f974b85c94..137506db03127 100644
+--- a/tools/testing/selftests/cgroup/test_kmem.c
++++ b/tools/testing/selftests/cgroup/test_kmem.c
+@@ -420,7 +420,7 @@ int main(int argc, char **argv)
+ 	char root[PATH_MAX];
+ 	int i, ret = EXIT_SUCCESS;
+ 
+-	if (cg_find_unified_root(root, sizeof(root)))
++	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 
+ 	/*
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+index c7c9572003a8c..b462416b38061 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -1314,7 +1314,7 @@ int main(int argc, char **argv)
+ 	char root[PATH_MAX];
+ 	int i, proc_status, ret = EXIT_SUCCESS;
+ 
+-	if (cg_find_unified_root(root, sizeof(root)))
++	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 
+ 	/*
+diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
+index 47fdaa1464430..e1169d3e620f0 100644
+--- a/tools/testing/selftests/cgroup/test_zswap.c
++++ b/tools/testing/selftests/cgroup/test_zswap.c
+@@ -324,7 +324,7 @@ int main(int argc, char **argv)
+ 	char root[PATH_MAX];
+ 	int i, ret = EXIT_SUCCESS;
+ 
+-	if (cg_find_unified_root(root, sizeof(root)))
++	if (cg_find_unified_root(root, sizeof(root), NULL))
+ 		ksft_exit_skip("cgroup v2 isn't mounted\n");
+ 
+ 	if (!zswap_configured())
 -- 
 2.43.0
 
