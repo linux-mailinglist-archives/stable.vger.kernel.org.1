@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-47083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7CB8D0C81
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C7F8D0A70
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E08F1C211F1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5585281F17
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6170415FCFE;
-	Mon, 27 May 2024 19:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20B616078C;
+	Mon, 27 May 2024 18:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1Iy9AA2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUPEZdTx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5D1168C4;
-	Mon, 27 May 2024 19:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12C515FA85;
+	Mon, 27 May 2024 18:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837628; cv=none; b=RacYcHg8og3ZFi3PFPnXu3xgSiwZYoqGvdaO56O3nBs9uZp/D6+32+gb8rHtgRYHCdjr7r0OF65RwTd0dNk/RCRJ2DsM0x5YFxqcQkQ8vi0Sivh3mM2VXGp11ec0+7DK6fHlRNj2wZ1tWeSfa2JFyDKTSLsKHgij0LxqDMcc4NY=
+	t=1716836393; cv=none; b=TGRZV6PE4+2sD4i5wq6+URnJo+pH/iPflisM7HL7GfAzBntZR+riWVTBqy35TjxpSF3xM2RS8zTtSVkeHteZ2xPu+1wu+MM7wpoLJZNRB6R00DLzX55m55vnqzG1huhIRGwmwOFwUpFAHWkQ1/fdGbxKyEp+LN5cj7T0EEilvGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837628; c=relaxed/simple;
-	bh=LuovYODvAu4p3+nUWrOmDVaB61KZ4qR88bF1vgE7YU4=;
+	s=arc-20240116; t=1716836393; c=relaxed/simple;
+	bh=q2Uk6MzbGjO+1g5iKft32kJA11M+zsqliPijqaDWYQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmEsC1LffhJSL17p0Wp9+gpfjK1sIJeN1HM3xlsDkImUFZF7bCxq1PSEzKXyNmJVZplBy6P8DlkZAEwPRdMJm3FmnJxsVwNT6nUxW1nyKnEagcqKEO0YSVz4FQDL2UemDyn2P/kBLXvHwnRzUSzqjUg5eTbTt4kL/UpG3symqQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1Iy9AA2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A061DC2BBFC;
-	Mon, 27 May 2024 19:20:27 +0000 (UTC)
+	 MIME-Version; b=ek+/mFN0h8fYc+nKV2lA5411f90XLaejZ/dqoiaVIWp5rZYVXEQA14xbncWUKrDKnvmpoj7ddv6diERTThhU0XQjMNS4rEvRFk+AgxwPfX6qyX1rONflJqaxZ+HYlhO7Mdn1ZPWtgNfR/rUeeD5JQsf2a6UyG/3TS00p5VKQjH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUPEZdTx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45629C2BBFC;
+	Mon, 27 May 2024 18:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837628;
-	bh=LuovYODvAu4p3+nUWrOmDVaB61KZ4qR88bF1vgE7YU4=;
+	s=korg; t=1716836393;
+	bh=q2Uk6MzbGjO+1g5iKft32kJA11M+zsqliPijqaDWYQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K1Iy9AA2D+FmzbqVBWBby0cLPgc6qxRVgPqK1W3tfCBcASbaFK/E3JhlstlBPndgY
-	 ZFLzycqqm1lnyhRBsqPN8zQs/aSyfUenjZ5MJgdakxU4LPV5IURhrm9YVTXZBxAJYW
-	 i8oH/bAsonAzrWSvVS7HewbJBjY07DEaVr49GMCs=
+	b=JUPEZdTxYLjfB4ArswWCaF02N9v8H8c6U059g6Sj2taQ+OILGg8YahdjUCJ/In4lr
+	 0rU+Y3wgn4bkQ8VjDKQE2vuNEN8+8U9M3/aUIF+FaPXHek8aroNK1eL4xGZlWO0x8t
+	 JItZkcLZ+gLWcdJbsUJhlRiv5pnfQxfQCMAwintc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 080/493] Input: xpad - add support for ASUS ROG RAIKIRI
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.9 035/427] ksmbd: avoid to send duplicate oplock break notifications
 Date: Mon, 27 May 2024 20:51:22 +0200
-Message-ID: <20240527185632.756235420@linuxfoundation.org>
+Message-ID: <20240527185604.908867096@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit be81415a32ef6d8a8a85529fcfac03d05b3e757d ]
+commit c91ecba9e421e4f2c9219cf5042fa63a12025310 upstream.
 
-Add the VID/PID for ASUS ROG RAIKIRI to xpad_device and the VID to xpad_table
+This patch fixes generic/011 when oplocks is enable.
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20240404035345.159643-1-vi@endrift.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Avoid to send duplicate oplock break notifications like smb2 leases
+case.
+
+Fixes: 97c2ec64667b ("ksmbd: avoid to send duplicate lease break notifications")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/oplock.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 1fad51b51b0e1..c2de2f063cb8d 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -207,6 +207,7 @@ static const struct xpad_device {
- 	{ 0x0738, 0xcb29, "Saitek Aviator Stick AV8R02", 0, XTYPE_XBOX360 },
- 	{ 0x0738, 0xf738, "Super SFIV FightStick TE S", 0, XTYPE_XBOX360 },
- 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
-+	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", 0, XTYPE_XBOXONE },
- 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
-@@ -482,6 +483,7 @@ static const struct usb_device_id xpad_table[] = {
- 	{ USB_DEVICE(0x0738, 0x4540) },		/* Mad Catz Beat Pad */
- 	XPAD_XBOXONE_VENDOR(0x0738),		/* Mad Catz FightStick TE 2 */
- 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
-+	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
- 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x0e6f),		/* 0x0e6f Xbox 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x0e6f),		/* 0x0e6f Xbox One controllers */
--- 
-2.43.0
-
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -610,19 +610,24 @@ static int oplock_break_pending(struct o
+ 		if (opinfo->op_state == OPLOCK_CLOSING)
+ 			return -ENOENT;
+ 		else if (opinfo->level <= req_op_level) {
+-			if (opinfo->is_lease &&
+-			    opinfo->o_lease->state !=
+-			     (SMB2_LEASE_HANDLE_CACHING_LE |
+-			      SMB2_LEASE_READ_CACHING_LE))
++			if (opinfo->is_lease == false)
++				return 1;
++
++			if (opinfo->o_lease->state !=
++			    (SMB2_LEASE_HANDLE_CACHING_LE |
++			     SMB2_LEASE_READ_CACHING_LE))
+ 				return 1;
+ 		}
+ 	}
+ 
+ 	if (opinfo->level <= req_op_level) {
+-		if (opinfo->is_lease &&
+-		    opinfo->o_lease->state !=
+-		     (SMB2_LEASE_HANDLE_CACHING_LE |
+-		      SMB2_LEASE_READ_CACHING_LE)) {
++		if (opinfo->is_lease == false) {
++			wake_up_oplock_break(opinfo);
++			return 1;
++		}
++		if (opinfo->o_lease->state !=
++		    (SMB2_LEASE_HANDLE_CACHING_LE |
++		     SMB2_LEASE_READ_CACHING_LE)) {
+ 			wake_up_oplock_break(opinfo);
+ 			return 1;
+ 		}
 
 
 
