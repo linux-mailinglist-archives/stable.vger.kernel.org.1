@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-46927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350C38D0BD8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A24F8D0DFD
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4D1228591D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF4F51F21D9D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6328C1754B;
-	Mon, 27 May 2024 19:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D07815FA60;
+	Mon, 27 May 2024 19:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gspLKoa4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wce3Xpgr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2224A17E90E;
-	Mon, 27 May 2024 19:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A03F17727;
+	Mon, 27 May 2024 19:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837215; cv=none; b=SQ34BE+rKsWHZvIJBL8ptialKrSemtCnDs/Y6DeGi4mP5KFiVyHNSe6krLIs535luCkYbSeT5O452Y4zY3wMyq5rXX0CXCLWrvB/JO2fnktWZY4+cpQc0ulSdzZDq34vgc2tJqjwh4BU6tmpke8nCjF/3tbcG0XnsErkkKUVKPg=
+	t=1716838555; cv=none; b=bHrh9BRR+BiLeRm+NhjYfQJ+Wg9zDs4KpRbzIj95HtshJ9kJws1c023fDZFtXLe+lojPx0fm2PibEVfbSnCLIdB5qykO7XGprOTszIfFOCilzSB1sz0R0xLMNeJdihZcRh4MDml10zRWxO5mqZ+9lze0LApZXljjYSsnUMiWmC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837215; c=relaxed/simple;
-	bh=umYKObinYUHrICYhmQAIIVa7wE3teQYhlpgILj1eA8w=;
+	s=arc-20240116; t=1716838555; c=relaxed/simple;
+	bh=Rml015BulBf0mcVK/dwqY9Lh1PfeI8aQ8YMw/9skfFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NE9rxsifK6KJcc3k/0h9eT6ZjfUomaBo9Q+G8x8Rezkpt0RMGr3TRN9WW/ejDMb5xNWLDgJ4K1/iit+lWZmbC40vbp8d26E/Q/q/1P7dvIrokU2hVCJONJx/NLZqaj1n3QRH0ZOzzBSX1j498YgFJQG7DWRootSgIJuT0za3BgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gspLKoa4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7F4C2BBFC;
-	Mon, 27 May 2024 19:13:34 +0000 (UTC)
+	 MIME-Version; b=mMFA8DWj0ski3iYYYj/FS8x4oJcJrvx59yvIpX0JpwlOk/m8+SVM889cxoCj5XPhxM9s8yiRXxr6Fd8js03aaqQSvTntRNsdZUjsrmmMZVeEj/NpA2IkdDS4sv50DYW5Chg/WRF+S8nO0bcfFQCRPLdfFw6X6brtwaPqDuFboho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wce3Xpgr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8090C2BBFC;
+	Mon, 27 May 2024 19:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837215;
-	bh=umYKObinYUHrICYhmQAIIVa7wE3teQYhlpgILj1eA8w=;
+	s=korg; t=1716838555;
+	bh=Rml015BulBf0mcVK/dwqY9Lh1PfeI8aQ8YMw/9skfFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gspLKoa4DzOJX0RvJgK8zx1ae/AWiXn3BY0IO895i79n83r5vmjYY0c3jrnZDmTQF
-	 zWzHN0+535oakIAUyO7F9MGTgtqxPFXDv23Dp2EIV3tPotlThyUQkVhwMPbcOg8k8P
-	 zGeSpoXP2U0qbyTY1BXCpfddAX5WL/ICe/Y1QKVw=
+	b=wce3XpgrdIIVRSwAcV/dfc3K0WnuXpMrjGDaNHCGiEmbLXkIHq+05YrWZtntHeVOQ
+	 b0uQFgzIDmiggrYZQ087XAqwT9Zld0ygNDukCxkgT4US9JpuRqTuinHoB7IvA++V22
+	 qA9dRF5kgEnnv77fsOD1xbtdnrC9JNl7pW1hr4eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 353/427] iommu: Undo pasid attachment only for the devices that have succeeded
+Subject: [PATCH 6.8 398/493] media: v4l2-subdev: Fix stream handling for crop API
 Date: Mon, 27 May 2024 20:56:40 +0200
-Message-ID: <20240527185633.537447296@linuxfoundation.org>
+Message-ID: <20240527185643.293509545@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit b025dea63cded0d82bccd591fa105d39efc6435d ]
+[ Upstream commit 34d7bf1c8e59f5fbf438ee32c96389ebe41ca2e8 ]
 
-There is no error handling now in __iommu_set_group_pasid(), it relies on
-its caller to loop all the devices to undo the pasid attachment. This is
-not self-contained and has drawbacks. It would result in unnecessary
-remove_dev_pasid() calls on the devices that have not been attached to the
-new domain. But the remove_dev_pasid() callback would get the new domain
-from the group->pasid_array. So for such devices, the iommu driver won't
-find the attachment under the domain, hence unable to do cleanup. This may
-not be a real problem today. But it depends on the implementation of the
-underlying iommu driver. e.g. the intel iommu driver would warn for such
-devices. Such warnings are unnecessary.
+When support for streams was added to the V4L2 subdev API, the
+v4l2_subdev_crop structure was extended with a stream field, but the
+field was not handled in the core code that translates the
+VIDIOC_SUBDEV_[GS]_CROP ioctls to the selection API. Fix it.
 
-To solve the above problem, it is necessary to handle the error within
-__iommu_set_group_pasid(). It only loops the devices that have attached
-to the new domain, and undo it.
-
-Fixes: 16603704559c ("iommu: Add attach/detach_dev_pasid iommu interfaces")
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20240328122958.83332-2-yi.l.liu@intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 2f91e10ee6fd ("media: subdev: add stream based configuration")
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index a95a483def2d2..659a77f7bb833 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -3317,15 +3317,26 @@ EXPORT_SYMBOL_GPL(iommu_group_dma_owner_claimed);
- static int __iommu_set_group_pasid(struct iommu_domain *domain,
- 				   struct iommu_group *group, ioasid_t pasid)
- {
--	struct group_device *device;
--	int ret = 0;
-+	struct group_device *device, *last_gdev;
-+	int ret;
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index 4c6198c48dd61..45836f0a2b0a7 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -732,6 +732,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg,
+ 		memset(&sel, 0, sizeof(sel));
+ 		sel.which = crop->which;
+ 		sel.pad = crop->pad;
++		sel.stream = crop->stream;
+ 		sel.target = V4L2_SEL_TGT_CROP;
  
- 	for_each_group_device(group, device) {
- 		ret = domain->ops->set_dev_pasid(domain, device->dev, pasid);
- 		if (ret)
--			break;
-+			goto err_revert;
- 	}
+ 		rval = v4l2_subdev_call(
+@@ -756,6 +757,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg,
+ 		memset(&sel, 0, sizeof(sel));
+ 		sel.which = crop->which;
+ 		sel.pad = crop->pad;
++		sel.stream = crop->stream;
+ 		sel.target = V4L2_SEL_TGT_CROP;
+ 		sel.r = crop->rect;
  
-+	return 0;
-+
-+err_revert:
-+	last_gdev = device;
-+	for_each_group_device(group, device) {
-+		const struct iommu_ops *ops = dev_iommu_ops(device->dev);
-+
-+		if (device == last_gdev)
-+			break;
-+		ops->remove_dev_pasid(device->dev, pasid);
-+	}
- 	return ret;
- }
- 
-@@ -3383,10 +3394,8 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
- 	}
- 
- 	ret = __iommu_set_group_pasid(domain, group, pasid);
--	if (ret) {
--		__iommu_remove_group_pasid(group, pasid);
-+	if (ret)
- 		xa_erase(&group->pasid_array, pasid);
--	}
- out_unlock:
- 	mutex_unlock(&group->mutex);
- 	return ret;
 -- 
 2.43.0
 
