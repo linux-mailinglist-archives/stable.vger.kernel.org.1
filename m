@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134FC8D0AEC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9048D0D1D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95985B217E7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F441F21A98
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187D826AF2;
-	Mon, 27 May 2024 19:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2572315FD01;
+	Mon, 27 May 2024 19:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwMCkZCz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq6GDdW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA39C15FA89;
-	Mon, 27 May 2024 19:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D990C168C4;
+	Mon, 27 May 2024 19:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836648; cv=none; b=FR1TDDFILbzUzqUP0WLDupevPho+HdpAkXk+OsCbuRgSIVmp1CilYMhT+b0KFw0uW8CzVupRhoygMPP+OD151qlJCoVZq0b+PEnbrS6auKv+m/qJE3jV8D62zD9pKGa5fv5WCjhKoBzjrsDUREbV3R+4mfwggkBPR72Kdsh6KNI=
+	t=1716837985; cv=none; b=WGDA6jg3Hpm9F5CLjRpD+LJ1e//YlKwg4BQw8Cz58ixVegqeJlfag66wsP/Y1wcH1q8UC4qdeUiybV1mpWP/zTOA2fr7zwLuKfengQhoygARJzLQ+FItc9Xa7uOz2jXWY1nQ0OSwSuMwm2/wkal29FOpDvKkBYRXIlxkhp82NCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836648; c=relaxed/simple;
-	bh=IqWHBx6EkiKRqKDijPmLZrRwvEGSD2t7O/5tWbeQiOg=;
+	s=arc-20240116; t=1716837985; c=relaxed/simple;
+	bh=EaDqHmZNEPOe90+EBE31B+mkLK5FgyYbsDeNPkZ6MjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EuqWCn3C0m2Z7xDctliMVIL27IFyiO800I0P2++9rwcjCN2kttvlEJ4qnC9cdy2FniylIVcqqjXY1RMEOjqofg5+CuiWUNsa/zozMxgbHfj/KETFvJqDINwyBPV1NK7cp87bPF4xX7q9SiA+X+Wzspv29XWfSTBL5u8jqZ+Uyh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwMCkZCz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F321FC2BBFC;
-	Mon, 27 May 2024 19:04:07 +0000 (UTC)
+	 MIME-Version; b=ZDtBdrbpLdgcVmQ0U/7gCJS8oOZ809maj8tW5ODawdDVNtQFhc/XESCOjN2jSY809fyiz3ZshKJn0xAfcVLa/+MJ1o2UAtwcKXfPa3+ioZ6of8slJP8uiU295XVFDoiVEq/EiDJK5Z1isETbwjO4vdg/jEwsIGK1HO7TFqPSx0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq6GDdW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED91C2BBFC;
+	Mon, 27 May 2024 19:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836648;
-	bh=IqWHBx6EkiKRqKDijPmLZrRwvEGSD2t7O/5tWbeQiOg=;
+	s=korg; t=1716837985;
+	bh=EaDqHmZNEPOe90+EBE31B+mkLK5FgyYbsDeNPkZ6MjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BwMCkZCzDL76grKi3ErKmd6p7p77eNmBXGURW6tVgC7sPBB1g+Pjjs95AiCuhQXmR
-	 D/REk77uW/hRMC5cw1wU6n5CIgB+CVpkZfysClN6Qapb53iZGTYkpxDQhnx+gtVGtQ
-	 EBHiHpS/UCMJDv/FJWGhYxjKf8o+qHBxhaK/S7a4=
+	b=Lq6GDdW38opfF7ZSURMUl8Ke6geXNAHmJ2kjF/OgAZqAO+oo5wcvRZw36CKol33qN
+	 K2hpHk4jRFGWl9Omv8b7tyZiWUJ0XANp9zl15VpGkxb8a0hrPUyUe0N3DDoaFnw27F
+	 J2CSxu2mOcBjeh5c07Pcj4zaG6/H8KQVoNsRDN1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 134/427] ACPI: LPSS: Advertise number of chip selects via property
+Subject: [PATCH 6.8 179/493] ACPI: bus: Indicate support for _TFP thru _OSC
 Date: Mon, 27 May 2024 20:53:01 +0200
-Message-ID: <20240527185614.384666059@linuxfoundation.org>
+Message-ID: <20240527185636.206339752@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 07b73ee599428b41d0240f2f7b31b524eba07dd0 ]
+[ Upstream commit 95d43290f1e476b3be782dd17642e452d0436266 ]
 
-Advertise number of chip selects via property for Intel Braswell.
+The ACPI thermal driver already uses the _TPF ACPI method to retrieve
+precise sampling time values, but this is not reported thru _OSC.
 
-Fixes: 620c803f42de ("ACPI: LPSS: Provide an SSP type to the driver")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Fix this by setting bit 9 ("Fast Thermal Sampling support") when
+evaluating _OSC.
+
+Fixes: a2ee7581afd5 ("ACPI: thermal: Add Thermal fast Sampling Period (_TFP) support")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_lpss.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/bus.c   | 2 ++
+ include/linux/acpi.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index 04e273167e92a..8e01792228d1e 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -325,6 +325,7 @@ static const struct lpss_device_desc bsw_i2c_dev_desc = {
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 569bd15f211be..9c5fc12fc13cb 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -316,6 +316,8 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+ 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PAD_SUPPORT;
+ 	if (IS_ENABLED(CONFIG_ACPI_PROCESSOR))
+ 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PPC_OST_SUPPORT;
++	if (IS_ENABLED(CONFIG_ACPI_THERMAL))
++		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_FAST_THERMAL_SAMPLING_SUPPORT;
  
- static const struct property_entry bsw_spi_properties[] = {
- 	PROPERTY_ENTRY_U32("intel,spi-pxa2xx-type", LPSS_BSW_SSP),
-+	PROPERTY_ENTRY_U32("num-cs", 2),
- 	{ }
- };
- 
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_HOTPLUG_OST_SUPPORT;
+ 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index b7165e52b3c68..e4f4fb67ab55a 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -573,6 +573,7 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+ #define OSC_SB_CPCV2_SUPPORT			0x00000040
+ #define OSC_SB_PCLPI_SUPPORT			0x00000080
+ #define OSC_SB_OSLPI_SUPPORT			0x00000100
++#define OSC_SB_FAST_THERMAL_SAMPLING_SUPPORT	0x00000200
+ #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
+ #define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
+ #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
 -- 
 2.43.0
 
