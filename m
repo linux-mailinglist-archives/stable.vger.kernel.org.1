@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-46925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562368D0BD6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 528BA8D0DF8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED0B41F23787
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84CB51C2173C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750CD155CA7;
-	Mon, 27 May 2024 19:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4BE15FCF0;
+	Mon, 27 May 2024 19:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/6CkRDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5WCdt3r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BFE17E90E;
-	Mon, 27 May 2024 19:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A4517727;
+	Mon, 27 May 2024 19:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837210; cv=none; b=gLLrbSA+wg3IRI44UQQEUoqzpAF4ennLLtfniesmDG0sC09cWk/bvuip2HcIgJlneQnz9FUSD7RtH1zsnhXgNtns4oNV3wSE2vy6xnmGmxBQi5lJjrHQf7zHERHZaE+RSN7uM4lNn+I7KdIMZQN25MSR9iCUvq1+/D4Fnr2Wh+I=
+	t=1716838542; cv=none; b=qloJytIh31PdH5YEdBy46Cy2uUQBLEmK8hcCxeqnuw2PpaUnTVN7aA4OS/DVNuNxj+W4cRpTV65OXdzMtcQF5ZTgEsMSo6MSPmYGUJjB4xxWAtlSkxkrvx+EVxdRLCm/gKek4RLlnsN0Og17i59QldMWFhZ7Rpu9uHpRN2ujldw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837210; c=relaxed/simple;
-	bh=K+t5/3UtA5iDTl/rDdyBeyrEJpfkjsij9JscobEbv4Q=;
+	s=arc-20240116; t=1716838542; c=relaxed/simple;
+	bh=Zbp82yHssFYgUYgWA/AYteX66HZheTkHkYx5Q6wXxmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyQWDeaTuefVBeWmZKu122wJ1hVxPlKgYz/jGisBLNL9M1JCuy/JySmiCqy4qoOXtFmtCgpUAWXBZGTUeWIRGyQcwkZ3kR5hs9aar2YqPfD1AQDcQMbSFSv1eXCmXQCd/6lUgEKGqFi7QcF0EeFoDBx5M4oF2nXOOU+WH3wYXOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/6CkRDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF28EC32781;
-	Mon, 27 May 2024 19:13:29 +0000 (UTC)
+	 MIME-Version; b=Vi3e5mRIkHDip2gjhK8ddvQctdCz4mUzsKZHSTZAgwNuz4hgJyCYIQBx58ueboOw7hx5wo4td8iV3ZNuEhx43+XkaKBqWt3aapLaBNRkI5x4RIlnnn30tkSAfoVd2eoziuX/O3m7d0wBBHwJIjIQO+yrO4m0hrl24oCfoGBdRCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5WCdt3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F86C2BBFC;
+	Mon, 27 May 2024 19:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837210;
-	bh=K+t5/3UtA5iDTl/rDdyBeyrEJpfkjsij9JscobEbv4Q=;
+	s=korg; t=1716838542;
+	bh=Zbp82yHssFYgUYgWA/AYteX66HZheTkHkYx5Q6wXxmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/6CkRDC4RRX8tVzy5o5hQ9e5c3Q45AvVQ24xP1EW8B/1bTdc57lXsdkgnnvdAItI
-	 8NGmsYZ8dRtamGdB16D2/+0hk1dtgeXxWpiKIimR8cmvJwFdgzCiKq4w5wG101TBRI
-	 oR9teX4kKXi+pLNFEdVEkctZ/LgUt07G7aM75dJQ=
+	b=u5WCdt3rr7GjXp5iYxjQkZhCGuNyKE1Z04NygixbYQQTEcF+NYs5tk/jSmt+xecc1
+	 DwDNrUmTdbrOTAN6Fpj5rvhhKcI1df9xuBYGrnfHekeFMH/tkmxAk5URnWDnWG6dwh
+	 McJ8WYWNMUKfS0RJA0kMQGKwewc27vMK0ASNOWHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Or Har-Toov <ohartoov@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Rob Herring <robh@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 351/427] RDMA/mlx5: Adding remote atomic access flag to updatable flags
+Subject: [PATCH 6.8 396/493] media: dt-bindings: ovti,ov2680: Fix the power supply names
 Date: Mon, 27 May 2024 20:56:38 +0200
-Message-ID: <20240527185633.445268539@linuxfoundation.org>
+Message-ID: <20240527185643.227001095@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Or Har-Toov <ohartoov@nvidia.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 2ca7e93bc963d9ec2f5c24d117176851454967af ]
+[ Upstream commit e2f6ea61b6f3e4ebbb7dff857eea6220c18cd17b ]
 
-Currently IB_ACCESS_REMOTE_ATOMIC is blocked from being updated via UMR
-although in some cases it should be possible. These cases are checked in
-mlx5r_umr_can_reconfig function.
+The original .txt bindings had the OV2680 power supply names correct,
+but the transition from .txt to yaml spelled them incorrectly.
 
-Fixes: ef3642c4f54d ("RDMA/mlx5: Fix error unwinds for rereg_mr")
-Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-Link: https://lore.kernel.org/r/24dac73e2fa48cb806f33a932d97f3e402a5ea2c.1712140377.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fix the OV2680 power supply names as the original .txt bindings
+as these are the names used by the OV2680 driver and in devicetree.
+
+Fixes: 57226cd8c8bf ("media: dt-bindings: ov2680: convert bindings to yaml")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../bindings/media/i2c/ovti,ov2680.yaml        | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index 7f7b1f59b5f05..ecc111ed5d86e 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -1572,7 +1572,8 @@ static bool can_use_umr_rereg_access(struct mlx5_ib_dev *dev,
- 	unsigned int diffs = current_access_flags ^ target_access_flags;
+diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
+index cf456f8d9ddcb..c87677f5e2a25 100644
+--- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
+@@ -37,15 +37,15 @@ properties:
+       active low.
+     maxItems: 1
  
- 	if (diffs & ~(IB_ACCESS_LOCAL_WRITE | IB_ACCESS_REMOTE_WRITE |
--		      IB_ACCESS_REMOTE_READ | IB_ACCESS_RELAXED_ORDERING))
-+		      IB_ACCESS_REMOTE_READ | IB_ACCESS_RELAXED_ORDERING |
-+		      IB_ACCESS_REMOTE_ATOMIC))
- 		return false;
- 	return mlx5r_umr_can_reconfig(dev, current_access_flags,
- 				      target_access_flags);
+-  dovdd-supply:
++  DOVDD-supply:
+     description:
+       Definition of the regulator used as interface power supply.
+ 
+-  avdd-supply:
++  AVDD-supply:
+     description:
+       Definition of the regulator used as analog power supply.
+ 
+-  dvdd-supply:
++  DVDD-supply:
+     description:
+       Definition of the regulator used as digital power supply.
+ 
+@@ -59,9 +59,9 @@ required:
+   - reg
+   - clocks
+   - clock-names
+-  - dovdd-supply
+-  - avdd-supply
+-  - dvdd-supply
++  - DOVDD-supply
++  - AVDD-supply
++  - DVDD-supply
+   - reset-gpios
+   - port
+ 
+@@ -82,9 +82,9 @@ examples:
+                 clock-names = "xvclk";
+                 reset-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
+ 
+-                dovdd-supply = <&sw2_reg>;
+-                dvdd-supply = <&sw2_reg>;
+-                avdd-supply = <&reg_peri_3p15v>;
++                DOVDD-supply = <&sw2_reg>;
++                DVDD-supply = <&sw2_reg>;
++                AVDD-supply = <&reg_peri_3p15v>;
+ 
+                 port {
+                         ov2680_to_mipi: endpoint {
 -- 
 2.43.0
 
