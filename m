@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-47081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F748D0C82
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7CB8D0C81
 	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03CCDB214F2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E08F1C211F1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9ED715FD04;
-	Mon, 27 May 2024 19:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6170415FCFE;
+	Mon, 27 May 2024 19:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RH+tBFDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1Iy9AA2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A752B168C4;
-	Mon, 27 May 2024 19:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5D1168C4;
+	Mon, 27 May 2024 19:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837622; cv=none; b=SAUrMRlREIj1lJzdKW/lT7yB1+mhqZ5NlhUlkdKNWVXB0CCiCQMAfnIcOOY+vSONBSWZmhAsjVp6bzTpk3G182383wZuRFMmbdkBV0fxakny/n1XXb3s8wsdSJ10p/1SgZ5jb9ImKH3xwR1J47+MNSJq7MZQoJFlguetfC/DaXk=
+	t=1716837628; cv=none; b=RacYcHg8og3ZFi3PFPnXu3xgSiwZYoqGvdaO56O3nBs9uZp/D6+32+gb8rHtgRYHCdjr7r0OF65RwTd0dNk/RCRJ2DsM0x5YFxqcQkQ8vi0Sivh3mM2VXGp11ec0+7DK6fHlRNj2wZ1tWeSfa2JFyDKTSLsKHgij0LxqDMcc4NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837622; c=relaxed/simple;
-	bh=AViIKg+FayGRMSnrJNTUySxnbF0bAVMguZADiA0UKK4=;
+	s=arc-20240116; t=1716837628; c=relaxed/simple;
+	bh=LuovYODvAu4p3+nUWrOmDVaB61KZ4qR88bF1vgE7YU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHfemYD2Z/lVJHD+cjxwJNqiJtxQNhsz+pp5hWPkvyUCZTLRJXXyoxwHtrVL+BXZ2BheOc+7nFm8kxmIpQGZAjhfTJxW993Jpcd9pj4LHdOQUBYQQBjciD2PVJuiFYyJzsRa/DGwumk+fG3XgIQlSHjGmkojzOhfE/KPyY4TQLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RH+tBFDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E48C2BBFC;
-	Mon, 27 May 2024 19:20:22 +0000 (UTC)
+	 MIME-Version; b=tmEsC1LffhJSL17p0Wp9+gpfjK1sIJeN1HM3xlsDkImUFZF7bCxq1PSEzKXyNmJVZplBy6P8DlkZAEwPRdMJm3FmnJxsVwNT6nUxW1nyKnEagcqKEO0YSVz4FQDL2UemDyn2P/kBLXvHwnRzUSzqjUg5eTbTt4kL/UpG3symqQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1Iy9AA2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A061DC2BBFC;
+	Mon, 27 May 2024 19:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837622;
-	bh=AViIKg+FayGRMSnrJNTUySxnbF0bAVMguZADiA0UKK4=;
+	s=korg; t=1716837628;
+	bh=LuovYODvAu4p3+nUWrOmDVaB61KZ4qR88bF1vgE7YU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RH+tBFDvSs4IOzd7xSPrIvHX0eVrtpOXkfD9JwmRUgbbX40zRVeGcZ0u82Z3bx7uZ
-	 NMk561XvRvXkIknZ4OebVr8tqtNyQGnQUMaLIR0t/Gg+s6x42ltgPzlusxQkKuct5v
-	 cB/ACxFy/18AMToJ+hV1mmgKl7qqdPCZOuGcSW2U=
+	b=K1Iy9AA2D+FmzbqVBWBby0cLPgc6qxRVgPqK1W3tfCBcASbaFK/E3JhlstlBPndgY
+	 ZFLzycqqm1lnyhRBsqPN8zQs/aSyfUenjZ5MJgdakxU4LPV5IURhrm9YVTXZBxAJYW
+	 i8oH/bAsonAzrWSvVS7HewbJBjY07DEaVr49GMCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
+	Vicki Pfau <vi@endrift.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 079/493] KVM: selftests: Add test for uaccesses to non-existent vgic-v2 CPUIF
-Date: Mon, 27 May 2024 20:51:21 +0200
-Message-ID: <20240527185632.692845090@linuxfoundation.org>
+Subject: [PATCH 6.8 080/493] Input: xpad - add support for ASUS ROG RAIKIRI
+Date: Mon, 27 May 2024 20:51:22 +0200
+Message-ID: <20240527185632.756235420@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -66,100 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit 160933e330f4c5a13931d725a4d952a4b9aefa71 ]
+[ Upstream commit be81415a32ef6d8a8a85529fcfac03d05b3e757d ]
 
-Assert that accesses to a non-existent vgic-v2 CPU interface
-consistently fail across the various KVM device attr ioctls. This also
-serves as a regression test for a bug wherein KVM hits a NULL
-dereference when the CPUID specified in the ioctl is invalid.
+Add the VID/PID for ASUS ROG RAIKIRI to xpad_device and the VID to xpad_table
 
-Note that there is no need to print the observed errno, as TEST_ASSERT()
-will take care of it.
-
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240424173959.3776798-3-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Link: https://lore.kernel.org/r/20240404035345.159643-1-vi@endrift.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/kvm/aarch64/vgic_init.c | 49 +++++++++++++++++++
- 1 file changed, 49 insertions(+)
+ drivers/input/joystick/xpad.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/aarch64/vgic_init.c b/tools/testing/selftests/kvm/aarch64/vgic_init.c
-index eef816b80993f..ca917c71ff602 100644
---- a/tools/testing/selftests/kvm/aarch64/vgic_init.c
-+++ b/tools/testing/selftests/kvm/aarch64/vgic_init.c
-@@ -84,6 +84,18 @@ static struct vm_gic vm_gic_create_with_vcpus(uint32_t gic_dev_type,
- 	return v;
- }
- 
-+static struct vm_gic vm_gic_create_barebones(uint32_t gic_dev_type)
-+{
-+	struct vm_gic v;
-+
-+	v.gic_dev_type = gic_dev_type;
-+	v.vm = vm_create_barebones();
-+	v.gic_fd = kvm_create_device(v.vm, gic_dev_type);
-+
-+	return v;
-+}
-+
-+
- static void vm_gic_destroy(struct vm_gic *v)
- {
- 	close(v->gic_fd);
-@@ -357,6 +369,40 @@ static void test_vcpus_then_vgic(uint32_t gic_dev_type)
- 	vm_gic_destroy(&v);
- }
- 
-+#define KVM_VGIC_V2_ATTR(offset, cpu) \
-+	(FIELD_PREP(KVM_DEV_ARM_VGIC_OFFSET_MASK, offset) | \
-+	 FIELD_PREP(KVM_DEV_ARM_VGIC_CPUID_MASK, cpu))
-+
-+#define GIC_CPU_CTRL	0x00
-+
-+static void test_v2_uaccess_cpuif_no_vcpus(void)
-+{
-+	struct vm_gic v;
-+	u64 val = 0;
-+	int ret;
-+
-+	v = vm_gic_create_barebones(KVM_DEV_TYPE_ARM_VGIC_V2);
-+	subtest_dist_rdist(&v);
-+
-+	ret = __kvm_has_device_attr(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
-+				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0));
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "accessed non-existent CPU interface, want errno: %i",
-+		    EINVAL);
-+	ret = __kvm_device_attr_get(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
-+				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0), &val);
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "accessed non-existent CPU interface, want errno: %i",
-+		    EINVAL);
-+	ret = __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
-+				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0), &val);
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "accessed non-existent CPU interface, want errno: %i",
-+		    EINVAL);
-+
-+	vm_gic_destroy(&v);
-+}
-+
- static void test_v3_new_redist_regions(void)
- {
- 	struct kvm_vcpu *vcpus[NR_VCPUS];
-@@ -675,6 +721,9 @@ void run_tests(uint32_t gic_dev_type)
- 	test_vcpus_then_vgic(gic_dev_type);
- 	test_vgic_then_vcpus(gic_dev_type);
- 
-+	if (VGIC_DEV_IS_V2(gic_dev_type))
-+		test_v2_uaccess_cpuif_no_vcpus();
-+
- 	if (VGIC_DEV_IS_V3(gic_dev_type)) {
- 		test_v3_new_redist_regions();
- 		test_v3_typer_accesses();
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index 1fad51b51b0e1..c2de2f063cb8d 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -207,6 +207,7 @@ static const struct xpad_device {
+ 	{ 0x0738, 0xcb29, "Saitek Aviator Stick AV8R02", 0, XTYPE_XBOX360 },
+ 	{ 0x0738, 0xf738, "Super SFIV FightStick TE S", 0, XTYPE_XBOX360 },
+ 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
++	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", 0, XTYPE_XBOXONE },
+ 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
+@@ -482,6 +483,7 @@ static const struct usb_device_id xpad_table[] = {
+ 	{ USB_DEVICE(0x0738, 0x4540) },		/* Mad Catz Beat Pad */
+ 	XPAD_XBOXONE_VENDOR(0x0738),		/* Mad Catz FightStick TE 2 */
+ 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
++	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
+ 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x0e6f),		/* 0x0e6f Xbox 360 controllers */
+ 	XPAD_XBOXONE_VENDOR(0x0e6f),		/* 0x0e6f Xbox One controllers */
 -- 
 2.43.0
 
