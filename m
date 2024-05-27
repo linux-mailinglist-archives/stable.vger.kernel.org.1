@@ -1,78 +1,82 @@
-Return-Path: <stable+bounces-46303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737838D0080
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:55:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4937A8D0084
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 147311F23D9A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 12:55:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05E84284496
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 12:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B7015E5D6;
-	Mon, 27 May 2024 12:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325F415E5DE;
+	Mon, 27 May 2024 12:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H2C+pWB0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HUMj+oLr"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB5715575E;
-	Mon, 27 May 2024 12:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F0615E5C6;
+	Mon, 27 May 2024 12:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716814553; cv=none; b=tAl1UOnLNCTGI7pgLDtoA3SdnOfZu+4FgRbT+dU7pFQdJJ1AKSycF4vBnu+LuWwtZEyqEKWthIzgt60lCaHSbqvwh3jdbpcVde/LI2wGEoVv3aT46y4eNkMsRqfxaKKS6q/z60r8V+hF2sz3UBKtBw2RCWNGUdCufcaXiShJU1Q=
+	t=1716814565; cv=none; b=DBYNvnJuzK3B3lh+Rft0OKVEt+kkkbQ0FzHFvhhXQEpkW0GaWpNJ47GbWtObsIrx0QGBKW3+4l48OijHbJlH3nBHRX276lSk03jKDlh+W2F+fSoOkZkS+a1T+a0+DrMExYXum5RZ1898eUhpPeqjVgmi/KNkm2/EYPWRUgVi2ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716814553; c=relaxed/simple;
-	bh=WIhj8ZlUhbORZnFlYZJT6FSSNy0cIwYmfFiWuKbPLNY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=SjqiGWFVNFtLHTOR1j9BB0Q7+OkNYddZ2qoHH8MuHJrDE72NUQkAy7bdiNQU0HBsVc0CLcAiZ5yQZaSp+34UR4BodnU4htOBxdcNj7toFE7Icf8aBUQXUkJccHkn6B0p92IqzBduNa5IaDKkK6SBbWtcsFZoqdD8l/q+T27iiEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H2C+pWB0; arc=none smtp.client-ip=192.198.163.11
+	s=arc-20240116; t=1716814565; c=relaxed/simple;
+	bh=JpZFnOGLPxlVnryQ0+GLWGmjNOXMWnNyZQTAgap75Yc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QLkFDliik0T5UluLc4pGqfMiFyo0GKfAddOAQu1Q9+7ZahC6YD8HXZ/knbNsLBn+jaaUZDQC5SmIKuAtuSUP4jfo8MAEYTjl6My5504/fhoL0ky8VrFX8cd9ZJ/L2Y3ZSIb/IbbH7yEilVylzTrNMPvckTYOJluxbnS/9eGcHvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HUMj+oLr; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716814551; x=1748350551;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=WIhj8ZlUhbORZnFlYZJT6FSSNy0cIwYmfFiWuKbPLNY=;
-  b=H2C+pWB0/cI4Dqxs89BLPRHwJXe1GeaO4PBRPongDb0iwizHrJYvrThE
-   ILoesjRzdB9lbLClc+8kpbNW64lCXY6vrSdnJNXzd9A5z10oa5iaRhfLO
-   rlV6sksAEYsKIANVYWB6dApDTovq4RDNNXPnZ47bHKF/Ss9Z58NIsBdNd
-   LVB4U5eCAjenG8i1mhEFd4RdI7UUutsDZOgO2VqeMnRy4mckv5WX3X9Ji
-   zFmyHMSTfE4/gUELu7RPZPjnSkojDKyUL7J+lRKbqwuHzi9GKvQyhQZVe
-   rli6+G3njKjUu9Mk9+TMYJBEXtWe0UXc0DDio0B+FHK5HRm3quiYWKqRp
-   A==;
-X-CSE-ConnectionGUID: +xfapkzxSqeU+KDI49rPjA==
-X-CSE-MsgGUID: +UXYoRdpQoeY9YnRwTV4jQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="23734068"
+  t=1716814563; x=1748350563;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=JpZFnOGLPxlVnryQ0+GLWGmjNOXMWnNyZQTAgap75Yc=;
+  b=HUMj+oLrLEqGpP+354o2PydNBEZWoT47LkNbbsSA2nr0x5McxLqvS5rk
+   ihVBk7dYAfPp9JqH2qxHM6yJrLRlUO+WlTZ8kp6yPvD4sNs7UE5swbpSR
+   7oh+R8cCeAGWhkWWc4dc/EOBbH/wWa4ILwKfmy5WlQEeHO9jkB1WrBUm/
+   MmTuwnOneC/Xlcvy9YaZDG2g+xJLGhGezHrQtPoKfGHG3YjrsKA3G+cS/
+   M/yIirbG54sdLI0O9qWi5vOUiuVPLk+xhiYe6Q/yxh/ZqsDAsP68dCuwE
+   AM05rjAKscEsN3isF92Qp7WlqrFK3BL9aD6FLIzvB8SXHI/VWKMqQ+1EY
+   Q==;
+X-CSE-ConnectionGUID: 3S8DwqcWROmy+VB6dSEmHw==
+X-CSE-MsgGUID: nLfL30CISM6g+voixY8xYQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="23734117"
 X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="23734068"
+   d="scan'208";a="23734117"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 05:55:50 -0700
-X-CSE-ConnectionGUID: XMTbiM2bSSq6qNv4xtHhAg==
-X-CSE-MsgGUID: 1doX+hmwQf6IrRS9QSMc1A==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 05:56:02 -0700
+X-CSE-ConnectionGUID: kaWJdMYBRqCxCTMNhnyzcQ==
+X-CSE-MsgGUID: gNkS6SEwTWCYvL0ZT1B5xA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="34643614"
+   d="scan'208";a="34643644"
 Received: from unknown (HELO localhost) ([10.245.247.139])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 05:55:47 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 05:55:59 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/4] x86/of: Return consistent error type from x86_of_pci_irq_enable()
-Date: Mon, 27 May 2024 15:55:35 +0300
-Message-Id: <20240527125538.13620-1-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 2/4] x86/pci/intel_mid_pci: Fix PCIBIOS_* return code handling
+Date: Mon, 27 May 2024 15:55:36 +0300
+Message-Id: <20240527125538.13620-2-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240527125538.13620-1-ilpo.jarvinen@linux.intel.com>
+References: <20240527125538.13620-1-ilpo.jarvinen@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,34 +86,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-x86_of_pci_irq_enable() returns PCIBIOS_* code received from
-pci_read_config_byte() directly and also -EINVAL which are not
-compatible error types. x86_of_pci_irq_enable() is used as
-(*pcibios_enable_irq) function which should not return PCIBIOS_* codes.
+intel_mid_pci_irq_enable() uses pci_read_config_byte() that returns
+PCIBIOS_* codes. The error handling, however, assumes the codes are
+normal errnos because it checks for < 0.
 
-Convert the PCIBIOS_* return code from pci_read_config_byte() into
-normal errno using pcibios_err_to_errno().
+intel_mid_pci_irq_enable() also returns the PCIBIOS_* code back to the
+caller but the function is used as the (*pcibios_enable_irq) function
+which should return normal errnos.
 
-Fixes: 96e0a0797eba ("x86: dtb: Add support for PCI devices backed by dtb nodes")
+Convert the error check to plain non-zero check which works for
+PCIBIOS_* return codes and convert the PCIBIOS_* return code using
+pcibios_err_to_errno() into normal errno before returning it.
+
+Fixes: 5b395e2be6c4 ("x86/platform/intel-mid: Make IRQ allocation a bit more flexible")
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Cc: stable@vger.kernel.org
 ---
- arch/x86/kernel/devicetree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/pci/intel_mid_pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-index 8e3c53b4d070..64280879c68c 100644
---- a/arch/x86/kernel/devicetree.c
-+++ b/arch/x86/kernel/devicetree.c
-@@ -83,7 +83,7 @@ static int x86_of_pci_irq_enable(struct pci_dev *dev)
- 
- 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_PIN, &pin);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
- 	if (!pin)
+diff --git a/arch/x86/pci/intel_mid_pci.c b/arch/x86/pci/intel_mid_pci.c
+index 8edd62206604..722a33be08a1 100644
+--- a/arch/x86/pci/intel_mid_pci.c
++++ b/arch/x86/pci/intel_mid_pci.c
+@@ -233,9 +233,9 @@ static int intel_mid_pci_irq_enable(struct pci_dev *dev)
  		return 0;
  
+ 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_LINE, &gsi);
+-	if (ret < 0) {
++	if (ret) {
+ 		dev_warn(&dev->dev, "Failed to read interrupt line: %d\n", ret);
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 	}
+ 
+ 	id = x86_match_cpu(intel_mid_cpu_ids);
 -- 
 2.39.2
 
