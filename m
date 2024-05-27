@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-47302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648C08D0D70
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52AC98D0D72
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01A77B211F3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D01D281589
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7E215FD04;
-	Mon, 27 May 2024 19:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAAA16079A;
+	Mon, 27 May 2024 19:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfKTtZH1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6FPoD+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A03C262BE;
-	Mon, 27 May 2024 19:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24092262BE;
+	Mon, 27 May 2024 19:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838191; cv=none; b=V+1z3tl6Kq77tBt8JIVr/vKkORp9PK04WgajxIbRVb39ml2Nks0NsQ9l0FewQIKUU7Njhmo1uNHN/IiezBpDoFMhwQG4bdx3EWT1PiqEoFe+UrMq5JIU2MCbxnbqSw68HEQ1Fve/6VOMyE90U5XMODlw5J5gFIOkTMwUMzjjtS0=
+	t=1716838196; cv=none; b=ReXfHojNVHY24pSNyJGTttlmLxpZiuY+1AzTFra9ubOUDLZU4P0t6Vxyf85FEBGd+a8vucow5Xe/EWqFBVuoSzJNg/aEDFzBI0mZphVwFxkXVCP4DCp+f1lwTenadW6UbTSER4DMxqk7kEPdhtHtUmLD/wo8xgjCv0Oy1fcFpq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838191; c=relaxed/simple;
-	bh=cdDbtWLRi5K0wHCH3l0lVIUWlm5keOitGJ3NihutZkw=;
+	s=arc-20240116; t=1716838196; c=relaxed/simple;
+	bh=NR3JQESadvJpyaI1XrqYgTz7jDUsa90S7dZCAn2j0QY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBfdvVwZ2U28vM0aVsGXxA7blAjcJcbd847lIfrfi36Qr5SC27QhTNlp6vQrNmAtS+iaBIRHI0yu7aVWkaflpTQ0MdRlKph7K554Fi40QDIQd8+wph0xqyNaWMyQ+E1GwSwDw9YrnTVGsyMEysBxeCg2Eo1ghU18DNYowt7Zhlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfKTtZH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EBAC2BBFC;
-	Mon, 27 May 2024 19:29:50 +0000 (UTC)
+	 MIME-Version; b=AIjEMpUhTvgcWWs+pithFJ6bC0oCRP7kU4Han3Rf5LENqVef7DTkzRUKtAauBn5Lvf5C+3RU3obXj8V1iXtAuwV8/jAsgHLGpLj0Yl+O8Q4fJ8jTgfHXjRPOjg7lkYVPh3zt0GAveQzv0JqbYpduyURhvSmUaK+h60owyyZMHC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6FPoD+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2F0C2BBFC;
+	Mon, 27 May 2024 19:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838191;
-	bh=cdDbtWLRi5K0wHCH3l0lVIUWlm5keOitGJ3NihutZkw=;
+	s=korg; t=1716838196;
+	bh=NR3JQESadvJpyaI1XrqYgTz7jDUsa90S7dZCAn2j0QY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfKTtZH1rwt+SoYGcL6ntXDwsEuYFvBFwQVBxDxG9npsOTC1pYOQ+dDcLsevanRrS
-	 01fsCnEBVb6fsVppomy+afevO2nMlOQP0elZGJDVr9OTb2+U/AUGB4zxlt+/q+12aO
-	 JXQQZ8fImVuO0IoUWnf6WHxWCwtjpyGb9849tT8g=
+	b=t6FPoD+OwRDe9DMlOoFxB/GqYzeBTmYT+gUSPjUHwOOxfUvjhFUC6u3hHf5MhVdek
+	 FRRDXgqDTAEwamBnDvnHQzPi1hQmDybwHgui5fAMyZKOnBccSp8EegLnvR2DDsDSis
+	 uC3etexVtEGCozJRPSfsaYc1H5Ut5Yaffl1vB2Eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gao Xingwang <gaoxingwang1@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 300/493] ptp: ocp: fix DPLL functions
-Date: Mon, 27 May 2024 20:55:02 +0200
-Message-ID: <20240527185640.118978457@linuxfoundation.org>
+Subject: [PATCH 6.8 301/493] net: ipv6: fix wrong start position when receive hop-by-hop fragment
+Date: Mon, 27 May 2024 20:55:03 +0200
+Message-ID: <20240527185640.151280199@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -66,53 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+From: gaoxingwang <gaoxingwang1@huawei.com>
 
-[ Upstream commit a2c78977950da00aca83a3f8865d1f54e715770d ]
+[ Upstream commit 1cd354fe1e4864eeaff62f66ee513080ec946f20 ]
 
-In ptp_ocp driver pin actions assume sma_nr starts with 1, but for DPLL
-subsystem callback 0-based index was used. Fix it providing proper index.
+In IPv6, ipv6_rcv_core will parse the hop-by-hop type extension header and increase skb->transport_header by one extension header length.
+But if there are more other extension headers like fragment header at this time, the skb->transport_header points to the second extension header,
+not the transport layer header or the first extension header.
 
-Fixes: 09eeb3aecc6c ("ptp_ocp: implement DPLL ops")
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://lore.kernel.org/r/20240508132111.11545-1-vadim.fedorenko@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This will result in the start and nexthdrp variable not pointing to the same position in ipv6frag_thdr_trunced,
+and ipv6_skip_exthdr returning incorrect offset and frag_off.Sometimes,the length of the last sharded packet is smaller than the calculated incorrect offset, resulting in packet loss.
+We can use network header to offset and calculate the correct position to solve this problem.
+
+Fixes: 9d9e937b1c8b (ipv6/netfilter: Discard first fragment not including all headers)
+Signed-off-by: Gao Xingwang <gaoxingwang1@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_ocp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv6/reassembly.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 5f858e426bbd5..05b8f325a887d 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -4277,7 +4277,7 @@ static int ptp_ocp_dpll_direction_set(const struct dpll_pin *pin,
- 		return -EOPNOTSUPP;
- 	mode = direction == DPLL_PIN_DIRECTION_INPUT ?
- 			    SMA_MODE_IN : SMA_MODE_OUT;
--	return ptp_ocp_sma_store_val(bp, 0, mode, sma_nr);
-+	return ptp_ocp_sma_store_val(bp, 0, mode, sma_nr + 1);
- }
- 
- static int ptp_ocp_dpll_frequency_set(const struct dpll_pin *pin,
-@@ -4298,7 +4298,7 @@ static int ptp_ocp_dpll_frequency_set(const struct dpll_pin *pin,
- 	tbl = bp->sma_op->tbl[sma->mode];
- 	for (i = 0; tbl[i].name; i++)
- 		if (tbl[i].frequency == frequency)
--			return ptp_ocp_sma_store_val(bp, i, sma->mode, sma_nr);
-+			return ptp_ocp_sma_store_val(bp, i, sma->mode, sma_nr + 1);
- 	return -EINVAL;
- }
- 
-@@ -4315,7 +4315,7 @@ static int ptp_ocp_dpll_frequency_get(const struct dpll_pin *pin,
- 	u32 val;
- 	int i;
- 
--	val = bp->sma_op->get(bp, sma_nr);
-+	val = bp->sma_op->get(bp, sma_nr + 1);
- 	tbl = bp->sma_op->tbl[sma->mode];
- 	for (i = 0; tbl[i].name; i++)
- 		if (val == tbl[i].value) {
+diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
+index 5ebc47da1000c..2af98edef87ee 100644
+--- a/net/ipv6/reassembly.c
++++ b/net/ipv6/reassembly.c
+@@ -369,7 +369,7 @@ static int ipv6_frag_rcv(struct sk_buff *skb)
+ 	 * the source of the fragment, with the Pointer field set to zero.
+ 	 */
+ 	nexthdr = hdr->nexthdr;
+-	if (ipv6frag_thdr_truncated(skb, skb_transport_offset(skb), &nexthdr)) {
++	if (ipv6frag_thdr_truncated(skb, skb_network_offset(skb) + sizeof(struct ipv6hdr), &nexthdr)) {
+ 		__IP6_INC_STATS(net, __in6_dev_get_safely(skb->dev),
+ 				IPSTATS_MIB_INHDRERRORS);
+ 		icmpv6_param_prob(skb, ICMPV6_HDR_INCOMP, 0);
 -- 
 2.43.0
 
