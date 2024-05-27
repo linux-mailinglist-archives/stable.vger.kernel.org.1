@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-46340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC538D0311
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:17:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC008D0314
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DC341C220E1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:17:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 533A529EB35
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A446216D9C9;
-	Mon, 27 May 2024 14:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE7A16DEA9;
+	Mon, 27 May 2024 14:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AGU5bMod"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Co73GHWS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618A515F3FD;
-	Mon, 27 May 2024 14:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C5115F411;
+	Mon, 27 May 2024 14:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819174; cv=none; b=DzZcPRTbgorGC0ylwapiOhWF0i7hLBksh1cI2VstxfLKh7r9gESVvv6jyboW28gUfMJ0goOvB5/Ex2q+sbyw/S51WJZ0cQbKYPb5pn/PGecqZYEw5k++Z/gNJR9eDZMASHoJAojqVS6FSlxJWVOnCJCGY+cWt5FAMUqvn7Jd5p8=
+	t=1716819177; cv=none; b=u+L8hv9J4/njLmD4i6Euda7YnRQLcrI42cE7f1Y8RwySn5yDZIUo36Cux+1c9IQ1zJGq53R3D7YnHDQTLyX48n1EIXYrOlfcc/AmqF+EAlW1iIQRE/9vOgW8+ztmjxR1DfcJ0ZCY6ojCakHbGIXc/mGT6y+XDPxl7hIfjXWVd/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819174; c=relaxed/simple;
-	bh=u6qFsFok2jeIPfIgLDCqMxuh5YFGDR29kCcIbVjQGMw=;
+	s=arc-20240116; t=1716819177; c=relaxed/simple;
+	bh=sCvrPt4WIobpFxpQmj0P7zdxczqjn5m5qnrJFzhjgTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/2eY+a+dverWatJMISaMK/aSqSfnBb5vAVQaz+LrvGMMbedE+y1n/1dU3hPyNOXZBH6bwU6r8hPwDmxqGl7hmWxeNj8sAEWsKSkhNr5lzWVT1EW/9lf7Lo+JQhEvpqKp9YQoyBwZ6UbRckn19r9j+sjWUbo8A2VPFVzw6K6AEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AGU5bMod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0E9C2BBFC;
-	Mon, 27 May 2024 14:12:52 +0000 (UTC)
+	 MIME-Version; b=IFPtlOltEtvO5r/10V2rIx5Rm66dMMXkCofJL+o8YK6uObT+uhE6GkqCOnt6MYjfLZc18NSxjHk22qh+Os0PWqaSOoQQxwGSACBw0bRJaj+sU8qHbFSw05wQqDd40eTzB1sd9+d8Wi9kIzwvbqZB5EjRePzixUOZBImwgvM3stI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Co73GHWS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87E7C32789;
+	Mon, 27 May 2024 14:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819174;
-	bh=u6qFsFok2jeIPfIgLDCqMxuh5YFGDR29kCcIbVjQGMw=;
+	s=k20201202; t=1716819177;
+	bh=sCvrPt4WIobpFxpQmj0P7zdxczqjn5m5qnrJFzhjgTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGU5bMod+6cqL5vtSe1PRBsKvGsrkCsJvyPlrqX2Ij9uwqAxwo43/4BOKG88D8+3m
-	 Hz8625a2xy8jXU+tXs9mq4mzUnf1oDblti+DN4XLSlBCABRAb+OW935DIDVduNA6mW
-	 4CW+NE1U8oI5Ek2ulw3xYczmxSCYK+mLjtjqmG5QBglBQ3rDjpbSyLRkmx8ZC2MOMb
-	 TX+THRuyKWH/a8RRTMdAschRORic0Exb+phzOw8K34fN1HUkSshH7RArA5fl+p+n1w
-	 2I6UXWPM7fkyH19hwOyID4SxJzTuhcxyvQdfy0akBbvLQ0oGe20m/4NJNVK9kUSuri
-	 4/s5sQqBwG4Tw==
+	b=Co73GHWSvdfcz4ZTgxaiYzazpV4FLekNb/MKEX2C0hAfNrJwnbMbJ6EXRFIPnd0Ke
+	 9CYm1GNK4rwaL0kqk6x0fpY/F8N5vo1PYmrm6IWm5vHDKgACzlNQVBZ05sxvu6FDV6
+	 v16lXJi8lIWOS7cJPKsCB1rfIHJpSE5gMHyMulB1BQwfMbVYfcjEHQjKwbL62mtUgB
+	 OY3e2BryCzDB7FpgVr3rBRB6Cq+xNLOnsrW9FluWe1KcPA0wJWfqSGkdMg0WrCgBqQ
+	 OvDkA9VibO/lFPM/miOL4vyT4zUbiuYBUPQIBPOK533POMWnN0neMR0QyulDLvUlzt
+	 FvVpr+rQAzAIA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shiqi Liu <shiqiliu@hust.edu.cn>,
-	Marc Zyngier <maz@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+Cc: Kunwu Chan <chentao@kylinos.cn>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
 	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	broonie@kernel.org,
-	anshuman.khandual@arm.com,
-	suzuki.poulose@arm.com,
-	miguel.luis@oracle.com,
-	joey.gouly@arm.com,
-	oliver.upton@linux.dev,
-	jingzhangos@google.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.9 20/35] arm64/sysreg: Update PIE permission encodings
-Date: Mon, 27 May 2024 10:11:25 -0400
-Message-ID: <20240527141214.3844331-20-sashal@kernel.org>
+	catalin.marinas@arm.com,
+	shuah@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 21/35] kselftest: arm64: Add a null pointer check
+Date: Mon, 27 May 2024 10:11:26 -0400
+Message-ID: <20240527141214.3844331-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
 References: <20240527141214.3844331-1-sashal@kernel.org>
@@ -74,96 +69,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: Shiqi Liu <shiqiliu@hust.edu.cn>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 12d712dc8e4f1a30b18f8c3789adfbc07f5eb050 ]
+[ Upstream commit 80164282b3620a3cb73de6ffda5592743e448d0e ]
 
-Fix left shift overflow issue when the parameter idx is greater than or
-equal to 8 in the calculation of perm in PIRx_ELx_PERM macro.
+There is a 'malloc' call, which can be unsuccessful.
+This patch will add the malloc failure checking
+to avoid possible null dereference and give more information
+about test fail reasons.
 
-Fix this by modifying the encoding to use a long integer type.
-
-Signed-off-by: Shiqi Liu <shiqiliu@hust.edu.cn>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20240421063328.29710-1-shiqiliu@hust.edu.cn
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240423082102.2018886-1-chentao@kylinos.cn
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/sysreg.h       | 24 ++++++++++++------------
- tools/arch/arm64/include/asm/sysreg.h | 24 ++++++++++++------------
- 2 files changed, 24 insertions(+), 24 deletions(-)
+ tools/testing/selftests/arm64/tags/tags_test.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
-index 9e8999592f3af..af3b206fa4239 100644
---- a/arch/arm64/include/asm/sysreg.h
-+++ b/arch/arm64/include/asm/sysreg.h
-@@ -1036,18 +1036,18 @@
-  * Permission Indirection Extension (PIE) permission encodings.
-  * Encodings with the _O suffix, have overlays applied (Permission Overlay Extension).
-  */
--#define PIE_NONE_O	0x0
--#define PIE_R_O		0x1
--#define PIE_X_O		0x2
--#define PIE_RX_O	0x3
--#define PIE_RW_O	0x5
--#define PIE_RWnX_O	0x6
--#define PIE_RWX_O	0x7
--#define PIE_R		0x8
--#define PIE_GCS		0x9
--#define PIE_RX		0xa
--#define PIE_RW		0xc
--#define PIE_RWX		0xe
-+#define PIE_NONE_O	UL(0x0)
-+#define PIE_R_O		UL(0x1)
-+#define PIE_X_O		UL(0x2)
-+#define PIE_RX_O	UL(0x3)
-+#define PIE_RW_O	UL(0x5)
-+#define PIE_RWnX_O	UL(0x6)
-+#define PIE_RWX_O	UL(0x7)
-+#define PIE_R		UL(0x8)
-+#define PIE_GCS		UL(0x9)
-+#define PIE_RX		UL(0xa)
-+#define PIE_RW		UL(0xc)
-+#define PIE_RWX		UL(0xe)
+diff --git a/tools/testing/selftests/arm64/tags/tags_test.c b/tools/testing/selftests/arm64/tags/tags_test.c
+index 5701163460ef7..955f87c1170d7 100644
+--- a/tools/testing/selftests/arm64/tags/tags_test.c
++++ b/tools/testing/selftests/arm64/tags/tags_test.c
+@@ -6,6 +6,7 @@
+ #include <stdint.h>
+ #include <sys/prctl.h>
+ #include <sys/utsname.h>
++#include "../../kselftest.h"
  
- #define PIRx_ELx_PERM(idx, perm)	((perm) << ((idx) * 4))
- 
-diff --git a/tools/arch/arm64/include/asm/sysreg.h b/tools/arch/arm64/include/asm/sysreg.h
-index ccc13e9913760..cd8420e8c3ad8 100644
---- a/tools/arch/arm64/include/asm/sysreg.h
-+++ b/tools/arch/arm64/include/asm/sysreg.h
-@@ -701,18 +701,18 @@
-  * Permission Indirection Extension (PIE) permission encodings.
-  * Encodings with the _O suffix, have overlays applied (Permission Overlay Extension).
-  */
--#define PIE_NONE_O	0x0
--#define PIE_R_O		0x1
--#define PIE_X_O		0x2
--#define PIE_RX_O	0x3
--#define PIE_RW_O	0x5
--#define PIE_RWnX_O	0x6
--#define PIE_RWX_O	0x7
--#define PIE_R		0x8
--#define PIE_GCS		0x9
--#define PIE_RX		0xa
--#define PIE_RW		0xc
--#define PIE_RWX		0xe
-+#define PIE_NONE_O	UL(0x0)
-+#define PIE_R_O		UL(0x1)
-+#define PIE_X_O		UL(0x2)
-+#define PIE_RX_O	UL(0x3)
-+#define PIE_RW_O	UL(0x5)
-+#define PIE_RWnX_O	UL(0x6)
-+#define PIE_RWX_O	UL(0x7)
-+#define PIE_R		UL(0x8)
-+#define PIE_GCS		UL(0x9)
-+#define PIE_RX		UL(0xa)
-+#define PIE_RW		UL(0xc)
-+#define PIE_RWX		UL(0xe)
- 
- #define PIRx_ELx_PERM(idx, perm)	((perm) << ((idx) * 4))
- 
+ #define SHIFT_TAG(tag)		((uint64_t)(tag) << 56)
+ #define SET_TAG(ptr, tag)	(((uint64_t)(ptr) & ~SHIFT_TAG(0xff)) | \
+@@ -21,6 +22,9 @@ int main(void)
+ 	if (prctl(PR_SET_TAGGED_ADDR_CTRL, PR_TAGGED_ADDR_ENABLE, 0, 0, 0) == 0)
+ 		tbi_enabled = 1;
+ 	ptr = (struct utsname *)malloc(sizeof(*ptr));
++	if (!ptr)
++		ksft_exit_fail_msg("Failed to allocate utsname buffer\n");
++
+ 	if (tbi_enabled)
+ 		tag = 0x42;
+ 	ptr = (struct utsname *)SET_TAG(ptr, tag);
 -- 
 2.43.0
 
