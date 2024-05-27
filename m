@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9828D0B37
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B7778D0D3E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC0A51C216BC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D6361C215BA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13471DFED;
-	Mon, 27 May 2024 19:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD7715FD0F;
+	Mon, 27 May 2024 19:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUs/kHQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6SGvhWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8023317E90E;
-	Mon, 27 May 2024 19:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D9C262BE;
+	Mon, 27 May 2024 19:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836837; cv=none; b=T6fyyiUdhfPhc9KtnfhbKHEWe3NwB+UqU8yAKlWTF/PwgSqspitQsQW5KVKkgNmszQddGyxlKNEiO9dWHsn6E0cfZQD22JWfNT9yOgfU33m6FPZUjS+LT3BneuWoFfHlaeQQu5P7G3nAZuDrWqwodQueXyZQrvtfviuBOtceJsU=
+	t=1716838066; cv=none; b=hoYfztgqDFDvIPuLmrbrdenQyF/s4rEAaFf7/GWIY24ofOw+7eS0iotVUN2jcmmBiNTI3vzhLa3Da0tdLQusl+6MWBaMV9VdCX/KXOWaMr2178cTEUONVo0lSdC1k0mfCr5RgMZYg7nMwbSxOa7SyKHIu6vLzv/3PVa8dYZLBW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836837; c=relaxed/simple;
-	bh=k/lfzlRJyO7g/fuv2kmBL7JMpkR7FTcXLlIPc3HKuxg=;
+	s=arc-20240116; t=1716838066; c=relaxed/simple;
+	bh=nQ0tnJJ3kkTibzvq7zmRS8Bomly2dvnKK/Gw83F+nC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIbYo+lAH+G4AiiVnvsTz6uHGiyAFHPVIyometV67GrV1afKMNen3irLqCxD3ZVe+opUVMjBl1fOFAH8mssyzKuEJP6ofafsSNcRXVbTdhRmGcqrtyMmxHvvtDMRSsizeDYY7JrtbvYWQncl7LZEEccgtNb5RZcY0sZYFU5t+n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUs/kHQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141E2C32781;
-	Mon, 27 May 2024 19:07:16 +0000 (UTC)
+	 MIME-Version; b=PTbBPsmE9vZjnSVPMN1REYm+cNe4+voEvZtzqMx2K2jpIpd3sn6QqCcnUxycroHXLsgFeCoFAmxUeP33XhbNX1JxuPGZUTm+DDkas6dT+57EPpzQTDfA9UI1eCFUWJOmyoq5iy0e0eD5mPyzaQPK87PFSuNNDgphSe127tzJkfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6SGvhWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029B9C2BBFC;
+	Mon, 27 May 2024 19:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836837;
-	bh=k/lfzlRJyO7g/fuv2kmBL7JMpkR7FTcXLlIPc3HKuxg=;
+	s=korg; t=1716838066;
+	bh=nQ0tnJJ3kkTibzvq7zmRS8Bomly2dvnKK/Gw83F+nC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUs/kHQqzkP3fa6hZWnyKm/YMm2ZQlCSru+2xY7xblWexvwK+VTpSdFkThvHkWO++
-	 oXdpwehL11w2MqcGHFxUyCO18cdvaGbDzmW5dHoEZSZCgsbsYX8uP8uJF2at8CGqGT
-	 DoD/VitYIZD9Bh+cTNO/wqLs3PDDt1J4PlMR0RIU=
+	b=E6SGvhWsgvGGKo+sIXR2wxts7eHxjElvs+sBk1BdkzpyoGs9NEOn/5wbEdV68L+mU
+	 o54K1Rqaac4kyBtqFOPkVCPXzAYeIuveb4C1ewJQd7XWAthJKOB1EiQ0rQr19YNChV
+	 fNrc8ahOOF8UzcNpLa5cBcGAJV1uIzjRINyCsP8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 207/427] wifi: rtw89: wow: refine WoWLAN flows of HCI interrupts and low power mode
+Subject: [PATCH 6.8 252/493] macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"
 Date: Mon, 27 May 2024 20:54:14 +0200
-Message-ID: <20240527185621.652702240@linuxfoundation.org>
+Message-ID: <20240527185638.537476147@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit baaf806e4632a259cc959fd1c516c2d9ed48df6d ]
+[ Upstream commit d301a71c76ee4c384b4e03cdc320a55f5cf1df05 ]
 
-After enabling packet offload, the TX will be stuck after resume from
-WoWLAN mode. And the 8852c gets error messages like
+The via-macii ADB driver calls request_irq() after disabling hard
+interrupts. But disabling interrupts isn't necessary here because the
+VIA shift register interrupt was masked during VIA1 initialization.
 
-rtw89_8852ce 0000:04:00.0: No busy txwd pages available
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 100 is not idle
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 101 is not idle
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 102 is not idle
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 103 is not idle
-
-If suspend/resume many times that firmware will download failed and
-disconnection.
-
-To fix these issues, We removed the rtw89_hci_disable_intr() and
-rtw89_hci_enable_intr() during rtw89_wow_swap_fw() to prevent add packet
-offload can't receive c2h back due to interrupt disable. Only 8852C and
-8922A needs to disable interrupt before downloading fw.
-
-Furthermore, we avoid using low power HCI mode on WoWLAN mode, to prevent
-interrupt enabled, then get interrupt and calculate RXBD mismatched due to
-software RXBD index already reset but hardware RXBD index not yet.
-
-Fixes: 5c12bb66b79d ("wifi: rtw89: refine packet offload flow")
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240502022505.28966-3-pkshih@realtek.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/419fcc09d0e563b425c419053d02236b044d86b0.1710298421.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/ps.c  |  3 ++-
- drivers/net/wireless/realtek/rtw89/wow.c | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/macintosh/via-macii.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/ps.c b/drivers/net/wireless/realtek/rtw89/ps.c
-index 31290d8cb7f7c..92074b73ebebd 100644
---- a/drivers/net/wireless/realtek/rtw89/ps.c
-+++ b/drivers/net/wireless/realtek/rtw89/ps.c
-@@ -55,7 +55,8 @@ static void rtw89_ps_power_mode_change_with_hci(struct rtw89_dev *rtwdev,
- 
- static void rtw89_ps_power_mode_change(struct rtw89_dev *rtwdev, bool enter)
+diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
+index db9270da5b8e9..b6ddf1d47cb4e 100644
+--- a/drivers/macintosh/via-macii.c
++++ b/drivers/macintosh/via-macii.c
+@@ -140,24 +140,19 @@ static int macii_probe(void)
+ /* Initialize the driver */
+ static int macii_init(void)
  {
--	if (rtwdev->chip->low_power_hci_modes & BIT(rtwdev->ps_mode))
-+	if (rtwdev->chip->low_power_hci_modes & BIT(rtwdev->ps_mode) &&
-+	    !test_bit(RTW89_FLAG_WOWLAN, rtwdev->flags))
- 		rtw89_ps_power_mode_change_with_hci(rtwdev, enter);
- 	else
- 		rtw89_mac_power_mode_change(rtwdev, enter);
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index ccad026defb50..ca4835008b56e 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -457,14 +457,17 @@ static int rtw89_wow_swap_fw(struct rtw89_dev *rtwdev, bool wow)
- 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
- 	struct ieee80211_vif *wow_vif = rtw_wow->wow_vif;
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)wow_vif->drv_priv;
-+	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	bool include_bb = !!chip->bbmcu_nr;
-+	bool disable_intr_for_dlfw = false;
- 	struct ieee80211_sta *wow_sta;
- 	struct rtw89_sta *rtwsta = NULL;
- 	bool is_conn = true;
- 	int ret;
+-	unsigned long flags;
+ 	int err;
  
--	rtw89_hci_disable_intr(rtwdev);
-+	if (chip_id == RTL8852C || chip_id == RTL8922A)
-+		disable_intr_for_dlfw = true;
+-	local_irq_save(flags);
+-
+ 	err = macii_init_via();
+ 	if (err)
+-		goto out;
++		return err;
  
- 	wow_sta = ieee80211_find_sta(wow_vif, rtwvif->bssid);
- 	if (wow_sta)
-@@ -472,12 +475,18 @@ static int rtw89_wow_swap_fw(struct rtw89_dev *rtwdev, bool wow)
- 	else
- 		is_conn = false;
+ 	err = request_irq(IRQ_MAC_ADB, macii_interrupt, 0, "ADB",
+ 			  macii_interrupt);
+ 	if (err)
+-		goto out;
++		return err;
  
-+	if (disable_intr_for_dlfw)
-+		rtw89_hci_disable_intr(rtwdev);
-+
- 	ret = rtw89_fw_download(rtwdev, fw_type, include_bb);
- 	if (ret) {
- 		rtw89_warn(rtwdev, "download fw failed\n");
- 		return ret;
- 	}
- 
-+	if (disable_intr_for_dlfw)
-+		rtw89_hci_enable_intr(rtwdev);
-+
- 	rtw89_phy_init_rf_reg(rtwdev, true);
- 
- 	ret = rtw89_fw_h2c_role_maintain(rtwdev, rtwvif, rtwsta,
-@@ -520,7 +529,6 @@ static int rtw89_wow_swap_fw(struct rtw89_dev *rtwdev, bool wow)
- 	}
- 
- 	rtw89_mac_hw_mgnt_sec(rtwdev, wow);
--	rtw89_hci_enable_intr(rtwdev);
- 
- 	return 0;
+ 	macii_state = idle;
+-out:
+-	local_irq_restore(flags);
+-	return err;
++	return 0;
  }
+ 
+ /* initialize the hardware */
 -- 
 2.43.0
 
