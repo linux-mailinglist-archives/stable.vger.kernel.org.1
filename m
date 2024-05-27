@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-46343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3939B8D031A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:18:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5F48D031E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A51A1C21C00
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:18:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 924411F25189
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FF316E864;
-	Mon, 27 May 2024 14:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCE916E896;
+	Mon, 27 May 2024 14:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tSRaJL9W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOJvvCWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC4616DEDB;
-	Mon, 27 May 2024 14:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E9E16E88B;
+	Mon, 27 May 2024 14:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819181; cv=none; b=fiyK4rxUvs+gm26Jkcxd6vFeXbgSdgeWX2IcKJqF/OAEk/Fpy9Z4rVQM/V3VkuVEZQdwPXPY3o1bjf/7Biyc1KZGnTWQ/Wm7wRihX+0/KZvVoIN1hTKol6PmOUt36LJdbHzNWVOJZpLjHXjkOaPUiKm+maxIyMWxjP2C/8u3Us0=
+	t=1716819183; cv=none; b=PxRwg1z1Xk+Mv+UQC1v8Nu/HOj61Hacm2CIKGT+SI2niTf8FQllBHl4KHzHxeV/n07EwG1ZKeCnAC6w9oKya1N7LjP3lY7BGWDhMzu2sDvGww4mlZpXepTwNqTDjPkIsw0ZO6QxD757/bDbmH201iqDXFBGSTJBEFYGGN2nPXNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819181; c=relaxed/simple;
-	bh=AMK0Y8oxG0m+uOtoW2x5sJMwUmv2BQL30RmhLfMRe/U=;
+	s=arc-20240116; t=1716819183; c=relaxed/simple;
+	bh=nnl7uwuBL13OQe7+PdCqXTtXDYutmJcyZLZkPj744Qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2FVHZrcYvvT9fLwRYLRC1s99a3/eJcVLOF7GXuj0zsBlisB5OCN+HbS1dOTGVFLEQ+uSDrIjZFD+F8x/WE7Z387manHAnGsGJsk8yVYwjf5gmCI5N433g7bEaE+pCUu8U2Cg1bQC5kiriqpM5nbWAHd8GvifP+FZ9RrCLkzKXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tSRaJL9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F7FC2BBFC;
-	Mon, 27 May 2024 14:12:59 +0000 (UTC)
+	 MIME-Version; b=MnSjgNviC9dyZH/krVsE+1AbCgpBTuymUQ6DmyosZomxELguYZOI5wjz72RWl+zJDjGUJh6t9/OvG63xzx6YkSEYiA1MW2Q/lcfNgwMnEKyG/HKY64JoICZ2TxaVGvdM+XZvz+LAzW9YRoUbBJXxC7JxfxhWd5FAATJKjDCQ1l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOJvvCWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B4BC4AF07;
+	Mon, 27 May 2024 14:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819181;
-	bh=AMK0Y8oxG0m+uOtoW2x5sJMwUmv2BQL30RmhLfMRe/U=;
+	s=k20201202; t=1716819182;
+	bh=nnl7uwuBL13OQe7+PdCqXTtXDYutmJcyZLZkPj744Qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSRaJL9Wl7Q0l6NhFPIMzxR+6+uTshLlLDX8t6oZ5jgwN30ihpufqh8h1Tj0NG4fc
-	 eK3exe71NICwnhCHg7K7YkhQ5GuJQL/PQgJlKdo2GF6GD59DkU9aOwEVl/38THrnjj
-	 nmCGS1td85posttQtg2cKoLXsy1L0vozPYK2dupSLKbraqIsJVZiAHe4m3AT2EcOdT
-	 y3FQXB+o5OvcNqov4TCdgWe/v9OyheQVLDcAjodmR2l2n4IFCJ8YLSHPZptAhMNXa6
-	 gRETmsOAWVrvtBgXQ5QzykFLdY5+mKWfJ7jBJd9dlqkKQTXmOrVua4Lvm6D0H92c9i
-	 LqzhmS42hxcCw==
+	b=VOJvvCWIMgQCgCKMHL8CtuDdd2tLZYVRwlcmSSiL1N7aIOuw8qCE6ummivSZmi3zv
+	 tx0nOUUuuBOSm8G3GhlsQnbp+rY4qvsr2GqiWpY66PhANtj8b4h3n+a6HBUET37mG9
+	 haB5PPCIll3phHaa9V8zLk30m9sCJAeY1b9xqF4cE4k5pqtLHmggEbgcTDP/RtUTjh
+	 r7idI13FXL1tmbGCr8Cmi0AkJBkQi5Rv+9I3qPgUPwxtO3lQH7PiP+Nq0r7WtAv3OH
+	 SwOQ1c2jlPMM9GmqwfBveuBvVJQuaB1bZrYUcl76clBKm1ZFTdCJjQqcAJEKtGE+9j
+	 6+XvBrcnZjKoQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Tamim Khan <tamim@fusetak.com>,
+	Gianni <gianni.casagrande.mail@gmail.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	alsi@bang-olufsen.dk,
-	andrew@lunn.ch,
-	f.fainelli@gmail.com,
-	olteanv@gmail.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 23/35] net: dsa: realtek: do not assert reset on remove
-Date: Mon, 27 May 2024 10:11:28 -0400
-Message-ID: <20240527141214.3844331-23-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 24/35] ACPI: resource: Skip IRQ override on Asus Vivobook Pro N6506MV
+Date: Mon, 27 May 2024 10:11:29 -0400
+Message-ID: <20240527141214.3844331-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
 References: <20240527141214.3844331-1-sashal@kernel.org>
@@ -73,53 +67,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+From: Tamim Khan <tamim@fusetak.com>
 
-[ Upstream commit 4f580e9aced1816398c1c64f178302a22b8ea6e2 ]
+[ Upstream commit 7c52c7071bd403acee8cb0064627d46c6c2a1ea3 ]
 
-The necessity of asserting the reset on removal was previously
-questioned, as DSA's own cleanup methods should suffice to prevent
-traffic leakage[1].
+Like various other Asus Vivobook and Expertbook laptops, the Asus
+Vivobook Pro N6506MV has a DSDT table that describes IRQ 1 as ActiveLow
+while the kernel is overriding it to Edge_High. This prevents the internal
+keyboard from working. This patch prevents this issue by adding this laptop
+to the override table that prevents the kernel from overriding this IRQ
 
-When a driver has subdrivers controlled by devres, they will be
-unregistered after the main driver's .remove is executed. If it asserts
-a reset, the subdrivers will be unable to communicate with the hardware
-during their cleanup. For LEDs, this means that they will fail to turn
-off, resulting in a timeout error.
-
-[1] https://lore.kernel.org/r/20240123215606.26716-9-luizluca@gmail.com/
-
-Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218745
+Tested-by: Gianni <gianni.casagrande.mail@gmail.com>
+Signed-off-by: Tamim Khan <tamim@fusetak.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/realtek/rtl83xx.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/dsa/realtek/rtl83xx.c b/drivers/net/dsa/realtek/rtl83xx.c
-index d2e876805393b..a9c1702431efb 100644
---- a/drivers/net/dsa/realtek/rtl83xx.c
-+++ b/drivers/net/dsa/realtek/rtl83xx.c
-@@ -290,16 +290,13 @@ EXPORT_SYMBOL_NS_GPL(rtl83xx_shutdown, REALTEK_DSA);
-  * rtl83xx_remove() - Cleanup a realtek switch driver
-  * @priv: realtek_priv pointer
-  *
-- * If a method is provided, this function asserts the hard reset of the switch
-- * in order to avoid leaking traffic when the driver is gone.
-+ * Placehold for common cleanup procedures.
-  *
-- * Context: Might sleep if priv->gdev->chip->can_sleep.
-+ * Context: Any
-  * Return: nothing
-  */
- void rtl83xx_remove(struct realtek_priv *priv)
- {
--	/* leave the device reset asserted */
--	rtl83xx_reset_assert(priv);
- }
- EXPORT_SYMBOL_NS_GPL(rtl83xx_remove, REALTEK_DSA);
- 
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index c9af5d2f4d2d7..553b043809ad5 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -517,6 +517,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
+ 		},
+ 	},
++	{
++		/* Asus Vivobook Pro N6506MV */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "N6506MV"),
++		},
++	},
+ 	{
+ 		/* LG Electronics 17U70P */
+ 		.matches = {
 -- 
 2.43.0
 
