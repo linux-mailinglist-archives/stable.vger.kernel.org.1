@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39EA8D0B83
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421278D0D58
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10B0F1C2161D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE3F3280FCA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341F626ACA;
-	Mon, 27 May 2024 19:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37CC161302;
+	Mon, 27 May 2024 19:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZHCQEZ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjRtyWpf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E175417E90E;
-	Mon, 27 May 2024 19:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B108D16079B;
+	Mon, 27 May 2024 19:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837010; cv=none; b=UdheY+4zG7xXwLAfCK2UKZuxh6PktypAtVafqSoGzixiVwWFrqC0CByFn2dIts/9u22PHVN2e1YBn1bRGarss0SQw+e3MeboPvn5/ghEwEOfzWFdo5IahM55y1Cw6bEHlS2bw44cAbqWo+oEr/9OX44QFCwNn6K7yl+Ulz/y+n4=
+	t=1716838129; cv=none; b=TTOq2I1IBK87ceudfHQ//ltBCgc2lxYYYQCuID0zb0ft5zNGab+MMMhUoQvE1aMkrpGE42s02HQN0TBGMmzBRSpO88tgw9EsWeRx0IHu5u+UF7KwMIDecnuZedFfAy4w7I0iuc+WuEcGOIDDKMNvAoJykQ13IgnLVEk/O4a+9v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837010; c=relaxed/simple;
-	bh=TJyKCcmvBHkddlO5DEkPLmJ5QfWo+eTUviEUPyB/F5M=;
+	s=arc-20240116; t=1716838129; c=relaxed/simple;
+	bh=mJq6c5o2jGIY8sdcoj08kWTikYFucowkE5X1DsYyjr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHi67J+GfP7OMUe7YEFoCNLkkf4TmUOWbyN8mjJjnFb95mjyLMBPl7yJoBB6mVo9jx80IKylMmIGuPJme9SJnqZJHwlfk4bXQsg9dUw03talwNtfy+fXTnHsuZTf+76dUJ0LtK0S2YhhcODGq4ncbnYblVAjVtry861PYw9TONg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZHCQEZ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C2EC32781;
-	Mon, 27 May 2024 19:10:09 +0000 (UTC)
+	 MIME-Version; b=J/u7d65ADQxMB6XI4Ekej4ut9KwXRqozM0GAKYVpe1KmGOxgGfV9cxFZxB2QFU6orsIkGTTRNtoz4vNc/vJXTbMbwgLu9B2oqcfWKKuWazarQQ51692DcnxqvPPpnT9awqDsKDTUiTNNIzFJ3raoq6A5O+ccm/7ieSjjDuXhG9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjRtyWpf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDB1C32786;
+	Mon, 27 May 2024 19:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837009;
-	bh=TJyKCcmvBHkddlO5DEkPLmJ5QfWo+eTUviEUPyB/F5M=;
+	s=korg; t=1716838129;
+	bh=mJq6c5o2jGIY8sdcoj08kWTikYFucowkE5X1DsYyjr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZHCQEZ2l9mmgQjjiu/QXKb+cqp6AJN4xTR5jFMtBNdCQOOwAP+udASjcvxJ8nBpg
-	 FgZuS0YMFvpUw8lk3/LFnUyc8yfcHpgqFOkiEwi08Z3/kj2dR9HHt9zGE8+bRfloVR
-	 +JtAbpw7RZPAvH6xrxtYgEeTGnl9adgLgCTHE0vw=
+	b=yjRtyWpfW7NbV3+/1V1ikmKdLbmlbu46dGVzv7zlv1q9p4PHIh1Df3y1bmepn/dqB
+	 aS5z5sypYINuFZELngYP2Gs8s3rmw3vkPq1OTbeIXD3gRru9ytxyEyR/ksWoqrK09r
+	 mp2o1iMAReeCy4uqww1cog/NUWiaAdwIvLOe52IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 233/427] dm-delay: fix workqueue delay_timer race
+Subject: [PATCH 6.8 278/493] selftests/binderfs: use the Makefiles rules, not Makes implicit rules
 Date: Mon, 27 May 2024 20:54:40 +0200
-Message-ID: <20240527185624.233011604@linuxfoundation.org>
+Message-ID: <20240527185639.394124942@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit 8d24790ed08ab4e619ce58ed4a1b353ab77ffdc5 ]
+[ Upstream commit 019baf635eb6ffe8d6c1343f81788f02a7e0ed98 ]
 
-delay_timer could be pending when delay_dtr() is called. It needs to be
-shut down before kdelayd_wq is destroyed, so it won't try queueing more
-work to kdelayd_wq while that's getting destroyed.
+First of all, in order to build with clang at all, one must first apply
+Valentin Obst's build fix for LLVM [1]. Once that is done, then when
+building with clang, via:
 
-Also the del_timer_sync() call in delay_presuspend() doesn't protect
-against the timer getting immediately rearmed by the queued call to
-flush_delayed_bios(), but there's no real harm if that does happen.
-timer_delete() is less work, and is basically just as likely to stop a
-pointless call to flush_delayed_bios().
+    make LLVM=1 -C tools/testing/selftests
 
-Fixes: 26b9f228703f ("dm: delay target")
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+...the following error occurs:
+
+   clang: error: cannot specify -o when generating multiple output files
+
+This is because clang, unlike gcc, won't accept invocations of this
+form:
+
+    clang file1.c header2.h
+
+While trying to fix this, I noticed that:
+
+a) selftests/lib.mk already avoids the problem, and
+
+b) The binderfs Makefile indavertently bypasses the selftests/lib.mk
+build system, and quitely uses Make's implicit build rules for .c files
+instead.
+
+The Makefile attempts to set up both a dependency and a source file,
+neither of which was needed, because lib.mk is able to automatically
+handle both. This line:
+
+    binderfs_test: binderfs_test.c
+
+...causes Make's implicit rules to run, which builds binderfs_test
+without ever looking at lib.mk.
+
+Fix this by simply deleting the "binderfs_test:" Makefile target and
+letting lib.mk handle it instead.
+
+[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
+
+Fixes: 6e29225af902 ("binderfs: port tests to test harness infrastructure")
+Cc: Christian Brauner <brauner@kernel.org>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-delay.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/filesystems/binderfs/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/md/dm-delay.c b/drivers/md/dm-delay.c
-index 5eabdb06c6498..eec0daa4b227a 100644
---- a/drivers/md/dm-delay.c
-+++ b/drivers/md/dm-delay.c
-@@ -154,8 +154,10 @@ static void delay_dtr(struct dm_target *ti)
- {
- 	struct delay_c *dc = ti->private;
+diff --git a/tools/testing/selftests/filesystems/binderfs/Makefile b/tools/testing/selftests/filesystems/binderfs/Makefile
+index c2f7cef919c04..eb4c3b4119348 100644
+--- a/tools/testing/selftests/filesystems/binderfs/Makefile
++++ b/tools/testing/selftests/filesystems/binderfs/Makefile
+@@ -3,6 +3,4 @@
+ CFLAGS += $(KHDR_INCLUDES) -pthread
+ TEST_GEN_PROGS := binderfs_test
  
--	if (dc->kdelayd_wq)
-+	if (dc->kdelayd_wq) {
-+		timer_shutdown_sync(&dc->delay_timer);
- 		destroy_workqueue(dc->kdelayd_wq);
-+	}
- 
- 	if (dc->read.dev)
- 		dm_put_device(ti, dc->read.dev);
-@@ -335,7 +337,7 @@ static void delay_presuspend(struct dm_target *ti)
- 	mutex_unlock(&delayed_bios_lock);
- 
- 	if (!delay_is_fast(dc))
--		del_timer_sync(&dc->delay_timer);
-+		timer_delete(&dc->delay_timer);
- 	flush_delayed_bios(dc, true);
- }
- 
+-binderfs_test: binderfs_test.c ../../kselftest.h ../../kselftest_harness.h
+-
+ include ../../lib.mk
 -- 
 2.43.0
 
