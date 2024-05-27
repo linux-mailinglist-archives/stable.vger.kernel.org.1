@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-46634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440528D0A93
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DEB48D0A9C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75B931C21637
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26F802804D1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7D8160784;
-	Mon, 27 May 2024 19:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721271667E5;
+	Mon, 27 May 2024 19:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3Vdo+gR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvxjlgF/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A55115FA8C;
-	Mon, 27 May 2024 19:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301C71667DB;
+	Mon, 27 May 2024 19:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836460; cv=none; b=JymSWo35f1Ju2FoWwCBWM65EYQXl3dTTViAlwBHgDTRAFK2IwIAIh+eIxDTA/AGfLV1Hrfeufa2bGSQfrOdzAPczB7PsoRnbuoemyu81qeu+TCcuv1Y40kTaOA8sQy8jqm9N3wa0V6wrePJmN2XD/VVvG7eCgrxsY1D0t0biug0=
+	t=1716836465; cv=none; b=SCY1tp5rCjASWIPdIVrQt/G2bxwdlBAkdYZfybpneTUywQkbtY7Rq5zXmuJ9gIYFhjPI3IurdOqeQSk67nCE475+RJAoNWImv4ibLtNL/v2W7Bt4axqJAorS+2oSt3uESMxyx5LaJq4IrWNU4Vxs/NrU9mnULpIyIkVuhdDXIqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836460; c=relaxed/simple;
-	bh=MIy8J3pIvysAR9oCBGy5wcOZsLDjf9lJuPc+rknwT/s=;
+	s=arc-20240116; t=1716836465; c=relaxed/simple;
+	bh=pJ5gZKqeYoFzbOMXG9nmJOdX9hfraKN8jn1Sa71kxB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zwc8Wp0SqZJlNnuXjiNYyzFX4oMIaHEk1C7OpoEV4FWZcqQwKcqaEuZIpYH8uu4Yutx+MoU+vIc0VwnVSobT6bQuSwohrrMcaKM17/jxZD9RrR3BrI5KTrjcHKBZ6UEbIYO9qeGaPkQT7aMPnZY0VhIjMkR1IRSGZSIByrjzxz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3Vdo+gR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E1CC2BBFC;
-	Mon, 27 May 2024 19:00:59 +0000 (UTC)
+	 MIME-Version; b=seE8lCRly1NljeiNjcrvr2d322QBVbrp37ndM3OtayYC5uIsaAbihCGTVQTEaTWxh+yAbujNWMwDInBsKXLvecQH4wt4fOVUHYm8LYDYvDd42PAejYAK8N5iODoRj0VyBDX+GWeVEpWd7n7+aryJLzf4PaVvVaUTvn/+DBo7R5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvxjlgF/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E8EC2BBFC;
+	Mon, 27 May 2024 19:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836459;
-	bh=MIy8J3pIvysAR9oCBGy5wcOZsLDjf9lJuPc+rknwT/s=;
+	s=korg; t=1716836465;
+	bh=pJ5gZKqeYoFzbOMXG9nmJOdX9hfraKN8jn1Sa71kxB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3Vdo+gRa2VeKdqryWeOyzEEvhayvL8yzp2lIycFrAJ5B4xZHJsq2VsThf1MYwnoC
-	 uihES/rKiW1MsyE5MooLZs+8Y/Lk06tY8vNAmuHxYYb73tRq+boMQnObHPA4+K/O26
-	 ns8AgXvNeBQJ8SQj75P2x4r7kfoDeM4qrQc8wVc0=
+	b=zvxjlgF/GQTPpQslK6doM+FaEFcEIp7IctrEBqe6qcQWfw2dqErkjEdApGMtTF7Rd
+	 5jckSuug+FOqVNMRz6o4omnyyG/c8znVHWJad3HHYTvByZnG96cBvQJtvwRocTOcPk
+	 ew7BI9cK8kMjZo1TchLixbhg6uTPWZhvVcJNyRiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 063/427] shmem: Fix shmem_rename2()
-Date: Mon, 27 May 2024 20:51:50 +0200
-Message-ID: <20240527185607.812770881@linuxfoundation.org>
+Subject: [PATCH 6.9 064/427] io-wq: write next_work before dropping acct_lock
+Date: Mon, 27 May 2024 20:51:51 +0200
+Message-ID: <20240527185607.886725484@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -66,52 +66,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit ad191eb6d6942bb835a0b20b647f7c53c1d99ca4 ]
+[ Upstream commit 068c27e32e51e94e4a9eb30ae85f4097a3602980 ]
 
-When renaming onto an existing directory entry, user space expects
-the replacement entry to have the same directory offset as the
-original one.
+Commit 361aee450c6e ("io-wq: add intermediate work step between pending
+list and active work") closed a race between a cancellation and the work
+being removed from the wq for execution.  To ensure the request is
+always reachable by the cancellation, we need to move it within the wq
+lock, which also synchronizes the cancellation.  But commit
+42abc95f05bf ("io-wq: decouple work_list protection from the big
+wqe->lock") replaced the wq lock here and accidentally reintroduced the
+race by releasing the acct_lock too early.
 
-Link: https://gitlab.alpinelinux.org/alpine/aports/-/issues/15966
-Fixes: a2e459555c5f ("shmem: stable directory offsets")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://lore.kernel.org/r/20240415152057.4605-4-cel@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+In other words:
+
+        worker                |     cancellation
+work = io_get_next_work()     |
+raw_spin_unlock(&acct->lock); |
+			      |
+                              | io_acct_cancel_pending_work
+                              | io_wq_worker_cancel()
+worker->next_work = work
+
+Using acct_lock is still enough since we synchronize on it on
+io_acct_cancel_pending_work.
+
+Fixes: 42abc95f05bf ("io-wq: decouple work_list protection from the big wqe->lock")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://lore.kernel.org/r/20240416021054.3940-2-krisman@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/libfs.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ io_uring/io-wq.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index c392a6edd3930..b635ee5adbcce 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -366,6 +366,9 @@ int simple_offset_empty(struct dentry *dentry)
-  *
-  * Caller provides appropriate serialization.
-  *
-+ * User space expects the directory offset value of the replaced
-+ * (new) directory entry to be unchanged after a rename.
-+ *
-  * Returns zero on success, a negative errno value on failure.
-  */
- int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
-@@ -373,8 +376,14 @@ int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
- {
- 	struct offset_ctx *old_ctx = old_dir->i_op->get_offset_ctx(old_dir);
- 	struct offset_ctx *new_ctx = new_dir->i_op->get_offset_ctx(new_dir);
-+	long new_offset = dentry2offset(new_dentry);
- 
- 	simple_offset_remove(old_ctx, old_dentry);
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 522196dfb0ff5..318ed067dbf64 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -564,10 +564,7 @@ static void io_worker_handle_work(struct io_wq_acct *acct,
+ 		 * clear the stalled flag.
+ 		 */
+ 		work = io_get_next_work(acct, worker);
+-		raw_spin_unlock(&acct->lock);
+ 		if (work) {
+-			__io_worker_busy(wq, worker);
+-
+ 			/*
+ 			 * Make sure cancelation can find this, even before
+ 			 * it becomes the active work. That avoids a window
+@@ -578,9 +575,15 @@ static void io_worker_handle_work(struct io_wq_acct *acct,
+ 			raw_spin_lock(&worker->lock);
+ 			worker->next_work = work;
+ 			raw_spin_unlock(&worker->lock);
+-		} else {
+-			break;
+ 		}
 +
-+	if (new_offset) {
-+		offset_set(new_dentry, 0);
-+		return simple_offset_replace(new_ctx, old_dentry, new_offset);
-+	}
- 	return simple_offset_add(new_ctx, old_dentry);
- }
++		raw_spin_unlock(&acct->lock);
++
++		if (!work)
++			break;
++
++		__io_worker_busy(wq, worker);
++
+ 		io_assign_current_work(worker, work);
+ 		__set_current_state(TASK_RUNNING);
  
 -- 
 2.43.0
