@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-46787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F448D0B3F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9666D8D0D47
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB0D91C217EB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EF31281E73
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7B815DBD8;
-	Mon, 27 May 2024 19:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54BA16078C;
+	Mon, 27 May 2024 19:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXjhNJJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lh+WFmh0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA40F61FD6;
-	Mon, 27 May 2024 19:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A392C262BE;
+	Mon, 27 May 2024 19:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836857; cv=none; b=KVjmVdNVn2sCy1WsDGgr8Jfdl/e5DEgihYCNJp+LDGMVX1nl9J+cc1BEGwfEzy9qrxcDXTFhJAdCLT/bVmo0xNS4gPeX5v4pRx4q1z9/WEOseDmrvbpPmtgZ+g+0l9rCNnqvQQGPDEd3ZsVWXt97A0eTkStAV+0CjSDrFAamCNw=
+	t=1716838086; cv=none; b=QiRJ6Z4MZ5i4/Jhx8ErnqZhw3INlmjbbwNFj3oKffLoTXQ+/ADsDkd4zcs/FwQiTXqFMjCZfeai8igZp9HJG52dp4LraZTnkR2VYktpdza2z4+LUZPLPov5Qm2JQd4RUxE0dnmaNNTodn9ZsdnyLP8NP2A1kcD+sL/hM14VD1cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836857; c=relaxed/simple;
-	bh=wuFJH2cFQ/HrGBI0gOlzBQHbue3n9mMQZMUOAKMYeGU=;
+	s=arc-20240116; t=1716838086; c=relaxed/simple;
+	bh=4dZaORMtH93wf3a6nBNax1zvN9KTGrVfhPfmXl0/6ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QW3HGAKL6b9GgQLAlhcJwUyOZj71YFwTQByqKQqBVojAShIqy941P1ghYubD0rwKBckU8db7ZVVOthOyYl1ViV8+g0Eo8z7qmsGN5BKuITrB34lSxNxQdsYir3ExXgekigfzD7VS2EfP42pyDSJcBd2/aMUbVLZPkGEu6TXgCJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXjhNJJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEEBC32786;
-	Mon, 27 May 2024 19:07:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LvCnkd+0k8YlpTGb+fvBgFELMBf7FPhaOQ8tGL6G4WGpONrauKRcFhIl6k78ncDvB4btxqMX8aOc6vgQywewFhpGdtTN+kip+ccgtLUCdkmmwdEe6r/GruEAax/rOjSB5AiZ58RTAdS56jFuckZQ9qmizzPq4/XKF4+p4QY5CFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lh+WFmh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A46BC2BBFC;
+	Mon, 27 May 2024 19:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836857;
-	bh=wuFJH2cFQ/HrGBI0gOlzBQHbue3n9mMQZMUOAKMYeGU=;
+	s=korg; t=1716838086;
+	bh=4dZaORMtH93wf3a6nBNax1zvN9KTGrVfhPfmXl0/6ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXjhNJJnhg7HMzcf2GGq/1hMDHzTdjvDJQu0leigfqpNddTSAlqmeC6BnBVmNSUo9
-	 t8Z6z5qeTjDPghfHig9+5TrKzdXS0xOY6jiHHSkYsXWtD2QyvAFKUuSPAZwo7sMyv1
-	 b93TPFLQjrrMyoXSliIn+hOi6pBpb7/457CrprXI=
+	b=Lh+WFmh0iP0fAe26Giu1FzvBLr5cywNs+XnvyeVeutZnr3NGameVAFwGlHLQV3fG/
+	 Ze6XoyK4kD+yi06GjsELQ/dSSqsB78DmB5j/cQWYKDb4VyChB+42zaUc7CgzdiD44n
+	 lPRMepWhQI59QEqNsMWCYX46bfFf20Ua02MCimyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 214/427] kunit: unregister the device on error
+Subject: [PATCH 6.8 259/493] pwm: Drop duplicate check against chip->npwm in of_pwm_xlate_with_flags()
 Date: Mon, 27 May 2024 20:54:21 +0200
-Message-ID: <20240527185622.460636557@linuxfoundation.org>
+Message-ID: <20240527185638.765219332@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit fabd480b721eb30aa4e2c89507b53933069f9f6e ]
+[ Upstream commit 91bb23493f8fd115e362d075ebaa3e6f12d1439d ]
 
-kunit_init_device() should unregister the device on bus register error,
-but mistakenly it tries to unregister the bus.
+args->args[0] is passed as parameter "index" to pwm_request_from_chip().
+The latter function also checks for index >= npwm, so
+of_pwm_xlate_with_flags() doesn't need to do that.
 
-Unregister the device instead of the bus.
-
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Fixes: d03c720e03bd ("kunit: Add APIs for managing devices")
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/b06e445a6ed62a339add727eccb969a33d678386.1704835845.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Stable-dep-of: 3e551115aee0 ("pwm: meson: Add check for error from clk_round_rate()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/core.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/lib/kunit/device.c b/lib/kunit/device.c
-index abc603730b8ea..25c81ed465fb7 100644
---- a/lib/kunit/device.c
-+++ b/lib/kunit/device.c
-@@ -51,7 +51,7 @@ int kunit_bus_init(void)
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index 606d9ef0c7097..b025d90e201c9 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -111,9 +111,6 @@ of_pwm_xlate_with_flags(struct pwm_chip *chip, const struct of_phandle_args *arg
+ 	if (args->args_count < 1)
+ 		return ERR_PTR(-EINVAL);
  
- 	error = bus_register(&kunit_bus_type);
- 	if (error)
--		bus_unregister(&kunit_bus_type);
-+		root_device_unregister(kunit_bus_device);
- 	return error;
- }
- 
+-	if (args->args[0] >= chip->npwm)
+-		return ERR_PTR(-EINVAL);
+-
+ 	pwm = pwm_request_from_chip(chip, args->args[0], NULL);
+ 	if (IS_ERR(pwm))
+ 		return pwm;
 -- 
 2.43.0
 
