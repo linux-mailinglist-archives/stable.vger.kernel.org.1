@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-47418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8148C8D0DE6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DF88D0BE9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD89EB20F2D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD268286227
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2706415FA60;
-	Mon, 27 May 2024 19:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EA5155CA7;
+	Mon, 27 May 2024 19:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcQefnPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wegru0st"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEF917727;
-	Mon, 27 May 2024 19:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E297C17E90E;
+	Mon, 27 May 2024 19:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838498; cv=none; b=usBi8Wb6k97QdfkkSPqeTNp1K5LRArGvj6RcbehUrOFh4wRJ+ETAeeJLys9lxEbE340E3Vy3ndtjzST3vdQs8HXho7RsitlBGxtSkxoIPkz3UqRF/rB7LN0jNrz5lMCcijrHGUDTIDb2B98BY5Fk7ZRhxk+g/C1EZsYj2t9Bq8E=
+	t=1716837258; cv=none; b=u/HHmD0PH6wxjSL18p9K8vQdUayxEiZamza+BbqcryjdpFqtbKOhSyvDvctgv5yjB0AK2PKnpIPyAXtBSzK6R9lVuTRkjhXLANdqLdecpvzvWM2uWDshk0RgISPVsaKIoS/+heDB1NkXB4K9cdn76Ry2GCiwlrc2d/h8AsCGoHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838498; c=relaxed/simple;
-	bh=EBYzLdmQ5DDesiESWTYfs8q7QJNcv/b4GsFsTCn4WxM=;
+	s=arc-20240116; t=1716837258; c=relaxed/simple;
+	bh=wvYtHrHbR8VvR1/oWQ8rOqUN1k3oB3jlR1Mv1jVt7k8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0lk/OrIMSXpeqy7IFzucJxONNUHTx1Gl1jQMYsdEqN8HRt2lSk837gL0R+070CvofE6lubSDfxjIBV/60m/uWYmY7x4TOyxD1Y5NcViTu6Xi/jQx3ieyiKaGn/RNFApzpIGvAKCFIMW1GKDcCk9u+qWbY0wPgIkkoPlz9hNpvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcQefnPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626AFC2BBFC;
-	Mon, 27 May 2024 19:34:58 +0000 (UTC)
+	 MIME-Version; b=dCMzf2uGKqOg09VDDr6YDbUjvbzESK6SDeGzfMaZ9pxLEvyExg536nMkW0Hc+XEWuOP8ZITcXsDRo0oTcZOXgWt8oH1B/4Mk838jQluMd4FFisA7uDLPd69eQIDha9ZwOP3vbakSQoFr9nP4D6U7DCChgyXGTZeD34SOAvOa7no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wegru0st; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753D2C2BBFC;
+	Mon, 27 May 2024 19:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838498;
-	bh=EBYzLdmQ5DDesiESWTYfs8q7QJNcv/b4GsFsTCn4WxM=;
+	s=korg; t=1716837257;
+	bh=wvYtHrHbR8VvR1/oWQ8rOqUN1k3oB3jlR1Mv1jVt7k8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcQefnPeTdgeU9xgPBIZjqtLO4u6S7FURbh1NE923fJhoaQN7H2/kqDL3voL1DxqP
-	 Gz5j7GzGn/3vCu8o6TE2qlNZIcHWPbp32wNcFXFjdhCszTQEn1K8JG5zU/I8/Qjj2N
-	 jbKOw5Ugi9ts5Zan/tuAldc0M1sv7ZSLt2z673Vg=
+	b=Wegru0stZG5bSWh0ADBT3NeB2khnCHHWiXVceYfd9ZukytoWrAOSBMnI1QbgvwLUp
+	 dtJ2Vw+MO8hS8XjeTMWjqjw6BBC91TnCcrLNOtQTJ5SGH0UaJNf+cHOrrgh4bPgvP4
+	 2Pb50Ms1aYJOb1oQckrDgmRPAN2tM5WWKdCVRWCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devinder Khroad <dkhroad@logitech.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 416/493] media: uvcvideo: Add quirk for Logitech Rally Bar
-Date: Mon, 27 May 2024 20:56:58 +0200
-Message-ID: <20240527185643.901348539@linuxfoundation.org>
+Subject: [PATCH 6.9 372/427] clk: renesas: r9a07g043: Add clock and reset entry for PLIC
+Date: Mon, 27 May 2024 20:56:59 +0200
+Message-ID: <20240527185634.243199328@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 07731053d11f7647d5d8bc23caac997a4d562dfe ]
+[ Upstream commit 44019387fce230beda35b83da3a2c9fc5787704e ]
 
-Logitech Rally Bar devices, despite behaving as UVC cameras, have a
-different power management system that the other cameras from Logitech.
+Add the missing clock and reset entry for PLIC. Also add
+R9A07G043_NCEPLIC_ACLK to the critical clocks list.
 
-USB_QUIRK_RESET_RESUME is applied to all the UVC cameras from Logitech
-at the usb core. Unfortunately, USB_QUIRK_RESET_RESUME causes undesired
-USB disconnects in the Rally Bar that make them completely unusable.
-
-There is an open discussion about if we should fix this in the core or
-add a quirk in the UVC driver. In order to enable this hardware, let's
-land this patch first, and we can revert it later if there is a
-different conclusion.
-
-Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Devinder Khroad <dkhroad@logitech.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20240404-rallybar-v6-1-6d67bb6b69af@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240403200952.633084-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 31 ++++++++++++++++++++++++++++++
- drivers/media/usb/uvc/uvcvideo.h   |  1 +
- 2 files changed, 32 insertions(+)
+ drivers/clk/renesas/r9a07g043-cpg.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index bbd90123a4e76..91a41aa3ced24 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/usb.h>
-+#include <linux/usb/quirks.h>
- #include <linux/usb/uvc.h>
- #include <linux/videodev2.h>
- #include <linux/vmalloc.h>
-@@ -2232,6 +2233,9 @@ static int uvc_probe(struct usb_interface *intf,
- 		goto error;
- 	}
+diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
+index 33532673d25d7..26b71547fdbe3 100644
+--- a/drivers/clk/renesas/r9a07g043-cpg.c
++++ b/drivers/clk/renesas/r9a07g043-cpg.c
+@@ -280,6 +280,10 @@ static struct rzg2l_mod_clk r9a07g043_mod_clks[] = {
+ 				0x5a8, 1),
+ 	DEF_MOD("tsu_pclk",	R9A07G043_TSU_PCLK, R9A07G043_CLK_TSU,
+ 				0x5ac, 0),
++#ifdef CONFIG_RISCV
++	DEF_MOD("nceplic_aclk",	R9A07G043_NCEPLIC_ACLK, R9A07G043_CLK_P1,
++				0x608, 0),
++#endif
+ };
  
-+	if (dev->quirks & UVC_QUIRK_NO_RESET_RESUME)
-+		udev->quirks &= ~USB_QUIRK_RESET_RESUME;
+ static struct rzg2l_reset r9a07g043_resets[] = {
+@@ -338,6 +342,10 @@ static struct rzg2l_reset r9a07g043_resets[] = {
+ 	DEF_RST(R9A07G043_ADC_PRESETN, 0x8a8, 0),
+ 	DEF_RST(R9A07G043_ADC_ADRST_N, 0x8a8, 1),
+ 	DEF_RST(R9A07G043_TSU_PRESETN, 0x8ac, 0),
++#ifdef CONFIG_RISCV
++	DEF_RST(R9A07G043_NCEPLIC_ARESETN, 0x908, 0),
++#endif
 +
- 	uvc_dbg(dev, PROBE, "UVC device initialized\n");
- 	usb_enable_autosuspend(udev);
- 	return 0;
-@@ -2574,6 +2578,33 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceSubClass	= 1,
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT) },
-+	/* Logitech Rally Bar Huddle */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x046d,
-+	  .idProduct		= 0x087c,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_NO_RESET_RESUME) },
-+	/* Logitech Rally Bar */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x046d,
-+	  .idProduct		= 0x089b,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_NO_RESET_RESUME) },
-+	/* Logitech Rally Bar Mini */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x046d,
-+	  .idProduct		= 0x08d3,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_NO_RESET_RESUME) },
- 	/* Chicony CNF7129 (Asus EEE 100HE) */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 6fb0a78b1b009..88218693f6f0b 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -73,6 +73,7 @@
- #define UVC_QUIRK_FORCE_Y8		0x00000800
- #define UVC_QUIRK_FORCE_BPP		0x00001000
- #define UVC_QUIRK_WAKE_AUTOSUSPEND	0x00002000
-+#define UVC_QUIRK_NO_RESET_RESUME	0x00004000
+ };
  
- /* Format flags */
- #define UVC_FMT_FLAG_COMPRESSED		0x00000001
+ static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
+@@ -347,6 +355,7 @@ static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
+ #endif
+ #ifdef CONFIG_RISCV
+ 	MOD_CLK_BASE + R9A07G043_IAX45_CLK,
++	MOD_CLK_BASE + R9A07G043_NCEPLIC_ACLK,
+ #endif
+ 	MOD_CLK_BASE + R9A07G043_DMAC_ACLK,
+ };
 -- 
 2.43.0
 
