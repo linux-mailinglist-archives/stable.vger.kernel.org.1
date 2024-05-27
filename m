@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF3D8D0B59
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 682338D0D50
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8F601F21432
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 993F11C20C35
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0B416086C;
-	Mon, 27 May 2024 19:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F27516078C;
+	Mon, 27 May 2024 19:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYUlo6wM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f05AY+/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6B426ACA;
-	Mon, 27 May 2024 19:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587BA262BE;
+	Mon, 27 May 2024 19:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836903; cv=none; b=Iyf8rAjGdbCEozZSe1tHoHarYLHnL3c0xpStET9eXf2ys1wOkREb+DJVbiv2X+f73IGjPzIrNskbgTSUlcrQBlbbk2hjlSgLWOsjIjzIHn3MNwtaEqy4mlJg1gN6+0qvwAaid3UsAELrh5s8M9gZImgnYK/fWy/wEEXFW4lNPQM=
+	t=1716838110; cv=none; b=SEzOEbBdbgzXnG77FHJKwxnM0EmUsBWDAqSJ/OYI+M7A9sqOFmxmmetmsyW9SZ/KwL3OLLDgKmXvJq7LgLaa0uEn4aXzTHrH2LQ6t9ktsHyRGuZr87C6wP3MCDMHvayx+Bkob8RkN6BCXsUge3zWXCjYkEIP189/C2ZENiBHrO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836903; c=relaxed/simple;
-	bh=R7LcVM76N3MqROgIBdRpSiEGqz8cI43SRx30wcqfyYE=;
+	s=arc-20240116; t=1716838110; c=relaxed/simple;
+	bh=TN6wfrr9JHodnFJHgbn/7JoKLmyr8+Mjow12FYLSQ5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJ91Utf5+3GpbixpAtS1Dlm4UqQq4rJwxu4RY/+waeVRLYg5xZn8rv6HwP72s9ciQTJU/G0OllBaQqhKY2hiFesbaM/5bZ4KtQyMSFtEOwf70+Q4hoARGGRxOdndpmBPyhOjUldgTUqN1Yo9fsUJPxaeoxMWtat8tIyf8UEy6Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYUlo6wM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EE1C2BBFC;
-	Mon, 27 May 2024 19:08:22 +0000 (UTC)
+	 MIME-Version; b=Jly0FBXAOvtQZjt092tej52HeDqySiP2Z5UeXtNEi34lyMcsBvqnl7uP1iETtCnohuEeC2FUhJihaIn1z/9X+2W+Z6ld/HhmE2QCU8dhKCAMgR064NATbt+mGWN2qJKKsPRngOOnGiIg7kKXQLxqiGR7p55jX8ggSH3eZh9aiCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f05AY+/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5C7C2BBFC;
+	Mon, 27 May 2024 19:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836903;
-	bh=R7LcVM76N3MqROgIBdRpSiEGqz8cI43SRx30wcqfyYE=;
+	s=korg; t=1716838110;
+	bh=TN6wfrr9JHodnFJHgbn/7JoKLmyr8+Mjow12FYLSQ5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYUlo6wMbe1k0yB+zs7kch6n1AF1444Zi274UKlI2SDYC8eDArEzbgPC+GcjsvQcu
-	 tMUrrEyruROzmsDog1LBaDt03Cvs4WYPHp8+yd1iDi7iB+2y8prB+EtUgSVnglRKlA
-	 Dt5P+4v2arT3i82dHIbhNej+XdLoEh3e5wsvyzig=
+	b=f05AY+/TdPK63jGlpP2guJd+Ww3NUNS+wiFlk77pM1cvO4hNz2Ct8k+55qhHE8DPV
+	 Yz9spwON3x7Xq9XGqyzyCOeD1pIFMylN/25rkRMpYjOmvyJbumKhft1BXbMftt+vZY
+	 52ZIlRZfEunV5sFENILWfKAnxv8EhJbtN512769I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chad Monroe <chad@monroe.io>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 226/427] usb: aqc111: stop lying about skb->truesize
+Subject: [PATCH 6.8 271/493] wifi: mt76: mt7996: fix size of txpower MCU command
 Date: Mon, 27 May 2024 20:54:33 +0200
-Message-ID: <20240527185623.603106365@linuxfoundation.org>
+Message-ID: <20240527185639.146365516@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Chad Monroe <chad@monroe.io>
 
-[ Upstream commit 9aad6e45c4e7d16b2bb7c3794154b828fb4384b4 ]
+[ Upstream commit 66ffcb9abae68625c704b247c7d15cbbc7837391 ]
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+Fixes issues with scanning and low power output at some rates.
 
-I replace one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
-
-Fixes: 361459cd9642 ("net: usb: aqc111: Implement RX data path")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240506135546.3641185-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f75e4779d215 ("wifi: mt76: mt7996: add txpower setting support")
+Signed-off-by: Chad Monroe <chad@monroe.io>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 7 +++++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 1 +
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 7b8afa589a53c..284375f662f1e 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1141,17 +1141,15 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			continue;
- 		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 9e70b960086ac..25ea81ecdab9b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -4468,7 +4468,7 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy)
+ 		u8 band_idx;
+ 	} __packed req = {
+ 		.tag = cpu_to_le16(UNI_TXPOWER_POWER_LIMIT_TABLE_CTRL),
+-		.len = cpu_to_le16(sizeof(req) + MT7996_SKU_RATE_NUM - 4),
++		.len = cpu_to_le16(sizeof(req) + MT7996_SKU_PATH_NUM - 4),
+ 		.power_ctrl_id = UNI_TXPOWER_POWER_LIMIT_TABLE_CTRL,
+ 		.power_limit_type = TX_POWER_LIMIT_TABLE_RATE,
+ 		.band_idx = phy->mt76->band_idx,
+@@ -4483,7 +4483,7 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy)
+ 	mphy->txpower_cur = tx_power;
  
--		/* Clone SKB */
--		new_skb = skb_clone(skb, GFP_ATOMIC);
-+		new_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
+ 	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
+-				 sizeof(req) + MT7996_SKU_RATE_NUM);
++				 sizeof(req) + MT7996_SKU_PATH_NUM);
+ 	if (!skb)
+ 		return -ENOMEM;
  
- 		if (!new_skb)
- 			goto err;
+@@ -4507,6 +4507,9 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy)
+ 	/* eht */
+ 	skb_put_data(skb, &la.eht[0], sizeof(la.eht));
  
--		new_skb->len = pkt_len;
-+		skb_put(new_skb, pkt_len);
-+		memcpy(new_skb->data, skb->data, pkt_len);
- 		skb_pull(new_skb, AQ_RX_HW_PAD);
--		skb_set_tail_pointer(new_skb, new_skb->len);
++	/* padding */
++	skb_put_zero(skb, MT7996_SKU_PATH_NUM - MT7996_SKU_RATE_NUM);
++
+ 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
+ 				     MCU_WM_UNI_CMD(TXPOWER), true);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 36d1f247d55aa..ddeb40d522c5a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -50,6 +50,7 @@
+ #define MT7996_CFEND_RATE_11B		0x03	/* 11B LP, 11M */
  
--		new_skb->truesize = SKB_TRUESIZE(new_skb->len);
- 		if (aqc111_data->rx_checksum)
- 			aqc111_rx_checksum(new_skb, pkt_desc);
+ #define MT7996_SKU_RATE_NUM		417
++#define MT7996_SKU_PATH_NUM		494
  
+ #define MT7996_MAX_TWT_AGRT		16
+ #define MT7996_MAX_STA_TWT_AGRT		8
 -- 
 2.43.0
 
