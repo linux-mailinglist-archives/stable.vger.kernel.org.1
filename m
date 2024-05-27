@@ -1,153 +1,141 @@
-Return-Path: <stable+bounces-46569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D658D08E1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:41:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C058D094E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:17:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 307F01C22825
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:41:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD05C281F91
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3181155C8D;
-	Mon, 27 May 2024 16:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB927345D;
+	Mon, 27 May 2024 17:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzldhrqR"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X5NyoCEb";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xn9zxwmd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BF0155C96;
-	Mon, 27 May 2024 16:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E75715F330
+	for <stable@vger.kernel.org>; Mon, 27 May 2024 17:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716828061; cv=none; b=r0Vn6YVBqVpGqG/rC/8Zbgd/a6jTnFm9JmAuL0NE2e3+P3go12F7Gno7WasfUbVHk+CyccKly4nWuqje3jrT33HG3lMZUk7A+KByeBmE3ho2e16fgYNKncOLGxigklFUnXmfpeuVuWanudv3Q9mVAlsmlGa1YHPZ0dnQf7RQZs0=
+	t=1716830263; cv=none; b=LF05yffTjhDq9b/0AVZZqfYc9KvA89ddiqz3wTD5fG4Tgm2LSWjuTeAyoCKCBVTEggaCusxtWal1tI1Nfro8WVetIlrvb5K2jubH1pd3CbsVhxqqPslTszvTEnJeSTGc3n2q27sX47vnp7NiKq54hrh9FnoFycUhqLMyyLqTE3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716828061; c=relaxed/simple;
-	bh=dfkfDaQUMpGwTtp2bomb4Iu2aKjA9XikV5FqpfBCsSE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q3kUf/kz+mNl/MIbRSBqVmjhMaoZmb5KsnvHlRFo/YKsh5gfCZAiAECwTxoa1vngR/1eEoTL1XT3Q5yRsxfaDJ5LxZj4NOj26oCYbTBnFv/9y8EXcagtQr9tNVc17Wdlb+fqwwf3a2/tcx2jeJTZlVwFFRthah+kVPZ+m+SKHYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dzldhrqR; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2e964acff1aso35515841fa.0;
-        Mon, 27 May 2024 09:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716828058; x=1717432858; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zXhZGnNO1k1I5G/0gxKase3G2b7JBGSEOc1kPGMl+NM=;
-        b=dzldhrqRlF2YGq29PgfboobrpPcgJhFZ/nm16yLreVDOdZwXqkm2h21vTuLDBsQQNj
-         dHciV2SKF5vFhkzlECH8CxHnTnT6QFAd3AEydnj7YtGGQbLcU/HCTBTJZlTIDZ3jFF8k
-         JYkjWwMhH6CKmC+/0r0v/xxbWRGrT2uWvT3W3yMO3Xv9rE9+4bkFZxV5Ha4Y8D2wGdRh
-         bHsz1s6JRmcloxtE7/ZrjvWG2xW7ApsYS1Es16FQcZsM7o6ck6YSnnikFB0wpsVy4/o1
-         ISNK0TUsyyuQS7BvaTtDyho39Y8MD6ss35akWSLUaLjDEOuGP1Cn4Nbfs0Ku3LBRom/x
-         YADw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716828058; x=1717432858;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zXhZGnNO1k1I5G/0gxKase3G2b7JBGSEOc1kPGMl+NM=;
-        b=LB8jbZaQRdOdORVaPo52wLx0GZ3byYglJVzTmQJIrkvrb9NfbZClJpWyeDHeJAT61f
-         UYDuQe6tKbIYSmCcmv4+czp/TzImtKRatm5MrGpG1RcyJ00GnAOW8KId5vpRvsdNWoeb
-         SbVzLGjMZ/l9YWeT24tX0rV88rfi8WSt+9SsR8zpefDXKWGwswa6kbbrfT636PivjWva
-         5KPH0zprTgfN9aVgmZrrM94ilb3g61kiFJ0J4J2LUAquF9aJbVlQ2baNHQ+rN8Ff/BrN
-         0ETVsZjXaPNrZ/7Io0LQvcHxKaUKJQooszLtFt7vXrm+fqUe805VtNUre/XawGO+/b6S
-         o+VA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8s1l2nzZ4mVrVxWRsHW0Aey2+yUj3/Bb42HtwnwEaBCPDDYqcNUAmXUJDFORF8Swpd9gW43h3BiH6/kIFi/neJ4CC3y+AKMwxpD7Q4jK7oLynSwWEU1HWyXR/g6f5uSw/hd+j4uZRaj7nsa0hBtVYalQBzlNCH4/fXQ6wCnJJK3tZrQKjOBPV
-X-Gm-Message-State: AOJu0YzqBntKNyxV4+uWewl1SWx5huwtxrAI6W2qabAAdtVrs5G0WXR6
-	8DaqjAwKZPTSxdZALT5IzezRFtpF1iBCCGjyrE+7TB+lVwyINQumsloirG9AI4L4yS9wuVf2LTs
-	9TxCfgtoIFXeOwj0PzQrLyKp1k20EHFDb3X4=
-X-Google-Smtp-Source: AGHT+IEsccTJyokgadctxD4gUbLFqcCCT0IkiQsUawd8VegpGiS5XsBpVEQl3nAm3VoXKG7/pPR0CRO43bwFcNIF1xc=
-X-Received: by 2002:a2e:bc08:0:b0:2e9:570e:1cf with SMTP id
- 38308e7fff4ca-2e95b3089d9mr71753261fa.52.1716828057942; Mon, 27 May 2024
- 09:40:57 -0700 (PDT)
+	s=arc-20240116; t=1716830263; c=relaxed/simple;
+	bh=3rxUTA1I4HerrioRN+3OBuqtmdLgl8iJBgIQ129TVv0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=O5wUyi4/N2IZLBVWS/b2SutreXomNcPYCT4chUOTRJ3u3JJcWG3sxlva8BCm1CBUadeH5FdIuDEDkvJ8fp9QzRpijobRGFwspWJL6iTmGQM74cYkUaOnpfLA75XGZ3bCF2WxPsnTY1ti/IZtWeugLC19RJPDTDwkHNAZmiR4vkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X5NyoCEb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xn9zxwmd; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1716830258;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TEUijocrU6T3aGS8zxSPcciq61yCZ/WDO0sL2+cY/T8=;
+	b=X5NyoCEbyAv3ABYBlh7o8A7irGrnvxH1m4TKd7iNmw1qQOhKxQGkBhiz2ti2bkwuDielmP
+	QrOJtN0zV++IpZqh2GBxJH5vZ/sjYnqbogD0S+AO4SBDTzuGhOc1pMenpLHNvoGQQUmiVu
+	/FKtvbK4fMOudeAkuYDfDlJbdnNSwUX4SRoxyDq9u4kNjq58z9RYDLhfuM4au2ClVfYxYU
+	smHzpcko8NNXH8I3ANUPkghgtgGDPTaBVzTWo5DjMyALu0IDCmHJSJ0DmNP6Dv/jgHO2GV
+	NzmmAsYy/LLrRLsCwCG25iTTt5HVhNr9/hj8ScWwHduSYhugppp/lmtDHZgFSA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1716830258;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TEUijocrU6T3aGS8zxSPcciq61yCZ/WDO0sL2+cY/T8=;
+	b=xn9zxwmdfJGjQSnL8bckNXa6H2UiG4De2taOAkc2QX12tlNDfsZwink/hat7+HDjeWUwu2
+	czSIKKfiaCOUFbBg==
+To: Tim Teichmann <teichmanntim@outlook.de>
+Cc: Christian Heusel <christian@heusel.eu>, regressions@lists.linux.dev,
+ x86@kernel.org, stable@vger.kernel.org
+Subject: Re: [REGRESSION][BISECTED] Scheduling errors with the AMD FX 8300 CPU
+In-Reply-To: <PR3PR02MB6012EDF7EBA8045FBB03C434B3F02@PR3PR02MB6012.eurprd02.prod.outlook.com>
+References: <7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk>
+ <87r0dqdf0r.ffs@tglx>
+ <gtgsklvltu5pzeiqn7fwaktdsywk2re75unapgbcarlmqkya5a@mt7pi4j2f7b3>
+ <87h6ejd0wt.ffs@tglx>
+ <PR3PR02MB6012CB03006F1EEE8E8B5D69B3F02@PR3PR02MB6012.eurprd02.prod.outlook.com>
+ <874jajcn9r.ffs@tglx>
+ <PR3PR02MB6012EDF7EBA8045FBB03C434B3F02@PR3PR02MB6012.eurprd02.prod.outlook.com>
+Date: Mon, 27 May 2024 19:17:38 +0200
+Message-ID: <87msobb2dp.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAE4VaREzY+a2PvQJYJbfh8DwB4OP7kucZG-e28H22xyWob1w_A@mail.gmail.com>
- <5b79732b-087c-411f-a477-9b837566673e@leemhuis.info> <20240524132008.6b6f69f6@gandalf.local.home>
- <CAE4VaRF80OhnaiqeP9STfLa5pORB31YSorgoJ92fQ8tsRovxqQ@mail.gmail.com>
-In-Reply-To: <CAE4VaRF80OhnaiqeP9STfLa5pORB31YSorgoJ92fQ8tsRovxqQ@mail.gmail.com>
-From: =?UTF-8?B?SWxra2EgTmF1bGFww6TDpA==?= <digirigawa@gmail.com>
-Date: Mon, 27 May 2024 19:40:21 +0300
-Message-ID: <CAE4VaRGaNJSdo474joOtKEkxkfmyJ-zsrr8asb7ojP2JexFt-A@mail.gmail.com>
-Subject: Re: Bug in Kernel 6.8.x, 6.9.x Causing Trace/Panic During Shutdown/Reboot
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>, 
-	Linux regressions mailing list <regressions@lists.linux.dev>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Hi Steven,
+Tim!
 
-I took some time and bisected the 6.8.9 - 6.8.10 and git gave the
-panic inducing commit:
+On Mon, May 27 2024 at 18:36, Tim Teichmann wrote:
+> Right here is the output of the
+> Basic Leafs :
+> ================
+> 0x00000000: EAX=0x0000000d, EBX=0x68747541, ECX=0x444d4163, EDX=0x69746e65
+> 0x00000001: EAX=0x00600f20, EBX=0x00080800, ECX=0x3e98320b, EDX=0x178bfbff
+> 0x00000005: EAX=0x00000040, EBX=0x00000040, ECX=0x00000003, EDX=0x00000000
+> 0x00000006: EAX=0x00000000, EBX=0x00000000, ECX=0x00000001, EDX=0x00000000
+> 0x00000007: subleafs:
+>   0: EAX=0x00000000, EBX=0x00000008, ECX=0x00000000, EDX=0x00000000
+> 0x0000000d: subleafs:
+>   0: EAX=0x00000007, EBX=0x00000340, ECX=0x000003c0, EDX=0x40000000
+>   2: EAX=0x00000100, EBX=0x00000240, ECX=0x00000000, EDX=0x00000000
+> Extended Leafs :
+> ================
+> 0x80000000: EAX=0x8000001e, EBX=0x68747541, ECX=0x444d4163, EDX=0x69746e65
+> 0x80000001: EAX=0x00600f20, EBX=0x10000000, ECX=0x01eb3fff, EDX=0x2fd3fbff
+> 0x80000002: EAX=0x20444d41, EBX=0x74285846, ECX=0x382d296d, EDX=0x20303033
+> 0x80000003: EAX=0x68676945, EBX=0x6f432d74, ECX=0x50206572, EDX=0x65636f72
+> 0x80000004: EAX=0x726f7373, EBX=0x20202020, ECX=0x20202020, EDX=0x00202020
+> 0x80000005: EAX=0xff40ff18, EBX=0xff40ff30, ECX=0x10040140, EDX=0x40020140
+> 0x80000006: EAX=0x64006400, EBX=0x64004200, ECX=0x08008140, EDX=0x0040c140
+> 0x80000007: EAX=0x00000000, EBX=0x00000000, ECX=0x00000000, EDX=0x000007d9
+> 0x80000008: EAX=0x00003030, EBX=0x00001000, ECX=0x00004007, EDX=0x00000000
+> 0x8000000a: EAX=0x00000001, EBX=0x00010000, ECX=0x00000000, EDX=0x00001cff
+> 0x80000019: EAX=0xf040f018, EBX=0x64006400, ECX=0x00000000, EDX=0x00000000
+> 0x8000001a: EAX=0x00000003, EBX=0x00000000, ECX=0x00000000, EDX=0x00000000
+> 0x8000001b: EAX=0x000000ff, EBX=0x00000000, ECX=0x00000000, EDX=0x00000000
+> 0x8000001c: EAX=0x00000000, EBX=0x80032013, ECX=0x00010200, EDX=0x8000000f
+> 0x8000001d: subleafs:
+>   0: EAX=0x00000121, EBX=0x00c0003f, ECX=0x0000003f, EDX=0x00000000
+>   1: EAX=0x00004122, EBX=0x0040003f, ECX=0x000001ff, EDX=0x00000000
+>   2: EAX=0x00004143, EBX=0x03c0003f, ECX=0x000007ff, EDX=0x00000001
+>   3: EAX=0x0001c163, EBX=0x0fc0003f, ECX=0x000007ff, EDX=0x00000001
+> 0x8000001e: EAX=0x00000000, EBX=0x00000100, ECX=0x00000000, EDX=0x00000000
 
-414fb08628143 (tracefs: Reset permissions on remount if permissions are opt=
-ions)
+Duh. 0x8000001e claims that there are two SMT threads. The original code
+only evaluates that part for family >= 0x17. I missed to forward that
+condition.
 
-I reverted that commit to 6.9.2 and now it only serves the trace but
-the panic is gone. But I can live with it.
+Fix below.
 
---Ilkka
+Thanks,
 
-On Sun, May 26, 2024 at 8:42=E2=80=AFPM Ilkka Naulap=C3=A4=C3=A4 <digirigaw=
-a@gmail.com> wrote:
->
-> hi,
->
-> I took 6.9.2 and applied that 0bcfd9aa4dafa to it. Now the kernel is
-> serving me both problems; the trace and the panic as the pic shows.
->
-> > To understand this, did you do anything with tracing? Before shutting d=
-own,
-> > is there anything in /sys/kernel/tracing/instances directory?
-> > Were any of the files/directories permissions in /sys/kernel/tracing ch=
-anged?
->
-> And to answer your question, I did not do any tracing or so and the
-> /sys/kernel/tracing is empty.
-> Just plain boot-up, no matter if in full desktop or in bare rescue
-> mode, ends up the same way.
->
-> --Ilkka
->
-> On Fri, May 24, 2024 at 8:19=E2=80=AFPM Steven Rostedt <rostedt@goodmis.o=
-rg> wrote:
-> >
-> > On Fri, 24 May 2024 12:50:08 +0200
-> > "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.i=
-nfo> wrote:
-> >
-> > > > - Affected Versions: Before kernel version 6.8.10, the bug caused a
-> > > > quick display of a kernel trace dump before the shutdown/reboot
-> > > > completed. Starting from version 6.8.10 and continuing into version
-> > > > 6.9.0 and 6.9.1, this issue has escalated to a kernel panic,
-> > > > preventing the shutdown or reboot from completing and leaving the
-> > > > machine stuck.
-> >
-> > Ah, I bet it was this commit: baa23a8d4360d ("tracefs: Reset permission=
-s on
-> > remount if permissions are options"), which added a "iput" callback to =
-the
-> > dentry without calling iput, leaving stale inodes around.
-> >
-> > This is fixed with:
-> >
-> >   0bcfd9aa4dafa ("tracefs: Clear EVENT_INODE flag in tracefs_drop_inode=
-()")
-> >
-> > Try adding just that patch. It will at least make it go back to what wa=
-s
-> > happening before 6.8.10 (I hope!).
-> >
-> > -- Steve
+        tglx
+---
+diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topology_amd.c
+index d419deed6a48..ebf1cefb1cb2 100644
+--- a/arch/x86/kernel/cpu/topology_amd.c
++++ b/arch/x86/kernel/cpu/topology_amd.c
+@@ -84,9 +84,9 @@ static bool parse_8000_001e(struct topo_scan *tscan, bool has_topoext)
+ 
+ 	/*
+ 	 * If leaf 0xb is available, then the domain shifts are set
+-	 * already and nothing to do here.
++	 * already and nothing to do here. Only valid for family >= 0x17.
+ 	 */
+-	if (!has_topoext) {
++	if (!has_topoext && c->x86 >= 0x17) {
+ 		/*
+ 		 * Leaf 0x80000008 set the CORE domain shift already.
+ 		 * Update the SMT domain, but do not propagate it.
 
