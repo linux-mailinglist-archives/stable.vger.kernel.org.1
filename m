@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC07E8D070E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:58:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9CA8D0711
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 17:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 926EC1F23F65
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:58:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57A5128ADC6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 15:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45E3167285;
-	Mon, 27 May 2024 15:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7861216729C;
+	Mon, 27 May 2024 15:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8GYVNTl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FGgsn+MF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C8C13AD23;
-	Mon, 27 May 2024 15:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3275B16728E;
+	Mon, 27 May 2024 15:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825259; cv=none; b=LRvWgRkGn5DyTLQbLfo/D/f6AyinpPo1fUas7do/gewcF4ixLl3k70zVg/WLZKXGWdcGIq30/WN8fyWZqu5dBwUsAgwKGCHujBY0ux0gqcmsJ0nGYO+aHAohO0llKelBTVzMuTRbyyrdWFIsu6o2RCRS93h5UFuvkajRGgwuP4w=
+	t=1716825263; cv=none; b=EoZFul1VSr2xpD9fqrUW2FHRqR1EZVY5BpOZzWzrihhwVQFjPQs07Wn1473+fKnqEv7Yvz9eaYLsTOlevxw5Vwy0vv2IknGWm0QQDPV4Ro6Y+XlmGPps4wsq2bUO9aDWBg3gj8aLFdMXandiMhHt72cP4tPQlpJefTkX9Tq4XsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825259; c=relaxed/simple;
-	bh=Nd1TIhD6iw1hsjb+KKv3Uy6VnZoxV0BzPDvKZ/mNWhg=;
+	s=arc-20240116; t=1716825263; c=relaxed/simple;
+	bh=JBD5uyXOg5U5QC3/XSHMViSJs+yiNdm94tuokjSd038=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+HIGuGuvyShzs+kgwUHoOUwNoVLcUwguPmKhP0nPQfslqRKVvMvetALGoGWVZoQXtkux7xw4AGfR3LwwsKs8GGRCy/EINrWi+4kGfMbSrzDBVxvOEiOFgLp6k+EgJgB9Dvg4MN/3J9SEgbgPu2sYxQypsIupub83faLKyV3ruQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8GYVNTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD7AC2BBFC;
-	Mon, 27 May 2024 15:54:17 +0000 (UTC)
+	 MIME-Version; b=irWtAwd4ofjMvVCKQ2M9GQzM6I7KBGuzD2SchwAdYiYSGCpU0+nbWp265f87StvmBrxZ4eMqLNN3W5rx7oUQ0cfqbnbtVpTSMWcIKYYUBANRWDtld0n35aWPAux3y084xqshrKOQm7zkGHE0sp5/GwzAiZRKqDtLqO9Gecy9GgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FGgsn+MF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B97C32789;
+	Mon, 27 May 2024 15:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716825259;
-	bh=Nd1TIhD6iw1hsjb+KKv3Uy6VnZoxV0BzPDvKZ/mNWhg=;
+	s=k20201202; t=1716825262;
+	bh=JBD5uyXOg5U5QC3/XSHMViSJs+yiNdm94tuokjSd038=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E8GYVNTl2q96yfgPRh4V5ml4M4y+T3bnFt2TtechPspKtf/G6ghfCFTkVreSQQtgx
-	 xkqjMRsyMMhQQNtR6QiwexOUCpNzsEOATCKYHlyoxilXRQi9vGi2Qv/LQb/N/UA36k
-	 KO+duLhO0wkkzD5nPJzNpL9xtpZ/oAWJuMhgmtdfMrbFirTHtI/4GwTwjD8w+KIZk6
-	 9UNL6SfIbhPVaVqpnsz+JwrlKawlYjCEN4hrar2Ei+VKyAfa0muJLqoWRvRNIvHmWY
-	 rGh3vXh94uwx6vmMwFw2U7Zzs6yqqrTTneyX/JjHSXrLvH+jjc5g8xjYbOlZBbHsjq
-	 i2pNaTkAZxgaw==
+	b=FGgsn+MFx2GxrD2JgROhOvlKIXh7l/lGEi7FZz0q7UwZVIrqzOEb3VfGr3wwj8JC4
+	 a9dIP7t2vg9tGQ3pFRhNyCYkVyHh6/3npwnsqi0pn1JWc0EcFZI2dJ7h4MiR5XL7Hq
+	 iqUywWDBkcR5iQ2+0cjcvn1+85gsOIAbBVVTo4o0YOBban2sEkIfVIdsjGY0Ssznto
+	 MRmdH+k6gbdU77QphnTuPzeIseeDXuHI0x13FPbpWIc1OeycskVwtkzcOz1rNZ9/v0
+	 cEqNJ3qDHHL3YJlHnwXWhK/MT7kaja14R/LRtz/B1mek05MABDji0qTK2jQpVtiWkt
+	 CPrBqn7OyytgA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	cezary.rojewski@intel.com,
 	liam.r.girdwood@linux.intel.com,
 	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
 	ranjani.sridharan@linux.intel.com,
 	kai.vehmanen@linux.intel.com,
 	perex@perex.cz,
@@ -58,9 +58,9 @@ Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	ckeepax@opensource.cirrus.com,
 	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 07/20] ASoC: Intel: sof_sdw: add JD2 quirk for HP Omen 14
-Date: Mon, 27 May 2024 11:52:50 -0400
-Message-ID: <20240527155349.3864778-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.8 08/20] ASoC: Intel: sof_sdw: add quirk for Dell SKU 0C0F
+Date: Mon, 27 May 2024 11:52:51 -0400
+Message-ID: <20240527155349.3864778-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527155349.3864778-1-sashal@kernel.org>
 References: <20240527155349.3864778-1-sashal@kernel.org>
@@ -77,38 +77,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 4fee07fbf47d2a5f1065d985459e5ce7bf7969f0 ]
+[ Upstream commit b10cb955c6c0b8dbd9a768166d71cc12680b7fdf ]
 
-The default JD1 does not seem to work, use JD2 instead.
+The JD1 jack detection doesn't seem to work, use JD2.
+Also use the 4 speaker configuration.
 
+Link: https://github.com/thesofproject/linux/issues/4900
 Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240411220347.131267-4-pierre-louis.bossart@linux.intel.com
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20240411220347.131267-5-pierre-louis.bossart@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ sound/soc/intel/boards/sof_sdw.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index cf14bd3053fc9..9a4f801be93d1 100644
+index 9a4f801be93d1..468724ccde10e 100644
 --- a/sound/soc/intel/boards/sof_sdw.c
 +++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -495,6 +495,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_BT_OFFLOAD_SSP(1) |
- 					SOF_SSP_BT_OFFLOAD_PRESENT),
+@@ -429,6 +429,16 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 					RT711_JD2 |
+ 					SOF_SDW_FOUR_SPK),
  	},
 +	{
 +		.callback = sof_sdw_quirk_cb,
 +		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN Transcend Gaming Laptop"),
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0C0F")
 +		},
-+		.driver_data = (void *)(RT711_JD2),
++		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
++					RT711_JD2 |
++					SOF_SDW_FOUR_SPK),
 +	},
-+
- 	/* LunarLake devices */
  	{
  		.callback = sof_sdw_quirk_cb,
+ 		.matches = {
 -- 
 2.43.0
 
