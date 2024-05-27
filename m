@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-47082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD878D0C80
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9518D0C85
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE251F2223A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51B251F2210F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E063815FCE9;
-	Mon, 27 May 2024 19:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3C6155C81;
+	Mon, 27 May 2024 19:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z63jJsy3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUJNjjWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7F515EFC3;
-	Mon, 27 May 2024 19:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971F6168C4;
+	Mon, 27 May 2024 19:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837625; cv=none; b=Mu3eWPnP8Dh4KM428hj1EXy69sXx7DPsj6mj8zu/0r59lmT140vikVXHluwU9oQmfMMCu4XGV5L7rNneOFak+S4VALfmskcMtnz3nCL8dIJpaIwfjQAEvMK0ItjvYJo21CWzbwm2U4w6sCVAfZZoVcUD3cXW2/cfbSi53eDcoxY=
+	t=1716837635; cv=none; b=YeVJRudkFmDRTNqALChWXBk4SV5VUrbEmlTpW2FTr/+XvYJNMf4bPmxql9hfLB0FmOU5wNFTNGUycRekLPYbKF+rIgp3K0cC96kXX8Z+FH/l8mgHXpMSL7/LTiAgb81J0imQP03ioXviYk/PDuKPL2Q2klbhm6Qe+gRuDHO8KjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837625; c=relaxed/simple;
-	bh=sw1o8DlsZsgW2GKFUBtQBLuiQvUVBo/LQUwCvaeonBg=;
+	s=arc-20240116; t=1716837635; c=relaxed/simple;
+	bh=zk54leyV3veHbji2/wQGOO+Ff3MDCuDlCGudtfxM1A0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIhkz/7n4Hx8Z2bm9sbPlBzMqw2mRciFjOu/h3sDYNKllw4xMr17ZheF+IFtNaHGRoyp9jsYAITw8qQFZ3yCYeSuWTwr47jSXIhRZgTcvE1pdW0rW9ATb22ztHDkkztdsOVMhscwcFsqPMWQGt2uS8K/ky9KgL4s6o8njjQhanA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z63jJsy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31368C2BBFC;
-	Mon, 27 May 2024 19:20:25 +0000 (UTC)
+	 MIME-Version; b=rZwu6u31Rlz5VY0nSwIGcEJ0hUX0bM/F1q9uHNONpcgpWgG5bxFp7n7ji4BAgHyTlDSVNxFCLd0DrhrZWA7II0jTSUkxtma+0oo7IkvEXClAXfsaOxgCzMwJ5e2RzBxa+QFMrlqlKGzkzb30i5/gggLK+MJ6bAB9zpHkmHHxHRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUJNjjWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEE5C2BBFC;
+	Mon, 27 May 2024 19:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837625;
-	bh=sw1o8DlsZsgW2GKFUBtQBLuiQvUVBo/LQUwCvaeonBg=;
+	s=korg; t=1716837635;
+	bh=zk54leyV3veHbji2/wQGOO+Ff3MDCuDlCGudtfxM1A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z63jJsy3fjangIu7QcgNXYknfnV0lCARnjW6rUsEK6gwFuO/HPZqLpdJW71+ka4Cs
-	 aYBhmZf8PguepcZE1+lnWgWb09GCTnpbGYfc0dHqiwsLyneYoWcUBgH/A1Ca4TvrWr
-	 Cl+3cV46KxlrfWNQiZdEpkJo0WUOCf8YdP8DmCGc=
+	b=DUJNjjWhk18sKve55QwX9FfrB3pkpEtoovAiAfgb9pRVTfYu7fdcekEcGtCo/fJ5q
+	 xUI8lkYED7C36KAZOVED8ytopwguFXqc4mLx0wOMVUKKyIXftq6v5jlh+fOSCJQjZ9
+	 gGu8qSJAk/O81w7Z7kfrfN9eMNSGsPILSXtrh/z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Abdelrahman Morsy <abdelrahmanhesham94@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 044/493] dt-bindings: rockchip: grf: Add missing type to pcie-phy node
-Date: Mon, 27 May 2024 20:50:46 +0200
-Message-ID: <20240527185630.359121374@linuxfoundation.org>
+Subject: [PATCH 6.8 045/493] HID: mcp-2221: cancel delayed_work only when CONFIG_IIO is enabled
+Date: Mon, 27 May 2024 20:50:47 +0200
+Message-ID: <20240527185630.432225039@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -67,35 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Abdelrahman Morsy <abdelrahmanhesham94@gmail.com>
 
-[ Upstream commit d41201c90f825f19a46afbfb502f22f612d8ccc4 ]
+[ Upstream commit 3cba9cfcc1520a2307a29f6fab887bcfc121c417 ]
 
-'pcie-phy' is missing any type. Add 'type: object' to indicate it's a
-node.
+If the device is unplugged and CONFIG_IIO is not supported, this will
+result in a warning message at kernel/workqueue.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20240401204959.1698106-1-robh@kernel.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Only cancel delayed work in mcp2221_remove(), when CONFIG_IIO is enabled.
+
+Signed-off-by: Abdelrahman Morsy <abdelrahmanhesham94@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/soc/rockchip/grf.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-mcp2221.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-index 9793ea6f0fe65..575555810c2c2 100644
---- a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-+++ b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-@@ -165,6 +165,7 @@ allOf:
-           unevaluatedProperties: false
+diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+index f9cceaeffd081..da5ea5a23b087 100644
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -944,9 +944,11 @@ static void mcp2221_hid_unregister(void *ptr)
+ /* This is needed to be sure hid_hw_stop() isn't called twice by the subsystem */
+ static void mcp2221_remove(struct hid_device *hdev)
+ {
++#if IS_REACHABLE(CONFIG_IIO)
+ 	struct mcp2221 *mcp = hid_get_drvdata(hdev);
  
-         pcie-phy:
-+          type: object
-           description:
-             Documentation/devicetree/bindings/phy/rockchip-pcie-phy.txt
+ 	cancel_delayed_work_sync(&mcp->init_work);
++#endif
+ }
  
+ #if IS_REACHABLE(CONFIG_IIO)
 -- 
 2.43.0
 
