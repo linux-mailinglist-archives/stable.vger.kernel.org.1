@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0CC8D0DD1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:34:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B93218D0BAB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E150B20C14
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:34:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB6BD1C2168E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09EB15FA9F;
-	Mon, 27 May 2024 19:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6D526AF2;
+	Mon, 27 May 2024 19:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XrbXlXjd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edR0U80+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD5A17727;
-	Mon, 27 May 2024 19:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FC017E90E;
+	Mon, 27 May 2024 19:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838447; cv=none; b=DGur9fryErTnmx40txL2spXSI8fPVIW70xFQi02w898H18JFVfCrnAfnVi1i3o7W4+nnGXMbXgpCLXn2OIrgifheZiOVM+Zvxl9tVmqEHf0gf9SN7V6K/t2/TtG0FUPk/dZKZ4fkowJiMrab6YK4OJRkasn9BI/I+zk6Ob7B9TQ=
+	t=1716837109; cv=none; b=Ai5La0SkykQgsDWSq8f4le3BhuP9zyB4bxnfKXdqDD8AhmqDZFpfV6QSSyT+ZiJuHCj4cpt88XStr43UVHY27J/wesuP0Zstkg2q13EzXBDlARP3d8e1BPu7dxyFmM3X6+EIxMRFdHd6kf6YQR/Gl5BZMd93hY9zg2iCI8hrmmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838447; c=relaxed/simple;
-	bh=8R+7lPcn37DcE+PUZ1Q2Dibp3ZSQZp9ieIh8AxKXW7Q=;
+	s=arc-20240116; t=1716837109; c=relaxed/simple;
+	bh=mCBJ2vCj8Qi2Nm2Q3b3y+e4qszUK6MMXrtTjcCO2QAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVlmo8Rbquuj9b5bY+Y/TtB+RF3EB9bvaVkQw0+kFEvvh0eA/ch6xxVVY/RcJ7TTwfOqNee92XC5QpZ9F3c6ZzO+40Xu3jbCd7TARdEwJ9MGTMEC3ba+Wnnd5zVOqWC5ZxchpLJRZlYdwf5T1U72XyqL15d6UuZVYClI6vxw72k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrbXlXjd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2E5C2BBFC;
-	Mon, 27 May 2024 19:34:07 +0000 (UTC)
+	 MIME-Version; b=uyJwRbNoln4KrHJAGKetl8mWB6VmRvzsTPdYiP6Fqq/37z1W8kyrcfuMqrdUETTpKyrV28ozQ6651UqPlDj0MYuVwf0SV+VsUaxDgIE/hN4Q0wRTLaM1newbcdpzCyLI1j5FgG/W2sL0ZMaNnHkOo8J1JPi48qJKpBIpGT/mz6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edR0U80+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E5EC2BBFC;
+	Mon, 27 May 2024 19:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838447;
-	bh=8R+7lPcn37DcE+PUZ1Q2Dibp3ZSQZp9ieIh8AxKXW7Q=;
+	s=korg; t=1716837109;
+	bh=mCBJ2vCj8Qi2Nm2Q3b3y+e4qszUK6MMXrtTjcCO2QAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XrbXlXjd2alnVVnxEZA/H+ejQFtrKVgBEpps99Un7mJAwpH9UDqAC0smVE2hozddK
-	 ZbGfcUpiO0e6pVq4Ths644cnZDn7u4msnw0YjMZ5Q2Tvurnjr4hpZsOfIF+76D0A5P
-	 SYNr20/Es9XsKBboTrWpfdctuy+LixcgjmBno7f4=
+	b=edR0U80+vEsycn+K1OAhUnMoPrTNsqfnMNeUrEjM0oJXZyZwR8nTT7/dpNlvpDYaF
+	 QNtsDAjcaWz8yrWlCMAgciu0ItXJabrCDg74sLhg3U6ynicwcUdG11ZNYDqTF3EG/e
+	 O7FLy1bh7RjQ5ehGg5U0w8nvH1keXaVP6+HAJuAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Ying <victor.liu@nxp.com>,
-	Marek Vasut <marex@denx.de>,
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 357/493] drm/lcdif: Do not disable clocks on already suspended hardware
+Subject: [PATCH 6.9 312/427] media: ngene: Add dvb_ca_en50221_init return value check
 Date: Mon, 27 May 2024 20:55:59 +0200
-Message-ID: <20240527185641.964561014@linuxfoundation.org>
+Message-ID: <20240527185631.012995343@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Aleksandr Burakov <a.burakov@rosalinux.ru>
 
-[ Upstream commit 172695f145fb4798ab605e8a73f6e87711930124 ]
+[ Upstream commit 9bb1fd7eddcab2d28cfc11eb20f1029154dac718 ]
 
-In case the LCDIF is enabled in DT but unused, the clocks used by the
-LCDIF are not enabled. Those clocks may even have a use count of 0 in
-case there are no other users of those clocks. This can happen e.g. in
-case the LCDIF drives HDMI bridge which has no panel plugged into the
-HDMI connector.
+The return value of dvb_ca_en50221_init() is not checked here that may
+cause undefined behavior in case of nonzero value return.
 
-Do not attempt to disable clocks in the suspend callback and re-enable
-clocks in the resume callback unless the LCDIF is enabled and was in
-use before the system entered suspend, otherwise the driver might end
-up trying to disable clocks which are already disabled with use count
-0, and would trigger a warning from clock core about this condition.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Note that the lcdif_rpm_suspend() and lcdif_rpm_resume() functions
-internally perform the clocks disable and enable operations and act
-as runtime PM hooks too.
-
-Reviewed-by: Liu Ying <victor.liu@nxp.com>
-Fixes: 9db35bb349a0 ("drm: lcdif: Add support for i.MX8MP LCDIF variant")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240226082644.32603-1-marex@denx.de
+Fixes: 25aee3debe04 ("[media] Rename media/dvb as media/pci")
+Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mxsfb/lcdif_drv.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/pci/ngene/ngene-core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-index 18de2f17e2491..6494e82707569 100644
---- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-+++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-@@ -340,6 +340,9 @@ static int __maybe_unused lcdif_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/media/pci/ngene/ngene-core.c b/drivers/media/pci/ngene/ngene-core.c
+index 7481f553f9595..24ec576dc3bff 100644
+--- a/drivers/media/pci/ngene/ngene-core.c
++++ b/drivers/media/pci/ngene/ngene-core.c
+@@ -1488,7 +1488,9 @@ static int init_channel(struct ngene_channel *chan)
+ 	}
  
-+	if (pm_runtime_suspended(dev))
-+		return 0;
-+
- 	return lcdif_rpm_suspend(dev);
- }
- 
-@@ -347,7 +350,8 @@ static int __maybe_unused lcdif_resume(struct device *dev)
- {
- 	struct drm_device *drm = dev_get_drvdata(dev);
- 
--	lcdif_rpm_resume(dev);
-+	if (!pm_runtime_suspended(dev))
-+		lcdif_rpm_resume(dev);
- 
- 	return drm_mode_config_helper_resume(drm);
- }
+ 	if (dev->ci.en && (io & NGENE_IO_TSOUT)) {
+-		dvb_ca_en50221_init(adapter, dev->ci.en, 0, 1);
++		ret = dvb_ca_en50221_init(adapter, dev->ci.en, 0, 1);
++		if (ret != 0)
++			goto err;
+ 		set_transfer(chan, 1);
+ 		chan->dev->channel[2].DataFormatFlags = DF_SWAP32;
+ 		set_transfer(&chan->dev->channel[2], 1);
 -- 
 2.43.0
 
