@@ -1,140 +1,150 @@
-Return-Path: <stable+bounces-47519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628B88D1062
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 00:52:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2FE8D1070
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 01:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AC842823D8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 22:52:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56A6C1F21E66
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 23:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C986A33A;
-	Mon, 27 May 2024 22:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C803213B293;
+	Mon, 27 May 2024 23:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="V+rroTeF"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB4B1DFE4;
-	Mon, 27 May 2024 22:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D89613AD04
+	for <stable@vger.kernel.org>; Mon, 27 May 2024 23:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716850341; cv=none; b=rwx+oOlzQMZKxY5DE+L/UeybWwhRT0+mBw3HGdX/w9mftzpoMwRu7wYdh9/ovg1UktYqXnApRgZgpwPdSC6X8hjzPA9JdohxMlyuGzjNWGGfGcZJet2S4tlVMwrgYJQRWaEJ+DmkV7ijEO2hEndhpB/+ybgGRHGvMD6A8IYe/NE=
+	t=1716851565; cv=none; b=bsrbxFbxg8BpXVtLXxODKLxECGiKf1t2WVGIUI1qFzNfvVzdADnhqQBEPXi95vPmu/JPDkstbJ2PZqkGwiGGZiA59W8wwO21T4AzyHytkPFNVlFv+gjFOGbZWumWzBnVM80GiAWtfD54NNK2mZF5eCOegVGC5XU3FNobrRR6azU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716850341; c=relaxed/simple;
-	bh=B/ujHKF4cYcDAPAD7yF5zk3E89zp7t8vYX9ezPn+xZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jCoFCEAG3vEL69rcZUSo76bBUKgKHs3qvgEuoqrehVNqG0bGlT5V9WS7jWKVu9YHnSY674gfHVS6xJ0ZgSTWKcx4QIa/7/HKVDUQJKDjYSDGJTD9oHbWmbnuxx2xta6iWfAv08ZbickY8CQoTUExTn+ZS2XlKnIpj/Mx1Bpm5w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Received: from i5e86193d.versanet.de ([94.134.25.61] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sBjC4-0005YB-Ez; Tue, 28 May 2024 00:51:52 +0200
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To: Val Packett <val@packett.cool>
-Cc: stable@vger.kernel.org, Sandy Huang <hjc@rock-chips.com>,
- Andy Yan <andy.yan@rock-chips.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH v2 1/2] drm/rockchip: vop: clear DMA stop bit upon vblank on
- RK3066
-Date: Tue, 28 May 2024 00:51:51 +0200
-Message-ID: <2972856.VdNmn5OnKV@diego>
-In-Reply-To: <BF06ES.TD22854ZPLB92@packett.cool>
-References:
- <2024051930-canteen-produce-1ba7@gregkh> <1817371.3VsfAaAtOV@diego>
- <BF06ES.TD22854ZPLB92@packett.cool>
+	s=arc-20240116; t=1716851565; c=relaxed/simple;
+	bh=0wmXGrXNl1JIddYv9SZqtoNICb7NDDFn9lXc8+3O4DQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jdKvjhBMhi/PLn55VA3H0pmgD1OFQjxsFlpJ/VEdpFSNoy1UUr187v0zCYMsmdej05IvL9QPFvSkjLQpg6lje6hOWdaPWzl+jhEOQaC2/W5y1ytiY5OMbiHGnrkV/nzmqWV4/02165ZcLpJjskE5oDPX4yAUiS8mGgfPjPf1LRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=V+rroTeF; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+X-Envelope-To: heiko@sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1716851561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NhJB2QVODdUA35I9pFEh6dmBBV56wUfJsZyxgaUD6Yc=;
+	b=V+rroTeFfCggIU6g9FhwO+eUXGJJS0N0JEH51ksOYwRUE1xcX8iTW1M2Lz3MLIx3L8gEaE
+	AMkJdPsStaC/7RR4woi4luZbmlVOy+Bd4AktN+ZMXGpthefQM4EVwhH+9IZCpRzwuU+lqQ
+	wLNLgFWNkmVKrPD5uAScrjw0LRhXVUXb1PB2ovRXV7rOqnnUztJ+qUxrBfsrwFt7/g0L4b
+	xLaL860E8FHpdok32JAMsdBjCjIvOUNAi0bqeHaCSFEBNpkapW4pBiZZorrZ+TbEjQx6AW
+	BgB63Xzdtil7TkB9VqkaJG0js7plpSgPDkxcwaQXOsZnkv5QHfUWBKmX35mRdg==
+X-Envelope-To: val@packett.cool
+X-Envelope-To: stable@vger.kernel.org
+X-Envelope-To: hjc@rock-chips.com
+X-Envelope-To: andy.yan@rock-chips.com
+X-Envelope-To: maarten.lankhorst@linux.intel.com
+X-Envelope-To: mripard@kernel.org
+X-Envelope-To: tzimmermann@suse.de
+X-Envelope-To: airlied@gmail.com
+X-Envelope-To: daniel@ffwll.ch
+X-Envelope-To: dri-devel@lists.freedesktop.org
+X-Envelope-To: linux-arm-kernel@lists.infradead.org
+X-Envelope-To: linux-rockchip@lists.infradead.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+To: =?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>
+Cc: Val Packett <val@packett.cool>,
+	stable@vger.kernel.org,
+	Sandy Huang <hjc@rock-chips.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] drm/rockchip: vop: clear DMA stop bit upon vblank on RK3066
+Date: Mon, 27 May 2024 20:11:49 -0300
+Message-ID: <20240527231202.23365-1-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hey,
+The RK3066 VOP sets a dma_stop bit when it's done scanning out a frame
+and needs the driver to acknowledge that by clearing the bit.
 
-Am Dienstag, 28. Mai 2024, 00:13:59 CEST schrieb Val Packett:
-> On Mon, May 27 2024 at 22:43:18 +02:00:00, Heiko St=FCbner=20
-> <heiko@sntech.de> wrote:
-> > Am Montag, 27. Mai 2024, 09:16:33 CEST schrieb Val Packett:
-> >>  On the RK3066, there is a bit that must be cleared, otherwise
-> >>  the picture does not show up
-> >> on the display (at least for RGB).
-> >>=20
-> >>  Fixes: f4a6de8 ("drm: rockchip: vop: add rk3066 vop definitions")
-> >>  Cc: stable@vger.kernel.org
-> >>  Signed-off-by: Val Packett <val@packett.cool>
-> >>  ---
-> >>  v2: doing this on vblank makes more sense; added fixes tag
-> >=20
-> > can you give a rationale for this please?
-> >=20
-> > I.e. does this dma-stop bit need to be set on each vblank that happens
-> > to push this frame to the display somehow?
->=20
->=20
-> The only things I'm 100% sure about:
->=20
-> - that bit is called dma_stop in the Android kernel's header;
-> - without ever setting that bit to 1, it was getting set to 1 by the=20
-> chip itself, as logging the register on flush was showing a 1 in that=20
-> position (it was the only set bit - I guess others aren't readable=20
-> after cfg_done?);
-> - without clearing it "between" frames, the whole screen is always=20
-> filled with noise, the picture is not visible.
->=20
-> The rest is at least a bit (ha) speculative:
->=20
-> As I understand from what the name implies, the hardware sets it to=20
-> indicate that it has scanned out the frame and is waiting for=20
-> acknowledgment (clearing) to be able to scan out the next frame. I=20
-> guess it's a redundant synchronization mechanism that was removed in=20
-> later iterations of the VOP hardware block.
->=20
-> I've been trying to see if moving where I clear the bit affects the=20
-> sort-of-tearing-but-vertical glitches that sometimes happen, especially=20
-> early on after the system has just booted, but that seems to be=20
-> completely unrelated pixel clock craziness (the Android kernel runs the=20
-> screen at 66 fps, interestingly).
->=20
-> I'm fairly confident that both places are "correct". The reason I'm=20
-> more on the side of vblank now is that it made logical sense to me when=20
-> I thought about it more: acknowledging that the frame has been scanned=20
-> out is a reaction to the frame having been scanned out. It's a=20
-> consequence of *that* that the acknowledgment is required for the next=20
-> frame to be drawn.
->=20
-> Unless we can get the opinion of someone closely familiar with this=20
-> decade-old hardware, we only have this reasoning to go off of :)
+So unless we clear it "between" frames, the RGB output only shows noise
+instead of the picture. vblank seems to be the most appropriate place to
+do it, since it indicates exactly that: that the hardware is done
+with the frame.
 
-Actually that reasoning was exactly what I was hoping for :-) .
-And it actually also makes perfect sense.
+This seems to be a redundant synchronization mechanism that was removed
+in later iterations of the VOP hardware block.
 
-I was somehow thinking this needs to be set only when starting output
-and not as sort of an Ack.
+Fixes: f4a6de8 ("drm: rockchip: vop: add rk3066 vop definitions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Val Packett <val@packett.cool>
+---
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 6 ++++++
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.h | 1 +
+ drivers/gpu/drm/rockchip/rockchip_vop_reg.c | 1 +
+ 3 files changed, 8 insertions(+)
 
-Could you do a v3 with:
-=2D the findings from above slightly condensed in the commit message
-  It's really helpful when someone stumbles onto that commit 10 years
-  from now and can get this really helpful explanation from the commit
-  message.
-=2D sending it as a _new_ thread
-  Having v2 as reply to v1 patches confuses tooling that then can't
-  distinguish what is actually part of this v2
-
-
-Thanks a lot
-Heiko
-
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index a13473b2d..2731fe2b2 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1766,6 +1766,12 @@ static void vop_handle_vblank(struct vop *vop)
+ 	}
+ 	spin_unlock(&drm->event_lock);
+ 
++	if (VOP_HAS_REG(vop, common, dma_stop)) {
++		spin_lock(&vop->reg_lock);
++		VOP_REG_SET(vop, common, dma_stop, 0);
++		spin_unlock(&vop->reg_lock);
++	}
++
+ 	if (test_and_clear_bit(VOP_PENDING_FB_UNREF, &vop->pending))
+ 		drm_flip_work_commit(&vop->fb_unref_work, system_unbound_wq);
+ }
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+index b33e5bdc2..0cf512cc1 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+@@ -122,6 +122,7 @@ struct vop_common {
+ 	struct vop_reg lut_buffer_index;
+ 	struct vop_reg gate_en;
+ 	struct vop_reg mmu_en;
++	struct vop_reg dma_stop;
+ 	struct vop_reg out_mode;
+ 	struct vop_reg standby;
+ };
+diff --git a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+index b9ee02061..9bcb40a64 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
++++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+@@ -466,6 +466,7 @@ static const struct vop_output rk3066_output = {
+ };
+ 
+ static const struct vop_common rk3066_common = {
++	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
+ 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
+ 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
+ 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
+-- 
+2.45.1
 
 
