@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D19A8D0DB8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CB58D0BB8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EA8B1C20F64
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31BFD1C216AC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBFD13AD05;
-	Mon, 27 May 2024 19:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD5A6A039;
+	Mon, 27 May 2024 19:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/t5dE7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a691Pwup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B49B17727;
-	Mon, 27 May 2024 19:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B97717E90E;
+	Mon, 27 May 2024 19:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838382; cv=none; b=KI/wJagvVcLZR5q9Ycto1mWLtQTrF3U5g4JIWB0kbIfNF3vFWBhuwXsmkaVQpx+NmywaANa6ScKAIcKnoMaGiBm92r29pC0u/mjORtraz0UboaMk2LAzvSd6Bd+M5ayGsGADGcUZ4LqstZsWirJyxi7FcNl6iR66fkAXsSLAfuY=
+	t=1716837142; cv=none; b=ZYNifocTmytcZjy2LcnBgDDhhxhy8WffrC8fp192Ngzoq838uTyo2sh+qHrvgll11/xCWRSEZyP7HnPoukP+RQ13+Cm/fnw/B4fY9ZDNRFAO6RQv/CvB8blBhNeTxA/ekl3AUjVnocq1glinGzhmwnX6p3Ia7Jmsu9wajPD508c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838382; c=relaxed/simple;
-	bh=QDwSFyelHK8hZGlNhwWNHQRuS6sN88SqSJdm4vLVDew=;
+	s=arc-20240116; t=1716837142; c=relaxed/simple;
+	bh=upod/bHbKVLjnwoAyzeFYKOeRxhB80u7Y5/pItAeg0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMkrEmODJYPwv5rV0LlW1Hn7vWhlUpqDEmckGxYvsJDZwwbRQPo6CsAcIMqa8BxggiOqdw+GkM+zHDygbBbpk5zWjo9ckGxYgXFdePTJlNG2k5LPrcyoogZ+x3yN9lYoUFA5fPODSa8eGVXDos2IeMcauheuV43x04sXorLqqZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/t5dE7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09094C2BBFC;
-	Mon, 27 May 2024 19:33:01 +0000 (UTC)
+	 MIME-Version; b=ZdtUG9HmOVBKzR5EPOOhBO0xuPy8HqW3J94lAb3/fGprogNq/5gnB8MprxzyqbWKPwDA8j7tOmhW0vEGQR2g8Ob+5Zd59YI8yWIV9wVEhyckwLrz6LKBBH4yDURR3bRGhabuNC+YXrWHHjuAV85NNn+Wj8YNgp9Iv5YUQFWAykw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a691Pwup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A2CC2BBFC;
+	Mon, 27 May 2024 19:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838382;
-	bh=QDwSFyelHK8hZGlNhwWNHQRuS6sN88SqSJdm4vLVDew=;
+	s=korg; t=1716837142;
+	bh=upod/bHbKVLjnwoAyzeFYKOeRxhB80u7Y5/pItAeg0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/t5dE7Isb2jyN4+xuf6oNyXqpR+e/ivDF7TU6a4/hlnNzCPGO5flfns0/eep7iFj
-	 ubBqR6NYDkmlSB854CTUgONTZAm4+YaFqmGIDlAB4Z7qWrx8USut0OecSAbqpmDsiz
-	 W5pjgSMTCfA0fTOnCUEhavnk8xe9uEcJduV6jtYI=
+	b=a691Pwupzq+00AGVu4MwpoSrugtvdRtk5XLXhXtLoNfFc9C8csoo+6oeGpyVWID2W
+	 ggrbfsU5EU0VFBE+r6XblD9bPbE3dGTnmx2r0o4dAOfFu/5cR+k2oAo47UZFsjfPqT
+	 zVvVPzAWe1i7ONNq8RlZV5+sfdHQ6v6mmILBmjaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Mark Brown <broonie@kernel.org>,
+	Huai-Yuan Liu <qq810974084@gmail.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 371/493] ASoC: kirkwood: Fix potential NULL dereference
-Date: Mon, 27 May 2024 20:56:13 +0200
-Message-ID: <20240527185642.406280458@linuxfoundation.org>
+Subject: [PATCH 6.9 327/427] drm/arm/malidp: fix a possible null pointer dereference
+Date: Mon, 27 May 2024 20:56:14 +0200
+Message-ID: <20240527185632.005534707@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Huai-Yuan Liu <qq810974084@gmail.com>
 
-[ Upstream commit ea60ab95723f5738e7737b56dda95e6feefa5b50 ]
+[ Upstream commit a1f95aede6285dba6dd036d907196f35ae3a11ea ]
 
-In kirkwood_dma_hw_params() mv_mbus_dram_info() returns NULL if
-CONFIG_PLAT_ORION macro is not defined.
-Fix this bug by adding NULL check.
+In malidp_mw_connector_reset, new memory is allocated with kzalloc, but
+no check is performed. In order to prevent null pointer dereferencing,
+ensure that mw_state is checked before calling
+__drm_atomic_helper_connector_reset.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: bb6a40fc5a83 ("ASoC: kirkwood: Fix reference to PCM buffer address")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://msgid.link/r/20240328173337.21406-1-amishin@t-argos.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8cbc5caf36ef ("drm: mali-dp: Add writeback connector")
+Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240407063053.5481-1-qq810974084@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/kirkwood/kirkwood-dma.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/arm/malidp_mw.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/kirkwood/kirkwood-dma.c b/sound/soc/kirkwood/kirkwood-dma.c
-index dd2f806526c10..ef00792e1d49a 100644
---- a/sound/soc/kirkwood/kirkwood-dma.c
-+++ b/sound/soc/kirkwood/kirkwood-dma.c
-@@ -182,6 +182,9 @@ static int kirkwood_dma_hw_params(struct snd_soc_component *component,
- 	const struct mbus_dram_target_info *dram = mv_mbus_dram_info();
- 	unsigned long addr = substream->runtime->dma_addr;
+diff --git a/drivers/gpu/drm/arm/malidp_mw.c b/drivers/gpu/drm/arm/malidp_mw.c
+index 626709bec6f5f..2577f0cef8fcd 100644
+--- a/drivers/gpu/drm/arm/malidp_mw.c
++++ b/drivers/gpu/drm/arm/malidp_mw.c
+@@ -72,7 +72,10 @@ static void malidp_mw_connector_reset(struct drm_connector *connector)
+ 		__drm_atomic_helper_connector_destroy_state(connector->state);
  
-+	if (!dram)
-+		return 0;
+ 	kfree(connector->state);
+-	__drm_atomic_helper_connector_reset(connector, &mw_state->base);
++	connector->state = NULL;
 +
- 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
- 		kirkwood_dma_conf_mbus_windows(priv->io,
- 			KIRKWOOD_PLAYBACK_WIN, addr, dram);
++	if (mw_state)
++		__drm_atomic_helper_connector_reset(connector, &mw_state->base);
+ }
+ 
+ static enum drm_connector_status
 -- 
 2.43.0
 
