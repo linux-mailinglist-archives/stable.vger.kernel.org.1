@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-46441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DB78D047E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D30798D0483
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 068E41F21566
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:47:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 465151F21FA3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30B316EC02;
-	Mon, 27 May 2024 14:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E63916728B;
+	Mon, 27 May 2024 14:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C2Lh37GA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Si5r81SS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E94115FA6C;
-	Mon, 27 May 2024 14:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B713167283;
+	Mon, 27 May 2024 14:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819564; cv=none; b=basrUdTQhcFA2ZM6BIJCYSU7K43gQn/685Bz3Ul6tMEruEC/axaVRosC8sJy8AcvveRPbDNTrlMaKAh08CplECivrFhYC/xfuzE4A0eT9vddMWhkLu7q9Rcrp2gp8G9J2kD84hhJl5hgd/khucg/2Fpt49tBBx5tFUtemFtU4jk=
+	t=1716819567; cv=none; b=GgNQXCb/zgjzRmshDmPs7F/yGnbGVd8fAm2YORTy8SW+Z/CPo1rX/TgG1p6WdFbecMI//iO/sKRRj7tzTwp6rqHqr/yFsJD/9xcvgwWIjx0aeooIEyTJqCB+pczyR+vwgGhqdMgP34UNnAYvZBc699Yspxi12AI2tJqjb2V8YMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819564; c=relaxed/simple;
-	bh=Z2Lu6fp7hgS+t8UgQUG2yU3FkRiF5IM8aE8wjUPcwZ0=;
+	s=arc-20240116; t=1716819567; c=relaxed/simple;
+	bh=fPf8xYS+uD2VYcTwW+mOFsIu3Qrkg/8hYLLY5eqx0t4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkOmnffcMQtwpa9u9E+AGA2r/b/NQq2ZsWcpcc742wJg38Vw2h156QfhjYSj3/pnW85IgRf9SoXELJql237Isy8Qnd75dOvajexcx3c9BFNukPZi2kOWlqE+/LpQSy/F52ykVo0hnDRQBHSmfXJMcA0i3OjFjQKpzgHNIurSUB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C2Lh37GA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF0BC32781;
-	Mon, 27 May 2024 14:19:22 +0000 (UTC)
+	 MIME-Version; b=PwSrTDtw40giNz9Zm7isM8GxXJh/hdvwphlWeqDQCMErOFguuE0F8Jt6iY9VbG+OA0xf0aKD4x/uuUjNfvPiE81gTJ5FLq8BSL9GIXs5uKPpCYlzn56I32xF0lwiPAvP5CwgzY/R0LeKFnufWZQSmTz/x+I9cwNzH4grDzHYYqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Si5r81SS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7369FC32789;
+	Mon, 27 May 2024 14:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819563;
-	bh=Z2Lu6fp7hgS+t8UgQUG2yU3FkRiF5IM8aE8wjUPcwZ0=;
+	s=k20201202; t=1716819565;
+	bh=fPf8xYS+uD2VYcTwW+mOFsIu3Qrkg/8hYLLY5eqx0t4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2Lh37GAeVQg5A0qg19GVfleMzdSkEsmV1FQtX7c8lTemcwwwCFyhMT9xgA0IizZX
-	 uJoesFPPf6joaMYRAwX1dmmmrM3DHPla8tFuBs8/nKvqkeWgxiVoMXTJpmLQyOZOLi
-	 CI09ddBKjlcjkHZ932r9r0KeCZaZFx18TXOzkwswdDYNHwBl6L1sluwc1dGSSVZAdv
-	 o01G6MC4kQ0iYQ995xThGOLOT/sGwi/fMnjpHCVoRS8ovZ0essHjQ8+D1ILP95JSqf
-	 4v7t/S29uaRRV2po8CwNK2M2oiFcpu6K73ivQVpD8k7NrIlO7bPEdUQ+bArzx2OKg4
-	 icO1Xdl8TqTXw==
+	b=Si5r81SSvUCZh0QHAFYir8VExpXT/haMkglXk/0aZPAOK5yF0zuzNtLfMlb1GN1MN
+	 j1hV1iSg4sUOdkr+R0N7gBY0CuNMEuVgBS6LonIMvKgDM4A+takfYb7PREpFu/WJhO
+	 rI7xnxieIa9EStU4p6HV/MeyVZ86dkA2koJ7IN4WdK90snF7kThJaUUmn6c0Bh2GTP
+	 zImaoIVvqm/YwTzHUviM0jTEgOJj8IJUF2MvcRw11aEWIsAhCjxr9QpmRGG2L/jVC5
+	 eCr/Q6YG3V36ONRWEWJQiaf6kfOXWiz8R928iy6XTUg3VRjWppz/CwldoPucOaQ98v
+	 IGncmWwIQodeg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	syzbot <syzkaller@googlegroups.com>,
-	Kees Cook <keescook@chromium.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
+Cc: Wander Lairson Costa <wander@redhat.com>,
+	Hu Chunyu <chuhu@redhat.com>,
 	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
+	nhorman@tuxdriver.com,
+	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 05/13] af_packet: avoid a false positive warning in packet_setsockopt()
-Date: Mon, 27 May 2024 10:18:42 -0400
-Message-ID: <20240527141901.3854691-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 06/13] drop_monitor: replace spin_lock by raw_spin_lock
+Date: Mon, 27 May 2024 10:18:43 -0400
+Message-ID: <20240527141901.3854691-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141901.3854691-1-sashal@kernel.org>
 References: <20240527141901.3854691-1-sashal@kernel.org>
@@ -71,79 +70,153 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.218
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 86d43e2bf93ccac88ef71cee36a23282ebd9e427 ]
+[ Upstream commit f1e197a665c2148ebc25fe09c53689e60afea195 ]
 
-Although the code is correct, the following line
+trace_drop_common() is called with preemption disabled, and it acquires
+a spin_lock. This is problematic for RT kernels because spin_locks are
+sleeping locks in this configuration, which causes the following splat:
 
-	copy_from_sockptr(&req_u.req, optval, len));
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 449, name: rcuc/47
+preempt_count: 1, expected: 0
+RCU nest depth: 2, expected: 2
+5 locks held by rcuc/47/449:
+ #0: ff1100086ec30a60 ((softirq_ctrl.lock)){+.+.}-{2:2}, at: __local_bh_disable_ip+0x105/0x210
+ #1: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: rt_spin_lock+0xbf/0x130
+ #2: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: __local_bh_disable_ip+0x11c/0x210
+ #3: ffffffffb394a160 (rcu_callback){....}-{0:0}, at: rcu_do_batch+0x360/0xc70
+ #4: ff1100086ee07520 (&data->lock){+.+.}-{2:2}, at: trace_drop_common.constprop.0+0xb5/0x290
+irq event stamp: 139909
+hardirqs last  enabled at (139908): [<ffffffffb1df2b33>] _raw_spin_unlock_irqrestore+0x63/0x80
+hardirqs last disabled at (139909): [<ffffffffb19bd03d>] trace_drop_common.constprop.0+0x26d/0x290
+softirqs last  enabled at (139892): [<ffffffffb07a1083>] __local_bh_enable_ip+0x103/0x170
+softirqs last disabled at (139898): [<ffffffffb0909b33>] rcu_cpu_kthread+0x93/0x1f0
+Preemption disabled at:
+[<ffffffffb1de786b>] rt_mutex_slowunlock+0xab/0x2e0
+CPU: 47 PID: 449 Comm: rcuc/47 Not tainted 6.9.0-rc2-rt1+ #7
+Hardware name: Dell Inc. PowerEdge R650/0Y2G81, BIOS 1.6.5 04/15/2022
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x8c/0xd0
+ dump_stack+0x14/0x20
+ __might_resched+0x21e/0x2f0
+ rt_spin_lock+0x5e/0x130
+ ? trace_drop_common.constprop.0+0xb5/0x290
+ ? skb_queue_purge_reason.part.0+0x1bf/0x230
+ trace_drop_common.constprop.0+0xb5/0x290
+ ? preempt_count_sub+0x1c/0xd0
+ ? _raw_spin_unlock_irqrestore+0x4a/0x80
+ ? __pfx_trace_drop_common.constprop.0+0x10/0x10
+ ? rt_mutex_slowunlock+0x26a/0x2e0
+ ? skb_queue_purge_reason.part.0+0x1bf/0x230
+ ? __pfx_rt_mutex_slowunlock+0x10/0x10
+ ? skb_queue_purge_reason.part.0+0x1bf/0x230
+ trace_kfree_skb_hit+0x15/0x20
+ trace_kfree_skb+0xe9/0x150
+ kfree_skb_reason+0x7b/0x110
+ skb_queue_purge_reason.part.0+0x1bf/0x230
+ ? __pfx_skb_queue_purge_reason.part.0+0x10/0x10
+ ? mark_lock.part.0+0x8a/0x520
+...
 
-triggers this warning :
+trace_drop_common() also disables interrupts, but this is a minor issue
+because we could easily replace it with a local_lock.
 
-memcpy: detected field-spanning write (size 28) of single field "dst" at include/linux/sockptr.h:49 (size 16)
+Replace the spin_lock with raw_spin_lock to avoid sleeping in atomic
+context.
 
-Refactor the code to be more explicit.
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Reported-by: Hu Chunyu <chuhu@redhat.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ net/core/drop_monitor.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index db5d16c5d5b11..3ae11961c9cc3 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3762,28 +3762,30 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
- 	case PACKET_TX_RING:
- 	{
- 		union tpacket_req_u req_u;
--		int len;
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index 7742ee689141f..009b9e22c4e75 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -73,7 +73,7 @@ struct net_dm_hw_entries {
+ };
  
-+		ret = -EINVAL;
- 		lock_sock(sk);
- 		switch (po->tp_version) {
- 		case TPACKET_V1:
- 		case TPACKET_V2:
--			len = sizeof(req_u.req);
-+			if (optlen < sizeof(req_u.req))
-+				break;
-+			ret = copy_from_sockptr(&req_u.req, optval,
-+						sizeof(req_u.req)) ?
-+						-EINVAL : 0;
- 			break;
- 		case TPACKET_V3:
- 		default:
--			len = sizeof(req_u.req3);
-+			if (optlen < sizeof(req_u.req3))
-+				break;
-+			ret = copy_from_sockptr(&req_u.req3, optval,
-+						sizeof(req_u.req3)) ?
-+						-EINVAL : 0;
- 			break;
- 		}
--		if (optlen < len) {
--			ret = -EINVAL;
--		} else {
--			if (copy_from_sockptr(&req_u.req, optval, len))
--				ret = -EFAULT;
--			else
--				ret = packet_set_ring(sk, &req_u, 0,
--						    optname == PACKET_TX_RING);
--		}
-+		if (!ret)
-+			ret = packet_set_ring(sk, &req_u, 0,
-+					      optname == PACKET_TX_RING);
- 		release_sock(sk);
- 		return ret;
+ struct per_cpu_dm_data {
+-	spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
++	raw_spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
+ 					 * 'send_timer'
+ 					 */
+ 	union {
+@@ -168,9 +168,9 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
+ err:
+ 	mod_timer(&data->send_timer, jiffies + HZ / 10);
+ out:
+-	spin_lock_irqsave(&data->lock, flags);
++	raw_spin_lock_irqsave(&data->lock, flags);
+ 	swap(data->skb, skb);
+-	spin_unlock_irqrestore(&data->lock, flags);
++	raw_spin_unlock_irqrestore(&data->lock, flags);
+ 
+ 	if (skb) {
+ 		struct nlmsghdr *nlh = (struct nlmsghdr *)skb->data;
+@@ -225,7 +225,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
+ 
+ 	local_irq_save(flags);
+ 	data = this_cpu_ptr(&dm_cpu_data);
+-	spin_lock(&data->lock);
++	raw_spin_lock(&data->lock);
+ 	dskb = data->skb;
+ 
+ 	if (!dskb)
+@@ -259,7 +259,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
  	}
+ 
+ out:
+-	spin_unlock_irqrestore(&data->lock, flags);
++	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
+ 
+ static void trace_kfree_skb_hit(void *ignore, struct sk_buff *skb, void *location)
+@@ -318,9 +318,9 @@ net_dm_hw_reset_per_cpu_data(struct per_cpu_dm_data *hw_data)
+ 		mod_timer(&hw_data->send_timer, jiffies + HZ / 10);
+ 	}
+ 
+-	spin_lock_irqsave(&hw_data->lock, flags);
++	raw_spin_lock_irqsave(&hw_data->lock, flags);
+ 	swap(hw_data->hw_entries, hw_entries);
+-	spin_unlock_irqrestore(&hw_data->lock, flags);
++	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
+ 
+ 	return hw_entries;
+ }
+@@ -452,7 +452,7 @@ net_dm_hw_trap_summary_probe(void *ignore, const struct devlink *devlink,
+ 		return;
+ 
+ 	hw_data = this_cpu_ptr(&dm_hw_cpu_data);
+-	spin_lock_irqsave(&hw_data->lock, flags);
++	raw_spin_lock_irqsave(&hw_data->lock, flags);
+ 	hw_entries = hw_data->hw_entries;
+ 
+ 	if (!hw_entries)
+@@ -481,7 +481,7 @@ net_dm_hw_trap_summary_probe(void *ignore, const struct devlink *devlink,
+ 	}
+ 
+ out:
+-	spin_unlock_irqrestore(&hw_data->lock, flags);
++	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
+ }
+ 
+ static const struct net_dm_alert_ops net_dm_alert_summary_ops = {
+@@ -1669,7 +1669,7 @@ static struct notifier_block dropmon_net_notifier = {
+ 
+ static void __net_dm_cpu_data_init(struct per_cpu_dm_data *data)
+ {
+-	spin_lock_init(&data->lock);
++	raw_spin_lock_init(&data->lock);
+ 	skb_queue_head_init(&data->drop_queue);
+ 	u64_stats_init(&data->stats.syncp);
+ }
 -- 
 2.43.0
 
