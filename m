@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-46857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783A98D0B8D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B658D0D8C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33F98284ED0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D97071C215AE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C4515DBD8;
-	Mon, 27 May 2024 19:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E7D15FD04;
+	Mon, 27 May 2024 19:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWOtuFM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N34JgvFB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E3B17E90E;
-	Mon, 27 May 2024 19:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9053A1EEF7;
+	Mon, 27 May 2024 19:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837033; cv=none; b=FLtPq+N9OB7kvBbEjn45Kb2stG+2TsWpjcpNCd72m1Rpd041e9sg8kONCw286hpYwxtV3RtOr9dNyLxe6EuOn208DjIKZvtl+zYmsSUgz13r/a06u4PdCvO+Gov+XJo6/UNarSdVs0L85p3rh6N3uu/6+tXYegCPVVknmThplpI=
+	t=1716838271; cv=none; b=Q6eUynZiV7aSbC98wyMpbA5yn7/9xM47juLDbFYvohnNS9dj10p3ouLaEGl4n9/cHJsB7yYnW7mQVNL6NMWIKsTX2Pjd8lvf/Q9yMxvExEjJu2QduMJWn57NJoa/GbbkXYBys4KpsP7ySF2h2viTF816PZIYBWXDWnCGPKxO4RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837033; c=relaxed/simple;
-	bh=nmm9roPr9nAHfmBNea/JF2SoSNbz+dAJ0YDI3QMyMuI=;
+	s=arc-20240116; t=1716838271; c=relaxed/simple;
+	bh=PajG9yWQTYlbqXZEINsDfzpCvm/BCyJ9ZYLaSDl1O/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrJEzq5kJs1Hb+MDAZ+2OOhO5pKJiJeptbP4Q9dE9az+vHB5N9XemK4Ccy91NjMaPuQaT5zWCePI669F2duSkTOh9urB05xSRctxaVnMAQM59VMq42R2RFK1jB4UQU5L/DQBLlsg/yCIqySDDR1dPzR0d0IGec8CK1UyIViF0/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWOtuFM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90768C32782;
-	Mon, 27 May 2024 19:10:32 +0000 (UTC)
+	 MIME-Version; b=JsdSM4UExZO+8gdUAXGBBg52e344pD3H4kEaH/Xv9byM8WOrpXRSddwYdMVLuVdyyYeoWoiH6Q0ePPfHjZth54JBgep9sJZnbB+0tTEwrc4AfoAhrHnAO2pEaQenZ4Aafrs6tn4vSm11j6TddBbtigOzcI4q2903Iz0DpPM1veA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N34JgvFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F01CC2BBFC;
+	Mon, 27 May 2024 19:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837032;
-	bh=nmm9roPr9nAHfmBNea/JF2SoSNbz+dAJ0YDI3QMyMuI=;
+	s=korg; t=1716838271;
+	bh=PajG9yWQTYlbqXZEINsDfzpCvm/BCyJ9ZYLaSDl1O/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWOtuFM5r43x+oPM/fPz3InX/udmpDUnLTdNgrPt/OpjsGcgyGeIUBDZSXDs9o95w
-	 9yjrwsigP2cjKemickDBetXTB4b3fTKhK+eM5T2tDSLKvR493V3fzp6l7YKGDHsht5
-	 SF+kT68xksFwUhl23FVljjJ2/6SFw5aS2vN/Mbao=
+	b=N34JgvFBnHG0YvvrRTJLGJqwwqacfp27b58IBx4UkkmaV7ORTZlJsUcE5S/VJUW7z
+	 +LuVSvDEKfF8VAwfJ5fE1sL1cb4fKMKlV2VVWlgB2bKlC8lNVRvS2x0Qkz+Lsguqrb
+	 65PvmHX8SGRWoFwHj0YOlwZjc69CI+C0p9Lf4dQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingqing Zhuo <Qingqing.Zhuo@amd.com>,
-	Harry Wentland <Harry.Wentland@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 285/427] drm/amd/display: Remove redundant condition in dcn35_calc_blocks_to_gate()
+Subject: [PATCH 6.8 330/493] mptcp: cleanup SOL_TCP handling
 Date: Mon, 27 May 2024 20:55:32 +0200
-Message-ID: <20240527185629.105269212@linuxfoundation.org>
+Message-ID: <20240527185641.062244615@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,52 +64,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit a43dbeaba81eb645a12a004c67722c632ed0d94b ]
+[ Upstream commit 7f71a337b5152ea0e7bef408d1af53778a919316 ]
 
-pipe_ctx->plane_res.mpcc_inst is of a type that can only hold values
-between 0 and 255, so it's always greater than or equal to 0.
+Most TCP-level socket options get an integer from user space, and
+set the corresponding field under the msk-level socket lock.
 
-Thus the condition 'pipe_ctx->plane_res.mpcc_inst >= 0' was always true
-and has been removed.
+Reduce the code duplication moving such operations in the common code.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn35/dcn35_hwseq.c:1023 dcn35_calc_blocks_to_gate() warn: always true condition '(pipe_ctx->plane_res.mpcc_inst >= 0) => (0-255 >= 0)'
-
-Fixes: 6f8b7565cca4 ("drm/amd/display: Add DCN35 HWSEQ")
-Cc: Qingqing Zhuo <Qingqing.Zhuo@amd.com>
-Cc: Harry Wentland <Harry.Wentland@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bd11dc4fb969 ("mptcp: fix full TCP keep-alive support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mptcp/sockopt.c | 75 ++++++++++++++++++---------------------------
+ 1 file changed, 30 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-index 9067ca78f8511..a14f99f4f14a5 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -999,8 +999,7 @@ void dcn35_calc_blocks_to_gate(struct dc *dc, struct dc_state *context,
- 		if (pipe_ctx->plane_res.dpp)
- 			update_state->pg_pipe_res_update[PG_DPP][pipe_ctx->plane_res.hubp->inst] = false;
+diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+index f2fe28a3912a9..b0a61ec8c2448 100644
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -622,18 +622,11 @@ static int mptcp_setsockopt_sol_tcp_congestion(struct mptcp_sock *msk, sockptr_t
+ 	return ret;
+ }
  
--		if ((pipe_ctx->plane_res.dpp || pipe_ctx->stream_res.opp) &&
--			pipe_ctx->plane_res.mpcc_inst >= 0)
-+		if (pipe_ctx->plane_res.dpp || pipe_ctx->stream_res.opp)
- 			update_state->pg_pipe_res_update[PG_MPCC][pipe_ctx->plane_res.mpcc_inst] = false;
+-static int mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, sockptr_t optval,
+-					 unsigned int optlen)
++static int __mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, int val)
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val, ret;
  
- 		if (pipe_ctx->stream_res.dsc)
+-	ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-	if (ret)
+-		return ret;
+-
+-	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
+ 	msk->cork = !!val;
+ 	mptcp_for_each_subflow(msk, subflow) {
+@@ -645,23 +638,15 @@ static int mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, sockptr_t optva
+ 	}
+ 	if (!val)
+ 		mptcp_check_and_set_pending(sk);
+-	release_sock(sk);
+ 
+ 	return 0;
+ }
+ 
+-static int mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, sockptr_t optval,
+-					    unsigned int optlen)
++static int __mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, int val)
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	int val, ret;
+ 
+-	ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-	if (ret)
+-		return ret;
+-
+-	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
+ 	msk->nodelay = !!val;
+ 	mptcp_for_each_subflow(msk, subflow) {
+@@ -673,8 +658,6 @@ static int mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, sockptr_t op
+ 	}
+ 	if (val)
+ 		mptcp_check_and_set_pending(sk);
+-	release_sock(sk);
+-
+ 	return 0;
+ }
+ 
+@@ -797,35 +780,10 @@ static int mptcp_setsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 	int ret, val;
+ 
+ 	switch (optname) {
+-	case TCP_INQ:
+-		ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-		if (ret)
+-			return ret;
+-		if (val < 0 || val > 1)
+-			return -EINVAL;
+-
+-		lock_sock(sk);
+-		msk->recvmsg_inq = !!val;
+-		release_sock(sk);
+-		return 0;
+ 	case TCP_ULP:
+ 		return -EOPNOTSUPP;
+-	case TCP_NOTSENT_LOWAT:
+-		ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-		if (ret)
+-			return ret;
+-
+-		lock_sock(sk);
+-		WRITE_ONCE(msk->notsent_lowat, val);
+-		mptcp_write_space(sk);
+-		release_sock(sk);
+-		return 0;
+ 	case TCP_CONGESTION:
+ 		return mptcp_setsockopt_sol_tcp_congestion(msk, optval, optlen);
+-	case TCP_CORK:
+-		return mptcp_setsockopt_sol_tcp_cork(msk, optval, optlen);
+-	case TCP_NODELAY:
+-		return mptcp_setsockopt_sol_tcp_nodelay(msk, optval, optlen);
+ 	case TCP_DEFER_ACCEPT:
+ 		/* See tcp.c: TCP_DEFER_ACCEPT does not fail */
+ 		mptcp_setsockopt_first_sf_only(msk, SOL_TCP, optname, optval, optlen);
+@@ -838,7 +796,34 @@ static int mptcp_setsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 						      optval, optlen);
+ 	}
+ 
+-	return -EOPNOTSUPP;
++	ret = mptcp_get_int_option(msk, optval, optlen, &val);
++	if (ret)
++		return ret;
++
++	lock_sock(sk);
++	switch (optname) {
++	case TCP_INQ:
++		if (val < 0 || val > 1)
++			ret = -EINVAL;
++		else
++			msk->recvmsg_inq = !!val;
++		break;
++	case TCP_NOTSENT_LOWAT:
++		WRITE_ONCE(msk->notsent_lowat, val);
++		mptcp_write_space(sk);
++		break;
++	case TCP_CORK:
++		ret = __mptcp_setsockopt_sol_tcp_cork(msk, val);
++		break;
++	case TCP_NODELAY:
++		ret = __mptcp_setsockopt_sol_tcp_nodelay(msk, val);
++		break;
++	default:
++		ret = -ENOPROTOOPT;
++	}
++
++	release_sock(sk);
++	return ret;
+ }
+ 
+ int mptcp_setsockopt(struct sock *sk, int level, int optname,
 -- 
 2.43.0
 
