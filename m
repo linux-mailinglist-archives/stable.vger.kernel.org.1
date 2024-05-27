@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-46921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC628D0BD2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18698D0E01
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:36:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA74C286211
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C35A1F21D93
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6528D6A039;
-	Mon, 27 May 2024 19:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B7715FD0F;
+	Mon, 27 May 2024 19:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3qHS+Tr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4wxEBZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249AE17E90E;
-	Mon, 27 May 2024 19:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C811EEF7;
+	Mon, 27 May 2024 19:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837200; cv=none; b=NY/2wuNM1kjqOtXldMZvyQo6NKzSKrEwqRpLEgs6pBLY642gpbqb5hAvDjMtnFF5RVl7gzHIzQnhrlPuHlc5tzhJUXqYUCgFH7NKgYY/EJlU2H2246MUho/hB/5hbIrveFLVEQvy2HJ0XE5shZx8i3SUaF946xFsst73Dh+h7RY=
+	t=1716838566; cv=none; b=bD1OkQDf9c3ao+xJQJ5suEgTzPbkRMaBuAsFF5ZWbBF731QgqMZ7GLvUkCrA4yWm/tDjUgXGlgM2zpwnjdYRwGejRPp78y8+LSVLoQ0ITkg8jC2xKiT4UtHiz+9sWLxvEiAiQstVz/g35Ug8dmpqEUYb4ZQ6JqMLElqtkPjUPlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837200; c=relaxed/simple;
-	bh=yYsOu6aj1Ljg9lvvu5DkXerBPVRiHEiGmuA5xJeSERg=;
+	s=arc-20240116; t=1716838566; c=relaxed/simple;
+	bh=KRJbYifaxF9mMEMDo+D5yP/K+u0+Yg1UoGzy23ExHd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JEKqTjBZKvvUgsBfWXjB8Nam6/X0SNdXqh0Qp0OFOrpQpUhoCsmhhcU50BsZeBA54WNMzhPC8MMynVa6kC5AqptF6BM0fOKnrKDISh+L1sb9kJXM6DGXFl7vd2SDf5vbMNEgAWfW4XYcw9M6Xt5VeGZzLz2NrerQZWZbYTTVe94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3qHS+Tr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC680C2BBFC;
-	Mon, 27 May 2024 19:13:19 +0000 (UTC)
+	 MIME-Version; b=KkPROPfkrRlt2S5zy1kIzptthV/YbuQyrOUHNVOPFdJXkWkLV2Ta3NYW/wmvXwaTfvLG6ptMJ8aHzeWY3D13RE93sCtt3ce7JXlr3eSbA+pXIgJj8SsPp1/2g7Hbz6xyyO0oloo428OI0kTU98Owg6QG8HrMGEm4OsHdsE1Tq8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4wxEBZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D869C2BBFC;
+	Mon, 27 May 2024 19:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837200;
-	bh=yYsOu6aj1Ljg9lvvu5DkXerBPVRiHEiGmuA5xJeSERg=;
+	s=korg; t=1716838565;
+	bh=KRJbYifaxF9mMEMDo+D5yP/K+u0+Yg1UoGzy23ExHd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b3qHS+TriItOEM2dufD5UfGDtZv45pZgGflo+C38ucjjtl+6WFbxyb3ODUnTawB4l
-	 zGaJj7lUDolzDVtGyyESyzSukrGnJ4e9fe9opXNrFpEH45+0B4Um58qsEsMscgCw/C
-	 fcPXnQaa0GmMh950OqzCEhM1aLrTYXhzWQZYHe8U=
+	b=b4wxEBZVHubfmzoa0XyDUPby621Fa4i/6o6Qu/oz83SrPk4TJ/FzMl7W3BySgYflx
+	 kuat6FmeHA9olPMJgCWQPF5VwsxDWIoiyXjk2MD/eK+ZNrDK7Ae/kj/NsO7Sc+jzhP
+	 LOby5kBmIlAovnX7SWEPuxiAWq3XqeEx7aKt0Tgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Armin Wolf <W_Armin@gmx.de>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 347/427] power: supply: core: simplify charge_behaviour formatting
+Subject: [PATCH 6.8 392/493] platform/x86: xiaomi-wmi: Fix race condition when reporting key events
 Date: Mon, 27 May 2024 20:56:34 +0200
-Message-ID: <20240527185633.264375893@linuxfoundation.org>
+Message-ID: <20240527185643.096458615@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +61,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 91b623cda43e449a49177ba99b6723f551a4bfbe ]
+[ Upstream commit 290680c2da8061e410bcaec4b21584ed951479af ]
 
-The function power_supply_show_charge_behaviour() is not needed and can
-be removed completely.
-Removing the function also saves a spurious read of the property from
-the driver on each call.
+Multiple WMI events can be received concurrently, so multiple instances
+of xiaomi_wmi_notify() can be active at the same time. Since the input
+device is shared between those handlers, the key input sequence can be
+disturbed.
 
-The convulted logic was a leftover from an earlier patch revision.
-Some restructuring made this cleanup possible.
+Fix this by protecting the key input sequence with a mutex.
 
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/all/9e035ae4-cb07-4f84-8336-1a0050855bea@redhat.com/
-Fixes: 4e61f1e9d58f ("power: supply: core: fix charge_behaviour formatting")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Compile-tested only.
+
+Fixes: edb73f4f0247 ("platform/x86: wmi: add Xiaomi WMI key driver")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20240402143059.8456-2-W_Armin@gmx.de
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240329-power-supply-simplify-v1-1-416f1002739f@weissschuh.net
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/power_supply_sysfs.c | 20 ++------------------
- 1 file changed, 2 insertions(+), 18 deletions(-)
+ drivers/platform/x86/xiaomi-wmi.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/power/supply/power_supply_sysfs.c b/drivers/power/supply/power_supply_sysfs.c
-index 0d2c3724d0bc0..b86e11bdc07ef 100644
---- a/drivers/power/supply/power_supply_sysfs.c
-+++ b/drivers/power/supply/power_supply_sysfs.c
-@@ -271,23 +271,6 @@ static ssize_t power_supply_show_usb_type(struct device *dev,
- 	return count;
+diff --git a/drivers/platform/x86/xiaomi-wmi.c b/drivers/platform/x86/xiaomi-wmi.c
+index 54a2546bb93bf..be80f0bda9484 100644
+--- a/drivers/platform/x86/xiaomi-wmi.c
++++ b/drivers/platform/x86/xiaomi-wmi.c
+@@ -2,8 +2,10 @@
+ /* WMI driver for Xiaomi Laptops */
+ 
+ #include <linux/acpi.h>
++#include <linux/device.h>
+ #include <linux/input.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/wmi.h>
+ 
+ #include <uapi/linux/input-event-codes.h>
+@@ -20,12 +22,21 @@
+ 
+ struct xiaomi_wmi {
+ 	struct input_dev *input_dev;
++	struct mutex key_lock;	/* Protects the key event sequence */
+ 	unsigned int key_code;
+ };
+ 
++static void xiaomi_mutex_destroy(void *data)
++{
++	struct mutex *lock = data;
++
++	mutex_destroy(lock);
++}
++
+ static int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
+ {
+ 	struct xiaomi_wmi *data;
++	int ret;
+ 
+ 	if (wdev == NULL || context == NULL)
+ 		return -EINVAL;
+@@ -35,6 +46,11 @@ static int xiaomi_wmi_probe(struct wmi_device *wdev, const void *context)
+ 		return -ENOMEM;
+ 	dev_set_drvdata(&wdev->dev, data);
+ 
++	mutex_init(&data->key_lock);
++	ret = devm_add_action_or_reset(&wdev->dev, xiaomi_mutex_destroy, &data->key_lock);
++	if (ret < 0)
++		return ret;
++
+ 	data->input_dev = devm_input_allocate_device(&wdev->dev);
+ 	if (data->input_dev == NULL)
+ 		return -ENOMEM;
+@@ -59,10 +75,12 @@ static void xiaomi_wmi_notify(struct wmi_device *wdev, union acpi_object *dummy)
+ 	if (data == NULL)
+ 		return;
+ 
++	mutex_lock(&data->key_lock);
+ 	input_report_key(data->input_dev, data->key_code, 1);
+ 	input_sync(data->input_dev);
+ 	input_report_key(data->input_dev, data->key_code, 0);
+ 	input_sync(data->input_dev);
++	mutex_unlock(&data->key_lock);
  }
  
--static ssize_t power_supply_show_charge_behaviour(struct device *dev,
--						  struct power_supply *psy,
--						  union power_supply_propval *value,
--						  char *buf)
--{
--	int ret;
--
--	ret = power_supply_get_property(psy,
--					POWER_SUPPLY_PROP_CHARGE_BEHAVIOUR,
--					value);
--	if (ret < 0)
--		return ret;
--
--	return power_supply_charge_behaviour_show(dev, psy->desc->charge_behaviours,
--						  value->intval, buf);
--}
--
- static ssize_t power_supply_show_property(struct device *dev,
- 					  struct device_attribute *attr,
- 					  char *buf) {
-@@ -321,7 +304,8 @@ static ssize_t power_supply_show_property(struct device *dev,
- 						&value, buf);
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_BEHAVIOUR:
--		ret = power_supply_show_charge_behaviour(dev, psy, &value, buf);
-+		ret = power_supply_charge_behaviour_show(dev, psy->desc->charge_behaviours,
-+							 value.intval, buf);
- 		break;
- 	case POWER_SUPPLY_PROP_MODEL_NAME ... POWER_SUPPLY_PROP_SERIAL_NUMBER:
- 		ret = sysfs_emit(buf, "%s\n", value.strval);
+ static const struct wmi_device_id xiaomi_wmi_id_table[] = {
 -- 
 2.43.0
 
