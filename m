@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-46796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30788D0B4F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF968D0D77
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7342E1F21EED
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D50FD28160B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBB2160783;
-	Mon, 27 May 2024 19:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B00E15FD04;
+	Mon, 27 May 2024 19:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moBG6nqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAcwvxGp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8D46A039;
-	Mon, 27 May 2024 19:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA6E17727;
+	Mon, 27 May 2024 19:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836878; cv=none; b=cxe8zHMOBa5XcImZjpMMaILK/GehJiT8hjrF4S1lglgB2sU0ds5/MHPppasyEQs4a68SqS9FJihekSTTevyarelmzuc5/Pfdn+0AcYujcWLwfwn16oz59t3mD2wTMj7NVLMCw0oexK1/+QhwzhQ3Vk/yYMltSqoN9uvost57vPQ=
+	t=1716838209; cv=none; b=fK35uMxNQwEMKtyiLpAlUL8ltU6xVVRATUmsDqMTWYMyJFxMe24WhqJL9eZj6es+3frFRlIJFMFsxA/9+FFvvQsyyd36/N8SB/iQwlSbYyMLFOIJG43HP29g8O3eTHJUqZOcGo9esPQKWtCVJWTFVNugqqrXtb2yWmgSRhVVuoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836878; c=relaxed/simple;
-	bh=AwK3Gdda18GvybnK51hvxHUzLj37bvpbljUhJYO/FYk=;
+	s=arc-20240116; t=1716838209; c=relaxed/simple;
+	bh=LFApEpaM5wrImS7VdPG7ICjiLGq+bpfRE9mSPq+KWhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIMb4+lyaIBo4DvCcGQgeZqLZmrti29jTTYDMcRPBQPAgmO4oAfvo/cf5kgqX64D3kOiCli+76V084KKABWIY4LyxDAizdCD84s+oMEOhu76G4rsmEvaO56LYPwVIzjJobfOWQhJImUCanYJFfPK09qUO1RN6gXmI6kP6yM2K+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moBG6nqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8322FC32781;
-	Mon, 27 May 2024 19:07:57 +0000 (UTC)
+	 MIME-Version; b=oMKOzw6cAvkXyyc7l4pX/HGVH+4TbNqvCWiK112oniso4gh50VBDBFYwE/wtIsDD9VH9MPsHTC/QJostrBcM7Kx6LQr2JFuZimOvBTY/nULAxNrZ5BDhOUY7x2RY5+T0mbleWQobzKtU2FbsdoM3v52HoN4V0x5BjSrWlnhK/Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAcwvxGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9BAC2BBFC;
+	Mon, 27 May 2024 19:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836877;
-	bh=AwK3Gdda18GvybnK51hvxHUzLj37bvpbljUhJYO/FYk=;
+	s=korg; t=1716838208;
+	bh=LFApEpaM5wrImS7VdPG7ICjiLGq+bpfRE9mSPq+KWhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moBG6nqgysE0+9djIrP65qd/K+PnwA2P5xtdRY8rjcCzcsBViXooR0KqOkaN/jdHP
-	 OWn3DvG4HL5Ba5lzz8qo0nkX7i71cJ9PVK779MjPhX+SY3c26TG/0/SLpBHdHUMD5I
-	 7LXRL3U/XwTZN5GhX444/4yX9kinsZGbzyLokVZY=
+	b=wAcwvxGpI00XGjt6F6OyctSuYvSxqEn5DykGJIOrIDhm0nkbBxL9z4max/SoOHYon
+	 liKn5aFShGmh25ZotlcvTtp/ZZQrDOeOO+kRi8lbN0XXJrz60isX5TwlsSu6rpZ3rY
+	 Ko4wvQqnhmrAStRIQMU3+ahAF5jEqQoxd8KzoiD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Liu <JJLIU0@nuvoton.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	syzbot+838346b979830606c854@syzkaller.appspotmail.com,
+	Stanislav Fomichev <sdf@google.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 221/427] gpio: nuvoton: Fix sgpio irq handle error
+Subject: [PATCH 6.8 266/493] bpf: Add BPF_PROG_TYPE_CGROUP_SKB attach type enforcement in BPF_LINK_CREATE
 Date: Mon, 27 May 2024 20:54:28 +0200
-Message-ID: <20240527185623.189157608@linuxfoundation.org>
+Message-ID: <20240527185638.990240481@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Liu <jim.t90615@gmail.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit 7f45fe2ea3b8c85787976293126a4a7133b107de ]
+[ Upstream commit 543576ec15b17c0c93301ac8297333c7b6e84ac7 ]
 
-The generic_handle_domain_irq() function calls irq_resolve_mapping().
-Thus delete a duplicative irq_find_mapping() call
-so that a stack trace and an RCU stall will be avoided.
+bpf_prog_attach uses attach_type_to_prog_type to enforce proper
+attach type for BPF_PROG_TYPE_CGROUP_SKB. link_create uses
+bpf_prog_get and relies on bpf_prog_attach_check_attach_type
+to properly verify prog_type <> attach_type association.
 
-Fixes: c4f8457d17ce ("gpio: nuvoton: Add Nuvoton NPCM sgpio driver")
-Signed-off-by: Jim Liu <JJLIU0@nuvoton.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240506064244.1645922-1-JJLIU0@nuvoton.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Add missing attach_type enforcement for the link_create case.
+Otherwise, it's currently possible to attach cgroup_skb prog
+types to other cgroup hooks.
+
+Fixes: af6eea57437a ("bpf: Implement bpf_link-based cgroup BPF program attachment")
+Link: https://lore.kernel.org/bpf/0000000000004792a90615a1dde0@google.com/
+Reported-by: syzbot+838346b979830606c854@syzkaller.appspotmail.com
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20240426231621.2716876-2-sdf@google.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-npcm-sgpio.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ kernel/bpf/syscall.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpio/gpio-npcm-sgpio.c b/drivers/gpio/gpio-npcm-sgpio.c
-index d31788b43abcc..2605706145434 100644
---- a/drivers/gpio/gpio-npcm-sgpio.c
-+++ b/drivers/gpio/gpio-npcm-sgpio.c
-@@ -434,7 +434,7 @@ static void npcm_sgpio_irq_handler(struct irq_desc *desc)
- 	struct gpio_chip *gc = irq_desc_get_handler_data(desc);
- 	struct irq_chip *ic = irq_desc_get_chip(desc);
- 	struct npcm_sgpio *gpio = gpiochip_get_data(gc);
--	unsigned int i, j, girq;
-+	unsigned int i, j;
- 	unsigned long reg;
- 
- 	chained_irq_enter(ic, desc);
-@@ -443,11 +443,9 @@ static void npcm_sgpio_irq_handler(struct irq_desc *desc)
- 		const struct npcm_sgpio_bank *bank = &npcm_sgpio_banks[i];
- 
- 		reg = ioread8(bank_reg(gpio, bank, EVENT_STS));
--		for_each_set_bit(j, &reg, 8) {
--			girq = irq_find_mapping(gc->irq.domain,
--						i * 8 + gpio->nout_sgpio + j);
--			generic_handle_domain_irq(gc->irq.domain, girq);
--		}
-+		for_each_set_bit(j, &reg, 8)
-+			generic_handle_domain_irq(gc->irq.domain,
-+						  i * 8 + gpio->nout_sgpio + j);
- 	}
- 
- 	chained_irq_exit(ic, desc);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 0f90b6b27430d..1860ba343726d 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3852,6 +3852,11 @@ static int bpf_prog_attach_check_attach_type(const struct bpf_prog *prog,
+ 			 * check permissions at attach time.
+ 			 */
+ 			return -EPERM;
++
++		ptype = attach_type_to_prog_type(attach_type);
++		if (prog->type != ptype)
++			return -EINVAL;
++
+ 		return prog->enforce_expected_attach_type &&
+ 			prog->expected_attach_type != attach_type ?
+ 			-EINVAL : 0;
 -- 
 2.43.0
 
