@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71E48D0C7A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:20:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C19C48D0A69
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 246AB1C209A6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:20:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D6822820B3
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B778615EFC3;
-	Mon, 27 May 2024 19:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CAC15FD0F;
+	Mon, 27 May 2024 18:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QO5u83sK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLhOOcJp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7579E168C4;
-	Mon, 27 May 2024 19:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861FC15FA85;
+	Mon, 27 May 2024 18:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837605; cv=none; b=TAMfOLUpUpF7CoGxM+sLPW8dOYcoiwhmKhh/6YbhHfuTYGuSJr0Hf80eQMw3v7Zf9YtTa5dY7n6sSaPbAj+s48Kr7VdyjWP1HBnAcW7JH00UlrkRBAlB9qJ/4ILvChDo/vL9R7unoxbY+7XL7eaCX8HOIiRQae2CbanYGBFBYhg=
+	t=1716836375; cv=none; b=QgPkJombktcFr7ug5kzXFyxAwurA/Lh5xFJxnfoiiy3G8dJxCu8fBW0uUgj1/ByNBLPMMKtFU7/vXHfU9j1zdt3AIrxVqSofDmUhUmGWLfDbS3FthSqM2/gJexMVUJX+xTL/geFNavbpXmXTYoN3jaM9LIneGFX0K1m4qLdhhbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837605; c=relaxed/simple;
-	bh=lk7O5ELhVNqDg4kjcH2Oyz84qDHFqd0y1BLYXQeDcGk=;
+	s=arc-20240116; t=1716836375; c=relaxed/simple;
+	bh=TV/aJtxmzhe5sndcwp9I7tp8vb02iD1p6qKaqNhLNnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnR40YmMLKCpHltnFFD6DUzLMO4nwCSag8WXAzF5JBh+1j/7CF6C9oBXtQhjA5uwehIGGjVKYtMHrC5JlntAL0lk4OkFkZxEfhCmihksULHI/EFXdN66GYdXFzINJGg25VrztdbjyWbzkB0diMoZAhUsDmhnSxiVTCjwhXrlyOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QO5u83sK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A49EC2BBFC;
-	Mon, 27 May 2024 19:20:04 +0000 (UTC)
+	 MIME-Version; b=jvt6waEZntroBThA2KWmd/gQxQ/z/Ku+R4WY2wXPLih6zfKKvzINvR2sk0dt4waI2KlaIxObN/ty1PfHzZCZ32fW5+oUDVMwujt4R+gNPNwKAhEnll+d6SzxqblEVo5kv1ske6GPX+ZX9qOTWzHrxkuudrK5gXD6sD4xnT6e6g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLhOOcJp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D13DC2BBFC;
+	Mon, 27 May 2024 18:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837605;
-	bh=lk7O5ELhVNqDg4kjcH2Oyz84qDHFqd0y1BLYXQeDcGk=;
+	s=korg; t=1716836375;
+	bh=TV/aJtxmzhe5sndcwp9I7tp8vb02iD1p6qKaqNhLNnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QO5u83sKAjMwzyrHfb7DU8x7TlC0KsTolgNSXil1/Ap7wWnDK4JA8zCmbkPgQTzF5
-	 8yPy14VEUGElv6IckPUdRo/709JxvrnOPuWdJ4YKAlxC57dM2yMjhyK1O+8NidD6Ae
-	 UE6bq3xS3unX4EX23RRkK887o56DW5nnN+WBUakQ=
+	b=uLhOOcJpq0eYQ3G+lQZp5KWpTiPNLdjJcpW3SQ0rfzlubS/sAbK4K1YL8s08vRxzI
+	 J3I3OAPYxGR6FhSw+kwlTW0JRZRyp4j+lIW/xC8bNPFXUn9IoSqKT9XR+KQpZhsA4E
+	 vuapzKnPRQv+Kdi4lvkPPEenZUpYcfSDwmOKhUSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 074/493] regulator: qcom-refgen: fix module autoloading
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	"Bai, Shuangpeng" <sjb7183@psu.edu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 029/427] nilfs2: fix unexpected freezing of nilfs_segctor_sync()
 Date: Mon, 27 May 2024 20:51:16 +0200
-Message-ID: <20240527185632.362108416@linuxfoundation.org>
+Message-ID: <20240527185604.427963021@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit ddd3f34c10002e41ed3cd89c9bd8f1d05a22506a ]
+commit 936184eadd82906992ff1f5ab3aada70cce44cee upstream.
 
-Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
-based on the alias from of_device_id table.
+A potential and reproducible race issue has been identified where
+nilfs_segctor_sync() would block even after the log writer thread writes a
+checkpoint, unless there is an interrupt or other trigger to resume log
+writing.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://msgid.link/r/20240410172615.255424-1-krzk@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This turned out to be because, depending on the execution timing of the
+log writer thread running in parallel, the log writer thread may skip
+responding to nilfs_segctor_sync(), which causes a call to schedule()
+waiting for completion within nilfs_segctor_sync() to lose the opportunity
+to wake up.
+
+The reason why waking up the task waiting in nilfs_segctor_sync() may be
+skipped is that updating the request generation issued using a shared
+sequence counter and adding an wait queue entry to the request wait queue
+to the log writer, are not done atomically.  There is a possibility that
+log writing and request completion notification by nilfs_segctor_wakeup()
+may occur between the two operations, and in that case, the wait queue
+entry is not yet visible to nilfs_segctor_wakeup() and the wake-up of
+nilfs_segctor_sync() will be carried over until the next request occurs.
+
+Fix this issue by performing these two operations simultaneously within
+the lock section of sc_state_lock.  Also, following the memory barrier
+guidelines for event waiting loops, move the call to set_current_state()
+in the same location into the event waiting loop to ensure that a memory
+barrier is inserted just before the event condition determination.
+
+Link: https://lkml.kernel.org/r/20240520132621.4054-3-konishi.ryusuke@gmail.com
+Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/qcom-refgen-regulator.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nilfs2/segment.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/regulator/qcom-refgen-regulator.c b/drivers/regulator/qcom-refgen-regulator.c
-index 656fe330d38f0..063e12c08e75f 100644
---- a/drivers/regulator/qcom-refgen-regulator.c
-+++ b/drivers/regulator/qcom-refgen-regulator.c
-@@ -140,6 +140,7 @@ static const struct of_device_id qcom_refgen_match_table[] = {
- 	{ .compatible = "qcom,sm8250-refgen-regulator", .data = &sm8250_refgen_desc },
- 	{ }
- };
-+MODULE_DEVICE_TABLE(of, qcom_refgen_match_table);
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2174,19 +2174,28 @@ static int nilfs_segctor_sync(struct nil
+ 	struct nilfs_segctor_wait_request wait_req;
+ 	int err = 0;
  
- static struct platform_driver qcom_refgen_driver = {
- 	.probe = qcom_refgen_probe,
--- 
-2.43.0
-
+-	spin_lock(&sci->sc_state_lock);
+ 	init_wait(&wait_req.wq);
+ 	wait_req.err = 0;
+ 	atomic_set(&wait_req.done, 0);
++	init_waitqueue_entry(&wait_req.wq, current);
++
++	/*
++	 * To prevent a race issue where completion notifications from the
++	 * log writer thread are missed, increment the request sequence count
++	 * "sc_seq_request" and insert a wait queue entry using the current
++	 * sequence number into the "sc_wait_request" queue at the same time
++	 * within the lock section of "sc_state_lock".
++	 */
++	spin_lock(&sci->sc_state_lock);
+ 	wait_req.seq = ++sci->sc_seq_request;
++	add_wait_queue(&sci->sc_wait_request, &wait_req.wq);
+ 	spin_unlock(&sci->sc_state_lock);
+ 
+-	init_waitqueue_entry(&wait_req.wq, current);
+-	add_wait_queue(&sci->sc_wait_request, &wait_req.wq);
+-	set_current_state(TASK_INTERRUPTIBLE);
+ 	wake_up(&sci->sc_wait_daemon);
+ 
+ 	for (;;) {
++		set_current_state(TASK_INTERRUPTIBLE);
++
+ 		if (atomic_read(&wait_req.done)) {
+ 			err = wait_req.err;
+ 			break;
 
 
 
