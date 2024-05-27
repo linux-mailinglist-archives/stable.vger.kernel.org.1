@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-46427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FD98D044D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:42:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5A88D04A9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D67C381C45
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:42:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B1F9B2DF3A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF57921C170;
-	Mon, 27 May 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F47D21C198;
+	Mon, 27 May 2024 14:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFb2ODGM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FFiG2Jli"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DE3210195;
-	Mon, 27 May 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD3221C18D;
+	Mon, 27 May 2024 14:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819508; cv=none; b=qbKdIzaJHegUUDE9LIfGsheq8niqrTZFWNFS21cwkn9ozlKRb+sQqmQihh3lpsbt+66kDSVMrmARsHCHe7qBBgZqF0LGB4O2ElAT1VV5a3D+dpcrsWiq56Mai0TbaPr8I/308Vblj+bNXELRtabHzw8f/A3/7PjSSs5RO3mX7Ko=
+	t=1716819510; cv=none; b=t8gZOMPixcOnrIO/hQb/qhsOvkzBa/s/pz0WgQgdg8th09tuLqGDpTOIwx1XNw5H7EB5si6MyoO99Mhzg0c8aUs0JwlS541SOg1vuMG8iR7FuDTc81f56YMYutxF6lRvj4UlU/dY69NNYUmJkULQN0B0s9XDNzdBXM6e3XEaIYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819508; c=relaxed/simple;
-	bh=Nc1h0iROXLAYstYCLiGlzYQ1+t0FEGMu+q++HSBtj4U=;
+	s=arc-20240116; t=1716819510; c=relaxed/simple;
+	bh=6312h6JBv+KRqdI2YQsQBbtLN6STqv3ORKTst5+kdxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TrEUa7m74tUTTIVz0IcAXwNsUDeyDcEWdjltY09GuyD3xaCtYJP6rusKZH1nmHLHU1YDRQHC+MBFGUHb4Y1gvz9JwK6EK3urBVtT15NgnDrdeVdRSiVuxw2rg1JJBmRdKeCfcljpoM/OCa88C3aHMcpdZFhSdyYdGi4j4KB3Gnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFb2ODGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589B3C32781;
-	Mon, 27 May 2024 14:18:27 +0000 (UTC)
+	 MIME-Version; b=bTzNRPb3FZPP6ZfwB/0VdNROIKP+JFSUBSsNeNtYjakkJt9ns2sm9Q849/6MBI2SMACmKJt+sAQbXl9iMlkZc5EGBZsiOjbgHOLXI/FUvrw8+t95VkgLFTuJtDJKWwbxSEAzRZnsrRRZDy1IYJE6aMzrGqQPQs1Y4lm+lB7DQEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FFiG2Jli; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E345DC4AF08;
+	Mon, 27 May 2024 14:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819508;
-	bh=Nc1h0iROXLAYstYCLiGlzYQ1+t0FEGMu+q++HSBtj4U=;
+	s=k20201202; t=1716819510;
+	bh=6312h6JBv+KRqdI2YQsQBbtLN6STqv3ORKTst5+kdxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFb2ODGM49gX2HJPbGP3c33scw/2N6AL7SRwc/HkIZl0cQ3gdDkROLmz75GIUjtGR
-	 N7ATa5uM4k1r27EtdyQMoFlmMb+4ghLAOS7Aiqsr1jipCMTn5wLphwm6YacRrNKsu7
-	 qVEjm4P6mJiYLedCo9eb6zDqv3ykgwytnW/keRUVBn4YAQTgylTsbXG15QiEP3rxuM
-	 daiUKHLQZMTyXPYtytOaI7DB74t1Pi6DK4JEfttUqEL1/BZlSaM9UUzxkZVnUJK+SQ
-	 cngekjLrlGiIdKIxeGVv2Xj7RpzrJta9JCPj7cOQKaXCyGX54sm2q5k8cz9kns83gr
-	 3pVhQi+ohjlgw==
+	b=FFiG2Jliy8M3orp8QlQe/9y5kGFAvKKBKSSh7bIR7jipgd/tYk417c95RbYxb9XcY
+	 b8L/uaKSnbEySizQxh/RZLhjspRr/Aj/RlM5B0czJ87iuMM8Tls2T9DobGNuARGS7N
+	 sLQ/nXecLsz1isZn3XwHqQScXk8XhrTfoJzmHrYeb2rciDGSW7MjBWpoEVBtOpS7xo
+	 F5mQHhagOh6TVL2OIawtTdHL6r3i5LEFzI4Blcg5dIYrY6PMHZGnUfW4PUeVWGCzmy
+	 qRqke+ANjMfMJpE2bvDaf/1ReazeTjSiB+i2DV8ZRrhpGnA1T5Q2bc6yhjY8cwuIo1
+	 1jI0i2JMm3a7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+Cc: Eric Dumazet <edumazet@google.com>,
+	syzbot <syzkaller@googlegroups.com>,
 	Kees Cook <keescook@chromium.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 04/13] wifi: ath9k: work around memset overflow warning
-Date: Mon, 27 May 2024 10:17:58 -0400
-Message-ID: <20240527141819.3854376-4-sashal@kernel.org>
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 05/13] af_packet: avoid a false positive warning in packet_setsockopt()
+Date: Mon, 27 May 2024 10:17:59 -0400
+Message-ID: <20240527141819.3854376-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141819.3854376-1-sashal@kernel.org>
 References: <20240527141819.3854376-1-sashal@kernel.org>
@@ -63,73 +66,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.160
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 61752ac69b69ed2e04444d090f6917c77ab36d42 ]
+[ Upstream commit 86d43e2bf93ccac88ef71cee36a23282ebd9e427 ]
 
-gcc-9 and some other older versions produce a false-positive warning
-for zeroing two fields
+Although the code is correct, the following line
 
-In file included from include/linux/string.h:369,
-                 from drivers/net/wireless/ath/ath9k/main.c:18:
-In function 'fortify_memset_chk',
-    inlined from 'ath9k_ps_wakeup' at drivers/net/wireless/ath/ath9k/main.c:140:3:
-include/linux/fortify-string.h:462:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  462 |                         __write_overflow_field(p_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	copy_from_sockptr(&req_u.req, optval, len));
 
-Using a struct_group seems to reliably avoid the warning and
-not make the code much uglier. The combined memset() should even
-save a couple of cpu cycles.
+triggers this warning :
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+memcpy: detected field-spanning write (size 28) of single field "dst" at include/linux/sockptr.h:49 (size 16)
+
+Refactor the code to be more explicit.
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240328135509.3755090-3-arnd@kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath.h        | 6 ++++--
- drivers/net/wireless/ath/ath9k/main.c | 3 +--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ net/packet/af_packet.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
-index f02a308a9ffc5..34654f710d8a1 100644
---- a/drivers/net/wireless/ath/ath.h
-+++ b/drivers/net/wireless/ath/ath.h
-@@ -171,8 +171,10 @@ struct ath_common {
- 	unsigned int clockrate;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index cffa217fb3063..787036afa69a5 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3762,28 +3762,30 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
+ 	case PACKET_TX_RING:
+ 	{
+ 		union tpacket_req_u req_u;
+-		int len;
  
- 	spinlock_t cc_lock;
--	struct ath_cycle_counters cc_ani;
--	struct ath_cycle_counters cc_survey;
-+	struct_group(cc,
-+		struct ath_cycle_counters cc_ani;
-+		struct ath_cycle_counters cc_survey;
-+	);
- 
- 	struct ath_regulatory regulatory;
- 	struct ath_regulatory reg_world_copy;
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 9e6d088bd2818..1b71fb1d04719 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -135,8 +135,7 @@ void ath9k_ps_wakeup(struct ath_softc *sc)
- 	if (power_mode != ATH9K_PM_AWAKE) {
- 		spin_lock(&common->cc_lock);
- 		ath_hw_cycle_counters_update(common);
--		memset(&common->cc_survey, 0, sizeof(common->cc_survey));
--		memset(&common->cc_ani, 0, sizeof(common->cc_ani));
-+		memset(&common->cc, 0, sizeof(common->cc));
- 		spin_unlock(&common->cc_lock);
++		ret = -EINVAL;
+ 		lock_sock(sk);
+ 		switch (po->tp_version) {
+ 		case TPACKET_V1:
+ 		case TPACKET_V2:
+-			len = sizeof(req_u.req);
++			if (optlen < sizeof(req_u.req))
++				break;
++			ret = copy_from_sockptr(&req_u.req, optval,
++						sizeof(req_u.req)) ?
++						-EINVAL : 0;
+ 			break;
+ 		case TPACKET_V3:
+ 		default:
+-			len = sizeof(req_u.req3);
++			if (optlen < sizeof(req_u.req3))
++				break;
++			ret = copy_from_sockptr(&req_u.req3, optval,
++						sizeof(req_u.req3)) ?
++						-EINVAL : 0;
+ 			break;
+ 		}
+-		if (optlen < len) {
+-			ret = -EINVAL;
+-		} else {
+-			if (copy_from_sockptr(&req_u.req, optval, len))
+-				ret = -EFAULT;
+-			else
+-				ret = packet_set_ring(sk, &req_u, 0,
+-						    optname == PACKET_TX_RING);
+-		}
++		if (!ret)
++			ret = packet_set_ring(sk, &req_u, 0,
++					      optname == PACKET_TX_RING);
+ 		release_sock(sk);
+ 		return ret;
  	}
- 
 -- 
 2.43.0
 
