@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89AA8D0B3B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C178D0D41
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAA001C21773
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68A31F21B83
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19E126ACA;
-	Mon, 27 May 2024 19:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A3615FD04;
+	Mon, 27 May 2024 19:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4nKYB+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkLdXZhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF5217E90E;
-	Mon, 27 May 2024 19:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004AF262BE;
+	Mon, 27 May 2024 19:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836847; cv=none; b=FPPU3UD3oFwj0RhCpYa5zDSAQtNyuQ60duKsi4Hdus1jJWQJnnf01m7eANDmsS24+DHvsPluI12cRoy0sECZbzz+3YCfrTcg6QMpAUow6eKxWxl4XWN8A4ivzvcr9qJWlUalhDDfMTPVTug1YQgnfNioQnqF3McklkZf8q/at3U=
+	t=1716838074; cv=none; b=i+do8nm78J0CELjhHumMCIjVDlVKBo1xU8ebWtuhkIAMZgEYHqFvqLDnpyRrM0UwgGPmauO4IhjSJKBx97Z9cICKL8Abd948RQrdIQe+6ToNcW58ixnBQscM7SoG4Fs10ZW4IhkYOPekuqDmiQsU7ZeHvRNBIyU0UKQexd5nR9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836847; c=relaxed/simple;
-	bh=xTABD2S8Y7eqKrr0smdkmZ2BYGg0CwuyIRIviUT4IVM=;
+	s=arc-20240116; t=1716838074; c=relaxed/simple;
+	bh=znthojYMjBIci5w28WfIeyzr9xb2W+sDnVUP0OcFv2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngGUWmvyLxY4Iscbh4pj/MUgRwUeKqQ9MWJa6OTW0J05m7VSankaWyTImVLviddKS+H/F62lQKObmLM+u4O6i3CN4IwmjRB1RVrEVhnRRpdMYfJwE5EnM0l+mD4czkxWq6Jc6pZMTij0YDM2j7YjDtV+GVloLtREigngWk/HeQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4nKYB+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2729AC2BBFC;
-	Mon, 27 May 2024 19:07:27 +0000 (UTC)
+	 MIME-Version; b=CkM0eyNwhP4kxnkGTMfMJnqIL7VVjNIKHKJjHbu2LFyKTZ9qsrUSke3aqmFqO4DgtmWj1jYKWxlvv37KKKPbhgGYY+SecMkT4VshmSTqeVR34WUieDR6dWodd/XwsCcEfPU6FWTh9O97W9qSNEdFDtRQJSXLF2x0jr4chn4I78I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkLdXZhj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA62C2BBFC;
+	Mon, 27 May 2024 19:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836847;
-	bh=xTABD2S8Y7eqKrr0smdkmZ2BYGg0CwuyIRIviUT4IVM=;
+	s=korg; t=1716838073;
+	bh=znthojYMjBIci5w28WfIeyzr9xb2W+sDnVUP0OcFv2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4nKYB+PZrDyCYT+ABpl/WhGkg7wsE4gTK0b2YGI5CdR8tNXcEzf3rsieM9c5aLdU
-	 Zs0cnNo4VRTU7ev4ZlTIk2qyRI/bU/DFnenLIOPPpcV9nrs32CAgx6YmFt2kYuo1hx
-	 Vm+HTsJRRkTNt2fuv88N1n9dVOoDsL7Kmc3qawao=
+	b=QkLdXZhjmqLNbwV8QNjLTwZF8x66Q3fIRdYVo1nX8mQVYvHf/dcAU2V1dMjVf+PcM
+	 oXj/4fS8E5L1L9cw/NV/oAx0N745xM4P+dQNrL54ZloRPHriwe1ZS/iJFwcbbWNswb
+	 Kzb2eXcR802BPlInASZhr7MyRoamDlgwRhKJk64I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Viktor Malik <vmalik@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 210/427] selftests/binderfs: use the Makefiles rules, not Makes implicit rules
+Subject: [PATCH 6.8 255/493] selftests/bpf: Run cgroup1_hierarchy test in own mount namespace
 Date: Mon, 27 May 2024 20:54:17 +0200
-Message-ID: <20240527185621.964113919@linuxfoundation.org>
+Message-ID: <20240527185638.635115268@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit 019baf635eb6ffe8d6c1343f81788f02a7e0ed98 ]
+[ Upstream commit 19468ed51488dae19254e8a67c75d583b05fa5e3 ]
 
-First of all, in order to build with clang at all, one must first apply
-Valentin Obst's build fix for LLVM [1]. Once that is done, then when
-building with clang, via:
+The cgroup1_hierarchy test uses setup_classid_environment to setup
+cgroupv1 environment. The problem is that the environment is set in
+/sys/fs/cgroup and therefore, if not run under an own mount namespace,
+effectively deletes all system cgroups:
 
-    make LLVM=1 -C tools/testing/selftests
+    $ ls /sys/fs/cgroup | wc -l
+    27
+    $ sudo ./test_progs -t cgroup1_hierarchy
+    #41/1    cgroup1_hierarchy/test_cgroup1_hierarchy:OK
+    #41/2    cgroup1_hierarchy/test_root_cgid:OK
+    #41/3    cgroup1_hierarchy/test_invalid_level:OK
+    #41/4    cgroup1_hierarchy/test_invalid_cgid:OK
+    #41/5    cgroup1_hierarchy/test_invalid_hid:OK
+    #41/6    cgroup1_hierarchy/test_invalid_cgrp_name:OK
+    #41/7    cgroup1_hierarchy/test_invalid_cgrp_name2:OK
+    #41/8    cgroup1_hierarchy/test_sleepable_prog:OK
+    #41      cgroup1_hierarchy:OK
+    Summary: 1/8 PASSED, 0 SKIPPED, 0 FAILED
+    $ ls /sys/fs/cgroup | wc -l
+    1
 
-...the following error occurs:
+To avoid this, run setup_cgroup_environment first which will create an
+own mount namespace. This only affects the cgroupv1_hierarchy test as
+all other cgroup1 test progs already run setup_cgroup_environment prior
+to running setup_classid_environment.
 
-   clang: error: cannot specify -o when generating multiple output files
+Also add a comment to the header of setup_classid_environment to warn
+against this invalid usage in future.
 
-This is because clang, unlike gcc, won't accept invocations of this
-form:
-
-    clang file1.c header2.h
-
-While trying to fix this, I noticed that:
-
-a) selftests/lib.mk already avoids the problem, and
-
-b) The binderfs Makefile indavertently bypasses the selftests/lib.mk
-build system, and quitely uses Make's implicit build rules for .c files
-instead.
-
-The Makefile attempts to set up both a dependency and a source file,
-neither of which was needed, because lib.mk is able to automatically
-handle both. This line:
-
-    binderfs_test: binderfs_test.c
-
-...causes Make's implicit rules to run, which builds binderfs_test
-without ever looking at lib.mk.
-
-Fix this by simply deleting the "binderfs_test:" Makefile target and
-letting lib.mk handle it instead.
-
-[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
-
-Fixes: 6e29225af902 ("binderfs: port tests to test harness infrastructure")
-Cc: Christian Brauner <brauner@kernel.org>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 360769233cc9 ("selftests/bpf: Add selftests for cgroup1 hierarchy")
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240429112311.402497-1-vmalik@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/filesystems/binderfs/Makefile | 2 --
- 1 file changed, 2 deletions(-)
+ tools/testing/selftests/bpf/cgroup_helpers.c               | 3 +++
+ tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c | 7 ++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/filesystems/binderfs/Makefile b/tools/testing/selftests/filesystems/binderfs/Makefile
-index c2f7cef919c04..eb4c3b4119348 100644
---- a/tools/testing/selftests/filesystems/binderfs/Makefile
-+++ b/tools/testing/selftests/filesystems/binderfs/Makefile
-@@ -3,6 +3,4 @@
- CFLAGS += $(KHDR_INCLUDES) -pthread
- TEST_GEN_PROGS := binderfs_test
+diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
+index 19be9c63d5e84..e812876d79c7e 100644
+--- a/tools/testing/selftests/bpf/cgroup_helpers.c
++++ b/tools/testing/selftests/bpf/cgroup_helpers.c
+@@ -508,6 +508,9 @@ int cgroup_setup_and_join(const char *path) {
+ /**
+  * setup_classid_environment() - Setup the cgroupv1 net_cls environment
+  *
++ * This function should only be called in a custom mount namespace, e.g.
++ * created by running setup_cgroup_environment.
++ *
+  * After calling this function, cleanup_classid_environment should be called
+  * once testing is complete.
+  *
+diff --git a/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c b/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c
+index 74d6d7546f40f..25332e596750f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c
++++ b/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c
+@@ -87,9 +87,12 @@ void test_cgroup1_hierarchy(void)
+ 		goto destroy;
  
--binderfs_test: binderfs_test.c ../../kselftest.h ../../kselftest_harness.h
--
- include ../../lib.mk
+ 	/* Setup cgroup1 hierarchy */
++	err = setup_cgroup_environment();
++	if (!ASSERT_OK(err, "setup_cgroup_environment"))
++		goto destroy;
+ 	err = setup_classid_environment();
+ 	if (!ASSERT_OK(err, "setup_classid_environment"))
+-		goto destroy;
++		goto cleanup_cgroup;
+ 
+ 	err = join_classid();
+ 	if (!ASSERT_OK(err, "join_cgroup1"))
+@@ -153,6 +156,8 @@ void test_cgroup1_hierarchy(void)
+ 
+ cleanup:
+ 	cleanup_classid_environment();
++cleanup_cgroup:
++	cleanup_cgroup_environment();
+ destroy:
+ 	test_cgroup1_hierarchy__destroy(skel);
+ }
 -- 
 2.43.0
 
