@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-46418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837E68D0426
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:40:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 495878D0429
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A79A41C2154F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:40:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFA711F20FAF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CF7201241;
-	Mon, 27 May 2024 14:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81A716D9C5;
+	Mon, 27 May 2024 14:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJ83R5bq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvWkoY4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B919200138;
-	Mon, 27 May 2024 14:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD8015F405;
+	Mon, 27 May 2024 14:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819469; cv=none; b=a5SMcUrJc3sP46zftZqcLZnN7XuELoknX2XK1wfWyBarsl1VE8KQUaTe5oOSZI1z4I0JCrd8DIvtPJWqK5GyjfXwcwSMRMo7CafFHVFDBW/YXeCRCrnXfjS4CgqKbCyiLFdp6tWNXMOVVQbnd6h59SIaDNC4sGAGHhZjgYErif8=
+	t=1716819477; cv=none; b=SQByzxeNan2xzKaerF3esek86J6W4bQtK8Z75lqbRe+M92gSlm0WKemYq6zUggcHC0LO3DwU5Wa/aA/3tsc3rPGN/BZXbwuG/xTTLoZhS5Y7/Bbl7sV0puZIVoAuZj/mUj9TesCVwSyQscetjgBO0x3kLXgD1v/RYbou5sSTMcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819469; c=relaxed/simple;
-	bh=ouMgPq98R/4+nN98hHVg3mBpd1ZuLZQLD9HpkmlSQZU=;
+	s=arc-20240116; t=1716819477; c=relaxed/simple;
+	bh=XYkTLSRQDTcxmvQu5eHrjpEjE9SsJfxPR7keFDJH58g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lTQCWzSguNhZOhsQ078bETCW52V3RUBoowEVq6lhSCL8g6yaROodbvQHiCclhsNCj1ECsp/Xups5TePcG9c1jJ/goLb7uIesdjYcMd2gB57voWGM6NoUcwGEpa1kvIeVSDL3ylcOXmygaIczb7pXBoWKY4AOadjoLVAN7z4tK+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJ83R5bq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58787C32781;
-	Mon, 27 May 2024 14:17:48 +0000 (UTC)
+	 MIME-Version; b=XCtjgPIpiz6xvPRWIaBuf7XB29OBoD3q9uuHxb6G9U53XlN/5kJzLj+Vf5Ojm32TFLCURd0BhL/fmyKQuO3mucJQIEkGzxto6wdvpZhGRezmpczsJrXeNV6jfgyRaZKhbs500zlsSQ20bgxS02NJeX/fGIwJ/IVxkgUurQlliJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvWkoY4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26680C2BBFC;
+	Mon, 27 May 2024 14:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819469;
-	bh=ouMgPq98R/4+nN98hHVg3mBpd1ZuLZQLD9HpkmlSQZU=;
+	s=k20201202; t=1716819477;
+	bh=XYkTLSRQDTcxmvQu5eHrjpEjE9SsJfxPR7keFDJH58g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJ83R5bqREPILf+R7Ln4B6Dte7qtMLQqM/3xeDPU+rujM9SHbQXHbTETBzPlfImpZ
-	 fenvzA58yFCe+ZAfG7LCAMUG5J8cMsCb2WYz4aV/oxqqEU1y9FuyFBKx1TfBGbTCQV
-	 arg2YSKZU0AugLwOpz0QmlGLu0x8GqIj1xoGUIOOZrwyiRebTqWNC5ZDll1bBXZhRI
-	 QjaWnpvAQ2ud+53e9Df3/7LTAYjZMTGTnBBxKnLU0VkmJA0t1c2l+Xv52aj9TwoD9R
-	 ReCSR66mrqhWBs8XTey9FPCBGEjkwiRE26wfLZk4lCnOm2D/JASLcDfyaprMaFX36m
-	 B7kMhHNLIcbgQ==
+	b=DvWkoY4B/KX7YYfunqKxbVkM2CnpujKIzYuj/1mdyfQ/HXDfuvp21e5ivem5BMu/M
+	 Q0pqVFyyIVM92mp8+fCAUPMcu3Ux2q9Mncmx8tAazTMJALIKfqFHn8TDJgTseTlaVL
+	 FzUblO7S7a1t71kHytiYEXZoWHMYpZfpSkYPZ1WphH0ae1vAmiFLOU3lSQoaxOdmpH
+	 uDRYNhwQegznLLf6LtG4FPL8O+xAzmCo2s8veZTAN1hGrohKkv+jesFKb3qAFB0zOZ
+	 flCzXZ0Y78gJiI2+TTm+IWJxCtHRJpCmQZXXolfNhVmS7T6yjY4nDeUJOZF/Q9iXC+
+	 MC/bIXHAQmOoA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Leon Yen <leon.yen@mediatek.com>,
+	Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 12/17] netpoll: Fix race condition in netpoll_owner_active
-Date: Mon, 27 May 2024 10:16:49 -0400
-Message-ID: <20240527141712.3853988-12-sashal@kernel.org>
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	deren.wu@mediatek.com,
+	horms@kernel.org,
+	kernel@mattwhitlock.name,
+	wang.zhao@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 13/17] wifi: mt76: mt7921s: fix potential hung tasks during chip recovery
+Date: Mon, 27 May 2024 10:16:50 -0400
+Message-ID: <20240527141712.3853988-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141712.3853988-1-sashal@kernel.org>
 References: <20240527141712.3853988-1-sashal@kernel.org>
@@ -68,50 +77,104 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.92
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Leon Yen <leon.yen@mediatek.com>
 
-[ Upstream commit c2e6a872bde9912f1a7579639c5ca3adf1003916 ]
+[ Upstream commit ecf0b2b8a37c8464186620bef37812a117ff6366 ]
 
-KCSAN detected a race condition in netpoll:
+During chip recovery (e.g. chip reset), there is a possible situation that
+kernel worker reset_work is holding the lock and waiting for kernel thread
+stat_worker to be parked, while stat_worker is waiting for the release of
+the same lock.
+It causes a deadlock resulting in the dumping of hung tasks messages and
+possible rebooting of the device.
 
-	BUG: KCSAN: data-race in net_rx_action / netpoll_send_skb
-	write (marked) to 0xffff8881164168b0 of 4 bytes by interrupt on cpu 10:
-	net_rx_action (./include/linux/netpoll.h:90 net/core/dev.c:6712 net/core/dev.c:6822)
-<snip>
-	read to 0xffff8881164168b0 of 4 bytes by task 1 on cpu 2:
-	netpoll_send_skb (net/core/netpoll.c:319 net/core/netpoll.c:345 net/core/netpoll.c:393)
-	netpoll_send_udp (net/core/netpoll.c:?)
-<snip>
-	value changed: 0x0000000a -> 0xffffffff
+This patch prevents the execution of stat_worker during the chip recovery.
 
-This happens because netpoll_owner_active() needs to check if the
-current CPU is the owner of the lock, touching napi->poll_owner
-non atomically. The ->poll_owner field contains the current CPU holding
-the lock.
-
-Use an atomic read to check if the poll owner is the current CPU.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240429100437.3487432-1-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  | 2 --
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 2 --
+ drivers/net/wireless/mediatek/mt76/sdio.c            | 3 ++-
+ 4 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 4ac8d0ad9f6fc..fd2195cfcb4aa 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -316,7 +316,7 @@ static int netpoll_owner_active(struct net_device *dev)
- 	struct napi_struct *napi;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 49ddca84f7862..cae7c21ca1f8b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -883,6 +883,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
+ 	int i, ret;
  
- 	list_for_each_entry_rcu(napi, &dev->napi_list, dev_list) {
--		if (napi->poll_owner == smp_processor_id())
-+		if (READ_ONCE(napi->poll_owner) == smp_processor_id())
- 			return 1;
+ 	dev_dbg(dev->mt76.dev, "chip reset\n");
++	set_bit(MT76_RESET, &dev->mphy.state);
+ 	dev->hw_full_reset = true;
+ 	ieee80211_stop_queues(hw);
+ 
+@@ -911,6 +912,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
  	}
- 	return 0;
+ 
+ 	dev->hw_full_reset = false;
++	clear_bit(MT76_RESET, &dev->mphy.state);
+ 	pm->suspended = false;
+ 	ieee80211_wake_queues(hw);
+ 	ieee80211_iterate_active_interfaces(hw,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+index 8dd60408b117e..cb20ddcad137c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+@@ -78,7 +78,6 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
+ 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
+ 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
+ 
+-	set_bit(MT76_RESET, &dev->mphy.state);
+ 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 	wake_up(&dev->mt76.mcu.wait);
+ 	skb_queue_purge(&dev->mt76.mcu.res_q);
+@@ -129,7 +128,6 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
+ 
+ 	err = __mt7921_start(&dev->phy);
+ out:
+-	clear_bit(MT76_RESET, &dev->mphy.state);
+ 
+ 	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+index fd07b66233920..46af03803de73 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+@@ -98,7 +98,6 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
+ 	mt76_txq_schedule_all(&dev->mphy);
+ 	mt76_worker_disable(&dev->mt76.tx_worker);
+-	set_bit(MT76_RESET, &dev->mphy.state);
+ 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 	wake_up(&dev->mt76.mcu.wait);
+ 	skb_queue_purge(&dev->mt76.mcu.res_q);
+@@ -135,7 +134,6 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
+ 
+ 	err = __mt7921_start(&dev->phy);
+ out:
+-	clear_bit(MT76_RESET, &dev->mphy.state);
+ 
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
+index fc4fb94635645..2a81c2f663449 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/sdio.c
+@@ -499,7 +499,8 @@ static void mt76s_tx_status_data(struct mt76_worker *worker)
+ 	dev = container_of(sdio, struct mt76_dev, sdio);
+ 
+ 	while (true) {
+-		if (test_bit(MT76_REMOVED, &dev->phy.state))
++		if (test_bit(MT76_RESET, &dev->phy.state) ||
++		    test_bit(MT76_REMOVED, &dev->phy.state))
+ 			break;
+ 
+ 		if (!dev->drv->tx_status_data(dev, &update))
 -- 
 2.43.0
 
