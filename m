@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-46669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D4D8D0AC1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD588D0CEE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6011F20EEA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BA4CB20C24
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC67167270;
-	Mon, 27 May 2024 19:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCA51607AF;
+	Mon, 27 May 2024 19:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxFMY9o3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ydmv7oQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F06168C2F;
-	Mon, 27 May 2024 19:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1E515FCE9;
+	Mon, 27 May 2024 19:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836549; cv=none; b=QlmlcF5kXzPF8EMdLS3nxU7/dyNWg1MsdevfkvKCXOzf3c5iu0D0jArY9ycyEBhVHAjMKGY9PqB/4McUFpNQnhB8OxjrP1XMXIlRSQqfWh5ahO/VNCnM4OSR9vCrskOlHF+ut7KaKLU/fkFfpdwyamkxD3It4gI2PaoJ21SPHNA=
+	t=1716837869; cv=none; b=AxYphHxKqKwq72FTBBs5g6GMueFlRT9UV9EATWhCmvhbE2PITRixANXv5k+MJJX/0gMwUaEYfzI6FWQYT8lIvaFdqcvvIuc/8mGS44fs8zxeaJDWsU+ee/CSrPJLtpcl9LmWfp/NPzIGv2P6BflzliMhDFbLr5fvcocod6TQu3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836549; c=relaxed/simple;
-	bh=+eBiJ4DZhLkshoWQAUZA/1sbUYWYAabY9++WEKBLenQ=;
+	s=arc-20240116; t=1716837869; c=relaxed/simple;
+	bh=qWaHv3AOxFNfOXWTzclFObiHUKrDaV86+qTPG6Q5bww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCvI8fbc5vugEVcIz4ZHKL6of5Oi9JzJKDXFVwAufN9upx+gq2peVAmVxByW+UIpVpuY7pUgHUhZwMg2O9ycbdyWte8fflwPS/0VUIiqGxkvuwiioipM/pZ8F5sftcs12QUnhaeFcp1yvpFNgM/cwruywcIShCMHZ+9ZLTaG1U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxFMY9o3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7120C2BBFC;
-	Mon, 27 May 2024 19:02:28 +0000 (UTC)
+	 MIME-Version; b=OnLp8Aq8lpeLRHJ+8RINdyiZzNQnudGqChTb/xg8YgfqhomHG4ezcvdnKVyj6MuzTe8pHFPOSNFTOwT4xd/01ZadUeg1CPKWREmhzLEGfcUlYgO7LiKUefiyzft8DdSBq4rI0mdxlgiDk8mlQnGXgQTgB8g4ZekiMglU2YWTluE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ydmv7oQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A5AC2BBFC;
+	Mon, 27 May 2024 19:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836549;
-	bh=+eBiJ4DZhLkshoWQAUZA/1sbUYWYAabY9++WEKBLenQ=;
+	s=korg; t=1716837868;
+	bh=qWaHv3AOxFNfOXWTzclFObiHUKrDaV86+qTPG6Q5bww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxFMY9o3LXGu/i5OHy/AbZX9ZkyJP6j7VqnNycZx4JlF9k0M7NEmoNwLe+MATIt2v
-	 bjbWfKSzV4mQGwh8e9I3LPY3MN6qkiHoDziv7fQp852j/bWV9DPqOVSE4LwG/JiX7t
-	 dzLZ9sD3Mfj2JZKmSMD7s835fBHru6Q1mZqlXQEs=
+	b=Ydmv7oQLGKPIng/r6cvzd538TmhKfUs0RlPN+09RUqTHUKlYg1Q9hJ1T2evZGxguB
+	 XHHe0N+bS8bXH0IQzEKundymsJUnZZJwpqkqyqHAUMY5W9vfhhm4PM6Nw2SdHJWerw
+	 Bpb+n4vkGmWxb3y24YeqlZQkZyIv0XCMQRmX8bXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Prestwood <prestwoj@gmail.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 090/427] wifi: ath10k: poll service ready message before failing
+Subject: [PATCH 6.8 135/493] shmem: Fix shmem_rename2()
 Date: Mon, 27 May 2024 20:52:17 +0200
-Message-ID: <20240527185610.135930195@linuxfoundation.org>
+Message-ID: <20240527185634.881995353@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit e57b7d62a1b2f496caf0beba81cec3c90fad80d5 ]
+[ Upstream commit ad191eb6d6942bb835a0b20b647f7c53c1d99ca4 ]
 
-Currently host relies on CE interrupts to get notified that
-the service ready message is ready. This results in timeout
-issue if the interrupt is not fired, due to some unknown
-reasons. See below logs:
+When renaming onto an existing directory entry, user space expects
+the replacement entry to have the same directory offset as the
+original one.
 
-[76321.937866] ath10k_pci 0000:02:00.0: wmi service ready event not received
-...
-[76322.016738] ath10k_pci 0000:02:00.0: Could not init core: -110
-
-And finally it causes WLAN interface bring up failure.
-
-Change to give it one more chance here by polling CE rings,
-before failing directly.
-
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
-
-Fixes: 5e3dd157d7e7 ("ath10k: mac80211 driver for Qualcomm Atheros 802.11ac CQA98xx devices")
-Reported-by: James Prestwood <prestwoj@gmail.com>
-Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
-Link: https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240227030409.89702-1-quic_bqiang@quicinc.com
+Link: https://gitlab.alpinelinux.org/alpine/aports/-/issues/15966
+Fixes: a2e459555c5f ("shmem: stable directory offsets")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20240415152057.4605-4-cel@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ fs/libfs.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 2e9661f4bea82..80d255aaff1be 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1763,12 +1763,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
- 
- int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+diff --git a/fs/libfs.c b/fs/libfs.c
+index bb6731fa63059..ef700d39f0f35 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -365,6 +365,9 @@ int simple_offset_empty(struct dentry *dentry)
+  *
+  * Caller provides appropriate serialization.
+  *
++ * User space expects the directory offset value of the replaced
++ * (new) directory entry to be unchanged after a rename.
++ *
+  * Returns zero on success, a negative errno value on failure.
+  */
+ int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+@@ -372,8 +375,14 @@ int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
  {
--	unsigned long time_left;
-+	unsigned long time_left, i;
+ 	struct offset_ctx *old_ctx = old_dir->i_op->get_offset_ctx(old_dir);
+ 	struct offset_ctx *new_ctx = new_dir->i_op->get_offset_ctx(new_dir);
++	long new_offset = dentry2offset(new_dentry);
  
- 	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
- 						WMI_SERVICE_READY_TIMEOUT_HZ);
--	if (!time_left)
--		return -ETIMEDOUT;
-+	if (!time_left) {
-+		/* Sometimes the PCI HIF doesn't receive interrupt
-+		 * for the service ready message even if the buffer
-+		 * was completed. PCIe sniffer shows that it's
-+		 * because the corresponding CE ring doesn't fires
-+		 * it. Workaround here by polling CE rings once.
-+		 */
-+		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
+ 	simple_offset_remove(old_ctx, old_dentry);
 +
-+		for (i = 0; i < CE_COUNT; i++)
-+			ath10k_hif_send_complete_check(ar, i, 1);
-+
-+		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
-+							WMI_SERVICE_READY_TIMEOUT_HZ);
-+		if (!time_left) {
-+			ath10k_warn(ar, "polling timed out\n");
-+			return -ETIMEDOUT;
-+		}
-+
-+		ath10k_warn(ar, "service ready completion received, continuing normally\n");
++	if (new_offset) {
++		offset_set(new_dentry, 0);
++		return simple_offset_replace(new_ctx, old_dentry, new_offset);
 +	}
-+
- 	return 0;
+ 	return simple_offset_add(new_ctx, old_dentry);
  }
  
 -- 
