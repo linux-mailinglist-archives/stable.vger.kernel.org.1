@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-46714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C4F8D0AF0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D4D8D0AC1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D3FAB2252E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6011F20EEA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D3115FCF0;
-	Mon, 27 May 2024 19:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC67167270;
+	Mon, 27 May 2024 19:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orjv6QqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxFMY9o3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CAC1078F;
-	Mon, 27 May 2024 19:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F06168C2F;
+	Mon, 27 May 2024 19:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836665; cv=none; b=TQKTAOKv4GzyyVcSlKeQi1KYJh+0Pl7zdELnal9HFOdAZ467IzPD0kdKNaKaJdhgu+4X3Ld1I9TH/GU7V8h74/ZNxGJnAml0WNSby1cGr3ecqQB1ktywoIsIjUgRi0XxenWHQ1OCt4dh0+SYwo7Puh9BJmLsUrpdrzuj0Alvz6c=
+	t=1716836549; cv=none; b=QlmlcF5kXzPF8EMdLS3nxU7/dyNWg1MsdevfkvKCXOzf3c5iu0D0jArY9ycyEBhVHAjMKGY9PqB/4McUFpNQnhB8OxjrP1XMXIlRSQqfWh5ahO/VNCnM4OSR9vCrskOlHF+ut7KaKLU/fkFfpdwyamkxD3It4gI2PaoJ21SPHNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836665; c=relaxed/simple;
-	bh=SzNjURK/GVg1zllD753La0ul2M/xNJF1DDgwgGEE4D8=;
+	s=arc-20240116; t=1716836549; c=relaxed/simple;
+	bh=+eBiJ4DZhLkshoWQAUZA/1sbUYWYAabY9++WEKBLenQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkoVzTbCcbCslKtVlmvhzYOwwo2aabPk/YUqrF48g2LOoI7ot0r1Wzw2rnM3oHVN11ZtdqLfmPKJR8SkCeuBuvirzXKsBDe66X7zTzlRqTRNBMIzta9phybWj2ZaB/r6CCY4NgTvBoDgLpqL7x81ekfKjqb43+YJfW+Rw7l5/FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orjv6QqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F17C2BBFC;
-	Mon, 27 May 2024 19:04:24 +0000 (UTC)
+	 MIME-Version; b=XCvI8fbc5vugEVcIz4ZHKL6of5Oi9JzJKDXFVwAufN9upx+gq2peVAmVxByW+UIpVpuY7pUgHUhZwMg2O9ycbdyWte8fflwPS/0VUIiqGxkvuwiioipM/pZ8F5sftcs12QUnhaeFcp1yvpFNgM/cwruywcIShCMHZ+9ZLTaG1U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxFMY9o3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7120C2BBFC;
+	Mon, 27 May 2024 19:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836665;
-	bh=SzNjURK/GVg1zllD753La0ul2M/xNJF1DDgwgGEE4D8=;
+	s=korg; t=1716836549;
+	bh=+eBiJ4DZhLkshoWQAUZA/1sbUYWYAabY9++WEKBLenQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orjv6QqKmt3ASYTrVs2iboA16+ID02WlsMG9zT1f1NUJwOA/nfBVN3Xa8e8IvxADR
-	 GWFy2G3QdimehHnPWif4xTcbYeO22JQkAp6+cY9Ad1cJALO/884hf8botCega914Ow
-	 gZ2AZvWltyeiCD6bu/o6z+vU8iakxZ2hqiV37mCs=
+	b=DxFMY9o3LXGu/i5OHy/AbZX9ZkyJP6j7VqnNycZx4JlF9k0M7NEmoNwLe+MATIt2v
+	 bjbWfKSzV4mQGwh8e9I3LPY3MN6qkiHoDziv7fQp852j/bWV9DPqOVSE4LwG/JiX7t
+	 dzLZ9sD3Mfj2JZKmSMD7s835fBHru6Q1mZqlXQEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	James Prestwood <prestwoj@gmail.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 089/427] block: support to account io_ticks precisely
-Date: Mon, 27 May 2024 20:52:16 +0200
-Message-ID: <20240527185610.058342996@linuxfoundation.org>
+Subject: [PATCH 6.9 090/427] wifi: ath10k: poll service ready message before failing
+Date: Mon, 27 May 2024 20:52:17 +0200
+Message-ID: <20240527185610.135930195@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -66,150 +68,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 99dc422335d8b2bd4d105797241d3e715bae90e9 ]
+[ Upstream commit e57b7d62a1b2f496caf0beba81cec3c90fad80d5 ]
 
-Currently, io_ticks is accounted based on sampling, specifically
-update_io_ticks() will always account io_ticks by 1 jiffies from
-bdev_start_io_acct()/blk_account_io_start(), and the result can be
-inaccurate, for example(HZ is 250):
+Currently host relies on CE interrupts to get notified that
+the service ready message is ready. This results in timeout
+issue if the interrupt is not fired, due to some unknown
+reasons. See below logs:
 
-Test script:
-fio -filename=/dev/sda -bs=4k -rw=write -direct=1 -name=test -thinktime=4ms
+[76321.937866] ath10k_pci 0000:02:00.0: wmi service ready event not received
+...
+[76322.016738] ath10k_pci 0000:02:00.0: Could not init core: -110
 
-Test result: util is about 90%, while the disk is really idle.
+And finally it causes WLAN interface bring up failure.
 
-This behaviour is introduced by commit 5b18b5a73760 ("block: delete
-part_round_stats and switch to less precise counting"), however, there
-was a key point that is missed that this patch also improve performance
-a lot:
+Change to give it one more chance here by polling CE rings,
+before failing directly.
 
-Before the commit:
-part_round_stats:
-  if (part->stamp != now)
-   stats |= 1;
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
 
-  part_in_flight()
-  -> there can be lots of task here in 1 jiffies.
-  part_round_stats_single()
-   __part_stat_add()
-  part->stamp = now;
-
-After the commit:
-update_io_ticks:
-  stamp = part->bd_stamp;
-  if (time_after(now, stamp))
-   if (try_cmpxchg())
-    __part_stat_add()
-    -> only one task can reach here in 1 jiffies.
-
-Hence in order to account io_ticks precisely, we only need to know if
-there are IO inflight at most once in one jiffies. Noted that for
-rq-based device, iterating tags should not be used here because
-'tags->lock' is grabbed in blk_mq_find_and_get_req(), hence
-part_stat_lock_inc/dec() and part_in_flight() is used to trace inflight.
-The additional overhead is quite little:
-
- - per cpu add/dec for each IO for rq-based device;
- - per cpu sum for each jiffies;
-
-And it's verified by null-blk that there are no performance degration
-under heavy IO pressure.
-
-Fixes: 5b18b5a73760 ("block: delete part_round_stats and switch to less precise counting")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240509123717.3223892-2-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 5e3dd157d7e7 ("ath10k: mac80211 driver for Qualcomm Atheros 802.11ac CQA98xx devices")
+Reported-by: James Prestwood <prestwoj@gmail.com>
+Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
+Link: https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240227030409.89702-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c  | 9 +++++----
- block/blk-merge.c | 2 ++
- block/blk-mq.c    | 4 ++++
- block/blk.h       | 1 +
- block/genhd.c     | 2 +-
- 5 files changed, 13 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index b795ac177281a..6fcf8ed5fc1f1 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -987,10 +987,11 @@ void update_io_ticks(struct block_device *part, unsigned long now, bool end)
- 	unsigned long stamp;
- again:
- 	stamp = READ_ONCE(part->bd_stamp);
--	if (unlikely(time_after(now, stamp))) {
--		if (likely(try_cmpxchg(&part->bd_stamp, &stamp, now)))
--			__part_stat_add(part, io_ticks, end ? now - stamp : 1);
--	}
-+	if (unlikely(time_after(now, stamp)) &&
-+	    likely(try_cmpxchg(&part->bd_stamp, &stamp, now)) &&
-+	    (end || part_in_flight(part)))
-+		__part_stat_add(part, io_ticks, now - stamp);
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 2e9661f4bea82..80d255aaff1be 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1763,12 +1763,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
+ 
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+ {
+-	unsigned long time_left;
++	unsigned long time_left, i;
+ 
+ 	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+ 						WMI_SERVICE_READY_TIMEOUT_HZ);
+-	if (!time_left)
+-		return -ETIMEDOUT;
++	if (!time_left) {
++		/* Sometimes the PCI HIF doesn't receive interrupt
++		 * for the service ready message even if the buffer
++		 * was completed. PCIe sniffer shows that it's
++		 * because the corresponding CE ring doesn't fires
++		 * it. Workaround here by polling CE rings once.
++		 */
++		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
 +
- 	if (part->bd_partno) {
- 		part = bdev_whole(part);
- 		goto again;
-diff --git a/block/blk-merge.c b/block/blk-merge.c
-index 4e3483a16b757..ae61a9c2fc93c 100644
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -779,6 +779,8 @@ static void blk_account_io_merge_request(struct request *req)
- 	if (blk_do_io_stat(req)) {
- 		part_stat_lock();
- 		part_stat_inc(req->part, merges[op_stat_group(req_op(req))]);
-+		part_stat_local_dec(req->part,
-+				    in_flight[op_is_write(req_op(req))]);
- 		part_stat_unlock();
- 	}
- }
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 32afb87efbd0e..5ac2087b05630 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -997,6 +997,8 @@ static inline void blk_account_io_done(struct request *req, u64 now)
- 		update_io_ticks(req->part, jiffies, true);
- 		part_stat_inc(req->part, ios[sgrp]);
- 		part_stat_add(req->part, nsecs[sgrp], now - req->start_time_ns);
-+		part_stat_local_dec(req->part,
-+				    in_flight[op_is_write(req_op(req))]);
- 		part_stat_unlock();
- 	}
- }
-@@ -1019,6 +1021,8 @@ static inline void blk_account_io_start(struct request *req)
- 
- 		part_stat_lock();
- 		update_io_ticks(req->part, jiffies, false);
-+		part_stat_local_inc(req->part,
-+				    in_flight[op_is_write(req_op(req))]);
- 		part_stat_unlock();
- 	}
- }
-diff --git a/block/blk.h b/block/blk.h
-index d9f584984bc44..da5dbc6b13068 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -357,6 +357,7 @@ static inline bool blk_do_io_stat(struct request *rq)
++		for (i = 0; i < CE_COUNT; i++)
++			ath10k_hif_send_complete_check(ar, i, 1);
++
++		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
++							WMI_SERVICE_READY_TIMEOUT_HZ);
++		if (!time_left) {
++			ath10k_warn(ar, "polling timed out\n");
++			return -ETIMEDOUT;
++		}
++
++		ath10k_warn(ar, "service ready completion received, continuing normally\n");
++	}
++
+ 	return 0;
  }
  
- void update_io_ticks(struct block_device *part, unsigned long now, bool end);
-+unsigned int part_in_flight(struct block_device *part);
- 
- static inline void req_set_nomerge(struct request_queue *q, struct request *req)
- {
-diff --git a/block/genhd.c b/block/genhd.c
-index 52a4521df067b..345d80ab9791b 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -118,7 +118,7 @@ static void part_stat_read_all(struct block_device *part,
- 	}
- }
- 
--static unsigned int part_in_flight(struct block_device *part)
-+unsigned int part_in_flight(struct block_device *part)
- {
- 	unsigned int inflight = 0;
- 	int cpu;
 -- 
 2.43.0
 
