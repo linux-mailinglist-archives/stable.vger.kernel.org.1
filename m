@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-46897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3B68D0BB6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17778D0DB7
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D6D81C20BFC
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD31B281614
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AB415DBD8;
-	Mon, 27 May 2024 19:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA1E15FA60;
+	Mon, 27 May 2024 19:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaMmIqrx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtaSub6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2362417E90E;
-	Mon, 27 May 2024 19:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E113317727;
+	Mon, 27 May 2024 19:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837137; cv=none; b=euzTlSparJCWkRZXxknx9N/kFT6RQQBL6F+mRKgXocLC0qk/E5fsKUYAYxu2ja3Sb7FCRKteKUs7/1zy4TH1GikhPHJCjoO/IikMQeWKXN68Q9rcFaRFQihyG/pkf7Cs/fK8SsJazZ+p9o5uwJnQ9X3jpUVCkaW9Q27Ja9LKk9c=
+	t=1716838380; cv=none; b=Ity9xYRcE1bkDi+JePzsQWTcSZ1x4xdFouQ+Edc7JZ7DE+4EJQ0N8mDt6bteoo4fmVWMHl7AQoxIO7tgvuRFHHaw1ISkR+EBE8XAbrlfKbhCK0HUKw6s+yuINymO7A/YCSvTXp7zzUaGDNXx0EsqBaXtlXUspUbQlEt4/6EFx+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837137; c=relaxed/simple;
-	bh=SKzXpGwDw/Wsnk8n3O07xvh4RTKKDxP/3tzrIotizuE=;
+	s=arc-20240116; t=1716838380; c=relaxed/simple;
+	bh=rTik0pc86XrhDkNnYy1xIJLcUWyLGi7naGHRFfsHudU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CXQCvneMmSalclOG/BLyR5kk7AO9cRKvXDRiAbOjoP1e/m4sgpX/WPkeahh4ivJPgZNeiCL5o/XTmpaqgiT7uvaq6gJ5eEZbZ0vpZJH/auMX6fzxAiGzXB0N9hWiq5iyIpsuxF/mFUwyEeWWVy10gMQXoO/0aTor3pAIvEYSaw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaMmIqrx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85472C2BBFC;
-	Mon, 27 May 2024 19:12:16 +0000 (UTC)
+	 MIME-Version; b=aH+NZVGawNAay+5OQo3Pa1LNw1X3SDRRFqFDFw15UGNoEaqTcgq6F2YD7QxEyX22cnc59HOS5jvkF210z2lk9Ecdv2Jm2HV1lecZNsBEKg8vvBCacofw9PiXx0MchTLjIDRKURK2rKS6WcmkQHOiNq1GtorAvAfITN3HDUIiNi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtaSub6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775BCC2BBFC;
+	Mon, 27 May 2024 19:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837137;
-	bh=SKzXpGwDw/Wsnk8n3O07xvh4RTKKDxP/3tzrIotizuE=;
+	s=korg; t=1716838379;
+	bh=rTik0pc86XrhDkNnYy1xIJLcUWyLGi7naGHRFfsHudU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QaMmIqrxS01UjgaH4FzJ4gN8dtgI/GeNW7FXyFbLqa7HHbQOjLgqFMJYvCf0diKl4
-	 VJTopG1Pgm2O/x4t+YGtZYPzty5s/8zTaegEso8PWUtRuSC3vaoT0HXlFRzDIcm2Aq
-	 0pfS3aVOgTyIMz18EqFqYLCAFZQjRu3slwS3meLY=
+	b=xtaSub6POiNGKbJuRX+kvg+8KgxJ6ocZGZWoYG0UwPz6tNjCU6K8mQect/M1cbcm2
+	 3zLrnrprAnAtaWhnuHe5NJmS3rRQXsWbJj+zPpcPwkNt9GFAddwjywF78ldWBu/9lu
+	 ZbJip5cSfClMUB68rJ+qx0QchMNa3SHIMP/7+qUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Sam Ravnborg <sam@ravnborg.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
 	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 325/427] fbdev: sh7760fb: allow modular build
+Subject: [PATCH 6.8 370/493] fbdev: shmobile: fix snprintf truncation
 Date: Mon, 27 May 2024 20:56:12 +0200
-Message-ID: <20240527185631.879632423@linuxfoundation.org>
+Message-ID: <20240527185642.375025486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,52 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 51084f89d687e14d96278241e5200cde4b0985c7 ]
+[ Upstream commit 26c8cfb9d1e4b252336d23dd5127a8cbed414a32 ]
 
-There is no reason to prohibit sh7760fb from being built as a
-loadable module as suggested by Geert, so change the config symbol
-from bool to tristate to allow that and change the FB dependency as
-needed.
+The name of the overlay does not fit into the fixed-length field:
 
-Fixes: f75f71b2c418 ("fbdev/sh7760fb: Depend on FB=y")
-Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+drivers/video/fbdev/sh_mobile_lcdcfb.c:1577:2: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 25
+
+Make it short enough by changing the string.
+
+Fixes: c5deac3c9b22 ("fbdev: sh_mobile_lcdc: Implement overlays support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/sh_mobile_lcdcfb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 197b6d5268e94..3f46663aa563d 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -1648,8 +1648,8 @@ config FB_COBALT
- 	select FB_IOMEM_HELPERS
- 
- config FB_SH7760
--	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
--	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
-+	tristate "SH7760/SH7763/SH7720/SH7721 LCDC support"
-+	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
- 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
- 	select FB_IOMEM_HELPERS
- 	help
+diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+index eb2297b37504c..d35d2cf999988 100644
+--- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
++++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+@@ -1575,7 +1575,7 @@ sh_mobile_lcdc_overlay_fb_init(struct sh_mobile_lcdc_overlay *ovl)
+ 	 */
+ 	info->fix = sh_mobile_lcdc_overlay_fix;
+ 	snprintf(info->fix.id, sizeof(info->fix.id),
+-		 "SH Mobile LCDC Overlay %u", ovl->index);
++		 "SHMobile ovl %u", ovl->index);
+ 	info->fix.smem_start = ovl->dma_handle;
+ 	info->fix.smem_len = ovl->fb_size;
+ 	info->fix.line_length = ovl->pitch;
 -- 
 2.43.0
 
