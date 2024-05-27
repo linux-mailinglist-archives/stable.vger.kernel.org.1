@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-47434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B518F8D0DF7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE57F8D0BF8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55EB81F21282
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8489A286210
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A22D15FA9F;
-	Mon, 27 May 2024 19:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FB415FA85;
+	Mon, 27 May 2024 19:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeQBGmVL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwnddlW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27646535A4;
-	Mon, 27 May 2024 19:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D239017E90E;
+	Mon, 27 May 2024 19:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838540; cv=none; b=VuJ8HYQWwq5YN25/xjG3ujPNLILbK54IE3WsokVlkBc+afMJu4ogUMDNPtx7GynHRv5Mwi8vwDO6I39uN5QIfTXCB3vVaotfjlyOmw2bxy007rpQF9SYorn8kezhnuxheXfNe3MTqnzIRdkxsnouezK1ZPglSXsXLLzlgd2Mgpk=
+	t=1716837295; cv=none; b=r0klKyDfGpUBgpm7Ga9eV8mE8rNrueLEAfX6NKoZeg3A1DrSVTYI9MqEFksnHFdwzoFZ4O30sfNPDjzXcSa1PZRpsqtjtvCYaBYVIH6z9KFv2TFF/2/bSxlOIqYkjG7hEB12QwOFfGhHWAIgPwhDQ0XELLbfcbMj5Wuh1eIdJQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838540; c=relaxed/simple;
-	bh=6ZpzoyfiOnCmo0rCdPwbEDtk3yw3jK0ay+ALJ8VqSRw=;
+	s=arc-20240116; t=1716837295; c=relaxed/simple;
+	bh=90Pr1ExvdvVoeO5o95/gtJewRkGRYDd0j0NwM9FLkPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRh9i+Kn7VVVvOuIbUP3vXaADaG0lWbX2YrcTHa2I1mv2gY87mvUA7ytbXHiY6+UUBz/Mw2drfLKKa9FeNNHis7x+USp6/zfcqyNjndVazRMA0zxDqOh0eKBHT0l5qrlDAe5mgvDuhd9Unr8fgp5e4ZanU1jSac4kwuqT2jIY7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeQBGmVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55560C2BBFC;
-	Mon, 27 May 2024 19:35:39 +0000 (UTC)
+	 MIME-Version; b=na7lCsutl1z0R5e7WUsHFPaqFw48FBmsOnzwCEHbP2JMsdMvbWeqKULnYENnMA3H07zzEf2ekP7s0Mg0zhXDq8qeUhD+oZhUbVjAAxKz31g7mKOvdnBAqMUoOzayxi54dFzi8tsFMpQnQO/EPMGG8lNmvZEKXSce6Op74YWGmfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwnddlW4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A20C2BBFC;
+	Mon, 27 May 2024 19:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838539;
-	bh=6ZpzoyfiOnCmo0rCdPwbEDtk3yw3jK0ay+ALJ8VqSRw=;
+	s=korg; t=1716837295;
+	bh=90Pr1ExvdvVoeO5o95/gtJewRkGRYDd0j0NwM9FLkPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YeQBGmVLAbmmryj8r/r6dSVW0MzNukXod96ZHWcqEeLyvDkspNvMwM/Xbtv0fzYGq
-	 /O/CT28hVLn2HV8ZxFi6tnrLr3VYHc70nGNNR63bEQCaLBVhIfnNM/5i6qsUUfPW1b
-	 GylNS4WrAWSZii4Mlpnb5/8Jxtr07xGpYJyJP3YI=
+	b=jwnddlW4VYYaGCJeCgviZfmbM5e6esu3ebKBNWq4cvqyABYooEmsnpBB9yP1oS50t
+	 4NBiODTdpxLPPJzly98NNt8Cu+L6L4lv7tZaHBMNEcETVnhsjK4VpsAkFekV/kvcjY
+	 SXz7jDYF1rtpCn5MMjxInqvr4OhBebC75v4v67qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	David Hildenbrand <david@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Fei Li <fei1.li@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 431/493] RDMA/hns: Modify the print level of CQE error
+Subject: [PATCH 6.9 386/427] virt: acrn: stop using follow_pfn
 Date: Mon, 27 May 2024 20:57:13 +0200
-Message-ID: <20240527185644.379360275@linuxfoundation.org>
+Message-ID: <20240527185634.675037198@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +68,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 349e859952285ab9689779fb46de163f13f18f43 ]
+[ Upstream commit 1b265da7ea1e1ae997fa119c2846bb389eb39c6b ]
 
-Too much print may lead to a panic in kernel. Change ibdev_err() to
-ibdev_err_ratelimited(), and change the printing level of cqe dump
-to debug level.
+Patch series "remove follow_pfn".
 
-Fixes: 7c044adca272 ("RDMA/hns: Simplify the cqe code of poll cq")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-11-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This series open codes follow_pfn in the only remaining caller, although
+the code there remains questionable.  It then also moves follow_phys into
+the only user and simplifies it a bit.
+
+This patch (of 3):
+
+Switch from follow_pfn to follow_pte so that we can get rid of follow_pfn.
+Note that this doesn't fix any of the pre-existing raciness and lack of
+permission checking in the code.
+
+Link: https://lkml.kernel.org/r/20240324234542.2038726-1-hch@lst.de
+Link: https://lkml.kernel.org/r/20240324234542.2038726-2-hch@lst.de
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Fei Li <fei1.li@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 3d6586008f7b ("drivers/virt/acrn: fix PFNMAP PTE checks in acrn_vm_ram_map()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/virt/acrn/mm.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 9c9a707d26d67..f95ec4618fbed 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -3715,8 +3715,9 @@ static void get_cqe_status(struct hns_roce_dev *hr_dev, struct hns_roce_qp *qp,
- 		   wc->status == IB_WC_WR_FLUSH_ERR))
- 		return;
+diff --git a/drivers/virt/acrn/mm.c b/drivers/virt/acrn/mm.c
+index fa5d9ca6be570..69c3f619f8819 100644
+--- a/drivers/virt/acrn/mm.c
++++ b/drivers/virt/acrn/mm.c
+@@ -171,18 +171,24 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
+ 	mmap_read_lock(current->mm);
+ 	vma = vma_lookup(current->mm, memmap->vma_base);
+ 	if (vma && ((vma->vm_flags & VM_PFNMAP) != 0)) {
++		spinlock_t *ptl;
++		pte_t *ptep;
++
+ 		if ((memmap->vma_base + memmap->len) > vma->vm_end) {
+ 			mmap_read_unlock(current->mm);
+ 			return -EINVAL;
+ 		}
  
--	ibdev_err(&hr_dev->ib_dev, "error cqe status 0x%x:\n", cqe_status);
--	print_hex_dump(KERN_ERR, "", DUMP_PREFIX_NONE, 16, 4, cqe,
-+	ibdev_err_ratelimited(&hr_dev->ib_dev, "error cqe status 0x%x:\n",
-+			      cqe_status);
-+	print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_NONE, 16, 4, cqe,
- 		       cq->cqe_size, false);
- 	wc->vendor_err = hr_reg_read(cqe, CQE_SUB_STATUS);
+-		ret = follow_pfn(vma, memmap->vma_base, &pfn);
+-		mmap_read_unlock(current->mm);
++		ret = follow_pte(vma->vm_mm, memmap->vma_base, &ptep, &ptl);
+ 		if (ret < 0) {
++			mmap_read_unlock(current->mm);
+ 			dev_dbg(acrn_dev.this_device,
+ 				"Failed to lookup PFN at VMA:%pK.\n", (void *)memmap->vma_base);
+ 			return ret;
+ 		}
++		pfn = pte_pfn(ptep_get(ptep));
++		pte_unmap_unlock(ptep, ptl);
++		mmap_read_unlock(current->mm);
  
+ 		return acrn_mm_region_add(vm, memmap->user_vm_pa,
+ 			 PFN_PHYS(pfn), memmap->len,
 -- 
 2.43.0
 
