@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032AC8D0AE2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4DD8D0CFB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84310B220DF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CBCE1C213E0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A949A161322;
-	Mon, 27 May 2024 19:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE75815FCE9;
+	Mon, 27 May 2024 19:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAqJP+0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0wl292N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66663D518;
-	Mon, 27 May 2024 19:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5CC168C4;
+	Mon, 27 May 2024 19:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836626; cv=none; b=Y2ixPYuFUruTqU13aqMmVDBry41ebS6SoCrq6vPN2YtfTojHr5+3jWkqe2YFFb0n1KvsTFF0Aq+W702xg+qvwyuEqraBCrVjk8FwnEl/FqTas8SSZXyK4f6PQ8haEpnQY1n92dhBlB4OIWc9zOsCoCg0WpkUhCvB3dgFFi6fbL4=
+	t=1716837901; cv=none; b=fQGKw1sexacIre2J5HSa7HRZa4LkMoC0cUr7sW6mxfbPYm3HWuzG5wBNSgNcTy4tDXHB1Jz4OyBnJzdlVvBBHAD84kihOkWwjLz8lSilsSj9Z28PMxAckjWWTf/gqxSi0PlIvwGGZYXPs8PPX2N9GZQta3OPs5UAoZxApVnL9h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836626; c=relaxed/simple;
-	bh=e9dVIpdRBjwn/QkZ6aV5sVV0GrPSx9ILJEUvJjk0jfE=;
+	s=arc-20240116; t=1716837901; c=relaxed/simple;
+	bh=2HIyxVxQOUE/j3851qO3Y+6nOK4IkVHlIvm+ehFpVuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZbfoe18s2YMhCMIVtguRgfHCBkRb9gdiUIimFzMjGQk/OiltxKTz7NNJ9pEML8dtkqamtctvOZa6Ds0PlZrLcByQkrG94TaSLFhOLPv7Z/KZDTSG/++1pp0rmDpOc/1trwpIcFAhAWgpNJaVM1/YbEafPW8hgXMb2aD6YU2ccM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAqJP+0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944ACC2BBFC;
-	Mon, 27 May 2024 19:03:45 +0000 (UTC)
+	 MIME-Version; b=kxdjOLrFW9I8nutpTE5rQaEoZh/YBYPCV2RVKExHQgavwrp+6RQQARRD2y/HofLPsxajE6qQDRxIFd8mlR1LNmf3Uwt/2y3/wKrQE+rNx+OtlhpS0YzpQGMYIFjzyflodaWIcD8QQCz5+2DQv2ApDMffDdtzW55HbIOKCJ3Aijo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0wl292N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F315C2BBFC;
+	Mon, 27 May 2024 19:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836625;
-	bh=e9dVIpdRBjwn/QkZ6aV5sVV0GrPSx9ILJEUvJjk0jfE=;
+	s=korg; t=1716837901;
+	bh=2HIyxVxQOUE/j3851qO3Y+6nOK4IkVHlIvm+ehFpVuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAqJP+0DI27/O+wmGyGe2W8g5n2L25m/WRaaZuPhV7aMP8fx0uM7xIZFtzSUGfZtQ
-	 wSJ4MDGJ41d0kKA9jPwtyLCuxGIg9W8AaqXJVDTNgz7NM+aiEEyHK4NRt+7QmkusC9
-	 Oo+soZl2If8TkM0+2FV9FQ9go39ZrlKz6mUSxdLU=
+	b=X0wl292N5d1m5X/0VoVcWLqOJ/uGt5phm2OuDKjIN+0T2il3bylj/8c/D5fOvdW0g
+	 VCDohchpwclS/W6QdEx0h7phXm1KVVEcKdG9htpm0is9u3zbRvvIzkCLJV90gJDaRe
+	 yrJgNdpUFq41Ny6wiyNlZkI19zeNI2bxDs9XxKek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ayala Beker <ayala.beker@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 126/427] scsi: ufs: qcom: Perform read back after writing reset bit
-Date: Mon, 27 May 2024 20:52:53 +0200
-Message-ID: <20240527185613.734959483@linuxfoundation.org>
+Subject: [PATCH 6.8 172/493] wifi: mac80211: dont select link ID if not provided in scan request
+Date: Mon, 27 May 2024 20:52:54 +0200
+Message-ID: <20240527185635.978965712@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Ayala Beker <ayala.beker@intel.com>
 
-[ Upstream commit c4d28e06b0c94636f6e35d003fa9ebac0a94e1ae ]
+[ Upstream commit 80b0aacd1ad046b46d471cf8ed6203bbd777f988 ]
 
-Currently, the reset bit for the UFS provided reset controller (used by its
-phy) is written to, and then a mb() happens to try and ensure that hit the
-device. Immediately afterwards a usleep_range() occurs.
+If scan request doesn't include a link ID to be used for TSF
+reporting, don't select it as it might become inactive before
+scan is actually started by the driver.
+Instead, let the driver select one of the active links.
 
-mb() ensures that the write completes, but completion doesn't mean that it
-isn't stored in a buffer somewhere. The recommendation for ensuring this
-bit has taken effect on the device is to perform a read back to force it to
-make it all the way to the device. This is documented in device-io.rst and
-a talk by Will Deacon on this can be seen over here:
-
-    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
-
-Let's do that to ensure the bit hits the device. By doing so and
-guaranteeing the ordering against the immediately following usleep_range(),
-the mb() can safely be removed.
-
-Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-1-181252004586@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: cbde0b49f276 ("wifi: mac80211: Extend support for scanning while MLO connected")
+Signed-off-by: Ayala Beker <ayala.beker@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320091155.a6b643a15755.Ic28ed9a611432387b7f85e9ca9a97a4ce34a6e0f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/mac80211/scan.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
-index 9dd9a391ebb76..b9de170983c9e 100644
---- a/drivers/ufs/host/ufs-qcom.h
-+++ b/drivers/ufs/host/ufs-qcom.h
-@@ -151,10 +151,10 @@ static inline void ufs_qcom_assert_reset(struct ufs_hba *hba)
- 	ufshcd_rmwl(hba, UFS_PHY_SOFT_RESET, UFS_PHY_SOFT_RESET, REG_UFS_CFG1);
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index dd0ec34a3f8a8..d613a9e3ae1fd 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -695,19 +695,11 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
+ 		return -EBUSY;
  
- 	/*
--	 * Make sure assertion of ufs phy reset is written to
--	 * register before returning
-+	 * Dummy read to ensure the write takes effect before doing any sort
-+	 * of delay
+ 	/* For an MLO connection, if a link ID was specified, validate that it
+-	 * is indeed active. If no link ID was specified, select one of the
+-	 * active links.
++	 * is indeed active.
  	 */
--	mb();
-+	ufshcd_readl(hba, REG_UFS_CFG1);
- }
+-	if (ieee80211_vif_is_mld(&sdata->vif)) {
+-		if (req->tsf_report_link_id >= 0) {
+-			if (!(sdata->vif.active_links &
+-			      BIT(req->tsf_report_link_id)))
+-				return -EINVAL;
+-		} else {
+-			req->tsf_report_link_id =
+-				__ffs(sdata->vif.active_links);
+-		}
+-	}
++	if (ieee80211_vif_is_mld(&sdata->vif) && req->tsf_report_link_id >= 0 &&
++	    !(sdata->vif.active_links & BIT(req->tsf_report_link_id)))
++		return -EINVAL;
  
- static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
-@@ -162,10 +162,10 @@ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
- 	ufshcd_rmwl(hba, UFS_PHY_SOFT_RESET, 0, REG_UFS_CFG1);
- 
- 	/*
--	 * Make sure de-assertion of ufs phy reset is written to
--	 * register before returning
-+	 * Dummy read to ensure the write takes effect before doing any sort
-+	 * of delay
- 	 */
--	mb();
-+	ufshcd_readl(hba, REG_UFS_CFG1);
- }
- 
- /* Host controller hardware version: major.minor.step */
+ 	if (!__ieee80211_can_leave_ch(sdata))
+ 		return -EBUSY;
 -- 
 2.43.0
 
