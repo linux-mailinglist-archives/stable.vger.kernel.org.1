@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-46803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F918D0B56
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842618D0D28
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC0391F21C71
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E53528367E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCBD1607B8;
-	Mon, 27 May 2024 19:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4983116078C;
+	Mon, 27 May 2024 19:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubZiKKCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZVb9A7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA551607B2;
-	Mon, 27 May 2024 19:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BFF168C4;
+	Mon, 27 May 2024 19:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836895; cv=none; b=RRM+hhOb/7/BqPvUfq5WnM4O0Bsu8Eld5DiY8TJm9iPqJGvyqftv+TUxVHEOtTGM6HeWP/kwmadBrcSP0zNeQXLbRgz/x1dGKFxAqhTfr86JEEdKlLpOb6NYRDiK5i8MxHYWWrtvT7c+L/VmBBMGAU9wJxqb7ke38JNWLKR0Zpw=
+	t=1716838014; cv=none; b=rSqUMaysv4K0qhDWZGB2lvM5pPpNhiH1qJ+SvAoiUUf1XWkA1C5G9p3Ti+GTT/1YP1Zlh5kGjvFMgXnGLOib8REOJ7O4tFa6JmKRgv40tQ00FCd18pkXryZuMHsRV/EBGHFllgnS7qp6ewEBGGtmk2Z21E3lZUBFtvF5zyVqfyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836895; c=relaxed/simple;
-	bh=AJk4n4E1+N5CuE724zwHbONNd/k3FGbEARnbH08ekZA=;
+	s=arc-20240116; t=1716838014; c=relaxed/simple;
+	bh=uE4MlUEByXuTImpRPdFuz/kttp9CGpM8PnJ8kIaC8Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBoH3mKVHcJ0pHPBbQu4evibp1of3eQHYLEUEbrwqIJbNJ4rQMG75jCzhcNQeuNctTI8HLlDJ9M3Pg5Rgb8oOT31TJ5wMecf55iE1KskQJcbidQyaeDdPiwYB5dveFPGau0yF887NYGGc1wDTW0G+W/ER/aR2+Z1LmGFfafWkjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubZiKKCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B24C2BBFC;
-	Mon, 27 May 2024 19:08:15 +0000 (UTC)
+	 MIME-Version; b=SjjZXhj0L1h4guMGRuhzZFeCzriAVHWLfMrPb6BWR4/aRbsfJpXKOLFjthcL6LghIjuG/OvLdAbH0XKRre6EXWV//zPg0sUut8ctFXD+QOli/84BhQ+Re773FIF7X70ubrEQ0Dj72rzF/kn0aAQ/ZkBxRAQTmEQWvuuZlhxxuwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZVb9A7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96423C2BBFC;
+	Mon, 27 May 2024 19:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836895;
-	bh=AJk4n4E1+N5CuE724zwHbONNd/k3FGbEARnbH08ekZA=;
+	s=korg; t=1716838013;
+	bh=uE4MlUEByXuTImpRPdFuz/kttp9CGpM8PnJ8kIaC8Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubZiKKCRwgTXIpchlRzYEFtcBq+oe3C+k9W50hGS9u/qXDNZz+hGSNx30M1zVaHr5
-	 2HLiTyxnK6uZo2+k5/B8R39hezWWgXoIltGOeaUMAOhRfLOjuUw/O4QORXXoMdeAbX
-	 qI/LWx4YASP9mofARHJZBDFR+2uTHuZOAUOjLWwk=
+	b=uZVb9A7s5TDIvWXn4SAdJrUkzgOmdOsR84DlA1LTssAILuyPYNyzwXrCp6bhUDhzz
+	 yrXMKYhSSU01K6Tvay5vqOKaHh04RpYYYWmdrNoSWa09s/JgobxRMJ19HindUR+KsX
+	 bH3dAKCnRYVdpdlhPFp9Hkn07m3fW3G56rSoasPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
-Subject: [PATCH 6.9 188/427] wifi: carl9170: add a proper sanity check for endpoints
-Date: Mon, 27 May 2024 20:53:55 +0200
-Message-ID: <20240527185619.812600068@linuxfoundation.org>
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 234/493] gfs2: finish_xmote cleanup
+Date: Mon, 27 May 2024 20:53:56 +0200
+Message-ID: <20240527185637.955046285@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit b6dd09b3dac89b45d1ea3e3bd035a3859c0369a0 ]
+[ Upstream commit 1cd28e15864054f3c48baee9eecda1c0441c48ac ]
 
-Syzkaller reports [1] hitting a warning which is caused by presence
-of a wrong endpoint type at the URB sumbitting stage. While there
-was a check for a specific 4th endpoint, since it can switch types
-between bulk and interrupt, other endpoints are trusted implicitly.
-Similar warning is triggered in a couple of other syzbot issues [2].
+Currently, function finish_xmote() takes and releases the glock
+spinlock.  However, all of its callers immediately take that spinlock
+again, so it makes more sense to take the spin lock before calling
+finish_xmote() already.
 
-Fix the issue by doing a comprehensive check of all endpoints
-taking into account difference between high- and full-speed
-configuration.
+With that, thaw_glock() is the only place that sets the GLF_HAVE_REPLY
+flag outside of the glock spinlock, but it also takes that spinlock
+immediately thereafter.  Change that to set the bit when the spinlock is
+already held.  This allows to switch from test_and_clear_bit() to
+test_bit() and clear_bit() in glock_work_func().
 
-[1] Syzkaller report:
-...
-WARNING: CPU: 0 PID: 4721 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-...
-Call Trace:
- <TASK>
- carl9170_usb_send_rx_irq_urb+0x273/0x340 drivers/net/wireless/ath/carl9170/usb.c:504
- carl9170_usb_init_device drivers/net/wireless/ath/carl9170/usb.c:939 [inline]
- carl9170_usb_firmware_finish drivers/net/wireless/ath/carl9170/usb.c:999 [inline]
- carl9170_usb_firmware_step2+0x175/0x240 drivers/net/wireless/ath/carl9170/usb.c:1028
- request_firmware_work_func+0x130/0x240 drivers/base/firmware_loader/main.c:1107
- process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
- worker_thread+0x669/0x1090 kernel/workqueue.c:2436
- kthread+0x2e8/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
- </TASK>
-
-[2] Related syzkaller crashes:
-Link: https://syzkaller.appspot.com/bug?extid=e394db78ae0b0032cb4d
-Link: https://syzkaller.appspot.com/bug?extid=9468df99cb63a4a4c4e1
-
-Reported-and-tested-by: syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
-Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Acked-By: Christian Lamparter <chunkeey@gmail.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240422183355.3785-1-n.zhandarovich@fintech.ru
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: 9947a06d29c0 ("gfs2: do_xmote fixes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/carl9170/usb.c | 32 +++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ fs/gfs2/glock.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
-index c4edf83559410..a3e03580cd9ff 100644
---- a/drivers/net/wireless/ath/carl9170/usb.c
-+++ b/drivers/net/wireless/ath/carl9170/usb.c
-@@ -1069,6 +1069,38 @@ static int carl9170_usb_probe(struct usb_interface *intf,
- 			ar->usb_ep_cmd_is_bulk = true;
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 1bf0d751ece0a..0c719fcd4fbc5 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -617,7 +617,6 @@ static void finish_xmote(struct gfs2_glock *gl, unsigned int ret)
+ 	struct gfs2_holder *gh;
+ 	unsigned state = ret & LM_OUT_ST_MASK;
+ 
+-	spin_lock(&gl->gl_lockref.lock);
+ 	trace_gfs2_glock_state_change(gl, state);
+ 	state_change(gl, state);
+ 	gh = find_first_waiter(gl);
+@@ -665,7 +664,6 @@ static void finish_xmote(struct gfs2_glock *gl, unsigned int ret)
+ 			       gl->gl_target, state);
+ 			GLOCK_BUG_ON(gl, 1);
+ 		}
+-		spin_unlock(&gl->gl_lockref.lock);
+ 		return;
  	}
  
-+	/* Verify that all expected endpoints are present */
-+	if (ar->usb_ep_cmd_is_bulk) {
-+		u8 bulk_ep_addr[] = {
-+			AR9170_USB_EP_RX | USB_DIR_IN,
-+			AR9170_USB_EP_TX | USB_DIR_OUT,
-+			AR9170_USB_EP_CMD | USB_DIR_OUT,
-+			0};
-+		u8 int_ep_addr[] = {
-+			AR9170_USB_EP_IRQ | USB_DIR_IN,
-+			0};
-+		if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
-+		    !usb_check_int_endpoints(intf, int_ep_addr))
-+			err = -ENODEV;
-+	} else {
-+		u8 bulk_ep_addr[] = {
-+			AR9170_USB_EP_RX | USB_DIR_IN,
-+			AR9170_USB_EP_TX | USB_DIR_OUT,
-+			0};
-+		u8 int_ep_addr[] = {
-+			AR9170_USB_EP_IRQ | USB_DIR_IN,
-+			AR9170_USB_EP_CMD | USB_DIR_OUT,
-+			0};
-+		if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
-+		    !usb_check_int_endpoints(intf, int_ep_addr))
-+			err = -ENODEV;
-+	}
-+
-+	if (err) {
-+		carl9170_free(ar);
-+		return err;
-+	}
-+
- 	usb_set_intfdata(intf, ar);
- 	SET_IEEE80211_DEV(ar->hw, &intf->dev);
+@@ -688,7 +686,6 @@ static void finish_xmote(struct gfs2_glock *gl, unsigned int ret)
+ 	}
+ out:
+ 	clear_bit(GLF_LOCK, &gl->gl_flags);
+-	spin_unlock(&gl->gl_lockref.lock);
+ }
  
+ static bool is_system_glock(struct gfs2_glock *gl)
+@@ -835,15 +832,19 @@ __acquires(&gl->gl_lockref.lock)
+ 		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
+ 		    target == LM_ST_UNLOCKED &&
+ 		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
++			spin_lock(&gl->gl_lockref.lock);
+ 			finish_xmote(gl, target);
+-			gfs2_glock_queue_work(gl, 0);
++			__gfs2_glock_queue_work(gl, 0);
++			spin_unlock(&gl->gl_lockref.lock);
+ 		} else if (ret) {
+ 			fs_err(sdp, "lm_lock ret %d\n", ret);
+ 			GLOCK_BUG_ON(gl, !gfs2_withdrawing_or_withdrawn(sdp));
+ 		}
+ 	} else { /* lock_nolock */
++		spin_lock(&gl->gl_lockref.lock);
+ 		finish_xmote(gl, target);
+-		gfs2_glock_queue_work(gl, 0);
++		__gfs2_glock_queue_work(gl, 0);
++		spin_unlock(&gl->gl_lockref.lock);
+ 	}
+ out:
+ 	spin_lock(&gl->gl_lockref.lock);
+@@ -1099,11 +1100,12 @@ static void glock_work_func(struct work_struct *work)
+ 	struct gfs2_glock *gl = container_of(work, struct gfs2_glock, gl_work.work);
+ 	unsigned int drop_refs = 1;
+ 
+-	if (test_and_clear_bit(GLF_REPLY_PENDING, &gl->gl_flags)) {
++	spin_lock(&gl->gl_lockref.lock);
++	if (test_bit(GLF_REPLY_PENDING, &gl->gl_flags)) {
++		clear_bit(GLF_REPLY_PENDING, &gl->gl_flags);
+ 		finish_xmote(gl, gl->gl_reply);
+ 		drop_refs++;
+ 	}
+-	spin_lock(&gl->gl_lockref.lock);
+ 	if (test_bit(GLF_PENDING_DEMOTE, &gl->gl_flags) &&
+ 	    gl->gl_state != LM_ST_UNLOCKED &&
+ 	    gl->gl_demote_state != LM_ST_EXCLUSIVE) {
+@@ -2176,8 +2178,11 @@ static void thaw_glock(struct gfs2_glock *gl)
+ 		return;
+ 	if (!lockref_get_not_dead(&gl->gl_lockref))
+ 		return;
++
++	spin_lock(&gl->gl_lockref.lock);
+ 	set_bit(GLF_REPLY_PENDING, &gl->gl_flags);
+-	gfs2_glock_queue_work(gl, 0);
++	__gfs2_glock_queue_work(gl, 0);
++	spin_unlock(&gl->gl_lockref.lock);
+ }
+ 
+ /**
 -- 
 2.43.0
 
