@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-46939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709FD8D0BE4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3B68D0BB6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0D51F23A88
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D6D81C20BFC
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9603C15EFC3;
-	Mon, 27 May 2024 19:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AB415DBD8;
+	Mon, 27 May 2024 19:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edH+nf/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaMmIqrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DB917E90E;
-	Mon, 27 May 2024 19:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2362417E90E;
+	Mon, 27 May 2024 19:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837245; cv=none; b=nwrjn3Ey0DwNWR20RRY7PhayAK5eAvTKEcWyaH6Q66upgxX3tnC1vGz9/GXUUMRb3xIj1xVsa1Uw8Q9va1acL+m4ezDFwXFQqI15L+8cQ8MyKlReUg12DFm3Y+CUU7bgv2kvZPgPQ1f36wIH8jM3Ra8xmAM0toOy1azFzg30ZK4=
+	t=1716837137; cv=none; b=euzTlSparJCWkRZXxknx9N/kFT6RQQBL6F+mRKgXocLC0qk/E5fsKUYAYxu2ja3Sb7FCRKteKUs7/1zy4TH1GikhPHJCjoO/IikMQeWKXN68Q9rcFaRFQihyG/pkf7Cs/fK8SsJazZ+p9o5uwJnQ9X3jpUVCkaW9Q27Ja9LKk9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837245; c=relaxed/simple;
-	bh=upUMbYVQywNyDBdZB3mNNtTKsSeDsNIiy80yRKSk0Ds=;
+	s=arc-20240116; t=1716837137; c=relaxed/simple;
+	bh=SKzXpGwDw/Wsnk8n3O07xvh4RTKKDxP/3tzrIotizuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3mjfEoAslA4dIqud/Bu/eRZGJDe7l1GkRIbam9FFEvUGW4HOWo+rFIOwyi0ZPkJ0mvcvhrQ2NBwPtZz6L8jabJ6tzOfmAH1arLRHNSDXpWBklEPgSe6T3vMhhC3onxQANz+S9eoGhOGRHuNhtCI707isnrftmIpbNUUgmW5agc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edH+nf/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD47C2BBFC;
-	Mon, 27 May 2024 19:14:04 +0000 (UTC)
+	 MIME-Version; b=CXQCvneMmSalclOG/BLyR5kk7AO9cRKvXDRiAbOjoP1e/m4sgpX/WPkeahh4ivJPgZNeiCL5o/XTmpaqgiT7uvaq6gJ5eEZbZ0vpZJH/auMX6fzxAiGzXB0N9hWiq5iyIpsuxF/mFUwyEeWWVy10gMQXoO/0aTor3pAIvEYSaw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaMmIqrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85472C2BBFC;
+	Mon, 27 May 2024 19:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837245;
-	bh=upUMbYVQywNyDBdZB3mNNtTKsSeDsNIiy80yRKSk0Ds=;
+	s=korg; t=1716837137;
+	bh=SKzXpGwDw/Wsnk8n3O07xvh4RTKKDxP/3tzrIotizuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=edH+nf/nOxeea1Qjd8w7emQYKOzpSMQlW0mbE4qbnedDrz4S/4UmUCTrKYmoSO+6n
-	 jFTwi4H3SoPoj7T125UDvN58RefdiLhMsaFe/cdPkg7fdShG3AeDqXva/4EIM4HDBI
-	 i3L5MKLzl325ANTaxm7LfSUo7DPVlyB32TmH2nVA=
+	b=QaMmIqrxS01UjgaH4FzJ4gN8dtgI/GeNW7FXyFbLqa7HHbQOjLgqFMJYvCf0diKl4
+	 VJTopG1Pgm2O/x4t+YGtZYPzty5s/8zTaegEso8PWUtRuSC3vaoT0HXlFRzDIcm2Aq
+	 0pfS3aVOgTyIMz18EqFqYLCAFZQjRu3slwS3meLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 324/427] media: v4l2-subdev: Fix stream handling for crop API
-Date: Mon, 27 May 2024 20:56:11 +0200
-Message-ID: <20240527185631.818815952@linuxfoundation.org>
+Subject: [PATCH 6.9 325/427] fbdev: sh7760fb: allow modular build
+Date: Mon, 27 May 2024 20:56:12 +0200
+Message-ID: <20240527185631.879632423@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
 References: <20240527185601.713589927@linuxfoundation.org>
@@ -68,45 +73,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 34d7bf1c8e59f5fbf438ee32c96389ebe41ca2e8 ]
+[ Upstream commit 51084f89d687e14d96278241e5200cde4b0985c7 ]
 
-When support for streams was added to the V4L2 subdev API, the
-v4l2_subdev_crop structure was extended with a stream field, but the
-field was not handled in the core code that translates the
-VIDIOC_SUBDEV_[GS]_CROP ioctls to the selection API. Fix it.
+There is no reason to prohibit sh7760fb from being built as a
+loadable module as suggested by Geert, so change the config symbol
+from bool to tristate to allow that and change the FB dependency as
+needed.
 
-Fixes: 2f91e10ee6fd ("media: subdev: add stream based configuration")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: f75f71b2c418 ("fbdev/sh7760fb: Depend on FB=y")
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index 4c6198c48dd61..45836f0a2b0a7 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -732,6 +732,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg,
- 		memset(&sel, 0, sizeof(sel));
- 		sel.which = crop->which;
- 		sel.pad = crop->pad;
-+		sel.stream = crop->stream;
- 		sel.target = V4L2_SEL_TGT_CROP;
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index 197b6d5268e94..3f46663aa563d 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -1648,8 +1648,8 @@ config FB_COBALT
+ 	select FB_IOMEM_HELPERS
  
- 		rval = v4l2_subdev_call(
-@@ -756,6 +757,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg,
- 		memset(&sel, 0, sizeof(sel));
- 		sel.which = crop->which;
- 		sel.pad = crop->pad;
-+		sel.stream = crop->stream;
- 		sel.target = V4L2_SEL_TGT_CROP;
- 		sel.r = crop->rect;
- 
+ config FB_SH7760
+-	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
+-	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
++	tristate "SH7760/SH7763/SH7720/SH7721 LCDC support"
++	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
+ 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
+ 	select FB_IOMEM_HELPERS
+ 	help
 -- 
 2.43.0
 
