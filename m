@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-47219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3309E8D0D19
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961D08D0AE6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C45A31F2146F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C83D91C21641
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0211415FD04;
-	Mon, 27 May 2024 19:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFBE15ECFF;
+	Mon, 27 May 2024 19:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9qVsxxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8z4dErz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49F515FA91;
-	Mon, 27 May 2024 19:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9DCD518;
+	Mon, 27 May 2024 19:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837975; cv=none; b=lUNsy7w+Iu1gmXi/c7mvhAOFKpFgh0m/U8dSlgEycyCka2Z37eVFkPk0t4rvQpqYm6XW0BNFMtqBxAc8bLs3zpNZ+BXXyR2U1dqgpCbpRXRAe3hLITTzTZe3FHvEPK4b9y3GrAnHoUcvdzwWxt++LUzTrdBBRVvcdeumhs4DnYM=
+	t=1716836638; cv=none; b=NL15e8kmVCzEb4c32p7fhjzdLg67vzmR1DiscOrn59UPVSD6xRCkL/mQmtdGag1xQnaxOJpuMRJ0RvtIxjOOO8TsOt2kjuUzQNwcAIbeI94bWdtMCsgnq8ImEuwmmduHNpvXsaQv8gfcsovbtWhRc5tqGCqUWfj+JgJ81zoGdbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837975; c=relaxed/simple;
-	bh=tXJPcfpj4kSxaaLP2p8Tvz+2MyXAW6xXUNKwA9afJ6k=;
+	s=arc-20240116; t=1716836638; c=relaxed/simple;
+	bh=Er7U3JXgebqaAU9bz7LRLWz+55LHDANYXTE8ErVZAgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbRwxEcG9fyptP/ILkipg5PcHlRLPrXol2TEwrPwnybLLpk635d3DbC+Siv9UO3OJSKQLGNSGW67mSnXl801kVnUf6csggVeNHDabmqZPr5rkPIcPqc3/TFmNC5RvUAtzdXyVuZL2VKabZC1yUoKWExZtyprhnxM5UJDNjJhKag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9qVsxxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481EAC2BBFC;
-	Mon, 27 May 2024 19:26:15 +0000 (UTC)
+	 MIME-Version; b=fuuc/xsUC3F6Ko/6zLTosdHYrv2ZQGn5XEsMu4ptAKn/IJUgUVJku6b3lCkzpM4Z/lRr7rL6GkkXwtmt0AK7H4SZj0zhsNyDIAXy3PK1X/RdL4dAwzNzpkHboOBJPb5pqF3fAeWOK5ciqPenJB9otu/dZCD8vN0IPkhpvCWawWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8z4dErz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15005C2BBFC;
+	Mon, 27 May 2024 19:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837975;
-	bh=tXJPcfpj4kSxaaLP2p8Tvz+2MyXAW6xXUNKwA9afJ6k=;
+	s=korg; t=1716836638;
+	bh=Er7U3JXgebqaAU9bz7LRLWz+55LHDANYXTE8ErVZAgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9qVsxxQYF/iR6KeMwP6ke61+YbY+D+2XdS64WgaEcrKZqjjjWSsZMOzpPLnsubmo
-	 fHoTKDC2R3jEgh5cXjfr4EXQn8gLGQybB7s8i6UgTE0O6wUk4EYjbRNNB7p5dUjvZU
-	 X3rEyqynPKdNlAnqMwFfgt4vmt+xLnw7WzF7WdCE=
+	b=k8z4dErz5ck6YUQNZVplt29+6DPNk3NrMHmCR3H1DBwkHMiamgyWdsgIc0XkmkyVw
+	 SWxtaUwM+MkatW1pvvz3wkXTMCzDqwYGLzc4UMfbggxGYj2gt4FH0xzzLXYjIhw/sG
+	 oPvHlvri7Lx/yR98NEr7WB+TMMVAhOMc4ARR0ifc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 175/493] wifi: iwlwifi: mvm: select STA mask only for active links
+Subject: [PATCH 6.9 130/427] scsi: ufs: cdns-pltfrm: Perform read back after writing HCLKDIV
 Date: Mon, 27 May 2024 20:52:57 +0200
-Message-ID: <20240527185636.072823266@linuxfoundation.org>
+Message-ID: <20240527185614.057611595@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 2783ab506eaa36dbef40bda0f96eb49fe149790e ]
+[ Upstream commit b715c55daf598aac8fa339048e4ca8a0916b332e ]
 
-During reconfig, we might send keys, but those should be only
-sent to already active link stations. Iterate only active ones
-to fix that issue.
+Currently, HCLKDIV is written to and then completed with an mb().
 
-Fixes: aea99650f731 ("wifi: iwlwifi: mvm: set STA mask for keys in MLO")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240320232419.c6818d1c6033.I6357f05c55ef111002ddc169287eb356ca0c1b21@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
+
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+
+Let's do that to ensure the bit hits the device. Because the mb()'s purpose
+wasn't to add extra ordering (on top of the ordering guaranteed by
+writel()/readl()), it can safely be removed.
+
+Fixes: d90996dae8e4 ("scsi: ufs: Add UFS platform driver for Cadence UFS")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-6-181252004586@redhat.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/ufs/host/cdns-pltfrm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 4ba1599ed71ca..dffdd00f8ab62 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -9,7 +9,9 @@
- u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 			   int filter_link_id)
- {
-+	struct ieee80211_link_sta *link_sta;
- 	struct iwl_mvm_sta *mvmsta;
-+	struct ieee80211_vif *vif;
- 	unsigned int link_id;
- 	u32 result = 0;
+diff --git a/drivers/ufs/host/cdns-pltfrm.c b/drivers/ufs/host/cdns-pltfrm.c
+index bb30267da4711..66811d8d1929c 100644
+--- a/drivers/ufs/host/cdns-pltfrm.c
++++ b/drivers/ufs/host/cdns-pltfrm.c
+@@ -136,7 +136,7 @@ static int cdns_ufs_set_hclkdiv(struct ufs_hba *hba)
+ 	 * Make sure the register was updated,
+ 	 * UniPro layer will not work with an incorrect value.
+ 	 */
+-	mb();
++	ufshcd_readl(hba, CDNS_UFS_REG_HCLKDIV);
  
-@@ -17,26 +19,27 @@ u32 iwl_mvm_sta_fw_id_mask(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 		return 0;
- 
- 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
-+	vif = mvmsta->vif;
- 
- 	/* it's easy when the STA is not an MLD */
- 	if (!sta->valid_links)
- 		return BIT(mvmsta->deflink.sta_id);
- 
- 	/* but if it is an MLD, get the mask of all the FW STAs it has ... */
--	for (link_id = 0; link_id < ARRAY_SIZE(mvmsta->link); link_id++) {
--		struct iwl_mvm_link_sta *link_sta;
-+	for_each_sta_active_link(vif, sta, link_sta, link_id) {
-+		struct iwl_mvm_link_sta *mvm_link_sta;
- 
- 		/* unless we have a specific link in mind */
- 		if (filter_link_id >= 0 && link_id != filter_link_id)
- 			continue;
- 
--		link_sta =
-+		mvm_link_sta =
- 			rcu_dereference_check(mvmsta->link[link_id],
- 					      lockdep_is_held(&mvm->mutex));
- 		if (!link_sta)
- 			continue;
- 
--		result |= BIT(link_sta->sta_id);
-+		result |= BIT(mvm_link_sta->sta_id);
- 	}
- 
- 	return result;
+ 	return 0;
+ }
 -- 
 2.43.0
 
