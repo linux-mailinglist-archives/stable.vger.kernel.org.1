@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-46391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90448D03D2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:33:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1616B8D03D5
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0474729060F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:32:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE3701F24A2C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392BD187337;
-	Mon, 27 May 2024 14:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B72016C865;
+	Mon, 27 May 2024 14:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nZw47mBL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LEQ2q4+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F6D18732C;
-	Mon, 27 May 2024 14:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AD516C861;
+	Mon, 27 May 2024 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819375; cv=none; b=CWpkFIN7MhhFktTp8I06CZhiR1ZEkXnzaz5aDO/ByN8fnKchc5Fe2OKqaL0Xe6aCyJwKZS+Vkl7Hax2RihRGoFRrfmTUedWIkgK0H0jK7tAINdnfVCkLmXzQIVr5hFiJlXFc8tu5XhOW0xM+/W2CVNbmUUjvp6MkL0aPBTAQC/g=
+	t=1716819378; cv=none; b=X+ttLvDglVoDy7OeBW0D8MoIRTVa/a0zRu4ezFj64mb2l7Q7UGpk0GXLjKF2gPO3Q9KCEz/jcltaqnQdPlkGYOitXI7jH3G5pE4Rmh+ZgVLi5XWsHjTgrhlj4GsoxQ4Y+5oDx1Chpsdc5lscHUVC1YkDbFwdeaQGn5AfTEi6CN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819375; c=relaxed/simple;
-	bh=BIw2+zxL42chBaHleeega4ELuCSGP1NVJvOk4gWAD2A=;
+	s=arc-20240116; t=1716819378; c=relaxed/simple;
+	bh=r1ZavXw/PgJLOPqEk12b3H0V3a/cJBxHeS5bWGKmWFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DC7ZXAbDoWLnoo5Ea06NQn2S/ammI7vwZHyYMMiS3urJV0Rl3v5JYnv5YZcctnigkrkHf3gCWuUDfK8gwkqt5FM3VYiQ1jrkjLa64xn0MWtuazM11gdqeH6HtNJwgbfO4ZxJBq7dHTMhUWq95TEUj1VC+RNTraxfVVispLmISt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nZw47mBL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AFEC32789;
-	Mon, 27 May 2024 14:16:13 +0000 (UTC)
+	 MIME-Version; b=QntX4WVEffwSgVGdq0g6IjFOYgy5nDYCnpbv2LcLFoZx81tEVjnGgxYtt1HcEu/VVoiR4ZjzptVeFfCohkQb7ytOOC/KdQ3rZNM5ChUYq5OzlF0MxBo1ssgC077ULR+D+em+cncdauo5dxNsw89FC2qs+n2RD/ie9Qrp+FBceok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LEQ2q4+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB89C32789;
+	Mon, 27 May 2024 14:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819374;
-	bh=BIw2+zxL42chBaHleeega4ELuCSGP1NVJvOk4gWAD2A=;
+	s=k20201202; t=1716819377;
+	bh=r1ZavXw/PgJLOPqEk12b3H0V3a/cJBxHeS5bWGKmWFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZw47mBLJlOr9VrSd1kESPSkAwwBHPl7Hy0fBU7zlQCdRH3n9L0uJ99MiV3Ig7DES
-	 QM40ydmBs5gegybFMjKBdl9Lkj88m3oVzPYrdK1NVAJ6S6F0W6nzO7zLhpJ3z5/rN8
-	 uU4XIuJPy32RRTShUcyzJVbiCG9E1a7oGgRy3apZk41PZ40bBRjVM3Cfczk1o+hcZo
-	 m+OSm8PL1bEzgjnb31LzZBOzmsrEr6KTqgHNcmvkyARIk3mVmuiZcYMyLf++vnKARf
-	 DKsYcZSDJm20ESknrtkmipTj90zyq8an5ndUVuwVu9/DzQEfmdql+exNp0Xz/aK0dz
-	 +r6fjPobNqlkQ==
+	b=LEQ2q4+vqu63jG9FFDbSToBGHBjLhR9K0MZ36uIwSk/mYo/mgHnpvYY0JOpK+kN+C
+	 k87qDetc74ScsmzCAnp0w1ZbCJ8kFF9TZAtskhmLCMTQBx0PbcdRYMHCtCzEMxvlWb
+	 Xh3uNssdDGYDRNeD8yFkuXN2G31q+Ef8TPJXhByCDkohb4rvuoXuM7nz63W/11op1R
+	 ErJZn1NKB8WH5pUgQr2y7Jfs1rBXOMNLRevlsbL7qCLEgybjjsWcMqNRt83fwgTaRV
+	 mzvdAyISmII2fES5v/20WInmmPczk7P7QP/RGJySjB86DszWGXgd1/WQ4AIu9vVKXz
+	 I+CM3I+K62CiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	syzbot <syzkaller@googlegroups.com>,
-	Kees Cook <keescook@chromium.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 06/21] af_packet: avoid a false positive warning in packet_setsockopt()
-Date: Mon, 27 May 2024 10:15:17 -0400
-Message-ID: <20240527141551.3853516-6-sashal@kernel.org>
+	rafael@kernel.org,
+	raag.jadav@intel.com,
+	mika.westerberg@linux.intel.com,
+	michal.wilczynski@intel.com,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 07/21] ACPI: x86: Add PNP_UART1_SKIP quirk for Lenovo Blade2 tablets
+Date: Mon, 27 May 2024 10:15:18 -0400
+Message-ID: <20240527141551.3853516-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141551.3853516-1-sashal@kernel.org>
 References: <20240527141551.3853516-1-sashal@kernel.org>
@@ -71,79 +69,87 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 86d43e2bf93ccac88ef71cee36a23282ebd9e427 ]
+[ Upstream commit d8f20383a2fc3a3844b08a4999cf0e81164a0e56 ]
 
-Although the code is correct, the following line
+The x86 Android tablets on which quirks to skip looking for a matching
+UartSerialBus resource and instead unconditionally create a serial bus
+device (serdev) are necessary there are 2 sorts of serialports:
 
-	copy_from_sockptr(&req_u.req, optval, len));
+ACPI enumerated highspeed designware UARTs, these are the ones which
+typcially need to be skipped since they need a serdev for the attached
+BT HCI.
 
-triggers this warning :
+A PNP enumerated UART which is part of the PCU. So far the existing
+quirks have ignored this. But on the Lenovo Yoga Tablet 2 Pro 1380
+models this is used for a custom fastcharging protocol. There is
+a Micro USB switch which can switch the USB data lines to this uart
+and then a 600 baud protocol is used to configure the charger for
+a voltage higher then 5V.
 
-memcpy: detected field-spanning write (size 28) of single field "dst" at include/linux/sockptr.h:49 (size 16)
+Add a new ACPI_QUIRK_PNP_UART1_SKIP quirk type and set this for
+the existing entry for the Lenovo Yoga Tablet 2 830 / 1050 models.
+Note this will lead to unnecessarily also creating a serdev for
+the PCU UART on the 830 / 1050 which don't need this, but the UART
+is not used otherwise there so that is not a problem.
 
-Refactor the code to be more explicit.
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/acpi/x86/utils.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index f017d7d33da39..7beb36c2eafa9 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3806,28 +3806,30 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
- 	case PACKET_TX_RING:
- 	{
- 		union tpacket_req_u req_u;
--		int len;
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index c708524576df4..f8cdc234cbc3f 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -261,9 +261,10 @@ bool force_storage_d3(void)
+ #define ACPI_QUIRK_SKIP_I2C_CLIENTS				BIT(0)
+ #define ACPI_QUIRK_UART1_SKIP					BIT(1)
+ #define ACPI_QUIRK_UART1_TTY_UART2_SKIP				BIT(2)
+-#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(3)
+-#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(4)
+-#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(5)
++#define ACPI_QUIRK_PNP_UART1_SKIP				BIT(3)
++#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(4)
++#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(5)
++#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(6)
  
-+		ret = -EINVAL;
- 		lock_sock(sk);
- 		switch (po->tp_version) {
- 		case TPACKET_V1:
- 		case TPACKET_V2:
--			len = sizeof(req_u.req);
-+			if (optlen < sizeof(req_u.req))
-+				break;
-+			ret = copy_from_sockptr(&req_u.req, optval,
-+						sizeof(req_u.req)) ?
-+						-EINVAL : 0;
- 			break;
- 		case TPACKET_V3:
- 		default:
--			len = sizeof(req_u.req3);
-+			if (optlen < sizeof(req_u.req3))
-+				break;
-+			ret = copy_from_sockptr(&req_u.req3, optval,
-+						sizeof(req_u.req3)) ?
-+						-EINVAL : 0;
- 			break;
- 		}
--		if (optlen < len) {
--			ret = -EINVAL;
--		} else {
--			if (copy_from_sockptr(&req_u.req, optval, len))
--				ret = -EFAULT;
--			else
--				ret = packet_set_ring(sk, &req_u, 0,
--						    optname == PACKET_TX_RING);
--		}
-+		if (!ret)
-+			ret = packet_set_ring(sk, &req_u, 0,
-+					      optname == PACKET_TX_RING);
- 		release_sock(sk);
- 		return ret;
- 	}
+ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 	/*
+@@ -343,6 +344,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21"),
+ 		},
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_PNP_UART1_SKIP |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
+ 	{
+@@ -441,14 +443,18 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
+ 	if (ret)
+ 		return 0;
+ 
+-	/* to not match on PNP enumerated debug UARTs */
+-	if (!dev_is_platform(controller_parent))
+-		return 0;
+-
+ 	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
+ 	if (dmi_id)
+ 		quirks = (unsigned long)dmi_id->driver_data;
+ 
++	if (!dev_is_platform(controller_parent)) {
++		/* PNP enumerated UARTs */
++		if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid == 1)
++			*skip = true;
++
++		return 0;
++	}
++
+ 	if ((quirks & ACPI_QUIRK_UART1_SKIP) && uid == 1)
+ 		*skip = true;
+ 
 -- 
 2.43.0
 
