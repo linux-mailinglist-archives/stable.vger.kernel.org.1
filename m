@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-47427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324928D0DEE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBEEB8D0BF2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62D191C215A0
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 732191F23D69
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8264216078C;
-	Mon, 27 May 2024 19:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B046815FA85;
+	Mon, 27 May 2024 19:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5mPn4dI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHBZJXyf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7621EEF7;
-	Mon, 27 May 2024 19:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA6217E90E;
+	Mon, 27 May 2024 19:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838522; cv=none; b=u7XSqn1Wfp0nX9SQiewSJ9eYOwW2gcC8fOE53he8o73KOgwoPfPnuGC3ooO/Nyls2S/KEcgJZ7IOWpS2wge4QnFoGPxedxDwQpcd3VyICEQuBmvZwZxmi4x+2KFBwgDfQ4VirdvokQl26Uuj7v1+hLJGxUtPjpHzOvElrvcVTQ8=
+	t=1716837280; cv=none; b=OXWp/3bZE/9gjwTUEs+ThP2k5UuBRscxlb22asBxPS6CU5cu/JXbGkPQccyFxhzjfraQx9SdZB8LEyHbtPQObOWRpGl/ouUvabrXg2Jq6HpF0ne3QypVbPPf6MnazlQTKENuh1mxMRgr8EQhg2jKXwFz9mIIMRdCOM7DK4lC1LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838522; c=relaxed/simple;
-	bh=bLN9iCDZI0HJWP1J6h7SEvW57LcDrchLjYRPUsLJJH4=;
+	s=arc-20240116; t=1716837280; c=relaxed/simple;
+	bh=IxkwXmW9tmEs/oYodQ3GjDSSASdg+F8+Ll6lQj7vyv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kOo/nHePkV6OXNEaq6LhmYzwuH/M7DfrNpMmp1mIoxPTivvUfHx1Xfs/6jdIVMZencfcQBY9F4pbs5fVDq7S03Vyrn7Aup+g6cUoATZ4QcjUPNmSGyZgXWPOmnbZdDNUrertPcZxZy6+XTlF6fl39cpo19tXbgTpp1W/jrKkBdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5mPn4dI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77716C2BBFC;
-	Mon, 27 May 2024 19:35:21 +0000 (UTC)
+	 MIME-Version; b=kfeXW1cLB0xjASemytMr4q8Poi+hxSNBbQIHhp+FeJE8gU7nmfJFfI348H6u2VMJAOy2Eif43pa6Ug3BoiwTX0Ju+cZGU8FL3c918O0fMtcdHZrLdZvuh8ChcsowgWreCHnQyeo3xKWU4KAFn7bqdVtrvPjt6JgFJsmNBO3dOdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHBZJXyf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012DDC2BBFC;
+	Mon, 27 May 2024 19:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838521;
-	bh=bLN9iCDZI0HJWP1J6h7SEvW57LcDrchLjYRPUsLJJH4=;
+	s=korg; t=1716837280;
+	bh=IxkwXmW9tmEs/oYodQ3GjDSSASdg+F8+Ll6lQj7vyv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V5mPn4dI5/3Gw8Ft+HgSGpRNwYQCS01uubKLP8H/eNMUnSpSpulR/q3FGkd4907+8
-	 4p8C7COkN2hZXY2k7HkQKXtocM5b+Mzdmf4VbX33xID4nh2jgpBwdr80pPfpemyM1g
-	 p0hqGxC2zCqMdOxKNqsG2DS95Qg3oYzFhD8nJv+w=
+	b=kHBZJXyfMH5/yfzbsgsDnVyKY2ibQMwmPdqt+/q//hCtBxIwxEQlRfMamAFONecXC
+	 HDtUs//4nReACCDx1+tXzkWPY+OKV7PzVgxjVCF1ivqW4r+tJ3EKylEcOS5fm2mA6h
+	 qR9izzrKzBEY6u3PI56RvCVHf7pa7Fvx5rbL6APE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 424/493] clk: mediatek: pllfh: Dont log error for missing fhctl node
-Date: Mon, 27 May 2024 20:57:06 +0200
-Message-ID: <20240527185644.159310797@linuxfoundation.org>
+Subject: [PATCH 6.9 380/427] x86/insn: Fix PUSH instruction in x86 instruction decoder opcode map
+Date: Mon, 27 May 2024 20:57:07 +0200
+Message-ID: <20240527185634.486840224@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit bb7b3c8e7180f36de75cdea200ab7127f93f58cc ]
+[ Upstream commit 59162e0c11d7257cde15f907d19fefe26da66692 ]
 
-Support for fhctl clocks in apmixedsys was introduced at a later point
-and to this moment only one mt6795 based platform has a fhctl DT node
-present. Therefore the fhctl support in apmixedsys should be seen as
-optional and not cause an error when it is missing.
+The x86 instruction decoder is used not only for decoding kernel
+instructions. It is also used by perf uprobes (user space probes) and by
+perf tools Intel Processor Trace decoding. Consequently, it needs to
+support instructions executed by user space also.
 
-Change the message's log level to warning. The warning level is chosen
-so that it will still alert the fact that fhctl support might be
-unintentionally missing, but without implying that this is necessarily
-an issue.
+Opcode 0x68 PUSH instruction is currently defined as 64-bit operand size
+only i.e. (d64). That was based on Intel SDM Opcode Map. However that is
+contradicted by the Instruction Set Reference section for PUSH in the
+same manual.
 
-Even if the FHCTL DT nodes are added to all current platforms moving
-forward, since those changes won't be backported, this ensures stable
-kernel releases won't have live with this error.
+Remove 64-bit operand size only annotation from opcode 0x68 PUSH
+instruction.
 
-Fixes: d7964de8a8ea ("clk: mediatek: Add new clock driver to handle FHCTL hardware")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20240308-mtk-fhctl-no-node-error-v1-1-51e446eb149a@collabora.com
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Example:
+
+  $ cat pushw.s
+  .global  _start
+  .text
+  _start:
+          pushw   $0x1234
+          mov     $0x1,%eax   # system call number (sys_exit)
+          int     $0x80
+  $ as -o pushw.o pushw.s
+  $ ld -s -o pushw pushw.o
+  $ objdump -d pushw | tail -4
+  0000000000401000 <.text>:
+    401000:       66 68 34 12             pushw  $0x1234
+    401004:       b8 01 00 00 00          mov    $0x1,%eax
+    401009:       cd 80                   int    $0x80
+  $ perf record -e intel_pt//u ./pushw
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.014 MB perf.data ]
+
+ Before:
+
+  $ perf script --insn-trace=disasm
+  Warning:
+  1 instruction trace errors
+           pushw   10349 [000] 10586.869237014:            401000 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           pushw $0x1234
+           pushw   10349 [000] 10586.869237014:            401006 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %al, (%rax)
+           pushw   10349 [000] 10586.869237014:            401008 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %cl, %ch
+           pushw   10349 [000] 10586.869237014:            40100a [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb $0x2e, (%rax)
+   instruction trace error type 1 time 10586.869237224 cpu 0 pid 10349 tid 10349 ip 0x40100d code 6: Trace doesn't match instruction
+
+ After:
+
+  $ perf script --insn-trace=disasm
+             pushw   10349 [000] 10586.869237014:            401000 [unknown] (./pushw)           pushw $0x1234
+             pushw   10349 [000] 10586.869237014:            401004 [unknown] (./pushw)           movl $1, %eax
+
+Fixes: eb13296cfaf6 ("x86: Instruction decoder API")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240502105853.5338-3-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-pllfh.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/lib/x86-opcode-map.txt       | 2 +-
+ tools/arch/x86/lib/x86-opcode-map.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-pllfh.c b/drivers/clk/mediatek/clk-pllfh.c
-index 3a2b3f90be25d..094ec8a26d668 100644
---- a/drivers/clk/mediatek/clk-pllfh.c
-+++ b/drivers/clk/mediatek/clk-pllfh.c
-@@ -68,7 +68,7 @@ void fhctl_parse_dt(const u8 *compatible_node, struct mtk_pllfh_data *pllfhs,
- 
- 	node = of_find_compatible_node(NULL, NULL, compatible_node);
- 	if (!node) {
--		pr_err("cannot find \"%s\"\n", compatible_node);
-+		pr_warn("cannot find \"%s\"\n", compatible_node);
- 		return;
- 	}
- 
+diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
+index 12af572201a29..84ffe9e528e78 100644
+--- a/arch/x86/lib/x86-opcode-map.txt
++++ b/arch/x86/lib/x86-opcode-map.txt
+@@ -148,7 +148,7 @@ AVXcode:
+ 65: SEG=GS (Prefix)
+ 66: Operand-Size (Prefix)
+ 67: Address-Size (Prefix)
+-68: PUSH Iz (d64)
++68: PUSH Iz
+ 69: IMUL Gv,Ev,Iz
+ 6a: PUSH Ib (d64)
+ 6b: IMUL Gv,Ev,Ib
+diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
+index 12af572201a29..84ffe9e528e78 100644
+--- a/tools/arch/x86/lib/x86-opcode-map.txt
++++ b/tools/arch/x86/lib/x86-opcode-map.txt
+@@ -148,7 +148,7 @@ AVXcode:
+ 65: SEG=GS (Prefix)
+ 66: Operand-Size (Prefix)
+ 67: Address-Size (Prefix)
+-68: PUSH Iz (d64)
++68: PUSH Iz
+ 69: IMUL Gv,Ev,Iz
+ 6a: PUSH Ib (d64)
+ 6b: IMUL Gv,Ev,Ib
 -- 
 2.43.0
 
