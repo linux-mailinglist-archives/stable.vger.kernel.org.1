@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-47375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786FC8D0DBA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:33:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6A38D0BBA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1FEAB215B8
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:33:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA012285A8F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3445413AD05;
-	Mon, 27 May 2024 19:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183A815DBD8;
+	Mon, 27 May 2024 19:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZISlgFxs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ln6Hc5hU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B9617727;
-	Mon, 27 May 2024 19:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91DA17E90E;
+	Mon, 27 May 2024 19:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838388; cv=none; b=CNkr4iYJIXB0EN7MQIrcn2HZ57RuX5sTE8Q/xRdVkIYB+uyKIxlDcdNP7jK658ZnnCdyfgF+0spAsHe5XhJ4R9FVql1KK14YhsjzOcP+MxaIO9VCElc6hI+NTaREhxwJ5XpNtfCj9FdiEPHAunmTw5URZeq3BZczNyeAtm47HQ4=
+	t=1716837144; cv=none; b=lYgsjB8Okor7bo4du7QGbgLf+BiRrjigQZqK0g/MhgnEo0/VJwFmbEs2W3Nv/C9JSzPNdFYP2+WO9W4jPkNUdrrEO07LjWCTSlrj3NjXrf4RsQFKAN02cSrBnYQE7SZozyALDfESmWaR54f8vlN9tzbEa4VVZ7yU8iflZekuAMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838388; c=relaxed/simple;
-	bh=Ao8Ld2Y51rvM9pvyOLG63SfwK1HtYKFoavkJxEjPcHg=;
+	s=arc-20240116; t=1716837144; c=relaxed/simple;
+	bh=gyFpTDZo/I5l2ps5Of7aky6SYqfN78qaMh7zDki6Q4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkOE0580aUaz4cXmH1RJ1LHm221h6CSQb3h+WzXPWcl+VVgI2YM/0wthpynjyXVvPvwi0CPvZBun8R1IYA5Z5matCs1YPAxG45jSuoE0M6c7P2X3aHjyHK98mwt8A9F+hJQ4wj/jtG5EWWQbyWaJc4Q1OJQRuuDnVVDyhVuE3fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZISlgFxs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0FDC2BBFC;
-	Mon, 27 May 2024 19:33:07 +0000 (UTC)
+	 MIME-Version; b=N9OLRv/Z6iKfEDuadAd49BDB10Mc37WtWHVmIzvr6gXKqfIv/oBl4Sg+C21ekOamwn1BBuPLYRrGmZ8LAB1BoxD5yU6wg6206CceDybZPNZugGqO/XCtJsVXKdAquzasU7KvVy2LyxmY3pqa0sZfpcg5TtjUiB//zG1T8FA8uR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ln6Hc5hU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C105C2BBFC;
+	Mon, 27 May 2024 19:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838387;
-	bh=Ao8Ld2Y51rvM9pvyOLG63SfwK1HtYKFoavkJxEjPcHg=;
+	s=korg; t=1716837144;
+	bh=gyFpTDZo/I5l2ps5Of7aky6SYqfN78qaMh7zDki6Q4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZISlgFxsK3ses5s0MQPT5KoOHaurFrUtLfO+YeirJI9EsTm9530CQg6G+atSzNdul
-	 tV7xmIgpNIgMhXcSXlR2sglGucP3BhH8WF6F1Mc5FqtwRJ6dPR0EfCSvPS6LUaT58B
-	 ZLxBnYKDzK+XMpSRjou/9zJNpSlO4uEtvh2d1HC4=
+	b=Ln6Hc5hUuKf+jIHqhABXNJ9lY3BjKg5xYiVqemScDRn1taC0RumK7Nc/2e1iSZjWG
+	 Z3U7fgvraTQLYDj8CslwuHHtJgUl3kTjFA6K0EKS2gcRDYi+cl0FVEuSy0ZI40vD4Y
+	 zVEZslLLLzs7J7EZ9BgSY+k6iwBBqm9BjDm2/Cds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Green <greenjustin@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 373/493] drm/mediatek: Add 0 size check to mtk_drm_gem_obj
+Subject: [PATCH 6.9 328/427] drm: vc4: Fix possible null pointer dereference
 Date: Mon, 27 May 2024 20:56:15 +0200
-Message-ID: <20240527185642.476828963@linuxfoundation.org>
+Message-ID: <20240527185632.067721524@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Green <greenjustin@chromium.org>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 1e4350095e8ab2577ee05f8c3b044e661b5af9a0 ]
+[ Upstream commit c534b63bede6cb987c2946ed4d0b0013a52c5ba7 ]
 
-Add a check to mtk_drm_gem_init if we attempt to allocate a GEM object
-of 0 bytes. Currently, no such check exists and the kernel will panic if
-a userspace application attempts to allocate a 0x0 GBM buffer.
+In vc4_hdmi_audio_init() of_get_address() may return
+NULL which is later dereferenced. Fix this bug by adding NULL check.
 
-Tested by attempting to allocate a 0x0 GBM buffer on an MT8188 and
-verifying that we now return EINVAL.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Justin Green <greenjustin@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240307180051.4104425-1-greenjustin@chromium.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: bb7d78568814 ("drm/vc4: Add HDMI audio support")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240409075622.11783-1-amishin@t-argos.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-index 4f2e3feabc0f8..1bf229615b018 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-@@ -38,6 +38,9 @@ static struct mtk_drm_gem_obj *mtk_drm_gem_init(struct drm_device *dev,
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index d8751ea203032..5f8d51b293705 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2740,6 +2740,8 @@ static int vc4_hdmi_audio_init(struct vc4_hdmi *vc4_hdmi)
+ 		index = 1;
  
- 	size = round_up(size, PAGE_SIZE);
+ 	addr = of_get_address(dev->of_node, index, NULL, NULL);
++	if (!addr)
++		return -EINVAL;
  
-+	if (size == 0)
-+		return ERR_PTR(-EINVAL);
-+
- 	mtk_gem_obj = kzalloc(sizeof(*mtk_gem_obj), GFP_KERNEL);
- 	if (!mtk_gem_obj)
- 		return ERR_PTR(-ENOMEM);
+ 	vc4_hdmi->audio.dma_data.addr = be32_to_cpup(addr) + mai_data->offset;
+ 	vc4_hdmi->audio.dma_data.addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
 -- 
 2.43.0
 
