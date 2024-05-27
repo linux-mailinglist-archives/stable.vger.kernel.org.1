@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-46392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1616B8D03D5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:33:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460598D03D8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE3701F24A2C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:33:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7746F1C21659
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B72016C865;
-	Mon, 27 May 2024 14:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304DF190681;
+	Mon, 27 May 2024 14:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LEQ2q4+v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EUfP1HQv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AD516C861;
-	Mon, 27 May 2024 14:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF429190678;
+	Mon, 27 May 2024 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819378; cv=none; b=X+ttLvDglVoDy7OeBW0D8MoIRTVa/a0zRu4ezFj64mb2l7Q7UGpk0GXLjKF2gPO3Q9KCEz/jcltaqnQdPlkGYOitXI7jH3G5pE4Rmh+ZgVLi5XWsHjTgrhlj4GsoxQ4Y+5oDx1Chpsdc5lscHUVC1YkDbFwdeaQGn5AfTEi6CN0=
+	t=1716819380; cv=none; b=ADBOGKmgmskkbSfhvwCTZqpjMgNod2sWxBn+DHMbm3k+9HTog+QHfCOWyiNGc6GRwFEOvNxrQtGXzb4UmXTjZIlcw6CVQvbDcjW9tmKUdH/4xBOuda/LoWKHGJL6o77u8bZPLqpSwBVokbk+g0res8Soe4a7aehatGAmnNc7haE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819378; c=relaxed/simple;
-	bh=r1ZavXw/PgJLOPqEk12b3H0V3a/cJBxHeS5bWGKmWFc=;
+	s=arc-20240116; t=1716819380; c=relaxed/simple;
+	bh=ienhWxL0nifnR2BV4FJfNecXkeTTxFDFIofd/LZnwf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QntX4WVEffwSgVGdq0g6IjFOYgy5nDYCnpbv2LcLFoZx81tEVjnGgxYtt1HcEu/VVoiR4ZjzptVeFfCohkQb7ytOOC/KdQ3rZNM5ChUYq5OzlF0MxBo1ssgC077ULR+D+em+cncdauo5dxNsw89FC2qs+n2RD/ie9Qrp+FBceok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LEQ2q4+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB89C32789;
-	Mon, 27 May 2024 14:16:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U6MjCM2WWv/pjDb1CerrTGZL4Wuc5i5gcxHcERo084o0YwCuA2n42Degvb40JjXUdLagI6/vamRuB89oCqTR4eQtjdBc6s65QIIBQHkQHGUSRFTCCyl6kjaGU829Bnk0TKPKxYa2DGajFMvCEMWnZXKJZNUuFP5CuR/C3QO8r5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EUfP1HQv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C85FC2BBFC;
+	Mon, 27 May 2024 14:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819377;
-	bh=r1ZavXw/PgJLOPqEk12b3H0V3a/cJBxHeS5bWGKmWFc=;
+	s=k20201202; t=1716819379;
+	bh=ienhWxL0nifnR2BV4FJfNecXkeTTxFDFIofd/LZnwf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEQ2q4+vqu63jG9FFDbSToBGHBjLhR9K0MZ36uIwSk/mYo/mgHnpvYY0JOpK+kN+C
-	 k87qDetc74ScsmzCAnp0w1ZbCJ8kFF9TZAtskhmLCMTQBx0PbcdRYMHCtCzEMxvlWb
-	 Xh3uNssdDGYDRNeD8yFkuXN2G31q+Ef8TPJXhByCDkohb4rvuoXuM7nz63W/11op1R
-	 ErJZn1NKB8WH5pUgQr2y7Jfs1rBXOMNLRevlsbL7qCLEgybjjsWcMqNRt83fwgTaRV
-	 mzvdAyISmII2fES5v/20WInmmPczk7P7QP/RGJySjB86DszWGXgd1/WQ4AIu9vVKXz
-	 I+CM3I+K62CiQ==
+	b=EUfP1HQvXMjwdwOTYKcTbp31c3VjU40Cn8iJE4bSCGnFn74QxQorI53jcqi8jNBMJ
+	 RDmko8LUb8NjZP4zJKExiLlY+mvcYUeXaLQC4GxfeZVjV08jc+YtuFbgX3iMvld/vM
+	 3fxgvcyJJRr9e0JIP/NQ+UHLDl0Vpw816HPooMG133R+MjemJVyKSwFS7aYDAB6k3j
+	 Y/bKJuKDmx3vqJ1t5F5Ilxi0wusTuNhLvrZVadEPF0mdLPHlQn11x6jUmJuBFiORGe
+	 aIvpbzBPHynwlCSu74I+f7UHkVVZaruJWJGfIZe1O1IuaBG7mtchfQJ6ABgA0CmRLt
+	 K3MEMULBlPpDA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	raag.jadav@intel.com,
-	mika.westerberg@linux.intel.com,
-	michal.wilczynski@intel.com,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 07/21] ACPI: x86: Add PNP_UART1_SKIP quirk for Lenovo Blade2 tablets
-Date: Mon, 27 May 2024 10:15:18 -0400
-Message-ID: <20240527141551.3853516-7-sashal@kernel.org>
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 08/21] net: sfp: add quirk for another multigig RollBall transceiver
+Date: Mon, 27 May 2024 10:15:19 -0400
+Message-ID: <20240527141551.3853516-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141551.3853516-1-sashal@kernel.org>
 References: <20240527141551.3853516-1-sashal@kernel.org>
@@ -64,92 +68,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit d8f20383a2fc3a3844b08a4999cf0e81164a0e56 ]
+[ Upstream commit 1c77c721916ae108c2c5865986735bfe92000908 ]
 
-The x86 Android tablets on which quirks to skip looking for a matching
-UartSerialBus resource and instead unconditionally create a serial bus
-device (serdev) are necessary there are 2 sorts of serialports:
+Add quirk for another RollBall copper transceiver: Turris RTSFP-2.5G,
+containing 2.5g capable RTL8221B PHY.
 
-ACPI enumerated highspeed designware UARTs, these are the ones which
-typcially need to be skipped since they need a serdev for the attached
-BT HCI.
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
 
-A PNP enumerated UART which is part of the PCU. So far the existing
-quirks have ignored this. But on the Lenovo Yoga Tablet 2 Pro 1380
-models this is used for a custom fastcharging protocol. There is
-a Micro USB switch which can switch the USB data lines to this uart
-and then a 600 baud protocol is used to configure the charger for
-a voltage higher then 5V.
-
-Add a new ACPI_QUIRK_PNP_UART1_SKIP quirk type and set this for
-the existing entry for the Lenovo Yoga Tablet 2 830 / 1050 models.
-Note this will lead to unnecessarily also creating a serdev for
-the PCU UART on the 830 / 1050 which don't need this, but the UART
-is not used otherwise there so that is not a problem.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/net/phy/sfp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index c708524576df4..f8cdc234cbc3f 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -261,9 +261,10 @@ bool force_storage_d3(void)
- #define ACPI_QUIRK_SKIP_I2C_CLIENTS				BIT(0)
- #define ACPI_QUIRK_UART1_SKIP					BIT(1)
- #define ACPI_QUIRK_UART1_TTY_UART2_SKIP				BIT(2)
--#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(3)
--#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(4)
--#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(5)
-+#define ACPI_QUIRK_PNP_UART1_SKIP				BIT(3)
-+#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(4)
-+#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(5)
-+#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(6)
- 
- static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 	/*
-@@ -343,6 +344,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_PNP_UART1_SKIP |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
- 	},
- 	{
-@@ -441,14 +443,18 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
- 	if (ret)
- 		return 0;
- 
--	/* to not match on PNP enumerated debug UARTs */
--	if (!dev_is_platform(controller_parent))
--		return 0;
--
- 	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
- 	if (dmi_id)
- 		quirks = (unsigned long)dmi_id->driver_data;
- 
-+	if (!dev_is_platform(controller_parent)) {
-+		/* PNP enumerated UARTs */
-+		if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid == 1)
-+			*skip = true;
-+
-+		return 0;
-+	}
-+
- 	if ((quirks & ACPI_QUIRK_UART1_SKIP) && uid == 1)
- 		*skip = true;
- 
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 3679a43f4eb02..c1a481b25a120 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -486,6 +486,7 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_M("OEM", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10G", sfp_fixup_rollball_cc),
++	SFP_QUIRK_F("Turris", "RTSFP-2.5G", sfp_fixup_rollball),
+ 	SFP_QUIRK_F("Turris", "RTSFP-10", sfp_fixup_rollball),
+ 	SFP_QUIRK_F("Turris", "RTSFP-10G", sfp_fixup_rollball),
+ };
 -- 
 2.43.0
 
