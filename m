@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113FA8D0B29
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081278D0D31
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 436FA1C21527
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3C902817A5
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C2026AF2;
-	Mon, 27 May 2024 19:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A71D262BE;
+	Mon, 27 May 2024 19:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITfFLdO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icrzuFOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6572617E90E;
-	Mon, 27 May 2024 19:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489F615FA91;
+	Mon, 27 May 2024 19:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836802; cv=none; b=ihcAWXmwmpSZ1iKfXG4EgDG2MGIf6+2gQ43X1+7lY4RAAVRS4HO1w3mT9kHnaIAol4tgp4UGjaJniG8UMoeEpofYwsd4ZWTyxcGWvSSO7AN8m2A9SoIf7JH7fT/2xY+Ks0InXJEatb7uDfRTeoESN1A08ZYKpAt4JXs4LMAx9mI=
+	t=1716838029; cv=none; b=NbsS+USJ+h6mDruZWNyLNOer6vY0Z0S3L7ZKtvlrCIvYjkqCINA3PQm1RiT8JbNTxDXpfyPIGe4/Zz4sTYodyRFR/iagnc1lkN8zezUirExjDORDWrwwugX6wGkLoFo6Z2nEbAG1ethXCK5/wspeNB6/ReigD50633nFvkynY7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836802; c=relaxed/simple;
-	bh=CfNoznnSdwUXc6UckrD7tNn7Bgoc1cDsrzhaYEhkL78=;
+	s=arc-20240116; t=1716838029; c=relaxed/simple;
+	bh=G4RED9dV+mnX3RdVV77OHm4Q2MD6ah2clW/G2G1gVIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dENc7I4Oc+qoFdQhhiGyC0Qk8Gikejjf3PCunXgUDGfIhVghdbjttWyRAgUMEFZtfzAP/nVWbHajE4pPBNjsMIVww9w4bFcmcbAwMS7swAuczAqLtkT9RQOwzOlUkVk+yv6Zh2Up4F92BPphaqwZQbJQN/XCU+twXlDvxq4WUAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITfFLdO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE53C2BBFC;
-	Mon, 27 May 2024 19:06:41 +0000 (UTC)
+	 MIME-Version; b=gO2dqrIVaq5t8UMFZdZFe9xwKLxUoIGeH44pOXD90pSLOnoNAiMSF0iTm0dqefgVtoj4+kftSVYRUFz8Y3Cav8pFK063Wu8SMXCk5KRt9JQZHHsel6Ok+QJloi9G3aq/SoDFh8Dlp//oEwJqh9Qc/c4EPT5V/Ek5c6kjK6R+2g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icrzuFOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7259C2BBFC;
+	Mon, 27 May 2024 19:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836801;
-	bh=CfNoznnSdwUXc6UckrD7tNn7Bgoc1cDsrzhaYEhkL78=;
+	s=korg; t=1716838029;
+	bh=G4RED9dV+mnX3RdVV77OHm4Q2MD6ah2clW/G2G1gVIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ITfFLdO1Lz1v6FMvN7cVe9o52LT36K836iCK9BJk6vQvdG0k9D/ei5OW9z9TlqQBY
-	 PKIQmK+AH2qgrbkpmt/yQlEuHzwvs+Lrdi8JZLLD/gmQI1ebae+vilaEyoV/6y2kCm
-	 /ZPzJ2Pk7V7qrmy4Y25/JntN8R9hfX3OIdh1LYu8=
+	b=icrzuFOoceZv9z6r+pFfhcjBjCGhNhKKJ784Ujc2z5zWGWFw6xcZdd65Z+LSNm9E2
+	 o81hv6QpRzBJ/5Bx85/cZRqh5tsef+9jx7y4gqkqTNzt5NGVVAQOcNeaRnyvy8jDry
+	 gcqQqDFfAOm72xggSqLgdpXQfHsTAB67wqsXIw7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+838346b979830606c854@syzkaller.appspotmail.com,
-	Stanislav Fomichev <sdf@google.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Portia Stephens <portia.stephens@canonical.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 194/427] bpf: Add BPF_PROG_TYPE_CGROUP_SKB attach type enforcement in BPF_LINK_CREATE
+Subject: [PATCH 6.8 239/493] cpufreq: brcmstb-avs-cpufreq: ISO C90 forbids mixed declarations
 Date: Mon, 27 May 2024 20:54:01 +0200
-Message-ID: <20240527185620.365282198@linuxfoundation.org>
+Message-ID: <20240527185638.117759835@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@google.com>
+From: Portia Stephens <portia.stephens@canonical.com>
 
-[ Upstream commit 543576ec15b17c0c93301ac8297333c7b6e84ac7 ]
+[ Upstream commit fa7bd98f3c8b33fb68c6b2bc69cff32b63db69f8 ]
 
-bpf_prog_attach uses attach_type_to_prog_type to enforce proper
-attach type for BPF_PROG_TYPE_CGROUP_SKB. link_create uses
-bpf_prog_get and relies on bpf_prog_attach_check_attach_type
-to properly verify prog_type <> attach_type association.
+There is a compile warning because a NULL pointer check was added before
+a struct was declared. This moves the NULL pointer check to after the
+struct is declared and moves the struct assignment to after the NULL
+pointer check.
 
-Add missing attach_type enforcement for the link_create case.
-Otherwise, it's currently possible to attach cgroup_skb prog
-types to other cgroup hooks.
-
-Fixes: af6eea57437a ("bpf: Implement bpf_link-based cgroup BPF program attachment")
-Link: https://lore.kernel.org/bpf/0000000000004792a90615a1dde0@google.com/
-Reported-by: syzbot+838346b979830606c854@syzkaller.appspotmail.com
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240426231621.2716876-2-sdf@google.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: f661017e6d32 ("cpufreq: brcmstb-avs-cpufreq: add check for cpufreq_cpu_get's return value")
+Signed-off-by: Portia Stephens <portia.stephens@canonical.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/cpufreq/brcmstb-avs-cpufreq.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index c287925471f68..cb61d8880dbe0 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -3985,6 +3985,11 @@ static int bpf_prog_attach_check_attach_type(const struct bpf_prog *prog,
- 			 * check permissions at attach time.
- 			 */
- 			return -EPERM;
+diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+index 1a1857b0a6f48..ea8438550b490 100644
+--- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
++++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+@@ -481,9 +481,12 @@ static bool brcm_avs_is_firmware_loaded(struct private_data *priv)
+ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+ {
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
++	struct private_data *priv;
 +
-+		ptype = attach_type_to_prog_type(attach_type);
-+		if (prog->type != ptype)
-+			return -EINVAL;
+ 	if (!policy)
+ 		return 0;
+-	struct private_data *priv = policy->driver_data;
 +
- 		return prog->enforce_expected_attach_type &&
- 			prog->expected_attach_type != attach_type ?
- 			-EINVAL : 0;
++	priv = policy->driver_data;
+ 
+ 	cpufreq_cpu_put(policy);
+ 
 -- 
 2.43.0
 
