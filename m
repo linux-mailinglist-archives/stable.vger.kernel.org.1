@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-46676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A568F8D0ACA
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0468D0CD4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D264AB21CD4
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDB57B2085D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819151607B2;
-	Mon, 27 May 2024 19:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F6115FCFE;
+	Mon, 27 May 2024 19:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVV9Pe2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2AS+OKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EACF1607B0;
-	Mon, 27 May 2024 19:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49365168C4;
+	Mon, 27 May 2024 19:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836567; cv=none; b=ApUQU62KeMQvenx7V2HxKpe2XQspr/P8Wp6GJqdGPN5p9AaRFHF5R3I+ilUxw3vjwjGUOjvx5Dd1d9DF7yxHSBycfYDmcEZuapUqeAH6RFrja3VZ0fiNgS7g94an2kPLXT7cwkQplFERJG9hO3p0bSKSp4FgCgHkuZpv4S2wbWY=
+	t=1716837804; cv=none; b=qsqYhURLTNorV8Mim99Um1iVmg6CIbL9ZNuqrs+n+zeFQH7BBCy6/0VACYP2qpAhBJmSU0LXePypBEBIrlw63pnTyCmQ4Ft00VCdbrsZdDJinbgwnVHixMYOuxdXX/6NI4Yqk3n3Xyov9DzWDx5hsKyOQ3WxUxogYZgF5acpL64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836567; c=relaxed/simple;
-	bh=HQVn0yuVX0pmczZH5B/KYmQUfuEdy+GqYPM81OISfvg=;
+	s=arc-20240116; t=1716837804; c=relaxed/simple;
+	bh=TuWxy1FFIiiuUYzb41eQ7txirMqpyFQKs9ppDZiYcnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4DCkDmDdxPkJbMc18pboWuxyI4vylCgszKtMnv7GdR1esVAyTHzU9LCuUj2F5RhX6kjLrNpBZbNsbBDv8EzbXJWO7gCYUK31IHRCS3WpkJlkRmADsJFLK9E2wpcU8wdE9KTNBqeASfPHmGSaW+d0fsIahsIs8F+OgdYaYzAtRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVV9Pe2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE37C32782;
-	Mon, 27 May 2024 19:02:46 +0000 (UTC)
+	 MIME-Version; b=QV/EN0WhmfnCQk6oUk4R3v8fgC92niG9LYy93ax30yIfF4glGz/0yZ4BkpQzjPMXM/WFnxjN6kXpGzW0YFpU4ALkUVsSrFYLaohkTiPiL9MiaMAG7tM4cwi3NikZuUQGJQbSFfIZZBOQ9uSR5uoMrLV1TXKsIJXj171bh+6xAnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2AS+OKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D735BC2BBFC;
+	Mon, 27 May 2024 19:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836566;
-	bh=HQVn0yuVX0pmczZH5B/KYmQUfuEdy+GqYPM81OISfvg=;
+	s=korg; t=1716837804;
+	bh=TuWxy1FFIiiuUYzb41eQ7txirMqpyFQKs9ppDZiYcnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVV9Pe2jvyJJkwIdExI+nD359KANzdqbBiyz68OJGlytYC5SPFdyJJs+zu1BPhrs8
-	 2WYR5wRL3x9rfCqgXB4FY09eEBZ/vZccR1WgwQdWYle2x+91xbZAVjJadNwJFgrOSP
-	 UrSpDHMGVPUjLJSYe3Rma/7MlYgEl33OTLv0UQlg=
+	b=f2AS+OKcF/4+aqbXZNq/2GU37RFtcAP/0wIoTBBbldkhgp6VOlq/Ec/h76Xpc1l5r
+	 4wK0wzhGq3FADzaMT5whjlZEWR1JwogWEWamshclKmpd5G2Y2TkwYuNjWB4r2Mr2+S
+	 D4tu61mcGXscAfOX0chWAuKVDG9Yao8BjMX/Icjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 105/427] wifi: iwlwifi: mvm: set wider BW OFDMA ignore correctly
-Date: Mon, 27 May 2024 20:52:32 +0200
-Message-ID: <20240527185611.582273775@linuxfoundation.org>
+Subject: [PATCH 6.8 151/493] kunit/fortify: Fix mismatched kvalloc()/vfree() usage
+Date: Mon, 27 May 2024 20:52:33 +0200
+Message-ID: <20240527185635.368514130@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit b97b0c04f895003ec60b08879180068889d19c9e ]
+[ Upstream commit 998b18072ceb0613629c256b409f4d299829c7ec ]
 
-Clearly, I put this flag into the wrong place: devices using the
-code in mac80211.c only do not support EHT, so this isn't even
-relevant. Fix this by moving the code to the right function.
+The kv*() family of tests were accidentally freeing with vfree() instead
+of kvfree(). Use kvfree() instead.
 
-Fixes: 32a5690e9acb ("wifi: iwlwifi: mvm: support wider-bandwidth OFDMA")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240320232419.0d5fb0e971e4.I3b67c5e0ddcbe6e58143ec0bc4e40dd6dba4f863@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 9124a2640148 ("kunit/fortify: Validate __alloc_size attribute results")
+Link: https://lore.kernel.org/r/20240425230619.work.299-kees@kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c     | 3 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 3 +++
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ lib/fortify_kunit.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 8f4b063d6243e..5d937d647d98d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1651,9 +1651,6 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
- 				     IEEE80211_VIF_SUPPORTS_CQM_RSSI;
- 	}
- 
--	if (vif->p2p || iwl_fw_lookup_cmd_ver(mvm->fw, PHY_CONTEXT_CMD, 1) < 5)
--		vif->driver_flags |= IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW;
--
- 	if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
- 		mvm->p2p_device_vif = vif;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index d18304ac126cd..5a4973431c8b7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -92,6 +92,9 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
- 		mvm->csme_vif = vif;
- 	}
- 
-+	if (vif->p2p || iwl_fw_lookup_cmd_ver(mvm->fw, PHY_CONTEXT_CMD, 1) < 5)
-+		vif->driver_flags |= IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW;
-+
- 	goto out_unlock;
- 
-  out_free_bf:
+diff --git a/lib/fortify_kunit.c b/lib/fortify_kunit.c
+index 2e4fedc816210..7830a9e64ead7 100644
+--- a/lib/fortify_kunit.c
++++ b/lib/fortify_kunit.c
+@@ -229,28 +229,28 @@ DEFINE_ALLOC_SIZE_TEST_PAIR(vmalloc)
+ 									\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvmalloc((alloc_pages) * PAGE_SIZE, gfp),		\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvmalloc_node((alloc_pages) * PAGE_SIZE, gfp, NUMA_NO_NODE), \
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvzalloc((alloc_pages) * PAGE_SIZE, gfp),		\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvzalloc_node((alloc_pages) * PAGE_SIZE, gfp, NUMA_NO_NODE), \
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvcalloc(1, (alloc_pages) * PAGE_SIZE, gfp),		\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvcalloc((alloc_pages) * PAGE_SIZE, 1, gfp),		\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvmalloc_array(1, (alloc_pages) * PAGE_SIZE, gfp),	\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvmalloc_array((alloc_pages) * PAGE_SIZE, 1, gfp),	\
+-		vfree(p));						\
++		kvfree(p));						\
+ 									\
+ 	prev_size = (expected_pages) * PAGE_SIZE;			\
+ 	orig = kvmalloc(prev_size, gfp);				\
 -- 
 2.43.0
 
