@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-46336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885328D0303
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:16:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2868E8D042F
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9C591C2191A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:16:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 120A6B2FE23
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890E516D309;
-	Mon, 27 May 2024 14:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642A516D32F;
+	Mon, 27 May 2024 14:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGXHnzsA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uLSBRIuU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEB416D305;
-	Mon, 27 May 2024 14:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DED416D325;
+	Mon, 27 May 2024 14:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819164; cv=none; b=U8/F5Uw42GUSzei8d8yF2xS/O/wx7z3RfwTQsi5R1kC/AbBWsM0Ah5Te0irfC8zg9qeKHL4nLwgPMt7FS39h7IOdmnxcWEoGYcOhn0OB598SmjruwC946g0+OO1xDtyUwxVZrtyHURSoI4C/+0ecxA1wjxuqGS+JEBmwjCD93vI=
+	t=1716819166; cv=none; b=FAqRu8qV+O2z5UxWzFyszNtywBWVYdZ+T9c+gN7TuZIgnMvLrSoutraphT5d+6BmGZq3c4c8PYKliw7GVmAcKrO7fUQMS0Nj6zFoxf2aC8fsGAbvcD0l17942rKO0eWbXEKCtVBnEJferokeMiYyPCTO4aIJS8x47/xsJXoXQUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819164; c=relaxed/simple;
-	bh=tNphdjirBb9tdMxisUu7AmYR16l1TQhNBoK7qKrb16g=;
+	s=arc-20240116; t=1716819166; c=relaxed/simple;
+	bh=etjAyQemO/7YnJLLdqANw2A3NWliFralIXkWEsiy8S4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBeA8DAgj0Nwwu0kDs4y1HM/4Y3sV7qzh/i9luN1AOVL1dasdM4JG241nbxVlYqXJc4YeZFl1Pxlwktz/RPU4T3LvArBn8NfxC8juQqqeH+dbSBXBtaA5q18y04PgX9QDHuqdRzKzbNEm178ZxNImpq6SLdTBTlsgt4GWv+nZw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGXHnzsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FCBC4AF08;
-	Mon, 27 May 2024 14:12:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W8Wo+5SLSA0vynDUkrSY3t9950EkXkymcsNrupwmEmbW+lKPo+ZFvFPzpPo3r18Ju/Fxf6GS8PIMqNmi/AaW54s3exCWAXmB+6tkDf3Yxik9e6U4ympx6tNyucDEXFeksu5moUpVe72FwoMrq2DcakbpIDmaUWvLE3k1EfGRRGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uLSBRIuU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38498C2BBFC;
+	Mon, 27 May 2024 14:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819163;
-	bh=tNphdjirBb9tdMxisUu7AmYR16l1TQhNBoK7qKrb16g=;
+	s=k20201202; t=1716819165;
+	bh=etjAyQemO/7YnJLLdqANw2A3NWliFralIXkWEsiy8S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGXHnzsA6TziWXWjCc+aoFgqrO+0g6PY65cCZZFiSBYe5sDA0D8+k+UuqaRlES3Ai
-	 itv15fdtGNbCbrfMueO3EF62e5iRR+7jUDZHdXDQfgUJ+cSvKPpuuFQpHYnJWpWs2S
-	 Rlp67Ix/1H6BCyMociVieF8GOemwKKBkvL4sncy6Uevn7ln3j1G1Vnlfss3M30srNy
-	 mFXziUW4I4qiGGFrf47iZD4afw7ZfJ75xHaM0IqSUdysRYlSyomdGBd4i5d+J9xp8I
-	 OIgV6+pY2f9E/2dLaboe9urMAcaah5i2PVjxGZNm8VFjoyJRvvYTN+eEqg5bFqal78
-	 /tHjQBvv8qg7Q==
+	b=uLSBRIuUD/hRPg5PKB9cPh9QnjHgnTT5wDwLfxhqICQGRsIU1oQCh/qEHGZTwRwIO
+	 M4DtsdQslUQgO2rOV96njwzokVjYOGHaE/eSW3o8LbK7QdTfVU+Bvkl9UcZjuzNqUp
+	 s0r0de4rQhCI5mQ6k9w1ub3tG6o6mg21qakXOOkwxS9qmnSxBESipZF9ahzBeuGjEx
+	 u0rZjvUDaE2jqQp+MS0E/cyb2xUreU1rEMX8QmoWNWw8xLPUApNKzWASRoUEi0TdDo
+	 k9i0clPI2pUU318L5s2beoje483W9qzX3vpR0bVNJPTXIECZlOA+lWueFvMbhqOsLf
+	 Al8f48GjBuznA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manish Rangankar <mrangankar@marvell.com>,
-	Martin Hoyer <mhoyer@redhat.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	njavali@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 16/35] scsi: qedi: Fix crash while reading debugfs attribute
-Date: Mon, 27 May 2024 10:11:21 -0400
-Message-ID: <20240527141214.3844331-16-sashal@kernel.org>
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 17/35] net: sfp: enhance quirk for Fibrestore 2.5G copper SFP module
+Date: Mon, 27 May 2024 10:11:22 -0400
+Message-ID: <20240527141214.3844331-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
 References: <20240527141214.3844331-1-sashal@kernel.org>
@@ -65,98 +67,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: Manish Rangankar <mrangankar@marvell.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 28027ec8e32ecbadcd67623edb290dad61e735b5 ]
+[ Upstream commit cd4a32e60061789676f7f018a94fcc9ec56732a0 ]
 
-The qedi_dbg_do_not_recover_cmd_read() function invokes sprintf() directly
-on a __user pointer, which results into the crash.
+Enhance the quirk for Fibrestore 2.5G copper SFP module. The original
+commit e27aca3760c0 ("net: sfp: add quirk for FS's 2.5G copper SFP")
+introducing the quirk says that the PHY is inaccessible, but that is
+not true.
 
-To fix this issue, use a small local stack buffer for sprintf() and then
-call simple_read_from_buffer(), which in turns make the copy_to_user()
-call.
+The module uses Rollball protocol to talk to the PHY, and needs a 4
+second wait before probing it, same as FS 10G module.
 
-BUG: unable to handle page fault for address: 00007f4801111000
-PGD 8000000864df6067 P4D 8000000864df6067 PUD 864df7067 PMD 846028067 PTE 0
-Oops: 0002 [#1] PREEMPT SMP PTI
-Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 06/15/2023
-RIP: 0010:memcpy_orig+0xcd/0x130
-RSP: 0018:ffffb7a18c3ffc40 EFLAGS: 00010202
-RAX: 00007f4801111000 RBX: 00007f4801111000 RCX: 000000000000000f
-RDX: 000000000000000f RSI: ffffffffc0bfd7a0 RDI: 00007f4801111000
-RBP: ffffffffc0bfd7a0 R08: 725f746f6e5f6f64 R09: 3d7265766f636572
-R10: ffffb7a18c3ffd08 R11: 0000000000000000 R12: 00007f4881110fff
-R13: 000000007fffffff R14: ffffb7a18c3ffca0 R15: ffffffffc0bfd7af
-FS:  00007f480118a740(0000) GS:ffff98e38af00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f4801111000 CR3: 0000000864b8e001 CR4: 00000000007706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body+0x1a/0x60
- ? page_fault_oops+0x183/0x510
- ? exc_page_fault+0x69/0x150
- ? asm_exc_page_fault+0x22/0x30
- ? memcpy_orig+0xcd/0x130
- vsnprintf+0x102/0x4c0
- sprintf+0x51/0x80
- qedi_dbg_do_not_recover_cmd_read+0x2f/0x50 [qedi 6bcfdeeecdea037da47069eca2ba717c84a77324]
- full_proxy_read+0x50/0x80
- vfs_read+0xa5/0x2e0
- ? folio_add_new_anon_rmap+0x44/0xa0
- ? set_pte_at+0x15/0x30
- ? do_pte_missing+0x426/0x7f0
- ksys_read+0xa5/0xe0
- do_syscall_64+0x58/0x80
- ? __count_memcg_events+0x46/0x90
- ? count_memcg_event_mm+0x3d/0x60
- ? handle_mm_fault+0x196/0x2f0
- ? do_user_addr_fault+0x267/0x890
- ? exc_page_fault+0x69/0x150
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7f4800f20b4d
+The PHY inside the module is Realtek RTL8221B-VB-CG PHY. The realtek
+driver recently gained support to set it up via clause 45 accesses.
 
-Tested-by: Martin Hoyer <mhoyer@redhat.com>
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Manish Rangankar <mrangankar@marvell.com>
-Link: https://lore.kernel.org/r/20240415072155.30840-1-mrangankar@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240423085039.26957-2-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_debugfs.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/net/phy/sfp.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/qedi/qedi_debugfs.c b/drivers/scsi/qedi/qedi_debugfs.c
-index 8deb2001dc2ff..37eed6a278164 100644
---- a/drivers/scsi/qedi/qedi_debugfs.c
-+++ b/drivers/scsi/qedi/qedi_debugfs.c
-@@ -120,15 +120,11 @@ static ssize_t
- qedi_dbg_do_not_recover_cmd_read(struct file *filp, char __user *buffer,
- 				 size_t count, loff_t *ppos)
- {
--	size_t cnt = 0;
--
--	if (*ppos)
--		return 0;
-+	char buf[64];
-+	int len;
- 
--	cnt = sprintf(buffer, "do_not_recover=%d\n", qedi_do_not_recover);
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	len = sprintf(buf, "do_not_recover=%d\n", qedi_do_not_recover);
-+	return simple_read_from_buffer(buffer, count, ppos, buf, len);
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 6e7639fc64ddc..44c47d34a5c68 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -385,18 +385,23 @@ static void sfp_fixup_rollball(struct sfp *sfp)
+ 	sfp->phy_t_retry = msecs_to_jiffies(1000);
  }
  
- static int
+-static void sfp_fixup_fs_10gt(struct sfp *sfp)
++static void sfp_fixup_fs_2_5gt(struct sfp *sfp)
+ {
+-	sfp_fixup_10gbaset_30m(sfp);
+ 	sfp_fixup_rollball(sfp);
+ 
+-	/* The RollBall fixup is not enough for FS modules, the AQR chip inside
++	/* The RollBall fixup is not enough for FS modules, the PHY chip inside
+ 	 * them does not return 0xffff for PHY ID registers in all MMDs for the
+ 	 * while initializing. They need a 4 second wait before accessing PHY.
+ 	 */
+ 	sfp->module_t_wait = msecs_to_jiffies(4000);
+ }
+ 
++static void sfp_fixup_fs_10gt(struct sfp *sfp)
++{
++	sfp_fixup_10gbaset_30m(sfp);
++	sfp_fixup_fs_2_5gt(sfp);
++}
++
+ static void sfp_fixup_halny_gsfp(struct sfp *sfp)
+ {
+ 	/* Ignore the TX_FAULT and LOS signals on this module.
+@@ -472,6 +477,10 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	// Rollball protocol to talk to the PHY.
+ 	SFP_QUIRK_F("FS", "SFP-10G-T", sfp_fixup_fs_10gt),
+ 
++	// Fiberstore SFP-2.5G-T uses Rollball protocol to talk to the PHY and
++	// needs 4 sec wait before probing the PHY.
++	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_fs_2_5gt),
++
+ 	// Fiberstore GPON-ONU-34-20BI can operate at 2500base-X, but report 1.2GBd
+ 	// NRZ in their EEPROM
+ 	SFP_QUIRK("FS", "GPON-ONU-34-20BI", sfp_quirk_2500basex,
+@@ -488,9 +497,6 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
+ 		  sfp_fixup_ignore_tx_fault),
+ 
+-	// FS 2.5G Base-T
+-	SFP_QUIRK_M("FS", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
+-
+ 	// Lantech 8330-262D-E can operate at 2500base-X, but incorrectly report
+ 	// 2500MBd NRZ in their EEPROM
+ 	SFP_QUIRK_M("Lantech", "8330-262D-E", sfp_quirk_2500basex),
 -- 
 2.43.0
 
