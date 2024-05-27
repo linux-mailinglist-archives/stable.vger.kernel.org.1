@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-47235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EFB18D0D2B
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5918D0B25
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50BCC1C21563
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ACCD283982
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16251607A8;
-	Mon, 27 May 2024 19:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7FD26ACA;
+	Mon, 27 May 2024 19:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9cP76kP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfVTBvBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC8D16079B;
-	Mon, 27 May 2024 19:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4F217E90E;
+	Mon, 27 May 2024 19:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838016; cv=none; b=l4ueP0THhXYTEhhxy3jaadUwF4IPJvQ0yA32OyN52VGdW2YyE/yfGKvJEv3QECE6XFsXzQud5WvEWOSAaAWpKJDuMmmTEmlRFDmKn+vZg/ojdaUmtrd808ll05nQszA8G2VVy2IzXWWGXGvPpBuh0ZU/FJLLbVoBJOjk9p2Bwyk=
+	t=1716836792; cv=none; b=ZmqWdb6DMHhYQY6pY1sHlRgHWYP6udED8TXaARxvn7qdR7KYmyPjadsTc+it2Bx1av+YaIAb/9wyqZ8GfKyxQHDG6rDjdbqEgnoxrU+2BUEySdvFi5AR0VToaQS3RtEkyuiZ30JRXWrTEEiibE53skFVls7skdBFizGWwMSHu8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838016; c=relaxed/simple;
-	bh=zMOJ6XMwf+BoJK0h+rXXjjQ/sFwPl+X/KtfC5XOLXk4=;
+	s=arc-20240116; t=1716836792; c=relaxed/simple;
+	bh=QW1IdSnZmRjHJp2NdxOK+xsEBNCzeLlVkAeg8Rf73lE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+8MiG9IXPcRKQt7QGZ/JXxP5dpckhktP3n/FXpS9pNaD2Aox1yJWwkCXTVRcroi1xWh9Fr/0OXjvHgf0FCSjT0j9Iguku+GR65b4Gp+OrfQIKntLbxt/D7X8P97gwB28iEEaovi4zghGX0znmvPqOyg7UVcyE26TbxW21QmWlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9cP76kP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2202DC32789;
-	Mon, 27 May 2024 19:26:55 +0000 (UTC)
+	 MIME-Version; b=GU44P9SK5eAbbtf/OYo360/wlswceAI5BOMa5p509fbdtZS9rrwPK/maQAlwuBOJ8eFaZ91I7CQKS+lfmjWmX/DNTrIRj3Fr1fXSlZ/2ELx6B20FWQ0BiuJhoRejgTSVSM9gJPYWsYOPGlKceNSa9Fcra6IX+m/eqxcRtWzE9RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfVTBvBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DFBC2BBFC;
+	Mon, 27 May 2024 19:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838016;
-	bh=zMOJ6XMwf+BoJK0h+rXXjjQ/sFwPl+X/KtfC5XOLXk4=;
+	s=korg; t=1716836791;
+	bh=QW1IdSnZmRjHJp2NdxOK+xsEBNCzeLlVkAeg8Rf73lE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s9cP76kP7hP6Ojd2DesZ//VRamAS8ytEqFRqJG2bWyvYDAAiCz1WYYi7mcOkW8IRK
-	 taQb8gO8yGRv+avv/BSr9ZXHH6iM2kJQWvaHmQTuFl4TWsHumdl7+aWfOwgDabKA3N
-	 /lQoPSpvwgVaJoYFlbGK0fbsIgUJT6ZMcY/Yyafk=
+	b=QfVTBvBlD8+DzlwC9EdATEphwsNKsqQ14gYuEGTOiD1LCAmBfMP5/5rMxXDhKVrkA
+	 HqqvkimlNl8R7oaoXxk2rll2Vf92pg1jCfeCmr4JPSaSOOGz48ZDP+w4UmT9P5w7fb
+	 hWCG5nPbRbeplm+aAhB17oX9wF5a2wHSCzLfUFaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Viktor Malik <vmalik@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 235/493] gfs2: do_xmote fixes
+Subject: [PATCH 6.9 190/427] selftests/bpf: Run cgroup1_hierarchy test in own mount namespace
 Date: Mon, 27 May 2024 20:53:57 +0200
-Message-ID: <20240527185637.981638451@linuxfoundation.org>
+Message-ID: <20240527185619.998088295@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit 9947a06d29c0a30da88cdc6376ca5fd87083e130 ]
+[ Upstream commit 19468ed51488dae19254e8a67c75d583b05fa5e3 ]
 
-Function do_xmote() is called with the glock spinlock held.  Commit
-86934198eefa added a 'goto skip_inval' statement at the beginning of the
-function to further below where the glock spinlock is expected not to be
-held anymore.  Then it added code there that requires the glock spinlock
-to be held.  This doesn't make sense; fix this up by dropping and
-retaking the spinlock where needed.
+The cgroup1_hierarchy test uses setup_classid_environment to setup
+cgroupv1 environment. The problem is that the environment is set in
+/sys/fs/cgroup and therefore, if not run under an own mount namespace,
+effectively deletes all system cgroups:
 
-In addition, when ->lm_lock() returned an error, do_xmote() didn't fail
-the locking operation, and simply left the glock hanging; fix that as
-well.  (This is a much older error.)
+    $ ls /sys/fs/cgroup | wc -l
+    27
+    $ sudo ./test_progs -t cgroup1_hierarchy
+    #41/1    cgroup1_hierarchy/test_cgroup1_hierarchy:OK
+    #41/2    cgroup1_hierarchy/test_root_cgid:OK
+    #41/3    cgroup1_hierarchy/test_invalid_level:OK
+    #41/4    cgroup1_hierarchy/test_invalid_cgid:OK
+    #41/5    cgroup1_hierarchy/test_invalid_hid:OK
+    #41/6    cgroup1_hierarchy/test_invalid_cgrp_name:OK
+    #41/7    cgroup1_hierarchy/test_invalid_cgrp_name2:OK
+    #41/8    cgroup1_hierarchy/test_sleepable_prog:OK
+    #41      cgroup1_hierarchy:OK
+    Summary: 1/8 PASSED, 0 SKIPPED, 0 FAILED
+    $ ls /sys/fs/cgroup | wc -l
+    1
 
-Fixes: 86934198eefa ("gfs2: Clear flags when withdraw prevents xmote")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+To avoid this, run setup_cgroup_environment first which will create an
+own mount namespace. This only affects the cgroupv1_hierarchy test as
+all other cgroup1 test progs already run setup_cgroup_environment prior
+to running setup_classid_environment.
+
+Also add a comment to the header of setup_classid_environment to warn
+against this invalid usage in future.
+
+Fixes: 360769233cc9 ("selftests/bpf: Add selftests for cgroup1 hierarchy")
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240429112311.402497-1-vmalik@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 44 +++++++++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 19 deletions(-)
+ tools/testing/selftests/bpf/cgroup_helpers.c               | 3 +++
+ tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c | 7 ++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 0c719fcd4fbc5..2507fe34cbdf0 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -713,6 +713,7 @@ __acquires(&gl->gl_lockref.lock)
- {
- 	const struct gfs2_glock_operations *glops = gl->gl_ops;
- 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
-+	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
- 	unsigned int lck_flags = (unsigned int)(gh ? gh->gh_flags : 0);
- 	int ret;
- 
-@@ -741,6 +742,9 @@ __acquires(&gl->gl_lockref.lock)
- 	    (gl->gl_state == LM_ST_EXCLUSIVE) ||
- 	    (lck_flags & (LM_FLAG_TRY|LM_FLAG_TRY_1CB)))
- 		clear_bit(GLF_BLOCKING, &gl->gl_flags);
-+	if (!glops->go_inval && !glops->go_sync)
-+		goto skip_inval;
-+
- 	spin_unlock(&gl->gl_lockref.lock);
- 	if (glops->go_sync) {
- 		ret = glops->go_sync(gl);
-@@ -753,6 +757,7 @@ __acquires(&gl->gl_lockref.lock)
- 				fs_err(sdp, "Error %d syncing glock \n", ret);
- 				gfs2_dump_glock(NULL, gl, true);
- 			}
-+			spin_lock(&gl->gl_lockref.lock);
- 			goto skip_inval;
- 		}
- 	}
-@@ -773,9 +778,10 @@ __acquires(&gl->gl_lockref.lock)
- 		glops->go_inval(gl, target == LM_ST_DEFERRED ? 0 : DIO_METADATA);
- 		clear_bit(GLF_INVALIDATE_IN_PROGRESS, &gl->gl_flags);
- 	}
-+	spin_lock(&gl->gl_lockref.lock);
- 
- skip_inval:
--	gfs2_glock_hold(gl);
-+	gl->gl_lockref.count++;
- 	/*
- 	 * Check for an error encountered since we called go_sync and go_inval.
- 	 * If so, we can't withdraw from the glock code because the withdraw
-@@ -817,37 +823,37 @@ __acquires(&gl->gl_lockref.lock)
- 			 */
- 			clear_bit(GLF_LOCK, &gl->gl_flags);
- 			clear_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
--			gfs2_glock_queue_work(gl, GL_GLOCK_DFT_HOLD);
--			goto out;
-+			__gfs2_glock_queue_work(gl, GL_GLOCK_DFT_HOLD);
-+			return;
- 		} else {
- 			clear_bit(GLF_INVALIDATE_IN_PROGRESS, &gl->gl_flags);
- 		}
- 	}
- 
--	if (sdp->sd_lockstruct.ls_ops->lm_lock)	{
--		struct lm_lockstruct *ls = &sdp->sd_lockstruct;
-+	if (ls->ls_ops->lm_lock) {
-+		spin_unlock(&gl->gl_lockref.lock);
-+		ret = ls->ls_ops->lm_lock(gl, target, lck_flags);
-+		spin_lock(&gl->gl_lockref.lock);
- 
--		/* lock_dlm */
--		ret = sdp->sd_lockstruct.ls_ops->lm_lock(gl, target, lck_flags);
- 		if (ret == -EINVAL && gl->gl_target == LM_ST_UNLOCKED &&
- 		    target == LM_ST_UNLOCKED &&
- 		    test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
--			spin_lock(&gl->gl_lockref.lock);
--			finish_xmote(gl, target);
--			__gfs2_glock_queue_work(gl, 0);
--			spin_unlock(&gl->gl_lockref.lock);
-+			/*
-+			 * The lockspace has been released and the lock has
-+			 * been unlocked implicitly.
-+			 */
- 		} else if (ret) {
- 			fs_err(sdp, "lm_lock ret %d\n", ret);
--			GLOCK_BUG_ON(gl, !gfs2_withdrawing_or_withdrawn(sdp));
-+			target = gl->gl_state | LM_OUT_ERROR;
-+		} else {
-+			/* The operation will be completed asynchronously. */
-+			return;
- 		}
--	} else { /* lock_nolock */
--		spin_lock(&gl->gl_lockref.lock);
--		finish_xmote(gl, target);
--		__gfs2_glock_queue_work(gl, 0);
--		spin_unlock(&gl->gl_lockref.lock);
- 	}
--out:
--	spin_lock(&gl->gl_lockref.lock);
-+
-+	/* Complete the operation now. */
-+	finish_xmote(gl, target);
-+	__gfs2_glock_queue_work(gl, 0);
- }
- 
+diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
+index 19be9c63d5e84..e812876d79c7e 100644
+--- a/tools/testing/selftests/bpf/cgroup_helpers.c
++++ b/tools/testing/selftests/bpf/cgroup_helpers.c
+@@ -508,6 +508,9 @@ int cgroup_setup_and_join(const char *path) {
  /**
+  * setup_classid_environment() - Setup the cgroupv1 net_cls environment
+  *
++ * This function should only be called in a custom mount namespace, e.g.
++ * created by running setup_cgroup_environment.
++ *
+  * After calling this function, cleanup_classid_environment should be called
+  * once testing is complete.
+  *
+diff --git a/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c b/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c
+index 74d6d7546f40f..25332e596750f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c
++++ b/tools/testing/selftests/bpf/prog_tests/cgroup1_hierarchy.c
+@@ -87,9 +87,12 @@ void test_cgroup1_hierarchy(void)
+ 		goto destroy;
+ 
+ 	/* Setup cgroup1 hierarchy */
++	err = setup_cgroup_environment();
++	if (!ASSERT_OK(err, "setup_cgroup_environment"))
++		goto destroy;
+ 	err = setup_classid_environment();
+ 	if (!ASSERT_OK(err, "setup_classid_environment"))
+-		goto destroy;
++		goto cleanup_cgroup;
+ 
+ 	err = join_classid();
+ 	if (!ASSERT_OK(err, "join_cgroup1"))
+@@ -153,6 +156,8 @@ void test_cgroup1_hierarchy(void)
+ 
+ cleanup:
+ 	cleanup_classid_environment();
++cleanup_cgroup:
++	cleanup_cgroup_environment();
+ destroy:
+ 	test_cgroup1_hierarchy__destroy(skel);
+ }
 -- 
 2.43.0
 
