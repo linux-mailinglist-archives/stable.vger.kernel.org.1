@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-46772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB56A8D0B30
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7608D0D37
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CA471F229AE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E01F283BFF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DB16A039;
-	Mon, 27 May 2024 19:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41B415FD04;
+	Mon, 27 May 2024 19:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcQ8CXCY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvF2oAdc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33C717E90E;
-	Mon, 27 May 2024 19:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32B5262BE;
+	Mon, 27 May 2024 19:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836819; cv=none; b=rQzh/FXeNVTO4LVdguU3extHjgTXK5w88Zg/bkA8tACp54BFPhfFcDCgug42USZrGYXiwZC0eDkt4R/sV0J8IFx3OO76gIiL3m9Oo30pacLsEprqQPCtaDkEOCuks30ebsGMGX2Kw0G69a/f3VwdhdwowgmnDYAxpb8bNh3R3BY=
+	t=1716838044; cv=none; b=f8yWw6CU8WfSx5I9eKbS10PWRNTzf4ZKooV3Is9hHUmxR8rzhFbWR67kPYU2/cEO5aoBdQ7UQJc61EeCBiuslrs1DPGAUHeOg+kNpiR+U3rFbuYtJlWul50oA8WloiY3T8YlkSE4Xk9BmvQXrZD+uNwaIc8H9mn6JQUN3d8gSxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836819; c=relaxed/simple;
-	bh=CAxeFSQGO1ODz12bPZC9EsrwzYKho1KajxqirT4b4Qk=;
+	s=arc-20240116; t=1716838044; c=relaxed/simple;
+	bh=gmqa8IDNu7M8j67F3Dy5EKm1HWdB7s8gcKAmkBQeZEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNY8b/Km/92sF5ZLlZBP7vO1ypAmrNOZpfsSdEXdI+x3kpF7znzc+5FKboSR074JYMdgBp3Y2Bp4axeyoF/ne0I3XnpLlPqqUE+Vy8tmtusa7JhuZo/fSFGr65B4q+CscfvlVItRjU4uoIoWeZj/cooSRl9DZtxdZDSmGlaXdzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcQ8CXCY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8A6C2BBFC;
-	Mon, 27 May 2024 19:06:59 +0000 (UTC)
+	 MIME-Version; b=Q1U/sFrmVN5bsPBTPDZYV02eK6524l2qyHKvc0RwQjFKq9gftAbQaSw40JOdTB76dHgFq9kXTgVeyJ+v3OhxfRWhzAskWYh0l0qhS1PEsKQw4k+KWDiY68yv9HtDLCRtI+Bd1Zo4RcRnalQ6gure60eiqxGPQWolzeHyUD0fc+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvF2oAdc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30207C2BBFC;
+	Mon, 27 May 2024 19:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836819;
-	bh=CAxeFSQGO1ODz12bPZC9EsrwzYKho1KajxqirT4b4Qk=;
+	s=korg; t=1716838044;
+	bh=gmqa8IDNu7M8j67F3Dy5EKm1HWdB7s8gcKAmkBQeZEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rcQ8CXCYQ3fj7UkPlL5C+btWI0nwx9eVQ6/XhLxQgLpS56NbEXGhLvB0NbzCFRqR3
-	 +pof7HaMqjWzgzU/feYVedkeo5bzAsG0RpmM3TzksK01HibIXYXAr8TzR08QJLCQ0y
-	 c+PlmEN3wge/BSI1ep99G09gQI+UA2Hk25ZUssOo=
+	b=vvF2oAdcvZ5W1UZrN8jqaHlstIyRzHm9Pi8xCW5/+zZl/IFwWfjCmGXaQBz7YAXwW
+	 21fSytEQT32G/yAHFdG+zKNsMWxDZb5ZPdUIuSpa+WqZCBFclEydt0lUmuvbXDjJFA
+	 JHL4f7t0zT9CD4QIcPLre0n17uiToHtVxyQAKmIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Monroe <chad@monroe.io>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 200/427] wifi: mt76: mt7996: fix size of txpower MCU command
+Subject: [PATCH 6.8 245/493] thermal/debugfs: Pass cooling device state to thermal_debug_cdev_add()
 Date: Mon, 27 May 2024 20:54:07 +0200
-Message-ID: <20240527185620.940125932@linuxfoundation.org>
+Message-ID: <20240527185638.319812058@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chad Monroe <chad@monroe.io>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 66ffcb9abae68625c704b247c7d15cbbc7837391 ]
+[ Upstream commit 31a0fa0019b022024cc082ae292951a596b06f8c ]
 
-Fixes issues with scanning and low power output at some rates.
+If cdev_dt_seq_show() runs before the first state transition of a cooling
+device, it will not print any state residency information for it, even
+though it might be reasonably expected to print residency information for
+the initial state of the cooling device.
 
-Fixes: f75e4779d215 ("wifi: mt76: mt7996: add txpower setting support")
-Signed-off-by: Chad Monroe <chad@monroe.io>
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+For this reason, rearrange the code to get the initial state of a cooling
+device at the registration time and pass it to thermal_debug_cdev_add(),
+so that the latter can create a duration record for that state which will
+allow cdev_dt_seq_show() to print its residency information.
+
+Fixes: 755113d76786 ("thermal/debugfs: Add thermal cooling device debugfs information")
+Reported-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Tested-by: Lukasz Luba <lukasz.luba@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 7 +++++--
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 1 +
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/thermal/thermal_core.c    |  9 +++++++--
+ drivers/thermal/thermal_debugfs.c | 12 ++++++++++--
+ drivers/thermal/thermal_debugfs.h |  4 ++--
+ 3 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index b44abe2acc81b..cfb5a7d348eb8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -4464,7 +4464,7 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy)
- 		u8 band_idx;
- 	} __packed req = {
- 		.tag = cpu_to_le16(UNI_TXPOWER_POWER_LIMIT_TABLE_CTRL),
--		.len = cpu_to_le16(sizeof(req) + MT7996_SKU_RATE_NUM - 4),
-+		.len = cpu_to_le16(sizeof(req) + MT7996_SKU_PATH_NUM - 4),
- 		.power_ctrl_id = UNI_TXPOWER_POWER_LIMIT_TABLE_CTRL,
- 		.power_limit_type = TX_POWER_LIMIT_TABLE_RATE,
- 		.band_idx = phy->mt76->band_idx,
-@@ -4479,7 +4479,7 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy)
- 	mphy->txpower_cur = tx_power;
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index 1818901d37ca8..5975bf380826d 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -899,6 +899,7 @@ __thermal_cooling_device_register(struct device_node *np,
+ {
+ 	struct thermal_cooling_device *cdev;
+ 	struct thermal_zone_device *pos = NULL;
++	unsigned long current_state;
+ 	int id, ret;
  
- 	skb = mt76_mcu_msg_alloc(&dev->mt76, NULL,
--				 sizeof(req) + MT7996_SKU_RATE_NUM);
-+				 sizeof(req) + MT7996_SKU_PATH_NUM);
- 	if (!skb)
- 		return -ENOMEM;
+ 	if (!ops || !ops->get_max_state || !ops->get_cur_state ||
+@@ -936,6 +937,10 @@ __thermal_cooling_device_register(struct device_node *np,
+ 	if (ret)
+ 		goto out_cdev_type;
  
-@@ -4503,6 +4503,9 @@ int mt7996_mcu_set_txpower_sku(struct mt7996_phy *phy)
- 	/* eht */
- 	skb_put_data(skb, &la.eht[0], sizeof(la.eht));
- 
-+	/* padding */
-+	skb_put_zero(skb, MT7996_SKU_PATH_NUM - MT7996_SKU_RATE_NUM);
++	ret = cdev->ops->get_cur_state(cdev, &current_state);
++	if (ret)
++		goto out_cdev_type;
 +
- 	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
- 				     MCU_WM_UNI_CMD(TXPOWER), true);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 36d1f247d55aa..ddeb40d522c5a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -50,6 +50,7 @@
- #define MT7996_CFEND_RATE_11B		0x03	/* 11B LP, 11M */
+ 	thermal_cooling_device_setup_sysfs(cdev);
  
- #define MT7996_SKU_RATE_NUM		417
-+#define MT7996_SKU_PATH_NUM		494
+ 	ret = dev_set_name(&cdev->device, "cooling_device%d", cdev->id);
+@@ -949,6 +954,8 @@ __thermal_cooling_device_register(struct device_node *np,
+ 		return ERR_PTR(ret);
+ 	}
  
- #define MT7996_MAX_TWT_AGRT		16
- #define MT7996_MAX_STA_TWT_AGRT		8
++	thermal_debug_cdev_add(cdev, current_state);
++
+ 	/* Add 'this' new cdev to the global cdev list */
+ 	mutex_lock(&thermal_list_lock);
+ 
+@@ -964,8 +971,6 @@ __thermal_cooling_device_register(struct device_node *np,
+ 
+ 	mutex_unlock(&thermal_list_lock);
+ 
+-	thermal_debug_cdev_add(cdev);
+-
+ 	return cdev;
+ 
+ out_cooling_dev:
+diff --git a/drivers/thermal/thermal_debugfs.c b/drivers/thermal/thermal_debugfs.c
+index 2891d2ab4875c..403f74d663dce 100644
+--- a/drivers/thermal/thermal_debugfs.c
++++ b/drivers/thermal/thermal_debugfs.c
+@@ -468,8 +468,9 @@ void thermal_debug_cdev_state_update(const struct thermal_cooling_device *cdev,
+  * Allocates a cooling device object for debug, initializes the
+  * statistics and create the entries in sysfs.
+  * @cdev: a pointer to a cooling device
++ * @state: current state of the cooling device
+  */
+-void thermal_debug_cdev_add(struct thermal_cooling_device *cdev)
++void thermal_debug_cdev_add(struct thermal_cooling_device *cdev, int state)
+ {
+ 	struct thermal_debugfs *thermal_dbg;
+ 	struct cdev_debugfs *cdev_dbg;
+@@ -486,9 +487,16 @@ void thermal_debug_cdev_add(struct thermal_cooling_device *cdev)
+ 		INIT_LIST_HEAD(&cdev_dbg->durations[i]);
+ 	}
+ 
+-	cdev_dbg->current_state = 0;
++	cdev_dbg->current_state = state;
+ 	cdev_dbg->timestamp = ktime_get();
+ 
++	/*
++	 * Create a record for the initial cooling device state, so its
++	 * duration will be printed by cdev_dt_seq_show() as expected if it
++	 * runs before the first state transition.
++	 */
++	thermal_debugfs_cdev_record_get(thermal_dbg, cdev_dbg->durations, state);
++
+ 	debugfs_create_file("trans_table", 0400, thermal_dbg->d_top,
+ 			    thermal_dbg, &tt_fops);
+ 
+diff --git a/drivers/thermal/thermal_debugfs.h b/drivers/thermal/thermal_debugfs.h
+index 155b9af5fe870..c28bd4c114124 100644
+--- a/drivers/thermal/thermal_debugfs.h
++++ b/drivers/thermal/thermal_debugfs.h
+@@ -2,7 +2,7 @@
+ 
+ #ifdef CONFIG_THERMAL_DEBUGFS
+ void thermal_debug_init(void);
+-void thermal_debug_cdev_add(struct thermal_cooling_device *cdev);
++void thermal_debug_cdev_add(struct thermal_cooling_device *cdev, int state);
+ void thermal_debug_cdev_remove(struct thermal_cooling_device *cdev);
+ void thermal_debug_cdev_state_update(const struct thermal_cooling_device *cdev, int state);
+ void thermal_debug_tz_add(struct thermal_zone_device *tz);
+@@ -14,7 +14,7 @@ void thermal_debug_tz_trip_down(struct thermal_zone_device *tz,
+ void thermal_debug_update_temp(struct thermal_zone_device *tz);
+ #else
+ static inline void thermal_debug_init(void) {}
+-static inline void thermal_debug_cdev_add(struct thermal_cooling_device *cdev) {}
++static inline void thermal_debug_cdev_add(struct thermal_cooling_device *cdev, int state) {}
+ static inline void thermal_debug_cdev_remove(struct thermal_cooling_device *cdev) {}
+ static inline void thermal_debug_cdev_state_update(const struct thermal_cooling_device *cdev,
+ 						   int state) {}
 -- 
 2.43.0
 
