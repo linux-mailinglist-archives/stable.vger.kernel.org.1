@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-46860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A4E8D0B90
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5928D0D90
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41A0AB22CCB
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABE40B210F6
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A1F1754B;
-	Mon, 27 May 2024 19:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC90615FA9F;
+	Mon, 27 May 2024 19:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJLLRuPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBmX4Gqs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8127317E90E;
-	Mon, 27 May 2024 19:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0CF1EEF7;
+	Mon, 27 May 2024 19:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837040; cv=none; b=W6lkdl/B5heEiAHRFDeZ9+dENY1Nd0/9DFwnwcC6zgZYS/qN1uvCqbRtrzPidXroHUcG2Q4lNU4JTdbyg02uRYIkpRR06czqYvgOUtFDzgdDgW5w5iii0DYpMH4h1GcE4bNbKN6YhhP9vPYcgH5p1kwddrLoPx95uXEcHa87vVE=
+	t=1716838279; cv=none; b=LATGEVPR4VJfx+fpcw0ZOsCNABIEmCvtmMv4GnfZmJzyikg59nCSVrTFGebvZvt/bHaaSzf+pG8+ZollPiUVWkJfpdoINQO5HC59fX3PuA6WNtmMk3Z71gnFmHn5btjG1AHmDk0+d6/KrxzrO2h7d0+3sMONbJunZkx6YchfeTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837040; c=relaxed/simple;
-	bh=rEToUy8LqG0OmfWuWT6c7jK/aGLcD+AV1HtxETxcyTY=;
+	s=arc-20240116; t=1716838279; c=relaxed/simple;
+	bh=0zLAlRCTj0mfKrR7GbvV+OkynWVaPc5pf8QX/HiWKc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aoy0+hdwqLKd8dXP3I1hNYbHPb5cw1ryve0TZirYxz28lzUTdagQ3gSolD496OdP11uUaGOmBIxr94uJ88bDP2hdR2FnbZiYpnWakmPE5WWBbgaccrNjQFEVyFMFRVZuBbLshh0TE09rFTeCTrxSnoq4XJd4IjziTYmt/U5FJDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJLLRuPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16835C2BBFC;
-	Mon, 27 May 2024 19:10:39 +0000 (UTC)
+	 MIME-Version; b=R8YV0FFpO8sNYNyiX1pOL+CRS4z7JdLLs/nGe9GO+EqJyWSYOc5mv+OUwWnJDTP22mxqFsjULxuS9a8/t5b0fDg9zBSjlNSid25cl6wHtuBD36yCIOpHWmmHQls5ryohXDFx/BdjxVhJG68GGNHVdwKKgmtVEC1aMh/SS64Og4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBmX4Gqs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC47C32781;
+	Mon, 27 May 2024 19:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837040;
-	bh=rEToUy8LqG0OmfWuWT6c7jK/aGLcD+AV1HtxETxcyTY=;
+	s=korg; t=1716838279;
+	bh=0zLAlRCTj0mfKrR7GbvV+OkynWVaPc5pf8QX/HiWKc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJLLRuPuaUZUBFM4th2PhRO7muy7YepwSU8/iGAmEG6Vz93LdWyrYWjXzK4E8r/IU
-	 4Rcky7rGO9bU4yWCb9vYNAe0LkfElU8FGnmQhl/9csHP8wU5WJZEii7PVy1/r5owqd
-	 SgfHbK7S/fKZ6gp2kvWdNKURgUosoENskA75LPwU=
+	b=SBmX4GqsD7peEzwKzI0Rqz4Zbq6eZVhTKO4tOTANSzFiyroSBoeaNKkF3n44MSwIE
+	 wf3/DEvPVtBMhYjI1DbqC7SxPyw/g9ouvz6MNrXuD7wfCnVA8pVp70HR6bMHjAXNBC
+	 QmGq4QTqC1XkA+WKhshw73ZDqYOH6zfrsTiiPxNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aapo Vienamo <aapo.vienamo@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Rohan G Thomas <rohan.g.thomas@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 288/427] mtd: core: Report error if first mtd_otp_size() call fails in mtd_otp_nvmem_add()
+Subject: [PATCH 6.8 333/493] net: stmmac: est: Per Tx-queue error count for HLBF
 Date: Mon, 27 May 2024 20:55:35 +0200
-Message-ID: <20240527185629.318730251@linuxfoundation.org>
+Message-ID: <20240527185641.163482467@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aapo Vienamo <aapo.vienamo@linux.intel.com>
+From: Rohan G Thomas <rohan.g.thomas@intel.com>
 
-[ Upstream commit d44f0bbbd8d182debcce88bda55b05269f3d33d6 ]
+[ Upstream commit fd5a6a71313e27c4f601526081b69d4e76f03dea ]
 
-Jump to the error reporting code in mtd_otp_nvmem_add() if the
-mtd_otp_size() call fails. Without this fix, the error is not logged.
+Keep per Tx-queue error count on Head-Of-Line Blocking due to frame
+size(HLBF) error. The MAC raises HLBF error on one or more queues
+when none of the time Intervals of open-gates in the GCL is greater
+than or equal to the duration needed for frame transmission and by
+default drops those packets that causes HLBF error. EST_FRM_SZ_ERR
+register provides the One Hot encoded Queue numbers that have the
+Frame Size related error.
 
-Signed-off-by: Aapo Vienamo <aapo.vienamo@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Fixes: 4b361cfa8624 ("mtd: core: add OTP nvmem provider support")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240313173425.1325790-2-aapo.vienamo@linux.intel.com
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 36ac9e7f2e57 ("net: stmmac: move the EST lock to struct stmmac_priv")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtdcore.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/common.h     | 1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-index 0de87bc638405..6d5c755411de0 100644
---- a/drivers/mtd/mtdcore.c
-+++ b/drivers/mtd/mtdcore.c
-@@ -956,8 +956,10 @@ static int mtd_otp_nvmem_add(struct mtd_info *mtd)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index 2706761955fea..618d455b457c7 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -226,6 +226,7 @@ struct stmmac_extra_stats {
+ 	unsigned long mtl_est_btre;
+ 	unsigned long mtl_est_btrlm;
+ 	unsigned long max_sdu_txq_drop[MTL_MAX_TX_QUEUES];
++	unsigned long mtl_est_txq_hlbf[MTL_MAX_TX_QUEUES];
+ 	/* per queue statistics */
+ 	struct stmmac_txq_stats txq_stats[MTL_MAX_TX_QUEUES];
+ 	struct stmmac_rxq_stats rxq_stats[MTL_MAX_RX_QUEUES];
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+index 4da6ccc17c205..c9693f77e1f61 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+@@ -81,6 +81,7 @@ static void est_irq_status(struct stmmac_priv *priv, struct net_device *dev,
+ 	u32 status, value, feqn, hbfq, hbfs, btrl, btrl_max;
+ 	void __iomem *est_addr = priv->estaddr;
+ 	u32 txqcnt_mask = BIT(txqcnt) - 1;
++	int i;
  
- 	if (mtd->_get_user_prot_info && mtd->_read_user_prot_reg) {
- 		size = mtd_otp_size(mtd, true);
--		if (size < 0)
--			return size;
-+		if (size < 0) {
-+			err = size;
-+			goto err;
+ 	status = readl(est_addr + EST_STATUS);
+ 
+@@ -125,6 +126,11 @@ static void est_irq_status(struct stmmac_priv *priv, struct net_device *dev,
+ 
+ 		x->mtl_est_hlbf++;
+ 
++		for (i = 0; i < txqcnt; i++) {
++			if (feqn & BIT(i))
++				x->mtl_est_txq_hlbf[i]++;
 +		}
++
+ 		/* Clear Interrupt */
+ 		writel(feqn, est_addr + EST_FRM_SZ_ERR);
  
- 		if (size > 0) {
- 			nvmem = mtd_otp_nvmem_register(mtd, "user-otp", size,
 -- 
 2.43.0
 
