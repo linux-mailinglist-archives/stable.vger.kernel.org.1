@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CADA8D03F9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF15C8D03FA
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE4C41C21550
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:36:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F11721C215CE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159F21A38F5;
-	Mon, 27 May 2024 14:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF7A1C0DD7;
+	Mon, 27 May 2024 14:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jU7hwKW4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="so0qNQDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C571C1A38ED;
-	Mon, 27 May 2024 14:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1321C0DCE;
+	Mon, 27 May 2024 14:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819405; cv=none; b=RwmjVKUDOKAi3154vb/XF+tAIV3Ri3btaxS8Uy4I+vmAvi4VaUTbJhS/TyphDEpVQFjjeDbPNjZiJrl5xQL4VM8JB2Jgj2d+O28jAcwWh6E3LnmEC9QxeRGdxBdk+NQnJZ/bormtb44+ZyN4HH9//y+qB4UVZXvgmTqlpX7HpzU=
+	t=1716819407; cv=none; b=WjFvw4EAyTedPcISXLw94k4m6wkasQ/2TDkEYMhgO5X+OOPVGTbvniif1oZijZMdV4hWlNlcVo8d/z1LOngIMVdlO89cYxyV67tT4XNXZ70DgB8RaXAv+LMjScU3K+c3oOZf4XVnuJM28BnH2NxbEbhdguRbrhKmtys6RtrA8AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819405; c=relaxed/simple;
-	bh=gSlwN5js8MlJT3Vc2y1GjcwiAoMKOVUoZeb6E/zARnE=;
+	s=arc-20240116; t=1716819407; c=relaxed/simple;
+	bh=194iDOSz5/fl5Of3QLCu1RQMKF0u9wdBEdM7bhOex0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yt+VreSIucj/cGiVadK5E3CMdaahuFYE2kJ4TtxzbGRrgOd47qLjSCd4Pyrsa3CIqLWd87KmuWHG3n7EJOZunaf0eDpGmSY8h4iEN9zBn580vhsqNBasfvW08ejaaBcsmP61DFTOuPiiqrX6XF3F5j7F7GfLwSN3vXsdqEWlOO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jU7hwKW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C1CC32781;
-	Mon, 27 May 2024 14:16:44 +0000 (UTC)
+	 MIME-Version; b=DCZ8gqh4Bhd+GrLkXWSx6mgPYw2WhHTzGVQQMjCJrfYExpNiPa4qtklTsC9eHpYBa69jsBxPx9L53acF72KwdH9YBIDbt9G4YZEHv6dQNtC6nVa2NhAs77vdVadcWBS1ZifTm8OGR47Z5452wFChtNF1tYWqyB2XeUZOucNaYOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=so0qNQDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EC4C32781;
+	Mon, 27 May 2024 14:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819405;
-	bh=gSlwN5js8MlJT3Vc2y1GjcwiAoMKOVUoZeb6E/zARnE=;
+	s=k20201202; t=1716819407;
+	bh=194iDOSz5/fl5Of3QLCu1RQMKF0u9wdBEdM7bhOex0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jU7hwKW45QphVb8qmkm6isNZrmx38JyJO3JQvPzVA9gwXpTLpLW+jngiI0m03UaT7
-	 ILDOEjLUKS2dE99piWS8Kbe+tCkbhDdXUgZeaw4b9WzUo9IAoKqNi/i0Hqcubuzu5E
-	 VFw1yBzzmIuGD233v82S+gupARwcW4Eap1jrhzyZsFDRD7K4sdnsCQ0Mwg4qz5qu6Y
-	 jbKbJcOYEKJMNgVlhS0qNJ2CQKqTs/Gt2wQ16HcAdZVc8vM14ryZT6E+CCxNZobJAS
-	 m/9+ftoTqZodPeUDKLZRSGaf9LRnspY4gzBSP74jUkXtAqCKUKsAnl/Rke9SfQEHcK
-	 Dzt0JSNiamR3A==
+	b=so0qNQDeRBSLPGz6sYKT578IhLwNqnSJ5mLjm+rn18r+6No0Bj8Teb08I5ZgtK519
+	 ea3TtKo7bRlxW8LANG/yvIMAYbPRkn+8YZTfLHwm2mpxOMRpSZ+Znc9xoEwCOdiNOV
+	 L3sWM5DiPBnrltFD23qbhqXYoX3tkqp6PGVMwdKs2zqgeEMbtnhJiJW1lu60ciKi+m
+	 09pRY+wWiG8T0nRc0Qk/8XNoK+JcIY+ecqa7SrfcgKT4GwI7hc8PjZxfPSseTAYuvE
+	 AZ1S1ZSCqB79w19w7qlvONypy8yu578enS4T8SgoFBBmsrEirp64jzd0gB3ILcT7XH
+	 ANSG1a/G1zRig==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Luke D. Jones" <luke@ljones.dev>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Takashi Iwai <tiwai@suse.de>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 18/21] HID: asus: fix more n-key report descriptors if n-key quirked
-Date: Mon, 27 May 2024 10:15:29 -0400
-Message-ID: <20240527141551.3853516-18-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 19/21] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
+Date: Mon, 27 May 2024 10:15:30 -0400
+Message-ID: <20240527141551.3853516-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141551.3853516-1-sashal@kernel.org>
 References: <20240527141551.3853516-1-sashal@kernel.org>
@@ -67,99 +66,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
-From: "Luke D. Jones" <luke@ljones.dev>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 59d2f5b7392e988a391e6924e177c1a68d50223d ]
+[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
 
-Adjusts the report descriptor for N-Key devices to
-make the output count 0x01 which completely avoids
-the need for a block of filtering.
+Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
+and Nvidia, and the backlight can't be adjusted properly unless
+acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
+present and loaded, this doesn't work as expected at all.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+For making it working as default, add the corresponding quirk entry
+with a DMI matching "LENOVO" "82UX".
+
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c | 51 ++++++++++++++++++++----------------------
- 1 file changed, 24 insertions(+), 27 deletions(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index 78cdfb8b9a7ae..d6d8a028623a7 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -335,36 +335,20 @@ static int asus_raw_event(struct hid_device *hdev,
- 	if (drvdata->quirks & QUIRK_MEDION_E1239T)
- 		return asus_e1239t_event(drvdata, data, size);
- 
--	if (drvdata->quirks & QUIRK_USE_KBD_BACKLIGHT) {
-+	/*
-+	 * Skip these report ID, the device emits a continuous stream associated
-+	 * with the AURA mode it is in which looks like an 'echo'.
-+	 */
-+	if (report->id == FEATURE_KBD_LED_REPORT_ID1 || report->id == FEATURE_KBD_LED_REPORT_ID2)
-+		return -1;
-+	if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
- 		/*
--		 * Skip these report ID, the device emits a continuous stream associated
--		 * with the AURA mode it is in which looks like an 'echo'.
-+		 * G713 and G733 send these codes on some keypresses, depending on
-+		 * the key pressed it can trigger a shutdown event if not caught.
- 		*/
--		if (report->id == FEATURE_KBD_LED_REPORT_ID1 ||
--				report->id == FEATURE_KBD_LED_REPORT_ID2) {
-+		if (data[0] == 0x02 && data[1] == 0x30) {
- 			return -1;
--		/* Additional report filtering */
--		} else if (report->id == FEATURE_KBD_REPORT_ID) {
--			/*
--			 * G14 and G15 send these codes on some keypresses with no
--			 * discernable reason for doing so. We'll filter them out to avoid
--			 * unmapped warning messages later.
--			*/
--			if (data[1] == 0xea || data[1] == 0xec || data[1] == 0x02 ||
--					data[1] == 0x8a || data[1] == 0x9e) {
--				return -1;
--			}
- 		}
--		if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
--			/*
--			 * G713 and G733 send these codes on some keypresses, depending on
--			 * the key pressed it can trigger a shutdown event if not caught.
--			*/
--			if(data[0] == 0x02 && data[1] == 0x30) {
--				return -1;
--			}
--		}
--
- 	}
- 
- 	if (drvdata->quirks & QUIRK_ROG_CLAYMORE_II_KEYBOARD) {
-@@ -1250,6 +1234,19 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		rdesc[205] = 0x01;
- 	}
- 
-+	/* match many more n-key devices */
-+	if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
-+		for (int i = 0; i < *rsize + 1; i++) {
-+			/* offset to the count from 0x5a report part always 14 */
-+			if (rdesc[i] == 0x85 && rdesc[i + 1] == 0x5a &&
-+			    rdesc[i + 14] == 0x95 && rdesc[i + 15] == 0x05) {
-+				hid_info(hdev, "Fixing up Asus N-Key report descriptor\n");
-+				rdesc[i + 15] = 0x01;
-+				break;
-+			}
-+		}
-+	}
-+
- 	return rdesc;
- }
- 
-@@ -1319,4 +1316,4 @@ static struct hid_driver asus_driver = {
- };
- module_hid_driver(asus_driver);
- 
--MODULE_LICENSE("GPL");
-\ No newline at end of file
-+MODULE_LICENSE("GPL");
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 31205fee59d4a..16ab2d9ef67f3 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -505,6 +505,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Lenovo Slim 7 16ARH7 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_native,
+ 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
 -- 
 2.43.0
 
