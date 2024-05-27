@@ -1,194 +1,153 @@
-Return-Path: <stable+bounces-46568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5458D08C3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:36:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D658D08E1
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4120C28EF64
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:36:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 307F01C22825
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5213361FDB;
-	Mon, 27 May 2024 16:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3181155C8D;
+	Mon, 27 May 2024 16:41:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzldhrqR"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01olkn2065.outbound.protection.outlook.com [40.92.65.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D16273477
-	for <stable@vger.kernel.org>; Mon, 27 May 2024 16:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.65.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716827769; cv=fail; b=EMLSnM1tf0i/fvJgGSZsoxNBTGCsw+7dnmosDpZJIPCObv3AenHZsKxqdwik47/7C6ED+KNrNGg8CYBLxs6j/77QNgAlL4Z7UDORPaIwCmFAdqWSiXy/kcc9mB+wfz2tFXZBNURtMgDmjh3uMjn7vmGQY/5BcbmeB9LM0/LP37o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716827769; c=relaxed/simple;
-	bh=MFTLs0wqzjN+AY8HOE4DonFdt8iHr1Am/O7TuM2fhAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pR7ERPyHD/N/CQ4rXP93J0Z20q42KErjYKSB/cIxGU2pIa9lgqCLOfYMhPpd+lUaJKtZkO7R8SgG+cIYY5k8juabbNfFY+EtVOyLDikjgENnFLO/HOyWF1TmT3nDZucTMQiFSf3hVd7s4PJ2se8epSJXreRmAaen50cl5KMVTc4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outlook.de; spf=pass smtp.mailfrom=outlook.de; arc=fail smtp.client-ip=40.92.65.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outlook.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.de
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aTMfvoCRUPlPvSRuE0vAD3xPVgqwzkq9zIg3d5f7doaBYVFZw1fTjv1SoT+9C3XtQC5ICNmLLwprHZ5uEp8w3zNc1qp/sJrzMCrK7a5TZd1N3rGqg/ODLnDjzMn32qwFntFocfNMbtILI7QYvHBzo9ZoiqBvkLxriAYfPKfVnwmUb3OGtM5dEQgv/zawf1/bUFTEh84L/u6W6hbLwjeZPfh0crGScm+qk/wwdJz5R0Fos+TLOKallDu1LbIF9y9fnRLmJgaYDcOkyqskbI8T9V5fPVSFekkjnnOh+Py2rG6E0kJ4EDHNxDD4l88/NpkPB6t03kbPuCKcubyK1KBSgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s56yG+jy/dsPlBBvi8NGufcuuAkDNvzTXSA6fp6OnoM=;
- b=dk3NpdxjSwu4d/A1mzOIVgks5J51/Ocy3gKdd6yIBDwIJeDMNqudDUmwhPNuSOvfhLaRUaNtVGDMNuBed9trmbX5OKSw+kn9Tg/XTPrPzIUEdHoIem9zyGzgImL7GYptJXtP5eD75dNkHS7c9/KEJUb7sjCmz2TOEARWecXJDptKJTzA9iNcL6r5EEMOjcV/mApH8MGwcyJXS1pmZ8nLA9K0ylhY56ajozUvWM/QtPCfSYxTe3h0Tn6NUn4Ank9vuVGZn8GHcHhOW6pnAhAJg8MEBGSPbwps+xydizcsmDjZ69M3ebdY3XLKl/fakO1V3OVFoImppZTZ4fTvAvQhXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from PR3PR02MB6012.eurprd02.prod.outlook.com (2603:10a6:102:69::18)
- by DU2PR02MB10229.eurprd02.prod.outlook.com (2603:10a6:10:496::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.29; Mon, 27 May
- 2024 16:36:03 +0000
-Received: from PR3PR02MB6012.eurprd02.prod.outlook.com
- ([fe80::15a3:e65a:6972:b802]) by PR3PR02MB6012.eurprd02.prod.outlook.com
- ([fe80::15a3:e65a:6972:b802%5]) with mapi id 15.20.7611.025; Mon, 27 May 2024
- 16:36:03 +0000
-Date: Mon, 27 May 2024 18:36:02 +0200
-From: Tim Teichmann <teichmanntim@outlook.de>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Christian Heusel <christian@heusel.eu>, regressions@lists.linux.dev, 
-	x86@kernel.org, stable@vger.kernel.org
-Subject: Re: [REGRESSION][BISECTED] Scheduling errors with the AMD FX 8300 CPU
-Message-ID:
- <PR3PR02MB6012EDF7EBA8045FBB03C434B3F02@PR3PR02MB6012.eurprd02.prod.outlook.com>
-References: <7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk>
- <87r0dqdf0r.ffs@tglx>
- <gtgsklvltu5pzeiqn7fwaktdsywk2re75unapgbcarlmqkya5a@mt7pi4j2f7b3>
- <87h6ejd0wt.ffs@tglx>
- <PR3PR02MB6012CB03006F1EEE8E8B5D69B3F02@PR3PR02MB6012.eurprd02.prod.outlook.com>
- <874jajcn9r.ffs@tglx>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <874jajcn9r.ffs@tglx>
-X-TMN: [ASpYzi+zeop+oKT8KkkB6Pg1cGgUUlY/CmX7CLF6jLPqv+jiuplWdJAoZUSJHf/B]
-X-ClientProxiedBy: PA7P264CA0299.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:370::10) To PR3PR02MB6012.eurprd02.prod.outlook.com
- (2603:10a6:102:69::18)
-X-Microsoft-Original-Message-ID:
- <hhex7ifj3flkvfzpq3so55gzkz5xm5m2hqg73dh6a3kzlvgr7m@efsjmgebzw7p>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BF0155C96;
+	Mon, 27 May 2024 16:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716828061; cv=none; b=r0Vn6YVBqVpGqG/rC/8Zbgd/a6jTnFm9JmAuL0NE2e3+P3go12F7Gno7WasfUbVHk+CyccKly4nWuqje3jrT33HG3lMZUk7A+KByeBmE3ho2e16fgYNKncOLGxigklFUnXmfpeuVuWanudv3Q9mVAlsmlGa1YHPZ0dnQf7RQZs0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716828061; c=relaxed/simple;
+	bh=dfkfDaQUMpGwTtp2bomb4Iu2aKjA9XikV5FqpfBCsSE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q3kUf/kz+mNl/MIbRSBqVmjhMaoZmb5KsnvHlRFo/YKsh5gfCZAiAECwTxoa1vngR/1eEoTL1XT3Q5yRsxfaDJ5LxZj4NOj26oCYbTBnFv/9y8EXcagtQr9tNVc17Wdlb+fqwwf3a2/tcx2jeJTZlVwFFRthah+kVPZ+m+SKHYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dzldhrqR; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2e964acff1aso35515841fa.0;
+        Mon, 27 May 2024 09:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716828058; x=1717432858; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zXhZGnNO1k1I5G/0gxKase3G2b7JBGSEOc1kPGMl+NM=;
+        b=dzldhrqRlF2YGq29PgfboobrpPcgJhFZ/nm16yLreVDOdZwXqkm2h21vTuLDBsQQNj
+         dHciV2SKF5vFhkzlECH8CxHnTnT6QFAd3AEydnj7YtGGQbLcU/HCTBTJZlTIDZ3jFF8k
+         JYkjWwMhH6CKmC+/0r0v/xxbWRGrT2uWvT3W3yMO3Xv9rE9+4bkFZxV5Ha4Y8D2wGdRh
+         bHsz1s6JRmcloxtE7/ZrjvWG2xW7ApsYS1Es16FQcZsM7o6ck6YSnnikFB0wpsVy4/o1
+         ISNK0TUsyyuQS7BvaTtDyho39Y8MD6ss35akWSLUaLjDEOuGP1Cn4Nbfs0Ku3LBRom/x
+         YADw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716828058; x=1717432858;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zXhZGnNO1k1I5G/0gxKase3G2b7JBGSEOc1kPGMl+NM=;
+        b=LB8jbZaQRdOdORVaPo52wLx0GZ3byYglJVzTmQJIrkvrb9NfbZClJpWyeDHeJAT61f
+         UYDuQe6tKbIYSmCcmv4+czp/TzImtKRatm5MrGpG1RcyJ00GnAOW8KId5vpRvsdNWoeb
+         SbVzLGjMZ/l9YWeT24tX0rV88rfi8WSt+9SsR8zpefDXKWGwswa6kbbrfT636PivjWva
+         5KPH0zprTgfN9aVgmZrrM94ilb3g61kiFJ0J4J2LUAquF9aJbVlQ2baNHQ+rN8Ff/BrN
+         0ETVsZjXaPNrZ/7Io0LQvcHxKaUKJQooszLtFt7vXrm+fqUe805VtNUre/XawGO+/b6S
+         o+VA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8s1l2nzZ4mVrVxWRsHW0Aey2+yUj3/Bb42HtwnwEaBCPDDYqcNUAmXUJDFORF8Swpd9gW43h3BiH6/kIFi/neJ4CC3y+AKMwxpD7Q4jK7oLynSwWEU1HWyXR/g6f5uSw/hd+j4uZRaj7nsa0hBtVYalQBzlNCH4/fXQ6wCnJJK3tZrQKjOBPV
+X-Gm-Message-State: AOJu0YzqBntKNyxV4+uWewl1SWx5huwtxrAI6W2qabAAdtVrs5G0WXR6
+	8DaqjAwKZPTSxdZALT5IzezRFtpF1iBCCGjyrE+7TB+lVwyINQumsloirG9AI4L4yS9wuVf2LTs
+	9TxCfgtoIFXeOwj0PzQrLyKp1k20EHFDb3X4=
+X-Google-Smtp-Source: AGHT+IEsccTJyokgadctxD4gUbLFqcCCT0IkiQsUawd8VegpGiS5XsBpVEQl3nAm3VoXKG7/pPR0CRO43bwFcNIF1xc=
+X-Received: by 2002:a2e:bc08:0:b0:2e9:570e:1cf with SMTP id
+ 38308e7fff4ca-2e95b3089d9mr71753261fa.52.1716828057942; Mon, 27 May 2024
+ 09:40:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PR3PR02MB6012:EE_|DU2PR02MB10229:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4ec0e99-3737-4665-b03e-08dc7e6b1977
-X-Microsoft-Antispam: BCL:0;ARA:14566002|461199019|440099019|3412199016;
-X-Microsoft-Antispam-Message-Info:
-	2AeHEB0S9syQ0DUzINbKdsGnK2deSnJkqHsLb/YzjjcdpnBFajI2F+z7y1hebnjD3jVD7K6UEmwRn7FfVN9Rs94Nxq+st8GXm6U8yTZo2RzuKO4IVqgbr0NtPjMXXo7EkirLFlev8JrxNVieQkg5iHvTq/aoNNwYhceiAzYZ67L2JsRmFE9fszoGtRahZXI4Fl/3EeZuRMdtXuS4uC3zgbR9Lp6kgEwIjFDvyh7t7ChIMxReS0RCSlUDCQY5rm63fYRN9nA+jvHRUbNfdAvcPmjb94RaFBE3KVN4CmDR03XXQN2BcS5zcyGd8oJiOGXiEwU5epQLgaBQp60U4rX2wgziWga6ybU9lNSohOauad0VHLS5MNWU19iLGZ5Rhn3V85Sl+ypVgK+ad1grvDL8dOzr2NCMzvpcey1X6ZtukEreRHsBQOZTougbYecgv0Qwtqc+qu+zhSAGhXpLD/8dyYbZQpzcshRJGYMGqZUforBSfSMQbNoLHnxsrnrfwmmuEh7Rpk6uPPDKF6FOimY0mMtKf6L6E7WuiTdG4KfzrenBCbdLfhtvSpQfQfKjVCK6
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?oTePsso2/D33nC2tinVl4ggxPlj8lA7AMoTWz50cZxdGPA/xyYF+L/DVCsR2?=
- =?us-ascii?Q?cV3lCHGUw5+MoL+AteLyxA82Wdm2dD9fFzBSviMMGHjybvjeAuhFcgybhK8w?=
- =?us-ascii?Q?Gn9Np6/R5eMnkJk9cyIqMMrI/ELoS/gzyFEm99sVaZl+bG3HNW+UF8uTF9yT?=
- =?us-ascii?Q?zyaKhoKdzrj4UA83XZIvU95kUGrwMjlirDyccuV1+5Fl9t6gty6k59j8BROu?=
- =?us-ascii?Q?m0pzEnpS4PGnXHVLijnhjPFU2ItF/8+ZN8DYK323/Tt+rScEl4//FSgypzVG?=
- =?us-ascii?Q?QQYF9jS3oDxdRdekFySS3K87r3LAJlDbLRTRxibcCIad550aOYTKeCOzXm/S?=
- =?us-ascii?Q?rhMponQJFuK/P8pWoHvXxo77aPBnwqefUehP3yswfdL6/VDpMti1e45Qo5xn?=
- =?us-ascii?Q?xgkv0h7WYhQJbb/xai2Aiill+ngqvVdzO7h6Faj1jYjWXA74OzFWmeN9F9uw?=
- =?us-ascii?Q?J5on9tytlahwwbsT546hHkEKSRVlyMtPlXSkHq54uPaEslW/RXwv0fZIPRPl?=
- =?us-ascii?Q?H8e09+NA5agok+6vEVcKIhRqRiVAIQrf832owD2aQRNDPPri2HUNIr8q/7Ym?=
- =?us-ascii?Q?SIdTs4uTbKux1U0VEMawVFsJwMfmREYDvMhZsRN1iiUIznO4d9fxfTMZwmNa?=
- =?us-ascii?Q?F0RoftaAJILOxNjetMF/ni/sme1peK82Onknl2f0pBUqAlkT/LZT/hEGvAcG?=
- =?us-ascii?Q?xf2MgsV4cVppUBXl5syEgKZfHTi/oIlw41WprZYiYT3iVbar09bOMWE3QqZG?=
- =?us-ascii?Q?LRPD185HOUoKHsAwvXjwSGf57eCQhV6ISzyJrdJ3P8iMJxOCPoXZDfEzqxRH?=
- =?us-ascii?Q?4/u0NHi2aar0MKhAzX3H/+J0C+xfcXc3iWfq1mvk+Y/BG595JRQeQVtkY+cA?=
- =?us-ascii?Q?T320XD7AgQgUc968gOJiDrbHOQshnIUHemdZj50cGcaBWVg1yl39IeFNrU/s?=
- =?us-ascii?Q?8hJoFMcD+MFjrPjHAJ/hStPx1xV3HnAnl28cQmQXNUL8SM5gknepZ6Ym2d09?=
- =?us-ascii?Q?NO1rJihfPwZAyEPwon+3wuzXj6rCEX3lDUvez4463XApQIl/hAvA2oMEs2K+?=
- =?us-ascii?Q?ro6T8Vu1iDHiJHcL9kY0DfBI8yLnvWzZZlYt+Upv13CWyr71gZSLedvG6Zsz?=
- =?us-ascii?Q?poAivu83SbNLv6xNs1zBuDhfRwB5n6g9Y5EYb0hLMcwOsguf1RQl3HCjJq0/?=
- =?us-ascii?Q?XqYYSaNcRoLx/DyQYfkfyfhpkSbLEI8ezcXHkRmNt9FtilaMj7l9ihxNuLKY?=
- =?us-ascii?Q?/MJMIyVvg3LZiyY/4YKTQol1Ad9TZMC/eFIi4TKSb7rAcvPboRbvkj7Sk5BY?=
- =?us-ascii?Q?gQvfBiMSo26SCmdPD04LLMx+?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-bcc80.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4ec0e99-3737-4665-b03e-08dc7e6b1977
-X-MS-Exchange-CrossTenant-AuthSource: PR3PR02MB6012.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2024 16:36:03.5064
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR02MB10229
+References: <CAE4VaREzY+a2PvQJYJbfh8DwB4OP7kucZG-e28H22xyWob1w_A@mail.gmail.com>
+ <5b79732b-087c-411f-a477-9b837566673e@leemhuis.info> <20240524132008.6b6f69f6@gandalf.local.home>
+ <CAE4VaRF80OhnaiqeP9STfLa5pORB31YSorgoJ92fQ8tsRovxqQ@mail.gmail.com>
+In-Reply-To: <CAE4VaRF80OhnaiqeP9STfLa5pORB31YSorgoJ92fQ8tsRovxqQ@mail.gmail.com>
+From: =?UTF-8?B?SWxra2EgTmF1bGFww6TDpA==?= <digirigawa@gmail.com>
+Date: Mon, 27 May 2024 19:40:21 +0300
+Message-ID: <CAE4VaRGaNJSdo474joOtKEkxkfmyJ-zsrr8asb7ojP2JexFt-A@mail.gmail.com>
+Subject: Re: Bug in Kernel 6.8.x, 6.9.x Causing Trace/Panic During Shutdown/Reboot
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>, 
+	Linux regressions mailing list <regressions@lists.linux.dev>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Thomas,
+Hi Steven,
 
-On 24/05/27 05:01pm, Thomas Gleixner wrote:
-> Tim!
-> 
-> On Mon, May 27 2024 at 14:35, Tim Teichmann wrote:
-> > On 27/05/2024 12:06, Thomas Gleixner wrote:
-> >> Christian! On Sat, May 25 2024 at 02:12, Christian Heusel wrote:
-> >>> On 24/05/25 12:24AM, Thomas Gleixner wrote:
-> >>>> Can you please provide the full boot log as the information which 
-> >>>> leads up to the symptom is obviously more interesting than the 
-> >>>> symptom itself. 
-> >>> I have attached the full dmesg of an example of a bad boot (from 
-> >>> doing the bisection), sorry that I missed that when putting together 
-> >>> the initial report! 
-> >> Thanks for the data. Can you please provide the output of # cat 
-> >> /proc/cpuinfo from a working kernel? Thanks, tglx 
+I took some time and bisected the 6.8.9 - 6.8.10 and git gave the
+panic inducing commit:
+
+414fb08628143 (tracefs: Reset permissions on remount if permissions are opt=
+ions)
+
+I reverted that commit to 6.9.2 and now it only serves the trace but
+the panic is gone. But I can live with it.
+
+--Ilkka
+
+On Sun, May 26, 2024 at 8:42=E2=80=AFPM Ilkka Naulap=C3=A4=C3=A4 <digirigaw=
+a@gmail.com> wrote:
+>
+> hi,
+>
+> I took 6.9.2 and applied that 0bcfd9aa4dafa to it. Now the kernel is
+> serving me both problems; the trace and the panic as the pic shows.
+>
+> > To understand this, did you do anything with tracing? Before shutting d=
+own,
+> > is there anything in /sys/kernel/tracing/instances directory?
+> > Were any of the files/directories permissions in /sys/kernel/tracing ch=
+anged?
+>
+> And to answer your question, I did not do any tracing or so and the
+> /sys/kernel/tracing is empty.
+> Just plain boot-up, no matter if in full desktop or in bare rescue
+> mode, ends up the same way.
+>
+> --Ilkka
+>
+> On Fri, May 24, 2024 at 8:19=E2=80=AFPM Steven Rostedt <rostedt@goodmis.o=
+rg> wrote:
 > >
-> > Right here is the output of
-> 
-> Thanks for this. Can you also provide the output of:
-> 
-> # cpuid -r
-> 
-> please?
-> 
-> Thanks,
-> 
->         tglx
-
-Right here is the output of the
-
-# cpuid -r
-
-command:
-
-Basic Leafs :
-================
-0x00000000: EAX=0x0000000d, EBX=0x68747541, ECX=0x444d4163, EDX=0x69746e65
-0x00000001: EAX=0x00600f20, EBX=0x00080800, ECX=0x3e98320b, EDX=0x178bfbff
-0x00000005: EAX=0x00000040, EBX=0x00000040, ECX=0x00000003, EDX=0x00000000
-0x00000006: EAX=0x00000000, EBX=0x00000000, ECX=0x00000001, EDX=0x00000000
-0x00000007: subleafs:
-  0: EAX=0x00000000, EBX=0x00000008, ECX=0x00000000, EDX=0x00000000
-0x0000000d: subleafs:
-  0: EAX=0x00000007, EBX=0x00000340, ECX=0x000003c0, EDX=0x40000000
-  2: EAX=0x00000100, EBX=0x00000240, ECX=0x00000000, EDX=0x00000000
-Extended Leafs :
-================
-0x80000000: EAX=0x8000001e, EBX=0x68747541, ECX=0x444d4163, EDX=0x69746e65
-0x80000001: EAX=0x00600f20, EBX=0x10000000, ECX=0x01eb3fff, EDX=0x2fd3fbff
-0x80000002: EAX=0x20444d41, EBX=0x74285846, ECX=0x382d296d, EDX=0x20303033
-0x80000003: EAX=0x68676945, EBX=0x6f432d74, ECX=0x50206572, EDX=0x65636f72
-0x80000004: EAX=0x726f7373, EBX=0x20202020, ECX=0x20202020, EDX=0x00202020
-0x80000005: EAX=0xff40ff18, EBX=0xff40ff30, ECX=0x10040140, EDX=0x40020140
-0x80000006: EAX=0x64006400, EBX=0x64004200, ECX=0x08008140, EDX=0x0040c140
-0x80000007: EAX=0x00000000, EBX=0x00000000, ECX=0x00000000, EDX=0x000007d9
-0x80000008: EAX=0x00003030, EBX=0x00001000, ECX=0x00004007, EDX=0x00000000
-0x8000000a: EAX=0x00000001, EBX=0x00010000, ECX=0x00000000, EDX=0x00001cff
-0x80000019: EAX=0xf040f018, EBX=0x64006400, ECX=0x00000000, EDX=0x00000000
-0x8000001a: EAX=0x00000003, EBX=0x00000000, ECX=0x00000000, EDX=0x00000000
-0x8000001b: EAX=0x000000ff, EBX=0x00000000, ECX=0x00000000, EDX=0x00000000
-0x8000001c: EAX=0x00000000, EBX=0x80032013, ECX=0x00010200, EDX=0x8000000f
-0x8000001d: subleafs:
-  0: EAX=0x00000121, EBX=0x00c0003f, ECX=0x0000003f, EDX=0x00000000
-  1: EAX=0x00004122, EBX=0x0040003f, ECX=0x000001ff, EDX=0x00000000
-  2: EAX=0x00004143, EBX=0x03c0003f, ECX=0x000007ff, EDX=0x00000001
-  3: EAX=0x0001c163, EBX=0x0fc0003f, ECX=0x000007ff, EDX=0x00000001
-0x8000001e: EAX=0x00000000, EBX=0x00000100, ECX=0x00000000, EDX=0x00000000
-
-Thank you,
-Tim Teichmann
+> > On Fri, 24 May 2024 12:50:08 +0200
+> > "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.i=
+nfo> wrote:
+> >
+> > > > - Affected Versions: Before kernel version 6.8.10, the bug caused a
+> > > > quick display of a kernel trace dump before the shutdown/reboot
+> > > > completed. Starting from version 6.8.10 and continuing into version
+> > > > 6.9.0 and 6.9.1, this issue has escalated to a kernel panic,
+> > > > preventing the shutdown or reboot from completing and leaving the
+> > > > machine stuck.
+> >
+> > Ah, I bet it was this commit: baa23a8d4360d ("tracefs: Reset permission=
+s on
+> > remount if permissions are options"), which added a "iput" callback to =
+the
+> > dentry without calling iput, leaving stale inodes around.
+> >
+> > This is fixed with:
+> >
+> >   0bcfd9aa4dafa ("tracefs: Clear EVENT_INODE flag in tracefs_drop_inode=
+()")
+> >
+> > Try adding just that patch. It will at least make it go back to what wa=
+s
+> > happening before 6.8.10 (I hope!).
+> >
+> > -- Steve
 
