@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-46544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C578B8D078D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:07:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 808DC8D0794
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E1F21F220C9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:07:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8EA0289A8C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB45216E896;
-	Mon, 27 May 2024 15:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E53516EBF1;
+	Mon, 27 May 2024 15:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F7H2yHzg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sHUo5g9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B3116726B;
-	Mon, 27 May 2024 15:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BDF16E893;
+	Mon, 27 May 2024 15:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825474; cv=none; b=jKhE0u04uNeqt+IbtON2Z9736UMCKKvyvy5+D4OoXUunojJDdYoVGMkZXklq8ikKGhDpkdAphNDuKKnU7D1CgKDH7Blzve4gDKgXTeZ9qzsY3qB4E49UzQvt1qnIX/hVP7y6+Oud63+tia0UFGhMya5L9Zs1+PxH/tlygXkePjM=
+	t=1716825476; cv=none; b=bY8Lwtgug0oCEQTCs6cGKQhiR8yq6zihxJ3+ZgQxX32RYjDzxstj/Rh9V1gIW5dqORcM4wZKIfyeUwZO6jvhUX/Y2X1FNtmOYk8ecFfJ0q0Nu80mxjOxfnkjnBk9eouw4F7lntS70SM1MHIn9sFpCb2JDOv4N2XF8tbvqLwMVrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825474; c=relaxed/simple;
-	bh=Rdcig0QlEbYG/qze7YAYrzkVNJF3ZDiIo1GDKCxuQ1o=;
+	s=arc-20240116; t=1716825476; c=relaxed/simple;
+	bh=RXItawyunSKwgW8TbTmkLjm06IxAaMojUWhmDVD+9Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kriHsIG/qx07zrnQrMW4BVIsQw4E0p8D9wvukn7Acn4QP/PPadYP9tKDekiFhKATwcXFcOxkFfCnqAFPBDyVtBulJZghMe1uj8dO8T4/7NjmTen7tPm3rb6vGIJhlm5U66o0jKPCtp/IDM5zYvHt3GjAs6oHX2KlFSS2AljgUPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F7H2yHzg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB19C4AF08;
-	Mon, 27 May 2024 15:57:52 +0000 (UTC)
+	 MIME-Version; b=TTBr7V9X7fE0ziuVyX049hDHoEeGCsx3yGyXBNAivQcm66OibuzKJZ8UdC3RsjQpR2Z/zDlTLvOE3X0TLWWN68W9qLyYL4HkfKpEr3s7+8QjCKN8nWupu6QqHeDcCUW/FJAFUd/Q0GB1rbDKQ4gfyzz/4vqZ2ssFUzxoyN2hBJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sHUo5g9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F78EC32789;
+	Mon, 27 May 2024 15:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716825474;
-	bh=Rdcig0QlEbYG/qze7YAYrzkVNJF3ZDiIo1GDKCxuQ1o=;
+	s=k20201202; t=1716825475;
+	bh=RXItawyunSKwgW8TbTmkLjm06IxAaMojUWhmDVD+9Iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7H2yHzgQDB9nl+JvJG9ACWz6OxStJdjMxHf4oguQH+3XpJVg9/qVkIy1rj9XrWII
-	 1XvceYH96asj5Iei39hzDbfq3awjKOjqODLD7gcKAxS4UPR0k/GT5wkt3QZbYzTaZA
-	 jjBtZ4Th+0Bk+h74hei5JHCNtsnGCPPM1iQQzzL1Tf1LD33IByt7yngp5RT4UIATdm
-	 owjvQ0e8vg9lNo2bn1Mh0ukuo31o+EUxAK7/JIbGHOB3jwAfb8aJkO7ZwiJtfveqfm
-	 /0bYxWDd0UJam0nrXFeEAEGKB722f0YC16/kpnOfRyALo52J6lYBSqml2KWy38MJDk
-	 EVj/btSHJLU/w==
+	b=sHUo5g9MP+KTBnMJMrgxOAE2AjaCWw8SmL+hV/h/DpvxUGq/mSvdDTdYks2osJMic
+	 GT54tCzAipodM/TT2+bVn0Jq9YXSRs96+Ml8p1vkJUT9qRrkLIeMVZRcLL1WKW+Yi7
+	 y3++sIlpHGqJC8gV5P/rJpu7XSpqE9YR4hYU0ZUNRYIRCjZrg73oAo5AICMXIoxwhl
+	 GC4o/AvInjxqyFNOiiHfh8LVY9sV1zjq7qWslRwNY3OsJFoGNoH0EHHuANgXI4W236
+	 43YhnfYkFnEcFtoONVD7rtpZR9F6q9i4AvkWe5g6iizo9vN7nmHrJqmI0pi4XsUUhT
+	 39gMWjG2otwyA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
+Cc: Ben Fradella <bfradell@netapp.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	nathan@kernel.org,
-	bhe@redhat.com,
-	arnd@arndb.de,
-	akpm@linux-foundation.org,
-	geert@linux-m68k.org,
-	wangkefeng.wang@huawei.com,
-	christophe.leroy@csgroup.eu,
-	stanislav.kinsburskii@gmail.com,
-	bhelgaas@google.com,
-	linuxppc-dev@lists.ozlabs.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 10/11] powerpc/io: Avoid clang null pointer arithmetic warnings
-Date: Mon, 27 May 2024 11:56:47 -0400
-Message-ID: <20240527155710.3865826-10-sashal@kernel.org>
+	ilpo.jarvinen@linux.intel.com,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 11/11] platform/x86: p2sb: Don't init until unassigned resources have been assigned
+Date: Mon, 27 May 2024 11:56:48 -0400
+Message-ID: <20240527155710.3865826-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527155710.3865826-1-sashal@kernel.org>
 References: <20240527155710.3865826-1-sashal@kernel.org>
@@ -75,83 +69,83 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.92
 Content-Transfer-Encoding: 8bit
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Ben Fradella <bfradell@netapp.com>
 
-[ Upstream commit 03c0f2c2b2220fc9cf8785cd7b61d3e71e24a366 ]
+[ Upstream commit 2c6370e6607663fc5fa0fd9ed58e2e01014898c7 ]
 
-With -Wextra clang warns about pointer arithmetic using a null pointer.
-When building with CONFIG_PCI=n, that triggers a warning in the IO
-accessors, eg:
+The P2SB could get an invalid BAR from the BIOS, and that won't be fixed
+up until pcibios_assign_resources(), which is an fs_initcall().
 
-  In file included from linux/arch/powerpc/include/asm/io.h:672:
-  linux/arch/powerpc/include/asm/io-defs.h:23:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     23 | DEF_PCI_AC_RET(inb, u8, (unsigned long port), (port), pio, port)
-        | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ...
-  linux/arch/powerpc/include/asm/io.h:591:53: note: expanded from macro '__do_inb'
-    591 | #define __do_inb(port)          readb((PCI_IO_ADDR)_IO_BASE + port);
-        |                                       ~~~~~~~~~~~~~~~~~~~~~ ^
+- Move p2sb_fs_init() to an fs_initcall_sync(). This is still early
+  enough to avoid a race with any dependent drivers.
 
-That is because when CONFIG_PCI=n, _IO_BASE is defined as 0.
+- Add a check for IORESOURCE_UNSET in p2sb_valid_resource() to catch
+  unset BARs going forward.
 
-Although _IO_BASE is defined as plain 0, the cast (PCI_IO_ADDR) converts
-it to void * before the addition with port happens.
+- Return error values from p2sb_fs_init() so that the 'initcall_debug'
+  cmdline arg provides useful data.
 
-Instead the addition can be done first, and then the cast. The resulting
-value will be the same, but avoids the warning, and also avoids void
-pointer arithmetic which is apparently non-standard.
-
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Closes: https://lore.kernel.org/all/CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240503075619.394467-1-mpe@ellerman.id.au
+Signed-off-by: Ben Fradella <bfradell@netapp.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
+Reviewed-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20240509164905.41016-1-bcfradella@proton.me
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/io.h | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/platform/x86/p2sb.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index fc112a91d0c2f..0e1745e5125b0 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -553,12 +553,12 @@ __do_out_asm(_rec_outl, "stwbrx")
- #define __do_inw(port)		_rec_inw(port)
- #define __do_inl(port)		_rec_inl(port)
- #else /* CONFIG_PPC32 */
--#define __do_outb(val, port)	writeb(val,(PCI_IO_ADDR)_IO_BASE+port);
--#define __do_outw(val, port)	writew(val,(PCI_IO_ADDR)_IO_BASE+port);
--#define __do_outl(val, port)	writel(val,(PCI_IO_ADDR)_IO_BASE+port);
--#define __do_inb(port)		readb((PCI_IO_ADDR)_IO_BASE + port);
--#define __do_inw(port)		readw((PCI_IO_ADDR)_IO_BASE + port);
--#define __do_inl(port)		readl((PCI_IO_ADDR)_IO_BASE + port);
-+#define __do_outb(val, port)	writeb(val,(PCI_IO_ADDR)(_IO_BASE+port));
-+#define __do_outw(val, port)	writew(val,(PCI_IO_ADDR)(_IO_BASE+port));
-+#define __do_outl(val, port)	writel(val,(PCI_IO_ADDR)(_IO_BASE+port));
-+#define __do_inb(port)		readb((PCI_IO_ADDR)(_IO_BASE + port));
-+#define __do_inw(port)		readw((PCI_IO_ADDR)(_IO_BASE + port));
-+#define __do_inl(port)		readl((PCI_IO_ADDR)(_IO_BASE + port));
- #endif /* !CONFIG_PPC32 */
+diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
+index a64f56ddd4a44..053be5c5e0cad 100644
+--- a/drivers/platform/x86/p2sb.c
++++ b/drivers/platform/x86/p2sb.c
+@@ -56,12 +56,9 @@ static int p2sb_get_devfn(unsigned int *devfn)
+ 	return 0;
+ }
  
- #ifdef CONFIG_EEH
-@@ -574,12 +574,12 @@ __do_out_asm(_rec_outl, "stwbrx")
- #define __do_writesw(a, b, n)	_outsw(PCI_FIX_ADDR(a),(b),(n))
- #define __do_writesl(a, b, n)	_outsl(PCI_FIX_ADDR(a),(b),(n))
+-static bool p2sb_valid_resource(struct resource *res)
++static bool p2sb_valid_resource(const struct resource *res)
+ {
+-	if (res->flags)
+-		return true;
+-
+-	return false;
++	return res->flags & ~IORESOURCE_UNSET;
+ }
  
--#define __do_insb(p, b, n)	readsb((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
--#define __do_insw(p, b, n)	readsw((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
--#define __do_insl(p, b, n)	readsl((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
--#define __do_outsb(p, b, n)	writesb((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
--#define __do_outsw(p, b, n)	writesw((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
--#define __do_outsl(p, b, n)	writesl((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
-+#define __do_insb(p, b, n)	readsb((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
-+#define __do_insw(p, b, n)	readsw((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
-+#define __do_insl(p, b, n)	readsl((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
-+#define __do_outsb(p, b, n)	writesb((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
-+#define __do_outsw(p, b, n)	writesw((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
-+#define __do_outsl(p, b, n)	writesl((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
+ /* Copy resource from the first BAR of the device in question */
+@@ -220,16 +217,20 @@ EXPORT_SYMBOL_GPL(p2sb_bar);
  
- #define __do_memset_io(addr, c, n)	\
- 				_memset_io(PCI_FIX_ADDR(addr), c, n)
+ static int __init p2sb_fs_init(void)
+ {
+-	p2sb_cache_resources();
+-	return 0;
++	return p2sb_cache_resources();
+ }
+ 
+ /*
+- * pci_rescan_remove_lock to avoid access to unhidden P2SB devices can
+- * not be locked in sysfs pci bus rescan path because of deadlock. To
+- * avoid the deadlock, access to P2SB devices with the lock at an early
+- * step in kernel initialization and cache required resources. This
+- * should happen after subsys_initcall which initializes PCI subsystem
+- * and before device_initcall which requires P2SB resources.
++ * pci_rescan_remove_lock() can not be locked in sysfs PCI bus rescan path
++ * because of deadlock. To avoid the deadlock, access P2SB devices with the lock
++ * at an early step in kernel initialization and cache required resources.
++ *
++ * We want to run as early as possible. If the P2SB was assigned a bad BAR,
++ * we'll need to wait on pcibios_assign_resources() to fix it. So, our list of
++ * initcall dependencies looks something like this:
++ *
++ * ...
++ * subsys_initcall (pci_subsys_init)
++ * fs_initcall     (pcibios_assign_resources)
+  */
+-fs_initcall(p2sb_fs_init);
++fs_initcall_sync(p2sb_fs_init);
 -- 
 2.43.0
 
