@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-46716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0563B8D0AF1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:04:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 588868D0CFD
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:25:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B6F21F229AE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:04:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BED81C214BF
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29BA15FCE5;
-	Mon, 27 May 2024 19:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D817815FCFC;
+	Mon, 27 May 2024 19:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1Y/ndcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeMl/mIX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5701078F;
-	Mon, 27 May 2024 19:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A05168C4;
+	Mon, 27 May 2024 19:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836674; cv=none; b=jySDQdvZhpTRaCNPLZtzwOzegv5CZR/i/Buzi8WzLz6BayyTnqUT9qsUFMrjMDE9O8PuweKdXQ/JupCfvqRFXffe0kmRMO2FyWcDf9WLh2vFUhJeAEMatzzSQ+fEtKUkrwc3xu9L/f8x86JxLree+JulzyyiPYeRV/Hk/XVgaBU=
+	t=1716837906; cv=none; b=JQXdXS8f0qSCrp2DIwErRyvAoTGlRHM7HbtJYFL7r6EvcLQL6UsmbAEy49/p0L9rblNVGqce5yuc+ZxYUY5ZDNddHo3dQZgcwZ2K0qz5JR+WND0+eztRdo54qS/EfUFhHXQGOkuBaRBMfmH6WBK8CNNHY1ef3kbISIGGBK6HtLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836674; c=relaxed/simple;
-	bh=OE/yyHuKs4BX4bij+7NhVG6IUMLLlJrap7fY6YEKVAc=;
+	s=arc-20240116; t=1716837906; c=relaxed/simple;
+	bh=V38ghrS1OqPFJLMaxvFTJJJER9WQxyhlCsnQoY9GX1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQiL41e6F03lO6F9N/z+hQ86WeMmlAqFZqacZAH0Sou84t/pxGZlIK9xbL8cJoexmeQeo9kk+l5rHWUdA9vqzZjGeFnQlFeS2q1ai/yw3KipXc4LwFdYhwYnbmS5yGFtngSbwi14V/CSy3cpVr13z8e5NyBo5YH5gNnCdBnX4o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1Y/ndcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC62C2BBFC;
-	Mon, 27 May 2024 19:04:34 +0000 (UTC)
+	 MIME-Version; b=FpkFIbnQ6erE/n3VOxPyK0pN66bOPSIyH9JI9/9tIeQKm9s0HD0h4mbVJ5njorEdB/sdlwwLM7Et/kxUYPwpPzjomJCsEZpX/A+mcjmLqfb9YuQUW6hxPlk/YJeIFIQW8okTMSh5p0dhwPJkXlQtOibbh5XcpKWBY2dr/POQaqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeMl/mIX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253D6C2BBFC;
+	Mon, 27 May 2024 19:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836674;
-	bh=OE/yyHuKs4BX4bij+7NhVG6IUMLLlJrap7fY6YEKVAc=;
+	s=korg; t=1716837906;
+	bh=V38ghrS1OqPFJLMaxvFTJJJER9WQxyhlCsnQoY9GX1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1Y/ndcZbUL+6ST+C9qYwsgI/M6Ky8UYQ4Z1PaHP0RAK2IapO85FcplYCrBmzUl5x
-	 b1MWpzWzeBDLOs64ix3/4PQB2Z3IADe5qsBMQZKiTamSJK70vdXLsJnHa0wf1Ka12z
-	 PnRcCcs7uk0UazXDigL329gGdIzipN1w6iMASKgY=
+	b=EeMl/mIXMZaVbLLV6uo9PA/3PLSDvSFF/V+TL5MAtL8gvmmfzz7ryM64w32rmJw6/
+	 TCaqBdltufOqLU3b2ZL76HAKTlO/kD9lGTpnNQ70U3I+VgZ0jeo4R16yh50+W8ueS/
+	 T+fl2ro+vC2/9GB8lEmOx/D8j9DsAQXvKYIbIER4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hechao Li <hli@netflix.com>,
-	Tycho Andersen <tycho@tycho.pizza>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Sahil Siddiq <icegambit91@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 145/427] tcp: increase the default TCP scaling ratio
-Date: Mon, 27 May 2024 20:53:12 +0200
-Message-ID: <20240527185615.413380920@linuxfoundation.org>
+Subject: [PATCH 6.8 191/493] bpftool: Mount bpffs on provided dir instead of parent dir
+Date: Mon, 27 May 2024 20:53:13 +0200
+Message-ID: <20240527185636.595423424@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,266 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hechao Li <hli@netflix.com>
+From: Sahil Siddiq <icegambit91@gmail.com>
 
-[ Upstream commit 697a6c8cec03c2299f850fa50322641a8bf6b915 ]
+[ Upstream commit 478a535ae54ad3831371904d93b5dfc403222e17 ]
 
-After commit dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale"),
-we noticed an application-level timeout due to reduced throughput.
+When pinning programs/objects under PATH (eg: during "bpftool prog
+loadall") the bpffs is mounted on the parent dir of PATH in the
+following situations:
+- the given dir exists but it is not bpffs.
+- the given dir doesn't exist and the parent dir is not bpffs.
 
-Before the commit, for a client that sets SO_RCVBUF to 65k, it takes
-around 22 seconds to transfer 10M data. After the commit, it takes 40
-seconds. Because our application has a 30-second timeout, this
-regression broke the application.
+Mounting on the parent dir can also have the unintentional side-
+effect of hiding other files located under the parent dir.
 
-The reason that it takes longer to transfer data is that
-tp->scaling_ratio is initialized to a value that results in ~0.25 of
-rcvbuf. In our case, SO_RCVBUF is set to 65536 by the application, which
-translates to 2 * 65536 = 131,072 bytes in rcvbuf and hence a ~28k
-initial receive window.
+If the given dir exists but is not bpffs, then the bpffs should
+be mounted on the given dir and not its parent dir.
 
-Later, even though the scaling_ratio is updated to a more accurate
-skb->len/skb->truesize, which is ~0.66 in our environment, the window
-stays at ~0.25 * rcvbuf. This is because tp->window_clamp does not
-change together with the tp->scaling_ratio update when autotuning is
-disabled due to SO_RCVBUF. As a result, the window size is capped at the
-initial window_clamp, which is also ~0.25 * rcvbuf, and never grows
-bigger.
+Similarly, if the given dir doesn't exist and its parent dir is not
+bpffs, then the given dir should be created and the bpffs should be
+mounted on this new dir.
 
-Most modern applications let the kernel do autotuning, and benefit from
-the increased scaling_ratio. But there are applications such as kafka
-that has a default setting of SO_RCVBUF=64k.
+Fixes: 2a36c26fe3b8 ("bpftool: Support bpffs mountpoint as pin path for prog loadall")
+Signed-off-by: Sahil Siddiq <icegambit91@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/2da44d24-74ae-a564-1764-afccf395eeec@isovalent.com/T/#t
+Link: https://lore.kernel.org/bpf/20240404192219.52373-1-icegambit91@gmail.com
 
-This patch increases the initial scaling_ratio from ~25% to 50% in order
-to make it backward compatible with the original default
-sysctl_tcp_adv_win_scale for applications setting SO_RCVBUF.
+Closes: https://github.com/libbpf/bpftool/issues/100
 
-Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
-Signed-off-by: Hechao Li <hli@netflix.com>
-Reviewed-by: Tycho Andersen <tycho@tycho.pizza>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/netdev/20240402215405.432863-1-hli@netflix.com/
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Changes since v1:
+ - Split "mount_bpffs_for_pin" into two functions.
+   This is done to improve maintainability and readability.
+
+Changes since v2:
+- mount_bpffs_for_pin: rename to "create_and_mount_bpffs_dir".
+- mount_bpffs_given_file: rename to "mount_bpffs_given_file".
+- create_and_mount_bpffs_dir:
+  - introduce "dir_exists" boolean.
+  - remove new dir if "mnt_fs" fails.
+- improve error handling and error messages.
+
+Changes since v3:
+- Rectify function name.
+- Improve error messages and formatting.
+- mount_bpffs_for_file:
+  - Check if dir exists before block_mount check.
+
+Changes since v4:
+- Use strdup instead of strcpy.
+- create_and_mount_bpffs_dir:
+  - Use S_IRWXU instead of 0700.
+- Improve error handling and formatting.
+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/bpf/bpftool/common.c     | 96 +++++++++++++++++++++++++++++-----
+ tools/bpf/bpftool/iter.c       |  2 +-
+ tools/bpf/bpftool/main.h       |  3 +-
+ tools/bpf/bpftool/prog.c       |  5 +-
+ tools/bpf/bpftool/struct_ops.c |  2 +-
+ 5 files changed, 92 insertions(+), 16 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 6ae35199d3b3c..2bcf30381d75f 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1539,11 +1539,10 @@ static inline int tcp_space_from_win(const struct sock *sk, int win)
- 	return __tcp_space_from_win(tcp_sk(sk)->scaling_ratio, win);
+diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
+index cc6e6aae2447d..958e92acca8e2 100644
+--- a/tools/bpf/bpftool/common.c
++++ b/tools/bpf/bpftool/common.c
+@@ -244,29 +244,101 @@ int open_obj_pinned_any(const char *path, enum bpf_obj_type exp_type)
+ 	return fd;
  }
  
--/* Assume a conservative default of 1200 bytes of payload per 4K page.
-+/* Assume a 50% default for skb->len/skb->truesize ratio.
-  * This may be adjusted later in tcp_measure_rcv_mss().
-  */
--#define TCP_DEFAULT_SCALING_RATIO ((1200 << TCP_RMEM_TO_WIN_SCALE) / \
--				   SKB_TRUESIZE(4096))
-+#define TCP_DEFAULT_SCALING_RATIO (1 << (TCP_RMEM_TO_WIN_SCALE - 1))
- 
- static inline void tcp_scaling_ratio_init(struct sock *sk)
+-int mount_bpffs_for_pin(const char *name, bool is_dir)
++int create_and_mount_bpffs_dir(const char *dir_name)
  {
+ 	char err_str[ERR_MAX_LEN];
+-	char *file;
+-	char *dir;
++	bool dir_exists;
+ 	int err = 0;
+ 
+-	if (is_dir && is_bpffs(name))
++	if (is_bpffs(dir_name))
+ 		return err;
+ 
+-	file = malloc(strlen(name) + 1);
+-	if (!file) {
++	dir_exists = access(dir_name, F_OK) == 0;
++
++	if (!dir_exists) {
++		char *temp_name;
++		char *parent_name;
++
++		temp_name = strdup(dir_name);
++		if (!temp_name) {
++			p_err("mem alloc failed");
++			return -1;
++		}
++
++		parent_name = dirname(temp_name);
++
++		if (is_bpffs(parent_name)) {
++			/* nothing to do if already mounted */
++			free(temp_name);
++			return err;
++		}
++
++		if (access(parent_name, F_OK) == -1) {
++			p_err("can't create dir '%s' to pin BPF object: parent dir '%s' doesn't exist",
++			      dir_name, parent_name);
++			free(temp_name);
++			return -1;
++		}
++
++		free(temp_name);
++	}
++
++	if (block_mount) {
++		p_err("no BPF file system found, not mounting it due to --nomount option");
++		return -1;
++	}
++
++	if (!dir_exists) {
++		err = mkdir(dir_name, S_IRWXU);
++		if (err) {
++			p_err("failed to create dir '%s': %s", dir_name, strerror(errno));
++			return err;
++		}
++	}
++
++	err = mnt_fs(dir_name, "bpf", err_str, ERR_MAX_LEN);
++	if (err) {
++		err_str[ERR_MAX_LEN - 1] = '\0';
++		p_err("can't mount BPF file system on given dir '%s': %s",
++		      dir_name, err_str);
++
++		if (!dir_exists)
++			rmdir(dir_name);
++	}
++
++	return err;
++}
++
++int mount_bpffs_for_file(const char *file_name)
++{
++	char err_str[ERR_MAX_LEN];
++	char *temp_name;
++	char *dir;
++	int err = 0;
++
++	if (access(file_name, F_OK) != -1) {
++		p_err("can't pin BPF object: path '%s' already exists", file_name);
++		return -1;
++	}
++
++	temp_name = strdup(file_name);
++	if (!temp_name) {
+ 		p_err("mem alloc failed");
+ 		return -1;
+ 	}
+ 
+-	strcpy(file, name);
+-	dir = dirname(file);
++	dir = dirname(temp_name);
+ 
+ 	if (is_bpffs(dir))
+ 		/* nothing to do if already mounted */
+ 		goto out_free;
+ 
++	if (access(dir, F_OK) == -1) {
++		p_err("can't pin BPF object: dir '%s' doesn't exist", dir);
++		err = -1;
++		goto out_free;
++	}
++
+ 	if (block_mount) {
+ 		p_err("no BPF file system found, not mounting it due to --nomount option");
+ 		err = -1;
+@@ -276,12 +348,12 @@ int mount_bpffs_for_pin(const char *name, bool is_dir)
+ 	err = mnt_fs(dir, "bpf", err_str, ERR_MAX_LEN);
+ 	if (err) {
+ 		err_str[ERR_MAX_LEN - 1] = '\0';
+-		p_err("can't mount BPF file system to pin the object (%s): %s",
+-		      name, err_str);
++		p_err("can't mount BPF file system to pin the object '%s': %s",
++		      file_name, err_str);
+ 	}
+ 
+ out_free:
+-	free(file);
++	free(temp_name);
+ 	return err;
+ }
+ 
+@@ -289,7 +361,7 @@ int do_pin_fd(int fd, const char *name)
+ {
+ 	int err;
+ 
+-	err = mount_bpffs_for_pin(name, false);
++	err = mount_bpffs_for_file(name);
+ 	if (err)
+ 		return err;
+ 
+diff --git a/tools/bpf/bpftool/iter.c b/tools/bpf/bpftool/iter.c
+index 6b0e5202ca7a9..5c39c2ed36a2b 100644
+--- a/tools/bpf/bpftool/iter.c
++++ b/tools/bpf/bpftool/iter.c
+@@ -76,7 +76,7 @@ static int do_pin(int argc, char **argv)
+ 		goto close_obj;
+ 	}
+ 
+-	err = mount_bpffs_for_pin(path, false);
++	err = mount_bpffs_for_file(path);
+ 	if (err)
+ 		goto close_link;
+ 
+diff --git a/tools/bpf/bpftool/main.h b/tools/bpf/bpftool/main.h
+index b8bb08d10dec9..9eb764fe4cc8b 100644
+--- a/tools/bpf/bpftool/main.h
++++ b/tools/bpf/bpftool/main.h
+@@ -142,7 +142,8 @@ const char *get_fd_type_name(enum bpf_obj_type type);
+ char *get_fdinfo(int fd, const char *key);
+ int open_obj_pinned(const char *path, bool quiet);
+ int open_obj_pinned_any(const char *path, enum bpf_obj_type exp_type);
+-int mount_bpffs_for_pin(const char *name, bool is_dir);
++int mount_bpffs_for_file(const char *file_name);
++int create_and_mount_bpffs_dir(const char *dir_name);
+ int do_pin_any(int argc, char **argv, int (*get_fd_by_id)(int *, char ***));
+ int do_pin_fd(int fd, const char *name);
+ 
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 9cb42a3366c07..4c4cf16a40ba7 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -1778,7 +1778,10 @@ static int load_with_options(int argc, char **argv, bool first_prog_only)
+ 		goto err_close_obj;
+ 	}
+ 
+-	err = mount_bpffs_for_pin(pinfile, !first_prog_only);
++	if (first_prog_only)
++		err = mount_bpffs_for_file(pinfile);
++	else
++		err = create_and_mount_bpffs_dir(pinfile);
+ 	if (err)
+ 		goto err_close_obj;
+ 
+diff --git a/tools/bpf/bpftool/struct_ops.c b/tools/bpf/bpftool/struct_ops.c
+index d573f2640d8e9..aa43dead249cb 100644
+--- a/tools/bpf/bpftool/struct_ops.c
++++ b/tools/bpf/bpftool/struct_ops.c
+@@ -515,7 +515,7 @@ static int do_register(int argc, char **argv)
+ 	if (argc == 1)
+ 		linkdir = GET_ARG();
+ 
+-	if (linkdir && mount_bpffs_for_pin(linkdir, true)) {
++	if (linkdir && create_and_mount_bpffs_dir(linkdir)) {
+ 		p_err("can't mount bpffs for pinning");
+ 		return -1;
+ 	}
 -- 
 2.43.0
 
