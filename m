@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-46540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D8B8D0780
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:06:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6F88D0785
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCFAD1F2209C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:06:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 196BC286B82
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9EA16DEB1;
-	Mon, 27 May 2024 15:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6E716DECC;
+	Mon, 27 May 2024 15:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tF94oen7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZkXZ8hVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9EB15F30B;
-	Mon, 27 May 2024 15:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F033616DEC8;
+	Mon, 27 May 2024 15:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825458; cv=none; b=XVEQX5XsK7I8uTFoTv5Nl/mlzDrDfDTzxpg92TYXe8kg6jLtWH2B+TLmqREQ1t2phf+206gMozatkMfZxoVfWA/IPNTB8nRDBCIZXXKyjPj9/nVYUvLQPcA/FfjYHTNsQOLyXMInZJRkc8wWKV7rHwqt/zpPRRHI9Qvdfu5a5uk=
+	t=1716825461; cv=none; b=pa5ce1YUrmVEMY636PrEWfuKncFH1C5dJiJ6zhF07X1KWTtfYFJPYDSGEtmZTG+51lG9Jc9CfveqicvBKzhMJE5WP11ISXpbC6gEobKJODBDXLbVOuI3LOR+NkOvqSIej1waKiWR8MjSPaRBuDlAFrgVpIm5DpE2awA/Yd6/F1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825458; c=relaxed/simple;
-	bh=4oVg1/Nu8RNb/3cMAUNF5l/nUCMGVH9Ix6xpXCVryVc=;
+	s=arc-20240116; t=1716825461; c=relaxed/simple;
+	bh=uq3FQDC58HjOwyxAqCT7Qtm3ab+Bwz0osmRhwDaLGXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OX6IsNWsoqVcO8qY5FALzOlHywNAYnYKVkbmOj3iOTd+v+WliTdwczlYLFniKbxqJK0WJkQU3brU2/Pij+op8q4y0W171TohiWk0Ikn847yME38FJzC1LhsPF/HnNhOOYtNTkDuXezlH3aiTZfEiAjsZCoLFrPaRoOAfMDC3n8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tF94oen7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97A2C32781;
-	Mon, 27 May 2024 15:57:35 +0000 (UTC)
+	 MIME-Version; b=dthyWtYfNkBi3WD48t/ZFDbyDKtkx+L6IAeHSaB20mbQf6TRBUaWjv59Q7PYmekV47gWzz/JDIBxzGBpP86TVkCOCG5pCRNdZIjFARpvrQh5fS4L7gc8+XP65ZACr0+gHSbX5C7QK+odczjulpS+yU893F3BfN7X2B4ukMLZLuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZkXZ8hVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85922C32781;
+	Mon, 27 May 2024 15:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716825457;
-	bh=4oVg1/Nu8RNb/3cMAUNF5l/nUCMGVH9Ix6xpXCVryVc=;
+	s=k20201202; t=1716825460;
+	bh=uq3FQDC58HjOwyxAqCT7Qtm3ab+Bwz0osmRhwDaLGXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tF94oen73MIwzk5v3TebDOjc/bb6kd8vA7CCPunmSrTSgp4U5pV4Du0FtF4AENj0w
-	 JERPvgp28vrMEX65aZMwDZR1U4vZiX0fb9/7lUl/XEoAwHp5qUEBJMeh1p0kC+gt+R
-	 nTTI5GI1uiENDbV7t10AmU7evbFuyWkdoledvNi3Jf/V3PybvIl8SrpCBNVUwJrJ5y
-	 0+pbQFOsSbqHjk6DPbBhQCfGI4zViI9ULg39gcvdxevmFhwY1SMBav7cGWH6TUUK1v
-	 oXFsDoiEUkGaFInd+PiADK+mwMa7BTQgFKaMeRyNGVX+2nzm9Ba82mPaoSBZr7n75t
-	 Tg23GWJfBUxEw==
+	b=ZkXZ8hVRYK0g7Qv5RnTZBypULJpyg2bqOOvm5OJ3rqzbY9YXoqcA7+hI/Q3qPhbY5
+	 C9HtwfvFchpB6jRgcx32RDB/mB2yfLOgya+CXp0y+eNGONIsimDbPoSbmVdagVgS5F
+	 oLQHih2cNjfaiBnGP4ragoZEgPFws0mtDSnD39hVCr47lB8K2lKcwyzjY6VUIZeQUF
+	 X3kVyKk+cqkLfbCf3G3dvvT7tnOIpiau9jnRfZ+BqdwNlhp1lrbpFG/OqwSvyNi2gm
+	 j9dAlpZr+u60i+j+fVKqsSZFC5xID3g2DKR31OO47wmF6yhoxIw9XXp85OsaB90pra
+	 Vmift8NIAgMyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Zheyu Ma <zheyuma97@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kailang@realtek.com,
-	luke@ljones.dev,
-	shenghao-ding@ti.com,
-	simont@opensource.cirrus.com,
-	foss@athaariq.my.id,
-	rf@opensource.cirrus.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 06/11] ALSA: hda/realtek: Add quirks for Lenovo 13X
-Date: Mon, 27 May 2024 11:56:43 -0400
-Message-ID: <20240527155710.3865826-6-sashal@kernel.org>
+	andriy.shevchenko@linux.intel.com,
+	wsa+renesas@sang-engineering.com,
+	peda@axentia.se,
+	mcgrof@kernel.org,
+	hkallweit1@gmail.com,
+	gregkh@linuxfoundation.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 07/11] media: lgdt3306a: Add a check against null-pointer-def
+Date: Mon, 27 May 2024 11:56:44 -0400
+Message-ID: <20240527155710.3865826-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527155710.3865826-1-sashal@kernel.org>
 References: <20240527155710.3865826-1-sashal@kernel.org>
@@ -73,35 +71,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.92
 Content-Transfer-Encoding: 8bit
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Zheyu Ma <zheyuma97@gmail.com>
 
-[ Upstream commit 25f46354dca912c84f1f79468fd636a94b8d287a ]
+[ Upstream commit c1115ddbda9c930fba0fdd062e7a8873ebaf898d ]
 
-Add laptop using CS35L41 HDA.
-This laptop does not have _DSD, so require entries in property
-configuration table for cs35l41_hda driver.
+The driver should check whether the client provides the platform_data.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Message-ID: <20240423162303.638211-3-sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The following log reveals it:
+
+[   29.610324] BUG: KASAN: null-ptr-deref in kmemdup+0x30/0x40
+[   29.610730] Read of size 40 at addr 0000000000000000 by task bash/414
+[   29.612820] Call Trace:
+[   29.613030]  <TASK>
+[   29.613201]  dump_stack_lvl+0x56/0x6f
+[   29.613496]  ? kmemdup+0x30/0x40
+[   29.613754]  print_report.cold+0x494/0x6b7
+[   29.614082]  ? kmemdup+0x30/0x40
+[   29.614340]  kasan_report+0x8a/0x190
+[   29.614628]  ? kmemdup+0x30/0x40
+[   29.614888]  kasan_check_range+0x14d/0x1d0
+[   29.615213]  memcpy+0x20/0x60
+[   29.615454]  kmemdup+0x30/0x40
+[   29.615700]  lgdt3306a_probe+0x52/0x310
+[   29.616339]  i2c_device_probe+0x951/0xa90
+
+Link: https://lore.kernel.org/linux-media/20220405095018.3993578-1-zheyuma97@gmail.com
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/dvb-frontends/lgdt3306a.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index f0b939862a2a6..37b92f2bb2075 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10076,6 +10076,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
-+	SND_PCI_QUIRK(0x17aa, 0x3865, "Lenovo 13X", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x3866, "Lenovo 13X", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
+diff --git a/drivers/media/dvb-frontends/lgdt3306a.c b/drivers/media/dvb-frontends/lgdt3306a.c
+index 6dfa8b18ed671..fccadfcd76bef 100644
+--- a/drivers/media/dvb-frontends/lgdt3306a.c
++++ b/drivers/media/dvb-frontends/lgdt3306a.c
+@@ -2177,6 +2177,11 @@ static int lgdt3306a_probe(struct i2c_client *client,
+ 	struct dvb_frontend *fe;
+ 	int ret;
+ 
++	if (!client->dev.platform_data) {
++		dev_err(&client->dev, "platform data is mandatory\n");
++		return -EINVAL;
++	}
++
+ 	config = kmemdup(client->dev.platform_data,
+ 			 sizeof(struct lgdt3306a_config), GFP_KERNEL);
+ 	if (config == NULL) {
 -- 
 2.43.0
 
