@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-46419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495878D0429
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:40:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F588D042C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 16:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFA711F20FAF
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:40:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 544591C21610
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 14:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81A716D9C5;
-	Mon, 27 May 2024 14:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C9320127A;
+	Mon, 27 May 2024 14:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvWkoY4B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="na0kfNHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD8015F405;
-	Mon, 27 May 2024 14:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54D1201271;
+	Mon, 27 May 2024 14:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819477; cv=none; b=SQByzxeNan2xzKaerF3esek86J6W4bQtK8Z75lqbRe+M92gSlm0WKemYq6zUggcHC0LO3DwU5Wa/aA/3tsc3rPGN/BZXbwuG/xTTLoZhS5Y7/Bbl7sV0puZIVoAuZj/mUj9TesCVwSyQscetjgBO0x3kLXgD1v/RYbou5sSTMcQ=
+	t=1716819479; cv=none; b=mWL8B65TBRkdyL7LJTMOmzTj6DSr5pcDQxTu/cufuyZ69uxWOk4Is1a16lbtCXBne6lLyeKh+JoMy9N3Q3SqObi679t+zdKIavxgVmokGgiLQMJVYm99aD2FjpszqxUNdN2Vhc4ajp/VJbnGLu0TGKxwNCdKZnI+eZoV1DQ3dI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819477; c=relaxed/simple;
-	bh=XYkTLSRQDTcxmvQu5eHrjpEjE9SsJfxPR7keFDJH58g=;
+	s=arc-20240116; t=1716819479; c=relaxed/simple;
+	bh=KNdy2LzM8Xkp24ADaFZAunv2873qw9qduM5IkseMQp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCtjgPIpiz6xvPRWIaBuf7XB29OBoD3q9uuHxb6G9U53XlN/5kJzLj+Vf5Ojm32TFLCURd0BhL/fmyKQuO3mucJQIEkGzxto6wdvpZhGRezmpczsJrXeNV6jfgyRaZKhbs500zlsSQ20bgxS02NJeX/fGIwJ/IVxkgUurQlliJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvWkoY4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26680C2BBFC;
-	Mon, 27 May 2024 14:17:55 +0000 (UTC)
+	 MIME-Version; b=dExyjaAt7qhZt9twKCkMzs4lyVYc5SGqsvV5sZqW8S81g3OUlZIBKe9VAe14T9vlCCqUpdmmBbJwi4zstW3B0ARboRYBvEWK9DHifXd+Tl3nI1kc6trR8DHR3FI6NMnOFBbWmJKAMuJzPPSiFezUs4gbvTK4qS85hSIQnVfRWGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=na0kfNHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B40EC32781;
+	Mon, 27 May 2024 14:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819477;
-	bh=XYkTLSRQDTcxmvQu5eHrjpEjE9SsJfxPR7keFDJH58g=;
+	s=k20201202; t=1716819478;
+	bh=KNdy2LzM8Xkp24ADaFZAunv2873qw9qduM5IkseMQp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvWkoY4B/KX7YYfunqKxbVkM2CnpujKIzYuj/1mdyfQ/HXDfuvp21e5ivem5BMu/M
-	 Q0pqVFyyIVM92mp8+fCAUPMcu3Ux2q9Mncmx8tAazTMJALIKfqFHn8TDJgTseTlaVL
-	 FzUblO7S7a1t71kHytiYEXZoWHMYpZfpSkYPZ1WphH0ae1vAmiFLOU3lSQoaxOdmpH
-	 uDRYNhwQegznLLf6LtG4FPL8O+xAzmCo2s8veZTAN1hGrohKkv+jesFKb3qAFB0zOZ
-	 flCzXZ0Y78gJiI2+TTm+IWJxCtHRJpCmQZXXolfNhVmS7T6yjY4nDeUJOZF/Q9iXC+
-	 MC/bIXHAQmOoA==
+	b=na0kfNHL3oVlwi8TnsRZRt4a4iTGjXp8ITeRYVKGeOpvgtHAVV214LDBGucUmWRiC
+	 ztUiU5up76nquleLM7CUMmrwA7IHizurGr9YUPRE9BZgpSuA7pnE0egB+Cdt/F+idq
+	 jRRH7LuqAluzEur2RTx9/fNgzfZeg45bIPWA8PTgakqjIg3OHNV/YdCfX53Q2KuK75
+	 00e2trjH8CKuS4kcSUq/ApYN0T3yRqt6ZMUsz96zxtAhfJR41Et1cQQtzH641/fZx0
+	 dXAIjRxMZmASE5iAXcokmnQ0K6HoUkpURIq/FXSIF6BXUk5Vbq+W0B/XEHOmmkFKqh
+	 NlnHo+jTGxGWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leon Yen <leon.yen@mediatek.com>,
-	Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+Cc: Sean O'Brien <seobrien@chromium.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	deren.wu@mediatek.com,
-	horms@kernel.org,
-	kernel@mattwhitlock.name,
-	wang.zhao@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 13/17] wifi: mt76: mt7921s: fix potential hung tasks during chip recovery
-Date: Mon, 27 May 2024 10:16:50 -0400
-Message-ID: <20240527141712.3853988-13-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 14/17] HID: Add quirk for Logitech Casa touchpad
+Date: Mon, 27 May 2024 10:16:51 -0400
+Message-ID: <20240527141712.3853988-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141712.3853988-1-sashal@kernel.org>
 References: <20240527141712.3853988-1-sashal@kernel.org>
@@ -77,104 +67,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.92
 Content-Transfer-Encoding: 8bit
 
-From: Leon Yen <leon.yen@mediatek.com>
+From: Sean O'Brien <seobrien@chromium.org>
 
-[ Upstream commit ecf0b2b8a37c8464186620bef37812a117ff6366 ]
+[ Upstream commit dd2c345a94cfa3873cc20db87387ee509c345c1b ]
 
-During chip recovery (e.g. chip reset), there is a possible situation that
-kernel worker reset_work is holding the lock and waiting for kernel thread
-stat_worker to be parked, while stat_worker is waiting for the release of
-the same lock.
-It causes a deadlock resulting in the dumping of hung tasks messages and
-possible rebooting of the device.
+This device sometimes doesn't send touch release signals when moving
+from >=4 fingers to <4 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
+of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
 
-This patch prevents the execution of stat_worker during the chip recovery.
+MT_QUIRK_FORCE_MULTI_INPUT is not necessary for this device, but does no
+harm.
 
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sean O'Brien <seobrien@chromium.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  | 2 --
- drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 2 --
- drivers/net/wireless/mediatek/mt76/sdio.c            | 3 ++-
- 4 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 49ddca84f7862..cae7c21ca1f8b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -883,6 +883,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 	int i, ret;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 405d88b08908d..97745a1f9c6f1 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -802,6 +802,7 @@
+ #define USB_DEVICE_ID_LOGITECH_AUDIOHUB 0x0a0e
+ #define USB_DEVICE_ID_LOGITECH_T651	0xb00c
+ #define USB_DEVICE_ID_LOGITECH_DINOVO_EDGE_KBD	0xb309
++#define USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD	0xbb00
+ #define USB_DEVICE_ID_LOGITECH_C007	0xc007
+ #define USB_DEVICE_ID_LOGITECH_C077	0xc077
+ #define USB_DEVICE_ID_LOGITECH_RECEIVER	0xc101
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 3816fd06bc953..17efe6e2a1a44 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2084,6 +2084,12 @@ static const struct hid_device_id mt_devices[] = {
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
  
- 	dev_dbg(dev->mt76.dev, "chip reset\n");
-+	set_bit(MT76_RESET, &dev->mphy.state);
- 	dev->hw_full_reset = true;
- 	ieee80211_stop_queues(hw);
- 
-@@ -911,6 +912,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 	}
- 
- 	dev->hw_full_reset = false;
-+	clear_bit(MT76_RESET, &dev->mphy.state);
- 	pm->suspended = false;
- 	ieee80211_wake_queues(hw);
- 	ieee80211_iterate_active_interfaces(hw,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index 8dd60408b117e..cb20ddcad137c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -78,7 +78,6 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
- 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
- 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
- 
--	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
-@@ -129,7 +128,6 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
- 
- 	err = __mt7921_start(&dev->phy);
- out:
--	clear_bit(MT76_RESET, &dev->mphy.state);
- 
- 	local_bh_disable();
- 	napi_enable(&dev->mt76.tx_napi);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index fd07b66233920..46af03803de73 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -98,7 +98,6 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
- 	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
- 	mt76_txq_schedule_all(&dev->mphy);
- 	mt76_worker_disable(&dev->mt76.tx_worker);
--	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
-@@ -135,7 +134,6 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
- 
- 	err = __mt7921_start(&dev->phy);
- out:
--	clear_bit(MT76_RESET, &dev->mphy.state);
- 
- 	mt76_worker_enable(&dev->mt76.tx_worker);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
-index fc4fb94635645..2a81c2f663449 100644
---- a/drivers/net/wireless/mediatek/mt76/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/sdio.c
-@@ -499,7 +499,8 @@ static void mt76s_tx_status_data(struct mt76_worker *worker)
- 	dev = container_of(sdio, struct mt76_dev, sdio);
- 
- 	while (true) {
--		if (test_bit(MT76_REMOVED, &dev->phy.state))
-+		if (test_bit(MT76_RESET, &dev->phy.state) ||
-+		    test_bit(MT76_REMOVED, &dev->phy.state))
- 			break;
- 
- 		if (!dev->drv->tx_status_data(dev, &update))
++	/* Logitech devices */
++	{ .driver_data = MT_CLS_NSMU,
++		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_LOGITECH,
++			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
++
+ 	/* MosArt panels */
+ 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ASUS,
 -- 
 2.43.0
 
