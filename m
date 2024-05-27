@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-47450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED04F8D0E09
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:36:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB638D0C22
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A4881C209A1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C2081F246C9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E58B161305;
-	Mon, 27 May 2024 19:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B52815EFC3;
+	Mon, 27 May 2024 19:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HW5bqlxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRAJz7Ld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CEC15FCFB;
-	Mon, 27 May 2024 19:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3AC160783;
+	Mon, 27 May 2024 19:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838581; cv=none; b=BAFTiF7KhRfGIyYlnHC9GY7PFCFurysem+rMSdjYLgBE6/nrYs91hOHFb8nQfJXOA08GIYQXSkDkW4WM0pWmdsx60spQn8OfDMpkQ8pxbPdEGK6lKqaIiuW6ruVc+F3NtgTZg+OunUmjyaYtrpyApR9v2VEtSXe4JkOSNBdOCKI=
+	t=1716837388; cv=none; b=VRyMjFFIFjBAqdTEn7R3t94c381joy+hPH0BSVLbB6jR4m+GM+CJm7lBDQxKrXtUcY7tmfENZCH2WgeeSLyFTBWZ14rety62Q8jjRUAHnRgten4zA8uDXNxy6hGgXdEfM8/IjlOUPdGajFTqL+3G5Govxv5l8mYRpL8ud+UnsXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838581; c=relaxed/simple;
-	bh=zcEIEW53WBCLDEEa1oDYVPTVgq9F0CbNJx2ztZuIpDI=;
+	s=arc-20240116; t=1716837388; c=relaxed/simple;
+	bh=m1T5gtK9OdVuzj8i/VI5/lUN5kQRje37I8Kdn75su5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V86TIvqjHIt9ZREi8pUn0EGpG0PTiPw4BbpeuGqfmRj94cwCMiSpKS/AffcjOXB0ZLowLewc21Lno/TTlcy4IAedjY5w6qAfzUMYaA8bYe1EwGc9CBO0/Vp6AJsCDbIM5bONLax64xsscxXUc/rdCJrVGw1E88WX1viIClDu2Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HW5bqlxS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8DEC32781;
-	Mon, 27 May 2024 19:36:20 +0000 (UTC)
+	 MIME-Version; b=rv5WWf9rnHWSjlgyMpQxi6RNecWdQ1paZLn42UDpdAi5X7BEL9u/W/k/DFnhKayN9GlLNn43jS/w/g1Vk/5lgiOnXoBc9HLNYumFS0ImMzczKRjBiZMezWiyOf0Ig4SJIBuIdsxdaTMdDMmtMzIhot015VZFWjsrtNV9LDMwrd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRAJz7Ld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83918C2BBFC;
+	Mon, 27 May 2024 19:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838580;
-	bh=zcEIEW53WBCLDEEa1oDYVPTVgq9F0CbNJx2ztZuIpDI=;
+	s=korg; t=1716837387;
+	bh=m1T5gtK9OdVuzj8i/VI5/lUN5kQRje37I8Kdn75su5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HW5bqlxSs8ayx6Ap+d1AGmEes4CKNgwilFI1xqIi96Ab0kFp9AOmaK0icWRfPFlL3
-	 c/xtTOoE5Cq3YLORqQsDQRZjiCqPgWJdq9Tnu8DRm6ILE7mM1F13zJeDXw+B3DZu6U
-	 7Nzl7ggFqji5/RkxqTL9T7Hz5rR/+q/5q/PT4RJA=
+	b=qRAJz7LdHqFONxJS+99qVjW/9kbJ0inyhVm79eG11ZrRc13XvIMyHy7yL0/dZO7Lm
+	 k0Re+pXK2Uz1HRW4xG4Y8SJLKHy4N0aPdR9xuI2kYx5Ts+9j5kG7dolf1ygd3b0h4e
+	 TZib06CUNRr4ru3pXNIZldUiS3dqJLoFr56KidLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	SeongJae Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 449/493] x86/insn: Add VEX versions of VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS
+Subject: [PATCH 6.9 404/427] selftests/damon/_damon_sysfs: check errors from nr_schemes file reads
 Date: Mon, 27 May 2024 20:57:31 +0200
-Message-ID: <20240527185644.918502356@linuxfoundation.org>
+Message-ID: <20240527185635.217046153@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit b8000264348979b60dbe479255570a40e1b3a097 ]
+[ Upstream commit 732b8815c079199d29b0426d9372bb098c63cdc7 ]
 
-The x86 instruction decoder is used not only for decoding kernel
-instructions. It is also used by perf uprobes (user space probes) and by
-perf tools Intel Processor Trace decoding. Consequently, it needs to
-support instructions executed by user space also.
+DAMON context staging method in _damon_sysfs.py is not checking the
+returned error from nr_schemes file read.  Check it.
 
-Intel Architecture Instruction Set Extensions and Future Features manual
-number 319433-044 of May 2021, documented VEX versions of instructions
-VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS, but the opcode map has them
-listed as EVEX only.
-
-Remove EVEX-only (ev) annotation from instructions VPDPBUSD, VPDPBUSDS,
-VPDPWSSD and VPDPWSSDS, which allows them to be decoded with either a VEX
-or EVEX prefix.
-
-Fixes: 0153d98f2dd6 ("x86/insn: Add misc instructions to x86 instruction decoder")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240502105853.5338-4-adrian.hunter@intel.com
+Link: https://lkml.kernel.org/r/20240503180318.72798-3-sj@kernel.org
+Fixes: f5f0e5a2bef9 ("selftests/damon/_damon_sysfs: implement kdamonds start function")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/x86-opcode-map.txt       | 8 ++++----
- tools/arch/x86/lib/x86-opcode-map.txt | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ tools/testing/selftests/damon/_damon_sysfs.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index 940913550ed83..d1ccd06c53127 100644
---- a/arch/x86/lib/x86-opcode-map.txt
-+++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -698,10 +698,10 @@ AVXcode: 2
- 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
- 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
- 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
--50: vpdpbusd Vx,Hx,Wx (66),(ev)
--51: vpdpbusds Vx,Hx,Wx (66),(ev)
--52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
--53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
-+50: vpdpbusd Vx,Hx,Wx (66)
-+51: vpdpbusds Vx,Hx,Wx (66)
-+52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
-+53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
- 54: vpopcntb/w Vx,Wx (66),(ev)
- 55: vpopcntd/q Vx,Wx (66),(ev)
- 58: vpbroadcastd Vx,Wx (66),(v)
-diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index 940913550ed83..d1ccd06c53127 100644
---- a/tools/arch/x86/lib/x86-opcode-map.txt
-+++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -698,10 +698,10 @@ AVXcode: 2
- 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
- 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
- 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
--50: vpdpbusd Vx,Hx,Wx (66),(ev)
--51: vpdpbusds Vx,Hx,Wx (66),(ev)
--52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
--53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
-+50: vpdpbusd Vx,Hx,Wx (66)
-+51: vpdpbusds Vx,Hx,Wx (66)
-+52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
-+53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
- 54: vpopcntb/w Vx,Wx (66),(ev)
- 55: vpopcntd/q Vx,Wx (66),(ev)
- 58: vpbroadcastd Vx,Wx (66),(v)
+diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
+index d23d7398a27a8..fe77d7e73a25b 100644
+--- a/tools/testing/selftests/damon/_damon_sysfs.py
++++ b/tools/testing/selftests/damon/_damon_sysfs.py
+@@ -287,6 +287,8 @@ class DamonCtx:
+         nr_schemes_file = os.path.join(
+                 self.sysfs_dir(), 'schemes', 'nr_schemes')
+         content, err = read_file(nr_schemes_file)
++        if err is not None:
++            return err
+         if int(content) != len(self.schemes):
+             err = write_file(nr_schemes_file, '%d' % len(self.schemes))
+             if err != None:
 -- 
 2.43.0
 
