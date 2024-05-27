@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9048D0D1D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B44E8D0B23
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F441F21A98
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15E0B283822
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2572315FD01;
-	Mon, 27 May 2024 19:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABCD26ACA;
+	Mon, 27 May 2024 19:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq6GDdW3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAbYZPH6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D990C168C4;
-	Mon, 27 May 2024 19:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C2117E90E;
+	Mon, 27 May 2024 19:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837985; cv=none; b=WGDA6jg3Hpm9F5CLjRpD+LJ1e//YlKwg4BQw8Cz58ixVegqeJlfag66wsP/Y1wcH1q8UC4qdeUiybV1mpWP/zTOA2fr7zwLuKfengQhoygARJzLQ+FItc9Xa7uOz2jXWY1nQ0OSwSuMwm2/wkal29FOpDvKkBYRXIlxkhp82NCM=
+	t=1716836786; cv=none; b=A7atwtfvUIJOV2AnD5wnpp1QS6yx1WHfX07/JTh7zbfqZWcphUuRP/RnzB/4/kE4MzR0yEkwnTdRxOHh9PJL+/f+s1ZKioe2iW2cYf0C1SndNhD0Nv2IzZtl2S8gwtgnSqkAuCdFakoEMV95zTDQ03+qDTMbRb0AB+1vYBhnBbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837985; c=relaxed/simple;
-	bh=EaDqHmZNEPOe90+EBE31B+mkLK5FgyYbsDeNPkZ6MjU=;
+	s=arc-20240116; t=1716836786; c=relaxed/simple;
+	bh=9cxUG7XVLpEmlAVDdW5HICZ0du52RqqEWYAHWKw43ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDtBdrbpLdgcVmQ0U/7gCJS8oOZ809maj8tW5ODawdDVNtQFhc/XESCOjN2jSY809fyiz3ZshKJn0xAfcVLa/+MJ1o2UAtwcKXfPa3+ioZ6of8slJP8uiU295XVFDoiVEq/EiDJK5Z1isETbwjO4vdg/jEwsIGK1HO7TFqPSx0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq6GDdW3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED91C2BBFC;
-	Mon, 27 May 2024 19:26:25 +0000 (UTC)
+	 MIME-Version; b=G2A775g1PBwXWsU8PxaoWLti7VNK5tca076nOj+YfuiwHuN8oPU+c3LT+WCnj3vfSya227z4PQ48vCP+TVlZj0ehi1tnEzv1AAi80e+v/pFjcwE0QTUhuv5RXzXRFIw4XmUQ6CnqfpVpjW3w37jLT4K3l6lR4C6g/T4rOBVD9Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAbYZPH6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0175C32781;
+	Mon, 27 May 2024 19:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837985;
-	bh=EaDqHmZNEPOe90+EBE31B+mkLK5FgyYbsDeNPkZ6MjU=;
+	s=korg; t=1716836786;
+	bh=9cxUG7XVLpEmlAVDdW5HICZ0du52RqqEWYAHWKw43ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lq6GDdW38opfF7ZSURMUl8Ke6geXNAHmJ2kjF/OgAZqAO+oo5wcvRZw36CKol33qN
-	 K2hpHk4jRFGWl9Omv8b7tyZiWUJ0XANp9zl15VpGkxb8a0hrPUyUe0N3DDoaFnw27F
-	 J2CSxu2mOcBjeh5c07Pcj4zaG6/H8KQVoNsRDN1U=
+	b=WAbYZPH6/EoJMn4cdLLhPCCx13R+x2lKQzd36kT2WxMdv95MoCWScLykusetAr/Sj
+	 px/AhKecK2riz1hiD+r0S80KIkind6KFhfvjtbfci5eyqptz3KylCF9sySODMQXuaY
+	 yqdEm4xBn6TYy+NkTh0GEkS1slKnX4693AJ6S+lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 179/493] ACPI: bus: Indicate support for _TFP thru _OSC
-Date: Mon, 27 May 2024 20:53:01 +0200
-Message-ID: <20240527185636.206339752@linuxfoundation.org>
+Subject: [PATCH 6.9 135/427] EDAC/skx_common: Allow decoding of SGX addresses
+Date: Mon, 27 May 2024 20:53:02 +0200
+Message-ID: <20240527185614.466318168@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit 95d43290f1e476b3be782dd17642e452d0436266 ]
+[ Upstream commit e0d335077831196bffe6a634ffe385fc684192ca ]
 
-The ACPI thermal driver already uses the _TPF ACPI method to retrieve
-precise sampling time values, but this is not reported thru _OSC.
+There are no "struct page" associations with SGX pages, causing the check
+pfn_to_online_page() to fail. This results in the inability to decode the
+SGX addresses and warning messages like:
 
-Fix this by setting bit 9 ("Fast Thermal Sampling support") when
-evaluating _OSC.
+  Invalid address 0x34cc9a98840 in IA32_MC17_ADDR
 
-Fixes: a2ee7581afd5 ("ACPI: thermal: Add Thermal fast Sampling Period (_TFP) support")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Add an additional check to allow the decoding of the error address and to
+skip the warning message, if the error address is an SGX address.
+
+Fixes: 1e92af09fab1 ("EDAC/skx_common: Filter out the invalid address")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20240408120419.50234-1-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/bus.c   | 2 ++
- include/linux/acpi.h | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/edac/skx_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 569bd15f211be..9c5fc12fc13cb 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -316,6 +316,8 @@ static void acpi_bus_osc_negotiate_platform_control(void)
- 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PAD_SUPPORT;
- 	if (IS_ENABLED(CONFIG_ACPI_PROCESSOR))
- 		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PPC_OST_SUPPORT;
-+	if (IS_ENABLED(CONFIG_ACPI_THERMAL))
-+		capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_FAST_THERMAL_SAMPLING_SUPPORT;
- 
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_HOTPLUG_OST_SUPPORT;
- 	capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index b7165e52b3c68..e4f4fb67ab55a 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -573,6 +573,7 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
- #define OSC_SB_CPCV2_SUPPORT			0x00000040
- #define OSC_SB_PCLPI_SUPPORT			0x00000080
- #define OSC_SB_OSLPI_SUPPORT			0x00000100
-+#define OSC_SB_FAST_THERMAL_SAMPLING_SUPPORT	0x00000200
- #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
- #define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
- #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
+diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
+index 9c5b6f8bd8bd5..27996b7924c82 100644
+--- a/drivers/edac/skx_common.c
++++ b/drivers/edac/skx_common.c
+@@ -648,7 +648,7 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
+ 	memset(&res, 0, sizeof(res));
+ 	res.mce  = mce;
+ 	res.addr = mce->addr & MCI_ADDR_PHYSADDR;
+-	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT)) {
++	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT) && !arch_is_platform_page(res.addr)) {
+ 		pr_err("Invalid address 0x%llx in IA32_MC%d_ADDR\n", mce->addr, mce->bank);
+ 		return NOTIFY_DONE;
+ 	}
 -- 
 2.43.0
 
