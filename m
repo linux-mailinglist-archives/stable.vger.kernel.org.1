@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-46777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF6D8D0B35
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:07:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 889948D0D3D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 692F9B21501
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:07:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D37D28185E
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FC226ACA;
-	Mon, 27 May 2024 19:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EE216078C;
+	Mon, 27 May 2024 19:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUbIQuCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNppuKk0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5AA17E90E;
-	Mon, 27 May 2024 19:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60489262BE;
+	Mon, 27 May 2024 19:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836832; cv=none; b=CfBLRwZOQv5M51l0NmCAXLNWMwgfnrJgPAS7eBVmDAI5t5pi2WefV0A+Jn3kVSsNm/OYyy14G+U9HfHSK2fw2HxbgXrChMcnyEFcoSaFFuOmLSunVYB2mAXM5AnONN6muX67R+bxxfg3GhV0xuukEvYYlk88S+fGHVLIYLgOSX8=
+	t=1716838061; cv=none; b=VXdBNlF/ReBwK+8KXg3Kag/XegAcplWC0qj8lXaJdMNnDX5UQmpkZ1kELG9EX+ayG+UNKcIywlTLImQI+D227WxX8B1Pws6+bEmDf0m4idNUF+LKWKSV/dnY9ywPD5MbUULTJhLVmEqX2nkX2qewa3mcXJ72NrX7kKypDHMMffo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836832; c=relaxed/simple;
-	bh=+3t0+BxcvoNxVcjl0/75hdS6BShXJt396YOwR4qbLf0=;
+	s=arc-20240116; t=1716838061; c=relaxed/simple;
+	bh=Px9DcZy/bOnMVoamtCiAwBL1lY+7LglazCNZSZjBkU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewx49zVo/eKtBBRwfE+qaV3jrrz4/s5tgpssRd0i0nCvXkNmFm0Ij7KXMx6tHASYrlUWvXv5wlLrKrTJQ1WlQR7D4EAcIZdxOJAfttDWLDlGqfcQg95U4dwD8UxH3g2mO+VYgri0LoWOsm+BNXjKhcwGAXann1ZQWBK0G7bQ5N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUbIQuCO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9023C2BBFC;
-	Mon, 27 May 2024 19:07:11 +0000 (UTC)
+	 MIME-Version; b=L/y/OYBeVFBIfXFIfARGWtOl1A938lAb8y2kzIQNmRr6mtHmZu5o4wHGUYoY3L24HhPSVMn1Wvnu+N7j6j8Ml2WYQtrgUgyfLSnETGHq2KlSi5A3nxqAbCuKRu7ie+H2uc/RzSuebx5YMk22kMJ6EXtZaQQIxPEcHYR8/zlyhJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNppuKk0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5CFC2BBFC;
+	Mon, 27 May 2024 19:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836832;
-	bh=+3t0+BxcvoNxVcjl0/75hdS6BShXJt396YOwR4qbLf0=;
+	s=korg; t=1716838061;
+	bh=Px9DcZy/bOnMVoamtCiAwBL1lY+7LglazCNZSZjBkU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUbIQuCO/DlGwaM31XrY5ql1CLLpb60yqif1kzRfOY3tgqD+StwJIj44dt1+0Ott5
-	 cixmb841CBUFQtYCyttgnlEq7ZSN6/t6z0m5DVpeNXaGv9VdV31+PHjq4jO6USJQfJ
-	 VvfTof2HtLH9zukH64WXoBIBUU2bowxaZm7s10mI=
+	b=tNppuKk0jCarda4HyGpg1G6U1/+e6/dntrUgp0+CEbZkwqc1K9iWrLhIfn8sIxmyR
+	 gELLxa5OUgVC3YWCZW3WPC5Qo+Dxp/+xpZHSJUEs3B2QFcDquzGYS/Nya9s8ZnFoqr
+	 PAa6TjEUA2aKQbZEezOdiB1ad5yHtAab2LJxj47w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
+	Hao Chen <chenhao418@huawei.com>,
+	Junhao He <hejunhao3@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 205/427] libbpf: Fix error message in attach_kprobe_multi
+Subject: [PATCH 6.8 250/493] drivers/perf: hisi: hns3: Actually use devm_add_action_or_reset()
 Date: Mon, 27 May 2024 20:54:12 +0200
-Message-ID: <20240527185621.453656298@linuxfoundation.org>
+Message-ID: <20240527185638.478646302@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Hao Chen <chenhao418@huawei.com>
 
-[ Upstream commit 7c13ef16e87ac2e44d16c0468b1191bceb06f95c ]
+[ Upstream commit 582c1aeee0a9e73010cf1c4cef338709860deeb0 ]
 
-We just failed to retrieve pattern, so we need to print spec instead.
+pci_alloc_irq_vectors() allocates an irq vector. When devm_add_action()
+fails, the irq vector is not freed, which leads to a memory leak.
 
-Fixes: ddc6b04989eb ("libbpf: Add bpf_program__attach_kprobe_multi_opts function")
-Reported-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240502075541.1425761-2-jolsa@kernel.org
+Replace the devm_add_action with devm_add_action_or_reset to ensure
+the irq vector can be destroyed when it fails.
+
+Fixes: 66637ab137b4 ("drivers/perf: hisi: add driver for HNS3 PMU")
+Signed-off-by: Hao Chen <chenhao418@huawei.com>
+Signed-off-by: Junhao He <hejunhao3@huawei.com>
+Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20240425124627.13764-4-hejunhao3@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
+ drivers/perf/hisilicon/hns3_pmu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 4980ed4f7559b..f515cf264a0a2 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -11475,7 +11475,7 @@ static int attach_kprobe_multi(const struct bpf_program *prog, long cookie, stru
- 
- 	n = sscanf(spec, "%m[a-zA-Z0-9_.*?]", &pattern);
- 	if (n < 1) {
--		pr_warn("kprobe multi pattern is invalid: %s\n", pattern);
-+		pr_warn("kprobe multi pattern is invalid: %s\n", spec);
- 		return -EINVAL;
+diff --git a/drivers/perf/hisilicon/hns3_pmu.c b/drivers/perf/hisilicon/hns3_pmu.c
+index cbdd53b0a0342..60062eaa342aa 100644
+--- a/drivers/perf/hisilicon/hns3_pmu.c
++++ b/drivers/perf/hisilicon/hns3_pmu.c
+@@ -1527,7 +1527,7 @@ static int hns3_pmu_irq_register(struct pci_dev *pdev,
+ 		return ret;
  	}
  
+-	ret = devm_add_action(&pdev->dev, hns3_pmu_free_irq, pdev);
++	ret = devm_add_action_or_reset(&pdev->dev, hns3_pmu_free_irq, pdev);
+ 	if (ret) {
+ 		pci_err(pdev, "failed to add free irq action, ret = %d.\n", ret);
+ 		return ret;
 -- 
 2.43.0
 
