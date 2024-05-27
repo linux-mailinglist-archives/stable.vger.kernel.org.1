@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-46753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883268D0B1C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:06:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50A28D0D4C
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 431022837A7
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:06:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 565A91F21B87
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB5015FCE9;
-	Mon, 27 May 2024 19:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8553215FD04;
+	Mon, 27 May 2024 19:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxS4JFg7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4gooz6l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC7C1078F;
-	Mon, 27 May 2024 19:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BCD262BE;
+	Mon, 27 May 2024 19:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836771; cv=none; b=kWVqaeFWDj0nU6WkUiS8D0b+5n9Of/k0QBamyKGUaJ5AdUjGP4jAayKx0HybPex1iOr/5tD8mx2Lpzekgi0qGPiXQWnk8uZBHwe01kNrEMS/rYUwil6ET5QAn0YXYKYQeVIno3wgq0m/alYfAKGo/zCIeGwnhutNMqXT5iXaLeE=
+	t=1716838100; cv=none; b=oEhU9iBgjhavSiqDjfiKgVrCudTxvFbM3Yiu2F/BB3WTeC21Ls3vEzWTMbgoEE9bzPc3rdHf7YK6+CTA8HgQksvkCsd/BhRe2peBniuMwEMe6mQdtj4A8vw1jm3vBPS6ewvZAvqJncneoVmESLifWn0Is7dGqEwDC3ebsysPfcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836771; c=relaxed/simple;
-	bh=wVL9Ym44VWpQLXxfGd+vB2XcoOCOCnTUOkicJ08PpCE=;
+	s=arc-20240116; t=1716838100; c=relaxed/simple;
+	bh=caXAhLDh9JPsrA09zvjJp+pa4CgbIvHkQQTFQQZkOBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ib5BbX5cYTuKCZcJ4tdyxU8QuOntZxqkIGcZBPOup7U63nX+4EvOVuXTa3nuScZEaHcrrGUbP49oT+0G6GqmPQYjUHeb3JKD/eyjuQe1GxVXAOkp/FJqvAaxSu17dcnL7haCRV/m6PITRIHiBGhE+vJtXBNkzTXnKu4L0b3jDEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxS4JFg7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5D4C2BBFC;
-	Mon, 27 May 2024 19:06:10 +0000 (UTC)
+	 MIME-Version; b=QPO0MyvjJMQzQ9lnE2hegBaG/XKB2PLZ6eBfvLXRVLAe6YKfv3NXaQvFcFOkJLQXdBf90B/4Ey2d369CS+nSWYJpg+q5T0xwC7oRGREoZHhXEJH5ULlqdSRkx0+dkn7L/PYAVmPynlMBhCHGpluPNVDAUmGcupkLqQ9EdQzzWkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4gooz6l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27ABC2BBFC;
+	Mon, 27 May 2024 19:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836770;
-	bh=wVL9Ym44VWpQLXxfGd+vB2XcoOCOCnTUOkicJ08PpCE=;
+	s=korg; t=1716838100;
+	bh=caXAhLDh9JPsrA09zvjJp+pa4CgbIvHkQQTFQQZkOBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TxS4JFg7XO9yXUMrpYEgRdS9ecU2C47NFDS1Tvjm8lT/o47fcRAnrFQFpBqboRINs
-	 S6nvCbNv8gJ35kJE9j894sbwmefGj5nHyIVulHiGGwEpHpCFSK8a9La/DpBcSBnn9y
-	 160TZYH1fgTgan0SZOrKSir4nSRF9VAas7yMoKGM=
+	b=I4gooz6l7cITgdiqhFzC4jFb5Fc1kPCevwI5oY2P/ylWdc0wGo/8gKnTYO6EcaJIg
+	 tI84S3SguBpSRssTpUHAIqLpe5WEbO0jaP85Bme98CSwzIjuVfwuA/hTv0Edkhc4kK
+	 fluKIaZoafLNQ2j2Ouk2sYDZ/2nHvDkKuIXEjKCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yuri Karpov <YKarpov@ispras.ru>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 179/427] tcp: avoid premature drops in tcp_add_backlog()
+Subject: [PATCH 6.8 224/493] scsi: hpsa: Fix allocation size for Scsi_Host private data
 Date: Mon, 27 May 2024 20:53:46 +0200
-Message-ID: <20240527185618.935552157@linuxfoundation.org>
+Message-ID: <20240527185637.631132867@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yuri Karpov <YKarpov@ispras.ru>
 
-[ Upstream commit ec00ed472bdb7d0af840da68c8c11bff9f4d9caa ]
+[ Upstream commit 504e2bed5d50610c1836046c0c195b0a6dba9c72 ]
 
-While testing TCP performance with latest trees,
-I saw suspect SOCKET_BACKLOG drops.
+struct Scsi_Host private data contains pointer to struct ctlr_info.
 
-tcp_add_backlog() computes its limit with :
+Restore allocation of only 8 bytes to store pointer in struct Scsi_Host
+private data area.
 
-    limit = (u32)READ_ONCE(sk->sk_rcvbuf) +
-            (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
-    limit += 64 * 1024;
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-This does not take into account that sk->sk_backlog.len
-is reset only at the very end of __release_sock().
-
-Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
-sk_rcvbuf in normal conditions.
-
-We should double sk->sk_rcvbuf contribution in the formula
-to absorb bubbles in the backlog, which happen more often
-for very fast flows.
-
-This change maintains decent protection against abuses.
-
-Fixes: c377411f2494 ("net: sk_add_backlog() take rmem_alloc into account")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240423125620.3309458-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bbbd25499100 ("scsi: hpsa: Fix allocation size for scsi_host_alloc()")
+Signed-off-by: Yuri Karpov <YKarpov@ispras.ru>
+Link: https://lore.kernel.org/r/20240312170447.743709-1-YKarpov@ispras.ru
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/scsi/hpsa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index e0cef75f85fb9..92511b7fd5249 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -2001,7 +2001,7 @@ int tcp_v4_early_demux(struct sk_buff *skb)
- bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 		     enum skb_drop_reason *reason)
+diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
+index af18d20f30794..49c57a9c110b5 100644
+--- a/drivers/scsi/hpsa.c
++++ b/drivers/scsi/hpsa.c
+@@ -5850,7 +5850,7 @@ static int hpsa_scsi_host_alloc(struct ctlr_info *h)
  {
--	u32 limit, tail_gso_size, tail_gso_segs;
-+	u32 tail_gso_size, tail_gso_segs;
- 	struct skb_shared_info *shinfo;
- 	const struct tcphdr *th;
- 	struct tcphdr *thtail;
-@@ -2010,6 +2010,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	bool fragstolen;
- 	u32 gso_segs;
- 	u32 gso_size;
-+	u64 limit;
- 	int delta;
+ 	struct Scsi_Host *sh;
  
- 	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
-@@ -2107,7 +2108,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	__skb_push(skb, hdrlen);
- 
- no_coalesce:
--	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
-+	/* sk->sk_backlog.len is reset only at the end of __release_sock().
-+	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
-+	 * sk_rcvbuf in normal conditions.
-+	 */
-+	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
-+
-+	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
- 
- 	/* Only socket owner can try to collapse/prune rx queues
- 	 * to reduce memory overhead, so add a little headroom here.
-@@ -2115,6 +2122,8 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
- 	 */
- 	limit += 64 * 1024;
- 
-+	limit = min_t(u64, limit, UINT_MAX);
-+
- 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
- 		bh_unlock_sock(sk);
- 		*reason = SKB_DROP_REASON_SOCKET_BACKLOG;
+-	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info));
++	sh = scsi_host_alloc(&hpsa_driver_template, sizeof(struct ctlr_info *));
+ 	if (sh == NULL) {
+ 		dev_err(&h->pdev->dev, "scsi_host_alloc failed\n");
+ 		return -ENOMEM;
 -- 
 2.43.0
 
