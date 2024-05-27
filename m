@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-46621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575208D0A7E
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 569328D0C63
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D8F628260F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1062828436D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBEB15FCF0;
-	Mon, 27 May 2024 19:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257FE160796;
+	Mon, 27 May 2024 19:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMwvO+0a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zr1xBk35"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCFBDDA9;
-	Mon, 27 May 2024 19:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D553B15A84C;
+	Mon, 27 May 2024 19:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836426; cv=none; b=hVXfDiyQfRky5wDOtC3hww7kMC81dMs4bF0Gm+gKI6qvB1T7bcv9T1GRQvOeKL6FkO8Cv/2+p1LO22HFWadUH1uS7l8dYl9w+EHB53o0RjxJGz6hkaLxAR3t6N9du8Zr1Qjtk6Pun+/9qJ9Sx7+/vqNFeKD26p5+dPrgjz60Kvw=
+	t=1716837544; cv=none; b=rr8qdwusXNGSJeJtfdQ0g0niGfDnP6smz0U4UN0NDlOd0ysGX+BTauz1LV8DCKXUWchVMA+JZ5pgR4vHu03iViR3h2QdVfJOeZZFYB5kgv58ChRD7zm/IMW2tc+MXdzonzHP1a8aDrdlMSGr7uuzAQjBSpFd8VoJb877FX0XZZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836426; c=relaxed/simple;
-	bh=5vW1KYp1wCvaBDwogPG4pgTatb2LENQkuqIfkC0yUnY=;
+	s=arc-20240116; t=1716837544; c=relaxed/simple;
+	bh=VcUHx0/2x7RjQDacEqIBVj9BQCBri5kgAMb69sHn+x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDaz0LlDmAXgvcmncmxyMHgNj6MzZGw0IOqphZDIkVBDJNBFn1TPsfJEdk4TcpzfX0/jsxeHhdBN9sl8g7NPdZmx+wpxME6HAB5e/K1I8v7/sUUgVtuEIW6TYrRRU0vKVswJHM7pWSqdtp174DzqQdxeK/ZGhv/uXgRct7BZ/Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMwvO+0a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F20C2BBFC;
-	Mon, 27 May 2024 19:00:25 +0000 (UTC)
+	 MIME-Version; b=GGa+IvDcuMfokJSZPrvutW4AZw+/JfVfdcQIHdf4YMX8K09AnUGzfwVyBWavJsOisJX+4rmZXnt6PI0LwDwOSWklM7uRZECOtlSkNnHmZUDg8/N4ZlwrJ6mT2/xQR25XnOwb/Hcoxgp+A9na2T4YkqPzh2R2pbfn8s8PDF1cKkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zr1xBk35; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AAFDC2BBFC;
+	Mon, 27 May 2024 19:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836426;
-	bh=5vW1KYp1wCvaBDwogPG4pgTatb2LENQkuqIfkC0yUnY=;
+	s=korg; t=1716837544;
+	bh=VcUHx0/2x7RjQDacEqIBVj9BQCBri5kgAMb69sHn+x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMwvO+0aaS5dL2437jiMy0+YcPCz/s/dZx0n4xXaGkRWjlAxiUGAeE7At3/37KCsq
-	 9zFfEKsGwV+/IbxxPlmMHMTFpHmGDFmkRK6JVJQVnGRX0JMQo2ZP2t9LPZqghM1hlP
-	 FUSW3A7p11h0pY/H7FW5iFkIeIlDtmDHOzmpDXuc=
+	b=zr1xBk35gmFIbZebpJG0cntDdbG8GUA3/JpmrxU/jX0kcN2XYnMBBwmEoJuLYM4Qd
+	 baRN9/YmagPcHdzvGQ/WINN9sZbggYo37mmGJNqCa5JtfiBm6NbXVUQO+1n36IffnR
+	 BRXRtwvG1nhzPLqD2OlkOBnD6qrB6ZX0MpBEOe30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	j51569436@gmail.com,
-	Daniel Starke <daniel.starke@siemens.com>
-Subject: [PATCH 6.9 008/427] tty: n_gsm: fix possible out-of-bounds in gsm0_receive()
+	Duanqiang Wen <duanqiangwen@net-swift.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 053/493] Revert "net: txgbe: fix i2c dev name cannot match clkdev"
 Date: Mon, 27 May 2024 20:50:55 +0200
-Message-ID: <20240527185602.591947094@linuxfoundation.org>
+Message-ID: <20240527185630.977146074@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Starke <daniel.starke@siemens.com>
+From: Duanqiang Wen <duanqiangwen@net-swift.com>
 
-commit 47388e807f85948eefc403a8a5fdc5b406a65d5a upstream.
+[ Upstream commit 8d6bf83f6740ba52a59e25dad360e1e87ef47666 ]
 
-Assuming the following:
-- side A configures the n_gsm in basic option mode
-- side B sends the header of a basic option mode frame with data length 1
-- side A switches to advanced option mode
-- side B sends 2 data bytes which exceeds gsm->len
-  Reason: gsm->len is not used in advanced option mode.
-- side A switches to basic option mode
-- side B keeps sending until gsm0_receive() writes past gsm->buf
-  Reason: Neither gsm->state nor gsm->len have been reset after
-  reconfiguration.
+This reverts commit c644920ce9220d83e070f575a4df711741c07f07.
+when register i2c dev, txgbe shorten "i2c_designware" to "i2c_dw",
+will cause this i2c dev can't match platfom driver i2c_designware_platform.
 
-Fix this by changing gsm->count to gsm->len comparison from equal to less
-than. Also add upper limit checks against the constant MAX_MRU in
-gsm0_receive() and gsm1_receive() to harden against memory corruption of
-gsm->len and gsm->mru.
-
-All other checks remain as we still need to limit the data according to the
-user configuration and actual payload size.
-
-Reported-by: j51569436@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218708
-Tested-by: j51569436@gmail.com
-Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20240424054842.7741-1-daniel.starke@siemens.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Duanqiang Wen <duanqiangwen@net-swift.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240422084109.3201-1-duanqiangwen@net-swift.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -2913,7 +2913,10 @@ static void gsm0_receive(struct gsm_mux
- 		break;
- 	case GSM_DATA:		/* Data */
- 		gsm->buf[gsm->count++] = c;
--		if (gsm->count == gsm->len) {
-+		if (gsm->count >= MAX_MRU) {
-+			gsm->bad_size++;
-+			gsm->state = GSM_SEARCH;
-+		} else if (gsm->count >= gsm->len) {
- 			/* Calculate final FCS for UI frames over all data */
- 			if ((gsm->control & ~PF) != UIH) {
- 				gsm->fcs = gsm_fcs_add_block(gsm->fcs, gsm->buf,
-@@ -3026,7 +3029,7 @@ static void gsm1_receive(struct gsm_mux
- 		gsm->state = GSM_DATA;
- 		break;
- 	case GSM_DATA:		/* Data */
--		if (gsm->count > gsm->mru) {	/* Allow one for the FCS */
-+		if (gsm->count > gsm->mru || gsm->count > MAX_MRU) {	/* Allow one for the FCS */
- 			gsm->state = GSM_OVERRUN;
- 			gsm->bad_size++;
- 		} else
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+index 8cddc9ddb3392..29997e4b2d6ca 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+@@ -20,8 +20,6 @@
+ #include "txgbe_phy.h"
+ #include "txgbe_hw.h"
+ 
+-#define TXGBE_I2C_CLK_DEV_NAME "i2c_dw"
+-
+ static int txgbe_swnodes_register(struct txgbe *txgbe)
+ {
+ 	struct txgbe_nodes *nodes = &txgbe->nodes;
+@@ -558,8 +556,8 @@ static int txgbe_clock_register(struct txgbe *txgbe)
+ 	char clk_name[32];
+ 	struct clk *clk;
+ 
+-	snprintf(clk_name, sizeof(clk_name), "%s.%d",
+-		 TXGBE_I2C_CLK_DEV_NAME, pci_dev_id(pdev));
++	snprintf(clk_name, sizeof(clk_name), "i2c_dw.%d",
++		 pci_dev_id(pdev));
+ 
+ 	clk = clk_register_fixed_rate(NULL, clk_name, NULL, 0, 156250000);
+ 	if (IS_ERR(clk))
+@@ -621,7 +619,7 @@ static int txgbe_i2c_register(struct txgbe *txgbe)
+ 
+ 	info.parent = &pdev->dev;
+ 	info.fwnode = software_node_fwnode(txgbe->nodes.group[SWNODE_I2C]);
+-	info.name = TXGBE_I2C_CLK_DEV_NAME;
++	info.name = "i2c_designware";
+ 	info.id = pci_dev_id(pdev);
+ 
+ 	info.res = &DEFINE_RES_IRQ(pdev->irq);
+-- 
+2.43.0
+
 
 
 
