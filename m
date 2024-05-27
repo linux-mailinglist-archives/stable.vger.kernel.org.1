@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-47060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC0E8D0C6A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD058D0C76
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4A821F2259C
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E997CB21AC2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED6B15FCFC;
-	Mon, 27 May 2024 19:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018ED15FCFE;
+	Mon, 27 May 2024 19:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1wo7KYo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZcw2vCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9102168C4;
-	Mon, 27 May 2024 19:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EA1168C4;
+	Mon, 27 May 2024 19:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837563; cv=none; b=BXDgeoSbR6wSI47uMknpwHWbmQxAhGBGBUVwk5ziS2a6ad1+iiXzw2e6gXOc2oh15sLylQdDsw79ZIVs2evLsugbILyU2G6AgnT84M1ZK4jAmE4Xd32wTi8ztIz+EczLgPmqGqdwnrKyjS6nTCTcYGVDP8e4TJ17Hm325zvhOWQ=
+	t=1716837592; cv=none; b=ed1Vkj5Uyp55G18F+DAklxTRmtxagt/mqHM/RYLBUrj7IMDc2MIWYqy2kQ9RHx9E3J5/JhlAshV7HBbzrwE7nl1r81q8F2xypFdF9tS2DDXvTnR1fgbSUXpH5v2IBRRwn5PJ9m5/Iw2eGKK5a+q9bqFe/7sO8yMishnCv1+Uc1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837563; c=relaxed/simple;
-	bh=LtbExZG8+kxB8qViEIX2beTpsNX4/X1XCL6NJIVnzdI=;
+	s=arc-20240116; t=1716837592; c=relaxed/simple;
+	bh=Dh58MPGSt9+uscW6DIW0oL3wlrkSwyMiJMQsyMeT2QA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLIiM2aX9vaG44R5Dx9g57BOQq+TueMVuLRCX70BI0rUAo0NUxAjkSDpFxsCIZWmJ4ufUe2F3T71Z8pWymagA94GwRznB7H+cYXnOH9EVOYiu6SLKrzOLz8PZN6x7mgxB8ZSXl3zJACuM+GZtb3REIZC9zdd7WXLZ5ZfFuQ/MjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1wo7KYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B534C2BBFC;
-	Mon, 27 May 2024 19:19:23 +0000 (UTC)
+	 MIME-Version; b=gttqmLdKH3SE+xjQKzqWncL58F6aTIXwAVb4BA1lZi3LbsM3sJmmg9+1x1vU4dgCRswsfmTb9opUDn6xKs73APoAXrOEeVxqZJtzRZhV0Kro4NQ0CryWf22JND1oQktKU4MJ78vnaSY2xmrVnROAl3zdVwYZY+7R525rKzbiYWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZcw2vCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F87C2BBFC;
+	Mon, 27 May 2024 19:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837563;
-	bh=LtbExZG8+kxB8qViEIX2beTpsNX4/X1XCL6NJIVnzdI=;
+	s=korg; t=1716837592;
+	bh=Dh58MPGSt9+uscW6DIW0oL3wlrkSwyMiJMQsyMeT2QA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1wo7KYoYd/7f1neQDZpjg1cZOPQCHRKMeFhYqq2C6J2ZwCF/l8wRGWRAFSc9fpJX
-	 iBhEXmxP4yXnK2Yed+4GA48b3V9BT/dj87o+wlRXIBU3/1J27DpWaR51sHnVbuSm76
-	 t79oYHeXASsZPGO/hpV/111/17LVn3Ufnf6TP+sk=
+	b=RZcw2vCjvXGUY7WrRGBFTQKMl5sZmEW63rGFxHxbr2j/oNtb61/C3S2MTOdoctm8j
+	 2j/NUhaKzGp0SV6zcPcAAWTnrBuBteTZkrigxUufDufBrGOdrZHPAz4whU49zlsnMq
+	 s+QmlRfVMINv+Ro0GeKPtzUGtKLcLpgCVXUhldpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Kinder <richard.kinder@gmail.com>,
+	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 042/493] wifi: mac80211: ensure beacon is non-S1G prior to extracting the beacon timestamp field
-Date: Mon, 27 May 2024 20:50:44 +0200
-Message-ID: <20240527185630.225513263@linuxfoundation.org>
+Subject: [PATCH 6.8 043/493] wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
+Date: Mon, 27 May 2024 20:50:45 +0200
+Message-ID: <20240527185630.295133464@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
 References: <20240527185626.546110716@linuxfoundation.org>
@@ -66,39 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Richard Kinder <richard.kinder@gmail.com>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-[ Upstream commit d12b9779cc9ba29d65fbfc728eb8a037871dd331 ]
+[ Upstream commit 9ef369973cd2c97cce3388d2c0c7e3c056656e8a ]
 
-Logic inside ieee80211_rx_mgmt_beacon accesses the
-mgmt->u.beacon.timestamp field without first checking whether the beacon
-received is non-S1G format.
+The declarations of the tx_rx_evt class and the rdev_set_antenna event
+use the wrong order of arguments in the TP_ARGS macro.
 
-Fix the problem by checking the beacon is non-S1G format to avoid access
-of the mgmt->u.beacon.timestamp field.
+Fix the order of arguments in the TP_ARGS macro.
 
-Signed-off-by: Richard Kinder <richard.kinder@gmail.com>
-Link: https://msgid.link/20240328005725.85355-1-richard.kinder@gmail.com
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Link: https://msgid.link/20240405152431.270267-1-Igor.A.Artemiev@mcst.ru
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/wireless/trace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index ac0073c8f96f4..df26672fb3383 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -6184,7 +6184,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 			link->u.mgd.dtim_period = elems->dtim_period;
- 		link->u.mgd.have_beacon = true;
- 		ifmgd->assoc_data->need_beacon = false;
--		if (ieee80211_hw_check(&local->hw, TIMING_BEACON_ONLY)) {
-+		if (ieee80211_hw_check(&local->hw, TIMING_BEACON_ONLY) &&
-+		    !ieee80211_is_s1g_beacon(hdr->frame_control)) {
- 			link->conf->sync_tsf =
- 				le64_to_cpu(mgmt->u.beacon.timestamp);
- 			link->conf->sync_device_ts =
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index cc3fd4177bcee..0cf8f958081eb 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -1747,7 +1747,7 @@ TRACE_EVENT(rdev_return_void_tx_rx,
+ 
+ DECLARE_EVENT_CLASS(tx_rx_evt,
+ 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
+-	TP_ARGS(wiphy, rx, tx),
++	TP_ARGS(wiphy, tx, rx),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+ 		__field(u32, tx)
+@@ -1764,7 +1764,7 @@ DECLARE_EVENT_CLASS(tx_rx_evt,
+ 
+ DEFINE_EVENT(tx_rx_evt, rdev_set_antenna,
+ 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
+-	TP_ARGS(wiphy, rx, tx)
++	TP_ARGS(wiphy, tx, rx)
+ );
+ 
+ DECLARE_EVENT_CLASS(wiphy_netdev_id_evt,
 -- 
 2.43.0
 
