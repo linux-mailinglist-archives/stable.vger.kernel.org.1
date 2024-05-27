@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-46585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871CF8D0A4D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 20:59:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 775FB8D0C69
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 102591F226D2
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 18:59:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5E9E1F222D0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052F716079A;
-	Mon, 27 May 2024 18:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A62C15EFC3;
+	Mon, 27 May 2024 19:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJgLIkca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkFsfAKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DA415FD03;
-	Mon, 27 May 2024 18:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471CA7347E;
+	Mon, 27 May 2024 19:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836334; cv=none; b=Dxl4F2vPEVLNpRPJyPM7RS9v+WYPUakkAAEbFuwY+/pdfqn1IRgy8QUYLPxg5WN14fJRGOpl79XfipJi9yd4q62DC8WTRHRKF8dGL/4A5SEIfi77w/AQtcqhxYZR2yG6VxfGlOzuJQa0B3t8hFiBgfh2+u3bAHDogBbvJ6HCZag=
+	t=1716837561; cv=none; b=oRAnmwPVKwdDPbTtSA/6pykFazX1XNZJdXBpMkl59yH/VNlGxd241r9iNrDr20+8mVuoZhMckawuAWyyJQTyAXMn5iD4ONcEMLM3vA7AIAsjxPuLdNZMr1u/o/BvE+csgDZdlc74B367YIP2BTwuAS2VmQKRdK3DnMHSSHRRUmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836334; c=relaxed/simple;
-	bh=IJyLvBxBH9juFERNdwMgwlACkFE3gc3lT56j7dXeHhw=;
+	s=arc-20240116; t=1716837561; c=relaxed/simple;
+	bh=LMnEjaWbW1L9esV9Fq8M0SizXc3p7rcajQW+yEQguis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UFn0z1Bq3t4xG45fT23mw0sUcEg15kpNI9gd4gS9zWk1sd3mVxKs589UmfIDZCQImBIsYZGTL8sLCzjvEOHS4K5Xt5v4yMsrOjcIbebXBIAsdSt1xcvdSgiePaD5vk7rexoikUPmukJS/GY+f0nbvRkCy/JZnhJzYnm5xRiK2n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJgLIkca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACEDC32786;
-	Mon, 27 May 2024 18:58:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j+WKW5ddHzIpklZ+UuHPgBE+F76PkRC7NyZm5MTeEkDXc6jZmn2Pgg37lTi9V/tj7YTPMGaEYbepb4e4hJ0E0gaBpFviXWMIVVZth+N55zgx6xsRRj45jXtWmOoraEh1ydhDNok+/4a3niVp5i8Ag1PQwrW2p/FGJ4Hgvj+XWQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkFsfAKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FECC2BBFC;
+	Mon, 27 May 2024 19:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836334;
-	bh=IJyLvBxBH9juFERNdwMgwlACkFE3gc3lT56j7dXeHhw=;
+	s=korg; t=1716837561;
+	bh=LMnEjaWbW1L9esV9Fq8M0SizXc3p7rcajQW+yEQguis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJgLIkcaxBIkXzeI+zQq9dZeBbKRE0R/DE72m6Ie3lm4Nk3nRmrpocXhBEO8cyS3B
-	 bKwvYTdSybVvxmQsDp9lxwJxhJPAHFKoATFo2Toh818gulJAlNz1hNEralFQ6OVgVV
-	 lAaQ/Y5MxY75ox9sZMhu4NY0fXZpKFMEbeuqPT3U=
+	b=IkFsfAKJljRFTtCB9rGdh3hftDOID/dhOzAO/trw201ZlDptKHepgGNsGGvAT0y88
+	 HoCXeuXNQ46LXsO7XzLQSCTnEuM60PDN7A/xrzBI8VZqFtObSMWAju5vCDancxlEom
+	 ISwCM8XEG0Id+dXElYFVMvENCugw4Ud0fT9bbawY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jandryuk@gmail.com>,
-	Peter Hutterer <peter.hutterer@who-t.net>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.9 014/427] Input: try trimming too long modalias strings
+	Conor Dooley <conor.dooley@microchip.com>,
+	=?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 059/493] riscv: thead: Rename T-Head PBMT to MAE
 Date: Mon, 27 May 2024 20:51:01 +0200
-Message-ID: <20240527185603.075956459@linuxfoundation.org>
+Message-ID: <20240527185631.380467092@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,215 +61,143 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Christoph Müllner <christoph.muellner@vrull.eu>
 
-commit 0774d19038c496f0c3602fb505c43e1b2d8eed85 upstream.
+[ Upstream commit 6179d4a213006491ff0d50073256f21fad22149b ]
 
-If an input device declares too many capability bits then modalias
-string for such device may become too long and not fit into uevent
-buffer, resulting in failure of sending said uevent. This, in turn,
-may prevent userspace from recognizing existence of such devices.
+T-Head's vendor extension to set page attributes has the name
+MAE (memory attribute extension).
+Let's rename it, so it is clear what this referes to.
 
-This is typically not a concern for real hardware devices as they have
-limited number of keys, but happen with synthetic devices such as
-ones created by xen-kbdfront driver, which creates devices as being
-capable of delivering all possible keys, since it doesn't know what
-keys the backend may produce.
-
-To deal with such devices input core will attempt to trim key data,
-in the hope that the rest of modalias string will fit in the given
-buffer. When trimming key data it will indicate that it is not
-complete by placing "+," sign, resulting in conversions like this:
-
-old: k71,72,73,74,78,7A,7B,7C,7D,8E,9E,A4,AD,E0,E1,E4,F8,174,
-new: k71,72,73,74,78,7A,7B,7C,+,
-
-This should allow existing udev rules continue to work with existing
-devices, and will also allow writing more complex rules that would
-recognize trimmed modalias and check input device characteristics by
-other means (for example by parsing KEY= data in uevent or parsing
-input device sysfs attributes).
-
-Note that the driver core may try adding more uevent environment
-variables once input core is done adding its own, so when forming
-modalias we can not use the entire available buffer, so we reduce
-it by somewhat an arbitrary amount (96 bytes).
-
-Reported-by: Jason Andryuk <jandryuk@gmail.com>
-Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
-Tested-by: Jason Andryuk <jandryuk@gmail.com>
-Link: https://lore.kernel.org/r/ZjAWMQCJdrxZkvkB@google.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/T-head-Semi/thead-extension-spec/blob/master/xtheadmae.adoc
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
+Link: https://lore.kernel.org/r/20240407213236.2121592-2-christoph.muellner@vrull.eu
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/input.c |  104 ++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 89 insertions(+), 15 deletions(-)
+ arch/riscv/Kconfig.errata            |  8 ++++----
+ arch/riscv/errata/thead/errata.c     | 10 +++++-----
+ arch/riscv/include/asm/errata_list.h | 20 ++++++++++----------
+ 3 files changed, 19 insertions(+), 19 deletions(-)
 
---- a/drivers/input/input.c
-+++ b/drivers/input/input.c
-@@ -1378,19 +1378,19 @@ static int input_print_modalias_bits(cha
- 				     char name, const unsigned long *bm,
- 				     unsigned int min_bit, unsigned int max_bit)
+diff --git a/arch/riscv/Kconfig.errata b/arch/riscv/Kconfig.errata
+index 910ba8837add8..2acc7d876e1fb 100644
+--- a/arch/riscv/Kconfig.errata
++++ b/arch/riscv/Kconfig.errata
+@@ -82,14 +82,14 @@ config ERRATA_THEAD
+ 
+ 	  Otherwise, please say "N" here to avoid unnecessary overhead.
+ 
+-config ERRATA_THEAD_PBMT
+-	bool "Apply T-Head memory type errata"
++config ERRATA_THEAD_MAE
++	bool "Apply T-Head's memory attribute extension (XTheadMae) errata"
+ 	depends on ERRATA_THEAD && 64BIT && MMU
+ 	select RISCV_ALTERNATIVE_EARLY
+ 	default y
+ 	help
+-	  This will apply the memory type errata to handle the non-standard
+-	  memory type bits in page-table-entries on T-Head SoCs.
++	  This will apply the memory attribute extension errata to handle the
++	  non-standard PTE utilization on T-Head SoCs (XTheadMae).
+ 
+ 	  If you don't know what to do here, say "Y".
+ 
+diff --git a/arch/riscv/errata/thead/errata.c b/arch/riscv/errata/thead/errata.c
+index b1c410bbc1aec..6e7ee1f16bee3 100644
+--- a/arch/riscv/errata/thead/errata.c
++++ b/arch/riscv/errata/thead/errata.c
+@@ -19,10 +19,10 @@
+ #include <asm/patch.h>
+ #include <asm/vendorid_list.h>
+ 
+-static bool errata_probe_pbmt(unsigned int stage,
+-			      unsigned long arch_id, unsigned long impid)
++static bool errata_probe_mae(unsigned int stage,
++			     unsigned long arch_id, unsigned long impid)
  {
--	int len = 0, i;
-+	int bit = min_bit;
-+	int len = 0;
+-	if (!IS_ENABLED(CONFIG_ERRATA_THEAD_PBMT))
++	if (!IS_ENABLED(CONFIG_ERRATA_THEAD_MAE))
+ 		return false;
  
- 	len += snprintf(buf, max(size, 0), "%c", name);
--	for (i = min_bit; i < max_bit; i++)
--		if (bm[BIT_WORD(i)] & BIT_MASK(i))
--			len += snprintf(buf + len, max(size - len, 0), "%X,", i);
-+	for_each_set_bit_from(bit, bm, max_bit)
-+		len += snprintf(buf + len, max(size - len, 0), "%X,", bit);
- 	return len;
- }
- 
--static int input_print_modalias(char *buf, int size, const struct input_dev *id,
--				int add_cr)
-+static int input_print_modalias_parts(char *buf, int size, int full_len,
-+				      const struct input_dev *id)
+ 	if (arch_id != 0 || impid != 0)
+@@ -140,8 +140,8 @@ static u32 thead_errata_probe(unsigned int stage,
  {
--	int len;
-+	int len, klen, remainder, space;
+ 	u32 cpu_req_errata = 0;
  
- 	len = snprintf(buf, max(size, 0),
- 		       "input:b%04Xv%04Xp%04Xe%04X-",
-@@ -1399,8 +1399,48 @@ static int input_print_modalias(char *bu
+-	if (errata_probe_pbmt(stage, archid, impid))
+-		cpu_req_errata |= BIT(ERRATA_THEAD_PBMT);
++	if (errata_probe_mae(stage, archid, impid))
++		cpu_req_errata |= BIT(ERRATA_THEAD_MAE);
  
- 	len += input_print_modalias_bits(buf + len, size - len,
- 				'e', id->evbit, 0, EV_MAX);
--	len += input_print_modalias_bits(buf + len, size - len,
-+
-+	/*
-+	 * Calculate the remaining space in the buffer making sure we
-+	 * have place for the terminating 0.
-+	 */
-+	space = max(size - (len + 1), 0);
-+
-+	klen = input_print_modalias_bits(buf + len, size - len,
- 				'k', id->keybit, KEY_MIN_INTERESTING, KEY_MAX);
-+	len += klen;
-+
-+	/*
-+	 * If we have more data than we can fit in the buffer, check
-+	 * if we can trim key data to fit in the rest. We will indicate
-+	 * that key data is incomplete by adding "+" sign at the end, like
-+	 * this: * "k1,2,3,45,+,".
-+	 *
-+	 * Note that we shortest key info (if present) is "k+," so we
-+	 * can only try to trim if key data is longer than that.
-+	 */
-+	if (full_len && size < full_len + 1 && klen > 3) {
-+		remainder = full_len - len;
-+		/*
-+		 * We can only trim if we have space for the remainder
-+		 * and also for at least "k+," which is 3 more characters.
-+		 */
-+		if (remainder <= space - 3) {
-+			/*
-+			 * We are guaranteed to have 'k' in the buffer, so
-+			 * we need at least 3 additional bytes for storing
-+			 * "+," in addition to the remainder.
-+			 */
-+			for (int i = size - 1 - remainder - 3; i >= 0; i--) {
-+				if (buf[i] == 'k' || buf[i] == ',') {
-+					strcpy(buf + i + 1, "+,");
-+					len = i + 3; /* Not counting '\0' */
-+					break;
-+				}
-+			}
-+		}
-+	}
-+
- 	len += input_print_modalias_bits(buf + len, size - len,
- 				'r', id->relbit, 0, REL_MAX);
- 	len += input_print_modalias_bits(buf + len, size - len,
-@@ -1416,12 +1456,25 @@ static int input_print_modalias(char *bu
- 	len += input_print_modalias_bits(buf + len, size - len,
- 				'w', id->swbit, 0, SW_MAX);
+ 	errata_probe_cmo(stage, archid, impid);
  
--	if (add_cr)
--		len += snprintf(buf + len, max(size - len, 0), "\n");
--
- 	return len;
- }
+diff --git a/arch/riscv/include/asm/errata_list.h b/arch/riscv/include/asm/errata_list.h
+index ea33288f8a25b..9bad9dfa2f7a1 100644
+--- a/arch/riscv/include/asm/errata_list.h
++++ b/arch/riscv/include/asm/errata_list.h
+@@ -23,7 +23,7 @@
+ #endif
  
-+static int input_print_modalias(char *buf, int size, const struct input_dev *id)
-+{
-+	int full_len;
-+
-+	/*
-+	 * Printing is done in 2 passes: first one figures out total length
-+	 * needed for the modalias string, second one will try to trim key
-+	 * data in case when buffer is too small for the entire modalias.
-+	 * If the buffer is too small regardless, it will fill as much as it
-+	 * can (without trimming key data) into the buffer and leave it to
-+	 * the caller to figure out what to do with the result.
-+	 */
-+	full_len = input_print_modalias_parts(NULL, 0, 0, id);
-+	return input_print_modalias_parts(buf, size, full_len, id);
-+}
-+
- static ssize_t input_dev_show_modalias(struct device *dev,
- 				       struct device_attribute *attr,
- 				       char *buf)
-@@ -1429,7 +1482,9 @@ static ssize_t input_dev_show_modalias(s
- 	struct input_dev *id = to_input_dev(dev);
- 	ssize_t len;
+ #ifdef CONFIG_ERRATA_THEAD
+-#define	ERRATA_THEAD_PBMT 0
++#define	ERRATA_THEAD_MAE 0
+ #define	ERRATA_THEAD_PMU 1
+ #define	ERRATA_THEAD_NUMBER 2
+ #endif
+@@ -53,20 +53,20 @@ asm(ALTERNATIVE("sfence.vma %0", "sfence.vma", SIFIVE_VENDOR_ID,	\
+  * in the default case.
+  */
+ #define ALT_SVPBMT_SHIFT 61
+-#define ALT_THEAD_PBMT_SHIFT 59
++#define ALT_THEAD_MAE_SHIFT 59
+ #define ALT_SVPBMT(_val, prot)						\
+ asm(ALTERNATIVE_2("li %0, 0\t\nnop",					\
+ 		  "li %0, %1\t\nslli %0,%0,%3", 0,			\
+ 			RISCV_ISA_EXT_SVPBMT, CONFIG_RISCV_ISA_SVPBMT,	\
+ 		  "li %0, %2\t\nslli %0,%0,%4", THEAD_VENDOR_ID,	\
+-			ERRATA_THEAD_PBMT, CONFIG_ERRATA_THEAD_PBMT)	\
++			ERRATA_THEAD_MAE, CONFIG_ERRATA_THEAD_MAE)	\
+ 		: "=r"(_val)						\
+ 		: "I"(prot##_SVPBMT >> ALT_SVPBMT_SHIFT),		\
+-		  "I"(prot##_THEAD >> ALT_THEAD_PBMT_SHIFT),		\
++		  "I"(prot##_THEAD >> ALT_THEAD_MAE_SHIFT),		\
+ 		  "I"(ALT_SVPBMT_SHIFT),				\
+-		  "I"(ALT_THEAD_PBMT_SHIFT))
++		  "I"(ALT_THEAD_MAE_SHIFT))
  
--	len = input_print_modalias(buf, PAGE_SIZE, id, 1);
-+	len = input_print_modalias(buf, PAGE_SIZE, id);
-+	if (len < PAGE_SIZE - 2)
-+		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
- 
- 	return min_t(int, len, PAGE_SIZE);
- }
-@@ -1641,6 +1696,23 @@ static int input_add_uevent_bm_var(struc
- 	return 0;
- }
- 
-+/*
-+ * This is a pretty gross hack. When building uevent data the driver core
-+ * may try adding more environment variables to kobj_uevent_env without
-+ * telling us, so we have no idea how much of the buffer we can use to
-+ * avoid overflows/-ENOMEM elsewhere. To work around this let's artificially
-+ * reduce amount of memory we will use for the modalias environment variable.
-+ *
-+ * The potential additions are:
-+ *
-+ * SEQNUM=18446744073709551615 - (%llu - 28 bytes)
-+ * HOME=/ (6 bytes)
-+ * PATH=/sbin:/bin:/usr/sbin:/usr/bin (34 bytes)
-+ *
-+ * 68 bytes total. Allow extra buffer - 96 bytes
-+ */
-+#define UEVENT_ENV_EXTRA_LEN	96
-+
- static int input_add_uevent_modalias_var(struct kobj_uevent_env *env,
- 					 const struct input_dev *dev)
- {
-@@ -1650,9 +1722,11 @@ static int input_add_uevent_modalias_var
- 		return -ENOMEM;
- 
- 	len = input_print_modalias(&env->buf[env->buflen - 1],
--				   sizeof(env->buf) - env->buflen,
--				   dev, 0);
--	if (len >= (sizeof(env->buf) - env->buflen))
-+				   (int)sizeof(env->buf) - env->buflen -
-+					UEVENT_ENV_EXTRA_LEN,
-+				   dev);
-+	if (len >= ((int)sizeof(env->buf) - env->buflen -
-+					UEVENT_ENV_EXTRA_LEN))
- 		return -ENOMEM;
- 
- 	env->buflen += len;
+-#ifdef CONFIG_ERRATA_THEAD_PBMT
++#ifdef CONFIG_ERRATA_THEAD_MAE
+ /*
+  * IO/NOCACHE memory types are handled together with svpbmt,
+  * so on T-Head chips, check if no other memory type is set,
+@@ -83,11 +83,11 @@ asm volatile(ALTERNATIVE(						\
+ 	"slli    t3, t3, %3\n\t"					\
+ 	"or      %0, %0, t3\n\t"					\
+ 	"2:",  THEAD_VENDOR_ID,						\
+-		ERRATA_THEAD_PBMT, CONFIG_ERRATA_THEAD_PBMT)		\
++		ERRATA_THEAD_MAE, CONFIG_ERRATA_THEAD_MAE)		\
+ 	: "+r"(_val)							\
+-	: "I"(_PAGE_MTMASK_THEAD >> ALT_THEAD_PBMT_SHIFT),		\
+-	  "I"(_PAGE_PMA_THEAD >> ALT_THEAD_PBMT_SHIFT),			\
+-	  "I"(ALT_THEAD_PBMT_SHIFT)					\
++	: "I"(_PAGE_MTMASK_THEAD >> ALT_THEAD_MAE_SHIFT),		\
++	  "I"(_PAGE_PMA_THEAD >> ALT_THEAD_MAE_SHIFT),			\
++	  "I"(ALT_THEAD_MAE_SHIFT)					\
+ 	: "t3")
+ #else
+ #define ALT_THEAD_PMA(_val)
+-- 
+2.43.0
+
 
 
 
