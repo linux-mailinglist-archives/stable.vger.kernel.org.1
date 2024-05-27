@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAAB8D0C1A
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 753DF8D0E19
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B6D028375F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:16:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31B132815A0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878C815FA91;
-	Mon, 27 May 2024 19:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECFB160877;
+	Mon, 27 May 2024 19:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTaA0kvT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQvzOLfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449DF168C4;
-	Mon, 27 May 2024 19:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7D615FCF0;
+	Mon, 27 May 2024 19:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837375; cv=none; b=JrwltbWsiUJebtedUsXLz7L4nj16M3+VELrZx+uXajDcOx0HIuXFpuEMVsJEBvr0BMSiQ0OyBhH8hh8uv2eY8I6Dh9W21tWvTsvkUBw0RdWmfrD3KXNsxyc6VECPFx5A5ksPNKjYS7ahm/QpIi1R7M0kIIMfrFk0UBbnu2o8Cps=
+	t=1716838618; cv=none; b=VR9rrtjnOkwZ1tD+18WsOU6yjKJZZ+79ZyOWrCMR3OFEACjMdAQ6yUtXfV82k0XOkwtpycMYI3Twmb9bDJsjayBB7fa8RQ5OFEQnGimqvQ+XsAAxlG67cX27MpB6qz3mKoqTON3bWTSuuEFJjxRI7yIuhF+wO1Tb9ghR0pEEYL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837375; c=relaxed/simple;
-	bh=ZZzQY6Nd9VWISDrRvARb/ueGZ32CSbD2uL6ZI2tPGRk=;
+	s=arc-20240116; t=1716838618; c=relaxed/simple;
+	bh=b9I/8LIDwPAcgjM6gxUICXipoZo3ssPfNR8YVA3sMYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jk6T2g6erG0oXEHECcEYBnafex2oByncqDttXRhzDb96Ln+28ffLPXeDe+14oZzLu4nvpp30XsK2pwVFDz6nbUXig9cxF1OcgfbauzSLQQFYVTkZaFKHFIVfOSBLQmikN+LWG0vWRExLETUQGYk9yzq8wcV97yQT9m0aw6G4dmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTaA0kvT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA65C2BBFC;
-	Mon, 27 May 2024 19:16:14 +0000 (UTC)
+	 MIME-Version; b=FSCKN4MglU/NIdklhBKWTUD9qouIR0J5JJqMint6EZ0ZbOa/NrpayBDDg58cVaAdre4vOhTJzHe4orGz9mNE9hdXyz0RpC5fLbPhNSLCSm8gwGRxQBFz1oOyMlCorX1pp7PuSvsk1vrBM38lxi+XlCqzJIVON2J79xCkU85snrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQvzOLfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA64FC2BBFC;
+	Mon, 27 May 2024 19:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837375;
-	bh=ZZzQY6Nd9VWISDrRvARb/ueGZ32CSbD2uL6ZI2tPGRk=;
+	s=korg; t=1716838618;
+	bh=b9I/8LIDwPAcgjM6gxUICXipoZo3ssPfNR8YVA3sMYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTaA0kvTsPWaVM4byy8P3JwNM8Px7Gmn7BL/tr7ArPH1cVRSXPSAzx1LQW2w/jFhe
-	 Dni9qMmWgzMeWXrmBxK8AlD9Y/4h4vaqUqdtt3ge2qk1aTatRsR/Ud46CBe4LxRitc
-	 taoSwlUsPkIbpszrfpe1w+Tr032w+0G2FVCg9ADI=
+	b=GQvzOLfGSKewEksaPrKnrAs6cpF9RpjM773PMSBzcT3iiC81fclQ8I1ad4zrt6RTA
+	 Kraf6kFgIQB12lTHFSTniQ/FZrMg1RGExvhpv1gBbacXuTgrHM5IpaCnv0a5Q6Glh2
+	 n6MXM21iSQ1PF5lB9ErfePAeWAtxaDAR2jFh/ZI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Du <xudu@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 417/427] idpf: dont skip over ethtool tcp-data-split setting
+Subject: [PATCH 6.8 462/493] clk: qcom: apss-ipq-pll: fix PLL rate for IPQ5018
 Date: Mon, 27 May 2024 20:57:44 +0200
-Message-ID: <20240527185635.616882105@linuxfoundation.org>
+Message-ID: <20240527185645.304455062@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 67708158e732bf03d076fba1e3d4453fbf8292a2 ]
+[ Upstream commit c55f7ee2ec239b6afd8639c7ac06493876deb0ea ]
 
-Disabling tcp-data-split on idpf silently fails:
-  # ethtool -G $NETDEV tcp-data-split off
-  # ethtool -g $NETDEV | grep 'TCP data split'
-  TCP data split:        on
+According to ipq5018.dtsi, the maximum supported rate by the
+CPU is 1.008 GHz on the IPQ5018 platform, however the current
+configuration of the PLL results in 1.2 GHz rate.
 
-But it works if you also change 'tx' or 'rx':
-  # ethtool -G $NETDEV tcp-data-split off tx 256
-  # ethtool -g $NETDEV | grep 'TCP data split'
-  TCP data split:        off
+Change the 'L' value in the PLL configuration to limit the
+rate to 1.008 GHz. The downstream kernel also uses the same
+value [1]. Also add a comment to indicate the desired
+frequency.
 
-The bug is in idpf_set_ringparam, where it takes a shortcut out if the
-TX and RX sizes are not changing. Fix it by checking also if the
-tcp-data-split setting remains unchanged. Only then can the soft reset
-be skipped.
+[1] https://git.codelinaro.org/clo/qsdk/oss/kernel/linux-ipq-5.4/-/blob/NHSS.QSDK.12.4/drivers/clk/qcom/apss-ipq5018.c?ref_type=heads#L151
 
-Fixes: 9b1aa3ef2328 ("idpf: add get/set for Ethtool's header split ringparam")
-Reported-by: Xu Du <xudu@redhat.com>
-Closes: https://issues.redhat.com/browse/RHEL-36182
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://lore.kernel.org/r/20240515092414.158079-1-mschmidt@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 50492f929486 ("clk: qcom: apss-ipq-pll: add support for IPQ5018")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240326-fix-ipq5018-apss-pll-rate-v1-1-82ab31c9da7e@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_ethtool.c | 3 ++-
+ drivers/clk/qcom/apss-ipq-pll.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index 986d429d11755..6972d728431cb 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -376,7 +376,8 @@ static int idpf_set_ringparam(struct net_device *netdev,
- 			    new_tx_count);
+diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
+index 678b805f13d45..5e3da5558f4e0 100644
+--- a/drivers/clk/qcom/apss-ipq-pll.c
++++ b/drivers/clk/qcom/apss-ipq-pll.c
+@@ -73,8 +73,9 @@ static struct clk_alpha_pll ipq_pll_stromer_plus = {
+ 	},
+ };
  
- 	if (new_tx_count == vport->txq_desc_count &&
--	    new_rx_count == vport->rxq_desc_count)
-+	    new_rx_count == vport->rxq_desc_count &&
-+	    kring->tcp_data_split == idpf_vport_get_hsplit(vport))
- 		goto unlock_mutex;
- 
- 	if (!idpf_vport_set_hsplit(vport, kring->tcp_data_split)) {
++/* 1.008 GHz configuration */
+ static const struct alpha_pll_config ipq5018_pll_config = {
+-	.l = 0x32,
++	.l = 0x2a,
+ 	.config_ctl_val = 0x4001075b,
+ 	.config_ctl_hi_val = 0x304,
+ 	.main_output_mask = BIT(0),
 -- 
 2.43.0
 
