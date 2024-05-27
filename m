@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-46594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627498D0A63
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:00:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B898D0C73
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCF58B20EA1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:00:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB241C20F6B
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D071607A2;
-	Mon, 27 May 2024 18:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92C015EFC3;
+	Mon, 27 May 2024 19:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GK4qOJOk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPjXlaFH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FE2161936;
-	Mon, 27 May 2024 18:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73DE168C4;
+	Mon, 27 May 2024 19:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836357; cv=none; b=Sp4X7pgZ/oHhZ5PPNpYWw9d1teDq2+3199hzeLUi3R7u78B9hjv8+neH37nE7b+aKk7HA1E02iB3ZbJ2BKI1AiPctwfYj3spNvssJBSpTAUppq0n6OHjb9bDVMof47/JmFtkANTM9/MbELNg7zKoxRxFNY8/YgC+l2TjGO0yIxU=
+	t=1716837587; cv=none; b=lRCUeMa9Wth8abcYfxUROWYKRBIXslBEaUmh9z73JLk0ohGwuZEV4Z9M0adqOTZMj1YQxB/6UNepJ8O0yEkbmcQRX43bOsuOXKLsqUvBTIE3+7BjIM17uua1aGRxgd33n05jkj6U6zHLvU+iqFz2qgeJzk5IJ1jih9GgMLPcKxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836357; c=relaxed/simple;
-	bh=gNHCS4trCU5zanBEn18ktXQhoGQsfUwt+llQyjULhWw=;
+	s=arc-20240116; t=1716837587; c=relaxed/simple;
+	bh=jg55G0MttxSZ0/2QIPHh6OMEH8kLeEpC5Kvex8O/PYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XU4DJFAAPdKNKryDbGaB3bChol32UeiPOak8tJbygqTfsLpXAEewhyDAZ5IsCCPT+8JaNADGy+2AyWDdlfmaJNYeI8wWwSqa9vFoAylOKMaeQbr07XluzwFLA2WGGusfnA9ZBUnIpHYWQaTBZ+IM9Swrd7Wm+YhSuuDIqUzgwmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GK4qOJOk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D00AC2BBFC;
-	Mon, 27 May 2024 18:59:17 +0000 (UTC)
+	 MIME-Version; b=pzkrbguyOcVyo0a8lQweISGvQ/2ZcXwMEkwcnwR26ubBn2PmoyNaDkJa++XN3LqTeJ3jS7ye+6jBfiuwlFaNZO3U2lY0livxN7t5kOQGnucEZqNFtIBvsdhn/crUybAFP5v4zpuRwBox131qxlIENSyn2uZ1XjO+7niWaOgRaQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPjXlaFH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF86C2BBFC;
+	Mon, 27 May 2024 19:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836357;
-	bh=gNHCS4trCU5zanBEn18ktXQhoGQsfUwt+llQyjULhWw=;
+	s=korg; t=1716837587;
+	bh=jg55G0MttxSZ0/2QIPHh6OMEH8kLeEpC5Kvex8O/PYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GK4qOJOkxEa8I4hllK1I73GzyZyTnaeknFaelpp+f3C9UlDziwPK1/W/MWL5VY3N/
-	 XIacHSeMWfu5NVVYLo6NprUQQ26D3Sm3D6lYYrVPUTyKPvOOxiaHJ/9Ab16N4mT2O1
-	 /nFfLZzbROhX6jVzbg+o88SD+c1OWF0i+CMe9Teo=
+	b=KPjXlaFHJ588qbaFfEg1PbIzmwwSqINGrLdFWx9psfAdidjxvkjywdXdJF3ZrWjxX
+	 d6WtiaaFGnm65oYPTwrBp8w4e4PjdJ/R3/E5my/v+RTaj6xpWZKD3jEdKcXIIT0azl
+	 gIArvuIxdoNTLl70m+3/mEankIVlr0Q8mBIRXA2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brennan Xavier McManus <bxmcmanus@gmail.com>,
-	Ammar Faizi <ammarfaizi2@gnuweeb.org>,
-	Willy Tarreau <w@1wt.eu>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH 6.9 022/427] tools/nolibc/stdlib: fix memory error in realloc()
-Date: Mon, 27 May 2024 20:51:09 +0200
-Message-ID: <20240527185603.815313831@linuxfoundation.org>
+	Uday M Bhat <uday.m.bhat@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 068/493] ASoC: SOF: pcm: Restrict DSP D0i3 during S0ix to IPC3
+Date: Mon, 27 May 2024 20:51:10 +0200
+Message-ID: <20240527185631.978181860@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brennan Xavier McManus <bxmcmanus@gmail.com>
+From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 
-commit 791f4641142e2aced85de082e5783b4fb0b977c2 upstream.
+[ Upstream commit 90a2353080eedec855d63f6aadfda14104ee9b06 ]
 
-Pass user_p_len to memcpy() instead of heap->len to prevent realloc()
-from copying an extra sizeof(heap) bytes from beyond the allocated
-region.
+Introduce a new field in struct sof_ipc_pcm_ops that can be used to
+restrict DSP D0i3 during S0ix suspend to IPC3. With IPC4, all streams
+must be stopped before S0ix suspend.
 
-Signed-off-by: Brennan Xavier McManus <bxmcmanus@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Fixes: 0e0ff638400be8f497a35b51a4751fd823f6bd6a ("tools/nolibc/stdlib: Implement `malloc()`, `calloc()`, `realloc()` and `free()`")
-Signed-off-by: Willy Tarreau <w@1wt.eu>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Uday M Bhat <uday.m.bhat@intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240408194147.28919-3-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/stdlib.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/ipc3-pcm.c  |  1 +
+ sound/soc/sof/pcm.c       | 13 ++++++-------
+ sound/soc/sof/sof-audio.h |  2 ++
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
---- a/tools/include/nolibc/stdlib.h
-+++ b/tools/include/nolibc/stdlib.h
-@@ -185,7 +185,7 @@ void *realloc(void *old_ptr, size_t new_
- 	if (__builtin_expect(!ret, 0))
- 		return NULL;
+diff --git a/sound/soc/sof/ipc3-pcm.c b/sound/soc/sof/ipc3-pcm.c
+index 330f04bcd75d2..a7cf52fd76455 100644
+--- a/sound/soc/sof/ipc3-pcm.c
++++ b/sound/soc/sof/ipc3-pcm.c
+@@ -409,4 +409,5 @@ const struct sof_ipc_pcm_ops ipc3_pcm_ops = {
+ 	.trigger = sof_ipc3_pcm_trigger,
+ 	.dai_link_fixup = sof_ipc3_pcm_dai_link_fixup,
+ 	.reset_hw_params_during_stop = true,
++	.d0i3_supported_in_s0ix = true,
+ };
+diff --git a/sound/soc/sof/pcm.c b/sound/soc/sof/pcm.c
+index f03cee94bce62..8804e00e7251b 100644
+--- a/sound/soc/sof/pcm.c
++++ b/sound/soc/sof/pcm.c
+@@ -325,14 +325,13 @@ static int sof_pcm_trigger(struct snd_soc_component *component,
+ 			ipc_first = true;
+ 		break;
+ 	case SNDRV_PCM_TRIGGER_SUSPEND:
+-		if (sdev->system_suspend_target == SOF_SUSPEND_S0IX &&
++		/*
++		 * If DSP D0I3 is allowed during S0iX, set the suspend_ignored flag for
++		 * D0I3-compatible streams to keep the firmware pipeline running
++		 */
++		if (pcm_ops && pcm_ops->d0i3_supported_in_s0ix &&
++		    sdev->system_suspend_target == SOF_SUSPEND_S0IX &&
+ 		    spcm->stream[substream->stream].d0i3_compatible) {
+-			/*
+-			 * trap the event, not sending trigger stop to
+-			 * prevent the FW pipelines from being stopped,
+-			 * and mark the flag to ignore the upcoming DAPM
+-			 * PM events.
+-			 */
+ 			spcm->stream[substream->stream].suspend_ignored = true;
+ 			return 0;
+ 		}
+diff --git a/sound/soc/sof/sof-audio.h b/sound/soc/sof/sof-audio.h
+index 85b26e3fefa8f..05e2a899d746c 100644
+--- a/sound/soc/sof/sof-audio.h
++++ b/sound/soc/sof/sof-audio.h
+@@ -116,6 +116,7 @@ struct snd_sof_dai_config_data {
+  *				  triggers. The FW keeps the host DMA running in this case and
+  *				  therefore the host must do the same and should stop the DMA during
+  *				  hw_free.
++ * @d0i3_supported_in_s0ix: Allow DSP D0I3 during S0iX
+  */
+ struct sof_ipc_pcm_ops {
+ 	int (*hw_params)(struct snd_soc_component *component, struct snd_pcm_substream *substream,
+@@ -135,6 +136,7 @@ struct sof_ipc_pcm_ops {
+ 	bool reset_hw_params_during_stop;
+ 	bool ipc_first_on_start;
+ 	bool platform_stop_during_hw_free;
++	bool d0i3_supported_in_s0ix;
+ };
  
--	memcpy(ret, heap->user_p, heap->len);
-+	memcpy(ret, heap->user_p, user_p_len);
- 	munmap(heap, heap->len);
- 	return ret;
- }
+ /**
+-- 
+2.43.0
+
 
 
 
