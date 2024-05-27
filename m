@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-47440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A24F8D0DFD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:35:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643E28D0BD9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF4F51F21D9D
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:35:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 966F41C2130D
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D07815FA60;
-	Mon, 27 May 2024 19:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA103155CA7;
+	Mon, 27 May 2024 19:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wce3Xpgr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRwKdLTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A03F17727;
-	Mon, 27 May 2024 19:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9966C17E90E;
+	Mon, 27 May 2024 19:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838555; cv=none; b=bHrh9BRR+BiLeRm+NhjYfQJ+Wg9zDs4KpRbzIj95HtshJ9kJws1c023fDZFtXLe+lojPx0fm2PibEVfbSnCLIdB5qykO7XGprOTszIfFOCilzSB1sz0R0xLMNeJdihZcRh4MDml10zRWxO5mqZ+9lze0LApZXljjYSsnUMiWmC0=
+	t=1716837217; cv=none; b=ER4vaN7k8CmKOGfTDmQzu++UiUc8jZb916x48+YTQNAGUPSqL/AI1Q/Mpf2kQByVdZ8PS6VQjCuow+X/er9gwz5mSjWaMbhkQ+sJdzCjHczLo632sYhwhUr00k5ovhSiCekJHRCqLJW5NwLTS1Tm0Catg6usB6lq9hby9aUHF0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838555; c=relaxed/simple;
-	bh=Rml015BulBf0mcVK/dwqY9Lh1PfeI8aQ8YMw/9skfFs=;
+	s=arc-20240116; t=1716837217; c=relaxed/simple;
+	bh=n2oDqFJrsAQJ3gQJr+LtsnqRH/VQejLXMgt5JoT6Nrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMFA8DWj0ski3iYYYj/FS8x4oJcJrvx59yvIpX0JpwlOk/m8+SVM889cxoCj5XPhxM9s8yiRXxr6Fd8js03aaqQSvTntRNsdZUjsrmmMZVeEj/NpA2IkdDS4sv50DYW5Chg/WRF+S8nO0bcfFQCRPLdfFw6X6brtwaPqDuFboho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wce3Xpgr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8090C2BBFC;
-	Mon, 27 May 2024 19:35:54 +0000 (UTC)
+	 MIME-Version; b=Q0BKOfkMfEfr5/M5AkEZlPggxzp3plz4Ip75UKJkQ1wDQ2Jv7dSW0hkt4LfpI9uOYEM6LtCq/5dzqMmJ8Esm3IKBZpYvQM2SKpm8PRW/2ggLIVIsFndCNqIU7dlt1ZkeK8V61xunToJGpYCvKgMUMWwCXi/UW2wqOawlOjkjOd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRwKdLTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F04C2BBFC;
+	Mon, 27 May 2024 19:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838555;
-	bh=Rml015BulBf0mcVK/dwqY9Lh1PfeI8aQ8YMw/9skfFs=;
+	s=korg; t=1716837217;
+	bh=n2oDqFJrsAQJ3gQJr+LtsnqRH/VQejLXMgt5JoT6Nrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wce3XpgrdIIVRSwAcV/dfc3K0WnuXpMrjGDaNHCGiEmbLXkIHq+05YrWZtntHeVOQ
-	 b0uQFgzIDmiggrYZQ087XAqwT9Zld0ygNDukCxkgT4US9JpuRqTuinHoB7IvA++V22
-	 qA9dRF5kgEnnv77fsOD1xbtdnrC9JNl7pW1hr4eA=
+	b=eRwKdLTXLJ/UAqdVNK53reMzOygfgqXJt9uDLGfLh64nA5LCjuC1/CfIx5fkYSHnG
+	 Hh2dp21Hk7e22lmTOU1lDOVKceXkJfHZAApX938pBaWhYAAPeba1VGsSj/R46WdlrF
+	 KiKh0gfpQXOohw9FF3mRpYlXzhGwruoOQnxeD/HE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 398/493] media: v4l2-subdev: Fix stream handling for crop API
-Date: Mon, 27 May 2024 20:56:40 +0200
-Message-ID: <20240527185643.293509545@linuxfoundation.org>
+Subject: [PATCH 6.9 354/427] RDMA/hns: Fix return value in hns_roce_map_mr_sg
+Date: Mon, 27 May 2024 20:56:41 +0200
+Message-ID: <20240527185633.576251788@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 34d7bf1c8e59f5fbf438ee32c96389ebe41ca2e8 ]
+[ Upstream commit 203b70fda63425a4eb29f03f9074859afe821a39 ]
 
-When support for streams was added to the V4L2 subdev API, the
-v4l2_subdev_crop structure was extended with a stream field, but the
-field was not handled in the core code that translates the
-VIDIOC_SUBDEV_[GS]_CROP ioctls to the selection API. Fix it.
+As described in the ib_map_mr_sg function comment, it returns the number
+of sg elements that were mapped to the memory region. However,
+hns_roce_map_mr_sg returns the number of pages required for mapping the
+DMA area. Fix it.
 
-Fixes: 2f91e10ee6fd ("media: subdev: add stream based configuration")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 9b2cf76c9f05 ("RDMA/hns: Optimize PBL buffer allocation process")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20240411033851.2884771-1-shaozhengchao@huawei.com
+Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_mr.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index 4c6198c48dd61..45836f0a2b0a7 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -732,6 +732,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg,
- 		memset(&sel, 0, sizeof(sel));
- 		sel.which = crop->which;
- 		sel.pad = crop->pad;
-+		sel.stream = crop->stream;
- 		sel.target = V4L2_SEL_TGT_CROP;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 9e05b57a2d67d..80c050d7d0ea6 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -441,18 +441,18 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+-	int ret = 0;
++	int ret, sg_num = 0;
  
- 		rval = v4l2_subdev_call(
-@@ -756,6 +757,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg,
- 		memset(&sel, 0, sizeof(sel));
- 		sel.which = crop->which;
- 		sel.pad = crop->pad;
-+		sel.stream = crop->stream;
- 		sel.target = V4L2_SEL_TGT_CROP;
- 		sel.r = crop->rect;
+ 	mr->npages = 0;
+ 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
+ 				 sizeof(dma_addr_t), GFP_KERNEL);
+ 	if (!mr->page_list)
+-		return ret;
++		return sg_num;
  
+-	ret = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
+-	if (ret < 1) {
++	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
++	if (sg_num < 1) {
+ 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
+-			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, ret);
++			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
+ 		goto err_page_list;
+ 	}
+ 
+@@ -463,17 +463,16 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	ret = hns_roce_mtr_map(hr_dev, mtr, mr->page_list, mr->npages);
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to map sg mtr, ret = %d.\n", ret);
+-		ret = 0;
++		sg_num = 0;
+ 	} else {
+ 		mr->pbl_mtr.hem_cfg.buf_pg_shift = (u32)ilog2(ibmr->page_size);
+-		ret = mr->npages;
+ 	}
+ 
+ err_page_list:
+ 	kvfree(mr->page_list);
+ 	mr->page_list = NULL;
+ 
+-	return ret;
++	return sg_num;
+ }
+ 
+ static void hns_roce_mw_free(struct hns_roce_dev *hr_dev,
 -- 
 2.43.0
 
