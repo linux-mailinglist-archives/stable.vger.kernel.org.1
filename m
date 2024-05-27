@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-47096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC28C8D0C92
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0192F8D0ABE
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE28B1C210BD
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:21:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339AA1C20EC9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45ADC15FCE9;
-	Mon, 27 May 2024 19:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C584167D83;
+	Mon, 27 May 2024 19:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocfS3mtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0GX7u9K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040E2168C4;
-	Mon, 27 May 2024 19:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE29626AF2;
+	Mon, 27 May 2024 19:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837661; cv=none; b=fS7GR+9Ur534AmtTJW4b3C32ouchwz2b6PSedas/vIHWLXe2/2blWIGJEHFicafkhUYesucnBS7nmPQtzG/89ObXaCk2KSo1YDbGcpktXgaLBLiKATaDeYIONgGW0TDTS336oKPiIg8dyoAtIuVO3WyhhLOiVeqaFNDQrqlS0Nc=
+	t=1716836542; cv=none; b=GTO2moQmuWwsJJKjIyJV4SJ7J/dhVRn74e/jZSmIAouGfqgPzgqY3ySZExbXx0WnNcMQ79DAsYnCtLPsIDuLHbqkrMZSjCc/yOmihdD4VOeEvPPJCaQ5rduLhkspZi17AMVXztWkVBsTXFm2wMqNlJz3mtUyhb7LKHsLW03bWCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837661; c=relaxed/simple;
-	bh=h1Ml+mmEJ5IxK973B2wd6O16x2XRTwIdatFHKxwNO+Y=;
+	s=arc-20240116; t=1716836542; c=relaxed/simple;
+	bh=XV3R9ytdJx19jR+Ppar+XzZyzPWixxLIbsniVQnD29E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KoYjihhC2KTK3yOzaA/3YZCg5ca0UwCvJtjVltenDpPAU3DkbzKUwijEZQu/PSjKOcmKiNYyahaXNIz2wwUNHK9R9SjSr0/qky5MLPEEHA4bUlNBrF0CNzJQohrNV88lWgjLjAlt9ZpQJi9VZlZ5bVIOWYzIIgEby0kP8478whU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocfS3mtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F147C2BBFC;
-	Mon, 27 May 2024 19:21:00 +0000 (UTC)
+	 MIME-Version; b=pPOIAmO93/cvHVXf+ERtaNmy5n5yiP+Rje3cB2ucZB1oCHbxAidNxbX4i/HA6Kt8Gl5P3X3p5AfGSib1pWBPyy0IbLjiZ+znSetz0WoggeIF/0b4ASH0LzUo+JjEux/h6s2qIO/HrX4TVZ7Gi3bK1eT49YHGKZ8O/xTNKWa2QsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0GX7u9K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24992C32781;
+	Mon, 27 May 2024 19:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837660;
-	bh=h1Ml+mmEJ5IxK973B2wd6O16x2XRTwIdatFHKxwNO+Y=;
+	s=korg; t=1716836541;
+	bh=XV3R9ytdJx19jR+Ppar+XzZyzPWixxLIbsniVQnD29E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ocfS3mtKDDS1FTAK6g7B1KBB4iYDVDuJVUGepiR7XyczXiT8f2Patkpk7sfij3mnS
-	 frE8Xlt0xH8OYEs5xT5kQM/XJagwOXMgSSwBwN/j1iIJbW8VVK+sqn+V9P7V2CdmQn
-	 Pc1GbewtDHwlc+NUZpNgxuhR+tnj2QUBE9eRNzIE=
+	b=l0GX7u9KAQLh85OcmNhqDbIa4Z5Ps/wcTB9aYegpWaz8GOhQoylPSK6jYObTLWvxX
+	 51kdJYjkYoxKhZNqvOvg4xUfD+THW5roLrkApiWZaiOUY9DNXg0nL8mLJ6QE5h38ci
+	 ub0tSOMRIovIeCk8Qr9mp8/PDVNk65oXGurwzN9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <wayne.lin@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 096/493] drm/amd/display: Add VCO speed parameter for DCN31 FPU
-Date: Mon, 27 May 2024 20:51:38 +0200
-Message-ID: <20240527185633.572595161@linuxfoundation.org>
+Subject: [PATCH 6.9 052/427] crypto: x86/nh-avx2 - add missing vzeroupper
+Date: Mon, 27 May 2024 20:51:39 +0200
+Message-ID: <20240527185606.562470323@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 0e62103bdcbc88281e16add299a946fb3bd02fbe ]
+[ Upstream commit 4ad096cca942959871d8ff73826d30f81f856f6e ]
 
-Add VCO speed parameters in the bounding box array.
+Since nh_avx2() uses ymm registers, execute vzeroupper before returning
+from it.  This is necessary to avoid reducing the performance of SSE
+code.
 
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0f961f9f670e ("crypto: x86/nhpoly1305 - add AVX2 accelerated NHPoly1305")
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/crypto/nh-avx2-x86_64.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
-index deb6d162a2d5c..7307b7b8d8ad7 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
-@@ -291,6 +291,7 @@ static struct _vcs_dpi_soc_bounding_box_st dcn3_15_soc = {
- 	.do_urgent_latency_adjustment = false,
- 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
- 	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
-+	.dispclk_dppclk_vco_speed_mhz = 2400.0,
- 	.num_chans = 4,
- 	.dummy_pstate_latency_us = 10.0
- };
-@@ -438,6 +439,7 @@ static struct _vcs_dpi_soc_bounding_box_st dcn3_16_soc = {
- 	.do_urgent_latency_adjustment = false,
- 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
- 	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
-+	.dispclk_dppclk_vco_speed_mhz = 2500.0,
- };
- 
- void dcn31_zero_pipe_dcc_fraction(display_e2e_pipe_params_st *pipes,
+diff --git a/arch/x86/crypto/nh-avx2-x86_64.S b/arch/x86/crypto/nh-avx2-x86_64.S
+index ef73a3ab87263..791386d9a83aa 100644
+--- a/arch/x86/crypto/nh-avx2-x86_64.S
++++ b/arch/x86/crypto/nh-avx2-x86_64.S
+@@ -154,5 +154,6 @@ SYM_TYPED_FUNC_START(nh_avx2)
+ 	vpaddq		T1, T0, T0
+ 	vpaddq		T4, T0, T0
+ 	vmovdqu		T0, (HASH)
++	vzeroupper
+ 	RET
+ SYM_FUNC_END(nh_avx2)
 -- 
 2.43.0
 
