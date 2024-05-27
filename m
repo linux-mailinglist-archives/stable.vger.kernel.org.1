@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-47277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88B58D0D57
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:28:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E61F38D0B84
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 484791F21BD5
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:28:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 703C1B22BD9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDCD1607AF;
-	Mon, 27 May 2024 19:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0FD26AF2;
+	Mon, 27 May 2024 19:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1z6DCIl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2e7wCZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE321607A2;
-	Mon, 27 May 2024 19:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680CA17E90E;
+	Mon, 27 May 2024 19:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716838127; cv=none; b=GBRfYhNvRMTm2swCdp9EH++nGAgWRDvAewumeXsC5qVXL0QO7QcW4Blh93VwYWROTRxtWSYg6DvWRMTfCvggB2Ejebv3IHCWBLm9P5yGr4ajjOif5YVZbu2gwW2fhXZarKqN4rgjLfhZpo/r6EWgoZIltZ/i1TR+HjVeSoM8K+w=
+	t=1716837007; cv=none; b=Tcxw23qgJ9CjUaWt+Z6CEyiCK+JpBa3Bs9XfmGFCLkDFb/RMys7D8BbnRuwngIQp6HbmEv8jS/2cS2b20XR9ltCTfNN+81dDq0KW8iAnzL+EsKc3K+VbbSC0VT9BD4vkpipunc6RcYDQoNm+fp5CxQrOg3n1/GWu1LTD7pHIp6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716838127; c=relaxed/simple;
-	bh=TNyvqMRDHubCvk8T/pOQ0kHq5SYgnRN9BIfxM2OS0vA=;
+	s=arc-20240116; t=1716837007; c=relaxed/simple;
+	bh=37G+OoQCRz9xLz4i30K1Xq5Us2Rq6Ln0LyjXY3drSKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/C09i21O6qQLt9dHF0nRRwU7JGSq6sV/FW9mjcjcCig/Tof7nvhJKdPKyjHQoyK5Rkss+e07LZL7zCbPCc7qXz+5ZZGjK7PJ+rxnKR/K1HN92zJkKstvQrUhJlK5ZYEvtcoQ2eA4f/XZ2CwZOa3kCP0+vvODP2yuKlhrvQKwqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1z6DCIl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD202C2BBFC;
-	Mon, 27 May 2024 19:28:46 +0000 (UTC)
+	 MIME-Version; b=ricZDg6rynI7OdGoRZlqutXZAl6UZfQkVuN/C0eIxIbIyMIMhh9l1ckH4E3HJI3lVY6fVEIHZxqbsxZbeqqFJLD5TDpLsm72m5Def/rmtn8tQvfiHEX6OWkpXUftstv3vYVdfRsEp7K4u08jwj+h2pNo0V06P6IAq9VuRIU/N5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2e7wCZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0574C2BBFC;
+	Mon, 27 May 2024 19:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716838127;
-	bh=TNyvqMRDHubCvk8T/pOQ0kHq5SYgnRN9BIfxM2OS0vA=;
+	s=korg; t=1716837007;
+	bh=37G+OoQCRz9xLz4i30K1Xq5Us2Rq6Ln0LyjXY3drSKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B1z6DCIlQqItrNExM9laICY+8a57mjW5AqvRJ5ZW/nbMbsVBrWeLNZYm5m6LPS4TD
-	 IbXvyyubEF9JeoKsDktmi6ATX9+GwwOKqUTIiEK0nxWvFTH3uXVw7TGGJxJOuHFqXO
-	 fj5TAfixncc/MpbeQnYUrmvCNAuAQYYTlYB/Bmd0=
+	b=f2e7wCZGoWuCGkSRd2FjBw/rpF74VgFCX1js9JxlJnegCJpe7AS5UIdBlvVxy1+R5
+	 ihOT2QFTAxvOFfElzwBw3p91eriwQ1mDSeXEEVc1pkYlfjop4YpecBXFo5MAL0XoIp
+	 xbp59m9U3mrg1u+zWAPzwPtapNJ/uGta/LmToxyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Edward Liaw <edliaw@google.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 277/493] wifi: rtw89: wow: refine WoWLAN flows of HCI interrupts and low power mode
+Subject: [PATCH 6.9 232/427] selftests/sgx: Include KHDR_INCLUDES in Makefile
 Date: Mon, 27 May 2024 20:54:39 +0200
-Message-ID: <20240527185639.362109375@linuxfoundation.org>
+Message-ID: <20240527185624.147695746@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +67,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Edward Liaw <edliaw@google.com>
 
-[ Upstream commit baaf806e4632a259cc959fd1c516c2d9ed48df6d ]
+[ Upstream commit 2c3b8f8f37c6c0c926d584cf4158db95e62b960c ]
 
-After enabling packet offload, the TX will be stuck after resume from
-WoWLAN mode. And the 8852c gets error messages like
+Add KHDR_INCLUDES to the CFLAGS to pull in the kselftest harness
+dependencies (-D_GNU_SOURCE).
 
-rtw89_8852ce 0000:04:00.0: No busy txwd pages available
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 100 is not idle
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 101 is not idle
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 102 is not idle
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 103 is not idle
+Also, remove redefinitions of _GNU_SOURCE in the source code.
 
-If suspend/resume many times that firmware will download failed and
-disconnection.
-
-To fix these issues, We removed the rtw89_hci_disable_intr() and
-rtw89_hci_enable_intr() during rtw89_wow_swap_fw() to prevent add packet
-offload can't receive c2h back due to interrupt disable. Only 8852C and
-8922A needs to disable interrupt before downloading fw.
-
-Furthermore, we avoid using low power HCI mode on WoWLAN mode, to prevent
-interrupt enabled, then get interrupt and calculate RXBD mismatched due to
-software RXBD index already reset but hardware RXBD index not yet.
-
-Fixes: 5c12bb66b79d ("wifi: rtw89: refine packet offload flow")
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240502022505.28966-3-pkshih@realtek.com
+Fixes: 809216233555 ("selftests/harness: remove use of LINE_MAX")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202404301040.3bea5782-oliver.sang@intel.com
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/ps.c  |  3 ++-
- drivers/net/wireless/realtek/rtw89/wow.c | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ tools/testing/selftests/sgx/Makefile    | 2 +-
+ tools/testing/selftests/sgx/sigstruct.c | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/ps.c b/drivers/net/wireless/realtek/rtw89/ps.c
-index 917c01e5e9eda..e86d5588ec609 100644
---- a/drivers/net/wireless/realtek/rtw89/ps.c
-+++ b/drivers/net/wireless/realtek/rtw89/ps.c
-@@ -54,7 +54,8 @@ static void rtw89_ps_power_mode_change_with_hci(struct rtw89_dev *rtwdev,
+diff --git a/tools/testing/selftests/sgx/Makefile b/tools/testing/selftests/sgx/Makefile
+index 867f88ce2570a..26ea30fae23ca 100644
+--- a/tools/testing/selftests/sgx/Makefile
++++ b/tools/testing/selftests/sgx/Makefile
+@@ -12,7 +12,7 @@ OBJCOPY := $(CROSS_COMPILE)objcopy
+ endif
  
- static void rtw89_ps_power_mode_change(struct rtw89_dev *rtwdev, bool enter)
- {
--	if (rtwdev->chip->low_power_hci_modes & BIT(rtwdev->ps_mode))
-+	if (rtwdev->chip->low_power_hci_modes & BIT(rtwdev->ps_mode) &&
-+	    !test_bit(RTW89_FLAG_WOWLAN, rtwdev->flags))
- 		rtw89_ps_power_mode_change_with_hci(rtwdev, enter);
- 	else
- 		rtw89_mac_power_mode_change(rtwdev, enter);
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 5c7ca36c09b6b..abb4d1cc55d0e 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -489,14 +489,17 @@ static int rtw89_wow_swap_fw(struct rtw89_dev *rtwdev, bool wow)
- 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
- 	struct ieee80211_vif *wow_vif = rtw_wow->wow_vif;
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)wow_vif->drv_priv;
-+	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	bool include_bb = !!chip->bbmcu_nr;
-+	bool disable_intr_for_dlfw = false;
- 	struct ieee80211_sta *wow_sta;
- 	struct rtw89_sta *rtwsta = NULL;
- 	bool is_conn = true;
- 	int ret;
+ INCLUDES := -I$(top_srcdir)/tools/include
+-HOST_CFLAGS := -Wall -Werror -g $(INCLUDES) -fPIC
++HOST_CFLAGS := -Wall -Werror $(KHDR_INCLUDES) -g $(INCLUDES) -fPIC
+ HOST_LDFLAGS := -z noexecstack -lcrypto
+ ENCL_CFLAGS += -Wall -Werror -static-pie -nostdlib -ffreestanding -fPIE \
+ 	       -fno-stack-protector -mrdrnd $(INCLUDES)
+diff --git a/tools/testing/selftests/sgx/sigstruct.c b/tools/testing/selftests/sgx/sigstruct.c
+index d73b29becf5b0..200034a0fee51 100644
+--- a/tools/testing/selftests/sgx/sigstruct.c
++++ b/tools/testing/selftests/sgx/sigstruct.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*  Copyright(c) 2016-20 Intel Corporation. */
  
--	rtw89_hci_disable_intr(rtwdev);
-+	if (chip_id == RTL8852C || chip_id == RTL8922A)
-+		disable_intr_for_dlfw = true;
- 
- 	wow_sta = ieee80211_find_sta(wow_vif, rtwvif->bssid);
- 	if (wow_sta)
-@@ -504,12 +507,18 @@ static int rtw89_wow_swap_fw(struct rtw89_dev *rtwdev, bool wow)
- 	else
- 		is_conn = false;
- 
-+	if (disable_intr_for_dlfw)
-+		rtw89_hci_disable_intr(rtwdev);
-+
- 	ret = rtw89_fw_download(rtwdev, fw_type, include_bb);
- 	if (ret) {
- 		rtw89_warn(rtwdev, "download fw failed\n");
- 		return ret;
- 	}
- 
-+	if (disable_intr_for_dlfw)
-+		rtw89_hci_enable_intr(rtwdev);
-+
- 	rtw89_phy_init_rf_reg(rtwdev, true);
- 
- 	ret = rtw89_fw_h2c_role_maintain(rtwdev, rtwvif, rtwsta,
-@@ -552,7 +561,6 @@ static int rtw89_wow_swap_fw(struct rtw89_dev *rtwdev, bool wow)
- 	}
- 
- 	rtw89_mac_hw_mgnt_sec(rtwdev, wow);
--	rtw89_hci_enable_intr(rtwdev);
- 
- 	return 0;
- }
+-#define _GNU_SOURCE
+ #include <assert.h>
+ #include <getopt.h>
+ #include <stdbool.h>
 -- 
 2.43.0
 
