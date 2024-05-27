@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-46646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1138D0AA6
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2758D0CBB
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC0522816FE
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C44E11F20DD0
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02F4160880;
-	Mon, 27 May 2024 19:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29E7160784;
+	Mon, 27 May 2024 19:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+KIV9FP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6S0K1Xo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC79F1078F;
-	Mon, 27 May 2024 19:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71130168C4;
+	Mon, 27 May 2024 19:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836490; cv=none; b=iwduFrYPb6E/w0Dc3BfyNACMf8sFo5PEiVw8EhvTc0hMdCT445g1adLg+1/FYomFqfRD334P/heyc/UdMXUl57nAjDOmzFgrFlfNR8kkgG2K787hRC2IvrdkrnGQsHyluG8BcqpL0b8hgtoDSEOOwSnymIGZE3eVPH6BgthGe5Y=
+	t=1716837755; cv=none; b=a58HUt9FAeb8LoHy4GhV+B23NcXrA4QFD432NEafcnBkleG748X+U3tSLw8ctMYSc7JJgfH7jiC9MuKhmVbwTjEwwhdVTRuvT3YGz7MjXaxnJ33pPcnYU/mfTpvWibmXNmhpKiqJE6TGyxgkzm8XaMxIOamsXb8LRpseQvmGuRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836490; c=relaxed/simple;
-	bh=4DltXQC+ZAfHzXvaMW9k7iBWyNARxvCFCkGdBI143qU=;
+	s=arc-20240116; t=1716837755; c=relaxed/simple;
+	bh=+nR2cwsfbJPq998eNNUHPDISmi/aYea+d288DvNLN5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vn9IySTRMwEZm++1syw706vAnzuZRukQZ/1CgGPC6CUlZYH7nQh2rB8h0Y3f0KnH9ZsznDdS5FqOPVye/ti3BIt6dC1GsxIOb2F0YPK5zdxZ0rAk4wbF78TLK8WtgzwiXvozi+NOjuf3cTKw9OUJZfv9MzN2k8XHhOtA5ijxVGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+KIV9FP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D93CC2BBFC;
-	Mon, 27 May 2024 19:01:30 +0000 (UTC)
+	 MIME-Version; b=YSWRYj/HdUoR2/vJrPil+7MfMFzCVIkDJ2aO5QDRNSO5GRUZLSpjd1fMJCBEyO1OBaU1WUYxA5ERJDBcvSyiOlBIrRFJWksNanXMvD1CJHdcfNvakYDfx9jzBrKqVieNydYA/bnZOXfDETPaSJ28dX46txcxyaf4+mpsu7rl2U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6S0K1Xo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B34C2BBFC;
+	Mon, 27 May 2024 19:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836490;
-	bh=4DltXQC+ZAfHzXvaMW9k7iBWyNARxvCFCkGdBI143qU=;
+	s=korg; t=1716837755;
+	bh=+nR2cwsfbJPq998eNNUHPDISmi/aYea+d288DvNLN5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+KIV9FPrnGKZUgoV4DFAd8qKGjWYgQOULpifI3SYmr2NEw3EBIpgcSsdwftFS/Jn
-	 FDSIc+FX3gS3tLDF3VQsa164R542/c19HDFG4UpZobp26gIExKIpygm24LprpzXo1t
-	 EEHqTrPDeW38MZ28dtNrL9Sjh0xBnibYbfSeR0x8=
+	b=v6S0K1XovfPDP6ro1h9t9FU1CLVL5FniFJJP3k29LgjSubq2XuFH1o6/KHZcQsUbx
+	 TtI3VPdEz6q+973nfBx7xJJQWu65l3Qy85ceQV3YkaVAgQ1ffJsITvg0WLcBvosY+m
+	 5ns+hCDMfZTShj/SSV002e3jjBIyF/EeVa487wtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mukul Joshi <mukul.joshi@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 047/427] firmware: raspberrypi: Use correct device for DMA mappings
+Subject: [PATCH 6.8 092/493] drm/amdgpu: Fix VRAM memory accounting
 Date: Mon, 27 May 2024 20:51:34 +0200
-Message-ID: <20240527185606.138712011@linuxfoundation.org>
+Message-ID: <20240527185633.406959066@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Mukul Joshi <mukul.joshi@amd.com>
 
-[ Upstream commit df518a0ae1b982a4dcf2235464016c0c4576a34d ]
+[ Upstream commit f06446ef23216090d1ee8ede1a7d7ae430c22dcc ]
 
-The buffer used to transfer data over the mailbox interface is mapped
-using the client's device. This is incorrect, as the device performing
-the DMA transfer is the mailbox itself. Fix it by using the mailbox
-controller device instead.
+Subtract the VRAM pinned memory when checking for available memory
+in amdgpu_amdkfd_reserve_mem_limit function since that memory is not
+available for use.
 
-This requires including the mailbox_controller.h header to dereference
-the mbox_chan and mbox_controller structures. The header is not meant to
-be included by clients. This could be fixed by extending the client API
-with a function to access the controller's device.
-
-Fixes: 4e3d60656a72 ("ARM: bcm2835: Add the Raspberry Pi firmware driver")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Tested-by: Ivan T. Ivanov <iivanov@suse.de>
-Link: https://lore.kernel.org/r/20240326195807.15163-3-laurent.pinchart@ideasonboard.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/raspberrypi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/raspberrypi.c b/drivers/firmware/raspberrypi.c
-index 322aada20f742..ac34876a97f8b 100644
---- a/drivers/firmware/raspberrypi.c
-+++ b/drivers/firmware/raspberrypi.c
-@@ -9,6 +9,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/kref.h>
- #include <linux/mailbox_client.h>
-+#include <linux/mailbox_controller.h>
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_platform.h>
-@@ -97,8 +98,8 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 	if (size & 3)
- 		return -EINVAL;
- 
--	buf = dma_alloc_coherent(fw->cl.dev, PAGE_ALIGN(size), &bus_addr,
--				 GFP_ATOMIC);
-+	buf = dma_alloc_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size),
-+				 &bus_addr, GFP_ATOMIC);
- 	if (!buf)
- 		return -ENOMEM;
- 
-@@ -126,7 +127,7 @@ int rpi_firmware_property_list(struct rpi_firmware *fw,
- 		ret = -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index daa66eb4f722b..b1e2dd52e643d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -220,7 +220,7 @@ int amdgpu_amdkfd_reserve_mem_limit(struct amdgpu_device *adev,
+ 	    (kfd_mem_limit.ttm_mem_used + ttm_mem_needed >
+ 	     kfd_mem_limit.max_ttm_mem_limit) ||
+ 	    (adev && xcp_id >= 0 && adev->kfd.vram_used[xcp_id] + vram_needed >
+-	     vram_size - reserved_for_pt)) {
++	     vram_size - reserved_for_pt - atomic64_read(&adev->vram_pin_size))) {
+ 		ret = -ENOMEM;
+ 		goto release;
  	}
- 
--	dma_free_coherent(fw->cl.dev, PAGE_ALIGN(size), buf, bus_addr);
-+	dma_free_coherent(fw->chan->mbox->dev, PAGE_ALIGN(size), buf, bus_addr);
- 
- 	return ret;
- }
 -- 
 2.43.0
 
