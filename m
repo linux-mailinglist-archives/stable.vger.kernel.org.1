@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-47118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CFD28D0CA9
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A59A8D0AA4
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12123B203F1
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:22:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28CC0B2126A
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F70615FCE9;
-	Mon, 27 May 2024 19:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0B216078F;
+	Mon, 27 May 2024 19:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUcxtx13"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lc/4QZjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F575168C4;
-	Mon, 27 May 2024 19:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB031078F;
+	Mon, 27 May 2024 19:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837717; cv=none; b=MAzHYJNLy7zzGlA+p8mNtMi22X/050g1BeU0zrXsKCYTSWOOYcelDcsCOjZzOAWP48ryGjkuLcyK56sVuQFR7pzH/RybRjwp/rQiCHoKRjXoifV6UPc7CYH1/qCkkkOBumnKiSaq++LpjvDMfo2P3c0Nj2jaSAvh+iz9JDWMrMU=
+	t=1716836482; cv=none; b=JBqBVwv6hnxT8e9cgjODa1wthPZiLNWmBirScPVFpDQtO8HO39+7HYCyZXAAhfa1OjYw/1MIuOvlR9KexUNyZNSuoACCqbJaJcmrTWQTNVMg7ZEt8XCSqqpnCB2CBUT6235Qi4aQQ+FFu5oG4qw3C+IXGzvYJvpygKPRwmIjD3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837717; c=relaxed/simple;
-	bh=YJb7IQG1VdANIOf+wh6QzQyRX9Gf6VtYjC5qBZEtLPE=;
+	s=arc-20240116; t=1716836482; c=relaxed/simple;
+	bh=CqXh9y4IojNCARK+GtUw6Bs2dpPrSmbC3Y0QqT4TfYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBZy9SMNkAvELe4jMowTUpmwJoxbZ+QfEI66NBTSCV0r3rDV96sGFwKvlSVF3rZD5WugmZF4Ke9l5btf7m31rMqjfttAZjFi7ywb9JVQJOTbHC+r4+TfXpyFf61OxUAzru+F5rQC3gdG54f5f4YEVFH1Gy4NOcenzg4lRJTGdAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUcxtx13; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77AAC2BBFC;
-	Mon, 27 May 2024 19:21:56 +0000 (UTC)
+	 MIME-Version; b=Sj8TqOMiTPLFTdMnVRIScR2XVxb4NNRIec9WY7OcZr5rvi+Pbx5CMgOg0dIH+5y5QfCh07ube7+SlLukx6tFX3wBgTlPsKZ3O+Q5dtzgYD8Y+CkXWkSyKU0NawmlTVtlXkjRKFB6AcBUvZa7S3MFVPz3OuC4co8z+rX3B3PB3HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lc/4QZjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346AAC2BBFC;
+	Mon, 27 May 2024 19:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837717;
-	bh=YJb7IQG1VdANIOf+wh6QzQyRX9Gf6VtYjC5qBZEtLPE=;
+	s=korg; t=1716836482;
+	bh=CqXh9y4IojNCARK+GtUw6Bs2dpPrSmbC3Y0QqT4TfYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IUcxtx136awNyfd2wD63MlytPOXpDEpZA55lrIM5nUNh2Nvtseo5JrUHdBzPz3HtK
-	 NnI7v+oueywcyvyH42qtFeXg2EtiMN6eogYpdqwvyobr2cPxWtNNCLKbVPMP5vWe71
-	 Sn7XRDi7KgaxoSDq3/Rok1m9IEyBf/e20EWYUco0=
+	b=lc/4QZjGDLOi7p6Q/eGafsCI58tqRoKHhE5ZAQjZtro0VYkyOxOKBPtwGFh3LMdy5
+	 zftNvkWMMrXGe2hTzBZppz61KDoyWpEawhYZM1XPHKUo5TWv98MbBsFg7axzNXPoAM
+	 mEP1350fpmfS6R9Uv3m6FASmvQsfVJHBKTy33ZHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 116/493] nilfs2: fix out-of-range warning
+	Andrew Halaney <ahalaney@redhat.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Xilin Wu <wuxilin123@gmail.com>
+Subject: [PATCH 6.9 071/427] soc: qcom: pmic_glink: notify clients about the current state
 Date: Mon, 27 May 2024 20:51:58 +0200
-Message-ID: <20240527185634.304969116@linuxfoundation.org>
+Message-ID: <20240527185608.455471912@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
-References: <20240527185626.546110716@linuxfoundation.org>
+In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
+References: <20240527185601.713589927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit c473bcdd80d4ab2ae79a7a509a6712818366e32a ]
+[ Upstream commit d6cbce2cd354c9a37a558f290a8f1dfd20584f99 ]
 
-clang-14 points out that v_size is always smaller than a 64KB
-page size if that is configured by the CPU architecture:
+In case the client is registered after the pmic-glink recived a response
+from the Protection Domain mapper, it is going to miss the notification
+about the state. Notify clients about the current state upon
+registration.
 
-fs/nilfs2/ioctl.c:63:19: error: result of comparison of constant 65536 with expression of type '__u16' (aka 'unsigned short') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-        if (argv->v_size > PAGE_SIZE)
-            ~~~~~~~~~~~~ ^ ~~~~~~~~~
-
-This is ok, so just shut up that warning with a cast.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240328143051.1069575-7-arnd@kernel.org
-Fixes: 3358b4aaa84f ("nilfs2: fix problems of memory allocation in ioctl")
-Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Tested-by: Xilin Wu <wuxilin123@gmail.com> # on QCS8550 AYN Odin 2
+Link: https://lore.kernel.org/r/20240403-pmic-glink-fix-clients-v2-2-aed4e02baacc@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/pmic_glink.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
-index cfb6aca5ec383..d6e3f20e8872e 100644
---- a/fs/nilfs2/ioctl.c
-+++ b/fs/nilfs2/ioctl.c
-@@ -60,7 +60,7 @@ static int nilfs_ioctl_wrap_copy(struct the_nilfs *nilfs,
- 	if (argv->v_nmembs == 0)
- 		return 0;
+diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
+index 2b2cdf4796542..e85a12ec2aab1 100644
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -83,9 +83,14 @@ struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
+ 	client->pdr_notify = pdr;
+ 	client->priv = priv;
  
--	if (argv->v_size > PAGE_SIZE)
-+	if ((size_t)argv->v_size > PAGE_SIZE)
- 		return -EINVAL;
++	mutex_lock(&pg->state_lock);
+ 	mutex_lock(&pg->client_lock);
++
+ 	list_add(&client->node, &pg->clients);
++	client->pdr_notify(client->priv, pg->client_state);
++
+ 	mutex_unlock(&pg->client_lock);
++	mutex_unlock(&pg->state_lock);
  
- 	/*
+ 	devres_add(dev, client);
+ 
 -- 
 2.43.0
 
