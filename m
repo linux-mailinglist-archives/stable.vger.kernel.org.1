@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-46895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B278D0BB3
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:12:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27DA8D0DA9
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEB03B2182F
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:12:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59703283CA8
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5032026AF2;
-	Mon, 27 May 2024 19:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72300262BE;
+	Mon, 27 May 2024 19:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+nuHLcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsYrRN2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D54117E90E;
-	Mon, 27 May 2024 19:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA701EEF7;
+	Mon, 27 May 2024 19:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716837132; cv=none; b=EAul/PzepuwbnW11GEVpR2aD0UaJaj7GdwfKhfLuKofvY+9nVzXjU5BxUngmcJiCVA1ldlOEX2qsy8Ewv57vVq0C+y5cL/gfZOnTFRzU4hCR5Mfe2axOz/XOU1PKbOrjKfag5yqfK3vg6W/jzrSH5X4STozsjbbWH/7Oi5lfGd4=
+	t=1716838341; cv=none; b=M3H5W3a92tPBM4kxb4gVf9l5uWom0pAfH6VoylaKrigjswnIzmxXQs1pefS8XgpUFB61kJL80W1ukoQOX9a5/UiPfvmX1WTepbqfPK2T+oypovVX0IvR05bXsE3hWUfg+arnbL4MRFpPGBdtjpKZB6ATNAZ+htAoFwe9XVt0U4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716837132; c=relaxed/simple;
-	bh=cUXm6diHtXBbkFlrcAhcev6u4BC8zMBufJiSaaeZCto=;
+	s=arc-20240116; t=1716838341; c=relaxed/simple;
+	bh=2SEaBis3vKg3RGcWms0oIu3wuamRKroqWIYO38ALa4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmKsgLca9oOmlTSxLPW5DZEL/APx7jQt/Da0SnhfXWDLNAN6enizLZF612+1dwqYGj7Q87NZtdLiGaR/qZnRc5mlTJMMeKA63ey3ES9s1nS7d0L/me9y9M76y/j5+4OJnuGtdYVJC8UDiXRgRy/8LnJb2fdJ/21TT+nh3AvjRhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+nuHLcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AD0C2BBFC;
-	Mon, 27 May 2024 19:12:11 +0000 (UTC)
+	 MIME-Version; b=Tm294f0NZ8msW25xG6W9XN+GCPPC8ufKmBcKedEIntA0t29+bmoT2KNOFpFl7SmKvKKS2ALmyAITUjvimQat8f1+8D1aFesV7FaCl+Bydh2BME2XzyTP7cmXLc8c7SC1i3rTucdXn1+dNzpmAdW4lhh10+RM7WdzBso2s2nYN9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsYrRN2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE97BC2BBFC;
+	Mon, 27 May 2024 19:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716837131;
-	bh=cUXm6diHtXBbkFlrcAhcev6u4BC8zMBufJiSaaeZCto=;
+	s=korg; t=1716838341;
+	bh=2SEaBis3vKg3RGcWms0oIu3wuamRKroqWIYO38ALa4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+nuHLcfdrUWItlkKN/ZYEr0qXmpXa9uURQCJlyFz7qtUV0GR3g8pFxgZ3Hyqgclb
-	 zWyeLlJlFb9EwKdDCmtF2h3LFhwOEtsmjeen10o8/ZwzYLrGD8J34SKtFcBZn9zNN5
-	 wiuelnsnqmHIJ2kXdPZ9cAyv/tta+gXIDrotnmIg=
+	b=YsYrRN2u3TNE73JE0Z/1f+or58+p0mrdlZORmu75WtHbm6gAU8XS/Onf/ECZym21T
+	 GGOjDp7dLGOjddknCEEiPgfR4k24lELsm93fXX86QgAArHHbWA88m6Ip6Or3jylvQk
+	 r4aECXTwxihcivUuys68aqnw3dUVkpznc5ljCC3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 270/427] Bluetooth: ISO: Make iso_get_sock_listen generic
+Subject: [PATCH 6.8 315/493] net/mlx5: Fix peer devlink set for SF representor devlink port
 Date: Mon, 27 May 2024 20:55:17 +0200
-Message-ID: <20240527185627.631136990@linuxfoundation.org>
+Message-ID: <20240527185640.589968369@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,200 +65,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 311527e9dafdcae0c5a20d62f4f84ad01b33b5f4 ]
+[ Upstream commit 3c453e8cc672de1f9c662948dba43176bc68d7f0 ]
 
-This makes iso_get_sock_listen more generic, to return matching socket
-in the state provided as argument.
+The cited patch change register devlink flow, and neglect to reflect
+the changes for peer devlink set logic. Peer devlink set is
+triggering a call trace if done after devl_register.[1]
 
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: a5b862c6a221 ("Bluetooth: L2CAP: Fix div-by-zero in l2cap_le_flowctl_init()")
+Hence, align peer devlink set logic with register devlink flow.
+
+[1]
+WARNING: CPU: 4 PID: 3394 at net/devlink/core.c:155 devlink_rel_nested_in_add+0x177/0x180
+CPU: 4 PID: 3394 Comm: kworker/u40:1 Not tainted 6.9.0-rc4_for_linust_min_debug_2024_04_16_14_08 #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+Workqueue: mlx5_vhca_event0 mlx5_vhca_state_work_handler [mlx5_core]
+RIP: 0010:devlink_rel_nested_in_add+0x177/0x180
+Call Trace:
+ <TASK>
+ ? __warn+0x78/0x120
+ ? devlink_rel_nested_in_add+0x177/0x180
+ ? report_bug+0x16d/0x180
+ ? handle_bug+0x3c/0x60
+ ? exc_invalid_op+0x14/0x70
+ ? asm_exc_invalid_op+0x16/0x20
+ ? devlink_port_init+0x30/0x30
+ ? devlink_port_type_clear+0x50/0x50
+ ? devlink_rel_nested_in_add+0x177/0x180
+ ? devlink_rel_nested_in_add+0xdd/0x180
+ mlx5_sf_mdev_event+0x74/0xb0 [mlx5_core]
+ notifier_call_chain+0x35/0xb0
+ blocking_notifier_call_chain+0x3d/0x60
+ mlx5_blocking_notifier_call_chain+0x22/0x30 [mlx5_core]
+ mlx5_sf_dev_probe+0x185/0x3e0 [mlx5_core]
+ auxiliary_bus_probe+0x38/0x80
+ ? driver_sysfs_add+0x51/0x80
+ really_probe+0xc5/0x3a0
+ ? driver_probe_device+0x90/0x90
+ __driver_probe_device+0x80/0x160
+ driver_probe_device+0x1e/0x90
+ __device_attach_driver+0x7d/0x100
+ bus_for_each_drv+0x80/0xd0
+ __device_attach+0xbc/0x1f0
+ bus_probe_device+0x86/0xa0
+ device_add+0x64f/0x860
+ __auxiliary_device_add+0x3b/0xa0
+ mlx5_sf_dev_add+0x139/0x330 [mlx5_core]
+ mlx5_sf_dev_state_change_handler+0x1e4/0x250 [mlx5_core]
+ notifier_call_chain+0x35/0xb0
+ blocking_notifier_call_chain+0x3d/0x60
+ mlx5_vhca_state_work_handler+0x151/0x200 [mlx5_core]
+ process_one_work+0x13f/0x2e0
+ worker_thread+0x2bd/0x3c0
+ ? rescuer_thread+0x410/0x410
+ kthread+0xc4/0xf0
+ ? kthread_complete_and_exit+0x20/0x20
+ ret_from_fork+0x2d/0x50
+ ? kthread_complete_and_exit+0x20/0x20
+ ret_from_fork_asm+0x11/0x20
+ </TASK>
+
+Fixes: bf729988303a ("net/mlx5: Restore mistakenly dropped parts in register devlink flow")
+Fixes: c6e77aa9dd82 ("net/mlx5: Register devlink first under devlink lock")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240509112951.590184-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/bluetooth.h |  2 +-
- net/bluetooth/iso.c               | 75 +++++++++++++++++--------------
- 2 files changed, 43 insertions(+), 34 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/main.c    | 14 +++++---------
+ .../mellanox/mlx5/core/sf/dev/driver.c        | 19 ++++++++-----------
+ 2 files changed, 13 insertions(+), 20 deletions(-)
 
-diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-index eaec5d6caa29d..b3228bd6cd6be 100644
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -285,7 +285,7 @@ void bt_err_ratelimited(const char *fmt, ...);
- 	bt_err_ratelimited("%s: " fmt, bt_dev_name(hdev), ##__VA_ARGS__)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index e285823bd08f0..0288e19e3a68e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1680,6 +1680,8 @@ int mlx5_init_one_light(struct mlx5_core_dev *dev)
+ 	struct devlink *devlink = priv_to_devlink(dev);
+ 	int err;
  
- /* Connection and socket states */
--enum {
-+enum bt_sock_state {
- 	BT_CONNECTED = 1, /* Equal to TCP_ESTABLISHED to make net code happy */
- 	BT_OPEN,
- 	BT_BOUND,
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 6bed4aa8291de..6cb41f9d174e2 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -85,8 +85,9 @@ static void iso_sock_disconn(struct sock *sk);
- 
- typedef bool (*iso_sock_match_t)(struct sock *sk, void *data);
- 
--static struct sock *iso_get_sock_listen(bdaddr_t *src, bdaddr_t *dst,
--					iso_sock_match_t match, void *data);
-+static struct sock *iso_get_sock(bdaddr_t *src, bdaddr_t *dst,
-+				 enum bt_sock_state state,
-+				 iso_sock_match_t match, void *data);
- 
- /* ---- ISO timers ---- */
- #define ISO_CONN_TIMEOUT	(HZ * 40)
-@@ -233,10 +234,11 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
- 		 * terminated are not processed anymore.
- 		 */
- 		if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags)) {
--			parent = iso_get_sock_listen(&hcon->src,
--						     &hcon->dst,
--						     iso_match_conn_sync_handle,
--						     hcon);
-+			parent = iso_get_sock(&hcon->src,
-+					      &hcon->dst,
-+					      BT_LISTEN,
-+					      iso_match_conn_sync_handle,
-+					      hcon);
- 
- 			if (parent) {
- 				set_bit(BT_SK_PA_SYNC_TERM,
-@@ -581,22 +583,23 @@ static struct sock *__iso_get_sock_listen_by_sid(bdaddr_t *ba, bdaddr_t *bc,
- 	return NULL;
- }
- 
--/* Find socket listening:
-+/* Find socket in given state:
-  * source bdaddr (Unicast)
-  * destination bdaddr (Broadcast only)
-  * match func - pass NULL to ignore
-  * match func data - pass -1 to ignore
-  * Returns closest match.
-  */
--static struct sock *iso_get_sock_listen(bdaddr_t *src, bdaddr_t *dst,
--					iso_sock_match_t match, void *data)
-+static struct sock *iso_get_sock(bdaddr_t *src, bdaddr_t *dst,
-+				 enum bt_sock_state state,
-+				 iso_sock_match_t match, void *data)
- {
- 	struct sock *sk = NULL, *sk1 = NULL;
- 
- 	read_lock(&iso_sk_list.lock);
- 
- 	sk_for_each(sk, &iso_sk_list.head) {
--		if (sk->sk_state != BT_LISTEN)
-+		if (sk->sk_state != state)
- 			continue;
- 
- 		/* Match Broadcast destination */
-@@ -1777,32 +1780,37 @@ static void iso_conn_ready(struct iso_conn *conn)
- 						 HCI_EVT_LE_BIG_SYNC_ESTABILISHED);
- 
- 			/* Get reference to PA sync parent socket, if it exists */
--			parent = iso_get_sock_listen(&hcon->src,
--						     &hcon->dst,
--						     iso_match_pa_sync_flag, NULL);
-+			parent = iso_get_sock(&hcon->src, &hcon->dst,
-+					      BT_LISTEN,
-+					      iso_match_pa_sync_flag,
-+					      NULL);
- 			if (!parent && ev)
--				parent = iso_get_sock_listen(&hcon->src,
--							     &hcon->dst,
--							     iso_match_big, ev);
-+				parent = iso_get_sock(&hcon->src,
-+						      &hcon->dst,
-+						      BT_LISTEN,
-+						      iso_match_big, ev);
- 		} else if (test_bit(HCI_CONN_PA_SYNC_FAILED, &hcon->flags)) {
- 			ev2 = hci_recv_event_data(hcon->hdev,
- 						  HCI_EV_LE_PA_SYNC_ESTABLISHED);
- 			if (ev2)
--				parent = iso_get_sock_listen(&hcon->src,
--							     &hcon->dst,
--							     iso_match_sid, ev2);
-+				parent = iso_get_sock(&hcon->src,
-+						      &hcon->dst,
-+						      BT_LISTEN,
-+						      iso_match_sid, ev2);
- 		} else if (test_bit(HCI_CONN_PA_SYNC, &hcon->flags)) {
- 			ev3 = hci_recv_event_data(hcon->hdev,
- 						  HCI_EVT_LE_BIG_INFO_ADV_REPORT);
- 			if (ev3)
--				parent = iso_get_sock_listen(&hcon->src,
--							     &hcon->dst,
--							     iso_match_sync_handle, ev3);
-+				parent = iso_get_sock(&hcon->src,
-+						      &hcon->dst,
-+						      BT_LISTEN,
-+						      iso_match_sync_handle,
-+						      ev3);
- 		}
- 
- 		if (!parent)
--			parent = iso_get_sock_listen(&hcon->src,
--							BDADDR_ANY, NULL, NULL);
-+			parent = iso_get_sock(&hcon->src, BDADDR_ANY,
-+					      BT_LISTEN, NULL, NULL);
- 
- 		if (!parent)
- 			return;
-@@ -1923,8 +1931,8 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 	 */
- 	ev1 = hci_recv_event_data(hdev, HCI_EV_LE_PA_SYNC_ESTABLISHED);
- 	if (ev1) {
--		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr, iso_match_sid,
--					 ev1);
-+		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
-+				  iso_match_sid, ev1);
- 		if (sk && !ev1->status)
- 			iso_pi(sk)->sync_handle = le16_to_cpu(ev1->handle);
- 
-@@ -1934,12 +1942,12 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 	ev2 = hci_recv_event_data(hdev, HCI_EVT_LE_BIG_INFO_ADV_REPORT);
- 	if (ev2) {
- 		/* Try to get PA sync listening socket, if it exists */
--		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
--						iso_match_pa_sync_flag, NULL);
-+		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
-+				  iso_match_pa_sync_flag, NULL);
- 
- 		if (!sk) {
--			sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
--						 iso_match_sync_handle, ev2);
-+			sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
-+					  iso_match_sync_handle, ev2);
- 
- 			/* If PA Sync is in process of terminating,
- 			 * do not handle any more BIGInfo adv reports.
-@@ -1979,8 +1987,8 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 		u8 *base;
- 		struct hci_conn *hcon;
- 
--		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
--					 iso_match_sync_handle_pa_report, ev3);
-+		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
-+				  iso_match_sync_handle_pa_report, ev3);
- 		if (!sk)
- 			goto done;
- 
-@@ -2029,7 +2037,8 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 			hcon->le_per_adv_data_len = 0;
- 		}
- 	} else {
--		sk = iso_get_sock_listen(&hdev->bdaddr, BDADDR_ANY, NULL, NULL);
-+		sk = iso_get_sock(&hdev->bdaddr, BDADDR_ANY,
-+				  BT_LISTEN, NULL, NULL);
++	devl_lock(devlink);
++	devl_register(devlink);
+ 	dev->state = MLX5_DEVICE_STATE_UP;
+ 	err = mlx5_function_enable(dev, true, mlx5_tout_ms(dev, FW_PRE_INIT_TIMEOUT));
+ 	if (err) {
+@@ -1693,27 +1695,21 @@ int mlx5_init_one_light(struct mlx5_core_dev *dev)
+ 		goto query_hca_caps_err;
  	}
  
- done:
+-	devl_lock(devlink);
+-	devl_register(devlink);
+-
+ 	err = mlx5_devlink_params_register(priv_to_devlink(dev));
+ 	if (err) {
+ 		mlx5_core_warn(dev, "mlx5_devlink_param_reg err = %d\n", err);
+-		goto params_reg_err;
++		goto query_hca_caps_err;
+ 	}
+ 
+ 	devl_unlock(devlink);
+ 	return 0;
+ 
+-params_reg_err:
+-	devl_unregister(devlink);
+-	devl_unlock(devlink);
+ query_hca_caps_err:
+-	devl_unregister(devlink);
+-	devl_unlock(devlink);
+ 	mlx5_function_disable(dev, true);
+ out:
+ 	dev->state = MLX5_DEVICE_STATE_INTERNAL_ERROR;
++	devl_unregister(devlink);
++	devl_unlock(devlink);
+ 	return err;
+ }
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+index 7ebe712808275..b2986175d9afe 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+@@ -60,6 +60,13 @@ static int mlx5_sf_dev_probe(struct auxiliary_device *adev, const struct auxilia
+ 		goto remap_err;
+ 	}
+ 
++	/* Peer devlink logic expects to work on unregistered devlink instance. */
++	err = mlx5_core_peer_devlink_set(sf_dev, devlink);
++	if (err) {
++		mlx5_core_warn(mdev, "mlx5_core_peer_devlink_set err=%d\n", err);
++		goto peer_devlink_set_err;
++	}
++
+ 	if (MLX5_ESWITCH_MANAGER(sf_dev->parent_mdev))
+ 		err = mlx5_init_one_light(mdev);
+ 	else
+@@ -69,20 +76,10 @@ static int mlx5_sf_dev_probe(struct auxiliary_device *adev, const struct auxilia
+ 		goto init_one_err;
+ 	}
+ 
+-	err = mlx5_core_peer_devlink_set(sf_dev, devlink);
+-	if (err) {
+-		mlx5_core_warn(mdev, "mlx5_core_peer_devlink_set err=%d\n", err);
+-		goto peer_devlink_set_err;
+-	}
+-
+ 	return 0;
+ 
+-peer_devlink_set_err:
+-	if (mlx5_dev_is_lightweight(sf_dev->mdev))
+-		mlx5_uninit_one_light(sf_dev->mdev);
+-	else
+-		mlx5_uninit_one(sf_dev->mdev);
+ init_one_err:
++peer_devlink_set_err:
+ 	iounmap(mdev->iseg);
+ remap_err:
+ 	mlx5_mdev_uninit(mdev);
 -- 
 2.43.0
 
