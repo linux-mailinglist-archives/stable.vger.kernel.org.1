@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-46802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D0F8D0B54
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:08:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E9B8D0D26
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 21:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F417284204
-	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:08:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBF431F21ED2
+	for <lists+stable@lfdr.de>; Mon, 27 May 2024 19:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E121607B0;
-	Mon, 27 May 2024 19:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5533A15FD01;
+	Mon, 27 May 2024 19:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymz/2MWC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lga1apy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4617126AF2;
-	Mon, 27 May 2024 19:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1322F168C4;
+	Mon, 27 May 2024 19:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716836893; cv=none; b=XrENHvKdMlsyKqgONLmqoUP8Xz9ti7QcBqz9kA6svbGR7TYn9ZN/GPKkJ10sw5TOEuIVCfFdUyzrvvM1fEVYBOKuLTOLI3yIwR4Xs6kWk6YTKUjVOyptooqa9KNY7TwA6hFxs3R9UTXye6QIF7CM7p1aDySWfdYgnJTJ2LS4tAg=
+	t=1716838009; cv=none; b=nNLdCFEWVsEtEYAyBHbXPIQ6Q5aRXXlCnlYHUHLB+pFV2OrvTIc2h/TQmygzgpfZVOLeb7Auv+RE8vXC3xYUmmk1MOmBjVu9PTsYxiDYEgqXZhPAdzAmMWwPOno89whhsBi9cp1i1GBm88qcX+VGHIO0/cpbCU7pku80SG2mkBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716836893; c=relaxed/simple;
-	bh=74/Znb+ZsWb6rLvxWxdVNmKsfE8ykNGziil6VL+GLpo=;
+	s=arc-20240116; t=1716838009; c=relaxed/simple;
+	bh=ErnoN3GR8yThyHoi1ibTWGOnVhiaPUMF94jreWrLp/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ciBgghMVzl8n0JJjOq3NEfSzcYQkSUXG0pfXOlY+a42ybukH/S2GrlZ99+4K+ir6le9Z9mNeRLweSFZ1PKpzOljv8LJBROI/ah1qqxS1i4vHpR2UaqliyHUzbB4VbN2gM3MCQbmF3acbheQgl70ZREosvFU1tqQbFuNNod4t6fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymz/2MWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB791C2BBFC;
-	Mon, 27 May 2024 19:08:12 +0000 (UTC)
+	 MIME-Version; b=UQrQJh4i2oa+iCGyK1ZOQT47JssttIMZXjAYmIAdwleH9zaH1fWDdil7LbHndbUVd2e5oOcPUJ+yIIGCp2LmyLhZnv/NFKNBzfflKfue5QLHgxGQ6AGIaBjnxG6S122uCYsN/RwtWt/r3d92VNWm8OgwskBPI6obPDU9Drz+lQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lga1apy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF10C2BBFC;
+	Mon, 27 May 2024 19:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716836893;
-	bh=74/Znb+ZsWb6rLvxWxdVNmKsfE8ykNGziil6VL+GLpo=;
+	s=korg; t=1716838008;
+	bh=ErnoN3GR8yThyHoi1ibTWGOnVhiaPUMF94jreWrLp/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymz/2MWCB07hTEBV84VKpflPMvkQBJoWMC8yoka9y2Rwz4Cj7UyilaoOengiueTz9
-	 C4CTrUiTrio2z0vX1g4uLvKJsoAX1vXQbaQepxF1MA63DqWKZtJ9VwDdBjGwPVDoTD
-	 AvOuVDWZFylCTc4yfoPkFdApU/vBeqT9DbTmPCwg=
+	b=Lga1apy1GoefSSEeI4MhRAmAgp6Kxvqc23DSe/I86vA/iaFQmQrD9Zazx4B3Cpfgj
+	 v4v06cTURK2RsnZ7tZgv13+O0U5ITjmjIZFfUfuuhbhmGaHe/X+UGYh6ajmIMGHb6E
+	 85uX27Z1cxmNIHAJ6pWKO2FmALtZ3cshQd30UN6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 187/427] macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"
+Subject: [PATCH 6.8 232/493] gfs2: Remove ill-placed consistency check
 Date: Mon, 27 May 2024 20:53:54 +0200
-Message-ID: <20240527185619.696782681@linuxfoundation.org>
+Message-ID: <20240527185637.895231501@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-References: <20240527185601.713589927@linuxfoundation.org>
+In-Reply-To: <20240527185626.546110716@linuxfoundation.org>
+References: <20240527185626.546110716@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit d301a71c76ee4c384b4e03cdc320a55f5cf1df05 ]
+[ Upstream commit 59f60005797b4018d7b46620037e0c53d690795e ]
 
-The via-macii ADB driver calls request_irq() after disabling hard
-interrupts. But disabling interrupts isn't necessary here because the
-VIA shift register interrupt was masked during VIA1 initialization.
+This consistency check was originally added by commit 9287c6452d2b1
+("gfs2: Fix occasional glock use-after-free").  It is ill-placed in
+gfs2_glock_free() because if it holds there, it must equally hold in
+__gfs2_glock_put() already.  Either way, the check doesn't seem
+necessary anymore.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/419fcc09d0e563b425c419053d02236b044d86b0.1710298421.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: d98779e68772 ("gfs2: Fix potential glock use-after-free on unmount")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/via-macii.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ fs/gfs2/glock.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
-index db9270da5b8e9..b6ddf1d47cb4e 100644
---- a/drivers/macintosh/via-macii.c
-+++ b/drivers/macintosh/via-macii.c
-@@ -140,24 +140,19 @@ static int macii_probe(void)
- /* Initialize the driver */
- static int macii_init(void)
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 385561cd4f4c7..5d5b3235d4e59 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -170,7 +170,6 @@ void gfs2_glock_free(struct gfs2_glock *gl)
  {
--	unsigned long flags;
- 	int err;
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
  
--	local_irq_save(flags);
--
- 	err = macii_init_via();
- 	if (err)
--		goto out;
-+		return err;
- 
- 	err = request_irq(IRQ_MAC_ADB, macii_interrupt, 0, "ADB",
- 			  macii_interrupt);
- 	if (err)
--		goto out;
-+		return err;
- 
- 	macii_state = idle;
--out:
--	local_irq_restore(flags);
--	return err;
-+	return 0;
- }
- 
- /* initialize the hardware */
+-	gfs2_glock_assert_withdraw(gl, atomic_read(&gl->gl_revokes) == 0);
+ 	rhashtable_remove_fast(&gl_hash_table, &gl->gl_node, ht_parms);
+ 	smp_mb();
+ 	wake_up_glock(gl);
 -- 
 2.43.0
 
