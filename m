@@ -1,223 +1,123 @@
-Return-Path: <stable+bounces-47589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD3C8D25A6
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 22:20:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F8A8D25B3
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 22:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC4571C231AD
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 20:20:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7F9A1C23448
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 20:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DFD131E38;
-	Tue, 28 May 2024 20:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BD5179201;
+	Tue, 28 May 2024 20:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dj5vThgV"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1KK6qtsy";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="onkV9rr1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8559138DE0;
-	Tue, 28 May 2024 20:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9446C1327E5;
+	Tue, 28 May 2024 20:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716927625; cv=none; b=kumXx2gZqieFR9oK/R+y+LKqxjTcy8sPBHbDNOJZUwrJ9Ad6vsGse5/5BfTXfcMMUMbvG3QULCYxrUVi2fA0ow3qqRbG/WxhEqTwRis9AIi/Lh2dUgfsTbRFHp/aEgjxC8uVMXvgWa57Wd6pTTJauK2M+ynwUIwGVDM8m6ZpxpI=
+	t=1716927695; cv=none; b=TvCje1adDESTwDIkKrmDbJcFTrsqxg+gEomgTKd76UPHUYr5Fmqsk1WLa6nItW2bk2AvWo7xCY5vFP8nJFiLCO3PaiB6jH/mTbzyMKnCccpVgplMgIcuHy69e/D8WhNVJXMX5Xb2vbKV2RhTOEUf4ICb8TkMRFw76gl9uoON/sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716927625; c=relaxed/simple;
-	bh=9nxkQndVkEqFqgKDqGv6JljTe2j+JwreE7eODbC9Neo=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=XzJuZG6+dY6aE8aZf4R0nupylozsLXYGKBZQCxyT1/AtNlkCH6RaJvd4TrKVCRoQ3vXBBQa7DkBZH05lsAciO6PNoy3kvWBXW9dmsw3if2jhHIMaM96LpnjfihJ3jQKlla9PqH+53XhPVm99J7D6v2cznfxV9Z3vxYAF0iuaOtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dj5vThgV; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1f4a5344ec7so1546535ad.1;
-        Tue, 28 May 2024 13:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716927623; x=1717532423; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bB1n4uA6XWEYiTk9cyE4enxqgqP/0efJliwy3+pDOe0=;
-        b=dj5vThgV5pyJXUKzrfQmNmuRQGfRQM4M1QBSx57200VxyOhe31l3Kz5jwmtJa3kkdQ
-         AJ4F3V8QNx1fZ71pKftJYfG+MS2M3PJw9Z+yDxrFtJ4/0nOCuKLywJpqA+rw4cb/K7cT
-         iiWRiYP4DovV05LDs+wxdt0w3D0CiWqyXywHsy7Ew35Ojts9VC+bRqec87Wh0Uzekbqz
-         uEwq2WkZ6SQcJfz9ml5pkfYDhdvw4M71FDDYA6qPQplHP90nUJ/ARetdsarw2DgvGW9H
-         DMvFVltPaXfAHBpk1XTYyQVwa/cy1so7U0idkTDJQAPUp+Gzkc5NasS1JpaTAPZdiRbi
-         BSQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716927623; x=1717532423;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=bB1n4uA6XWEYiTk9cyE4enxqgqP/0efJliwy3+pDOe0=;
-        b=ZbcYQU37nTbchlsfWWSJoHlsmIlmRo9P+Fp74D8gUq+h4Aw9TJX72wnK+TZSGJWnKe
-         LpSmaqmXsadQQSrHNs9ALzduJFnVH/PN9L/GUs0trhWAJjx5POQLF1gidMdGr1d7riQx
-         7Oz5FNfWhoSrQPApznVzyo+/siDA8go/KXeGAkXlMkGMigspLVR/GsNuwAM/VaadGq2f
-         7MU08KjodMMzKfZWgm+P4l0xOKIZHUWT23SukplpTtmcQzypnCXCcpRU7g9LaRwN/0ud
-         wXXYTOXFf5s9orZTCVgnOKWTxF5lCCGeDA2lUad97l4UhLk4UdY14s3y8OMusTJtLO0Q
-         eBmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWRykTj8EM1l/m7OIUlcy15YOioLm1si0VOSYVnDafC5Yqo/HVfScmRmi3pCjc6cAPJM+/kxMqU2/ZAqpDZhj7CYW/rMWrqpIyEE8bDqBIwWsGftsCvqYZNvE7l
-X-Gm-Message-State: AOJu0Yylb2dU8utWa4t43L7/OYQj0RflVd50oB4+BqYVmJWJxgCEQxtR
-	B+GdvfPHllYcGygUjjmib8ydMxvTFrgo2Zkw+0ujwpjXNlIX4FgL
-X-Google-Smtp-Source: AGHT+IGfD25o8NZnevXMrCddQ+nfonvi/MK7jT1lQz9Ncdv926CzW0j8u3buvCuFU4KNH/KISkc/9w==
-X-Received: by 2002:a17:902:a718:b0:1f3:81c:c17 with SMTP id d9443c01a7336-1f4eaabfc4dmr1404715ad.23.1716927622663;
-        Tue, 28 May 2024 13:20:22 -0700 (PDT)
-Received: from localhost ([98.97.41.203])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f44c9683d4sm84904905ad.178.2024.05.28.13.20.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 May 2024 13:20:22 -0700 (PDT)
-Date: Tue, 28 May 2024 13:20:19 -0700
-From: John Fastabend <john.fastabend@gmail.com>
-To: Jakub Sitnicki <jakub@cloudflare.com>, 
- Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: netdev@vger.kernel.org, 
- Cong Wang <cong.wang@bytedance.com>, 
- Eric Dumazet <edumazet@google.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- John Fastabend <john.fastabend@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- bpf@vger.kernel.org, 
- kernel-dev@igalia.com, 
- syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com, 
- stable@vger.kernel.org
-Message-ID: <66563c8385546_2f7f208bf@john.notmuch>
-In-Reply-To: <875xuzwpjb.fsf@cloudflare.com>
-References: <20240524144702.1178377-1-cascardo@igalia.com>
- <875xuzwpjb.fsf@cloudflare.com>
-Subject: Re: [PATCH net v2] sock_map: avoid race between sock_map_close and
- sk_psock_put
+	s=arc-20240116; t=1716927695; c=relaxed/simple;
+	bh=4FCBurm5/GQckynXeIquujhqJWTZpUak7MuyxMQJ6j0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nXqTbew9u39yaMUAJk1TBUlur8CIQbarOx8xMV3lvunbxdk24jXIMTU/3wnTvmnGHM/EkahlphV4BsiInkfRwArCTQbgct72nHnQeEgUQMzt4SnQoBk0EacbVr4cgU4hr6FSC2f0Dp4RhJpLjuPwijheVC7BOLZjqJrHYpwm0yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1KK6qtsy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=onkV9rr1; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1716927692;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mPuiTTglKo245MRT1O0rauosEqwWPFYkeow/Wj3djDI=;
+	b=1KK6qtsycWyZWGYpIomFB0szOY8nGoEB5Ho2mCbA55fKgFaSs7RGX7qObRS4Vr34H2NNL4
+	dTwHaRTjwRAbT0K+qmfcYYSQZpB+bqLPieRrry5oZF/ioD/3tCkzpqeJ5bdd8LKSNmQYcJ
+	lVUTg785uzh3QYihRvdMb4wCcU1ZRclkHfXho+rO7iTqZhoygmvPpQwfSzAI4ge6eQtbB3
+	6ijCTEommEj3xsH0wYBjzH6OBeQA/IY314vhiUTDsTdEkoE0cY3XdFPrr9XWMmjtqHRCSM
+	KYrcPKFN0IN/79Gc1nT/L6YiSu818F1V7SGe8bdc6jNyGjNwUd0R8YhHMtbyqQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1716927692;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mPuiTTglKo245MRT1O0rauosEqwWPFYkeow/Wj3djDI=;
+	b=onkV9rr1RYQxxpwZ1a6f5K/ty3kcZzvXUY/KzPXc+FfHSSIyW8BLZEm05H8keZCjPhNA5Z
+	RSv5pSbMZXKyOYBg==
+To: Tim Teichmann <teichmanntim@outlook.de>
+Cc: Christian Heusel <christian@heusel.eu>, regressions@lists.linux.dev,
+ x86@kernel.org, stable@vger.kernel.org, LKML
+ <linux-kernel@vger.kernel.org>
+Subject: [PATCH Resend] x86/topology/amd: Evaluate SMT in CPUID leaf 0x8000001e
+ only on family 0x17 and greater
+In-Reply-To: <87bk4pbve8.ffs@tglx>
+References: <7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk>
+ <87r0dqdf0r.ffs@tglx>
+ <gtgsklvltu5pzeiqn7fwaktdsywk2re75unapgbcarlmqkya5a@mt7pi4j2f7b3>
+ <87h6ejd0wt.ffs@tglx>
+ <PR3PR02MB6012CB03006F1EEE8E8B5D69B3F02@PR3PR02MB6012.eurprd02.prod.outlook.com>
+ <874jajcn9r.ffs@tglx>
+ <PR3PR02MB6012EDF7EBA8045FBB03C434B3F02@PR3PR02MB6012.eurprd02.prod.outlook.com>
+ <87msobb2dp.ffs@tglx>
+ <PR3PR02MB6012D4B2D513F6FA9D29BE5EB3F12@PR3PR02MB6012.eurprd02.prod.outlook.com>
+ <87bk4pbve8.ffs@tglx>
+Date: Tue, 28 May 2024 22:21:31 +0200
+Message-ID: <8734q1bsc4.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Jakub Sitnicki wrote:
-> On Fri, May 24, 2024 at 11:47 AM -03, Thadeu Lima de Souza Cascardo wrote:
-> > sk_psock_get will return NULL if the refcount of psock has gone to 0, which
-> > will happen when the last call of sk_psock_put is done. However,
-> > sk_psock_drop may not have finished yet, so the close callback will still
-> > point to sock_map_close despite psock being NULL.
-> >
-> > This can be reproduced with a thread deleting an element from the sock map,
-> > while the second one creates a socket, adds it to the map and closes it.
-> >
-> > That will trigger the WARN_ON_ONCE:
-> >
-> > ------------[ cut here ]------------
-> > WARNING: CPU: 1 PID: 7220 at net/core/sock_map.c:1701 sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-> > Modules linked in:
-> > CPU: 1 PID: 7220 Comm: syz-executor380 Not tainted 6.9.0-syzkaller-07726-g3c999d1ae3c7 #0
-> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-> > RIP: 0010:sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-> > Code: df e8 92 29 88 f8 48 8b 1b 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 79 29 88 f8 4c 8b 23 eb 89 e8 4f 15 23 f8 90 <0f> 0b 90 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d e9 13 26 3d 02
-> > RSP: 0018:ffffc9000441fda8 EFLAGS: 00010293
-> > RAX: ffffffff89731ae1 RBX: ffffffff94b87540 RCX: ffff888029470000
-> > RDX: 0000000000000000 RSI: ffffffff8bcab5c0 RDI: ffffffff8c1faba0
-> > RBP: 0000000000000000 R08: ffffffff92f9b61f R09: 1ffffffff25f36c3
-> > R10: dffffc0000000000 R11: fffffbfff25f36c4 R12: ffffffff89731840
-> > R13: ffff88804b587000 R14: ffff88804b587000 R15: ffffffff89731870
-> > FS:  000055555e080380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > CR2: 0000000000000000 CR3: 00000000207d4000 CR4: 0000000000350ef0
-> > Call Trace:
-> >  <TASK>
-> >  unix_release+0x87/0xc0 net/unix/af_unix.c:1048
-> >  __sock_release net/socket.c:659 [inline]
-> >  sock_close+0xbe/0x240 net/socket.c:1421
-> >  __fput+0x42b/0x8a0 fs/file_table.c:422
-> >  __do_sys_close fs/open.c:1556 [inline]
-> >  __se_sys_close fs/open.c:1541 [inline]
-> >  __x64_sys_close+0x7f/0x110 fs/open.c:1541
-> >  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-> >  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
-> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> > RIP: 0033:0x7fb37d618070
-> > Code: 00 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff eb d4 e8 10 2c 00 00 80 3d 31 f0 07 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
-> > RSP: 002b:00007ffcd4a525d8 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-> > RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fb37d618070
-> > RDX: 0000000000000010 RSI: 00000000200001c0 RDI: 0000000000000004
-> > RBP: 0000000000000000 R08: 0000000100000000 R09: 0000000100000000
-> > R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-> > R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-> >  </TASK>
-> >
-> > Use sk_psock, which will only check that the pointer is not been set to
-> > NULL yet, which should only happen after the callbacks are restored. If,
-> > then, a reference can still be gotten, we may call sk_psock_stop and cancel
-> > psock->work.
-> >
-> > As suggested by Paolo Abeni, reorder the condition so the control flow is
-> > less convoluted.
-> >
-> > After that change, the reproducer does not trigger the WARN_ON_ONCE
-> > anymore.
-> >
-> > Suggested-by: Paolo Abeni <pabeni@redhat.com>
-> > Reported-by: syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=07a2e4a1a57118ef7355
-> > Fixes: aadb2bb83ff7 ("sock_map: Fix a potential use-after-free in sock_map_close()")
-> > Fixes: 5b4a79ba65a1 ("bpf, sockmap: Don't let sock_map_{close,destroy,unhash} call itself")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> > ---
-> >
-> > v2: change control flow as suggested by Paolo Abeni
-> >
-> > v1: https://lore.kernel.org/netdev/20240520214153.847619-1-cascardo@igalia.com/
-> >
-> > ---
-> >  net/core/sock_map.c | 16 ++++++++++------
-> >  1 file changed, 10 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-> > index 9402889840bf..c3179567a99a 100644
-> > --- a/net/core/sock_map.c
-> > +++ b/net/core/sock_map.c
-> > @@ -1680,19 +1680,23 @@ void sock_map_close(struct sock *sk, long timeout)
-> >  
-> >  	lock_sock(sk);
-> >  	rcu_read_lock();
-> > -	psock = sk_psock_get(sk);
-> > -	if (unlikely(!psock)) {
-> > -		rcu_read_unlock();
-> > -		release_sock(sk);
-> > -		saved_close = READ_ONCE(sk->sk_prot)->close;
-> > -	} else {
-> > +	psock = sk_psock(sk);
-> > +	if (likely(psock)) {
-> >  		saved_close = psock->saved_close;
-> >  		sock_map_remove_links(sk, psock);
-> > +		psock = sk_psock_get(sk);
-> > +		if (unlikely(!psock))
-> > +			goto no_psock;
-> >  		rcu_read_unlock();
-> >  		sk_psock_stop(psock);
-> >  		release_sock(sk);
-> >  		cancel_delayed_work_sync(&psock->work);
-> >  		sk_psock_put(sk, psock);
-> > +	} else {
-> > +		saved_close = READ_ONCE(sk->sk_prot)->close;
-> > +no_psock:
-> > +		rcu_read_unlock();
-> > +		release_sock(sk);
-> >  	}
-> >  
-> >  	/* Make sure we do not recurse. This is a bug.
-> 
-> Thanks.
-> 
-> Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
+The new AMD/HYGON topology parser evaluates the SMT information in CPUID
+leaf 0x8000001e unconditionally while the original code restricted it to
+CPUs with family 0x17 and greater.
 
-LGTM as well. Thanks.
+This breaks family 0x15 CPUs which advertise that leaf and have a non-zero
+value in the SMT section. The machine boots, but the scheduler complains
+loudly about the mismatch of the core IDs:
 
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+  WARNING: CPU: 1 PID: 0 at kernel/sched/core.c:6482 sched_cpu_starting+0x183/0x250
+  WARNING: CPU: 0 PID: 1 at kernel/sched/topology.c:2408 build_sched_domains+0x76b/0x12b0
+
+Add the condition back to cure it.
+
+Fixes: f7fb3b2dd92c ("x86/cpu: Provide an AMD/HYGON specific topology parser")
+Reported-by: Tim Teichmann <teichmanntim@outlook.de>
+Bisected-by: Christian Heusel <christian@heusel.eu>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Tim Teichmann <teichmanntim@outlook.de>
+Cc: regressions@lists.linux.dev
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/56
+---
+Resend with LKML in Cc. Sorry for the noise.
+---
+ arch/x86/kernel/cpu/topology_amd.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/arch/x86/kernel/cpu/topology_amd.c
++++ b/arch/x86/kernel/cpu/topology_amd.c
+@@ -84,9 +84,9 @@ static bool parse_8000_001e(struct topo_
+ 
+ 	/*
+ 	 * If leaf 0xb is available, then the domain shifts are set
+-	 * already and nothing to do here.
++	 * already and nothing to do here. Only valid for family >= 0x17.
+ 	 */
+-	if (!has_topoext) {
++	if (!has_topoext && c->x86 >= 0x17) {
+ 		/*
+ 		 * Leaf 0x80000008 set the CORE domain shift already.
+ 		 * Update the SMT domain, but do not propagate it.
 
