@@ -1,163 +1,113 @@
-Return-Path: <stable+bounces-47593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E7E8D2678
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 22:49:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B148D2692
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 22:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D19831F22098
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 20:49:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CC3CB26B45
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 20:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74529179650;
-	Tue, 28 May 2024 20:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EEE17B432;
+	Tue, 28 May 2024 20:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="IXtvp3bx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T899pEGx"
 X-Original-To: stable@vger.kernel.org
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498194C627
-	for <stable@vger.kernel.org>; Tue, 28 May 2024 20:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3DA17B409;
+	Tue, 28 May 2024 20:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716929262; cv=none; b=azBP7+LqEh53kCucHdlKz5mFpud1F21pWvIaAeZlYjpUS9vrP+T2L4WtjmpC+hwd6CGW2xWBzzg7aUcepM8zJm/K0uwb7Wc4dCt+lt1TfVuu1IEOSg4a9cl5yYWpZXSLyr06Ilyxa6IfhRCz9H6bZ3JywEiqOEB61UMku8BxiGY=
+	t=1716929680; cv=none; b=s1f/5zHSCx8HYrXn6osFlAxspeKIf9YyBePl3ZW6AF2xokG5XxqDarPKkAFqgs3Hor9Axy7kSvplednm6xhVLVdM2oE1Q0SoEbmkD+5k45ug5n+CjxTKxwKV8XwiihMhtROIDvztLOY+dkI34Sq9iahznBYN5GBqZlnyQ8n3P2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716929262; c=relaxed/simple;
-	bh=CJ0wRt39wry877MFi5yLNi/ccKGSRy4FwAIVIEaqIF4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GNhiT0B/L9Nwnznt/YP4NhYaKzsaIRYP8MbVmOu+EK2i2WCvp/j709jPNeqJhHwPDoxojFI8l9Y8j+lZiY5um1ZUNKD+KSGKRrRwecWDYZLkz4pfwqmI5i5I/3L+V9x/19EtzLlUUWPcXib1UJbqr5EjmAPIAu/x8USKPb45Se0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=IXtvp3bx; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id CF79B2C02E0;
-	Wed, 29 May 2024 08:38:12 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1716928692;
-	bh=CJ0wRt39wry877MFi5yLNi/ccKGSRy4FwAIVIEaqIF4=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=IXtvp3bxuBBtDxhgwIhDwpa76JmTbmCqM5KyQLNPZJvRniJmAoZUFRDVqKg1t+NQx
-	 +mbtDasFYzQLVk09VJONheuxtxNSHYbed5IAHNbW+MjEYvpsPbvhQm5muzPrGRcM6g
-	 mlQiPa+0+TPLM1xRhgJz39QL5+qEBeHFu9Tq3zjEGq8hHDhDEM3tOzHs4rl06g32ap
-	 SusXAS9vgP/eZoOdQqMs+P3tJH48sSKR2TfvzHoC/7Ho+b9bZidJdfgy7kXlD6MRYH
-	 FYFG/8PM2TuSsDPGBrRvaQf7tjTMkOeJzZ1Z42qwPF24am/osa1AjvJGRYYoFjwRiZ
-	 j9YuXFla7MB9Q==
-Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B665640b40001>; Wed, 29 May 2024 08:38:12 +1200
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
- svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8:f753:6de:11c0:a008) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.1544.11; Wed, 29 May 2024 08:38:12 +1200
-Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
- svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) with Microsoft SMTP Server
- (TLS) id 15.0.1497.48; Wed, 29 May 2024 08:38:12 +1200
-Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
- svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
- 15.02.1544.011; Wed, 29 May 2024 08:38:12 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: Jon Hunter <jonathanh@nvidia.com>, Chuck Lever III
-	<chuck.lever@oracle.com>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Neil Brown
-	<neilb@suse.de>, linux-stable <stable@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, "Linux Kernel Mailing
- List" <linux-kernel@vger.kernel.org>, Linus Torvalds
-	<torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Guenter Roeck <linux@roeck-us.net>, "shuah@kernel.org" <shuah@kernel.org>,
-	"patches@kernelci.org" <patches@kernelci.org>, "lkft-triage@lists.linaro.org"
-	<lkft-triage@lists.linaro.org>, "pavel@denx.de" <pavel@denx.de>,
-	"f.fainelli@gmail.com" <f.fainelli@gmail.com>, "sudipm.mukherjee@gmail.com"
-	<sudipm.mukherjee@gmail.com>, "srw@sladewatkins.net" <srw@sladewatkins.net>,
-	"rwarsow@gmx.de" <rwarsow@gmx.de>, "conor@kernel.org" <conor@kernel.org>,
-	"allen.lkml@gmail.com" <allen.lkml@gmail.com>, "broonie@kernel.org"
-	<broonie@kernel.org>, "linux-tegra@vger.kernel.org"
-	<linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH 5.15 00/23] 5.15.160-rc1 review
-Thread-Topic: [PATCH 5.15 00/23] 5.15.160-rc1 review
-Thread-Index: AQHasN4TfgxwqfFZfEKH0FZYU7evErGr1xiAgAARtgCAAGozAA==
-Date: Tue, 28 May 2024 20:38:12 +0000
-Message-ID: <d5adc4a4-81b6-46f6-bcf6-7debf48d2bbf@alliedtelesis.co.nz>
-References: <20240523130327.956341021@linuxfoundation.org>
- <8e60522f-22db-4308-bb7d-3c71a0c7d447@nvidia.com>
- <2024052541-likeness-banjo-e147@gregkh>
- <8ddb4da3-49e4-4d96-bec3-66a209bff71b@nvidia.com>
- <968E3378-1B38-4519-BB85-5B1C45E3A16A@oracle.com>
- <8b6fe99f-7fa9-493c-afe7-8e75b7f59852@nvidia.com>
-In-Reply-To: <8b6fe99f-7fa9-493c-afe7-8e75b7f59852@nvidia.com>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6E74215606E9154889788EFD7A709BB7@atlnz.lc>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1716929680; c=relaxed/simple;
+	bh=iEcVS7kNwhO3HFB9CScl6vFacYu+gRoXrd/D5F+ZUUM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:In-Reply-To:
+	 Content-Type; b=EeSMwIMVXbRZcTFpC5i+3455GV+ck0pOvk7fscDB3enHyaffRvGAc+CKxcVTTu/HCl/AfofmZhuJ68CUnwQRy0uoZBYlXMyY9rZ9jggspKyoLlr9+P6XmBWltWsB1irArQgwSovKvVMtvfkfB31Ix4EM51eJeAufAJKhiPytdWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T899pEGx; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-35502a992c9so1376103f8f.3;
+        Tue, 28 May 2024 13:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716929677; x=1717534477; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:cc:to
+         :subject:from:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y6FE63oTYkWPlAI/9XHCPUmOHWIDgyDXFFG5HlAkfZ4=;
+        b=T899pEGxGmAAghF+LXRCsHlCpjVYCI8XBjQ/8fKIBgku1OF/2OI1jdF67/xQjCH81k
+         BX6FOtbxnvgOA3p167bc+8b/nbfZhD3JFW0HwPAInEGay/4oH3DmxgRQaRgVcj8Wpsv5
+         G3yCjX/2xTWzoHG0HYXxzPyJU/48BamQK5og6mLTqrgHg7nrN8PVgoYxAz68txW8Vx67
+         sJ/0X+jiD51IZ1W6zF2TnNnI6H1Zlq7etLoGRYDixwCLRyEtFAI3A5+OX/V3HVgSqJ17
+         1HNpjetm+UccP3wrVlw14SsIBINyVfMiH++C6zyeP42tflHD/kJ671QhZNGg5Tl1dEW4
+         gTzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716929677; x=1717534477;
+        h=content-transfer-encoding:in-reply-to:content-language:cc:to
+         :subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y6FE63oTYkWPlAI/9XHCPUmOHWIDgyDXFFG5HlAkfZ4=;
+        b=l/R9Ky4g6HZkMHsinXGIsFRwjfqtLiYovzeRO4pik08GSioonkDiE6kTWAwRk8i368
+         iCGYTNFfNg9kTINt38yrIJLMo0MNTH0deA68MaDxXBtxpCqqVZsUAegTfYfZsvCKEeyW
+         96Z8n2/USReAzQTA7/OkrUhq7VnLV2G1azESrCMXk7DaknKvSckBdM3zBWDzBkGCIi7M
+         +9Vmj6IkacR9p6/tVQ+7gQl7b7GRaSaCyTanVZZtpWHNvFRSCtszxtPLz+gbG+ClYoUF
+         +jwzGtmyxRpQxjUnrvnShaay+xst4UfckFdJx/I1YAJwVfG2+ccqUdehLt4etbRMwydw
+         gsPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjudLa6FRCYKQo+wH4ZFMz8e3dLTw8965VtId6fKJaLZrP8gIM9Wc3TlwEMIiZazktetWG8W3pTlognl2oLxh8N11H17VCVknCJtL9/qqA
+X-Gm-Message-State: AOJu0Yy674H4PtLvk978PRPaRedxoy4DGtRNA59nSBOhnPs1P5DX9XWD
+	HSZocJdAPH3U9UbqsExuAFm1T4gyHuir/SU1Yfy6s24FsV1jYjMk
+X-Google-Smtp-Source: AGHT+IHjFpmdzBHqUWc+Pqo+B6yRQMIbFlgbaMgYEfh7yVC87GyDVnV/XkxD6Xeb2MSXu/Gut4OMVw==
+X-Received: by 2002:adf:fc91:0:b0:355:3cf:49ad with SMTP id ffacd0b85a97d-3552fe185b8mr11130763f8f.65.1716929677150;
+        Tue, 28 May 2024 13:54:37 -0700 (PDT)
+Received: from [100.64.100.6] ([179.61.241.28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3557a08abd8sm12751917f8f.32.2024.05.28.13.54.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 May 2024 13:54:36 -0700 (PDT)
+Message-ID: <c947e600-e126-43ea-9530-0389206bef5e@gmail.com>
+Date: Tue, 28 May 2024 22:54:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=F9L0dbhN c=1 sm=1 tr=0 ts=665640b4 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=75chYTbOgJ0A:10 a=IkcTkHD0fZMA:10 a=TpHVaj0NuXgA:10 a=Ikd4Dj_1AAAA:8 a=VwQbUJbxAAAA:8 a=yDejyKqjGvIJSoj4HikA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
-X-SEG-SpamProfiler-Score: 0
+User-Agent: Mozilla Thunderbird
+From: Mike <user.service2016@gmail.com>
+Subject: Re: Bluetooth kernel BUG with Intel AX211 (regression in 6.1.83)
+To: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Johan Hedberg <johan.hedberg@gmail.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ linux-bluetooth@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>,
+ Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
+ =?UTF-8?Q?Jeremy_Lain=C3=A9?= <jeremy.laine@m4x.org>,
+ Linux regressions mailing list <regressions@lists.linux.dev>
+Content-Language: en-US
+In-Reply-To: <8e8ca7a6-1511-4794-a214-2b75326e5484@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-DQpPbiAyOS8wNS8yNCAwMjoxOCwgSm9uIEh1bnRlciB3cm90ZToNCj4NCj4gT24gMjgvMDUvMjAy
-NCAxNDoxNCwgQ2h1Y2sgTGV2ZXIgSUlJIHdyb3RlOg0KPj4NCj4+DQo+Pj4gT24gTWF5IDI4LCAy
-MDI0LCBhdCA1OjA04oCvQU0sIEpvbiBIdW50ZXIgPGpvbmF0aGFuaEBudmlkaWEuY29tPiB3cm90
-ZToNCj4+Pg0KPj4+DQo+Pj4gT24gMjUvMDUvMjAyNCAxNToyMCwgR3JlZyBLcm9haC1IYXJ0bWFu
-IHdyb3RlOg0KPj4+PiBPbiBTYXQsIE1heSAyNSwgMjAyNCBhdCAxMjoxMzoyOEFNICswMTAwLCBK
-b24gSHVudGVyIHdyb3RlOg0KPj4+Pj4gSGkgR3JlZywNCj4+Pj4+DQo+Pj4+PiBPbiAyMy8wNS8y
-MDI0IDE0OjEyLCBHcmVnIEtyb2FoLUhhcnRtYW4gd3JvdGU6DQo+Pj4+Pj4gVGhpcyBpcyB0aGUg
-c3RhcnQgb2YgdGhlIHN0YWJsZSByZXZpZXcgY3ljbGUgZm9yIHRoZSA1LjE1LjE2MCANCj4+Pj4+
-PiByZWxlYXNlLg0KPj4+Pj4+IFRoZXJlIGFyZSAyMyBwYXRjaGVzIGluIHRoaXMgc2VyaWVzLCBh
-bGwgd2lsbCBiZSBwb3N0ZWQgYXMgYSANCj4+Pj4+PiByZXNwb25zZQ0KPj4+Pj4+IHRvIHRoaXMg
-b25lLsKgIElmIGFueW9uZSBoYXMgYW55IGlzc3VlcyB3aXRoIHRoZXNlIGJlaW5nIGFwcGxpZWQs
-IA0KPj4+Pj4+IHBsZWFzZQ0KPj4+Pj4+IGxldCBtZSBrbm93Lg0KPj4+Pj4+DQo+Pj4+Pj4gUmVz
-cG9uc2VzIHNob3VsZCBiZSBtYWRlIGJ5IFNhdCwgMjUgTWF5IDIwMjQgMTM6MDM6MTUgKzAwMDAu
-DQo+Pj4+Pj4gQW55dGhpbmcgcmVjZWl2ZWQgYWZ0ZXIgdGhhdCB0aW1lIG1pZ2h0IGJlIHRvbyBs
-YXRlLg0KPj4+Pj4+DQo+Pj4+Pj4gVGhlIHdob2xlIHBhdGNoIHNlcmllcyBjYW4gYmUgZm91bmQg
-aW4gb25lIHBhdGNoIGF0Og0KPj4+Pj4+IGh0dHBzOi8vd3d3Lmtlcm5lbC5vcmcvcHViL2xpbnV4
-L2tlcm5lbC92NS54L3N0YWJsZS1yZXZpZXcvcGF0Y2gtNS4xNS4xNjAtcmMxLmd6IA0KPj4+Pj4+
-DQo+Pj4+Pj4gb3IgaW4gdGhlIGdpdCB0cmVlIGFuZCBicmFuY2ggYXQ6DQo+Pj4+Pj4gZ2l0Oi8v
-Z2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3N0YWJsZS9saW51eC1zdGFi
-bGUtcmMuZ2l0IA0KPj4+Pj4+IGxpbnV4LTUuMTUueQ0KPj4+Pj4+IGFuZCB0aGUgZGlmZnN0YXQg
-Y2FuIGJlIGZvdW5kIGJlbG93Lg0KPj4+Pj4+DQo+Pj4+Pj4gdGhhbmtzLA0KPj4+Pj4+DQo+Pj4+
-Pj4gZ3JlZyBrLWgNCj4+Pj4+Pg0KPj4+Pj4+IC0tLS0tLS0tLS0tLS0NCj4+Pj4+PiBQc2V1ZG8t
-U2hvcnRsb2cgb2YgY29tbWl0czoNCj4+Pj4+DQo+Pj4+PiAuLi4NCj4+Pj4+DQo+Pj4+Pj4gTmVp
-bEJyb3duIDxuZWlsYkBzdXNlLmRlPg0KPj4+Pj4+IMKgwqDCoMKgwqAgbmZzZDogZG9uJ3QgYWxs
-b3cgbmZzZCB0aHJlYWRzIHRvIGJlIHNpZ25hbGxlZC4NCj4+Pj4+DQo+Pj4+Pg0KPj4+Pj4gSSBh
-bSBzZWVpbmcgYSBzdXNwZW5kIHJlZ3Jlc3Npb24gb24gYSBjb3VwbGUgYm9hcmRzIGFuZCBiaXNl
-Y3QgaXMgDQo+Pj4+PiBwb2ludGluZw0KPj4+Pj4gdG8gdGhlIGFib3ZlIGNvbW1pdC4gUmV2ZXJ0
-aW5nIHRoaXMgY29tbWl0IGRvZXMgZml4IHRoZSBpc3N1ZS4NCj4+Pj4gVWdoLCB0aGF0IGZpeGVz
-IHRoZSByZXBvcnQgZnJvbSBvdGhlcnMuwqAgQ2FuIHlvdSBjYzogZXZlcnlvbmUgb24gdGhhdA0K
-Pj4+PiBhbmQgZmlndXJlIG91dCB3aGF0IGlzIGdvaW5nIG9uLCBhcyB0aGlzIGtlZXBzIGdvaW5n
-IGJhY2sgYW5kIGZvcnRoLi4uDQo+Pj4NCj4+Pg0KPj4+IEFkZGluZyBDaHVjaywgTmVpbCBhbmQg
-Q2hyaXMgZnJvbSB0aGUgYnVnIHJlcG9ydCBoZXJlIFswXS4NCj4+Pg0KPj4+IFdpdGggdGhlIGFi
-b3ZlIGFwcGxpZWQgdG8gdjUuMTUueSwgSSBhbSBzZWVpbmcgc3VzcGVuZCBvbiAyIG9mIG91ciAN
-Cj4+PiBib2FyZHMgZmFpbC4gVGhlc2UgYm9hcmRzIGFyZSB1c2luZyBORlMgYW5kIG9uIGVudHJ5
-IHRvIHN1c3BlbmQgSSBhbSANCj4+PiBub3cgc2VlaW5nIC4uLg0KPj4+DQo+Pj4gRnJlZXppbmcg
-b2YgdGFza3MgZmFpbGVkIGFmdGVyIDIwLjAwMiBzZWNvbmRzICgxIHRhc2tzIHJlZnVzaW5nIHRv
-DQo+Pj4gZnJlZXplLCB3cV9idXN5PTApOg0KPj4+DQo+Pj4gVGhlIGJvYXJkcyBhcHBlYXIgdG8g
-aGFuZyBhdCB0aGF0IHBvaW50LiBTbyBtYXkgYmUgc29tZXRoaW5nIGVsc2UgDQo+Pj4gbWlzc2lu
-Zz8NCj4+DQo+PiBOb3RlIHRoYXQgd2UgZG9uJ3QgaGF2ZSBhY2Nlc3MgdG8gaGFyZHdhcmUgbGlr
-ZSB0aGlzLCBzbw0KPj4gd2UgaGF2ZW4ndCB0ZXN0ZWQgdGhhdCBwYXRjaCAoZXZlbiB0aGUgdXBz
-dHJlYW0gdmVyc2lvbikNCj4+IHdpdGggc3VzcGVuZCBvbiB0aGF0IGhhcmR3YXJlLg0KPg0KPg0K
-PiBObyBwcm9ibGVtLCBJIHdvdWxkIG5vdCBleHBlY3QgeW91IHRvIGhhdmUgdGhpcyBwYXJ0aWN1
-bGFyIGhhcmR3YXJlIDotKQ0KPg0KSXQncyBwcm9iYWJseSBub3QgbXVjaCBoZWxwIGJ1dCBmb3Ig
-dGhlIG9vcHMgSSBvcmlnaW5hbGx5IHJlcG9ydGVkIHdlJ3ZlIA0KYmVlbiBjYXJyeWluZyAibmZz
-ZDogZG9uJ3QgYWxsb3cgbmZzZCB0aHJlYWRzIHRvIGJlIHNpZ25hbGxlZCIgbG9jYWxseSANCmFu
-ZCB0aGF0IHJlc29sdmVkIGl0LiBOb3cgdGhhdCB3ZSd2ZSB1cGRhdGVkIHRvIDUuMTUuMTYwIGFu
-ZCBkcm9wcGVkIHRoZSANCmxvY2FsIHBhdGNoIGl0J3Mgc3RpbGwgcmVzb2x2ZWQgZm9yIHVzLiBP
-dXIgc3lzdGVtcyBkb24ndCBtYWtlIHVzZSBvZiANCnN1c3BlbmQgc28gdGhleSB3b24ndCBoaXQg
-YW55IGlzc3VlIHJlbGF0ZWQgdG8gdGhhdC4NCj4+IFNvLCBpdCBjb3VsZCBiZSBzb21ldGhpbmcg
-bWlzc2luZywgb3IgaXQgY291bGQgYmUgdGhhdA0KPj4gcGF0Y2ggaGFzIGEgcHJvYmxlbS4NCj4+
-DQo+PiBJdCB3b3VsZCBoZWxwIHVzIHRvIGtub3cgaWYgeW91IG9ic2VydmUgdGhlIHNhbWUgaXNz
-dWUNCj4+IHdpdGggYW4gdXBzdHJlYW0ga2VybmVsLCBpZiB0aGF0IGlzIHBvc3NpYmxlLg0KPg0K
-Pg0KPiBJIGRvbid0IG9ic2VydmUgdGhpcyB3aXRoIGVpdGhlciBtYWlubGluZSwgLW5leHQgb3Ig
-YW55IG90aGVyIHN0YWJsZSANCj4gYnJhbmNoLiBTbyB0aGF0IHdvdWxkIHN1Z2dlc3QgdGhhdCBz
-b21ldGhpbmcgZWxzZSBpcyBtaXNzaW5nIGZyb20gDQo+IGxpbnV4LTUuMTUueS4NCj4NCj4gSm9u
-DQo+
+On 29.04.24 20:46, Linux regression tracking (Thorsten Leemhuis) wrote:> 
+Well, did you try what I suggested earlier (see above) and check if a
+> revert of 6083089ab00631617f9eac678df3ab050a9d837a ontop of latest 6.1.y
+> helps?
+
+Hello Thorsten, Jeremy,
+I hope you don't mind if I jump into the conversation trying to help.
+I'm also experiencing this bug (with an Intel AX200) and I don't see
+any updates in this thread since a month.
+
+I tried reverting 6083089ab00631617f9eac678df3ab050a9d837a
+on top of6.1.91 and it looks much better: it's been 10 days, and the BT 
+and the system are stable.
+Previously, I encountered the mentioned "kernel BUG" at each boot, and I 
+was unable to stop/kill the bluetoothd process.
+Let me know if/how I can help further.
+M.
 
