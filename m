@@ -1,96 +1,119 @@
-Return-Path: <stable+bounces-47559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD2E8D1856
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 12:20:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330978D1990
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 13:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5171FB276E8
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 10:20:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C96481F226CF
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 11:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE84169AC9;
-	Tue, 28 May 2024 10:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3824E16C6A9;
+	Tue, 28 May 2024 11:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPEFKegA"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ErXr+ajk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A406015E96;
-	Tue, 28 May 2024 10:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBAC17E8F4
+	for <stable@vger.kernel.org>; Tue, 28 May 2024 11:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716891630; cv=none; b=LizhnNC3oHFvi460WOYAwQlHDr6hewK+QslakA1Ewrt80B7+YZpSqhOl1rOAD6r5q3kTosjNM7eaq48ePjW+6AW3SNmnI2wQUGkwvPhi9a01kzQKmqelLTvM+ECakcGzBmsTXBodXmihkUPETiNDI8OGu3CC714HhauX719MHqs=
+	t=1716896017; cv=none; b=SoBwW2AK+2zAGEu9/C0PylW0Wc4o6TP+Ae+W+vYVgjlNvrcumgsY/WLM8voEII4c0htyz1uGVSpv621A/cIK5FjZpLdmWW0d5rU+ryqI9gz2vtn85tstyf7HBONqs0hgQvqS/AasHhhKC/hsdnVnsfsAUFXEawlmGtput0oZu+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716891630; c=relaxed/simple;
-	bh=XPE9r6ln1qemfRDv7biBuJ2KZj87/YszG/QpHYmPiNY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Ha4ONcm6W2tiblEHb0NEosYGsoKzxMwYmurWswYgRbfHO65LZvapo/o1RYjZJxvy+Y4eqDbQqu3D2DIVqc3WbO53W1XLTVPuUJgS2NMIW9xPibXaVStd/+tV7jbbuGGidV3hBTjebsCvdsfh1NbtyfBA8frOsbXgk8StTup0M/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPEFKegA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1485AC32782;
-	Tue, 28 May 2024 10:20:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716891630;
-	bh=XPE9r6ln1qemfRDv7biBuJ2KZj87/YszG/QpHYmPiNY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=HPEFKegAwY7IRVEcryFyvVjtAsGYv02kcQvFjCcUAC943Y4fZrRMnIwiz/sK7+xUb
-	 4B+SdbwagxDnlsxMsqKRkSrI0+VHCo2YxBT4SbcqzkayRGTHYNdojKCQm3UI2c83Ad
-	 fix2n7LJdxM5xvIiAoQwWMUE9hl21noG0j/qk55AjFKUQAHRvZtWdfNxSht+vpA77D
-	 hPgy23b/rVYGLgRplIQ/2ho2YYy01yizluFlMMg8U+mh04QUr2uxh6rvm39h4VMzeb
-	 fnCdBgp9EJKaDJWvezEx3rlW2KAFWwSZS8TGMwWHoLNeJkH3ZvfM+day0e3hYyMdyF
-	 lkVfbEtRJMG5g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id EEF2CC4361B;
-	Tue, 28 May 2024 10:20:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1716896017; c=relaxed/simple;
+	bh=pVkfCfXwvpGITqeArgg8XorBGEqsQIg7EkQ5urfJgbQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=l5ayhh1RV4TB8F6TuM2o0P9qB6PC5EdF8chxJhM2mg7pY2QU5rjdiDXLGs4Gay45gvd2vLCpWMCz+YXHh1sFZ1I4CwqYMf1swxMQRYyDdggogocysOG67QsFqpJP0IWCdK7k9UwHnRPJYi5FZ9eqylso7drj+butuzOhhNkKTf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--maennich.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ErXr+ajk; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--maennich.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-42120a4c56eso2143275e9.0
+        for <stable@vger.kernel.org>; Tue, 28 May 2024 04:33:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1716896013; x=1717500813; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pTOxhoHq0Nkxf/74IFjzbYdMxemeJfpZA9XvBTvTfc4=;
+        b=ErXr+ajkwW8QC39Mej+rxdrFeYUwVnx/x0bXfsBYisomxuLsZpmRb8iBz6j+fd1Wzp
+         omwdzrak9vItrH6+cW+YktjF0vAmUUmG1XS1XR25aLRpYq/hHFCnUoy7At3g5EVgZp5Y
+         8zSj0Uz40Ztpbv0TaV7ljrJ8WgqXb3HnRhUWoVYesIvoQsUGC0DYkaGb563A+vXYyIIW
+         y8ej/2RESLsXc1B6bz2EPbldrQJeJ4Y9UYZt0e3loev6KU/jvHBfmkU78qmlMVF4wWc4
+         Md030pqFfjorYLkp2UFfkCx1Wsv+gsdOoib+EOCpfUgoUduH3Dt3mGUn7Ns/q9zYguCr
+         mizQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716896013; x=1717500813;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pTOxhoHq0Nkxf/74IFjzbYdMxemeJfpZA9XvBTvTfc4=;
+        b=f0V1ZiSGkAoY9y7PArYQkaAhq8t+Vzfvlaje9vQ8WLDLfGQParWOY1d8bVteIs40A7
+         o86gZ1RANMIhmyAXrq2u9cPMDdsQncHiXJM2oYb9vImoA70eeuUyEx7EanjJHxuad1X1
+         u1trsjExlNRW4xFFYjxLNSbcCxUSE/GR1nYRHDq270fJERLUnVYiW7MtxWtj5M8L6eDk
+         StdlyX6ExUfkK63oO6O/ErZAl49w9AFippfVcnAyx/kqjsEZ69ZW46bBhRuaNp7P1m+r
+         OK8xZH+7yQjk3DH0q4wBzajZQut0p423QEsOEdoI6fBnzRj8B5i+PHF0J7nGwnVS8xR7
+         RXOA==
+X-Forwarded-Encrypted: i=1; AJvYcCWNOOgVtCbmBVMY71Y98OeeHZfuZAGQ8xJ+qaU/AWIM11AJ3KHeQ8ffpm2XygvIGFBc2GexkMpnUiTwEkIic8c1Ol9GQqUW
+X-Gm-Message-State: AOJu0Yw6+4Af0vaq422s3TGUd4kfGRuwpOhPz51FV5Ok3bgC6tlsKIQ4
+	XZbNHuGDL1bVAR5KgnlFsePYXddOljEDUTLMhxSX9v0YDBgz5uObgRltTK+EQwv4tqVKTyzneF/
+	4rwu03VGlZg==
+X-Google-Smtp-Source: AGHT+IEZuPpg1yO7fn0IEIKwi0X1YijuMLbkk9FqYxMx51RJlFRj8VX6O6wgo1ofZTORDUJHHcMrL76AmO0uAA==
+X-Received: from licht.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:f9c])
+ (user=maennich job=sendgmr) by 2002:a05:600c:4704:b0:41f:41fc:318b with SMTP
+ id 5b1f17b1804b1-42108205095mr2453645e9.4.1716896013057; Tue, 28 May 2024
+ 04:33:33 -0700 (PDT)
+Date: Tue, 28 May 2024 11:32:43 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] sock_map: avoid race between sock_map_close and
- sk_psock_put
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171689162997.24184.10361719946392416490.git-patchwork-notify@kernel.org>
-Date: Tue, 28 May 2024 10:20:29 +0000
-References: <20240524144702.1178377-1-cascardo@igalia.com>
-In-Reply-To: <20240524144702.1178377-1-cascardo@igalia.com>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: netdev@vger.kernel.org, cong.wang@bytedance.com, jakub@cloudflare.com,
- edumazet@google.com, daniel@iogearbox.net, john.fastabend@gmail.com,
- davem@davemloft.net, kuba@kernel.org, ast@kernel.org, pabeni@redhat.com,
- bpf@vger.kernel.org, kernel-dev@igalia.com,
- syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com, stable@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
+Message-ID: <20240528113243.827490-2-maennich@google.com>
+Subject: [PATCH] kheaders: explicitly define file modes for archived headers
+From: "=?UTF-8?q?Matthias=20M=C3=A4nnich?=" <maennich@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: kernel-team@android.com, maennich@google.com, gprocida@google.com, 
+	stable@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Masahiro Yamada <masahiroy@kernel.org>, Joel Fernandes <joel@joelfernandes.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+From: Matthias Maennich <maennich@google.com>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Build environments might be running with different umask settings
+resulting in indeterministic file modes for the files contained in
+kheaders.tar.xz. The file itself is served with 444, i.e. world
+readable. Archive the files explicitly with 744,a+X to improve
+reproducibility across build environments.
 
-On Fri, 24 May 2024 11:47:02 -0300 you wrote:
-> sk_psock_get will return NULL if the refcount of psock has gone to 0, which
-> will happen when the last call of sk_psock_put is done. However,
-> sk_psock_drop may not have finished yet, so the close callback will still
-> point to sock_map_close despite psock being NULL.
-> 
-> This can be reproduced with a thread deleting an element from the sock map,
-> while the second one creates a socket, adds it to the map and closes it.
-> 
-> [...]
+--mode=0444 is not suitable as directories need to be executable. Also,
+444 makes it hard to delete all the readonly files after extraction.
 
-Here is the summary with links:
-  - [net,v2] sock_map: avoid race between sock_map_close and sk_psock_put
-    https://git.kernel.org/netdev/net/c/4b4647add7d3
+Cc: stable@vger.kernel.org
+Cc: linux-kbuild@vger.kernel.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Signed-off-by: Matthias Maennich <maennich@google.com>
+---
+ kernel/gen_kheaders.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-You are awesome, thank you!
+diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+index 6d443ea22bb7..8b6e0c2bc0df 100755
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -84,7 +84,7 @@ find $cpio_dir -type f -print0 |
+ 
+ # Create archive and try to normalize metadata for reproducibility.
+ tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
+-    --owner=0 --group=0 --sort=name --numeric-owner \
++    --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
+     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+ 
+ echo $headers_md5 > kernel/kheaders.md5
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.45.1.288.g0e0cd299f1-goog
 
 
