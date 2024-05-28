@@ -1,130 +1,128 @@
-Return-Path: <stable+bounces-47548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDE28D1297
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 05:32:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AED8D1332
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 06:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A988328413E
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 03:32:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C3181F226A1
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 04:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B57199B8;
-	Tue, 28 May 2024 03:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E24317C7F;
+	Tue, 28 May 2024 04:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XD6l51WU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IJbnZWW2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0611401B;
-	Tue, 28 May 2024 03:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA9117E8E4;
+	Tue, 28 May 2024 04:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716867162; cv=none; b=s2nNyXzM/ENXAKZQ+jF2qG6T8cQTctBkM1upWiN0KdEotcVzwIbC+OGE+S8vqc7muAHwm1LSgRIaGEv16/0WUZn1T1uBqYQ/dLBj6nsrsLqqPc5/fzMlghfJGcGNdnT53chCGGCzURroWbYhQJL5R7KoYglIwswGCa3AtYs+iCM=
+	t=1716869323; cv=none; b=Bk4/M0w7BG/mD2qhkjZ2aLJIRlV+mh5TEV1uysfmlJi+SRK3by2VCB3fm7K+GAU5UFQfMaZvCiwiqwJBFj9vdrf0/Aj0xYk5Bo02WS+LPrmQ+2D0n/ypt/d7F7aIoljpWXHjunqhOUUgotz6/musM+3JelQ5mfiQXbQzAslSQ3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716867162; c=relaxed/simple;
-	bh=SleKNQwalY1X1sWZ99eNvJW3+I467p59CunL4Lgmfks=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QJ1tKbnibIMB4o5tWO4Cfd/G34GT/pWZlP1bUvLpR+es8ZUD6HJgs7IgCYqv10sD2fPbnPfFtxUqTkkcWAXYL5UXgyx9EV3c+YKuKyHsyGBqNVmNljFlz79u+8xFzYYjq4LUiptdSX0dcTMPNV2MZnAuIIpCG2zpLmi4PmHeO/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XD6l51WU; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1716869323; c=relaxed/simple;
+	bh=1zQlRYQXYa6k6CCPf33lK1Df7v5lDyubYaYJYb2isv0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=apZPQm/u3pi6Up5boDgtXHlcTCHRTzwf+nLBxLr8j/95fOV9LthpIZNy3yfvfqRIC4gdsVEqofRhGU35jrrrakt3Q6dJyJynoMaLrx4sqtexppch+/sVwoPap8k/OxeGdYoLugmqdeo8a5B7zqzQlrCenRjdxYm6jvKfAVG2GTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IJbnZWW2; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2bda88e2b23so71566a91.1;
-        Mon, 27 May 2024 20:32:41 -0700 (PDT)
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2e6f33150bcso3283641fa.2;
+        Mon, 27 May 2024 21:08:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716867160; x=1717471960; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1716869320; x=1717474120; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jLJbSBSqoq/Zyb8WJpUER3T2Y8k8wG3x9WsdChjQWJg=;
-        b=XD6l51WUm9sSn1Yla2Pd2bhoHIoJkeXG1s1NfUzt9p79H3cWpMz0vHNQ9OOR1W0uYs
-         5QDWBOIkhr87ybiuohlQ5JJHSUp7d+/x7phKf1iGPySd6gCcSnPvbeTS3QxIkRMtLAwN
-         mtec126NS/mXXP5s+Mk1rDmer2ZqiwDWh1vqeP3+hrnPWLYSPK/0vI+lijITpKhXlK0E
-         pb3dddfsayFK84oOm+MIPCFMq8Pgpv8FZ1cFufojQ5Z2W4UvVKA6txUNtBC/mHK1rf80
-         23Rh3GtfrkzsZXZpceMmuMzuTW4OK7h0XRg6GR2AHqa2LJq9MzuD9Me1k8lSiI7JwGms
-         IzPg==
+        bh=tMyc3pRbel0bshffcEecjOn4iWU9YutUkHwlm4EbsFw=;
+        b=IJbnZWW2kEgxbrN+HgJviZ+yC+ib49+2Qk4saCIgbVfCrXp/BbwSFfHRYV6FUc+UD4
+         XgevKtfKGohqpMRga9P0l8h6C32clnBMlr0MM4JLBlllAudgPLCbShkenIN7AGT7wVK5
+         rC5ZWDAuzU2u02FOv/35CH1s/768H2bto0ZObotjkKDkyXdoGj32sEU/AAQLSI35HeQi
+         OAc/JRUo8Tq/QO2pRbebSk2KPxN9GtFmbHTb7xZCdyKD5pw1iXp/p0UISqSG3VFTFIPz
+         lUBPsQow9rtYAW4RTcUcPxuSnNPakXazfIYehfb5bAbBLxPwtMvHloJP7Vlh1tk8Trle
+         WeUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716867160; x=1717471960;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1716869320; x=1717474120;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jLJbSBSqoq/Zyb8WJpUER3T2Y8k8wG3x9WsdChjQWJg=;
-        b=NTX3vWZFlXC1k6FX7t11YBGSIagrX8H67TtnfmWClGf1/aQbIgOf6UQxJorrqFuQ91
-         /cIDzT29vAqq6IgNI7WgMjYS9i5ohkjfBVek6eFk2ABzAGFOyoqWkcHVJn7vHfztOExr
-         pR4MeRMD6HRYF+TeELHiQnBHLgjQ9jmRHtRjCOIs4OOCIfWtzSuDE9BPdWHE1QvZ9TOR
-         OHDxGwxmyEPNM9R6PAzaeKS01Pc74lodNRNtw5HJdgugu44eGTqEAF9iEThGDr0pfT8m
-         sRvKCI3fBLfrfJs3vQ9HmWJUAmGf9e8PWFLB6VkAKPuR7r6Uxh0Oxp09Z9EzcjVFMU1X
-         vcEg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQm90b2L8Ev4kqBwOzhINB2IHeRc0TL5LNi1PMVGb6Qss5JiZEQgg9QHpBGAd3FMUFwvmeIuftTm/IpEQzAA/r8qzL80i5NHytZITS57qibVaEIH93ElbhYlbdTn8+zZeQNFGt
-X-Gm-Message-State: AOJu0YwAhfVLrWyl1uPxV/zOy1cNZYUjIylm55U58Nz4Y1fxiP/8YOtk
-	hXwRv7Z5PCfcQ0Udg1SDiVoEubNYRjCCqh6tstLp6jQ37gyW62hmaElBD1yC
-X-Google-Smtp-Source: AGHT+IGvqs9EvS9l7fq4AM0aII/4Cp9J/Kxzr2kPMQsY+M6noSmTXGcunoA7KtbZwmrClItXIiBfEw==
-X-Received: by 2002:a05:6a20:dd86:b0:1af:dbe4:b34e with SMTP id adf61e73a8af0-1b212e726a1mr11500416637.4.1716867160520;
-        Mon, 27 May 2024 20:32:40 -0700 (PDT)
-Received: from localhost.localdomain (122-117-151-175.hinet-ip.hinet.net. [122.117.151.175])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f8fcbec62fsm5909651b3a.133.2024.05.27.20.32.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 20:32:40 -0700 (PDT)
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
-To: mathias.nyman@intel.com,
-	gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ki.chiang65@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
-Date: Tue, 28 May 2024 11:31:36 +0800
-Message-Id: <20240528033136.14102-2-ki.chiang65@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240528033136.14102-1-ki.chiang65@gmail.com>
-References: <20240528033136.14102-1-ki.chiang65@gmail.com>
+        bh=tMyc3pRbel0bshffcEecjOn4iWU9YutUkHwlm4EbsFw=;
+        b=BVmrgquyBKng5/hYiOKIxLvjpMHJOPxCAO2ahe30+1T455yydp7cnvYQRAO6OcjASs
+         4DeHD2WE/phFbB2SBph/d+61JFDx0fiq87oC3tQqBnP8UlQzkCs989uZ9RJByQBzFNh6
+         jTdrpETTEKeFcIROq9pLGnSdgUiiHM/7wo2qpNMpUNpMEREtrJ2DFnMxp/IVbNf419M8
+         HuhPb3kDxFboUaydSl13r+jGm5XHNC4ZwVRuX2ugiYW5N6DmRwQsE43+8cdZdAXZFl/J
+         dcdr0touxgyMCPDYX8rm5t6qfo1/GM+CJ6QR5kXEKvUpkiSEUBqXVC/yUNmAJrfFHv1K
+         20DA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+IIpAVW2ijt7PZSbNPvgligBmMH57Va4e8ut0kK3om3+1W76yQGAt/mC54jBa9fn7uOSPiuJzBgknZPbrD5Z//4cHBGR5MJ3FapR5iyU0iG2+QRf7isnpZQKulW98umOneui16scrTrC6UE8UaPflN2VrRoc9F0Ow9vL598Xqi3TrOCcL+GLF
+X-Gm-Message-State: AOJu0YydFYaEqahgVIY32VXFiMATInnFiYm6JheW0dawwvK/7lyIInd5
+	wBoO+WPaQgBXzjXmRkttyVHbFs72/tuQF9Cxdh37UCiQ03gfbYrkxLOgNU1hnOO+/xEGXSQCq5d
+	0GzH8zeNeb3al9BoBDJrZs3LptKk=
+X-Google-Smtp-Source: AGHT+IGJiavREr3NWLKOzpRZdqUHa7q77BL+5YFsloQz18KBti8Zw39zdX1RWbJfMYba295OwGrClZrngVMi829iwIM=
+X-Received: by 2002:a2e:800f:0:b0:2e9:6306:8a51 with SMTP id
+ 38308e7fff4ca-2e963069082mr58708411fa.52.1716869319348; Mon, 27 May 2024
+ 21:08:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAE4VaREzY+a2PvQJYJbfh8DwB4OP7kucZG-e28H22xyWob1w_A@mail.gmail.com>
+ <5b79732b-087c-411f-a477-9b837566673e@leemhuis.info> <20240524132008.6b6f69f6@gandalf.local.home>
+ <CAE4VaRF80OhnaiqeP9STfLa5pORB31YSorgoJ92fQ8tsRovxqQ@mail.gmail.com>
+ <CAE4VaRGaNJSdo474joOtKEkxkfmyJ-zsrr8asb7ojP2JexFt-A@mail.gmail.com>
+ <2024052710-marsupial-debug-febd@gregkh> <20240527174424.75625921@rorschach.local.home>
+In-Reply-To: <20240527174424.75625921@rorschach.local.home>
+From: =?UTF-8?B?SWxra2EgTmF1bGFww6TDpA==?= <digirigawa@gmail.com>
+Date: Tue, 28 May 2024 07:08:03 +0300
+Message-ID: <CAE4VaRGzvMU7ZuNwHq1SE0t+Z02Aa5QO44tBH8YgvSYX5ByRwg@mail.gmail.com>
+Subject: Re: Bug in Kernel 6.8.x, 6.9.x Causing Trace/Panic During Shutdown/Reboot
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, 
+	"Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>, 
+	Linux regressions mailing list <regressions@lists.linux.dev>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
-asrock p67 host"), EJ188 have the same issue as EJ168, where completely
-dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
+I tried 6.10-rc1 and it still ends up to panic
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
----
-Changes in v2:
-- Porting to latest release
+--Ilkka
 
- drivers/usb/host/xhci-pci.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index c040d816e626..b47d57d80b96 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -36,6 +36,7 @@
- 
- #define PCI_VENDOR_ID_ETRON		0x1b6f
- #define PCI_DEVICE_ID_EJ168		0x7023
-+#define PCI_DEVICE_ID_EJ188		0x7052
- 
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-@@ -395,6 +396,10 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 	}
-+	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
-+			pdev->device == PCI_DEVICE_ID_EJ188) {
-+		xhci->quirks |= XHCI_RESET_ON_RESUME;
-+	}
- 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
- 	    pdev->device == 0x0014) {
- 		xhci->quirks |= XHCI_ZERO_64B_REGS;
--- 
-2.25.1
-
+On Tue, May 28, 2024 at 12:44=E2=80=AFAM Steven Rostedt <rostedt@goodmis.or=
+g> wrote:
+>
+> On Mon, 27 May 2024 20:14:42 +0200
+> Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> > On Mon, May 27, 2024 at 07:40:21PM +0300, Ilkka Naulap=C3=A4=C3=A4 wrot=
+e:
+> > > Hi Steven,
+> > >
+> > > I took some time and bisected the 6.8.9 - 6.8.10 and git gave the
+> > > panic inducing commit:
+> > >
+> > > 414fb08628143 (tracefs: Reset permissions on remount if permissions a=
+re options)
+> > >
+> > > I reverted that commit to 6.9.2 and now it only serves the trace but
+> > > the panic is gone. But I can live with it.
+> >
+> > Steven, should we revert that?
+> >
+> > Or is there some other change that we should take to resolve this?
+> >
+>
+> Before we revert it (as it may be a bug in mainline), Ilkka, can you
+> test v6.10-rc1?  If it exists there, it will let me know whether or not
+> I missed something.
+>
+> Thanks,
+>
+> -- Steve
 
