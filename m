@@ -1,125 +1,137 @@
-Return-Path: <stable+bounces-47545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D73F8D125A
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 05:00:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7E48D127A
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 05:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 175AFB21DB7
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 03:00:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B4161C21B3E
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 03:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBE51401B;
-	Tue, 28 May 2024 03:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A56110957;
+	Tue, 28 May 2024 03:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IfaWkHfG"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="l6IbzZrC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB08F9D6
-	for <stable@vger.kernel.org>; Tue, 28 May 2024 03:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A427616426;
+	Tue, 28 May 2024 03:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716865202; cv=none; b=LvzCRXQ6rAyOZoC7Q0B3acevCG0yjk8GMtfjWx9UVgsEEsmB9OnxVfq42GYusn65YrstZ6oZlyjNyFSRAaujLC4wzFzWFqiS3ASQPPNALcakH8Del7SOPGYPrxWlktZd2s79I50okj+nr2huEYhvhDi2vp3iQFOq7Pe+wChP/U4=
+	t=1716866363; cv=none; b=X4RPCyzQPx2q3APhiriWRxtQVlmQkzn1t77cIeYfy10m5LsSEZbuGWFLNRn0c+IojR59GXeG//D/91Pryn/YtsQQqkY88N3YaJ2k3HUkNSOLo/501w4zMQYJ6FQ8P3KPpelBY11f3XoPzE8BWKpKDkxn8aEwy/I+3EzEdmhaDxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716865202; c=relaxed/simple;
-	bh=SleKNQwalY1X1sWZ99eNvJW3+I467p59CunL4Lgmfks=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fhEz2ZNkyIEs9cZ2A8fRJf4D+0dOkE+nohzyKRkMgfRUuW0wvATydGkCBfheXVi0VLurLagpl9UBqh3gwKChaRKdOggDz2NxY+pxhdRvSYhRPGvUf8o0Er1oJH+oQdttmnBvMqR0qjJmNSCAg9ZGmeLeLodadPA9rapCdajI1bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IfaWkHfG; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6f8e965d1b6so5585b3a.1
-        for <stable@vger.kernel.org>; Mon, 27 May 2024 20:00:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716865200; x=1717470000; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jLJbSBSqoq/Zyb8WJpUER3T2Y8k8wG3x9WsdChjQWJg=;
-        b=IfaWkHfGOskEHX6srvbjDvZpZte7sU0KnyZ2pUEM021uL1gKmIRdjLrFNPCWp9Aceh
-         E71EdOYkVALmRQKxmcv7g9Y+Lr8Bp1iRgi/baUq4ZU0Bst3TB5Jgdur35J5oDfVkDSke
-         KRfS36DQV3Vk70l2ka38XzfNuKuRm/VDk7sYNxFmnFpf6ZoRC45PZfCaycPGEolWvsHG
-         exjGALZ4N/3gLanAK8klevLgjlRmmL29i7GAnYEEpGIIi+82lnUWJ95EtPYM0Gy4hlwB
-         VOeOVNMG8HLYwJjlNCyOLuYsEdCoc2ECOjBOMOJcd5X/stJ6SZOw5twR/pCyBb3amMWJ
-         neTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716865200; x=1717470000;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jLJbSBSqoq/Zyb8WJpUER3T2Y8k8wG3x9WsdChjQWJg=;
-        b=T+91FMElpRhRByXjk/Y+3+3YNYf4NTSda/IFCPK6iy9E6zbAtO5Mt6OXLmNcP9m+/q
-         1YlmN56D00uU69jO/Pj28P5lOf/FKCSdm/2EFAHLhKSC2KZsJtZLFd1GCaGC51JnXoVq
-         U9nyI3O7t8HEVlEocB/Rm+lNeuWqmAlqytocET9zYEz9kCPmZiIHKSf3JrXuccfdY7NB
-         jol4WekrNHzBbhcoHG2HnLe8HLmLA75rfI70UAcX5BdS7aOn0tE57ywFV0iplKRW9XG+
-         p/34l04kDywC3XZwiuUVSjwaBw/bj9UuQiRnvx0RqkkNi+Ogdt4kiiB7lbIr1xMHmQeu
-         MFBQ==
-X-Gm-Message-State: AOJu0YxescOKELREdT7cwxf0RoddotcMqr1b3Wx7NcZ3dKcmfMhIExma
-	WvgEdL/gWRMbrENcG/oJi+NVu4bbKslTo0X75Q2Ss96c6VD0QD4gOjQvWDV6
-X-Google-Smtp-Source: AGHT+IG5dU6BsPaSgahc57q9qCbwE/wOZCr7X1WIANVkPcfKjond+Z/ssOt37C6QTVNqxEW565cZNw==
-X-Received: by 2002:a05:6a00:2176:b0:6ec:ee44:17bb with SMTP id d2e1a72fcca58-6f8f3e843a1mr11397926b3a.2.1716865199665;
-        Mon, 27 May 2024 19:59:59 -0700 (PDT)
-Received: from localhost.localdomain (122-117-151-175.hinet-ip.hinet.net. [122.117.151.175])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f8fcbeea11sm5666533b3a.98.2024.05.27.19.59.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 19:59:59 -0700 (PDT)
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
-To: ki.chiang65@gmail.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2 1/2] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
-Date: Tue, 28 May 2024 10:59:49 +0800
-Message-Id: <20240528025949.13679-2-ki.chiang65@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240528025949.13679-1-ki.chiang65@gmail.com>
-References: <20240528025949.13679-1-ki.chiang65@gmail.com>
+	s=arc-20240116; t=1716866363; c=relaxed/simple;
+	bh=VWJNgBha+MdLZW4KuBTIsRu3l1hPwoNUzhpFf4na7Ks=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JO9eHH9W+WKD2gNUX7TkhV8JXAbrKDMRnFVxg/VfsH0EFqcpsZHiE4jnpqQDXs6X8Sp7u03I9kX06sA8qkmIfWjnqsFlYhxtrynVRw0ESSEojbUr/77hFE3ACWRM3XloqYDTef5xZ3d9tGRMZr2FuHbSJ6DQgvbM6Zvzo/ogt6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=l6IbzZrC; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44RJasUK022704;
+	Tue, 28 May 2024 03:19:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=Pe5ZMcYeU7gDMNUUWz1AxChcullgJDypFw+3sEWfQ+4=; b=l6
+	IbzZrCSYcfmOO4Hj1ive4IR75F199K9fEyuaqpNqTmD5GLRFBs+WkoHWCf2nYllm
+	4zI42afiW4TgjKIz7LupqtSICba+6O9YrLzYbw/kx3a/dPl8mEHe864E/uBLfzbj
+	8X7oXnu05WgG8pGx0MX5khKjIcMBWjFPvvXYkIxJ4VLv6AIzBfsoTKNgjD8+6WoV
+	dtHZYNH3L2Yz7RiTkHBTehJo6GR1e2R2Mb1jBgkwYQTgbHVGU31HFdVY5dXyaAvt
+	2GDN+V9LS9pk8dq27oBifmMh1Vtrd9MwhPCz2Y/HlU9zew4bzqwluSCCmTxyoqOc
+	oM15eh0H0k7EPvl16oQQ==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yb9yj513b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 May 2024 03:19:14 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44S3JDXq030865
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 May 2024 03:19:13 GMT
+Received: from zijuhu-gv.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 27 May 2024 20:19:10 -0700
+From: Zijun Hu <quic_zijuhu@quicinc.com>
+To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+        <akpm@linux-foundation.org>, <dmitry.torokhov@gmail.com>
+CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        Zijun Hu
+	<quic_zijuhu@quicinc.com>
+Subject: [PATCH v2] kobject_uevent: Fix OOB access within zap_modalias_env()
+Date: Tue, 28 May 2024 11:19:07 +0800
+Message-ID: <1716866347-11229-1-git-send-email-quic_zijuhu@quicinc.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: -dMAhVfl2qXrg3So5GHQq4jY2Eo-3Gtw
+X-Proofpoint-ORIG-GUID: -dMAhVfl2qXrg3So5GHQq4jY2Eo-3Gtw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-27_06,2024-05-27_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 mlxscore=0 phishscore=0 mlxlogscore=784 spamscore=0
+ clxscore=1015 impostorscore=0 bulkscore=0 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405280024
 
-As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
-asrock p67 host"), EJ188 have the same issue as EJ168, where completely
-dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
+zap_modalias_env() wrongly calculates size of memory block to move, so
+will cause OOB memory access issue if variable MODALIAS is not the last
+one within its @env parameter, fixed by correcting size to memmove.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Fixes: 9b3fa47d4a76 ("kobject: fix suppressing modalias in uevents delivered over netlink")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 ---
-Changes in v2:
-- Porting to latest release
+V1 -> V2: Correct commit messages and add inline comments
 
- drivers/usb/host/xhci-pci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+V1 discussion link:
+https://lore.kernel.org/lkml/0b916393-eb39-4467-9c99-ac1bc9746512@quicinc.com/T/#m8d80165294640dbac72f5c48d14b7ca4f097b5c7
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index c040d816e626..b47d57d80b96 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -36,6 +36,7 @@
+ lib/kobject_uevent.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/lib/kobject_uevent.c b/lib/kobject_uevent.c
+index 03b427e2707e..f22366be020c 100644
+--- a/lib/kobject_uevent.c
++++ b/lib/kobject_uevent.c
+@@ -433,8 +433,23 @@ static void zap_modalias_env(struct kobj_uevent_env *env)
+ 		len = strlen(env->envp[i]) + 1;
  
- #define PCI_VENDOR_ID_ETRON		0x1b6f
- #define PCI_DEVICE_ID_EJ168		0x7023
-+#define PCI_DEVICE_ID_EJ188		0x7052
+ 		if (i != env->envp_idx - 1) {
++			/* @env->envp[] contains pointers to @env->buf[]
++			 * with @env->buflen elements, and we want to
++			 * remove variable MODALIAS pointed by
++			 * @env->envp[i] with length @len as shown below:
++			 *
++			 * 0          @env->buf[]      @env->buflen
++			 * ----------------------------------------
++			 *      ^              ^                  ^
++			 *      |->   @len   <-|   target block   |
++			 * @env->envp[i]  @env->envp[i+1]
++			 *
++			 * so the "target block" indicated above is moved
++			 * backward by @len, and its right size is
++			 * (@env->buf + @env->buflen - @env->envp[i + 1]).
++			 */
+ 			memmove(env->envp[i], env->envp[i + 1],
+-				env->buflen - len);
++				env->buf + env->buflen - env->envp[i + 1]);
  
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
- #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-@@ -395,6 +396,10 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 	}
-+	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
-+			pdev->device == PCI_DEVICE_ID_EJ188) {
-+		xhci->quirks |= XHCI_RESET_ON_RESUME;
-+	}
- 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
- 	    pdev->device == 0x0014) {
- 		xhci->quirks |= XHCI_ZERO_64B_REGS;
+ 			for (j = i; j < env->envp_idx - 1; j++)
+ 				env->envp[j] = env->envp[j + 1] - len;
 -- 
-2.25.1
+2.7.4
 
 
