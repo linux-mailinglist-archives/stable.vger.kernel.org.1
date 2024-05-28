@@ -1,119 +1,147 @@
-Return-Path: <stable+bounces-47560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330978D1990
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 13:33:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1D68D19F5
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 13:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C96481F226CF
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 11:33:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FBBD1F2201E
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 11:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3824E16C6A9;
-	Tue, 28 May 2024 11:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8747616D333;
+	Tue, 28 May 2024 11:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ErXr+ajk"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ExPyb3w9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBAC17E8F4
-	for <stable@vger.kernel.org>; Tue, 28 May 2024 11:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9BC16C69D;
+	Tue, 28 May 2024 11:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716896017; cv=none; b=SoBwW2AK+2zAGEu9/C0PylW0Wc4o6TP+Ae+W+vYVgjlNvrcumgsY/WLM8voEII4c0htyz1uGVSpv621A/cIK5FjZpLdmWW0d5rU+ryqI9gz2vtn85tstyf7HBONqs0hgQvqS/AasHhhKC/hsdnVnsfsAUFXEawlmGtput0oZu+o=
+	t=1716896645; cv=none; b=iAYO20wy+MWwE8kYpzeD7XKQRn4qN2qlNAEAiuUjIJ/kx9pLa3TeMZfFASpaGAroujW8CN+nCH4ZMzJ/MIkH3KFoipy+7DbtirKBgMgD/IhAHXvnI0YepiTKeAK25ohPhOWRsVU6vVxYSZAyMHffx+nr/QWH+eaU3SoagG6+yl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716896017; c=relaxed/simple;
-	bh=pVkfCfXwvpGITqeArgg8XorBGEqsQIg7EkQ5urfJgbQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=l5ayhh1RV4TB8F6TuM2o0P9qB6PC5EdF8chxJhM2mg7pY2QU5rjdiDXLGs4Gay45gvd2vLCpWMCz+YXHh1sFZ1I4CwqYMf1swxMQRYyDdggogocysOG67QsFqpJP0IWCdK7k9UwHnRPJYi5FZ9eqylso7drj+butuzOhhNkKTf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--maennich.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ErXr+ajk; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--maennich.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-42120a4c56eso2143275e9.0
-        for <stable@vger.kernel.org>; Tue, 28 May 2024 04:33:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1716896013; x=1717500813; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pTOxhoHq0Nkxf/74IFjzbYdMxemeJfpZA9XvBTvTfc4=;
-        b=ErXr+ajkwW8QC39Mej+rxdrFeYUwVnx/x0bXfsBYisomxuLsZpmRb8iBz6j+fd1Wzp
-         omwdzrak9vItrH6+cW+YktjF0vAmUUmG1XS1XR25aLRpYq/hHFCnUoy7At3g5EVgZp5Y
-         8zSj0Uz40Ztpbv0TaV7ljrJ8WgqXb3HnRhUWoVYesIvoQsUGC0DYkaGb563A+vXYyIIW
-         y8ej/2RESLsXc1B6bz2EPbldrQJeJ4Y9UYZt0e3loev6KU/jvHBfmkU78qmlMVF4wWc4
-         Md030pqFfjorYLkp2UFfkCx1Wsv+gsdOoib+EOCpfUgoUduH3Dt3mGUn7Ns/q9zYguCr
-         mizQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716896013; x=1717500813;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pTOxhoHq0Nkxf/74IFjzbYdMxemeJfpZA9XvBTvTfc4=;
-        b=f0V1ZiSGkAoY9y7PArYQkaAhq8t+Vzfvlaje9vQ8WLDLfGQParWOY1d8bVteIs40A7
-         o86gZ1RANMIhmyAXrq2u9cPMDdsQncHiXJM2oYb9vImoA70eeuUyEx7EanjJHxuad1X1
-         u1trsjExlNRW4xFFYjxLNSbcCxUSE/GR1nYRHDq270fJERLUnVYiW7MtxWtj5M8L6eDk
-         StdlyX6ExUfkK63oO6O/ErZAl49w9AFippfVcnAyx/kqjsEZ69ZW46bBhRuaNp7P1m+r
-         OK8xZH+7yQjk3DH0q4wBzajZQut0p423QEsOEdoI6fBnzRj8B5i+PHF0J7nGwnVS8xR7
-         RXOA==
-X-Forwarded-Encrypted: i=1; AJvYcCWNOOgVtCbmBVMY71Y98OeeHZfuZAGQ8xJ+qaU/AWIM11AJ3KHeQ8ffpm2XygvIGFBc2GexkMpnUiTwEkIic8c1Ol9GQqUW
-X-Gm-Message-State: AOJu0Yw6+4Af0vaq422s3TGUd4kfGRuwpOhPz51FV5Ok3bgC6tlsKIQ4
-	XZbNHuGDL1bVAR5KgnlFsePYXddOljEDUTLMhxSX9v0YDBgz5uObgRltTK+EQwv4tqVKTyzneF/
-	4rwu03VGlZg==
-X-Google-Smtp-Source: AGHT+IEZuPpg1yO7fn0IEIKwi0X1YijuMLbkk9FqYxMx51RJlFRj8VX6O6wgo1ofZTORDUJHHcMrL76AmO0uAA==
-X-Received: from licht.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:f9c])
- (user=maennich job=sendgmr) by 2002:a05:600c:4704:b0:41f:41fc:318b with SMTP
- id 5b1f17b1804b1-42108205095mr2453645e9.4.1716896013057; Tue, 28 May 2024
- 04:33:33 -0700 (PDT)
-Date: Tue, 28 May 2024 11:32:43 +0000
+	s=arc-20240116; t=1716896645; c=relaxed/simple;
+	bh=M4W+oHkOeOhdlYM/2iz4WIkappOulaLKd7/7AQX4LQI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L6sqHqIATqk0wxM9wlBtNJwm8wxHw6sHFX0pu7qOx8X30SsZCiSDNrCJ7JJW998AK+9RuzcrwjbgdjdSPE6FDGGxJE2hFDoCgL0OGj8L/JSlhgkTez0liqnUD/6vdCmbk1WgPbleDoNpGl1BK1scXjU4TPYntD3tP8kGHzqZN/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ExPyb3w9; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44SB8JBf001099;
+	Tue, 28 May 2024 11:44:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	vTGSCjZG91irllHjXXjKPaqTtQw3nVtYXZ6CCsqxeEQ=; b=ExPyb3w9kO7D2OrQ
+	ZCG3pGZI/VhUpLY5jZ+ZdgCuCyRoUEIo3o6H0qRDE9Qk75mp+Q/cTo6o4f8rlMk0
+	6mDNMYMNq2ZHana0OLXNuTsyFBvHOkXS5aqmHJnvZYWky1m1tSlrio88sgiqSj4x
+	GUV9fChig1Q88W/9hDI+xeZ19QQK/Hk1B8BFJzD4yPHbcmhEyLAGdyHBZufYMLP5
+	4ckibAV93V+Ull5SYKupcwmhRTkI0THpk4h/RhOZ+CmKZU9ughByD+B7a6jY3Ez9
+	pR0gwfgKAgqOCstumTVhV6gdxWVxfJdQ2VPsFWM2GfUxgMcf/DBgpv/hvyDY8uGV
+	ci3e3A==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yb9yj5xst-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 May 2024 11:43:54 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44SBhrqt017753
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 May 2024 11:43:53 GMT
+Received: from hu-ajipan-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 28 May 2024 04:43:47 -0700
+From: Ajit Pandey <quic_ajipan@quicinc.com>
+To: Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+	<sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Vladimir Zapolskiy
+	<vladimir.zapolskiy@linaro.org>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Taniya Das
+	<quic_tdas@quicinc.com>,
+        Jagadeesh Kona <quic_jkona@quicinc.com>,
+        Imran Shaik
+	<quic_imrashai@quicinc.com>,
+        Satya Priya Kakitapalli
+	<quic_skakitap@quicinc.com>,
+        Ajit Pandey <quic_ajipan@quicinc.com>, <stable@vger.kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH V3 1/8] clk: qcom: clk-alpha-pll: Fix CAL_L_VAL override for LUCID EVO PLL
+Date: Tue, 28 May 2024 17:12:47 +0530
+Message-ID: <20240528114254.3147988-2-quic_ajipan@quicinc.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240528114254.3147988-1-quic_ajipan@quicinc.com>
+References: <20240528114254.3147988-1-quic_ajipan@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
-Message-ID: <20240528113243.827490-2-maennich@google.com>
-Subject: [PATCH] kheaders: explicitly define file modes for archived headers
-From: "=?UTF-8?q?Matthias=20M=C3=A4nnich?=" <maennich@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel-team@android.com, maennich@google.com, gprocida@google.com, 
-	stable@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Masahiro Yamada <masahiroy@kernel.org>, Joel Fernandes <joel@joelfernandes.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: e9rOfkIYaCVibs-vSjZcpNqKPptyukRX
+X-Proofpoint-ORIG-GUID: e9rOfkIYaCVibs-vSjZcpNqKPptyukRX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-28_07,2024-05-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1011 impostorscore=0 bulkscore=0 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405280087
 
-From: Matthias Maennich <maennich@google.com>
+In LUCID EVO PLL CAL_L_VAL and L_VAL bitfields are part of single
+PLL_L_VAL register. Update for L_VAL bitfield values in PLL_L_VAL
+register using regmap_write() API in __alpha_pll_trion_set_rate
+callback will override LUCID EVO PLL initial configuration related
+to PLL_CAL_L_VAL bit fields in PLL_L_VAL register.
 
-Build environments might be running with different umask settings
-resulting in indeterministic file modes for the files contained in
-kheaders.tar.xz. The file itself is served with 444, i.e. world
-readable. Archive the files explicitly with 744,a+X to improve
-reproducibility across build environments.
+Observed random PLL lock failures during PLL enable due to such
+override in PLL calibration value. Use regmap_update_bits() with
+L_VAL bitfield mask instead of regmap_write() API to update only
+PLL_L_VAL bitfields in __alpha_pll_trion_set_rate callback.
 
---mode=0444 is not suitable as directories need to be executable. Also,
-444 makes it hard to delete all the readonly files after extraction.
-
+Fixes: 260e36606a03 ("clk: qcom: clk-alpha-pll: add Lucid EVO PLL configuration interfaces")
 Cc: stable@vger.kernel.org
-Cc: linux-kbuild@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Signed-off-by: Matthias Maennich <maennich@google.com>
+Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- kernel/gen_kheaders.sh | 2 +-
+ drivers/clk/qcom/clk-alpha-pll.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
-index 6d443ea22bb7..8b6e0c2bc0df 100755
---- a/kernel/gen_kheaders.sh
-+++ b/kernel/gen_kheaders.sh
-@@ -84,7 +84,7 @@ find $cpio_dir -type f -print0 |
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index d4227909d1fe..62138ed3df88 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -1665,7 +1665,7 @@ static int __alpha_pll_trion_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	if (ret < 0)
+ 		return ret;
  
- # Create archive and try to normalize metadata for reproducibility.
- tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
--    --owner=0 --group=0 --sort=name --numeric-owner \
-+    --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
-     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+-	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
++	regmap_update_bits(pll->clkr.regmap, PLL_L_VAL(pll), LUCID_EVO_PLL_L_VAL_MASK,  l);
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
  
- echo $headers_md5 > kernel/kheaders.md5
+ 	/* Latch the PLL input */
 -- 
-2.45.1.288.g0e0cd299f1-goog
+2.25.1
 
 
