@@ -1,164 +1,190 @@
-Return-Path: <stable+bounces-47573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0478D1ED1
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 16:30:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2AC38D1F27
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 16:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 698191F238C7
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 14:30:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00E6C1C22519
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 14:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7AD16FF37;
-	Tue, 28 May 2024 14:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721F9171088;
+	Tue, 28 May 2024 14:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FdFutYW5"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Sb9Z29gB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978AD16FF5A;
-	Tue, 28 May 2024 14:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6054716FF4B
+	for <stable@vger.kernel.org>; Tue, 28 May 2024 14:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716906587; cv=none; b=BnBSBjhLpwqU9E/AMRE5RkNAtj4zdrQNcA54KIeITwNqJ5GEAZlOtiZIPdZcOape2k1vgVau/FkARDoa/ABbYxAqP/TDzTNdyD1/c/hLDnIH+iwVuaiGpbC79ica3LCJx4gi/qsVbVuPzcz4zmvjAFRS3kpUG8Wzh8QmlSqKh84=
+	t=1716907503; cv=none; b=Fsk8ebLkPuX6O8lnhHO6XFvy+IS7HEHWY5ZdpRgV4Iyu8Mh1gQhraweCPAQLaToofq2wpf+vqWEJd1AwjjCzRamtnDmuiGRaJbI4UYxyDKrC33u7nl4cEYzcS2DgexX+Rao6vN0tsGmqkye+Ig8tTBXBZOr3KeV8OJA/VJSwoD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716906587; c=relaxed/simple;
-	bh=ka61hrwWyt80vXDLIqj6xF9p6ZdwzYeaYhuB6NPdZV0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M1aSHpO7MNfMUeflQoafZIs2Vs/K7aeJTWT6+MGDpI/erg750ZdVKiR1HhLGI1Jqep+SSDEBf1k476IBZAJnGZS4nLF93TDEhOnVNB87J4pTyYjkKokOgpZISnzPK6WFylo3FO4FwjWYE8na/ttF4585zXG2DRATOADsrCCK/bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FdFutYW5; arc=none smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-8052b43d328so130769241.0;
-        Tue, 28 May 2024 07:29:45 -0700 (PDT)
+	s=arc-20240116; t=1716907503; c=relaxed/simple;
+	bh=u5DGMExmMELV1xy8yLiiNHEKToOQqClZz2C5kQWXUNA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L7cnHxjzkRMpknwaHJ4S1/NfaZGjcYtKiVjMMGthm1fDmmuWI8X93RJwRShMPqCHsThabdvji22gtWxvsM99UMx4h3u3O+oQ4nH6mBzr99s6RfSisMPF8hpQUi6i2Te64nJ0z1Dqm5kERD4pvZUNbFXgwk20A1fcDdJC/Yw20cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Sb9Z29gB; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a633ec1cecdso93257166b.2
+        for <stable@vger.kernel.org>; Tue, 28 May 2024 07:45:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716906584; x=1717511384; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fg8y460Xa+j7cx+obTE0cFpPu6S6+u6FQc2pe05Mc/I=;
-        b=FdFutYW5p6K+1vWWZTWEGs+7tad2TzPDGqfaX093Y33VT6GRJ9Ts3is96zhD5uzuhB
-         QCjGkrjBZUhHmpv7YO7yzzRNdesNKTCAscFj8RmdSwZ/r73Fm1sUJnujJNP2Xeshf9hc
-         c0T6vyWU8fZu7lOTDcobq+jli/yJZYH54/qXqEzn/F9HcTcVNtmHPiOuyAdJ5ORWSJSq
-         6YJrT52okV3nF2nKlC5Hlyh2uAofpDKkYf78PzJE9hB1lJW2jwklBv5blNEzQrXRCI2a
-         7MywhOXKYl5ILeYDnRJ+cNx4+xXOdqGS0pF+kDP9yFdRu3cdjbnM7Th6eivLBjeYo4x2
-         9AaA==
+        d=ionos.com; s=google; t=1716907499; x=1717512299; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TG5W+RrKzluwPnH1A1A5fDJr2fjufgKg3mZALw2M2DI=;
+        b=Sb9Z29gBBZ7RGKeiwA20b4Mhka0/qQLlA/CeZB0gmndIMDAy1KvAePcvWh7wqXBt05
+         4IISI44NyrAjto96wx5YHBGA/h1rHfwQ20dishr5RmR6A3nlNkV1Wv2acU/CJLB155TX
+         W1V5Imfh+Z0QPgGYpflG56Vhbg6w03XmliM/lmUJiiMTzNH2Gc6JyH0cdRpsLywoDkxY
+         eUo5F3ERMMtosqCFjMXAI0+YtA9ep4uS2B6h9gwdjg974KpHm8YkfoG2mEqCICJxIfoP
+         yTLJBRCQ/QePlNHHypun4fgoBbqva4TQClsEcDMZkWxbBucVmsxaSQXH3ZrCjJTYRwmN
+         5rjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716906584; x=1717511384;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fg8y460Xa+j7cx+obTE0cFpPu6S6+u6FQc2pe05Mc/I=;
-        b=tRAvhw1lCgy6AREdna0/Lm+4rmvBr4GxBgrxZo0SCcmK5zIXezIXHoUlCpjDC+WpJT
-         slJQTAdGV+W0wiC2a0Ar8VlW2tFxpShhjSd3tBKYVu4KU6Q7LWijm3XZLhj35b3ITVdS
-         YWini1YyyS2+QxDwD6b2bCBRXQEVjNOUX89Livda4SbJIQKBeS1RptegnkSDu9MeEU6Z
-         gMw9S469kmZ9N0saCVSchW7vYvdPiE7mw8fs7aoG5vHuTL4Y9sw5+RwyalUUawQjGiFU
-         Qk7sraE7R0vzlKIY6+CZIVpjGmVFSiXIUGIEqDyyA48JX9+kf+kmpchHdvAXJx9WAY+e
-         rnWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUAUaFNmnisOCwhpjtDJpN1wTaEoxU08PYNvD04tUwQq34AnmqRoBItbb7Zef+8fe6CwFEhuxy0JmQIjhtkS///LEwXcPDUd0l2MmrnO/6jC3xCWILEH797VE5gEsyprOAvdf6orZ5dX7K++qEYoWcP0pYnM/tiwEdk6m1G
-X-Gm-Message-State: AOJu0YyFKtLSwqD69YlmOGd1FhpDs9jzwRBiwDrjYcBtHUDZqj6/pifR
-	qGU74oeykABZWUx4z3FLXIoliqqtJ0AZ5YYHhcd0nMBE8fHu+WxSPr0TECZYGf3++6R0w82KnWh
-	aN0dVargg2tK7SosnR/KjqU7hQ8A=
-X-Google-Smtp-Source: AGHT+IE1iPcTI3pn+5wr1fZSALkFdHBU+jz0yKwG86On+gFfOzSfsdcWJsSjZYld6caHgt28iKAiaIMEpj6Eo7JGKbc=
-X-Received: by 2002:a05:6122:7c8:b0:4de:847a:3647 with SMTP id
- 71dfb90a1353d-4e4f02cac8bmr12828252e0c.11.1716906584536; Tue, 28 May 2024
- 07:29:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1716907499; x=1717512299;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TG5W+RrKzluwPnH1A1A5fDJr2fjufgKg3mZALw2M2DI=;
+        b=q7KjPbOBljNYDOm3serk0lM92rXlhcM66eOAK3b14cFGeKBp5B77I5ukoz69joG8Yf
+         NbbgOXzEy4sb5VT5Etkr+cb3uLHf6Uw6MjGL251RmEyo9ydCXw6Fxo4AaLTkCz8BkUVf
+         vk1K2ZK25nWsHjdTYIfOB6yMt/B+dE4Z8cmuxEPD5Rru57AuZLvbk+RCAp9lHa5GvMa2
+         2zjkLg0xCnP8hXVFjJ9gRdGRzthZYNhuDNoV4ndFCk9WQTG8T5R9ZgKAPh5zo/0W+re0
+         L6PgrtB+cCaHg95a8bnRR8bE1C24OqYsAywnGJz77m72eJRjbQdsvNBDvoAF8PKj9COa
+         sgfw==
+X-Forwarded-Encrypted: i=1; AJvYcCWM8++aemfefw6K5MQjmVhVBSxKHln0F9ujkpUD7lRGVv06Y6CLGcAYYzW6atVGjM5n7992ymRw09OEUfEv4atzqQg85hpx
+X-Gm-Message-State: AOJu0YzDxwJdLLm4rytoWVOAmrrzDsklrjr4bYs70SCuy0jO+5AAex1c
+	ITqOBkr2mVSde4FHdm7/kTqv+1Dlch0i77pSKqfx4iplp0k8mAPTCTO9hCnqA0o=
+X-Google-Smtp-Source: AGHT+IGcfIH5RPh4OnyVqTq4ATc6SBA5sJNh2KrF2k5/BA6AVB02Dz6lBLYJ9g6apMqOwqcdLBUyzg==
+X-Received: by 2002:a17:906:4453:b0:a59:9b75:b84 with SMTP id a640c23a62f3a-a62646cd4bfmr828803266b.35.1716907498607;
+        Tue, 28 May 2024 07:44:58 -0700 (PDT)
+Received: from raven.blarg.de (p200300dc6f06e100023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f06:e100:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c817bffsm623787766b.32.2024.05.28.07.44.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 May 2024 07:44:58 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: dhowells@redhat.com,
+	jlayton@kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/netfs/fscache_cookie: add missing "n_accesses" check
+Date: Tue, 28 May 2024 16:44:45 +0200
+Message-Id: <20240528144445.3268304-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240527074456.9310-1-chengen.du@canonical.com>
- <66549c368764b_268e8229462@willemb.c.googlers.com.notmuch> <CAPza5qe-H6piY6ED7StLOiviiMbWq1rnMpKR_dZu1sehwhji2w@mail.gmail.com>
-In-Reply-To: <CAPza5qe-H6piY6ED7StLOiviiMbWq1rnMpKR_dZu1sehwhji2w@mail.gmail.com>
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date: Tue, 28 May 2024 10:29:07 -0400
-Message-ID: <CAF=yD-J8UV+KD7fUQ-eSJWvHrhqezMs81zXX=VeVgdHR8ZZ7ag@mail.gmail.com>
-Subject: Re: [PATCH v3] af_packet: Handle outgoing VLAN packets without
- hardware offloading
-To: Chengen Du <chengen.du@canonical.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, loke.chetan@gmail.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 27, 2024 at 11:40=E2=80=AFPM Chengen Du <chengen.du@canonical.c=
-om> wrote:
->
-> Hi Willem,
->
-> Thank you for your suggestions on the patch.
-> However, there are some parts I am not familiar with, and I would appreci=
-ate more detailed information from your side.
+This fixes a NULL pointer dereference bug due to a data race which
+looks like this:
 
-Please respond with plain-text email. This message did not make it to
-the list. Also no top posting.
+  BUG: kernel NULL pointer dereference, address: 0000000000000008
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] SMP PTI
+  CPU: 33 PID: 16573 Comm: kworker/u97:799 Not tainted 6.8.7-cm4all1-hp+ #43
+  Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 10/17/2018
+  Workqueue: events_unbound netfs_rreq_write_to_cache_work
+  RIP: 0010:cachefiles_prepare_write+0x30/0xa0
+  Code: 57 41 56 45 89 ce 41 55 49 89 cd 41 54 49 89 d4 55 53 48 89 fb 48 83 ec 08 48 8b 47 08 48 83 7f 10 00 48 89 34 24 48 8b 68 20 <48> 8b 45 08 4c 8b 38 74 45 49 8b 7f 50 e8 4e a9 b0 ff 48 8b 73 10
+  RSP: 0018:ffffb4e78113bde0 EFLAGS: 00010286
+  RAX: ffff976126be6d10 RBX: ffff97615cdb8438 RCX: 0000000000020000
+  RDX: ffff97605e6c4c68 RSI: ffff97605e6c4c60 RDI: ffff97615cdb8438
+  RBP: 0000000000000000 R08: 0000000000278333 R09: 0000000000000001
+  R10: ffff97605e6c4600 R11: 0000000000000001 R12: ffff97605e6c4c68
+  R13: 0000000000020000 R14: 0000000000000001 R15: ffff976064fe2c00
+  FS:  0000000000000000(0000) GS:ffff9776dfd40000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000008 CR3: 000000005942c002 CR4: 00000000001706f0
+  Call Trace:
+   <TASK>
+   ? __die+0x1f/0x70
+   ? page_fault_oops+0x15d/0x440
+   ? search_module_extables+0xe/0x40
+   ? fixup_exception+0x22/0x2f0
+   ? exc_page_fault+0x5f/0x100
+   ? asm_exc_page_fault+0x22/0x30
+   ? cachefiles_prepare_write+0x30/0xa0
+   netfs_rreq_write_to_cache_work+0x135/0x2e0
+   process_one_work+0x137/0x2c0
+   worker_thread+0x2e9/0x400
+   ? __pfx_worker_thread+0x10/0x10
+   kthread+0xcc/0x100
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x30/0x50
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
+  Modules linked in:
+  CR2: 0000000000000008
+  ---[ end trace 0000000000000000 ]---
 
-https://docs.kernel.org/process/submitting-patches.html
-https://subspace.kernel.org/etiquette.html
+This happened because fscache_cookie_state_machine() was slow and was
+still running while another process invoked fscache_unuse_cookie();
+this led to a fscache_cookie_lru_do_one() call, setting the
+FSCACHE_COOKIE_DO_LRU_DISCARD flag, which was picked up by
+fscache_cookie_state_machine(), withdrawing the cookie via
+cachefiles_withdraw_cookie(), clearing cookie->cache_priv.
 
-> > > @@ -2457,7 +2465,8 @@ static int tpacket_rcv(struct sk_buff *skb, str=
-uct net_device *dev,
-> > >       sll->sll_halen =3D dev_parse_header(skb, sll->sll_addr);
-> > >       sll->sll_family =3D AF_PACKET;
-> > >       sll->sll_hatype =3D dev->type;
-> > > -     sll->sll_protocol =3D skb->protocol;
-> > > +     sll->sll_protocol =3D (skb->protocol =3D=3D htons(ETH_P_8021Q))=
- ?
-> > > +             vlan_eth_hdr(skb)->h_vlan_encapsulated_proto : skb->pro=
-tocol;
-> >
-> > In SOCK_RAW mode, the VLAN tag will be present, so should be returned.
->
-> Based on libpcap's handling, the SLL may not be used in SOCK_RAW mode.
+At the same time, yet another process invoked
+cachefiles_prepare_write(), which found a NULL pointer in this code
+line:
 
-The kernel fills in the sockaddr_ll fields in tpacket_rcv for both
-SOCK_RAW and SOCK_DGRAM. Libpcap already can use both SOCK_RAW and
-SOCK_DGRAM. And constructs the sll2_header pseudo header that tcpdump
-sees itself, in pcap_handle_packet_mmap.
+  struct cachefiles_object *object = cachefiles_cres_object(cres);
 
-> Do you recommend evaluating the mode and maintaining the original logic i=
-n SOCK_RAW mode,
-> or should we use the same logic for both SOCK_DGRAM and SOCK_RAW modes?
+The next line crashes, obviously:
 
-I suggest keeping as is for SOCK_RAW, as returning data that starts at
-a VLAN header together with skb->protocol of ETH_P_IPV6 would be just
-as confusing as the inverse that we do today on SOCK_DGRAM.
+  struct cachefiles_cache *cache = object->volume->cache;
 
-> >
-> > I'm concerned about returning a different value between SOCK_RAW and
-> > SOCK_DGRAM. But don't immediately see a better option. And for
-> > SOCK_DGRAM this approach is indistinguishable from the result on a
-> > device with hardware offload, so is acceptable.
-> >
-> > This test for ETH_P_8021Q ignores the QinQ stacked VLAN case. When
-> > fixing VLAN encap, both variants should be addressed at the same time.
-> > Note that ETH_P_8021AD is included in the eth_type_vlan test you call
-> > above.
->
-> In patch 1, the eth_type_vlan() function is used to determine if we need =
-to set the sll_protocol to the VLAN-encapsulated protocol, which includes b=
-oth ETH_P_8021Q and ETH_P_8021AD.
-> You mentioned previously that we might want the true network protocol ins=
-tead of the inner VLAN tag in the QinQ case (which means 802.1ad?).
-> I believe I may have misunderstood your point.
+During cachefiles_prepare_write(), the "n_accesses" counter is
+non-zero (via fscache_begin_operation()).  The cookie must not be
+withdrawn until it drops to zero.
 
-I mean that if SOCK_DGRAM strips all VLAN headers to return the data
-from the start of the true network header, then skb->protocol should
-return that network protocol.
+The counter is checked by fscache_cookie_state_machine() before
+switching to FSCACHE_COOKIE_STATE_RELINQUISHING and
+FSCACHE_COOKIE_STATE_WITHDRAWING (in "case
+FSCACHE_COOKIE_STATE_FAILED"), but not for
+FSCACHE_COOKIES_TATE_LRU_DISCARDING ("case
+FSCACHE_COOKIE_STATE_ACTIVE").
 
-With vlan stacking, your patch currently returns ETH_P_8021Q.
+This patch adds the missing check.  With a non-zero access counter,
+the function returns and the next fscache_end_cookie_access() call
+will queue another fscache_cookie_state_machine() call to handle the
+still-pending FSCACHE_COOKIE_DO_LRU_DISCARD.
 
-See the packet formats in
-https://en.wikipedia.org/wiki/IEEE_802.1ad#Frame_format if you're
-confused about how stacking works.
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ fs/netfs/fscache_cookie.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> Could you please confirm if both ETH_P_8021Q and ETH_P_8021AD should use =
-the VLAN-encapsulated protocol when VLAN hardware offloading is unavailable=
-?
-> Or are there other aspects that this judgment does not handle correctly?
+diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
+index bce2492186d0..d4d4b3a8b106 100644
+--- a/fs/netfs/fscache_cookie.c
++++ b/fs/netfs/fscache_cookie.c
+@@ -741,6 +741,10 @@ static void fscache_cookie_state_machine(struct fscache_cookie *cookie)
+ 			spin_lock(&cookie->lock);
+ 		}
+ 		if (test_bit(FSCACHE_COOKIE_DO_LRU_DISCARD, &cookie->flags)) {
++			if (atomic_read(&cookie->n_accesses) != 0)
++				/* still being accessed: postpone it */
++				break;
++
+ 			__fscache_set_cookie_state(cookie,
+ 						   FSCACHE_COOKIE_STATE_LRU_DISCARDING);
+ 			wake = true;
+-- 
+2.39.2
+
 
