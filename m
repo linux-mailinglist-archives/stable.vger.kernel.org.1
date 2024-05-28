@@ -1,94 +1,145 @@
-Return-Path: <stable+bounces-47585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71248D24AE
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 21:33:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 943FB8D2578
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 22:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F67F1C26E6F
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 19:33:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48BCC288299
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 20:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39FE175571;
-	Tue, 28 May 2024 19:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C5517838E;
+	Tue, 28 May 2024 20:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="0HhiQ6gP"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="smtUY2yj"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609DC44C7B;
-	Tue, 28 May 2024 19:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBDB175567;
+	Tue, 28 May 2024 20:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716924830; cv=none; b=E4AJoGrC3U6iOIrNfBpZqoYLtgrl+1W2aW4M/OvMwHfK3aiLXwqi3sJ4tDEmHehHLGcufQH6hmuHjEQqAS4vBcgyZgfDM4hv9AzRUEn/HW2CrBRkEpFj1J1yZy3FZyXfFjPPSP80e9zrUFbRUdGo6Xp8YUxBtvtDEo/Evg/BgFk=
+	t=1716926891; cv=none; b=OQceeJPaJLa8qML66zPxpAGWk4yM+W5l7HnBJui/etX6IEJ1+ztTmDs9wKRcvARINEAtxOTdplSsDfOZ4nBkecVtKLxOjjF6dF/pgWNz6ZUuUSJoaaTrxqJz2SqPMxSf+0UybW5NN/QsJzip2lln/FeiIZR5Uptj20bpGB/pe+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716924830; c=relaxed/simple;
-	bh=SAzqYRs6ytcvBAT2gM+tFTk/FkMB41AMEmhlw5Oio+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HYFUfvmnMjR8bwAXviefKSGrICRhwvHBGC8oJ+YV/TgOLbOJJGYLQKb09vIxcCH+29hMV3P0bzKFlZWmlnGB/bFTOanYGixIr1MDmAGxvrOMEW2Yz5lIRm0FuNYZzTOhGz+lFaJJXzxpL7BOeksdzTnY13GUmtOxsWTR79O8MEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=0HhiQ6gP; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1716924817;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vEcYrtC5/5DfStl4dIj37jhAbDFQZAJnvaGpqjqdsbY=;
-	b=0HhiQ6gP6WIuQRoqHpxzONbELHFREJpGNPmsWk8aDbbCc9SMtQ3rwOj5r2YsxcjE49LSAH
-	mzO4aRrAS9x/zMDw==
-Message-ID: <246d760e-eb56-408b-ace4-3c0e6f3c25d7@hardfalcon.net>
-Date: Tue, 28 May 2024 21:33:36 +0200
+	s=arc-20240116; t=1716926891; c=relaxed/simple;
+	bh=9nK4Pt729bDyHsWtWfOueJ4b6xoCoKDa7FItRu9bWs0=;
+	h=Date:To:From:Subject:Message-Id; b=UzP1QXbqXDpr/zJl00ZkeDAOMUdOebSPBoRaqfS/uWk5NX0Q+iN6dWPQCUiYLlkTdAlNiLvi6F+1PPJI/m/y3F+iAsWbpw50bsYufxqVMNPNvzZgRi/oIftJfTKN41bHuKGbZJI6JGYZbn/QAWI0Ih4tkJYGI01lrNErbPRkcVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=smtUY2yj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83538C3277B;
+	Tue, 28 May 2024 20:08:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1716926890;
+	bh=9nK4Pt729bDyHsWtWfOueJ4b6xoCoKDa7FItRu9bWs0=;
+	h=Date:To:From:Subject:From;
+	b=smtUY2yjYjkUZR7ZVRpFbJ81xBX2bI3kv0d2DzOiwYLznEPMmCQpI7mI+2bDf5B1f
+	 uz61R1ylCZllrb61HJrK1dmuiK3ilnw/DcGe9zNH8hGlAnWZWBnhbn1nps+vd6XhOj
+	 t2+6Y+8ex/LvezDnKHKfXIuzQ/WhRAAuPTqSF5S8=
+Date: Tue, 28 May 2024 13:08:09 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,keescook@chromium.org,elver@google.com,dvyukov@google.com,bjohannesmeyer@gmail.com,glider@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kmsan-do-not-wipe-out-origin-when-doing-partial-unpoisoning.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240528200810.83538C3277B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH 6.9 000/427] 6.9.3-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240527185601.713589927@linuxfoundation.org>
-Content-Language: en-US
-From: Pascal Ernster <git@hardfalcon.net>
-In-Reply-To: <20240527185601.713589927@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-[2024-05-27 20:50] Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.9.3 release.
-> There are 427 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 29 May 2024 18:53:20 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.3-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
 
-Hi, 6.9.3-rc1 is running fine on various x86_64 bare metal and virtual 
-machines of mine (Haswell, Kaby Lake, Coffee Lake).
+The patch titled
+     Subject: kmsan: do not wipe out origin when doing partial unpoisoning
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kmsan-do-not-wipe-out-origin-when-doing-partial-unpoisoning.patch
 
-Tested-by: Pascal Ernster <git@hardfalcon.net>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kmsan-do-not-wipe-out-origin-when-doing-partial-unpoisoning.patch
 
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Regards
-Pascal
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Alexander Potapenko <glider@google.com>
+Subject: kmsan: do not wipe out origin when doing partial unpoisoning
+Date: Tue, 28 May 2024 12:48:06 +0200
+
+As noticed by Brian, KMSAN should not be zeroing the origin when
+unpoisoning parts of a four-byte uninitialized value, e.g.:
+
+    char a[4];
+    kmsan_unpoison_memory(a, 1);
+
+This led to false negatives, as certain poisoned values could receive zero
+origins, preventing those values from being reported.
+
+To fix the problem, check that kmsan_internal_set_shadow_origin() writes
+zero origins only to slots which have zero shadow.
+
+Link: https://lkml.kernel.org/r/20240528104807.738758-1-glider@google.com
+Fixes: f80be4571b19 ("kmsan: add KMSAN runtime core")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Reported-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
+  Link: https://lore.kernel.org/lkml/20240524232804.1984355-1-bjohannesmeyer@gmail.com/T/
+Reviewed-by: Marco Elver <elver@google.com>
+Tested-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/kmsan/core.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+--- a/mm/kmsan/core.c~kmsan-do-not-wipe-out-origin-when-doing-partial-unpoisoning
++++ a/mm/kmsan/core.c
+@@ -196,8 +196,7 @@ void kmsan_internal_set_shadow_origin(vo
+ 				      u32 origin, bool checked)
+ {
+ 	u64 address = (u64)addr;
+-	void *shadow_start;
+-	u32 *origin_start;
++	u32 *shadow_start, *origin_start;
+ 	size_t pad = 0;
+ 
+ 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
+@@ -225,8 +224,16 @@ void kmsan_internal_set_shadow_origin(vo
+ 	origin_start =
+ 		(u32 *)kmsan_get_metadata((void *)address, KMSAN_META_ORIGIN);
+ 
+-	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++)
+-		origin_start[i] = origin;
++	/*
++	 * If the new origin is non-zero, assume that the shadow byte is also non-zero,
++	 * and unconditionally overwrite the old origin slot.
++	 * If the new origin is zero, overwrite the old origin slot iff the
++	 * corresponding shadow slot is zero.
++	 */
++	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
++		if (origin || !shadow_start[i])
++			origin_start[i] = origin;
++	}
+ }
+ 
+ struct page *kmsan_vmalloc_to_page_or_null(void *vaddr)
+_
+
+Patches currently in -mm which might be from glider@google.com are
+
+kmsan-do-not-wipe-out-origin-when-doing-partial-unpoisoning.patch
+
 
