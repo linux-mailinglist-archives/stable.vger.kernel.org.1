@@ -1,58 +1,77 @@
-Return-Path: <stable+bounces-47535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1EE18D11CB
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 04:20:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0A68D11D0
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 04:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26D7B1F255CD
-	for <lists+stable@lfdr.de>; Tue, 28 May 2024 02:20:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8D6BB218B9
+	for <lists+stable@lfdr.de>; Tue, 28 May 2024 02:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7465147F6F;
-	Tue, 28 May 2024 02:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996DB107A0;
+	Tue, 28 May 2024 02:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="njaMxIeh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XpEnBpfF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3AF47A62;
-	Tue, 28 May 2024 02:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5166D4CE09;
+	Tue, 28 May 2024 02:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716862742; cv=none; b=EXY/33YCx1XXaEV0YNFiZ/4Ga++DnRw6E6z+MF7ah20mPDPwQE2FxHja3PyXOMPUL+tXKYIEmh0T4AGvqQPKyKW4/8ZUP/RTnDZSr6u3gqSClJrZnbtw+0Hh7x1TWqiFsBrX1WcLRa+1zL2siZ/2fU6Dn4f8mLM7XlVelInvuYA=
+	t=1716862748; cv=none; b=Jr8UwF0YiQKVr+nwWEK9i+sQne+PaJrkHhNT7nAT8a65LYfk9B6bmhgn6CZEbn9BxPLO2sCBpXJHnd2MqF4UPbNiRNi66d7swuYHEX8qaWRHph3FCnNxKCLlpuRtcpuZ9obk4/F2/ZcQ/W4hFWghDr1z/P1uIB3D+xEh5efhp9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716862742; c=relaxed/simple;
-	bh=Pjk67fPFjHtppc3wMlZuoY1CvZdQrDtIflgQnJLuOvE=;
+	s=arc-20240116; t=1716862748; c=relaxed/simple;
+	bh=DYwIRoN2C7rBJfLlUVd7IdAgf6u/jVHpwWH2EcdaZ94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jT90b7ATjZ1XXaIdotUk5WDGIXTNkPECXEKTBns8etnINxGmBEjCyWgvqxxekFeA8J3Ry448sDKGpvg1MincMJy1/DBCcS1RxZW74AjjgbsMsKp5cKHznfc7qzmwpeZgrWW6wSsNowl4Wf7A3Kx830mYx1aulqUvzK8R/sBPmlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=njaMxIeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA0EC2BBFC;
-	Tue, 28 May 2024 02:19:00 +0000 (UTC)
+	 MIME-Version; b=UUr+rgu/iOP/7zpXXA11VhrGIJ13/fx/SOpiFCrowhCDmaAmAageHC+HOXd9Shxt/woiH+L645vUH6tm42Y+WtZQh6JNQr+yiQmtTgLbDTkoqtG9onnOS6Tar++Yytq4jH/sM8Yw0pJ44haBn5EVPlZaQEb5XS2gXp7xnKo19fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XpEnBpfF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02233C2BBFC;
+	Tue, 28 May 2024 02:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716862741;
-	bh=Pjk67fPFjHtppc3wMlZuoY1CvZdQrDtIflgQnJLuOvE=;
+	s=k20201202; t=1716862748;
+	bh=DYwIRoN2C7rBJfLlUVd7IdAgf6u/jVHpwWH2EcdaZ94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njaMxIeh/NAUMx7tGiJVWHzOSCFymOdHGaGmrQbpiZCMNpiK+1hQP+2IOx3dkMOPJ
-	 3wqlj7v/imnz92EUyHLDzuXqxgwjsOn92BZRhW4SHoXQO08mQAKxJYSWit4XldUdCR
-	 sYJC2KxHyXK2rMv2zJ6WLuv5dak6YLDsf1nkXYGHUpKiabYIu05a6gi9I+nC/MaCBE
-	 MY5Eun43deRmjBpT74C62johDL5aI7QV7D5SDUo8+bY+DBh1AR5zVhsUZn3gj3zol8
-	 6Bo+IOiw7VTsH8GAVZpccR6vQAZPP7Y+4TOJt+9VPaCGAsGG4w9U+9uC+/b2SnLF1a
-	 PN9hC5Fz41EGQ==
+	b=XpEnBpfFtPGHxHkGcvJKww/D6f4dF/3j/joEH05If9tPrbU74Ddk9zRReYGlvt1up
+	 nKi5A3PymMXULM3I3s0etiUxCigLqDjFh6JE9mXaIeWP0RRgGi4tyFv2OICCeBasaa
+	 +7a9bq6+5GQnzgt60vJn0IPQgfNzSjph+7smS/kL44t3tr9ifUug39yQx9fT6b4Z9n
+	 Aqln8NjxpnKX39X9zYfmvPwhKMPYpXoDXpwQ9No3z7moE+i3Agbsb+SjMgpt3N+OJj
+	 0/5P2iK/UeyeXLDpA4RioUtx7Weya1WhOYPmwtkP+s/FR6JTdKaYnOu2cQ+f0evLvH
+	 O/S785S6Nzm1w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Guo Ren <guoren@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 3/4] ext4: fix uninitialized ratelimit_state->lock access in __ext4_fill_super()
-Date: Mon, 27 May 2024 22:18:52 -0400
-Message-ID: <20240528021854.3905245-3-sashal@kernel.org>
+	mingo@redhat.com,
+	jejb@parisc-linux.org,
+	deller@gmx.de,
+	benh@kernel.crashing.org,
+	paulus@samba.org,
+	mpe@ellerman.id.au,
+	palmer@sifive.com,
+	aou@eecs.berkeley.edu,
+	schwidefsky@de.ibm.com,
+	heiko.carstens@de.ibm.com,
+	tglx@linutronix.de,
+	bp@alien8.de,
+	x86@kernel.org,
+	naveen.n.rao@linux.vnet.ibm.com,
+	anil.s.keshavamurthy@intel.com,
+	davem@davemloft.net,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 4/4] kprobe/ftrace: bail out if ftrace was killed
+Date: Mon, 27 May 2024 22:18:53 -0400
+Message-ID: <20240528021854.3905245-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240528021854.3905245-1-sashal@kernel.org>
 References: <20240528021854.3905245-1-sashal@kernel.org>
@@ -67,136 +86,224 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
 
-[ Upstream commit b4b4fda34e535756f9e774fb2d09c4537b7dfd1c ]
+[ Upstream commit 1a7d0890dd4a502a202aaec792a6c04e6e049547 ]
 
-In the following concurrency we will access the uninitialized rs->lock:
+If an error happens in ftrace, ftrace_kill() will prevent disarming
+kprobes. Eventually, the ftrace_ops associated with the kprobes will be
+freed, yet the kprobes will still be active, and when triggered, they
+will use the freed memory, likely resulting in a page fault and panic.
 
-ext4_fill_super
-  ext4_register_sysfs
-   // sysfs registered msg_ratelimit_interval_ms
-                             // Other processes modify rs->interval to
-                             // non-zero via msg_ratelimit_interval_ms
-  ext4_orphan_cleanup
-    ext4_msg(sb, KERN_INFO, "Errors on filesystem, "
-      __ext4_msg
-        ___ratelimit(&(EXT4_SB(sb)->s_msg_ratelimit_state)
-          if (!rs->interval)  // do nothing if interval is 0
-            return 1;
-          raw_spin_trylock_irqsave(&rs->lock, flags)
-            raw_spin_trylock(lock)
-              _raw_spin_trylock
-                __raw_spin_trylock
-                  spin_acquire(&lock->dep_map, 0, 1, _RET_IP_)
-                    lock_acquire
-                      __lock_acquire
-                        register_lock_class
-                          assign_lock_key
-                            dump_stack();
-  ratelimit_state_init(&sbi->s_msg_ratelimit_state, 5 * HZ, 10);
-    raw_spin_lock_init(&rs->lock);
-    // init rs->lock here
+This behavior can be reproduced quite easily, by creating a kprobe and
+then triggering a ftrace_kill(). For simplicity, we can simulate an
+ftrace error with a kernel module like [1]:
 
-and get the following dump_stack:
+[1]: https://github.com/brenns10/kernel_stuff/tree/master/ftrace_killer
 
-=========================================================
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-CPU: 12 PID: 753 Comm: mount Tainted: G E 6.7.0-rc6-next-20231222 #504
-[...]
-Call Trace:
- dump_stack_lvl+0xc5/0x170
- dump_stack+0x18/0x30
- register_lock_class+0x740/0x7c0
- __lock_acquire+0x69/0x13a0
- lock_acquire+0x120/0x450
- _raw_spin_trylock+0x98/0xd0
- ___ratelimit+0xf6/0x220
- __ext4_msg+0x7f/0x160 [ext4]
- ext4_orphan_cleanup+0x665/0x740 [ext4]
- __ext4_fill_super+0x21ea/0x2b10 [ext4]
- ext4_fill_super+0x14d/0x360 [ext4]
-[...]
-=========================================================
+  sudo perf probe --add commit_creds
+  sudo perf trace -e probe:commit_creds
+  # In another terminal
+  make
+  sudo insmod ftrace_killer.ko  # calls ftrace_kill(), simulating bug
+  # Back to perf terminal
+  # ctrl-c
+  sudo perf probe --del commit_creds
 
-Normally interval is 0 until s_msg_ratelimit_state is initialized, so
-___ratelimit() does nothing. But registering sysfs precedes initializing
-rs->lock, so it is possible to change rs->interval to a non-zero value
-via the msg_ratelimit_interval_ms interface of sysfs while rs->lock is
-uninitialized, and then a call to ext4_msg triggers the problem by
-accessing an uninitialized rs->lock. Therefore register sysfs after all
-initializations are complete to avoid such problems.
+After a short period, a page fault and panic would occur as the kprobe
+continues to execute and uses the freed ftrace_ops. While ftrace_kill()
+is supposed to be used only in extreme circumstances, it is invoked in
+FTRACE_WARN_ON() and so there are many places where an unexpected bug
+could be triggered, yet the system may continue operating, possibly
+without the administrator noticing. If ftrace_kill() does not panic the
+system, then we should do everything we can to continue operating,
+rather than leave a ticking time bomb.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240102133730.1098120-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/all/20240501162956.229427-1-stephen.s.brennan@oracle.com/
+
+Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Guo Ren <guoren@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ arch/csky/kernel/probes/ftrace.c     | 3 +++
+ arch/loongarch/kernel/ftrace_dyn.c   | 3 +++
+ arch/parisc/kernel/ftrace.c          | 3 +++
+ arch/powerpc/kernel/kprobes-ftrace.c | 3 +++
+ arch/riscv/kernel/probes/ftrace.c    | 3 +++
+ arch/s390/kernel/ftrace.c            | 3 +++
+ arch/x86/kernel/kprobes/ftrace.c     | 3 +++
+ include/linux/kprobes.h              | 7 +++++++
+ kernel/kprobes.c                     | 6 ++++++
+ kernel/trace/ftrace.c                | 1 +
+ 10 files changed, 35 insertions(+)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 83fc3f092a0c7..5baacb3058abd 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5556,19 +5556,15 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
- 	if (err)
- 		goto failed_mount6;
+diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probes/ftrace.c
+index 834cffcfbce32..7ba4b98076de1 100644
+--- a/arch/csky/kernel/probes/ftrace.c
++++ b/arch/csky/kernel/probes/ftrace.c
+@@ -12,6 +12,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 	struct kprobe_ctlblk *kcb;
+ 	struct pt_regs *regs;
  
--	err = ext4_register_sysfs(sb);
--	if (err)
--		goto failed_mount7;
--
- 	err = ext4_init_orphan_info(sb);
- 	if (err)
--		goto failed_mount8;
-+		goto failed_mount7;
- #ifdef CONFIG_QUOTA
- 	/* Enable quota usage during mount. */
- 	if (ext4_has_feature_quota(sb) && !sb_rdonly(sb)) {
- 		err = ext4_enable_quotas(sb);
- 		if (err)
--			goto failed_mount9;
-+			goto failed_mount8;
- 	}
- #endif  /* CONFIG_QUOTA */
- 
-@@ -5594,7 +5590,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
- 		ext4_msg(sb, KERN_INFO, "recovery complete");
- 		err = ext4_mark_recovery_complete(sb, es);
- 		if (err)
--			goto failed_mount10;
-+			goto failed_mount9;
- 	}
- 
- 	if (test_opt(sb, DISCARD) && !bdev_max_discard_sectors(sb->s_bdev))
-@@ -5611,15 +5607,17 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
- 	atomic_set(&sbi->s_warning_count, 0);
- 	atomic_set(&sbi->s_msg_count, 0);
- 
-+	/* Register sysfs after all initializations are complete. */
-+	err = ext4_register_sysfs(sb);
-+	if (err)
-+		goto failed_mount9;
++	if (unlikely(kprobe_ftrace_disabled))
++		return;
 +
- 	return 0;
+ 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+ 	if (bit < 0)
+ 		return;
+diff --git a/arch/loongarch/kernel/ftrace_dyn.c b/arch/loongarch/kernel/ftrace_dyn.c
+index 73858c9029cc9..bff058317062e 100644
+--- a/arch/loongarch/kernel/ftrace_dyn.c
++++ b/arch/loongarch/kernel/ftrace_dyn.c
+@@ -287,6 +287,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 	struct kprobe *p;
+ 	struct kprobe_ctlblk *kcb;
  
--failed_mount10:
-+failed_mount9:
- 	ext4_quotas_off(sb, EXT4_MAXQUOTAS);
--failed_mount9: __maybe_unused
-+failed_mount8: __maybe_unused
- 	ext4_release_orphan_info(sb);
--failed_mount8:
--	ext4_unregister_sysfs(sb);
--	kobject_put(&sbi->s_kobj);
- failed_mount7:
- 	ext4_unregister_li_request(sb);
- failed_mount6:
++	if (unlikely(kprobe_ftrace_disabled))
++		return;
++
+ 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+ 	if (bit < 0)
+ 		return;
+diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
+index 621a4b386ae4f..c91f9c2e61ed2 100644
+--- a/arch/parisc/kernel/ftrace.c
++++ b/arch/parisc/kernel/ftrace.c
+@@ -206,6 +206,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 	struct kprobe *p;
+ 	int bit;
+ 
++	if (unlikely(kprobe_ftrace_disabled))
++		return;
++
+ 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+ 	if (bit < 0)
+ 		return;
+diff --git a/arch/powerpc/kernel/kprobes-ftrace.c b/arch/powerpc/kernel/kprobes-ftrace.c
+index 072ebe7f290ba..f8208c027148f 100644
+--- a/arch/powerpc/kernel/kprobes-ftrace.c
++++ b/arch/powerpc/kernel/kprobes-ftrace.c
+@@ -21,6 +21,9 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
+ 	struct pt_regs *regs;
+ 	int bit;
+ 
++	if (unlikely(kprobe_ftrace_disabled))
++		return;
++
+ 	bit = ftrace_test_recursion_trylock(nip, parent_nip);
+ 	if (bit < 0)
+ 		return;
+diff --git a/arch/riscv/kernel/probes/ftrace.c b/arch/riscv/kernel/probes/ftrace.c
+index 7142ec42e889f..a69dfa610aa85 100644
+--- a/arch/riscv/kernel/probes/ftrace.c
++++ b/arch/riscv/kernel/probes/ftrace.c
+@@ -11,6 +11,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 	struct kprobe_ctlblk *kcb;
+ 	int bit;
+ 
++	if (unlikely(kprobe_ftrace_disabled))
++		return;
++
+ 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+ 	if (bit < 0)
+ 		return;
+diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
+index c46381ea04ecb..7f6f8c438c265 100644
+--- a/arch/s390/kernel/ftrace.c
++++ b/arch/s390/kernel/ftrace.c
+@@ -296,6 +296,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 	struct kprobe *p;
+ 	int bit;
+ 
++	if (unlikely(kprobe_ftrace_disabled))
++		return;
++
+ 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+ 	if (bit < 0)
+ 		return;
+diff --git a/arch/x86/kernel/kprobes/ftrace.c b/arch/x86/kernel/kprobes/ftrace.c
+index dd2ec14adb77b..15af7e98e161a 100644
+--- a/arch/x86/kernel/kprobes/ftrace.c
++++ b/arch/x86/kernel/kprobes/ftrace.c
+@@ -21,6 +21,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 	struct kprobe_ctlblk *kcb;
+ 	int bit;
+ 
++	if (unlikely(kprobe_ftrace_disabled))
++		return;
++
+ 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+ 	if (bit < 0)
+ 		return;
+diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
+index 8de5d51a0b5e7..45d5b0a76b0bd 100644
+--- a/include/linux/kprobes.h
++++ b/include/linux/kprobes.h
+@@ -383,11 +383,15 @@ static inline void wait_for_kprobe_optimizer(void) { }
+ extern void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+ 				  struct ftrace_ops *ops, struct ftrace_regs *fregs);
+ extern int arch_prepare_kprobe_ftrace(struct kprobe *p);
++/* Set when ftrace has been killed: kprobes on ftrace must be disabled for safety */
++extern bool kprobe_ftrace_disabled __read_mostly;
++extern void kprobe_ftrace_kill(void);
+ #else
+ static inline int arch_prepare_kprobe_ftrace(struct kprobe *p)
+ {
+ 	return -EINVAL;
+ }
++static inline void kprobe_ftrace_kill(void) {}
+ #endif /* CONFIG_KPROBES_ON_FTRACE */
+ 
+ /* Get the kprobe at this addr (if any) - called with preemption disabled */
+@@ -496,6 +500,9 @@ static inline void kprobe_flush_task(struct task_struct *tk)
+ static inline void kprobe_free_init_mem(void)
+ {
+ }
++static inline void kprobe_ftrace_kill(void)
++{
++}
+ static inline int disable_kprobe(struct kprobe *kp)
+ {
+ 	return -EOPNOTSUPP;
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index c2841e5957130..c8720bed8ed6a 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1068,6 +1068,7 @@ static struct ftrace_ops kprobe_ipmodify_ops __read_mostly = {
+ 
+ static int kprobe_ipmodify_enabled;
+ static int kprobe_ftrace_enabled;
++bool kprobe_ftrace_disabled;
+ 
+ static int __arm_kprobe_ftrace(struct kprobe *p, struct ftrace_ops *ops,
+ 			       int *cnt)
+@@ -1136,6 +1137,11 @@ static int disarm_kprobe_ftrace(struct kprobe *p)
+ 		ipmodify ? &kprobe_ipmodify_ops : &kprobe_ftrace_ops,
+ 		ipmodify ? &kprobe_ipmodify_enabled : &kprobe_ftrace_enabled);
+ }
++
++void kprobe_ftrace_kill()
++{
++	kprobe_ftrace_disabled = true;
++}
+ #else	/* !CONFIG_KPROBES_ON_FTRACE */
+ static inline int arm_kprobe_ftrace(struct kprobe *p)
+ {
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 83ba342aef31f..4bdaed40e30d0 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -7892,6 +7892,7 @@ void ftrace_kill(void)
+ 	ftrace_disabled = 1;
+ 	ftrace_enabled = 0;
+ 	ftrace_trace_function = ftrace_stub;
++	kprobe_ftrace_kill();
+ }
+ 
+ /**
 -- 
 2.43.0
 
