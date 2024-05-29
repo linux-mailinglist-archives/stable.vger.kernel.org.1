@@ -1,191 +1,182 @@
-Return-Path: <stable+bounces-47655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1C38D3D68
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 19:29:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8879F8D3E53
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 20:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63F6C284EE9
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 17:29:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59031C20FE5
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 18:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15901A38C5;
-	Wed, 29 May 2024 17:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4DC15D5AF;
+	Wed, 29 May 2024 18:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LemeY3a3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OJXnETLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A112181CFC;
-	Wed, 29 May 2024 17:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C895D139588;
+	Wed, 29 May 2024 18:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717003792; cv=none; b=MTX4hSvzOpltleX+m48n6G3eyMu17QppnOFe25rQe/vj1zknKu3yoMJe9sxC42+PXvnYGLJB9j92H1Xf9SuN/TzgPVuh/dj/KEZ2Quom3I2Im1pMZOpDCvkMoBDmIqsaVEzE9r5QHqa0a7G1gwQ1HGJWmHmuihxWvDYQ5jrZYgg=
+	t=1717007341; cv=none; b=OqoovyEAHloB/PA01q1vSTNYByb2GcrlGKFRzGd+nVWGTDFXvqxdnNr826vU26wNIdJnMm1H+GIzrXJ9PaKmG9AO7PLM7PpEiozYfInLJUW2fbWo1EUi6MrkFJWWCVdgwwc/hofs71eJFIpsue58+5lNijXDG2JoWdM6aqQqswQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717003792; c=relaxed/simple;
-	bh=A9UhXtEcisGdQ7S+GoLiZz5Cc4x1PGg5yQCUDuWY1OI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Rr/DGMxOE7FLCUJodtMOnOwPeKRJB52sK8OP070Y5f0xNiT59+5GxjQZ4RERT1olzqogTWPuixzW8WnrIJ7HnDDCJB3VXzZGtGgIFC9sGhEOFLhHS0DGOeB94pDiI01k8ihunIRCvxzvHsPF8evIouNe9YdwK+r3Xzp1aX1dgAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LemeY3a3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D741FC113CC;
-	Wed, 29 May 2024 17:29:51 +0000 (UTC)
+	s=arc-20240116; t=1717007341; c=relaxed/simple;
+	bh=F+taAuGNZhYoMVVTU7lLtx1SfJK0lEHssiup5OjbRwM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=poWNIdkMcU/yUyadDcvrE4H72IWejS6PuNAyviFT87LO28DogZyb5QquVTFeb4h4SqnIBZB56W04BOCn38cZBTI6fr2LRG60NKw9rC5yawMxjYbrzkD+WfDAezdbpnQRXoz5HeoxjO62bzNaU67aFz8lrlyI+99GgnCc1zWNCBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OJXnETLB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98A3C113CC;
+	Wed, 29 May 2024 18:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717003791;
-	bh=A9UhXtEcisGdQ7S+GoLiZz5Cc4x1PGg5yQCUDuWY1OI=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=LemeY3a3dkcONAXHujpB1cyh0OwVvJyxJG9LXALeTeRnFCy+709y/PlntMQwguoMC
-	 l1hQRt9eYvIyazkYGA4q2osF5cn4EtBz/X4oq1EuRRfvVymdT9we7xQWYFwx3Xb6K3
-	 zfQ79/6Slv6ErsMDVL8FfAVfi7k62isDe1pv25XIurFcsVIn1RIf1tKgflpU+kg6/M
-	 q6KhdD1mJO+lU1z17M+rL2mHQlbBKlSY8iH0QbDIw+GCRsISDEtsWu/D+uTd/47va/
-	 4ciSEAJQxRXl/bY1hlG7uts2Q2ZtEytrcJ/pyJKlMSZ2tUPY2T7d6BOLx2RNkKACAQ
-	 QOcbOOs7N1rPA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C18CDC25B7C;
-	Wed, 29 May 2024 17:29:51 +0000 (UTC)
-From: Dmitry Safonov via B4 Relay <devnull+0x7f454c46.gmail.com@kernel.org>
-Date: Wed, 29 May 2024 18:29:32 +0100
-Subject: [PATCH net] net/tcp: Don't consider TCP_CLOSE in
- TCP_AO_ESTABLISHED
+	s=k20201202; t=1717007341;
+	bh=F+taAuGNZhYoMVVTU7lLtx1SfJK0lEHssiup5OjbRwM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OJXnETLB0f223e8W2RsjVYjIMqr7bToNJyCmyAB7OTW0Iicuh+rYG+KqGLCO7ayAa
+	 5Zjo3ibnNU2XwEc8OSrrpR+1TAEW1ZAKLXmVnd7TwUVt+pkO/C7yQit4ADtk1by60H
+	 18N9HLeNgZt14M20HKEBHZXu0bPKDdCnhjCZWpkCqd+Ag4TPBIn7/Mv5/bwJC5PQCh
+	 VBT/OnOdiSVlRL7tTRDbSpnUUoY0jGfrW3YsMZPt1mmZKjBvj+ukeeS4wMX0qXYyEc
+	 v9Zo2t6/fE7gXSOVGqjADcEXaVQ08aKhfDUg/zief3WxpW+mv7LHka2D7m4VfgEWE9
+	 lc2xnfVCwm4dg==
+Date: Wed, 29 May 2024 11:28:59 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Binbin Zhou <zhoubinbin@loongson.cn>, loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v3 3/4] LoongArch: Fix entry point in image header
+Message-ID: <20240529182859.GA3994034@thelio-3990X>
+References: <20240522-loongarch-booting-fixes-v3-0-25e77a8fc86e@flygoat.com>
+ <20240522-loongarch-booting-fixes-v3-3-25e77a8fc86e@flygoat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240529-tcp_ao-sk_state-v1-1-d69b5d323c52@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAPtlV2YC/x2M0QrCMAwAf2Xk2UBbugf9FZGR1uiC2I0kDGHs3
- 60+3sHdDsYqbHAZdlDexGRpHeJpgDpTezLKvTOkkHIY0xm9rhMtaK/JnJwxc0mxhDyGEKFXq/J
- DPv/jFRo73LosZIxFqdX5N3uTOSscxxdTVVH3fwAAAA==
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Dmitry Safonov <0x7f454c46@gmail.com>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1717003790; l=4011;
- i=0x7f454c46@gmail.com; s=20240410; h=from:subject:message-id;
- bh=41vTCdrciFlE2ucowln/i/qvIHlsHBhkFQcAUL+bxDc=;
- b=wiHAeqOo3CwmYpFYkuuD0qstxMwV/2lWmg1Q7gCER+fRAP/qC5KJHm1nMJzg+0gZmDrBtBZxUciS
- pf81NF2oDAMFJ+nbMLEU7mnDq2zw9Cvvrw1C7Yu2d6+KVgpdQRJp
-X-Developer-Key: i=0x7f454c46@gmail.com; a=ed25519;
- pk=cFSWovqtkx0HrT5O9jFCEC/Cef4DY8a2FPeqP4THeZQ=
-X-Endpoint-Received: by B4 Relay for 0x7f454c46@gmail.com/20240410 with
- auth_id=152
-X-Original-From: Dmitry Safonov <0x7f454c46@gmail.com>
-Reply-To: 0x7f454c46@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240522-loongarch-booting-fixes-v3-3-25e77a8fc86e@flygoat.com>
 
-From: Dmitry Safonov <0x7f454c46@gmail.com>
+Hi Jiaxun,
 
-TCP_CLOSE may or may not have current/rnext keys and should not be
-considered "established". The fast-path for TCP_CLOSE is
-SKB_DROP_REASON_TCP_CLOSE. This is what tcp_rcv_state_process() does
-anyways. Add an early drop path to not spend any time verifying
-segment signatures for sockets in TCP_CLOSE state.
+On Wed, May 22, 2024 at 11:02:19PM +0100, Jiaxun Yang wrote:
+> Currently kernel entry in head.S is in DMW address range,
+> firmware is instructed to jump to this address after loading
+> the image.
+> 
+> However kernel should not make any assumption on firmware's
+> DMW setting, thus the entry point should be a physical address
+> falls into direct translation region.
+> 
+> Fix by converting entry address to physical and amend entry
+> calculation logic in libstub accordingly.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+> v2: Fix efistub
+> v3: Move calculation to linker script
+> ---
+>  arch/loongarch/kernel/head.S             | 2 +-
+>  arch/loongarch/kernel/vmlinux.lds.S      | 2 ++
+>  drivers/firmware/efi/libstub/loongarch.c | 2 +-
+>  3 files changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/loongarch/kernel/head.S b/arch/loongarch/kernel/head.S
+> index c4f7de2e2805..2cdc1ea808d9 100644
+> --- a/arch/loongarch/kernel/head.S
+> +++ b/arch/loongarch/kernel/head.S
+> @@ -22,7 +22,7 @@
+>  _head:
+>  	.word	MZ_MAGIC		/* "MZ", MS-DOS header */
+>  	.org	0x8
+> -	.dword	kernel_entry		/* Kernel entry point */
+> +	.dword	_kernel_entry_phys	/* Kernel entry point (physical address) */
+>  	.dword	_kernel_asize		/* Kernel image effective size */
+>  	.quad	PHYS_LINK_KADDR		/* Kernel image load offset from start of RAM */
+>  	.org	0x38			/* 0x20 ~ 0x37 reserved */
+> diff --git a/arch/loongarch/kernel/vmlinux.lds.S b/arch/loongarch/kernel/vmlinux.lds.S
+> index e8e97dbf9ca4..c6f89e51257a 100644
+> --- a/arch/loongarch/kernel/vmlinux.lds.S
+> +++ b/arch/loongarch/kernel/vmlinux.lds.S
+> @@ -6,6 +6,7 @@
+>  
+>  #define PAGE_SIZE _PAGE_SIZE
+>  #define RO_EXCEPTION_TABLE_ALIGN	4
+> +#define TO_PHYS_MASK			0x000fffffffffffff /* 48-bit */
+>  
+>  /*
+>   * Put .bss..swapper_pg_dir as the first thing in .bss. This will
+> @@ -142,6 +143,7 @@ SECTIONS
+>  
+>  #ifdef CONFIG_EFI_STUB
+>  	/* header symbols */
+> +	_kernel_entry_phys = kernel_entry & TO_PHYS_MASK;
+>  	_kernel_asize = _end - _text;
+>  	_kernel_fsize = _edata - _text;
+>  	_kernel_vsize = _end - __initdata_begin;
+> diff --git a/drivers/firmware/efi/libstub/loongarch.c b/drivers/firmware/efi/libstub/loongarch.c
+> index 684c9354637c..60c145121393 100644
+> --- a/drivers/firmware/efi/libstub/loongarch.c
+> +++ b/drivers/firmware/efi/libstub/loongarch.c
+> @@ -41,7 +41,7 @@ static efi_status_t exit_boot_func(struct efi_boot_memmap *map, void *priv)
+>  unsigned long __weak kernel_entry_address(unsigned long kernel_addr,
+>  		efi_loaded_image_t *image)
+>  {
+> -	return *(unsigned long *)(kernel_addr + 8) - VMLINUX_LOAD_ADDRESS + kernel_addr;
+> +	return *(unsigned long *)(kernel_addr + 8) - TO_PHYS(VMLINUX_LOAD_ADDRESS) + kernel_addr;
+>  }
+>  
+>  efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
+> 
+> -- 
+> 2.43.0
+> 
 
-Cc: stable@vger.kernel.org # v6.7
-Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
-Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
----
- include/net/tcp_ao.h |  7 ++++---
- net/ipv4/tcp_ao.c    | 13 +++++++++----
- 2 files changed, 13 insertions(+), 7 deletions(-)
+This patch is now in -next as commit 75461304ee4e ("LoongArch: Fix entry
+point in kernel image header"). I just bisected a build failure that I
+see when building with LLVM (either 18 or 19) to this change.
 
-diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
-index 471e177362b4..5d8e9ed2c005 100644
---- a/include/net/tcp_ao.h
-+++ b/include/net/tcp_ao.h
-@@ -86,7 +86,8 @@ static inline int tcp_ao_sizeof_key(const struct tcp_ao_key *key)
- struct tcp_ao_info {
- 	/* List of tcp_ao_key's */
- 	struct hlist_head	head;
--	/* current_key and rnext_key aren't maintained on listen sockets.
-+	/* current_key and rnext_key are maintained on sockets
-+	 * in TCP_AO_ESTABLISHED states.
- 	 * Their purpose is to cache keys on established connections,
- 	 * saving needless lookups. Never dereference any of them from
- 	 * listen sockets.
-@@ -201,9 +202,9 @@ struct tcp6_ao_context {
- };
- 
- struct tcp_sigpool;
-+/* Established states are fast-path and there always is current_key/rnext_key */
- #define TCP_AO_ESTABLISHED (TCPF_ESTABLISHED | TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 | \
--			    TCPF_CLOSE | TCPF_CLOSE_WAIT | \
--			    TCPF_LAST_ACK | TCPF_CLOSING)
-+			    TCPF_CLOSE_WAIT | TCPF_LAST_ACK | TCPF_CLOSING)
- 
- int tcp_ao_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 			struct tcp_ao_key *key, struct tcphdr *th,
-diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
-index 781b67a52571..37c42b63ff99 100644
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -933,6 +933,7 @@ tcp_inbound_ao_hash(struct sock *sk, const struct sk_buff *skb,
- 	struct tcp_ao_key *key;
- 	__be32 sisn, disn;
- 	u8 *traffic_key;
-+	int state;
- 	u32 sne = 0;
- 
- 	info = rcu_dereference(tcp_sk(sk)->ao_info);
-@@ -948,8 +949,9 @@ tcp_inbound_ao_hash(struct sock *sk, const struct sk_buff *skb,
- 		disn = 0;
- 	}
- 
-+	state = READ_ONCE(sk->sk_state);
- 	/* Fast-path */
--	if (likely((1 << sk->sk_state) & TCP_AO_ESTABLISHED)) {
-+	if (likely((1 << state) & TCP_AO_ESTABLISHED)) {
- 		enum skb_drop_reason err;
- 		struct tcp_ao_key *current_key;
- 
-@@ -988,6 +990,9 @@ tcp_inbound_ao_hash(struct sock *sk, const struct sk_buff *skb,
- 		return SKB_NOT_DROPPED_YET;
- 	}
- 
-+	if (unlikely(state == TCP_CLOSE))
-+		return SKB_DROP_REASON_TCP_CLOSE;
-+
- 	/* Lookup key based on peer address and keyid.
- 	 * current_key and rnext_key must not be used on tcp listen
- 	 * sockets as otherwise:
-@@ -1001,7 +1006,7 @@ tcp_inbound_ao_hash(struct sock *sk, const struct sk_buff *skb,
- 	if (th->syn && !th->ack)
- 		goto verify_hash;
- 
--	if ((1 << sk->sk_state) & (TCPF_LISTEN | TCPF_NEW_SYN_RECV)) {
-+	if ((1 << state) & (TCPF_LISTEN | TCPF_NEW_SYN_RECV)) {
- 		/* Make the initial syn the likely case here */
- 		if (unlikely(req)) {
- 			sne = tcp_ao_compute_sne(0, tcp_rsk(req)->rcv_isn,
-@@ -1018,14 +1023,14 @@ tcp_inbound_ao_hash(struct sock *sk, const struct sk_buff *skb,
- 			/* no way to figure out initial sisn/disn - drop */
- 			return SKB_DROP_REASON_TCP_FLAGS;
- 		}
--	} else if ((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV)) {
-+	} else if ((1 << state) & (TCPF_SYN_SENT | TCPF_SYN_RECV)) {
- 		disn = info->lisn;
- 		if (th->syn || th->rst)
- 			sisn = th->seq;
- 		else
- 			sisn = info->risn;
- 	} else {
--		WARN_ONCE(1, "TCP-AO: Unexpected sk_state %d", sk->sk_state);
-+		WARN_ONCE(1, "TCP-AO: Unexpected sk_state %d", state);
- 		return SKB_DROP_REASON_TCP_AOFAILURE;
- 	}
- verify_hash:
+$ make -skj"$(nproc)" ARCH=loongarch LLVM=1 defconfig vmlinux
+...
+kallsyms failure: relative symbol value 0x9000000000200000 out of range in relative mode
+make[4]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
+...
 
----
-base-commit: e0cce98fe279b64f4a7d81b7f5c3a23d80b92fbc
-change-id: 20240529-tcp_ao-sk_state-4eb21b045001
+Does kallsyms need some adjustment for this?
 
-Best regards,
--- 
-Dmitry Safonov <0x7f454c46@gmail.com>
+Cheers,
+Nathan
 
-
+# bad: [9d99040b1bc8dbf385a8aa535e9efcdf94466e19] Add linux-next specific files for 20240529
+# good: [e0cce98fe279b64f4a7d81b7f5c3a23d80b92fbc] Merge tag 'tpmdd-next-6.10-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd
+git bisect start '9d99040b1bc8dbf385a8aa535e9efcdf94466e19' 'e0cce98fe279b64f4a7d81b7f5c3a23d80b92fbc'
+# bad: [270c6bb9d5e8448b74950f23ff2a192faaf10428] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+git bisect bad 270c6bb9d5e8448b74950f23ff2a192faaf10428
+# good: [c38b067bf2ab58d93590a50cbc06c992fe00447e] Merge branch 'ti-next' of git://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+git bisect good c38b067bf2ab58d93590a50cbc06c992fe00447e
+# bad: [6bcfb2dcf8b00c0b4cef68ac026c71dae3c25070] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/printk/linux.git
+git bisect bad 6bcfb2dcf8b00c0b4cef68ac026c71dae3c25070
+# good: [2ca0cd490407a728a9aa57b9538f3ca8b287a089] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git
+git bisect good 2ca0cd490407a728a9aa57b9538f3ca8b287a089
+# good: [f3760c80d06a838495185c0fe341c043e6495142] Merge branch 'rework/write-atomic' into for-next
+git bisect good f3760c80d06a838495185c0fe341c043e6495142
+# good: [b9fc9904efcaea8470f0d4cd0691f1295add9381] Merge branch 'vfs.module.description' into vfs.all
+git bisect good b9fc9904efcaea8470f0d4cd0691f1295add9381
+# good: [88dbb5f3c068ba8944e97235ccfdc5fbd6c7d577] Merge branch '9p-next' of git://github.com/martinetd/linux
+git bisect good 88dbb5f3c068ba8944e97235ccfdc5fbd6c7d577
+# bad: [b4660cd50cb1e5821532e34dbc7f47cb155ba57b] Merge branch 'next' of git://git.monstr.eu/linux-2.6-microblaze.git
+git bisect bad b4660cd50cb1e5821532e34dbc7f47cb155ba57b
+# bad: [c768fc96978cd0f74dd297d58720cb984a7f6341] LoongArch: Override higher address bits in JUMP_VIRT_ADDR
+git bisect bad c768fc96978cd0f74dd297d58720cb984a7f6341
+# good: [2624e739c2e9abe5f6cc9acc37f9752f0055fb5f] LoongArch: Add all CPUs enabled by fdt to NUMA node 0
+git bisect good 2624e739c2e9abe5f6cc9acc37f9752f0055fb5f
+# bad: [75461304ee4e7e2cb282265a6a89c35b81282d19] LoongArch: Fix entry point in kernel image header
+git bisect bad 75461304ee4e7e2cb282265a6a89c35b81282d19
+# first bad commit: [75461304ee4e7e2cb282265a6a89c35b81282d19] LoongArch: Fix entry point in kernel image header
 
