@@ -1,49 +1,55 @@
-Return-Path: <stable+bounces-47635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99158D355B
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 13:20:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021498D35EF
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 14:03:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A58342895DA
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 11:20:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CA5BB22FF4
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 12:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CC2178CCD;
-	Wed, 29 May 2024 11:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB9D180A80;
+	Wed, 29 May 2024 12:03:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C87A13DDB2;
-	Wed, 29 May 2024 11:19:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111FE180A65
+	for <stable@vger.kernel.org>; Wed, 29 May 2024 12:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716981595; cv=none; b=ibkuHZ0rp//L2P9aadcr13nk15MjjkE17tE798ZTDb+muZO+eG5XkN3snsPG8k6hT85+DZ1BTp7vIkzvD9/b1p6yWvd4/Tp1VpwXxDH6Oh3IG2EuTtnGlzNswSGJUiFal4Lv0ZNKACqlGdYtzJ27HsnN9ExrT4rHtEP+cK6CyYs=
+	t=1716984190; cv=none; b=L638oQ6DPxp7ALpkqZTKVrFfdokEmpGzzSn4BGk+rU/vD9ltUZj3VwbuxdWCLVBcGqO24EY83L1RBzM2BhWq2uE0tkX+fNwDVjz9K/5cbm7KACh3TLHzRl1cjHwwm07GHBecWDiELVeDV3PapCG2kfCRm6WJFfST0cmB6a4ZUQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716981595; c=relaxed/simple;
-	bh=cTpW4h0esAKGMKfykiWz6wsPp/48KJ+ilI1XLm2O+rw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sgMDVzmDDUXWUyE0roODwpNSf6JDgfs2rkG4caDr1PoNXPJoPdl/jWP+drrxQpbzb5jmYBZiWXISr5/t70+VP42K5XLYjCyNflDi8YO/As8L2ITIH1YnG1hWVgKEtLweuqeqSjTJvsL+mnrY2jcAYU35dtfe/wNlb9QY+eH+NjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.180.133.93])
-	by gateway (Coremail) with SMTP id _____8AxW+pWD1dmRB4BAA--.4656S3;
-	Wed, 29 May 2024 19:19:50 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.180.133.93])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8DxfcdVD1dmDewMAA--.34229S2;
-	Wed, 29 May 2024 19:19:50 +0800 (CST)
-From: Hongchen Zhang <zhanghongchen@loongson.cn>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Hongchen Zhang <zhanghongchen@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] PCI: use local_pci_probe when best selected cpu is offline
-Date: Wed, 29 May 2024 19:19:47 +0800
-Message-Id: <20240529111947.1549556-1-zhanghongchen@loongson.cn>
-X-Mailer: git-send-email 2.33.0
+	s=arc-20240116; t=1716984190; c=relaxed/simple;
+	bh=FUgdQZEaXu0MCotYhA3f84CvYdTnkmhhti3ID8skutI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nodn+P07WTcweqdkFbY9euc4mwmN+HHD/o69pUNKV9N/Hi51R7KP/slE4T387udq0wy4hrXfxAK9NaMS/iTLgT/6siZ9hQas/AOdMA9kqVMSY0Lm30Qc2glpHiiXKkfjlYye9IjJCX9bvmghNVx5mxZcA0e4AkHMsh1MGFx99Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: by air.basealt.ru (Postfix, from userid 490)
+	id 922222F2023E; Wed, 29 May 2024 11:56:28 +0000 (UTC)
+X-Spam-Level: 
+Received: from shell.ipa.basealt.ru (unknown [176.12.98.74])
+	by air.basealt.ru (Postfix) with ESMTPSA id E740E2F2023C;
+	Wed, 29 May 2024 11:56:27 +0000 (UTC)
+From: Alexander Ofitserov <oficerovas@altlinux.org>
+To: oficerovas@altlinux.org,
+	gregkh@linuxfoundation.org,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: lvc-project@linuxtesting.org,
+	dutyrok@altlinux.org,
+	kovalev@altlinux.org,
+	stable@vger.kernel.org,
+	syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1] wifi: mac80211: apply mcast rate only if interface is up
+Date: Wed, 29 May 2024 14:56:02 +0300
+Message-ID: <20240529115602.4068459-1-oficerovas@altlinux.org>
+X-Mailer: git-send-email 2.42.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,50 +57,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAf8DxfcdVD1dmDewMAA--.34229S2
-X-CM-SenderInfo: x2kd0w5krqwupkhqwqxorr0wxvrqhubq/1tbiAQAMB2ZWihIEpwAnsm
-X-Coremail-Antispam: 1Uk129KBj9xXoWrZF1rXr18WryfXw1UZr1UJwc_yoWfAFX_ua
-	48Wrs7Wr4UCr10k3s09r1fZrZak3WjvFs2gF4xKa4rZa42yr4UtasrZry5Jr1ru3y5JF9F
-	yr1UXF1rZr17JosvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUb7kYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7V
-	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25EfUUUUU
 
-When the best selected cpu is offline, work_on_cpu will stuck
-forever. Therefore, in this case, we should call
-local_pci_probe instead of work_on_cpu.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+If the interface isn't enabled, don't apply multicast
+rate changes immediately.
+
+Reported-by: syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
 ---
- drivers/pci/pci-driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/cfg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index af2996d0d17f..32a99828e6a3 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -386,7 +386,7 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
- 		free_cpumask_var(wq_domain_mask);
- 	}
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 1e57027da2913..2c60fc165801c 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2838,8 +2838,9 @@ static int ieee80211_set_mcast_rate(struct wiphy *wiphy, struct net_device *dev,
+ 	memcpy(sdata->vif.bss_conf.mcast_rate, rate,
+ 	       sizeof(int) * NUM_NL80211_BANDS);
  
--	if (cpu < nr_cpu_ids)
-+	if ((cpu < nr_cpu_ids) && cpu_online(cpu))
- 		error = work_on_cpu(cpu, local_pci_probe, &ddi);
- 	else
- 		error = local_pci_probe(&ddi);
+-	ieee80211_link_info_change_notify(sdata, &sdata->deflink,
+-					  BSS_CHANGED_MCAST_RATE);
++	if (ieee80211_sdata_running(sdata))
++		ieee80211_link_info_change_notify(sdata, &sdata->deflink,
++						  BSS_CHANGED_MCAST_RATE);
+ 
+ 	return 0;
+ }
 -- 
-2.33.0
+2.42.1
 
 
