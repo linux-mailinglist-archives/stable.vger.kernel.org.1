@@ -1,142 +1,193 @@
-Return-Path: <stable+bounces-47662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9408D4051
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 23:29:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1914B8D4054
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 23:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B93628460B
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 21:29:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 303641C21DA4
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 21:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95C01C9EAD;
-	Wed, 29 May 2024 21:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C5E16D4E7;
+	Wed, 29 May 2024 21:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="asbG9zBD"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iqMn3XO7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7651C68AE;
-	Wed, 29 May 2024 21:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D24E15B576
+	for <stable@vger.kernel.org>; Wed, 29 May 2024 21:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717018190; cv=none; b=r9fPXz00Y2Bl3JXNB4BNWrR9AlXok3Jv7sfHqQGPs6NlMqKlXG+3rNrWYTMBtCW1Q2/SxDEDu3mHh3GfIkN+1F4419A4Onm9MfnQ2irnp6aZq0d/dUHEVoOawFn14jaEiusFu7G8zL820RggbTNpZj+Gvu+btOhwr859Hnlak18=
+	t=1717018284; cv=none; b=gMm28+Z5vCZS4l4fxtV6s6GcbXXrMF/729j+/ZpAuWksv92+3f7G60bV7Vprhm6z/mRhupv1UKXqU2OFulx0mYVgWUE/8SmLFce0zAkFICKPKeN/BfbWwveXAckj2e/7ytjBzJ3S1tR0D968jUtPHxiyECY3GJhdpZAPmrcOYII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717018190; c=relaxed/simple;
-	bh=YFT6XmkjuA1L67KGJ7Z/ys6g5VheO1R0g4CnaTAx/k8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZJ2OkjYFh+WEOb2XbWHp6yRbooAUC21CCsY6wbCjuVG5PXQ60LnrbB6BDBKt4kqY1X8kwdhWtkPcm+yl8BB/434us5pqXGkMi4x50tzaptHq0U6AN35iFvTfhyM5qINZ0FONJ8n+rOi4zsvXnub5fFlbks5DBzLka7a6mTzlmXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=asbG9zBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576DAC113CC;
-	Wed, 29 May 2024 21:29:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717018190;
-	bh=YFT6XmkjuA1L67KGJ7Z/ys6g5VheO1R0g4CnaTAx/k8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=asbG9zBDD1bf7uxNqV60imN7ol4BAKKLXWotP35uMcrJHa0RhgT2cS+6ozCmOPh/w
-	 y2uZPaNg0K8HW/5YTGArGXaWr+2GV8XUMi33gJIQY8vd2z88Mm80t3d/sARC1VnegJ
-	 BGRePAEAEV0mMwTozWo3kF9bozW0Lb62CMHvIrvHThLAryU6mT0k5Vw3ul8VnaZx4D
-	 FPBI9HqC2VQsX1QnUxtZ2mQ4qT5+W384dW+wJTBkXByKhDBL+WW8De3EWlrJ0ABon0
-	 SPYeTyt6la6Uvu7bLsPXfnTG7IS6YjXWwQ+f+7aBbm3hzQSQqZR3xZazc2BrZX+2Q0
-	 Jol+y8m0KqzEg==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 29 May 2024 14:29:42 -0700
-Subject: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
+	s=arc-20240116; t=1717018284; c=relaxed/simple;
+	bh=W05mNXb0UrG3pIeEAflXGkFgca+10GQzjYeUMQhZlUY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZWpU/22O/gigqHwE2wror/02G2/44svKoiDcf1lWthl9qK07I6b2ede4Ez1Z+/QcQW+xP9HEg010Xn+wYnriQZYqzfZBTwCEXi4c0f/UobY3sZFqeegIHzlF7q78jphTkfYYKXjj01kzS8oYJ1TULTiZiJ2AARHi1Q7/4lHtf44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iqMn3XO7; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57a16f4b8bfso3992a12.0
+        for <stable@vger.kernel.org>; Wed, 29 May 2024 14:31:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1717018281; x=1717623081; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FLiA1NhyieWQfcXd3ARNdY+JpVH2itsFMZIhqt+3Mg4=;
+        b=iqMn3XO7KUt9usB7I6kjcLjHC4Ct0kCh4a0F4Iu8IaG3ujUJgtRn42nJJkX+gOlYNu
+         J4F/m4wnGIqfV5SFNuem21NiWZaiTv5dSj1DcZrmuAs91XhzWYa2zkwEkZjYe48kq99C
+         KUp93M6Idsd3VKMKpNbGxkqnvBPdDmX3F49aBpRw1LZEryMSEIADu2opNDGm+4AEYpSK
+         XeHB3dEFdwz19F7qA9cucDQNBxF+yAip0dynRNdfycy326L750GRkUSrPbd3C/z5Uo7D
+         O9R9DDwNQh/uSAYxf3ZhLyepY2HQzV88EFJYzPmHXlWSxOSfVQwSXH8bNYGK4KXzfdoM
+         RJTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717018281; x=1717623081;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FLiA1NhyieWQfcXd3ARNdY+JpVH2itsFMZIhqt+3Mg4=;
+        b=hNGCIk89/zOTdkE6zlDhJ1TwweqGp0fLXCMk9M9hOUoUDuOQXC9OfHydAwczOkfBk4
+         E8PhdmPlIUL949GWAdH2QbtkCMBWcmMsVuUW3vBS6RlJWKIiq4p2NnfemP4tgYMyh/8m
+         GAPV82gdL4fT75e+K3TMBths8HQjOaR2QyvuhU6lhLFdImbbVEBo5znu84YAdIaMif0u
+         4FZmJMeYWlmuMHX0df52YnUofta7F0OZnYPUgwFl/agHeHsxt0SRuj5CfvVisy6h6RKv
+         OfyR/HBbpaozhNfS+6bzHxw+BDB8f/+oP1G2snT+1olZS4iCSfd1PZykULs/7PPtkE0p
+         XJng==
+X-Forwarded-Encrypted: i=1; AJvYcCVQN52b+jeeot1QQQ486diSSS4UlKCecspEb/pATr1DygOq5tCn5K4g9xgoeVcp7k7Cj0A10CI07i1mbdoC8DorNboccTAg
+X-Gm-Message-State: AOJu0YwUd3FZpDYIxGUvXT+2D9153hI3prEws2SCUew+B9WOFaARaRBy
+	05nQ5olaQ3AAh+SnamXsPwkT7SiZqE0xChPxfpmbaRZAsoqi9unREYx7jnQmoooWYYnkepEfvJz
+	g6X+60xtYtu+SUVWChg6qkfIjg/U0tGnoG/St
+X-Google-Smtp-Source: AGHT+IE+x8lFbKLlWU1Fq0CgkMn615w4ys1te7GNt5dz/IZuvIoJg4ejLZAvtFf70Zb8LZLZNTajFROLwUn0R5dzS2k=
+X-Received: by 2002:aa7:c2ce:0:b0:576:b1a9:2960 with SMTP id
+ 4fb4d7f45d1cf-57a18c8ab10mr22904a12.5.1717018280000; Wed, 29 May 2024
+ 14:31:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAEWeV2YC/x3NwQrCMAyA4VcZORvYghb0VcYO3ZJpDjYlnaMy9
- u4Wj//l+w8o4ioFHt0BLrsWtdRiuHSwvGJ6Ciq3Burp2t/ojuyWcbFP2oRx/mI23wq+a3Nwtui
- MwhRDWIcYhKA52WXV+n+M03n+AKGQncdzAAAA
-To: Jiri Slaby <jirislaby@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kees Cook <keescook@chromium.org>, 
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- linux-serial@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org, 
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2369; i=nathan@kernel.org;
- h=from:subject:message-id; bh=YFT6XmkjuA1L67KGJ7Z/ys6g5VheO1R0g4CnaTAx/k8=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDGnh83zf105XVlO+zHNmhrKxdqlJuM23XWFdKTuZpzqG+
- Eo/nHKxo5SFQYyLQVZMkaX6sepxQ8M5ZxlvnJoEM4eVCWQIAxenAExk7wOG/2ERuht3rcpyb7Ay
- +zCz+Hybv91x/r/M7bPL//9qdrjw7SPDP5WoQKHdR3Q2HRGTb/zYYcYlPWGz2R/WhwLhM2d/fdf
- MyQ0A
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+References: <20240524033933.135049-1-jeffxu@google.com> <20240524033933.135049-2-jeffxu@google.com>
+ <79b3aa3e-bc70-410e-9646-0b6880a4a74b@app.fastmail.com>
+In-Reply-To: <79b3aa3e-bc70-410e-9646-0b6880a4a74b@app.fastmail.com>
+From: Jeff Xu <jeffxu@google.com>
+Date: Wed, 29 May 2024 14:30:41 -0700
+Message-ID: <CALmYWFu61FkbboWkXUSKBGmXeiNtBwrgfizS5kNvPMx4ByUqPQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] memfd: fix MFD_NOEXEC_SEAL to be non-sealable by default
+To: David Rheinsberg <david@readahead.eu>, =?UTF-8?B?QmFybmFiw6FzIFDFkWN6ZQ==?= <pobrn@protonmail.com>
+Cc: Jeff Xu <jeffxu@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, cyphar@cyphar.com, 
+	dmitry.torokhov@gmail.com, Daniel Verkamp <dverkamp@chromium.org>, hughd@google.com, 
+	jorgelo@chromium.org, Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	skhan@linuxfoundation.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Work for __counted_by on generic pointers in structures (not just
-flexible array members) has started landing in Clang 19 (current tip of
-tree). During the development of this feature, a restriction was added
-to __counted_by to prevent the flexible array member's element type from
-including a flexible array member itself such as:
+Hi David and Barnab=C3=A1s
 
-  struct foo {
-    int count;
-    char buf[];
-  };
+On Fri, May 24, 2024 at 7:15=E2=80=AFAM David Rheinsberg <david@readahead.e=
+u> wrote:
+>
+> Hi
+>
+> On Fri, May 24, 2024, at 5:39 AM, jeffxu@chromium.org wrote:
+> > From: Jeff Xu <jeffxu@google.com>
+> >
+> > By default, memfd_create() creates a non-sealable MFD, unless the
+> > MFD_ALLOW_SEALING flag is set.
+> >
+> > When the MFD_NOEXEC_SEAL flag is initially introduced, the MFD created
+> > with that flag is sealable, even though MFD_ALLOW_SEALING is not set.
+> > This patch changes MFD_NOEXEC_SEAL to be non-sealable by default,
+> > unless MFD_ALLOW_SEALING is explicitly set.
+> >
+> > This is a non-backward compatible change. However, as MFD_NOEXEC_SEAL
+> > is new, we expect not many applications will rely on the nature of
+> > MFD_NOEXEC_SEAL being sealable. In most cases, the application already
+> > sets MFD_ALLOW_SEALING if they need a sealable MFD.
+>
+> This does not really reflect the effort that went into this. Shouldn't th=
+is be something along the lines of:
+>
+>     This is a non-backward compatible change. However, MFD_NOEXEC_SEAL
+>     was only recently introduced and a codesearch revealed no breaking
+>     users apart from dbus-broker unit-tests (which have a patch pending
+>     and explicitly support this change).
+>
+Actually, I think we might need to hold on to this change. With debian
+code search, I found more codes that already use MFD_NOEXEC_SEAL
+without MFD_ALLOW_SEALING. e.g. systemd [1], [2] [3]
 
-  struct bar {
-    int count;
-    struct foo data[] __counted_by(count);
-  };
+I'm not sure if this  will break  more applications not-knowingly that
+have started relying on MFD_NOEXEC_SEAL being sealable. The feature
+has been out for more than a year.
 
-because the size of data cannot be calculated with the standard array
-size formula:
+Would you consider my augments in [4] to make MFD to be sealable by default=
+ ?
 
-  sizeof(struct foo) * count
+At this moment, I'm willing to add a document to clarify that
+MFD_NOEXEC_SEAL is sealable by default, and that an app that needs
+non-sealable MFD can  set  SEAL_SEAL.  Because both MFD_NOEXEC_SEAL
+and vm.memfd_noexec are new,  I don't think it breaks the existing
+ABI, and vm.memfd_noexec=3D0 is there for backward compatibility
+reasons. Besides, I honestly think there is little reason that MFD
+needs to be non-sealable by default.  There might be few rare cases,
+but the majority of apps don't need that.  On the flip side, the fact
+that MFD is set up to be sealable by default is a nice bonus for an
+app - it makes it easier for apps to use the sealing feature.
 
-This restriction was downgraded to a warning but due to CONFIG_WERROR,
-it can still break the build. The application of __counted_by on the
-ports member of 'struct mxser_board' triggers this restriction,
-resulting in:
+What do you think ?
 
-  drivers/tty/mxser.c:291:2: error: 'counted_by' should not be applied to an array with element of unknown size because 'struct mxser_port' is a struct type with a flexible array member. This will be an error in a future compiler version [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
-    291 |         struct mxser_port ports[] __counted_by(nports);
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-  1 error generated.
+Thanks
+-Jeff
 
-Remove this use of __counted_by to fix the warning/error. However,
-rather than remove it altogether, leave it commented, as it may be
-possible to support this in future compiler releases.
+[1] https://codesearch.debian.net/search?q=3DMFD_NOEXEC_SEAL
+[2] https://codesearch.debian.net/show?file=3Dsystemd_256~rc3-5%2Fsrc%2Fhom=
+e%2Fhomed-home.c&line=3D1274
+[3] https://sources.debian.org/src/elogind/255.5-1debian1/src/shared/serial=
+ize.c/?hl=3D558#L558
+[4] https://lore.kernel.org/lkml/CALmYWFuPBEM2DE97mQvB2eEgSO9Dvt=3DuO9OewMh=
+GfhGCY66Hbw@mail.gmail.com/
 
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2026
-Fixes: f34907ecca71 ("mxser: Annotate struct mxser_board with __counted_by")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- drivers/tty/mxser.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/mxser.c b/drivers/tty/mxser.c
-index 458bb1280ebf..5b97e420a95f 100644
---- a/drivers/tty/mxser.c
-+++ b/drivers/tty/mxser.c
-@@ -288,7 +288,7 @@ struct mxser_board {
- 	enum mxser_must_hwid must_hwid;
- 	speed_t max_baud;
- 
--	struct mxser_port ports[] __counted_by(nports);
-+	struct mxser_port ports[] /* __counted_by(nports) */;
- };
- 
- static DECLARE_BITMAP(mxser_boards, MXSER_BOARDS);
-
----
-base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
-change-id: 20240529-drop-counted-by-ports-mxser-board-ed2a66f1a6e2
-
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
-
+> > Additionally, this enhances the useability of  pid namespace sysctl
+> > vm.memfd_noexec. When vm.memfd_noexec equals 1 or 2, the kernel will
+> > add MFD_NOEXEC_SEAL if mfd_create does not specify MFD_EXEC or
+> > MFD_NOEXEC_SEAL, and the addition of MFD_NOEXEC_SEAL enables the MFD
+> > to be sealable. This means, any application that does not desire this
+> > behavior will be unable to utilize vm.memfd_noexec =3D 1 or 2 to
+> > migrate/enforce non-executable MFD. This adjustment ensures that
+> > applications can anticipate that the sealable characteristic will
+> > remain unmodified by vm.memfd_noexec.
+> >
+> > This patch was initially developed by Barnab=C3=A1s P=C5=91cze, and Bar=
+nab=C3=A1s
+> > used Debian Code Search and GitHub to try to find potential breakages
+> > and could only find a single one. Dbus-broker's memfd_create() wrapper
+> > is aware of this implicit `MFD_ALLOW_SEALING` behavior, and tries to
+> > work around it [1]. This workaround will break. Luckily, this only
+> > affects the test suite, it does not affect
+> > the normal operations of dbus-broker. There is a PR with a fix[2]. In
+> > addition, David Rheinsberg also raised similar fix in [3]
+> >
+> > [1]:
+> > https://github.com/bus1/dbus-broker/blob/9eb0b7e5826fc76cad7b025bc46f26=
+7d4a8784cb/src/util/misc.c#L114
+> > [2]: https://github.com/bus1/dbus-broker/pull/366
+> > [3]:
+> > https://lore.kernel.org/lkml/20230714114753.170814-1-david@readahead.eu=
+/
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 105ff5339f498a ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EXEC")
+> > Signed-off-by: Barnab=C3=A1s P=C5=91cze <pobrn@protonmail.com>
+> > Signed-off-by: Jeff Xu <jeffxu@google.com>
+> > Reviewed-by: David Rheinsberg <david@readahead.eu>
+>
+> Looks good! Thanks!
+> David
 
