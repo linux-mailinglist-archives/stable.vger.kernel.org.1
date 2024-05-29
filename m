@@ -1,94 +1,75 @@
-Return-Path: <stable+bounces-47617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D5E8D3182
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 10:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6618D324E
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 10:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0581F21778
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 08:35:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A66C1F217A5
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 08:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062D2180A80;
-	Wed, 29 May 2024 08:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F40167DA5;
+	Wed, 29 May 2024 08:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdAQONCw"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC2C16A386;
-	Wed, 29 May 2024 08:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F517167D92
+	for <stable@vger.kernel.org>; Wed, 29 May 2024 08:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716971379; cv=none; b=cyaHtMzTjTyGD/o39n4xwY9tHdGdoBM17fR0kgMTZuVY6rCPLpbqEIst2l+N0r5o0cVoGz4pE8Aa/DoYTQQ42eib/LXO3+lLWWhhOOiR7E4XBE/0SECR2Ypsybjs0Y2Ma11/z42mqz6SvgAJNOiSk6arDEVKzX1bqF7G3xZK92E=
+	t=1716972617; cv=none; b=Q2gkwwEvBMGWhCyIIiSMuSJk+a1UHaHWw4yEmPcIsR5Eh6trrHD7/zFJvK5MZremIbl82P/LHqlJ22PRnPp7jQZcemMM684BtqBx5SRNJFNeKG32Y/vUMExr1S1tygCYdQvIXqCQNUv81/6YlAvuGUt6XnonWAo9wGTrME6Mv1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716971379; c=relaxed/simple;
-	bh=8SW852+Vfnp4PsENYXV4X/Claa09p9DB1Fs1huwvNrM=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=dgG9cwA65hW1XW2/C3yGVa6c2r/qkjlvkRIuoo7VpHTTk8d39ElHiJ5KpldovWuDULCXyTDCglpSg8aI/XfgW82eqhpcBR5wQ7vKybdRzqSpMt2QyxVRXA2DIXG29Vhbe9bOm1CSCs8OzYDcNOq3Aiyg9Cev7jFTm1oOjBbmfAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Vq2Xc1pxLzPkf8;
-	Wed, 29 May 2024 16:26:24 +0800 (CST)
-Received: from kwepemm600007.china.huawei.com (unknown [7.193.23.208])
-	by mail.maildlp.com (Postfix) with ESMTPS id DA2E2140FB3;
-	Wed, 29 May 2024 16:29:33 +0800 (CST)
-Received: from [10.174.185.179] (10.174.185.179) by
- kwepemm600007.china.huawei.com (7.193.23.208) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 29 May 2024 16:29:32 +0800
-Subject: Re: [PATCH MANUALSEL 4.19 1/2] KVM: x86: Handle SRCU initialization
- failure during page track init
-To: Sasha Levin <sashal@kernel.org>
-CC: Paolo Bonzini <pbonzini@redhat.com>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Haimin Zhang <tcs_kernel@tencent.com>, TCS Robot
-	<tcs_robot@tencent.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<bp@alien8.de>, <x86@kernel.org>, <kvm@vger.kernel.org>
-References: <20211006111259.264427-1-sashal@kernel.org>
- <0fd9f7e5-697f-6ad0-b1e3-40bd48a8efae@redhat.com>
-From: Zenghui Yu <yuzenghui@huawei.com>
-Message-ID: <9acccdfe-b7d8-b59d-7b00-d5a266b84d36@huawei.com>
-Date: Wed, 29 May 2024 16:29:32 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+	s=arc-20240116; t=1716972617; c=relaxed/simple;
+	bh=Jw43DxEHHLaMBRyPzhIh13jU7OM/CNi04Od4MHVUAz0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=dH48OpTz8h6Mqm+8vzAHstAoBtPT+5QO/ZW195ppKV5+I+dTwEhOvJipvmfaOwcTvpIr4oHB0V0ZIAkz/5Wn1DLmHcjjqd75M3rCKAuXTzg+PXe7jG/1pbZTrNkdsugop08vrx/wbfPOER88phc0O3EpteWkNl1qfJdtgcxSIPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdAQONCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFF7C2BD10
+	for <stable@vger.kernel.org>; Wed, 29 May 2024 08:50:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716972617;
+	bh=Jw43DxEHHLaMBRyPzhIh13jU7OM/CNi04Od4MHVUAz0=;
+	h=From:Date:Subject:To:From;
+	b=OdAQONCwr+JJ017u+Ae0lrePDmH6qfks3csBwQ3f7QvEWwWGAg054LZyj3+GqFWl+
+	 I3ygv/8P3XhR1F0RwPhBAbhD3buZkQ2170bEDD+7Vx8GYFicZ2hJkz9UKehJHIzXHJ
+	 smlO0g27egDTtUF0tCJ5Mh4LBbKNpKppFGKOMWYw80xGh1fO3x0iQJDwH4Yrj7IGaq
+	 bdgAqUq5wu1hL89GDDhSrgOZrJ4v/1xdE1CykyHW5Dax9skExi1N1OuWBaEp66LNe9
+	 8HDMZpig03NNBOyGESL2loGkqOelcCx/i169ZDx/18hznS+ZWvRrGI7wNjUcYeS75Q
+	 z1o4OS88cl5gQ==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52ae38957e8so464674e87.1
+        for <stable@vger.kernel.org>; Wed, 29 May 2024 01:50:16 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyhLkZYtwlXEtvr31oEc6YLR249895kv6wp1YnCMLJcvL27VizA
+	SpNcWIs8gySNF28JCxRL4pIB847sxZVM5YT6XxebBmZHkfWTe8Ohy6Aa+pp7qiMhYRso6xGVmIj
+	k8VPgU8hUhJz4rUbcXjHKt38kFpY=
+X-Google-Smtp-Source: AGHT+IGkpBvcik818lRbsabmDizwd0XhuejnzOKgg/XVoUjm4jv5p8J+/dOLBSFR70/Lf13Hoyj8ij8muLeLl60vc48=
+X-Received: by 2002:a05:651c:8b:b0:2ea:7f84:e842 with SMTP id
+ 38308e7fff4ca-2ea7f84ef1dmr1896931fa.40.1716972615233; Wed, 29 May 2024
+ 01:50:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <0fd9f7e5-697f-6ad0-b1e3-40bd48a8efae@redhat.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm600007.china.huawei.com (7.193.23.208)
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 29 May 2024 10:50:04 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE3OuzR3kcyn_3pr4M3=QaV4Dqj=X6StUnRk9gM-1MQaw@mail.gmail.com>
+Message-ID: <CAMj1kXE3OuzR3kcyn_3pr4M3=QaV4Dqj=X6StUnRk9gM-1MQaw@mail.gmail.com>
+Subject: backport request
+To: "# 3.4.x" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 2021/10/6 19:23, Paolo Bonzini wrote:
-> On 06/10/21 13:12, Sasha Levin wrote:
-> > From: Haimin Zhang <tcs_kernel@tencent.com>
-> >
-> > [ Upstream commit eb7511bf9182292ef1df1082d23039e856d1ddfb ]
-> >
-> > Check the return of init_srcu_struct(), which can fail due to OOM, when
-> > initializing the page track mechanism.  Lack of checking leads to a NULL
-> > pointer deref found by a modified syzkaller.
-> >
-> > Reported-by: TCS Robot <tcs_robot@tencent.com>
-> > Signed-off-by: Haimin Zhang <tcs_kernel@tencent.com>
-> > Message-Id: <1630636626-12262-1-git-send-email-tcs_kernel@tencent.com>
-> > [Move the call towards the beginning of kvm_arch_init_vm. - Paolo]
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+Please consider commit
 
-Sasha, will this patch be applied for 4.19?
+15aa8fb852f995dd
+x86/efistub: Omit physical KASLR when memory reservations exist
 
-The same question for the 5.4 backport [*]. It looks like both of them
-are missed for unknown reasons.
+for backporting to v6.1 and later.
 
-[*] https://lore.kernel.org/stable/20211006111250.264294-1-sashal@kernel.org
+Thanks,
+Ard.
 
