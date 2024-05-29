@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-47614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2B58D2D72
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 08:41:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAB38D2D75
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 08:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD62128AB3C
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 06:41:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D8971F27BF1
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 06:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022F31607A0;
-	Wed, 29 May 2024 06:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D98415FCFE;
+	Wed, 29 May 2024 06:41:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F9515B122;
-	Wed, 29 May 2024 06:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5C515F417;
+	Wed, 29 May 2024 06:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716964885; cv=none; b=CNBmiSGO/p51HyycJzSfmp9NZOKt9P2p+nxTFT1gsHBNp/N1DMMGBTgWrOep8fSZqeZhshpTfFLKDhvkZLFOpAo9z4c/BhvMfCpLV3tcjX/M3JJ+Bo0+3DiFw2YwzodPbmy2PCCv5xCpcqZ1L5w89SoTjrsDsNF0wcWG7+Itfwg=
+	t=1716964897; cv=none; b=g56IBr6qeczP4Gi7y7gx38d61vs/Q+8M0+hGgJg+IkDmtjYqlQ0Ui/qxOPwlbXrvfqI3P3QYN2HKX+j94ptLswGo8PxDHUJhpRCghI3cPwjrklIVILxKJCB9qSQHgy/f+q5tNgbqxEFZE2SljUo69P4Aj88NIODIVSlmA6koNFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716964885; c=relaxed/simple;
-	bh=0r2mHDCnif4N/loTjLL5nW+YIJx3eDj/rTX/Zdpzf9E=;
+	s=arc-20240116; t=1716964897; c=relaxed/simple;
+	bh=YWDdmREmUsG2sdnpM6TKccbxM+ep6uFhfemoebxk7Ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSRcMX4dr9ed1LeQBper8LjoG/CJPpgqnr8GvJM4LYQjZZxXzZgJoQui0CuZkScDUs7Wb47SFrZPlXJdBO+/6Gzehk+eko8SuxKclBaC1vG5pmIJMBhVb3+DdTBSNvtVjx46s/imE0fCdq+GxohQ9hZXnZJq96NoN6eE2tE2NrI=
+	 MIME-Version; b=OveK0W0ReCK4LNiZZQ2Zn/iyLTIETDPe6WWbKbAeIBXUQ+XL5JXGkDQgpwxw8Ed11oV+Uce1kJkP5bX5w+Thm1jd0ioSbDhURgOVfdzKgaYnmdSDMvn5dTaECurLmlbb8ZRmnKWoW9iitD2o3BbUgU9S8M8j+bND4skSI1x/f80=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7C0C2BD10;
-	Wed, 29 May 2024 06:41:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555FAC2BD10;
+	Wed, 29 May 2024 06:41:35 +0000 (UTC)
 From: Huacai Chen <chenhuacai@loongson.cn>
 To: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Cc: Huacai Chen <chenhuacai@kernel.org>,
@@ -36,9 +36,9 @@ Cc: Huacai Chen <chenhuacai@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] fs/ntfs3: Update log->page_{mask,bits} if log->page_size changed
-Date: Wed, 29 May 2024 14:40:52 +0800
-Message-ID: <20240529064053.2741996-2-chenhuacai@loongson.cn>
+Subject: [PATCH 2/2] fs/ntfs3: Rename the label end_reply to end_replay
+Date: Wed, 29 May 2024 14:40:53 +0800
+Message-ID: <20240529064053.2741996-3-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240529064053.2741996-1-chenhuacai@loongson.cn>
 References: <20240529064053.2741996-1-chenhuacai@loongson.cn>
@@ -50,33 +50,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If an NTFS file system is mounted to another system with different
-PAGE_SIZE from the original system, log->page_size will change in
-log_replay(), but log->page_{mask,bits} don't change correspondingly.
-This will cause a panic because "u32 bytes = log->page_size - page_off"
-will get a negative value in the later read_log_page().
+The label end_reply is obviously a typo. It should be "replay" in this
+context. So rename end_reply to end_replay.
 
 Cc: stable@vger.kernel.org
 Fixes: b46acd6a6a627d876898e ("fs/ntfs3: Add NTFS journal")
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- fs/ntfs3/fslog.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ntfs3/fslog.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index 855519713bf7..19c448093df7 100644
+index 19c448093df7..87c0e2b52954 100644
 --- a/fs/ntfs3/fslog.c
 +++ b/fs/ntfs3/fslog.c
-@@ -3914,6 +3914,9 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 		goto out;
- 	}
+@@ -4661,7 +4661,7 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
+ 	 * table are not empty.
+ 	 */
+ 	if ((!dptbl || !dptbl->total) && (!trtbl || !trtbl->total))
+-		goto end_reply;
++		goto end_replay;
  
-+	log->page_mask = log->page_size - 1;
-+	log->page_bits = blksize_bits(log->page_size);
-+
- 	/* If the file size has shrunk then we won't mount it. */
- 	if (log->l_size < le64_to_cpu(ra2->l_size)) {
- 		err = -EINVAL;
+ 	sbi->flags |= NTFS_FLAGS_NEED_REPLAY;
+ 	if (is_ro)
+@@ -5090,7 +5090,7 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
+ 
+ 	sbi->flags &= ~NTFS_FLAGS_NEED_REPLAY;
+ 
+-end_reply:
++end_replay:
+ 
+ 	err = 0;
+ 	if (is_ro)
 -- 
 2.43.0
 
