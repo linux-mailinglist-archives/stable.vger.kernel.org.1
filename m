@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-47623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC618D33D3
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 11:58:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582828D33D4
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 11:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2594285200
-	for <lists+stable@lfdr.de>; Wed, 29 May 2024 09:58:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBCA41F25691
+	for <lists+stable@lfdr.de>; Wed, 29 May 2024 09:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF5116EBFC;
-	Wed, 29 May 2024 09:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AD016E89B;
+	Wed, 29 May 2024 09:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lh618Qqz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c92HAsCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A40916D9D9;
-	Wed, 29 May 2024 09:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DD616E89A;
+	Wed, 29 May 2024 09:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716976712; cv=none; b=SzLdA5cva9u1o0aK5ZDlnSesZBSoVl+6eyHH6Cy1dpXMWmJmmsW6e7euwcPxqUFf0Y4a2zI1FLHR/aK+eANox1PYjKiLMWXd0QGkXXSKYgYcFs6ecfkzgUAVPmxHCJgA9aYxIrAgalkUEB3sqUyAR8jHbdzFEFoNXZuieVaLgZ0=
+	t=1716976715; cv=none; b=Mr2SytATj1hO16klkn6qIgoj6To7v5t6cBZLAlgGCJAe0XFqmJQtwtElvOpdszsF/dVAB/mnfhO9wBzjzN+CSyWPcUQk8H57ZW9oKNN8YxJtGj7f+YviH70xJ5C/RONqOupmMlX1JxCJajAr0OQQqzVfTwPvrGiCgyV4qp1jm6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716976712; c=relaxed/simple;
-	bh=7P5R3ubCOeXHLXpUlDHx/dHy0Jv9kZQpceL925EkVzo=;
+	s=arc-20240116; t=1716976715; c=relaxed/simple;
+	bh=pKYcz1uLT3WVF+Y1ZRMN8WSZGKcnNVn92Lf18YP6QZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXw6rSbbfh6U6eWcMEZs+pMaPh0Qz6i+h5zYedgtKb/tq+D2HgH4m1iJnZWaAa2JfA+u7Kc8fMYUR/YoSIjR1Y3fYS6ZHRY/xd2rF+FDh3XvWogmVi3Mtj09sl1ZewKFCWzHANcRsnglEF6SCDsfQ2LRhrLEc/s8qj3mjgMRKu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lh618Qqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E89C32781;
-	Wed, 29 May 2024 09:58:29 +0000 (UTC)
+	 MIME-Version; b=FFXIDOfa8b8ygdV8XT4dvjwiHyiGCmkEBYHZFVk5w02k6EzdfHRIXv4JP8TM0EzqCQ2CWTbhbANFsDnzlTIjLzLrp1UnwQmDENICkDEL6SrhnRBUGQq7ij0ljYtfDhhpXXaSuMeO7/MM7ggzSaj8NmGZPD4uttdZg12IOz3qMEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c92HAsCi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A01C2BD10;
+	Wed, 29 May 2024 09:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716976711;
-	bh=7P5R3ubCOeXHLXpUlDHx/dHy0Jv9kZQpceL925EkVzo=;
+	s=k20201202; t=1716976714;
+	bh=pKYcz1uLT3WVF+Y1ZRMN8WSZGKcnNVn92Lf18YP6QZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lh618Qqz3GkysW4ZY+oXJomzMGzUN2tTe5pGjPZ7QahtEXY+uwSs27wvqKZFSd5eD
-	 WC7/JWMc8JjjsP3q7gZOfDThkRwrs5CtTC17JtzHsEp1y+JGtpu2LDWWUq2+Pgu/YF
-	 2cqOBZhrpoiKI5PlRmHNiy05qrIaMj93iPyPoP+jIyNVsGRMRu2yZ5U6Ol5DplSCJF
-	 VJyq92nVvCiifPuYMgVDpS0ruoECeKUVL40Uov4JgbmID9o2u7AOebcX4lYfFT6Xv5
-	 BEoLT3kqkzV6ZbrtTrArAmuZukOPyHso9lu/47Yys7HulIPjn2VmPr+UH1mZ1G8B/K
-	 yMX1Z6aq+oPdA==
+	b=c92HAsCiq8Z98T9fnBxV1PU8KoB11zli4TwpgatOAH4NBRuu1A5JtzbXdcDR7Rhc1
+	 o4rwTYCqbghn9IxuNANQEw1U5E4OL5/el+cQ+1AkdN+kSEPLaH46mdCC3hva6Z0Jtf
+	 KgnrbsQseNrbr9wkF+Yt7VAGfuz8i/a/18X7ok/uH2uI7OYVXaN4nQMbDH85KJMULM
+	 70EHhfiJa0Mkl8vvqqjnMEPNQ9Heivt9Ahzu0xYFS3w0f50R9sSWnT7ZvijjHU07r+
+	 gUx74Bql0SDK7dJE2LltTGk9eYkydsH/pW3vGwBERKnJMJfK1HfyrVeZLoCzDqYuW2
+	 GePahqtq3GQLg==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
@@ -50,9 +50,9 @@ Cc: Paolo Abeni <pabeni@redhat.com>,
 	Mat Martineau <martineau@kernel.org>,
 	Matthieu Baerts <matttbe@kernel.org>,
 	"David S . Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6.y 1/3] mptcp: avoid some duplicate code in socket option handling
-Date: Wed, 29 May 2024 11:58:19 +0200
-Message-ID: <20240529095817.3370953-6-matttbe@kernel.org>
+Subject: [PATCH 6.6.y 2/3] mptcp: cleanup SOL_TCP handling
+Date: Wed, 29 May 2024 11:58:20 +0200
+Message-ID: <20240529095817.3370953-7-matttbe@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240529095817.3370953-5-matttbe@kernel.org>
 References: <20240529095817.3370953-5-matttbe@kernel.org>
@@ -62,68 +62,147 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1770; i=matttbe@kernel.org; h=from:subject; bh=YdsRVgmWu00252Q9jth2tk5Jszjf+SVA7ez0qSUcxr4=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmVvw5IB+qGhftULCeSRroWOoXwWo1RHoE1LUU0 87BCWeamvCJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZlb8OQAKCRD2t4JPQmmg c+UzD/0f11Obp4/Uu4Xx+pkY7aFaq65HvhQpi3OwVEfD25hfPKvAs9arHsy37AYfHp2OATYFNCk d5TzLY0cjYMoS0X7S7OCghY8cj9cnOB/o2Q+OXwdjMivNmDhf/ImUQqn6za92LfDIh68CTJFcFe JlvexDUgDu2fbQJIQjusTGaYun6Ud7J/Y061qKeoq0pzJaDTQxUbvrCg4SDpZYkBn6maRMmYm9t NPUGpH8VVXu2RtXTnZDSaYZit9R1Otcu+wCnxmALgQZPbjwosYoXqWY+SqPOnYYs7oIM/GWrnGj l4LAdk/Ex9igFy806DQCSlDPgQkz6zHdJq5PlJ3WilJSIglx3juVOhbcohGLldk5khzx3loD5NG badVNgs/MI8K10WAfyaQeK/QFt9ZavsapkxG8/GroiipsSKD5Nxwkgf7NP4wLEYTvXPwqOKF0To p7gNLrXqJ7ASaQG1/UFSuAntTmngipTWkkJxzHIfeYP8lpXY9+TDdoJDZ7l2cQRvWwzKz/zoTOU KtkM4W3NRWMIhIxXrWIyZPZf01UGI7pM6Xk7xD0r6/zn5Gpv0OMbbNyphsoUtcW/i1JxoMd/hoO kZKzJz3KB/C3Xa64mCrciWxigFPrD3d0ZKGbmeARrrW0i+bjkTK/kSB8xWHT4CHxKz5gc/Fhjlz ygccuAImUK+LbSQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4141; i=matttbe@kernel.org; h=from:subject; bh=+XMlOTRgrnNIpJd1C3XW84vhK+avpbvvPETRda1fqVc=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmVvw51jJLL3dU026AB06Wo2GIJ75tRnrpEbV2u eVOkWXDmcKJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZlb8OQAKCRD2t4JPQmmg c6GzD/9SKmmHR5dTM2lBfrCpzrlZTsP1SXmeRoAMn5RIR1WkDKaauIbIvEelAOgTj/XFIWAyJti 6tRVlrDHBGV+Np/FymA74pb0im4ZzmeTIOnbyvR9XntjqfejrJnIs5dpvy1FHzGpjVfY17gTmGp OsTWdnX8oDOsV7kxtgFsV0f8JKBJBvtLDZEVHc+34kkyA7J39J/Hm+em7HVJpB8kFQbvW5NsZMj m3+JxXpYL1LzTytxaNkMfas+ksd851ar21qbLcW508buwAiIZOu4mmhcGd1fNZJeNB8yDu4AQGg qAQDEyLtzL04Jxf4OFNpfNS8thB8M/ckMvsZsBiBJJDAh8vD/jS7EQiiCNey6a4xyeuPGGSr//5 XEU6PHZGFuXGT9xu1j/C43RrL1nEiNOtHA5T1L8bMCgRNgeWmm0dcg+syctY9WDkVXit25s/ea0 0eiFHZGwAqdQoQLsKGxnVZ58lKANm/2ZHSr/wZOReLE/8moNLt4QF6Ei6FOCNW0VIg34IlN/dyB opeOL0+M1vw6e98pMhuBPQ6b3TgGn1rFWib8MFeKNqRa8ZYW/iJqjzGTjolXoQi6Jx9TotNAv9l loQND7yxh+7slkAdufyIQC9slBRg4oviIWYAt853QckjsFL4zoFQQdha66hNAl1lP7A9QgePQ9V Sru58Vj/tfxzLWw==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit a74762675f700a5473ebe54a671a0788a5b23cc9 upstream.
+commit 7f71a337b5152ea0e7bef408d1af53778a919316 upstream.
 
-The mptcp_get_int_option() helper is needless open-coded in a
-couple of places, replace the duplicate code with the helper
-call.
+Most TCP-level socket options get an integer from user space, and
+set the corresponding field under the msk-level socket lock.
+
+Reduce the code duplication moving such operations in the common code.
 
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Stable-dep-of: bd11dc4fb969 ("mptcp: fix full TCP keep-alive support")
+[ Without TCP_NOTSENT_LOWAT support, as it is not in this version, see
+  commit 29b5e5ef8739 ("mptcp: implement TCP_NOTSENT_LOWAT support") ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/sockopt.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ net/mptcp/sockopt.c | 61 +++++++++++++++++++--------------------------
+ 1 file changed, 26 insertions(+), 35 deletions(-)
 
 diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-index 1afa8245f27c..f29949efd7a3 100644
+index f29949efd7a3..e33d721ed37e 100644
 --- a/net/mptcp/sockopt.c
 +++ b/net/mptcp/sockopt.c
-@@ -626,13 +626,11 @@ static int mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, sockptr_t optva
+@@ -621,18 +621,11 @@ static int mptcp_setsockopt_sol_tcp_congestion(struct mptcp_sock *msk, sockptr_t
+ 	return ret;
+ }
+ 
+-static int mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, sockptr_t optval,
+-					 unsigned int optlen)
++static int __mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, int val)
  {
  	struct mptcp_subflow_context *subflow;
  	struct sock *sk = (struct sock *)msk;
--	int val;
-+	int val, ret;
+-	int val, ret;
  
--	if (optlen < sizeof(int))
--		return -EINVAL;
+-	ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-	if (ret)
+-		return ret;
 -
--	if (copy_from_sockptr(&val, optval, sizeof(val)))
--		return -EFAULT;
-+	ret = mptcp_get_int_option(msk, optval, optlen, &val);
-+	if (ret)
-+		return ret;
- 
- 	lock_sock(sk);
+-	lock_sock(sk);
  	sockopt_seq_inc(msk);
-@@ -656,13 +654,11 @@ static int mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, sockptr_t op
+ 	msk->cork = !!val;
+ 	mptcp_for_each_subflow(msk, subflow) {
+@@ -644,23 +637,15 @@ static int mptcp_setsockopt_sol_tcp_cork(struct mptcp_sock *msk, sockptr_t optva
+ 	}
+ 	if (!val)
+ 		mptcp_check_and_set_pending(sk);
+-	release_sock(sk);
+ 
+ 	return 0;
+ }
+ 
+-static int mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, sockptr_t optval,
+-					    unsigned int optlen)
++static int __mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, int val)
  {
  	struct mptcp_subflow_context *subflow;
  	struct sock *sk = (struct sock *)msk;
--	int val;
-+	int val, ret;
+-	int val, ret;
  
--	if (optlen < sizeof(int))
--		return -EINVAL;
+-	ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-	if (ret)
+-		return ret;
 -
--	if (copy_from_sockptr(&val, optval, sizeof(val)))
--		return -EFAULT;
+-	lock_sock(sk);
+ 	sockopt_seq_inc(msk);
+ 	msk->nodelay = !!val;
+ 	mptcp_for_each_subflow(msk, subflow) {
+@@ -672,8 +657,6 @@ static int mptcp_setsockopt_sol_tcp_nodelay(struct mptcp_sock *msk, sockptr_t op
+ 	}
+ 	if (val)
+ 		mptcp_check_and_set_pending(sk);
+-	release_sock(sk);
+-
+ 	return 0;
+ }
+ 
+@@ -786,25 +769,10 @@ static int mptcp_setsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 	int ret, val;
+ 
+ 	switch (optname) {
+-	case TCP_INQ:
+-		ret = mptcp_get_int_option(msk, optval, optlen, &val);
+-		if (ret)
+-			return ret;
+-		if (val < 0 || val > 1)
+-			return -EINVAL;
+-
+-		lock_sock(sk);
+-		msk->recvmsg_inq = !!val;
+-		release_sock(sk);
+-		return 0;
+ 	case TCP_ULP:
+ 		return -EOPNOTSUPP;
+ 	case TCP_CONGESTION:
+ 		return mptcp_setsockopt_sol_tcp_congestion(msk, optval, optlen);
+-	case TCP_CORK:
+-		return mptcp_setsockopt_sol_tcp_cork(msk, optval, optlen);
+-	case TCP_NODELAY:
+-		return mptcp_setsockopt_sol_tcp_nodelay(msk, optval, optlen);
+ 	case TCP_DEFER_ACCEPT:
+ 		/* See tcp.c: TCP_DEFER_ACCEPT does not fail */
+ 		mptcp_setsockopt_first_sf_only(msk, SOL_TCP, optname, optval, optlen);
+@@ -817,7 +785,30 @@ static int mptcp_setsockopt_sol_tcp(struct mptcp_sock *msk, int optname,
+ 						      optval, optlen);
+ 	}
+ 
+-	return -EOPNOTSUPP;
 +	ret = mptcp_get_int_option(msk, optval, optlen, &val);
 +	if (ret)
 +		return ret;
++
++	lock_sock(sk);
++	switch (optname) {
++	case TCP_INQ:
++		if (val < 0 || val > 1)
++			ret = -EINVAL;
++		else
++			msk->recvmsg_inq = !!val;
++		break;
++	case TCP_CORK:
++		ret = __mptcp_setsockopt_sol_tcp_cork(msk, val);
++		break;
++	case TCP_NODELAY:
++		ret = __mptcp_setsockopt_sol_tcp_nodelay(msk, val);
++		break;
++	default:
++		ret = -ENOPROTOOPT;
++	}
++
++	release_sock(sk);
++	return ret;
+ }
  
- 	lock_sock(sk);
- 	sockopt_seq_inc(msk);
+ int mptcp_setsockopt(struct sock *sk, int level, int optname,
 -- 
 2.43.0
 
