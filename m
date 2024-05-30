@@ -1,125 +1,168 @@
-Return-Path: <stable+bounces-47682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F8A58D4711
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 10:30:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5BF8D471D
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 10:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDB792850B6
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 08:30:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2B3C1C21048
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 08:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52CA14F131;
-	Thu, 30 May 2024 08:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KLiXbJ5k";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9gO2GsiN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88669152527;
+	Thu, 30 May 2024 08:33:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F7E176AB8;
-	Thu, 30 May 2024 08:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7AFDDA1;
+	Thu, 30 May 2024 08:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717057815; cv=none; b=svVDW8tpQe9iDRNBPAZwXIQPhGB/QYS4MzBtXgu9esZaG41Sa0bD5ZE64RxBjYYw/dU01uK8r1Sc9p0K5siMbMUkRrGIlmemZVAaoKtf1DgsINrrFPiUAyRiDWAHXrBgJYxpjTM2L52g+5ZWGNlZ9/3kOy7E4DSE8DzEPMpY3mI=
+	t=1717057989; cv=none; b=dOm7YEdELaXjrzxT+68cFgmDasI0QecLBtNAFTn3+eZCyAiC89njeJBxojYhytYBsmjCE05t11ef4n52LnpFuwmJ74u7ueYW2rfzflGIO3LvM0zKBFx3kLS33VSCEegHk09+Mn7M9gOMQ9ZCutrTrht7qtFuzxH9JHtkVWGbFMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717057815; c=relaxed/simple;
-	bh=MvdkkCKPSepl91Y7804RHqMcNOXEkytlMBE1ugKuISI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Vk+JEnINf+3Cn6S6T8lPiNXD1nnHm1HV8YSGd6M8cQmSH8PxbaxqxcLlw01MhbiK4yqDBjk9rJNXtmMp2vTfOxpvQHsIRO6Jx32Ltu4UJweTIQXi30VojOxW/hVb7gwmsU9m5PfTx+cciXtWW6PQJmAKNePUPmSGRUkVWsoMoKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KLiXbJ5k; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9gO2GsiN; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717057812;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wPLYtheb57Rblm9GDh2pb6WDY4geRPaBbhxs9rtzT8Y=;
-	b=KLiXbJ5kVOu3neydHnHQVL+J8kVUVKtyY8TxS1nD9omXKtTUWM0JyIb0h9gB8lULE3IvGn
-	UjAzYScGJS08NL0WEoUgZfF42H5kD+3qSASisrsIyufFWT9qdkYvLLlbhsWcx8XeJ5txUs
-	IzfSHyPS6wZtkfZuqoKn6oUQpomf9GCU8mTiAdW8K6b1FDXEz3KxJDygooUV1k8FpsC3Kj
-	DEzEAQmvzOEzw5hWFosu2o3r/QaVG+626sQc4dlfH+tceb5tHcUas4Hh+gvLmR64txHmWa
-	5VxU/rYiw41OEClVVK4MCwwjkdQmld4Y4Ddrfd0+LcNwcbA8koKnpN3xu6FfaQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717057812;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wPLYtheb57Rblm9GDh2pb6WDY4geRPaBbhxs9rtzT8Y=;
-	b=9gO2GsiNU0j80SYgjCU5ZMvX9PLfCkhd8juQRmDqn3rfO80GTDojdfoxa2KY0+53FX4Jd/
-	FYTbnDYWwPwxf2Cg==
-To: Peter Schneider <pschneider1968@googlemail.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
- stable@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: Kernel 6.9 regression: X86: Bogus messages from topology detection
-In-Reply-To: <ce3abe01-4c37-416e-a5ed-25703318318a@googlemail.com>
-References: <877cffcs7h.ffs@tglx>
- <16cd76b1-a512-4a7b-a304-5e4e31af3c8a@googlemail.com>
- <ce3abe01-4c37-416e-a5ed-25703318318a@googlemail.com>
-Date: Thu, 30 May 2024 10:30:09 +0200
-Message-ID: <87zfs78zxq.ffs@tglx>
+	s=arc-20240116; t=1717057989; c=relaxed/simple;
+	bh=Lh0EiR8MsmykjlpKs06/3Ea3aRQO385pIfW9SimWnAg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ea5lXXaamIrBS7ZVDeRU7HSWhVYN9a9a6tURbTqMMvIsxag57MymvIZkb6ADnU0ZOjv3TWmnZDqASmgK2BsskGls9cW4S3UcySpS9VZh4UBOsoqk4sf+OFEEMMmC+Se7FZcUq//+0x1US3g1/tDNItODmVLaQuRdR4/uZUvkyjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52b4fcbf078so779475e87.0;
+        Thu, 30 May 2024 01:33:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717057986; x=1717662786;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P08idekIOg20mZIarxRKyXgHpULyinHaFcyaYJ01jjM=;
+        b=RiVy+SiNKKisnPB5SpV10IziOe4inWzspBRodRHwWt4rVsRl9Uq+7B8FTv7mwvaMlR
+         Cf3ZX69LLcPeB/ohd2MWAsGUw+moHTcrD3VaNE6ctH5Q3kJj6Vp4NN/X2qDt31+b0iiY
+         IhgNG2H5w9GKv3Fqaw589WTa555HVlUfbDLXBUvUkp590fghRYeNmhDfBbqmBxy57Vni
+         HSimfdYrhigm4FFOgc2Rd454i2ftqVfRU31FH9hfKvu5inBtMZbp1eLe5uAkYvQAR8nW
+         5IP96NscGXZJ9wKZK1ls9AB5UqXZOwwCfpI+nBz8DQ/TGOj9WoYgCA2TRyjGgbQ4mg+o
+         lnGA==
+X-Forwarded-Encrypted: i=1; AJvYcCWYD9F0L29VsjRXKP+2Ta/u4s7RUGeNqrnnF1eEHLBcCoY4Ap5UbYfmeIgs4kLiNnzEEOfdiGN1YeHCmh73+SapGbfFcVaaafHC5Qj6rqYbL/xaXaGHPg0+QAOCV0fofqqqjpi8wgXqZnQnf6spuyVrj7M4Hf+Tg+wn48dhOQP9WyIeOe6d
+X-Gm-Message-State: AOJu0YwU7XVccfMuuALuDdKb/F0zOEVpKBojH8lErjQwdzbS5qhWXM+A
+	59Tkk0PkEo9K+J6L3NICz0iMMkGGvb2Jr2nOdf865Mvvnbe8m+yK3SRHyQ==
+X-Google-Smtp-Source: AGHT+IF4HO8WkpganMOJCdBH7V8iwOAnUumE3Ekt6DwpuB6tfpjJzjPSXyKJMzGQmQKHNUMBfqb5bg==
+X-Received: by 2002:ac2:5286:0:b0:51e:2282:63cf with SMTP id 2adb3069b0e04-52b7d46a259mr789449e87.45.1717057985739;
+        Thu, 30 May 2024 01:33:05 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35579d7de7esm16625872f8f.14.2024.05.30.01.33.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 May 2024 01:33:04 -0700 (PDT)
+Message-ID: <68293959-9141-4184-a436-ea67efa9aa7c@kernel.org>
+Date: Thu, 30 May 2024 10:33:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Chancellor <nathan@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linux-serial@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+ <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
+ <2024053008-sadly-skydiver-92be@gregkh>
+ <09445a96-4f86-4d34-9984-4769bd6f4bc1@embeddedor.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <09445a96-4f86-4d34-9984-4769bd6f4bc1@embeddedor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Peter!
+On 30. 05. 24, 10:12, Gustavo A. R. Silva wrote:
+> 
+> 
+> On 30/05/24 09:40, Greg Kroah-Hartman wrote:
+>> On Thu, May 30, 2024 at 08:22:03AM +0200, Jiri Slaby wrote:
+>>>>   This will be an error in a future compiler version 
+>>>> [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
+>>>>       291 |         struct mxser_port ports[] __counted_by(nports);
+>>>>           |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+>>>>     1 error generated.
+>>>>
+>>>> Remove this use of __counted_by to fix the warning/error. However,
+>>>> rather than remove it altogether, leave it commented, as it may be
+>>>> possible to support this in future compiler releases.
+>>>
+>>> This looks like a compiler bug/deficiency.
+>>
+>> I agree, why not just turn that option off in the compiler so that these
+>> "warnings" will not show up?
+> 
+> It's not a compiler bug.
 
-On Mon, May 27 2024 at 23:15, Peter Schneider wrote:
+It is, provided the code compiles and runs.
 
-Thanks for providing all the information!
+> The flexible array is nested four struct layers deep, see:
+> 
+> ports[].port.buf.sentinel.data[]
+> 
+> The error report could be more specific, though.
 
-> I want to add one thing: there is a log entry in the dmesg output of a "bad" kernel, which 
-> I initially overlooked, because it is way up, and I noticed this just now. I guess this 
-> might be relevant:
->
-> [    1.683564] [Firmware Bug]: CPU0: Topology domain 0 shift 1 != 5
+Ah, ok. The assumption is sentinel.data[] shall be unused. That's why it 
+all works. The size is well known, [] is zero size, right?
 
-Yes. That's absolutely related. I can see what goes wrong, but I have
-absolutely no idea how that happens.
+Still, fix the compiler, not the code.
 
-Can you please apply the debug patch below ad provide the full dmesg
-after boot?
+thanks,
+-- 
+js
+suse labs
 
-Thanks,
-
-        tglx
----
---- a/arch/x86/kernel/cpu/topology_common.c
-+++ b/arch/x86/kernel/cpu/topology_common.c
-@@ -65,6 +65,7 @@ static void parse_legacy(struct topo_sca
- 		cores <<= smt_shift;
- 	}
- 
-+	pr_info("Legacy: %u %u %u\n", c->cpuid_level, smt_shift, core_shift);
- 	topology_set_dom(tscan, TOPO_SMT_DOMAIN, smt_shift, 1U << smt_shift);
- 	topology_set_dom(tscan, TOPO_CORE_DOMAIN, core_shift, cores);
- }
---- a/arch/x86/kernel/cpu/topology_ext.c
-+++ b/arch/x86/kernel/cpu/topology_ext.c
-@@ -72,6 +72,9 @@ static inline bool topo_subleaf(struct t
- 
- 	cpuid_subleaf(leaf, subleaf, &sl);
- 
-+	pr_info("L:%0x %0x %0x S:%u N:%u T:%u\n", leaf, subleaf, sl.level, sl.x2apic_shift,
-+		sl.num_processors, sl.type);
-+
- 	if (!sl.num_processors || sl.type == INVALID_TYPE)
- 		return false;
- 
-@@ -97,6 +100,7 @@ static inline bool topo_subleaf(struct t
- 			     leaf, subleaf, tscan->c->topo.initial_apicid, sl.x2apic_id);
- 	}
- 
-+	pr_info("D: %u\n", dom);
- 	topology_set_dom(tscan, dom, sl.x2apic_shift, sl.num_processors);
- 	return true;
- }
 
