@@ -1,117 +1,166 @@
-Return-Path: <stable+bounces-47687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44BFF8D484A
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 11:21:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7134F8D4860
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 11:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABBF21F21B1F
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 09:21:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A206C1C20DA1
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 09:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552436F313;
-	Thu, 30 May 2024 09:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9932154BEC;
+	Thu, 30 May 2024 09:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="C1N+N03H"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="q3eJfNJ4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F81183971
-	for <stable@vger.kernel.org>; Thu, 30 May 2024 09:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A0F15251B;
+	Thu, 30 May 2024 09:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717060909; cv=none; b=sf2ROB+kdHn4/bBy84gnDkMMgy2wda0Gdq75fCEdtU/zdtyl3A6GoXAazaSNJBf0FMOug9o13NCGfQ1xKkmpdKx8weas4j+8twHSEoHg3J5H08dogPpjTGUY29FXSshdXa6YmXeMXmpdx9C5ZnWJ8qaU7ObrusRTeoTXAq00IO0=
+	t=1717060938; cv=none; b=jcFs0UX0Pq7BUqWvG5CGnurKqD1IVBVohEJTVAhCq5biuCfD1y2oZAV6CqqLP6JHZN0cklFsQ2fBHnrGT/9RG+fmLUIuH4+l6YL6AySM3cBka9fWR2aZWpqARK9liKNvK1a4BP/7U0NFYGQMPPMjYwci7MFGl4Z1t+0YRk+ru+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717060909; c=relaxed/simple;
-	bh=LOuk5ngQgDvwGWmTqF8UHa1uZEIcOdoIOKhJeBC24z0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oYA6Ey/cb52ZKuBRr+uXnJ+CodBDTwfZI3+sxDVYiZ/XwlbBelKhomv6+RgKev5eeQKl30/VJ7O7frseKPFHy8FuY+U8FBM1tRzw58dKldJnUCgKq2J1KS07z4mcnAziTlHH98sJND3Wj5P6j8gAWHJvP36dO/+jqhbgcsTTYG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=C1N+N03H; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4211245e889so6471775e9.2
-        for <stable@vger.kernel.org>; Thu, 30 May 2024 02:21:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1717060906; x=1717665706; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J2NdMUTFKCND4TuQAML2rnvjKT/jKwjKz+oofuCTZRU=;
-        b=C1N+N03HSClTf7HDAbAg03esAG0+Hm8TAvrIXn0xEH5owaeDI0RbU8q4kXwKvam6YH
-         6rJ25m5X9RKo1K1EwEidkD4JpcmHehhR3FabH2EOxdr7aBtp/vEiD0wzYkrgcO4HSGRA
-         gKvs/fZ1Cf+zJJDnvOLovhlC9TwqeK0vtppkz6ArotbeipU1Am/gsSuBZIpOnLIYZcPz
-         Yx2squZ9tT4c9XLq1T1swEm9+fYB6X7re+6inPYBToqzoiuiJuDx5PFCMiw5St/bhrbm
-         yygowueKgj/KrRX7pqC55WDPsqKeiAWcESt0Xy6l3iKjpZxqM/OasJU/xJWUpVoVw6V/
-         qsYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717060906; x=1717665706;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J2NdMUTFKCND4TuQAML2rnvjKT/jKwjKz+oofuCTZRU=;
-        b=muDa4U8/WB6pcHEB5B13EyusIr31PtPriBWwz6BSSrtT/cYtWO+U3pbZ6pYitWOegs
-         Cp6N5BMTutCT7JIFZyj8q/STykb4Ay1xmGtr44gQUtalvIUQl/YKA/62QTMVoOoAeR1t
-         JWYiJVy9g9Hwerlp0fYxxV+1ScrJ0r/co15YTnqb5I/+e6RZQ2tiIHn0YQ1XZUkm7KTA
-         glclQKBQY+t/WPmRIDicZmFfV7w8mQc8g4rI975SOLWpmURgGhqBjbMrSK+mctS3nP5C
-         6VqEK5u0yImAfizSdomhbv7hue84y63KcwTkVHRTIiB2P7/AZbulYassqgmVLOzOvPtd
-         Cjpg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+jeFDZpwFcDRaXY51MHoAxFTdtfIUVViz0KsgIjRk2Js3BMH07IYPDaA4zOwJ5fcA5c0JLLcTO0iyRyJ2hxsNYinbdSHx
-X-Gm-Message-State: AOJu0Ywfukw/sybpBIBRdQjRUA83XrXyWIITaXvvVFdWEhOY7YVs148Q
-	+d+/QnXLwCOOwuyZYwiAK1fDps9nb7wxpMi1+j/hhgm5iZ0WpmeIxQUDW6ApNC0=
-X-Google-Smtp-Source: AGHT+IGvEkCdARfpYJn7j9uuA7yNxUbgpb8AAl+3ZNngODEN/Wqw/TiTEIYw1nqx7Q6osL9EIgQc7Q==
-X-Received: by 2002:a05:600c:154f:b0:421:b79:93fd with SMTP id 5b1f17b1804b1-4212781b4a7mr13857215e9.21.1717060905592;
-        Thu, 30 May 2024 02:21:45 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:75a:e000:aae:8a32:91fa:6bf5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4212706c46fsm19043935e9.28.2024.05.30.02.21.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 May 2024 02:21:45 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Dmitry Baryshkov <dbaryshkov@gmail.com>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] gpio: amd8111: Convert PCIBIOS_* return codes to errnos
-Date: Thu, 30 May 2024 11:21:43 +0200
-Message-ID: <171706089866.32720.4484394923188699673.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240527132345.13956-1-ilpo.jarvinen@linux.intel.com>
-References: <20240527132345.13956-1-ilpo.jarvinen@linux.intel.com>
+	s=arc-20240116; t=1717060938; c=relaxed/simple;
+	bh=MlA3azACbrwom+C84GC0LOLxTP/lEriaHVGtrpci8Ig=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p6qdlkOIhs8tc5Jauh0/r8xXrEGHDfQ77YvyRxvapJIcMv2SeJYg0s4X7byOEAi2ndTmuAOKXTlhtUb173ebRqxTaOvsMcQlTN/HfCOJIOeWXFEE5IiKNfF1Yft6YjT0YIzFkKPI66w9Sem+Ww/+E4jfL86xf3Ii6QaAanzD3Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=q3eJfNJ4; arc=none smtp.client-ip=115.124.30.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1717060927; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=HC3QeNIhf5e5Wu+RbydEahoJp6GbOb1Ol6v/8D88RQI=;
+	b=q3eJfNJ4QPFmKhQfQNhmpLQC/kHyzN5fJzBnaMFRqbcLFemGrpytXWenGTXowFOhwLPCB5QGVWviFXFj7Bfgpny6VLgA0nGaV+LKKfRt8GROnP1LVIuNe+0bW/liJ3KeRRyDcly1bMADgtU84F7DINT9FOZFn5gqKcG1pBA9y/k=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067112;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0W7WbjK6_1717060922;
+Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W7WbjK6_1717060922)
+          by smtp.aliyun-inc.com;
+          Thu, 30 May 2024 17:22:06 +0800
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-erofs@lists.ozlabs.org,
+	Baokun Li <libaokun1@huawei.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>
+Subject: [PATCH 6.9.y] erofs: avoid allocating DEFLATE streams before mounting
+Date: Thu, 30 May 2024 17:21:59 +0800
+Message-Id: <20240530092201.16873-1-hsiangkao@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+commit 80eb4f62056d6ae709bdd0636ab96ce660f494b2 upstream.
 
+Currently, each DEFLATE stream takes one 32 KiB permanent internal
+window buffer even if there is no running instance which uses DEFLATE
+algorithm.
 
-On Mon, 27 May 2024 16:23:44 +0300, Ilpo Järvinen wrote:
-> amd_gpio_init() uses pci_read_config_dword() that returns PCIBIOS_*
-> codes. The return code is then returned as is but amd_gpio_init() is
-> a module init function that should return normal errnos.
-> 
-> Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-> errno before returning it from amd_gpio_init().
-> 
-> [...]
+It's unexpected and wasteful on embedded devices with limited resources
+and servers with hundreds of CPU cores if DEFLATE is enabled but unused.
 
-Applied, thanks!
+Fixes: ffa09b3bd024 ("erofs: DEFLATE compression support")
+Cc: <stable@vger.kernel.org> # 6.6+
+Reviewed-by: Sandeep Dhavale <dhavale@google.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20240520090106.2898681-1-hsiangkao@linux.alibaba.com
+---
+ fs/erofs/decompressor_deflate.c | 55 +++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 26 deletions(-)
 
-[1/2] gpio: amd8111: Convert PCIBIOS_* return codes to errnos
-      commit: d4cde6e42f2eb56436cab6d1931738ec09e64f74
-[2/2] gpio: rdc321x: Convert PCIBIOS_* return codes to errnos
-      commit: 9a73e037f4b5eb45c9ecccb191d39c280abe7cbd
-
-Best regards,
+diff --git a/fs/erofs/decompressor_deflate.c b/fs/erofs/decompressor_deflate.c
+index 81e65c453ef0..3a3461561a3c 100644
+--- a/fs/erofs/decompressor_deflate.c
++++ b/fs/erofs/decompressor_deflate.c
+@@ -46,39 +46,15 @@ int __init z_erofs_deflate_init(void)
+ 	/* by default, use # of possible CPUs instead */
+ 	if (!z_erofs_deflate_nstrms)
+ 		z_erofs_deflate_nstrms = num_possible_cpus();
+-
+-	for (; z_erofs_deflate_avail_strms < z_erofs_deflate_nstrms;
+-	     ++z_erofs_deflate_avail_strms) {
+-		struct z_erofs_deflate *strm;
+-
+-		strm = kzalloc(sizeof(*strm), GFP_KERNEL);
+-		if (!strm)
+-			goto out_failed;
+-
+-		/* XXX: in-kernel zlib cannot shrink windowbits currently */
+-		strm->z.workspace = vmalloc(zlib_inflate_workspacesize());
+-		if (!strm->z.workspace) {
+-			kfree(strm);
+-			goto out_failed;
+-		}
+-
+-		spin_lock(&z_erofs_deflate_lock);
+-		strm->next = z_erofs_deflate_head;
+-		z_erofs_deflate_head = strm;
+-		spin_unlock(&z_erofs_deflate_lock);
+-	}
+ 	return 0;
+-
+-out_failed:
+-	erofs_err(NULL, "failed to allocate zlib workspace");
+-	z_erofs_deflate_exit();
+-	return -ENOMEM;
+ }
+ 
+ int z_erofs_load_deflate_config(struct super_block *sb,
+ 			struct erofs_super_block *dsb, void *data, int size)
+ {
+ 	struct z_erofs_deflate_cfgs *dfl = data;
++	static DEFINE_MUTEX(deflate_resize_mutex);
++	static bool inited;
+ 
+ 	if (!dfl || size < sizeof(struct z_erofs_deflate_cfgs)) {
+ 		erofs_err(sb, "invalid deflate cfgs, size=%u", size);
+@@ -89,9 +65,36 @@ int z_erofs_load_deflate_config(struct super_block *sb,
+ 		erofs_err(sb, "unsupported windowbits %u", dfl->windowbits);
+ 		return -EOPNOTSUPP;
+ 	}
++	mutex_lock(&deflate_resize_mutex);
++	if (!inited) {
++		for (; z_erofs_deflate_avail_strms < z_erofs_deflate_nstrms;
++		     ++z_erofs_deflate_avail_strms) {
++			struct z_erofs_deflate *strm;
++
++			strm = kzalloc(sizeof(*strm), GFP_KERNEL);
++			if (!strm)
++				goto failed;
++			/* XXX: in-kernel zlib cannot customize windowbits */
++			strm->z.workspace = vmalloc(zlib_inflate_workspacesize());
++			if (!strm->z.workspace) {
++				kfree(strm);
++				goto failed;
++			}
+ 
++			spin_lock(&z_erofs_deflate_lock);
++			strm->next = z_erofs_deflate_head;
++			z_erofs_deflate_head = strm;
++			spin_unlock(&z_erofs_deflate_lock);
++		}
++		inited = true;
++	}
++	mutex_unlock(&deflate_resize_mutex);
+ 	erofs_info(sb, "EXPERIMENTAL DEFLATE feature in use. Use at your own risk!");
+ 	return 0;
++failed:
++	mutex_unlock(&deflate_resize_mutex);
++	z_erofs_deflate_exit();
++	return -ENOMEM;
+ }
+ 
+ int z_erofs_deflate_decompress(struct z_erofs_decompress_req *rq,
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+2.39.3
+
 
