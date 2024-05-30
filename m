@@ -1,125 +1,141 @@
-Return-Path: <stable+bounces-47724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A798D4EF4
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 17:21:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310658D4D75
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 16:06:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB458B23FB9
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 15:21:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97D69B23EE6
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 14:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F74D18757D;
-	Thu, 30 May 2024 15:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C9F186E45;
+	Thu, 30 May 2024 14:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="WI2EPLYT"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CEHs+mnA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cU0klByx"
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADEE187541;
-	Thu, 30 May 2024 15:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B5F186E32;
+	Thu, 30 May 2024 14:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717082490; cv=none; b=aDeQ28shSApOTHZKrOcRl3HukVr3tzrnf3FtueQzyKNJWFXQ05qywV7LOSlPilZbQ06kN+5s1yjuTdeRm8NZ1+UNQ22LzqrkntsBPNooSOuK3CUU6UN/Co/rj44uW9smc9OQbv9nSdjbj+uFDFqk0g9yctXmBTeqxv2IYoIyVvo=
+	t=1717077977; cv=none; b=YNi5PnfqjDqHzdIVLwVz0iOHxoPVfiiy+Iq5PUBERHc2Lc40Yz62j+oVGkjtQ6RYRrYdOO8xnSk5MY7w9yXAIG3a0Hfq7ZS5pYFpUWxdzNGQmDlb0orRyGb05593BCwkBnNXRsEh24cJMXeVeXq66OjgAROBNjnPCIuQyiKuNCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717082490; c=relaxed/simple;
-	bh=U5TgF7VIYvKSRNdp67128508jDwSIOgx0w/UYpTd0Uo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SyBRJJ9pchn78u3nZjznyqU6EJrBRK7sbH1hgyhC/4G4yVoQC4i8xBS1viKLPFZaJ2tfAxx4delDGTyVGyOY7c6oBKxKYdJCPRJ3DBL0qLNCFYoZYRZxIYiKPJNHwGj6e9ennGiqWiKUQtB7vXusF/gjBybfrvGfrSNISB7YZ+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=WI2EPLYT; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-6001a.ext.cloudfilter.net ([10.0.30.140])
-	by cmsmtp with ESMTPS
-	id CaEesLOmjSLKxChaksA1PE; Thu, 30 May 2024 15:21:22 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id ChajsMX6R9zHMChajs3G13; Thu, 30 May 2024 15:21:21 +0000
-X-Authority-Analysis: v=2.4 cv=fo4XZ04f c=1 sm=1 tr=0 ts=66589971
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=7eglLlv4HFOW3sTsDH6Jqg==:17
- a=IkcTkHD0fZMA:10 a=TpHVaj0NuXgA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
- a=VjqEAW4Pdxq5hPAZ8QEA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=U5TgF7VIYvKSRNdp67128508jDwSIOgx0w/UYpTd0Uo=; b=WI2EPLYTdZl9H0MLSza743CvOT
-	1xSH/pmM1S9t7kmGMjm2n0Be+KYEmaP6IrWjZrupFcuKsoHRKMRmIhYkFQPfxNgXiiIyvfCvN+Fvx
-	3a9gI9uwjVPIX+WncjfkZwfz9OP/ygWuJf+B/AlUnvWqqBBfEXGvIDDo9Fcc+s0h8jFw1yY73TvdF
-	9RnhV6p5q+F4BZK+a7D0OI6csw1ffZhGzrDMu0WM1KkB9me+LMHlgWJBrkgO4uXV448+vuC9Bdjgc
-	6ev6XphlrZ5D6syOHR2rNh6EYQXK3zIudkhLSUDKSLSmLOjFWaw7OgF7+7BenED2BWq63+OAIre3P
-	or6LJIFg==;
-Received: from d58c58c2.rev.dansknet.dk ([213.140.88.194]:46746 helo=[10.0.0.182])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1sCbQI-000zIv-2W;
-	Thu, 30 May 2024 03:46:10 -0500
-Message-ID: <bee7240b-d143-4613-bde4-822d9c598834@embeddedor.com>
-Date: Thu, 30 May 2024 10:46:05 +0200
+	s=arc-20240116; t=1717077977; c=relaxed/simple;
+	bh=YBMOAyCBcFgvcCBMtcMZvnXu+mAomOWGRZXqez9nBgo=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=YIR+tPIsNqxLuxrOwpGNoxUQIGf3l8hbT3WWhpaxrldDDARYLcu9s11xhHRZcZCPi1IsnLi6fAxlYDAs2TsJGUfL/cp7u6wod47CLKOCj9UdzL+7xeeGqRSZVoduOdeQ9ngO/QkAUkdRfnlRi/UIdirw+UwusCkri3NSQFZugMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CEHs+mnA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cU0klByx; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 30 May 2024 14:06:13 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1717077974;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OS8Id2nCSN/fXoy4VK7jJRP3GU3EeLv5GyCQcWx88mk=;
+	b=CEHs+mnAAVC8qGnvr3qbcF2DSK0/4KvRrzUr5Ef2VlXFFUexXvbYA3PnZVMv8+PSLya4/0
+	CJPoytpfOsZ1jPrudIPnpWSt0q07jQGqadHLwe+R+PK1K53cHZw6CpCktwBU+0G7magZQ4
+	eqIMrY39DMMQQsPGuKv6/lCjCQcrRJHHhBzTikqlNCbvw/UGZvv514iMsrYWxLo4JlrE06
+	iEHzlprolNe1SFA0QvEF5eatnE/xB/Nejil3DngoDxcm+4tBaEpxAvMPgWKucSIVWOTyy7
+	VemRaKVqUhDCoJ8kmoIuUc0K1eQb30mRrO67Hog0XitDdne0DNuaD965q2eZtQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1717077974;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OS8Id2nCSN/fXoy4VK7jJRP3GU3EeLv5GyCQcWx88mk=;
+	b=cU0klByxwrv7J+azJ440bpWNU2bM1NofpK7ebb6rOev19r9M9JsP4873I+4dx4+0jGKgFH
+	B9dAQZ7GTXdIOhCA==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/topology/amd: Evaluate SMT in CPUID leaf
+ 0x8000001e only on family 0x17 and greater
+Cc: Tim Teichmann <teichmanntim@outlook.de>,
+ Christian Heusel <christian@heusel.eu>, Thomas Gleixner <tglx@linutronix.de>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk>
+References: <7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
-To: Bill Wendling <morbo@google.com>, Jiri Slaby <jirislaby@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nathan Chancellor <nathan@kernel.org>, Kees Cook <keescook@chromium.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Justin Stitt <justinstitt@google.com>, linux-serial@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-hardening@vger.kernel.org, llvm@lists.linux.dev,
- patches@lists.linux.dev, stable@vger.kernel.org
-References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
- <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
- <2024053008-sadly-skydiver-92be@gregkh>
- <09445a96-4f86-4d34-9984-4769bd6f4bc1@embeddedor.com>
- <68293959-9141-4184-a436-ea67efa9aa7c@kernel.org>
- <6170ad64-ee1c-4049-97d3-33ce26b4b715@kernel.org>
- <CAGG=3QU6kREyhAoRC+68UFX4txAKK-qK-HNvgzeqphj5-1te_g@mail.gmail.com>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <CAGG=3QU6kREyhAoRC+68UFX4txAKK-qK-HNvgzeqphj5-1te_g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Message-ID: <171707797395.10875.8250870947985684035.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 213.140.88.194
-X-Source-L: No
-X-Exim-ID: 1sCbQI-000zIv-2W
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: d58c58c2.rev.dansknet.dk ([10.0.0.182]) [213.140.88.194]:46746
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 0
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfAhf2r85ew2rJnWMrEcRvPwxDdCzQQhBJ52/4J2JitPgC5WhNBqatcvSUZqTvSs5BSImn0vV+rmTA9do1L8kHzBUelBjBEVqJFd6BmgzYlDbJs5kIDB1
- 0i0k588Iw2m7+wwaHMC2RkEGOhffYrePS1I/RvD3ad/x/ai/N5UewN4nkTSAgWhfIPX+8vm9ttgGg93yWijn64eoLOA4D4r6h3Fa4n3yvGIkzscGNnjXcR0z
- i6s9mpZ7b84QBa62rhjnwI43QvmF85rn14CvCmTtvc3sUPBmWxN9n8+Pks/vCVqv
 
+The following commit has been merged into the x86/urgent branch of tip:
 
->> So we should get rid of all those. Sooner than later.
->>
-> Yes! Please do this.
+Commit-ID:     34bf6bae3286a58762711cfbce2cf74ecd42e1b5
+Gitweb:        https://git.kernel.org/tip/34bf6bae3286a58762711cfbce2cf74ecd42e1b5
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 28 May 2024 22:21:31 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 30 May 2024 15:58:55 +02:00
 
-Definitely, we are working on that already[1]. :)
+x86/topology/amd: Evaluate SMT in CPUID leaf 0x8000001e only on family 0x17 and greater
 
---
-Gustavo
+The new AMD/HYGON topology parser evaluates the SMT information in CPUID leaf
+0x8000001e unconditionally while the original code restricted it to CPUs with
+family 0x17 and greater.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=grep&q=-Wflex-array-member-not-at-end
+This breaks family 0x15 CPUs which advertise that leaf and have a non-zero
+value in the SMT section. The machine boots, but the scheduler complains loudly
+about the mismatch of the core IDs:
+
+  WARNING: CPU: 1 PID: 0 at kernel/sched/core.c:6482 sched_cpu_starting+0x183/0x250
+  WARNING: CPU: 0 PID: 1 at kernel/sched/topology.c:2408 build_sched_domains+0x76b/0x12b0
+
+Add the condition back to cure it.
+
+  [ bp: Make it actually build because grandpa is not concerned with
+    trivial stuff. :-P ]
+
+Fixes: f7fb3b2dd92c ("x86/cpu: Provide an AMD/HYGON specific topology parser")
+Closes: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/56
+Reported-by: Tim Teichmann <teichmanntim@outlook.de>
+Reported-by: Christian Heusel <christian@heusel.eu>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tim Teichmann <teichmanntim@outlook.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6g2jduf6c@7b5pvomauugk
+---
+ arch/x86/kernel/cpu/topology_amd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topology_amd.c
+index d419dee..7d476fa 100644
+--- a/arch/x86/kernel/cpu/topology_amd.c
++++ b/arch/x86/kernel/cpu/topology_amd.c
+@@ -84,9 +84,9 @@ static bool parse_8000_001e(struct topo_scan *tscan, bool has_topoext)
+ 
+ 	/*
+ 	 * If leaf 0xb is available, then the domain shifts are set
+-	 * already and nothing to do here.
++	 * already and nothing to do here. Only valid for family >= 0x17.
+ 	 */
+-	if (!has_topoext) {
++	if (!has_topoext && tscan->c->x86 >= 0x17) {
+ 		/*
+ 		 * Leaf 0x80000008 set the CORE domain shift already.
+ 		 * Update the SMT domain, but do not propagate it.
 
