@@ -1,126 +1,95 @@
-Return-Path: <stable+bounces-47740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DAE8D52D1
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 22:05:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00788D53AD
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 22:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18375285A63
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 20:05:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 226D6B21776
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 20:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CE15589B;
-	Thu, 30 May 2024 20:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B90158878;
+	Thu, 30 May 2024 20:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PqVn6/sR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gLwyM/9Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744734D8DD;
-	Thu, 30 May 2024 20:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2811B770E1
+	for <stable@vger.kernel.org>; Thu, 30 May 2024 20:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717099551; cv=none; b=I9zh/jeEgNRmw5Dwpo1p2kczZ3VdUEp7Btmd1nQXnSjRLcSAVI5NmVl3PJuzpxxu9f2MD+E1cLdeQUAJV4c+y1Nq7tH6pw67wbCMxXO54CBznvrmp1hLpLPD3itQlP3cnYbki4hwKkts5darxptXhrU9ta8g6LFjO+FcfEIwmt8=
+	t=1717100429; cv=none; b=lZ6hwhMolKhUunXv6RCZeESN6eHPNJRFptsd0WmH8QshHKdUM3m4RVW/sIQAciIE4B63yPZovJoXOqikqeBJ6fN9K7Q9Kj/3C5izakRuEIXBJQ+RzMznxLDuUyG5YwZNL3TUwAjNtT5Z/idybFIgTZHETp4Wgfq5atnM8f4Mdgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717099551; c=relaxed/simple;
-	bh=EiMlIOlSM0Rwsr2BLYTLTBQ5OLses7NcEFn+0gX9OXo=;
-	h=Date:To:From:Subject:Message-Id; b=YTeGSsnzH48KMfngZ+My3JB3UZE6r/nmuaS5Zv4jo8aY62z3wzoghki1O3gYV8DK5rgVNKhQp6JoB8E0LNcSZBL8s8KcumruTzvfd0JH7mZW5MTB1cPZ07cLWpvu7Dr2jW8Kj9NQxdeglvVaUtRK2hho6cTUuwBuO2XLcr3ONMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PqVn6/sR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354DFC2BBFC;
-	Thu, 30 May 2024 20:05:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1717099551;
-	bh=EiMlIOlSM0Rwsr2BLYTLTBQ5OLses7NcEFn+0gX9OXo=;
-	h=Date:To:From:Subject:From;
-	b=PqVn6/sR4ObkUi22tt1DxXqDmIVdrdoVo/GNlxl59zamQ5Bz+6Mchw1YIPjmnYm2E
-	 G49QluUjuY8GdBxEM4ABomHtT1bAOvwKQRtXLP291SEyqjy+SxCPa4UcN981MNzz6f
-	 9r+iQaV0xIAmvCquc9wwjya1W9kxMNl8Ijbyw2N8=
-Date: Thu, 30 May 2024 13:05:50 -0700
-To: mm-commits@vger.kernel.org,zhaoyang.huang@unisoc.com,xiang@kernel.org,urezki@gmail.com,stable@vger.kernel.org,lstoakes@gmail.com,liuhailong@oppo.com,hch@infradead.org,guangye.yang@mediatek.com,21cnbao@gmail.com,hailong.liu@oppo.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-vmalloc-fix-vbq-free-breakage.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240530200551.354DFC2BBFC@smtp.kernel.org>
+	s=arc-20240116; t=1717100429; c=relaxed/simple;
+	bh=V4Iu2BqKHIcitHkE+HEYEi7U7gAsrnLi9fOAR9nBPfg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=RzDBuTImOxy9EIErOctUR91RIP1R877kMIrlsRfaUrqoRrLQ7MpJBeOWy66858xKs7smux1tW6Xko7HkWu0kEo8dVF7/6R7cpTh2+R4FtePu4cZBNZ7FMUEy4PgCQt3h1UZhRpqQJugiIk+HTT4oKfVNTuQ60OX9b9xHwzrxWqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gLwyM/9Q; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52b840a001dso772081e87.3
+        for <stable@vger.kernel.org>; Thu, 30 May 2024 13:20:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717100426; x=1717705226; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=V4Iu2BqKHIcitHkE+HEYEi7U7gAsrnLi9fOAR9nBPfg=;
+        b=gLwyM/9QeFJ2C7QFmTUFx/eeyzh9QDOGzgX19G7IhLwPQgrsr0sxJHKg3Qv8KbcLIf
+         y7BWlpabpNyskq13L+GmIU7xmr2lUw4Tn+Y2s/g0e6lcCWE1Wj+fOulTLgenoOszW9/f
+         tyHJnPPYlqKEmMjtQ3tqROIGXqYlgTFSsGReOMT3srpQSgIB1IkLP4i9gSuRRkJseLZn
+         jdgjYV5RUzekVt1azhXe5EevaKMugMh+cS1xCbQwMXqyapesNAEN6dlAKB//HV4n+336
+         85nLrS66Uh0xMNZc47U2vvvl7EUNIn+/Liby4WL8xNnxto/1mWGM+mlT8KaTp5U2erEu
+         nAYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717100426; x=1717705226;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V4Iu2BqKHIcitHkE+HEYEi7U7gAsrnLi9fOAR9nBPfg=;
+        b=fz/hjYM++E/wAZ3FIznIh9goii5yMxWJpl81uhKgq4AMEIhXb6y+WR4BjJmxskmQys
+         YHdyFvmBj7fVdNXSlM5WSq4X8snF965Zoum9PXzGsDass+aUD8tyLxNUiaMy+6Ck+cmf
+         YJDo3Hb3cOTTNtfd7Tdq9rhAves5pOu3UGWuX8ZezBR+lh3WZz1aArUhB0Lx2FPSQHxs
+         9TQh7U4j8J+bg0SqGXwnoHJggID3qL2gsfvDVCKzuTChxTcgrKM1NmGA/+kNfuF36BiF
+         1Q/Fg3y6lpVsbhR12qvq5648uUZBvJvk9sOl9+p0rCHs/t/vdgMHh4rTNdfHHznY5Klz
+         v3Dg==
+X-Gm-Message-State: AOJu0YzKtfOrwauRGDyQfG1EJ7mLAjr6tGhCrkNO8EQl9zFM5/bXF98M
+	UxiYL+GVM43Zo4qTFhvPkIqf+y0E7ZOogT3XnMK9zppPt6kNvoTDNOAlLlW9tPnLLvqAv/BDxjn
+	MobLQ2jlpw5BvNFpjeD4lT2jlQ2NtAw==
+X-Google-Smtp-Source: AGHT+IFfnSipC8rqnIaW25wSennEDZ764cbu1cpx7HMkImu4olbRVNnpD1bQ7ZjmAa6mvyakjuwA2ac0kFLp+lQFMr4=
+X-Received: by 2002:a19:ca4d:0:b0:522:297f:cb06 with SMTP id
+ 2adb3069b0e04-52b7d434d92mr1727891e87.32.1717100426156; Thu, 30 May 2024
+ 13:20:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <CAEQj+Ebm09gBePmOYZ3NiH2sMBLqDz=5RS5oODpTTfR1FWspzA@mail.gmail.com>
+In-Reply-To: <CAEQj+Ebm09gBePmOYZ3NiH2sMBLqDz=5RS5oODpTTfR1FWspzA@mail.gmail.com>
+From: phil995511 - <phil995511@gmail.com>
+Date: Thu, 30 May 2024 22:20:14 +0200
+Message-ID: <CAEQj+Eb8PByrAxZ9udhQaXXQi19QLg04isuHKL_EG62LsstrKQ@mail.gmail.com>
+Subject: Fwd: Kernel 6.8.12
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Hello,
 
-The patch titled
-     Subject: mm/vmalloc: fix vbq->free breakage
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-vmalloc-fix-vbq-free-breakage.patch
+Kernel 6.8 which is the default kernel of Ubundu 24.04 and other
+distributions derived from it is at the end of its life for you !?!
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-fix-vbq-free-breakage.patch
+As it provides better support for the Raspberry Pi 5 graphics card, I
+hoped to be able to benefit from it under Raspberry Pi OS which still
+uses the latest LTS kernel available.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+But if you don't make kernel 6.8 an LTS kernel, for Ubuntu and its
+derivatives, I will never be able to benefit from it on my RPi5 ;-(
+In addition, I am afraid that OS derived from Ubuntu 24.04 LTS will
+end up in difficulties due to this situation.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: "hailong.liu" <hailong.liu@oppo.com>
-Subject: mm/vmalloc: fix vbq->free breakage
-Date: Thu, 30 May 2024 17:31:08 +0800
-
-The function xa_for_each() in _vm_unmap_aliases() loops through all vbs. 
-However, since commit 062eacf57ad9 ("mm: vmalloc: remove a global
-vmap_blocks xarray") the vb from xarray may not be on the corresponding
-CPU vmap_block_queue.  Consequently, purge_fragmented_block() might use
-the wrong vbq->lock to protect the free list, leading to vbq->free
-breakage.
-
-Link: https://lkml.kernel.org/r/20240530093108.4512-1-hailong.liu@oppo.com
-Fixes: fc1e0d980037 ("mm/vmalloc: prevent stale TLBs in fully utilized blocks")
-Signed-off-by: Hailong.Liu <liuhailong@oppo.com>
-Reported-by: Guangye Yang <guangye.yang@mediatek.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Gao Xiang <xiang@kernel.org>
-Cc: Guangye Yang <guangye.yang@mediatek.com>
-Cc: liuhailong <liuhailong@oppo.com>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/vmalloc.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
---- a/mm/vmalloc.c~mm-vmalloc-fix-vbq-free-breakage
-+++ a/mm/vmalloc.c
-@@ -2830,10 +2830,9 @@ static void _vm_unmap_aliases(unsigned l
- 	for_each_possible_cpu(cpu) {
- 		struct vmap_block_queue *vbq = &per_cpu(vmap_block_queue, cpu);
- 		struct vmap_block *vb;
--		unsigned long idx;
- 
- 		rcu_read_lock();
--		xa_for_each(&vbq->vmap_blocks, idx, vb) {
-+		list_for_each_entry_rcu(vb, &vbq->free, free_list) {
- 			spin_lock(&vb->lock);
- 
- 			/*
-_
-
-Patches currently in -mm which might be from hailong.liu@oppo.com are
-
-mm-vmalloc-fix-vbq-free-breakage.patch
-
+Best regards.
 
