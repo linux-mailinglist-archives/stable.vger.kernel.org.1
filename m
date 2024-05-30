@@ -1,145 +1,117 @@
-Return-Path: <stable+bounces-47686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4570C8D4762
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 10:43:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BFF8D484A
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 11:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 063CC284834
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 08:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABBF21F21B1F
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 09:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F10F1761A8;
-	Thu, 30 May 2024 08:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552436F313;
+	Thu, 30 May 2024 09:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2zXqL1rX"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="C1N+N03H"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FDD1C697
-	for <stable@vger.kernel.org>; Thu, 30 May 2024 08:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F81183971
+	for <stable@vger.kernel.org>; Thu, 30 May 2024 09:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717058604; cv=none; b=H74otgEdy2A+sddRqf0uDgCwZXkxq792Gy9Fr0gzmN7pDelWOCT7qQFvrqZxlm3whpMjq/w09DWSg6Jqc9E3+XXMImd+C8uHf91fWgo2ZzdkKutZ53n3JnQ3tQTTUU1hEGHaG4dSI/URKPl02iojO2OhUfZ2HuINbxqFeLpcjNE=
+	t=1717060909; cv=none; b=sf2ROB+kdHn4/bBy84gnDkMMgy2wda0Gdq75fCEdtU/zdtyl3A6GoXAazaSNJBf0FMOug9o13NCGfQ1xKkmpdKx8weas4j+8twHSEoHg3J5H08dogPpjTGUY29FXSshdXa6YmXeMXmpdx9C5ZnWJ8qaU7ObrusRTeoTXAq00IO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717058604; c=relaxed/simple;
-	bh=5lPEc5yVvXfy5xHN7NJ1MGi4/BA5kf2rdtCVoPXAHLo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dBw4rbbXbgunjLAVDTVG+Ev47Jjp2rfAR+eoHpy63UY9DKHPWEFl4I+1b26yqA9U8pVdGHNBVetxe3SmU9HKite3+GINeu3S7hl1ruikh25ZtwDh/otLDau2/KsaY6YV+TlRJZgylVQn0CW7uss6wRC/Y9MEVMUKKBkmUv0WfJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2zXqL1rX; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-57a16f4b8bfso10503a12.0
-        for <stable@vger.kernel.org>; Thu, 30 May 2024 01:43:22 -0700 (PDT)
+	s=arc-20240116; t=1717060909; c=relaxed/simple;
+	bh=LOuk5ngQgDvwGWmTqF8UHa1uZEIcOdoIOKhJeBC24z0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oYA6Ey/cb52ZKuBRr+uXnJ+CodBDTwfZI3+sxDVYiZ/XwlbBelKhomv6+RgKev5eeQKl30/VJ7O7frseKPFHy8FuY+U8FBM1tRzw58dKldJnUCgKq2J1KS07z4mcnAziTlHH98sJND3Wj5P6j8gAWHJvP36dO/+jqhbgcsTTYG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=C1N+N03H; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4211245e889so6471775e9.2
+        for <stable@vger.kernel.org>; Thu, 30 May 2024 02:21:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717058601; x=1717663401; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1717060906; x=1717665706; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UIungYlLLm/88bUfHAWA9yyqvj5B21yLMgFZirqe2GE=;
-        b=2zXqL1rXx1ktsblkUS2EkHp/Zuyb/LxVI0+1TfluVZLPUYa2mOasdA/IdLqvuVlaJL
-         XBOlpIPBkNyEDgtfcZ/GKvZszXLKtk6Ymd6EPDfJWeoo5IXzab7Oe5s3jYluSbHfBLvG
-         D3j0lkSnQGDzghEGWCiFBRY4Y97AwoHFzxJzHDwJoH1Thzsc/zZk//B095s31fdtDVQS
-         jQmCxWmmmQxM5n20oyhK9trzJR5xIQUOjeW5CDJgGw9CX91PazUTtMZUpTd7BqnT3uhK
-         wSjYS2QxogD8jX8ml6VdcSlrFmUHBmot2M8dBcSuQ0oQ2SwTBFFDndhZ4RDdP2P5dBJZ
-         OZBQ==
+        bh=J2NdMUTFKCND4TuQAML2rnvjKT/jKwjKz+oofuCTZRU=;
+        b=C1N+N03HSClTf7HDAbAg03esAG0+Hm8TAvrIXn0xEH5owaeDI0RbU8q4kXwKvam6YH
+         6rJ25m5X9RKo1K1EwEidkD4JpcmHehhR3FabH2EOxdr7aBtp/vEiD0wzYkrgcO4HSGRA
+         gKvs/fZ1Cf+zJJDnvOLovhlC9TwqeK0vtppkz6ArotbeipU1Am/gsSuBZIpOnLIYZcPz
+         Yx2squZ9tT4c9XLq1T1swEm9+fYB6X7re+6inPYBToqzoiuiJuDx5PFCMiw5St/bhrbm
+         yygowueKgj/KrRX7pqC55WDPsqKeiAWcESt0Xy6l3iKjpZxqM/OasJU/xJWUpVoVw6V/
+         qsYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717058601; x=1717663401;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1717060906; x=1717665706;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UIungYlLLm/88bUfHAWA9yyqvj5B21yLMgFZirqe2GE=;
-        b=e/I8fQ+s+CY5aSCeGwu5aS2SUnge4BiU5JpK4GnPRH9bhk4BvWWl66zfUUEgsLMqBA
-         AFFOzJVKxB9VcaEXbb0bL27PGtV4CIDqttreMYMjZxUDnakq794ZA0Kgm1+M2BY8neoV
-         Erm5USKcnDC7IyYMyyMGOwd2+S4/pDwhuhHa81uEltFD3qbpc8SRGQaoWI88FSw46gK9
-         GrGxMCicC/TkkptSyXIYfWUlFq3E9Yf57Habakg87ytUIxASpDMx29G8+ayelc/swRIa
-         kQeuQVzsjjdbErnLZVdzLzaSlT3JCqK4gMyGOeAQxhLwlmzNJKSQ9H50dyETj6Ux6H26
-         WX9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWXTjfxiaKa0ZMmJJVT3TIen2zOj11bsLesqu4PiTla7eXIFKTky+E901AUUUokOvMcEnfRgsxPpnPFKpmcVkNKPZZUxyKa
-X-Gm-Message-State: AOJu0YxzND8pzGUfV7LuIr+M80V7EtjtUFAy0oQTz1phL6BXgo+3oZf/
-	SfBQJRBkY1pxU0z1FFDOOMho2Cm5RIwZ3NEjQNPQdUJ1q1SJBCv1g+LoL1QDo1xARP3iBERt08m
-	A/Sh6lO3D64SznvdMcc6sRN/MxBxiVfNQeLY=
-X-Google-Smtp-Source: AGHT+IHx8Dydq+riFuMhZGjUR/rHUsDceSADAwx6lobyo5M6S2EYM9iJat5JNucibeh4gaWqYkUQDP3ROcddvlVakTs=
-X-Received: by 2002:a05:6402:31b8:b0:57a:1a30:f5cf with SMTP id
- 4fb4d7f45d1cf-57a1a30fcd5mr81193a12.0.1717058600679; Thu, 30 May 2024
- 01:43:20 -0700 (PDT)
+        bh=J2NdMUTFKCND4TuQAML2rnvjKT/jKwjKz+oofuCTZRU=;
+        b=muDa4U8/WB6pcHEB5B13EyusIr31PtPriBWwz6BSSrtT/cYtWO+U3pbZ6pYitWOegs
+         Cp6N5BMTutCT7JIFZyj8q/STykb4Ay1xmGtr44gQUtalvIUQl/YKA/62QTMVoOoAeR1t
+         JWYiJVy9g9Hwerlp0fYxxV+1ScrJ0r/co15YTnqb5I/+e6RZQ2tiIHn0YQ1XZUkm7KTA
+         glclQKBQY+t/WPmRIDicZmFfV7w8mQc8g4rI975SOLWpmURgGhqBjbMrSK+mctS3nP5C
+         6VqEK5u0yImAfizSdomhbv7hue84y63KcwTkVHRTIiB2P7/AZbulYassqgmVLOzOvPtd
+         Cjpg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+jeFDZpwFcDRaXY51MHoAxFTdtfIUVViz0KsgIjRk2Js3BMH07IYPDaA4zOwJ5fcA5c0JLLcTO0iyRyJ2hxsNYinbdSHx
+X-Gm-Message-State: AOJu0Ywfukw/sybpBIBRdQjRUA83XrXyWIITaXvvVFdWEhOY7YVs148Q
+	+d+/QnXLwCOOwuyZYwiAK1fDps9nb7wxpMi1+j/hhgm5iZ0WpmeIxQUDW6ApNC0=
+X-Google-Smtp-Source: AGHT+IGvEkCdARfpYJn7j9uuA7yNxUbgpb8AAl+3ZNngODEN/Wqw/TiTEIYw1nqx7Q6osL9EIgQc7Q==
+X-Received: by 2002:a05:600c:154f:b0:421:b79:93fd with SMTP id 5b1f17b1804b1-4212781b4a7mr13857215e9.21.1717060905592;
+        Thu, 30 May 2024 02:21:45 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:75a:e000:aae:8a32:91fa:6bf5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4212706c46fsm19043935e9.28.2024.05.30.02.21.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 May 2024 02:21:45 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Dmitry Baryshkov <dbaryshkov@gmail.com>,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] gpio: amd8111: Convert PCIBIOS_* return codes to errnos
+Date: Thu, 30 May 2024 11:21:43 +0200
+Message-ID: <171706089866.32720.4484394923188699673.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240527132345.13956-1-ilpo.jarvinen@linux.intel.com>
+References: <20240527132345.13956-1-ilpo.jarvinen@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
- <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org> <2024053008-sadly-skydiver-92be@gregkh>
- <09445a96-4f86-4d34-9984-4769bd6f4bc1@embeddedor.com> <68293959-9141-4184-a436-ea67efa9aa7c@kernel.org>
- <6170ad64-ee1c-4049-97d3-33ce26b4b715@kernel.org>
-In-Reply-To: <6170ad64-ee1c-4049-97d3-33ce26b4b715@kernel.org>
-From: Bill Wendling <morbo@google.com>
-Date: Thu, 30 May 2024 01:43:03 -0700
-Message-ID: <CAGG=3QU6kREyhAoRC+68UFX4txAKK-qK-HNvgzeqphj5-1te_g@mail.gmail.com>
-Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <keescook@chromium.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Justin Stitt <justinstitt@google.com>, 
-	linux-serial@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org, 
-	llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 30, 2024 at 1:41=E2=80=AFAM Jiri Slaby <jirislaby@kernel.org> w=
-rote:
->
-> On 30. 05. 24, 10:33, Jiri Slaby wrote:
-> > On 30. 05. 24, 10:12, Gustavo A. R. Silva wrote:
-> >>
-> >>
-> >> On 30/05/24 09:40, Greg Kroah-Hartman wrote:
-> >>> On Thu, May 30, 2024 at 08:22:03AM +0200, Jiri Slaby wrote:
-> >>>>>   This will be an error in a future compiler version
-> >>>>> [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
-> >>>>>       291 |         struct mxser_port ports[] __counted_by(nports);
-> >>>>>           |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-> >>>>>     1 error generated.
-> >>>>>
-> >>>>> Remove this use of __counted_by to fix the warning/error. However,
-> >>>>> rather than remove it altogether, leave it commented, as it may be
-> >>>>> possible to support this in future compiler releases.
-> >>>>
-> >>>> This looks like a compiler bug/deficiency.
-> >>>
-> >>> I agree, why not just turn that option off in the compiler so that th=
-ese
-> >>> "warnings" will not show up?
-> >>
-> >> It's not a compiler bug.
-> >
-> > It is, provided the code compiles and runs.
-> >
-> >> The flexible array is nested four struct layers deep, see:
-> >>
-> >> ports[].port.buf.sentinel.data[]
-> >>
-> >> The error report could be more specific, though.
-> >
-> > Ah, ok. The assumption is sentinel.data[] shall be unused. That's why i=
-t
-> > all works. The size is well known, [] is zero size, right?
-> >
-> > Still, fix the compiler, not the code.
->
-> Or fix the code (properly).
->
-> Flex arrays (even empty) in the middle of structs (like
-> ports[].port.buf.sentinel.data[] above is) are deprecated since gcc 14:
-> https://gcc.gnu.org/pipermail/gcc-patches/2023-August/626516.html
->
-> So we should get rid of all those. Sooner than later.
->
-Yes! Please do this.
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
--bw
+
+On Mon, 27 May 2024 16:23:44 +0300, Ilpo Järvinen wrote:
+> amd_gpio_init() uses pci_read_config_dword() that returns PCIBIOS_*
+> codes. The return code is then returned as is but amd_gpio_init() is
+> a module init function that should return normal errnos.
+> 
+> Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+> errno before returning it from amd_gpio_init().
+> 
+> [...]
+
+Applied, thanks!
+
+[1/2] gpio: amd8111: Convert PCIBIOS_* return codes to errnos
+      commit: d4cde6e42f2eb56436cab6d1931738ec09e64f74
+[2/2] gpio: rdc321x: Convert PCIBIOS_* return codes to errnos
+      commit: 9a73e037f4b5eb45c9ecccb191d39c280abe7cbd
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
