@@ -1,74 +1,178 @@
-Return-Path: <stable+bounces-47737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE508D5272
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 21:42:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C5E8D52AB
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 21:51:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D043A1F24D78
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 19:42:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14FC3B21C0A
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 19:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BB3158874;
-	Thu, 30 May 2024 19:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2AB139584;
+	Thu, 30 May 2024 19:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA0Od9z1"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LO/Nvq0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BB112E6D
-	for <stable@vger.kernel.org>; Thu, 30 May 2024 19:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E30A433CA;
+	Thu, 30 May 2024 19:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717098152; cv=none; b=gYD8jvLrCP4Ctp7/Wig2R7Nx0z9oUiMgKfXZKjvfbKtdjBK0c/goKSNfdXzF/FllDON2vu7ZK4vURBW3jP0sc9zND5MBZj5lE/YhbHNb4kHhH1VK0E0SDIHPAQqGJGGGfpZ+2JsbNoFdxVDUvPsZU5MyEJ+0hbFyYiGCyupkONw=
+	t=1717098690; cv=none; b=RMWlQtfHSkpZ1jg1turwScYZCwBxrwuVnaWZ3yw1ERKhuXhlKTgty/lTZ6rlSgaE85ayvBUZPEEjEc8dR2YTQylbLxxuxdaHndC6jT/vWChUlAXji3O/3gYW5gr8UDO6rkq+hONIpyHAOewQrF3ESnog6zJhBcb1a9/dSGokLEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717098152; c=relaxed/simple;
-	bh=q3bf3RlEQ7Z94EL98F0V240LErTB0/iKv8bz7fEIipU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MjD9tVmXxFkyGvtXgn0N0Fr73EnJY8+Mf5R1vhe4SZvMt6W+wwpWCyTlxxVwLmHOf6W1j6ECW5DSTsQCfMO6Qghmn2M1WnCLrzJ8WgYSkvGER/hdERvftM0hWBp0gNTAxhmljjl191NLpX5LyJGP1/0/eLxFYnoReaezBMx4VG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA0Od9z1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022F8C2BBFC;
-	Thu, 30 May 2024 19:42:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717098152;
-	bh=q3bf3RlEQ7Z94EL98F0V240LErTB0/iKv8bz7fEIipU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IA0Od9z1JbFohw6P9c2ei3/NtB3minYoNIXIjd3mLG6J3YWvqczJsU++fkrhDkkE6
-	 +2ZJlA6hDgFttHLScfsHJgH7a8ZpcvcSmpuTDNVir2LKjo8uO9A3YBqZkECPy+u0gs
-	 zWG8/dchFBa7tf8VDSbLDvDKlRYZPp7zshQizpOg=
-Date: Thu, 30 May 2024 21:42:36 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Mohammad Hosain <mh3marefat@yahoo.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: AM5 big performance reduction with CSM boot mode and Wi-Fi
- disabled.
-Message-ID: <2024053003-unbutton-stadium-2a2b@gregkh>
-References: <321337111.6017022.1717061838476.ref@mail.yahoo.com>
- <321337111.6017022.1717061838476@mail.yahoo.com>
- <2024053032-squeeze-such-dd29@gregkh>
- <1591472096.6190967.1717088352009@mail.yahoo.com>
+	s=arc-20240116; t=1717098690; c=relaxed/simple;
+	bh=fO8QCfWvfKl1/hxz1mdJCg15uFs3PNC5SQVbQ3RoLkM=;
+	h=Date:To:From:Subject:Message-Id; b=sdm3lDAD3Z4/ogfDXVCSi+HB6561L8Q9JUO5l4JdOaoFcusvERBGJn7zpASRdZ78ZqzqPilTNsBw4t7jX1CvtTK3Rok8n6lJy7INz4hAGKwbYLhr/aU+1pymCXWwkHjFJRFAWIzUYofWv+DDsLLCALrpmtsJtdD9u9E6OONMNBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LO/Nvq0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE78C2BBFC;
+	Thu, 30 May 2024 19:51:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1717098689;
+	bh=fO8QCfWvfKl1/hxz1mdJCg15uFs3PNC5SQVbQ3RoLkM=;
+	h=Date:To:From:Subject:From;
+	b=LO/Nvq0xKAyKlov9Yi/DiuOO99FOfKc+nW8j6u0yP6gFaCNwK2jwBvR1DL5JBntjH
+	 naCS/Jg4cbyLe+J1P09AfBKnZCkD91Xb2A5Fe8A7L6po4GSNygRyhqq7d8IQrign+s
+	 wyA7xA9JChAv0eqcqStSAQCyMWA9d5h5evApuIb4=
+Date: Thu, 30 May 2024 12:51:29 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,ghe@suse.com,gechangwei@live.cn,joseph.qi@linux.alibaba.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-fix-null-pointer-dereference-in-ocfs2_journal_dirty.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240530195129.BAE78C2BBFC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1591472096.6190967.1717088352009@mail.yahoo.com>
 
-On Thu, May 30, 2024 at 04:59:12PM +0000, Mohammad Hosain wrote:
-> I think it has never worked (I remember as back as 6.7 it behaved like this but only recently I discovered it). If you enable CSM and disable Wi-Fi using BIOS, gaming performance is massively reduced on AM5 boards... This only happens on Linux.
-> 
-> I don't know who are the developers involved that is why I emailed stable@vger.kernel.org.
 
-stable@vger is not the correct place for generic bug reports like this,
-sorry.  Please try reporting this on the linux wifi mailing list, the
-developers there should be able to help you out more.
+The patch titled
+     Subject: ocfs2: fix NULL pointer dereference in ocfs2_journal_dirty()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     ocfs2-fix-null-pointer-dereference-in-ocfs2_journal_dirty.patch
 
-good luck!
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-null-pointer-dereference-in-ocfs2_journal_dirty.patch
 
-greg k-h
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+Subject: ocfs2: fix NULL pointer dereference in ocfs2_journal_dirty()
+Date: Thu, 30 May 2024 19:06:29 +0800
+
+bdev->bd_super has been removed and commit 8887b94d9322 change the usage
+from bdev->bd_super to b_assoc_map->host->i_sb.  This introduces the
+following NULL pointer dereference in ocfs2_journal_dirty() since
+b_assoc_map is still not initialized.  This can be easily reproduced by
+running xfstests generic/186, which simulate no more credits.
+
+[  134.351592] BUG: kernel NULL pointer dereference, address: 0000000000000000
+...
+[  134.355341] RIP: 0010:ocfs2_journal_dirty+0x14f/0x160 [ocfs2]
+...
+[  134.365071] Call Trace:
+[  134.365312]  <TASK>
+[  134.365524]  ? __die_body+0x1e/0x60
+[  134.365868]  ? page_fault_oops+0x13d/0x4f0
+[  134.366265]  ? __pfx_bit_wait_io+0x10/0x10
+[  134.366659]  ? schedule+0x27/0xb0
+[  134.366981]  ? exc_page_fault+0x6a/0x140
+[  134.367356]  ? asm_exc_page_fault+0x26/0x30
+[  134.367762]  ? ocfs2_journal_dirty+0x14f/0x160 [ocfs2]
+[  134.368305]  ? ocfs2_journal_dirty+0x13d/0x160 [ocfs2]
+[  134.368837]  ocfs2_create_new_meta_bhs.isra.51+0x139/0x2e0 [ocfs2]
+[  134.369454]  ocfs2_grow_tree+0x688/0x8a0 [ocfs2]
+[  134.369927]  ocfs2_split_and_insert.isra.67+0x35c/0x4a0 [ocfs2]
+[  134.370521]  ocfs2_split_extent+0x314/0x4d0 [ocfs2]
+[  134.371019]  ocfs2_change_extent_flag+0x174/0x410 [ocfs2]
+[  134.371566]  ocfs2_add_refcount_flag+0x3fa/0x630 [ocfs2]
+[  134.372117]  ocfs2_reflink_remap_extent+0x21b/0x4c0 [ocfs2]
+[  134.372994]  ? inode_update_timestamps+0x4a/0x120
+[  134.373692]  ? __pfx_ocfs2_journal_access_di+0x10/0x10 [ocfs2]
+[  134.374545]  ? __pfx_ocfs2_journal_access_di+0x10/0x10 [ocfs2]
+[  134.375393]  ocfs2_reflink_remap_blocks+0xe4/0x4e0 [ocfs2]
+[  134.376197]  ocfs2_remap_file_range+0x1de/0x390 [ocfs2]
+[  134.376971]  ? security_file_permission+0x29/0x50
+[  134.377644]  vfs_clone_file_range+0xfe/0x320
+[  134.378268]  ioctl_file_clone+0x45/0xa0
+[  134.378853]  do_vfs_ioctl+0x457/0x990
+[  134.379422]  __x64_sys_ioctl+0x6e/0xd0
+[  134.379987]  do_syscall_64+0x5d/0x170
+[  134.380550]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  134.381231] RIP: 0033:0x7fa4926397cb
+[  134.381786] Code: 73 01 c3 48 8b 0d bd 56 38 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 8d 56 38 00 f7 d8 64 89 01 48
+[  134.383930] RSP: 002b:00007ffc2b39f7b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+[  134.384854] RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007fa4926397cb
+[  134.385734] RDX: 00007ffc2b39f7f0 RSI: 000000004020940d RDI: 0000000000000003
+[  134.386606] RBP: 0000000000000000 R08: 00111a82a4f015bb R09: 00007fa494221000
+[  134.387476] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+[  134.388342] R13: 0000000000f10000 R14: 0000558e844e2ac8 R15: 0000000000f10000
+[  134.389207]  </TASK>
+
+Fix it by only aborting transaction and journal in ocfs2_journal_dirty()
+now, and leave ocfs2_abort() later when detecting an aborted handle,
+e.g. start next transaction. Also log the handle details in this case.
+
+Link: https://lkml.kernel.org/r/20240530110630.3933832-1-joseph.qi@linux.alibaba.com
+Fixes: 8887b94d9322 ("ocfs2: stop using bdev->bd_super for journal error logging")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/journal.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+--- a/fs/ocfs2/journal.c~ocfs2-fix-null-pointer-dereference-in-ocfs2_journal_dirty
++++ a/fs/ocfs2/journal.c
+@@ -778,13 +778,15 @@ void ocfs2_journal_dirty(handle_t *handl
+ 		if (!is_handle_aborted(handle)) {
+ 			journal_t *journal = handle->h_transaction->t_journal;
+ 
+-			mlog(ML_ERROR, "jbd2_journal_dirty_metadata failed. "
+-					"Aborting transaction and journal.\n");
++			mlog(ML_ERROR, "jbd2_journal_dirty_metadata failed: "
++			     "handle type %u started at line %u, credits %u/%u "
++			     "errcode %d. Aborting transaction and journal.\n",
++			     handle->h_type, handle->h_line_no,
++			     handle->h_requested_credits,
++			     jbd2_handle_buffer_credits(handle), status);
+ 			handle->h_err = status;
+ 			jbd2_journal_abort_handle(handle);
+ 			jbd2_journal_abort(journal, status);
+-			ocfs2_abort(bh->b_assoc_map->host->i_sb,
+-				    "Journal already aborted.\n");
+ 		}
+ 	}
+ }
+_
+
+Patches currently in -mm which might be from joseph.qi@linux.alibaba.com are
+
+ocfs2-fix-null-pointer-dereference-in-ocfs2_journal_dirty.patch
+ocfs2-fix-null-pointer-dereference-in-ocfs2_abort_trigger.patch
+
 
