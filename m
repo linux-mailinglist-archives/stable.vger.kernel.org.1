@@ -1,118 +1,117 @@
-Return-Path: <stable+bounces-47696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E709E8D491E
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 12:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8188D4940
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 12:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2E7C282737
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 10:02:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45461288064
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 10:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BD2169ACD;
-	Thu, 30 May 2024 10:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C421761AD;
+	Thu, 30 May 2024 10:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R83T4z8O"
+	dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b="lbWREGlk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083AF18396D;
-	Thu, 30 May 2024 10:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F65D1761B4;
+	Thu, 30 May 2024 10:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717063329; cv=none; b=RO6TKHYmfCDymWm7nfg/5XbC5rsumkb9qY+PRnzYkV3j4cRacCzlr5e3sAk9kqZiV5Zlj+xU2X+N3Lwj8ZtdjDQN8C49DTb8XHhEub+pa+C9wfdaq32dpUzFQeY1QNb2VzeANTqDkGD8K8kMoqYHjCSzssrc0NCo/vM2T7r0RzA=
+	t=1717063566; cv=none; b=JGs9AU+t8jLlNeoPIQ7V3hgkOsMRDcCHnq/wthBHOxgsrQIr08BV5y2dZ4PUFNZ6d5K/NnKVFgwpIpyqmM0hjcwCZXg1mginyV1iSsZJ5k97PhYDH9f5/Kxj+OBCaHYjOq7oAHQW2Nk8I1RNu793/Ydgcsq03jtqDiBjO6QZExU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717063329; c=relaxed/simple;
-	bh=1LP2rTo7NH0u3HUMgvoQtIkwfwWpjfpCFYaEhS+TgdI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GxglIErD6S4CYv44SZseejnN8HDEfo+fS/TVCwjUjAkHmdpfg1/u5hUqUizfaSgabkaYWDILodFr1sn4lozPKiy0tGD7NbWBdXc20YaapB0+kRMnukxiMeJI2zt6HtUF4/S7hCPNJ+wT5JtiFD5GpuuAoUPeDYihiYzjIqJWhmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R83T4z8O; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717063328; x=1748599328;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=1LP2rTo7NH0u3HUMgvoQtIkwfwWpjfpCFYaEhS+TgdI=;
-  b=R83T4z8O1rpXRNZ9Ji6yJHaVjStc4ZVqQg1wtDs7tcoO88ywDLuXjB4w
-   O5Xbo3C4NTwMPvJmMe5Z26ILxCDOPLtZ5pN1ngvCIfQt4z180RvHe9etZ
-   MwnZagCmmzrE+NaCmNGeNkeY5KyWMY73QBGF/AzP2S3yCuw2YOO1quIXw
-   S4U6HsRFpDpbHo6WFYQUXRam1ULm4RAdNnxjsrfqCI+wNoXfFMwDLQuZj
-   ZfBlGxZN4DXiclewHdB/gYf9vr5RIHqzuEKwQwwyMPqs1ThFFiHgPqTXP
-   YoiRbCWGPK8tMYsH5ZMW3vcwVg/JkjOM5EHq8tVLXKP9TRFsiM4qQAszT
-   A==;
-X-CSE-ConnectionGUID: 54nMk7gVQSC6eP6wt2W/CQ==
-X-CSE-MsgGUID: WFX1lcDkRTGCBVxNkai47A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="24942804"
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="24942804"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 03:02:07 -0700
-X-CSE-ConnectionGUID: 899tdr+XSt+622yob0QDcA==
-X-CSE-MsgGUID: q2Tk505KSB+DoG7+DejYbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="40235059"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.246.132])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 03:02:04 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Cc: inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	Jani Nikula <jani.nikula@intel.com>,
+	s=arc-20240116; t=1717063566; c=relaxed/simple;
+	bh=P8D54ok9cu6zOkpePcZy8AUJjwmh3AO9JwlkXPHfqEM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m/O9EWYx52v1dRztpekamVpgs1DFQ3Y+7GfXqmcVd/0+sVaVpMZB7jFT4PgCioLrtisnHEximC6Kqp1C+oYya0xzuXlvj9L6DxYga1T8v1TLfTo8mPryMaCbML1mGky5g+QZMci0w5fgtI55m1V9K5V/v65KX8EBEC7uLUwJ+iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de; spf=pass smtp.mailfrom=t-8ch.de; dkim=pass (1024-bit key) header.d=t-8ch.de header.i=@t-8ch.de header.b=lbWREGlk; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=t-8ch.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-8ch.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+	t=1717063562; bh=P8D54ok9cu6zOkpePcZy8AUJjwmh3AO9JwlkXPHfqEM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lbWREGlk5GiSkfmpcriEcHBf6Tn3CssE33q54ngE6AIhtMmYix7k4RywNLNddmt1C
+	 66ltCd61fcVdH6FnTimj99g6BVeUFP+B4CC0AB6Tdnfivk7CALIprN/JQx/JqMu4Fp
+	 VfptFL9AJhKSJF3tmOzqxxDlB5SI1V2ZNNb565vA=
+Date: Thu, 30 May 2024 12:06:01 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>, 
+	Binbin Zhou <zhoubinbin@loongson.cn>, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
-Subject: [PATCH 1/4] drm/exynos/vidi: fix memory leak in .get_modes()
-Date: Thu, 30 May 2024 13:01:51 +0300
-Message-Id: <20240530100154.317683-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.2
+Subject: Re: [PATCH v3 1/4] LoongArch: Fix built-in DTB detection
+Message-ID: <e1321725-ee7e-4716-ad45-634803fca5ff@t-8ch.de>
+References: <20240522-loongarch-booting-fixes-v3-0-25e77a8fc86e@flygoat.com>
+ <20240522-loongarch-booting-fixes-v3-1-25e77a8fc86e@flygoat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240522-loongarch-booting-fixes-v3-1-25e77a8fc86e@flygoat.com>
 
-The duplicated EDID is never freed. Fix it.
+On 2024-05-22 23:02:17+0000, Jiaxun Yang wrote:
+> fdt_check_header(__dtb_start) will always success because kernel
+> provided a dummy dtb, and by coincidence __dtb_start clashed with
+> entry of this dummy dtb. The consequence is fdt passed from
+> firmware will never be taken.
+> 
+> Fix by trying to utilise __dtb_start only when CONFIG_BUILTIN_DTB
+> is enabled.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7b937cc243e5 ("of: Create of_root if no dtb provided by firmware")
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+> v3: Better reasoning in commit message, thanks Binbin and Huacai!
+> ---
+>  arch/loongarch/kernel/setup.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+> index 60e0fe97f61a..ea6d5db6c878 100644
+> --- a/arch/loongarch/kernel/setup.c
+> +++ b/arch/loongarch/kernel/setup.c
+> @@ -275,16 +275,18 @@ static void __init arch_reserve_crashkernel(void)
+>  static void __init fdt_setup(void)
+>  {
+>  #ifdef CONFIG_OF_EARLY_FLATTREE
+> -	void *fdt_pointer;
+> +	void *fdt_pointer = NULL;
+>  
+>  	/* ACPI-based systems do not require parsing fdt */
+>  	if (acpi_os_get_root_pointer())
+>  		return;
+>  
+> +#ifdef CONFIG_BUILTIN_DTB
+>  	/* Prefer to use built-in dtb, checking its legality first. */
+>  	if (!fdt_check_header(__dtb_start))
+>  		fdt_pointer = __dtb_start;
+> -	else
+> +#endif
+> +	if (!fdt_pointer)
+>  		fdt_pointer = efi_fdt_pointer(); /* Fallback to firmware dtb */
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Prefer to use non-ifdef logic:
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index fab135308b70..11a720fef32b 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -309,6 +309,7 @@ static int vidi_get_modes(struct drm_connector *connector)
- 	struct vidi_context *ctx = ctx_from_connector(connector);
- 	struct edid *edid;
- 	int edid_len;
-+	int count;
- 
- 	/*
- 	 * the edid data comes from user side and it would be set
-@@ -328,7 +329,11 @@ static int vidi_get_modes(struct drm_connector *connector)
- 
- 	drm_connector_update_edid_property(connector, edid);
- 
--	return drm_add_edid_modes(connector, edid);
-+	count = drm_add_edid_modes(connector, edid);
-+
-+	kfree(edid);
-+
-+	return count;
- }
- 
- static const struct drm_connector_helper_funcs vidi_connector_helper_funcs = {
--- 
-2.39.2
+	if (IS_ENABLED(CONFIG_BUILTIN_DTB) && !fdt_check_header(__dtb_start))
+  		fdt_pointer = __dtb_start;
 
+This is shorter, easier to read and will prevent bitrot.
+The code will be typechecked but then optimized away, so no
+runtime overhead exists.
+
+>  
+>  	if (!fdt_pointer || fdt_check_header(fdt_pointer))
+> 
+> -- 
+> 2.43.0
+> 
 
