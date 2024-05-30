@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-47723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5EA8D4EB0
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 17:08:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40F78D4F27
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 17:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8982E285F22
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 15:08:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A47F285297
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 15:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2B917F51A;
-	Thu, 30 May 2024 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70480182D0C;
+	Thu, 30 May 2024 15:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusipp.de header.i=osmanx@heusipp.de header.b="BxbK3YbP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OIM/F4At"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B0917F512;
-	Thu, 30 May 2024 15:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B494818755D;
+	Thu, 30 May 2024 15:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717081686; cv=none; b=IaIym56QcwgHEQ/mUewLhjoS3EzOar/bmWGu5bPvCZZAPlfrJ1JvRzI/9++vHueOeDDwPrdcfFNPbevzEa3ofuFIUBoGprAn2dGP9Gbn8C/GrGTDXPLjDNSXFf5ZZ/n3YNFlFDk43YsqVBybVCaqg0hMkF3j/Vgw375YZmchaPc=
+	t=1717083202; cv=none; b=scUbXPRgUA+rOXbK5/rOaHBmb+VcErnVLstUPk/gcvSUvC6cex6oWj4y+OGbflFZBccRA4wGeSiZH7QYYnJFYaSmYdR8dsfMJilluy7cJHU56LQLyFq4xzHvebFSfxCJQhN3uLwN3GeVZQrToR3ZCQMDXPgV2O+/DuBtkqN29TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717081686; c=relaxed/simple;
-	bh=Pa11LFth+eQqOgfbTEnTARtXJJKp/bt6Wv/siUFKtvc=;
+	s=arc-20240116; t=1717083202; c=relaxed/simple;
+	bh=t9rCtR888zCMmrHzZcCvAT1velIWgffOm4gsLVTlhw4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KsEOLmH8wVvzxZJfauTd90Lo9aRRjNUj0hLLfQxRMv4Logr7jKoGObqN6C0xMWAC16yRp8lFDwQPU65TqnE7IWBbjDNbFpI94wFWpj3I2TkMFnea1VeaSJ944+cT8HjEYRsy9Gh2Z3MvAWM68qRelFvEG34viWBzIIvzA0rKPYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusipp.de; spf=pass smtp.mailfrom=heusipp.de; dkim=pass (2048-bit key) header.d=heusipp.de header.i=osmanx@heusipp.de header.b=BxbK3YbP; arc=none smtp.client-ip=212.227.126.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusipp.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusipp.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusipp.de;
-	s=s1-ionos; t=1717081650; x=1717686450; i=osmanx@heusipp.de;
-	bh=mb7kXFpGBX4A0/kwGZN2V0UfuyCQlIq7DVikbtlTwbE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=BxbK3YbPIyUu1oVthVFlag/Cd2h1e9uIHPNrRO64XdJ4LhSLOY+0fg64L8Vl3nj5
-	 PaPmKIBuD1oPAFurXWwVNBJkuIqpxjLJB+Mi18GaXjpmWBJ04ESbD+9lRXbCMGRu5
-	 80z+5t/JANmSbFDkquBFCdcq8RFk8LQ+b/r56tTkEjfUuhvZDI3EgtkQiAWVhboqs
-	 PdfOkL7PXwew820CAyG+KffL57UVYWTDKok6hPM8/qmrtjK/FOxABX46+InOmYhEP
-	 nXgv7orVt/DQ9w6jchonwPYm6y+HSPol5PXiEpDEbh7betUEq7CDGpzKl/PyopcSp
-	 O5XHfPklJZEgvlGBbQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from [192.168.178.90] ([91.62.108.110]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N95Nf-1saZ8f16rH-0165Mf; Thu, 30 May 2024 17:07:30 +0200
-Message-ID: <f12ab64f-fd59-491e-a44a-6ae570a81ada@heusipp.de>
-Date: Thu, 30 May 2024 17:05:33 +0200
+	 In-Reply-To:Content-Type; b=ANoZTi/5rq58wh2Lp9kxwFsnsXV9c+azyd/TC3/rZQKFVvAUfy+DaYtEE0tSJHzeQG8V71hwYUQnbeGGvpEQmOjNWXEQdkzSDDWibpJ36+3Vtkd6R/5FuqvdxAKos4x3vvnld0wgLz+0saaRGwzamQawOc/V8+2h34o/mJX7KFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OIM/F4At; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717083200; x=1748619200;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=t9rCtR888zCMmrHzZcCvAT1velIWgffOm4gsLVTlhw4=;
+  b=OIM/F4AtG4gI4nRMh7lq5kM64e5SV0x1aVnItN6wO1ncrRIvxNlpfWvo
+   1HEmWm23daHv/aGngeXafFi8VQYFWjsM2ShXX7uTq3M42ICBeZ6VvklUH
+   PtLrMZcTdhRYoAfQ2J23Q3AbGDn+Yb2Gelqtq/TZxNghdSfgSv0JFzb28
+   DzjYkFX7KnFAS0VHwUvNzskxpWZg2zAdT16Ih1jIyVTXB2asbnM7uPvUn
+   huTQKR6+eDdn10/bjJ8o6v8ZpkaWF1MG/40JnyZG3fsHq0x7x3zUddITf
+   yhROV074a5VKrfzKq1PsvLyub/hwqqxzWOKCOaagUlznKkEGpfc8tJIcp
+   A==;
+X-CSE-ConnectionGUID: uwGej9ZcTxy8tblFdF2DmA==
+X-CSE-MsgGUID: Wa/TXlsqQ5upksJupzQtEw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24239948"
+X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
+   d="scan'208";a="24239948"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 08:33:19 -0700
+X-CSE-ConnectionGUID: jqniPc5cRDugYYYRAiK0+g==
+X-CSE-MsgGUID: E3TRIy5tQCCBHZBQQvtwSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
+   d="scan'208";a="40763385"
+Received: from kinlongk-desk.amr.corp.intel.com (HELO [10.125.111.178]) ([10.125.111.178])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 08:33:19 -0700
+Message-ID: <86c8a026-4df7-4ba8-b0e5-6289ae584289@intel.com>
+Date: Thu, 30 May 2024 08:33:18 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,73 +69,83 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [tip: x86/urgent] x86/cpu: Provide default cache line size if not
  enumerated
-To: linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>
+To: =?UTF-8?Q?J=C3=B6rn_Heusipp?= <osmanx@heusipp.de>,
+ linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  stable@vger.kernel.org, x86@kernel.org, Thomas Gleixner
  <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>, Adam Dunlap <acdunlap@google.com>
 References: <171707898810.10875.17950546903678321366.tip-bot2@tip-bot2>
+ <f12ab64f-fd59-491e-a44a-6ae570a81ada@heusipp.de>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: =?UTF-8?Q?J=C3=B6rn_Heusipp?= <osmanx@heusipp.de>
-In-Reply-To: <171707898810.10875.17950546903678321366.tip-bot2@tip-bot2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Vlq/kQBJmGV/Zq/rjceQiQLnB4prXqvO9CRK6z4mBb2ruI3cLXf
- 1D6CF9K9PwqSFnwEquSusjOYdFSTznUhvQ/1ghcKdaeLl4Qrk6QGsxtoPdP+KLEStCZG/5q
- YPYzEtJGIl4e9Mao3U73/0xx+brLWiUAjtcd9eMyUxdKzvd+1d1rH2XOsobWcR9nrgCWLAe
- b3UwVfEwES+cetFdyMevw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:bHyNZgwEtmQ=;ry7j9VPvrIDQ6l4YE8cO0qjgyHI
- 1S7/s7sGiYENwZb401zw2Nsig162np+buJUBUNvQN2QoRdZcD0/QW2uj8ujdUpB0BOt+3qhvS
- ZCl0oPHW6UyBsA1vsvgqPrh31Y7NrpwmCHDqs9TFOkeNEIxelbLw93oaTMjGlUqUJe/h9eiCY
- wui3O/svluhwOafr1ln3bLyX86U9QjAH6WaB7DSpAGYYRqDX8WTYL9XEQ0sqskXgmxMUOav5d
- kw/YSBfDxlmhrHtmeEc0jxuGvPHMVq5jz6e5K+1macrr9dLvZfwp1hM61l0/KiJa7U/OOWBcB
- dtmzdN+iWaI6ksL9FCs+H8dD0yuils1EQ95Bh3JAImlV7c5rY8c08AyqHjY8yOWQKdkMD7NR7
- d5hY4IaEd0blkLMjEuV4Rzmprz0tSeUt+0pHIWKwOydqPurtdSqsn0hgQ7QOKi3pq598OsCKt
- 4Q+yudpBUNG0wqzR0jPlOv+oSNgFRxtGtU5SrEJzuZn5pc9sRZkyOyyvBcUmeeyOjBVuxUwzY
- bUtcaRcy3F4+JTN/TOanST5+w+fq0GFZZHIUpYYlMV3yP8dC09QynEyk1i+4BJCTeaSK95mr1
- mL31lP/8BdQXEjRF4RfFI1HEc/HqlHDlX/st6W7HOAvqpQydYKXhUnpegXvlNCxJYgKPSCmSn
- 6XWfwvdT5oLvrrN2/qOl16Rfr8SvX/2X5z0d7kObQfgJQcFIqUWQCe3fKf8P6AFeWzRk9Wr7q
- 3PPeNVDF9wjYv63laKapQcfoY7ipu1Nw5Ru/QJhb0EWZ3u+JlAZLmo=
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <f12ab64f-fd59-491e-a44a-6ae570a81ada@heusipp.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 5/30/24 08:05, Jörn Heusipp wrote:
+>>
+>> +        /* Provide a sane default if not enumerated: */
+>> +        if (!c->x86_clflush_size)
+>> +            c->x86_clflush_size = 32;
+>>       } else {
+>>           cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
+>>
+> 
+> That honestly looks like a mis-merge to me. This is not what I did test.
+> x86_clflush_size needs to get set in the top-level else branch in which
+> it is not already set. commit 95bfb35269b2e85cff0dd2c957b2d42ebf95ae5f
+> had switched the if branches around.
 
-Hello Dave!
+You're totally right.  Thank you for catching that.
 
-On 30/05/2024 16:23, tip-bot2 for Dave Hansen wrote:
-> The following commit has been merged into the x86/urgent branch of tip:
->
-> Commit-ID:     b9210e56d71d9deb1ad692e405f6b2394f7baa4d
-> Gitweb:        https://git.kernel.org/tip/b9210e56d71d9deb1ad692e405f6b2=
-394f7baa4d
-> Author:        Dave Hansen <dave.hansen@linux.intel.com>
-> AuthorDate:    Fri, 17 May 2024 13:05:34 -07:00
-> Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-> CommitterDate: Thu, 30 May 2024 07:14:27 -07:00
+I think a variable removal flipped that code around and it confused me
+when I did the rebase.  It should be fixed up now.
 
-> Tested-by: J=C3=B6rn Heusipp <osmanx@heusipp.de>
-
-> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-> index 2b170da..373b16b 100644
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -1070,6 +1070,10 @@ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
->   			    cpu_has(c, X86_FEATURE_PSE36))
->   				c->x86_phys_bits =3D 36;
->   		}
-> +
-> +		/* Provide a sane default if not enumerated: */
-> +		if (!c->x86_clflush_size)
-> +			c->x86_clflush_size =3D 32;
->   	} else {
->   		cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
->
-
-That honestly looks like a mis-merge to me. This is not what I did test.
-x86_clflush_size needs to get set in the top-level else branch in which
-it is not already set. commit 95bfb35269b2e85cff0dd2c957b2d42ebf95ae5f
-had switched the if branches around.
-
-Best regards,
-J=C3=B6rn
+Again, thanks a bunch for the report, the testing, and catching my
+screwup quickly!
 
