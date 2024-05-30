@@ -1,144 +1,170 @@
-Return-Path: <stable+bounces-47720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034558D4E5D
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 16:49:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868D78D4E79
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 16:58:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACDAD1F2243F
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 14:49:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 061DC1F22237
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 14:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AC017C239;
-	Thu, 30 May 2024 14:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E9D145A01;
+	Thu, 30 May 2024 14:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvovkK8k"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BIyMj6rC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4241D143C40;
-	Thu, 30 May 2024 14:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2310117D35E;
+	Thu, 30 May 2024 14:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717080567; cv=none; b=JUGvwv0bB2eCey7YzFJ1SWJ3zaLQ56wZT70kC8sxyjEuyejJQC70SWZWthERzENy+uEtBpdHxpnIe9WSjg8xGFLdtZVD2nyqxvG7U5gLGEZjjRAcsvrEYtucDydYPKIY6iuP6Vxbl/nApxsUhclVJIA5m+nNMS85LTrXxCJHfvc=
+	t=1717081092; cv=none; b=PWqusfZp3xDY7VPHYQos+H3qsG4XF0MsGEz4SG6fPJj608sSKkK+mpdxFF5yWSNZYXH0l/kSZWdd9qxqWD00LMbTJ9TWyWPb2okIJ8xaiI6RRF08Z7V496Z3tZmMRd2NSAJEa4DpFpkM5Gxl/A0yxrrIGYlbVM6/fvKU+cCHr7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717080567; c=relaxed/simple;
-	bh=wwtJRjKMn2slhYPeALJabtNJMZHMmNFS65oYl0ixA5Y=;
+	s=arc-20240116; t=1717081092; c=relaxed/simple;
+	bh=vHl/hFne/dN3VS62u9WcIyO8pcYKfCjKEu2He7GV1JM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iz8XYnGJZE56Lb8iyPA38rVkrS+B7/NOvV+C2Il4XbrpEV2Onk2u/fpq0iT6rvOZpWBHs7qNDCx3IXrfSEVBeMC2vWBmj6TcdzX+inmuM6poxxSe0ashxcSGcSrtlkiUifo/eTGBuWA358vtrbbW0EPJb5ESnmcupcFs2r6OVjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvovkK8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F1BC32782;
-	Thu, 30 May 2024 14:49:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717080566;
-	bh=wwtJRjKMn2slhYPeALJabtNJMZHMmNFS65oYl0ixA5Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HvovkK8k20SzEg2YC30XUIcx5DwkzfCmENgeU/PRMKsS5mS8d+8ESkOAcY0R3DUO5
-	 bnQ5Tb2BIBR5U1s6KE7HsZJ2csiwkGORNeHmu9ndaZgcpwUdJPvBBGRSvd0vYcraWF
-	 snnWgvcDddNVYqSGdeBNglASlIBQoT9Lxa662Vo9JWldTkwihOPuHSjvfl+L1DvlOJ
-	 ZfOBGRdpnPvMFMByFvWzO6o9St8fUMHfqwXkCXCZCpr+xLSb9f5YudMiJ7f0q0pyEG
-	 6iuz9wDqTZWrhZv6HRROr5QDTlfWhSKZByOw+H+cc8sQD+NTfMbxCPjdvb7sA4GQXE
-	 d0fyo2X7tFENg==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52b7ebb2668so1031034e87.2;
-        Thu, 30 May 2024 07:49:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWnUe56gRACO7eLsHlR8Nqnk+EUT/yQFnbM8QZuvIj7ONTPcHCwdUyOYXSUZTuacZRzLwPAK+9477x/Dml0/caTMynV4RxL9WTTZjO714GnamySnIaeuYASe9hGRclbbtoHGLjI
-X-Gm-Message-State: AOJu0Yy0JjPIaADBUJEKQY2Up3PAaE1UgJ+qxJLTOiIew5QwlHTLRXxO
-	+/oR0GZlDVqYR0nVnFLmCFi08P1lARcT2fgEa+MAJt9GMykv6Xd95MStzSWEnbRYfzR1GgHpcmt
-	S9cRkhM7LmKUSrfS4Ig7DmrOItrs=
-X-Google-Smtp-Source: AGHT+IEFbO7hCM8ignUOyU2tTcs7HiHvR3sHXqvQXQMLlxZdRFHMlmmonXFYocj9Y5VwLAJsY827gITXCm29TWhIeR4=
-X-Received: by 2002:a19:6404:0:b0:52a:7d01:84cd with SMTP id
- 2adb3069b0e04-52b7d437e3dmr2178953e87.30.1717080565312; Thu, 30 May 2024
- 07:49:25 -0700 (PDT)
+	 To:Cc:Content-Type; b=qpBZQ6cM1VOdRo5Zu8HRh++qDVyB8Y+MbzomcBoW4Vn0qm4BehFpXZO0vsPU+qSsX4Z+/z/9mY2/P/1nF+YwyBB7npoBEW6S9ZZo/a/hZdt+9oM2R/eDT3sXdoxHB0jDBuNh/KyBWUxku6MqkFVLVqzODef2rks9m1nF/jfacvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BIyMj6rC; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-702323ea6b2so659336b3a.3;
+        Thu, 30 May 2024 07:58:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717081090; x=1717685890; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Pcneh6OdbXB2yw8eBub3uBTS5tn1ef9zWgBOmoSp/pE=;
+        b=BIyMj6rCXKyErJ12caQIMKVLS1tC8uA4ibcuKhdpuaQIfQJ6KLsk5B05PL/rapeLuk
+         qd41hkoqWOb9nZaE0LcZ6UR9S62F+qgKjTRPoWhmxdXrgaMIWTzFB0brs9TSJhWUzD4c
+         R+DKGhNsklZ6ghU0eES3S7HL8bHqh/VoiIGDS0Q7dpY/C2v61ojMq2c566vHrvNYNY0y
+         0A5PiUiQMkVmswdS6nlBVxb5hzJ1ilYBtQ1pGc1Q9jYeAhkBKRuswfi9GWZ5SLQK1jef
+         DuxIcREvr+rYQj9bHD7PsKGZ5uxH4ZHoS2qGLzBy/0lliAcxbLb3Ty/GexcybH5IcoTo
+         +WEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717081090; x=1717685890;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Pcneh6OdbXB2yw8eBub3uBTS5tn1ef9zWgBOmoSp/pE=;
+        b=q2l1779Ir8dCHl0jjvjq7nUD81KIfkPT58PSG666YWN6GhqUsJSeIUZrvjzNUv1qS/
+         2Au5lrffcKyzC7YqbpM2oCftfrVB1echzODvm7SzjKxN+nq3ozYfd/quWsMbP0tISHLk
+         aqvLH0SrPTeKIivmZlW1c+LptG5hf74hTmIdMfmnAnxdRYItCKgBo8BtH/x9u5CJhWJX
+         R3ts4YVLu1ZFEVggvWAIsvMPmDqrO43VtgcIMec2KtgpthnLg1IVIWUpIyxgPQdDUK6x
+         Wg5EQoUdz9QoD0xjeybZqbljGyzBChavJuNW6KN3QCrh+DI++fwLYps8TYGx8naupYxi
+         s6wg==
+X-Forwarded-Encrypted: i=1; AJvYcCV3iX6CDh4tm2KNzQJzAmOp2IAi7bz/xIEFFMzykZH+89IxRBzdXTc0zbQhxo8I/DMGwwO+9DaqrG9wQXFv1txTV8AmaVAan4eCSDZR7up7o6Jmr0yBrK2Lmqs5J3kgmx4mxAmF4xYW
+X-Gm-Message-State: AOJu0YzQE+AjktKgt7jjUd3TurYU6mDUL9d/YvTWs7cDXUQwgN9C+3ZI
+	4zjnJ0diPJtvxWN7EgkY2wL2oQ4cENfVPIsdnIVK/RecJtUFwCZvqgwSB06Z+RTftrWYk1TDTFm
+	lZ2v0YwRTvPL4POeqUBoVv2J+tDY=
+X-Google-Smtp-Source: AGHT+IG/K9bjenhk0+Nldu2e8TDBOCESyblInvnkPhmih6+zxEhLkPmDFwz2LvGoFVaBBs/bIA3IpcKiiLGStFQRrDc=
+X-Received: by 2002:a05:6a00:4214:b0:6ed:60a4:6d9c with SMTP id
+ d2e1a72fcca58-702310e53cdmr2970675b3a.4.1717081090330; Thu, 30 May 2024
+ 07:58:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240522-loongarch-booting-fixes-v3-0-25e77a8fc86e@flygoat.com>
- <20240522-loongarch-booting-fixes-v3-1-25e77a8fc86e@flygoat.com> <e1321725-ee7e-4716-ad45-634803fca5ff@t-8ch.de>
-In-Reply-To: <e1321725-ee7e-4716-ad45-634803fca5ff@t-8ch.de>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 30 May 2024 22:49:18 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H78dNJVgL5mrSwRJF8jT0bV9znO=hx_EgsvKePWtac24g@mail.gmail.com>
-Message-ID: <CAAhV-H78dNJVgL5mrSwRJF8jT0bV9znO=hx_EgsvKePWtac24g@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] LoongArch: Fix built-in DTB detection
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Binbin Zhou <zhoubinbin@loongson.cn>, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+References: <20240529-drop-counted-by-radeon-states-state-array-v1-1-5cdc1fb29be7@kernel.org>
+In-Reply-To: <20240529-drop-counted-by-radeon-states-state-array-v1-1-5cdc1fb29be7@kernel.org>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Thu, 30 May 2024 10:57:58 -0400
+Message-ID: <CADnq5_P5Mz=Acm0HURUUHu03eBmemcu7jYe8nYJ5WtBjb93Qgg@mail.gmail.com>
+Subject: Re: [PATCH] drm/radeon: Remove __counted_by from StateArray.states[]
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Alex Deucher <alexander.deucher@amd.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Kees Cook <keescook@chromium.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-hardening@vger.kernel.org, 
+	llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Thomas,
+Applied.  Thanks!
 
-On Thu, May 30, 2024 at 6:06=E2=80=AFPM Thomas Wei=C3=9Fschuh <thomas@t-8ch=
-.de> wrote:
+On Wed, May 29, 2024 at 5:54=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
 >
-> On 2024-05-22 23:02:17+0000, Jiaxun Yang wrote:
-> > fdt_check_header(__dtb_start) will always success because kernel
-> > provided a dummy dtb, and by coincidence __dtb_start clashed with
-> > entry of this dummy dtb. The consequence is fdt passed from
-> > firmware will never be taken.
-> >
-> > Fix by trying to utilise __dtb_start only when CONFIG_BUILTIN_DTB
-> > is enabled.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 7b937cc243e5 ("of: Create of_root if no dtb provided by firmware=
-")
-> > Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> > ---
-> > v3: Better reasoning in commit message, thanks Binbin and Huacai!
-> > ---
-> >  arch/loongarch/kernel/setup.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setu=
-p.c
-> > index 60e0fe97f61a..ea6d5db6c878 100644
-> > --- a/arch/loongarch/kernel/setup.c
-> > +++ b/arch/loongarch/kernel/setup.c
-> > @@ -275,16 +275,18 @@ static void __init arch_reserve_crashkernel(void)
-> >  static void __init fdt_setup(void)
-> >  {
-> >  #ifdef CONFIG_OF_EARLY_FLATTREE
-> > -     void *fdt_pointer;
-> > +     void *fdt_pointer =3D NULL;
-> >
-> >       /* ACPI-based systems do not require parsing fdt */
-> >       if (acpi_os_get_root_pointer())
-> >               return;
-> >
-> > +#ifdef CONFIG_BUILTIN_DTB
-> >       /* Prefer to use built-in dtb, checking its legality first. */
-> >       if (!fdt_check_header(__dtb_start))
-> >               fdt_pointer =3D __dtb_start;
-> > -     else
-> > +#endif
-> > +     if (!fdt_pointer)
-> >               fdt_pointer =3D efi_fdt_pointer(); /* Fallback to firmwar=
-e dtb */
+> From: Bill Wendling <morbo@google.com>
 >
-> Prefer to use non-ifdef logic:
+> Work for __counted_by on generic pointers in structures (not just
+> flexible array members) has started landing in Clang 19 (current tip of
+> tree). During the development of this feature, a restriction was added
+> to __counted_by to prevent the flexible array member's element type from
+> including a flexible array member itself such as:
 >
->         if (IS_ENABLED(CONFIG_BUILTIN_DTB) && !fdt_check_header(__dtb_sta=
-rt))
->                 fdt_pointer =3D __dtb_start;
+>   struct foo {
+>     int count;
+>     char buf[];
+>   };
 >
-> This is shorter, easier to read and will prevent bitrot.
-> The code will be typechecked but then optimized away, so no
-> runtime overhead exists.
-Good suggestion, I will take it.
-
-Huacai
+>   struct bar {
+>     int count;
+>     struct foo data[] __counted_by(count);
+>   };
 >
-> >
-> >       if (!fdt_pointer || fdt_check_header(fdt_pointer))
-> >
-> > --
-> > 2.43.0
-> >
+> because the size of data cannot be calculated with the standard array
+> size formula:
+>
+>   sizeof(struct foo) * count
+>
+> This restriction was downgraded to a warning but due to CONFIG_WERROR,
+> it can still break the build. The application of __counted_by on the
+> states member of 'struct _StateArray' triggers this restriction,
+> resulting in:
+>
+>   drivers/gpu/drm/radeon/pptable.h:442:5: error: 'counted_by' should not =
+be applied to an array with element of unknown size because 'ATOM_PPLIB_STA=
+TE_V2' (aka 'struct _ATOM_PPLIB_STATE_V2') is a struct type with a flexible=
+ array member. This will be an error in a future compiler version [-Werror,=
+-Wbounds-safety-counted-by-elt-type-unknown-size]
+>     442 |     ATOM_PPLIB_STATE_V2 states[] __counted_by(ucNumEntries);
+>         |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   1 error generated.
+>
+> Remove this use of __counted_by to fix the warning/error. However,
+> rather than remove it altogether, leave it commented, as it may be
+> possible to support this in future compiler releases.
+>
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2028
+> Fixes: efade6fe50e7 ("drm/radeon: silence UBSAN warning (v3)")
+> Signed-off-by: Bill Wendling <morbo@google.com>
+> Co-developed-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  drivers/gpu/drm/radeon/pptable.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/radeon/pptable.h b/drivers/gpu/drm/radeon/pp=
+table.h
+> index b7f22597ee95..969a8fb0ee9e 100644
+> --- a/drivers/gpu/drm/radeon/pptable.h
+> +++ b/drivers/gpu/drm/radeon/pptable.h
+> @@ -439,7 +439,7 @@ typedef struct _StateArray{
+>      //how many states we have
+>      UCHAR ucNumEntries;
+>
+> -    ATOM_PPLIB_STATE_V2 states[] __counted_by(ucNumEntries);
+> +    ATOM_PPLIB_STATE_V2 states[] /* __counted_by(ucNumEntries) */;
+>  }StateArray;
+>
+>
+>
+> ---
+> base-commit: e64e8f7c178e5228e0b2dbb504b9dc75953a319f
+> change-id: 20240529-drop-counted-by-radeon-states-state-array-01936ded4c1=
+8
+>
+> Best regards,
+> --
+> Nathan Chancellor <nathan@kernel.org>
+>
 
