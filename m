@@ -1,315 +1,226 @@
-Return-Path: <stable+bounces-47672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7FA8D44F5
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 07:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4416E8D4570
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 08:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0616C1F225B4
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 05:52:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3C171F2314A
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 06:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654F4381C8;
-	Thu, 30 May 2024 05:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="S0KhlLcL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC91155354;
+	Thu, 30 May 2024 06:22:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7613D288B1
-	for <stable@vger.kernel.org>; Thu, 30 May 2024 05:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F311F155313;
+	Thu, 30 May 2024 06:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717048320; cv=none; b=HO6FV0w7Vmcv9cd+/DR1bVe7Ymx6uXJmcE+TXri9BUghhr0rZYr3iTe5ezOtlfLbrD3X4hf+Y3uYln9iWF6UPK5OyCvdzaQV7CYziwetgxn8rIE0MiOMWqz0xKTo7vhxcd7qvqq/NQ/yGn5rpa4dwtQ80afiSnSUsPC1jYtLVyc=
+	t=1717050128; cv=none; b=COKTrZjJ2QZdojzb404jtNlQrCJfy+I6S6GTIQHO7xtJAeH6FYqNhM18lRyNNBPBbTUGsxUJMRu5nxFad7MiIGME5c4KEb28IgjUdIikWd/Tmq/Ijj1zdrm4Zbu5IZixXnHP/ciKYWgaO94RTnLjlrk76fZPfoKYPyHEn9MaoV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717048320; c=relaxed/simple;
-	bh=lKmbzPR08psUT+v0csI7cxGJZwtefGOvXM2mYVI5gR0=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=bO7ubgEIpr/dx00Tw/Kr53Kcl/GwZLD6EVyS1O4ddWpcEeviIGNmnhIIt0IWgGmCZQcyxM/6TPbmCBHTYwrjatCTfbaqRI2WNT81FjGnnFvuraMZjTp4kOuNel/TY7IymtGhAcG2g8HOK1Yq2Q7c4Cjwe/97aQMaK2crHtI1zsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=S0KhlLcL; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id 271B920B9260; Wed, 29 May 2024 22:51:52 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 271B920B9260
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1717048312;
-	bh=hWPezramp0qUfUBH5xShjf9TvyKC6uhMUbIYUkIKMdc=;
-	h=Date:From:To:Subject:From;
-	b=S0KhlLcLOw1uIk0F6c27sTvyA0pztQP8SvmkPXCqdMFpvSkLG0yte4jpMCvfP78s/
-	 m+4/rxbjc5mhY0aTNc0QDAtmI8B7lIcx+BfVh8aeXqPZKI2vAWX+kXRhkQvPkKuVRl
-	 R3WpyMucrZtpZ5PVsh4T+/4G8NXroceRPP3pq+gA=
-Date: Wed, 29 May 2024 22:51:52 -0700
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: stable@vger.kernel.org
-Subject: Request for backporting of two drm patches
-Message-ID: <20240530055152.GA13146@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	s=arc-20240116; t=1717050128; c=relaxed/simple;
+	bh=l9+XfNU1PImZakE7pZoE0Rp+a8gf1C0ee0ya5BBnFx8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S9CSuUtifBy/oPWdPk5Dw06TLdRP4UoaTWD2RWsbT82b4luukrYBhxXaTG8bSIJKnjEVI4xFtKql9y74yacJgCDMKiwq4NeDDCO0fJ7y55e56IJ2X59x/tyy6CCgQ0ll++dyN3Bokq753O150i8gX4rwz5r2FUzvjSS3Wbn+I8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42011507a54so2257345e9.0;
+        Wed, 29 May 2024 23:22:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717050125; x=1717654925;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9abOIANtUFAdiRrEhSy3lHHZlzhzRD52Y0DRlShRTQs=;
+        b=dGzG0PYa/5q8LvMdo8xgP0EONMpLb8NQbp8jM75rltZR6AwmeCXCl2CbWMU3xi2P/J
+         eb4py0U8Z+G1UWgyOdeZbqkBnzPKMg7szNl2EtTgvJhsJQYcnEeblN8v2C9x05OB4CKz
+         HCxisN+YvnFe2PksV7vIKQB9mtIz3BcQXjSYyVEffxsqojUW3Q87W2MSfa5rcwLZQx/f
+         mDDpFQH5sqjtPeLFNkwWF/WZw1/qbDk+Vjc3vCQuyWecjLFGTiwvE+yWcGxkLDHhz1aE
+         WAxiMxfLxnsviMQOVuZGo01R4DA23AeJprtiICQxKVIefHz1Os1SYvjWRpCyhbeT0wku
+         7Jaw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvYXXBj8fzptn/8rfsvhfFoWnVEmyBKP1apbFAHW0AMLPibaqdL6u3DY2mrp9oW9/6X11lCzJmc5NIKAkDWbarDECLX02l4UXfFycXNo/eREULedoP0Dmhx7naAUtUEa5LEPexUvY+xXfnnDrWZmL5enKuoMumYDQ3FgGNOiF2QZXvuSlF
+X-Gm-Message-State: AOJu0Ywz5q1WndJPOmpgxc6nmPaandsjYbGVITQaohAdMiJcEecz3O4p
+	/a2OWOdu2QhPNaKskxv4Fjf85qxhTQB0QlJFZa9ynnlOST5KgL6j
+X-Google-Smtp-Source: AGHT+IGs5JBtoA7uXaeGL1MNMQclVfCH2sNp/kA2U36B22flaurOU4tPIhja6hXqTQr+1dIlg2fQJg==
+X-Received: by 2002:a05:600c:4fc3:b0:41a:56b7:eb37 with SMTP id 5b1f17b1804b1-4212810404cmr5712365e9.20.1717050125214;
+        Wed, 29 May 2024 23:22:05 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42127084ca2sm14202265e9.41.2024.05.29.23.22.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 May 2024 23:22:04 -0700 (PDT)
+Message-ID: <d7c19866-6883-4f98-b178-a5ccf8726895@kernel.org>
+Date: Thu, 30 May 2024 08:22:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="IS0zKkzwUGydFO0o"
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
+To: Nathan Chancellor <nathan@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kees Cook <keescook@chromium.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linux-serial@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 29. 05. 24, 23:29, Nathan Chancellor wrote:
+> Work for __counted_by on generic pointers in structures (not just
+> flexible array members) has started landing in Clang 19 (current tip of
+> tree). During the development of this feature, a restriction was added
+> to __counted_by to prevent the flexible array member's element type from
+> including a flexible array member itself such as:
+> 
+>    struct foo {
+>      int count;
+>      char buf[];
+>    };
+> 
+>    struct bar {
+>      int count;
+>      struct foo data[] __counted_by(count);
+>    };
+> 
+> because the size of data cannot be calculated with the standard array
+> size formula:
+> 
+>    sizeof(struct foo) * count
+> 
+> This restriction was downgraded to a warning but due to CONFIG_WERROR,
+> it can still break the build. The application of __counted_by on the
+> ports member of 'struct mxser_board' triggers this restriction,
+> resulting in:
+> 
+>    drivers/tty/mxser.c:291:2: error: 'counted_by' should not be applied to an array with element of unknown size because 'struct mxser_port' is a struct type with a flexible array member.
 
---IS0zKkzwUGydFO0o
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Huh -- what am I missing:
 
-Hi all,
-Can you please pick up the following two drm patches to linux-5.15.y
-and newer?
-As these bugs affect these kernel versions too
- 
-List of patches to be backported
-Patch 1:
-5abffb66d12bcac84bf7b66389c571b8bb6e82bd
-drm: Check output polling initialized before disabling
- 
-Patch 2:
-048a36d8a6085bbd8ab9e5794b713b92ac986450
-drm: Check polling initialized before enabling in drm_helper_probe_single_connector_modes
+struct mxser_port {
+         struct tty_port port;
+         struct mxser_board *board;
 
-These however do not apply cleanly on the 5.15.y branch, so I am also
-attaching rebased versions of these patches in the mail
- 
-Thanks and Regards,
-Shradha.
+         unsigned long ioaddr;
+         unsigned long opmode_ioaddr;
 
---IS0zKkzwUGydFO0o
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="0001-drm-Check-output-polling-initialized-before-disablin.patch"
+         u8 rx_high_water;
+         u8 rx_low_water;
+         int type;               /* UART type */
 
-From a49cb22e6017a7b2e38148cf7dea6d52b550d607 Mon Sep 17 00:00:00 2001
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Date: Thu, 1 Feb 2024 22:43:28 -0800
-Subject: [PATCH 1/2] drm: Check output polling initialized before disabling
+         u8 x_char;              /* xon/xoff character */
+         u8 IER;                 /* Interrupt Enable Register */
+         u8 MCR;                 /* Modem control register */
+         u8 FCR;                 /* FIFO control register */
 
-In drm_kms_helper_poll_disable() check if output polling
-support is initialized before disabling polling. If not flag
-this as a warning.
-Additionally in drm_mode_config_helper_suspend() and
-drm_mode_config_helper_resume() calls, that re the callers of these
-functions, avoid invoking them if polling is not initialized.
-For drivers like hyperv-drm, that do not initialize connector
-polling, if suspend is called without this check, it leads to
-suspend failure with following stack
-[  770.719392] Freezing remaining freezable tasks ... (elapsed 0.001 seconds) done.
-[  770.720592] printk: Suspending console(s) (use no_console_suspend to debug)
-[  770.948823] ------------[ cut here ]------------
-[  770.948824] WARNING: CPU: 1 PID: 17197 at kernel/workqueue.c:3162 __flush_work.isra.0+0x212/0x230
-[  770.948831] Modules linked in: rfkill nft_counter xt_conntrack xt_owner udf nft_compat crc_itu_t nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables nfnetlink vfat fat mlx5_ib ib_uverbs ib_core mlx5_core intel_rapl_msr intel_rapl_common kvm_amd ccp mlxfw kvm psample hyperv_drm tls drm_shmem_helper drm_kms_helper irqbypass pcspkr syscopyarea sysfillrect sysimgblt hv_balloon hv_utils joydev drm fuse xfs libcrc32c pci_hyperv pci_hyperv_intf sr_mod sd_mod cdrom t10_pi sg hv_storvsc scsi_transport_fc hv_netvsc serio_raw hyperv_keyboard hid_hyperv crct10dif_pclmul crc32_pclmul crc32c_intel hv_vmbus ghash_clmulni_intel dm_mirror dm_region_hash dm_log dm_mod
-[  770.948863] CPU: 1 PID: 17197 Comm: systemd-sleep Not tainted 5.14.0-362.2.1.el9_3.x86_64 #1
-[  770.948865] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 05/09/2022
-[  770.948866] RIP: 0010:__flush_work.isra.0+0x212/0x230
-[  770.948869] Code: 8b 4d 00 4c 8b 45 08 89 ca 48 c1 e9 04 83 e2 08 83 e1 0f 83 ca 02 89 c8 48 0f ba 6d 00 03 e9 25 ff ff ff 0f 0b e9 4e ff ff ff <0f> 0b 45 31 ed e9 44 ff ff ff e8 8f 89 b2 00 66 66 2e 0f 1f 84 00
-[  770.948870] RSP: 0018:ffffaf4ac213fb10 EFLAGS: 00010246
-[  770.948871] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8c992857
-[  770.948872] RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffff9aad82b00330
-[  770.948873] RBP: ffff9aad82b00330 R08: 0000000000000000 R09: ffff9aad87ee3d10
-[  770.948874] R10: 0000000000000200 R11: 0000000000000000 R12: ffff9aad82b00330
-[  770.948874] R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000001
-[  770.948875] FS:  00007ff1b2f6bb40(0000) GS:ffff9aaf37d00000(0000) knlGS:0000000000000000
-[  770.948878] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  770.948878] CR2: 0000555f345cb666 CR3: 00000001462dc005 CR4: 0000000000370ee0
-[  770.948879] Call Trace:
-[  770.948880]  <TASK>
-[  770.948881]  ? show_trace_log_lvl+0x1c4/0x2df
-[  770.948884]  ? show_trace_log_lvl+0x1c4/0x2df
-[  770.948886]  ? __cancel_work_timer+0x103/0x190
-[  770.948887]  ? __flush_work.isra.0+0x212/0x230
-[  770.948889]  ? __warn+0x81/0x110
-[  770.948891]  ? __flush_work.isra.0+0x212/0x230
-[  770.948892]  ? report_bug+0x10a/0x140
-[  770.948895]  ? handle_bug+0x3c/0x70
-[  770.948898]  ? exc_invalid_op+0x14/0x70
-[  770.948899]  ? asm_exc_invalid_op+0x16/0x20
-[  770.948903]  ? __flush_work.isra.0+0x212/0x230
-[  770.948905]  __cancel_work_timer+0x103/0x190
-[  770.948907]  ? _raw_spin_unlock_irqrestore+0xa/0x30
-[  770.948910]  drm_kms_helper_poll_disable+0x1e/0x40 [drm_kms_helper]
-[  770.948923]  drm_mode_config_helper_suspend+0x1c/0x80 [drm_kms_helper]
-[  770.948933]  ? __pfx_vmbus_suspend+0x10/0x10 [hv_vmbus]
-[  770.948942]  hyperv_vmbus_suspend+0x17/0x40 [hyperv_drm]
-[  770.948944]  ? __pfx_vmbus_suspend+0x10/0x10 [hv_vmbus]
-[  770.948951]  dpm_run_callback+0x4c/0x140
-[  770.948954]  __device_suspend_noirq+0x74/0x220
-[  770.948956]  dpm_noirq_suspend_devices+0x148/0x2a0
-[  770.948958]  dpm_suspend_end+0x54/0xe0
-[  770.948960]  create_image+0x14/0x290
-[  770.948963]  hibernation_snapshot+0xd6/0x200
-[  770.948964]  hibernate.cold+0x8b/0x1fb
-[  770.948967]  state_store+0xcd/0xd0
-[  770.948969]  kernfs_fop_write_iter+0x124/0x1b0
-[  770.948973]  new_sync_write+0xff/0x190
-[  770.948976]  vfs_write+0x1ef/0x280
-[  770.948978]  ksys_write+0x5f/0xe0
-[  770.948979]  do_syscall_64+0x5c/0x90
-[  770.948981]  ? syscall_exit_work+0x103/0x130
-[  770.948983]  ? syscall_exit_to_user_mode+0x12/0x30
-[  770.948985]  ? do_syscall_64+0x69/0x90
-[  770.948986]  ? do_syscall_64+0x69/0x90
-[  770.948987]  ? do_user_addr_fault+0x1d6/0x6a0
-[  770.948989]  ? do_syscall_64+0x69/0x90
-[  770.948990]  ? exc_page_fault+0x62/0x150
-[  770.948992]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[  770.948995] RIP: 0033:0x7ff1b293eba7
-[  770.949010] Code: 0b 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
-[  770.949011] RSP: 002b:00007ffde3912128 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[  770.949012] RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007ff1b293eba7
-[  770.949013] RDX: 0000000000000005 RSI: 00007ffde3912210 RDI: 0000000000000004
-[  770.949014] RBP: 00007ffde3912210 R08: 000055d7dd4c9510 R09: 00007ff1b29b14e0
-[  770.949014] R10: 00007ff1b29b13e0 R11: 0000000000000246 R12: 0000000000000005
-[  770.949015] R13: 000055d7dd4c53e0 R14: 0000000000000005 R15: 00007ff1b29f69e0
-[  770.949016]  </TASK>
-[  770.949017] ---[ end trace e6fa0618bfa2f31d ]---
+         struct async_icount icount;
+         unsigned int timeout;
 
-This patch also fixes some rebasing issues on 5.15.y branch
+         u8 read_status_mask;
+         u8 ignore_status_mask;
+         u8 xmit_fifo_size;
 
-Built-on: Rhel9, Ubuntu22
-Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/1706856208-9617-1-git-send-email-shradhagupta@linux.microsoft.com
----
- drivers/gpu/drm/drm_modeset_helper.c | 19 ++++++++++++++++---
- drivers/gpu/drm/drm_probe_helper.c   | 12 ++++++++++--
- 2 files changed, 26 insertions(+), 5 deletions(-)
+         spinlock_t slock;
+};
 
-diff --git a/drivers/gpu/drm/drm_modeset_helper.c b/drivers/gpu/drm/drm_modeset_helper.c
-index da483125e063..97071ff5e540 100644
---- a/drivers/gpu/drm/drm_modeset_helper.c
-+++ b/drivers/gpu/drm/drm_modeset_helper.c
-@@ -198,13 +198,22 @@ int drm_mode_config_helper_suspend(struct drm_device *dev)
- 
- 	if (!dev)
- 		return 0;
-+	/*
-+	 * Don't disable polling if it was never initialized
-+	 */
-+	if (dev->mode_config.poll_enabled)
-+		drm_kms_helper_poll_disable(dev);
- 
--	drm_kms_helper_poll_disable(dev);
- 	drm_fb_helper_set_suspend_unlocked(dev->fb_helper, 1);
- 	state = drm_atomic_helper_suspend(dev);
- 	if (IS_ERR(state)) {
- 		drm_fb_helper_set_suspend_unlocked(dev->fb_helper, 0);
--		drm_kms_helper_poll_enable(dev);
-+		/*
-+		 * Don't enable polling if it was never initialized
-+		 */
-+		if (dev->mode_config.poll_enabled)
-+			drm_kms_helper_poll_enable(dev);
-+
- 		return PTR_ERR(state);
- 	}
- 
-@@ -244,7 +253,11 @@ int drm_mode_config_helper_resume(struct drm_device *dev)
- 	dev->mode_config.suspend_state = NULL;
- 
- 	drm_fb_helper_set_suspend_unlocked(dev->fb_helper, 0);
--	drm_kms_helper_poll_enable(dev);
-+	/*
-+	 * Don't enable polling if it is not initialized
-+	 */
-+	if (dev->mode_config.poll_enabled)
-+		drm_kms_helper_poll_enable(dev);
- 
- 	return ret;
- }
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index f6b72e03688d..08d75590fdc0 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -235,6 +235,9 @@ drm_connector_mode_valid(struct drm_connector *connector,
-  * Drivers can call this helper from their device resume implementation. It is
-  * not an error to call this even when output polling isn't enabled.
-  *
-+ * If device polling was never initialized before, this call will trigger a
-+ * warning and return.
-+ *
-  * Note that calls to enable and disable polling must be strictly ordered, which
-  * is automatically the case when they're only call from suspend/resume
-  * callbacks.
-@@ -246,7 +249,8 @@ void drm_kms_helper_poll_enable(struct drm_device *dev)
- 	struct drm_connector_list_iter conn_iter;
- 	unsigned long delay = DRM_OUTPUT_POLL_PERIOD;
- 
--	if (!dev->mode_config.poll_enabled || !drm_kms_helper_poll)
-+	if (drm_WARN_ON_ONCE(dev, !dev->mode_config.poll_enabled) ||
-+	    !drm_kms_helper_poll || dev->mode_config.poll_running)
- 		return;
- 
- 	drm_connector_list_iter_begin(dev, &conn_iter);
-@@ -742,14 +746,18 @@ EXPORT_SYMBOL(drm_kms_helper_is_poll_worker);
-  * not an error to call this even when output polling isn't enabled or already
-  * disabled. Polling is re-enabled by calling drm_kms_helper_poll_enable().
-  *
-+ * If however, the polling was never initialized, this call will trigger a
-+ * warning and return
-+ *
-  * Note that calls to enable and disable polling must be strictly ordered, which
-  * is automatically the case when they're only call from suspend/resume
-  * callbacks.
-  */
- void drm_kms_helper_poll_disable(struct drm_device *dev)
- {
--	if (!dev->mode_config.poll_enabled)
-+	if (drm_WARN_ON(dev, !dev->mode_config.poll_enabled))
- 		return;
-+
- 	cancel_delayed_work_sync(&dev->mode_config.output_poll_work);
- }
- EXPORT_SYMBOL(drm_kms_helper_poll_disable);
+?
+
+>  This will be an error in a future compiler version [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
+>      291 |         struct mxser_port ports[] __counted_by(nports);
+>          |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+>    1 error generated.
+> 
+> Remove this use of __counted_by to fix the warning/error. However,
+> rather than remove it altogether, leave it commented, as it may be
+> possible to support this in future compiler releases.
+
+This looks like a compiler bug/deficiency.
+
+What does gcc say BTW?
+
+> Cc: stable@vger.kernel.org
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2026
+> Fixes: f34907ecca71 ("mxser: Annotate struct mxser_board with __counted_by")
+
+I would not say "Fixes" here. It only works around a broken compiler.
+
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>   drivers/tty/mxser.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/tty/mxser.c b/drivers/tty/mxser.c
+> index 458bb1280ebf..5b97e420a95f 100644
+> --- a/drivers/tty/mxser.c
+> +++ b/drivers/tty/mxser.c
+> @@ -288,7 +288,7 @@ struct mxser_board {
+>   	enum mxser_must_hwid must_hwid;
+>   	speed_t max_baud;
+>   
+> -	struct mxser_port ports[] __counted_by(nports);
+> +	struct mxser_port ports[] /* __counted_by(nports) */;
+>   };
+>   
+>   static DECLARE_BITMAP(mxser_boards, MXSER_BOARDS);
+
+thanks,
 -- 
-2.34.1
+js
+suse labs
 
-
---IS0zKkzwUGydFO0o
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="0002-drm-Check-polling-initialized-before-enabling-in-drm.patch"
-
-From b0302ce41b5870226fefeb827bb86d245be2b122 Mon Sep 17 00:00:00 2001
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Date: Thu, 1 Feb 2024 22:43:44 -0800
-Subject: [PATCH 2/2] drm: Check polling initialized before enabling in
- drm_helper_probe_single_connector_modes
-
-In function drm_helper_probe_single_connector_modes() when we enable
-polling again, if it is already uninitialized, a warning is reported.
-This patch fixes the warning message by checking if poll is initialized
-before enabling it.
-This patch also fixes some rebasing issues on 5.15.y branch
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202401191128.db8423f1-oliver.sang@intel.com
-Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/1706856224-9725-1-git-send-email-shradhagupta@linux.microsoft.com
----
- drivers/gpu/drm/drm_probe_helper.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index 08d75590fdc0..e79bb93072dd 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -498,7 +498,8 @@ int drm_helper_probe_single_connector_modes(struct drm_connector *connector,
- 	}
- 
- 	/* Re-enable polling in case the global poll config changed. */
--	if (drm_kms_helper_poll != dev->mode_config.poll_running)
-+	if (dev->mode_config.poll_enabled &&
-+	    (drm_kms_helper_poll != dev->mode_config.poll_running))
- 		drm_kms_helper_poll_enable(dev);
- 
- 	dev->mode_config.poll_running = drm_kms_helper_poll;
--- 
-2.34.1
-
-
---IS0zKkzwUGydFO0o--
 
