@@ -1,153 +1,74 @@
-Return-Path: <stable+bounces-47736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB108D5265
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 21:38:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE508D5272
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 21:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 088591C23864
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 19:38:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D043A1F24D78
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 19:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FC715886B;
-	Thu, 30 May 2024 19:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BB3158874;
+	Thu, 30 May 2024 19:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Na72SnQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA0Od9z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191C114BF8D;
-	Thu, 30 May 2024 19:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BB112E6D
+	for <stable@vger.kernel.org>; Thu, 30 May 2024 19:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717097915; cv=none; b=gKpa43Drj/778k09499TgW3UV8RIDSLPFnm3wEz9qCpCoU9zuiRNF1ymlARbvi559qLXwJnaUN/kbObTkVty9W5ZP8kNY6HLUwLmdXArkrswWpa6cn5sveJebXQx66fY+kQm6xUtf6ehgPo6vJJGdM07m2QIy5U/e7CWytlskrw=
+	t=1717098152; cv=none; b=gYD8jvLrCP4Ctp7/Wig2R7Nx0z9oUiMgKfXZKjvfbKtdjBK0c/goKSNfdXzF/FllDON2vu7ZK4vURBW3jP0sc9zND5MBZj5lE/YhbHNb4kHhH1VK0E0SDIHPAQqGJGGGfpZ+2JsbNoFdxVDUvPsZU5MyEJ+0hbFyYiGCyupkONw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717097915; c=relaxed/simple;
-	bh=Ix6gwD7X6uDMEin5J9xf8KorDYnrCNICaYsuoYTfabk=;
-	h=Date:To:From:Subject:Message-Id; b=qHHw/B+S3zoLqgM2HzY7DzTbtitfibDB2/OWFTlmAsQEwBCOnY0Uww2R1J1Oi8W1DyuYrmWJFZVGgEDkj3kGPUTsbT02VMTQno2XCZHYDOgaCD4ury1UJZkhGWM4chNeI3GC424Z3sMTmMFftqJ0VRZ6GDRa6knaiGaj8pTT5gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Na72SnQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A60CC2BBFC;
-	Thu, 30 May 2024 19:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1717097914;
-	bh=Ix6gwD7X6uDMEin5J9xf8KorDYnrCNICaYsuoYTfabk=;
-	h=Date:To:From:Subject:From;
-	b=Na72SnQfKDbYXlJtEa6ET1/AFcQYZGFUABDmXF9helpnxCYxrTbhKOxN+EElU97m5
-	 PGz9eyTBSMOFBin+ngMQu00W3HAzBxfmaqzBwNzkq+KOfT6qXdNtux5AWPRg6s9rDF
-	 Wtk1xskwqMa2lsqyhiFEmOKxhbLxbc2y4fVpVxQQ=
-Date: Thu, 30 May 2024 12:38:33 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-fix-potential-kernel-bug-due-to-lack-of-writeback-flag-waiting.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240530193834.7A60CC2BBFC@smtp.kernel.org>
+	s=arc-20240116; t=1717098152; c=relaxed/simple;
+	bh=q3bf3RlEQ7Z94EL98F0V240LErTB0/iKv8bz7fEIipU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MjD9tVmXxFkyGvtXgn0N0Fr73EnJY8+Mf5R1vhe4SZvMt6W+wwpWCyTlxxVwLmHOf6W1j6ECW5DSTsQCfMO6Qghmn2M1WnCLrzJ8WgYSkvGER/hdERvftM0hWBp0gNTAxhmljjl191NLpX5LyJGP1/0/eLxFYnoReaezBMx4VG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA0Od9z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022F8C2BBFC;
+	Thu, 30 May 2024 19:42:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1717098152;
+	bh=q3bf3RlEQ7Z94EL98F0V240LErTB0/iKv8bz7fEIipU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IA0Od9z1JbFohw6P9c2ei3/NtB3minYoNIXIjd3mLG6J3YWvqczJsU++fkrhDkkE6
+	 +2ZJlA6hDgFttHLScfsHJgH7a8ZpcvcSmpuTDNVir2LKjo8uO9A3YBqZkECPy+u0gs
+	 zWG8/dchFBa7tf8VDSbLDvDKlRYZPp7zshQizpOg=
+Date: Thu, 30 May 2024 21:42:36 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mohammad Hosain <mh3marefat@yahoo.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: AM5 big performance reduction with CSM boot mode and Wi-Fi
+ disabled.
+Message-ID: <2024053003-unbutton-stadium-2a2b@gregkh>
+References: <321337111.6017022.1717061838476.ref@mail.yahoo.com>
+ <321337111.6017022.1717061838476@mail.yahoo.com>
+ <2024053032-squeeze-such-dd29@gregkh>
+ <1591472096.6190967.1717088352009@mail.yahoo.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1591472096.6190967.1717088352009@mail.yahoo.com>
 
+On Thu, May 30, 2024 at 04:59:12PM +0000, Mohammad Hosain wrote:
+> I think it has never worked (I remember as back as 6.7 it behaved like this but only recently I discovered it). If you enable CSM and disable Wi-Fi using BIOS, gaming performance is massively reduced on AM5 boards... This only happens on Linux.
+> 
+> I don't know who are the developers involved that is why I emailed stable@vger.kernel.org.
 
-The patch titled
-     Subject: nilfs2: fix potential kernel bug due to lack of writeback flag waiting
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-fix-potential-kernel-bug-due-to-lack-of-writeback-flag-waiting.patch
+stable@vger is not the correct place for generic bug reports like this,
+sorry.  Please try reporting this on the linux wifi mailing list, the
+developers there should be able to help you out more.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-potential-kernel-bug-due-to-lack-of-writeback-flag-waiting.patch
+good luck!
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix potential kernel bug due to lack of writeback flag waiting
-Date: Thu, 30 May 2024 23:15:56 +0900
-
-Destructive writes to a block device on which nilfs2 is mounted can cause
-a kernel bug in the folio/page writeback start routine or writeback end
-routine (__folio_start_writeback in the log below):
-
- kernel BUG at mm/page-writeback.c:3070!
- Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- ...
- RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
- Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
-  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
-  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
- ...
- Call Trace:
-  <TASK>
-  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
-  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
-  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
-  kthread+0x2f0/0x390
-  ret_from_fork+0x4b/0x80
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
-
-This is because when the log writer starts a writeback for segment summary
-blocks or a super root block that use the backing device's page cache, it
-does not wait for the ongoing folio/page writeback, resulting in an
-inconsistent writeback state.
-
-Fix this issue by waiting for ongoing writebacks when putting
-folios/pages on the backing device into writeback state.
-
-Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/segment.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/fs/nilfs2/segment.c~nilfs2-fix-potential-kernel-bug-due-to-lack-of-writeback-flag-waiting
-+++ a/fs/nilfs2/segment.c
-@@ -1652,6 +1652,7 @@ static void nilfs_segctor_prepare_write(
- 			if (bh->b_folio != bd_folio) {
- 				if (bd_folio) {
- 					folio_lock(bd_folio);
-+					folio_wait_writeback(bd_folio);
- 					folio_clear_dirty_for_io(bd_folio);
- 					folio_start_writeback(bd_folio);
- 					folio_unlock(bd_folio);
-@@ -1665,6 +1666,7 @@ static void nilfs_segctor_prepare_write(
- 			if (bh == segbuf->sb_super_root) {
- 				if (bh->b_folio != bd_folio) {
- 					folio_lock(bd_folio);
-+					folio_wait_writeback(bd_folio);
- 					folio_clear_dirty_for_io(bd_folio);
- 					folio_start_writeback(bd_folio);
- 					folio_unlock(bd_folio);
-@@ -1681,6 +1683,7 @@ static void nilfs_segctor_prepare_write(
- 	}
- 	if (bd_folio) {
- 		folio_lock(bd_folio);
-+		folio_wait_writeback(bd_folio);
- 		folio_clear_dirty_for_io(bd_folio);
- 		folio_start_writeback(bd_folio);
- 		folio_unlock(bd_folio);
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-nilfs2-fix-potential-kernel-bug-due-to-lack-of-writeback-flag-waiting.patch
-
+greg k-h
 
