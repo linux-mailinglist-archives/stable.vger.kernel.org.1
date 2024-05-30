@@ -1,151 +1,169 @@
-Return-Path: <stable+bounces-47725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40F78D4F27
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 17:33:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A458D4F3A
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 17:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A47F285297
-	for <lists+stable@lfdr.de>; Thu, 30 May 2024 15:33:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A93781C23160
+	for <lists+stable@lfdr.de>; Thu, 30 May 2024 15:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70480182D0C;
-	Thu, 30 May 2024 15:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35EA182D35;
+	Thu, 30 May 2024 15:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OIM/F4At"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JYxu47Zu";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PVycF0Nc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B494818755D;
-	Thu, 30 May 2024 15:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB70F182D2D;
+	Thu, 30 May 2024 15:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717083202; cv=none; b=scUbXPRgUA+rOXbK5/rOaHBmb+VcErnVLstUPk/gcvSUvC6cex6oWj4y+OGbflFZBccRA4wGeSiZH7QYYnJFYaSmYdR8dsfMJilluy7cJHU56LQLyFq4xzHvebFSfxCJQhN3uLwN3GeVZQrToR3ZCQMDXPgV2O+/DuBtkqN29TY=
+	t=1717083503; cv=none; b=ZWgdGD+5w0o3XKNM9axTNMcmVhaZM7fz3xl1PX7ypjMaCHY40nCWw38rOGSd5uFHF6P+IGRKXKVkg1fMjt8Ep5lW3x5fU5M3CY64x3GRGaKePIgjh7ihi8zxx5reg4ERqupc+/zUYtuccyyjaqjfv5DHu2u22SJ1o9hNa1CE2xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717083202; c=relaxed/simple;
-	bh=t9rCtR888zCMmrHzZcCvAT1velIWgffOm4gsLVTlhw4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ANoZTi/5rq58wh2Lp9kxwFsnsXV9c+azyd/TC3/rZQKFVvAUfy+DaYtEE0tSJHzeQG8V71hwYUQnbeGGvpEQmOjNWXEQdkzSDDWibpJ36+3Vtkd6R/5FuqvdxAKos4x3vvnld0wgLz+0saaRGwzamQawOc/V8+2h34o/mJX7KFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OIM/F4At; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717083200; x=1748619200;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=t9rCtR888zCMmrHzZcCvAT1velIWgffOm4gsLVTlhw4=;
-  b=OIM/F4AtG4gI4nRMh7lq5kM64e5SV0x1aVnItN6wO1ncrRIvxNlpfWvo
-   1HEmWm23daHv/aGngeXafFi8VQYFWjsM2ShXX7uTq3M42ICBeZ6VvklUH
-   PtLrMZcTdhRYoAfQ2J23Q3AbGDn+Yb2Gelqtq/TZxNghdSfgSv0JFzb28
-   DzjYkFX7KnFAS0VHwUvNzskxpWZg2zAdT16Ih1jIyVTXB2asbnM7uPvUn
-   huTQKR6+eDdn10/bjJ8o6v8ZpkaWF1MG/40JnyZG3fsHq0x7x3zUddITf
-   yhROV074a5VKrfzKq1PsvLyub/hwqqxzWOKCOaagUlznKkEGpfc8tJIcp
-   A==;
-X-CSE-ConnectionGUID: uwGej9ZcTxy8tblFdF2DmA==
-X-CSE-MsgGUID: Wa/TXlsqQ5upksJupzQtEw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24239948"
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="24239948"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 08:33:19 -0700
-X-CSE-ConnectionGUID: jqniPc5cRDugYYYRAiK0+g==
-X-CSE-MsgGUID: E3TRIy5tQCCBHZBQQvtwSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="40763385"
-Received: from kinlongk-desk.amr.corp.intel.com (HELO [10.125.111.178]) ([10.125.111.178])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 08:33:19 -0700
-Message-ID: <86c8a026-4df7-4ba8-b0e5-6289ae584289@intel.com>
-Date: Thu, 30 May 2024 08:33:18 -0700
+	s=arc-20240116; t=1717083503; c=relaxed/simple;
+	bh=kJUgEnnB1j6Tpeo+jUM1Mg4mIz8PPZ73v26DSU8OP/A=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=BSJRMJDsBK3Wb1XlcchCFciTpO7IY2wfX5oi/3Z81mbE17/PQCMBl9lyE6t9AFL8+WQzWefNNFhfL66fy/CsJZAEfMpGtei6+O7vmSlRpi+qSwnGlm/Wzii2/j4/zCT/dpP1x+g/TqXT0LRWUEAUARbQMBodYTzBvAIbQoXXbs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JYxu47Zu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PVycF0Nc; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 30 May 2024 15:38:19 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1717083499;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=VB8BVFevT06lKaWEfV21IkEQ1bl6YGSl1ka9f+ApiMM=;
+	b=JYxu47ZuAb/NdDXUDFB5+N+fBV5Rz/B2dT8/433zltXUaufDXiRSt9pP3gi4S7pIOCKDkK
+	BjXKDr9RXSSHdSYnnRU10iWjbodzxeR4HxOaLZOKzD4SMNy1Wivmf76qmSAr/uKlp5UssV
+	dEgPeqhSHrKjJwoyUWb9EXRI48CMC5WadaYcRFgTKSQ6UUiwZXCQVmNBHGHIisx1kE1gSg
+	vVQJs8T510mOW6Auu0vKnKkTuFiBLnURf6U7bAnagof1+hQd+KAWQwfugIDe/wvSgctIDr
+	6vGMh287FtqZxtWKfqc25oAVbxLPQ+d/zDHPaYG4ETlN/QDmqTvg451T48il1w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1717083499;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=VB8BVFevT06lKaWEfV21IkEQ1bl6YGSl1ka9f+ApiMM=;
+	b=PVycF0NcgHXIHpSH2tiFTYdCkiefL1iaQaBZmKg3kSZqXXgV3GQ41lqvp+q2kxFXujSOcB
+	nG1LEqRtwRJ3GZDg==
+From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/urgent] x86/cpu: Provide default cache line size if not enumerated
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, osmanx@heusipp.de,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [tip: x86/urgent] x86/cpu: Provide default cache line size if not
- enumerated
-To: =?UTF-8?Q?J=C3=B6rn_Heusipp?= <osmanx@heusipp.de>,
- linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- stable@vger.kernel.org, x86@kernel.org, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Adam Dunlap <acdunlap@google.com>
-References: <171707898810.10875.17950546903678321366.tip-bot2@tip-bot2>
- <f12ab64f-fd59-491e-a44a-6ae570a81ada@heusipp.de>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <f12ab64f-fd59-491e-a44a-6ae570a81ada@heusipp.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <171708349914.10875.4285177308487469311.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/30/24 08:05, Jörn Heusipp wrote:
->>
->> +        /* Provide a sane default if not enumerated: */
->> +        if (!c->x86_clflush_size)
->> +            c->x86_clflush_size = 32;
->>       } else {
->>           cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
->>
-> 
-> That honestly looks like a mis-merge to me. This is not what I did test.
-> x86_clflush_size needs to get set in the top-level else branch in which
-> it is not already set. commit 95bfb35269b2e85cff0dd2c957b2d42ebf95ae5f
-> had switched the if branches around.
+The following commit has been merged into the x86/urgent branch of tip:
 
-You're totally right.  Thank you for catching that.
+Commit-ID:     2a38e4ca302280fdcce370ba2bee79bac16c4587
+Gitweb:        https://git.kernel.org/tip/2a38e4ca302280fdcce370ba2bee79bac16=
+c4587
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Fri, 17 May 2024 13:05:34 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Thu, 30 May 2024 08:29:45 -07:00
 
-I think a variable removal flipped that code around and it confused me
-when I did the rebase.  It should be fixed up now.
+x86/cpu: Provide default cache line size if not enumerated
 
-Again, thanks a bunch for the report, the testing, and catching my
-screwup quickly!
+tl;dr: CPUs with CPUID.80000008H but without CPUID.01H:EDX[CLFSH]
+will end up reporting cache_line_size()=3D=3D0 and bad things happen.
+Fill in a default on those to avoid the problem.
+
+Long Story:
+
+The kernel dies a horrible death if c->x86_cache_alignment (aka.
+cache_line_size() is 0.  Normally, this value is populated from
+c->x86_clflush_size.
+
+Right now the code is set up to get c->x86_clflush_size from two
+places.  First, modern CPUs get it from CPUID.  Old CPUs that don't
+have leaf 0x80000008 (or CPUID at all) just get some sane defaults
+from the kernel in get_cpu_address_sizes().
+
+The vast majority of CPUs that have leaf 0x80000008 also get
+->x86_clflush_size from CPUID.  But there are oddballs.
+
+Intel Quark CPUs[1] and others[2] have leaf 0x80000008 but don't set
+CPUID.01H:EDX[CLFSH], so they skip over filling in ->x86_clflush_size:
+
+	cpuid(0x00000001, &tfms, &misc, &junk, &cap0);
+	if (cap0 & (1<<19))
+		c->x86_clflush_size =3D ((misc >> 8) & 0xff) * 8;
+
+So they: land in get_cpu_address_sizes() and see that CPUID has level
+0x80000008 and jump into the side of the if() that does not fill in
+c->x86_clflush_size.  That assigns a 0 to c->x86_cache_alignment, and
+hilarity ensues in code like:
+
+        buffer =3D kzalloc(ALIGN(sizeof(*buffer), cache_line_size()),
+                         GFP_KERNEL);
+
+To fix this, always provide a sane value for ->x86_clflush_size.
+
+Big thanks to Andy Shevchenko for finding and reporting this and also
+providing a first pass at a fix. But his fix was only partial and only
+worked on the Quark CPUs.  It would not, for instance, have worked on
+the QEMU config.
+
+1. https://raw.githubusercontent.com/InstLatx64/InstLatx64/master/GenuineInte=
+l/GenuineIntel0000590_Clanton_03_CPUID.txt
+2. You can also get this behavior if you use "-cpu 486,+clzero"
+   in QEMU.
+
+[ dhansen: remove 'vp_bits_from_cpuid' reference in changelog
+	   because bpetkov brutally murdered it recently. ]
+
+Fixes: fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value stra=
+ight away, instead of a two-phase approach")
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: J=C3=B6rn Heusipp <osmanx@heusipp.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240516173928.3960193-1-andriy.shevchenko@=
+linux.intel.com/
+Link: https://lore.kernel.org/lkml/5e31cad3-ad4d-493e-ab07-724cfbfaba44@heusi=
+pp.de/
+Link: https://lore.kernel.org/all/20240517200534.8EC5F33E%40davehans-spike.os=
+tc.intel.com
+---
+ arch/x86/kernel/cpu/common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 2b170da..e31293c 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1075,6 +1075,10 @@ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
+=20
+ 		c->x86_virt_bits =3D (eax >> 8) & 0xff;
+ 		c->x86_phys_bits =3D eax & 0xff;
++
++		/* Provide a sane default if not enumerated: */
++		if (!c->x86_clflush_size)
++			c->x86_clflush_size =3D 32;
+ 	}
+=20
+ 	c->x86_cache_bits =3D c->x86_phys_bits;
 
