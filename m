@@ -1,174 +1,104 @@
-Return-Path: <stable+bounces-47803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF498D6558
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 17:12:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA4E8D65A5
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 17:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFC751C27B40
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 15:12:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0AC1287AD7
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 15:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6414515B128;
-	Fri, 31 May 2024 15:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F86E763FC;
+	Fri, 31 May 2024 15:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Qo8YFZO+"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pJEIrs2f";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X272vt9j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0491074414
-	for <stable@vger.kernel.org>; Fri, 31 May 2024 15:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB6933080;
+	Fri, 31 May 2024 15:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717168208; cv=none; b=VdMR1OYomnniIW6cIX+VD+TtWWf53OG7FUwZAdNVhmyeARX3C6tzsYUSxf3+RfEgYRUseU1zvw7CtotrqrNc6pws2pGsSChR+j0qe8rX2LyRbQXmQKZmNQxZQ0quDpDd/R54l9sG29YLLKZubIKNo6JoZ3MaP/udLeVvr8oI05w=
+	t=1717169106; cv=none; b=K2bivyYDpYqi12ZToRqagjMe+CgOltc4dy4H6cy792dFUPMnZ+Fs3kAZc6c7FAoTda4hcytTv89Q0OEHfIaC/T7oMt32ERqQfXGR0cI9IqbAROXNCxWAP04KvD6k3k3Z7VAVCq/kr4Z40ven2yl88E32HLT8iR2Ef30h/KkT+DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717168208; c=relaxed/simple;
-	bh=lSBTA0Qk/B4VrsMyrQ+UGHVIIpiGLtyvVy9RZsGZb6g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o55jLHru0MWr/6bYtyRfLQPGz5gb5ZQ7kCfV5djZ/fn5/m1zbSGBTrR/V1RxL7CUQJKgcSUNGy8VLP78BRI14H12s6gYnOEoIuPNtpX0Bye83UVGi3XpFn58bv935XtZBbor2JF03m0hMj86wQ8DjOjIaWEOi/T6Y8iyJzdUEI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Qo8YFZO+; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-702342c60dfso1247903b3a.2
-        for <stable@vger.kernel.org>; Fri, 31 May 2024 08:10:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1717168205; x=1717773005; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0iJi0PJvFvf1CFWoWmSdo3d7YUtAaK0ClDdvyTsNzKU=;
-        b=Qo8YFZO++iQjWGWvSL+TSGJuosY4EJVIKhULH7gcRYS1qgLIw0Tln30SvuJVO/9vvn
-         xuogBx5tx8cFjtz2fZDBl8etHqCvPLUtC0PQjsOIyVyE+2aZozo7JxIisXS+3xrX2gNi
-         PIjYjz3lSZowxBRqYXyboMiryyelB9XCpLncg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717168205; x=1717773005;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0iJi0PJvFvf1CFWoWmSdo3d7YUtAaK0ClDdvyTsNzKU=;
-        b=FCJJOEnDF/XxKbbVHnueDbGTLYFuUli4+ccYJIjGyO1herD5own7HhQr4xoCVIobOm
-         vGY5GTCLWCNxTD+V7p6HK3TQ416d6vLCiX1xJ1FElf05HqAqNylWLyQluItmfLy1QQUl
-         Z40tkMWeplCw448+Ioe0QhhrZi7lxZ8CtA9haoyPyHzHQq56hirNr1cG0TGtpeU8/qL8
-         2vgr3TjxjOGN/vsI+jVLJg05A4Nr0Y4KXjpVtoj/j6gkMhBEiDI8frBAQGORNPz05ciM
-         dvxhspxeWHYMvkzbm6addFlY55aSJSW7Bb6+2S2NqP1loC1zv+9zSMQPNPx2pgOhtbsu
-         Mhgw==
-X-Forwarded-Encrypted: i=1; AJvYcCVY67yzHtZZdA329lbDxGzi0zVqG162bZt2NzOt5PCHxhul0GQSDsa5cyzzAw0kK7r5IqADPeiW7nOL5H03AFIRXbTZ3sb1
-X-Gm-Message-State: AOJu0YwkzFkMWyLYxmmJcrqNqOdWQnt5puYDBrPZwI3ekG1DpddejOzO
-	JQHzFyRXLvKiSwn42Fv9346EN2WwJzMYVWCnBnRv4uUYx7tNhDhoPa41CcvToQ==
-X-Google-Smtp-Source: AGHT+IF0dfrykqzmUvNhdjADW7h9n7zm7Vm0UiyRN3i+/5G4mCKeIjmvMB7zJv32Mh9bRCpkaz5h1A==
-X-Received: by 2002:a05:6a00:1905:b0:6ec:e785:98b9 with SMTP id d2e1a72fcca58-70247899ea5mr2712668b3a.27.1717168205237;
-        Fri, 31 May 2024 08:10:05 -0700 (PDT)
-Received: from dianders.sjc.corp.google.com ([2620:15c:9d:2:6c7c:c1c7:e465:4f2f])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70242b2bfc6sm1484111b3a.193.2024.05.31.08.10.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 May 2024 08:10:04 -0700 (PDT)
-From: Douglas Anderson <dianders@chromium.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	Tony Lindgren <tony@atomide.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	stable@vger.kernel.org,
-	Tony Lindgren <tony.lindgren@linux.intel.com>,
-	Bing Fan <tombinfan@tencent.com>,
-	Guanbing Huang <albanhuang@tencent.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Subject: [PATCH v3] serial: port: Don't block system suspend even if bytes are left to xmit
-Date: Fri, 31 May 2024 08:09:18 -0700
-Message-ID: <20240531080914.v3.1.I2395e66cf70c6e67d774c56943825c289b9c13e4@changeid>
-X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
+	s=arc-20240116; t=1717169106; c=relaxed/simple;
+	bh=pF4Mixxdrq0cYOpR+ClRxFtubx/s2XmY9q7iP3NxDqg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=YhMfiOf8EswM+Nfze70YQzG/8jfEsM48yllLfZ+xCWUlL+eXFT9bOqhVf6p+/VrMlEy5p/Qwb3Em7X/5x/Enisr/qvGemjIQCTAihX/xbYwh944gVFMA70yMBqinqnteiUV6Fl6P1Yv5e6waEq+siU17jw5PfDLT9iuoNaEMYvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pJEIrs2f; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X272vt9j; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1717169102;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zBAiXgC5x6K/2E25MmGwn9JeI87ahIu7LD3cMl3AcgI=;
+	b=pJEIrs2fQMNn+nGI1rBaVPcWTQOUXi7P4atPxxPoRH2Fim0kO4PPoHNaW2EglMy/KdNQWf
+	yAmJNeXfL9KrLIcPRb9Ma54ySvg5VFzVDKFlJCh7ZgpKKeyf2ElJVCP4NQuX1H12dkfN7L
+	J5AqlHjH20FdGBi/tKGR0J6THLXH2NVEpAYbo3pag912MyCCB5HQkk8KstB0KY8+2MO109
+	AKbJbLySvpgPs73pDglKLGxgBmqGvx9ms68b1RzoIOlsZ1VWsST15OzWW+gYmC87VUc2hX
+	cm290au9wvRPlhry5e2iC0/gE/3lAwG+2Gv/3/M583XOXSLE0qeHqLcVFxK9Dw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1717169102;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zBAiXgC5x6K/2E25MmGwn9JeI87ahIu7LD3cMl3AcgI=;
+	b=X272vt9jZHCuUxIPlGP7h16QUfr6QWEuUYpJNrjFH+d/k/xNcbO61KHjTne81u5i5EyzD1
+	6pQNFx81D9aLOhCg==
+To: Christian Heusel <christian@heusel.eu>
+Cc: Peter Schneider <pschneider1968@googlemail.com>, LKML
+ <linux-kernel@vger.kernel.org>, x86@kernel.org, stable@vger.kernel.org,
+ regressions@lists.linux.dev
+Subject: Re: Kernel 6.9 regression: X86: Bogus messages from topology detection
+In-Reply-To: <43c15a7b-6f43-410e-800e-2ebec87ea762@heusel.eu>
+References: <76b1e0b9-26ae-4915-920d-9093f057796b@googlemail.com>
+ <87r0dj8ls4.ffs@tglx> <87o78n8fe2.ffs@tglx> <87le3r8dyw.ffs@tglx>
+ <4171899b-78cb-4fe2-a0b6-e06844554ed5@heusel.eu>
+ <20ec1c1a-b804-408f-b279-853579bffc24@heusel.eu> <87cyp28j0b.ffs@tglx>
+ <875xuu8hx0.ffs@tglx> <b42363ac-31ef-4b1a-9164-67c0e0af3768@heusel.eu>
+ <87sexy6qt9.ffs@tglx> <43c15a7b-6f43-410e-800e-2ebec87ea762@heusel.eu>
+Date: Fri, 31 May 2024 17:25:00 +0200
+Message-ID: <87plt26m2b.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Recently, suspend testing on sc7180-trogdor based devices has started
-to sometimes fail with messages like this:
+On Fri, May 31 2024 at 16:29, Christian Heusel wrote:
 
-  port a88000.serial:0.0: PM: calling pm_runtime_force_suspend+0x0/0xf8 @ 28934, parent: a88000.serial:0
-  port a88000.serial:0.0: PM: dpm_run_callback(): pm_runtime_force_suspend+0x0/0xf8 returns -16
-  port a88000.serial:0.0: PM: pm_runtime_force_suspend+0x0/0xf8 returned -16 after 33 usecs
-  port a88000.serial:0.0: PM: failed to suspend: error -16
+P-Cores are consistent:
 
-I could reproduce these problems by logging in via an agetty on the
-debug serial port (which was _not_ used for kernel console) and
-running:
-  cat /var/log/messages
-...and then (via an SSH session) forcing a few suspend/resume cycles.
+> CPU 0:
+>    0x0000000b 0x01: eax=0x00000006 ebx=0x0000000c ecx=0x00000201 edx=0x00000000
 
-Tracing through the code and doing some printf()-based debugging shows
-that the -16 (-EBUSY) comes from the recently added
-serial_port_runtime_suspend().
+>    0x0000001f 0x00: eax=0x00000001 ebx=0x00000002 ecx=0x00000100 edx=0x00000000
 
-The idea of the serial_port_runtime_suspend() function is to prevent
-the port from being _runtime_ suspended if it still has bytes left to
-transmit. Having bytes left to transmit isn't a reason to block
-_system_ suspend, though. If a serdev device in the kernel needs to
-block system suspend it should block its own suspend and it can use
-serdev_device_wait_until_sent() to ensure bytes are sent.
+E-Cores are not:
 
-The DEFINE_RUNTIME_DEV_PM_OPS() used by the serial_port code means
-that the system suspend function will be pm_runtime_force_suspend().
-In pm_runtime_force_suspend() we can see that before calling the
-runtime suspend function we'll call pm_runtime_disable(). This should
-be a reliable way to detect that we're called from system suspend and
-that we shouldn't look for busyness.
+> CPU 4:
+>    0x0000000b 0x01: eax=0x00000006 ebx=0x0000000c ecx=0x00000201 edx=0x00000010
 
-Fixes: 43066e32227e ("serial: port: Don't suspend if the port is still busy")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
-In v1 [1] this was part of a 2-patch series. I'm now just sending this
-patch on its own since the Qualcomm GENI serial driver has ended up
-having a whole pile of problems that are taking a while to unravel.
-It makes sense to disconnect the two efforts. The core problem fixed
-by this patch and the geni problems never had any dependencies anyway.
+>    0x0000001f 0x01: eax=0x00000007 ebx=0x0000000c ecx=0x00000201 edx=0x00000010
 
-[1] https://lore.kernel.org/r/20240523162207.1.I2395e66cf70c6e67d774c56943825c289b9c13e4@changeid/
+As the topology is evaluated from CPU0 CPUID leaf 0x1f it's obvious that
+CPU4...11 will trigger the sanity checks because their CPUID leaf 0x1f
+subleaf 1 entries are bogus.
 
-Changes in v3:
-- Adjust comment as per Tony Lindgren.
-- Add Cc: stable.
+IOW it's a firmware bug and there is nothing the kernel will and can do
+about it except what it does already: complaining about the inconsistency.
 
-Changes in v2:
-- Fix "regulator" => "regular" in comment.
-- Fix "PM Runtime" => "runtime PM" in comment.
-- Commit messages says how serdev devices should ensure bytes xfered.
+Thanks for providing all the information!
 
- drivers/tty/serial/serial_port.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/tty/serial/serial_port.c b/drivers/tty/serial/serial_port.c
-index 91a338d3cb34..d35f1d24156c 100644
---- a/drivers/tty/serial/serial_port.c
-+++ b/drivers/tty/serial/serial_port.c
-@@ -64,6 +64,13 @@ static int serial_port_runtime_suspend(struct device *dev)
- 	if (port->flags & UPF_DEAD)
- 		return 0;
- 
-+	/*
-+	 * Nothing to do on pm_runtime_force_suspend(), see
-+	 * DEFINE_RUNTIME_DEV_PM_OPS.
-+	 */
-+	if (!pm_runtime_enabled(dev))
-+		return 0;
-+
- 	uart_port_lock_irqsave(port, &flags);
- 	if (!port_dev->tx_enabled) {
- 		uart_port_unlock_irqrestore(port, flags);
--- 
-2.45.1.288.g0e0cd299f1-goog
+       tglx
 
 
