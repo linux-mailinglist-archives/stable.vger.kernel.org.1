@@ -1,134 +1,121 @@
-Return-Path: <stable+bounces-47784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A8E8D6083
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 13:19:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E978D614C
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 14:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 270DE1F24A00
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 11:19:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3D971C2218F
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 12:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB0B157490;
-	Fri, 31 May 2024 11:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE3A1581EB;
+	Fri, 31 May 2024 12:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HAsPEDLs";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XRgLpBmX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UAqR2LNQ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF27156F5B;
-	Fri, 31 May 2024 11:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4A129A0;
+	Fri, 31 May 2024 12:07:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717154352; cv=none; b=rz9xoCxQFiYRh3h4uUp/JjgSoGqrlGDUV8eFvWyxMT0O5gXOCMomsdaeq7oo0kA/zxrSazcZmJUdGZvZie52DOtEPUby4ZPXF57Sl/8WHAcW8Op+wiojGfqtjiilbOFQtmxSQPEHpPeBh+XGdx8h1Y/wsAU1hUaKn53NKq1uLEA=
+	t=1717157256; cv=none; b=mUbhwCkgyP7HHGlooEByOsm87J5JjpCOExJ2ZSAt0yIOnIgeK8R/PE+suJSHl096eSnr0a9IH1z8UjrgjQbf3v3cGb8X929KsE1ldo8n2g4kB1LW7O600wdhhRPIsmFAdGx5bQ8Ogxm69KoCfwyP16TSJmVWzwkBq2JYaW0mRRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717154352; c=relaxed/simple;
-	bh=Q/k0ZuJgDxU64Fg7EXSjwr3Af/BGVhb3gFxOmobhEZY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Xqo86MTy7x0nadnIl2KtobHJtMw3O2hSmdkJcw0IOII7fuxVLirrfWy6UAiuRQvJgGnN1jLFDmE7oHbCfA6m6hQoM1NBbwDmlnkK741WUWPL3upMKOkDYrrPymsLMFICzASprclpozUlRWoRnAbzHE7skrSL8XO71KS2Oeqh938=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HAsPEDLs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XRgLpBmX; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717154349;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kaI3CFwEe6RD74mHpEKGILiAvt58PIOSoSNwjACCcVc=;
-	b=HAsPEDLsyQ6bOu4ZuP/CmWhMQTJp+F+P8iX5d3ZgKBjfO2jt/goXI1G1L6t0k1uPH8Y1Pr
-	+9YjzxNc6NsNZL+W7T1XabiFHZY74hn9teFhfU5v0ug/mXeB8eHpUZJJV5sPZnVLD6/C86
-	klkNa3qstqzvLjHXZHqZTlknALpJa/vcyNBakUHPTW/IyIwcfmk8aj/5t4uGSp8ExgUs8+
-	7rLxCKrQYs0jAlh0leV/jz4Kz+X8gpawrCdBksYGT/KKEEwM+BdITe1BDqGTj48PGCgbyb
-	RCvYSybNz5zoWHp9trR4v8wqNfufHh04bN/CoGi92YdL7zz+F12f7kOEHrCa8g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717154349;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kaI3CFwEe6RD74mHpEKGILiAvt58PIOSoSNwjACCcVc=;
-	b=XRgLpBmXmSQF7EgKpoWN14dFoPzhYEM7IklIj+SAeJxShIvWMcV1sUWtHaBW3UufgQfep7
-	W9wJogk9URdh7ZDQ==
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	Rob Herring <robh@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Lukas Wunner <lukas@wunner.de>,
-	Nam Cao <namcao@linutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] PCI: of_property: Fix NULL pointer defererence in of_pci_prop_intr_map()
-Date: Fri, 31 May 2024 13:19:00 +0200
-Message-Id: <52dd5a634cb6b490c6a49170abdde4f1070c2ad6.1717154083.git.namcao@linutronix.de>
-In-Reply-To: <cover.1717154083.git.namcao@linutronix.de>
-References: <cover.1717154083.git.namcao@linutronix.de>
+	s=arc-20240116; t=1717157256; c=relaxed/simple;
+	bh=bFRiN8uxWumnVjMvefevotAEPlcwC9xHBjw/n3xbE3c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L/THRcOrTjYF7gaRCXucHACZVmfvvI+uZF722xi7MUuYCwbhKXcBw6HLvy/r52JUnZ8vugCRSZtQdRgcpbInJ4wFd7Os0jq/CMAcedAUKhH5yWtRwEGIyBTaRrUul43OiyqfEHo++yHFVema7VlDOcwFoOvR9rM9lIoIhY0ZggI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UAqR2LNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E44C116B1;
+	Fri, 31 May 2024 12:07:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717157255;
+	bh=bFRiN8uxWumnVjMvefevotAEPlcwC9xHBjw/n3xbE3c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UAqR2LNQzifSGlcFiKjv4yGKaGQYvcnpe4cK7hIQVlQBFidtlzt/419J7rqrqPK/5
+	 jgZyUDDlJ7k/HIF9MEB+LZ9wwvuPAIUh0Z21w7U5sOhX74f8xrSFehJLS4h9145Z2K
+	 hrCEUEcnKT7WkI0YJ4NhIoqb6rz4pKRE/0ZsifnEbnS5PGlleczGLNUUkeZlZK30a+
+	 Qv9ukWEUYg6ZMn/bJIVWr8xUqIJJ5Pg8Pk8mTVXpmRrgtgq4dH96XH0XQcgzSjNEVX
+	 VeJnvD/4OOSbq81MWHcM6/zWBFcjdcPpR6QEfdoshifP8GJQ3v/m0JpEAoE/TI1bOx
+	 35OFaPaZup3og==
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Jian-Hong Pan <jhp@endlessos.org>
+Cc: stable@vger.kernel.org,
+	linux-ide@vger.kernel.org
+Subject: [PATCH] ata: ahci: Do not enable LPM if no LPM states are supported by the HBA
+Date: Fri, 31 May 2024 14:07:11 +0200
+Message-ID: <20240531120711.660691-2-cassel@kernel.org>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2149; i=cassel@kernel.org; h=from:subject; bh=bFRiN8uxWumnVjMvefevotAEPlcwC9xHBjw/n3xbE3c=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNIi9+Znih+p/vx8+csrVuoir25F1WbsDNdyKHlXdaPMW 6EoaXlCRykLgxgXg6yYIovvD5f9xd3uU44r3rGBmcPKBDKEgYtTACYi9ZeRYd93XkmpzGDN+YFn Es+LCn1Qy11edmJlTzP7pQK/7PPNCxgZOsxe9OjFnMhcaN2/97TW4TT1TTPafqxk4bzM2/tL1es PPwA=
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
 Content-Transfer-Encoding: 8bit
 
-The subordinate pointer can be null if we are out of bus number. The
-function of_pci_prop_intr_map() deferences this pointer without checking
-and may crashes the kernel.
+LPM consists of HIPM (host initiated power management) and DIPM
+(device initiated power management).
 
-This crash can be reproduced by starting a QEMU instance:
-    qemu-system-riscv64 -machine virt \
-    -kernel ../build-pci-riscv/arch/riscv/boot/Image \
-    -append "console=ttyS0 root=/dev/vda" \
-    -nographic \
-    -drive "file=root.img,format=raw,id=hd0" \
-    -device virtio-blk-device,drive=hd0 \
-    -device pcie-root-port,bus=pcie.0,slot=1,id=rp1,bus-reserve=0 \
-    -device pcie-pci-bridge,id=br1,bus=rp1
+ata_eh_set_lpm() will only enable HIPM if both the HBA and the device
+supports it.
 
-Then hot-add a bridge with
-    device_add pci-bridge,id=br2,bus=br1,chassis_nr=1,addr=1
+However, DIPM will be enabled as long as the device supports it.
+The HBA will later reject the device's request to enter a power state
+that it does not support (Slumber/Partial/DevSleep) (DevSleep is never
+initiated by the device).
 
-Then the kernel crashes:
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000028
-    [snip]
-[<ffffffff804dac82>] of_pci_prop_intr_map+0x104/0x362
-[<ffffffff804db262>] of_pci_add_properties+0x382/0x3ca
-[<ffffffff804c8228>] of_pci_make_dev_node+0xb6/0x116
-[<ffffffff804a6b72>] pci_bus_add_device+0xa8/0xaa
-[<ffffffff804a6ba4>] pci_bus_add_devices+0x30/0x6a
-[<ffffffff804d3b5c>] shpchp_configure_device+0xa0/0x112
-[<ffffffff804d2b3a>] board_added+0xce/0x354
-[<ffffffff804d2e9a>] shpchp_enable_slot+0xda/0x30c
-[<ffffffff804d336c>] shpchp_pushbutton_thread+0x84/0xa0
+For a HBA that doesn't support any LPM states, simply don't set a LPM
+policy such that all the HIPM/DIPM probing/enabling will be skipped.
 
-NULL check this pointer first before proceeding.
+Not enabling HIPM or DIPM in the first place is safer than relying on
+the device following the AHCI specification and respecting the NAK.
+(There are comments in the code that some devices misbehave when
+receiving a NAK.)
 
-Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
+Performing this check in ahci_update_initial_lpm_policy() also has the
+advantage that a HBA that doesn't support any LPM states will take the
+exact same code paths as a port that is external/hot plug capable.
+
+Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
 Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 ---
- drivers/pci/of_property.c | 3 +++
- 1 file changed, 3 insertions(+)
+We have not received any bug reports with this.
+The devices that were quirked recently all supported both Partial and
+Slumber.
+This is more a defensive action, as it seems unnecessary to enable DIPM
+in the first place, if the HBA doesn't support any LPM states.
 
-diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
-index 5fb516807ba2..c405978a0b7e 100644
---- a/drivers/pci/of_property.c
-+++ b/drivers/pci/of_property.c
-@@ -199,6 +199,9 @@ static int of_pci_prop_intr_map(struct pci_dev *pdev, struct of_changeset *ocs,
- 	int ret;
- 	u8 pin;
+ drivers/ata/ahci.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 07d66d2c5f0d..214de08de642 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1735,6 +1735,12 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
+ 	if (ap->pflags & ATA_PFLAG_EXTERNAL)
+ 		return;
  
-+	if (!pdev->subordinate)
-+		return 0;
++	/* If no LPM states are supported by the HBA, do not bother with LPM */
++	if ((ap->host->flags & ATA_HOST_NO_PART) &&
++	    (ap->host->flags & ATA_HOST_NO_SSC) &&
++	    (ap->host->flags & ATA_HOST_NO_DEVSLP))
++		return;
 +
- 	pnode = pci_device_to_OF_node(pdev->bus->self);
- 	if (!pnode)
- 		pnode = pci_bus_to_OF_node(pdev->bus);
+ 	/* user modified policy via module param */
+ 	if (mobile_lpm_policy != -1) {
+ 		policy = mobile_lpm_policy;
 -- 
-2.39.2
+2.45.1
 
 
