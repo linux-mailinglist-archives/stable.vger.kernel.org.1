@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-47790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4664F8D62C3
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 15:17:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1410B8D62C5
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 15:17:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0219028BA10
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 13:17:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B887D1F22515
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 13:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD56158DCF;
-	Fri, 31 May 2024 13:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A681158DAD;
+	Fri, 31 May 2024 13:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HlbtCHcx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mPuBAoe+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA406158A36;
-	Fri, 31 May 2024 13:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C7E1422C7;
+	Fri, 31 May 2024 13:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717161442; cv=none; b=cR3JjiZtLb7hhe54D4RBuIxVk0qzidH+gCSi8V4N8oOOY8zjiUqsd7mvu9OT+S5RN2exx9eYvkm5b2/hi9yukGEHzwkt5t5emwM5pWdptx9hnUslRsX36uj3YK82pTdV86W/9hha9XZbytHvea+aF4hAA9qrPo4mlwIy7Ev0anA=
+	t=1717161445; cv=none; b=OJUDi4zNDKpN+n80j2DY+DoWI/ZoP7T/X7qWwdWLQG8yjqQA1V+fglc0IG/SR2txcZn8krPJgZ/0oysNyi+LXfgE3xZBuYMUKVzFABoSziVe8vIZs+8agZhgLi7vgtpyzVEN7qiw3q9K2wUlmlWRSwGv1GnzDYHT0euKVXM+JWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717161442; c=relaxed/simple;
-	bh=hREQc+rKYbEtB62OO98jmE4aIfVDLgV6L+RVo0OPMOs=;
+	s=arc-20240116; t=1717161445; c=relaxed/simple;
+	bh=sL6sXqS6GghXfzBSo92ynMAztG44AqdvhOnlzPMN+K8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=FpOmZWGtHBT4BCS1TmSzqE1UmqDDFFjPRfGwqSO2Ru6RQ6VHJppj7XQhO4KrsfqxjlOkRNWSyegrbfBa67V6oy5mURKAhu3zbUytBwtnHGvf8eKPHPCtvCN/0AgdSBubSDKJWNyjQDbEzU5yiKKbG0mf6qN4QhJBgmeo/1mErQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HlbtCHcx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3727C116B1;
-	Fri, 31 May 2024 13:17:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WccTcfIoAWNtXGmFDntLCJcbMBEBLzHpt5GMZTnKKtx47YsyeO3sBzOHwJdi80vqsYE3Ea4Ixn4UGjY49vI0B4JNjljPhxcZYdA1gC/QKDKxp17cgsDL42adkuxm3g3DhDvl4VXhsNUjSMM5WGWQ1yn7T36yg+AiPry2An/vBWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mPuBAoe+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0775EC32781;
+	Fri, 31 May 2024 13:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717161442;
-	bh=hREQc+rKYbEtB62OO98jmE4aIfVDLgV6L+RVo0OPMOs=;
+	s=k20201202; t=1717161444;
+	bh=sL6sXqS6GghXfzBSo92ynMAztG44AqdvhOnlzPMN+K8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=HlbtCHcx6WZFpZ3t3MtzlUYsiRnJ3Dif7ONfjPw+xjjb0/C0AO2e6kX+QkOsoMUbP
-	 Q2Od+EbG4w5jLiIQ/qgAi8VNaH/73RqgH53m2O4ylS3RyrgFNgZBZxRlXWPBlQ0Ybt
-	 qDNP7OG4rzxosrU03a+GSr5RKIHxc5r1raMG2AD+eTbcB5OqJ9++mYc29DQp2S7GyG
-	 xCq0+VZBrr0hBT76PCOOUmbFKV7j7pJCv3I4V5u0pSl+RU6uALKHKOL4+mT6XsSy/1
-	 c4Kv8tmu/2FoauM7iw1kdcjLyR8VdQWsj0eP/iM0Kv90QK6v+MifYWAHKoPCqNHozL
-	 +EiOqThCsqAtw==
+	b=mPuBAoe+uItvrap4UbfoxuquJP7oDcONULUC7Ab6V77SXGgHQPGIeU9TJGu7vDLtu
+	 M6JD3He4X2lXGbX+Cav/5EuX1bPYBgeqW8tr0XhcuSa0fOP0hSJphNeINnL2KecpJ0
+	 V/Vn7E4PxU+VZnBIfs5tU0VpBlrsKRwzeQ0Ei9emHgVIhCYv6Vvr8zvhQPU1clz6nt
+	 X+bGFskZrIA+Su8diDvp1EmQNla1ivXpBgyOkaUBVUg8auPZHVsCTgSdruuZIAl4EM
+	 k7RXMf5IQmX0lGx9NVB7+xf8y1BeXiuMzfZRp1FHfOKFDTvz/5gggNXE5n5CSrws37
+	 W/ZzK7wF3mPPA==
 From: Niklas Cassel <cassel@kernel.org>
 To: Damien Le Moal <dlemoal@kernel.org>, 
  Mario Limonciello <mario.limonciello@amd.com>, 
  Jian-Hong Pan <jhp@endlessos.org>, 
  Mika Westerberg <mika.westerberg@linux.intel.com>, 
  Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org, Aarrayy <lp610mh@gmail.com>, 
+Cc: stable@vger.kernel.org, Doru Iorgulescu <doru.iorgulescu1@gmail.com>, 
  linux-ide@vger.kernel.org
-In-Reply-To: <20240530212816.561680-2-cassel@kernel.org>
-References: <20240530212816.561680-2-cassel@kernel.org>
-Subject: Re: [PATCH] ata: libata-core: Add ATA_HORKAGE_NOLPM for Crucial
- CT240BX500SSD1
-Message-Id: <171716144058.860385.17073103843417056061.b4-ty@kernel.org>
-Date: Fri, 31 May 2024 15:17:20 +0200
+In-Reply-To: <20240530213244.562464-2-cassel@kernel.org>
+References: <20240530213244.562464-2-cassel@kernel.org>
+Subject: Re: [PATCH] ata: libata-core: Add ATA_HORKAGE_NOLPM for AMD Radeon
+ S3 SSD
+Message-Id: <171716144274.860385.926268923461750551.b4-ty@kernel.org>
+Date: Fri, 31 May 2024 15:17:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,7 +66,7 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.13.0
 
 
-On Thu, 30 May 2024 23:28:17 +0200, Niklas Cassel wrote:
+On Thu, 30 May 2024 23:32:44 +0200, Niklas Cassel wrote:
 > Commit 7627a0edef54 ("ata: ahci: Drop low power policy board type")
 > dropped the board_ahci_low_power board type, and instead enables LPM if:
 > -The AHCI controller reports that it supports LPM (Partial/Slumber), and
@@ -79,8 +79,8 @@ On Thu, 30 May 2024 23:28:17 +0200, Niklas Cassel wrote:
 
 Applied, thanks!
 
-[1/1] ata: libata-core: Add ATA_HORKAGE_NOLPM for Crucial CT240BX500SSD1
-      commit: 86aaa7e9d641c1ad1035ed2df88b8d0b48c86b30
+[1/1] ata: libata-core: Add ATA_HORKAGE_NOLPM for AMD Radeon S3 SSD
+      commit: 473880369304cfd4445720cdd8bae4c6f1e16e60
 
 Best regards,
 -- 
