@@ -1,179 +1,166 @@
-Return-Path: <stable+bounces-47777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B688D5F5D
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 12:16:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D37D8D5F8E
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 12:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F8241C2225B
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 10:16:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3CB1F24113
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 10:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DB91514D1;
-	Fri, 31 May 2024 10:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7961514DA;
+	Fri, 31 May 2024 10:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="oWRW3qCV"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ep6e/K3h"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA2E17554
-	for <stable@vger.kernel.org>; Fri, 31 May 2024 10:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635E82595;
+	Fri, 31 May 2024 10:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717150582; cv=none; b=toXND3JrzYQKXkMiyrtJPlkVUMHsc5M4kc7RloeQOcmJjn1kwJizUXu0ZzTKGEBRX4ODOrzeGv8c0GMq38nMGPwovBfwrb6dMaxfHMuyjYRl9q5Qc83H+RIWUuLP3ma4yNRnuCauaq69tose6s9GJyb9e9aZCuMe1aQkwNCqcH8=
+	t=1717150973; cv=none; b=I2Ym++BwT3hhIedrNyMgcY0WSYzSZkZCTuVgGF+gs/9ZF9znrnAXY95QH50iDqRrkVfMxzGoTMVeiEV4jjsZZBIPVLXDNcRiXATG5iGrplACl/LfcWqFj2APXeahSy+L9HwLcPjrs7G4r65Mph9pt6DuFjbTf0sYXjgVEx+NykM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717150582; c=relaxed/simple;
-	bh=QHgyjjJaCiC23glQhIuoKAJ2DmNT6bQlQnJB0Ht2ZpQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=T3cFsXZ6SenY8hsxv9i3+c5V8KacMfEq6l4JmCmwJnY6Rshj09g4VPmOGqioijqPHh+RxPyDjMy4T1+H5nC4TnPACpja3HdW0csdhkR0Sjg6GbfOujYJ80N/HbC8a7eKXDtabr8BoXjLdPf90IMk11dVJRQsyH40+NcDFfpsL6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=oWRW3qCV; arc=none smtp.client-ip=203.254.224.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20240531101617epoutp02f448571a547f2f3db51147b3eb97f4a4~Ui1omBuu52507625076epoutp02C
-	for <stable@vger.kernel.org>; Fri, 31 May 2024 10:16:17 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20240531101617epoutp02f448571a547f2f3db51147b3eb97f4a4~Ui1omBuu52507625076epoutp02C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1717150577;
-	bh=/KU+xOxNrt2ZnfYjFJ1+VO+CSsfLs3zgl8VpEFUWhc4=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=oWRW3qCV0QFNuHCCi+pkAhuHqUIH+LGMv2bP1VPZFwZcFswcsuk/eHwwumdovBrg0
-	 ppww107fNIvCHCkVks5OV9Mzq6WdcXMQZzYkcfTvJL8ibuHr1LduRNvJ+z/ZWY4YKm
-	 6QurtSXo6CltubY3RNZXCjT+859TgGPiZY8KBTQA=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-	epcas1p3.samsung.com (KnoxPortal) with ESMTP id
-	20240531101616epcas1p3ae240bce1c93c1ce35fc32475543ce16~Ui1n_uCWD1793917939epcas1p3R;
-	Fri, 31 May 2024 10:16:16 +0000 (GMT)
-Received: from epsmgec1p1.samsung.com (unknown [182.195.36.226]) by
-	epsnrtp4.localdomain (Postfix) with ESMTP id 4VrJtS1SbNz4x9Pw; Fri, 31 May
-	2024 10:16:16 +0000 (GMT)
-Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
-	epsmgec1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	70.A8.08602.073A9566; Fri, 31 May 2024 19:16:16 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
-	20240531101615epcas1p3f0085b563af62c7f83699b0135cc832a~Ui1nRqTi81794517945epcas1p3R;
-	Fri, 31 May 2024 10:16:15 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20240531101615epsmtrp1b3b592a72c12134a5c6ab76b4ed8049a~Ui1nQ4tgJ0964109641epsmtrp1o;
-	Fri, 31 May 2024 10:16:15 +0000 (GMT)
-X-AuditID: b6c32a33-c9f8da800000219a-40-6659a3708afb
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	3C.0E.07412.F63A9566; Fri, 31 May 2024 19:16:15 +0900 (KST)
-Received: from u20pb1-0435.tn.corp.samsungelectronics.net (unknown
-	[10.91.133.14]) by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20240531101615epsmtip296f408870311044c8070f1ac3fc2da5e~Ui1nDfC7B0954209542epsmtip2d;
-	Fri, 31 May 2024 10:16:15 +0000 (GMT)
-From: Sungjong Seo <sj1557.seo@samsung.com>
-To: linkinjeon@kernel.org, sj1557.seo@samsung.com
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com
-Subject: [PATCH] exfat: fix potential deadlock on __exfat_get_dentry_set
-Date: Fri, 31 May 2024 19:14:44 +0900
-Message-Id: <20240531101444.1874926-1-sj1557.seo@samsung.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1717150973; c=relaxed/simple;
+	bh=iX1V57jDLgMREVkFfskIpTYcZyg45SX9yjiElYuhwxs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L5rvGA9f9crZPMImkpV4iq7sZWzHjrk//Sr0GaBOcGQm86HliwJCk03j72vLwZkHhMRXwMAt7luTMw8SkGhDEECi5iSfelMfHrzMEVV64+4dG2RPS69XV0GElVAtMBh9XtJXHrA2d5JhKLVNnc8GBDzUOeommAIFcjikhtXP8ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=ep6e/K3h; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-57a32b0211aso772873a12.2;
+        Fri, 31 May 2024 03:22:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1717150971; x=1717755771; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:references:cc:to:content-language
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iX1V57jDLgMREVkFfskIpTYcZyg45SX9yjiElYuhwxs=;
+        b=ep6e/K3h3tfW2SQzvSzuay13SY16S2AA5eQZw9J8LEwdM3LkQkhgPoTquvZzRt1Lfg
+         Kh3JkpZYUWWiNZS3mT6HWIGMVDgNtCrm3FsLReGVvuJwtraBjXYCQEP+StvTZB9CTOad
+         o7A5KBJbhPIXNDYP/tquyKVm84OZjh23v2WbP7qBJGBlwsBXaMwM6QkZnxBHqHGW+RnM
+         bt0HgnoqgMUX8GU/J3mcvVYZBMO2FvgTbfI2mqgYmaQHejrRiH//M29YAxb9hKnotA7g
+         Pu7biOyRJtxKC44orfqvo9jAOUk/atlP9TQVBDjBmrHehMkx/wpDIxjbaxrlvE3uHPvW
+         z52Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717150971; x=1717755771;
+        h=in-reply-to:autocrypt:from:references:cc:to:content-language
+         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iX1V57jDLgMREVkFfskIpTYcZyg45SX9yjiElYuhwxs=;
+        b=Uh5+oxCaj9ygI0gG4Si/0o5efQtf6zw0rwRngY8uQhDCw/336F85654qVXRFiq2Cq2
+         5+0OImuTkgQr3W3FEs9OHQ706WgLjDR86OEP+uUqdsBF16glTpaYRbgxxbj4uxvyERKn
+         acHV5DSOvYYMrUYfH0vK6Y4XL+ypdOoIjPg8Z5GJtAWcGjCJ5Vas6hWROnitGtwCAfJX
+         lN8jrC/QLx++7GUJLDJhzSmOA/Y2lrHyE5C2viLSJ9Adx4UpaV0g4rNR/RSM/l/WBUBP
+         fzCku9eZeQGrt5uGiFKUbB/tDXKmtmHDDF/CN81MIcNJ+ognfge+VMU6pG4qtgYrYZ/o
+         1QBw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+qAS+AiFskdEqpKuPi2CVoBuvr/OkHM86dpYJUNlZ4FkzFBprgT/7bt/LawuMQZTGkGMMt9+33vHKgGLazIcsmiGH8i73
+X-Gm-Message-State: AOJu0YwLmfy65gOKcQn+AMe1mfshGtw4B8sgW1BmnFBmsIVSBgDAGNMO
+	K4BuL4t8om1viC2UiNWz20SDb34OYpZ2SCCCrpMgLmbUF/kSUiw=
+X-Google-Smtp-Source: AGHT+IFuMYzqfhNSFhwaKmLyEgvxP5ZmnHZyJrIkynCZwcnKHgQXZVBbL78/zLlD4a7W9mN07VvfwQ==
+X-Received: by 2002:a17:906:68e:b0:a66:a24f:13e with SMTP id a640c23a62f3a-a682022f7a6mr80974366b.29.1717150970372;
+        Fri, 31 May 2024 03:22:50 -0700 (PDT)
+Received: from [192.168.1.3] (p5b0573e1.dip0.t-ipconnect.de. [91.5.115.225])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67ea67b4a7sm71738366b.99.2024.05.31.03.22.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 May 2024 03:22:48 -0700 (PDT)
+Message-ID: <6cd58ea3-c980-4178-91fd-021f7861a7ba@googlemail.com>
+Date: Fri, 31 May 2024 12:22:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrDJsWRmVeSWpSXmKPExsWy7bCmvm7B4sg0g6+vWC0mTlvKbLFn70kW
-	i8u75rBZbPl3hNViwcZHjBbHWtazOrB5bFrVyebRt2UVo8fMt2oenzfJBbBENTDaJBYlZ2SW
-	pSqk5iXnp2TmpdsqhYa46VooKWTkF5fYKkUbGhrpGRqY6xkZGemZGsVaGZkqKeQl5qbaKlXo
-	QvUqKRQlFwDV5lYWAw3ISdWDiusVp+alOGTll4IcrFecmFtcmpeul5yfq6RQlphTCjRCST/h
-	G2PGrq9XGQvO81W8/L+DvYFxJ1cXIyeHhICJROORNaxdjFwcQgI7GCW+zf/EDOF8YpSYdeQK
-	VOYbo8ST3s1MMC2PNz+ESuxllJjbsIoFwmlnkpj/8gwzSBWbgLbE8qZlYLaIgKHEjCO3wIqY
-	BSYxSlxtOAE2SljAQ2LOnHNsIDaLgKrEnnW7WEBsXgFbicXHrjJCrJOXmHnpOztEXFDi5Mwn
-	YDXMQPHmrbPBjpUQ2Mcu8efnKWaIBheJ9dc+sELYwhKvjm9hh7ClJF72t7FDNHQzShz/+I4F
-	IjGDUWJJhwOEbS/R3NoMdBEH0AZNifW79CGW8Um8+9oDNVNQ4vS1bmaQEgkBXomONiGIsIrE
-	9w87WWBWXflxFRpcHhJvmk6D/SIkECvR82EW2wRG+VlI3pmF5J1ZCIsXMDKvYhRLLSjOTU9N
-	NiwwRI7aTYzghKllvIPx8vx/eocYmTgYDzFKcDArifD+So9IE+JNSaysSi3Kjy8qzUktPsSY
-	DAzgicxSosn5wJSdVxJvaGZmaWFpZGJobGZoSFjYxNLAxMzIxMLY0thMSZz3zJWyVCGB9MSS
-	1OzU1ILUIpgtTBycUg1MDue3LFA3EfvXEeAb8Uar1v3+Vp5IHdltZydLlr2qFz8eVXNlR9Xz
-	o7tmLXy3UZczyatNd9FEp+2R/Mdcps37MDXl4Gf9M5YF6S3XXZbek3huv4R9KbO18uq1l8wF
-	0szlbL4Xzzt44h+zeNqXzkenLXKua/tvEHTseJubeKbodatJW91MiQ9nH6+5++1z7HSHZxER
-	fhM7snfWBhmZvM8/d37u059tz2xSa9elKagK/eJLfHWsUpBfNeRMadhetSXBbBIFMXfyHgeU
-	73l5pDrFcdHl51diazOW7UqXqQ5nM9t0MST/Qp731e6OPxqM8wQ46q49kkpe+cpb5PmqAMbd
-	F3/e0O725hHP2rBDTm+NEktxRqKhFnNRcSIADeEhAU8EAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrELMWRmVeSWpSXmKPExsWy7bCSvG7+4sg0g6bvGhYTpy1lttiz9ySL
-	xeVdc9gstvw7wmqxYOMjRotjLetZHdg8Nq3qZPPo27KK0WPmWzWPz5vkAliiuGxSUnMyy1KL
-	9O0SuDJ2fb3KWHCer+Ll/x3sDYw7uboYOTkkBEwkHm9+yApiCwnsZpTYepW/i5EDKC4lcXCf
-	JoQpLHH4cHEXIxdQRSuTxKrPT5lBytkEtCWWNy0Ds0UEjCUenWtmBSliFpjCKHH53RawmcIC
-	HhJz5pxjA7FZBFQl9qzbxQJi8wrYSiw+dpUR4gZ5iZmXvrNDxAUlTs58AlbDDBRv3jqbeQIj
-	3ywkqVlIUgsYmVYxSqYWFOem5yYbFhjmpZbrFSfmFpfmpesl5+duYgQHo5bGDsZ78//pHWJk
-	4mA8xCjBwawkwvsrPSJNiDclsbIqtSg/vqg0J7X4EKM0B4uSOK/hjNkpQgLpiSWp2ampBalF
-	MFkmDk6pBqa12oYt/83mffK8J71csP2/XOdt1TpmJ5PwkOuvz3f8EMkuKt0hPkVu2j6hPUzc
-	n3TK94u5ZWobGEvuz85mffDEqmadq2VP2Ow36S8t7zBtWZxaPLNfS5nx1tXt67afWv/jM4OO
-	/b87vnLvBFu/uvqlfxY+tEzdS1G+/MSGL7M6Zd5me523Y9sSckWtK5Gru8rt8rODZgynJhVv
-	M6h4pBveNH3C8/UzzISLj9++semNk9u6PgvnJ9vUPlhtVAi8UzxtWl7Val/RlDWcPkuun5b2
-	Fav3l2nXu/yrpEP0Sl7PgYmeXv/2rGb7cab8QyNDp7viz9KXn6taXBOMwouPvugQ6/lnf799
-	tt7iushZyUosxRmJhlrMRcWJAP0cIv21AgAA
-X-CMS-MailID: 20240531101615epcas1p3f0085b563af62c7f83699b0135cc832a
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 101P
-X-ArchiveUser: EV
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240531101615epcas1p3f0085b563af62c7f83699b0135cc832a
-References: <CGME20240531101615epcas1p3f0085b563af62c7f83699b0135cc832a@epcas1p3.samsung.com>
+User-Agent: Betterbird (Windows)
+Subject: Re: Kernel 6.9 regression: X86: Bogus messages from topology
+ detection
+Content-Language: de-DE
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
+ stable@vger.kernel.org, regressions@lists.linux.dev, christian@heusel.eu
+References: <877cffcs7h.ffs@tglx>
+ <16cd76b1-a512-4a7b-a304-5e4e31af3c8a@googlemail.com>
+ <ce3abe01-4c37-416e-a5ed-25703318318a@googlemail.com> <87zfs78zxq.ffs@tglx>
+ <76b1e0b9-26ae-4915-920d-9093f057796b@googlemail.com> <87r0dj8ls4.ffs@tglx>
+ <87o78n8fe2.ffs@tglx> <87le3r8dyw.ffs@tglx>
+ <bd7ff2f3-bf2c-4431-9848-8eb41e7422c6@googlemail.com> <87ikyu8jp4.ffs@tglx>
+ <87frty8j9p.ffs@tglx> <087b4298-6564-40ad-a4fb-32dbb2f74a43@googlemail.com>
+ <87zfs670s0.ffs@tglx>
+From: Peter Schneider <pschneider1968@googlemail.com>
+Autocrypt: addr=pschneider1968@googlemail.com; keydata=
+ xjMEY58biBYJKwYBBAHaRw8BAQdADPnoGTrfCUCyH7SZVkFtnlzsFpeKANckofR4WVLMtMzN
+ L1BldGVyIFNjaG5laWRlciA8cHNjaG5laWRlcjE5NjhAZ29vZ2xlbWFpbC5jb20+wpwEExYK
+ AEQCGyMFCQW15qgFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQSjgovXlszhGoyt6IZu
+ OpLJLD/yRAUCY58b8AIZAQAKCRBuOpLJLD/yRIeIAQD0+/LMdKHM6AJdPCt+e9Z92BMybfnN
+ RtGqkdZWtvdhDQD9FJkGh/3PFtDinimB8UOB7Gi6AGxt9Nu9ne7PvHa0KQXOOARjnxuIEgor
+ BgEEAZdVAQUBAQdAw2GRwTf5HJlO6CCigzqH6GUKOjqR1xJ+3nR5EbBze0sDAQgHwn4EGBYK
+ ACYWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCY58biAIbDAUJBbXmqAAKCRBuOpLJLD/yRONS
+ AQCwB9qiEQoSnxHodu8kRuvUxXKIqN7701W+INXtFGtJygEAyPZH3/vSBJ4A7GUG7BZyQRcr
+ ryS0CUq77B7ZkcI1Nwo=
+In-Reply-To: <87zfs670s0.ffs@tglx>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------TEkbWb247Mv3hhQ1tGArGZ3y"
 
-When accessing a file with more entries than ES_MAX_ENTRY_NUM, the bh-array
-is allocated in __exfat_get_entry_set. The problem is that the bh-array is
-allocated with GFP_KERNEL. It does not make sense. In the following cases,
-a deadlock for sbi->s_lock between the two processes may occur.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------TEkbWb247Mv3hhQ1tGArGZ3y
+Content-Type: multipart/mixed; boundary="------------at82P3C0DcAOB0FpImiT00MA";
+ protected-headers="v1"
+From: Peter Schneider <pschneider1968@googlemail.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
+ stable@vger.kernel.org, regressions@lists.linux.dev, christian@heusel.eu
+Message-ID: <6cd58ea3-c980-4178-91fd-021f7861a7ba@googlemail.com>
+Subject: Re: Kernel 6.9 regression: X86: Bogus messages from topology
+ detection
+References: <877cffcs7h.ffs@tglx>
+ <16cd76b1-a512-4a7b-a304-5e4e31af3c8a@googlemail.com>
+ <ce3abe01-4c37-416e-a5ed-25703318318a@googlemail.com> <87zfs78zxq.ffs@tglx>
+ <76b1e0b9-26ae-4915-920d-9093f057796b@googlemail.com> <87r0dj8ls4.ffs@tglx>
+ <87o78n8fe2.ffs@tglx> <87le3r8dyw.ffs@tglx>
+ <bd7ff2f3-bf2c-4431-9848-8eb41e7422c6@googlemail.com> <87ikyu8jp4.ffs@tglx>
+ <87frty8j9p.ffs@tglx> <087b4298-6564-40ad-a4fb-32dbb2f74a43@googlemail.com>
+ <87zfs670s0.ffs@tglx>
+In-Reply-To: <87zfs670s0.ffs@tglx>
 
-       CPU0                CPU1
-       ----                ----
-  kswapd
-   balance_pgdat
-    lock(fs_reclaim)
-                      exfat_iterate
-                       lock(&sbi->s_lock)
-                       exfat_readdir
-                        exfat_get_uniname_from_ext_entry
-                         exfat_get_dentry_set
-                          __exfat_get_dentry_set
-                           kmalloc_array
-                            ...
-                            lock(fs_reclaim)
-    ...
-    evict
-     exfat_evict_inode
-      lock(&sbi->s_lock)
+--------------at82P3C0DcAOB0FpImiT00MA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-To fix this, let's allocate bh-array with GFP_NOFS.
+QW0gMzEuMDUuMjAyNCB1bSAxMjowNyBzY2hyaWViIFRob21hcyBHbGVpeG5lcjoNCiA+IFRo
+YW5rcyBhIGxvdCBmb3IgdGVzdGluZyBhbmQgcHJvdmlkaW5nIGFsbCB0aGUgaW5mb3JtYXRp
+b24hDQoNClJlZmFjdG9yaW5nIG1lc3N5IGxlZ2FjeSBjb2RlIGlzIG5vdCBhbiBlYXN5IHRh
+c2suIEknbSBnbGFkIEkgY291bGQgaGVscCBhIHRpbnkgbGl0dGxlIGJpdCANCnNvIHRoYXQg
+eW91IGNhbiBnZXQgdGhpcyBkb25lIHJpZ2h0IQ0KDQpCZXN0ZSBHcsO8w59lLA0KUGV0ZXIg
+U2NobmVpZGVyDQoNCi0tIA0KQ2xpbWIgdGhlIG1vdW50YWluIG5vdCB0byBwbGFudCB5b3Vy
+IGZsYWcsIGJ1dCB0byBlbWJyYWNlIHRoZSBjaGFsbGVuZ2UsDQplbmpveSB0aGUgYWlyIGFu
+ZCBiZWhvbGQgdGhlIHZpZXcuIENsaW1iIGl0IHNvIHlvdSBjYW4gc2VlIHRoZSB3b3JsZCwN
+Cm5vdCBzbyB0aGUgd29ybGQgY2FuIHNlZSB5b3UuICAgICAgICAgICAgICAgICAgICAtLSBE
+YXZpZCBNY0N1bGxvdWdoIEpyLg0KDQpPcGVuUEdQOiAgMHhBMzgyOEJENzk2Q0NFMTFBOENB
+REU4ODY2RTNBOTJDOTJDM0ZGMjQ0DQpEb3dubG9hZDogaHR0cHM6Ly93d3cucGV0ZXJzLW5l
+dHpwbGF0ei5kZS9kb3dubG9hZC9wc2NobmVpZGVyMTk2OF9wdWIuYXNjDQpodHRwczovL2tl
+eXMubWFpbHZlbG9wZS5jb20vcGtzL2xvb2t1cD9vcD1nZXQmc2VhcmNoPXBzY2huZWlkZXIx
+OTY4QGdvb2dsZW1haWwuY29tDQpodHRwczovL2tleXMubWFpbHZlbG9wZS5jb20vcGtzL2xv
+b2t1cD9vcD1nZXQmc2VhcmNoPXBzY2huZWlkZXIxOTY4QGdtYWlsLmNvbQ0K
 
-Fixes: a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
-Cc: stable@vger.kernel.org # v6.2+
-Reported-by: syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/000000000000fef47e0618c0327f@google.com
-Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
----
- fs/exfat/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--------------at82P3C0DcAOB0FpImiT00MA--
 
-diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
-index 84572e11cc05..7446bf09a04a 100644
---- a/fs/exfat/dir.c
-+++ b/fs/exfat/dir.c
-@@ -813,7 +813,7 @@ static int __exfat_get_dentry_set(struct exfat_entry_set_cache *es,
- 
- 	num_bh = EXFAT_B_TO_BLK_ROUND_UP(off + num_entries * DENTRY_SIZE, sb);
- 	if (num_bh > ARRAY_SIZE(es->__bh)) {
--		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_KERNEL);
-+		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_NOFS);
- 		if (!es->bh) {
- 			brelse(bh);
- 			return -ENOMEM;
--- 
-2.25.1
+--------------TEkbWb247Mv3hhQ1tGArGZ3y
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+wnsEABYIACMWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCZlmk9wUDAAAAAAAKCRBuOpLJLD/yRIw+
+AQDe4ogWtnV3Yu62+wjht22a+GlKXVMwQEOJZlQr9fLLlAEA08JnqsCTGRMjL67KrfbQGk9NcGoA
+RXNwX8NMVktlLwM=
+=2RTt
+-----END PGP SIGNATURE-----
+
+--------------TEkbWb247Mv3hhQ1tGArGZ3y--
 
