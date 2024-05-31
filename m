@@ -1,153 +1,160 @@
-Return-Path: <stable+bounces-47805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DDB8D65B9
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 17:30:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E65438D667B
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 18:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 916E71F223C3
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 15:30:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FADB1C22E84
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 16:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7D27710B;
-	Fri, 31 May 2024 15:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FD4176AA4;
+	Fri, 31 May 2024 16:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g+yjWoVQ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="w2FIGB0I"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7970A4C7C;
-	Fri, 31 May 2024 15:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5D8158DD8
+	for <stable@vger.kernel.org>; Fri, 31 May 2024 16:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717169427; cv=none; b=KxNYqM5Ama1tRB88aRp432zPq5Kjj7KRqyGLZlmMHfU28xh3u/ZuJcwuzvyBs64/sRdRUGsifiERzZcTKmBo/+8QRzRMJLZYLS/kOJVh5Hngfxv0A5aOhgy1usKe8ixXTUcfbEPOyGM8mhyc0u//Hye2J0OxHaDvGnJhodXgChY=
+	t=1717172035; cv=none; b=MpfifmKlH5aP1BxjQni25VcPahDPAGHnPjSAoGIzVSZppm1l5SoAEjGYpSatBTApNg0VR6pJK5CeiPgoSCgvGCJRk2Tn9IwClmMkHlVnkdLcmQ/HjaqgTm8FSSlLB3vtbKoXuTNvIfNeRT9oD/syi5wppV7paYvgKA+0Qezn7HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717169427; c=relaxed/simple;
-	bh=LMKo8cO4a5a84Rip7QNsCoS0nQcXswBiCLWRnMnn6yQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b6rfwoAIi25iZ7Mi1p7+pHDCRp9Q88QTeJpzg0QLbkh4rV0V+y1SCz4t5be7+DRrsuSx6mICRlEhrGLSk1OsEyw8UqxyViIzsokAifqMKqui2bSzU7WjhkC9gllzoRVw4hExqCreNCdMDQxitW+gxJCUk7YLHAyqi67Pw3c1k4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g+yjWoVQ; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717169426; x=1748705426;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LMKo8cO4a5a84Rip7QNsCoS0nQcXswBiCLWRnMnn6yQ=;
-  b=g+yjWoVQWyyKapB2k4A0YXAIfY61qZfPY1Zt+4HpcYgVJhQFhqRKMbu4
-   /xm2IhOYP5PlLfksTiYv1pdK7EwW7kiDpTc8+9NBWZ6R0jcCMkdzL+JmU
-   9rG8FsyH0hws4wiUH2KZ1WoGg3T08h1DkOgmUX9z8CmvDNcOJtIVrp1/N
-   GJIEFHDLHnv/KhrCTPp/8tUoIz3b7ibsw9awQjCxkijcThRCyAXvCKnua
-   rTYkSJ1Rleh9WrhTg+jPtLPnAMeV50DKjjfMiaPZ8Mn6lyPB9mjVxVUUu
-   01XD/KmCBvTIpbpNoLBUVbptXQ7h4+9XmNl4WdUZVXIS/sMhJTA/xVnks
-   w==;
-X-CSE-ConnectionGUID: S5qer6VeQqKTjOua9K04vA==
-X-CSE-MsgGUID: AaJyaOCUTWmgNCX6qO+qxQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="17514218"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="17514218"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:25 -0700
-X-CSE-ConnectionGUID: l5lsMTrXSpaytGx0KmxbDA==
-X-CSE-MsgGUID: vMNB4v87Tj2UN1JX9a5lsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="36209148"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:19 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1sD4Ct-0000000CVRR-3uji;
-	Fri, 31 May 2024 18:30:15 +0300
-Date: Fri, 31 May 2024 18:30:15 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	John Ogness <john.ogness@linutronix.de>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	linux-arm-msm@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+	s=arc-20240116; t=1717172035; c=relaxed/simple;
+	bh=XYS6GElq0yArJgxoxvyHPMS3W4BDecfj/Oq019zf3Gc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XI3YFij5/Pq0Espc3zKELNalRsLdtKBb0b92uo3M8buJUX8xTvKkUW8nzPxQVqrwztY8Hx1u6AoIuK8zPdz8oT9suvIJSfko/k/qnzb/Q+xInYEOiDhQhlavmObhAvxJMLTx560bYK3Xy/5iM9PV766AzO8pJGhkcQwf+qpCCtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=w2FIGB0I; arc=none smtp.client-ip=91.218.175.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: lpieralisi@kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1717172032;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qaf7wlJcbuaI5XLr7jlnJohIFPCzjuNsqqKvlQY7mnY=;
+	b=w2FIGB0INIhu6VVvsFM5KwIGw4z7lIFwD8CKxzGHIC739QzQmk2STRcVji1Ca84PW+sl91
+	0zp2Uiw5YUmH0jFB5Hf4777v2LPsoFbDiYlQJbIEr0B+3F2pr+gOPfQ+usbw2psr2x9opw
+	uMROgDK+ucm0Dla8+Dj4+FOVc5xZXvQ=
+X-Envelope-To: kw@linux.com
+X-Envelope-To: robh@kernel.org
+X-Envelope-To: linux-pci@vger.kernel.org
+X-Envelope-To: thippeswamy.havalige@amd.com
+X-Envelope-To: linux-arm-kernel@lists.infradead.org
+X-Envelope-To: markus.elfring@web.de
+X-Envelope-To: dan.carpenter@linaro.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Envelope-To: bhelgaas@google.com
+X-Envelope-To: michal.simek@amd.com
+X-Envelope-To: sean.anderson@linux.dev
+X-Envelope-To: stable@vger.kernel.org
+X-Envelope-To: bharatku@xilinx.com
+X-Envelope-To: helgaas@kernel.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	linux-pci@vger.kernel.org
+Cc: Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Markus Elfring <Markus.Elfring@web.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
 	stable@vger.kernel.org,
-	Tony Lindgren <tony.lindgren@linux.intel.com>,
-	Bing Fan <tombinfan@tencent.com>,
-	Guanbing Huang <albanhuang@tencent.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Subject: Re: [PATCH v3] serial: port: Don't block system suspend even if
- bytes are left to xmit
-Message-ID: <ZlntB9t6glOZC_HX@smile.fi.intel.com>
-References: <20240531080914.v3.1.I2395e66cf70c6e67d774c56943825c289b9c13e4@changeid>
+	Bharat Kumar Gogada <bharatku@xilinx.com>,
+	Bjorn Helgaas <helgaas@kernel.org>
+Subject: [PATCH v4 2/7] PCI: xilinx-nwl: Fix off-by-one in IRQ handler
+Date: Fri, 31 May 2024 12:13:32 -0400
+Message-Id: <20240531161337.864994-3-sean.anderson@linux.dev>
+In-Reply-To: <20240531161337.864994-1-sean.anderson@linux.dev>
+References: <20240531161337.864994-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240531080914.v3.1.I2395e66cf70c6e67d774c56943825c289b9c13e4@changeid>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, May 31, 2024 at 08:09:18AM -0700, Douglas Anderson wrote:
-> Recently, suspend testing on sc7180-trogdor based devices has started
-> to sometimes fail with messages like this:
-> 
->   port a88000.serial:0.0: PM: calling pm_runtime_force_suspend+0x0/0xf8 @ 28934, parent: a88000.serial:0
->   port a88000.serial:0.0: PM: dpm_run_callback(): pm_runtime_force_suspend+0x0/0xf8 returns -16
->   port a88000.serial:0.0: PM: pm_runtime_force_suspend+0x0/0xf8 returned -16 after 33 usecs
->   port a88000.serial:0.0: PM: failed to suspend: error -16
-> 
-> I could reproduce these problems by logging in via an agetty on the
-> debug serial port (which was _not_ used for kernel console) and
-> running:
->   cat /var/log/messages
-> ...and then (via an SSH session) forcing a few suspend/resume cycles.
-> 
-> Tracing through the code and doing some printf()-based debugging shows
-> that the -16 (-EBUSY) comes from the recently added
-> serial_port_runtime_suspend().
-> 
-> The idea of the serial_port_runtime_suspend() function is to prevent
-> the port from being _runtime_ suspended if it still has bytes left to
-> transmit. Having bytes left to transmit isn't a reason to block
-> _system_ suspend, though. If a serdev device in the kernel needs to
-> block system suspend it should block its own suspend and it can use
-> serdev_device_wait_until_sent() to ensure bytes are sent.
-> 
-> The DEFINE_RUNTIME_DEV_PM_OPS() used by the serial_port code means
-> that the system suspend function will be pm_runtime_force_suspend().
-> In pm_runtime_force_suspend() we can see that before calling the
-> runtime suspend function we'll call pm_runtime_disable(). This should
-> be a reliable way to detect that we're called from system suspend and
-> that we shouldn't look for busyness.
-> 
-> Fixes: 43066e32227e ("serial: port: Don't suspend if the port is still busy")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+MSGF_LEG_MASK is laid out with INTA in bit 0, INTB in bit 1, INTC in bit
+2, and INTD in bit 3. Hardware IRQ numbers start at 0, and we register
+PCI_NUM_INTX irqs. So to enable INTA (aka hwirq 0) we should set bit 0.
+Remove the subtraction of one.
 
-...
+This bug would cause legacy interrupts not to be delivered, as enabling
+INTB would actually enable INTA, and enabling INTA wouldn't enable
+anything at all. It is likely that this got overlooked for so long since
+most PCIe hardware uses MSIs. This fixes the following UBSAN error:
 
-> +	/*
-> +	 * Nothing to do on pm_runtime_force_suspend(), see
-> +	 * DEFINE_RUNTIME_DEV_PM_OPS.
+UBSAN: shift-out-of-bounds in ../drivers/pci/controller/pcie-xilinx-nwl.c:389:11
+shift exponent 18446744073709551615 is too large for 32-bit type 'int'
+CPU: 1 PID: 61 Comm: kworker/u10:1 Not tainted 6.6.20+ #268
+Hardware name: xlnx,zynqmp (DT)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+dump_backtrace (arch/arm64/kernel/stacktrace.c:235)
+show_stack (arch/arm64/kernel/stacktrace.c:242)
+dump_stack_lvl (lib/dump_stack.c:107)
+dump_stack (lib/dump_stack.c:114)
+__ubsan_handle_shift_out_of_bounds (lib/ubsan.c:218 lib/ubsan.c:387)
+nwl_unmask_leg_irq (drivers/pci/controller/pcie-xilinx-nwl.c:389 (discriminator 1))
+irq_enable (kernel/irq/internals.h:234 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
+__irq_startup (kernel/irq/internals.h:239 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
+irq_startup (kernel/irq/chip.c:270)
+__setup_irq (kernel/irq/manage.c:1800)
+request_threaded_irq (kernel/irq/manage.c:2206)
+pcie_pme_probe (include/linux/interrupt.h:168 drivers/pci/pcie/pme.c:348)
+<snip>
 
-	 * DEFINE_RUNTIME_DEV_PM_OPS().
+Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+---
 
-(in case you need to send a new version)
+Changes in v4:
+- Explain likely effects of the off-by-one error
+- Trim down UBSAN backtrace
 
-> +	 */
-> +	if (!pm_runtime_enabled(dev))
-> +		return 0;
+Changes in v3:
+- Expand commit message
 
+ drivers/pci/controller/pcie-xilinx-nwl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index 0408f4d612b5..437927e3bcca 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -371,7 +371,7 @@ static void nwl_mask_intx_irq(struct irq_data *data)
+ 	u32 mask;
+ 	u32 val;
+ 
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
+@@ -385,7 +385,7 @@ static void nwl_unmask_intx_irq(struct irq_data *data)
+ 	u32 mask;
+ 	u32 val;
+ 
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.35.1.1320.gc452695387.dirty
 
 
