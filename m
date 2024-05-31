@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-47808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019558D6740
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 18:50:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643708D6743
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 18:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 815041F253E4
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 16:50:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19BA728A880
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 16:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D6A17618C;
-	Fri, 31 May 2024 16:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA3C176AD7;
+	Fri, 31 May 2024 16:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="cD4TE2vr"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="fwlWT/OV"
 X-Original-To: stable@vger.kernel.org
 Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2043.outbound.protection.outlook.com [40.107.22.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6344616A360;
-	Fri, 31 May 2024 16:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5366176220;
+	Fri, 31 May 2024 16:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717174241; cv=fail; b=XVO8l8oXQ6nqJuri4xvor5363AsOiYGYtKyNFeU/ul1ygi+hhRTPwrBELkAmJ/8XC3aCF/Zn/IQDSuQYUbiomsFUJBUiHH3g1qF8agGJcw14XpSMT3BKeR2mUeOQflNMWtxpWmkpWrbr4uvllDoY05UCqCKqdYZTHMVngEmRhz0=
+	t=1717174244; cv=fail; b=WBvJXTwOt1H/4y7UpfIxTzUb1V1MOpZnzUwzgnhifqwiWdX07QEyEQg4lEy5erV+8oBloZbL69PdNNAXJhKJzkEdUOEwGCAHm00v792g5oOKwsaKD+YqUNz3wlnoLg2rMVG7jaVKTHOKzkoAWMlOmsFuKPl9+9whq2Q/jL0X0dU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717174241; c=relaxed/simple;
-	bh=znHkGDGAd2wKa/zwhgRsuq4KoHrinPDFQ3gAC8Iedew=;
+	s=arc-20240116; t=1717174244; c=relaxed/simple;
+	bh=0K2ngxY90rYCqbqMZNurw8oLJ9D39JP+SMdsqQRMKxs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Y0dgVz27lT+4jfffASTZSTwJuSHQoRT/lTtqwi0Lhb3B8eKFSW58Y7mSXehA9yoyfZgSaRAtv1u09oJu0/i3DHOoUHtlSBzucSDrOz+92/mWPvwtSLeLGGAclQylywp/SPD8EwqJ2NzsO0lWo9D8UHWpXD3xw8+8I5mxQ5cwPt0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=cD4TE2vr; arc=fail smtp.client-ip=40.107.22.43
+	 Content-Type:MIME-Version; b=l5y5/qal34IIfoTPFMgwMjQkAHDalEhcAFWiDjt9EEBTynaZo9IOxp9PkwmZXuV+xFtRwhChzMytrXGpPRTLNcd+V+XfdTZ+2HCBKYrPS0pcof6rtH6j7MoXVbuxXaWJ4a4qY3TlOn6XDl1PTrhDUY+d57XFSpz7EV9bP5NL1zU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=fwlWT/OV; arc=fail smtp.client-ip=40.107.22.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PYckeTFKa0YJrB9tNrZjLgyPSh78OHEFZfDoe3tRKbsTkMFKjt8hEDwJs+sQE+UXecR6kgYU5pzA5TI+1fvnjsro0PNy3ocJHxaYfDS83Y6gzAbqzLBrZQShVGvnDH4YnXV8DdRGCb7QGq5sgTj3v+o0m3YriWtdVid0uZw5U5VYpVnuHY2eyhYq2XOVrzW6ARutitVD+5z+3NAnuFB0vrRh/1vbzMbKi3jEe5u7Wg6/lkwu/NgnvbFPIyf0ZPmuQE2S17bjfY0SDPzVVTXo5ll6qAyxxaDcy5AnacvPSObi4SGf/aotDN2wJZiWkMuePU2X1WQVojrOqi3phnWwQg==
+ b=k5Cl22wIT+WhAnVNbdI8kaHlAZM4Ax2C/HYduN0lnF5DW5FxK4Pchm3PMJx7gHaG9Bz2nzuf+7hwp5fVpMplbKcf1jOi3iJ4md3BBpt3N5hIMHl1ElnyVXG3gyyKPqbN0a/8Cpk9r969PV9xz+TuOJthkcqMu5V8KhrTnm0GRVWaUZuOqqKIgPD9j4OUtauy4DloyXTCpF4XAGS/s177gk/Pk6ie6kmTXU3aniHxhdvYjRBknaAzZkKuD3FjOxSaGjosddr9jr/e/cLmRAo9NY44jVl6G0iilDHuRQdD1wBXeUAhZ9KansD0rifC91MOBnUKWc+LbuRqxK9h1j0g6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bmY1o+LEREUeqyvixFHgYYetL1+HS65155+MSCAYiNM=;
- b=I1NhbWb2cZPwOEUeiu8EZZv+tf2Cfy+B3TQL/LKIUAeyVwOs7ksjvDpOWbjUYX5U4xiL4nNSabU597i05utblgsD0MuSQlzFz6pTqXfReSMMtYLY69SpC/45dbol0izKJoTMrcZ+BcyM0p8VvVpJIj4kMbZ3tZGpObO1FqkCTQOe3E5q8aKK8r8zC0+HXTXBSbaHGwwavQnqRqfbdgA5I4C2Iqzs+qT1gOsDGvlaUwKIST7wNGie0wcPig+ob6I5CUWGga0dwKOK6EJGRNtmbLfIdZDOadwzRUVPYLFxtxnlOHbKGk2V/EjI5GapxbiWghWX2uBtKE78ufLF3QYS6Q==
+ bh=k1GLL22PJtQ9uo6lVy0+SUqwdLR5lFOu5hKmhM+Dzrk=;
+ b=gqbVz/fCB9SOaRlYKYfv+2fFtnjwfY5GebK0DHxbqghHwrNvAeGAxRdy1FFAd2nHjASaS9TwUeD0jeDVJ/WOgWjjYR3TUfQTfRsUQvfO6oZ43qvoncO6v8RXO1n0ZEwlD/sds/EI2cqZtaEXRZPiQrTsY+McrTMEof05VuyX3Z2VxTByYIywcQ6YEf4377CfXy6eAbCNcGj/y+R9LAOI0HPgJOSBuLiha/y5fJ54rVm6l4qr6q0zdCwosqRZ5/MjHWIiJ5AwERcMli+F/S5FZHXqUKIaNcXkd7m43TyvU1WoVBIALg7lYBTvCCTUapJezYM6TjGcHBJdTWYYIQGKOQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bmY1o+LEREUeqyvixFHgYYetL1+HS65155+MSCAYiNM=;
- b=cD4TE2vr1224uf8QVEWZWEr7fASwW3uL2vg8jZhQfiM7uVIzr2CjfGks+r//T74kvvIdvbR4OZhxbmr0K5GB+36X840QrCEXGA/nE6IerSkYdX8WiBV8uD42rbHfKD6y1w5ZjBz+4oRsdp6MaF6DNBctgUbNOxxcgpKKzdEId/E=
+ bh=k1GLL22PJtQ9uo6lVy0+SUqwdLR5lFOu5hKmhM+Dzrk=;
+ b=fwlWT/OVECIGKlBGy0uIHTep8ilytyyzOL5s+b2m4GuIsOHPjLayn0q1MW8Fd5QyJvAvj3TDMbfw3egEkcBPLLp+c7tZxKEPXjBS5WSy2BJ3PqEMIn75RZceeZkUJW4P/aro5O5vhsjB/NDLI9XPCX7t4AKi1DgQzYC4az7+0FE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DB7PR04MB4555.eurprd04.prod.outlook.com (2603:10a6:5:33::26) by
  AM8PR04MB7233.eurprd04.prod.outlook.com (2603:10a6:20b:1df::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.22; Fri, 31 May
- 2024 16:50:35 +0000
+ 2024 16:50:36 +0000
 Received: from DB7PR04MB4555.eurprd04.prod.outlook.com
  ([fe80::86ff:def:c14a:a72a]) by DB7PR04MB4555.eurprd04.prod.outlook.com
  ([fe80::86ff:def:c14a:a72a%7]) with mapi id 15.20.7611.030; Fri, 31 May 2024
- 16:50:35 +0000
+ 16:50:36 +0000
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 To: stable@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>,
@@ -70,9 +70,9 @@ Cc: netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	Simon Horman <simon.horman@corigine.com>
-Subject: [PATCH stable-5.15.y 1/2] net: dsa: sja1105: always enable the INCL_SRCPT option
-Date: Fri, 31 May 2024 19:50:15 +0300
-Message-Id: <20240531165016.3021154-2-vladimir.oltean@nxp.com>
+Subject: [PATCH stable-5.15.y 2/2] net: dsa: tag_sja1105: always prefer source port information from INCL_SRCPT
+Date: Fri, 31 May 2024 19:50:16 +0300
+Message-Id: <20240531165016.3021154-3-vladimir.oltean@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240531165016.3021154-1-vladimir.oltean@nxp.com>
 References: <20240531165016.3021154-1-vladimir.oltean@nxp.com>
@@ -89,147 +89,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB7PR04MB4555:EE_|AM8PR04MB7233:EE_
-X-MS-Office365-Filtering-Correlation-Id: e037b366-8f13-4d19-10d7-08dc8191cad5
+X-MS-Office365-Filtering-Correlation-Id: 59850258-b716-455b-bbde-08dc8191cb8f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230031|366007|376005|52116005|7416005|1800799015|38350700005;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?d5WshqA8wVFMZyOmU7NRGu4XWpgaK3JTNjsgtu6Uu9NFpQHqkD8gWSuNZ9Lm?=
- =?us-ascii?Q?5RVX0HD9mHGVInwO4IqX5ms505bv4RrZ4Fc3OzrMKrsDtgS3AQt4D5YUTgwg?=
- =?us-ascii?Q?yZ7/utRXDSXObC6WRhjW7Fs2V6yzg6lqQO13QnS55lH+3a/F1YynFqqR4ob9?=
- =?us-ascii?Q?B9qesrliuBzrBUp5MYKKnVu0iX3Jc+8CTrPjBqUTj7ylLxaSk23NA2d9Djy9?=
- =?us-ascii?Q?dUAkQa5fhVsBjrHSUgfdtwyKhUzTH3KmafJc/w8EEhn5b+o1PidUO7r7wKpp?=
- =?us-ascii?Q?ppEQGNtiBapn95RDXaLZXwK8SvFaxKYgKxH1CXyzT9dwLkRAIHR+aj77p4Y1?=
- =?us-ascii?Q?FY+6ReyC7qx3aL8t3az6BDT0IL/ERWZoiR6MpmXD8Xw27uId45095HOP077e?=
- =?us-ascii?Q?82nesB8WnsdIEuXf/BafOYMLkE9c/ZmB49xLih+PeaKopE/7ZJtio4qFWQae?=
- =?us-ascii?Q?L5u0J0TAaHbJym7J5vzOeVWXnSt9vz9/IVitfGXclxNDeEhL5HcgteKyCnvp?=
- =?us-ascii?Q?X6tIsS9N+Wx3i/o4ZvVggJPbGPqmfYt+xHU4MiICivslcMfQNv1DDcHiQlD3?=
- =?us-ascii?Q?3DS7W4Lht5I31UfwDEvyeSwEZbr3ZyCrdgH+74YyDNx6pzCWM7cOMSjHZkUV?=
- =?us-ascii?Q?1n9XiGUH/hN06zkbq7c8TAqZxmNYCpZeFuBoBSGMu6MtVrfCpCCNncWMb/+z?=
- =?us-ascii?Q?vdJ8iAqA5Q5zfHQJNwCVcwasn4+L6M9ng4Mehafg9oA26dmIrz8bUJQEYRjW?=
- =?us-ascii?Q?0sNp3lFlBnccUtH1hnVsrpr6yzJFu7FIyO2sK/LvzxqqbXI9lwK8aiAs1npe?=
- =?us-ascii?Q?fub+mwClWoahiqbyLpGKoDRB5kDou4mrb6Jx6nMpTXLA1o8nq2XVPKth4Jqd?=
- =?us-ascii?Q?eWqFp5Gxi9qhos9aIopHwhrt7A+2CBHm4wxhpD4yU69wc5g0F7Wj3jTOFamX?=
- =?us-ascii?Q?jUWeGaRiX4TeaX+Xp2O9DC41R02eTe1kHJdz4aIGeTHCMI3g87cujZjU4Lds?=
- =?us-ascii?Q?YeBLqDOXZ7Di5N18APXg8bT4s/PhP/6yww5OAa92yfS959hzTaXVr+539sK+?=
- =?us-ascii?Q?wrhmwTflghgBWx/Thj7zXJwKH1sqZMPTbsxz1hQYCydy1/N1gCK9Ilyf5Z2P?=
- =?us-ascii?Q?VOYegUajGjFD6khwjAnxgYb2YokDWT3lxPBz/0UieVY2jU2O2AjEEBkvRtfz?=
- =?us-ascii?Q?KcdADwy6Z+RW64ZksiXiU+G01xY1kOtZ1fJ4fdVpiDoPJapAQ5k2l+joPIQc?=
- =?us-ascii?Q?d6knMUaDZ696iJZAS3K1V7dD1Dl+gEIHExejrkIxUoMSh5zUpmOoNlPQBy47?=
- =?us-ascii?Q?13zEb+094LoOj91PEwzIDlH20B0lvHuXk+j3ecV2270gfQ=3D=3D?=
+	=?us-ascii?Q?f89sr7RxieAuSJKmNEe2eiIZhVQgvw7OZUQ/GQX1wIsrgpy8gkGU7sgV3ErM?=
+ =?us-ascii?Q?kzW11v5PhvSlIDsBkpb6X+RVaScNhdOTkYeQVKmURfQJrclGGjkHqyYBW5sQ?=
+ =?us-ascii?Q?8emtlKNIjWkAmB2FiT3yqzaEvc12+Vb0pkfP5nIiVI1rFbuHSFaJzbAhwaOc?=
+ =?us-ascii?Q?6K7rBcXg2b1FIGS8/DeHQG83UJxejp5iFOL73kuk5RYwtJcfJ5sN+uVsatXb?=
+ =?us-ascii?Q?9s5AhXnwHWiPO9lLxIrCbTsLN5l/8HvCPpTFTuaSdfnwTQfnZOFVwT/kBVWh?=
+ =?us-ascii?Q?muGE0F6kNWk02ECH3JG/aAowoQlI3f/ONLyCJO71OtZ47iHbOubEBiGVbGe7?=
+ =?us-ascii?Q?Md4xUWuk5kcLn3a63eKE8G4MorbMHlizT+J3Zs5FTLNMJWr6XJfTnu1dREek?=
+ =?us-ascii?Q?ms+WjBadmLRYjG8+0nPZd47VsOg753o1NN73RRTVbHBNlZcckaIq8ula5nlv?=
+ =?us-ascii?Q?49C1DJkCkq+tFj6+rU2Crb6MoLil5sGoCAjyob+12HcJCO9QN6Bjc1mS5uW/?=
+ =?us-ascii?Q?1/8jJCdFA8J/GwWWpbgkWCdW5Lhvs8lo1sLKxjwK9UXCrlrytu/a277peTOS?=
+ =?us-ascii?Q?U9g6up8VCjNmAl+OqlL6D87b0IYH28+1akapLsiUi5uv18k0HIS6wdMFOuK2?=
+ =?us-ascii?Q?VZziVJAbMe3b+HnePqCNa74QvXSI1tNvyxzm09J4wuTrslMoLTSTirjwtQ6S?=
+ =?us-ascii?Q?Qz1uEkCslm+gX+9V0odegwiTN32/5mjX/yxgC273YxXfcDhqaMsfSMkx6cq5?=
+ =?us-ascii?Q?d0TuZSgoHtYgOj3gyCcLiIJFPts+pPC3UZrRn2G0g2WLso7dfh0C5oD88Sqq?=
+ =?us-ascii?Q?tWSJHMTcuq3cXpRRvogf0JDoZ1sO0eQJtbvFXl6cMMxxKwjalUB9nssijN0A?=
+ =?us-ascii?Q?N035Vjks/SlITF9W50WeG1kVSO1yNf18hJFGxTOTBNMr9+BI0Ry/muid587/?=
+ =?us-ascii?Q?D5hy7QEees0pbbR4p8JD5Dt7ZGr0ib7jZTSlzdg4yvqUh2v0PAIWQ2JiCnuZ?=
+ =?us-ascii?Q?d9PSpo5povZEVWY46IPo2KJR4eIUOPiiMBE2FOf7ahWfvHiJWhZsy8VbaiY4?=
+ =?us-ascii?Q?/7r5VMRCjJTpX/WBkPrUVWAWqkPdqVLtpYWk9BjieoAZ2BOHm4HhsC0YmPfe?=
+ =?us-ascii?Q?O0vi9zFiqRF+nyQ/bxSjNKgmnhUSzs4acgKRpfcPg2s70WCUTeISf06IGrxy?=
+ =?us-ascii?Q?LFAkglK/S6WgbtvD8pPF3Dc0nrrzJ8o/b7EUb1YwjdvjbLT0sXZK1OF7pQAu?=
+ =?us-ascii?Q?jdaFgsUf4GfHxcrvZiLKVGXPoZhMsVjGiamRSX/4gW0a+x46Xa5qoZC++oly?=
+ =?us-ascii?Q?G2ByzL7omo/wWlrwGFjBbeY78OnBWUOR2KFPL+TxYoMgkg=3D=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR04MB4555.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(52116005)(7416005)(1800799015)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?l1e2arjndqCP6+L3I7jaFtf24UafDwA7GHdl9HOJYxF4KZkSI2FcUwkduyx1?=
- =?us-ascii?Q?zoX2Ma8OrfSLH0857F2qrwh9GR/GL/dJHmncSXrN5bdL1o9Mbdl9J/0dsz0N?=
- =?us-ascii?Q?jLwFZOSauTxv/ZhMCmeyejJx6nxc9S2Xrt4KwPqhQ6aBcCBc3Pcp1SrE6GsK?=
- =?us-ascii?Q?3MUm70gkqZMkmG7AKfl2uY9sp9vqn6YuU3G7pRqSoZHL9/I18IjPefEP597d?=
- =?us-ascii?Q?gRA6t9dFctB6yb6CdwObq39gebnfOuthj1MzJYg3KMziMvPPKmMd+tVgCJAL?=
- =?us-ascii?Q?CzEiboVNCDMINQV5E8zrzO+Ao8TE3hbZTa3B4zULUvRxx21u7jLOxqdPm2lR?=
- =?us-ascii?Q?a2sy2plLOJcLWv1mrq/RkxstMidXE3sTJky6FiQdX7R6HuHFn5Wm3JMvUOZl?=
- =?us-ascii?Q?nvJS2eV4ZFBjOCo1uRnAA14Edk1YylSVQNFbFY/KnpCN4K538RR1dLW66yb9?=
- =?us-ascii?Q?ww7ks+C4g2bUqtpI3VcSTtUPq18L9tocOvJAE6cAGtRNWGuNwCPCIUagg8ob?=
- =?us-ascii?Q?pAwmR/GG5L2mDCKyo0AQAN25zG692q6jC7SXFxgxdD4b7GUVrZifXYmux2/P?=
- =?us-ascii?Q?D7wvDNgJkARI3rqXLMW8xg5Prj2lIMsU8w49w/KxqfyVJ9xjhJbM5vxJEtWZ?=
- =?us-ascii?Q?q1gBFIWe8Em+N8F4QTsGPxSgY+HkB6ZctDFoQCc89EMz013pppse/DLJHsrW?=
- =?us-ascii?Q?XnCCVUu5b5eZwusKiFPalQGwDswkqwD1osJWq2P5nhxieeJwt6vyKQrat299?=
- =?us-ascii?Q?scX0nYhbYgghvwNuKzGcvbqGNBlRKfkpJZq5lauxpzd3G0CIeOXnWN0YMhkr?=
- =?us-ascii?Q?4ZYKlhEF+7avC3+ecRdMGqIbMDwiu76096Hs+dTuiiesz4LwPkc3FF35wrHy?=
- =?us-ascii?Q?ksrpVWYeqwwN77n+4MB8HSqTqzlqwOKWdFdPmlbs5Rfoi3gXMHn7iM99mRpv?=
- =?us-ascii?Q?t7l5PpZlyUQLfGerkbc5SmPJWvU3UkCYPN4LKBY0z7OYahEDfprgxGHjXLjj?=
- =?us-ascii?Q?+XzhiloR6uTVFiSMlw0EKVSQCDl0beHk9m2boaC6c3ZV2MOzGubG3prTzQtY?=
- =?us-ascii?Q?EZBebGIQK8IoS3aTAzIIguV8qRiU57Nqa0GuhpJSaLX0YNI34tBLZfUdjPWp?=
- =?us-ascii?Q?w+pSfHkUx6M4Qtv7Dl9ibQXQugFA1RSc3DPjh8SxzBlVyIihoWv5cybaLXId?=
- =?us-ascii?Q?+b+Gb7C4cRdBGmZR7n2J9FhZky52+fPNNqjgPQet8ZgClMjCEomc6MnUX1cK?=
- =?us-ascii?Q?OhGwZrd5eS2+IxIZj96RSoLwtXLHD1U88K/MiKGI3QdhJGvmZ1nsNzi7RJkn?=
- =?us-ascii?Q?+hL3r2q6zQ6+WJaLrYCSgv4V1Qzdj39/NQIUSLYYTfsfgXuR3axnnkg+pHH2?=
- =?us-ascii?Q?dpK9XV8sNU719GYok1pOpiP/8QnBuZidBbHs1umFtSZzGSu+iRVeKGqTZizL?=
- =?us-ascii?Q?pzrXwuzxro1sRyWOkyOaDgpbCz+SUdUogA5grtsgWofeDM6ntFZG5q6Tk8dJ?=
- =?us-ascii?Q?vnbIkA0zy+5MpphZ8A6W4ucluRwjLiufpbqFqYUGbeACpndUUl0t3S9iSc79?=
- =?us-ascii?Q?rXIVV8xfQObsCPN4NVHdAPro1OC8KtVmlzSsBI5l1cP3Z4QJ3EmEmeRNYnii?=
- =?us-ascii?Q?kw=3D=3D?=
+	=?us-ascii?Q?tQ4Sgc8LXnbUYhnv2d7kyz6y5HOJEM9aofsUmWPb306YVz/15PlAhMNRPWFe?=
+ =?us-ascii?Q?+/Es1PXG1CZS0B+YApNBhvlp+rKEOnshATQQ05wFPHEGVobOn1utNei+tvV3?=
+ =?us-ascii?Q?pbAEHO6hEwnZvFVRwTk9uoeR/luZL7cSKLTdvQxnp3pWgrsfh/tshrPeTDUT?=
+ =?us-ascii?Q?cNlzXlQiw2RqYYD2c2gI0qHjz/6R+esZixBQYklBqvNvW3mbGKo7vV5ST2KE?=
+ =?us-ascii?Q?3FFFhw+azWZAcWe0aCWCMNVs+5cjzLcMpC1uvN9kGNuebMv8PXfjpfD3Z4kd?=
+ =?us-ascii?Q?HlwPmOLsZMxKK3z60WVzNEmoiJT/192rD643YK68hmUHdPX0tcxSEAuc1IhT?=
+ =?us-ascii?Q?6keZn3EM00D8eF/hH5gwxlA48i1gIxNJgjL1WzLmah8cipvkNbtQuxcf2Br6?=
+ =?us-ascii?Q?OtTXVlPfzmnoWnoamjzyxE0TwTHSdfjlj1k2JE/V8sCpoZxRUtQtTHEWELj+?=
+ =?us-ascii?Q?kpMCRyjbA3hhuLogZXq8DdCxsHCDZRF1RL49fd7NmAN3WBuDNHdCKFKedeZ9?=
+ =?us-ascii?Q?aNRaCS7pG8ypqE1LzPwhePhkEyNfODeiETR/acXX11loCqEoowdKzY7J1LGb?=
+ =?us-ascii?Q?rpIo+CM+SZQV+ZQscW53woG0kH7am0xDRM9QaoXxBEo3fZk2Sr8rC6ndraZ7?=
+ =?us-ascii?Q?uTh0dLMla1jAsdgDD3ayc4PaXyUYqwVuO2VvoQ/+PEaT0KBuRRNo4NmleY77?=
+ =?us-ascii?Q?M2QqhYbE/2Gazt6qTMj/Hdnga+y9ZT9MCDNbVqn+7ZwzQtlLdy9plRJ2Ybob?=
+ =?us-ascii?Q?5HcjV2HbO2OD5dZ5zajeBNqPgli0V6wt2BRet2yogAVF05PRtyxy5s8Ciiz3?=
+ =?us-ascii?Q?Tr0JHNdRcRgIZPresbQkSDJxzESg+ZFNzjfJjKk5faU88rNoOqn/1VTuS763?=
+ =?us-ascii?Q?HgVZsdFoO6XqjpKnm3It7CDtrDWsSvW53Hwye7Fcbw/Ng5S8Val3TflQkOZE?=
+ =?us-ascii?Q?UBD5udBiAsooQll0WTlitVxCOz1cBTEOpvGAiPBR6c25ewor8zjbvsOCI9YZ?=
+ =?us-ascii?Q?jRglDJSMjCQ0VOBBhIYu2SgZskNOZlHMxftEhZPgwM7Bka4r+m3vS9VPhCoW?=
+ =?us-ascii?Q?8UCB5Bi2dN9LNkY8PoEmhINbCAPRpzqyalcAw7RPt7FR2uMlYzROGNfp22Z3?=
+ =?us-ascii?Q?q6LpHVW28wF3x+xY9BwVc1m3MjAw/iaGqw4oSHP1I1RyEryLizfwf6r4jWsB?=
+ =?us-ascii?Q?JXCriUUDdp6xqIno0936m2g5WV3bC/EbUDzpN1N6HA/PPwSsAwivxugUrDzy?=
+ =?us-ascii?Q?ZEGMuSWLpRqMuS7bvPafLf8sow1DU611W5+8G/HZXofF0OCsfMO0Oe+gsyqX?=
+ =?us-ascii?Q?iRHU1qpLb+ndWEbqFwCtVi8TqA6GFwkCzoYlcFSjQsfMCuv1qZXIDesx6GfP?=
+ =?us-ascii?Q?jIOkHX2X/X3a1+zmFV03yh3fEMJ5G3P/YGw4ujlp2wBfwQUxgqieAy7PEilO?=
+ =?us-ascii?Q?MRqKgva/Rwqg6T9s0oWRCrT9gyFh14EkeeN0G3Pglfo8ZXG2kysyEQGc6O3Q?=
+ =?us-ascii?Q?70WgYTyH8nXUIiBje5LEj0KhIAiTKc5ASmbLk6SoFMetdrNg22rNc4zfx6Lz?=
+ =?us-ascii?Q?K+THuItxuheTABFXB+SjQEjVZwySwOrQhwoBBz3QFJFrQpt+IiddP+RYS2Ei?=
+ =?us-ascii?Q?Ng=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e037b366-8f13-4d19-10d7-08dc8191cad5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59850258-b716-455b-bbde-08dc8191cb8f
 X-MS-Exchange-CrossTenant-AuthSource: DB7PR04MB4555.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 16:50:35.4195
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 16:50:36.6520
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T76d/Xm25i+Qn1m1GDMdLMhDG83tj5ZnPFWgfvBylX8JaeCZbE2gIw1wvby5Ap/J02F92YKiNdz4KFrpTjTh7g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: qQ4qPEqZ8lFofsQdZ2QI4NPZGT1+jhHBLeFATFeewSlNOCkOsD9QL4q2LC8b2m9lk6WjOkvmQAyK15k4bcvx9g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7233
 
-commit b4638af8885af93cd70351081da1909c59342440 upstream.
+commit c1ae02d876898b1b8ca1e12c6f84d7b406263800 upstream.
 
-Link-local traffic on bridged SJA1105 ports is sometimes tagged by the
-hardware with source port information (when the port is under a VLAN
-aware bridge).
+Currently the sja1105 tagging protocol prefers using the source port
+information from the VLAN header if that is available, falling back to
+the INCL_SRCPT option if it isn't. The VLAN header is available for all
+frames except for META frames initiated by the switch (containing RX
+timestamps), and thus, the "if (is_link_local)" branch is practically
+dead.
 
 The tag_8021q source port identification has become more loose
 ("imprecise") and will report a plausible rather than exact bridge port,
 when under a bridge (be it VLAN-aware or VLAN-unaware). But link-local
-traffic always needs to know the precise source port.
+traffic always needs to know the precise source port. With incorrect
+source port reporting, for example PTP traffic over 2 bridged ports will
+all be seen on sockets opened on the first such port, which is incorrect.
 
-Modify the driver logic (and therefore: the tagging protocol itself) to
-always include the source port information with link-local packets,
-regardless of whether the port is standalone, under a VLAN-aware or
-VLAN-unaware bridge. This makes it possible for the tagging driver to
-give priority to that information over the tag_8021q VLAN header.
+Now that the tagging protocol has been changed to make link-local frames
+always contain source port information, we can reverse the order of the
+checks so that we always give precedence to that information (which is
+always precise) in lieu of the tag_8021q VID which is only precise for a
+standalone port.
 
-The big drawback with INCL_SRCPT is that it makes it impossible to
-distinguish between an original MAC DA of 01:80:C2:XX:YY:ZZ and
-01:80:C2:AA:BB:ZZ, because the tagger just patches MAC DA bytes 3 and 4
-with zeroes. Only if PTP RX timestamping is enabled, the switch will
-generate a META follow-up frame containing the RX timestamp and the
-original bytes 3 and 4 of the MAC DA. Those will be used to patch up the
-original packet. Nonetheless, in the absence of PTP RX timestamping, we
-have to live with this limitation, since it is more important to have
-the more precise source port information for link-local traffic.
-
+Fixes: 884be12f8566 ("net: dsa: sja1105: add support for imprecise RX")
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Reviewed-by: Simon Horman <simon.horman@corigine.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Cc: stable@vger.kernel.org
-[ dropped Fixes: tags for patches not in linux-5.15.y ]
-Stable-dep-of: c1ae02d87689 ("net: dsa: tag_sja1105: always prefer source port information from INCL_SRCPT")
+[ Replaced the 2 original Fixes: tags with the correct one.
+  Respun the change around the lack of a "vbid", corresponding to DSA
+  FDB isolation, which appeared only in v5.18. ]
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ net/dsa/tag_sja1105.c | 34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 493192a8000c..888f10d93b9a 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -853,11 +853,11 @@ static int sja1105_init_general_params(struct sja1105_private *priv)
- 		.hostprio = 7,
- 		.mac_fltres1 = SJA1105_LINKLOCAL_FILTER_A,
- 		.mac_flt1    = SJA1105_LINKLOCAL_FILTER_A_MASK,
--		.incl_srcpt1 = false,
-+		.incl_srcpt1 = true,
- 		.send_meta1  = false,
- 		.mac_fltres0 = SJA1105_LINKLOCAL_FILTER_B,
- 		.mac_flt0    = SJA1105_LINKLOCAL_FILTER_B_MASK,
--		.incl_srcpt0 = false,
-+		.incl_srcpt0 = true,
- 		.send_meta0  = false,
- 		/* Default to an invalid value */
- 		.mirr_port = priv->ds->num_ports,
-@@ -2346,11 +2346,6 @@ int sja1105_vlan_filtering(struct dsa_switch *ds, int port, bool enabled,
- 	general_params->tpid = tpid;
- 	/* EtherType used to identify outer tagged (S-tag) VLAN traffic */
- 	general_params->tpid2 = tpid2;
--	/* When VLAN filtering is on, we need to at least be able to
--	 * decode management traffic through the "backup plan".
--	 */
--	general_params->incl_srcpt1 = enabled;
--	general_params->incl_srcpt0 = enabled;
+diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
+index a163f535697e..aa5d234b634d 100644
+--- a/net/dsa/tag_sja1105.c
++++ b/net/dsa/tag_sja1105.c
+@@ -489,10 +489,7 @@ static struct sk_buff *sja1105_rcv(struct sk_buff *skb,
+ 	is_link_local = sja1105_is_link_local(skb);
+ 	is_meta = sja1105_is_meta_frame(skb);
  
- 	/* VLAN filtering => independent VLAN learning.
- 	 * No VLAN filtering (or best effort) => shared VLAN learning.
+-	if (sja1105_skb_has_tag_8021q(skb)) {
+-		/* Normal traffic path. */
+-		sja1105_vlan_rcv(skb, &source_port, &switch_id, &vid);
+-	} else if (is_link_local) {
++	if (is_link_local) {
+ 		/* Management traffic path. Switch embeds the switch ID and
+ 		 * port ID into bytes of the destination MAC, courtesy of
+ 		 * the incl_srcpt options.
+@@ -506,14 +503,35 @@ static struct sk_buff *sja1105_rcv(struct sk_buff *skb,
+ 		sja1105_meta_unpack(skb, &meta);
+ 		source_port = meta.source_port;
+ 		switch_id = meta.switch_id;
+-	} else {
++	}
++
++	/* Normal data plane traffic and link-local frames are tagged with
++	 * a tag_8021q VLAN which we have to strip
++	 */
++	if (sja1105_skb_has_tag_8021q(skb)) {
++		int tmp_source_port = -1, tmp_switch_id = -1;
++
++		sja1105_vlan_rcv(skb, &tmp_source_port, &tmp_switch_id, &vid);
++		/* Preserve the source information from the INCL_SRCPT option,
++		 * if available. This allows us to not overwrite a valid source
++		 * port and switch ID with zeroes when receiving link-local
++		 * frames from a VLAN-aware bridged port (non-zero vid).
++		 */
++		if (source_port == -1)
++			source_port = tmp_source_port;
++		if (switch_id == -1)
++			switch_id = tmp_switch_id;
++	} else if (source_port == -1 && switch_id == -1) {
++		/* Packets with no source information have no chance of
++		 * getting accepted, drop them straight away.
++		 */
+ 		return NULL;
+ 	}
+ 
+-	if (source_port == -1 || switch_id == -1)
+-		skb->dev = dsa_find_designated_bridge_port_by_vid(netdev, vid);
+-	else
++	if (source_port != -1 && switch_id != -1)
+ 		skb->dev = dsa_master_find_slave(netdev, switch_id, source_port);
++	else
++		skb->dev = dsa_find_designated_bridge_port_by_vid(netdev, vid);
+ 	if (!skb->dev) {
+ 		netdev_warn(netdev, "Couldn't decode source port\n");
+ 		return NULL;
 -- 
 2.34.1
 
