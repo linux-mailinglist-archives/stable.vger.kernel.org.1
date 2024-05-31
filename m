@@ -1,246 +1,144 @@
-Return-Path: <stable+bounces-47781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631F88D6044
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 13:07:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F16E8D604E
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 13:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E12841F232B2
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 11:07:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9A312827CF
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 11:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0F9156F5D;
-	Fri, 31 May 2024 11:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4009C157480;
+	Fri, 31 May 2024 11:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=oppo.com header.i=@oppo.com header.b="GZIGUvr0"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4ZZAJ6zD";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sqxT0t4M"
 X-Original-To: stable@vger.kernel.org
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2056.outbound.protection.outlook.com [40.107.215.56])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0196156F40;
-	Fri, 31 May 2024 11:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.215.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717153641; cv=fail; b=DqZ3o9OwkGwrlUjl53mCaD4cZrMbS7LOpLm1Fb9x1Byqux4bMawCNfAZEV4Fxg2P32XcSfzQl78dRpO6QYYlUs/5KKcfuGz7AMqoRo6oXTKq7rannlHAp62O6NJQK6GJ70F80Ze2dlJ+jwabABu8GrPzhFMcZ2xHLKdR1e+0Fwk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717153641; c=relaxed/simple;
-	bh=AcKauf7xG6Cyoz0wUJHS53fNvniMIcqQaLcqLFNa7PA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZrH2VOa8+02kXJCDJRYN5wnKwvMMJDYHcRZimMCoiGd6nFK8ELzvUI4eMaCN9051e82Y5MimlZ959qRk6dG3pYWp0p/6froon/s5OQfut6yOsv7DRlXzrlwRH+DAFAtH1oRntkYGOTWLtCPsBjxQIzJf5EM3gU6GmwUa8dhUekc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oppo.com; spf=pass smtp.mailfrom=oppo.com; dkim=pass (1024-bit key) header.d=oppo.com header.i=@oppo.com header.b=GZIGUvr0; arc=fail smtp.client-ip=40.107.215.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oppo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oppo.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YSeB2Xw1HNV60CUC5cOLJMoiYMrliqYLoK0xgP8iwLoJIPutD+lGPrKzT2aKW7BAJgSZC58MALxvLU7zrykE3kpjkNBgPPK7n9zyzerZKv46EWDnh0LIiJ1AoXIHnZEeHgiXantpFgqXNvPrQ4D+HsFFHKkbQceUF3TgY73/iP3ruNgAXwNUVlpO038jaaFnFMPOIGUSinSpEMlKYhm3SOWvL19CTnCBlFJ4bCGdDN2QAJsXrrcrXQpNIuxE8fFEZuk32UV5XBQ8t1PewBBcHgJ98fjdAgB2FjUVNbteDw8WliaDDW6ioMWw3y55jcxpc2IEexaYQUZUUuadLkjc0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YxPRvTEyWkCUc29jOHVnhWvBj+Bjtcfx7c7GJZE7hJI=;
- b=oZp+hr/UQe87C17+vrUwD+kJ+cEOMNJ+fo5hIvjVBm+IgXDJ34Fck//K2SV4SUG4/FACNNX0qf3WnKAZoAGauexwWdvX3cIT3Z2zmGEc6GqWjda3knbm+uBDdFH13XO9jOfG6viLHVle2E4+T7SRL7DErj4DRTyJVQD0gv8AoLLS9t4y18LI9nrlGXIMBocXRkhVgmCG7W4Au+uhkm8zJ6tKwH2+sYFduAMRcrWm4lMZThvCd5C/e+6EA4s+PLua9vuhLaysu2pQpg850y22Bfq7U/lgR7FKHIW61aBRry4DRd/uan5Im6Ke7XjmYqIVnH0U4ks9YrC8Dro/84+0Xg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 58.252.5.68) smtp.rcpttodomain=gmail.com smtp.mailfrom=oppo.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=oppo.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oppo.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YxPRvTEyWkCUc29jOHVnhWvBj+Bjtcfx7c7GJZE7hJI=;
- b=GZIGUvr0HkdNMRtQjxK2B0XTWiHiFluBMMqRscp+Bqjk8JXVP0+qD1gzyE01Fw4BelwKsHe4dzXZARqQ0jv/QibTX4Ose5IriLp22ZfuTXX/sqPYh0RJeUphUAMJBi+jA7oIRpgYtcVDJ0zSRpzh6/Xk7pYZC3lVtUjc/IwIgUI=
-Received: from PS2PR02CA0092.apcprd02.prod.outlook.com (2603:1096:300:5c::32)
- by SEYPR02MB5845.apcprd02.prod.outlook.com (2603:1096:101:5e::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21; Fri, 31 May
- 2024 11:07:13 +0000
-Received: from HK2PEPF00006FB2.apcprd02.prod.outlook.com
- (2603:1096:300:5c:cafe::48) by PS2PR02CA0092.outlook.office365.com
- (2603:1096:300:5c::32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.22 via Frontend
- Transport; Fri, 31 May 2024 11:07:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 58.252.5.68)
- smtp.mailfrom=oppo.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=oppo.com;
-Received-SPF: Pass (protection.outlook.com: domain of oppo.com designates
- 58.252.5.68 as permitted sender) receiver=protection.outlook.com;
- client-ip=58.252.5.68; helo=mail.oppo.com; pr=C
-Received: from mail.oppo.com (58.252.5.68) by
- HK2PEPF00006FB2.mail.protection.outlook.com (10.167.8.8) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7633.15 via Frontend Transport; Fri, 31 May 2024 11:07:13 +0000
-Received: from oppo.com (172.16.40.118) by mailappw31.adc.com (172.16.56.198)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 31 May
- 2024 19:07:12 +0800
-Date: Fri, 31 May 2024 19:07:12 +0800
-From: Hailong Liu <hailong.liu@oppo.com>
-To: Zhaoyang Huang <huangzhaoyang@gmail.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, <mm-commits@vger.kernel.org>,
-	<zhaoyang.huang@unisoc.com>, <xiang@kernel.org>, <urezki@gmail.com>,
-	<stable@vger.kernel.org>, <lstoakes@gmail.com>, <liuhailong@oppo.com>,
-	<hch@infradead.org>, <guangye.yang@mediatek.com>, <21cnbao@gmail.com>
-Subject: Re: + mm-vmalloc-fix-vbq-free-breakage.patch added to
- mm-hotfixes-unstable branch
-Message-ID: <20240531110712.b42xstbqgtn6vw2t@oppo.com>
-References: <20240530200551.354DFC2BBFC@smtp.kernel.org>
- <CAGWkznHXyyfnu4eo4CdRyDO-Tvo+4eRASvkVyAHqFQ_i6W102Q@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D1615747A;
+	Fri, 31 May 2024 11:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717153725; cv=none; b=CEZr2zSZkBHmgE4YV3HFdivmcCKSmaH8fayplBzG04DJZcssn/jqLAneHTQ5fW0NvcM+FBlrUyzEo7wbjJxLX9QQ6igR8jSZ78x4oiJVKuhlclXMlhfgACToGkvPetJvwXoGFHVBDCAastbdh1Lnd3fR11DVetl7OOSmFMpys6w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717153725; c=relaxed/simple;
+	bh=v8EdGYHGsaTVTumDZ9stM10D6B3vf1X6bWQ3ALutTB8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ayw+slr3sm1wO7Kofy0nQyj2G/wi1vqolbfSCP3JZQuXrYa+dRD+frz0Sl+QDq6mtgLXKY26qHf+ln/KiRoaTkztKohCHUfaR1tCaC95j1QQz47HDvF/lsPNgSeY+0M1nz+RGbNAnmlrtSyvATDXJK49RHVHAps8rnwMlf7Fu3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4ZZAJ6zD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sqxT0t4M; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1717153721;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VXsJccLpvrmqx5YxSwOp/LzJzocUhsfX7av87j9dTLk=;
+	b=4ZZAJ6zDgX78teApoWDRVMHbIzzhhjaiKQhkxY9p07PkKD7Eq6ZibXi7rV3Ciac2UUQ0dj
+	jkRunaR4yMiDiiud7qcyNWaa4rM4qQ3pMNilk27GlKP/ZUtP9aLs1IDpU0BtKfvPDPSEzF
+	CkutIk5H+gGpgSSIOgaCuCBgMwh4jnbJ7ohfoiPo6a4E2biHMxouUroItziWt0GDk6uKAb
+	M0mU8ZX0kDSlA/VsQRuzKRES9X/gP/qxxvMMaLJFFF/6J8AUurzcH/l93cQVS99ElkCXKN
+	ztONsRa2gLvEbVr1ySEVAtyXhzpj/u6jFY6oQcyt7x2BPAZGVxO1KXK8Q7rMPQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1717153721;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VXsJccLpvrmqx5YxSwOp/LzJzocUhsfX7av87j9dTLk=;
+	b=sqxT0t4MQuCeM/63L7u71ZRxT+s/JnA27hFu9Lhw64ZbCTO4krOEC/7wyWT65ESJ2Oj6ht
+	7iRb9PBWTcu8FgCQ==
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Lukas Wunner <lukas@wunner.de>,
+	Nam Cao <namcao@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] PCI: hotplug: shpchp: Prevent NULL pointer dereference during probe
+Date: Fri, 31 May 2024 13:08:35 +0200
+Message-Id: <20240531110835.3800904-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGWkznHXyyfnu4eo4CdRyDO-Tvo+4eRASvkVyAHqFQ_i6W102Q@mail.gmail.com>
-X-ClientProxiedBy: mailappw31.adc.com (172.16.56.198) To mailappw31.adc.com
- (172.16.56.198)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HK2PEPF00006FB2:EE_|SEYPR02MB5845:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2b86080-d5a5-4916-79fc-08dc8161d328
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|7416005|376005|36860700004|82310400017|1800799015;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dFQzT0pPS2VhN0g3YTdqOFdQSjdmd0ZEcWNCOEdXOHZlQXY3NmZSU2EveEpp?=
- =?utf-8?B?WERDYW1sbm93QTcrVGVXVkR2Q0RVMVJSQUg5SDIwV0JZdHFuMG9iQURTMmlw?=
- =?utf-8?B?QzZNUlRLbzRxSDNCa2VxbFdKYWRoRU90dXh6SXN3L0VoOGl6bURCOEY1YVZG?=
- =?utf-8?B?dXNwM1lvRmN4cGZQeWp0bWozenkrMTZQaG4rOU4vSVhxUEFSMEt3d25saXow?=
- =?utf-8?B?QVJlM2lML0ZCaFFRL2hXWDdUbjQxQ0xBdGp0ZjRDQXFZQlg3MytRd0pCUDky?=
- =?utf-8?B?ZmYwM1R6ZUxLUXB1M01MaWRSQVlTOWp0dHRTUDkxZWw1K0NDYkZWbHlSTW15?=
- =?utf-8?B?bS9nbU1xVnNIdXdJdm1DK3BXNndVck96UnpFNklpZkZPalRFUkU1MFArMlBI?=
- =?utf-8?B?UVRhR3VuSGVXYVJZeHJHVm1SVjNhcysrM01iMUFPZCtQN0wrVHV1cWVWRGk4?=
- =?utf-8?B?K1BmTnZpbUFieTExUllUenFQUDlqcjdVRHd6cFhqbmJvUk5ua21adHdQeUtT?=
- =?utf-8?B?QTZuU1JBRmJWMm83ZkI1U1RCSkJpZUlKeWxtR05FUFdEYlREc3k5N0hVa1ZE?=
- =?utf-8?B?SXpXYlhGa2dZbmw1d2dQcVRXQnloclNETHh4anIxbnNOWHpEN1gxOGdMV2V3?=
- =?utf-8?B?aFNZSGYrL1ZoU1I1M3NHMkM1K2ZwTGR6Qy9lSmZaNCtGU1hrbTh1T0Z6NUlV?=
- =?utf-8?B?NUdKTGF4RnVvTm44aVA1a3l3ZitYSUdPQVRpS0NDdWJVTUhGODJoL0kvQ3RP?=
- =?utf-8?B?eVlpa2NCVlJZRy9ZTWc5dHI4d2oyeml6RlcxZC9PN3lZeUFvcklQa0NibXZz?=
- =?utf-8?B?azhZcklrMUxrK21paEJ2MFA2U1dnem1sOTlad3kwTXlrd1V1VjF0RVlpeEI5?=
- =?utf-8?B?UXRsRnVCcUZOU2RWYVJMNVhwb2RHS3VJbWVidTh4cG5uVkkvWGVUME9SM2dT?=
- =?utf-8?B?T0lHZUU5ZWlZaDcrTm0rWmlqcjB1T2NKYk01aDd6N1IvM2d0V25wM2l5NnY3?=
- =?utf-8?B?SGRoVzZSUnk3dmtucElPblhiY0plNGVZbUcxeG5qZkdVSXRXR0hMSU1sbW0w?=
- =?utf-8?B?YitKV1lvWEhGQ3U5bmFsTWUyYTNzajRwOUY4THAwbGlpQnh3NDV0VFNSaG5u?=
- =?utf-8?B?VzRnSVl6TFNWVXZ3eWUxL2orM0FOWVNEOXZEbFJTdW9rWVdCRW92ZkYzZ0Rk?=
- =?utf-8?B?bnlocDNNNXQwQXRUOHFTdjRQTVYrUjJxa3hJWWt0S0FwekxVN2tGOWNXTXo1?=
- =?utf-8?B?WkdHKzg0MzY1VzY0UTNLQnRSM0oxc0ZtTEhydXBNUnhwa2hYd2Q2bThtVWhS?=
- =?utf-8?B?V1RSLy9CM2FRRmZTN2ZjcDcxL2t5WGZLa1ZkbVBaSno4V25pMjB4MmQvTm5m?=
- =?utf-8?B?NmZMQkt4ZFZDRGJJd3VBZks1NWU2UjBrSkFSdG51SGMvQllFWVFaa2luVWlN?=
- =?utf-8?B?T0E2TnBMNGJlbWZ3Q0VLU1lNWERGU05Qd3JrdGo1ZFprVnE2VEFaOGVibENH?=
- =?utf-8?B?V0ZNQmxzbDBTaDFYMW5pY0RUU3BKYlUxYjBtMk9JK1FORnhKTnNGVnN5ejd6?=
- =?utf-8?B?QXdMc0kySEJqU2tGSWRQdzNuMjZ4c0haVzQ5MkxOQ2QweGxDeUx5a3I2N0dr?=
- =?utf-8?B?SGdrczBLMTVXSDlna3pXOTZGRW54c3FLZDRsY3pMYWZMMTJZaFRjR2pzWTFk?=
- =?utf-8?B?b0RFUVduQTF5NE5CakdaYTg0dWltWUJjbDkxcDJEYkpQQVBQRTJUZHdHZ29F?=
- =?utf-8?Q?clKoqHKSF22j52nuL4Jo7m5PAg8r9BiSVxUGv6I?=
-X-Forefront-Antispam-Report:
-	CIP:58.252.5.68;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.oppo.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(7416005)(376005)(36860700004)(82310400017)(1800799015);DIR:OUT;SFP:1101;
-X-OriginatorOrg: oppo.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 11:07:13.2505
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2b86080-d5a5-4916-79fc-08dc8161d328
-X-MS-Exchange-CrossTenant-Id: f1905eb1-c353-41c5-9516-62b4a54b5ee6
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f1905eb1-c353-41c5-9516-62b4a54b5ee6;Ip=[58.252.5.68];Helo=[mail.oppo.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	HK2PEPF00006FB2.apcprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR02MB5845
 
-On Fri, 31. May 08:51, Zhaoyang Huang wrote:
-> On Fri, May 31, 2024 at 4:12 AM Andrew Morton <akpm@linux-foundation.org> wrote:
-> >
-> >
-> > The patch titled
-> >      Subject: mm/vmalloc: fix vbq->free breakage
-> > has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-> >      mm-vmalloc-fix-vbq-free-breakage.patch
-> >
-> > This patch will shortly appear at
-> >      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-fix-vbq-free-breakage.patch
-> >
-> > This patch will later appear in the mm-hotfixes-unstable branch at
-> >     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> >
-> > Before you just go and hit "reply", please:
-> >    a) Consider who else should be cc'ed
-> >    b) Prefer to cc a suitable mailing list as well
-> >    c) Ideally: find the original patch on the mailing list and do a
-> >       reply-to-all to that, adding suitable additional cc's
-> >
-> > *** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-> >
-> > The -mm tree is included into linux-next via the mm-everything
-> > branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> > and is updated there every 2-3 working days
-> >
-> > ------------------------------------------------------
-> > From: "hailong.liu" <hailong.liu@oppo.com>
-> > Subject: mm/vmalloc: fix vbq->free breakage
-> > Date: Thu, 30 May 2024 17:31:08 +0800
-> >
-> > The function xa_for_each() in _vm_unmap_aliases() loops through all vbs.
-> > However, since commit 062eacf57ad9 ("mm: vmalloc: remove a global
-> > vmap_blocks xarray") the vb from xarray may not be on the corresponding
-> > CPU vmap_block_queue.  Consequently, purge_fragmented_block() might use
-> > the wrong vbq->lock to protect the free list, leading to vbq->free
-> > breakage.
-> >
-> > Link: https://lkml.kernel.org/r/20240530093108.4512-1-hailong.liu@oppo.com
-> > Fixes: fc1e0d980037 ("mm/vmalloc: prevent stale TLBs in fully utilized blocks")
-> > Signed-off-by: Hailong.Liu <liuhailong@oppo.com>
-> > Reported-by: Guangye Yang <guangye.yang@mediatek.com>
-> > Cc: Barry Song <21cnbao@gmail.com>
-> > Cc: Christoph Hellwig <hch@infradead.org>
-> > Cc: Gao Xiang <xiang@kernel.org>
-> > Cc: Guangye Yang <guangye.yang@mediatek.com>
-> > Cc: liuhailong <liuhailong@oppo.com>
-> > Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-> > Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> > ---
-> >
-> >  mm/vmalloc.c |    3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > --- a/mm/vmalloc.c~mm-vmalloc-fix-vbq-free-breakage
-> > +++ a/mm/vmalloc.c
-> > @@ -2830,10 +2830,9 @@ static void _vm_unmap_aliases(unsigned l
-> >         for_each_possible_cpu(cpu) {
-> >                 struct vmap_block_queue *vbq = &per_cpu(vmap_block_queue, cpu);
-> >                 struct vmap_block *vb;
-> > -               unsigned long idx;
-> >
-> >                 rcu_read_lock();
-> > -               xa_for_each(&vbq->vmap_blocks, idx, vb) {
-> > +               list_for_each_entry_rcu(vb, &vbq->free, free_list) {
-> No, this is wrong as the fully used vb's TLB will be kept since they
-> are not on the vbq->free. I have sent Patchv2 out.
-as in https://lore.kernel.org/linux-mm/877csxn6ls.ffs@tglx/
-the $VB either in purge_list or in free_list may not flushed
-in vm_unmap_aliases(). but $VB's flush is defferred.
+pci_dev->subordinate pointer can be NULL if we run out of bus number. The
+driver deferences this pointer without checking, and the kernel crashes.
 
-In fact, we don’t necessarily need to flush here, and doing so could lead to flushing twice.
-one in xa, one in purge_list
+This crash can be reproduced by starting a QEMU instance:
+    qemu-system-x86_64 -machine pc-q35-2.10 \
+    -kernel bzImage \
+    -drive "file=img,format=raw" \
+    -m 2048 -smp 1 -enable-kvm \
+    -append "console=ttyS0 root=/dev/sda debug" \
+    -nographic \
+    -device pcie-root-port,bus=pcie.0,slot=1,id=rp1 \
+    -device pcie-pci-bridge,id=br1,bus=rp1
 
-so IMO loop through list_for_each_entry_rcu() is more
-reasonable to me
+Then hot-add a bridge with the QEMU command:
+    device_add pci-bridge,id=br2,bus=br1,chassis_nr=1,addr=1
 
-> >                         spin_lock(&vb->lock);
-> >
-> >                         /*
-> > _
-> >
-> > Patches currently in -mm which might be from hailong.liu@oppo.com are
-> >
-> > mm-vmalloc-fix-vbq-free-breakage.patch
-> >
-> >
+Then the kernel crashes:
+shpchp 0000:02:01.0: enabling device (0000 -> 0002)
+shpchp 0000:02:01.0: enabling bus mastering
+BUG: kernel NULL pointer dereference, address: 00000000000000da
+    [snip]
+Call Trace:
+ <TASK>
+ ? show_regs+0x63/0x70
+ ? __die+0x23/0x70
+ ? page_fault_oops+0x17a/0x480
+ ? shpc_init+0x3fb/0x9d0
+ ? search_module_extables+0x4e/0x80
+ ? shpc_init+0x3fb/0x9d0
+ ? kernelmode_fixup_or_oops+0x9b/0x120
+ ? __bad_area_nosemaphore+0x16e/0x240
+ ? bad_area_nosemaphore+0x11/0x20
+ ? do_user_addr_fault+0x2a3/0x610
+ ? exc_page_fault+0x6d/0x160
+ ? asm_exc_page_fault+0x2b/0x30
+ ? shpc_init+0x3fb/0x9d0
+ shpc_probe+0x92/0x390
 
---
+NULL check this pointer first before proceeding. If there is no
+secondary bus number, there is no point in initializing this hot-plug
+controller, so just bails out.
 
-Best Regards,
-Hailong.
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org # all
+---
+This one exists since beginning of git history. So I didn't bother
+with a Fixes: tag.
+
+This patch is almost a copy-paste from pciehp
+---
+ drivers/pci/hotplug/shpchp_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/pci/hotplug/shpchp_core.c b/drivers/pci/hotplug/shpchp_core.c
+index 56c7795ed890..14cf9e894201 100644
+--- a/drivers/pci/hotplug/shpchp_core.c
++++ b/drivers/pci/hotplug/shpchp_core.c
+@@ -262,6 +262,12 @@ static int shpc_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (acpi_get_hp_hw_control_from_firmware(pdev))
+ 		return -ENODEV;
+ 
++	if (!pdev->subordinate) {
++		/* Can happen if we run out of bus numbers during probe */
++		pci_err(pdev, "Hotplug bridge without secondary bus, ignoring\n");
++		return -ENODEV;
++	}
++
+ 	ctrl = kzalloc(sizeof(*ctrl), GFP_KERNEL);
+ 	if (!ctrl)
+ 		goto err_out_none;
+-- 
+2.39.2
+
 
