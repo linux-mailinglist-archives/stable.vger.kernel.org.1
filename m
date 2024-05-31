@@ -1,104 +1,153 @@
-Return-Path: <stable+bounces-47804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA4E8D65A5
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 17:25:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DDB8D65B9
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 17:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0AC1287AD7
-	for <lists+stable@lfdr.de>; Fri, 31 May 2024 15:25:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 916E71F223C3
+	for <lists+stable@lfdr.de>; Fri, 31 May 2024 15:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F86E763FC;
-	Fri, 31 May 2024 15:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7D27710B;
+	Fri, 31 May 2024 15:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pJEIrs2f";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X272vt9j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g+yjWoVQ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB6933080;
-	Fri, 31 May 2024 15:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7970A4C7C;
+	Fri, 31 May 2024 15:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717169106; cv=none; b=K2bivyYDpYqi12ZToRqagjMe+CgOltc4dy4H6cy792dFUPMnZ+Fs3kAZc6c7FAoTda4hcytTv89Q0OEHfIaC/T7oMt32ERqQfXGR0cI9IqbAROXNCxWAP04KvD6k3k3Z7VAVCq/kr4Z40ven2yl88E32HLT8iR2Ef30h/KkT+DE=
+	t=1717169427; cv=none; b=KxNYqM5Ama1tRB88aRp432zPq5Kjj7KRqyGLZlmMHfU28xh3u/ZuJcwuzvyBs64/sRdRUGsifiERzZcTKmBo/+8QRzRMJLZYLS/kOJVh5Hngfxv0A5aOhgy1usKe8ixXTUcfbEPOyGM8mhyc0u//Hye2J0OxHaDvGnJhodXgChY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717169106; c=relaxed/simple;
-	bh=pF4Mixxdrq0cYOpR+ClRxFtubx/s2XmY9q7iP3NxDqg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YhMfiOf8EswM+Nfze70YQzG/8jfEsM48yllLfZ+xCWUlL+eXFT9bOqhVf6p+/VrMlEy5p/Qwb3Em7X/5x/Enisr/qvGemjIQCTAihX/xbYwh944gVFMA70yMBqinqnteiUV6Fl6P1Yv5e6waEq+siU17jw5PfDLT9iuoNaEMYvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pJEIrs2f; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X272vt9j; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717169102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBAiXgC5x6K/2E25MmGwn9JeI87ahIu7LD3cMl3AcgI=;
-	b=pJEIrs2fQMNn+nGI1rBaVPcWTQOUXi7P4atPxxPoRH2Fim0kO4PPoHNaW2EglMy/KdNQWf
-	yAmJNeXfL9KrLIcPRb9Ma54ySvg5VFzVDKFlJCh7ZgpKKeyf2ElJVCP4NQuX1H12dkfN7L
-	J5AqlHjH20FdGBi/tKGR0J6THLXH2NVEpAYbo3pag912MyCCB5HQkk8KstB0KY8+2MO109
-	AKbJbLySvpgPs73pDglKLGxgBmqGvx9ms68b1RzoIOlsZ1VWsST15OzWW+gYmC87VUc2hX
-	cm290au9wvRPlhry5e2iC0/gE/3lAwG+2Gv/3/M583XOXSLE0qeHqLcVFxK9Dw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717169102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBAiXgC5x6K/2E25MmGwn9JeI87ahIu7LD3cMl3AcgI=;
-	b=X272vt9jZHCuUxIPlGP7h16QUfr6QWEuUYpJNrjFH+d/k/xNcbO61KHjTne81u5i5EyzD1
-	6pQNFx81D9aLOhCg==
-To: Christian Heusel <christian@heusel.eu>
-Cc: Peter Schneider <pschneider1968@googlemail.com>, LKML
- <linux-kernel@vger.kernel.org>, x86@kernel.org, stable@vger.kernel.org,
- regressions@lists.linux.dev
-Subject: Re: Kernel 6.9 regression: X86: Bogus messages from topology detection
-In-Reply-To: <43c15a7b-6f43-410e-800e-2ebec87ea762@heusel.eu>
-References: <76b1e0b9-26ae-4915-920d-9093f057796b@googlemail.com>
- <87r0dj8ls4.ffs@tglx> <87o78n8fe2.ffs@tglx> <87le3r8dyw.ffs@tglx>
- <4171899b-78cb-4fe2-a0b6-e06844554ed5@heusel.eu>
- <20ec1c1a-b804-408f-b279-853579bffc24@heusel.eu> <87cyp28j0b.ffs@tglx>
- <875xuu8hx0.ffs@tglx> <b42363ac-31ef-4b1a-9164-67c0e0af3768@heusel.eu>
- <87sexy6qt9.ffs@tglx> <43c15a7b-6f43-410e-800e-2ebec87ea762@heusel.eu>
-Date: Fri, 31 May 2024 17:25:00 +0200
-Message-ID: <87plt26m2b.ffs@tglx>
+	s=arc-20240116; t=1717169427; c=relaxed/simple;
+	bh=LMKo8cO4a5a84Rip7QNsCoS0nQcXswBiCLWRnMnn6yQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b6rfwoAIi25iZ7Mi1p7+pHDCRp9Q88QTeJpzg0QLbkh4rV0V+y1SCz4t5be7+DRrsuSx6mICRlEhrGLSk1OsEyw8UqxyViIzsokAifqMKqui2bSzU7WjhkC9gllzoRVw4hExqCreNCdMDQxitW+gxJCUk7YLHAyqi67Pw3c1k4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g+yjWoVQ; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717169426; x=1748705426;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LMKo8cO4a5a84Rip7QNsCoS0nQcXswBiCLWRnMnn6yQ=;
+  b=g+yjWoVQWyyKapB2k4A0YXAIfY61qZfPY1Zt+4HpcYgVJhQFhqRKMbu4
+   /xm2IhOYP5PlLfksTiYv1pdK7EwW7kiDpTc8+9NBWZ6R0jcCMkdzL+JmU
+   9rG8FsyH0hws4wiUH2KZ1WoGg3T08h1DkOgmUX9z8CmvDNcOJtIVrp1/N
+   GJIEFHDLHnv/KhrCTPp/8tUoIz3b7ibsw9awQjCxkijcThRCyAXvCKnua
+   rTYkSJ1Rleh9WrhTg+jPtLPnAMeV50DKjjfMiaPZ8Mn6lyPB9mjVxVUUu
+   01XD/KmCBvTIpbpNoLBUVbptXQ7h4+9XmNl4WdUZVXIS/sMhJTA/xVnks
+   w==;
+X-CSE-ConnectionGUID: S5qer6VeQqKTjOua9K04vA==
+X-CSE-MsgGUID: AaJyaOCUTWmgNCX6qO+qxQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="17514218"
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
+   d="scan'208";a="17514218"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:25 -0700
+X-CSE-ConnectionGUID: l5lsMTrXSpaytGx0KmxbDA==
+X-CSE-MsgGUID: vMNB4v87Tj2UN1JX9a5lsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
+   d="scan'208";a="36209148"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:19 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1sD4Ct-0000000CVRR-3uji;
+	Fri, 31 May 2024 18:30:15 +0300
+Date: Fri, 31 May 2024 18:30:15 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	John Ogness <john.ogness@linutronix.de>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	linux-arm-msm@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+	stable@vger.kernel.org,
+	Tony Lindgren <tony.lindgren@linux.intel.com>,
+	Bing Fan <tombinfan@tencent.com>,
+	Guanbing Huang <albanhuang@tencent.com>,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org
+Subject: Re: [PATCH v3] serial: port: Don't block system suspend even if
+ bytes are left to xmit
+Message-ID: <ZlntB9t6glOZC_HX@smile.fi.intel.com>
+References: <20240531080914.v3.1.I2395e66cf70c6e67d774c56943825c289b9c13e4@changeid>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240531080914.v3.1.I2395e66cf70c6e67d774c56943825c289b9c13e4@changeid>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, May 31 2024 at 16:29, Christian Heusel wrote:
+On Fri, May 31, 2024 at 08:09:18AM -0700, Douglas Anderson wrote:
+> Recently, suspend testing on sc7180-trogdor based devices has started
+> to sometimes fail with messages like this:
+> 
+>   port a88000.serial:0.0: PM: calling pm_runtime_force_suspend+0x0/0xf8 @ 28934, parent: a88000.serial:0
+>   port a88000.serial:0.0: PM: dpm_run_callback(): pm_runtime_force_suspend+0x0/0xf8 returns -16
+>   port a88000.serial:0.0: PM: pm_runtime_force_suspend+0x0/0xf8 returned -16 after 33 usecs
+>   port a88000.serial:0.0: PM: failed to suspend: error -16
+> 
+> I could reproduce these problems by logging in via an agetty on the
+> debug serial port (which was _not_ used for kernel console) and
+> running:
+>   cat /var/log/messages
+> ...and then (via an SSH session) forcing a few suspend/resume cycles.
+> 
+> Tracing through the code and doing some printf()-based debugging shows
+> that the -16 (-EBUSY) comes from the recently added
+> serial_port_runtime_suspend().
+> 
+> The idea of the serial_port_runtime_suspend() function is to prevent
+> the port from being _runtime_ suspended if it still has bytes left to
+> transmit. Having bytes left to transmit isn't a reason to block
+> _system_ suspend, though. If a serdev device in the kernel needs to
+> block system suspend it should block its own suspend and it can use
+> serdev_device_wait_until_sent() to ensure bytes are sent.
+> 
+> The DEFINE_RUNTIME_DEV_PM_OPS() used by the serial_port code means
+> that the system suspend function will be pm_runtime_force_suspend().
+> In pm_runtime_force_suspend() we can see that before calling the
+> runtime suspend function we'll call pm_runtime_disable(). This should
+> be a reliable way to detect that we're called from system suspend and
+> that we shouldn't look for busyness.
+> 
+> Fixes: 43066e32227e ("serial: port: Don't suspend if the port is still busy")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-P-Cores are consistent:
+...
 
-> CPU 0:
->    0x0000000b 0x01: eax=0x00000006 ebx=0x0000000c ecx=0x00000201 edx=0x00000000
+> +	/*
+> +	 * Nothing to do on pm_runtime_force_suspend(), see
+> +	 * DEFINE_RUNTIME_DEV_PM_OPS.
 
->    0x0000001f 0x00: eax=0x00000001 ebx=0x00000002 ecx=0x00000100 edx=0x00000000
+	 * DEFINE_RUNTIME_DEV_PM_OPS().
 
-E-Cores are not:
+(in case you need to send a new version)
 
-> CPU 4:
->    0x0000000b 0x01: eax=0x00000006 ebx=0x0000000c ecx=0x00000201 edx=0x00000010
+> +	 */
+> +	if (!pm_runtime_enabled(dev))
+> +		return 0;
 
->    0x0000001f 0x01: eax=0x00000007 ebx=0x0000000c ecx=0x00000201 edx=0x00000010
+-- 
+With Best Regards,
+Andy Shevchenko
 
-As the topology is evaluated from CPU0 CPUID leaf 0x1f it's obvious that
-CPU4...11 will trigger the sanity checks because their CPUID leaf 0x1f
-subleaf 1 entries are bogus.
-
-IOW it's a firmware bug and there is nothing the kernel will and can do
-about it except what it does already: complaining about the inconsistency.
-
-Thanks for providing all the information!
-
-       tglx
 
 
