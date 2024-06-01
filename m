@@ -1,76 +1,53 @@
-Return-Path: <stable+bounces-47816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71548D6E04
-	for <lists+stable@lfdr.de>; Sat,  1 Jun 2024 07:20:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2608D6E07
+	for <lists+stable@lfdr.de>; Sat,  1 Jun 2024 07:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8A961C217F7
-	for <lists+stable@lfdr.de>; Sat,  1 Jun 2024 05:20:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69FC7284C8F
+	for <lists+stable@lfdr.de>; Sat,  1 Jun 2024 05:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E400B64B;
-	Sat,  1 Jun 2024 05:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96487B64B;
+	Sat,  1 Jun 2024 05:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M/mDr8e2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bn1PUc9e"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD87AF9CC;
-	Sat,  1 Jun 2024 05:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FD04C8C
+	for <stable@vger.kernel.org>; Sat,  1 Jun 2024 05:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717219211; cv=none; b=JnIwwX+6PN8S8AQ5zORXg3AeUm/chPkXd7J92lGWqWCg0ChdrSj9VxfsDOO4MUc1vMwSp1NPeSJMtJ8KkR4ZPKEVaFzZrQXX9G5rjWd5RFoeJKp9kheBvxQVCHVYMnAm0gTSaqqPu/XC4YquV3QcxGHVitKJSXH5p99xlxJEmZM=
+	t=1717219447; cv=none; b=blB4gXS1CIO9RWDN0cHARhQfvvKB38FyyrkR0h+uHXSBHpEFMdTL8gi4WStzdrN2hYJ//s2rOIF29W0XuZykbcyoqNasCFMHfJpwwGhRIa2pnHBT8VsO9FDhZKtWOBhJ+XtnYcQQFQt95IHPMmT6tRlZ3MAqhxC09Ut9C1R1C9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717219211; c=relaxed/simple;
-	bh=F37TZpHVwLcm3fW7tNFu6Jl5Qzq7pHJIpm3FmoVNQZo=;
+	s=arc-20240116; t=1717219447; c=relaxed/simple;
+	bh=A6eRlilG3DROl2LIYQJq85ttfBMNnOGLW84UpnH/8Hw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ERuV/Ehq8lmOUgAk1fVHePGGfeAYsX/yxYSChLqPFJvwC+QQq4QnEMBTEeIdz7bfDdzkB7nXEKENksyPYSOigEP5D+WAqveMMW84MJKD07oGbvFMLNRB3+gfMoleIe4ewV/cp7h71Z0ykX6DI1wCt43AHYfXQuyWwAc6o1ETu8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M/mDr8e2; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717219210; x=1748755210;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=F37TZpHVwLcm3fW7tNFu6Jl5Qzq7pHJIpm3FmoVNQZo=;
-  b=M/mDr8e2+/n/BmTKSNjYv12FxGMbUU9OLPohG7SpvsCtEo9tXSzuoDTr
-   ZdYHH0+4g16URGhoNCkTU1aZdAT44z3kV+VxZPCRSl8PP2EiVhP/TWtfp
-   NkbOle04NfPeK8/m47zPkNuNo8Jg3x2ar9DSQpS+0BcAoGFI05Okxk8mi
-   k4i/EmRHOgf3VpdvAxkzueQmDllluvGCqrqjo7j3uZM7KAAR6XtXumC9w
-   jEWz2HW9MsBtl3OYZQVdlc/j/N16BCIXzxvg/FFRFy67h3WEcNVbrYYvP
-   VjUWuhXs30qtw/cdgRumftEICOCNLvbzVgXNuNOVddwet9ef0DLW6ijgo
-   w==;
-X-CSE-ConnectionGUID: njX/XrvWTvG4iTKts9NIlg==
-X-CSE-MsgGUID: u3tX4qfOSRGCiuSGvTPm+A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11089"; a="13618126"
-X-IronPort-AV: E=Sophos;i="6.08,206,1712646000"; 
-   d="scan'208";a="13618126"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 22:20:10 -0700
-X-CSE-ConnectionGUID: TQcw1yjrSeWxR1JKsJDeMA==
-X-CSE-MsgGUID: I6KDIsNISyOatKivwMuAPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,206,1712646000"; 
-   d="scan'208";a="41288006"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa005.jf.intel.com with ESMTP; 31 May 2024 22:20:08 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 5D3AB128; Sat, 01 Jun 2024 08:20:06 +0300 (EEST)
-Date: Sat, 1 Jun 2024 08:20:06 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Jian-Hong Pan <jhp@endlessos.org>, stable@vger.kernel.org,
-	linux-ide@vger.kernel.org
-Subject: Re: [PATCH] ata: ahci: Do not enable LPM if no LPM states are
- supported by the HBA
-Message-ID: <20240601052006.GG1421138@black.fi.intel.com>
-References: <20240531120711.660691-2-cassel@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lloJJmPpUizuhnMKAZk1PFdqksKMsylTK+rcNSUWB+I8RPR7p7L7NptbFZGpY6KNeFWErbp69cGR0zhX8qsl+Nfg52MMzlVA06j6HnLoC/qIlo88pcDLczSSM+LPUAWP2liyUDpbiETSP5puGGCI9PfUQ5tot+bC+Owk2ktmnCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bn1PUc9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253ABC116B1;
+	Sat,  1 Jun 2024 05:24:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1717219446;
+	bh=A6eRlilG3DROl2LIYQJq85ttfBMNnOGLW84UpnH/8Hw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bn1PUc9eblRoLk57rwKMomsu3rKTSyT7nRrCadidR8Lh96MiBp58GpQ7/Fp+Hev4l
+	 98YnszgDy4h8Tgi9HepfF+sUNMnB88mA+13oxjkimrWiJ/GLiNwhaLUAIBmwGxpNTI
+	 LUKnqMIiSEOQWXjx++QlC7g7VTHPToXUBHKsAMx8=
+Date: Sat, 1 Jun 2024 07:24:12 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, Lang Yu <Lang.Yu@amd.com>,
+	=?utf-8?B?VG9tw6HFoQ==?= Trnka <trnka@scm.com>,
+	Felix Kuehling <felix.kuehling@amd.com>
+Subject: Re: [PATCH] drm/amdkfd: handle duplicate BOs in
+ reserve_bo_and_cond_vms
+Message-ID: <2024060148-monopoly-broiler-1e11@gregkh>
+References: <20240531141807.3501061-1-alexander.deucher@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,66 +56,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240531120711.660691-2-cassel@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240531141807.3501061-1-alexander.deucher@amd.com>
 
-On Fri, May 31, 2024 at 02:07:11PM +0200, Niklas Cassel wrote:
-> LPM consists of HIPM (host initiated power management) and DIPM
-> (device initiated power management).
+On Fri, May 31, 2024 at 10:18:07AM -0400, Alex Deucher wrote:
+> From: Lang Yu <Lang.Yu@amd.com>
 > 
-> ata_eh_set_lpm() will only enable HIPM if both the HBA and the device
-> supports it.
+> Observed on gfx8 ASIC where KFD_IOC_ALLOC_MEM_FLAGS_AQL_QUEUE_MEM is used.
+> Two attachments use the same VM, root PD would be locked twice.
 > 
-> However, DIPM will be enabled as long as the device supports it.
-> The HBA will later reject the device's request to enter a power state
-> that it does not support (Slumber/Partial/DevSleep) (DevSleep is never
-> initiated by the device).
+> [   57.910418] Call Trace:
+> [   57.793726]  ? reserve_bo_and_cond_vms+0x111/0x1c0 [amdgpu]
+> [   57.793820]  amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu+0x6c/0x1c0 [amdgpu]
+> [   57.793923]  ? idr_get_next_ul+0xbe/0x100
+> [   57.793933]  kfd_process_device_free_bos+0x7e/0xf0 [amdgpu]
+> [   57.794041]  kfd_process_wq_release+0x2ae/0x3c0 [amdgpu]
+> [   57.794141]  ? process_scheduled_works+0x29c/0x580
+> [   57.794147]  process_scheduled_works+0x303/0x580
+> [   57.794157]  ? __pfx_worker_thread+0x10/0x10
+> [   57.794160]  worker_thread+0x1a2/0x370
+> [   57.794165]  ? __pfx_worker_thread+0x10/0x10
+> [   57.794167]  kthread+0x11b/0x150
+> [   57.794172]  ? __pfx_kthread+0x10/0x10
+> [   57.794177]  ret_from_fork+0x3d/0x60
+> [   57.794181]  ? __pfx_kthread+0x10/0x10
+> [   57.794184]  ret_from_fork_asm+0x1b/0x30
 > 
-> For a HBA that doesn't support any LPM states, simply don't set a LPM
-> policy such that all the HIPM/DIPM probing/enabling will be skipped.
-> 
-> Not enabling HIPM or DIPM in the first place is safer than relying on
-> the device following the AHCI specification and respecting the NAK.
-> (There are comments in the code that some devices misbehave when
-> receiving a NAK.)
-> 
-> Performing this check in ahci_update_initial_lpm_policy() also has the
-> advantage that a HBA that doesn't support any LPM states will take the
-> exact same code paths as a port that is external/hot plug capable.
-> 
-> Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3007
+> Tested-by: Tomáš Trnka <trnka@scm.com>
+> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+> Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> (cherry picked from commit 2a705f3e49d20b59cd9e5cc3061b2d92ebe1e5f0)
 > ---
-> We have not received any bug reports with this.
-> The devices that were quirked recently all supported both Partial and
-> Slumber.
-> This is more a defensive action, as it seems unnecessary to enable DIPM
-> in the first place, if the HBA doesn't support any LPM states.
-> 
->  drivers/ata/ahci.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index 07d66d2c5f0d..214de08de642 100644
-> --- a/drivers/ata/ahci.c
-> +++ b/drivers/ata/ahci.c
-> @@ -1735,6 +1735,12 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
->  	if (ap->pflags & ATA_PFLAG_EXTERNAL)
->  		return;
->  
-> +	/* If no LPM states are supported by the HBA, do not bother with LPM */
-> +	if ((ap->host->flags & ATA_HOST_NO_PART) &&
-> +	    (ap->host->flags & ATA_HOST_NO_SSC) &&
-> +	    (ap->host->flags & ATA_HOST_NO_DEVSLP))
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-For debugging purposes in case of potential issues, perhaps add a debug
-log here so it is visible that we don't enable LPM?
+What kernel release(s) is this backport for?
 
-> +		return;
-> +
->  	/* user modified policy via module param */
->  	if (mobile_lpm_policy != -1) {
->  		policy = mobile_lpm_policy;
-> -- 
-> 2.45.1
+thanks,
+
+greg k-h
 
