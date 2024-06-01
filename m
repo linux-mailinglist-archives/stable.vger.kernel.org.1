@@ -1,109 +1,144 @@
-Return-Path: <stable+bounces-47815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E78E8D6D29
-	for <lists+stable@lfdr.de>; Sat,  1 Jun 2024 02:31:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C71548D6E04
+	for <lists+stable@lfdr.de>; Sat,  1 Jun 2024 07:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5891284A9F
-	for <lists+stable@lfdr.de>; Sat,  1 Jun 2024 00:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8A961C217F7
+	for <lists+stable@lfdr.de>; Sat,  1 Jun 2024 05:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9871917FF;
-	Sat,  1 Jun 2024 00:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E400B64B;
+	Sat,  1 Jun 2024 05:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hO13HGcg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M/mDr8e2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54197EC5;
-	Sat,  1 Jun 2024 00:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD87AF9CC;
+	Sat,  1 Jun 2024 05:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717201913; cv=none; b=tnOOvKrLp6ObqSH3F28VMA3qL0fgVc2/PcNqXX9/cjwZkDwS21PqQxwEBHmELWGKTdPT/YlNhAvGU6Cvh5fgaRof9RJXb9fJVVCJaOMf3Hvfb3fz6kon5AS9qCq4HIGGUmTHZXtf66IRvTuqi/feRuZC0TYJmMcoZ6vG7wuE30Y=
+	t=1717219211; cv=none; b=JnIwwX+6PN8S8AQ5zORXg3AeUm/chPkXd7J92lGWqWCg0ChdrSj9VxfsDOO4MUc1vMwSp1NPeSJMtJ8KkR4ZPKEVaFzZrQXX9G5rjWd5RFoeJKp9kheBvxQVCHVYMnAm0gTSaqqPu/XC4YquV3QcxGHVitKJSXH5p99xlxJEmZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717201913; c=relaxed/simple;
-	bh=fyYaLQCznhvziEAEHDqdDtgbI8WNIFUAbpv5kG1dZvM=;
-	h=Date:To:From:Subject:Message-Id; b=BD7wfOCrw5D/EfsgBwPOm2rY9+5y3v/g1LYBKIjrhN6YBwuQESdP8WrBopsxA0HA0F6tAGpW9+0znlQqs1WS7Dzq5ZGOapnwsfTMB7CnRY1jQ9MJUvPIUTKclZA0pGm5pb2XjpKW7GpeDC0aOciYJDC2SpbT2IqsMNTgvLot3Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hO13HGcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A898FC116B1;
-	Sat,  1 Jun 2024 00:31:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1717201912;
-	bh=fyYaLQCznhvziEAEHDqdDtgbI8WNIFUAbpv5kG1dZvM=;
-	h=Date:To:From:Subject:From;
-	b=hO13HGcgco+ToeMfEcPNU9Brc46tuqHsHb6O3/cRog3/4GD8VmsNrdDYcXoOfEvLj
-	 HHVmJoh6fGHJQ2b6TUfDu0FGvMVbjEsAWxP4ilvbeu6CE+QUGcWMvWwB6tv+mN8+m3
-	 cZoxfgxFQf2krQefhR/0s7vuP70dYITaMLooHw/M=
-Date: Fri, 31 May 2024 17:31:51 -0700
-To: mm-commits@vger.kernel.org,zhaoyang.huang@unisoc.com,xiang@kernel.org,urezki@gmail.com,stable@vger.kernel.org,lstoakes@gmail.com,liuhailong@oppo.com,hch@infradead.org,guangye.yang@mediatek.com,21cnbao@gmail.com,hailong.liu@oppo.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-vmalloc-fix-vbq-free-breakage.patch removed from -mm tree
-Message-Id: <20240601003152.A898FC116B1@smtp.kernel.org>
+	s=arc-20240116; t=1717219211; c=relaxed/simple;
+	bh=F37TZpHVwLcm3fW7tNFu6Jl5Qzq7pHJIpm3FmoVNQZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ERuV/Ehq8lmOUgAk1fVHePGGfeAYsX/yxYSChLqPFJvwC+QQq4QnEMBTEeIdz7bfDdzkB7nXEKENksyPYSOigEP5D+WAqveMMW84MJKD07oGbvFMLNRB3+gfMoleIe4ewV/cp7h71Z0ykX6DI1wCt43AHYfXQuyWwAc6o1ETu8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M/mDr8e2; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717219210; x=1748755210;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=F37TZpHVwLcm3fW7tNFu6Jl5Qzq7pHJIpm3FmoVNQZo=;
+  b=M/mDr8e2+/n/BmTKSNjYv12FxGMbUU9OLPohG7SpvsCtEo9tXSzuoDTr
+   ZdYHH0+4g16URGhoNCkTU1aZdAT44z3kV+VxZPCRSl8PP2EiVhP/TWtfp
+   NkbOle04NfPeK8/m47zPkNuNo8Jg3x2ar9DSQpS+0BcAoGFI05Okxk8mi
+   k4i/EmRHOgf3VpdvAxkzueQmDllluvGCqrqjo7j3uZM7KAAR6XtXumC9w
+   jEWz2HW9MsBtl3OYZQVdlc/j/N16BCIXzxvg/FFRFy67h3WEcNVbrYYvP
+   VjUWuhXs30qtw/cdgRumftEICOCNLvbzVgXNuNOVddwet9ef0DLW6ijgo
+   w==;
+X-CSE-ConnectionGUID: njX/XrvWTvG4iTKts9NIlg==
+X-CSE-MsgGUID: u3tX4qfOSRGCiuSGvTPm+A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11089"; a="13618126"
+X-IronPort-AV: E=Sophos;i="6.08,206,1712646000"; 
+   d="scan'208";a="13618126"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 22:20:10 -0700
+X-CSE-ConnectionGUID: TQcw1yjrSeWxR1JKsJDeMA==
+X-CSE-MsgGUID: I6KDIsNISyOatKivwMuAPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,206,1712646000"; 
+   d="scan'208";a="41288006"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa005.jf.intel.com with ESMTP; 31 May 2024 22:20:08 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 5D3AB128; Sat, 01 Jun 2024 08:20:06 +0300 (EEST)
+Date: Sat, 1 Jun 2024 08:20:06 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Jian-Hong Pan <jhp@endlessos.org>, stable@vger.kernel.org,
+	linux-ide@vger.kernel.org
+Subject: Re: [PATCH] ata: ahci: Do not enable LPM if no LPM states are
+ supported by the HBA
+Message-ID: <20240601052006.GG1421138@black.fi.intel.com>
+References: <20240531120711.660691-2-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240531120711.660691-2-cassel@kernel.org>
 
+On Fri, May 31, 2024 at 02:07:11PM +0200, Niklas Cassel wrote:
+> LPM consists of HIPM (host initiated power management) and DIPM
+> (device initiated power management).
+> 
+> ata_eh_set_lpm() will only enable HIPM if both the HBA and the device
+> supports it.
+> 
+> However, DIPM will be enabled as long as the device supports it.
+> The HBA will later reject the device's request to enter a power state
+> that it does not support (Slumber/Partial/DevSleep) (DevSleep is never
+> initiated by the device).
+> 
+> For a HBA that doesn't support any LPM states, simply don't set a LPM
+> policy such that all the HIPM/DIPM probing/enabling will be skipped.
+> 
+> Not enabling HIPM or DIPM in the first place is safer than relying on
+> the device following the AHCI specification and respecting the NAK.
+> (There are comments in the code that some devices misbehave when
+> receiving a NAK.)
+> 
+> Performing this check in ahci_update_initial_lpm_policy() also has the
+> advantage that a HBA that doesn't support any LPM states will take the
+> exact same code paths as a port that is external/hot plug capable.
+> 
+> Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> ---
+> We have not received any bug reports with this.
+> The devices that were quirked recently all supported both Partial and
+> Slumber.
+> This is more a defensive action, as it seems unnecessary to enable DIPM
+> in the first place, if the HBA doesn't support any LPM states.
+> 
+>  drivers/ata/ahci.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+> index 07d66d2c5f0d..214de08de642 100644
+> --- a/drivers/ata/ahci.c
+> +++ b/drivers/ata/ahci.c
+> @@ -1735,6 +1735,12 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
+>  	if (ap->pflags & ATA_PFLAG_EXTERNAL)
+>  		return;
+>  
+> +	/* If no LPM states are supported by the HBA, do not bother with LPM */
+> +	if ((ap->host->flags & ATA_HOST_NO_PART) &&
+> +	    (ap->host->flags & ATA_HOST_NO_SSC) &&
+> +	    (ap->host->flags & ATA_HOST_NO_DEVSLP))
 
-The quilt patch titled
-     Subject: mm/vmalloc: fix vbq->free breakage
-has been removed from the -mm tree.  Its filename was
-     mm-vmalloc-fix-vbq-free-breakage.patch
+For debugging purposes in case of potential issues, perhaps add a debug
+log here so it is visible that we don't enable LPM?
 
-This patch was dropped because an updated version will be merged
-
-------------------------------------------------------
-From: "hailong.liu" <hailong.liu@oppo.com>
-Subject: mm/vmalloc: fix vbq->free breakage
-Date: Thu, 30 May 2024 17:31:08 +0800
-
-The function xa_for_each() in _vm_unmap_aliases() loops through all vbs. 
-However, since commit 062eacf57ad9 ("mm: vmalloc: remove a global
-vmap_blocks xarray") the vb from xarray may not be on the corresponding
-CPU vmap_block_queue.  Consequently, purge_fragmented_block() might use
-the wrong vbq->lock to protect the free list, leading to vbq->free
-breakage.
-
-Link: https://lkml.kernel.org/r/20240530093108.4512-1-hailong.liu@oppo.com
-Fixes: fc1e0d980037 ("mm/vmalloc: prevent stale TLBs in fully utilized blocks")
-Signed-off-by: Hailong.Liu <liuhailong@oppo.com>
-Reported-by: Guangye Yang <guangye.yang@mediatek.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Gao Xiang <xiang@kernel.org>
-Cc: Guangye Yang <guangye.yang@mediatek.com>
-Cc: liuhailong <liuhailong@oppo.com>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/vmalloc.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
---- a/mm/vmalloc.c~mm-vmalloc-fix-vbq-free-breakage
-+++ a/mm/vmalloc.c
-@@ -2830,10 +2830,9 @@ static void _vm_unmap_aliases(unsigned l
- 	for_each_possible_cpu(cpu) {
- 		struct vmap_block_queue *vbq = &per_cpu(vmap_block_queue, cpu);
- 		struct vmap_block *vb;
--		unsigned long idx;
- 
- 		rcu_read_lock();
--		xa_for_each(&vbq->vmap_blocks, idx, vb) {
-+		list_for_each_entry_rcu(vb, &vbq->free, free_list) {
- 			spin_lock(&vb->lock);
- 
- 			/*
-_
-
-Patches currently in -mm which might be from hailong.liu@oppo.com are
-
-
+> +		return;
+> +
+>  	/* user modified policy via module param */
+>  	if (mobile_lpm_policy != -1) {
+>  		policy = mobile_lpm_policy;
+> -- 
+> 2.45.1
 
