@@ -1,33 +1,33 @@
-Return-Path: <stable+bounces-47837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58C78D7696
-	for <lists+stable@lfdr.de>; Sun,  2 Jun 2024 17:23:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC338D76B1
+	for <lists+stable@lfdr.de>; Sun,  2 Jun 2024 17:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B23E2815FA
-	for <lists+stable@lfdr.de>; Sun,  2 Jun 2024 15:23:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 589F8B22086
+	for <lists+stable@lfdr.de>; Sun,  2 Jun 2024 15:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01E43BB47;
-	Sun,  2 Jun 2024 15:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAACD446A5;
+	Sun,  2 Jun 2024 15:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Zg6yPH7m"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="AP1uTqY8"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0608F44366
-	for <stable@vger.kernel.org>; Sun,  2 Jun 2024 15:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4366433D8
+	for <stable@vger.kernel.org>; Sun,  2 Jun 2024 15:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717341775; cv=none; b=tR9tEaf009b0C4ocx4B1BgsjJsOvXbjTblhZZtbE2LmKKboKRjtAG7JQEmIw0Jo7eQLs4YyHCoJU8epFg6/QIr3PVxGCk42gkkNqDU3tIdtAqrxVi7psvvFcC47XEmJbfsu3q+Wxx9PS2z7Kw5KZCfXC9I1WGXEIaIJK5QcLntE=
+	t=1717341935; cv=none; b=Np9qIzfx1WEEqxRwsRnVdNdntIMF/tg51gj2TrqhIxPQVajnHj9cfN3TCl8aVqamzaBK7RW5BqhZ2bdhjZmthrh0pfaYF7WONe5G0JPcLWG2pmAYbf2M3cHQf/sPbXLSqaFZtDWDAkT4GPTNv1S0oOQpOI7L7Gco8GAwiwGTdXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717341775; c=relaxed/simple;
-	bh=KGbENDXOBg7ScetY5lHnZvFnMEzk9bFkBmKq9TKb++g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DYA6U4lRjBqATzjtrnVvdQB6jIQIT6Kr66YU5e8HU1ujM5EQ+vyNGZjWZ2fz/HvtYmE7KSttzK9DpkLSyskTTIHpA9M/fcqzr95sctpLAclxAOTSo1O4nBeNGTVvBKOhAtG9U9phMZfltMg8iluZvw1S/vZ+WAm3cgNXkBTfkJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Zg6yPH7m; arc=none smtp.client-ip=178.60.130.6
+	s=arc-20240116; t=1717341935; c=relaxed/simple;
+	bh=kO/6FbLN1jWBadXMdvfTK1A4V7XmLoZ5YoV9OKiXXV4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ob5R00FZC4o8CmQZhtXW3vvOGUMRMzl3wH2V8M+fr5K4UmefphCigoQHBBJ8xdyGeGgFoP0PZeup7Hte3exo+XkQhUWOQXm66cLBmppPCGcTDkmW9JJLnyGPn2UOYhzRtFVZbC3Fs1dijk+EAM30bVWwvNsK5hlqTrln+nJuFbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=AP1uTqY8; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -36,24 +36,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
 	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=jVWPGZp83bz9pAzmiPWn1QK9itDG3EVooZTf6JxoI6k=; b=Zg6yPH7mTGYjpuKj4s/pZgdhPQ
-	bBySQ/8eWdW5JqW3QQ93jQ1MRSoctC4Exm2A3qf/IEWIs9LioFphD6jEqqc79TRnWFlVnq4kzohs4
-	l4R4kmXlMgIpMu66ba50l0z5UbZCNETg1ypYhoFozyXq2056+n+nEamod5LK5EsBjlg0GSuIH2uEG
-	GmOyI2p3uc74VloZE6OnHiaOvp6hCusnWwkK4agwEsHxPNmBkV3wNsTRxlJJyNatFAzEkw/UXbHn0
-	3sQx8TaV8Aa/YA+KmYscm69mZbgsMyUTavjznZ2jHD2FkVxfmqa164odp1pLOaxONVDAYhaqbEwu5
-	+QwEhRZQ==;
+	bh=MvkKPWqMqcs/wP3/+kl+Vbks6gqFpSmgJcGw/19fUU4=; b=AP1uTqY80Rb/0Kw2XUcVjcik3+
+	oUlu5kEfjK9bV509xFKxYTrBESj4WQtPWnKhQ5pi1CWzHNJJG0o+XZXeNNn7xWSJUDh1cwGXVscdZ
+	ezL8xLxA8Nz/1L5nOWyFL3Xle6sb6vHN2h3aIgJkA8GaGlh1b3a1SdeeyIvUu9y7aBPPtDYPgiCzR
+	unJDLVpzBaCbEo2vkw7alTYEP9ay2nh8CVmrExHje1BO79ubIyks7KGZXg+TFWtIyOTWsJxplglbG
+	fTmFMkBOjSA8OVLKouGUM2sAmb6JKpxHH+bUSZry+K//TBSO7I5vlB0/lasCHFMLquaTXgluIrvmz
+	P1jiODqw==;
 Received: from [189.79.117.74] (helo=localhost)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1sDn2e-00FvcV-7w; Sun, 02 Jun 2024 17:22:40 +0200
+	id 1sDn5O-00FvfL-0G; Sun, 02 Jun 2024 17:25:30 +0200
 From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 To: stable@vger.kernel.org
 Cc: sashal@kernel.org,
 	gregkh@linuxfoundation.org,
-	x86@kernel.org
-Subject: [PATCH 5.4.y] x86/mm: Remove broken vsyscall emulation code from the page fault code
-Date: Sun,  2 Jun 2024 12:18:42 -0300
-Message-ID: <20240602152233.78240-1-gpiccoli@igalia.com>
+	x86@kernel.org,
+	kernel@gpiccoli.net,
+	kernel-dev@igalia.com
+Subject: [PATCH 5.10.y] x86/mm: Remove broken vsyscall emulation code from the page fault code
+Date: Sun,  2 Jun 2024 12:24:34 -0300
+Message-ID: <20240602152525.78730-1-gpiccoli@igalia.com>
 X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -148,14 +150,15 @@ Tested-by: Jiri Olsa <jolsa@kernel.org>
 Acked-by: Andy Lutomirski <luto@kernel.org>
 Link: https://lore.kernel.org/r/CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[gpiccoli: Backport the patch due to differences in the trees. The main changes
-between 5.4.y and 5.15.y are due to renaming the fixup function, by
-commit 6456a2a69ee1 ("x86/fault: Rename no_context() to kernelmode_fixup_or_oops()"),
-and on processor.h thread_struct due to commit cf122cfba5b1 ("kill uaccess_try()").
+[gpiccoli: Backport the patch due to differences in the trees. The main change
+between 5.10.y and 5.15.y is due to renaming the fixup function, by
+commit 6456a2a69ee1 ("x86/fault: Rename no_context() to kernelmode_fixup_or_oops()").
 
 Following 2 commits cause divergence in the diffs too (in the removed lines):
 cd072dab453a ("x86/fault: Add a helper function to sanitize error code")
-d4ffd5df9d18 ("x86/fault: Fix wrong signal when vsyscall fails with pkey").]
+d4ffd5df9d18 ("x86/fault: Fix wrong signal when vsyscall fails with pkey")
+
+Finally, there is context adjustment in the processor.h file.]
 Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 ---
 
@@ -179,7 +182,7 @@ Guilherme
  3 files changed, 3 insertions(+), 53 deletions(-)
 
 diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index e7c596dea947..86e5a1c1055f 100644
+index 44c33103a955..f0b817eb6e8b 100644
 --- a/arch/x86/entry/vsyscall/vsyscall_64.c
 +++ b/arch/x86/entry/vsyscall/vsyscall_64.c
 @@ -98,11 +98,6 @@ static int addr_to_vsyscall_nr(unsigned long addr)
@@ -254,22 +257,22 @@ index e7c596dea947..86e5a1c1055f 100644
  
  	regs->ax = ret;
 diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 9cbd86cf0deb..087df5edef78 100644
+index 6dc3c5f0be07..c682a14299e0 100644
 --- a/arch/x86/include/asm/processor.h
 +++ b/arch/x86/include/asm/processor.h
-@@ -487,7 +487,6 @@ struct thread_struct {
+@@ -528,7 +528,6 @@ struct thread_struct {
+ 	unsigned long		iopl_emul;
  
- 	mm_segment_t		addr_limit;
- 
+ 	unsigned int		iopl_warn:1;
 -	unsigned int		sig_on_uaccess_err:1;
- 	unsigned int		uaccess_err:1;	/* uaccess failed */
  
  	/* Floating point and extended processor state */
+ 	struct fpu		fpu;
 diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index c494c8c05824..21383ef7b506 100644
+index cdb337cf92ba..98a5924d98b7 100644
 --- a/arch/x86/mm/fault.c
 +++ b/arch/x86/mm/fault.c
-@@ -743,33 +743,8 @@ no_context(struct pt_regs *regs, unsigned long error_code,
+@@ -649,33 +649,8 @@ no_context(struct pt_regs *regs, unsigned long error_code,
  	}
  
  	/* Are we prepared to handle this kernel fault? */
