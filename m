@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-47834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 400088D74D0
-	for <lists+stable@lfdr.de>; Sun,  2 Jun 2024 12:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 125E18D7587
+	for <lists+stable@lfdr.de>; Sun,  2 Jun 2024 15:06:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF666B2121D
-	for <lists+stable@lfdr.de>; Sun,  2 Jun 2024 10:58:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB605B20AEC
+	for <lists+stable@lfdr.de>; Sun,  2 Jun 2024 13:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5650376E7;
-	Sun,  2 Jun 2024 10:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2273B290;
+	Sun,  2 Jun 2024 13:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i6Ic5bkQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fqea9U6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7129863B8;
-	Sun,  2 Jun 2024 10:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4831EF1D;
+	Sun,  2 Jun 2024 13:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717325928; cv=none; b=dtelx1gk6APVXLF8uwbD8wRswZ1JANizTkCQRGqFxAX1OKiOJm5eoG20H1plP+O99EZlned20GARbd0zIb1OrJJsUVklOgglMk4ynhDQQ7+yxJV6wu7jhimwBnAKNDwTxgzn+HKvCaVuYgL+0gXIZwkrEHIemkSENDbAarrVgPM=
+	t=1717333585; cv=none; b=BfYH2BRCNznMFYyvvWhGPCzMsTv2pzvHgSJcQgSPlNsKvID/JIW4tGBA1eEslowzjLMQWXxUiif5m3WauvfDLTbcCIL98S44vCm4LgGWqCtMW8kzqaoWkWHrm1MiZYd62pI4sz8op6k7NF09NLlRdMUAnFNePjJrENsPiJG3iGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717325928; c=relaxed/simple;
-	bh=edmopG2nKKEj3s8G6DghlmkQQsp68ky39kA51QfZ4uk=;
+	s=arc-20240116; t=1717333585; c=relaxed/simple;
+	bh=8i/iI+njLM3WMWCjdWEYodHIWZWabw5Ask2PFKIfkR0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pvoFj/x8YSpB+RQUHSUKHTwy0gVsFbSnvwwj+0Q0ADfvE2Ai0bp66o3kgJx/Zqulv3r/mP0ReacodpAEgTr/qwq6sW9W65BzVrvQYFNUEh8zFikxlXMQr6lnYH604K/q1+CzkkBIcEa9OqjEYUQ3fxbzP4QmSHaNoJ5Wa5RsSyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i6Ic5bkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895F7C2BBFC;
-	Sun,  2 Jun 2024 10:58:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I6rp0AZ9i+xYb3cVjq+oXdYcyPAj/7t1goUWwT5/XcEc18HVMlG+O2ellnq0YCCi2Sc6VKU6Mh9YTgVhc0MMD7n/e0ipiEes+EkW+ziaG4uyif+AFniIu8540abFjogUua56hHvZ8SfsHv2JRN1WVNfK/bWAfopWgyTDnwiA2qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fqea9U6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B6EC2BBFC;
+	Sun,  2 Jun 2024 13:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717325928;
-	bh=edmopG2nKKEj3s8G6DghlmkQQsp68ky39kA51QfZ4uk=;
+	s=k20201202; t=1717333585;
+	bh=8i/iI+njLM3WMWCjdWEYodHIWZWabw5Ask2PFKIfkR0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i6Ic5bkQhfvl2qlAclUmPaJa8iHDLIPs7JqjcICWvuJwQ5paNd6Vjqhgm7l4Flx41
-	 FEXwFQtzNh+E9xZ1bQv9i92jhdd6NUKyWr9MuwlcXk1Pzs2ZXlzZ5+54hMMxGc6LAv
-	 6fSAGKJ1Uk9gdGh4CRv88lPWUS9MRjA/Z1yg37NozeIJ206EhelGAG0T2sgnAaca+x
-	 sFMKpnqs2NEiS2nc/1ha8vnD1VHZKyqsYK3/V3MuOxRlqO9bVzKuXjy9KgX5aaaKup
-	 4OrSjj8avHkX3XJPh/IbSs7oT/9slPRnaODyQuYdR92Z707n6OeGggyX8i6SsPNqYH
-	 NZiCO4/7E0JcA==
-Date: Sun, 2 Jun 2024 11:58:36 +0100
+	b=Fqea9U6ZvIHrCyekzP0Oyu9eb6L5S32BfFFxOExZ36RU9AFsW0J3Jy+8fKaioVca0
+	 8b5kkDYxIv3Gw0LG68533pEhqRmkpKSYr3B6XckaCMZklbG64Xyl47eJAlMZ7daJF3
+	 4v/Qk/emiVEdBWj48ER6d7L4E4o0M504iKItnUVubxIfD7PlPw41zdI1cA7y7uoE+j
+	 OtaRv7qsxh8S5zU8jxTE/ZYczCQcRWW/HEE4Uydvw5C2/M9q6NO8BCqsU8uXpTJo6B
+	 vnQiqiej9fjLZ9wALCYCMx6w63mFcuMlQ7yC39BUAT+l6LR1LDfTQCGn940TdRxRxG
+	 VnfWrVd02wBlQ==
+Date: Sun, 2 Jun 2024 14:06:14 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: inv.git-commit@tdk.com
 Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
  Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH] iio: imu: inv_icm42600: stabilized timestamp in
+Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: stabilized timestamping in
  interrupt
-Message-ID: <20240602115836.43066c41@jic23-huawei>
-In-Reply-To: <20240529154717.651863-1-inv.git-commit@tdk.com>
-References: <20240529154717.651863-1-inv.git-commit@tdk.com>
+Message-ID: <20240602140614.5922529c@jic23-huawei>
+In-Reply-To: <20240527150117.608792-1-inv.git-commit@tdk.com>
+References: <20240527150117.608792-1-inv.git-commit@tdk.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,122 +61,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 29 May 2024 15:47:17 +0000
+On Mon, 27 May 2024 15:01:17 +0000
 inv.git-commit@tdk.com wrote:
 
 > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 > 
-> Use IRQ_ONESHOT flag to ensure the timestamp is not updated in the
-IRQF_ONESHOT
-
-I fixed that up whilst applying.
-> hard handler during the thread handler. And compute and use the
-> effective watermark value that correspond to this first timestamp.
+> Use IRQ ONESHOT flag to ensure the timestamp is not updated in the
+> hard handler during the thread handler. And use a fixed value of 1
+> sample that correspond to this first timestamp.
 > 
 > This way we can ensure the timestamp is always corresponding to the
 > value used by the timestamping mechanism. Otherwise, it is possible
 > that between FIFO count read and FIFO processing the timestamp is
 > overwritten in the hard handler.
 > 
-> Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+> Fixes: 111e1abd0045 ("iio: imu: inv_mpu6050: use the common inv_sensors timestamp module")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Applied to the fixes-togreg branch of iio.git
-
-Jonathan
-
+Applied
 > ---
->  .../imu/inv_icm42600/inv_icm42600_buffer.c    | 19 +++++++++++++++++--
->  .../imu/inv_icm42600/inv_icm42600_buffer.h    |  2 ++
->  .../iio/imu/inv_icm42600/inv_icm42600_core.c  |  1 +
->  3 files changed, 20 insertions(+), 2 deletions(-)
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 4 ++--
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 1 +
+>  2 files changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> index 63b85ec88c13..a8cf74c84c3c 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> @@ -222,10 +222,15 @@ int inv_icm42600_buffer_update_watermark(struct inv_icm42600_state *st)
->  	latency_accel = period_accel * wm_accel;
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> index 0dc0f22a5582..3d3b27f28c9d 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> @@ -100,8 +100,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+>  		goto end_session;
+>  	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
+>  	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
+> -	inv_sensors_timestamp_interrupt(&st->timestamp, nb, pf->timestamp);
+> -	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, nb, 0);
+> +	inv_sensors_timestamp_interrupt(&st->timestamp, 1, pf->timestamp);
+> +	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, 1, 0);
 >  
->  	/* 0 value for watermark means that the sensor is turned off */
-> +	if (wm_gyro == 0 && wm_accel == 0)
-> +		return 0;
-> +
->  	if (latency_gyro == 0) {
->  		watermark = wm_accel;
-> +		st->fifo.watermark.eff_accel = wm_accel;
->  	} else if (latency_accel == 0) {
->  		watermark = wm_gyro;
-> +		st->fifo.watermark.eff_gyro = wm_gyro;
->  	} else {
->  		/* compute the smallest latency that is a multiple of both */
->  		if (latency_gyro <= latency_accel)
-> @@ -241,6 +246,13 @@ int inv_icm42600_buffer_update_watermark(struct inv_icm42600_state *st)
->  		watermark = latency / period;
->  		if (watermark < 1)
->  			watermark = 1;
-> +		/* update effective watermark */
-> +		st->fifo.watermark.eff_gyro = latency / period_gyro;
-> +		if (st->fifo.watermark.eff_gyro < 1)
-> +			st->fifo.watermark.eff_gyro = 1;
-> +		st->fifo.watermark.eff_accel = latency / period_accel;
-> +		if (st->fifo.watermark.eff_accel < 1)
-> +			st->fifo.watermark.eff_accel = 1;
->  	}
->  
->  	/* compute watermark value in bytes */
-> @@ -514,7 +526,7 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
->  	/* handle gyroscope timestamp and FIFO data parsing */
->  	if (st->fifo.nb.gyro > 0) {
->  		ts = &gyro_st->ts;
-> -		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro,
-> +		inv_sensors_timestamp_interrupt(ts, st->fifo.watermark.eff_gyro,
->  						st->timestamp.gyro);
->  		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
->  		if (ret)
-> @@ -524,7 +536,7 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
->  	/* handle accelerometer timestamp and FIFO data parsing */
->  	if (st->fifo.nb.accel > 0) {
->  		ts = &accel_st->ts;
-> -		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel,
-> +		inv_sensors_timestamp_interrupt(ts, st->fifo.watermark.eff_accel,
->  						st->timestamp.accel);
->  		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
->  		if (ret)
-> @@ -577,6 +589,9 @@ int inv_icm42600_buffer_init(struct inv_icm42600_state *st)
->  	unsigned int val;
->  	int ret;
->  
-> +	st->fifo.watermark.eff_gyro = 1;
-> +	st->fifo.watermark.eff_accel = 1;
-> +
->  	/*
->  	 * Default FIFO configuration (bits 7 to 5)
->  	 * - use invalid value
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
-> index 8b85ee333bf8..f6c85daf42b0 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
-> @@ -32,6 +32,8 @@ struct inv_icm42600_fifo {
->  	struct {
->  		unsigned int gyro;
->  		unsigned int accel;
-> +		unsigned int eff_gyro;
-> +		unsigned int eff_accel;
->  	} watermark;
->  	size_t count;
->  	struct {
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> index 96116a68ab29..62fdae530334 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> @@ -537,6 +537,7 @@ static int inv_icm42600_irq_init(struct inv_icm42600_state *st, int irq,
->  	if (ret)
->  		return ret;
+>  	/* clear internal data buffer for avoiding kernel data leak */
+>  	memset(data, 0, sizeof(data));
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> index 1b603567ccc8..84273660ca2e 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> @@ -300,6 +300,7 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type)
+>  	if (!st->trig)
+>  		return -ENOMEM;
 >  
 > +	irq_type |= IRQF_ONESHOT;
->  	return devm_request_threaded_irq(dev, irq, inv_icm42600_irq_timestamp,
->  					 inv_icm42600_irq_handler, irq_type,
->  					 "inv_icm42600", st);
+>  	ret = devm_request_threaded_irq(&indio_dev->dev, st->irq,
+>  					&inv_mpu6050_interrupt_timestamp,
+>  					&inv_mpu6050_interrupt_handle,
 
 
