@@ -1,120 +1,196 @@
-Return-Path: <stable+bounces-47875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB088D854A
-	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 16:41:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7948D85B7
+	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 17:04:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A05F0B2164C
-	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 14:41:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4C5D282442
+	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 15:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C1412F5A5;
-	Mon,  3 Jun 2024 14:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D3FB65F;
+	Mon,  3 Jun 2024 15:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="woEGFp09"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TQPqZWhT"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC02F82D8E;
-	Mon,  3 Jun 2024 14:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1780391
+	for <stable@vger.kernel.org>; Mon,  3 Jun 2024 15:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717425671; cv=none; b=lmnDSPPDhy1ktSQUn6Dy26ltI6F9bRo1gay/LrjIOjfXnILsd1tzze8VMvFwDbGpOIhaZZHuBJFWM9E/5JXB+3HJg3UiQ1WAtbD5na2JXyWAXbZIrY5Y0nK5nT0gKahLlgpsZ2vpiZyYzc08VIOPbXjYAKXy1/dkCH0H5+l9TRo=
+	t=1717427078; cv=none; b=bI1zSTi8Pviss9X5/Ikj53kul/OM6NpaZi9NLDrFOmAIt6rLD8pLJic1roFOJKRwFfY2jLK8KtQBhGDLW6S7keE+Zr4VvN5QUKCE1qODyR0iIDgecEFfHKKejJ9wLu6jZ7ddAbCL1BOqRWL8+Q2bd3PLiPenY+JyhUkLLDZDEZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717425671; c=relaxed/simple;
-	bh=2U6Ww/ElEtbcuJBm40iFuywuFkm2IwWESN+oydX5p7Q=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=F5zLtFRPIKBHzS+Nfwsz31R0D3F+SOtVA+5FygdzJNyEVAT8+v0qJDasaxsJLtUA4NJ9BoilPuaYGtJUpV4edVU6leWTevmQkxl/DQFUhNqhmzfPbopJ1E8k+KaX5IZ0iMOMIAd1xrWW+MrNOTIoZA6iRa54ViFhSJ6iurQ1Oys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=woEGFp09; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1717425650; x=1718030450; i=markus.elfring@web.de;
-	bh=XqqTZCHeurhCB0Bc08xb2KzKAyoPa4GFLU41PH/vPdI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=woEGFp09PCwgXGAMEzPTw+Cz0/Aj5cLxNm6cadtTL9/dij9S2cOtDPu4p7uMm4jO
-	 NqFupNEEKhdSR7ZwDTKr74igMx47+hfBMIRHVoksFeQr6hrIXCDoHZ6BrLyh1Zz/H
-	 NG6vuC/dDf/FumDgKDbu+ysWubtGaG/4t4jq82IlrV9QmDZgNe6WGLF+usuCY1l7E
-	 mmVqgWHua1WXeSPANkWLynrNA5+/KUfl2GpZ3Z3JL7QitUCExsM5T+/w1KCC5cPTM
-	 VYwmFuTiexes31cPXeTSYHxU6HJ1S1rkc/3CEHSR0OVdWepkoNGMw0w+wmPu2p3Zb
-	 YZrTIyUs6WbGmPlk6A==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1N8n08-1sZOlQ1psU-00rc9C; Mon, 03
- Jun 2024 16:40:50 +0200
-Message-ID: <b828257d-5c69-4ff5-89e1-5d2aaf53a5e4@web.de>
-Date: Mon, 3 Jun 2024 16:40:48 +0200
+	s=arc-20240116; t=1717427078; c=relaxed/simple;
+	bh=EcqIhGlVUbQfz5ALesOBex6iPRZO4bsLk1BjsG2tgOI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h68QtI53gVAW/SY9JyDgo6ihS6HA1w4InmPbBWnmvDHDUHRQyF9uwzhBxS+S7j9stXEYQ52jt5Q0uirDPdRp4AqOrxfORkOtS04NbPZz2DiZtlkXKCY0T52FuqiZ7pdxBYlbifCamlAYAwAccMJhawSh6A5guyeR0WhxFivL2zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TQPqZWhT; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: stable@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1717427073;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qts32yh1q6JkSbgrbFUOSqR348gistj/bnY7s7orHog=;
+	b=TQPqZWhTXkI9TFla7IIt6+k9Pcomc56r7GNzfegObLV+c/T/fPc4VWhXhf1xUA/HIhnT6P
+	f/MjJozXmaGUwMJWGuSvP0Pj0uB3lrrJBFeqEmUpby/1Hb2dNI3bv7KFNgfMytV8qbRpRh
+	jLxRz2IO75vgunryzYQUt1V9yjUoqAA=
+X-Envelope-To: stable-commits@vger.kernel.org
+X-Envelope-To: laurent.pinchart@ideasonboard.com
+X-Envelope-To: tomi.valkeinen@ideasonboard.com
+X-Envelope-To: maarten.lankhorst@linux.intel.com
+X-Envelope-To: mripard@kernel.org
+X-Envelope-To: tzimmermann@suse.de
+X-Envelope-To: airlied@gmail.com
+X-Envelope-To: daniel@ffwll.ch
+X-Envelope-To: michal.simek@amd.com
+Message-ID: <12c2adcf-cc18-48a8-8411-0ba9ec3551e0@linux.dev>
+Date: Mon, 3 Jun 2024 11:04:28 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: tip-bot2@linutronix.de, Hagar Hemdan <hagarhem@amazon.com>,
- Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- stable@vger.kernel.org, x86@kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>
-References: <171741750653.10875.4371546608500601999.tip-bot2@tip-bot2>
-Subject: Re: [tip: irq/urgent] irqchip/gic-v3-its: Fix potential race
- condition in its_vlpi_prop_update()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <171741750653.10875.4371546608500601999.tip-bot2@tip-bot2>
+Subject: Re: Patch "drm: zynqmp_dpsub: Always register bridge" has been added
+ to the 6.9-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Michal Simek <michal.simek@amd.com>
+References: <20240603114605.1823279-1-sashal@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <20240603114605.1823279-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:75B7HC4z0qk4z/+G1CLRcW84vk0vRFTpabSPUpMkGPpEA52xMq9
- KOTSeRNEuNWDKOoqn+J19rvF4ju1yHxR6oGe/q+1PiUypyW/zmA/rpD1jz20WBMSEPzMWHj
- udWy1udL2vDhU5K3Qo4bHLYTM0/ILf/+Aq0+NvJXJseN/7bYAagu2K5Gts4HIS6MKZKXZ7J
- yc/zDavEv6TjitELi7AMQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:/PJWt2+d6UY=;8WOA5ctY9ICUVRL4jFoyBeHk3iw
- iU5ZxuYx2k5hP5i4LXBu1lwgCtUy8OJ0UvNtZUl3AuZB3REfcd1nmNVGxmktbhEptqEpSw95H
- n4yQeQDD3ppwydsi+TjW/pangjZlaXwSFvdeHA0FtdhvsRn7PIrqMTJtrEeGSdsr/57FWoTzT
- IiYGZMB+nU6WihWc/nHPrPIZDQ7ZhMbSFe86AG1H64ux2d2k6Mn5Z+Kxsk9l4DSStDI2x+Hs6
- u0/JtaA7I6bX6LtgETtxtym1PNOSTVyzJgXQuNP1KjeGRzapbyMhIWAmRAAxvy5Gwa/tBDUSm
- t5k9iTylaBho2RmcPKfI/VHlJ8HpiNycE2Ub/5iqdQSf1lCq/aX+8nbY54PXr8LGTMAof2zOF
- jrOmplV3cn4gjviHx+ZOHl274T/Kt7j9bv4FI/yG4Kt1VbhjasY4lf+cD2LFv1E+H0vs6w5gP
- yk6vZxvIdJBmOlqlFHOvyhblu9Qnn6qPl4Fe6U3UnpAGo1/rt1BYwxxneIzYUdnZmRMj4JNws
- FD/DFa6Kes4evCRWW1+LiDfy7odiqFV4MDCnQL/1y1xcjfQQLeYP1pSW9Krf0XZksa522YWE/
- Ij7Rru+IKQ8Enlms2vUNXMN6vw+zutjKGBQr0/j+LmfjgEV6gbl82Uf/CEj9iutj98d6y9zG7
- Dy8Wx7F5VZ65j+cRTqiA9a+QcBUyGUN1Y7CfNeCcqhijdJG1hyLytKCqVC/Qai5gsBD+6Hcqg
- GwkWOFVd2YLeSKVEPiQX6w+ZwmCJn9LUHeKpOSYw7wWlk6fLV3NFr7lg9G3XjLdd99Up4dYuk
- 583uZT04GkYIBK6mTYGFWOaTn6RgCCC1rYMNTJ2bJwdyg=
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-=E2=80=A6
-> [ tglx: Use guard() instead of goto ]
-=E2=80=A6
-> +++ b/drivers/irqchip/irq-gic-v3-its.c
-=E2=80=A6
-> @@ -1992,6 +1970,8 @@ static int its_irq_set_vcpu_affinity(struct irq_da=
-ta *d, void *vcpu_info)
->  	if (!is_v4(its_dev->its))
->  		return -EINVAL;
->
-> +	guard(raw_spinlock_irq, &its_dev->event_map.vlpi_lock);
+Hi Sasha,
+
+Please also pick [1] when it is applied.
+
+--Sean
+
+[1] https://lore.kernel.org/all/974d1b062d7c61ee6db00d16fa7c69aa1218ee02.1716198025.git.christophe.jaillet@wanadoo.fr/
+
+On 6/3/24 07:46, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     drm: zynqmp_dpsub: Always register bridge
+> 
+> to the 6.9-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      drm-zynqmp_dpsub-always-register-bridge.patch
+> and it can be found in the queue-6.9 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit d6817dc61b3b6a1e4f098b25109e7f2ecaaf0ee8
+> Author: Sean Anderson <sean.anderson@linux.dev>
+> Date:   Fri Mar 8 15:47:41 2024 -0500
+> 
+>     drm: zynqmp_dpsub: Always register bridge
+>     
+>     [ Upstream commit be3f3042391d061cfca2bd22630e0d101acea5fc ]
+>     
+>     We must always register the DRM bridge, since zynqmp_dp_hpd_work_func
+>     calls drm_bridge_hpd_notify, which in turn expects hpd_mutex to be
+>     initialized. We do this before zynqmp_dpsub_drm_init since that calls
+>     drm_bridge_attach. This fixes the following lockdep warning:
+>     
+>     [   19.217084] ------------[ cut here ]------------
+>     [   19.227530] DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+>     [   19.227768] WARNING: CPU: 0 PID: 140 at kernel/locking/mutex.c:582 __mutex_lock+0x4bc/0x550
+>     [   19.241696] Modules linked in:
+>     [   19.244937] CPU: 0 PID: 140 Comm: kworker/0:4 Not tainted 6.6.20+ #96
+>     [   19.252046] Hardware name: xlnx,zynqmp (DT)
+>     [   19.256421] Workqueue: events zynqmp_dp_hpd_work_func
+>     [   19.261795] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>     [   19.269104] pc : __mutex_lock+0x4bc/0x550
+>     [   19.273364] lr : __mutex_lock+0x4bc/0x550
+>     [   19.277592] sp : ffffffc085c5bbe0
+>     [   19.281066] x29: ffffffc085c5bbe0 x28: 0000000000000000 x27: ffffff88009417f8
+>     [   19.288624] x26: ffffff8800941788 x25: ffffff8800020008 x24: ffffffc082aa3000
+>     [   19.296227] x23: ffffffc080d90e3c x22: 0000000000000002 x21: 0000000000000000
+>     [   19.303744] x20: 0000000000000000 x19: ffffff88002f5210 x18: 0000000000000000
+>     [   19.311295] x17: 6c707369642e3030 x16: 3030613464662072 x15: 0720072007200720
+>     [   19.318922] x14: 0000000000000000 x13: 284e4f5f4e524157 x12: 0000000000000001
+>     [   19.326442] x11: 0001ffc085c5b940 x10: 0001ff88003f388b x9 : 0001ff88003f3888
+>     [   19.334003] x8 : 0001ff88003f3888 x7 : 0000000000000000 x6 : 0000000000000000
+>     [   19.341537] x5 : 0000000000000000 x4 : 0000000000001668 x3 : 0000000000000000
+>     [   19.349054] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffffff88003f3880
+>     [   19.356581] Call trace:
+>     [   19.359160]  __mutex_lock+0x4bc/0x550
+>     [   19.363032]  mutex_lock_nested+0x24/0x30
+>     [   19.367187]  drm_bridge_hpd_notify+0x2c/0x6c
+>     [   19.371698]  zynqmp_dp_hpd_work_func+0x44/0x54
+>     [   19.376364]  process_one_work+0x3ac/0x988
+>     [   19.380660]  worker_thread+0x398/0x694
+>     [   19.384736]  kthread+0x1bc/0x1c0
+>     [   19.388241]  ret_from_fork+0x10/0x20
+>     [   19.392031] irq event stamp: 183
+>     [   19.395450] hardirqs last  enabled at (183): [<ffffffc0800b9278>] finish_task_switch.isra.0+0xa8/0x2d4
+>     [   19.405140] hardirqs last disabled at (182): [<ffffffc081ad3754>] __schedule+0x714/0xd04
+>     [   19.413612] softirqs last  enabled at (114): [<ffffffc080133de8>] srcu_invoke_callbacks+0x158/0x23c
+>     [   19.423128] softirqs last disabled at (110): [<ffffffc080133de8>] srcu_invoke_callbacks+0x158/0x23c
+>     [   19.432614] ---[ end trace 0000000000000000 ]---
+>     
+>     Fixes: eb2d64bfcc17 ("drm: xlnx: zynqmp_dpsub: Report HPD through the bridge")
+>     Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+>     Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>     Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+>     Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+>     Link: https://patchwork.freedesktop.org/patch/msgid/20240308204741.3631919-1-sean.anderson@linux.dev
+>     (cherry picked from commit 61ba791c4a7a09a370c45b70a81b8c7d4cf6b2ae)
+>     Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+> index 88eb33acd5f0d..face8d6b2a6fb 100644
+> --- a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+> +++ b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+> @@ -256,12 +256,12 @@ static int zynqmp_dpsub_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		goto err_dp;
+>  
+> +	drm_bridge_add(dpsub->bridge);
 > +
->  	/* Unmap request? */
->  	if (!info)
->  		return its_vlpi_unmap(d);
+>  	if (dpsub->dma_enabled) {
+>  		ret = zynqmp_dpsub_drm_init(dpsub);
+>  		if (ret)
+>  			goto err_disp;
+> -	} else {
+> -		drm_bridge_add(dpsub->bridge);
+>  	}
+>  
+>  	dev_info(&pdev->dev, "ZynqMP DisplayPort Subsystem driver probed");
+> @@ -288,9 +288,8 @@ static void zynqmp_dpsub_remove(struct platform_device *pdev)
+>  
+>  	if (dpsub->drm)
+>  		zynqmp_dpsub_drm_cleanup(dpsub);
+> -	else
+> -		drm_bridge_remove(dpsub->bridge);
+>  
+> +	drm_bridge_remove(dpsub->bridge);
+>  	zynqmp_disp_remove(dpsub);
+>  	zynqmp_dp_remove(dpsub);
+>  
 
-I found a similar guard() call in the implementation of the function =E2=
-=80=9Ctask_state_match=E2=80=9D.
-https://elixir.bootlin.com/linux/v6.10-rc2/source/kernel/sched/core.c#L226=
-4
-
-A slightly different combination of parentheses is applied there.
-How do you think about to apply the following code variant accordingly?
-
-+	guard(raw_spinlock_irq)(&its_dev->event_map.vlpi_lock);
-
-
-Regards,
-Markus
 
