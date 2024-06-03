@@ -1,132 +1,119 @@
-Return-Path: <stable+bounces-47867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68D48D8291
-	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 14:41:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C758D8301
+	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 14:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13A861C2365C
-	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 12:41:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 447832819B4
+	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 12:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384F612C47D;
-	Mon,  3 Jun 2024 12:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="KuP2ZdVd";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VgDGsJv0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA07212C550;
+	Mon,  3 Jun 2024 12:56:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout2-smtp.messagingengine.com (fout2-smtp.messagingengine.com [103.168.172.145])
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0CE83CAE
-	for <stable@vger.kernel.org>; Mon,  3 Jun 2024 12:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBAF12C482
+	for <stable@vger.kernel.org>; Mon,  3 Jun 2024 12:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717418509; cv=none; b=kNjxorVItapyCqxGhzFEHm1ZaR6+E7wYI0yG3mOaVToScQ8YWLzjTe/Xu7OD8yZS74uUFC8NC6ideJJZjDT1KRgU4L2lddDYYFuxNjFfdUl3jmAarq3cLW2WHHmz+l8aF/KEivtrFEkfn+lpCILpbhso4Cro74FRsTUYmt5YL0k=
+	t=1717419375; cv=none; b=Ln3iOgt/1jRFlI6Kqmvh5hFhqQG2MbfPV4OK4WEgtkCyd/PxnE8QXr5fmz4G7ELsUTet2meESucjwsAJMwHi76ev0l30pcQrqaiPcGlfoUUAYwtmhPcvz/8YXAjOnb5oP69DnCGWemIxGogqqituaH+Yeld1eiukFy7V9MsUzEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717418509; c=relaxed/simple;
-	bh=ck7ERi3jkNm3v33fNhOhfY9RK0n8D/wiGyeE2yeK7PU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RaGEXMSH7+LN7OB4rMSmTSRNrlsr/kt8H5VprjyOlf7cP/MyWduuw+vJC1+wRGkH3DhIcHBMNrEpsFznXkLOFMOqtiYvXbvuzrFq/m5nRuda6uQg5uq5S6NZYI6Kgu4c+KktLSeN7Xwok1NhVZluDLgly7j7xzXonqojGcC1Yr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=KuP2ZdVd; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VgDGsJv0; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailfout.nyi.internal (Postfix) with ESMTP id B637F13800A3;
-	Mon,  3 Jun 2024 08:41:45 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Mon, 03 Jun 2024 08:41:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1717418505; x=1717504905; bh=NqrjlYP3fk
-	fndhe9g7J1kmuwkwnFlflLXdi6k+Nyivc=; b=KuP2ZdVdIZ/ksf8viDUOp6Qjuq
-	WAIbUUfSIvcj/w8ONROoHp89pZZn3/+hO4qdw50EGzIZEIJWfO0yTbxTDdl7VpJ2
-	BV2XW0BO0Tbg2eymTQw5b90jcvljjkGnAn18sGOdYmPJC/te9OTrR9eUqvmxwCzG
-	wdwpUaJuDFAdD3V296nGt+beYEmZnIEPzirgt5s3310v1Rxd2l6NoRSR2xlcCw8s
-	bNohYbJtC7U+XAeKEgagQUzXRbd5qQmt1QdU0klyZTrEVupFSZuFNA+X6bJkeseO
-	oLdstYZa6Wk8X6RP8bwViOtQaxpcMKzutxRaMDim3ke1T0IZlLNmk05kIqXg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1717418505; x=1717504905; bh=NqrjlYP3fkfndhe9g7J1kmuwkwnF
-	lflLXdi6k+Nyivc=; b=VgDGsJv01RTFpy6CalRhUtRYVMb6ed7U4YsdXHySZo8u
-	LeAgEiO1ZEWIWXYAO2FYx9ldRJJxrXz+0yxtN4wI71nejiCB5O/SYSNi2M76/Eod
-	/O9qm7bUcy1ro0OWCeNkXG0eWGSyCPrt5FeBCbLi+QxGz/l5ik3kTa9X8BR32kLt
-	21vUDpBGDq9ZdBiFo3Y3onX0DHjqyvxpfviGWyaoci9aqHbR55Mqzpi7Uolp7ZkI
-	qubq6wp4zNWEAU7ICxUGoMZwWT/grHsSYjtJ7fqCcLT8DWRy7rLr5ZiXJAHs2ZSb
-	2qAsLiJhjTPXyPqLIwqM5Q7qA2XfTZtOjv8gxOutmg==
-X-ME-Sender: <xms:CbpdZo9hGTmEWsSb_R861N_6XNnXTEy3JQK2rJ87Pb5Xto_ttlJcUg>
-    <xme:CbpdZgsgP1cWi-c0fzcyMMW82eatjEhxJKDAgNI3UePs-5bzMwVStT0gzqEsaI0sq
-    MVWEsstsTU2lA>
-X-ME-Received: <xmr:CbpdZuDeLugfAr7szWluLA-R0RPtSq5Uokpl7If4cHPGAjEkBlM0J8XsOUJxI_Fkr_JxZ7PcF1DnE7APJygwJ9y6DUeG1QBW7ED1jA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdelvddgheegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
-    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:CbpdZoeRlfOzSKKrb-6rZ9y7HKFaY2FRNGsu2P2oM9zOR_A3LjH4mg>
-    <xmx:CbpdZtMEJo7kZZHhNLaSAPgMyz9QQ1KORwGHgk944oz7dtrGh5hZmA>
-    <xmx:CbpdZik88JuxN8oNHVAzq4dpkEW9sN9JtW3loVpHGJLM57m7NI0CSw>
-    <xmx:CbpdZvsEwLFqWUWsgvdto-A4mJJMdvvlUCChO_wCflw6-VjyRAixWA>
-    <xmx:CbpdZioYER_JjNmCLemwTxBE3rUk_iNBtAeyju5kId4MC-0dLhuufayG>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Jun 2024 08:41:44 -0400 (EDT)
-Date: Mon, 3 Jun 2024 14:41:54 +0200
-From: Greg KH <greg@kroah.com>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: stable@vger.kernel.org
-Subject: Re: Patch "ALSA: timer: Set lower bound of start tick time" has been
- added to the 6.8-stable tree
-Message-ID: <2024060318-harvest-skirmish-23c4@gregkh>
-References: <20240530190237.17492-1-sashal@kernel.org>
- <87zfs714im.wl-tiwai@suse.de>
+	s=arc-20240116; t=1717419375; c=relaxed/simple;
+	bh=yNrdoS5BVEbUpDcCue0s0K2D+12hETX9oi5sehZyogE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=msQdiic0Je5hLu9FJCB7xSwfLIZZza5zyblqQUMJIx5+iWoiP7+8AHKB9cqKOJJ+zHSJoYcJxRemKH1JkLxNv9CfHcb0zFrhmg+FBBmwLXjQAIyy8J0LYOS5Ocm1jR1qJB8sJfy2RXouwFwJaMzQx3rwGwuxkviV72Ss4//MC2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from fsav313.sakura.ne.jp (fsav313.sakura.ne.jp [153.120.85.144])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 453Ctj6e083962;
+	Mon, 3 Jun 2024 21:55:45 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav313.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav313.sakura.ne.jp);
+ Mon, 03 Jun 2024 21:55:45 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav313.sakura.ne.jp)
+Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 453CtjUW083958
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 3 Jun 2024 21:55:45 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <2ddb1a36-73c3-47ec-be70-3af2ae04c4a6@I-love.SAKURA.ne.jp>
+Date: Mon, 3 Jun 2024 21:55:44 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87zfs714im.wl-tiwai@suse.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "nfc: nci: Fix kcov check in nci_rx_work()" has been added
+ to the 6.1-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+References: <20240603121312.1839586-1-sashal@kernel.org>
+Content-Language: en-US
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <20240603121312.1839586-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 30, 2024 at 09:30:41PM +0200, Takashi Iwai wrote:
-> On Thu, 30 May 2024 21:02:36 +0200,
-> Sasha Levin wrote:
-> > 
-> > This is a note to let you know that I've just added the patch titled
-> > 
-> >     ALSA: timer: Set lower bound of start tick time
-> > 
-> > to the 6.8-stable tree which can be found at:
-> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > 
-> > The filename of the patch is:
-> >      alsa-timer-set-lower-bound-of-start-tick-time.patch
-> > and it can be found in the queue-6.8 subdirectory.
-> > 
-> > If you, or anyone else, feels it should not be added to the stable tree,
-> > please let <stable@vger.kernel.org> know about it.
+Not for 6.1 and earlier kernels.
+
+-------- Forwarded Message --------
+Date: Sat, 11 May 2024 09:05:18 -0400
+Subject: Re: Patch "nfc: nci: Fix kcov check in nci_rx_work()" has been added to the 6.1-stable tree
+Message-ID: <Zj9tDunQd3BDcG2a@sashalap>
+
+On Sat, May 11, 2024 at 07:53:00AM +0900, Tetsuo Handa wrote:
+>On 2024/05/11 6:39, Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>     nfc: nci: Fix kcov check in nci_rx_work()
+>>
+>> to the 6.1-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>> The filename of the patch is:
+>>      nfc-nci-fix-kcov-check-in-nci_rx_work.patch
+>> and it can be found in the queue-6.1 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>>
+>
+>I think we should not add this patch to 6.1 and earlier kernels, for
+>only 6.2 and later kernels call kcov_remote_stop() from nci_rx_work().
+
+Dropped, thanks!
+
+-- 
+Thanks,
+Sasha
+
+On 2024/06/03 21:13, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> Please drop this one for 6.8 and older (you posted for 6.6 too).
-> As already explained in another mail, this commit needs a prerequisite
-> use of guard().
+>     nfc: nci: Fix kcov check in nci_rx_work()
 > 
-> An alternative patch has been already submitted.  Take it instead:
->   https://lore.kernel.org/all/20240527062431.18709-1-tiwai@suse.de/
+> to the 6.1-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      nfc-nci-fix-kcov-check-in-nci_rx_work.patch
+> and it can be found in the queue-6.1 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
 
-I've dropped this again and will take this patch when I catch up on the
-my stable queue patches either tomorrow or Wednesday, thanks!
-
-And sorry about the duplicate commit.
-
-greg k-h
 
