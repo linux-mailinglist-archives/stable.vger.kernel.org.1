@@ -1,203 +1,136 @@
-Return-Path: <stable+bounces-47861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2668D81C9
-	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 14:00:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF738D81EE
+	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 14:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EA7B1F2383B
-	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 11:59:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5437AB2510D
+	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 12:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8274A126F1D;
-	Mon,  3 Jun 2024 11:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61294127E11;
+	Mon,  3 Jun 2024 12:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fOwEt4ot";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ghOnvA8/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HT0ydrh6"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958E7126F0A;
-	Mon,  3 Jun 2024 11:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDB523748;
+	Mon,  3 Jun 2024 12:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717415994; cv=none; b=tESEqAm9TEjm8CeNGmvT6RmBJHj1sp/iYKP35We0DB1HokXdbeQCCMhlR7KSi6uQNNVi+dLQeV+O8IZaaDI67kPGBJJeAYw4PPHHBYpskWbuad3gqz6UuZyAJdFP0cvWmF1CEUueDEbf6DrK/bxg1UEfrXOGGpNF9U4/9TYOK/I=
+	t=1717416596; cv=none; b=HFXuVGnmKLPpUvoEdGoGfb8JUxkslV6cvmUSDnmOmN/FH0lubAJbCDFnw/OncHxE9q7uMlT6fkRRl/iZKvRsCqoVbdFAAQ17YeQNNoKSbBQ84bcp9GyJqYsuhK9bad/yn1td0BRScKmTcUfzBjU6XvIX1T3uFyvjavcivzA2oIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717415994; c=relaxed/simple;
-	bh=TQRPL/Oo8rr3W7nHbR/xkncUh5R8NuI+ZeJCE71XecM=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VxMQ5I8wXnjgo62sGKhQ7TfQ8z8afoD5vBYLY9qjz5UBGDeMeaFwmPDKSyfIEKh6zNXLkvIK44P+a9BsxaGoWf6z1TuZ0rI7HPY2PTqVX37X2PpiWcPqxQqKCWuhRhxvvolwSIJiplSXXPVSNNVs+a9McoN5J0K+QL3saVVwwl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fOwEt4ot; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ghOnvA8/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Jun 2024 11:59:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717415990;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Su/G7s/uy3NDXOkalvjbUj5RE12/Nt5IBT4vLru/iXQ=;
-	b=fOwEt4otIV9mT7RwDGug39OSHXkMc4csgRtLyhQbQ7nSRgW8YYr/qwVBTiqoISiVy9JsBq
-	dkIwf0Tg+aoPRJ1m9AAYKUcuCvC59+saeH+/UMB1xVHbRfWDTGPLs/BhLNoBXz/HJxru6b
-	hJvF03Rxv2iIuhREi6Xp85XusmSWgmi0e3ETJ7PtOb5Pa81KGsg+0hmgu81mh57syYtDlO
-	9szNq0HiXNbGy2nUvNMco0jihvBKf2mlVvmkpQr+1BH7OQ3lZx8ZRBdvnB77EwbyMuvt1t
-	8VoeSAIDgH9LFzQHn3Inuv02C49xJVHTapDUtxpH5+2LWn2dxLDEmobdjGXGQA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717415990;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Su/G7s/uy3NDXOkalvjbUj5RE12/Nt5IBT4vLru/iXQ=;
-	b=ghOnvA8/I+6qs3xv31dBpLfaMZtXZImsCP4gHOQ00KfsU3HXdY+k8Sxo6QCP60v9uRdYfT
-	juM7Qz3orFuah4Bw==
-From: "tip-bot2 for Samuel Holland" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/sifive-plic: Chain to parent IRQ after
- handlers are ready
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
- Samuel Holland <samuel.holland@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Anup Patel <anup@brainfault.org>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240529215458.937817-1-samuel.holland@sifive.com>
-References: <20240529215458.937817-1-samuel.holland@sifive.com>
+	s=arc-20240116; t=1717416596; c=relaxed/simple;
+	bh=pveUAptlefXNqpWMSt35a59/LhTlwbpd8/9PaZ7bx2c=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kmKXoNwO5KVTDYD0tjw7r1Ow89VRIxc9DHoQ2oXjcD4fbioQJcqjGXHuU0PFxqfLX1MZdNIjmSMNGLTHH0emr3XhDhfqjTOHLELfh9pkpxV6IYc5wHwW5TbXtT2G5zN8TmjIss5IVvPQV9uVoiY7syvdXhGyCTLbbgUVtFdllNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HT0ydrh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E59C32789;
+	Mon,  3 Jun 2024 12:09:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717416596;
+	bh=pveUAptlefXNqpWMSt35a59/LhTlwbpd8/9PaZ7bx2c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HT0ydrh6cA3/WAi2MBQoI/IRaQ2wLvD6I6ZqYsdO1bI06z9Pu4F9wMYtcaZV1LY3k
+	 eXVCGuIfyKln3H9rs23YSpAV8Nw7r3mGT5wEPSYUc8hNDF+oDz3+BgE1EXtOQNYjDv
+	 yxD+wU5hV3w+yTY25S1U6HL5rs0zMexf63u7Eb70/IA8sXjH3KHSESsi8NcfPylfl3
+	 9DDjBufvztLetZUqDvv6Zfr3BI//BYyzqthIkHyK2G0U8Lm4gJF3roKL/U3J4fNLJf
+	 etJRKiUzxtstcSikAuNdOvjRJ8X2PI3b5xIHUa0IDbRybotSRxZbD6uHLasrLPNmrv
+	 Lwa2A+JYRXm7A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sE6Vd-000DNA-JP;
+	Mon, 03 Jun 2024 13:09:53 +0100
+Date: Mon, 03 Jun 2024 13:09:52 +0100
+Message-ID: <86mso2kz1r.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org,
+	Oliver Upton <oliver.upton@linux.dev>,
+	James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: Patch "KVM: arm64: nv: Add sanitising to VNCR-backed sysregs" has been added to the 6.8-stable tree
+In-Reply-To: <20240603115255.1829330-1-sashal@kernel.org>
+References: <20240603115255.1829330-1-sashal@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <171741598986.10875.3452301673328892748.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: stable@vger.kernel.org, stable-commits@vger.kernel.org, oliver.upton@linux.dev, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The following commit has been merged into the irq/urgent branch of tip:
+On Mon, 03 Jun 2024 12:52:54 +0100,
+Sasha Levin <sashal@kernel.org> wrote:
+> 
+> This is a note to let you know that I've just added the patch titled
+> 
+>     KVM: arm64: nv: Add sanitising to VNCR-backed sysregs
+> 
+> to the 6.8-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      kvm-arm64-nv-add-sanitising-to-vncr-backed-sysregs.patch
+> and it can be found in the queue-6.8 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit fbb2bcdc458dd7db3860f85a06e98cc25904d20d
+> Author: Marc Zyngier <maz@kernel.org>
+> Date:   Wed Feb 14 13:18:04 2024 +0000
+> 
+>     KVM: arm64: nv: Add sanitising to VNCR-backed sysregs
+>     
+>     [ Upstream commit 888f0880702293096619b300150cd7e59fcd9743 ]
+>     
+>     VNCR-backed "registers" are actually only memory. Which means that
+>     there is zero control over what the guest can write, and that it
+>     is the hypervisor's job to actually sanitise the content of the
+>     backing store. Yeah, this is fun.
+>     
+>     In order to preserve some form of sanity, add a repainting mechanism
+>     that makes use of a per-VM set of RES0/RES1 masks, one pair per VNCR
+>     register. These masks get applied on access to the backing store via
+>     __vcpu_sys_reg(), ensuring that the state that is consumed by KVM is
+>     correct.
+>     
+>     So far, nothing populates these masks, but stay tuned.
+>     
+>     Signed-off-by: Marc Zyngier <maz@kernel.org>
+>     Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+>     Link: https://lore.kernel.org/r/20240214131827.2856277-4-maz@kernel.org
+>     Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+>     Stable-dep-of: ce5d2448eb8f ("KVM: arm64: Destroy mpidr_data for 'late' vCPU creation")
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Commit-ID:     e306a894bd511804ba9db7c00ca9cc05b55df1f2
-Gitweb:        https://git.kernel.org/tip/e306a894bd511804ba9db7c00ca9cc05b55df1f2
-Author:        Samuel Holland <samuel.holland@sifive.com>
-AuthorDate:    Wed, 29 May 2024 14:54:56 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 03 Jun 2024 13:53:12 +02:00
+Please drop this. It serves no purpose on 6.8 aside from wasting
+memory. If backporting ce5d2448eb8f is hard due to some conflicts,
+we'll tackle it ourselves.
 
-irqchip/sifive-plic: Chain to parent IRQ after handlers are ready
+Thanks,
 
-Now that the PLIC uses a platform driver, the driver is probed later in the
-boot process, where interrupts from peripherals might already be pending.
+	M.
 
-As a result, plic_handle_irq() may be called as early as the call to
-irq_set_chained_handler() completes. But this call happens before the
-per-context handler is completely set up, so there is a window where
-plic_handle_irq() can see incomplete per-context state and crash.
-
-Avoid this by delaying the call to irq_set_chained_handler() until all
-handlers from all PLICs are initialized.
-
-Fixes: 8ec99b033147 ("irqchip/sifive-plic: Convert PLIC driver into a platform driver")
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240529215458.937817-1-samuel.holland@sifive.com
-Closes: https://lore.kernel.org/r/CAMuHMdVYFFR7K5SbHBLY-JHhb7YpgGMS_hnRWm8H0KD-wBo+4A@mail.gmail.com/
----
- drivers/irqchip/irq-sifive-plic.c | 34 +++++++++++++++---------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index 8fb183c..9e22f7e 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -85,7 +85,7 @@ struct plic_handler {
- 	struct plic_priv	*priv;
- };
- static int plic_parent_irq __ro_after_init;
--static bool plic_cpuhp_setup_done __ro_after_init;
-+static bool plic_global_setup_done __ro_after_init;
- static DEFINE_PER_CPU(struct plic_handler, plic_handlers);
- 
- static int plic_irq_set_type(struct irq_data *d, unsigned int type);
-@@ -487,10 +487,8 @@ static int plic_probe(struct platform_device *pdev)
- 	unsigned long plic_quirks = 0;
- 	struct plic_handler *handler;
- 	u32 nr_irqs, parent_hwirq;
--	struct irq_domain *domain;
- 	struct plic_priv *priv;
- 	irq_hw_number_t hwirq;
--	bool cpuhp_setup;
- 
- 	if (is_of_node(dev->fwnode)) {
- 		const struct of_device_id *id;
-@@ -549,14 +547,6 @@ static int plic_probe(struct platform_device *pdev)
- 			continue;
- 		}
- 
--		/* Find parent domain and register chained handler */
--		domain = irq_find_matching_fwnode(riscv_get_intc_hwnode(), DOMAIN_BUS_ANY);
--		if (!plic_parent_irq && domain) {
--			plic_parent_irq = irq_create_mapping(domain, RV_IRQ_EXT);
--			if (plic_parent_irq)
--				irq_set_chained_handler(plic_parent_irq, plic_handle_irq);
--		}
--
- 		/*
- 		 * When running in M-mode we need to ignore the S-mode handler.
- 		 * Here we assume it always comes later, but that might be a
-@@ -597,25 +587,35 @@ done:
- 		goto fail_cleanup_contexts;
- 
- 	/*
--	 * We can have multiple PLIC instances so setup cpuhp state
-+	 * We can have multiple PLIC instances so setup global state
- 	 * and register syscore operations only once after context
- 	 * handlers of all online CPUs are initialized.
- 	 */
--	if (!plic_cpuhp_setup_done) {
--		cpuhp_setup = true;
-+	if (!plic_global_setup_done) {
-+		struct irq_domain *domain;
-+		bool global_setup = true;
-+
- 		for_each_online_cpu(cpu) {
- 			handler = per_cpu_ptr(&plic_handlers, cpu);
- 			if (!handler->present) {
--				cpuhp_setup = false;
-+				global_setup = false;
- 				break;
- 			}
- 		}
--		if (cpuhp_setup) {
-+
-+		if (global_setup) {
-+			/* Find parent domain and register chained handler */
-+			domain = irq_find_matching_fwnode(riscv_get_intc_hwnode(), DOMAIN_BUS_ANY);
-+			if (domain)
-+				plic_parent_irq = irq_create_mapping(domain, RV_IRQ_EXT);
-+			if (plic_parent_irq)
-+				irq_set_chained_handler(plic_parent_irq, plic_handle_irq);
-+
- 			cpuhp_setup_state(CPUHP_AP_IRQ_SIFIVE_PLIC_STARTING,
- 					  "irqchip/sifive/plic:starting",
- 					  plic_starting_cpu, plic_dying_cpu);
- 			register_syscore_ops(&plic_irq_syscore_ops);
--			plic_cpuhp_setup_done = true;
-+			plic_global_setup_done = true;
- 		}
- 	}
- 
+-- 
+Without deviation from the norm, progress is not possible.
 
