@@ -1,107 +1,182 @@
-Return-Path: <stable+bounces-47891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E184B8D8B0E
-	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 22:49:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9FE8FA508
+	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 23:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5EC1C20D0F
-	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 20:49:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE05928A971
+	for <lists+stable@lfdr.de>; Mon,  3 Jun 2024 21:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8832113958C;
-	Mon,  3 Jun 2024 20:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B82213C8E1;
+	Mon,  3 Jun 2024 21:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="DrmgVtNn"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kgRBbbf3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66F2B651
-	for <stable@vger.kernel.org>; Mon,  3 Jun 2024 20:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB793236;
+	Mon,  3 Jun 2024 21:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717447749; cv=none; b=sb4JkFJvIUAGUNxEWoOBV1qBlNcmC/a/hcwr0umOCfVLdvijOO1VWucU710rTyPENLCv69iuXoZ2gg2aTDd+cDjcg2tc34SZAC6zXOtuHqo0/Ulfck6qxJKO1Pvu110Bv3Y0RdnDjpckGMn5xUXm5KLSBMrGS6Aec7luDTDoJ2g=
+	t=1717451869; cv=none; b=mMawfEbYUeRWdiq0yYtRWCAk+Z5fXmH0AJ8WBHqBt1EpwSUP2s5OkTQyp1V4L3gI9LGEvo+I9sWpJkr5bUi9QvkuVSqm7pyzFlxrhipGsHhh9zy+v64LDkI9GyuuccaI+Xa7UNPmuSbqEZ4wsPUnlTdJ92/KyF+jPYAgsTiLlBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717447749; c=relaxed/simple;
-	bh=WvIFKq/r/270nxZkioFDcAGAacdTks1k3mJZ9zWzo48=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=OEmySdnAs7Vwfy0O+6Oh1AOVDOtPzPBc6eNbNi7xhSGKoaGt1GVsU749N3WBk1t6FGPUcjZwpoW2pG/841BU7JU4sH5MY4bZlF1mV50jVszZkYChdOM3TsrzFucHuOKzuO2gTpRGXajRLlMqhmuHOaLNe7GveKkHm6hYUtnd4Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=DrmgVtNn; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3737dc4a669so21227735ab.0
-        for <stable@vger.kernel.org>; Mon, 03 Jun 2024 13:49:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1717447747; x=1718052547; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5NMHXwPcGaw7JTj1qfWppz0p1uraG4kphghnrhoKb5o=;
-        b=DrmgVtNnGDdvrNwOOkKhuonuE4ZROt2wSubDZpZd+E8YVcJuUk/uRvCVpGWTkQAPuy
-         tPfOSTQn60B8fkWhLa5ve6Kqsfe9WsOB8mvjJbNaJ7A6/+HCLucDRUlQ0hwFD/6bwoDF
-         NR/hHtf03Dvx2m6a3qLCcDeosfaDkVk3nLVxswGzZFa55F4GgNkRaXF47sG8mSfu7VhL
-         8AIGD0PNEE8P9EyRUjCfrRj5pLKrL02g49+aVPLdg3R8Hi55dd0njGvi37zM5+zIh5Og
-         hombWE902+2/hGSvrO+NF0erI+b/3E5nkmRn9BajPzwg/37wZ78Bhkl+wefDLjHFQ+xf
-         8M9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717447747; x=1718052547;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5NMHXwPcGaw7JTj1qfWppz0p1uraG4kphghnrhoKb5o=;
-        b=IkOFf3oeOFI6J7ydhLUuB5Li6nhTXUAIWFUsEDdx/5dUL9tUFi7/Kpwo8A7TQd28vB
-         TiqD8W79Dd/+QIoCgNlerrQ8ahxj3BLHDFMRYhTbfkg8ws1qP9fINSrJAefF+RYOCM3t
-         KDHZbHR38cvo4R4KkGwT/0Cc0eYqswU243+GzK5R0g8VJoySx5G4TlBFxUFXf7uJt0lI
-         ulDO6KiSF0YgVuVDxgIGMnjbwlCmhESihaZPOKCCZXUOFo97OZMuIiA1lrcDcsQOhJZn
-         JC3IUwGP2s6Rm2zlHATlzspnh4QH9k0riFwgG2SXRO8XCh2R7us2JBVsBCmzD00qlnQh
-         fjWA==
-X-Gm-Message-State: AOJu0YwxeACXJDopBB5m4RB1J4BPrv5f1Iv7ylsTCk25BuS8uDd+Zbgh
-	JfZ2+wgSQKMU54uqipxyccOZJNB4m6Ea6sZsdA3kFuPMKHNbulB7hThnqC7MXg4Wf9I3sDKngnK
-	TPZ4BO4fyUAyscz0m88o5bQETSRob2nH1UpWRi3jgR+xQYqYSj2A=
-X-Google-Smtp-Source: AGHT+IH1gIAjdyyru9BL+F7FOLPVE12mSX+Os5kaKZQMBX5nzE8br2Mv1GqtnGVB79NnI+ytND9jYIN7HvZWrzNq8HU=
-X-Received: by 2002:a05:6e02:1d11:b0:374:9552:821a with SMTP id
- e9e14a558f8ab-374955285d8mr72871615ab.5.1717447746906; Mon, 03 Jun 2024
- 13:49:06 -0700 (PDT)
+	s=arc-20240116; t=1717451869; c=relaxed/simple;
+	bh=uGjlFGkxYZ4n2nf5+mWi19eRsaCZv5UkZwE+PGMYBB4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TRTtm9Uv/ysrpfRWDl51gcgzyLV53L+V/wFCW5jPub/j+rENOUAndIPDnArygup8JJqJD/9TX/w2iVyvANfuiyNX3pKWjKeooLA9m38Iow6QNA+twYnkSdnIY3PhKXQBGJyWFvuahQ6xVzw4dopDmVadTUxzgTEgDd9hC/WjGGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kgRBbbf3; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 453ASsNE015299;
+	Mon, 3 Jun 2024 21:57:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	+huiNJRLt44NCN/r6bDMvnL/tWOjvPnxr5JvMN59Ows=; b=kgRBbbf3F8N+RvZy
+	v3h1WYFs24UFg3u4O6SWivJdpRvFEAWZra4YVi3/rqoD6CvzxRVQ3LNTV+5a3ixt
+	xRmkfabk/5rjHWn8NFOWAAUuXmM4gKK6Sprsd/ffCJFbvX3cYxCqtPI9XHuU/qHO
+	V/Q8GDyEiY4YkqkOcZAW8nQqnOdVWuYnzMYFV8G6YwkbkEQ9EFiOC8KL69Nf3T9z
+	Udr10aRZek1P3ZyoghvW+8fdpSQkSjgr/vgCr1mBq6IZwXNTmr+ejZm94CcFeYUq
+	HMcREi5ysrSj76TLAuuLRnCi9FXoFPcLVxXLiavKBlSaPpoivxO6g9hFJRc60aKW
+	tIteyw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yfw5wn2fn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Jun 2024 21:57:45 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 453LviYm002952
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 3 Jun 2024 21:57:44 GMT
+Received: from [10.110.69.141] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 3 Jun 2024
+ 14:57:43 -0700
+Message-ID: <5f2ea1a4-17a9-4fdd-badc-386b9cc57183@quicinc.com>
+Date: Mon, 3 Jun 2024 14:57:43 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Ronnie Sahlberg <rsahlberg@ciq.com>
-Date: Mon, 3 Jun 2024 16:48:56 -0400
-Message-ID: <CAK4epfz9B58Dfz=wwNP2PJQzeqvT3J_kjY9d7PNY_VPKDKE=dA@mail.gmail.com>
-Subject: Candidates for stable v6.9..v6.10-rc1 Deadlock
-To: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-
-These commits reference Deadlock between v6.9 and v6.10-rc1
-
-These commits are not, yet, in stable/linux-rolling-stable.
-Let me know if you would rather me compare to a different repo/branch.
-The list has been manually pruned to only contain commits that look like
-actual issues.
-If they contain a Fixes line it has been verified that at least one of the
-commits that the Fixes tag(s) reference is in stable/linux-rolling-stable
-
-
-56c35f43eef013579c76
-eec7620800081e27dbf8
-4268254a39484fc11ba9
-0a46ef234756dca04623
-ecf0b2b8a37c84641866
-e03a5d3e95f22d15d8df
-4d3421e04c5dc38baf15
-9cc6290991e6cfc9a644
-77e619a82fc384ae3d1d
-e533e4c62e9993e62e94
-21ad2d03641ae70a7acd
-2afd5276d314d775ae0b
-3bdb7f161697e2d5123b
-6f31d6b643a32cc126cf
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] bus: mhi: ep: Do not allocate memory for MHI objects from
+ DMA zone
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        <mhi@lists.linux.dev>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20240603164354.79035-1-manivannan.sadhasivam@linaro.org>
+Content-Language: en-US
+From: Mayank Rana <quic_mrana@quicinc.com>
+In-Reply-To: <20240603164354.79035-1-manivannan.sadhasivam@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 7sqVywnf2gZBqIARLB72d1cYTxFVVZtx
+X-Proofpoint-ORIG-GUID: 7sqVywnf2gZBqIARLB72d1cYTxFVVZtx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-06-03_17,2024-05-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ adultscore=0 suspectscore=0 priorityscore=1501 clxscore=1011
+ lowpriorityscore=0 mlxlogscore=999 bulkscore=0 spamscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406030178
 
 
--- 
-Ronnie Sahlberg [Principal Software Engineer, Linux]
 
-P 775 384 8203 | E [email] | W ciq.com
+On 6/3/2024 9:43 AM, Manivannan Sadhasivam wrote:
+> MHI endpoint stack accidentally started allocating memory for objects from
+> DMA zone since commit 62210a26cd4f ("bus: mhi: ep: Use slab allocator
+Going through mentioned commit it seems that it was intended purpose to 
+use GFP_DMA/SLAB
+> where applicable"). But there is no real need to allocate memory from this
+> naturally limited DMA zone. This also causes the MHI endpoint stack to run
+> out of memory while doing high bandwidth transfers.
+> 
+> So let's switch over to normal memory.
+> 
+> Cc: stable@vger.kernel.org # 6.8
+> Fixes: 62210a26cd4f ("bus: mhi: ep: Use slab allocator where applicable")
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>   drivers/bus/mhi/ep/main.c | 14 +++++++-------
+>   1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
+> index f8f674adf1d4..4acfac73ca9a 100644
+> --- a/drivers/bus/mhi/ep/main.c
+> +++ b/drivers/bus/mhi/ep/main.c
+> @@ -90,7 +90,7 @@ static int mhi_ep_send_completion_event(struct mhi_ep_cntrl *mhi_cntrl, struct m
+>   	struct mhi_ring_element *event;
+>   	int ret;
+>   
+> -	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
+> +	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
+>   	if (!event)
+>   		return -ENOMEM;
+>   
+> @@ -109,7 +109,7 @@ int mhi_ep_send_state_change_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_stat
+>   	struct mhi_ring_element *event;
+>   	int ret;
+>   
+> -	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
+> +	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
+>   	if (!event)
+>   		return -ENOMEM;
+>   
+> @@ -127,7 +127,7 @@ int mhi_ep_send_ee_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ee_type exec_e
+>   	struct mhi_ring_element *event;
+>   	int ret;
+>   
+> -	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
+> +	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
+>   	if (!event)
+>   		return -ENOMEM;
+>   
+> @@ -146,7 +146,7 @@ static int mhi_ep_send_cmd_comp_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_e
+>   	struct mhi_ring_element *event;
+>   	int ret;
+>   
+> -	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
+> +	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
+>   	if (!event)
+>   		return -ENOMEM;
+>   
+> @@ -438,7 +438,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+>   		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
+>   		write_offset = len - buf_left;
+>   
+> -		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL | GFP_DMA);
+> +		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL);
+>   		if (!buf_addr)
+>   			return -ENOMEM;
+>   
+> @@ -1481,14 +1481,14 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
+>   
+>   	mhi_cntrl->ev_ring_el_cache = kmem_cache_create("mhi_ep_event_ring_el",
+>   							sizeof(struct mhi_ring_element), 0,
+> -							SLAB_CACHE_DMA, NULL);
+> +							0, NULL);
+>   	if (!mhi_cntrl->ev_ring_el_cache) {
+>   		ret = -ENOMEM;
+>   		goto err_free_cmd;
+>   	}
+>   
+>   	mhi_cntrl->tre_buf_cache = kmem_cache_create("mhi_ep_tre_buf", MHI_EP_DEFAULT_MTU, 0,
+> -						      SLAB_CACHE_DMA, NULL);
+> +						      0, NULL);
+>   	if (!mhi_cntrl->tre_buf_cache) {
+>   		ret = -ENOMEM;
+>   		goto err_destroy_ev_ring_el_cache;
+Reviewed-by: Mayank Rana <quic_mrana@quicinc.com>
 
