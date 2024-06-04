@@ -1,177 +1,135 @@
-Return-Path: <stable+bounces-47911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4098D8FACED
-	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 09:58:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 870C78FACF2
+	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 09:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A635E2853E9
-	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 07:58:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14CBA2839F2
+	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 07:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4701428FD;
-	Tue,  4 Jun 2024 07:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC49142E6E;
+	Tue,  4 Jun 2024 07:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NgKn2eVq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g3KvaiVU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855701442FB;
-	Tue,  4 Jun 2024 07:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9EA1420A5;
+	Tue,  4 Jun 2024 07:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717487800; cv=none; b=SYHyxjmQTvjF50A4FOBMlxULSrCxkFQm0Sij+4HXLvcjHHq56yEljx4bCf2wHIKfykH9pewb0mcwGvouicPgY6GUP2lvXBg+pZmYLVj+2/FvvtcnHEdorxcOEERMYJL9T8T0ryGqREcAu/1RHxaPeC4j+fz8Co27a1ZcCptsT9A=
+	t=1717487811; cv=none; b=bx6Z5lg7Htc3grwodVrmszFYN5tgMBjJuQgsWjWWbLzRxREU5hhn95+BKxT2p1VnuXkm+ArHmEoW+3Y91AR22pdk68iq3jrWDoUgwdCrCxHOCGk8/VQ5U5aCyzTS3oNHnMJsWtbiN8f0FpurRLi8MDNoVbkvxi6YDXCFQDfaaEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717487800; c=relaxed/simple;
-	bh=4P9STm7Tqu8zS5aS+jowLfgQpDvynJauXla8R+gW8oA=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kidVf0M1c5JOrRKlE3IsIvunLi1VolKMIAZeAjCqre7YsEb3zeJTgwa0G3SZMj5H3QL1WrEARhsJ/5/yyt/d6yzV0OE3EFz5uKjjc0qoHpv26xAHMDpV1RdY77DmTiRLQhudI68eaSS4iYwIJauPCuMQ9yKK9hwKIzrxinJ8ff8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NgKn2eVq; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42134bb9677so39241125e9.2;
-        Tue, 04 Jun 2024 00:56:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717487797; x=1718092597; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=O350TIsq9YLAoOoYARKSfDq5NiQ/v55dRM6GNZLiR0Y=;
-        b=NgKn2eVqAxsMISFWV4iN5LAOQ7BdGF6XdmwUBDMs264UpMqAm9MPYqY4NQKE5KhXkP
-         6s/BT8nm1HDCd7+Y7OF8zj8GHLQEHvNsbszu4Aomvgy6OjH/gA4ulQTsfYGveJ3Ptm8W
-         RkMllp7rWS0q2JSnFrQQcbjObE0Wl7RQnVS+Uul7nty1xdvoWIY6UUNZAhWeF+fxBilu
-         psU9fn0CTlDUZBZkPJwK+vqbXJCYcVxE5MdCZoH2O2UhrqbEfWb/tPuD+Fbl5WUqTblu
-         tKvZbSeQka0SZFAZgmHmk2wDGtw+nAXBJTu1jVb5magCqj35g9Gtgbp2GB32V5zyPjIz
-         gYgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717487797; x=1718092597;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O350TIsq9YLAoOoYARKSfDq5NiQ/v55dRM6GNZLiR0Y=;
-        b=Nvctj6ZqYU6igwZZ92Jaoexp8Te9BCd4MuvAnCTgil4BbAfhmHUA61RqvLlmJnYwW6
-         ncgdYzeZpk20M1GvxHMHHrqhScqPVOM3rdgUst5CXQv3f9ZQp9/exZBHv7lxG9OdO7Go
-         Pf9AUPuCraOU1lmG+LyQxZm9TACf8htZV3gOzvWSYh/gHofTqfp4FR6ASLPt+CP0klVl
-         Jk1djHfbPGCs2ogC6MGHamO1wm56l7GlBlLgTEnLRhz0PVnc5j7d3t34ZiYewG63aW6f
-         +zJ5nk2ZERst34Mo2sSDSS/FomVltwa43LNddl+sWmvcLyKdm4hfIGnxC5Woypnhx8j3
-         JIXA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFEQTKzfyNkOInLANi4CKySYQtnK32pYltHUT3EKLSe6aEWayeQYF39yu4id81hwyEsM3ar0LA5csDZzawEHavp0bleuSD
-X-Gm-Message-State: AOJu0Yw3CrdffXboqWxHlhQfeOzujDcfEFZu7YBrAQMdqO4UIOE1E0DF
-	cWvIGUUKonr6dXtXAyzbFRd5aDYeWp8UOgtQR2AixpUIVfUhLqqZ
-X-Google-Smtp-Source: AGHT+IHhG9sOTYVW20XrZDCQqFAC1654zHonmJAmvCtJ3YZzG5tFQWnvM95IUEMvAQZLQWekwWOZ7g==
-X-Received: by 2002:a05:600c:1f14:b0:421:36da:9438 with SMTP id 5b1f17b1804b1-42136da9466mr91646945e9.28.1717487796665;
-        Tue, 04 Jun 2024 00:56:36 -0700 (PDT)
-Received: from krava ([212.20.115.60])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215447035bsm2945455e9.13.2024.06.04.00.56.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jun 2024 00:56:36 -0700 (PDT)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Tue, 4 Jun 2024 09:56:33 +0200
-To: Tony Ambardar <tony.ambardar@gmail.com>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
-	Hao Luo <haoluo@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	kernel test robot <lkp@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH bpf v2 2/2] bpf: Harden __bpf_kfunc tag against linker
- kfunc removal
-Message-ID: <Zl7IscCtZVKjgP2h@krava>
-References: <cover.1717413886.git.Tony.Ambardar@gmail.com>
- <cover.1717477560.git.Tony.Ambardar@gmail.com>
- <e9c64e9b5c073dabd457ff45128aabcab7630098.1717477560.git.Tony.Ambardar@gmail.com>
+	s=arc-20240116; t=1717487811; c=relaxed/simple;
+	bh=Th/bB0ynCfO7mBhDp66CrCHTDuadKccCIQuJMOSIRY4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rEor0wPv7HxMrJbYn/S4zGjeKZMMJgaIRLbf5FzEC4f3zsUuS/Gq/xZhxBNReruKDRTzFk0wMTVPlwzd/giItAqyA+g70obUlVfekeHtgWRR2TnhrrXDJuT7sRtKB/Igw34t+GoePKGtcAS9G0yaTY7H/GfvwLD/cA3XwlcjFAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g3KvaiVU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC81C2BBFC;
+	Tue,  4 Jun 2024 07:56:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717487811;
+	bh=Th/bB0ynCfO7mBhDp66CrCHTDuadKccCIQuJMOSIRY4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=g3KvaiVU/xqeqaTzDV8nY3eNyEjqjPfyvo3F7DXRzSODsuzx86qp5/8vnI+vebXqQ
+	 sozoykN1o+zTbkD3/SesWFwXLoDP0bqMpq5JfYdktaOqDJ4e2MWR8mpPDJp8ebG+BZ
+	 ngh4SeIBlf74V3zietQIhQowVewvVur/WjpF8CdsmYkvYwV43o9KIhTzaY3kRIk/8F
+	 cP9Dt1RfX/0J3q0Y42XBkacg1udQUf3SqIpfOhdP4RPH1Q/ITOcowWNFzGpeKENaO+
+	 exDEEk575mK74TugEOeC7gy8hfR+NY9w1Cc0yGTxlRxHRWinTOWLOTyiW5ML+zryVh
+	 v1pl5X8bRZQCA==
+From: Chao Yu <chao@kernel.org>
+To: jaegeuk@kernel.org
+Cc: linux-f2fs-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Chao Yu <chao@kernel.org>,
+	stable@vger.kernel.org,
+	syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com
+Subject: [PATCH] f2fs: fix to don't dirty inode for readonly filesystem
+Date: Tue,  4 Jun 2024 15:56:36 +0800
+Message-Id: <20240604075636.3126389-1-chao@kernel.org>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e9c64e9b5c073dabd457ff45128aabcab7630098.1717477560.git.Tony.Ambardar@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 03, 2024 at 10:23:16PM -0700, Tony Ambardar wrote:
-> BPF kfuncs are often not directly referenced and may be inadvertently
-> removed by optimization steps during kernel builds, thus the __bpf_kfunc
-> tag mitigates against this removal by including the __used macro. However,
-> this macro alone does not prevent removal during linking, and may still
-> yield build warnings (e.g. on mips64el):
-> 
->     LD      vmlinux
->     BTFIDS  vmlinux
->   WARN: resolve_btfids: unresolved symbol bpf_verify_pkcs7_signature
->   WARN: resolve_btfids: unresolved symbol bpf_lookup_user_key
->   WARN: resolve_btfids: unresolved symbol bpf_lookup_system_key
->   WARN: resolve_btfids: unresolved symbol bpf_key_put
->   WARN: resolve_btfids: unresolved symbol bpf_iter_task_next
->   WARN: resolve_btfids: unresolved symbol bpf_iter_css_task_new
->   WARN: resolve_btfids: unresolved symbol bpf_get_file_xattr
->   WARN: resolve_btfids: unresolved symbol bpf_ct_insert_entry
->   WARN: resolve_btfids: unresolved symbol bpf_cgroup_release
->   WARN: resolve_btfids: unresolved symbol bpf_cgroup_from_id
->   WARN: resolve_btfids: unresolved symbol bpf_cgroup_acquire
->   WARN: resolve_btfids: unresolved symbol bpf_arena_free_pages
->     NM      System.map
->     SORTTAB vmlinux
->     OBJCOPY vmlinux.32
-> 
-> Update the __bpf_kfunc tag to better guard against linker optimization by
-> including the new __retain compiler macro, which fixes the warnings above.
-> 
-> Verify the __retain macro with readelf by checking object flags for 'R':
-> 
->   $ readelf -Wa kernel/trace/bpf_trace.o
->   Section Headers:
->     [Nr]  Name              Type     Address  Off  Size ES Flg Lk Inf Al
->   ...
->     [178] .text.bpf_key_put PROGBITS 00000000 6420 0050 00 AXR  0   0  8
->   ...
->   Key to Flags:
->   ...
->     R (retain), D (mbind), p (processor specific)
-> 
-> Link: https://lore.kernel.org/bpf/ZlmGoT9KiYLZd91S@krava/T/
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/r/202401211357.OCX9yllM-lkp@intel.com/
-> Fixes: 57e7c169cd6a ("bpf: Add __bpf_kfunc tag for marking kernel functions as kfuncs")
-> Cc: stable@vger.kernel.org # v6.6+
-> Signed-off-by: Tony Ambardar <Tony.Ambardar@gmail.com>
+syzbot reports f2fs bug as below:
 
-tested on mips64 cross build and the warnings are gone
-and related functions are in the vmlinux
+kernel BUG at fs/f2fs/inode.c:933!
+RIP: 0010:f2fs_evict_inode+0x1576/0x1590 fs/f2fs/inode.c:933
+Call Trace:
+ evict+0x2a4/0x620 fs/inode.c:664
+ dispose_list fs/inode.c:697 [inline]
+ evict_inodes+0x5f8/0x690 fs/inode.c:747
+ generic_shutdown_super+0x9d/0x2c0 fs/super.c:675
+ kill_block_super+0x44/0x90 fs/super.c:1667
+ kill_f2fs_super+0x303/0x3b0 fs/f2fs/super.c:4894
+ deactivate_locked_super+0xc1/0x130 fs/super.c:484
+ cleanup_mnt+0x426/0x4c0 fs/namespace.c:1256
+ task_work_run+0x24a/0x300 kernel/task_work.c:180
+ ptrace_notify+0x2cd/0x380 kernel/signal.c:2399
+ ptrace_report_syscall include/linux/ptrace.h:411 [inline]
+ ptrace_report_syscall_exit include/linux/ptrace.h:473 [inline]
+ syscall_exit_work kernel/entry/common.c:251 [inline]
+ syscall_exit_to_user_mode_prepare kernel/entry/common.c:278 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:283 [inline]
+ syscall_exit_to_user_mode+0x15c/0x280 kernel/entry/common.c:296
+ do_syscall_64+0x50/0x110 arch/x86/entry/common.c:88
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-patchset looks good to me
+The root cause is:
+- do_sys_open
+ - f2fs_lookup
+  - __f2fs_find_entry
+   - f2fs_i_depth_write
+    - f2fs_mark_inode_dirty_sync
+     - f2fs_dirty_inode
+      - set_inode_flag(inode, FI_DIRTY_INODE)
 
-Tested-by: Jiri Olsa <jolsa@kernel.org>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+- umount
+ - kill_f2fs_super
+  - kill_block_super
+   - generic_shutdown_super
+    - sync_filesystem
+    : sb is readonly, skip sync_filesystem()
+    - evict_inodes
+     - iput
+      - f2fs_evict_inode
+       - f2fs_bug_on(sbi, is_inode_flag_set(inode, FI_DIRTY_INODE))
+       : trigger kernel panic
 
-thanks,
-jirka
+When we try to repair i_current_depth in readonly filesystem, let's
+skip dirty inode to avoid panic in later f2fs_evict_inode().
 
-> ---
->  include/linux/btf.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/btf.h b/include/linux/btf.h
-> index f9e56fd12a9f..7c3e40c3295e 100644
-> --- a/include/linux/btf.h
-> +++ b/include/linux/btf.h
-> @@ -82,7 +82,7 @@
->   * as to avoid issues such as the compiler inlining or eliding either a static
->   * kfunc, or a global kfunc in an LTO build.
->   */
-> -#define __bpf_kfunc __used noinline
-> +#define __bpf_kfunc __used __retain noinline
->  
->  #define __bpf_kfunc_start_defs()					       \
->  	__diag_push();							       \
-> -- 
-> 2.34.1
-> 
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000e890bc0609a55cff@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+---
+ fs/f2fs/inode.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 8f2b9f62ef73..64cda1d77fe5 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -29,6 +29,9 @@ void f2fs_mark_inode_dirty_sync(struct inode *inode, bool sync)
+ 	if (is_inode_flag_set(inode, FI_NEW_INODE))
+ 		return;
+ 
++	if (f2fs_readonly(F2FS_I_SB(inode)->sb))
++		return;
++
+ 	if (f2fs_inode_dirtied(inode, sync))
+ 		return;
+ 
+-- 
+2.40.1
+
 
