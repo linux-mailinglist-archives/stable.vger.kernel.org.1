@@ -1,120 +1,260 @@
-Return-Path: <stable+bounces-47952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0958FBB54
-	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 20:11:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1A88FBB85
+	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 20:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D79B4B27719
-	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 18:11:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 734C1B225A5
+	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 18:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B276014A635;
-	Tue,  4 Jun 2024 18:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0D814A4E5;
+	Tue,  4 Jun 2024 18:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FMI3/ZyP"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="XyAZ/vt1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2044.outbound.protection.outlook.com [40.107.243.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3380014A623
-	for <stable@vger.kernel.org>; Tue,  4 Jun 2024 18:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717524655; cv=none; b=OqFbJxFRelfYr9JsWnxB76W2pf9aMplEP4h7zgOjzovNTlo6mhD+a2pFkm+4zrdoxOTsV4mgVnUhXayUVtxnSy+oNfOy+x2dalCaHAKjk3aQHmczqMAJea7cXsgZqLk+GgNPiOh2bu2cQ6t68xzbOO6w/9z8utpWdNc9J9Upl4I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717524655; c=relaxed/simple;
-	bh=vzeFpwHDiTuJOyn+mot3dnYATW3aJqqCp7gwCO5QEaQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pA4tXXXg3UHhZZnkpLpCCd6t2JLUlB2hZRUkc5Vrz6YInn2zxFfdNVq6aH3K6jkTShs+xlqusG5VjvBvL084K6MLEn1KK2bddf3Gpf5WeqBd1LrpTMPbFoMsasew/HrJXJRv7gI3ml7wz3qXU/DiQoYo4KOc1D3XkFz5I97sOGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FMI3/ZyP; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7026063a2fdso152313b3a.0
-        for <stable@vger.kernel.org>; Tue, 04 Jun 2024 11:10:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717524653; x=1718129453; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gyr1zxv5ZH6H8xeXFMyZIoJ+UJ94PJla19+uaioky8I=;
-        b=FMI3/ZyP8lMDwDpVMjZ8EznEojFgZPZtqF9EqJizAikrD/XYFrgqldNBAMvlWvu8Qs
-         aA7ntz8KJbZFFIfUtYt3z/RGdATjF5fOD0QvLo9v8NrulwwMFkPE2NXk6Ew+BS1jpFtw
-         z7q6ySLURprQgzQV1tqWrdmZcO8xme+ppugIFpyno7ltP9zugDFkx//c1kXQXNebQcnV
-         jGm9xSxJuD+qSGwg8L3WTFhvrT9KNLUl69agIlGlO7UaB4jR3dNLuxPPs7ZlKQd6cNij
-         CgcTsD+yyus8aIYUjc4JQg9z3cWwqyKS/tS5QQYZE+yXa4ESoh84I0Dyl6Llp/KqX5zf
-         H+qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717524653; x=1718129453;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Gyr1zxv5ZH6H8xeXFMyZIoJ+UJ94PJla19+uaioky8I=;
-        b=ldoekEtB87MrG0xtlkGjx5AcldEVhg+dOfqKr5NanMDa6hGnN8eY4/80hCaUua42+X
-         KAGsqNFYAFoxJTNQsec2PUcnikWUpxhA8KKPTTlxiRXiC7VzVxwkestJTTYC7DhqtyFr
-         tNQqRYRMLBUVfvYg0/nmGu0hLOFHw6Ddi7Z3hwCZd7bDw9QssqvWsKmQ1vpggPFVuvER
-         Y1Y813CymqrT4SEne1S+FFEaes8eLST78RCAAyyGdQuRUZFt4q65Hu3BCMDSEzKmef0M
-         JG0z3EsGTYfdbmuH6vj5PMNW+5ps6ApNFfPyVRDy2lZM3mXFHcfN5qtMRd3iQRYiCcdF
-         75Hg==
-X-Gm-Message-State: AOJu0Yxn/iyaujNLRob7FqqKx446nxViApNT7/rV5uCMM8aoxdNjV5J+
-	wxJcLBOe1N3JKfuOIsgPdrLdP1obPXCoMKECS1sphhtKssMug24uw2neHCA0
-X-Google-Smtp-Source: AGHT+IFmtTwwLOOg7z0OYk5Sk3Yoo5JmdBJVvbbi9jYYs8uTa18K59VQNq80CgNfPfZ036AoXGa35A==
-X-Received: by 2002:a05:6a00:2d1d:b0:6ed:cc50:36cd with SMTP id d2e1a72fcca58-703e59fbaa3mr239280b3a.2.1717524652792;
-        Tue, 04 Jun 2024 11:10:52 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:e7d3:fdd2:d8b9:aee6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7025aa3cb45sm5118592b3a.135.2024.06.04.11.10.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jun 2024 11:10:52 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: stable@vger.kernel.org
-Cc: Martin Kaiser <martin@kaiser.cx>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH] arm64: defconfig: enable the vf610 gpio driver
-Date: Tue,  4 Jun 2024 15:10:43 -0300
-Message-Id: <20240604181043.3481032-1-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3AD14A4E1
+	for <stable@vger.kernel.org>; Tue,  4 Jun 2024 18:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717525509; cv=fail; b=TGb+FeaF4OlB4M0nrvfueUvOOZVilzBsUNtwI7/K2cvSeMt4c0DTQumMIp50gIvMW7zih+Sky0ot2BqcRm6vIt+nu1QBBESya+9zZiboJU7pS8HhMUp+toTZpPZNNelNoOjBJZarMbZ/FD0cuFPFMf7kmAhkziB156G3Yblvlf0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717525509; c=relaxed/simple;
+	bh=DctQ7dxeXKwPJGvUXgE3h2sdMOOBDwIQV4xpoJMQzW0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=cSt47/vYjvCegn9j/bEyuH1btETxWqHyNAY73axWO6dEeIfSEiFQjklOX8uVblf+87HoTEQKzPv+aI51EM4RAWZgWWZGmLUG7ZudxuUn/HZojjP9QiXqNq++306Bn2KsR5+Zsyf/XafKYifc8zQgXsEx3j6Tm0MQkRFQeXfxJMQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=XyAZ/vt1; arc=fail smtp.client-ip=40.107.243.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iX5GgwW21QUQVGXvyqV2W16YmD3nB5VU/QDF5h7+Ux/XnOKPhlVvd0ZEWFr6h6LPZvnaAYFT+61FjPrmLx/pBc3LpIV+01ScJjIIqMQlLtqX94EV1uu+NLOY7zyX5lenKrA8LnGNvz6C618vHeyGSNNH7A3jbPNIRMuoPGp/eMrgS8Q7PRomSWSRa2ifcCAlMbFFEDBRu/bibSe/3zTbswCBmK0sAhDPE5+7S2UyoWM2cGzS9hWDDKGBaLwS5ryKgEm7MNa62HczpT6b1kjvsetwAExSfZvp7aoRrdkHnJxhU49SrIhwa0RCgSsltLhjJWmRFg5akzMDp1MEdUjq8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yfVT+Qtelt/0P6ZYgUhCX8egF6X4zv+tadLWYWYLnzk=;
+ b=XrwcGT8Tq+BetylZm3F58jhr0kg0UXDUqiLybIWyvF9sf1eD47YiIQTwp4O7eFJFSXu1ROBBLJ7u+xlJ3MuKzs6eFV03Xy4SkljGkRKnOjNdf6iPidQ8XX3l+EWevZ1gqXIS4dMT5DQmnf9uQRweElh4BUfml7cr+3hdu8EGG7IE9PtcIDZfOuqCm1L7JfSoykbh4aJ7hvylF/azzzZaJuxEsF4iYXk2EqoBOngWaoptYRRvw1uBTi8jPJz+6Q3j8mrcitA43yLLANhry4obVXhBFtFanVLAjb1dF3H6Yr8EbjB/bdsL2H42q+ykJPaO/It6hzlHOgSjx+Lgha0qBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yfVT+Qtelt/0P6ZYgUhCX8egF6X4zv+tadLWYWYLnzk=;
+ b=XyAZ/vt10KDBs0bsC+wDwJxVKy72bUWHfr8lbUgMh7SRCFvXYItpPoNUqYcXJA9D3CMP9IYk0W5ooL7IZqNsfh9GncZOB++jv+jsVNqOersPCODnBXsu/i9xWaoJ3beELB50j8vG3LezqSCkhxehAE1rV6RlOXe2BXFU6pnYsts=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14)
+ by MN0PR12MB5908.namprd12.prod.outlook.com (2603:10b6:208:37c::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.22; Tue, 4 Jun
+ 2024 18:25:03 +0000
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::9269:317f:e85:cf81]) by BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::9269:317f:e85:cf81%4]) with mapi id 15.20.7633.021; Tue, 4 Jun 2024
+ 18:25:01 +0000
+Message-ID: <33295481-6977-415f-abff-472bc6f24b9b@amd.com>
+Date: Tue, 4 Jun 2024 14:24:59 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "drm/amdgpu: init iommu after amdkfd device init"
+To: Armin Wolf <W_Armin@gmx.de>, alexander.deucher@amd.com,
+ christian.koenig@amd.com, Xinhui.Pan@amd.com, gregkh@linuxfoundation.org,
+ sashal@kernel.org
+Cc: stable@vger.kernel.org, bkauler@gmail.com, yifan1.zhang@amd.com,
+ Prike.Liang@amd.com, dri-devel@lists.freedesktop.org,
+ amd-gfx@lists.freedesktop.org
+References: <20240523173031.4212-1-W_Armin@gmx.de>
+ <663b8003-3970-4293-930e-e19dce054e01@gmx.de>
+Content-Language: en-US
+From: Felix Kuehling <felix.kuehling@amd.com>
+Organization: AMD Inc.
+In-Reply-To: <663b8003-3970-4293-930e-e19dce054e01@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YT4PR01CA0284.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:109::12) To BN9PR12MB5115.namprd12.prod.outlook.com
+ (2603:10b6:408:118::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5115:EE_|MN0PR12MB5908:EE_
+X-MS-Office365-Filtering-Correlation-Id: d324109b-c6bb-4ec8-f176-08dc84c3a5e5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|376005|1800799015;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aVJ3cUpiYzFNU2dMODg4WnVBUkNmZ28wZXRuQ1RyQkUvWnFEZFJMOVdvR1I3?=
+ =?utf-8?B?Y1M1YWcyME51RWZhQXM3cnpSZzgwdzNpcmRvT3JaNkNqL1hZb1dxeGhJRVVE?=
+ =?utf-8?B?d1dxS0dZWVRmbnZhQUFyeklNSGJhZ2djZlFKR0YxTTlmMjN3Z2d6UHJleXVw?=
+ =?utf-8?B?TnRxRUxHWjRDWE54QkxxdG5YWUlqYXFwNElNL0dQSzh6MGtGR2JXclp2WGgy?=
+ =?utf-8?B?NWQ1MFFENUxaY2tRZmFkeW9KQndPR0ZoS2ZScUlLSVFNY2hlbFZkOXpENG1Y?=
+ =?utf-8?B?dzlESjYrZW56VVVkeCtucm1STjhQbUJNRjdlNkpkVERtUkx2TlNlQkM3anNu?=
+ =?utf-8?B?TzRSYTY3bWhTeVloak1pWEd5cGhEQXdEa1FacVgxeWZNMVRyNlF6NG9iWTdp?=
+ =?utf-8?B?cUZPdno4b01zeTZiUGhrdXlNQm1Nb3dnaitCSXpkQmZRTUY0Vk9ucjc2Wkdu?=
+ =?utf-8?B?K2N5SW1wWVFQd3R0YU81c2lmczFtUkJrSlVia3lrWUxqSDUvSWNmNUxjTE5W?=
+ =?utf-8?B?V1JqZ0Z4ckY1aCswQ3ZGWDFTVFdFOFZZL3JjSWMrdUJ0TC9wa2w3K0ZMVThs?=
+ =?utf-8?B?RVhMZnpjekRmQ1Q4eFBNNlhQUzhld3pKMll6bHFvcmxSZVFPd0ZRMjdRZEFu?=
+ =?utf-8?B?ZGFiUlB4L2tkSzU3dCtkTDFvV2RubE9OY0NpM2ZWaHg2eE1kOGd2bWVMZy9n?=
+ =?utf-8?B?M2FEZlpyUlFnSXkwdFhoYWlwdFJpUi9wMldWMEpLUHdDeUt2M09uQmR3SlU5?=
+ =?utf-8?B?cEF4dVJWRXlTMXdEQU9GUDE1N1ordEgrYi9HdU8xT1ZpcFpXWlRiSDJVWncz?=
+ =?utf-8?B?bnEyQ2ROQ3Z4ZjJqL1BEZzJxcjVNaS9zSFg1ZGpCMXYxRk1YUjd6NElXKzUw?=
+ =?utf-8?B?Rk02S2QxblNFa3laRHUwd0wzb0VGRW1Xd3JVTjBJLzZJVVBCYnFDanF4MmxL?=
+ =?utf-8?B?YkFjcVgyajMwM3NENVh2NXppV0VpTmN3YzNEWk5yenRuV202cCtITEE5K0hN?=
+ =?utf-8?B?WlIwbTYveFBtRnB2c3NVbENySW0zTEdxWlVIaDBpalRWRmZ3ZVl3YTNkMVlR?=
+ =?utf-8?B?T0Z2eTMrSGlFTjhuQ2JlL25JcHJiNXJmcGU3TUE4YWIrUkg2MVJSa0hBVExy?=
+ =?utf-8?B?UHBhZG1sU0VKUEZYWFVTYjdkRVhkYU4vNEd3blkyaDhvckg4TFMrWER0TXdn?=
+ =?utf-8?B?TlpNdnF6Z0hCOG84aXNvb3p2U0dTaVVjL0U4czN5eEN0SUI3VEQ0SHlkdkxR?=
+ =?utf-8?B?OHJueS9IVGV5djFrck9uWjUyZjhDUzFtTjd0cGN2eS9YaWNZQmNwZEg5Tzhp?=
+ =?utf-8?B?STg5TUNUZTNEaGJrbng4dlMxZ1ZWWWtOMUJleUU5NitQOVZYYWk2SVdVYkhQ?=
+ =?utf-8?B?L1FzNHVWREpMSUNjVTEwa1h6UnM1c0ZqN3lyejdsNlRhcnErMlpCSks2MGRv?=
+ =?utf-8?B?TDhVOThLNzdrUkkzMk44bVRuT2RjQXIyU0lhck80NWZkRlRpOFRkNDF1eEhZ?=
+ =?utf-8?B?VTVLUko1c0VLS05jTmF0SVBsNHdPYUUvT25iV3lONXNtYlM5ekNJSjhuZWNB?=
+ =?utf-8?B?RWJHSmhGdnRBYjBkU2hzc2NwQjdFdDE1KzZURkhJdlVHUHJqZVJqNHZBdWhx?=
+ =?utf-8?B?Um1NUS9ST2JaRlNnV3YzUHd4d3JaZGh5T2JYQU5Ca3l4WVQ1YjZoLzRzUUt3?=
+ =?utf-8?B?ZHhYSVdKK09lSURLb3JlSndiQTllTDFGSGRkU0k4WEEvdTRTZHFhTC93PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5115.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NmxzMi9yQThwZlNJRUZoQnFkd2o0LzlNc1lsRGV2OEJ4UlM0K1Nya0hsZEIz?=
+ =?utf-8?B?L0FoeDIvcDBmcDFpbG1kUVViRHhzVXd2TFU4TGYxd28zMDJacDN5TlN6Y0Zt?=
+ =?utf-8?B?bE1BRWsrQ3p3eWs3dEpha0NRR2JvSkh4V3grbkdhWmpmRGsyVEtCT2FDVThl?=
+ =?utf-8?B?eS8wT2FrTnA0TmU2Z0loL2RpWjZYK3ljS1hMMkRvNmI3TVM3WXRqa3c3QWZj?=
+ =?utf-8?B?VTNNUy9aUHhQWXNzbExrZ1ZlSHVCWEtTMTJQR2N2NFArbW1ncmYzcVZDa3ZL?=
+ =?utf-8?B?dmFxVVR5R0lZdm5tSVhIaE56N1Q3SHhzWlpsMUJFYStadm10bm1oc2VHRVVO?=
+ =?utf-8?B?V3RiaXBIU0s1UVRZV3RlUWpSNzJiOUxPKzN5VGhZaG5NOHpXVHdlWVBVbkxj?=
+ =?utf-8?B?MzY4UlhZWVZ5WXk4eU9MNU8zdldqY082WDFzSmZDenZuRzBra2Z2ckVtd0Zu?=
+ =?utf-8?B?R3dhWXJ2YjRFRG9XWDdqeU1MYXFpcnNCV04wREV3dmo1UlJSQzFrR0FaZy9Q?=
+ =?utf-8?B?aDU1eXYwaEdXUlo2MGNwSDRTZmtPcnAxNCtEb3BJcjRjOHRYSzlJT3lGenla?=
+ =?utf-8?B?amhpczVJNTZhdWpQaElYQU1OZTZYdXkvZkFXYVZvRSs3cjcwV0tKc1pLd0xK?=
+ =?utf-8?B?VWgvenMwZ0J4UEw0Ri85M0FRMktwY3hUbGhFNy9pd09EMU5TVk9ROS9aZFU0?=
+ =?utf-8?B?amRPWW9MWlVTRE9JdHZybUtISmZEQ2VmWXVnU1o3N3ZBdFc3d2lSc0ZpZlla?=
+ =?utf-8?B?dkgwa0FlTS9Xb09jNzNzdG5FV2NkY1QvS0VMMVViRS9sSlhBNGlWNVYrNW9B?=
+ =?utf-8?B?MzhZL2pKMHhLTW5GVTVWQVpwT2tVVWNPWnBUaWZrSi9IdStKL2t1aEViN2p6?=
+ =?utf-8?B?cDBLMXJMNHpKVFRKSUpvZFhpM2tNbkc1TVlJbys0OUdIeko0SjVmYkFBditI?=
+ =?utf-8?B?V2RsMDBEOHdKY3Nycm5nclFVMWVFTW9ZRDYvK2paSUxGOEJWN2E0VENWbTE2?=
+ =?utf-8?B?SWRobFhpK2xZOUtrN2FxWkhwVkFQNU9TSXNxOElMaWNvUzVBRVpyTkxpNUU0?=
+ =?utf-8?B?MndoYmdHbUZySFI4TVFKemV5Q1BjMWdtOFM5QThudEI4d2RpY1IvR0UrL1NR?=
+ =?utf-8?B?TXRIcHNicnNsbTlabkp4ZGlTbEFJSkZBa1JieFNkRjZZejRjbXU4TmcxU2hK?=
+ =?utf-8?B?SnZKUXN0WTh6U0dDSXpqQjFzakVtWWl3TDdWZTRnRGFzTGQyZGtPaTJHcmhl?=
+ =?utf-8?B?bkwxNFNjdUx4NHRZZUUwb29PNnVTUlVkMmZUQy9kbExQQUIyN1RUMDVFWU91?=
+ =?utf-8?B?UnlMQWl0SjBPQWRUa0VjWHliM2dvNFA0WVVpMU8weTZiU1IyMzQ5RHNTN0NK?=
+ =?utf-8?B?SENTYjhmaFVPZ1l6bWR4TTBZeStlcXN5L2JnNHYyOUtmK1k5RlJkUlF0NVln?=
+ =?utf-8?B?YW9CTXJQS2RpcUhWQlQySWFrV2VJMHg5T0VnYXVzMWVBTnZ1VFNzakFBL2xL?=
+ =?utf-8?B?Um51YWU2S0pJVFJsd1E2dTZTcFA1eFVlTk45RlNwR0lrb3ljbjBaRDVaWnk2?=
+ =?utf-8?B?eFVqTzlkZFRpd2o0UVliSXZsZHYvTUQ5cDI2TEY1b2FWWHJCemM4MmJrcUFu?=
+ =?utf-8?B?eFRLaTJzQ1F6UmN6NXR6Rzc2aE9wNllzY1VwQURzMjF0OERaYm9SbEdvRTFk?=
+ =?utf-8?B?Z1Nmb2lWWVZTMENvQ0hMYTJyOS9uTm9GRHlMa3QwNnNZOFp3SjVuNHJEeTFy?=
+ =?utf-8?B?R2FPWHh6MzJubGw4Rjl4RGZYWWNNeGlGS1VMR293Z1g3QzFlUEIwQk4xMm55?=
+ =?utf-8?B?TWxhMGhtbVZOYTd5ZzRuRkFkN3JtWFpPSUVvRUcwRWREWEFpbDFkNUZTL0Rq?=
+ =?utf-8?B?YU1FRVI5cGlzUC96YkJNNmIvWnFJenlZNWV4c2Q5bU9tdUUwZVdBMmZzN1pO?=
+ =?utf-8?B?RW5IUjdOOGQ0SzM5MThraFNhZmpXd2VNTjFwSlZjYUsxUjFLdFhtV0dJZDNp?=
+ =?utf-8?B?T29vakFTMjg5a0d6VDFIamxyanI3dGNVNS9ZSjA0V3NnTmlyVDhzU3FFdW9D?=
+ =?utf-8?B?VFdUMDBoUzZsSjRPZTU4MW1FYzkvdE9UbjVKOXA5UmRGZzBDOTdYNXNNM3pH?=
+ =?utf-8?Q?zEzMdxAwTp7LQMygzvQ/qDLTd?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d324109b-c6bb-4ec8-f176-08dc84c3a5e5
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5115.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2024 18:25:01.7465
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: R/nHX9G+8zyuFgoeIEAfVa7PKLrgpc+fRLbvW6543LrdwxXFLOFaN49+/WI0zNvun+bE3RZSBAe89sKH2gQ0BQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5908
 
-From: Martin Kaiser <martin@kaiser.cx>
 
-commit a73bda63a102a5f1feb730d4d809de098a3d1886 upstream.
+On 2024-06-03 18:19, Armin Wolf wrote:
+> Am 23.05.24 um 19:30 schrieb Armin Wolf:
+>
+>> This reverts commit 56b522f4668167096a50c39446d6263c96219f5f.
+>>
+>> A user reported that this commit breaks the integrated gpu of his
+>> notebook, causing a black screen. He was able to bisect the problematic
+>> commit and verified that by reverting it the notebook works again.
+>> He also confirmed that kernel 6.8.1 also works on his device, so the
+>> upstream commit itself seems to be ok.
+>>
+>> An amdgpu developer (Alex Deucher) confirmed that this patch should
+>> have never been ported to 5.15 in the first place, so revert this
+>> commit from the 5.15 stable series.
+>
+> Hi,
+>
+> what is the status of this?
 
-The vf610 gpio driver is used in i.MX8QM, DXL, ULP and i.MX93 chips.
-Enable it in arm64 defconfig.
+Which branch is this for? This patch won't apply to anything after Linux 
+6.5. Support for IOMMUv2 was removed from amdgpu in Linux 6.6 by:
 
-(vf610 gpio used to be enabled by default for all i.MX chips. This was
-changed recently as most i.MX chips don't need this driver.)
+commit c99a2e7ae291e5b19b60443eb6397320ef9e8571
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Fri Jul 28 12:20:12 2023 -0400
 
-Cc: <stable@vger.kernel.org> # 6.6.x
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
-Hi,
+     drm/amdkfd: drop IOMMUv2 support
 
-This fixes a boot regression on imx93-evk running 6.6.32.
+     Now that we use the dGPU path for all APUs, drop the
+     IOMMUv2 support.
 
-Please apply it to the 6.6.y stable tree.
- 
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+     v2: drop the now unused queue manager functions for gfx7/8 APUs
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 24f395d9ce2a36..9f82eb906a8a34 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -632,6 +632,7 @@ CONFIG_GPIO_SYSCON=y
- CONFIG_GPIO_UNIPHIER=y
- CONFIG_GPIO_VISCONTI=y
- CONFIG_GPIO_WCD934X=m
-+CONFIG_GPIO_VF610=y
- CONFIG_GPIO_XGENE=y
- CONFIG_GPIO_XGENE_SB=y
- CONFIG_GPIO_MAX732X=y
+     Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+     Acked-by: Christian König <christian.koenig@amd.com>
+     Tested-by: Mike Lothian <mike@fireburn.co.uk>
+     Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+Regards,
+   Felix
+
+
+>
+> Armin Wolf
+>
+>>
+>> Reported-by: Barry Kauler <bkauler@gmail.com>
+>> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+>> ---
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 8 ++++----
+>>   1 file changed, 4 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c 
+>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+>> index 222a1d9ecf16..5f6c32ec674d 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+>> @@ -2487,6 +2487,10 @@ static int amdgpu_device_ip_init(struct 
+>> amdgpu_device *adev)
+>>       if (r)
+>>           goto init_failed;
+>>
+>> +    r = amdgpu_amdkfd_resume_iommu(adev);
+>> +    if (r)
+>> +        goto init_failed;
+>> +
+>>       r = amdgpu_device_ip_hw_init_phase1(adev);
+>>       if (r)
+>>           goto init_failed;
+>> @@ -2525,10 +2529,6 @@ static int amdgpu_device_ip_init(struct 
+>> amdgpu_device *adev)
+>>       if (!adev->gmc.xgmi.pending_reset)
+>>           amdgpu_amdkfd_device_init(adev);
+>>
+>> -    r = amdgpu_amdkfd_resume_iommu(adev);
+>> -    if (r)
+>> -        goto init_failed;
+>> -
+>>       amdgpu_fru_get_product_info(adev);
+>>
+>>   init_failed:
+>> -- 
+>> 2.39.2
+>>
+>>
 
