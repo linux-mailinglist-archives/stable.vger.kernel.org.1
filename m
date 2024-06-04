@@ -1,97 +1,93 @@
-Return-Path: <stable+bounces-47905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4438FA9F3
-	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 07:23:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC34C8FAA3D
+	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 07:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7FC01F24BB3
-	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 05:23:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F27DB20995
+	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 05:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D371F13DDB2;
-	Tue,  4 Jun 2024 05:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73BB13D608;
+	Tue,  4 Jun 2024 05:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AcbbUTLj"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="uJx/mT5m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7CC13D612;
-	Tue,  4 Jun 2024 05:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2E9199BC
+	for <stable@vger.kernel.org>; Tue,  4 Jun 2024 05:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717478613; cv=none; b=QZLJq4Wkx+iL1lrmUIjSZzh4sR5wpoUUb+TjfREAhYHJbCeSIv3XZ05v/xo8z+IMmFfR/ZqczcuZhZHgNJF1+MvsEEMQL73gF6tigLZ4Fnpwd4PXjLmgCeVdNLHv/dphBbPJAzx3wWx8G+8z+f3Jm9I2T4YFz0Dt1bn7jsJkdbo=
+	t=1717480274; cv=none; b=G6drpZgCtNk+eGHkGONu2g+tp2iK63Vp6TgaNxsqfCYQ50SOIGZKChQkDQJEze1VaEz/5smKk0NxhS7TgvQIAumfxAur0E/KW8d6Dzp7llsEzoH3kiK63HFPqYXBkBxD+ikuTrMrCH8mpCgVyKj2jBgIIIofbRxcUdykLTp2VCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717478613; c=relaxed/simple;
-	bh=gAwp8yYUnceVBn5scRDmLBn983/3nY5FUXQpnAfxA4I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uNGblZ+lajTDpK46EM37wZt/zmwsyD9+D2afNHZ+DKOolaJ7UScXlZDyakWrzzNakyNTp8B9p9NIRNkH7wq6rM3W9J3HDSlnuU2+NXE8yut6QnUy62y3TJMCQAb3jAK0UAXMQp4doht6lhW/yFnnG24vsfizUQFEzQB+M24yf20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AcbbUTLj; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5ba090b0336so2103671eaf.1;
-        Mon, 03 Jun 2024 22:23:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717478611; x=1718083411; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dV9DumgWigNz8izFoAXbyFQWDVcRbsgIhRa9w5EE8so=;
-        b=AcbbUTLjAH8huKng5c9gGfNj2lPQgiA5kLGlAJheHCCiyoY8UMWHa7Yi0sqXqlbIr4
-         8ym67Qihyec/KF+BIqPCZJ7FMc2EtjrkKm8yOO4YUI1wqKUX27n5UGwb+4MFmL9DO8ZD
-         /uMoAu2o6asp0J4peJEWlH8YHL6IBkE6PWEG+cxFLKpYde02Ff4Cq+0AFVeZSIPqC5ZU
-         dR0cYdMoKl0Nc7zPRGtZwVoEx0KnVjuVDzu2UP8jGAHg9Ppz6TO6vOUj7ltuNf2Flced
-         UrNF+7J4TZNhhcJXtc4eR/ymY2XMoIJqJXu8iVTWQJxbelNrAfUecRcDbAwRNKzMgmuS
-         ks5w==
+	s=arc-20240116; t=1717480274; c=relaxed/simple;
+	bh=uss0X1VN88HbrrQxklnUMnnojK0g+Phe6pPxPPeCyyA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TW1fgd0hiBAyWMXcI07CACrXlpjZw9OR3MLKwfsNFMmeqAMwPIAqrOsWyNJVCw75oVmmqtnkhXgmiweCKXvW3GeGFDxoaG0JNktdABQhg+hgdNU/d31WhvJtvlNhYzsz0+RpY3NclJdo9dHd6HAtFe2D/5Y3bDe2qeJXr6IVDW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=uJx/mT5m; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 313113F2A7
+	for <stable@vger.kernel.org>; Tue,  4 Jun 2024 05:51:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1717480261;
+	bh=bakozUuCaN+IM6untUm+580ISMXPQFrIaEMbe9vcbuo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=uJx/mT5mkkPDvsgk/rXDnQy1AXbbQLcvc3pkyuzddOxPT5/LMJuTFePdfSip8k7Au
+	 idjbtdbd7eGp1tNfIfPiGYIY+BqfDiQ9Ysix9RepqxmtBVyPbWRywecXaTxw/QEpr4
+	 57rArkCsRrIJXCJo9r3k4kQdJ/plCFa7ZepNXOcP43d/qK3rZ7HiTOvzzHGUV9YG+r
+	 OAQezpGmz2Yr9aM8BHmbWAr9QWDd8Y0iONndeehqvrMbPGneUZn5EixJVsngg16CMA
+	 1nkFmnnni/rlrmdjtXWoNmeDY+ofEANjk7uPPo6FJZXVATqDpTKZ4MBMKvOlMGRA0Q
+	 rQC286ac51BGw==
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-43fa039d2dbso50282061cf.2
+        for <stable@vger.kernel.org>; Mon, 03 Jun 2024 22:51:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717478611; x=1718083411;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dV9DumgWigNz8izFoAXbyFQWDVcRbsgIhRa9w5EE8so=;
-        b=dFxaWp0U6bpdJwYffQPnqYnOEU3AwUAjKSIvljkHpk5PaBg74jqfj/F4cDK7q+E7NG
-         uA35dIklNisNmUJm7NI7Y9wju7QdkO0pEci0LSOKeIwuGzYbRSjuV03CyVq6NRz42JWT
-         9V1wphcsst21FZwa7iXl3FcJlmHaqSXlC9gc2cW/ajlPjEKmT9WXA2nh2y3gPyECeaP5
-         26kJ+RRa5T+9CBhoj5E3z/gzwJf7aGYSYQx+XATgXpd1FECDt5Yh28Jb8nBpbEL8fiTK
-         CYXvy+lfEBiIGo36f2FTM+YZMw1dBKFoH2eBwH3yvqlpkvpnsB57zG8RFdSbWJWiGJ1j
-         wx3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVs6hZW+sT9sLIVShmHq0h4Q32fDDTJWWvs0qFNwt+TFsop35YscH4DtBlIPadSGnAt3uoBeOizv5duN035IuWquo8TB8Yl
-X-Gm-Message-State: AOJu0YwOtRK7GgU+9jheT3hAEK/mW/9xSBJTUzUsOtCnuM0ZvxQ7Qnda
-	oxtwRqZtxSzZr3MjRLnpk6ueWbLVni892A7QlF12XR8eV0uPh2+igLm125wC
-X-Google-Smtp-Source: AGHT+IEdxeEjz09+FO3uavBBt0AAnX1tBSFOFscFyEd7xzuRcMmOsX7zrb/OEpecE/mL8fRqj+5eOQ==
-X-Received: by 2002:a05:6358:a094:b0:198:ee95:e50f with SMTP id e5c5f4694b2df-19b48d78c49mr1398823955d.10.1717478610563;
-        Mon, 03 Jun 2024 22:23:30 -0700 (PDT)
-Received: from localhost.localdomain (69-172-146-21.cable.teksavvy.com. [69.172.146.21])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6c35937a496sm5303785a12.73.2024.06.03.22.23.28
+        d=1e100.net; s=20230601; t=1717480260; x=1718085060;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bakozUuCaN+IM6untUm+580ISMXPQFrIaEMbe9vcbuo=;
+        b=dbmFKxlZzi8PsTevjRCRZBgLnuPT+xCPmJUTvfUU1qd8o104n+G1K2lNLs9xofCq//
+         vyeUsryIF/nSKa42Wd0UWeZv6FtQ9iJTyxPuEnYambTtLj09OB2bh3TeUgyicFDQxg6l
+         ZFGk8U/NSSqc8hpVofUP/1bSt7ukPikeaPxDs6L355hd0RY4ONd5OJ13N514vUyCxJU/
+         TIRI1iZPK4EmQ1g5wJX7DnLqzVFMI0c/f06OwNJpq/hYZADXeBPpaJLbWj75BhT72yYm
+         dxRT1KOoBBwnxU5TKpdR9xkZYeEwgvdLv+GGWzbdkAJ4KdwSmC9NcflJ/H6N2XlJcdoN
+         pUAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVxJjWWtkanKVT1Jt3jHyIlZTaQcDjga6+ACPjbQjSn7H2+wX2MOQbL8SySzM6OofuHsmgdFL/1q/zjxKYoztKTqBiXpXZs
+X-Gm-Message-State: AOJu0YxI4g1SBJEgCXxYjAIbHhc9BiXGQjj2PZHnyXJ0k8wrGDgA7U8q
+	37MU+mbDBLZwPTpZV88Pm4E0MsDPKAgeZR/8qaFljlHg4k2Z15sYaDUglD7J5xYyYqdMzT1R5OZ
+	zCt0F1Z9VOYbRyHyfKI+K0UpJO4vn0QvCQTezMUSEp8+fL8nO76oLtPDj7q+kyR9dC0WRdA==
+X-Received: by 2002:ac8:7d42:0:b0:43e:3b8e:670f with SMTP id d75a77b69052e-43ff549f297mr105319931cf.43.1717480260122;
+        Mon, 03 Jun 2024 22:51:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGNNMHj3DNemo6r8ze9mxeAlNiDseNl5q4JzhvkZ5jaG0w4QaVp8XWGaG9AL3DFRkMjFlevuQ==
+X-Received: by 2002:ac8:7d42:0:b0:43e:3b8e:670f with SMTP id d75a77b69052e-43ff549f297mr105319801cf.43.1717480259672;
+        Mon, 03 Jun 2024 22:50:59 -0700 (PDT)
+Received: from localhost.localdomain ([2001:67c:1560:8007::aac:c40b])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-43ff23a1aacsm46472871cf.12.2024.06.03.22.50.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jun 2024 22:23:30 -0700 (PDT)
-From: Tony Ambardar <tony.ambardar@gmail.com>
-X-Google-Original-From: Tony Ambardar <Tony.Ambardar@gmail.com>
-To: bpf@vger.kernel.org
-Cc: Tony Ambardar <Tony.Ambardar@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@google.com>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	kernel test robot <lkp@intel.com>,
+        Mon, 03 Jun 2024 22:50:59 -0700 (PDT)
+From: Chengen Du <chengen.du@canonical.com>
+To: willemdebruijn.kernel@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kaber@trash.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengen Du <chengen.du@canonical.com>,
 	stable@vger.kernel.org
-Subject: [PATCH bpf v2 2/2] bpf: Harden __bpf_kfunc tag against linker kfunc removal
-Date: Mon,  3 Jun 2024 22:23:16 -0700
-Message-Id: <e9c64e9b5c073dabd457ff45128aabcab7630098.1717477560.git.Tony.Ambardar@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1717477560.git.Tony.Ambardar@gmail.com>
-References: <cover.1717413886.git.Tony.Ambardar@gmail.com> <cover.1717477560.git.Tony.Ambardar@gmail.com>
+Subject: [PATCH v5] af_packet: Handle outgoing VLAN packets without hardware offloading
+Date: Tue,  4 Jun 2024 13:48:23 +0800
+Message-ID: <20240604054823.20649-1-chengen.du@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,69 +96,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-BPF kfuncs are often not directly referenced and may be inadvertently
-removed by optimization steps during kernel builds, thus the __bpf_kfunc
-tag mitigates against this removal by including the __used macro. However,
-this macro alone does not prevent removal during linking, and may still
-yield build warnings (e.g. on mips64el):
+The issue initially stems from libpcap. The ethertype will be overwritten
+as the VLAN TPID if the network interface lacks hardware VLAN offloading.
+In the outbound packet path, if hardware VLAN offloading is unavailable,
+the VLAN tag is inserted into the payload but then cleared from the sk_buff
+struct. Consequently, this can lead to a false negative when checking for
+the presence of a VLAN tag, causing the packet sniffing outcome to lack
+VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
+tool may be unable to parse packets as expected.
 
-    LD      vmlinux
-    BTFIDS  vmlinux
-  WARN: resolve_btfids: unresolved symbol bpf_verify_pkcs7_signature
-  WARN: resolve_btfids: unresolved symbol bpf_lookup_user_key
-  WARN: resolve_btfids: unresolved symbol bpf_lookup_system_key
-  WARN: resolve_btfids: unresolved symbol bpf_key_put
-  WARN: resolve_btfids: unresolved symbol bpf_iter_task_next
-  WARN: resolve_btfids: unresolved symbol bpf_iter_css_task_new
-  WARN: resolve_btfids: unresolved symbol bpf_get_file_xattr
-  WARN: resolve_btfids: unresolved symbol bpf_ct_insert_entry
-  WARN: resolve_btfids: unresolved symbol bpf_cgroup_release
-  WARN: resolve_btfids: unresolved symbol bpf_cgroup_from_id
-  WARN: resolve_btfids: unresolved symbol bpf_cgroup_acquire
-  WARN: resolve_btfids: unresolved symbol bpf_arena_free_pages
-    NM      System.map
-    SORTTAB vmlinux
-    OBJCOPY vmlinux.32
+The TCI-TPID is missing because the prb_fill_vlan_info() function does not
+modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
+payload and not in the sk_buff struct. The skb_vlan_tag_present() function
+only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
+is stripped, preventing the packet capturing tool from determining the
+correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
+which means the packet capturing tool cannot parse the L3 header correctly.
 
-Update the __bpf_kfunc tag to better guard against linker optimization by
-including the new __retain compiler macro, which fixes the warnings above.
-
-Verify the __retain macro with readelf by checking object flags for 'R':
-
-  $ readelf -Wa kernel/trace/bpf_trace.o
-  Section Headers:
-    [Nr]  Name              Type     Address  Off  Size ES Flg Lk Inf Al
-  ...
-    [178] .text.bpf_key_put PROGBITS 00000000 6420 0050 00 AXR  0   0  8
-  ...
-  Key to Flags:
-  ...
-    R (retain), D (mbind), p (processor specific)
-
-Link: https://lore.kernel.org/bpf/ZlmGoT9KiYLZd91S@krava/T/
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202401211357.OCX9yllM-lkp@intel.com/
-Fixes: 57e7c169cd6a ("bpf: Add __bpf_kfunc tag for marking kernel functions as kfuncs")
-Cc: stable@vger.kernel.org # v6.6+
-Signed-off-by: Tony Ambardar <Tony.Ambardar@gmail.com>
+Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
+Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
+Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
 ---
- include/linux/btf.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/packet/af_packet.c | 64 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 62 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/btf.h b/include/linux/btf.h
-index f9e56fd12a9f..7c3e40c3295e 100644
---- a/include/linux/btf.h
-+++ b/include/linux/btf.h
-@@ -82,7 +82,7 @@
-  * as to avoid issues such as the compiler inlining or eliding either a static
-  * kfunc, or a global kfunc in an LTO build.
-  */
--#define __bpf_kfunc __used noinline
-+#define __bpf_kfunc __used __retain noinline
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index ea3ebc160e25..53d51ac87ac6 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -538,6 +538,52 @@ static void *packet_current_frame(struct packet_sock *po,
+ 	return packet_lookup_frame(po, rb, rb->head, status);
+ }
  
- #define __bpf_kfunc_start_defs()					       \
- 	__diag_push();							       \
++static u16 vlan_get_tci(struct sk_buff *skb)
++{
++	unsigned int vlan_depth = skb->mac_len;
++	struct vlan_hdr vhdr, *vh;
++	u8 *skb_head = skb->data;
++	int skb_len = skb->len;
++
++	if (vlan_depth) {
++		if (WARN_ON(vlan_depth < VLAN_HLEN))
++			return 0;
++		vlan_depth -= VLAN_HLEN;
++	} else {
++		vlan_depth = ETH_HLEN;
++	}
++
++	skb_push(skb, skb->data - skb_mac_header(skb));
++	vh = skb_header_pointer(skb, vlan_depth, sizeof(vhdr), &vhdr);
++	if (skb_head != skb->data) {
++		skb->data = skb_head;
++		skb->len = skb_len;
++	}
++	if (unlikely(!vh))
++		return 0;
++
++	return ntohs(vh->h_vlan_TCI);
++}
++
++static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
++{
++	__be16 proto = skb->protocol;
++
++	if (unlikely(eth_type_vlan(proto))) {
++		u8 *skb_head = skb->data;
++		int skb_len = skb->len;
++
++		skb_push(skb, skb->data - skb_mac_header(skb));
++		proto = __vlan_get_protocol(skb, proto, NULL);
++		if (skb_head != skb->data) {
++			skb->data = skb_head;
++			skb->len = skb_len;
++		}
++	}
++
++	return proto;
++}
++
+ static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
+ {
+ 	del_timer_sync(&pkc->retire_blk_timer);
+@@ -1011,6 +1057,10 @@ static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
+ 		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
+ 		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
+ 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++	} else if (unlikely(eth_type_vlan(pkc->skb->protocol))) {
++		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb);
++		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
++		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+ 	} else {
+ 		ppd->hv1.tp_vlan_tci = 0;
+ 		ppd->hv1.tp_vlan_tpid = 0;
+@@ -2428,6 +2478,10 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
+ 			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
+ 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++		} else if (unlikely(eth_type_vlan(skb->protocol))) {
++			h.h2->tp_vlan_tci = vlan_get_tci(skb);
++			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
++			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+ 		} else {
+ 			h.h2->tp_vlan_tci = 0;
+ 			h.h2->tp_vlan_tpid = 0;
+@@ -2457,7 +2511,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
+ 	sll->sll_family = AF_PACKET;
+ 	sll->sll_hatype = dev->type;
+-	sll->sll_protocol = skb->protocol;
++	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
++		vlan_get_protocol_dgram(skb) : skb->protocol;
+ 	sll->sll_pkttype = skb->pkt_type;
+ 	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+ 		sll->sll_ifindex = orig_dev->ifindex;
+@@ -3482,7 +3537,8 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 		/* Original length was stored in sockaddr_ll fields */
+ 		origlen = PACKET_SKB_CB(skb)->sa.origlen;
+ 		sll->sll_family = AF_PACKET;
+-		sll->sll_protocol = skb->protocol;
++		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
++			vlan_get_protocol_dgram(skb) : skb->protocol;
+ 	}
+ 
+ 	sock_recv_cmsgs(msg, sk, skb);
+@@ -3539,6 +3595,10 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
+ 			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
+ 			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++		} else if (unlikely(eth_type_vlan(skb->protocol))) {
++			aux.tp_vlan_tci = vlan_get_tci(skb);
++			aux.tp_vlan_tpid = ntohs(skb->protocol);
++			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+ 		} else {
+ 			aux.tp_vlan_tci = 0;
+ 			aux.tp_vlan_tpid = 0;
 -- 
-2.34.1
+2.43.0
 
 
