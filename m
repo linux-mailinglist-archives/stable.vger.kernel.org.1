@@ -1,87 +1,91 @@
-Return-Path: <stable+bounces-47910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9A38FAC7C
-	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 09:47:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4098D8FACED
+	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 09:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BE6A1F21D5E
-	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 07:47:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A635E2853E9
+	for <lists+stable@lfdr.de>; Tue,  4 Jun 2024 07:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B793E1419AD;
-	Tue,  4 Jun 2024 07:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4701428FD;
+	Tue,  4 Jun 2024 07:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OoWwmz5m"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NgKn2eVq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877A513FD9B
-	for <stable@vger.kernel.org>; Tue,  4 Jun 2024 07:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855701442FB;
+	Tue,  4 Jun 2024 07:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717487218; cv=none; b=oiUK/W+carGGbYCHmqwvskgsB2EEpQHYcUiEzQdALVtrdYR7/x+vhEbP0lR09yO3aXQXeerFsmiDj10esDPxzsGCoK7ULnBKcX9NrisMG00qEt8CZrp8MoxzsrqTjKiONKnPvgdmrZTL8WB3Kk/uMF6gAogpICEUDeXeqx0E9Jc=
+	t=1717487800; cv=none; b=SYHyxjmQTvjF50A4FOBMlxULSrCxkFQm0Sij+4HXLvcjHHq56yEljx4bCf2wHIKfykH9pewb0mcwGvouicPgY6GUP2lvXBg+pZmYLVj+2/FvvtcnHEdorxcOEERMYJL9T8T0ryGqREcAu/1RHxaPeC4j+fz8Co27a1ZcCptsT9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717487218; c=relaxed/simple;
-	bh=YVcF5oOm/Aj59C6GyqaXLxFiawVjvVSm5hVjKvyuPts=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FiAymBxC+cFqKUJLbxVywZht9DW62xcg1LUmCzIGS+V18S1kbWdPBVC+MkGn2Eke0NiWxJ4dof+Cy4c8pnZzVVt5ef+O5ijj9mNYWUkqXiTGkSCFwZe3JC/rFh7dr/hurRpWnnt6/uh7KFtL0UQPp7DFzOUXccPZsI9/kWdkPdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OoWwmz5m; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52b94ad88cbso3654440e87.0
-        for <stable@vger.kernel.org>; Tue, 04 Jun 2024 00:46:55 -0700 (PDT)
+	s=arc-20240116; t=1717487800; c=relaxed/simple;
+	bh=4P9STm7Tqu8zS5aS+jowLfgQpDvynJauXla8R+gW8oA=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kidVf0M1c5JOrRKlE3IsIvunLi1VolKMIAZeAjCqre7YsEb3zeJTgwa0G3SZMj5H3QL1WrEARhsJ/5/yyt/d6yzV0OE3EFz5uKjjc0qoHpv26xAHMDpV1RdY77DmTiRLQhudI68eaSS4iYwIJauPCuMQ9yKK9hwKIzrxinJ8ff8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NgKn2eVq; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42134bb9677so39241125e9.2;
+        Tue, 04 Jun 2024 00:56:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717487214; x=1718092014; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717487797; x=1718092597; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ArnO6Bp/HX6I0nIH5t2d1ahKjgBn1rOK4gnpq4M2PLM=;
-        b=OoWwmz5mNGVz+qaRo/LDPyfcHrcsobmB2mg1LT/9CrtlGbTwt2eLAqBqfhzresQbwU
-         zeSS88DRNYsp0V6eQ9WPDFB3xuaSt9C/xWJiVVc2gzJ39d/iYNBWYXJXqPmTepeWjOOd
-         quMcoyhI6RkuTTNfoDs6o7j2rFpDbXMnq9TOfEYMUaEKZ1+16P+WltmeCdN2AttxupWg
-         keDGh5Fl7gvDw8dw4V7SXFD+PPU6pCevLMXyHbCT2Xye573Bt8oqiQiFS2GZExtSb1QJ
-         tmpq3j3NKe2zqTnkUqYL5t19cW5Y+0t+EG6NoJPzmmHfMoOz0te0S7xVev6CBqxaK2Oc
-         zpIw==
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=O350TIsq9YLAoOoYARKSfDq5NiQ/v55dRM6GNZLiR0Y=;
+        b=NgKn2eVqAxsMISFWV4iN5LAOQ7BdGF6XdmwUBDMs264UpMqAm9MPYqY4NQKE5KhXkP
+         6s/BT8nm1HDCd7+Y7OF8zj8GHLQEHvNsbszu4Aomvgy6OjH/gA4ulQTsfYGveJ3Ptm8W
+         RkMllp7rWS0q2JSnFrQQcbjObE0Wl7RQnVS+Uul7nty1xdvoWIY6UUNZAhWeF+fxBilu
+         psU9fn0CTlDUZBZkPJwK+vqbXJCYcVxE5MdCZoH2O2UhrqbEfWb/tPuD+Fbl5WUqTblu
+         tKvZbSeQka0SZFAZgmHmk2wDGtw+nAXBJTu1jVb5magCqj35g9Gtgbp2GB32V5zyPjIz
+         gYgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717487214; x=1718092014;
+        d=1e100.net; s=20230601; t=1717487797; x=1718092597;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ArnO6Bp/HX6I0nIH5t2d1ahKjgBn1rOK4gnpq4M2PLM=;
-        b=vvtn1NFgWP7wUcMnIqvR26G2zbBPP3wNbqF1/XjqwRdcE0eVsbbJDXBgW9/rLRdp+u
-         ls+pLHcLStBGFyahDHZZJTZQ68Xi4S3WJua21aqCKASJr+I14Go0mesvPc//z+DHKxfx
-         jNRpWJJAxU9xnSP+rsl2Pas5mNmNznyXwZxO/4aFUjelc0+gECLr2Q8NlJGVFWM5gwOS
-         Lpw/HOsGCQxYotAvaYJ1JIXkQFnDiYg9mMDnJsxhZN1Zz8ER48h0V3i3oF0vuJ6ptwwm
-         UlRDVhsOcT5+b+aF766Tryrf6h7F/WZzf4h+OoOlmXLC+480QgKqbBySPGpRZUYQCv97
-         qokQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVAaad5MDDtifji/rj7BXsDABThJwMfR+Lf+z/+hf+SZbMAa6l86ep0k4SaXbf6Cxgl6hwpLp1GS7cXGE6TRbEpz0T9oad
-X-Gm-Message-State: AOJu0Yw/+eRWLOdUikpRCc+HPlZbAlEbUOfhS8UeTKhCp7UsuVheJylQ
-	dCdwlTwfLCbI0YY11rPyXmYTQEbASShdQs/OsXDmt9kcbl3mBz529qRdSNjk5Yg=
-X-Google-Smtp-Source: AGHT+IHt4EbuxRZrDYFrpec8oTySyjp1DrafnJTOx3RdW5qC5jdHWApwUFrCEtRNhy14a3agjZ5xyA==
-X-Received: by 2002:a05:6512:444:b0:52a:39aa:7767 with SMTP id 2adb3069b0e04-52b89533ad5mr9251601e87.3.1717487213717;
-        Tue, 04 Jun 2024 00:46:53 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52b84d761f1sm1438590e87.160.2024.06.04.00.46.53
+        bh=O350TIsq9YLAoOoYARKSfDq5NiQ/v55dRM6GNZLiR0Y=;
+        b=Nvctj6ZqYU6igwZZ92Jaoexp8Te9BCd4MuvAnCTgil4BbAfhmHUA61RqvLlmJnYwW6
+         ncgdYzeZpk20M1GvxHMHHrqhScqPVOM3rdgUst5CXQv3f9ZQp9/exZBHv7lxG9OdO7Go
+         Pf9AUPuCraOU1lmG+LyQxZm9TACf8htZV3gOzvWSYh/gHofTqfp4FR6ASLPt+CP0klVl
+         Jk1djHfbPGCs2ogC6MGHamO1wm56l7GlBlLgTEnLRhz0PVnc5j7d3t34ZiYewG63aW6f
+         +zJ5nk2ZERst34Mo2sSDSS/FomVltwa43LNddl+sWmvcLyKdm4hfIGnxC5Woypnhx8j3
+         JIXA==
+X-Forwarded-Encrypted: i=1; AJvYcCUFEQTKzfyNkOInLANi4CKySYQtnK32pYltHUT3EKLSe6aEWayeQYF39yu4id81hwyEsM3ar0LA5csDZzawEHavp0bleuSD
+X-Gm-Message-State: AOJu0Yw3CrdffXboqWxHlhQfeOzujDcfEFZu7YBrAQMdqO4UIOE1E0DF
+	cWvIGUUKonr6dXtXAyzbFRd5aDYeWp8UOgtQR2AixpUIVfUhLqqZ
+X-Google-Smtp-Source: AGHT+IHhG9sOTYVW20XrZDCQqFAC1654zHonmJAmvCtJ3YZzG5tFQWnvM95IUEMvAQZLQWekwWOZ7g==
+X-Received: by 2002:a05:600c:1f14:b0:421:36da:9438 with SMTP id 5b1f17b1804b1-42136da9466mr91646945e9.28.1717487796665;
+        Tue, 04 Jun 2024 00:56:36 -0700 (PDT)
+Received: from krava ([212.20.115.60])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215447035bsm2945455e9.13.2024.06.04.00.56.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jun 2024 00:46:53 -0700 (PDT)
-Date: Tue, 4 Jun 2024 10:46:51 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Krishna Kurapati <quic_kriskura@quicinc.com>
-Cc: cros-qcom-dts-watchers@chromium.org, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <swboyd@chromium.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthias Kaehlcke <mka@chromium.org>, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	quic_ppratap@quicinc.com, quic_jackp@quicinc.com, Doug Anderson <dianders@google.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] arm64: dts: qcom: sc7180: Disable SuperSpeed
- instances in park mode
-Message-ID: <le5fe7b4wdpkpgxyucobepvxfvetz3ukhiib3ca3zbnm6nz2t7@sczgscf2m3ie>
-References: <20240604060659.1449278-1-quic_kriskura@quicinc.com>
- <20240604060659.1449278-2-quic_kriskura@quicinc.com>
+        Tue, 04 Jun 2024 00:56:36 -0700 (PDT)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Tue, 4 Jun 2024 09:56:33 +0200
+To: Tony Ambardar <tony.ambardar@gmail.com>
+Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
+	Hao Luo <haoluo@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	kernel test robot <lkp@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH bpf v2 2/2] bpf: Harden __bpf_kfunc tag against linker
+ kfunc removal
+Message-ID: <Zl7IscCtZVKjgP2h@krava>
+References: <cover.1717413886.git.Tony.Ambardar@gmail.com>
+ <cover.1717477560.git.Tony.Ambardar@gmail.com>
+ <e9c64e9b5c073dabd457ff45128aabcab7630098.1717477560.git.Tony.Ambardar@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,51 +94,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240604060659.1449278-2-quic_kriskura@quicinc.com>
+In-Reply-To: <e9c64e9b5c073dabd457ff45128aabcab7630098.1717477560.git.Tony.Ambardar@gmail.com>
 
-On Tue, Jun 04, 2024 at 11:36:58AM +0530, Krishna Kurapati wrote:
-> On SC7180, in host mode, it is observed that stressing out controller
-> results in HC died error:
+On Mon, Jun 03, 2024 at 10:23:16PM -0700, Tony Ambardar wrote:
+> BPF kfuncs are often not directly referenced and may be inadvertently
+> removed by optimization steps during kernel builds, thus the __bpf_kfunc
+> tag mitigates against this removal by including the __used macro. However,
+> this macro alone does not prevent removal during linking, and may still
+> yield build warnings (e.g. on mips64el):
 > 
->  xhci-hcd.12.auto: xHCI host not responding to stop endpoint command
->  xhci-hcd.12.auto: xHCI host controller not responding, assume dead
->  xhci-hcd.12.auto: HC died; cleaning up
+>     LD      vmlinux
+>     BTFIDS  vmlinux
+>   WARN: resolve_btfids: unresolved symbol bpf_verify_pkcs7_signature
+>   WARN: resolve_btfids: unresolved symbol bpf_lookup_user_key
+>   WARN: resolve_btfids: unresolved symbol bpf_lookup_system_key
+>   WARN: resolve_btfids: unresolved symbol bpf_key_put
+>   WARN: resolve_btfids: unresolved symbol bpf_iter_task_next
+>   WARN: resolve_btfids: unresolved symbol bpf_iter_css_task_new
+>   WARN: resolve_btfids: unresolved symbol bpf_get_file_xattr
+>   WARN: resolve_btfids: unresolved symbol bpf_ct_insert_entry
+>   WARN: resolve_btfids: unresolved symbol bpf_cgroup_release
+>   WARN: resolve_btfids: unresolved symbol bpf_cgroup_from_id
+>   WARN: resolve_btfids: unresolved symbol bpf_cgroup_acquire
+>   WARN: resolve_btfids: unresolved symbol bpf_arena_free_pages
+>     NM      System.map
+>     SORTTAB vmlinux
+>     OBJCOPY vmlinux.32
 > 
-> And at this instant only restarting the host mode fixes it. Disable
-> SuperSpeed instances in park mode for SC7180 to mitigate this issue.
-
-Let me please repeat the question from v1:
-
-Just out of curiosity, what is the park mode?
-
+> Update the __bpf_kfunc tag to better guard against linker optimization by
+> including the new __retain compiler macro, which fixes the warnings above.
 > 
-> Reported-by: Doug Anderson <dianders@google.com>
-> Cc: <stable@vger.kernel.org>
-> Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
-> Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+> Verify the __retain macro with readelf by checking object flags for 'R':
+> 
+>   $ readelf -Wa kernel/trace/bpf_trace.o
+>   Section Headers:
+>     [Nr]  Name              Type     Address  Off  Size ES Flg Lk Inf Al
+>   ...
+>     [178] .text.bpf_key_put PROGBITS 00000000 6420 0050 00 AXR  0   0  8
+>   ...
+>   Key to Flags:
+>   ...
+>     R (retain), D (mbind), p (processor specific)
+> 
+> Link: https://lore.kernel.org/bpf/ZlmGoT9KiYLZd91S@krava/T/
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/r/202401211357.OCX9yllM-lkp@intel.com/
+> Fixes: 57e7c169cd6a ("bpf: Add __bpf_kfunc tag for marking kernel functions as kfuncs")
+> Cc: stable@vger.kernel.org # v6.6+
+> Signed-off-by: Tony Ambardar <Tony.Ambardar@gmail.com>
+
+tested on mips64 cross build and the warnings are gone
+and related functions are in the vmlinux
+
+patchset looks good to me
+
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+
+thanks,
+jirka
+
 > ---
-> Removed RB/TB tag from Doug as commit text was updated. 
+>  include/linux/btf.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->  arch/arm64/boot/dts/qcom/sc7180.dtsi | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> index 2b481e20ae38..cc93b5675d5d 100644
-> --- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> @@ -3063,6 +3063,7 @@ usb_1_dwc3: usb@a600000 {
->  				iommus = <&apps_smmu 0x540 0>;
->  				snps,dis_u2_susphy_quirk;
->  				snps,dis_enblslpm_quirk;
-> +				snps,parkmode-disable-ss-quirk;
->  				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
->  				phy-names = "usb2-phy", "usb3-phy";
->  				maximum-speed = "super-speed";
+> diff --git a/include/linux/btf.h b/include/linux/btf.h
+> index f9e56fd12a9f..7c3e40c3295e 100644
+> --- a/include/linux/btf.h
+> +++ b/include/linux/btf.h
+> @@ -82,7 +82,7 @@
+>   * as to avoid issues such as the compiler inlining or eliding either a static
+>   * kfunc, or a global kfunc in an LTO build.
+>   */
+> -#define __bpf_kfunc __used noinline
+> +#define __bpf_kfunc __used __retain noinline
+>  
+>  #define __bpf_kfunc_start_defs()					       \
+>  	__diag_push();							       \
 > -- 
 > 2.34.1
 > 
-
--- 
-With best wishes
-Dmitry
 
