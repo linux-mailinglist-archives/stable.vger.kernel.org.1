@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-48195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A4F8FCD8C
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:46:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6E88FCDE7
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 637A71C23D2B
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:46:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50351B2CE2B
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483FB1CC719;
-	Wed,  5 Jun 2024 12:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39801AB8F1;
+	Wed,  5 Jun 2024 12:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUHN7vbw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGhZ5Yl+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069EC1CC711;
-	Wed,  5 Jun 2024 12:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDE11AB8E7;
+	Wed,  5 Jun 2024 12:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589111; cv=none; b=ZPuHRiWwj1KQkwPqqOwxT+pvpDupQg9kkSTw087GlQLshNVrY8hw2KlEKNIig7kiyqdiiX0yU28TTPR1dX4hmsx9iGWG6kdSIQcjI2+C4WUZWYdLrDcpD9WzosTHMcPpLW0tfh6zFbi/Yd8aSooF2swZ57URjYKQ08/iooqP3/E=
+	t=1717589112; cv=none; b=c8npjSq5MkJoB/lY4KczMSDFnIUljZY/qDs2ZFnYruCC39QQEe57ycdk/Ymcnx5QgbnrgHGOHhUmUiA2Qp8/iBa9E7oyPvCZyjEKtiSrqEMrh/QJhEMqmANzYarc+ilXXrrof6G6d4Um6XoSxF9VUvXxIMKjv7ixgFwdUrl7pTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589111; c=relaxed/simple;
-	bh=1RbxT/6OSTDCO1lrHIY3cQWVCBAg91gJZtNuWLxq+Lg=;
+	s=arc-20240116; t=1717589112; c=relaxed/simple;
+	bh=Y/32szHfbZYbXDSCF25V/z9KTLPAFSYNCqwZHL/VUkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmSYbienipbDes15XdYOaA7OretGO8ThbOEBg6SvVOhiJTToGgBc1fa35xqYGgfk/TUyRUar2N3WfZ8vreYgORCkfZaBCSJwx2jGMrncsAAeRzruIdLicM7pahwjuLSugBpCHgbxLkYXcplkLkRL7MwgOmHZIU+zt8+38PUWkEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUHN7vbw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0BBC3277B;
-	Wed,  5 Jun 2024 12:05:09 +0000 (UTC)
+	 MIME-Version; b=G+H7anHb2l5kJhm1t7zxW4UdAYqI0s0eGqkAFFfJlm/u33ui8KiNAJKyYtqQNJSpgoOKQ5idOzvVficmqW7Ht3v0LlgrsKxqJ+BSGDPDfx4FeoVbTS2gP3+ePXlNrJbUMNwY4U4RjYLj4IEHlrDLM6nYJeziASpyIENNAGGdo+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGhZ5Yl+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DB6C32781;
+	Wed,  5 Jun 2024 12:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589110;
-	bh=1RbxT/6OSTDCO1lrHIY3cQWVCBAg91gJZtNuWLxq+Lg=;
+	s=k20201202; t=1717589112;
+	bh=Y/32szHfbZYbXDSCF25V/z9KTLPAFSYNCqwZHL/VUkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUHN7vbwEFuKf6tNBBko4yWH1H0+PpdN1QsivhfTDoxVm6wbW1Xqg5o3vuyd6GPk4
-	 zII0JXKvyswJXsrwrGBwwlyxobJ3cMkWzECIkLtfbwF+kggE2k6apUIC9Vtpa742fE
-	 D0rADZjYuAluI495+QrockfjIjeqgFqfbPaV1odWqax8a1orKHIfbx6tmcAa9PV+vd
-	 +AlCdhISaqceQh9WDZkKsMLix1VkRrU5DnA/QVW1zbvlFjjW21+4VhdThkA9KRHiW1
-	 0UfZyquT2XeAFY+utcMeMlqrxFA1indcSORhiYVZxTZ+5Z3A8LyGcyPJ8IjsxDriAb
-	 jGCTAWjXi6Y2A==
+	b=BGhZ5Yl+vqVoa7W4RgEQVl97X464HR7IHawAF+LCyM38YB+oVLKSbFLUlmPMjJWiZ
+	 0pWmrs4GfrRHOqAap+CqTN7d/EWLTkNDfTeGzNBwbubyBHhp6FYhd1rzQP4FE52J1Y
+	 mImQqe4k6hzPzS3MTuC0OZmxiBeifD43jGsVF2dZ/fsLA7DKrCdJvYHvydRx7neEKr
+	 XbO1WgrsNn+9lLbnP2KJQSsp0M+WDVLTJSqCxMwvnxJeGm0nt1NEftaQHr2x3pBPcw
+	 GUDLZWt75mPDT6Kib/HcXtV8ixsnmP+LwEwtNwpNiMt0bLoKnCkc6OifmwB0oVpwql
+	 GgctNhfQ0kUzA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sagi Grimberg <sagi@grimberg.me>,
-	Alex Turin <alex@vastdata.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kch@nvidia.com,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 09/14] nvmet: fix a possible leak when destroy a ctrl during qp establishment
-Date: Wed,  5 Jun 2024 08:04:42 -0400
-Message-ID: <20240605120455.2967445-9-sashal@kernel.org>
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 10/14] kbuild: fix short log for AS in link-vmlinux.sh
+Date: Wed,  5 Jun 2024 08:04:43 -0400
+Message-ID: <20240605120455.2967445-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120455.2967445-1-sashal@kernel.org>
 References: <20240605120455.2967445-1-sashal@kernel.org>
@@ -68,60 +64,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.92
 Content-Transfer-Encoding: 8bit
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit c758b77d4a0a0ed3a1292b3fd7a2aeccd1a169a4 ]
+[ Upstream commit 3430f65d6130ccbc86f0ff45642eeb9e2032a600 ]
 
-In nvmet_sq_destroy we capture sq->ctrl early and if it is non-NULL we
-know that a ctrl was allocated (in the admin connect request handler)
-and we need to release pending AERs, clear ctrl->sqs and sq->ctrl
-(for nvme-loop primarily), and drop the final reference on the ctrl.
+In convention, short logs print the output file, not the input file.
 
-However, a small window is possible where nvmet_sq_destroy starts (as
-a result of the client giving up and disconnecting) concurrently with
-the nvme admin connect cmd (which may be in an early stage). But *before*
-kill_and_confirm of sq->ref (i.e. the admin connect managed to get an sq
-live reference). In this case, sq->ctrl was allocated however after it was
-captured in a local variable in nvmet_sq_destroy.
-This prevented the final reference drop on the ctrl.
+Let's change the suffix for 'AS' since it assembles *.S into *.o.
 
-Solve this by re-capturing the sq->ctrl after all inflight request has
-completed, where for sure sq->ctrl reference is final, and move forward
-based on that.
+[Before]
 
-This issue was observed in an environment with many hosts connecting
-multiple ctrls simoutanuosly, creating a delay in allocating a ctrl
-leading up to this race window.
+  LD      .tmp_vmlinux.kallsyms1
+  NM      .tmp_vmlinux.kallsyms1.syms
+  KSYMS   .tmp_vmlinux.kallsyms1.S
+  AS      .tmp_vmlinux.kallsyms1.S
+  LD      .tmp_vmlinux.kallsyms2
+  NM      .tmp_vmlinux.kallsyms2.syms
+  KSYMS   .tmp_vmlinux.kallsyms2.S
+  AS      .tmp_vmlinux.kallsyms2.S
+  LD      vmlinux
 
-Reported-by: Alex Turin <alex@vastdata.com>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+[After]
+
+  LD      .tmp_vmlinux.kallsyms1
+  NM      .tmp_vmlinux.kallsyms1.syms
+  KSYMS   .tmp_vmlinux.kallsyms1.S
+  AS      .tmp_vmlinux.kallsyms1.o
+  LD      .tmp_vmlinux.kallsyms2
+  NM      .tmp_vmlinux.kallsyms2.syms
+  KSYMS   .tmp_vmlinux.kallsyms2.S
+  AS      .tmp_vmlinux.kallsyms2.o
+  LD      vmlinux
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/core.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ scripts/link-vmlinux.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 3235baf7cc6b1..c7c8dedf1f47b 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -802,6 +802,15 @@ void nvmet_sq_destroy(struct nvmet_sq *sq)
- 	percpu_ref_exit(&sq->ref);
- 	nvmet_auth_sq_free(sq);
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 458b2948b580d..019560548ac98 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -182,7 +182,7 @@ kallsyms_step()
+ 	mksysmap ${kallsyms_vmlinux} ${kallsyms_vmlinux}.syms
+ 	kallsyms ${kallsyms_vmlinux}.syms ${kallsyms_S}
  
-+	/*
-+	 * we must reference the ctrl again after waiting for inflight IO
-+	 * to complete. Because admin connect may have sneaked in after we
-+	 * store sq->ctrl locally, but before we killed the percpu_ref. the
-+	 * admin connect allocates and assigns sq->ctrl, which now needs a
-+	 * final ref put, as this ctrl is going away.
-+	 */
-+	ctrl = sq->ctrl;
-+
- 	if (ctrl) {
- 		/*
- 		 * The teardown flow may take some time, and the host may not
+-	info AS ${kallsyms_S}
++	info AS ${kallsymso}
+ 	${CC} ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS} \
+ 	      ${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL} \
+ 	      -c -o ${kallsymso} ${kallsyms_S}
 -- 
 2.43.0
 
