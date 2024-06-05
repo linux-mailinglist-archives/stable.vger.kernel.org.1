@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-48150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689028FCCFF
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:34:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D0F8FCD03
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0682E1F23E51
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:34:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D6C71F21F20
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79211A256C;
-	Wed,  5 Jun 2024 12:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534F91C2246;
+	Wed,  5 Jun 2024 12:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGGPvpxQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJ+BX1TL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F9F1A2560;
-	Wed,  5 Jun 2024 12:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8571C2240;
+	Wed,  5 Jun 2024 12:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588987; cv=none; b=OR71m4sLSWbZk+JETQ1BMxRHLz99gm4tTrszsIAdx3FHv2zL93UnLBNtv9Ue4axIuprgJncZ6XQr0xebkAXVbn1vgOhIdHjSuBRYgxKRUx1znMZxgbqWt7Jn4ylcpKDVQRF5JFOohrwMwlGxpQoMAmhW/0rRNLQ7XGJYM0T8z1M=
+	t=1717589002; cv=none; b=r2Stwn/+QRctb0VrNqFBRnhViuWrPCEqMmD2L4NqtCdhh3u3ObNJt0fgbxWXTe9UzDPy6v6Uknu2NVW9RgG+aPhcYBEfCpQhi8OboA+EClQW0fVNgLeYJRWnJGlbERo+hMssgKCLEmNt84P56r20vuaGhyPd8vKns5KYBDLM+FE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588987; c=relaxed/simple;
-	bh=+W6S6xQ9Mr5ysKrm4VyCT5dvvfoqp7FzldkgEf13SbY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BkeYL2kLkH1khoNcLTL815xlWM4wXFKwFmaILYvWxWdVO8ovBI7/Qf8Xcov8DmH1h0hg40iDwUiDOvxWi/IS4dHiaraxnPH8MAYC+dK7necBSq2as+X/Eg2fo7JrviriICP1ZIdao1jfz/rHGiYoMh/AHhdAdQjjUt9xEWsp1b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGGPvpxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC49C3277B;
-	Wed,  5 Jun 2024 12:03:06 +0000 (UTC)
+	s=arc-20240116; t=1717589002; c=relaxed/simple;
+	bh=vp7txUi8D2St2iqv2V5exkdfuTRTiuxEQ5umbddoIao=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zxfu8pyGHmwORKJjF7IszYAFlWt0r+daiRxlQx0pO0rdmCSxDeO+YJWEtWSiyNgY85z3mzp/0pdsD0D1WJiaXlqfyRT0m/uhDP4klvXU6YAdAWPKTcqLEScs1RLOa5o9eNcOB6SRD+NvNlYJLnrjL+DqkAxrAABNrnDHC+SfwxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJ+BX1TL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01387C32781;
+	Wed,  5 Jun 2024 12:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588987;
-	bh=+W6S6xQ9Mr5ysKrm4VyCT5dvvfoqp7FzldkgEf13SbY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGGPvpxQvls/iN3TSXFBQYWKOvxHyL7UIRGCZ46It6PPEFuvsFIk3Jz5h0F6+32Bq
-	 82Gou7oQ+uE4e18uakPLP27UQ4AiGFr+5+UWi4UTSiG6ZS5L9I2Ezy9hboxcCQ6UwB
-	 iqt8SllWwlhuWXmEiorQyTZ+4Q1S30D7Qx5KPmcC97VdtvBxhNGI1LNOV06Sexu1r7
-	 10yoXDLkCVopnlsZYdUSI0pbUK6ES067uPn1fYn+6NQMW++TcH+MuRvIH2+MKU+C6o
-	 P5Gd8wu6BdRdiASKEgl2d0CvtJeDzJisO7BD/pnWWXphmBhrBlZynXB0zg34A6H306
-	 LX3g+pQExSLQA==
+	s=k20201202; t=1717589001;
+	bh=vp7txUi8D2St2iqv2V5exkdfuTRTiuxEQ5umbddoIao=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kJ+BX1TLZ/LCkV87oxxoZjz0VCBhepmeIjsRu4FNIhtCCXuL6L0MNdejBjVS4Juuy
+	 lbTV8sLjIn53FxfE0Nc047mPSv4wPQXmW7EuMnEUZ5B3luGTeNKfKPgb0ZajbEzriO
+	 xAiBp89/urhT/kIROtvFoPy3OMunhYd4s2c9ca+Yn76C7Uz4dExXUlZO/wobpCAxBY
+	 aRw9E+ktBvMzq/siwycfu/7EV0vDHCDatmZKSfgXQG3Q2VY947xuIiZH1b/wV5v8mR
+	 19AMRYaf86gsuocv15A2ztRbz2mZB+9lSnYRSOXyHdPiMNt97XoBuNDnFWkKM10yk8
+	 aQH0b0p4vKt0A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Nilay Shroff <nilay@linux.ibm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	martin.petersen@oracle.com,
-	hare@suse.de,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 23/23] null_blk: Do not allow runt zone with zone capacity smaller then zone size
-Date: Wed,  5 Jun 2024 08:02:06 -0400
-Message-ID: <20240605120220.2966127-23-sashal@kernel.org>
+	sagi@grimberg.me,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.8 01/18] nvme-multipath: find NUMA path only for online numa-node
+Date: Wed,  5 Jun 2024 08:02:51 -0400
+Message-ID: <20240605120319.2966627-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240605120220.2966127-1-sashal@kernel.org>
-References: <20240605120220.2966127-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,56 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.3
+X-stable-base: Linux 6.8.12
 Content-Transfer-Encoding: 8bit
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-[ Upstream commit b164316808ec5de391c3e7b0148ec937d32d280d ]
+[ Upstream commit d3a043733f25d743f3aa617c7f82dbcb5ee2211a ]
 
-A zoned device with a smaller last zone together with a zone capacity
-smaller than the zone size does make any sense as that does not
-correspond to any possible setup for a real device:
-1) For ZNS and zoned UFS devices, all zones are always the same size.
-2) For SMR HDDs, all zones always have the same capacity.
-In other words, if we have a smaller last runt zone, then this zone
-capacity should always be equal to the zone size.
+In current native multipath design when a shared namespace is created,
+we loop through each possible numa-node, calculate the NUMA distance of
+that node from each nvme controller and then cache the optimal IO path
+for future reference while sending IO. The issue with this design is that
+we may refer to the NUMA distance table for an offline node which may not
+be populated at the time and so we may inadvertently end up finding and
+caching a non-optimal path for IO. Then latter when the corresponding
+numa-node becomes online and hence the NUMA distance table entry for that
+node is created, ideally we should re-calculate the multipath node distance
+for the newly added node however that doesn't happen unless we rescan/reset
+the controller. So essentially, we may keep using non-optimal IO path for a
+node which is made online after namespace is created.
+This patch helps fix this issue ensuring that when a shared namespace is
+created, we calculate the multipath node distance for each online numa-node
+instead of each possible numa-node. Then latter when a node becomes online
+and we receive any IO on that newly added node, we would calculate the
+multipath node distance for newly added node but this time NUMA distance
+table would have been already populated for newly added node. Hence we
+would be able to correctly calculate the multipath node distance and choose
+the optimal path for the IO.
 
-Add a check in null_init_zoned_dev() to prevent a configuration to have
-both a smaller zone size and a zone capacity smaller than the zone size.
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240530054035.491497-2-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/zoned.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/nvme/host/multipath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/null_blk/zoned.c b/drivers/block/null_blk/zoned.c
-index 1689e25841048..b638b7f7b4f80 100644
---- a/drivers/block/null_blk/zoned.c
-+++ b/drivers/block/null_blk/zoned.c
-@@ -84,6 +84,17 @@ int null_init_zoned_dev(struct nullb_device *dev,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 75386d3e0f981..615fbdc09d1cc 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -594,7 +594,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 		int node, srcu_idx;
  
-+	/*
-+	 * If a smaller zone capacity was requested, do not allow a smaller last
-+	 * zone at the same time as such zone configuration does not correspond
-+	 * to any real zoned device.
-+	 */
-+	if (dev->zone_capacity != dev->zone_size &&
-+	    dev->size & (dev->zone_size - 1)) {
-+		pr_err("A smaller last zone is not allowed with zone capacity smaller than zone size.\n");
-+		return -EINVAL;
-+	}
-+
- 	zone_capacity_sects = mb_to_sects(dev->zone_capacity);
- 	dev_capacity_sects = mb_to_sects(dev->size);
- 	dev->zone_size_sects = mb_to_sects(dev->zone_size);
+ 		srcu_idx = srcu_read_lock(&head->srcu);
+-		for_each_node(node)
++		for_each_online_node(node)
+ 			__nvme_find_path(head, node);
+ 		srcu_read_unlock(&head->srcu, srcu_idx);
+ 	}
 -- 
 2.43.0
 
