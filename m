@@ -1,75 +1,74 @@
-Return-Path: <stable+bounces-48231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DFC38FD14F
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 17:00:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CF68FD159
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 17:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 968B3285F21
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 15:00:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B17A21F241BA
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 15:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8EE3C482;
-	Wed,  5 Jun 2024 15:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495573A8C0;
+	Wed,  5 Jun 2024 15:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AZsTIQQ+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hkoEiGH0"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B2317BD5
-	for <stable@vger.kernel.org>; Wed,  5 Jun 2024 15:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5822AF16
+	for <stable@vger.kernel.org>; Wed,  5 Jun 2024 15:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717599621; cv=none; b=LPUC5jRcNcipyzsA9TxpWBFa19unT+Y/1sZvzbLZiGSWbZLwezBP13c9fkJpP/U9sBI0wag1zndL+I9gawgOBpu8g1fFGSD4jZFdZe1u2xELy7FUEd8q+GLtSLNBu0lup5/bbiVmLvvz4jKf+9bY+X/fMv203GqgtQGyT5+sm3A=
+	t=1717599871; cv=none; b=ehDR6+Z8EACHQancy39VNDLgIpA5TYTFFT45HOMs0yojEiORbCuN+zzAwuUoubpsjl8w9NiHhaBdtNJnplz8WKFnbmX/x2REhxzXBXNBahdQeU49C5PJf+JijguSf7L5yZZF8jPbKxxcckwr7pM+0uPpTCVYWXdieuIkKpIvM+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717599621; c=relaxed/simple;
-	bh=hfB6KyMdnp9dJZwn7lGH3NhK764UmRlQ8Bjpr+UBFmo=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:To:
-	 In-Reply-To:Content-Type; b=ua3v4OpnrihZTK+fmcRuTmdE+uL7oCKfFyjThthsWCKvwDGS3FQrcg52GILxoqIx9cPYBz7n5/PW13qQ05VyuMbBmtdZQbpXIHyX9i2Gg2OmsT4Gmw+HqqmQIWxBHh89UJzbntSUmAAZhk1egXoxaJgSZOZpy3zTYH51QXgyH9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AZsTIQQ+; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1717599871; c=relaxed/simple;
+	bh=0i4ZIFKowiVLzbZGmNNJx1BYPXZWnjns88Nl9iqdTNQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=mhAX/FfXBNxmAYI59EvZKgsN2dGKQHtVbxkpQY90svtUsTLCJfcu475f/JJYnF3jnCSTXWmZRiT2JrRRyrQULBq7gVKIrkwxR1cAUPao2KRHANoURpGUrMcGGXrfNqpnYDc7XDvuAvYEJMJUDkcot2RctkRbX/C2p2KJ6AaZWcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hkoEiGH0; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-57a3a886bb7so574675a12.3
-        for <stable@vger.kernel.org>; Wed, 05 Jun 2024 08:00:19 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-57a2529554eso874904a12.0
+        for <stable@vger.kernel.org>; Wed, 05 Jun 2024 08:04:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717599597; x=1718204397; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:to:from
-         :content-language:references:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=mvAx5zV1LEI7tA6py/iwWQYlQ7AWZCqLMD0ltjBgEAU=;
-        b=AZsTIQQ+Fyu9fHmPrODy3QCw2QiWYSlOecHJODdNcmkMXA3PkqKD+WoKX5WcbyHIor
-         F91jtkFoB7WY6Z7TaV2MYVy1TPyKtLhaNE19WdNQVWbh8DUaqJGShFaWBpGF+cO6TyhY
-         UK5MRK9dGp3DepIp/S2huZwVVJd9UnGaC3FPlOsK8UUCaaGgVrmoiyXHWMWDDZ8bcGYr
-         tR4HoXaty/jJkox0EHzTpS50bp1w3R1sD1kUfboDnDJYGjKPMJDStEta8pUqLmHvF3VT
-         T2/ZlfRN6QBVPnf9k/Q+0nUkNaUnDWZ8BLeC4m83YUF6CT4CE7N15w40lFhLdAhbbZ0C
-         b5ig==
+        d=gmail.com; s=20230601; t=1717599868; x=1718204668; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:to:from:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+4TdhoV4OgLoUtr0nlLz/pI23UTLQeRjQ/hx+7uDjwQ=;
+        b=hkoEiGH0gMse8l0Qk5zekFpndUbnHxSyTJEVzazawBghQpMGk2F8TZfNiU95hUsrN4
+         OZBsGg7LhlB/uhrI8LUAr9hNas/L79QEIRzk2xQTAl9WyzZznGjADLcIexy2S/ZYoGhI
+         wcuMSTm8C7A7KLgyoyY6xFPgZPryPKdl08pYhn+JeKq7RDyfaqk0CVsghgfb0zb4ByLx
+         nwIc29ZnEtgKo3diDJ617VIc58c9ddT7/BRCtv6gv0C3ii1OUDG8rHdsZJ+psMO5+LBc
+         8MjQc2NVgK8rqp2dNaQIS0GpEd7c+7UPGTQhZQkSMneqPgEPlVsAYpclLwCMewWuGF1h
+         JsIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717599597; x=1718204397;
-        h=content-transfer-encoding:in-reply-to:autocrypt:to:from
-         :content-language:references:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mvAx5zV1LEI7tA6py/iwWQYlQ7AWZCqLMD0ltjBgEAU=;
-        b=DvE1yiOAbQyzafqfwU50qdzZA8njgYycAJc+c/gLnepNb+6TyFAh7GT7wc1cbHOV5i
-         e6a0zRBb5g5CE/uAGCz3+2LrfUpQkzVcbjyzSgbuj9Xm0az9YwwVIb8GgaeTc/yk701C
-         L7nHjZ0D40LaFOr2ZO84T0FcWKqOQ5QnD6rWwuhWemz2hrQlnkckvx8lvo3C3m+UZ2gs
-         m6rRHRYP3xe4myG4NB/Te86X5Ib+ue0IRpRcaArVgRonrPdzd1Xb1w+mA2pE9Wu1bGPt
-         UcRumf2UvIaCoH8PSeuhYja0v3pozA7MOpMuwdoefEqYZe5yR01fPGxM7eUe6c3DJL+R
-         8cUQ==
-X-Gm-Message-State: AOJu0YxX9TVue5fFu/9LAame9YMidoMLKlxb1Nsg+9wyAfuQw/PiPUOU
-	b+Y6M3OXPDEe/Ryzq6lGNmOwvZMG704O/LyMNF4dq69fmQc4tJxiY87l/8EX
-X-Google-Smtp-Source: AGHT+IGmWtORe6owdyI+3PLVhAi12HYwDnY5LO4eY/7MSxvwqe0Ogp1VnhLNwHc6HLjbeONa6ZPHmg==
-X-Received: by 2002:a50:8e02:0:b0:57a:1e62:4d56 with SMTP id 4fb4d7f45d1cf-57a8b69c589mr1843778a12.1.1717599596921;
-        Wed, 05 Jun 2024 07:59:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717599868; x=1718204668;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+4TdhoV4OgLoUtr0nlLz/pI23UTLQeRjQ/hx+7uDjwQ=;
+        b=USR39UNgFjOu9/do0wQpg0wQTnPSWobS72+t8OcvvlAwNSFuYpkYWO45W2vRR3fMhi
+         fzvOzks03QnS62tabkIY7o+Unh4bB7LMayG1iuPJEyzQijv7QU8GIbCRw0g32UUWjOQ9
+         ww+Z16RBqXukrzU64lYwCvh43kX3NPK1iJdW7zFrd65pQu+F1MVIEK/NiPUJeKBXJ9Xw
+         +yvmnBj+SOkEUTnYN/C4QX2OL92nuC1aSd/qr1K5jqy91KWvflq07prHlTYKOtd1Vk2F
+         HEVRYZJXox8UZQz6ZNKe5qtYKL0vXNeizuFGuyr57pgNbbMqXnLmlbhp90k703vKsCvF
+         9Wuw==
+X-Gm-Message-State: AOJu0YwtvbXVl1at+2kNjnCNQY6DcQNeJgnKK/BprqaDdiqoLeXkUTKZ
+	1C2AlubS+fNQfMs+8Zs3Ifc/5bpULF8I6j43BtgG6A/E+id2ctwlxiAqXAxr
+X-Google-Smtp-Source: AGHT+IEPo4zGRSJoT7JuU5HC57LwQg+Ku7nXCGEHrwf/UlcTM1cBrlOk12Em/brZEWY40VeJQnAauA==
+X-Received: by 2002:a50:9983:0:b0:57a:4c22:b7 with SMTP id 4fb4d7f45d1cf-57a8b674419mr1918867a12.1.1717599867464;
+        Wed, 05 Jun 2024 08:04:27 -0700 (PDT)
 Received: from [192.168.1.3] ([91.86.182.228])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57a6b6d0741sm4669304a12.73.2024.06.05.07.59.56
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57a4d468a4fsm7895009a12.79.2024.06.05.08.04.26
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Jun 2024 07:59:56 -0700 (PDT)
-Message-ID: <aef09490-f8bd-46e9-abbf-a4cc9acc49aa@gmail.com>
-Date: Wed, 5 Jun 2024 16:59:54 +0200
+        Wed, 05 Jun 2024 08:04:26 -0700 (PDT)
+Message-ID: <7fcbb3c6-ae1a-460d-be2b-e2eca88151c9@gmail.com>
+Date: Wed, 5 Jun 2024 17:04:25 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,11 +78,12 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH AUTOSEL 6.6 18/18] null_blk: Do not allow runt zone with
  zone capacity smaller then zone size
-References: <20240605120409.2967044-1-sashal@kernel.org>
- <20240605120409.2967044-18-sashal@kernel.org>
-Content-Language: fr-FR
 From: =?UTF-8?Q?Fran=C3=A7ois_Valenduc?= <francoisvalenduc@gmail.com>
 To: stable@vger.kernel.org
+References: <20240605120409.2967044-1-sashal@kernel.org>
+ <20240605120409.2967044-18-sashal@kernel.org>
+ <aef09490-f8bd-46e9-abbf-a4cc9acc49aa@gmail.com>
+Content-Language: fr-FR
 Autocrypt: addr=francoisvalenduc@gmail.com; keydata=
  xsBNBFmRfc4BCACWux+Xf5qYIpxqWPxBjg9NEVoGwp+CrOBfxS5S35pdwhLhtvbAjWrkDd7R
  UV6TEQh46FxTC7xv7I9Zgu3ST12ZiE4oKuXD7SaiiHdL0F2XfFeM/BXDtqSKJl3KbIB6CwKn
@@ -114,60 +114,16 @@ Autocrypt: addr=francoisvalenduc@gmail.com; keydata=
  HKbaQwvh0qG47O0FdzTsGtIfIaIq/dW27HUt2ogqIesTuhd/VIHJr8FcBm1C+PqSERICN73p
  XfmwqgbZCBKeGdt3t8qzOyS7QZFTc6uIQTcuu3/v8BGcIXFMTwNhW1AMN9YDhhd4rEf/rhaY
  YSvtJ8+QyAVfetyu7/hhEHxBR3nFas9Ds9GAHjKkNvY/ZhBahcARkUY=
-In-Reply-To: <20240605120409.2967044-18-sashal@kernel.org>
+In-Reply-To: <aef09490-f8bd-46e9-abbf-a4cc9acc49aa@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Le 5/06/24 à 14:03, Sasha Levin a écrit :
-> From: Damien Le Moal <dlemoal@kernel.org>
 > 
-> [ Upstream commit b164316808ec5de391c3e7b0148ec937d32d280d ]
+> Is not 6.8 supposed to be end-of-life ?
 > 
-> A zoned device with a smaller last zone together with a zone capacity
-> smaller than the zone size does make any sense as that does not
-> correspond to any possible setup for a real device:
-> 1) For ZNS and zoned UFS devices, all zones are always the same size.
-> 2) For SMR HDDs, all zones always have the same capacity.
-> In other words, if we have a smaller last runt zone, then this zone
-> capacity should always be equal to the zone size.
-> 
-> Add a check in null_init_zoned_dev() to prevent a configuration to have
-> both a smaller zone size and a zone capacity smaller than the zone size.
-> 
-> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-> Reviewed-by: Niklas Cassel <cassel@kernel.org>
-> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-> Link: https://lore.kernel.org/r/20240530054035.491497-2-dlemoal@kernel.org
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   drivers/block/null_blk/zoned.c | 11 +++++++++++
->   1 file changed, 11 insertions(+)
-> 
-> diff --git a/drivers/block/null_blk/zoned.c b/drivers/block/null_blk/zoned.c
-> index 55c5b48bc276f..9f6d7316b99aa 100644
-> --- a/drivers/block/null_blk/zoned.c
-> +++ b/drivers/block/null_blk/zoned.c
-> @@ -83,6 +83,17 @@ int null_init_zoned_dev(struct nullb_device *dev, struct request_queue *q)
->   		return -EINVAL;
->   	}
->   
-> +	/*
-> +	 * If a smaller zone capacity was requested, do not allow a smaller last
-> +	 * zone at the same time as such zone configuration does not correspond
-> +	 * to any real zoned device.
-> +	 */
-> +	if (dev->zone_capacity != dev->zone_size &&
-> +	    dev->size & (dev->zone_size - 1)) {
-> +		pr_err("A smaller last zone is not allowed with zone capacity smaller than zone size.\n");
-> +		return -EINVAL;
-> +	}
-> +
->   	zone_capacity_sects = mb_to_sects(dev->zone_capacity);
->   	dev_capacity_sects = mb_to_sects(dev->size);
->   	dev->zone_size_sects = mb_to_sects(dev->zone_size);
-
-Is not 6.8 supposed to be end-of-life ?
+> François Valenduc
+Sorry, I replied to the wrong message. But there is also an autosel 
+series for 6.8 posted today. So is 6.8 really end-of-life ?
 
 François Valenduc
 
