@@ -1,195 +1,183 @@
-Return-Path: <stable+bounces-48226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8528FD0CE
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 16:26:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CBC8FD088
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 16:13:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B720B32B3B
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:04:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DA511F22F96
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7FF17BCD;
-	Wed,  5 Jun 2024 14:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF6C17C60;
+	Wed,  5 Jun 2024 14:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YHbbG7ip";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CsFYFFAk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UrnsKbt+"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1AF539A;
-	Wed,  5 Jun 2024 14:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE8A6FB0;
+	Wed,  5 Jun 2024 14:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717596249; cv=none; b=SWwDx0D6vXlRCSaCRvhd64TSBtaQiE/grLyacQm9ZyvuMsOjDlnXISxwP2OzvGoNTWRhUMYMfHfpvQhd0vy5a2k9Lv+jDv3/ZCRPqQsoEQ9AIH3rw5AeRul9Y9oDK72NCpjctguQ3LSKW3wYUGOffm9S9bxR4do97MoUxV19MGM=
+	t=1717596777; cv=none; b=V1jT3HnwDJ50oyh9P3myghYs+Vy7mY0GMBjVwujBQyP//TJF/IxzhYIT0BsikKvym3Pb/PNk9t3TeFQpCQPIWehBb+q9miKLGvbWmYb9aRHxofMujN1/pGWbsBTdD9g5BDLgp3VbkR1RTLFiqhrFXA/6k49rOWnW9/n6N0Aden0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717596249; c=relaxed/simple;
-	bh=BgVHXbFCQ5fCSrVb9AGzyAjZOjIxURSO/TE9wep8Ln4=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YMJx99lsiVc5w3YuQ396lLtZcWLEji3KGgEyFs+iI3/QXSVvjp3nn+7fpGC/slNyyonHOtAE7AAlLNz5++fQrualzhsvhu5q6p3OFAQE8m4DG/UOL3cZ3iuA33Q2+bL1fiQbhTjHqhGmwy2HK4XDyqsuuFoyQqIeUP2n/0jjDD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YHbbG7ip; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CsFYFFAk; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 05 Jun 2024 14:04:03 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1717596243;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qUE6ykawHzViSKjz9qXZZvNMQC+Qtw9d/nagfNH5eCs=;
-	b=YHbbG7ipnIFstVqefBFfKfl612TcYdYIlrrF9svDGVMtondvcQ2W+MoCLjID8PxTamD+xh
-	4BevfEv/Hmo4s5EhOkL+vHX8FXBRfxIdv2YjZJEttynj5sZFMr6xznQzz/HPctVxffHopc
-	LWpwajIetqXRGSwNc+tpktEAWiWbtYmC8zESETKXnos5T7wcvLH0ZhCUvFawJ+bXTDxn1e
-	mqdB9BCQEyevtxokqD0xBhMCCqvXOVZHi8q0Rj5CdN4zRt6Rp/mZzarEyncDytyYjv/+17
-	3F2MVJqDRPQmIF+TJjhrwmIwwO5kRFg1JmGGmxRYVZk3T0Sjtk5o2RF0GxUICw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1717596243;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qUE6ykawHzViSKjz9qXZZvNMQC+Qtw9d/nagfNH5eCs=;
-	b=CsFYFFAkNdoEbzzKrKWLI9t1WR03oIiTiuL907cdE5ChIa31aw39DC7sgBscMbXwYQlsUV
-	cWtC14fPurTgsQBQ==
-From: "tip-bot2 for Haifeng Xu" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Fix missing wakeup when waiting for
- context reference
-Cc: Haifeng Xu <haifeng.xu@shopee.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240513103948.33570-1-haifeng.xu@shopee.com>
-References: <20240513103948.33570-1-haifeng.xu@shopee.com>
+	s=arc-20240116; t=1717596777; c=relaxed/simple;
+	bh=ozvkOGgUaxgxta5ytOJ2UVPWZSX57s6TLs8ldu0HwZQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p+keQyTm2+TYerIlJK9WvtpawBYQNHkw4lSBWbsO/fDy5o5rl0niOwrAP1egzJLDiTqa50ynt/z9jyacoFdDXO7hXRd5pxvOnNdrO29F1kuuSfPLX05mJQTz3sY/ls/YCEBD3zlCUQNCymldbviLkskEhYEUvfmC7Zx8tG3RKC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UrnsKbt+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A920C2BD11;
+	Wed,  5 Jun 2024 14:12:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717596777;
+	bh=ozvkOGgUaxgxta5ytOJ2UVPWZSX57s6TLs8ldu0HwZQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UrnsKbt+4SxFIHs9D7s0CLZz9RiwVy9uaPxcmHYlp8AO7wBrkAnAsiSWkBqnR8rAr
+	 ZFHnnMzUWLEpGNnoqLbWVMHsZwOE2VMqe8ujTBVCDjFCbuCE+HeL45a6qALbWxQd2U
+	 CZ1yVJ4i9TkWCZlKp3z/5Op32xwZdUR0tYhxAJqPw5WdlyPTl9E4P2dX9VC1gss8cc
+	 gk3xXKvbR4FU3Khm8+yZmSsX1rHlVVLCBk3gKH1O+ZiV3DsDhhRnq5iTDcxzafjKb8
+	 d7/JDIa5zfAKyCvrM1fgwzje/2comJeg91ZR65SEOFYSLljurnqludiVTkQQf5LaLq
+	 HsMx4QCGUDvEw==
+Message-ID: <0f85551f-dd67-4d88-abc2-cdf80293a604@kernel.org>
+Date: Wed, 5 Jun 2024 16:12:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171759624302.10875.8851678460624573983.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net 2/3] selftests: net: lib: avoid error removing empty
+ netns name
+Content-Language: en-GB
+To: Petr Machata <petrm@nvidia.com>
+Cc: mptcp@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Geliang Tang <geliang@kernel.org>
+References: <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-0-b3afadd368c9@kernel.org>
+ <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-2-b3afadd368c9@kernel.org>
+ <877cf38yg5.fsf@nvidia.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <877cf38yg5.fsf@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/urgent branch of tip:
+Hi Petr,
 
-Commit-ID:     74751ef5c1912ebd3e65c3b65f45587e05ce5d36
-Gitweb:        https://git.kernel.org/tip/74751ef5c1912ebd3e65c3b65f45587e05ce5d36
-Author:        Haifeng Xu <haifeng.xu@shopee.com>
-AuthorDate:    Mon, 13 May 2024 10:39:48 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 05 Jun 2024 15:52:33 +02:00
+Thank you for the review!
 
-perf/core: Fix missing wakeup when waiting for context reference
+On 05/06/2024 12:38, Petr Machata wrote:
+> 
+> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
+> 
+>> If there is an error to create the first netns with 'setup_ns()',
+>> 'cleanup_ns()' will be called with an empty string as first parameter.
+>>
+>> The consequences is that 'cleanup_ns()' will try to delete an invalid
+>> netns, and wait 20 seconds if the netns list is empty.
+>>
+>> Instead of just checking if the name is not empty, convert the string
+>> separated by spaces to an array. Manipulating the array is cleaner, and
+>> calling 'cleanup_ns()' with an empty array will be a no-op.
+>>
+>> Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
+>> Cc: stable@vger.kernel.org
+>> Acked-by: Geliang Tang <geliang@kernel.org>
+>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> ---
+>>  tools/testing/selftests/net/lib.sh | 13 +++++++------
+>>  1 file changed, 7 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+>> index a422e10d3d3a..e2f51102d7e1 100644
+>> --- a/tools/testing/selftests/net/lib.sh
+>> +++ b/tools/testing/selftests/net/lib.sh
+>> @@ -15,7 +15,7 @@ ksft_xfail=2
+>>  ksft_skip=4
+>>  
+>>  # namespace list created by setup_ns
+>> -NS_LIST=""
+>> +NS_LIST=()
+>>  
+>>  ##############################################################################
+>>  # Helpers
+>> @@ -137,6 +137,7 @@ cleanup_ns()
+>>  	fi
+>>  
+>>  	for ns in "$@"; do
+>> +		[ -z "${ns}" ] && continue
+> 
+> I think this is now irrelevant though? Now cleanup_ns() will be called
+> with no arguments for an empty NS list, so the loop does not even kick in.
 
-In our production environment, we found many hung tasks which are
-blocked for more than 18 hours. Their call traces are like this:
+If you don't mind, I think it is "safer" to keep it: some selftests are
+using 'cleanup_ns()' directly, not via 'cleanup_all_ns()', e.g.
+netns-name.sh, cmsg-*.sh, fib-*.sh, etc. which can call it with the
+variables not set if 'setup_ns' failed during the init phase.
 
-[346278.191038] __schedule+0x2d8/0x890
-[346278.191046] schedule+0x4e/0xb0
-[346278.191049] perf_event_free_task+0x220/0x270
-[346278.191056] ? init_wait_var_entry+0x50/0x50
-[346278.191060] copy_process+0x663/0x18d0
-[346278.191068] kernel_clone+0x9d/0x3d0
-[346278.191072] __do_sys_clone+0x5d/0x80
-[346278.191076] __x64_sys_clone+0x25/0x30
-[346278.191079] do_syscall_64+0x5c/0xc0
-[346278.191083] ? syscall_exit_to_user_mode+0x27/0x50
-[346278.191086] ? do_syscall_64+0x69/0xc0
-[346278.191088] ? irqentry_exit_to_user_mode+0x9/0x20
-[346278.191092] ? irqentry_exit+0x19/0x30
-[346278.191095] ? exc_page_fault+0x89/0x160
-[346278.191097] ? asm_exc_page_fault+0x8/0x30
-[346278.191102] entry_SYSCALL_64_after_hwframe+0x44/0xae
+For the moment, all these selftests are calling 'cleanup_ns()' with
+parameters added without double quotes: so it is fine. Until someone
+changes that to please shellcheck, like we did on our side with MPTCP
+selftests. So this line will be useful soon when we will publish the
+rest of our patches to use 'lib.sh' [1] :)
 
-The task was waiting for the refcount become to 1, but from the vmcore,
-we found the refcount has already been 1. It seems that the task didn't
-get woken up by perf_event_release_kernel() and got stuck forever. The
-below scenario may cause the problem.
+Link:
+https://lore.kernel.org/mptcp/5f4615c3-0621-43c5-ad25-55747a4350ce@kernel.org/T/
+[1]
 
-Thread A					Thread B
-...						...
-perf_event_free_task				perf_event_release_kernel
-						   ...
-						   acquire event->child_mutex
-						   ...
-						   get_ctx
-   ...						   release event->child_mutex
-   acquire ctx->mutex
-   ...
-   perf_free_event (acquire/release event->child_mutex)
-   ...
-   release ctx->mutex
-   wait_var_event
-						   acquire ctx->mutex
-						   acquire event->child_mutex
-						   # move existing events to free_list
-						   release event->child_mutex
-						   release ctx->mutex
-						   put_ctx
-...						...
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
-In this case, all events of the ctx have been freed, so we couldn't
-find the ctx in free_list and Thread A will miss the wakeup. It's thus
-necessary to add a wakeup after dropping the reference.
-
-Fixes: 1cf8dfe8a661 ("perf/core: Fix race between close() and fork()")
-Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240513103948.33570-1-haifeng.xu@shopee.com
----
- kernel/events/core.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index f0128c5..8f908f0 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5384,6 +5384,7 @@ int perf_event_release_kernel(struct perf_event *event)
- again:
- 	mutex_lock(&event->child_mutex);
- 	list_for_each_entry(child, &event->child_list, child_list) {
-+		void *var = NULL;
- 
- 		/*
- 		 * Cannot change, child events are not migrated, see the
-@@ -5424,11 +5425,23 @@ again:
- 			 * this can't be the last reference.
- 			 */
- 			put_event(event);
-+		} else {
-+			var = &ctx->refcount;
- 		}
- 
- 		mutex_unlock(&event->child_mutex);
- 		mutex_unlock(&ctx->mutex);
- 		put_ctx(ctx);
-+
-+		if (var) {
-+			/*
-+			 * If perf_event_free_task() has deleted all events from the
-+			 * ctx while the child_mutex got released above, make sure to
-+			 * notify about the preceding put_ctx().
-+			 */
-+			smp_mb(); /* pairs with wait_var_event() */
-+			wake_up_var(var);
-+		}
- 		goto again;
- 	}
- 	mutex_unlock(&event->child_mutex);
 
