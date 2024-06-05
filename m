@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3F28FCC63
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:18:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B32F78FCC67
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC8641C20C8B
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:18:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FEDDB27671
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEAD1BA889;
-	Wed,  5 Jun 2024 11:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8970F1990B7;
+	Wed,  5 Jun 2024 11:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KiNR6jl8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HLwJWAUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5A51BA882;
-	Wed,  5 Jun 2024 11:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444031BA89E;
+	Wed,  5 Jun 2024 11:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588522; cv=none; b=Nutpb4Ta9Cqhl66bYLfm7BR94IaE7AFG7TKgFl1T0LYsv01+oryj37sLM5jDAx4IP9acuQWRgpaBCfETXsousNPiEjzboZy/eCxBUamEcTkZ/dX0RzcEBoYdp3k73oybaJ4AGKzEWlzek3jRCWLGMmII7RZqrgQoCOG5diIp9jc=
+	t=1717588523; cv=none; b=Y+MI/VY8bJvsEqafJHAZTTOCNWhRClnuMJCCdZPc9l7KhZLjDIFfkpZU9ze/1w8yuMFZ48GqOmBzcIWpKAXP9lSyZsv0FVJ+b+ONzAWaeE0LQnIkHBSSQsuTa4/44bhDamR5WQYSoHLX2IzYF67+AIsAESikR/xKrsaURJRh+tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588522; c=relaxed/simple;
-	bh=vZPl2Rg9MMjHgwCnAcC6p7mvcU/vcb8ipMfTFMNDETU=;
+	s=arc-20240116; t=1717588523; c=relaxed/simple;
+	bh=7BgoD1Te/ofFCaNZUnrVRTv7nU7IXLSPK3C/Bx4GeOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KaqdxrFEPzNgaZ2geMHiJ61Zdz/4nVq8qZx6tE3CK7oYLvWn2gU8HQUeGHhvQVyhIqlcgLkOpZ049FTUqynJ+GkITRofmcLtglQj7SEwBsaPG0by0j3zWIUKX/oTjFxztnieR2iQbTnqY86o5x15wh8H8H4rMKxRYlE9olDb7+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KiNR6jl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F271EC32786;
-	Wed,  5 Jun 2024 11:55:20 +0000 (UTC)
+	 MIME-Version; b=IS5uEm9CKcCbQYo1zKQJrsG3LESemHP02lInoVzuLrBpHLkSwiS8ss6OvFugHQnW6nUkTRTVAXUyQxFq7Vf98CzT8+HChtiCOorvASh6hCcUeJhlEPgJ7P2D/mTR54Kpn6S7UqQPfJWauAjXuugRB/JoiGDSJkHzfmc/LeNlZCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HLwJWAUS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55063C32781;
+	Wed,  5 Jun 2024 11:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588521;
-	bh=vZPl2Rg9MMjHgwCnAcC6p7mvcU/vcb8ipMfTFMNDETU=;
+	s=k20201202; t=1717588523;
+	bh=7BgoD1Te/ofFCaNZUnrVRTv7nU7IXLSPK3C/Bx4GeOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KiNR6jl8vm78FoYfg30mzAwmjl7R4CyOEoKr3kMu9JN0X3M345jPcVSmckWESk62z
-	 r6NsJayu2gUCRY+8/i1euvW98jjmvYcouPWEu42cWrq7YwXgQDxcCf9b0ubLPKDr01
-	 L4nWFwRFek+fPhPH/igiANsaLfbIyJyQVW+YUwHxzFcC65Gw+tuOYF5NmuN3xepApT
-	 ILa6zxqjGj71e/bpylwhVHCcjibBFLzEUpUa+L6UafIgmevvdvzPHW9EUGIVFGXAsl
-	 m7QUvs88F/02/6C6quDV+8xpul8PrmtbRqm98OkIjRxnimviXr9sa9AWSmTUCbH1DV
-	 W6ES4tsBzpYng==
+	b=HLwJWAUSQmhp1uJdANrOdRH3fkBoGE5AZYxbQ6oMcyyBNO6F2PYnG2ABLvR1+f7r6
+	 tEjWi5W/opKREJsY+MytF33AgEd9HkdHkrVip+hVBFE2BOVhNDxZFXp+resCgAhMqy
+	 1WWkeL+G+azZOBIVLpIo+D+yprZYrMskEcgggufhTj/DgoeI43CgdpVft/ITlORCUe
+	 m05JETqO/Em47dERsRNpXFLOzlahfKhLOrBURaQE4g+vPmHQkRhIhuvUewThs637Vc
+	 Hjj2nbRYF+RVo9jYvhdXwGHfd50gIOXZz5ectnlHM/RNefMnACJG+cv/rgl6djIW7m
+	 WgG4Pal9adeUw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roman Smirnov <r.smirnov@omp.ru>,
-	Jan Kara <jack@suse.cz>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Eric Heintzmann <heintzmann.eric@free.fr>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jack@suse.com
-Subject: [PATCH AUTOSEL 4.19 2/4] udf: udftime: prevent overflow in udf_disk_stamp_to_time()
-Date: Wed,  5 Jun 2024 07:55:10 -0400
-Message-ID: <20240605115518.2964670-2-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 3/4] PCI/PM: Avoid D3cold for HP Pavilion 17 PC/1972 PCIe Ports
+Date: Wed,  5 Jun 2024 07:55:11 -0400
+Message-ID: <20240605115518.2964670-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115518.2964670-1-sashal@kernel.org>
 References: <20240605115518.2964670-1-sashal@kernel.org>
@@ -66,52 +66,69 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.315
 Content-Transfer-Encoding: 8bit
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 3b84adf460381169c085e4bc09e7b57e9e16db0a ]
+[ Upstream commit 256df20c590bf0e4d63ac69330cf23faddac3e08 ]
 
-An overflow can occur in a situation where src.centiseconds
-takes the value of 255. This situation is unlikely, but there
-is no validation check anywere in the code.
+Hewlett-Packard HP Pavilion 17 Notebook PC/1972 is an Intel Ivy Bridge
+system with a muxless AMD Radeon dGPU.  Attempting to use the dGPU fails
+with the following sequence:
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+  ACPI Error: Aborting method \AMD3._ON due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+  radeon 0000:01:00.0: not ready 1023ms after resume; waiting
+  radeon 0000:01:00.0: not ready 2047ms after resume; waiting
+  radeon 0000:01:00.0: not ready 4095ms after resume; waiting
+  radeon 0000:01:00.0: not ready 8191ms after resume; waiting
+  radeon 0000:01:00.0: not ready 16383ms after resume; waiting
+  radeon 0000:01:00.0: not ready 32767ms after resume; waiting
+  radeon 0000:01:00.0: not ready 65535ms after resume; giving up
+  radeon 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20240327132755.13945-1-r.smirnov@omp.ru>
+The issue is that the Root Port the dGPU is connected to can't handle the
+transition from D3cold to D0 so the dGPU can't properly exit runtime PM.
+
+The existing logic in pci_bridge_d3_possible() checks for systems that are
+newer than 2015 to decide that D3 is safe.  This would nominally work for
+an Ivy Bridge system (which was discontinued in 2015), but this system
+appears to have continued to receive BIOS updates until 2017 and so this
+existing logic doesn't appropriately capture it.
+
+Add the system to bridge_d3_blacklist to prevent D3cold from being used.
+
+Link: https://lore.kernel.org/r/20240307163709.323-1-mario.limonciello@amd.com
+Reported-by: Eric Heintzmann <heintzmann.eric@free.fr>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3229
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Eric Heintzmann <heintzmann.eric@free.fr>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/udftime.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/pci/pci.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/fs/udf/udftime.c b/fs/udf/udftime.c
-index fce4ad976c8c2..26169b1f482c3 100644
---- a/fs/udf/udftime.c
-+++ b/fs/udf/udftime.c
-@@ -60,13 +60,18 @@ udf_disk_stamp_to_time(struct timespec64 *dest, struct timestamp src)
- 	dest->tv_sec = mktime64(year, src.month, src.day, src.hour, src.minute,
- 			src.second);
- 	dest->tv_sec -= offset * 60;
--	dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
--			src.hundredsOfMicroseconds * 100 + src.microseconds);
-+
- 	/*
- 	 * Sanitize nanosecond field since reportedly some filesystems are
- 	 * recorded with bogus sub-second values.
- 	 */
--	dest->tv_nsec %= NSEC_PER_SEC;
-+	if (src.centiseconds < 100 && src.hundredsOfMicroseconds < 100 &&
-+	    src.microseconds < 100) {
-+		dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
-+			src.hundredsOfMicroseconds * 100 + src.microseconds);
-+	} else {
-+		dest->tv_nsec = 0;
-+	}
- }
- 
- void
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 2ac400adaee11..4f229cb5d2a9f 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2530,6 +2530,18 @@ static const struct dmi_system_id bridge_d3_blacklist[] = {
+ 			DMI_MATCH(DMI_BOARD_VERSION, "Continental Z2"),
+ 		},
+ 	},
++	{
++		/*
++		 * Changing power state of root port dGPU is connected fails
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3229
++		 */
++		.ident = "Hewlett-Packard HP Pavilion 17 Notebook PC/1972",
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Hewlett-Packard"),
++			DMI_MATCH(DMI_BOARD_NAME, "1972"),
++			DMI_MATCH(DMI_BOARD_VERSION, "95.33"),
++		},
++	},
+ #endif
+ 	{ }
+ };
 -- 
 2.43.0
 
