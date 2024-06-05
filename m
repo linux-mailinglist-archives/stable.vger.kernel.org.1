@@ -1,183 +1,127 @@
-Return-Path: <stable+bounces-48227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91CBC8FD088
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 16:13:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8918FD0C4
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 16:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DA511F22F96
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:13:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D4F11F215F8
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF6C17C60;
-	Wed,  5 Jun 2024 14:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF1E19D894;
+	Wed,  5 Jun 2024 14:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UrnsKbt+"
+	dkim=pass (2048-bit key) header.d=orange.com header.i=@orange.com header.b="fR0rn0BC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-out.orange.com (smtp-out.orange.com [80.12.210.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE8A6FB0;
-	Wed,  5 Jun 2024 14:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB0623D7;
+	Wed,  5 Jun 2024 14:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.210.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717596777; cv=none; b=V1jT3HnwDJ50oyh9P3myghYs+Vy7mY0GMBjVwujBQyP//TJF/IxzhYIT0BsikKvym3Pb/PNk9t3TeFQpCQPIWehBb+q9miKLGvbWmYb9aRHxofMujN1/pGWbsBTdD9g5BDLgp3VbkR1RTLFiqhrFXA/6k49rOWnW9/n6N0Aden0=
+	t=1717597438; cv=none; b=FhnXJzry5bdH7Vt3Xd1UvBKrLRngQaxffRhcTgKT6X8eFXrIRabMNxxQnyjtd19mHp7Hlo9Nl46sqzU0sJBywCFrPVIo1UU7ZmyKhzk6CtNFHLewdhE5IVg6ij0i5efve7OMFkP5IEV6Ekl9ck7W34LGv3glCsHLJUjLfO2BLNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717596777; c=relaxed/simple;
-	bh=ozvkOGgUaxgxta5ytOJ2UVPWZSX57s6TLs8ldu0HwZQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p+keQyTm2+TYerIlJK9WvtpawBYQNHkw4lSBWbsO/fDy5o5rl0niOwrAP1egzJLDiTqa50ynt/z9jyacoFdDXO7hXRd5pxvOnNdrO29F1kuuSfPLX05mJQTz3sY/ls/YCEBD3zlCUQNCymldbviLkskEhYEUvfmC7Zx8tG3RKC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UrnsKbt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A920C2BD11;
-	Wed,  5 Jun 2024 14:12:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717596777;
-	bh=ozvkOGgUaxgxta5ytOJ2UVPWZSX57s6TLs8ldu0HwZQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UrnsKbt+4SxFIHs9D7s0CLZz9RiwVy9uaPxcmHYlp8AO7wBrkAnAsiSWkBqnR8rAr
-	 ZFHnnMzUWLEpGNnoqLbWVMHsZwOE2VMqe8ujTBVCDjFCbuCE+HeL45a6qALbWxQd2U
-	 CZ1yVJ4i9TkWCZlKp3z/5Op32xwZdUR0tYhxAJqPw5WdlyPTl9E4P2dX9VC1gss8cc
-	 gk3xXKvbR4FU3Khm8+yZmSsX1rHlVVLCBk3gKH1O+ZiV3DsDhhRnq5iTDcxzafjKb8
-	 d7/JDIa5zfAKyCvrM1fgwzje/2comJeg91ZR65SEOFYSLljurnqludiVTkQQf5LaLq
-	 HsMx4QCGUDvEw==
-Message-ID: <0f85551f-dd67-4d88-abc2-cdf80293a604@kernel.org>
-Date: Wed, 5 Jun 2024 16:12:52 +0200
+	s=arc-20240116; t=1717597438; c=relaxed/simple;
+	bh=ZF+Y57P9kdEiy4scC2Ivo4PpX3jyFJxVU8N7S098Rcg=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ZJWfIFd/t5SNwWtt5EUoI71oI0maLBMrCIFahNiNlsis70H8pQjX+BZDb96Gz0Go1Zuz7Ss5xuAfGkQKSlq2buKZAu4D+ZRwS/0jxiKMJq8AQNrOzB5FcztvpPsCvhadcke2rxPK+kNourustfBZuyLUxrTu8WqDEpH5zdIvzLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=orange.com; spf=pass smtp.mailfrom=orange.com; dkim=pass (2048-bit key) header.d=orange.com header.i=@orange.com header.b=fR0rn0BC; arc=none smtp.client-ip=80.12.210.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=orange.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=orange.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=orange.com; i=@orange.com; q=dns/txt; s=orange002;
+  t=1717597435; x=1749133435;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   in-reply-to:content-transfer-encoding:from;
+  bh=ZF+Y57P9kdEiy4scC2Ivo4PpX3jyFJxVU8N7S098Rcg=;
+  b=fR0rn0BCJEGVcaVTbBpUIJVNN5f2JL/j5C7/JFh1c1CCNSgnBPrOIeij
+   ccIyGz8xnwOLfGV72ZTkfhNMnl1A2YZLb9n5X1D2iXvbylrPbSZ6R53nE
+   2NOAs4CxHGQW728mCwg/14NCRYvwmiVy3asjRis+rtqonTiaMfU4ILRKV
+   Jl30vd3Hc/owfahSVuHK5bpGp5Ma6U0jO/WRGL8G9YTuovWN+GMe8W85N
+   6mVtjIrlIgpFq2MZcxtFSrnVsSseePgoO3h75QydQ0Fo+blzJo3AMh5A2
+   TyT+sgkVm9tLby3aNw5S8l0RkM8cOrVF6oSAEOP7i4Fdtoi2Bj7JoAaDk
+   w==;
+Received: from unknown (HELO opfedv3rlp0d.nor.fr.ftgroup) ([x.x.x.x]) by
+ smtp-out.orange.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 16:22:45 +0200
+Received: from test-mailhost.rd.francetelecom.fr (HELO l-mail-int) ([x.x.x.x]) by
+ opfedv3rlp0d.nor.fr.ftgroup with ESMTP; 05 Jun 2024 16:22:45 +0200
+Received: from lat6466.rd.francetelecom.fr ([x.x.x.x])	by l-mail-int with esmtp (Exim
+ 4.94.2)	(envelope-from <alexandre.ferrieux@orange.com>)	id 1sErX8-00CKl5-9B;
+ Wed, 05 Jun 2024 16:22:43 +0200
+From: alexandre.ferrieux@orange.com
+X-IronPort-AV: E=Sophos;i="6.08,216,1712613600"; 
+   d="scan'208";a="155592919"
+Message-ID: <6df76928-be7f-483e-9685-88ee245ef1bf@orange.com>
+Date: Wed, 5 Jun 2024 16:22:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 2/3] selftests: net: lib: avoid error removing empty
- netns name
-Content-Language: en-GB
-To: Petr Machata <petrm@nvidia.com>
-Cc: mptcp@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
- Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Geliang Tang <geliang@kernel.org>
-References: <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-0-b3afadd368c9@kernel.org>
- <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-2-b3afadd368c9@kernel.org>
- <877cf38yg5.fsf@nvidia.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <877cf38yg5.fsf@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH v5] af_packet: Handle outgoing VLAN packets without
+ hardware offloading
+To: Chengen Du <chengen.du@canonical.com>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, kaber@trash.net, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240604054823.20649-1-chengen.du@canonical.com>
+ <665f9bccaa91c_2bf7de294f4@willemb.c.googlers.com.notmuch>
+ <CAPza5qctPn_yrFQrO_2NHXpz-kf1qTwxk_APn2t5VU30sY=-MQ@mail.gmail.com>
+Content-Language: fr, en-US
+In-Reply-To: <CAPza5qctPn_yrFQrO_2NHXpz-kf1qTwxk_APn2t5VU30sY=-MQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-Hi Petr,
-
-Thank you for the review!
-
-On 05/06/2024 12:38, Petr Machata wrote:
-> 
-> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
-> 
->> If there is an error to create the first netns with 'setup_ns()',
->> 'cleanup_ns()' will be called with an empty string as first parameter.
->>
->> The consequences is that 'cleanup_ns()' will try to delete an invalid
->> netns, and wait 20 seconds if the netns list is empty.
->>
->> Instead of just checking if the name is not empty, convert the string
->> separated by spaces to an array. Manipulating the array is cleaner, and
->> calling 'cleanup_ns()' with an empty array will be a no-op.
->>
->> Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
->> Cc: stable@vger.kernel.org
->> Acked-by: Geliang Tang <geliang@kernel.org>
->> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->> ---
->>  tools/testing/selftests/net/lib.sh | 13 +++++++------
->>  1 file changed, 7 insertions(+), 6 deletions(-)
->>
->> diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
->> index a422e10d3d3a..e2f51102d7e1 100644
->> --- a/tools/testing/selftests/net/lib.sh
->> +++ b/tools/testing/selftests/net/lib.sh
->> @@ -15,7 +15,7 @@ ksft_xfail=2
->>  ksft_skip=4
->>  
->>  # namespace list created by setup_ns
->> -NS_LIST=""
->> +NS_LIST=()
->>  
->>  ##############################################################################
->>  # Helpers
->> @@ -137,6 +137,7 @@ cleanup_ns()
->>  	fi
->>  
->>  	for ns in "$@"; do
->> +		[ -z "${ns}" ] && continue
-> 
-> I think this is now irrelevant though? Now cleanup_ns() will be called
-> with no arguments for an empty NS list, so the loop does not even kick in.
-
-If you don't mind, I think it is "safer" to keep it: some selftests are
-using 'cleanup_ns()' directly, not via 'cleanup_all_ns()', e.g.
-netns-name.sh, cmsg-*.sh, fib-*.sh, etc. which can call it with the
-variables not set if 'setup_ns' failed during the init phase.
-
-For the moment, all these selftests are calling 'cleanup_ns()' with
-parameters added without double quotes: so it is fine. Until someone
-changes that to please shellcheck, like we did on our side with MPTCP
-selftests. So this line will be useful soon when we will publish the
-rest of our patches to use 'lib.sh' [1] :)
-
-Link:
-https://lore.kernel.org/mptcp/5f4615c3-0621-43c5-ad25-55747a4350ce@kernel.org/T/
-[1]
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+DQoNCk9uIDA1LzA2LzIwMjQgMDg6MDMsIENoZW5nZW4gRHUgd3JvdGU6DQo+IE9uIFdlZCwgSnVu
+IDUsIDIwMjQgYXQgNjo1N+KAr0FNIFdpbGxlbSBkZSBCcnVpam4NCj4gPHdpbGxlbWRlYnJ1aWpu
+Lmtlcm5lbEBnbWFpbC5jb20+IHdyb3RlOg0KPiA+DQo+ID4gVGhpcyBhZGRzIHNvbWUgcGFyc2lu
+ZyBvdmVyaGVhZCBpbiB0aGUgZGF0YXBhdGguIFNPQ0tfUkFXIGRvZXMgbm90DQo+ID4gbmVlZCBp
+dCwgYXMgaXQgY2FuIHNlZSB0aGUgd2hvbGUgVkxBTiB0YWcuIFBlcmhhcHMgbGltaXQgdGhlIG5l
+dw0KPiA+IGJyYW5jaGVzIHRvIFNPQ0tfREdSQU0gY2FzZXM/IFRoZW4gdGhlIGFib3ZlIGNhbiBh
+bHNvIGJlIHNpbXBsaWZpZWQuDQo+DQo+IEkgY29uc2lkZXJlZCB0aGlzIGFwcHJvYWNoIGJlZm9y
+ZSwgYnV0IGl0IHdvdWxkIHJlc3VsdCBpbiBkaWZmZXJlbnQNCj4gbWV0YWRhdGEgZm9yIFNPQ0tf
+REdSQU0gYW5kIFNPQ0tfUkFXIHNjZW5hcmlvcy4gVGhpcyBkaWZmZXJlbmNlIG1ha2VzDQo+IG1l
+IGhlc2l0YXRlIGJlY2F1c2UgaXQgbWlnaHQgYmUgYmV0dGVyIHRvIHByb3ZpZGUgY29uc2lzdGVu
+dCBtZXRhZGF0YQ0KPiB0byBkZXNjcmliZSB0aGUgc2FtZSBwYWNrZXQsIHJlZ2FyZGxlc3Mgb2Yg
+dGhlIHJlY2VpdmVyJ3MgYXBwcm9hY2guDQo+IFRoZXNlIGFyZSBqdXN0IG15IHRob3VnaHRzIGFu
+ZCBJJ20gb3BlbiB0byBmdXJ0aGVyIGRpc2N1c3Npb24uDQoNCkZXSVcsIEkgdm90ZSBmb3IgV2ls
+bGVtJ3MgYXBwcm9hY2ggaGVyZTogdGhlcmUgaXMgbm8gcHJvYmxlbSB3aXRoIGhhdmluZyANCmRp
+ZmZlcmVudCBtZXRhZGF0YSBpbiBTT0NLX0RHUkFNIGFuZCBTT0NLX1JBVywgYXMgdGhlIHVuZGVy
+bHlpbmcgcGFyc2luZyBlZmZvcnRzIA0KYXJlIGRpZmZlcmVudCBhbnl3YXksIGFsb25nIHdpdGgg
+dGhlIHN0YXJ0IG9mZnNldCBmb3IgQlBGLg0KKE5vLCBJJ20gbm90IHN1cGVyIGhhcHB5IHRvIHNl
+ZSBCUEYgY29kZSByZWFjaGluZyBvdXQgdG8gb2Zmc2V0IC00MDk2IG9yIHNvIHRvIA0KZ2V0IFZM
+QU4gYXMgbWV0YWRhdGEuIFRoYXQganVzdCBzbWVsbHMgbGlrZSBhIGhvcnJlbmRvdXMga2x1ZGdl
+LikNClRvIG1lLCBpdCBtYWtlcyBwbGVudHkgb2Ygc2Vuc2UgdG8gaGF2ZToNCiDCoC0gU09DS19E
+R1JBTSBmb3IgY29tcGF0aWJpbGl0eSAodXNlZCBieSBldmVyeW9uZSB0b2RheSksIGRvaW5nIGFs
+bCBoaXN0b3JpY2FsIA0Kc2hlbmFuaWdhbnMgd2l0aCBWTEFOcyBhbmQgbWV0YWRhdGENCiDCoC0g
+U09DS19SQVcgZm9yIGEgbW9kZXJuLCBuZXcgQVBJLCBtYWtpbmcgbm8gYXNzdW1wdGlvbiBvbiBl
+bmNhcHN1bGF0aW9uLCBhbmQgDQpwcmVzZW50aW5nIGFuIHVudG91Y2hlZCBsaW5lYXIgZnJhbWUN
+CiDCoC0geWVzIHRoaXMgbWVhbnMgZGlmZmVyZW50IEJQRiBjb2RlIGZvciB0aGUgc2FtZSBmaWx0
+ZXIgYmV0d2VlbiB0aGUgdHdvIG1vZGVzDQoNCkFnYWluLCBteSAuMDJjDQoNCi1BbGV4DQoNCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KQ2UgbWVz
+c2FnZSBldCBzZXMgcGllY2VzIGpvaW50ZXMgcGV1dmVudCBjb250ZW5pciBkZXMgaW5mb3JtYXRp
+b25zIGNvbmZpZGVudGllbGxlcyBvdSBwcml2aWxlZ2llZXMgZXQgbmUgZG9pdmVudCBkb25jDQpw
+YXMgZXRyZSBkaWZmdXNlcywgZXhwbG9pdGVzIG91IGNvcGllcyBzYW5zIGF1dG9yaXNhdGlvbi4g
+U2kgdm91cyBhdmV6IHJlY3UgY2UgbWVzc2FnZSBwYXIgZXJyZXVyLCB2ZXVpbGxleiBsZSBzaWdu
+YWxlcg0KYSBsJ2V4cGVkaXRldXIgZXQgbGUgZGV0cnVpcmUgYWluc2kgcXVlIGxlcyBwaWVjZXMg
+am9pbnRlcy4gTGVzIG1lc3NhZ2VzIGVsZWN0cm9uaXF1ZXMgZXRhbnQgc3VzY2VwdGlibGVzIGQn
+YWx0ZXJhdGlvbiwNCk9yYW5nZSBkZWNsaW5lIHRvdXRlIHJlc3BvbnNhYmlsaXRlIHNpIGNlIG1l
+c3NhZ2UgYSBldGUgYWx0ZXJlLCBkZWZvcm1lIG91IGZhbHNpZmllLiBNZXJjaS4NCg0KVGhpcyBt
+ZXNzYWdlIGFuZCBpdHMgYXR0YWNobWVudHMgbWF5IGNvbnRhaW4gY29uZmlkZW50aWFsIG9yIHBy
+aXZpbGVnZWQgaW5mb3JtYXRpb24gdGhhdCBtYXkgYmUgcHJvdGVjdGVkIGJ5IGxhdzsNCnRoZXkg
+c2hvdWxkIG5vdCBiZSBkaXN0cmlidXRlZCwgdXNlZCBvciBjb3BpZWQgd2l0aG91dCBhdXRob3Jp
+c2F0aW9uLg0KSWYgeW91IGhhdmUgcmVjZWl2ZWQgdGhpcyBlbWFpbCBpbiBlcnJvciwgcGxlYXNl
+IG5vdGlmeSB0aGUgc2VuZGVyIGFuZCBkZWxldGUgdGhpcyBtZXNzYWdlIGFuZCBpdHMgYXR0YWNo
+bWVudHMuDQpBcyBlbWFpbHMgbWF5IGJlIGFsdGVyZWQsIE9yYW5nZSBpcyBub3QgbGlhYmxlIGZv
+ciBtZXNzYWdlcyB0aGF0IGhhdmUgYmVlbiBtb2RpZmllZCwgY2hhbmdlZCBvciBmYWxzaWZpZWQu
+DQpUaGFuayB5b3UuCg==
 
 
