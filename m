@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-48211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D438FCDC2
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:51:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF058FCDC6
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB8A8285B5D
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:51:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6D811F2A666
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97C31D0062;
-	Wed,  5 Jun 2024 12:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48CE1ABCD3;
+	Wed,  5 Jun 2024 12:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7qU8FC9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOyTKfzq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811471CF8BB;
-	Wed,  5 Jun 2024 12:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D551D009F;
+	Wed,  5 Jun 2024 12:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589147; cv=none; b=Huy43m0U0bnHFO1sTpTo8g6LgpYmpwUNBHDRoYGtKOC6BzbQcJjt/XZ7F+kMwBcGxeOy04D0jBnyfOitN6ppCiRRpfcjgvQ5EPePVwPDsNYI6To9x/zDSbFOGIkLczXlCzEbX/vintZsOxvCEjsCE5/6+a7hbAB6VW4FAqrdtEE=
+	t=1717589150; cv=none; b=X+miEZ/pIM5czP0SOuNXe8Wm0pDljGGD7JwlqNF21nJoig2SUtycbVVsakSMQgghVYnB9qycrCJSp9f9R/haOk0EQJ8KYN+gFfwF+q0qprlJC9gLoulXOjlamT5vJ2FupqoJOAx7Z78lKlvhYxuv/fAAD9LiGMgoDigmOK1d22c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589147; c=relaxed/simple;
-	bh=Ki0uOE9OVNhemVSk0RYDvPVVhdi998Yhw6Tvj9L3ZUg=;
+	s=arc-20240116; t=1717589150; c=relaxed/simple;
+	bh=o2S4bVhDNJ+1ziiBZQeF7Y+3Bej05M4AnuKFqi8+NmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSSmJJdqOlEfKpGwSFnlILgtSQrZkwRCEmugdNva/sbLDmK46HCvtoZMVrN/iLTj2ydJebuRen5/7loo+VtkSL2W/GWPRHvhrL+BMIDCoj7HPZC4B0Bb7PlboF8pgkHzv7NsVozP1pmZftVQcTQV7X7A+DCy8DZhADV/fO1wb7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7qU8FC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D7CC3277B;
-	Wed,  5 Jun 2024 12:05:46 +0000 (UTC)
+	 MIME-Version; b=UAWTqMbWcPPBNIurtcGaHlVQqzOoZxcsaA4zZ75E0NNFjmasN/MoaW5RbiExJNyXuoC1N5fkKvWpe2MsPsH9DQyBwhudaFlqI62DlKuGaOrDW2SbQfzCKwbaz81D2xbKaY6x7Om4gZjcpve5HzaXQir/uhhPr5Op8BtPjf8unqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOyTKfzq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33160C3277B;
+	Wed,  5 Jun 2024 12:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589147;
-	bh=Ki0uOE9OVNhemVSk0RYDvPVVhdi998Yhw6Tvj9L3ZUg=;
+	s=k20201202; t=1717589150;
+	bh=o2S4bVhDNJ+1ziiBZQeF7Y+3Bej05M4AnuKFqi8+NmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7qU8FC9CyUB6FJqfoMGSvOn+KwubGl+Sta5WSAVCIAlpEvg6DAfcLGe/0INuvCAl
-	 +TzlLEtmCOa8msafE6IxLIvjWW6Yz1Nn4R8xEKenL2FzeleW7dRa8FCF0NIdveJX5o
-	 MhUAla6ZM640BiPYKrweqHf6LFH4v2hcNv6CRgVEW702fXBhS6G1E0BGseynBDyOX8
-	 jgVuz9oeVIf2HGTln9PQ8xpTGu576kPD+LAiH74ZgMF5LR+b01tQrfb0U+bGuLHq8F
-	 ENY8NIGBiPlzg21ndbAESnrm3B25CKHGKgkHQXIdbArHhtFgW6H6qBaaUjk30UvRgN
-	 ldpdVu82Xd79A==
+	b=LOyTKfzq/8D9+WyxsAlF1U9vcojnnmDvkM4wNB3HPmwOmtzN5GndHigBGFCsXBZQz
+	 n5Mg0pvD26MAnB/FqQ9tLsT3ncTEXKQudjPOiJ+73KeuwzyPSEZ6bhda0p2419CINt
+	 bnDWM5cqtAAqXCXSJlZQ8GqR2/OYrcirxxUmRH54i46MyNurZdObs6oxlXS9UT27Mi
+	 5flfKIebFxcUrYTuqTHd6tOpWHg9964UcBUR45/gXHqpCEVaNNUnuc2ShhIyTCwpvF
+	 OjCLI8guEtNaRIR/He+aljjruWV6EPyRRl14PyMW0TVFpnuCZ7aLKrqDfnqoBrvGL4
+	 Ui/o4NIUaUfxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+71bfed2b2bcea46c98f2@syzkaller.appspotmail.com,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	bongsu.jeon@samsung.com,
-	krzk@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 11/12] nfc/nci: Add the inconsistency check between the input data length and count
-Date: Wed,  5 Jun 2024 08:05:21 -0400
-Message-ID: <20240605120528.2967750-11-sashal@kernel.org>
+	martin.petersen@oracle.com,
+	hare@suse.de,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 12/12] null_blk: Do not allow runt zone with zone capacity smaller then zone size
+Date: Wed,  5 Jun 2024 08:05:22 -0400
+Message-ID: <20240605120528.2967750-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120528.2967750-1-sashal@kernel.org>
 References: <20240605120528.2967750-1-sashal@kernel.org>
@@ -68,42 +69,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.160
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 068648aab72c9ba7b0597354ef4d81ffaac7b979 ]
+[ Upstream commit b164316808ec5de391c3e7b0148ec937d32d280d ]
 
-write$nci(r0, &(0x7f0000000740)=ANY=[@ANYBLOB="610501"], 0xf)
+A zoned device with a smaller last zone together with a zone capacity
+smaller than the zone size does make any sense as that does not
+correspond to any possible setup for a real device:
+1) For ZNS and zoned UFS devices, all zones are always the same size.
+2) For SMR HDDs, all zones always have the same capacity.
+In other words, if we have a smaller last runt zone, then this zone
+capacity should always be equal to the zone size.
 
-Syzbot constructed a write() call with a data length of 3 bytes but a count value
-of 15, which passed too little data to meet the basic requirements of the function
-nci_rf_intf_activated_ntf_packet().
+Add a check in null_init_zoned_dev() to prevent a configuration to have
+both a smaller zone size and a zone capacity smaller than the zone size.
 
-Therefore, increasing the comparison between data length and count value to avoid
-problems caused by inconsistent data length and count.
-
-Reported-and-tested-by: syzbot+71bfed2b2bcea46c98f2@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240530054035.491497-2-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/virtual_ncidev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/block/null_blk/zoned.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/nfc/virtual_ncidev.c b/drivers/nfc/virtual_ncidev.c
-index 6317e8505aaad..09d4ab0e63b1a 100644
---- a/drivers/nfc/virtual_ncidev.c
-+++ b/drivers/nfc/virtual_ncidev.c
-@@ -121,6 +121,10 @@ static ssize_t virtual_ncidev_write(struct file *file,
- 		kfree_skb(skb);
- 		return -EFAULT;
+diff --git a/drivers/block/null_blk/zoned.c b/drivers/block/null_blk/zoned.c
+index dae54dd1aeac3..e0819b04d288f 100644
+--- a/drivers/block/null_blk/zoned.c
++++ b/drivers/block/null_blk/zoned.c
+@@ -80,6 +80,17 @@ int null_init_zoned_dev(struct nullb_device *dev, struct request_queue *q)
+ 		return -EINVAL;
  	}
-+	if (strnlen(skb->data, count) != count) {
-+		kfree_skb(skb);
+ 
++	/*
++	 * If a smaller zone capacity was requested, do not allow a smaller last
++	 * zone at the same time as such zone configuration does not correspond
++	 * to any real zoned device.
++	 */
++	if (dev->zone_capacity != dev->zone_size &&
++	    dev->size & (dev->zone_size - 1)) {
++		pr_err("A smaller last zone is not allowed with zone capacity smaller than zone size.\n");
 +		return -EINVAL;
 +	}
- 
- 	nci_recv_frame(ndev, skb);
- 	return count;
++
+ 	zone_capacity_sects = mb_to_sects(dev->zone_capacity);
+ 	dev_capacity_sects = mb_to_sects(dev->size);
+ 	dev->zone_size_sects = mb_to_sects(dev->zone_size);
 -- 
 2.43.0
 
