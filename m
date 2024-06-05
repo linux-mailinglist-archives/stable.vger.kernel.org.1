@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-48170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A388A8FCD4F
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:39:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C7D8FCD52
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6AB1282BCE
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:39:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22B4E1C235B3
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156841A2FB2;
-	Wed,  5 Jun 2024 12:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EBC1C619B;
+	Wed,  5 Jun 2024 12:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mPorn57P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="msLWi3cc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C111C619A;
-	Wed,  5 Jun 2024 12:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4643F1A3BB1;
+	Wed,  5 Jun 2024 12:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589052; cv=none; b=oiOIUJgSCie7c8OpX6celaIecvq7EdeJkn1PMZOeCw6c67OJ4VH7nDvzbM7jpJs0gm5bvVLTCYcHNn8lYQwuONj5SgVPe5EU7PVdYAZUtrEW68dvwkrjYYHRkt0kFoNH0Xoht4Crr6FTTb5vj5AeuS/eqR0YRPyayrrShrmnqDs=
+	t=1717589054; cv=none; b=ptwpX4LN4ViCPCqEzGZ+pTX7+3/kGwoX7KKrBzXeRHg9PXwLL/mOIgwI6ugV7DyM6UeyuJKgxGLwhe4l8NjNpkW/t1AOF0GSZ4p1fsy+wmBsasetqHkuI5EFv116xYNskOda7CPIWroe/UXQxWFjUSBIjGh6bPFNDTEhCojmBnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589052; c=relaxed/simple;
-	bh=HyWxOHBFsxYxuhl2IOENDQJf/JYMZt5KUEf88qktYTs=;
+	s=arc-20240116; t=1717589054; c=relaxed/simple;
+	bh=IGgKpx5j1MkOyKp+cg7XNRPiZbHX1nqPZwkHTCb2kNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ha1eAsabxeClyz6X3MphDcIVsV1v4PpB4YuQWhx4ifgBcxi+1yEPA44AzwBGKBiP346DJY5Pv/oQhSHsN051VkDlTdnIrog3yE9DwE5en8MFWNQ3y8EVzjVIjLAaz5Yxb3mnb86it5kc0b1uNNTxuMB6+AigTsMJWOpUoen0tMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mPorn57P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F58BC4AF07;
-	Wed,  5 Jun 2024 12:04:11 +0000 (UTC)
+	 MIME-Version; b=u9MFS3o6O+gqoVIQUHjf0AGVsauu67qoQ7oKaQPBc5vprRpUTE3fmALkrnn3LzTTPEqnOy0VqbuuezGS+2MoNnxa4rV7Ln0NaLjs3dPENlPv7yvblpWwScityrVwmtMNcBzKLFPiClISjYjQdAD2iK1Io1U6JETc1/IVnb1h7fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msLWi3cc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B07BC4AF09;
+	Wed,  5 Jun 2024 12:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589052;
-	bh=HyWxOHBFsxYxuhl2IOENDQJf/JYMZt5KUEf88qktYTs=;
+	s=k20201202; t=1717589054;
+	bh=IGgKpx5j1MkOyKp+cg7XNRPiZbHX1nqPZwkHTCb2kNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPorn57PJ0WPzixLsQbWIWpt5PUP50V4LwzCvxEqvgGcFzXB2yRJ7Eh82wUNONPYy
-	 JjDHV0m0FVYjVVCOS9cohwueMG/IP3fqGlXOWGkwJQU8kcGeMPaU6J5hPPaqOZeEUL
-	 Dm3JzXhXyFm0Ra0ZruaufMGQN6uEmb0Zg7Z3V2jyRs00TE5R8fCmVGEdJjw94k9QPQ
-	 +oM0E/BnmxEiTIfwY2PQAG51x+y0lzXVxaRV/DeDxDP6hSZuOg4rCqXAbVijZVIuJz
-	 9vcZMzbiR9bdcTuYAeVhEFycmSFSUwbw3U2suCDIHFl45dWdy32YxoJHiFLcmqnD/A
-	 CovWDSYu/jAeA==
+	b=msLWi3ccV/3Ru5YBzPqbhzcYAFjt9Z6G6P9Afw8tATAErSti3DSrxUOTd5haU/5Db
+	 yBeOp/5Hgw2pqsa3NuLBwkzMUGp/ANJrImLCGHllNnOGi2Gx580cfNM08YXr5Yo/hc
+	 burj9ckFVwlvhZeQajQbXuGXC/IjAlDn2lXZII+PnB3HXHilQiQgEhKMjwVUuIPbii
+	 XiAIPB3eUd6OfmO4DoZ18Ljyl7rvSHSWzyZJXPsyLrybWu4jxnlhVKtCcufBCh8nwR
+	 d1MX2576nsEwvEd/mJzK+5jMnRnfr6Z45d1DP1+3Xdv1g8y4jgMvBSKFk3HAfawCpB
+	 5Y0JMNAlm2HQw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Barry Song <21cnbao@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Matt Jan <zoo868e@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	chenxiang66@hisilicon.com,
-	m.szyprowski@samsung.com,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 02/18] dma-mapping: benchmark: avoid needless copy_to_user if benchmark fails
-Date: Wed,  5 Jun 2024 08:03:41 -0400
-Message-ID: <20240605120409.2967044-2-sashal@kernel.org>
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 03/18] connector: Fix invalid conversion in cn_proc.h
+Date: Wed,  5 Jun 2024 08:03:42 -0400
+Message-ID: <20240605120409.2967044-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120409.2967044-1-sashal@kernel.org>
 References: <20240605120409.2967044-1-sashal@kernel.org>
@@ -69,36 +68,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Matt Jan <zoo868e@gmail.com>
 
-[ Upstream commit f7c9ccaadffd13066353332c13d7e9bf73b8f92d ]
+[ Upstream commit 06e785aeb9ea8a43d0a3967c1ba6e69d758e82d4 ]
 
-If do_map_benchmark() has failed, there is nothing useful to copy back
-to userspace.
+The implicit conversion from unsigned int to enum
+proc_cn_event is invalid, so explicitly cast it
+for compilation in a C++ compiler.
+/usr/include/linux/cn_proc.h: In function 'proc_cn_event valid_event(proc_cn_event)':
+/usr/include/linux/cn_proc.h:72:17: error: invalid conversion from 'unsigned int' to 'proc_cn_event' [-fpermissive]
+   72 |         ev_type &= PROC_EVENT_ALL;
+      |                 ^
+      |                 |
+      |                 unsigned int
 
-Suggested-by: Barry Song <21cnbao@gmail.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Matt Jan <zoo868e@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/map_benchmark.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/uapi/linux/cn_proc.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index 02205ab53b7e9..28ca165cb62c1 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -252,6 +252,9 @@ static long map_benchmark_ioctl(struct file *file, unsigned int cmd,
- 		 * dma_mask changed by benchmark
- 		 */
- 		dma_set_mask(map->dev, old_dma_mask);
-+
-+		if (ret)
-+			return ret;
- 		break;
- 	default:
- 		return -EINVAL;
+diff --git a/include/uapi/linux/cn_proc.h b/include/uapi/linux/cn_proc.h
+index f2afb7cc4926c..18e3745b86cd4 100644
+--- a/include/uapi/linux/cn_proc.h
++++ b/include/uapi/linux/cn_proc.h
+@@ -69,8 +69,7 @@ struct proc_input {
+ 
+ static inline enum proc_cn_event valid_event(enum proc_cn_event ev_type)
+ {
+-	ev_type &= PROC_EVENT_ALL;
+-	return ev_type;
++	return (enum proc_cn_event)(ev_type & PROC_EVENT_ALL);
+ }
+ 
+ /*
 -- 
 2.43.0
 
