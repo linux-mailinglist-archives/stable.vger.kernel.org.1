@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-48135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11DEB8FCCCF
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:30:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A16A8FCCD2
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 257E91C2202D
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:30:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC1581F255C9
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2838B19E7C3;
-	Wed,  5 Jun 2024 12:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D9819E7E0;
+	Wed,  5 Jun 2024 12:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ARxAxDU7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jm1eR8y4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D303719D093;
-	Wed,  5 Jun 2024 12:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFE319E7D8;
+	Wed,  5 Jun 2024 12:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588955; cv=none; b=Bnms1vMTKRRLB5VaX+eGKjYiYjXDTSx2Kei7sg/qubj0n7nkRY4QeR/GI8pFBgifkjXC+2b6A02bs9ik8FQtsXeAccNF+YCp3Cslba4Y4GPFIph+8UyzUQPR2an/AzkRbcJNsMg3BJlA1bvjEH2BXh8Q0dpcyT5Q6ajGMbH8yEI=
+	t=1717588957; cv=none; b=K8ZlLr/JtU2nv3UNyaXES9EbXcDkgy+8GTqs2ilF5PQQy77t9gt0n9dP2b2P1udetUr6RuVPZbT0AGAqGkROykpbFEGoVJuuQePgI0PKU8itiLSi24zf6OeXo6aU4juRuvABzekKfgplge6GmEXlZrEXOCefm3Iusn261z8PF1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588955; c=relaxed/simple;
-	bh=COGzjn+D3LiWcArqLiFkj+7bTilYrHec01cV8/bgp4k=;
+	s=arc-20240116; t=1717588957; c=relaxed/simple;
+	bh=dRcy6OS1IofzbD1NjQE76rjD0zXix+SxVmT62c0IwPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XKewBMMCHaGiF+I6vZrxZotuPAPRHpyVYa901MaWacWHGiliaP7mmCRTk70dl08uJ/+hE6tZqZ8Z7cNS0cfPKvUK3TGyfpLj+Du97oxqjcd5dl79WhJ3LBt8geKUgg5DRX04aCIfWRblIZSTXleiwdLCrLYiRbmf1tGpKDZkvS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ARxAxDU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8271C3277B;
-	Wed,  5 Jun 2024 12:02:34 +0000 (UTC)
+	 MIME-Version; b=ogiYQ2cd1sIIotxAzK6Qu6Mbaaht7R4AJO4VosBBMHJv5JFB7erfrZr34AJGa6CEKE1lY09idwkwuuB0NZyt0EaQf4c3JGKgR83eAa2HH1YhBQhewVckdMh/9I9FYRYK3F5fauDvKQFt2Qh3HGVDdpwabO0t6KmRTxnTkXXppE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jm1eR8y4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3649CC4AF0C;
+	Wed,  5 Jun 2024 12:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588955;
-	bh=COGzjn+D3LiWcArqLiFkj+7bTilYrHec01cV8/bgp4k=;
+	s=k20201202; t=1717588956;
+	bh=dRcy6OS1IofzbD1NjQE76rjD0zXix+SxVmT62c0IwPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ARxAxDU7a5aTuRVPK682CpZRqXoj5JFNPVH7QnM8SejumJu8CUMn2tZMNVRtCFCBP
-	 z7PGfrJbGl3smeSD8BwalWtg6826Nu9YBudCFGhCS2fn8yY/8gA2scd9kLvg9cPjWg
-	 2o1uhx7NvRL+FiPjE9nZA+shcEbgFt6UwGkWmyaK7IQWAyQgqlPeJLx7tqob4UA8s7
-	 Dc/8/f5IxrKLn+e/5Yi1JQlsCHu5ZloiDtc8HjGtfFXQnTr/ZsSoAdC+Er3E3h6x6w
-	 Omiq0mm7cZSHPONXD5huGwESORY35x28IkfPanJAhJXQ1Asin36YjiRA/aq9QwRN9Y
-	 krcqbR4TD7NKw==
+	b=Jm1eR8y43/cqVFizuaUO8UMf3CxyGZjDeTjYoz+z2Zglb/2EnNNrqgy8H/91lPJby
+	 QnUQF52ON1fq571ZFnmW3yxOllo/a5e8H/nHmnlhtj6As2b58Aen/aD/EKcE6oA+8Y
+	 n6wu/ZC0JoWU/1kdYEoXz7FKJuIh7VTKyePKlj9zWELA27Xd4ZNqUYoV6cXi2JEi41
+	 kRwltnWN4PWbFKeXJO+KlXK+ztDOh0fFY4JRjMd67MCZ/28KpvYzjvX5Ko6NfMWCD6
+	 OQDd6npRjPVAawiyPTcFYNPdovyUsSd/u7jJB4Wm6r9I8M4/ciuMGCtsenXX0UO8B2
+	 lprOvKpPEkGDA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Jim Wylder <jwylder@google.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	eddyz87@gmail.com,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 08/23] libbpf: detect broken PID filtering logic for multi-uprobe
-Date: Wed,  5 Jun 2024 08:01:51 -0400
-Message-ID: <20240605120220.2966127-8-sashal@kernel.org>
+	gregkh@linuxfoundation.org
+Subject: [PATCH AUTOSEL 6.9 09/23] regmap-i2c: Subtract reg size from max_write
+Date: Wed,  5 Jun 2024 08:01:52 -0400
+Message-ID: <20240605120220.2966127-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120220.2966127-1-sashal@kernel.org>
 References: <20240605120220.2966127-1-sashal@kernel.org>
@@ -68,99 +65,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Jim Wylder <jwylder@google.com>
 
-[ Upstream commit 04d939a2ab229a3821f04fc81f7c027842f501f1 ]
+[ Upstream commit 611b7eb19d0a305d4de00280e4a71a1b15c507fc ]
 
-Libbpf is automatically (and transparently to user) detecting
-multi-uprobe support in the kernel, and, if supported, uses
-multi-uprobes to improve USDT attachment speed.
+Currently, when an adapter defines a max_write_len quirk,
+the data will be chunked into data sizes equal to the
+max_write_len quirk value.  But the payload will be increased by
+the size of the register address before transmission.  The
+resulting value always ends up larger than the limit set
+by the quirk.
 
-USDTs can be attached system-wide or for the specific process by PID. In
-the latter case, we rely on correct kernel logic of not triggering USDT
-for unrelated processes.
+Avoid this error by setting regmap's max_write to the quirk's
+max_write_len minus the number of bytes for the register and
+padding.  This allows the chunking to work correctly for this
+limited case without impacting other use-cases.
 
-As such, on older kernels that do support multi-uprobes, but still have
-broken PID filtering logic, we need to fall back to singular uprobes.
-
-Unfortunately, whether user is using PID filtering or not is known at
-the attachment time, which happens after relevant BPF programs were
-loaded into the kernel. Also unfortunately, we need to make a call
-whether to use multi-uprobes or singular uprobe for SEC("usdt") programs
-during BPF object load time, at which point we have no information about
-possible PID filtering.
-
-The distinction between single and multi-uprobes is small, but important
-for the kernel. Multi-uprobes get BPF_TRACE_UPROBE_MULTI attach type,
-and kernel internally substitiute different implementation of some of
-BPF helpers (e.g., bpf_get_attach_cookie()) depending on whether uprobe
-is multi or singular. So, multi-uprobes and singular uprobes cannot be
-intermixed.
-
-All the above implies that we have to make an early and conservative
-call about the use of multi-uprobes. And so this patch modifies libbpf's
-existing feature detector for multi-uprobe support to also check correct
-PID filtering. If PID filtering is not yet fixed, we fall back to
-singular uprobes for USDTs.
-
-This extension to feature detection is simple thanks to kernel's -EINVAL
-addition for pid < 0.
-
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20240521163401.3005045-4-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jim Wylder <jwylder@google.com>
+Link: https://msgid.link/r/20240523211437.2839942-1-jwylder@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/features.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ drivers/base/regmap/regmap-i2c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/features.c b/tools/lib/bpf/features.c
-index a336786a22a38..3df0125ed5fa7 100644
---- a/tools/lib/bpf/features.c
-+++ b/tools/lib/bpf/features.c
-@@ -392,11 +392,40 @@ static int probe_uprobe_multi_link(int token_fd)
- 	link_fd = bpf_link_create(prog_fd, -1, BPF_TRACE_UPROBE_MULTI, &link_opts);
- 	err = -errno; /* close() can clobber errno */
+diff --git a/drivers/base/regmap/regmap-i2c.c b/drivers/base/regmap/regmap-i2c.c
+index 3ec611dc0c09f..a905e955bbfc7 100644
+--- a/drivers/base/regmap/regmap-i2c.c
++++ b/drivers/base/regmap/regmap-i2c.c
+@@ -350,7 +350,8 @@ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
  
-+	if (link_fd >= 0 || err != -EBADF) {
-+		close(link_fd);
-+		close(prog_fd);
-+		return 0;
-+	}
-+
-+	/* Initial multi-uprobe support in kernel didn't handle PID filtering
-+	 * correctly (it was doing thread filtering, not process filtering).
-+	 * So now we'll detect if PID filtering logic was fixed, and, if not,
-+	 * we'll pretend multi-uprobes are not supported, if not.
-+	 * Multi-uprobes are used in USDT attachment logic, and we need to be
-+	 * conservative here, because multi-uprobe selection happens early at
-+	 * load time, while the use of PID filtering is known late at
-+	 * attachment time, at which point it's too late to undo multi-uprobe
-+	 * selection.
-+	 *
-+	 * Creating uprobe with pid == -1 for (invalid) '/' binary will fail
-+	 * early with -EINVAL on kernels with fixed PID filtering logic;
-+	 * otherwise -ESRCH would be returned if passed correct binary path
-+	 * (but we'll just get -BADF, of course).
-+	 */
-+	link_opts.uprobe_multi.pid = -1; /* invalid PID */
-+	link_opts.uprobe_multi.path = "/"; /* invalid path */
-+	link_opts.uprobe_multi.offsets = &offset;
-+	link_opts.uprobe_multi.cnt = 1;
-+
-+	link_fd = bpf_link_create(prog_fd, -1, BPF_TRACE_UPROBE_MULTI, &link_opts);
-+	err = -errno; /* close() can clobber errno */
-+
- 	if (link_fd >= 0)
- 		close(link_fd);
- 	close(prog_fd);
+ 		if (quirks->max_write_len &&
+ 		    (bus->max_raw_write == 0 || bus->max_raw_write > quirks->max_write_len))
+-			max_write = quirks->max_write_len;
++			max_write = quirks->max_write_len -
++				(config->reg_bits + config->pad_bits) / BITS_PER_BYTE;
  
--	return link_fd < 0 && err == -EBADF;
-+	return link_fd < 0 && err == -EINVAL;
- }
- 
- static int probe_kern_bpf_cookie(int token_fd)
+ 		if (max_read || max_write) {
+ 			ret_bus = kmemdup(bus, sizeof(*bus), GFP_KERNEL);
 -- 
 2.43.0
 
