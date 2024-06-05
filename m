@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-48174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3B38FCD7A
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:44:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B02C58FCD59
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C352B2B135
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:40:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E82A6287A94
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8C71C7752;
-	Wed,  5 Jun 2024 12:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D101A3BCE;
+	Wed,  5 Jun 2024 12:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/MsrZpm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HM10dP1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE251C7748;
-	Wed,  5 Jun 2024 12:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381BE1C775D;
+	Wed,  5 Jun 2024 12:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589058; cv=none; b=KrxFGVirHIplh9AFFzbsAy4rrApkJoQjkjW7L6PJvc19ykpFPqj2VOVbf9pyWytxiBYnYk/jZiNXhlKUwAhx1ROmGN+EZ9M/2KtaRGU10QVMDYP2iSO+rj+YP/8RR2ndIXBdaASsc817PiPx4kxUOOs0F1bFsp7GPVrNiWeT6Bk=
+	t=1717589062; cv=none; b=h+xzrA288xCUgwVRTJ8g7PBqn5+Jog7xwPE4+ZCm0lbOTTZKjlHtHPOVSx50pPLf4r7ADx72hkIjqfKBt4kRjp7HscqDPLHrsZ0Y5fR/Pr+JAevafF+oYe86hgpu51Hn4g6jwZbU6zIkUVn31wvYQGMKPz+NSDZJvtG/o4R9UDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589058; c=relaxed/simple;
-	bh=dRcy6OS1IofzbD1NjQE76rjD0zXix+SxVmT62c0IwPE=;
+	s=arc-20240116; t=1717589062; c=relaxed/simple;
+	bh=o6St3jZNvzDM0GfYHJVKJB9gAHK8ytdJPBLeqTaf4dY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j7St/lhLTkejWp1SPXnjI6gZ5nUDV/da8ilF8hnVxTZrdkn7s7g53+oSGYB2+/aw4mg/NsD0qnUAgZo5bb+kZrJ8IQ3P1CzROoDTwb6u444wGe6AM4oZ1YPg94hUKp70sK2Q9G/dlLRMxlfPpWAN9WYquEZYi6VW/zGQfvAgqDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/MsrZpm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855B6C4AF07;
-	Wed,  5 Jun 2024 12:04:17 +0000 (UTC)
+	 MIME-Version; b=scxHIJEORwAosQSnzYc88bV+XzJNeO3516n2TFXeHboH+wIz4JLZWV0f25lEl6k8VGKmJIQnHHHf3OD/HElnMlQHEHzUHSLEU9fHJZjWPAl45f9Ao7lSD0r7rY34pNP6rdBFAHqTY7ovcWtTNR7OywHhxlQAst2QnY3uKeGvDk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HM10dP1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89223C3277B;
+	Wed,  5 Jun 2024 12:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589058;
-	bh=dRcy6OS1IofzbD1NjQE76rjD0zXix+SxVmT62c0IwPE=;
+	s=k20201202; t=1717589062;
+	bh=o6St3jZNvzDM0GfYHJVKJB9gAHK8ytdJPBLeqTaf4dY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/MsrZpm96uqlFfwUM2fkzHmyq12ehTJ45OP9RG9RNJESuma9BBhZndk/jC+CE26Y
-	 RensooTSldzv+5qcUQYTgnE9Pw1Gyabu48DCMNp57emco/uHGxTP8oZWjy9UIxAnO+
-	 yw70y9VMN24aEldI/JSBYEvrCv358vI+j7NQasE7ga+byj53nhnBR8doKj+XyQhFa2
-	 PlaIP4TWov4SMpQML0bJilrEKxNMgsrwyKSVY385hD00WiXaqJ6LTxzNTWxHooDV49
-	 W1qdYHSAdcbPMcfxLJY2Plg0uNtA5mVthHqlbazw6YxNZ4rnOb9ALQ2VknA8Lp6bny
-	 GCIWhr1fnemIg==
+	b=HM10dP1uBxz2+2i44s0IE9lcOUwVdWiwWanDcCiAvB0tKjOUhRDHpkEPDO3bmVJzT
+	 lHQqgUr+jJT+iQBY0K3NMOin2F7hXzqHlseq+Worn0uzXxOtj/ZFcG3KWSAyld8ryE
+	 VOqkDXQq2ZBXSJLIV2xu1XaK+koB3f87aJ9gu3dcmaDXpLB3c8vJw27rV4eWb9fXEd
+	 lzEmOg7IBQSnrOl3hbnq4y4R1ySO/wlDJWYM1cvSsIUD737zmo798Vlv0W4Oojzgnw
+	 SyKyoFYH20NEOLiHCjX4uCJbKO05gXaXAVZAwcJS5d3C1OqKo7pU7+uZiXjVbzw2rj
+	 y/ypNpz/KV9VA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jim Wylder <jwylder@google.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Gregor Riepl <onitake@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	gregkh@linuxfoundation.org
-Subject: [PATCH AUTOSEL 6.6 06/18] regmap-i2c: Subtract reg size from max_write
-Date: Wed,  5 Jun 2024 08:03:45 -0400
-Message-ID: <20240605120409.2967044-6-sashal@kernel.org>
+	corbet@lwn.net,
+	ilpo.jarvinen@linux.intel.com,
+	paulmck@kernel.org,
+	tglx@linutronix.de,
+	jpoimboe@kernel.org,
+	bp@alien8.de,
+	xiongwei.song@windriver.com,
+	linux-doc@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 07/18] platform/x86: touchscreen_dmi: Add support for setting touchscreen properties from cmdline
+Date: Wed,  5 Jun 2024 08:03:46 -0400
+Message-ID: <20240605120409.2967044-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120409.2967044-1-sashal@kernel.org>
 References: <20240605120409.2967044-1-sashal@kernel.org>
@@ -65,44 +74,191 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
-From: Jim Wylder <jwylder@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 611b7eb19d0a305d4de00280e4a71a1b15c507fc ]
+[ Upstream commit 0b178b02673998f5acca5a0365a8858ca45beedb ]
 
-Currently, when an adapter defines a max_write_len quirk,
-the data will be chunked into data sizes equal to the
-max_write_len quirk value.  But the payload will be increased by
-the size of the register address before transmission.  The
-resulting value always ends up larger than the limit set
-by the quirk.
+On x86/ACPI platforms touchscreens mostly just work without needing any
+device/model specific configuration. But in some cases (mostly with Silead
+and Goodix touchscreens) it is still necessary to manually specify various
+touchscreen-properties on a per model basis.
 
-Avoid this error by setting regmap's max_write to the quirk's
-max_write_len minus the number of bytes for the register and
-padding.  This allows the chunking to work correctly for this
-limited case without impacting other use-cases.
+touchscreen_dmi is a special place for DMI quirks for this, but it can be
+challenging for users to figure out the right property values, especially
+for Silead touchscreens where non of these can be read back from
+the touchscreen-controller.
 
-Signed-off-by: Jim Wylder <jwylder@google.com>
-Link: https://msgid.link/r/20240523211437.2839942-1-jwylder@google.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+ATM users can only test touchscreen properties by editing touchscreen_dmi.c
+and then building a completely new kernel which makes it unnecessary
+difficult for users to test and submit properties when necessary for their
+laptop / tablet model.
+
+Add support for specifying properties on the kernel commandline to allow
+users to easily figure out the right settings. See the added documentation
+in kernel-parameters.txt for the commandline syntax.
+
+Cc: Gregor Riepl <onitake@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240523143601.47555-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-i2c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../admin-guide/kernel-parameters.txt         | 22 ++++++
+ drivers/platform/x86/touchscreen_dmi.c        | 79 ++++++++++++++++++-
+ 2 files changed, 98 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap-i2c.c b/drivers/base/regmap/regmap-i2c.c
-index 3ec611dc0c09f..a905e955bbfc7 100644
---- a/drivers/base/regmap/regmap-i2c.c
-+++ b/drivers/base/regmap/regmap-i2c.c
-@@ -350,7 +350,8 @@ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 66dfc348043d6..0aeb00732820a 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1866,6 +1866,28 @@
+ 				Format:
+ 				<bus_id>,<clkrate>
  
- 		if (quirks->max_write_len &&
- 		    (bus->max_raw_write == 0 || bus->max_raw_write > quirks->max_write_len))
--			max_write = quirks->max_write_len;
-+			max_write = quirks->max_write_len -
-+				(config->reg_bits + config->pad_bits) / BITS_PER_BYTE;
++	i2c_touchscreen_props= [HW,ACPI,X86]
++			Set device-properties for ACPI-enumerated I2C-attached
++			touchscreen, to e.g. fix coordinates of upside-down
++			mounted touchscreens. If you need this option please
++			submit a drivers/platform/x86/touchscreen_dmi.c patch
++			adding a DMI quirk for this.
++
++			Format:
++			<ACPI_HW_ID>:<prop_name>=<val>[:prop_name=val][:...]
++			Where <val> is one of:
++			Omit "=<val>" entirely	Set a boolean device-property
++			Unsigned number		Set a u32 device-property
++			Anything else		Set a string device-property
++
++			Examples (split over multiple lines):
++			i2c_touchscreen_props=GDIX1001:touchscreen-inverted-x:
++			touchscreen-inverted-y
++
++			i2c_touchscreen_props=MSSL1680:touchscreen-size-x=1920:
++			touchscreen-size-y=1080:touchscreen-inverted-y:
++			firmware-name=gsl1680-vendor-model.fw:silead,home-button
++
+ 	i8042.debug	[HW] Toggle i8042 debug mode
+ 	i8042.unmask_kbd_data
+ 			[HW] Enable printing of interrupt data from the KBD port
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 630ed0515b1e9..dc244e17754e6 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -9,10 +9,13 @@
+  */
  
- 		if (max_read || max_write) {
- 			ret_bus = kmemdup(bus, sizeof(*bus), GFP_KERNEL);
+ #include <linux/acpi.h>
++#include <linux/ctype.h>
+ #include <linux/device.h>
+ #include <linux/dmi.h>
+ #include <linux/efi_embedded_fw.h>
+ #include <linux/i2c.h>
++#include <linux/init.h>
++#include <linux/kstrtox.h>
+ #include <linux/notifier.h>
+ #include <linux/property.h>
+ #include <linux/string.h>
+@@ -1822,7 +1825,7 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 	{ }
+ };
+ 
+-static const struct ts_dmi_data *ts_data;
++static struct ts_dmi_data *ts_data;
+ 
+ static void ts_dmi_add_props(struct i2c_client *client)
+ {
+@@ -1857,6 +1860,64 @@ static int ts_dmi_notifier_call(struct notifier_block *nb,
+ 	return 0;
+ }
+ 
++#define MAX_CMDLINE_PROPS 16
++
++static struct property_entry ts_cmdline_props[MAX_CMDLINE_PROPS + 1];
++
++static struct ts_dmi_data ts_cmdline_data = {
++	.properties = ts_cmdline_props,
++};
++
++static int __init ts_parse_props(char *str)
++{
++	/* Save the original str to show it on syntax errors */
++	char orig_str[256];
++	char *name, *value;
++	u32 u32val;
++	int i, ret;
++
++	strscpy(orig_str, str, sizeof(orig_str));
++
++	/*
++	 * str is part of the static_command_line from init/main.c and poking
++	 * holes in that by writing 0 to it is allowed, as is taking long
++	 * lasting references to it.
++	 */
++	ts_cmdline_data.acpi_name = strsep(&str, ":");
++
++	for (i = 0; i < MAX_CMDLINE_PROPS; i++) {
++		name = strsep(&str, ":");
++		if (!name || !name[0])
++			break;
++
++		/* Replace '=' with 0 and make value point past '=' or NULL */
++		value = name;
++		strsep(&value, "=");
++		if (!value) {
++			ts_cmdline_props[i] = PROPERTY_ENTRY_BOOL(name);
++		} else if (isdigit(value[0])) {
++			ret = kstrtou32(value, 0, &u32val);
++			if (ret)
++				goto syntax_error;
++
++			ts_cmdline_props[i] = PROPERTY_ENTRY_U32(name, u32val);
++		} else {
++			ts_cmdline_props[i] = PROPERTY_ENTRY_STRING(name, value);
++		}
++	}
++
++	if (!i || str)
++		goto syntax_error;
++
++	ts_data = &ts_cmdline_data;
++	return 1;
++
++syntax_error:
++	pr_err("Invalid '%s' value for 'i2c_touchscreen_props='\n", orig_str);
++	return 1; /* "i2c_touchscreen_props=" is still a known parameter */
++}
++__setup("i2c_touchscreen_props=", ts_parse_props);
++
+ static struct notifier_block ts_dmi_notifier = {
+ 	.notifier_call = ts_dmi_notifier_call,
+ };
+@@ -1864,13 +1925,25 @@ static struct notifier_block ts_dmi_notifier = {
+ static int __init ts_dmi_init(void)
+ {
+ 	const struct dmi_system_id *dmi_id;
++	struct ts_dmi_data *ts_data_dmi;
+ 	int error;
+ 
+ 	dmi_id = dmi_first_match(touchscreen_dmi_table);
+-	if (!dmi_id)
++	ts_data_dmi = dmi_id ? dmi_id->driver_data : NULL;
++
++	if (ts_data) {
++		/*
++		 * Kernel cmdline provided data takes precedence, copy over
++		 * DMI efi_embedded_fw info if available.
++		 */
++		if (ts_data_dmi)
++			ts_data->embedded_fw = ts_data_dmi->embedded_fw;
++	} else if (ts_data_dmi) {
++		ts_data = ts_data_dmi;
++	} else {
+ 		return 0; /* Not an error */
++	}
+ 
+-	ts_data = dmi_id->driver_data;
+ 	/* Some dmi table entries only provide an efi_embedded_fw_desc */
+ 	if (!ts_data->properties)
+ 		return 0;
 -- 
 2.43.0
 
