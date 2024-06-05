@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-48119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9A48FCC93
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:23:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755AF8FCC98
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5500E1F22115
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:23:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25F92289CFD
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF2D19AD5A;
-	Wed,  5 Jun 2024 11:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5840719AD7C;
+	Wed,  5 Jun 2024 11:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Id9ZnfoJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NVM57fu2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D2B19AD50;
-	Wed,  5 Jun 2024 11:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F12419AD6D;
+	Wed,  5 Jun 2024 11:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588586; cv=none; b=dCU2WGJC1K62EJpmLaiNs8+/vgIz1woykfTOwWcZ/GMsALaEqO1NGjrUk99QLiRmw5I7r5YCE1J+U+lRK8HJSjxe3bmzpzcwicIPRkK2bCgvo08MCU/ABLmNXU9pMY2j7i0WgTB7RxNpXR5t9uuMR3i59upjxLt8peRmNsKYUYA=
+	t=1717588588; cv=none; b=u4FgeLBw9Wtx9j4DAq2WlbQovH+IvdzQIKJhp3CfrAhqSDdyzh8VAkzedANALhRDe3Acb/+LRV1iXHsl15mAZr5ZTHO3xLrzlzzeYdMQ2R3KjcZfkEOUHfzY5mAZvCJw2bxp/nkj+3fGIm9KQ8EGxFGZkANkbFhS4yb/Qn5Y+Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588586; c=relaxed/simple;
-	bh=AgC8t1bH71gJClga1+YVxhKXREwCLrjqi6MxdEj0f68=;
+	s=arc-20240116; t=1717588588; c=relaxed/simple;
+	bh=SjwhFhT8i8cJyN+LotTWnGQb2FKVkJ8FhSqvcrbVnVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lA2C5LcFQYVySglPo/Wcs5h0WRbZBE8mjIT8abvKH47PFeG7dXNcxPHzkn2HAvIPWcJIS3/pwQDVkM+bTuLprRSij516yzfBwBAGD+5nSMD6GiTFgnQDHXz9mTnZ7yZoVHUKLZldqXtvEPUGaYiHdcNysLmMjzeYsuyMHUNFWN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Id9ZnfoJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF689C3277B;
-	Wed,  5 Jun 2024 11:56:24 +0000 (UTC)
+	 MIME-Version; b=aYiJc1K5cC1X75PjAx54l+rXsdsX80rPmEa+C1UwJYqbsUMiOfkOjSqql9SUnczl2FeQ3GuRXOvEkgiZoaqB2gorRx6iG8i3DzWc5nDEu2x5KcGVj3zzp2t5uV6Xt89Si9jAwU6/NJi4zSFtYMYo6aouSSJI0oeVD8rVFxB597o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NVM57fu2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7E6C4AF08;
+	Wed,  5 Jun 2024 11:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588586;
-	bh=AgC8t1bH71gJClga1+YVxhKXREwCLrjqi6MxdEj0f68=;
+	s=k20201202; t=1717588587;
+	bh=SjwhFhT8i8cJyN+LotTWnGQb2FKVkJ8FhSqvcrbVnVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Id9ZnfoJnD+52pY5DMqkKvKl4AIowpsCgRQlZzLKUmNC4/cK08m5RcSpc9SJBQ5l0
-	 vruH7Ke6K4Y43RpFs4CKIvbJ4PxSnlIRYWzplKSyz4o/QWGF8KmgQskIvsISX1LWqv
-	 +YrcSmKOGFor/OU8/0RO3IHF4TH5/g5WGAJItaTmCLJe0ws+HqjjmESkgvkwplXVPI
-	 wkJgHiyJ3q4cUK+la7FtkfGTAMzEMGODAiEMHI6QsGFWbApy/PZZAHXnaEXXumo0Mf
-	 +VNCf9DBTb6X2O7HPkWcIBSdgD/nZ3Wz0U35zA+cZb7awb8Eyu1K/QRj1OI0JyvIqU
-	 MlLhHS3zRIxqA==
+	b=NVM57fu2/NiNtxLzW9gEfkyruNTGrQd9YE5cWwGLXvBQ6eXiLsMTkXcTSw+gmPBl5
+	 UqkAMIDoLAwu7ceUEbqmH9x/qp8r9dQPiT0xkHgEq4F7I2Hbn1dJ/IvrALBRiGwr6w
+	 sC+BhV9gM2ZXArw5PhQ/6EcVq0mrr1FqDQc8k0Kvhr3Uq4LYxxKZeETBr4bQEg7hJ6
+	 1Q9H/sIA/u/sQRQdXx/ygWsr2K+Bxel7ICV6WA23hsSAjWYqFWSWvcOeU6FCnwk8dT
+	 LIDsDsgO0exSGQ64L+e6eBc8NG0hXXGyI1PzjBYSbIuF7rCNYTfOTf04gCOk/f59m0
+	 Y5cCoxlLZt2sA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jian-Hong Pan <jhp@endlessos.org>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Mike Christie <michael.christie@oracle.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	sbinding@opensource.cirrus.com,
-	kailang@realtek.com,
-	luke@ljones.dev,
-	shenghao-ding@ti.com,
-	simont@opensource.cirrus.com,
-	foss@athaariq.my.id,
-	rf@opensource.cirrus.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 3/4] ALSA: hda/realtek: Enable headset mic of JP-IK LEAP W502 with ALC897
-Date: Wed,  5 Jun 2024 07:56:15 -0400
-Message-ID: <20240605115619.2965224-3-sashal@kernel.org>
+	jasowang@redhat.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 4/4] vhost-scsi: Handle vhost_vq_work_queue failures for events
+Date: Wed,  5 Jun 2024 07:56:16 -0400
+Message-ID: <20240605115619.2965224-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115619.2965224-1-sashal@kernel.org>
 References: <20240605115619.2965224-1-sashal@kernel.org>
@@ -74,69 +68,79 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
-From: Jian-Hong Pan <jhp@endlessos.org>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 45e37f9ce28d248470bab4376df2687a215d1b22 ]
+[ Upstream commit b1b2ce58ed23c5d56e0ab299a5271ac01f95b75c ]
 
-JP-IK LEAP W502 laptop's headset mic is not enabled until
-ALC897_FIXUP_HEADSET_MIC_PIN3 quirk is applied.
+Currently, we can try to queue an event's work before the vhost_task is
+created. When this happens we just drop it in vhost_scsi_do_plug before
+even calling vhost_vq_work_queue. During a device shutdown we do the
+same thing after vhost_scsi_clear_endpoint has cleared the backends.
 
-Here is the original pin node values:
+In the next patches we will be able to kill the vhost_task before we
+have cleared the endpoint. In that case, vhost_vq_work_queue can fail
+and we will leak the event's memory. This has handle the failure by
+just freeing the event. This is safe to do, because
+vhost_vq_work_queue will only return failure for us when the vhost_task
+is killed and so userspace will not be able to handle events if we
+sent them.
 
-0x11 0x40000000
-0x12 0xb7a60130
-0x14 0x90170110
-0x15 0x411111f0
-0x16 0x411111f0
-0x17 0x411111f0
-0x18 0x411111f0
-0x19 0x411111f0
-0x1a 0x411111f0
-0x1b 0x03211020
-0x1c 0x411111f0
-0x1d 0x4026892d
-0x1e 0x411111f0
-0x1f 0x411111f0
-
-Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
-Link: https://lore.kernel.org/r/20240520055008.7083-2-jhp@endlessos.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20240316004707.45557-2-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/vhost/scsi.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 47e404bde4241..41a86c050745e 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11760,6 +11760,7 @@ enum {
- 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
- 	ALC897_FIXUP_HEADSET_MIC_PIN2,
- 	ALC897_FIXUP_UNIS_H3C_X500S,
-+	ALC897_FIXUP_HEADSET_MIC_PIN3,
- };
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index abef0619c7901..8f17d29ab7e9c 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -497,10 +497,8 @@ vhost_scsi_do_evt_work(struct vhost_scsi *vs, struct vhost_scsi_evt *evt)
+ 		vq_err(vq, "Faulted on vhost_scsi_send_event\n");
+ }
  
- static const struct hda_fixup alc662_fixups[] = {
-@@ -12206,10 +12207,18 @@ static const struct hda_fixup alc662_fixups[] = {
- 			{}
- 		},
- 	},
-+	[ALC897_FIXUP_HEADSET_MIC_PIN3] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x19, 0x03a11050 }, /* use as headset mic */
-+			{ }
-+		},
-+	},
- };
+-static void vhost_scsi_evt_work(struct vhost_work *work)
++static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
+ {
+-	struct vhost_scsi *vs = container_of(work, struct vhost_scsi,
+-					vs_event_work);
+ 	struct vhost_virtqueue *vq = &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
+ 	struct vhost_scsi_evt *evt, *t;
+ 	struct llist_node *llnode;
+@@ -508,12 +506,20 @@ static void vhost_scsi_evt_work(struct vhost_work *work)
+ 	mutex_lock(&vq->mutex);
+ 	llnode = llist_del_all(&vs->vs_event_list);
+ 	llist_for_each_entry_safe(evt, t, llnode, list) {
+-		vhost_scsi_do_evt_work(vs, evt);
++		if (!drop)
++			vhost_scsi_do_evt_work(vs, evt);
+ 		vhost_scsi_free_evt(vs, evt);
+ 	}
+ 	mutex_unlock(&vq->mutex);
+ }
  
- static const struct snd_pci_quirk alc662_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1019, 0x9087, "ECS", ALC662_FIXUP_ASUS_MODE2),
-+	SND_PCI_QUIRK(0x1019, 0x9859, "JP-IK LEAP W502", ALC897_FIXUP_HEADSET_MIC_PIN3),
- 	SND_PCI_QUIRK(0x1025, 0x022f, "Acer Aspire One", ALC662_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x0241, "Packard Bell DOTS", ALC662_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1025, 0x0308, "Acer Aspire 8942G", ALC662_FIXUP_ASPIRE),
++static void vhost_scsi_evt_work(struct vhost_work *work)
++{
++	struct vhost_scsi *vs = container_of(work, struct vhost_scsi,
++					     vs_event_work);
++	vhost_scsi_complete_events(vs, false);
++}
++
+ static int vhost_scsi_copy_sgl_to_iov(struct vhost_scsi_cmd *cmd)
+ {
+ 	struct iov_iter *iter = &cmd->saved_iter;
+@@ -1509,7 +1515,8 @@ vhost_scsi_send_evt(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
+ 	}
+ 
+ 	llist_add(&evt->list, &vs->vs_event_list);
+-	vhost_vq_work_queue(vq, &vs->vs_event_work);
++	if (!vhost_vq_work_queue(vq, &vs->vs_event_work))
++		vhost_scsi_complete_events(vs, true);
+ }
+ 
+ static void vhost_scsi_evt_handle_kick(struct vhost_work *work)
 -- 
 2.43.0
 
