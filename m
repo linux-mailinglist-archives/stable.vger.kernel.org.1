@@ -1,145 +1,149 @@
-Return-Path: <stable+bounces-48239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8988FD3DA
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 19:21:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4928FD479
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 19:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE625283A60
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 17:21:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74DC0B22F6F
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 17:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2F3138493;
-	Wed,  5 Jun 2024 17:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A187194AF6;
+	Wed,  5 Jun 2024 17:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nBhdOLxt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmsZnuWW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345A723D7
-	for <stable@vger.kernel.org>; Wed,  5 Jun 2024 17:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D7F13AA3F;
+	Wed,  5 Jun 2024 17:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717608085; cv=none; b=Tn/vZab8t7dGk+vmk8Nh1o6Mlp5Lq9iO0DLMW+v0+9YQqmrZaiWduw2Qhwrj/x1pIRuzxZ0qGMsQmSPr3OmKNUc9x++OudXIpl9cJ8OQS34txmjqweqXAh6s6+k/3dVFqqgPnp01fak9sngp4d8RUMnx9tOMNzz1u99O4RYESFg=
+	t=1717610207; cv=none; b=H9bWBPYID6j9U3YkUVMzKGj3mcwrfXvmqD7BEkXb7nKLwuFmIwHOrU4O0uABDRQ2bP8q1BBaosM4yn/oUr2Erq3nqyUgBCGttI6GLKDMNIi9x7ce2QvIdyG/AYEhG+Aw1GXTbPU7bPoK6m6PzSq3iR+civG2+AuPCWq/8IvHONo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717608085; c=relaxed/simple;
-	bh=Tcwq5dn9T53VXyu2UVdw5TjGv2V1CJsT9RFq6hlk9QE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hNKtZGOHy4No89z+cWxlp7hdZ1d74e2RBSvB9XnsH/ClLuLw4aV/UX4P0+eL/A3Iwd2OHCv3u4oUmlmxmnOcf0kXZeymRTWFI1RQ9kHxqBBebseHq7Kk+u8DixljTkjI6HvlsczgXGR5hNWdGfnEWLozwLn6avbokcSbUAaQcpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nBhdOLxt; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1ee5f3123d8so5935ad.1
-        for <stable@vger.kernel.org>; Wed, 05 Jun 2024 10:21:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717608083; x=1718212883; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kYCo0S4v9XF6m0fRGRV3IsBGozW86ded8JzpR7EngjU=;
-        b=nBhdOLxtqLb/6IDbSQ7cbc5oFvALnCWkUFIjJpsMkQMjQOE7dXBUGCuCe0F70vOJTp
-         zhzuMjL9el0GaUd0i1WJEHri3+EanWtrRKxyHidjzQ/6xr2O0L2TViyOyN0qBsugfwTj
-         s7BOzVznQsc5gt6LIzggVG1PffrMGNOJQJA7unbUKbvQDovJqfLwcqst9FQsGz+3PSfe
-         TLQYIoltUHGQjUYDr/ayFtWklpnSuTK6pSXJNMna13LdoLTI7TJ2Yw72OMKZym5NiaFL
-         lh0TjaY3qEEj8VMMdZZwvnfvJTPGh3hKLdiDydhLBno8R8tW+5J4LyVpNlx4xBPGKOOW
-         /YPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717608083; x=1718212883;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kYCo0S4v9XF6m0fRGRV3IsBGozW86ded8JzpR7EngjU=;
-        b=FUntavDnKcTSyQ+aW5naTdB1WZWGn+5H8Qd3uSIe137pc0mGQVPCkXs36NI/ite1VP
-         1X4jXvARIJGIuB6KbMRbzz7lni4wfXOc45kOLwTBugNnoP0/IlFNMOMk/htTOJK5xP6Q
-         rUQgkeJ/UiYW+lFLhR1+ptN/L7QDejRg9aVQwZGubKCRWmV2nYnduq5IBxAJmN+IUM0k
-         Mh6YlvxtQd3ekWoBcxyBbEDPBtdMGEoDlRK/C6rFlJVDwDWIEEzetb768XTQ11hgzSDH
-         R5CpHxCJsFOdvteJ/ldWH5C+bb0X11UGwmxXsrTAffsk0E6Yd/3bkQhS0DB4UGc5tNBj
-         ad3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUis5Rfx6FZUMjb49k9EBaL0G848SCS5q9M261WbFfXUKukqIv+EQjzgs/fPod89dDmMqNcenu4EQpe80LkE9Jjqp73iGjk
-X-Gm-Message-State: AOJu0YwRr2VClfyvHW5ywIAsPOwJMDaVoU8O6bauvnuFIFRQKljHHZ2I
-	soQwqh8IbOozFxkn5/8c2nG4bcFcdA9+la+qGAfRxIEu7i3ZocSsbSOdpgj2zlEIAXtKvGqTr5+
-	sD7uoafRlN9WN85p5NBijGZUfG+D2bMpCcgue
-X-Google-Smtp-Source: AGHT+IE2SZkPszq0YruXeZgdwMZcRiyinGSYCRMCQ+02rAZyYrQw99myRkawq4RdPGWs6JBjFpE5FIBN0Whl5kn7mus=
-X-Received: by 2002:a17:902:ee8a:b0:1f6:5bba:8ea3 with SMTP id
- d9443c01a7336-1f6a7b01893mr3570835ad.25.1717608083107; Wed, 05 Jun 2024
- 10:21:23 -0700 (PDT)
+	s=arc-20240116; t=1717610207; c=relaxed/simple;
+	bh=strlOwnw4/bnGn8gwD1c1oynUtTrrwMZYOLxaaLrLDE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Q+bB6r6y/P7Hu7OGYOlTXMmeAnYcGCqN/NF0sbE0GYuRC+8nWHI1QyaRLcIITuTL8YkY127zYQ7ngrAO5nj841Dj/1w8VeOeq2GqIw97MAGJ0IBgd0r01IV9+z2uo5XDrX7W9SJ3WzIy8QHnuleJsm1PrRoIaaKf1AQjaSI3uRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmsZnuWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7385C2BD11;
+	Wed,  5 Jun 2024 17:56:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717610206;
+	bh=strlOwnw4/bnGn8gwD1c1oynUtTrrwMZYOLxaaLrLDE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GmsZnuWWotub3OTkHrlnfILM1banJqPU2PQctlTZE9sFP25BS0ZdOcSf6chO2m8aE
+	 jKe3NWYTbnb/i0xA9nSpfbT0MwMzcy3AfN5/QW+T46BmYArr6WpItztvcePYOhjVqm
+	 CbHsIZ++YMmzzrb7nmxGF+JaS/JoKz7YpTLQk5jXZDXA/S9ObSkKHHZHK3NqcF3j7R
+	 MZeFN+ivdUDDDoxKXe6SyfdHxO641U3qxw6sxZjThLyTiE0Aqoa9+HnTk2JBhpMTsB
+	 ACUrPDjqu4C5tLPmZQKUVfyQ2V5wJAIafcGn/gbw+ClhCXIYpqm98DAab9uoPPWN0N
+	 FoEId4V6FgAPA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sEusO-0011w7-7X;
+	Wed, 05 Jun 2024 18:56:44 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	glider@google.com,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: arm64: Disassociate vcpus from redistributor region on teardown
+Date: Wed,  5 Jun 2024 18:56:37 +0100
+Message-Id: <20240605175637.1635653-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240605160848.4116061-1-kan.liang@linux.intel.com>
-In-Reply-To: <20240605160848.4116061-1-kan.liang@linux.intel.com>
-From: Ian Rogers <irogers@google.com>
-Date: Wed, 5 Jun 2024 10:21:10 -0700
-Message-ID: <CAP-5=fV+-ytA2st17Ar-jQ5xYqrWtxnF2TcADKrC5WoPyKz4wQ@mail.gmail.com>
-Subject: Re: [PATCH] perf stat: Fix the hard-coded metrics calculation on the hybrid
-To: kan.liang@linux.intel.com
-Cc: acme@kernel.org, namhyung@kernel.org, jolsa@kernel.org, 
-	adrian.hunter@intel.com, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Khalil, Amiri" <amiri.khalil@intel.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, james.morse@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, glider@google.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Jun 5, 2024 at 9:10=E2=80=AFAM <kan.liang@linux.intel.com> wrote:
->
-> From: Kan Liang <kan.liang@linux.intel.com>
->
-> The hard-coded metrics is wrongly calculated on the hybrid machine.
->
-> $ perf stat -e cycles,instructions -a sleep 1
->
->  Performance counter stats for 'system wide':
->
->         18,205,487      cpu_atom/cycles/
->          9,733,603      cpu_core/cycles/
->          9,423,111      cpu_atom/instructions/     #  0.52  insn per cycl=
-e
->          4,268,965      cpu_core/instructions/     #  0.23  insn per cycl=
-e
->
-> The insn per cycle for cpu_core should be 4,268,965 / 9,733,603 =3D 0.44.
->
-> When finding the metric events, the find_stat() doesn't take the PMU
-> type into account. The cpu_atom/cycles/ is wrongly used to calculate
-> the IPC of the cpu_core.
->
-> Fixes: 0a57b910807a ("perf stat: Use counts rather than saved_value")
-> Reported-by: "Khalil, Amiri" <amiri.khalil@intel.com>
-> Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+When tearing down a redistributor region, make sure we don't have
+any dangling pointer to that region stored in a vcpu.
 
-Reviewed-by: Ian Rogers <irogers@google.com>
+Fixes: e5a35635464b ("kvm: arm64: vgic-v3: Introduce vgic_v3_free_redist_region()")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/kvm/vgic/vgic-init.c    |  2 +-
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c | 15 +++++++++++++--
+ arch/arm64/kvm/vgic/vgic.h         |  2 +-
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
-Thanks,
-Ian
+diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
+index 8f5b7a3e7009..7f68cf58b978 100644
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -391,7 +391,7 @@ static void kvm_vgic_dist_destroy(struct kvm *kvm)
+ 
+ 	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
+ 		list_for_each_entry_safe(rdreg, next, &dist->rd_regions, list)
+-			vgic_v3_free_redist_region(rdreg);
++			vgic_v3_free_redist_region(kvm, rdreg);
+ 		INIT_LIST_HEAD(&dist->rd_regions);
+ 	} else {
+ 		dist->vgic_cpu_base = VGIC_ADDR_UNDEF;
+diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+index a3983a631b5a..9e50928f5d7d 100644
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -919,8 +919,19 @@ static int vgic_v3_alloc_redist_region(struct kvm *kvm, uint32_t index,
+ 	return ret;
+ }
+ 
+-void vgic_v3_free_redist_region(struct vgic_redist_region *rdreg)
++void vgic_v3_free_redist_region(struct kvm *kvm, struct vgic_redist_region *rdreg)
+ {
++	struct kvm_vcpu *vcpu;
++	unsigned long c;
++
++	lockdep_assert_held(&kvm->arch.config_lock);
++
++	/* Garbage collect the region */
++	kvm_for_each_vcpu(c, vcpu, kvm) {
++		if (vcpu->arch.vgic_cpu.rdreg == rdreg)
++			vcpu->arch.vgic_cpu.rdreg = NULL;
++	}
++
+ 	list_del(&rdreg->list);
+ 	kfree(rdreg);
+ }
+@@ -945,7 +956,7 @@ int vgic_v3_set_redist_base(struct kvm *kvm, u32 index, u64 addr, u32 count)
+ 
+ 		mutex_lock(&kvm->arch.config_lock);
+ 		rdreg = vgic_v3_rdist_region_from_index(kvm, index);
+-		vgic_v3_free_redist_region(rdreg);
++		vgic_v3_free_redist_region(kvm, rdreg);
+ 		mutex_unlock(&kvm->arch.config_lock);
+ 		return ret;
+ 	}
+diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
+index 6106ebd5ba42..03d356a12377 100644
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -316,7 +316,7 @@ vgic_v3_rd_region_size(struct kvm *kvm, struct vgic_redist_region *rdreg)
+ 
+ struct vgic_redist_region *vgic_v3_rdist_region_from_index(struct kvm *kvm,
+ 							   u32 index);
+-void vgic_v3_free_redist_region(struct vgic_redist_region *rdreg);
++void vgic_v3_free_redist_region(struct kvm *kvm, struct vgic_redist_region *rdreg);
+ 
+ bool vgic_v3_rdist_overlap(struct kvm *kvm, gpa_t base, size_t size);
+ 
+-- 
+2.39.2
 
-> Cc: stable@vger.kernel.org
-> ---
->  tools/perf/util/stat-shadow.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.=
-c
-> index 3466aa952442..4d0edc061f1a 100644
-> --- a/tools/perf/util/stat-shadow.c
-> +++ b/tools/perf/util/stat-shadow.c
-> @@ -176,6 +176,10 @@ static double find_stat(const struct evsel *evsel, i=
-nt aggr_idx, enum stat_type
->                 if (type !=3D evsel__stat_type(cur))
->                         continue;
->
-> +               /* Ignore if not the PMU we're looking for. */
-> +               if (evsel->pmu !=3D cur->pmu)
-> +                       continue;
-> +
->                 aggr =3D &cur->stats->aggr[aggr_idx];
->                 if (type =3D=3D STAT_NSECS)
->                         return aggr->counts.val;
-> --
-> 2.35.1
->
 
