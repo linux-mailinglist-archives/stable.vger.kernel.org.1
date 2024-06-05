@@ -1,88 +1,97 @@
-Return-Path: <stable+bounces-48241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7B48FD5EF
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 20:42:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06CB8FD650
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 21:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEE6028290E
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 18:42:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FC8E1F25A17
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 19:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6B013A898;
-	Wed,  5 Jun 2024 18:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC62713B295;
+	Wed,  5 Jun 2024 19:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="HqU0hIq5"
 X-Original-To: stable@vger.kernel.org
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66056DF78;
-	Wed,  5 Jun 2024 18:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB5E13A400;
+	Wed,  5 Jun 2024 19:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717612920; cv=none; b=MSYT3LO5pLIe8BzX16QjrszTW6W7oDHTeOlw1E665oPJFvQ2Fi2naPxjVB6iTJ221hiz6EqQa0y4s3gxeEbOas3Qu30Me2865VnzV45FGQOCF/8JTGigpupwK+tyqwKciU1BmIDmJqaUp4xnMO6y3ZuUIoJ8wffg8ZbZc3p6Y9s=
+	t=1717614941; cv=none; b=RPITI1M29VbaGMTRdvXFof23VCWp3Kz+MnR/K5UfM3gs9bHqmBATb0glxM56sVUsmWKFx7p5GmLHsPietiNxNgwvpUWIPRIQ9ZbsjvseHZw0CM41toL7o1EEIcSiSsxP8Ug1zhC+sW9a3t7VOAiJmMeUcYOPGUZ+IO5uK3bOslY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717612920; c=relaxed/simple;
-	bh=usxXmoU/R3IudYuih3Vw/LaJeB4gSFj0j/Vb7Jr5+dQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bAso2pMbGkV7nRR2IR2P73NTeXxQUENqYAa9iGRSaUKshEwkp8+lP/z0D+vpf7cGIOMbZxFMUFuq/+AnOJwhcFnuNMpsnGeSp6QulQUI4SDYCdAOaElo4uG043NynQ5kRxwL+f7DjzukDt3geLe0TBHWIXlXxf/OzLoxq1A/cTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
-Received: from [46.222.228.168] (port=1704 helo=gnumonks.org)
-	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <pablo@gnumonks.org>)
-	id 1sEva4-00AuPb-77; Wed, 05 Jun 2024 20:41:54 +0200
-Date: Wed, 5 Jun 2024 20:41:51 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH nf] netfilter: restore default behavior for
- nf_conntrack_events
-Message-ID: <ZmCxb2MqzeQPDFZt@calendula>
-References: <20240604135438.2613064-1-nicolas.dichtel@6wind.com>
- <ZmAn7VcLHsdAI8Xg@strlen.de>
- <c527582b-05dd-45bf-a9b1-2499b01280ee@6wind.com>
+	s=arc-20240116; t=1717614941; c=relaxed/simple;
+	bh=PSWN472Wnorxu4k9ywdhZ+5eQVpHQixWKDSbnDQYmvc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MfyqTDRYdK1M9xGUa/A1oNx2+kD/n5HhNleMLfbbjo8lgXpj2jViraqmJ7Nou90IXW4QuiJCuvCNWn9Cj+YYBL8DKEyORjSkl0Uh8dKqaNkvrpqlnvH4ZBcKqvS2RekPF8hmBYa6eYcf9o+GSw6u8crO0WBq0GSt54pX5hoGmPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=HqU0hIq5; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4VvccW3XJkz6CmQvG;
+	Wed,  5 Jun 2024 19:15:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1717614937; x=1720206938; bh=F7zsNdmnby97gLElUEVqV1uV
+	tQADs+pescSr74QdCVQ=; b=HqU0hIq52Vp5574Xuw1Xpdbx3JvX36wx6DBqFCtH
+	E/w4jP9v105RMCEhx2p9vFZ8cRxlJS3PpTQxXP632VhEGwCLqDHz5oG7i0wCcDQS
+	pH/U+R1eTUFCytFXJzzQzJJ4i6WTzgqhzVmfC4F4cjg8H4TcXU7uS9NVeaVAGE3q
+	Gg1mm7dtPEy6pjZSqO/Bn7Ud98b/NHF+3JUY3QwsYNxLfi7DBbPJfcjOQSJlpR3H
+	3amXtDHA5CBzG2oIwvj1KJadYXzZZKtZC/XS0h5RrX6obTQnb0Yfy20kW1qVG7tL
+	f1ni9oD/RDCQHI2aID/r8tIBcv0wbL/gTq2ihr0gwhQ8GA==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id yXFPYd83rbJl; Wed,  5 Jun 2024 19:15:37 +0000 (UTC)
+Received: from [192.168.132.235] (unknown [65.117.37.195])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4VvccS6D9yz6Cnk8s;
+	Wed,  5 Jun 2024 19:15:36 +0000 (UTC)
+Message-ID: <9b382d5d-b02b-4dc8-8142-d6b2a1b06ab6@acm.org>
+Date: Wed, 5 Jun 2024 13:15:36 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c527582b-05dd-45bf-a9b1-2499b01280ee@6wind.com>
-X-Spam-Score: -1.9 (-)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] scsi: sd: Use READ(16) when reading block zero on
+ large capacity disks
+To: "Martin K. Petersen" <martin.petersen@oracle.com>,
+ linux-scsi@vger.kernel.org
+Cc: stable@vger.kernel.org, Pierre Tomon <pierretom+12@ik.me>,
+ Alan Stern <stern@rowland.harvard.edu>
+References: <50211dcb-dc40-4bb5-8168-8f102f6bfb5c@acm.org>
+ <20240605022521.3960956-1-martin.petersen@oracle.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240605022521.3960956-1-martin.petersen@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 05, 2024 at 11:09:31AM +0200, Nicolas Dichtel wrote:
-> Le 05/06/2024 à 10:55, Florian Westphal a écrit :
-> > Nicolas Dichtel <nicolas.dichtel@6wind.com> wrote:
-> >> Since the below commit, there are regressions for legacy setups:
-> >> 1/ conntracks are created while there are no listener
-> >> 2/ a listener starts and dumps all conntracks to get the current state
-> >> 3/ conntracks deleted before the listener has started are not advertised
-> >>
-> >> This is problematic in containers, where conntracks could be created early.
-> >> This sysctl is part of unsafe sysctl and could not be changed easily in
-> >> some environments.
-> >>
-> >> Let's switch back to the legacy behavior.
-> > 
-> > :-(
-> > 
-> > Would it be possible to resolve this for containers by setting
-> > the container default to 1 if init_net had it changed to 1 at netns
-> > creation time?
+On 6/4/24 20:25, Martin K. Petersen wrote:
+> Commit 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior
+> to querying device properties") triggered a read to LBA 0 before
+> attempting to inquire about device characteristics. This was done
+> because some protocol bridge devices will return generic values until
+> an attached storage device's media has been accessed.
 > 
-> When we have access to the host, it is possible to allow the configuration of
-> this (unsafe) sysctl for the pod. But there are cases where we don't have access
-> to the host.
+> Pierre Tomon reported that this change caused problems on a large
+> capacity external drive connected via a bridge device. The bridge in
+> question does not appear to implement the READ(10) command.
 > 
-> https://docs.openshift.com/container-platform/4.9/nodes/containers/nodes-containers-sysctls.html#nodes-containers-sysctls-unsafe_nodes-containers-using
+> Issue a READ(16) instead of READ(10) when a device has been identified
+> as preferring 16-byte commands (use_16_for_rw heuristic).
 
-conntrack is enabled on-demand by the ruleset these days, such monitor
-process could be created _before_ the ruleset is loaded?
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 
