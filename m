@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-48017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4CF8FCB42
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:56:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0718FCB46
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92C8BB259BD
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:56:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD0F289FC5
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3E119AD89;
-	Wed,  5 Jun 2024 11:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD7B19ADB1;
+	Wed,  5 Jun 2024 11:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="srSLjOHJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6Wehzt3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8865919885B;
-	Wed,  5 Jun 2024 11:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB2519ADA6;
+	Wed,  5 Jun 2024 11:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588226; cv=none; b=OWLvvORgEX5eYV+fmZZG8IpwfzxVVwtqofGDuBKQwFYR0E6OGPcXknNMRd2+zpx7tOzpXGtCtvXGDp6ve7/UgLcPk1ZP30t00MO7J+dizY+uq5mk8D41uUbSRxkpjJ2ErvlZFhab+1wWtrit/y8rhiqSDOUpsuA3YJaNc2arvrk=
+	t=1717588228; cv=none; b=ERAeFgWdunHaiwreZaVKTv0TvV5t2I0yQ29ZaQItKPSa18a5Qy6PStgNiRJEzETFJ8ih/pBuRlK+RECzm/SUW4quqVApO9QGjoJE7oDwblhLVHTftGnL4YaGuRjV1DIvM2fcTx+cpAuLgdAWM0REz1KeW9AbINLzO61L8JpU6w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588226; c=relaxed/simple;
-	bh=k9wMZie2g8zido3r8l4XxgOwAvQm8nitQZP1EAGITQo=;
+	s=arc-20240116; t=1717588228; c=relaxed/simple;
+	bh=NcXz8TapCZDDTdXu2QlDm8BCujGH0K94hgrdOa/LTzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MrUImC5OpCr8CX9WRbOoj/IhAwRdXjx/sMvIBqVK471xZzmi+U3/vYPjvcOiAJPpecz4obEmPNCix5vmmEQ9dTH5iTgpsmASemjWwFM+ab46ZBVtdHAF+0ZvQ88cjMCtLlIkRKTWfPsOqN5nIpWuL/1F8+TNFLXsFoHZIxZdsH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=srSLjOHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6686C32781;
-	Wed,  5 Jun 2024 11:50:24 +0000 (UTC)
+	 MIME-Version; b=Dx3TlYbFg41u2jjS3iuVwQNsWQx+hcbn5CUSAK+T5c5l90t3d8+RomA1GnzLQaX+IFvB9UKjctzRY+oUF4UP9W+1ja9HhyHX6BrSIMNaBqyXb6k9IRrSSajQKSy600oqAuyUos5QlAtdhiONZ6elSDIWbqm+F8LINEec+teFZc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6Wehzt3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CC0C32786;
+	Wed,  5 Jun 2024 11:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588226;
-	bh=k9wMZie2g8zido3r8l4XxgOwAvQm8nitQZP1EAGITQo=;
+	s=k20201202; t=1717588227;
+	bh=NcXz8TapCZDDTdXu2QlDm8BCujGH0K94hgrdOa/LTzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srSLjOHJPV5k+Ehbe7IXYhch/SaoMiisFIobMaX3hHfYkqH8syKfSI390h2AeFDVV
-	 2Lvb+4sqSgaLC4vGoSWUHvPy7A4cperkpQtbTJCBRsRYh6vwuqg6+3Za24tCewtH6l
-	 aj01P70pxm25gAqCiuzKxt48wB1VhDk8lx2Dis9UsX/PeBxMWSTqMUGz5AxxJ2naZz
-	 09Gf+U3pFrduu/Lp55vUXz1D+rehjevzHgrf3V9lfJ4giA+C9LW8kMImmxFuschxyq
-	 XLpvkoHFKT7WXHZzEAFdV35kYsx8vH0mE+OoKPoP9QK9aY6mHETLQyZbHmlb3pfqfW
-	 ZO7geDPqlin/Q==
+	b=k6Wehzt3cEtTkT9I6cH2XkMW1VthKW8eiZN0P0j8eRT/wzT9K65IbLTFMk/POCza0
+	 KlFg6nstaK3C/akQi0K7DHBfaWI/XIEym2tbjwAOVVvbr03xJzc6mY8UoFefsxd6LY
+	 L/Re5KHD7zFmA01nMabAcb4ek5vezAXO8hTdhWlKLQisC+JBIxnLVhPrGmNcbu0krs
+	 rfHezQgRxXKPJ3CBeQ0twkrmnI9iO0XZULfUB/Wcky1HrnZNP69mxz66Haaiwqy5wV
+	 W+FCNjkUL3XNNzcHqQ8FEYV7UTIBrR86xEzZjxy+/LKGNOqUTS1BXal1m1b0c386Pa
+	 ZkN5rSY3Ye+Tw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Peng Ma <andypma@tencent.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Perry Yuan <Perry.Yuan@amd.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 24/28] usb: typec: qcom-pmic-typec: split HPD bridge alloc and registration
-Date: Wed,  5 Jun 2024 07:48:53 -0400
-Message-ID: <20240605114927.2961639-24-sashal@kernel.org>
+	ray.huang@amd.com,
+	gautham.shenoy@amd.com,
+	rafael@kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 25/28] cpufreq: amd-pstate: fix memory leak on CPU EPP exit
+Date: Wed,  5 Jun 2024 07:48:54 -0400
+Message-ID: <20240605114927.2961639-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605114927.2961639-1-sashal@kernel.org>
 References: <20240605114927.2961639-1-sashal@kernel.org>
@@ -70,78 +70,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Peng Ma <andypma@tencent.com>
 
-[ Upstream commit 718b36a7b49acbba36546371db2d235271ceb06c ]
+[ Upstream commit cea04f3d9aeebda9d9c063c0dfa71e739c322c81 ]
 
-If a probe function returns -EPROBE_DEFER after creating another device
-there is a change of ending up in a probe deferral loop, (see commit
-fbc35b45f9f6 ("Add documentation on meaning of -EPROBE_DEFER"). In case
-of the qcom-pmic-typec driver the tcpm_register_port() function looks up
-external resources (USB role switch and inherently via called
-typec_register_port() USB-C muxes, switches and retimers).
+The cpudata memory from kzalloc() in amd_pstate_epp_cpu_init() is
+not freed in the analogous exit function, so fix that.
 
-In order to prevent such probe-defer loops caused by qcom-pmic-typec
-driver, use the API added by Johan Hovold and move HPD bridge
-registration to the end of the probe function.
-
-The devm_drm_dp_hpd_bridge_add() is called at the end of the probe
-function after all TCPM start functions. This is done as a way to
-overcome a different problem, the DRM subsystem can not properly cope
-with the DRM bridges being destroyed once the bridge is attached. Having
-this function call at the end of the probe function prevents possible
-DRM bridge device creation followed by destruction in case one of the
-TCPM start functions returns an error.
-
-Reported-by: Caleb Connolly <caleb.connolly@linaro.org>
-Acked-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240424-qc-pmic-typec-hpd-split-v4-1-f7e10d147443@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peng Ma <andypma@tencent.com>
+Acked-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Perry Yuan <Perry.Yuan@amd.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/cpufreq/amd-pstate.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-index d3958c061a972..501eddb294e43 100644
---- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-@@ -41,7 +41,7 @@ static int qcom_pmic_typec_probe(struct platform_device *pdev)
- 	struct device_node *np = dev->of_node;
- 	const struct pmic_typec_resources *res;
- 	struct regmap *regmap;
--	struct device *bridge_dev;
-+	struct auxiliary_device *bridge_dev;
- 	u32 base;
- 	int ret;
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 2015c9fcc3c91..097268e7b0aa8 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1378,6 +1378,13 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
  
-@@ -92,7 +92,7 @@ static int qcom_pmic_typec_probe(struct platform_device *pdev)
- 	if (!tcpm->tcpc.fwnode)
- 		return -EINVAL;
- 
--	bridge_dev = drm_dp_hpd_bridge_register(tcpm->dev, to_of_node(tcpm->tcpc.fwnode));
-+	bridge_dev = devm_drm_dp_hpd_bridge_alloc(tcpm->dev, to_of_node(tcpm->tcpc.fwnode));
- 	if (IS_ERR(bridge_dev))
- 		return PTR_ERR(bridge_dev);
- 
-@@ -110,8 +110,14 @@ static int qcom_pmic_typec_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto port_stop;
- 
-+	ret = devm_drm_dp_hpd_bridge_add(tcpm->dev, bridge_dev);
-+	if (ret)
-+		goto pdphy_stop;
+ static int amd_pstate_epp_cpu_exit(struct cpufreq_policy *policy)
+ {
++	struct amd_cpudata *cpudata = policy->driver_data;
 +
++	if (cpudata) {
++		kfree(cpudata);
++		policy->driver_data = NULL;
++	}
++
+ 	pr_debug("CPU %d exiting\n", policy->cpu);
  	return 0;
- 
-+pdphy_stop:
-+	tcpm->pdphy_stop(tcpm);
- port_stop:
- 	tcpm->port_stop(tcpm);
- port_unregister:
+ }
 -- 
 2.43.0
 
