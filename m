@@ -1,100 +1,110 @@
-Return-Path: <stable+bounces-48079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2082E8FCC1B
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:13:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C0A8FCC3C
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EEE11C21533
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:13:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 529A2292E31
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA345197550;
-	Wed,  5 Jun 2024 11:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675E91B3F2D;
+	Wed,  5 Jun 2024 11:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCt5y84X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQLonXI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9360E19752E;
-	Wed,  5 Jun 2024 11:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249681B3F31;
+	Wed,  5 Jun 2024 11:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588451; cv=none; b=LpCdSDChPyw8E43ViABFO3nhvEFkoLV9e2GzndljjNGHAiWtDZZ326ppLKG831QcxM3uurjYF9OJNfbW92sClFeNQWtZ19ITsCbGPrY6rUw3e9YXnV2ai5VPkmBlNBRYUmiZdQSKmEFptfX9ByMWHmEs+ndJZkGn6P88ms0MVxw=
+	t=1717588485; cv=none; b=CvFkoXtxjSUV0gNJjmxvyKOXOZOK70Hr/oDlhL4SyRau0uQ4omoE/KFkRJ/fBz4hiWKkCEmmMSiarSkohIIeKgkN0UZJW2Wn1SKIsS+31V6W8zApdyX0cMdq0kf72uT0W650t7k6kM+LjKl9PpCZCdyKHqwXHryFvJ5TWlLiJJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588451; c=relaxed/simple;
-	bh=2OM9RluI5P3tgT/FuEMdv4m5T8LO/7Z+ZcmeBnkHodo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YEgPAi5H0gC65tA6zvlYsiGniPcFxg3nnTL3+f4VAzwiTY/rF7EpSyw86UY2288aGxEp6hwGzxWJ0erOmmQ8cXm8HYOy7dLeQCLIqQY/cMZFVBqIO2+Qc/45lQf5eSdCGdXxhjZJ7HpF3AMGJGbyH9NfJx0inP7rkjQALNAO2RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCt5y84X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254A5C32781;
-	Wed,  5 Jun 2024 11:54:11 +0000 (UTC)
+	s=arc-20240116; t=1717588485; c=relaxed/simple;
+	bh=fjvJY+jDj+VRWLNeYheSJjo7RC0CvRgYbsQoviL+v/Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gFqWz3zXx3IznJG3EYYIdALNWabxmqS0GFVRVvcjk+VKwM+jvyCf+AgseNt1q59PbH/C5DuO+m4jFZQD2W7ftlJSbnoN4afnRDCkyIU83ut4QV/+nLU8ccCsctbWFr94xK7nHZqgGqZaktRDWqNdNbMTPj5/0i7cx5eON6dYPy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQLonXI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC6CC3277B;
+	Wed,  5 Jun 2024 11:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588451;
-	bh=2OM9RluI5P3tgT/FuEMdv4m5T8LO/7Z+ZcmeBnkHodo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NCt5y84XkRxyoqsCOCZDpELqR+/dN4Kf17tPK4590lu6zwwQoq2oeKH0msFFBu0pj
-	 DoVpIylycE9kJPHJpDkw4MsInUK6VvL1MWovx+vEe+ueA1iFI7U+HnyqanrKZPvcdN
-	 R0IRVQkhulaiBb9nnMVI6FG9/rQbIKSSjcWlAfF8Gz4kmCIdFv4LL/ZuG1r5Q6xjpe
-	 bXh9X0GooJkyF+UoFkLZf2GI9n1e8vXzbeu6wxs1QdTErXAbMfu54ir6LbhH7gcT7n
-	 sMuGDwYJX2TD0ihz4qgtZEhtxXRFhdlGSSEMe4cGnBCxmQDH6aSx3tmniBqs3bTeqs
-	 DKoM4JdxA1E5A==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1sEpDY-000000000x0-2U9q;
-	Wed, 05 Jun 2024 13:54:12 +0200
-Date: Wed, 5 Jun 2024 13:54:12 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.8 15/24] usb: dwc3: core: Access XHCI address
- space temporarily to read port info
-Message-ID: <ZmBR5I_TQ-219IEq@hovoldconsulting.com>
-References: <20240605115101.2962372-1-sashal@kernel.org>
- <20240605115101.2962372-15-sashal@kernel.org>
+	s=k20201202; t=1717588484;
+	bh=fjvJY+jDj+VRWLNeYheSJjo7RC0CvRgYbsQoviL+v/Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AQLonXI3VgSkp404filO/yP6DHcjq+pL2U6Euv+2kAMH8X2Zq7qL4CgwP6AW7zb5w
+	 Hsdi3XXBkTLXlWyRz+eFkZjWoj4MHgcSL31tSPuvNwTVxZk0OZ6MQjp/ehXenSNman
+	 2QVQ5Hl6WQoqtlNxnENoJOgBT+jSN0pzIAB9JYCBeBzSrSzOP0aWBZONxQfyuFZTUc
+	 nWcoxgusWD5/YewxlT5+MHEwvbJg6X+Co85B9kxG2RhzqyufkodjHm8sQ1tnxGZ4Lb
+	 VNCQmVaWV0hFnqrDPe/iiVzLnqkUmILko4ovEmhrR8XT3U+L6wi7wI770Xcb+ya3ca
+	 iGF4y3BZ33z1w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Yunlei He <heyunlei@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 5.10 1/7] f2fs: remove clear SB_INLINECRYPT flag in default_options
+Date: Wed,  5 Jun 2024 07:54:30 -0400
+Message-ID: <20240605115442.2964376-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240605115101.2962372-15-sashal@kernel.org>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.10.218
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 05, 2024 at 07:50:25AM -0400, Sasha Levin wrote:
-> From: Krishna Kurapati <quic_kriskura@quicinc.com>
-> 
-> [ Upstream commit 921e109c6200741499ad0136e41cca9d16431c92 ]
-> 
-> All DWC3 Multi Port controllers that exist today only support host mode.
-> Temporarily map XHCI address space for host-only controllers and parse
-> XHCI Extended Capabilities registers to read number of usb2 ports and
-> usb3 ports present on multiport controller. Each USB Port is at least HS
-> capable.
-> 
-> The port info for usb2 and usb3 phy are identified as num_usb2_ports
-> and num_usb3_ports and these are used as iterators for phy operations
-> and for modifying GUSB2PHYCFG/ GUSB3PIPECTL registers accordingly.
-> 
-> Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-> Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-> Tested-by: Johan Hovold <johan+linaro@kernel.org>
-> Link: https://lore.kernel.org/r/20240420044901.884098-3-quic_kriskura@quicinc.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+From: Yunlei He <heyunlei@oppo.com>
 
-Same here. Not a fix. Please drop.
+[ Upstream commit ac5eecf481c29942eb9a862e758c0c8b68090c33 ]
 
-Johan
+In f2fs_remount, SB_INLINECRYPT flag will be clear and re-set.
+If create new file or open file during this gap, these files
+will not use inlinecrypt. Worse case, it may lead to data
+corruption if wrappedkey_v0 is enable.
+
+Thread A:                               Thread B:
+
+-f2fs_remount				-f2fs_file_open or f2fs_new_inode
+  -default_options
+	<- clear SB_INLINECRYPT flag
+
+                                          -fscrypt_select_encryption_impl
+
+  -parse_options
+	<- set SB_INLINECRYPT again
+
+Signed-off-by: Yunlei He <heyunlei@oppo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/f2fs/super.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 9a74d60f61dba..f73b2b9445acd 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1713,8 +1713,6 @@ static void default_options(struct f2fs_sb_info *sbi)
+ 	F2FS_OPTION(sbi).compress_ext_cnt = 0;
+ 	F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_ON;
+ 
+-	sbi->sb->s_flags &= ~SB_INLINECRYPT;
+-
+ 	set_opt(sbi, INLINE_XATTR);
+ 	set_opt(sbi, INLINE_DATA);
+ 	set_opt(sbi, INLINE_DENTRY);
+-- 
+2.43.0
+
 
