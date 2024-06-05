@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-48038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780188FCB84
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:02:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6ACB8FCB83
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 593E02872FE
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:02:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A7BC1F2442D
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93B41A1872;
-	Wed,  5 Jun 2024 11:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034E11A1885;
+	Wed,  5 Jun 2024 11:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rBYs6BaH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Me5NHUIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7431D1A1860;
-	Wed,  5 Jun 2024 11:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33431A1881;
+	Wed,  5 Jun 2024 11:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588306; cv=none; b=INAwsJiCDaMHEN2Dl46UI4iDvoCHrs+hr08Qrd31ccfte4ACmLKe28Ph6C5vfIwNxN5O9BefVgrqAwr7ix+u7z7Ji6u1XKLOL6roh4ORNLLW+I8Ci8CxqBG/Wg7VQNVEgZt0Q46m1MnMeh1+k4RxPnGR8YHgVymSAJWodtN4v/M=
+	t=1717588307; cv=none; b=hShf4vfgmTMyVo70WTSRECHWyq6qetOpQESCS3Fwa7ouGPQYSA6KSjDMd9QtkDPqWsUhtsXVJXcrXRAtyUttw69YtrM8DPL6gzz2GRD/ZUQTmyzrl/diKn03Mbth+jGmXWTPdDBSfGlW1+l1MA5uUQpL8yr0T+6PlptDXP5MJ74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588306; c=relaxed/simple;
-	bh=/koGbcjt/brA1y2OEcG0TQp5Myw75w2PN2xhFyfAxqg=;
+	s=arc-20240116; t=1717588307; c=relaxed/simple;
+	bh=kiI/Lw2TK9Xytq4SD7omgBRD9aRnbSVuuUnrkQXDmf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSAyHCKsJ/ewEsOEWqdpdCApvKNiSDf1XgXuOGmf0SWlK2ghqjXt2F8/UsYla1Hx77fkkHiCiFlv5ra4EG+ehFI+h1spo5swyBB+5FyZJwkBWkh7utBwfyilMc3zuWnBItmtjyLmDvyQdBTd1Qy5j3WmSbzXBqD/C3VOXRuJCtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rBYs6BaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264ABC32786;
-	Wed,  5 Jun 2024 11:51:45 +0000 (UTC)
+	 MIME-Version; b=pi7fa6QJoKqwQmVmC4Z/jbpgTFo2oPBywApYo5xpWvcfwvo/iRytob9V2JlXCANXLm7Qf2W5anh5+TMztDIrkhV/o1QG9Wejjb5uZg2mb67/fHRV+2TU/2DJoWtHnTjT7coUT9nj5HpOSAcPB32ZOODRJsuDWLDNBlwI70yfWMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Me5NHUIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B02C32786;
+	Wed,  5 Jun 2024 11:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588306;
-	bh=/koGbcjt/brA1y2OEcG0TQp5Myw75w2PN2xhFyfAxqg=;
+	s=k20201202; t=1717588307;
+	bh=kiI/Lw2TK9Xytq4SD7omgBRD9aRnbSVuuUnrkQXDmf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rBYs6BaHUfKmIq+xNOesILNOuDpU42yoCTJtoou2jMaWyB6uGcafhV6JVpRpVfqZV
-	 MZYV/1UpE0heY6MUGNIxtzikCjnnF/OKFAI3TRVNWGgRVr+D83ex8Pu+/it4cB/J1k
-	 Vxo5gnWwoRoR9aR2VoGmZGbCSG5kyJl2wczzTjCyW0pT9pxEKn+gzLhhdQ4mpgH7P/
-	 1TJvprCUebZf9fZsTk8T/r1oM0G7VJGn+XPITU4CUgca7Kwcwy9wN2LnJnWpKVEprN
-	 m+z7wPbT5wIv1y0RdiPo9lRwarTKlJ3eADDBMLav88jNyAQSuz2KJTNrKJrVfghP5Q
-	 OuRDn9PIdO/jQ==
+	b=Me5NHUIfQst+Ef6hFd2Zl+G/fthdgB4APYeYEftUiz1vp7IU9lYybdN4njEtWAhxi
+	 gntB4pfQ08FbBrzgw9QHwDtGNR6Dq7+at88S/fb/RYrywej/qT9gSCNn3enNDSBP3d
+	 XNGcVEktVr3QX09QkWGcDxnxoIsBdTi4rbVjkiCSAGx7Av4kfnNIJXcZkeO/8IKXf0
+	 Vg0yeWpBL1FdezPKppepaA2ikpwi4s9Io7+0cBHhvilHK2pq4CtKX7EroWTcoMnfcC
+	 EEPN5vqICp3wQp2VDev9T9Wg00bjTj2RDia3VXHfBg7o7QFJwuGDt7+yoCm2D3IoeT
+	 wvOtxkcPMlSnQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Daniel Starke <daniel.starke@siemens.com>,
-	syzbot <syzbot+dbac96d8e73b61aa559c@syzkaller.appspotmail.com>,
+Cc: Sicong Huang <congei42@163.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-serial@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 17/24] tty: add the option to have a tty reject a new ldisc
-Date: Wed,  5 Jun 2024 07:50:27 -0400
-Message-ID: <20240605115101.2962372-17-sashal@kernel.org>
+	johan@kernel.org,
+	greybus-dev@lists.linaro.org
+Subject: [PATCH AUTOSEL 6.8 18/24] greybus: Fix use-after-free bug in gb_interface_release due to race condition.
+Date: Wed,  5 Jun 2024 07:50:28 -0400
+Message-ID: <20240605115101.2962372-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115101.2962372-1-sashal@kernel.org>
 References: <20240605115101.2962372-1-sashal@kernel.org>
@@ -70,109 +66,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.12
 Content-Transfer-Encoding: 8bit
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Sicong Huang <congei42@163.com>
 
-[ Upstream commit 6bd23e0c2bb6c65d4f5754d1456bc9a4427fc59b ]
+[ Upstream commit 5c9c5d7f26acc2c669c1dcf57d1bb43ee99220ce ]
 
-... and use it to limit the virtual terminals to just N_TTY.  They are
-kind of special, and in particular, the "con_write()" routine violates
-the "writes cannot sleep" rule that some ldiscs rely on.
+In gb_interface_create, &intf->mode_switch_completion is bound with
+gb_interface_mode_switch_work. Then it will be started by
+gb_interface_request_mode_switch. Here is the relevant code.
+if (!queue_work(system_long_wq, &intf->mode_switch_work)) {
+	...
+}
 
-This avoids the
+If we call gb_interface_release to make cleanup, there may be an
+unfinished work. This function will call kfree to free the object
+"intf". However, if gb_interface_mode_switch_work is scheduled to
+run after kfree, it may cause use-after-free error as
+gb_interface_mode_switch_work will use the object "intf".
+The possible execution flow that may lead to the issue is as follows:
 
-   BUG: sleeping function called from invalid context at kernel/printk/printk.c:2659
+CPU0                            CPU1
 
-when N_GSM has been attached to a virtual console, and gsmld_write()
-calls con_write() while holding a spinlock, and con_write() then tries
-to get the console lock.
+                            |   gb_interface_create
+                            |   gb_interface_request_mode_switch
+gb_interface_release        |
+kfree(intf) (free)          |
+                            |   gb_interface_mode_switch_work
+                            |   mutex_lock(&intf->mutex) (use)
 
-Tested-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Daniel Starke <daniel.starke@siemens.com>
-Reported-by: syzbot <syzbot+dbac96d8e73b61aa559c@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=dbac96d8e73b61aa559c
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240423163339.59780-1-torvalds@linux-foundation.org
+Fix it by canceling the work before kfree.
+
+Signed-off-by: Sicong Huang <congei42@163.com>
+Link: https://lore.kernel.org/r/20240416080313.92306-1-congei42@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_ldisc.c    |  6 ++++++
- drivers/tty/vt/vt.c        | 10 ++++++++++
- include/linux/tty_driver.h |  8 ++++++++
- 3 files changed, 24 insertions(+)
+ drivers/greybus/interface.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/tty_ldisc.c b/drivers/tty/tty_ldisc.c
-index 3f68e213df1f7..d80e9d4c974b4 100644
---- a/drivers/tty/tty_ldisc.c
-+++ b/drivers/tty/tty_ldisc.c
-@@ -545,6 +545,12 @@ int tty_set_ldisc(struct tty_struct *tty, int disc)
- 		goto out;
- 	}
+diff --git a/drivers/greybus/interface.c b/drivers/greybus/interface.c
+index 9ec949a438ef6..52ef6be9d4499 100644
+--- a/drivers/greybus/interface.c
++++ b/drivers/greybus/interface.c
+@@ -694,6 +694,7 @@ static void gb_interface_release(struct device *dev)
  
-+	if (tty->ops->ldisc_ok) {
-+		retval = tty->ops->ldisc_ok(tty, disc);
-+		if (retval)
-+			goto out;
-+	}
-+
- 	old_ldisc = tty->ldisc;
+ 	trace_gb_interface_release(intf);
  
- 	/* Shutdown the old discipline. */
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 52e6ca1ba21df..09126aed97bc1 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -3396,6 +3396,15 @@ static void con_cleanup(struct tty_struct *tty)
- 	tty_port_put(&vc->port);
++	cancel_work_sync(&intf->mode_switch_work);
+ 	kfree(intf);
  }
  
-+/*
-+ * We can't deal with anything but the N_TTY ldisc,
-+ * because we can sleep in our write() routine.
-+ */
-+static int con_ldisc_ok(struct tty_struct *tty, int ldisc)
-+{
-+	return ldisc == N_TTY ? 0 : -EINVAL;
-+}
-+
- static int default_color           = 7; /* white */
- static int default_italic_color    = 2; // green (ASCII)
- static int default_underline_color = 3; // cyan (ASCII)
-@@ -3515,6 +3524,7 @@ static const struct tty_operations con_ops = {
- 	.resize = vt_resize,
- 	.shutdown = con_shutdown,
- 	.cleanup = con_cleanup,
-+	.ldisc_ok = con_ldisc_ok,
- };
- 
- static struct cdev vc0_cdev;
-diff --git a/include/linux/tty_driver.h b/include/linux/tty_driver.h
-index 7372124fbf90b..dd4b31ce6d5d4 100644
---- a/include/linux/tty_driver.h
-+++ b/include/linux/tty_driver.h
-@@ -154,6 +154,13 @@ struct serial_struct;
-  *
-  *	Optional. Called under the @tty->termios_rwsem. May sleep.
-  *
-+ * @ldisc_ok: ``int ()(struct tty_struct *tty, int ldisc)``
-+ *
-+ *	This routine allows the @tty driver to decide if it can deal
-+ *	with a particular @ldisc.
-+ *
-+ *	Optional. Called under the @tty->ldisc_sem and @tty->termios_rwsem.
-+ *
-  * @set_ldisc: ``void ()(struct tty_struct *tty)``
-  *
-  *	This routine allows the @tty driver to be notified when the device's
-@@ -372,6 +379,7 @@ struct tty_operations {
- 	void (*hangup)(struct tty_struct *tty);
- 	int (*break_ctl)(struct tty_struct *tty, int state);
- 	void (*flush_buffer)(struct tty_struct *tty);
-+	int (*ldisc_ok)(struct tty_struct *tty, int ldisc);
- 	void (*set_ldisc)(struct tty_struct *tty);
- 	void (*wait_until_sent)(struct tty_struct *tty, int timeout);
- 	void (*send_xchar)(struct tty_struct *tty, u8 ch);
 -- 
 2.43.0
 
