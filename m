@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-47999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2D28FCAF2
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:50:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214388FCAF5
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D22691C22277
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:50:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A383328CE2B
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AFE194A75;
-	Wed,  5 Jun 2024 11:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4927195FE3;
+	Wed,  5 Jun 2024 11:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpYfVibj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jw8dL805"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1201667C1;
-	Wed,  5 Jun 2024 11:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D29D195FD9;
+	Wed,  5 Jun 2024 11:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588179; cv=none; b=i+ZtiG7GzA4cO+K1r3MBAs1YFKhzYp8ujq8KI864K84y8dLOeFuQiUhf24WnOFs2fjQqoALBZyT0A9vf4hqQp54v2k+igs0bDPfQwj9eDYvlAIEn65+oTyTaNuz/Weuxqs4LsNnVfJOWabB9ug9sva13/oCx4vnNFumzp3BO0Nw=
+	t=1717588182; cv=none; b=BLY0lKi/InD+0e85ETDuAtIFi0PmXh/j9N/2lXrnN1W1uTV5iWyu6CKoFN1f/t1JNmFGj7EIH+0+CGKyO1jf3407e8Yg02UnNtMQYTle6VDBrCk5gcyo6UdmgekCpdbyqtxvdcPFuUWk5G7PIPUQX+y33FwUZWX3z0nZ9zfS6pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588179; c=relaxed/simple;
-	bh=Qvyyt+366pQ234kcpBr110DHz4Z632wKKoIYCqa/E88=;
+	s=arc-20240116; t=1717588182; c=relaxed/simple;
+	bh=6KgIFqyKayKEXnNF/obBfmrkXcZtNXQT4U+oTZVIPK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8eXOoMC3JVbYTs7gVhqkgKmuId1qhel8IzFZ/Q3N/xOiYuSjj8Z1HDT4E++0Ywk4t6v8Drvwmp7B6oGEli3cKLYBHula+3Ls6B7GeTSIU1AP1bOlqRA5/FOcQIjnqWtVgYoYNyeG3LuVrOmXM+60OnBRrdwKeIIJqeBlAb7Snc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpYfVibj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA643C32786;
-	Wed,  5 Jun 2024 11:49:38 +0000 (UTC)
+	 MIME-Version; b=Tw6YStz2rnKfFjx//h56VWXCSwl+mLfK28fuwv+vgegDSB46E3y32MpPUkwabSoSKSllj7oF2rwrfqNHlf+aEBoPDH1OkU/BnlmpfwbkHmSaIoUZocoEjg31GsompGGoeuccHHUy/MixZDnPl6QBoYOMykcxPiMKRJh2MVbRsDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jw8dL805; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C46C32786;
+	Wed,  5 Jun 2024 11:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588179;
-	bh=Qvyyt+366pQ234kcpBr110DHz4Z632wKKoIYCqa/E88=;
+	s=k20201202; t=1717588181;
+	bh=6KgIFqyKayKEXnNF/obBfmrkXcZtNXQT4U+oTZVIPK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpYfVibjeHy0U5w49kZqWFw0DGXed1l5ysLNe5LditXuEupPgLqoM0zhGy/BOznHg
-	 BnTOIo5LPeZOElJiALsXhEso2sj/kqQhjzL/grRGNg9weHMCBkwsJA5ZdkJW2v9U2j
-	 V6pn1RnINqGzVUXGf3HgPvh2pfQ0qF8zz+IbkURDO06UOdJS90AeMRmWgkfjuOg2aW
-	 Ms/ajfmueo0GovbLkWG7OoMk7YoftWrPktO2RhGWxln3Hewqg02RHOkFuqHqERON30
-	 waVH+VAx2+ZZODNZ9xhi0kqi+RF3gYp329WjGVGBJBGU8WbzCJC+bVxSPWBrErTlqQ
-	 7cZs7sfdS6szQ==
+	b=jw8dL805RZxx57jw6uNtimblw5b6+hXb6emX+1WDgdK2XRcT17DaZXxH3uo7Lpj84
+	 cm4WhcKhwH4u3b0GvqujIlxW8roxqMb3IYi0M1DOzYv6HWKnRLzvFhH6y6n4HfA7VU
+	 IEYZ6FnXYulmhjhdzb5aFQvSp5fmxatqk9Zc6KjTzzL/AapRC1xO+lbRCtWbxu0BVo
+	 iQI14aaqjEr4z4kT68H1diuchPgZi2VkYJooZ+PhMCQ67/DoZv3qs8Bxms8x7hD4Qc
+	 iPnDlv8ajDOMP/Xjl1MmOHB/woMoUFWGl67XmLJgD2HpafMu1BZd04cJrmAPg8xadQ
+	 Lmr9zx5zMymvQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Joao Pinto <Joao.Pinto@synopsys.com>,
-	Joao Pinto <jpinto@synopsys.com>,
-	Vinod Koul <vkoul@kernel.org>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Eugeniy.Paltsev@synopsys.com,
-	dmaengine@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 06/28] Avoid hw_desc array overrun in dw-axi-dmac
-Date: Wed,  5 Jun 2024 07:48:35 -0400
-Message-ID: <20240605114927.2961639-6-sashal@kernel.org>
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 07/28] usb: dwc3: pci: Don't set "linux,phy_charger_detect" property on Lenovo Yoga Tab2 1380
+Date: Wed,  5 Jun 2024 07:48:36 -0400
+Message-ID: <20240605114927.2961639-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605114927.2961639-1-sashal@kernel.org>
 References: <20240605114927.2961639-1-sashal@kernel.org>
@@ -67,75 +66,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Joao Pinto <Joao.Pinto@synopsys.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 333e11bf47fa8d477db90e2900b1ed3c9ae9b697 ]
+[ Upstream commit 0fb782b5d5c462b2518b3b4fe7d652114c28d613 ]
 
-I have a use case where nr_buffers = 3 and in which each descriptor is composed by 3
-segments, resulting in the DMA channel descs_allocated to be 9. Since axi_desc_put()
-handles the hw_desc considering the descs_allocated, this scenario would result in a
-kernel panic (hw_desc array will be overrun).
+The Lenovo Yoga Tablet 2 Pro 1380 model is the exception to the rule that
+devices which use the Crystal Cove PMIC without using ACPI for battery and
+AC power_supply class support use the USB-phy for charger detection.
 
-To fix this, the proposal is to add a new member to the axi_dma_desc structure,
-where we keep the number of allocated hw_descs (axi_desc_alloc()) and use it in
-axi_desc_put() to handle the hw_desc array correctly.
+Unlike the Lenovo Yoga Tablet 2 830 / 1050 models this model has an extra
+LC824206XA Micro USB switch which does the charger detection.
 
-Additionally I propose to remove the axi_chan_start_first_queued() call after completing
-the transfer, since it was identified that unbalance can occur (started descriptors can
-be interrupted and transfer ignored due to DMA channel not being enabled).
+Add a DMI quirk to not set the "linux,phy_charger_detect" property on
+the 1380 model. This quirk matches on the BIOS version to differentiate
+the 1380 model from the 830 and 1050 models which otherwise have
+the same DMI strings.
 
-Signed-off-by: Joao Pinto <jpinto@synopsys.com>
-Link: https://lore.kernel.org/r/1711536564-12919-1-git-send-email-jpinto@synopsys.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240406140127.17885-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 6 ++----
- drivers/dma/dw-axi-dmac/dw-axi-dmac.h          | 1 +
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/usb/dwc3/dwc3-pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-index a86a81ff0caa6..321446fdddbd7 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-@@ -302,6 +302,7 @@ static struct axi_dma_desc *axi_desc_alloc(u32 num)
- 		kfree(desc);
- 		return NULL;
- 	}
-+	desc->nr_hw_descs = num;
+diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
+index 497deed38c0c1..9ef821ca2fc71 100644
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -8,6 +8,7 @@
+  *	    Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+  */
  
- 	return desc;
- }
-@@ -328,7 +329,7 @@ static struct axi_dma_lli *axi_desc_get(struct axi_dma_chan *chan,
- static void axi_desc_put(struct axi_dma_desc *desc)
- {
- 	struct axi_dma_chan *chan = desc->chan;
--	int count = atomic_read(&chan->descs_allocated);
-+	int count = desc->nr_hw_descs;
- 	struct axi_dma_hw_desc *hw_desc;
- 	int descs_put;
++#include <linux/dmi.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+@@ -220,6 +221,7 @@ static int dwc3_pci_quirks(struct dwc3_pci *dwc,
  
-@@ -1139,9 +1140,6 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
- 		/* Remove the completed descriptor from issued list before completing */
- 		list_del(&vd->node);
- 		vchan_cookie_complete(vd);
--
--		/* Submit queued descriptors after processing the completed ones */
--		axi_chan_start_first_queued(chan);
- 	}
+ 		if (pdev->device == PCI_DEVICE_ID_INTEL_BYT) {
+ 			struct gpio_desc *gpio;
++			const char *bios_ver;
+ 			int ret;
  
- out:
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-index 454904d996540..ac571b413b21c 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-@@ -104,6 +104,7 @@ struct axi_dma_desc {
- 	u32				completed_blocks;
- 	u32				length;
- 	u32				period_len;
-+	u32				nr_hw_descs;
- };
- 
- struct axi_dma_chan_config {
+ 			/* On BYT the FW does not always enable the refclock */
+@@ -277,8 +279,12 @@ static int dwc3_pci_quirks(struct dwc3_pci *dwc,
+ 			 * detection. These can be identified by them _not_
+ 			 * using the standard ACPI battery and ac drivers.
+ 			 */
++			bios_ver = dmi_get_system_info(DMI_BIOS_VERSION);
+ 			if (acpi_dev_present("INT33FD", "1", 2) &&
+-			    acpi_quirk_skip_acpi_ac_and_battery()) {
++			    acpi_quirk_skip_acpi_ac_and_battery() &&
++			    /* Lenovo Yoga Tablet 2 Pro 1380 uses LC824206XA instead */
++			    !(bios_ver &&
++			      strstarts(bios_ver, "BLADE_21.X64.0005.R00.1504101516"))) {
+ 				dev_info(&pdev->dev, "Using TUSB1211 phy for charger detection\n");
+ 				swnode = &dwc3_pci_intel_phy_charger_detect_swnode;
+ 			}
 -- 
 2.43.0
 
