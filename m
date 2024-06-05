@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-48024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BCD8FCB5A
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:58:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5758FCB5D
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:59:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 109111F244C9
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:58:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC37A28BA76
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB03195FE1;
-	Wed,  5 Jun 2024 11:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAC119E7E4;
+	Wed,  5 Jun 2024 11:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKiItUdE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SONaxWk8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AF2191462;
-	Wed,  5 Jun 2024 11:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E3119E7DD;
+	Wed,  5 Jun 2024 11:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588268; cv=none; b=iFcflL+7tT7UfYeenxh2NXrh7X0i92Jr7FFA182Q2ywFfTxmzgVHvmpVPb9sQJjVlHVLKcyo8fyjXi1IRcSPN0mF+F+tIwL1g6hc6corzeR7tRfCEr9Mu1xJAm+WGrZLAsrwx3WUDzxW3t0zNO7lq5mnVayz/IOlYN2hzGgrRgc=
+	t=1717588271; cv=none; b=jRCTr1MVRc2CZW7pXbPyOxgcavIulc83z1ateRuEnyon18wkxRd8ELagj1/FKE5xBS6clNldGpeBGVZXTG1+czkKzJPSoHlczFslS5LtBorVVWqMeWHR4QQkvDgeXLPQXAdvXxMDNejpGkeDaF6+VaJ7LZTLEy4+Irks/JHqgLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588268; c=relaxed/simple;
-	bh=dfOEL015ORH+6IM7K8biVLVLo1OBKrxckpzA/YbrmQQ=;
+	s=arc-20240116; t=1717588271; c=relaxed/simple;
+	bh=Lt+FpEM0jPpr3XwvPw7UJ/AendB5vN0IPjs2xeR8CQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3gMpHM5nFrpbXsD4yM/NwPDSGKjiGAQ3MD2qHL6icqJfMjWqI1YKtXLfBLwmuoETRIky+ZcJaTO6qsiLnHTvfFSi6pfRYcqxB5a8Y9BCqXbyPv24UoX+w4w7oZUuRKvOP1WG+bJhK4Rkn8SWDSP88AtQsn/rl/ATQrGJggMh8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LKiItUdE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D65C32781;
-	Wed,  5 Jun 2024 11:51:06 +0000 (UTC)
+	 MIME-Version; b=YXeUkx8CAWlMrHv4ZprvJgdfOU3G8JYevbvDvdUvarYhHyqmVsIC+/ua4QdC5Ldmh5DpuyUV7mZIhIrecWWhv8lRcZ3jKchb44w4D/IQ0D85R+elqR5Xa9nRPuXdff6XrRfowXT+lfI1PIfyvK0bB3nHMjPJ/1zg54WtFbK8CFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SONaxWk8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FE1C32781;
+	Wed,  5 Jun 2024 11:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588268;
-	bh=dfOEL015ORH+6IM7K8biVLVLo1OBKrxckpzA/YbrmQQ=;
+	s=k20201202; t=1717588271;
+	bh=Lt+FpEM0jPpr3XwvPw7UJ/AendB5vN0IPjs2xeR8CQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKiItUdEAY7h1eEgnv0ws+LqzhqqHteYN3YUj/OsFX9x8dTRGU/rF//GH97CoaaJG
-	 2Rlf1CVC4hniTHJvhV53L+tjmy1szc1ftuDxwJ0CsTX714N/ba3r4G0A3CIBhgimTK
-	 oCBfZHBK2t5NJ8aoX1LHCnCm3QADiaBECb4UA2EuhqwhNo2WoJSV6h8ojDn2fewKQm
-	 tglrGedy9I7NC7Ju1JHGDLteRmRf9lbLXWOb8wWd9RCRqwRUCey9osDsGbYDCMPe7d
-	 H6g1nKhpRlFaRhcZ/SqRZJA0TmIvuTgGtUwB3RZLjMjS0Sc+nAIXJcdqQFeIa7/+qT
-	 J1optcrq4I6Wg==
+	b=SONaxWk8cDU0EO1mY24CQbgoVBinXLE7FzUcPy0xAPeK5wrQOpfFtR+QyFgbqKC7J
+	 bNkCQZjlmuT7vWo+rWF4UMsdKUD9cdvopPEqpeSOWv2jEkPPHHb4RGFo8sX9GlcL5l
+	 Anfksk+nRUmJvKuKfUnGvDUD9VjG5YX+I7jrrJC+ib6z4QTHqR4igzqWwwnjZbZPVG
+	 fc9s21OtT2gnJPzmVsgPX70NdaBdLQlsQJl+csukzgOwLMqTvK4p9+DkB0AHttlHo5
+	 3A4ktfkKiT5IFCj1hT+A1og26NocyddG9JHY2Q5uKrWl8O/CrSHVO1KcReaCvq/Yha
+	 q1jPPPkSh8lIA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+Cc: Alex Henrie <alexhenrie24@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	neil.armstrong@linaro.org,
-	johan+linaro@kernel.org,
-	robh@kernel.org,
-	quic_kriskura@quicinc.com,
+	sudipm.mukherjee@gmail.com,
 	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 03/24] usb: typec: ucsi_glink: rework quirks implementation
-Date: Wed,  5 Jun 2024 07:50:13 -0400
-Message-ID: <20240605115101.2962372-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.8 04/24] usb: misc: uss720: check for incompatible versions of the Belkin F5U002
+Date: Wed,  5 Jun 2024 07:50:14 -0400
+Message-ID: <20240605115101.2962372-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115101.2962372-1-sashal@kernel.org>
 References: <20240605115101.2962372-1-sashal@kernel.org>
@@ -70,56 +66,72 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.12
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit 3f81cf54c1889eeecbb8d9188f5f2f597622170e ]
+[ Upstream commit 3295f1b866bfbcabd625511968e8a5c541f9ab32 ]
 
-In preparation to adding more quirks, extract quirks to the static
-variables and reference them through match->data. Otherwise adding
-more quirks will add the table really cumbersome.
+The incompatible device in my possession has a sticker that says
+"F5U002 Rev 2" and "P80453-B", and lsusb identifies it as
+"050d:0002 Belkin Components IEEE-1284 Controller". There is a bug
+report from 2007 from Michael Trausch who was seeing the exact same
+errors that I saw in 2024 trying to use this cable.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240329-qcom-ucsi-fixes-v2-8-0f5d37ed04db@linaro.org
+Link: https://lore.kernel.org/all/46DE5830.9060401@trausch.us/
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Link: https://lore.kernel.org/r/20240326150723.99939-5-alexhenrie24@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_glink.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/usb/misc/uss720.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
-index ce08eb33e5bec..0e6f837f6c31b 100644
---- a/drivers/usb/typec/ucsi/ucsi_glink.c
-+++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-@@ -311,12 +311,14 @@ static void pmic_glink_ucsi_destroy(void *data)
- 	mutex_unlock(&ucsi->lock);
- }
+diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
+index b00d92db5dfd1..eb5a8e0d9e2d6 100644
+--- a/drivers/usb/misc/uss720.c
++++ b/drivers/usb/misc/uss720.c
+@@ -677,7 +677,7 @@ static int uss720_probe(struct usb_interface *intf,
+ 	struct parport_uss720_private *priv;
+ 	struct parport *pp;
+ 	unsigned char reg;
+-	int i;
++	int ret;
  
-+static unsigned long quirk_sc8180x = UCSI_NO_PARTNER_PDOS;
+ 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
+ 		le16_to_cpu(usbdev->descriptor.idVendor),
+@@ -688,8 +688,8 @@ static int uss720_probe(struct usb_interface *intf,
+ 		usb_put_dev(usbdev);
+ 		return -ENODEV;
+ 	}
+-	i = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
+-	dev_dbg(&intf->dev, "set interface result %d\n", i);
++	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
++	dev_dbg(&intf->dev, "set interface result %d\n", ret);
+ 
+ 	interface = intf->cur_altsetting;
+ 
+@@ -725,12 +725,18 @@ static int uss720_probe(struct usb_interface *intf,
+ 	set_1284_register(pp, 7, 0x00, GFP_KERNEL);
+ 	set_1284_register(pp, 6, 0x30, GFP_KERNEL);  /* PS/2 mode */
+ 	set_1284_register(pp, 2, 0x0c, GFP_KERNEL);
+-	/* debugging */
+-	get_1284_register(pp, 0, &reg, GFP_KERNEL);
 +
- static const struct of_device_id pmic_glink_ucsi_of_quirks[] = {
--	{ .compatible = "qcom,qcm6490-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
--	{ .compatible = "qcom,sc8180x-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
--	{ .compatible = "qcom,sc8280xp-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
--	{ .compatible = "qcom,sm8350-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
--	{ .compatible = "qcom,sm8550-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
-+	{ .compatible = "qcom,qcm6490-pmic-glink", .data = &quirk_sc8180x, },
-+	{ .compatible = "qcom,sc8180x-pmic-glink", .data = &quirk_sc8180x, },
-+	{ .compatible = "qcom,sc8280xp-pmic-glink", .data = &quirk_sc8180x, },
-+	{ .compatible = "qcom,sm8350-pmic-glink", .data = &quirk_sc8180x, },
-+	{ .compatible = "qcom,sm8550-pmic-glink", .data = &quirk_sc8180x, },
- 	{}
- };
++	/* The Belkin F5U002 Rev 2 P80453-B USB parallel port adapter shares the
++	 * device ID 050d:0002 with some other device that works with this
++	 * driver, but it itself does not. Detect and handle the bad cable
++	 * here. */
++	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
+ 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
++	if (ret < 0)
++		return ret;
  
-@@ -354,7 +356,7 @@ static int pmic_glink_ucsi_probe(struct auxiliary_device *adev,
- 
- 	match = of_match_device(pmic_glink_ucsi_of_quirks, dev->parent);
- 	if (match)
--		ucsi->ucsi->quirks = (unsigned long)match->data;
-+		ucsi->ucsi->quirks = *(unsigned long *)match->data;
- 
- 	ucsi_set_drvdata(ucsi->ucsi, ucsi);
- 
+-	i = usb_find_last_int_in_endpoint(interface, &epd);
+-	if (!i) {
++	ret = usb_find_last_int_in_endpoint(interface, &epd);
++	if (!ret) {
+ 		dev_dbg(&intf->dev, "epaddr %d interval %d\n",
+ 				epd->bEndpointAddress, epd->bInterval);
+ 	}
 -- 
 2.43.0
 
