@@ -1,149 +1,88 @@
-Return-Path: <stable+bounces-48240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE4928FD479
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 19:57:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7B48FD5EF
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 20:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74DC0B22F6F
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 17:56:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEE6028290E
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 18:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A187194AF6;
-	Wed,  5 Jun 2024 17:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmsZnuWW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6B013A898;
+	Wed,  5 Jun 2024 18:42:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D7F13AA3F;
-	Wed,  5 Jun 2024 17:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66056DF78;
+	Wed,  5 Jun 2024 18:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717610207; cv=none; b=H9bWBPYID6j9U3YkUVMzKGj3mcwrfXvmqD7BEkXb7nKLwuFmIwHOrU4O0uABDRQ2bP8q1BBaosM4yn/oUr2Erq3nqyUgBCGttI6GLKDMNIi9x7ce2QvIdyG/AYEhG+Aw1GXTbPU7bPoK6m6PzSq3iR+civG2+AuPCWq/8IvHONo=
+	t=1717612920; cv=none; b=MSYT3LO5pLIe8BzX16QjrszTW6W7oDHTeOlw1E665oPJFvQ2Fi2naPxjVB6iTJ221hiz6EqQa0y4s3gxeEbOas3Qu30Me2865VnzV45FGQOCF/8JTGigpupwK+tyqwKciU1BmIDmJqaUp4xnMO6y3ZuUIoJ8wffg8ZbZc3p6Y9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717610207; c=relaxed/simple;
-	bh=strlOwnw4/bnGn8gwD1c1oynUtTrrwMZYOLxaaLrLDE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Q+bB6r6y/P7Hu7OGYOlTXMmeAnYcGCqN/NF0sbE0GYuRC+8nWHI1QyaRLcIITuTL8YkY127zYQ7ngrAO5nj841Dj/1w8VeOeq2GqIw97MAGJ0IBgd0r01IV9+z2uo5XDrX7W9SJ3WzIy8QHnuleJsm1PrRoIaaKf1AQjaSI3uRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmsZnuWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7385C2BD11;
-	Wed,  5 Jun 2024 17:56:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717610206;
-	bh=strlOwnw4/bnGn8gwD1c1oynUtTrrwMZYOLxaaLrLDE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=GmsZnuWWotub3OTkHrlnfILM1banJqPU2PQctlTZE9sFP25BS0ZdOcSf6chO2m8aE
-	 jKe3NWYTbnb/i0xA9nSpfbT0MwMzcy3AfN5/QW+T46BmYArr6WpItztvcePYOhjVqm
-	 CbHsIZ++YMmzzrb7nmxGF+JaS/JoKz7YpTLQk5jXZDXA/S9ObSkKHHZHK3NqcF3j7R
-	 MZeFN+ivdUDDDoxKXe6SyfdHxO641U3qxw6sxZjThLyTiE0Aqoa9+HnTk2JBhpMTsB
-	 ACUrPDjqu4C5tLPmZQKUVfyQ2V5wJAIafcGn/gbw+ClhCXIYpqm98DAab9uoPPWN0N
-	 FoEId4V6FgAPA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sEusO-0011w7-7X;
-	Wed, 05 Jun 2024 18:56:44 +0100
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	glider@google.com,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: arm64: Disassociate vcpus from redistributor region on teardown
-Date: Wed,  5 Jun 2024 18:56:37 +0100
-Message-Id: <20240605175637.1635653-1-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1717612920; c=relaxed/simple;
+	bh=usxXmoU/R3IudYuih3Vw/LaJeB4gSFj0j/Vb7Jr5+dQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bAso2pMbGkV7nRR2IR2P73NTeXxQUENqYAa9iGRSaUKshEwkp8+lP/z0D+vpf7cGIOMbZxFMUFuq/+AnOJwhcFnuNMpsnGeSp6QulQUI4SDYCdAOaElo4uG043NynQ5kRxwL+f7DjzukDt3geLe0TBHWIXlXxf/OzLoxq1A/cTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
+Received: from [46.222.228.168] (port=1704 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1sEva4-00AuPb-77; Wed, 05 Jun 2024 20:41:54 +0200
+Date: Wed, 5 Jun 2024 20:41:51 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH nf] netfilter: restore default behavior for
+ nf_conntrack_events
+Message-ID: <ZmCxb2MqzeQPDFZt@calendula>
+References: <20240604135438.2613064-1-nicolas.dichtel@6wind.com>
+ <ZmAn7VcLHsdAI8Xg@strlen.de>
+ <c527582b-05dd-45bf-a9b1-2499b01280ee@6wind.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, james.morse@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, glider@google.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+In-Reply-To: <c527582b-05dd-45bf-a9b1-2499b01280ee@6wind.com>
+X-Spam-Score: -1.9 (-)
 
-When tearing down a redistributor region, make sure we don't have
-any dangling pointer to that region stored in a vcpu.
+On Wed, Jun 05, 2024 at 11:09:31AM +0200, Nicolas Dichtel wrote:
+> Le 05/06/2024 à 10:55, Florian Westphal a écrit :
+> > Nicolas Dichtel <nicolas.dichtel@6wind.com> wrote:
+> >> Since the below commit, there are regressions for legacy setups:
+> >> 1/ conntracks are created while there are no listener
+> >> 2/ a listener starts and dumps all conntracks to get the current state
+> >> 3/ conntracks deleted before the listener has started are not advertised
+> >>
+> >> This is problematic in containers, where conntracks could be created early.
+> >> This sysctl is part of unsafe sysctl and could not be changed easily in
+> >> some environments.
+> >>
+> >> Let's switch back to the legacy behavior.
+> > 
+> > :-(
+> > 
+> > Would it be possible to resolve this for containers by setting
+> > the container default to 1 if init_net had it changed to 1 at netns
+> > creation time?
+> 
+> When we have access to the host, it is possible to allow the configuration of
+> this (unsafe) sysctl for the pod. But there are cases where we don't have access
+> to the host.
+> 
+> https://docs.openshift.com/container-platform/4.9/nodes/containers/nodes-containers-sysctls.html#nodes-containers-sysctls-unsafe_nodes-containers-using
 
-Fixes: e5a35635464b ("kvm: arm64: vgic-v3: Introduce vgic_v3_free_redist_region()")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/kvm/vgic/vgic-init.c    |  2 +-
- arch/arm64/kvm/vgic/vgic-mmio-v3.c | 15 +++++++++++++--
- arch/arm64/kvm/vgic/vgic.h         |  2 +-
- 3 files changed, 15 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-index 8f5b7a3e7009..7f68cf58b978 100644
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -391,7 +391,7 @@ static void kvm_vgic_dist_destroy(struct kvm *kvm)
- 
- 	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
- 		list_for_each_entry_safe(rdreg, next, &dist->rd_regions, list)
--			vgic_v3_free_redist_region(rdreg);
-+			vgic_v3_free_redist_region(kvm, rdreg);
- 		INIT_LIST_HEAD(&dist->rd_regions);
- 	} else {
- 		dist->vgic_cpu_base = VGIC_ADDR_UNDEF;
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-index a3983a631b5a..9e50928f5d7d 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -919,8 +919,19 @@ static int vgic_v3_alloc_redist_region(struct kvm *kvm, uint32_t index,
- 	return ret;
- }
- 
--void vgic_v3_free_redist_region(struct vgic_redist_region *rdreg)
-+void vgic_v3_free_redist_region(struct kvm *kvm, struct vgic_redist_region *rdreg)
- {
-+	struct kvm_vcpu *vcpu;
-+	unsigned long c;
-+
-+	lockdep_assert_held(&kvm->arch.config_lock);
-+
-+	/* Garbage collect the region */
-+	kvm_for_each_vcpu(c, vcpu, kvm) {
-+		if (vcpu->arch.vgic_cpu.rdreg == rdreg)
-+			vcpu->arch.vgic_cpu.rdreg = NULL;
-+	}
-+
- 	list_del(&rdreg->list);
- 	kfree(rdreg);
- }
-@@ -945,7 +956,7 @@ int vgic_v3_set_redist_base(struct kvm *kvm, u32 index, u64 addr, u32 count)
- 
- 		mutex_lock(&kvm->arch.config_lock);
- 		rdreg = vgic_v3_rdist_region_from_index(kvm, index);
--		vgic_v3_free_redist_region(rdreg);
-+		vgic_v3_free_redist_region(kvm, rdreg);
- 		mutex_unlock(&kvm->arch.config_lock);
- 		return ret;
- 	}
-diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
-index 6106ebd5ba42..03d356a12377 100644
---- a/arch/arm64/kvm/vgic/vgic.h
-+++ b/arch/arm64/kvm/vgic/vgic.h
-@@ -316,7 +316,7 @@ vgic_v3_rd_region_size(struct kvm *kvm, struct vgic_redist_region *rdreg)
- 
- struct vgic_redist_region *vgic_v3_rdist_region_from_index(struct kvm *kvm,
- 							   u32 index);
--void vgic_v3_free_redist_region(struct vgic_redist_region *rdreg);
-+void vgic_v3_free_redist_region(struct kvm *kvm, struct vgic_redist_region *rdreg);
- 
- bool vgic_v3_rdist_overlap(struct kvm *kvm, gpa_t base, size_t size);
- 
--- 
-2.39.2
-
+conntrack is enabled on-demand by the ruleset these days, such monitor
+process could be created _before_ the ruleset is loaded?
 
