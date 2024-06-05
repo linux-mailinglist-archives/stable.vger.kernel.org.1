@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-48007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5865C8FCB0F
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:52:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8618FCB13
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7C5528EC96
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:52:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 207221F21FE0
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C61019309B;
-	Wed,  5 Jun 2024 11:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59236195F1F;
+	Wed,  5 Jun 2024 11:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOq2h/ku"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOvP9frr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECD1192B6A;
-	Wed,  5 Jun 2024 11:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F28195F17;
+	Wed,  5 Jun 2024 11:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588199; cv=none; b=MNESlqt5NCejaknp8O/Wl4McXIBV78ERfS+pZmNsyltSh+m4OgzqAf3HZHg3aeLthFktL5mhHIj05lVwo6arIOzZVFW4d39bZohWieEe6sTioi8SDzNxE3xZSsqkpt+aC6+WSveR6ZYmtqnpL4JKryEThKUME1MffYsfUPnFMUw=
+	t=1717588206; cv=none; b=c6tsKfce2hHuJPxxZEKGDdOfaZrsr6ywXFZy2EUaYA/DOIK8ILuen0MM+OQL1BN4fEx/M2k9lWq4/OCc1iCpuAtVCULEwtgwVkNoFIZDZd/UAlPz+YZ8/yd19umbS530EfKfCD91Sl1ucnqAew8JMSoXYfE8AO+usSN3S9sZWcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588199; c=relaxed/simple;
-	bh=PA03ICMifFQi7hAOsFYMtCFwyHUJlSWnycc7wgnoZuw=;
+	s=arc-20240116; t=1717588206; c=relaxed/simple;
+	bh=ZPF7T9kuWu/BZfONDXqgsMzLC8AUBVBAEKzU6hLpZ9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGEZGFcgmUJUCgEmJ+eCvLPZd8dm8lSOksf3glWFH7W+99dYzi1x6pM3QlAnbL8Wz2r8xtW4psPvMS3dziPZ0npKYt3RKXfVHeerXhRMzQam4aSs6uPBfqn4m0fjdTzHmYUoA11RNGClnaO/D9WmDj291sa+estA9KItPTxqKTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOq2h/ku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF53C3277B;
-	Wed,  5 Jun 2024 11:49:57 +0000 (UTC)
+	 MIME-Version; b=HDB7CAkFec78+Hv6/+0ynDbN5WDKye73LjAm9i6dcnF17kUyM6sVDZXiB3cD078lvpg8uBf0cDYrXCUQRQdTiacZXMrPGVLFRPR/KFz6RZvB2Z/Ku0E2KncK7Aj/8lb55AYwQUQRX/Purz6Ha4HOm7hzkgZ7xx3liTIHsRDvU7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOvP9frr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AE6C32781;
+	Wed,  5 Jun 2024 11:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588199;
-	bh=PA03ICMifFQi7hAOsFYMtCFwyHUJlSWnycc7wgnoZuw=;
+	s=k20201202; t=1717588205;
+	bh=ZPF7T9kuWu/BZfONDXqgsMzLC8AUBVBAEKzU6hLpZ9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOq2h/kuhzBFpbY+IZHBCj6UYtLYHuzGsX+QYmBBebCIXHhZ5QUw8Cu2EW5cR6Nlf
-	 +CmQcYwMXcJ7b3pxeLxvtkvMuMdMlq045A/GRSQ88UP3VHe3e6mj1oTZL8RAmQPhkq
-	 xAK57UmxusgfA647I7pSysZF38Og8c5URXOmfkV4bY/HhYrmMw5nuZ7Af1sY8ah1mr
-	 zaHhFWTVm2m+mzNZH94xB1eKt217n+tq5CQHtIWKjlAckJxfawfCOU7PLmHg/ZYRnz
-	 54frz2uOFXtRlmDfhiholXrzK3HmR8JRpp1+X75VC6OGdenGqv8djGusvW6ZK+s/H8
-	 RU45+ejlUlStQ==
+	b=JOvP9frrfx/hc2OqJQZKPWRjbatq/8CQjKQCh2azbBJDLd4PWfoVNRrDKksy2TPEM
+	 Um6Ibm8j8FalbXL9Au+6ax65APYATHCCnnORzP1nPF5/U88TgM8qkCLHGngQpuo6gJ
+	 CopUwfybgV+WnTzJCaUSQ5Fz+n65XJ+sjn1K3p+JkNXC/dCqFIzF1ovnxw6EnPp3hi
+	 k7856AzFZqQJOe6SjQryT5fb6TfRH7gNWVCrwcEzLNuBTvcykIA4IYG9BLbnPR6hI7
+	 txXtA9wBhpeRaN1TwvFzEk/8sZhXYRQYSfmFdHYTupimKI2beh51XYLhzk0Mos5TnU
+	 OmmohAwtxR9Lw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Parker Newman <pnewman@connecttech.com>,
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jirislaby@kernel.org,
-	andriy.shevchenko@linux.intel.com,
-	matthew.howell@sealevel.com,
-	ilpo.jarvinen@linux.intel.com,
-	linux-serial@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 14/28] serial: exar: adding missing CTI and Exar PCI ids
-Date: Wed,  5 Jun 2024 07:48:43 -0400
-Message-ID: <20240605114927.2961639-14-sashal@kernel.org>
+	aladyshev22@gmail.com,
+	ivan.orlov0322@gmail.com,
+	azeemshaikh38@gmail.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 15/28] usb: gadget: function: Remove usage of the deprecated ida_simple_xx() API
+Date: Wed,  5 Jun 2024 07:48:44 -0400
+Message-ID: <20240605114927.2961639-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605114927.2961639-1-sashal@kernel.org>
 References: <20240605114927.2961639-1-sashal@kernel.org>
@@ -69,75 +68,95 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Parker Newman <pnewman@connecttech.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit b86ae40ffcf5a16b9569b1016da4a08c4f352ca2 ]
+[ Upstream commit 920e7522e3bab5ebc2fb0cc1a034f4470c87fa97 ]
 
-- Added Connect Tech and Exar IDs not already in pci_ids.h
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-Signed-off-by: Parker Newman <pnewman@connecttech.com>
-Link: https://lore.kernel.org/r/7c3d8e795a864dd9b0a00353b722060dc27c4e09.1713270624.git.pnewman@connecttech.com
+Note that the upper limit of ida_simple_get() is exclusive, but the one of
+ida_alloc_max() is inclusive. So a -1 has been added when needed.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/7cd361e2b377a5373968fa7deee4169229992a1e.1713107386.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_exar.c | 42 +++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ drivers/usb/gadget/function/f_hid.c     | 6 +++---
+ drivers/usb/gadget/function/f_printer.c | 6 +++---
+ drivers/usb/gadget/function/rndis.c     | 4 ++--
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
-index 0440df7de1ed7..4d1e07343d0bb 100644
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -46,8 +46,50 @@
- #define PCI_DEVICE_ID_COMMTECH_4228PCIE		0x0021
- #define PCI_DEVICE_ID_COMMTECH_4222PCIE		0x0022
+diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
+index 3c8a9dd585c09..2db01e03bfbf0 100644
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -1029,9 +1029,9 @@ static inline int hidg_get_minor(void)
+ {
+ 	int ret;
  
-+#define PCI_VENDOR_ID_CONNECT_TECH				0x12c4
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_SP_OPTO        0x0340
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_A      0x0341
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_B      0x0342
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS           0x0350
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_A         0x0351
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_B         0x0352
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS           0x0353
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_A        0x0354
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_B        0x0355
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS_OPTO      0x0360
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_A    0x0361
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_B    0x0362
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP             0x0370
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232         0x0371
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_485         0x0372
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_SP           0x0373
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_6_2_SP           0x0374
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_6_SP           0x0375
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232_NS      0x0376
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_LEFT   0x0380
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_RIGHT  0x0381
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XP_OPTO        0x0382
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_XPRS_OPTO    0x0392
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP        0x03A0
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232    0x03A1
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_485    0x03A2
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232_NS 0x03A3
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XEG001               0x0602
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_BASE           0x1000
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_2              0x1002
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_4              0x1004
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_8              0x1008
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_12             0x100C
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_16             0x1010
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG00X          0x110c
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG01X          0x110d
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_16                 0x1110
-+
- #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
- #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
-+#define PCI_DEVICE_ID_EXAR_XR17V252		0x0252
-+#define PCI_DEVICE_ID_EXAR_XR17V254		0x0254
-+#define PCI_DEVICE_ID_EXAR_XR17V258		0x0258
+-	ret = ida_simple_get(&hidg_ida, 0, 0, GFP_KERNEL);
++	ret = ida_alloc(&hidg_ida, GFP_KERNEL);
+ 	if (ret >= HIDG_MINORS) {
+-		ida_simple_remove(&hidg_ida, ret);
++		ida_free(&hidg_ida, ret);
+ 		ret = -ENODEV;
+ 	}
  
- #define PCI_SUBDEVICE_ID_USR_2980		0x0128
- #define PCI_SUBDEVICE_ID_USR_2981		0x0129
+@@ -1176,7 +1176,7 @@ static const struct config_item_type hid_func_type = {
+ 
+ static inline void hidg_put_minor(int minor)
+ {
+-	ida_simple_remove(&hidg_ida, minor);
++	ida_free(&hidg_ida, minor);
+ }
+ 
+ static void hidg_free_inst(struct usb_function_instance *f)
+diff --git a/drivers/usb/gadget/function/f_printer.c b/drivers/usb/gadget/function/f_printer.c
+index 076dd4c1be96c..ba7d180cc9e6d 100644
+--- a/drivers/usb/gadget/function/f_printer.c
++++ b/drivers/usb/gadget/function/f_printer.c
+@@ -1312,9 +1312,9 @@ static inline int gprinter_get_minor(void)
+ {
+ 	int ret;
+ 
+-	ret = ida_simple_get(&printer_ida, 0, 0, GFP_KERNEL);
++	ret = ida_alloc(&printer_ida, GFP_KERNEL);
+ 	if (ret >= PRINTER_MINORS) {
+-		ida_simple_remove(&printer_ida, ret);
++		ida_free(&printer_ida, ret);
+ 		ret = -ENODEV;
+ 	}
+ 
+@@ -1323,7 +1323,7 @@ static inline int gprinter_get_minor(void)
+ 
+ static inline void gprinter_put_minor(int minor)
+ {
+-	ida_simple_remove(&printer_ida, minor);
++	ida_free(&printer_ida, minor);
+ }
+ 
+ static int gprinter_setup(int);
+diff --git a/drivers/usb/gadget/function/rndis.c b/drivers/usb/gadget/function/rndis.c
+index 29bf8664bf582..12c5d9cf450c1 100644
+--- a/drivers/usb/gadget/function/rndis.c
++++ b/drivers/usb/gadget/function/rndis.c
+@@ -869,12 +869,12 @@ EXPORT_SYMBOL_GPL(rndis_msg_parser);
+ 
+ static inline int rndis_get_nr(void)
+ {
+-	return ida_simple_get(&rndis_ida, 0, 1000, GFP_KERNEL);
++	return ida_alloc_max(&rndis_ida, 999, GFP_KERNEL);
+ }
+ 
+ static inline void rndis_put_nr(int nr)
+ {
+-	ida_simple_remove(&rndis_ida, nr);
++	ida_free(&rndis_ida, nr);
+ }
+ 
+ struct rndis_params *rndis_register(void (*resp_avail)(void *v), void *v)
 -- 
 2.43.0
 
