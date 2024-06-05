@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-48140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717988FCCE2
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:31:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B948FCCE4
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:31:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9D79B29A8B
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:31:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FB201C23B67
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF8819FA8E;
-	Wed,  5 Jun 2024 12:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4611A01B9;
+	Wed,  5 Jun 2024 12:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rfUB443L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gnbEImBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435F819FA83;
-	Wed,  5 Jun 2024 12:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1889C1A01AF;
+	Wed,  5 Jun 2024 12:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588965; cv=none; b=lCXOUdASKHQ1e+CZu64MiBOQ9eSBPO7o5AIWjb1OzHhWE5wr64f2FrW3/VShSjHrs+Cs/Z2PdtMyh9XdkN6HIALYYiJ1uwjFswwdsathA4vkN9cZ8T/3lnnTcZI/1Kb7kPMSpubJA2bAOei4MrTDniiO/JRkdi2nyUgu1ekZQRY=
+	t=1717588967; cv=none; b=CRwAo5rlEZ3+HfJUz9n1E4pcyjuBtzUSdJD6mfVkJhxaEDlAxt91hBNp/NFxRziNuf/s2wb0+8ywqpaK+y4LCHEz0vbKOXmXm1dbQWT9zgfUQXe5W1GipqI4d44MOh3CstRJX1LBza9/MOBZlUr31hqXp9OGjGzIpc07V5tzIQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588965; c=relaxed/simple;
-	bh=BQlbPAvxsdi3X1d2VhHNpiIeTwGwQryj+ROh8dfsSWI=;
+	s=arc-20240116; t=1717588967; c=relaxed/simple;
+	bh=60Kug0jDBKnuODkdJoUPwBKjkCCDWud9myyXf3mbQyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQdbBk03BoeyRpEQxW9c1gblESCLj1VR6edZ/0rLJgaz+MSFVOT4HNtEdnl8W8e0WupUX1VbvxmzmTNFdO9S/wp76o0OblzNh7Lxa8H6nC99H6CjdMRtnFeSJy1gL2eoxZTVBXKG6wngIqunXbICZ8Wicv1eKWQIZH92bPbXKH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rfUB443L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408F5C4AF09;
-	Wed,  5 Jun 2024 12:02:44 +0000 (UTC)
+	 MIME-Version; b=nDi3MQSha3l1pG/2RpjjuOiLXESSb9xxSBjPKL1vKFDe6FKqkckOzSXDp9UJvJuJH7f0RY70GNGdigvEyu+ju/kk8DS4I/Ot0P9W8i1kAx+sjxiCyp18USeHc8jo0c5BQ6IqlUTkNJCUMSYkBRqlwzSb1WPlcZx51TMEIgKfHyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gnbEImBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3D3C4AF08;
+	Wed,  5 Jun 2024 12:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588965;
-	bh=BQlbPAvxsdi3X1d2VhHNpiIeTwGwQryj+ROh8dfsSWI=;
+	s=k20201202; t=1717588966;
+	bh=60Kug0jDBKnuODkdJoUPwBKjkCCDWud9myyXf3mbQyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rfUB443LzP7TXG7N5SYUwYTseiYa7PFmIsm5QKtNDuZjxE5E3mCb3KvvVxFuhUarq
-	 H1J+y9hCDXSNzxnrSRGJK8fWKU9V0KJZTl5tMyVIgVrz366T9aSrg6S9kYUavZBuOH
-	 P2W8MuPMcKwyUW9/jstPUg8pa1+pbi+1+pBNhaVwszxJChR4zB9Xqbq/HAm/O5QnmY
-	 iqDT0mUTOAYXlv8jyb2Z5IBJaTmzZtWM5SZVF2qY/g4jxk6oFbPx26/cNx7AdvZ++z
-	 7EGovBcdCcm2QRoO/3nj7eo+MHkQ3PDfanOhI1jSC89S7yqHmD0eDVwyslyNLrXk88
-	 mICsIYWZ8Whdw==
+	b=gnbEImBRSUCsj6MrwTjt9Fm+eYapXuft/fjld0G4oAhCDMESF58JfNyrDbGbV2g/v
+	 FPWBj4me1ueMy4w02vAof2EsCiTQBpyE+cB+ySSXDNb6q3x4irJ++bRXPuzLicFnWt
+	 HWrQ+6Jeo4UWQJCi5C5c0astGqnu9eSh4md6scosM2e0aGLet048Ym62GCU8Gq8RXa
+	 SeIAM/C+cnVvaeA0YmBopUidKICL+qtRY8RCMsLY9FZ1g/6dyjUnINA99MybS3CdKl
+	 z/tbEOtSXp2mFCEDasmMWxpXvfGlM+TIPzZbsbRBazcgRmBfvyMf7+DouM0SxUuLtv
+	 rU2+Nx+wu4sog==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hannes Reinecke <hare@kernel.org>,
+Cc: Sagi Grimberg <sagi@grimberg.me>,
+	Alex Turin <alex@vastdata.com>,
 	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 13/23] block: check for max_hw_sectors underflow
-Date: Wed,  5 Jun 2024 08:01:56 -0400
-Message-ID: <20240605120220.2966127-13-sashal@kernel.org>
+	kch@nvidia.com,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.9 14/23] nvmet: fix a possible leak when destroy a ctrl during qp establishment
+Date: Wed,  5 Jun 2024 08:01:57 -0400
+Message-ID: <20240605120220.2966127-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120220.2966127-1-sashal@kernel.org>
 References: <20240605120220.2966127-1-sashal@kernel.org>
@@ -67,56 +68,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit e993db2d6e5207f1ae061c2ac554ab1f714c741d ]
+[ Upstream commit c758b77d4a0a0ed3a1292b3fd7a2aeccd1a169a4 ]
 
-The logical block size need to be smaller than the max_hw_sector
-setting, otherwise we can't even transfer a single LBA.
+In nvmet_sq_destroy we capture sq->ctrl early and if it is non-NULL we
+know that a ctrl was allocated (in the admin connect request handler)
+and we need to release pending AERs, clear ctrl->sqs and sq->ctrl
+(for nvme-loop primarily), and drop the final reference on the ctrl.
 
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
+However, a small window is possible where nvmet_sq_destroy starts (as
+a result of the client giving up and disconnecting) concurrently with
+the nvme admin connect cmd (which may be in an early stage). But *before*
+kill_and_confirm of sq->ref (i.e. the admin connect managed to get an sq
+live reference). In this case, sq->ctrl was allocated however after it was
+captured in a local variable in nvmet_sq_destroy.
+This prevented the final reference drop on the ctrl.
+
+Solve this by re-capturing the sq->ctrl after all inflight request has
+completed, where for sure sq->ctrl reference is final, and move forward
+based on that.
+
+This issue was observed in an environment with many hosts connecting
+multiple ctrls simoutanuosly, creating a delay in allocating a ctrl
+leading up to this race window.
+
+Reported-by: Alex Turin <alex@vastdata.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/nvme/target/core.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 9d6033e01f2e1..b4272bd926370 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -104,6 +104,7 @@ static int blk_validate_zoned_limits(struct queue_limits *lim)
- static int blk_validate_limits(struct queue_limits *lim)
- {
- 	unsigned int max_hw_sectors;
-+	unsigned int logical_block_sectors;
+diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
+index 2fde22323622e..06f0c587f3437 100644
+--- a/drivers/nvme/target/core.c
++++ b/drivers/nvme/target/core.c
+@@ -818,6 +818,15 @@ void nvmet_sq_destroy(struct nvmet_sq *sq)
+ 	percpu_ref_exit(&sq->ref);
+ 	nvmet_auth_sq_free(sq);
  
- 	/*
- 	 * Unless otherwise specified, default to 512 byte logical blocks and a
-@@ -134,8 +135,11 @@ static int blk_validate_limits(struct queue_limits *lim)
- 		lim->max_hw_sectors = BLK_SAFE_MAX_SECTORS;
- 	if (WARN_ON_ONCE(lim->max_hw_sectors < PAGE_SECTORS))
- 		return -EINVAL;
-+	logical_block_sectors = lim->logical_block_size >> SECTOR_SHIFT;
-+	if (WARN_ON_ONCE(logical_block_sectors > lim->max_hw_sectors))
-+		return -EINVAL;
- 	lim->max_hw_sectors = round_down(lim->max_hw_sectors,
--			lim->logical_block_size >> SECTOR_SHIFT);
-+			logical_block_sectors);
- 
- 	/*
- 	 * The actual max_sectors value is a complex beast and also takes the
-@@ -153,7 +157,7 @@ static int blk_validate_limits(struct queue_limits *lim)
- 		lim->max_sectors = min(max_hw_sectors, BLK_DEF_MAX_SECTORS_CAP);
- 	}
- 	lim->max_sectors = round_down(lim->max_sectors,
--			lim->logical_block_size >> SECTOR_SHIFT);
-+			logical_block_sectors);
- 
- 	/*
- 	 * Random default for the maximum number of segments.  Driver should not
++	/*
++	 * we must reference the ctrl again after waiting for inflight IO
++	 * to complete. Because admin connect may have sneaked in after we
++	 * store sq->ctrl locally, but before we killed the percpu_ref. the
++	 * admin connect allocates and assigns sq->ctrl, which now needs a
++	 * final ref put, as this ctrl is going away.
++	 */
++	ctrl = sq->ctrl;
++
+ 	if (ctrl) {
+ 		/*
+ 		 * The teardown flow may take some time, and the host may not
 -- 
 2.43.0
 
