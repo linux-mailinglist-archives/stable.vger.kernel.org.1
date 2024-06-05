@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-48167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E2B8FCD47
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:38:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E68418FCD4A
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A68471C2132D
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:38:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D71528D08C
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAC91A3690;
-	Wed,  5 Jun 2024 12:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2047F1A36BE;
+	Wed,  5 Jun 2024 12:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxSef32A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NiTUujr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5471A3689;
-	Wed,  5 Jun 2024 12:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14F81A36B7;
+	Wed,  5 Jun 2024 12:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589033; cv=none; b=kG+JZOZspg+z+JP7wx0c98n333eAPjWcvUh3ym7pI/mw9oEaMLuGy+ECnKYhapMZYKz/4AklkNhKKksRiEBjLVAk0szbNHSMafRSwgkWwRHdVlqPiGBJiX+hLr1y+GJA2ys+aX6hBMyqVX+I1Lm4w6jPAmQAvWVUsJOr6Et/FwU=
+	t=1717589036; cv=none; b=FuUjEbCCJG/Dnxx/fgXuyhl9grvNqOvGcasX+5rtpWZXR7Jjc6ZDjsZqKkHJMnGVw0wZnLLchx/0aKi5vjHC8sx4wBAiVLBeOgeldRkC1ZvlZ6+27Bjyd6GrcB3UsL3VPfAqPn0uhhTGKbmQLwWf42OupvxZVR+JnQfdDhRPMzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589033; c=relaxed/simple;
-	bh=huM3Hia/E8C/3CGVJFNUtJsHYsCR6y3z74t2rsw1sPI=;
+	s=arc-20240116; t=1717589036; c=relaxed/simple;
+	bh=GNS9AW5xk91QvxSxcK6nVskhVX+Xg7DubMDBgAl/DNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eiG8Sa0u0WZvinlR0Gxmlu0Dd/60fdLgzmcCRqt8I8zQp8ADo9XzgejANMBcPeUSFc9acsdktNBsoAvllT5kCFaN4UQX4CV7q71TBbLu59l4kHqyyQ8RvoenCe+SG+AShAElKbX5Lk6m8WPvmmT88gIL/N39zfz1IJjX3pX2EqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxSef32A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A77C32781;
-	Wed,  5 Jun 2024 12:03:51 +0000 (UTC)
+	 MIME-Version; b=q55kARnRXaHwI/YGNkrxI7qR2/VQnBbrGNGQzeMqURw7q2xoI5sMwEh+LYely+HzgvGlS+J8k24K0s9nZ9/HgQmTI7hGMBk4CA+xf83qTe+kJQmf88ygHj4VgbveoMao8y6J+DxcNvfXAtDpyoMBu8XIsq0loFXBC+Z2JQUVW7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NiTUujr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E0DC32781;
+	Wed,  5 Jun 2024 12:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589033;
-	bh=huM3Hia/E8C/3CGVJFNUtJsHYsCR6y3z74t2rsw1sPI=;
+	s=k20201202; t=1717589036;
+	bh=GNS9AW5xk91QvxSxcK6nVskhVX+Xg7DubMDBgAl/DNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxSef32AZ8FligZkolP9iURMo5sTk4PMJaN4QHVQUMwKp1yaT0aoGApIuyzDT0/5N
-	 eLgXV//WzlKnY9orInUmPd5xAt3h6mvQkSu2XAHHKS5Pj+J968u6+o9Fl6k6r7J/XF
-	 6Tpxjj4bhq8Ezha3gs55OyqG9vMuWZaPrkTBKxhLsBDH7l9KgBUOKJ9G4lWfWKlacs
-	 8ig/78ocJmsj3oegqOACr7Z9mqejLFPFjyAaJj9iAQSW6YsdIrCQgJZBuADGYjtT6l
-	 41mBBAUZwDwcCNygK92LotA314NDuDRR4Dkwuax1WSMsNJRg+wqgiPdfOnluyQ6FfI
-	 lSrpwp+zRepYA==
+	b=NiTUujr3yHuOF2ZvbOVuWS6Wzk3kTBZexI4bvLOmsdqIJbOKQBOCpb/+4pWaQhGlu
+	 jJrZLVzX3StRQLaaWZI/65X5KC8UV3G4NvbZwwdra3XsQ/mwm3xDDTdKpj1Nc3QjmK
+	 Q1xHtX1jeHfNYOc+jtv+ASTtm3sshbYetYz99Qdk36pvaJOREjyvSfx3UyfF7a5Ix+
+	 wRLspWvGvx2981iz6SPGg+u/shbNA1NDfJFoqsH6XHWAXSQRIkVJr/E+mtCTydcd2L
+	 /TYjNa4TchVUZ/fk7+nGTZcC64B9pyvIALG2a1ZIn3w/X1nWAIZoxvTmONBLAKZwBZ
+	 i2b1v3miG4w4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	Feifei Xu <Feifei.Xu@amd.com>,
-	Feifei Xu <feifei.xu@amd.com>,
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	nathan@kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.8 17/18] Revert "drm/amdkfd: fix gfx_target_version for certain 11.0.3 devices"
-Date: Wed,  5 Jun 2024 08:03:07 -0400
-Message-ID: <20240605120319.2966627-17-sashal@kernel.org>
+	martin.petersen@oracle.com,
+	hare@suse.de,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 18/18] null_blk: Do not allow runt zone with zone capacity smaller then zone size
+Date: Wed,  5 Jun 2024 08:03:08 -0400
+Message-ID: <20240605120319.2966627-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120319.2966627-1-sashal@kernel.org>
 References: <20240605120319.2966627-1-sashal@kernel.org>
@@ -74,45 +69,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.12
 Content-Transfer-Encoding: 8bit
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit dd2b75fd9a79bf418e088656822af06fc253dbe3 ]
+[ Upstream commit b164316808ec5de391c3e7b0148ec937d32d280d ]
 
-This reverts commit 28ebbb4981cb1fad12e0b1227dbecc88810b1ee8.
+A zoned device with a smaller last zone together with a zone capacity
+smaller than the zone size does make any sense as that does not
+correspond to any possible setup for a real device:
+1) For ZNS and zoned UFS devices, all zones are always the same size.
+2) For SMR HDDs, all zones always have the same capacity.
+In other words, if we have a smaller last runt zone, then this zone
+capacity should always be equal to the zone size.
 
-Revert this commit as apparently the LLVM code to take advantage of
-this never landed.
+Add a check in null_init_zoned_dev() to prevent a configuration to have
+both a smaller zone size and a zone capacity smaller than the zone size.
 
-Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Feifei Xu <feifei.xu@amd.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240530054035.491497-2-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/block/null_blk/zoned.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-index fcf6558d019e5..7d39982bf74e2 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -405,15 +405,8 @@ struct kfd_dev *kgd2kfd_probe(struct amdgpu_device *adev, bool vf)
- 			f2g = &gfx_v11_kfd2kgd;
- 			break;
- 		case IP_VERSION(11, 0, 3):
--			if ((adev->pdev->device == 0x7460 &&
--			     adev->pdev->revision == 0x00) ||
--			    (adev->pdev->device == 0x7461 &&
--			     adev->pdev->revision == 0x00))
--				/* Note: Compiler version is 11.0.5 while HW version is 11.0.3 */
--				gfx_target_version = 110005;
--			else
--				/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
--				gfx_target_version = 110001;
-+			/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
-+			gfx_target_version = 110001;
- 			f2g = &gfx_v11_kfd2kgd;
- 			break;
- 		case IP_VERSION(11, 5, 0):
+diff --git a/drivers/block/null_blk/zoned.c b/drivers/block/null_blk/zoned.c
+index 6f5e0994862ea..bc13adb23ad38 100644
+--- a/drivers/block/null_blk/zoned.c
++++ b/drivers/block/null_blk/zoned.c
+@@ -83,6 +83,17 @@ int null_init_zoned_dev(struct nullb_device *dev, struct request_queue *q)
+ 		return -EINVAL;
+ 	}
+ 
++	/*
++	 * If a smaller zone capacity was requested, do not allow a smaller last
++	 * zone at the same time as such zone configuration does not correspond
++	 * to any real zoned device.
++	 */
++	if (dev->zone_capacity != dev->zone_size &&
++	    dev->size & (dev->zone_size - 1)) {
++		pr_err("A smaller last zone is not allowed with zone capacity smaller than zone size.\n");
++		return -EINVAL;
++	}
++
+ 	zone_capacity_sects = mb_to_sects(dev->zone_capacity);
+ 	dev_capacity_sects = mb_to_sects(dev->size);
+ 	dev->zone_size_sects = mb_to_sects(dev->zone_size);
 -- 
 2.43.0
 
