@@ -1,76 +1,86 @@
-Return-Path: <stable+bounces-47967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDA28FC1CC
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 04:26:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E52C8FC1D2
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 04:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64EFBB21496
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 02:26:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8D96B226D8
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 02:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACAB2AE75;
-	Wed,  5 Jun 2024 02:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D6F38DD6;
+	Wed,  5 Jun 2024 02:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="TX9HJgvW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CObOUJjl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97B6DF60;
-	Wed,  5 Jun 2024 02:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B57D61FC6;
+	Wed,  5 Jun 2024 02:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717554360; cv=none; b=XJE2cUs5pNG45TlJVhMTJPekzB6i12Gl1oYrnA9YuQwSeGwPN6WDG8SlI7Hazl0agcU6TXi+6Ar/jW1MBRNbJg/Do0mLXxAdcuKU1Dq8jIJwgRGHDIiq/k3OFHo1vs+mYZKFoDDgoU8PD871sMKOzNf9yFamGU2BmfpKbxf26aQ=
+	t=1717554573; cv=none; b=lbEd/sHx1KI+fK/hS8CLJ4GemkCpEu4pJnaWoOaTzD/7WstheSaV6HBnrF1oKa7m6TzWTvXSZVH0n39vkp6FeuEv2KgnrQFY47+kc+ehS4YSbsnZbdWQXIFyNgb0v04RtsLuojJbLCjAHfdNguEEBBw61Gayg9rOV6CpyJd5JfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717554360; c=relaxed/simple;
-	bh=t4/UuPcm2KF//0fZsqUvhp8NGB6Z5SyAUZtj00LZHJg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4dylL9eZXawEgiWip3RiKa+DgokoJMFDd335/S4ENh8d9GfHTMj6L03+eF6vWlyTVz8Pt+L5qKCkvzWw2UpZLukBFYMTHlSvGA0/uXKtnlpqKqqSv9YVx+Xtp18P40E0KnH0BLAfHonUS2Mn/sCD5RJqvPQbWzjxQU8qcGY9Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=TX9HJgvW; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4551DwsM028876;
-	Wed, 5 Jun 2024 02:25:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc :
- content-transfer-encoding : date : from : in-reply-to : message-id :
- mime-version : references : subject : to; s=corp-2023-11-20;
- bh=+YiiJ/dVbBnker1B+5dQTq9Zxcr9yNQJEMHs9jZf/Xg=;
- b=TX9HJgvWhvBjfQUbzmG/NaTPaEuIUc/z99sN05hYsk+qnTrYgJ0P8zdOwobZeVtlDLcl
- Dxvmw9M+nQB89zNeOjOUgdhImmBS5Mt2YuAl1ne0QsyF7olEa/aSTcuRASs7xJG9ejSr
- xQ5PnT8lUgk67FlFEdlG+msH614sZ/EYWGh+Ovr4n15ohoE8dgZpL3FBkoivCIvlk1cD
- 23VBSo/O4aKj79MsCKUSf7G70+zfSUDNoIk/xeH6lB2rf65thKWxUlbJZs4HPp4Cw2/c
- t6GSeVl8FUZDFhOH5KdOlYy9pOhcw+a6NyAsCCTd9zBSeAuGz9h12ebwnw4iKnJ6jDb8 Gg== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yjbusr5x2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 05 Jun 2024 02:25:53 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 4550UGbg005565;
-	Wed, 5 Jun 2024 02:25:52 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3ygrmec8m5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 05 Jun 2024 02:25:52 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4552Pqvo022056;
-	Wed, 5 Jun 2024 02:25:52 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3ygrmec8kr-1;
-	Wed, 05 Jun 2024 02:25:52 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: linux-scsi@vger.kernel.org
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>, stable@vger.kernel.org,
-        Pierre Tomon <pierretom+12@ik.me>,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH v2] scsi: sd: Use READ(16) when reading block zero on large capacity disks
-Date: Tue,  4 Jun 2024 22:25:21 -0400
-Message-ID: <20240605022521.3960956-1-martin.petersen@oracle.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <50211dcb-dc40-4bb5-8168-8f102f6bfb5c@acm.org>
-References: <50211dcb-dc40-4bb5-8168-8f102f6bfb5c@acm.org>
+	s=arc-20240116; t=1717554573; c=relaxed/simple;
+	bh=MGZTnPwwfwH9nId6Axtqz26zfs1RL57VKult57Ki1cc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Sl3O2n7EA1e3ejCfoi99w6rVfCFqaIYLcIX2p/ZhaREVkn68SVpRhxuqfP5YDJayj0wqXf5F8+GXk/PX3yyygUTs/rafUzYeBYh/MVm0WRjrnnf8UroRqlPiI924eMf610VXx7dUj7T/Ld7Agv7qZJ6Zo3ZJDegqiZMDIgvAMMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CObOUJjl; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2c284095ea6so99937a91.0;
+        Tue, 04 Jun 2024 19:29:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717554571; x=1718159371; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RA8N3xOBtdFnF4yqjReJeQ4Rlub96BDXBYIzJsytfmI=;
+        b=CObOUJjlpaY0/1XqqgiUQIzNsCtclyVImv8pf18voicDZS0chEvDno8p4ObdOBt98H
+         BlTOXcjH1EGRLBa91DMtWXBoEZ44hpgQ1UsMthGVrOuqPBoU0qJS5K+Z+nbOyHgXIxQU
+         07EqVuRHXhbisJf+t3sUwiSBASc8DVw5Qmt76ni3WQ4ZICj9IUuJejswWzJrLr9AMuZ5
+         ZIzRl3JoyF1WTIu5UEPWEW/t1D5jEPpjKc/aczo7vrkFMN/Bi2NXg6hz0WPeHj0r5J8G
+         OI4KXXofZzoOVJvgU9dE6gmAfA398lTo9mC1HOdEpl0DLnTClowfTrrlv4z9EkOMziMO
+         hwaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717554571; x=1718159371;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RA8N3xOBtdFnF4yqjReJeQ4Rlub96BDXBYIzJsytfmI=;
+        b=p623RaVIg+SwhpXQ5N4l5BskYP0DjRNrtl9dp40ODkxf+i6qxonEGkfKHbQQze/XIi
+         f5IbD20zpUCSZRJFRVByb9pcZotoya6dt9Ul6Ucf8IWfWpR6b47z8QSrbQeSvFbyZf1H
+         91MP1pdmFfcx+FhDFMN6qoAisBmOpdPkEBYCxCD+lRyNzWcLyfj/mqMoTNkX1DUtlDPa
+         zVKslEQPTis1cSWy/p/1DOLS/gR/ujv/iWqduAuDt4C7rFydFAxDNv3mAJvYZz1XeymC
+         gu1ybZdyU0ovX7rn035Z9XUfdjtFDa/P+E4GXjWCXPDe8P9FR6QzpHSTgtaJxtoPsPp1
+         YFjg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMkquh8Xg5iDLhEwafBmGObpEJCxT+LweXYq7xZmZm39Wl8rvdvOB+0rF+VMR6l1mi42MkQlON/UHc9SVmHCHFYEHL5B8oqvFasCeB4kKipxn5IKVZVdUEsrPeRnDF883B+7rm
+X-Gm-Message-State: AOJu0YwKh3nUhAppIDQatG99HRpjOcu7JwFTO8ZSRT6laIXGnQzeUJYq
+	pXXTQQHHAOlBTtR5y7FC+pmhnXl850guPwB6/tjd36ONx3vppEOHu5QOtUlH
+X-Google-Smtp-Source: AGHT+IGa9p2H6aINUCNgpshF7BdrKX9fvyuZVmxk4LegnukU52d/xXmeuDiv9VFqUd3V21av5+4Wxg==
+X-Received: by 2002:a17:90a:de98:b0:2c1:c581:8eae with SMTP id 98e67ed59e1d1-2c27db00387mr1359340a91.5.1717554571110;
+        Tue, 04 Jun 2024 19:29:31 -0700 (PDT)
+Received: from gmail.com ([2a09:bac5:6811:183c::26a:4f])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c2806b2f9fsm258728a91.51.2024.06.04.19.29.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Jun 2024 19:29:30 -0700 (PDT)
+From: Qingfang Deng <dqfext@gmail.com>
+To: stable@vger.kernel.org
+Cc: Qingfang Deng <qingfang.deng@siflower.com.cn>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Masahide NAKAMURA <nakam@linux-ipv6.org>,
+	YOSHIFUJI Hideaki <yoshfuji@linux-ipv6.org>,
+	Ville Nuorvala <vnuorval@tcs.hut.fi>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 4.19.y] neighbour: fix unaligned access to pneigh_entry
+Date: Wed,  5 Jun 2024 10:29:16 +0800
+Message-Id: <20240605022916.247882-1-dqfext@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,75 +88,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-04_11,2024-06-04_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 malwarescore=0
- suspectscore=0 spamscore=0 mlxlogscore=999 adultscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2406050017
-X-Proofpoint-ORIG-GUID: _NgYNPMaQUXZajdxusIy0HnA9J0IxKCm
-X-Proofpoint-GUID: _NgYNPMaQUXZajdxusIy0HnA9J0IxKCm
 
-Commit 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior
-to querying device properties") triggered a read to LBA 0 before
-attempting to inquire about device characteristics. This was done
-because some protocol bridge devices will return generic values until
-an attached storage device's media has been accessed.
+From: Qingfang Deng <qingfang.deng@siflower.com.cn>
 
-Pierre Tomon reported that this change caused problems on a large
-capacity external drive connected via a bridge device. The bridge in
-question does not appear to implement the READ(10) command.
+[ Upstream commit ed779fe4c9b5a20b4ab4fd6f3e19807445bb78c7 ]
 
-Issue a READ(16) instead of READ(10) when a device has been identified
-as preferring 16-byte commands (use_16_for_rw heuristic).
+After the blamed commit, the member key is longer 4-byte aligned. On
+platforms that do not support unaligned access, e.g., MIPS32R2 with
+unaligned_action set to 1, this will trigger a crash when accessing
+an IPv6 pneigh_entry, as the key is cast to an in6_addr pointer.
 
-Cc: stable@vger.kernel.org
-Fixes: 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior to querying device properties")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218890
-Link: https://lore.kernel.org/r/70dd7ae0-b6b1-48e1-bb59-53b7c7f18274@rowland.harvard.edu
-Reported-by: Pierre Tomon <pierretom+12@ik.me>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Tested-by: Pierre Tomon <pierretom+12@ik.me>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Change the type of the key to u32 to make it aligned.
+
+Fixes: 62dd93181aaa ("[IPV6] NDISC: Set per-entry is_router flag in Proxy NA.")
+Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
 ---
- drivers/scsi/sd.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ include/net/neighbour.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 65cdc8b77e35..22f8841eb5eb 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3572,16 +3572,23 @@ static bool sd_validate_opt_xfer_size(struct scsi_disk *sdkp,
+diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+index e58ef9e338de..4c53e51f0799 100644
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -172,7 +172,7 @@ struct pneigh_entry {
+ 	possible_net_t		net;
+ 	struct net_device	*dev;
+ 	u8			flags;
+-	u8			key[0];
++	u32			key[0];
+ };
  
- static void sd_read_block_zero(struct scsi_disk *sdkp)
- {
--	unsigned int buf_len = sdkp->device->sector_size;
--	char *buffer, cmd[10] = { };
-+	struct scsi_device *sdev = sdkp->device;
-+	unsigned int buf_len = sdev->sector_size;
-+	u8 *buffer, cmd[16] = { };
- 
- 	buffer = kmalloc(buf_len, GFP_KERNEL);
- 	if (!buffer)
- 		return;
- 
--	cmd[0] = READ_10;
--	put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
--	put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
-+	if (sdev->use_16_for_rw) {
-+		cmd[0] = READ_16;
-+		put_unaligned_be64(0, &cmd[2]); /* Logical block address 0 */
-+		put_unaligned_be32(1, &cmd[10]);/* Transfer 1 logical block */
-+	} else {
-+		cmd[0] = READ_10;
-+		put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
-+		put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
-+	}
- 
- 	scsi_execute_cmd(sdkp->device, cmd, REQ_OP_DRV_IN, buffer, buf_len,
- 			 SD_TIMEOUT, sdkp->max_retries, NULL);
+ /*
 -- 
-2.45.1
+2.34.1
 
 
