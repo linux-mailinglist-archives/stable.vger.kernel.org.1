@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-48144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 855CA8FCCEE
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:32:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACED68FCCF1
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94D332890DF
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:32:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E5161F2466A
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374AC1A0DFC;
-	Wed,  5 Jun 2024 12:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B904C1A1884;
+	Wed,  5 Jun 2024 12:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aANO43HV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbhnoG26"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58C01A0DF2;
-	Wed,  5 Jun 2024 12:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1431A1863;
+	Wed,  5 Jun 2024 12:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588971; cv=none; b=ceqo047/7x+hvRG3xZ109/5etT+1Lih5P6kJoddQ3Eps+PtiMpJ20JLARGqyHk6J5SxjcYf3vupynldWYTV7Q1BEKKhZXBis5D32AzmkHYTojZDBUCCFaDwFeER+Q1hm9EsMEfaurD24belbe+6rauZkEPMQLSWubBrOZG2JAog=
+	t=1717588973; cv=none; b=r+aSQwHY+wMjTEQMmo0jUDeBB61LCg29KGNZMkBwO/+RVaeJB7ntiEF0X+7IXeIkFu1E+eRZfg1eELLTP/b5oPQPQNDzu/IUXn/eo5tq+o4dlRp+C2sx7+hwOMQ0f6ClsEcQ16PDp9YhAgsnY5O4ToX2PtuFtY5bjzErG2GDH3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588971; c=relaxed/simple;
-	bh=miWF0EhdzQHWTZJygReqmuJhFVGFLmr1odB17pUnQiI=;
+	s=arc-20240116; t=1717588973; c=relaxed/simple;
+	bh=CJPoi8rZApWycbxEPaCbZfRjCL3ty4r2D+EZncVONVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3Y/fVVd7rAMgRxj3xuQnVGqQheJYShXjHyUa9YtZiKRb7HLGT0iYuhAElqFlAzDy3s8i78ewUH/jcRamZWTqHX79Nz7PEycgDdyq/6DCxGPW6YhFw+5vriN/2AhItrKaeQAFuDwOm2u2FwXmQhNIGeHsKUIPG1Af+Au7c5YY+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aANO43HV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A95C32781;
-	Wed,  5 Jun 2024 12:02:49 +0000 (UTC)
+	 MIME-Version; b=bnKgqHt6cpKU2kXysxKvXpGTFb47CYBAr2cKmWaz0ZOoIZbiF4cyIoLfXfDjBg41Ax9SlZZ2Pa6sKwNlOU9AG229y7UYauKZs53rAGKF2Pwk6B5wSD9bAVBMAao6H5YhX9GMcIE8UwUsjfqqZEA4qpO4Qv31f3tIAnabFJKc+n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbhnoG26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243C3C32781;
+	Wed,  5 Jun 2024 12:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588970;
-	bh=miWF0EhdzQHWTZJygReqmuJhFVGFLmr1odB17pUnQiI=;
+	s=k20201202; t=1717588973;
+	bh=CJPoi8rZApWycbxEPaCbZfRjCL3ty4r2D+EZncVONVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aANO43HV9DyW3f/OEo3WT5+83Hrg7AVWn3pA0tUHN49URImuO46XukApc0wQuXNG+
-	 PsaIiQCLg4f6QEsy+wkjS16ShZUpOwIhHgP8CXU3dexWfg8yL7WivPOuKXept83xxN
-	 0WKgg8lPpoPGPWi+3si1ozJ9wuG07wsYz8Pwsd+1+s9J2zxeMNHCrwXYdDB67Awugp
-	 r7Gw4ajHpp4XbUfyeE6t/oQu8AVI5G4Xr/Y1RSQW/qncLMmHlLSuCYgoLaER1Humc7
-	 ZbmNbZwjLQxtYN1lT7jWuilloEXs81S5errhdycXhXJ5rXTgJ0l1hUZTyfkwygIaTE
-	 5ZZ7KhzcDLSFw==
+	b=KbhnoG26xu6D1kpmzIqjkFwXwyp5jOQvJ9uMvbaLc6Kg2GDiuOJUPvPyF3tcxVjws
+	 XFwjAUHEdRPXUrQ5TI7L34Wpy+pWtspP+teD4SQ+pI5dxSibo7O6ct/AlI6kMNmn6Z
+	 vXu5CLn2BXFE3O0wdcnFgpHzjHn+zwauYtuUzAEbr64XeoSUps3V8+fzEuvACEt7jc
+	 kYDTf95uPfp8rvjkaY+/lTcX2Dg5GHRIwR8wiPcN8za2YrcUqODjwUNYzKu35XSmJh
+	 ZTLxs1ijWi7TT0BJcFNihr7aApgaoqXLGNFRrb3MfJknWUEO7L1xZNFYRT1ht0Yp2s
+	 s+M0dvFgQ0N0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Witold Sadowski <wsadowski@marvell.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 17/23] spi: cadence: Ensure data lines set to low during dummy-cycle period
-Date: Wed,  5 Jun 2024 08:02:00 -0400
-Message-ID: <20240605120220.2966127-17-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	cujomalainey@chromium.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 18/23] ALSA: ump: Set default protocol when not given explicitly
+Date: Wed,  5 Jun 2024 08:02:01 -0400
+Message-ID: <20240605120220.2966127-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120220.2966127-1-sashal@kernel.org>
 References: <20240605120220.2966127-1-sashal@kernel.org>
@@ -65,100 +67,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Witold Sadowski <wsadowski@marvell.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4a69c1264ff41bc5bf7c03101ada0454fbf08868 ]
+[ Upstream commit bc42ca002d5d211f9c57334b9b4c25ddb0b4ec35 ]
 
-During dummy-cycles xSPI will switch GPIO into Hi-Z mode. In that dummy
-period voltage on data lines will slowly drop, what can cause
-unintentional modebyte transmission. Value send to SPI memory chip will
-depend on last address, and clock frequency.
-To prevent unforeseen consequences of that behaviour, force send
-single modebyte(0x00).
-Modebyte will be send only if number of dummy-cycles is not equal
-to 0. Code must also reduce dummycycle byte count by one - as one byte
-is send as modebyte.
+When an inquiry of the current protocol via UMP Stream Configuration
+message fails by some reason, we may leave the current protocol
+undefined, which may lead to unexpected behavior.  Better to assume a
+valid protocol found in the protocol capability bits instead.
 
-Signed-off-by: Witold Sadowski <wsadowski@marvell.com>
-Link: https://msgid.link/r/20240529074037.1345882-2-wsadowski@marvell.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For a device that doesn't support the UMP v1.2 feature, it won't reach
+to this code path, and USB MIDI GTB descriptor would be used for
+determining the protocol, instead.
+
+Link: https://lore.kernel.org/r/20240529164723.18309-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-xspi.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ sound/core/ump.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index 8648b8eb080dc..cdce2e280f663 100644
---- a/drivers/spi/spi-cadence-xspi.c
-+++ b/drivers/spi/spi-cadence-xspi.c
-@@ -145,6 +145,9 @@
- #define CDNS_XSPI_STIG_DONE_FLAG		BIT(0)
- #define CDNS_XSPI_TRD_STATUS			0x0104
+diff --git a/sound/core/ump.c b/sound/core/ump.c
+index fd6a68a542788..65980a2f4982f 100644
+--- a/sound/core/ump.c
++++ b/sound/core/ump.c
+@@ -960,6 +960,14 @@ int snd_ump_parse_endpoint(struct snd_ump_endpoint *ump)
+ 	if (err < 0)
+ 		ump_dbg(ump, "Unable to get UMP EP stream config\n");
  
-+#define MODE_NO_OF_BYTES			GENMASK(25, 24)
-+#define MODEBYTES_COUNT			1
-+
- /* Helper macros for filling command registers */
- #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase) ( \
- 	FIELD_PREP(CDNS_XSPI_CMD_INSTR_TYPE, (data_phase) ? \
-@@ -157,9 +160,10 @@
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR3, ((op)->addr.val >> 24) & 0xFF) | \
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR4, ((op)->addr.val >> 32) & 0xFF))
- 
--#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op) ( \
-+#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, modebytes) ( \
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_ADDR5, ((op)->addr.val >> 40) & 0xFF) | \
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_CMD, (op)->cmd.opcode) | \
-+	FIELD_PREP(MODE_NO_OF_BYTES, modebytes) | \
- 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_NUM_ADDR_BYTES, (op)->addr.nbytes))
- 
- #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op, chipsel) ( \
-@@ -173,12 +177,12 @@
- #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op) \
- 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R2_DCNT_L, (op)->data.nbytes & 0xFFFF)
- 
--#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op) ( \
-+#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes) ( \
- 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_DCNT_H, \
- 		((op)->data.nbytes >> 16) & 0xffff) | \
- 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_NUM_OF_DUMMY, \
- 		  (op)->dummy.buswidth != 0 ? \
--		  (((op)->dummy.nbytes * 8) / (op)->dummy.buswidth) : \
-+		  (((dummybytes) * 8) / (op)->dummy.buswidth) : \
- 		  0))
- 
- #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op, chipsel) ( \
-@@ -351,6 +355,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
- 	u32 cmd_regs[6];
- 	u32 cmd_status;
- 	int ret;
-+	int dummybytes = op->dummy.nbytes;
- 
- 	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
- 	if (ret < 0)
-@@ -365,7 +370,12 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
- 	memset(cmd_regs, 0, sizeof(cmd_regs));
- 	cmd_regs[1] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase);
- 	cmd_regs[2] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_2(op);
--	cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op);
-+	if (dummybytes != 0) {
-+		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 1);
-+		dummybytes--;
-+	} else {
-+		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 0);
++	/* If no protocol is set by some reason, assume the valid one */
++	if (!(ump->info.protocol & SNDRV_UMP_EP_INFO_PROTO_MIDI_MASK)) {
++		if (ump->info.protocol_caps & SNDRV_UMP_EP_INFO_PROTO_MIDI2)
++			ump->info.protocol |= SNDRV_UMP_EP_INFO_PROTO_MIDI2;
++		else if (ump->info.protocol_caps & SNDRV_UMP_EP_INFO_PROTO_MIDI1)
++			ump->info.protocol |= SNDRV_UMP_EP_INFO_PROTO_MIDI1;
 +	}
- 	cmd_regs[4] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op,
- 						       cdns_xspi->cur_cs);
- 
-@@ -375,7 +385,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
- 		cmd_regs[0] = CDNS_XSPI_STIG_DONE_FLAG;
- 		cmd_regs[1] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_1(op);
- 		cmd_regs[2] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op);
--		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op);
-+		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes);
- 		cmd_regs[4] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op,
- 							   cdns_xspi->cur_cs);
- 
++
+ 	/* Query and create blocks from Function Blocks */
+ 	for (blk = 0; blk < ump->info.num_blocks; blk++) {
+ 		err = create_block_from_fb_info(ump, blk);
 -- 
 2.43.0
 
