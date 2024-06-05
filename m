@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-48095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5DB8FCC4C
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:16:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCD48FCC4F
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ACE51C23A12
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:16:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFE781F24418
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD22198847;
-	Wed,  5 Jun 2024 11:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416DB198E8D;
+	Wed,  5 Jun 2024 11:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFMJuUL1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQIKvC9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C045F19412B;
-	Wed,  5 Jun 2024 11:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF615198E87;
+	Wed,  5 Jun 2024 11:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588497; cv=none; b=gjfe1mk7w3Qz/bCoh+CEpulZAypgahRRyS03PlbIpzC+nnXerxBRTtefNMEVxIOkOGNFrM6+lWAqtnDMp/bMYyuNCoO0sJhi6KikHGPlUgC+O2g7cksv5aXAjvGbYKK0JFaG8Id6kEnZ4xJkxezAOjdGEnkgSoPQTknR2AGio18=
+	t=1717588506; cv=none; b=cRNrjwmsPkzp9ZwQvnBEwGJEOLM7oyYemQCGdHszUdW0HAPYnVWNlYElq8yIaIMsBOC4QJisCgen0w0PW0dervuiXQ4H/huO3MPec7affFOEkLGVhVCuUgf//AYzguh6tEYYwd4anEd/pZurQ1/wMim1xgK+aS6nnKtTQDOwpJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588497; c=relaxed/simple;
-	bh=kiI/Lw2TK9Xytq4SD7omgBRD9aRnbSVuuUnrkQXDmf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pddTx/ABjHK2M8WID85Wla235+wki5mP0oatDMNeRJFkQi+EjznynERnMLPDxgTqOEwB4O5zWuV+zklTEJVpTSffWHQ8ptudW228qjb+T7p1FkXZCb23MJbGAVIlziDnKEUOIjkMfrgWJg51oehtjJ20Nj4nktOOCMfKZR91Jgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFMJuUL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D233EC3277B;
-	Wed,  5 Jun 2024 11:54:56 +0000 (UTC)
+	s=arc-20240116; t=1717588506; c=relaxed/simple;
+	bh=keKYWfzN1djD6KLmxuPPa4XdGqVyHQTp9UFTeJAwljs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aI6vOrqN0q4erkrDEVf9JsYS1Ob6bAxVUnxDNAknPO7lrccC5YmY1tLPFLKwIZtHU6zbEvc28Bx2BJYkP3gUy7E5GE6hEDS/WBxm05tcyYZ0P2+RTSdu9u1UHlI4CbQdJDVMAitkhH6rHFxvxj3pBvgUQVHxOoIM9Haghk0ZRHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQIKvC9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041DCC32781;
+	Wed,  5 Jun 2024 11:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588497;
-	bh=kiI/Lw2TK9Xytq4SD7omgBRD9aRnbSVuuUnrkQXDmf0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hFMJuUL1JA2elYKgKSmpgR4eSJL/1r5sE0B7oVz2+wUeToirXEQfugfi4bcnltIlQ
-	 2mhgryxBrnVK95L6lJa14ptDl42h4mzGPQ0Ktc+GSEKjK6+ZYA3nmUnmcBcTg98XNi
-	 tmEDz+wkCGU3D1VTD7z/Iw2LP6Ymrvq9dX3SYpuxNJ8S+XlKAn7myVmgkIdHRVTIpF
-	 lRijNoLG6xZ4IdLMqdVUcq6IHm6YOrxTIO0HGinuwHroF6gXq/ryI+oFR0J1G5NkT9
-	 9pbNbVYHz6ZXYrc0pN+W2SXZiQV9di8/bIx5s5RxH6AJ0sh15A8TUPqKanSBuTrdMp
-	 bkLVwW6PLOCWA==
+	s=k20201202; t=1717588505;
+	bh=keKYWfzN1djD6KLmxuPPa4XdGqVyHQTp9UFTeJAwljs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eQIKvC9e+hKIF6kevzVmirJR3Nu8X9xqoH5WiIBeaWXGj3m11mExxTA2ccA+6koT+
+	 H0FJ3FpeoddhLw+oQEq48URUVGIrKRFzKYXnL+pz/gT5tWbc6arJoEFoGOB9jGOUcP
+	 gGsl1dt9pkeVv8E1Y6SqEVY/jTonWGTKGeuYWsGkWwNM5g7zyAJTttR+HmNaSelNxZ
+	 bqR2RjwN2+OpwEidb9AqEEd6kv0QpTy5ZUL8QoqnpZDPzR28iG2vV8BKsKOOprjfqc
+	 gdK440Cgb4ywqhkZVKDPpZ/5tlQONxwl3Xdxhjjub4zAw/BKdGtQuTa4DM7RDV+JAz
+	 /pnlqPfJQtkKA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sicong Huang <congei42@163.com>,
+Cc: Alex Henrie <alexhenrie24@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	johan@kernel.org,
-	greybus-dev@lists.linaro.org
-Subject: [PATCH AUTOSEL 5.10 7/7] greybus: Fix use-after-free bug in gb_interface_release due to race condition.
-Date: Wed,  5 Jun 2024 07:54:36 -0400
-Message-ID: <20240605115442.2964376-7-sashal@kernel.org>
+	sudipm.mukherjee@gmail.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/5] usb: misc: uss720: check for incompatible versions of the Belkin F5U002
+Date: Wed,  5 Jun 2024 07:54:54 -0400
+Message-ID: <20240605115504.2964549-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240605115442.2964376-1-sashal@kernel.org>
-References: <20240605115442.2964376-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,58 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.218
+X-stable-base: Linux 5.4.277
 Content-Transfer-Encoding: 8bit
 
-From: Sicong Huang <congei42@163.com>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit 5c9c5d7f26acc2c669c1dcf57d1bb43ee99220ce ]
+[ Upstream commit 3295f1b866bfbcabd625511968e8a5c541f9ab32 ]
 
-In gb_interface_create, &intf->mode_switch_completion is bound with
-gb_interface_mode_switch_work. Then it will be started by
-gb_interface_request_mode_switch. Here is the relevant code.
-if (!queue_work(system_long_wq, &intf->mode_switch_work)) {
-	...
-}
+The incompatible device in my possession has a sticker that says
+"F5U002 Rev 2" and "P80453-B", and lsusb identifies it as
+"050d:0002 Belkin Components IEEE-1284 Controller". There is a bug
+report from 2007 from Michael Trausch who was seeing the exact same
+errors that I saw in 2024 trying to use this cable.
 
-If we call gb_interface_release to make cleanup, there may be an
-unfinished work. This function will call kfree to free the object
-"intf". However, if gb_interface_mode_switch_work is scheduled to
-run after kfree, it may cause use-after-free error as
-gb_interface_mode_switch_work will use the object "intf".
-The possible execution flow that may lead to the issue is as follows:
-
-CPU0                            CPU1
-
-                            |   gb_interface_create
-                            |   gb_interface_request_mode_switch
-gb_interface_release        |
-kfree(intf) (free)          |
-                            |   gb_interface_mode_switch_work
-                            |   mutex_lock(&intf->mutex) (use)
-
-Fix it by canceling the work before kfree.
-
-Signed-off-by: Sicong Huang <congei42@163.com>
-Link: https://lore.kernel.org/r/20240416080313.92306-1-congei42@163.com
+Link: https://lore.kernel.org/all/46DE5830.9060401@trausch.us/
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Link: https://lore.kernel.org/r/20240326150723.99939-5-alexhenrie24@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/greybus/interface.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/misc/uss720.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/greybus/interface.c b/drivers/greybus/interface.c
-index 9ec949a438ef6..52ef6be9d4499 100644
---- a/drivers/greybus/interface.c
-+++ b/drivers/greybus/interface.c
-@@ -694,6 +694,7 @@ static void gb_interface_release(struct device *dev)
+diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
+index 0be8efcda15d5..d972c09629397 100644
+--- a/drivers/usb/misc/uss720.c
++++ b/drivers/usb/misc/uss720.c
+@@ -677,7 +677,7 @@ static int uss720_probe(struct usb_interface *intf,
+ 	struct parport_uss720_private *priv;
+ 	struct parport *pp;
+ 	unsigned char reg;
+-	int i;
++	int ret;
  
- 	trace_gb_interface_release(intf);
+ 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
+ 		le16_to_cpu(usbdev->descriptor.idVendor),
+@@ -688,8 +688,8 @@ static int uss720_probe(struct usb_interface *intf,
+ 		usb_put_dev(usbdev);
+ 		return -ENODEV;
+ 	}
+-	i = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
+-	dev_dbg(&intf->dev, "set interface result %d\n", i);
++	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
++	dev_dbg(&intf->dev, "set interface result %d\n", ret);
  
-+	cancel_work_sync(&intf->mode_switch_work);
- 	kfree(intf);
- }
+ 	interface = intf->cur_altsetting;
  
+@@ -725,12 +725,18 @@ static int uss720_probe(struct usb_interface *intf,
+ 	set_1284_register(pp, 7, 0x00, GFP_KERNEL);
+ 	set_1284_register(pp, 6, 0x30, GFP_KERNEL);  /* PS/2 mode */
+ 	set_1284_register(pp, 2, 0x0c, GFP_KERNEL);
+-	/* debugging */
+-	get_1284_register(pp, 0, &reg, GFP_KERNEL);
++
++	/* The Belkin F5U002 Rev 2 P80453-B USB parallel port adapter shares the
++	 * device ID 050d:0002 with some other device that works with this
++	 * driver, but it itself does not. Detect and handle the bad cable
++	 * here. */
++	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
+ 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
++	if (ret < 0)
++		return ret;
+ 
+-	i = usb_find_last_int_in_endpoint(interface, &epd);
+-	if (!i) {
++	ret = usb_find_last_int_in_endpoint(interface, &epd);
++	if (!ret) {
+ 		dev_dbg(&intf->dev, "epaddr %d interval %d\n",
+ 				epd->bEndpointAddress, epd->bInterval);
+ 	}
 -- 
 2.43.0
 
