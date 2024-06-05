@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-48110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9E478FCC77
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:20:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DB58FCC7C
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75F3B1F24EB9
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:20:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71EB9B26FDD
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BA91BBBCF;
-	Wed,  5 Jun 2024 11:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C66E1BC06F;
+	Wed,  5 Jun 2024 11:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhIie8SS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqpozGjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3436C1BBBC3;
-	Wed,  5 Jun 2024 11:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386C31BC06B;
+	Wed,  5 Jun 2024 11:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588558; cv=none; b=KYyaGyHCuV0Hd314UDFYo2amu0r4TRbf25Da8jGByOnK0Z0YTSQwix5oTqmSmPRvhqpSbIj6YZrJEL6m8KElX9nUuqa/4ATV/32lBrMnRxroDuHLPnym0xX9PkfZtKhhKiLetKWBQHvpn7em84SNGu5f7UughTxCaT3zrSKpV5o=
+	t=1717588564; cv=none; b=n32115CyNNQ/O2IX8Pf9Y8YiNfQDK3Zji9nGatt7gNQPvcgSLVoVb/XvhOqP+p2W6X59lleiZG1JNLYbj336aCQPZSv1E8LU7zAsKS7bsyKbP8htk+1Pi/mYaMPtBoZpIelEWakm4ExqjYdw1PAXaigL7WFSFg1/IZmIA4cbjXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588558; c=relaxed/simple;
-	bh=WTisGYSNvp17ebvku7IcULq8g4QnWshJd8J02Zl6YKw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cki1iRWJjALcPt/m7Khvy5VAc7StY6Qd81A6thWiNNnZMFPnnmvT2dBUS/Wg6AwxBnKXK/LZt8j5KVRz/sx38P0XvmUHKIZZTl7qN1PpDmFDE4KMGahUCDooog8P69R4Lkqv3BuBCnd6+TwLdo16i9lo8TgDk5cp7FPTZHmH7WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhIie8SS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02C6C32786;
-	Wed,  5 Jun 2024 11:55:56 +0000 (UTC)
+	s=arc-20240116; t=1717588564; c=relaxed/simple;
+	bh=qt56nWNkPEyaYkii4ItmJovPVXzjgXTz0F5q9bi3geY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WwSXb+efIylMDdhLl+wlwVL4SrBn9ATRFj6V5O4r2HQtq7S3AuUjLEuc5jT7PQQa3MTd7alOJP5Or14T0YFAenOJIW10IKOnnmGYjAezolU061SkuQs2X3eis4DdRSn51lyQ7sotf/k7a/Y84QQTXmblG6USIjq3iUzpO1k5zqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqpozGjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C73EC3277B;
+	Wed,  5 Jun 2024 11:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588557;
-	bh=WTisGYSNvp17ebvku7IcULq8g4QnWshJd8J02Zl6YKw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhIie8SSbnA2KqHzmnS7xAsUtRcBhgJlkoGAJ7/2O0LtCMClpHlRG304acbK+aPqr
-	 0QNnbdwen69Oo4VkI7cSCJQ5/57XvIvMm2rW4sqHXw50H8izEM4/NUQ1li9hoLAV5o
-	 +juKDxSfNrAxkXnDZCVvTy/cxEgfauAlt4tx4JcBtRrvslUnf4hfD6XrmIO+vnh9qT
-	 aU4ujK6NOMXbLH1MCXgQ5t0N70w6IEkQhRpFF6CvDhbR4pkLOe1MwiYmnPUU8XVcij
-	 t+H1QgtXHWlb67ShLoc/PxwVYDmEeRIrd/q3R7vsyxwunlQ+QwOhS5mykz0A2BoN4T
-	 R1YDUUAqc4DKg==
+	s=k20201202; t=1717588564;
+	bh=qt56nWNkPEyaYkii4ItmJovPVXzjgXTz0F5q9bi3geY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HqpozGjAJ13JSM8pfIMvcafgGEAfIJ2KuyX/MrrS+DOM+07iUwbNM6H1g3kYj8389
+	 +gvI4gtATC0UldigBfecaArsFmar4D0f9aOzm1+DxsS3FpMdcOi+kfDr6XUK0nEqNy
+	 sJbVYEXwjaoaCAVF/05Eqr9/sV8Z8zkKV4jYsof1l8pryGWXoVpzWKsZzdVAm8O2YD
+	 kAweh8C+oUnrEkYUUvgH24R9Ko5W917Sa+zzite/9QP+LxHujegjqNYikcO6LfLx3q
+	 TAMuCnhqodU9q+m2aSeDmU3eu8G3L87H7rqRqCix51ojFypqhmg1uV7eMwfG7gvf4w
+	 wqWiErphBUyMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mike Christie <michael.christie@oracle.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jasowang@redhat.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 6/6] vhost-scsi: Handle vhost_vq_work_queue failures for events
-Date: Wed,  5 Jun 2024 07:55:41 -0400
-Message-ID: <20240605115545.2964850-6-sashal@kernel.org>
+	ntfs3@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.8 1/6] fs/ntfs3: Mark volume as dirty if xattr is broken
+Date: Wed,  5 Jun 2024 07:55:53 -0400
+Message-ID: <20240605115602.2964993-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240605115545.2964850-1-sashal@kernel.org>
-References: <20240605115545.2964850-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,82 +58,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.3
+X-stable-base: Linux 6.8.12
 Content-Transfer-Encoding: 8bit
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit b1b2ce58ed23c5d56e0ab299a5271ac01f95b75c ]
+[ Upstream commit 24f6f5020b0b2c89c2cba5ec224547be95f753ee ]
 
-Currently, we can try to queue an event's work before the vhost_task is
-created. When this happens we just drop it in vhost_scsi_do_plug before
-even calling vhost_vq_work_queue. During a device shutdown we do the
-same thing after vhost_scsi_clear_endpoint has cleared the backends.
+Mark a volume as corrupted if the name length exceeds the space
+occupied by ea.
 
-In the next patches we will be able to kill the vhost_task before we
-have cleared the endpoint. In that case, vhost_vq_work_queue can fail
-and we will leak the event's memory. This has handle the failure by
-just freeing the event. This is safe to do, because
-vhost_vq_work_queue will only return failure for us when the vhost_task
-is killed and so userspace will not be able to handle events if we
-sent them.
-
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20240316004707.45557-2-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ fs/ntfs3/xattr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 282aac45c6909..f34f9895b8984 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -497,10 +497,8 @@ vhost_scsi_do_evt_work(struct vhost_scsi *vs, struct vhost_scsi_evt *evt)
- 		vq_err(vq, "Faulted on vhost_scsi_send_event\n");
- }
+diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
+index 53e7d1fa036aa..73785dece7a7f 100644
+--- a/fs/ntfs3/xattr.c
++++ b/fs/ntfs3/xattr.c
+@@ -219,8 +219,11 @@ static ssize_t ntfs_list_ea(struct ntfs_inode *ni, char *buffer,
+ 		if (!ea->name_len)
+ 			break;
  
--static void vhost_scsi_evt_work(struct vhost_work *work)
-+static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
- {
--	struct vhost_scsi *vs = container_of(work, struct vhost_scsi,
--					vs_event_work);
- 	struct vhost_virtqueue *vq = &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
- 	struct vhost_scsi_evt *evt, *t;
- 	struct llist_node *llnode;
-@@ -508,12 +506,20 @@ static void vhost_scsi_evt_work(struct vhost_work *work)
- 	mutex_lock(&vq->mutex);
- 	llnode = llist_del_all(&vs->vs_event_list);
- 	llist_for_each_entry_safe(evt, t, llnode, list) {
--		vhost_scsi_do_evt_work(vs, evt);
-+		if (!drop)
-+			vhost_scsi_do_evt_work(vs, evt);
- 		vhost_scsi_free_evt(vs, evt);
- 	}
- 	mutex_unlock(&vq->mutex);
- }
+-		if (ea->name_len > ea_size)
++		if (ea->name_len > ea_size) {
++			ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
++			err = -EINVAL; /* corrupted fs */
+ 			break;
++		}
  
-+static void vhost_scsi_evt_work(struct vhost_work *work)
-+{
-+	struct vhost_scsi *vs = container_of(work, struct vhost_scsi,
-+					     vs_event_work);
-+	vhost_scsi_complete_events(vs, false);
-+}
-+
- static int vhost_scsi_copy_sgl_to_iov(struct vhost_scsi_cmd *cmd)
- {
- 	struct iov_iter *iter = &cmd->saved_iter;
-@@ -1509,7 +1515,8 @@ vhost_scsi_send_evt(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
- 	}
- 
- 	llist_add(&evt->list, &vs->vs_event_list);
--	vhost_vq_work_queue(vq, &vs->vs_event_work);
-+	if (!vhost_vq_work_queue(vq, &vs->vs_event_work))
-+		vhost_scsi_complete_events(vs, true);
- }
- 
- static void vhost_scsi_evt_handle_kick(struct vhost_work *work)
+ 		if (buffer) {
+ 			/* Check if we can use field ea->name */
 -- 
 2.43.0
 
