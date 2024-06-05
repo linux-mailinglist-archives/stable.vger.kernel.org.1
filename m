@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-48094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB3B8FCC4A
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:16:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5DB8FCC4C
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E57121F24701
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:16:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ACE51C23A12
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434701B4C59;
-	Wed,  5 Jun 2024 11:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD22198847;
+	Wed,  5 Jun 2024 11:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxL2Y70d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFMJuUL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7861B4C26;
-	Wed,  5 Jun 2024 11:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C045F19412B;
+	Wed,  5 Jun 2024 11:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588497; cv=none; b=NnQCDJvts/rJ2XrO3vnYP35x1J0rtf71M7gBQzZAjZ1GVQQ0kYGsxGGrU0XFcRHpvnzirms+VnCSqr+imNeVsgTX4nGPEWzMMPCuPrlWAjHO+DIxKHtPDsynGkNAHBrtMD/UfVl/3hoKDlDYJdDvjhlLZmUFyt36sfiCjmUYhaw=
+	t=1717588497; cv=none; b=gjfe1mk7w3Qz/bCoh+CEpulZAypgahRRyS03PlbIpzC+nnXerxBRTtefNMEVxIOkOGNFrM6+lWAqtnDMp/bMYyuNCoO0sJhi6KikHGPlUgC+O2g7cksv5aXAjvGbYKK0JFaG8Id6kEnZ4xJkxezAOjdGEnkgSoPQTknR2AGio18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717588497; c=relaxed/simple;
-	bh=sc1O7xPeix1Ghi4AI3U+TX/IROk0X2kwxoGlHy37ysI=;
+	bh=kiI/Lw2TK9Xytq4SD7omgBRD9aRnbSVuuUnrkQXDmf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjK925JY05aHEpAqhqkzY3Mc8W448mBIJs+k9LePoucL8f9B3KGqleFNvHOORZ0jxxE4kYpK3n40xjZf9n+cHpr6gl1qNSnfMpcLjs2VSwqsCiXTYAQuLRjHUYbZBRGNa01FeQVpxFe3puV+CcLdEs9ozMiZ9dnMjz9jpCIUDAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxL2Y70d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564F4C32781;
-	Wed,  5 Jun 2024 11:54:55 +0000 (UTC)
+	 MIME-Version; b=pddTx/ABjHK2M8WID85Wla235+wki5mP0oatDMNeRJFkQi+EjznynERnMLPDxgTqOEwB4O5zWuV+zklTEJVpTSffWHQ8ptudW228qjb+T7p1FkXZCb23MJbGAVIlziDnKEUOIjkMfrgWJg51oehtjJ20Nj4nktOOCMfKZR91Jgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFMJuUL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D233EC3277B;
+	Wed,  5 Jun 2024 11:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588496;
-	bh=sc1O7xPeix1Ghi4AI3U+TX/IROk0X2kwxoGlHy37ysI=;
+	s=k20201202; t=1717588497;
+	bh=kiI/Lw2TK9Xytq4SD7omgBRD9aRnbSVuuUnrkQXDmf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxL2Y70dqQffBRfbOTC4O2w8HnSTTgVUub31T8j6LOTy/6z+dvcJvicRojkARmy/A
-	 0P7O0RYmgeZefR9E+hDiT2TgAKbBg3Q70DoRnYNBNp1OEqNP5j2P2AQUPlWGKBEnHy
-	 /OrLCD5U0FksZVO9FveTebdHHL9jAEAFtlkD37n1qQ1NiCxNauiBM2Lw37I/G7Jkmq
-	 bfZRjqsIH5Bq+dLsDoQOM0HBYcEuEVYiJ2RPV6dIw49JOd84KTt7yhNWb0kC1EDJO+
-	 aW0W6Gf58j7VGob6KiowxltwdSnrcQz/4cOyUB6T00X6uIHDyT8kpJJ7RhDPCNScLl
-	 FxAbKaIy4PueA==
+	b=hFMJuUL1JA2elYKgKSmpgR4eSJL/1r5sE0B7oVz2+wUeToirXEQfugfi4bcnltIlQ
+	 2mhgryxBrnVK95L6lJa14ptDl42h4mzGPQ0Ktc+GSEKjK6+ZYA3nmUnmcBcTg98XNi
+	 tmEDz+wkCGU3D1VTD7z/Iw2LP6Ymrvq9dX3SYpuxNJ8S+XlKAn7myVmgkIdHRVTIpF
+	 lRijNoLG6xZ4IdLMqdVUcq6IHm6YOrxTIO0HGinuwHroF6gXq/ryI+oFR0J1G5NkT9
+	 9pbNbVYHz6ZXYrc0pN+W2SXZiQV9di8/bIx5s5RxH6AJ0sh15A8TUPqKanSBuTrdMp
+	 bkLVwW6PLOCWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Parker Newman <pnewman@connecttech.com>,
+Cc: Sicong Huang <congei42@163.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jirislaby@kernel.org,
-	andriy.shevchenko@linux.intel.com,
-	matthew.howell@sealevel.com,
-	ilpo.jarvinen@linux.intel.com,
-	linux-serial@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 6/7] serial: exar: adding missing CTI and Exar PCI ids
-Date: Wed,  5 Jun 2024 07:54:35 -0400
-Message-ID: <20240605115442.2964376-6-sashal@kernel.org>
+	johan@kernel.org,
+	greybus-dev@lists.linaro.org
+Subject: [PATCH AUTOSEL 5.10 7/7] greybus: Fix use-after-free bug in gb_interface_release due to race condition.
+Date: Wed,  5 Jun 2024 07:54:36 -0400
+Message-ID: <20240605115442.2964376-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115442.2964376-1-sashal@kernel.org>
 References: <20240605115442.2964376-1-sashal@kernel.org>
@@ -69,75 +66,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.218
 Content-Transfer-Encoding: 8bit
 
-From: Parker Newman <pnewman@connecttech.com>
+From: Sicong Huang <congei42@163.com>
 
-[ Upstream commit b86ae40ffcf5a16b9569b1016da4a08c4f352ca2 ]
+[ Upstream commit 5c9c5d7f26acc2c669c1dcf57d1bb43ee99220ce ]
 
-- Added Connect Tech and Exar IDs not already in pci_ids.h
+In gb_interface_create, &intf->mode_switch_completion is bound with
+gb_interface_mode_switch_work. Then it will be started by
+gb_interface_request_mode_switch. Here is the relevant code.
+if (!queue_work(system_long_wq, &intf->mode_switch_work)) {
+	...
+}
 
-Signed-off-by: Parker Newman <pnewman@connecttech.com>
-Link: https://lore.kernel.org/r/7c3d8e795a864dd9b0a00353b722060dc27c4e09.1713270624.git.pnewman@connecttech.com
+If we call gb_interface_release to make cleanup, there may be an
+unfinished work. This function will call kfree to free the object
+"intf". However, if gb_interface_mode_switch_work is scheduled to
+run after kfree, it may cause use-after-free error as
+gb_interface_mode_switch_work will use the object "intf".
+The possible execution flow that may lead to the issue is as follows:
+
+CPU0                            CPU1
+
+                            |   gb_interface_create
+                            |   gb_interface_request_mode_switch
+gb_interface_release        |
+kfree(intf) (free)          |
+                            |   gb_interface_mode_switch_work
+                            |   mutex_lock(&intf->mutex) (use)
+
+Fix it by canceling the work before kfree.
+
+Signed-off-by: Sicong Huang <congei42@163.com>
+Link: https://lore.kernel.org/r/20240416080313.92306-1-congei42@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_exar.c | 42 +++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ drivers/greybus/interface.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
-index 7c28d2752a4cd..3d09f8f30e02a 100644
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -41,8 +41,50 @@
- #define PCI_DEVICE_ID_COMMTECH_4228PCIE		0x0021
- #define PCI_DEVICE_ID_COMMTECH_4222PCIE		0x0022
+diff --git a/drivers/greybus/interface.c b/drivers/greybus/interface.c
+index 9ec949a438ef6..52ef6be9d4499 100644
+--- a/drivers/greybus/interface.c
++++ b/drivers/greybus/interface.c
+@@ -694,6 +694,7 @@ static void gb_interface_release(struct device *dev)
  
-+#define PCI_VENDOR_ID_CONNECT_TECH				0x12c4
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_SP_OPTO        0x0340
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_A      0x0341
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_B      0x0342
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS           0x0350
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_A         0x0351
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_B         0x0352
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS           0x0353
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_A        0x0354
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_B        0x0355
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS_OPTO      0x0360
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_A    0x0361
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_B    0x0362
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP             0x0370
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232         0x0371
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_485         0x0372
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_SP           0x0373
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_6_2_SP           0x0374
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_6_SP           0x0375
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232_NS      0x0376
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_LEFT   0x0380
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_RIGHT  0x0381
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XP_OPTO        0x0382
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_XPRS_OPTO    0x0392
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP        0x03A0
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232    0x03A1
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_485    0x03A2
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232_NS 0x03A3
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XEG001               0x0602
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_BASE           0x1000
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_2              0x1002
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_4              0x1004
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_8              0x1008
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_12             0x100C
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_16             0x1010
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG00X          0x110c
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG01X          0x110d
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_16                 0x1110
-+
- #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
- #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
-+#define PCI_DEVICE_ID_EXAR_XR17V252		0x0252
-+#define PCI_DEVICE_ID_EXAR_XR17V254		0x0254
-+#define PCI_DEVICE_ID_EXAR_XR17V258		0x0258
+ 	trace_gb_interface_release(intf);
  
- #define PCI_SUBDEVICE_ID_USR_2980		0x0128
- #define PCI_SUBDEVICE_ID_USR_2981		0x0129
++	cancel_work_sync(&intf->mode_switch_work);
+ 	kfree(intf);
+ }
+ 
 -- 
 2.43.0
 
