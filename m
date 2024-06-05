@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-48014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00178FCB33
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 901088FCB36
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:55:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8789928F85B
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:55:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14C9F28F7CB
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5D019414C;
-	Wed,  5 Jun 2024 11:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374A319A295;
+	Wed,  5 Jun 2024 11:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMskRonR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXZKwzaq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9818A1990D4;
-	Wed,  5 Jun 2024 11:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F4E19A2AA;
+	Wed,  5 Jun 2024 11:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588217; cv=none; b=H8GOXRzqVxLPrU2xvy/XBvH7Wb9lOzoqy7YSuUYXhLhtTkas1uqQhWiN7GjBMprzBcVw3u7u4R7HWoow3sTvZOxeNT7fNfDj9dCpdaqU2sL4TYmAq8zEI9IbjYXN5pwVgBFDxVK4TxVFSsrBh1/FIbTSr7Wb2O6+dRQRnkaGMo0=
+	t=1717588221; cv=none; b=chCspjzPfqqrsIuHNXp1w4A7H7ewjMTRrclXjcb+Z+i6VqsDngfi22j7oBak2C3l3anyWk6ct8ygUrO7xOrpo0Mg0tqwb3NRGM13w5NNS62b4+RKp0d52gIPnBx6lgAPlS3CeZ/6qXIQeGB+1Ij3ZU38cdHwavFM66jVk88RBMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588217; c=relaxed/simple;
-	bh=ofMFuZutyc8UqgcT5XmcJ+uqQ0V9bPSOejxM9gZ7iic=;
+	s=arc-20240116; t=1717588221; c=relaxed/simple;
+	bh=EkD7i7xpLelwuzalMaOhwP4ENdBzzyH8bjFgJZNq2z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eKM0ZhqMUVYdPSee2tbHRxLuvqNaIuWp5KnTsIO0BPZfFZRBLL3Hu1+gFCS3bcB8AGmRwHLIBymP3vLy3+wA2lYl3riCN4sjXJlbuFnE2pXijLgeBn33hgq2GqyhELADSd5D2n4VGD/Apl6SG+KwK83uAGhZIcPVrHQZUrmBQaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fMskRonR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FE3C4AF07;
-	Wed,  5 Jun 2024 11:50:15 +0000 (UTC)
+	 MIME-Version; b=rEhwEJdtB7TEQOV5VkboMOQWd+knGjoBKLWsCipbEdrRn2LB+ex8x402wxbGKUtTQMZ7rtllUrCAN02s9SgZvmRncJL/Y+gl78yxt8GPBqMLGWvQ+nnF9WqGDAF5VXa9nBivFlBLAYkJfDowT0ug1FFN1wYCVdh9yqAse0LH3KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXZKwzaq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD4CC3277B;
+	Wed,  5 Jun 2024 11:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588217;
-	bh=ofMFuZutyc8UqgcT5XmcJ+uqQ0V9bPSOejxM9gZ7iic=;
+	s=k20201202; t=1717588220;
+	bh=EkD7i7xpLelwuzalMaOhwP4ENdBzzyH8bjFgJZNq2z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fMskRonRrRM6NmUpu7eFzU4ZWSt+5/GZnDifC3g5BBKW+cIyLqr00OYR8rRxZ9UsL
-	 5WFQvNnsU6NRPay7sxnmi/L7cbw0Twi85pDxxneGixBjvBodQdw3ntmd2a4kpJbbRN
-	 rQhIXHckPbbWOtUKKwfNUJ/y0iR/067B76ZOOaX0r1/NSCsgwu2S5yRBMiY7iBuZf1
-	 fDuz2gjYcniE5jgW7mJBrOKynD0taRtEo6ScCGWMZTZ0bXlUrkdbNHdvJ9KKf9MHtt
-	 NWHD4YX2sJyOfTOieCbn7d3dMJgHM9Ixc1KEi4aFpSuHw/ItNh6xukkB0zQYke9+J1
-	 c4NeqYaU1cVBQ==
+	b=AXZKwzaqo60L7ty/WCu1xfdCYQFgOz3whacQxOdfctpOczgIW0MEKq72/GYpCO1wF
+	 CeBVe0pkRcEzoMomdNoEboBviQPza2yNHWx8MmbofspC90lhslomu4FOvoP+ZyVlrW
+	 ydlrF1Q8BreI5psI4tlOh5Tm5OOUwJSUoT5rNgxbbk8CLHDf5Slc0gytDtlke2mNkq
+	 WPvqEz6D90XADollaxOYYvgAze4x2aUtEUzh/Edw7UfuJ3aqRyiSsjKBGtkJbYzNaO
+	 2kaC4nzy+VuIgLjdl/XSJxuMq7ije6B6w1ny7obvH1cDo0ODIO0k1y6nf2zifN+BU7
+	 mtcwtr1Xepv8w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>,
+Cc: Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	aisheng.dong@nxp.com,
-	shawnguo@kernel.org,
-	linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.9 21/28] i2c: lpi2c: Avoid calling clk_get_rate during transfer
-Date: Wed,  5 Jun 2024 07:48:50 -0400
-Message-ID: <20240605114927.2961639-21-sashal@kernel.org>
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	rrichter@amd.com,
+	terry.bowman@amd.com,
+	ming4.li@intel.com,
+	linux-cxl@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 22/28] cxl: Add post-reset warning if reset results in loss of previously committed HDM decoders
+Date: Wed,  5 Jun 2024 07:48:51 -0400
+Message-ID: <20240605114927.2961639-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605114927.2961639-1-sashal@kernel.org>
 References: <20240605114927.2961639-1-sashal@kernel.org>
@@ -65,76 +70,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit 4268254a39484fc11ba991ae148bacbe75d9cc0a ]
+[ Upstream commit 934edcd436dca0447e0d3691a908394ba16d06c3 ]
 
-Instead of repeatedly calling clk_get_rate for each transfer, lock
-the clock rate and cache the value.
-A deadlock has been observed while adding tlv320aic32x4 audio codec to
-the system. When this clock provider adds its clock, the clk mutex is
-locked already, it needs to access i2c, which in return needs the mutex
-for clk_get_rate as well.
+Secondary Bus Reset (SBR) is equivalent to a device being hot removed and
+inserted again. Doing a SBR on a CXL type 3 device is problematic if the
+exported device memory is part of system memory that cannot be offlined.
+The event is equivalent to violently ripping out that range of memory from
+the kernel. While the hardware requires the "Unmask SBR" bit set in the
+Port Control Extensions register and the kernel currently does not unmask
+it, user can unmask this bit via setpci or similar tool.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+The driver does not have a way to detect whether a reset coming from the
+PCI subsystem is a Function Level Reset (FLR) or SBR. The only way to
+detect is to note if a decoder is marked as enabled in software but the
+decoder control register indicates it's not committed.
+
+Add a helper function to find discrepancy between the decoder software
+state versus the hardware register state.
+
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://lore.kernel.org/r/20240502165851.1948523-6-dave.jiang@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-imx-lpi2c.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/cxl/core/pci.c | 29 +++++++++++++++++++++++++++++
+ drivers/cxl/cxl.h      |  2 ++
+ drivers/cxl/pci.c      | 22 ++++++++++++++++++++++
+ 3 files changed, 53 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index 6d72e4e126dde..36e8f6196a87b 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -99,6 +99,7 @@ struct lpi2c_imx_struct {
- 	__u8			*rx_buf;
- 	__u8			*tx_buf;
- 	struct completion	complete;
-+	unsigned long		rate_per;
- 	unsigned int		msglen;
- 	unsigned int		delivered;
- 	unsigned int		block_data;
-@@ -212,9 +213,7 @@ static int lpi2c_imx_config(struct lpi2c_imx_struct *lpi2c_imx)
+diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
+index 0df09bd794088..2773f05adb7d2 100644
+--- a/drivers/cxl/core/pci.c
++++ b/drivers/cxl/core/pci.c
+@@ -1045,3 +1045,32 @@ long cxl_pci_get_latency(struct pci_dev *pdev)
  
- 	lpi2c_imx_set_mode(lpi2c_imx);
+ 	return cxl_flit_size(pdev) * MEGA / bw;
+ }
++
++static int __cxl_endpoint_decoder_reset_detected(struct device *dev, void *data)
++{
++	struct cxl_port *port = data;
++	struct cxl_decoder *cxld;
++	struct cxl_hdm *cxlhdm;
++	void __iomem *hdm;
++	u32 ctrl;
++
++	if (!is_endpoint_decoder(dev))
++		return 0;
++
++	cxld = to_cxl_decoder(dev);
++	if ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)
++		return 0;
++
++	cxlhdm = dev_get_drvdata(&port->dev);
++	hdm = cxlhdm->regs.hdm_decoder;
++	ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(cxld->id));
++
++	return !FIELD_GET(CXL_HDM_DECODER0_CTRL_COMMITTED, ctrl);
++}
++
++bool cxl_endpoint_decoder_reset_detected(struct cxl_port *port)
++{
++	return device_for_each_child(&port->dev, port,
++				     __cxl_endpoint_decoder_reset_detected);
++}
++EXPORT_SYMBOL_NS_GPL(cxl_endpoint_decoder_reset_detected, CXL);
+diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+index 036d17db68e00..72fa477407689 100644
+--- a/drivers/cxl/cxl.h
++++ b/drivers/cxl/cxl.h
+@@ -891,6 +891,8 @@ void cxl_coordinates_combine(struct access_coordinate *out,
+ 			     struct access_coordinate *c1,
+ 			     struct access_coordinate *c2);
  
--	clk_rate = clk_get_rate(lpi2c_imx->clks[0].clk);
--	if (!clk_rate)
--		return -EINVAL;
-+	clk_rate = lpi2c_imx->rate_per;
++bool cxl_endpoint_decoder_reset_detected(struct cxl_port *port);
++
+ /*
+  * Unit test builds overrides this to __weak, find the 'strong' version
+  * of these symbols in tools/testing/cxl/.
+diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+index 2ff361e756d66..659f9d46b154c 100644
+--- a/drivers/cxl/pci.c
++++ b/drivers/cxl/pci.c
+@@ -957,11 +957,33 @@ static void cxl_error_resume(struct pci_dev *pdev)
+ 		 dev->driver ? "successful" : "failed");
+ }
  
- 	if (lpi2c_imx->mode == HS || lpi2c_imx->mode == ULTRA_FAST)
- 		filt = 0;
-@@ -611,6 +610,20 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
++static void cxl_reset_done(struct pci_dev *pdev)
++{
++	struct cxl_dev_state *cxlds = pci_get_drvdata(pdev);
++	struct cxl_memdev *cxlmd = cxlds->cxlmd;
++	struct device *dev = &pdev->dev;
++
 +	/*
-+	 * Lock the parent clock rate to avoid getting parent clock upon
-+	 * each transfer
++	 * FLR does not expect to touch the HDM decoders and related
++	 * registers.  SBR, however, will wipe all device configurations.
++	 * Issue a warning if there was an active decoder before the reset
++	 * that no longer exists.
 +	 */
-+	ret = devm_clk_rate_exclusive_get(&pdev->dev, lpi2c_imx->clks[0].clk);
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "can't lock I2C peripheral clock rate\n");
++	guard(device)(&cxlmd->dev);
++	if (cxlmd->endpoint &&
++	    cxl_endpoint_decoder_reset_detected(cxlmd->endpoint)) {
++		dev_crit(dev, "SBR happened without memory regions removal.\n");
++		dev_crit(dev, "System may be unstable if regions hosted system memory.\n");
++		add_taint(TAINT_USER, LOCKDEP_STILL_OK);
++	}
++}
 +
-+	lpi2c_imx->rate_per = clk_get_rate(lpi2c_imx->clks[0].clk);
-+	if (!lpi2c_imx->rate_per)
-+		return dev_err_probe(&pdev->dev, -EINVAL,
-+				     "can't get I2C peripheral clock rate\n");
-+
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, I2C_PM_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
+ static const struct pci_error_handlers cxl_error_handlers = {
+ 	.error_detected	= cxl_error_detected,
+ 	.slot_reset	= cxl_slot_reset,
+ 	.resume		= cxl_error_resume,
+ 	.cor_error_detected	= cxl_cor_error_detected,
++	.reset_done	= cxl_reset_done,
+ };
+ 
+ static struct pci_driver cxl_pci_driver = {
 -- 
 2.43.0
 
