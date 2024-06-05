@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-48196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6E88FCDE7
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:55:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7358FCD92
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50351B2CE2B
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:46:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 012B01F28522
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39801AB8F1;
-	Wed,  5 Jun 2024 12:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07E61AB914;
+	Wed,  5 Jun 2024 12:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGhZ5Yl+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLX/q/Af"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDE11AB8E7;
-	Wed,  5 Jun 2024 12:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1F61AB909;
+	Wed,  5 Jun 2024 12:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589112; cv=none; b=c8npjSq5MkJoB/lY4KczMSDFnIUljZY/qDs2ZFnYruCC39QQEe57ycdk/Ymcnx5QgbnrgHGOHhUmUiA2Qp8/iBa9E7oyPvCZyjEKtiSrqEMrh/QJhEMqmANzYarc+ilXXrrof6G6d4Um6XoSxF9VUvXxIMKjv7ixgFwdUrl7pTU=
+	t=1717589113; cv=none; b=KbBpEHxTLxKZFHdKq/VsDqx0S5jBObdFMLHCGgy7cxP5t90X5Ach11sngTR5Zcukph3KPPxUIDMhhjxepZbUJ/YbgYzd7tlk+tKrqG0ubPEjCeljdzZ4Is7wOkO+1/AUYa45w2E1lwDbiEOaYy5UElSaVgDNg/yxl7TwIYN59RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589112; c=relaxed/simple;
-	bh=Y/32szHfbZYbXDSCF25V/z9KTLPAFSYNCqwZHL/VUkI=;
+	s=arc-20240116; t=1717589113; c=relaxed/simple;
+	bh=iCEqVW94eFOmJrC/ldTm/SBWtD5V6IcQttdylIMUgdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+H7anHb2l5kJhm1t7zxW4UdAYqI0s0eGqkAFFfJlm/u33ui8KiNAJKyYtqQNJSpgoOKQ5idOzvVficmqW7Ht3v0LlgrsKxqJ+BSGDPDfx4FeoVbTS2gP3+ePXlNrJbUMNwY4U4RjYLj4IEHlrDLM6nYJeziASpyIENNAGGdo+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGhZ5Yl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DB6C32781;
-	Wed,  5 Jun 2024 12:05:11 +0000 (UTC)
+	 MIME-Version; b=tRgwTgsuTcDWHBPBuhLgLRM6ITX1IikNhpRTON7/t1C+a99BXkIGkFbZaDWkbqfAZKHaXtCKMYvF9eHTw4usPHrATHn8rTqCGBO8+CZebJIl5RUZzuIs6zIwMw8cHxNyUukVEBFzsFjZNZCns8ObPRf57UMfmx6tSOudiIrUSE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLX/q/Af; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79646C3277B;
+	Wed,  5 Jun 2024 12:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589112;
-	bh=Y/32szHfbZYbXDSCF25V/z9KTLPAFSYNCqwZHL/VUkI=;
+	s=k20201202; t=1717589113;
+	bh=iCEqVW94eFOmJrC/ldTm/SBWtD5V6IcQttdylIMUgdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGhZ5Yl+vqVoa7W4RgEQVl97X464HR7IHawAF+LCyM38YB+oVLKSbFLUlmPMjJWiZ
-	 0pWmrs4GfrRHOqAap+CqTN7d/EWLTkNDfTeGzNBwbubyBHhp6FYhd1rzQP4FE52J1Y
-	 mImQqe4k6hzPzS3MTuC0OZmxiBeifD43jGsVF2dZ/fsLA7DKrCdJvYHvydRx7neEKr
-	 XbO1WgrsNn+9lLbnP2KJQSsp0M+WDVLTJSqCxMwvnxJeGm0nt1NEftaQHr2x3pBPcw
-	 GUDLZWt75mPDT6Kib/HcXtV8ixsnmP+LwEwtNwpNiMt0bLoKnCkc6OifmwB0oVpwql
-	 GgctNhfQ0kUzA==
+	b=PLX/q/AfqwxNeNiPtofsZbobv5fc38ur1koEJoiwisCIwnFrnM1ZUXH34G/rLwz7T
+	 Fhi2Mox6fZkS75UVRLquZ5JcOtPLMZ3NhoAn3UqqjAD62q2aQgNv3tDSCLm+y/m70p
+	 RYwjtTNZ71WpM/1aSHbwmNaeQPxA4NP4RHpWg5VAa6xOsZ4e0HqBEIdT7pHHVJ9OE0
+	 anLBplkTqmuWW3LltM+LwHq2qp1fzPfQ3wjzlMwMahCT8/2IwBmltqiZNbJlyWXbLs
+	 bRbk3DV9has5FzCiLu240fhZGeNqCzl3KyjO4KrS6BVMV7u8A+opCihOj47PiIfOUA
+	 H/eUIPOn8dLvw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
+Cc: Edward Adam Davis <eadavis@qq.com>,
+	syzbot+71bfed2b2bcea46c98f2@syzkaller.appspotmail.com,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 10/14] kbuild: fix short log for AS in link-vmlinux.sh
-Date: Wed,  5 Jun 2024 08:04:43 -0400
-Message-ID: <20240605120455.2967445-10-sashal@kernel.org>
+	bongsu.jeon@samsung.com,
+	krzk@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 11/14] nfc/nci: Add the inconsistency check between the input data length and count
+Date: Wed,  5 Jun 2024 08:04:44 -0400
+Message-ID: <20240605120455.2967445-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120455.2967445-1-sashal@kernel.org>
 References: <20240605120455.2967445-1-sashal@kernel.org>
@@ -64,57 +68,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.92
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 3430f65d6130ccbc86f0ff45642eeb9e2032a600 ]
+[ Upstream commit 068648aab72c9ba7b0597354ef4d81ffaac7b979 ]
 
-In convention, short logs print the output file, not the input file.
+write$nci(r0, &(0x7f0000000740)=ANY=[@ANYBLOB="610501"], 0xf)
 
-Let's change the suffix for 'AS' since it assembles *.S into *.o.
+Syzbot constructed a write() call with a data length of 3 bytes but a count value
+of 15, which passed too little data to meet the basic requirements of the function
+nci_rf_intf_activated_ntf_packet().
 
-[Before]
+Therefore, increasing the comparison between data length and count value to avoid
+problems caused by inconsistent data length and count.
 
-  LD      .tmp_vmlinux.kallsyms1
-  NM      .tmp_vmlinux.kallsyms1.syms
-  KSYMS   .tmp_vmlinux.kallsyms1.S
-  AS      .tmp_vmlinux.kallsyms1.S
-  LD      .tmp_vmlinux.kallsyms2
-  NM      .tmp_vmlinux.kallsyms2.syms
-  KSYMS   .tmp_vmlinux.kallsyms2.S
-  AS      .tmp_vmlinux.kallsyms2.S
-  LD      vmlinux
-
-[After]
-
-  LD      .tmp_vmlinux.kallsyms1
-  NM      .tmp_vmlinux.kallsyms1.syms
-  KSYMS   .tmp_vmlinux.kallsyms1.S
-  AS      .tmp_vmlinux.kallsyms1.o
-  LD      .tmp_vmlinux.kallsyms2
-  NM      .tmp_vmlinux.kallsyms2.syms
-  KSYMS   .tmp_vmlinux.kallsyms2.S
-  AS      .tmp_vmlinux.kallsyms2.o
-  LD      vmlinux
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reported-and-tested-by: syzbot+71bfed2b2bcea46c98f2@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/link-vmlinux.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nfc/virtual_ncidev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-index 458b2948b580d..019560548ac98 100755
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -182,7 +182,7 @@ kallsyms_step()
- 	mksysmap ${kallsyms_vmlinux} ${kallsyms_vmlinux}.syms
- 	kallsyms ${kallsyms_vmlinux}.syms ${kallsyms_S}
+diff --git a/drivers/nfc/virtual_ncidev.c b/drivers/nfc/virtual_ncidev.c
+index 85c06dbb2c449..9fffd4421ad5b 100644
+--- a/drivers/nfc/virtual_ncidev.c
++++ b/drivers/nfc/virtual_ncidev.c
+@@ -121,6 +121,10 @@ static ssize_t virtual_ncidev_write(struct file *file,
+ 		kfree_skb(skb);
+ 		return -EFAULT;
+ 	}
++	if (strnlen(skb->data, count) != count) {
++		kfree_skb(skb);
++		return -EINVAL;
++	}
  
--	info AS ${kallsyms_S}
-+	info AS ${kallsymso}
- 	${CC} ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS} \
- 	      ${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL} \
- 	      -c -o ${kallsymso} ${kallsyms_S}
+ 	nci_recv_frame(ndev, skb);
+ 	return count;
 -- 
 2.43.0
 
