@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-48139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1D48FCCDF
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:31:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 717988FCCE2
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 473F2286C85
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:31:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9D79B29A8B
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7EE19FA73;
-	Wed,  5 Jun 2024 12:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF8819FA8E;
+	Wed,  5 Jun 2024 12:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TGU04Jma"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rfUB443L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECC119FA67;
-	Wed,  5 Jun 2024 12:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435F819FA83;
+	Wed,  5 Jun 2024 12:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588964; cv=none; b=LZcut5Qs88TgUGk5r75h4RFixbBuAqwnBHzhFNM1xXFyqLbNJdGkFew97xXUyUoYakIyaJKIFcWcwl5uUXiML9D4RGtZ8brPNlIpKm7px/5TwwfRW64vZmu+Sr35seREKvubLOazYTpfdxu8U9KevJ+cz2e+LJ1wBjR//EYnfFw=
+	t=1717588965; cv=none; b=lCXOUdASKHQ1e+CZu64MiBOQ9eSBPO7o5AIWjb1OzHhWE5wr64f2FrW3/VShSjHrs+Cs/Z2PdtMyh9XdkN6HIALYYiJ1uwjFswwdsathA4vkN9cZ8T/3lnnTcZI/1Kb7kPMSpubJA2bAOei4MrTDniiO/JRkdi2nyUgu1ekZQRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588964; c=relaxed/simple;
-	bh=FiaTm6Lhhr+ZZajCYAnCyOiSQJMTvV+vgNGZSYZo+To=;
+	s=arc-20240116; t=1717588965; c=relaxed/simple;
+	bh=BQlbPAvxsdi3X1d2VhHNpiIeTwGwQryj+ROh8dfsSWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkHET0JqANabp8ZAa5LcSCMDlI13efZPAUf2nSkw+8RrfnqNVlvgtYfT0EFOBhOitv/EsEW3pRzOOopVZLR+PoFKmivdoXIrXDm3wEkf71PvWJHGUyJB/nGJV1ent6WUf59G+6NTEYSIMQmqwQlDcFhV9mouHok6g2xwltzoAD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TGU04Jma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8147C32781;
-	Wed,  5 Jun 2024 12:02:42 +0000 (UTC)
+	 MIME-Version; b=AQdbBk03BoeyRpEQxW9c1gblESCLj1VR6edZ/0rLJgaz+MSFVOT4HNtEdnl8W8e0WupUX1VbvxmzmTNFdO9S/wp76o0OblzNh7Lxa8H6nC99H6CjdMRtnFeSJy1gL2eoxZTVBXKG6wngIqunXbICZ8Wicv1eKWQIZH92bPbXKH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rfUB443L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408F5C4AF09;
+	Wed,  5 Jun 2024 12:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588963;
-	bh=FiaTm6Lhhr+ZZajCYAnCyOiSQJMTvV+vgNGZSYZo+To=;
+	s=k20201202; t=1717588965;
+	bh=BQlbPAvxsdi3X1d2VhHNpiIeTwGwQryj+ROh8dfsSWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGU04Jma7Cmn/FlUknK0VCzfmvSKBBnES6hqZbKrqE5KR/2acPdY71j5GBmd/z0kT
-	 VhWy2UvQFshtLltcu9I/9eCO/aKOohfwSTWHenF5/NyGKIC+YFQ7ESL0wHYS31zIRI
-	 QnnqLjCLKTcJkLM0uX/t/wIxkkiJc/8EscqqgvNrH2XZCoIlrNgFIjFph+JhicNIYI
-	 OvkqtVNsoNxZRuXLobERqx9DEJsDOPefzP+kdkPIrNwJ7/HlkCjcp5xTsBaszFnRNl
-	 1X+Z5nfJiO+Zso+p7iqOpZt34uIbbOWWEsO7G41z0V7/zjQC4TglsiI84rirfPV/DD
-	 AbqGTV26LnTow==
+	b=rfUB443LzP7TXG7N5SYUwYTseiYa7PFmIsm5QKtNDuZjxE5E3mCb3KvvVxFuhUarq
+	 H1J+y9hCDXSNzxnrSRGJK8fWKU9V0KJZTl5tMyVIgVrz366T9aSrg6S9kYUavZBuOH
+	 P2W8MuPMcKwyUW9/jstPUg8pa1+pbi+1+pBNhaVwszxJChR4zB9Xqbq/HAm/O5QnmY
+	 iqDT0mUTOAYXlv8jyb2Z5IBJaTmzZtWM5SZVF2qY/g4jxk6oFbPx26/cNx7AdvZ++z
+	 7EGovBcdCcm2QRoO/3nj7eo+MHkQ3PDfanOhI1jSC89S7yqHmD0eDVwyslyNLrXk88
+	 mICsIYWZ8Whdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: hmtheboy154 <buingoc67@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+Cc: Hannes Reinecke <hare@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	ilpo.jarvinen@linux.intel.com,
-	linux-input@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 12/23] platform/x86: touchscreen_dmi: Add info for the EZpad 6s Pro
-Date: Wed,  5 Jun 2024 08:01:55 -0400
-Message-ID: <20240605120220.2966127-12-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 13/23] block: check for max_hw_sectors underflow
+Date: Wed,  5 Jun 2024 08:01:56 -0400
+Message-ID: <20240605120220.2966127-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120220.2966127-1-sashal@kernel.org>
 References: <20240605120220.2966127-1-sashal@kernel.org>
@@ -67,44 +67,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: hmtheboy154 <buingoc67@gmail.com>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit 3050052613790e75b5e4a8536930426b0a8b0774 ]
+[ Upstream commit e993db2d6e5207f1ae061c2ac554ab1f714c741d ]
 
-The "EZpad 6s Pro" uses the same touchscreen as the "EZpad 6 Pro B",
-unlike the "Ezpad 6 Pro" which has its own touchscreen.
+The logical block size need to be smaller than the max_hw_sector
+setting, otherwise we can't even transfer a single LBA.
 
-Signed-off-by: hmtheboy154 <buingoc67@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240527091447.248849-3-hdegoede@redhat.com
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ block/blk-settings.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index 6c03e7daadd4d..2d9ca2292ea19 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -1404,6 +1404,17 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_BIOS_DATE, "04/24/2018"),
- 		},
- 	},
-+	{
-+		/* Jumper EZpad 6s Pro */
-+		.driver_data = (void *)&jumper_ezpad_6_pro_b_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Jumper"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Ezpad"),
-+			/* Above matches are too generic, add bios match */
-+			DMI_MATCH(DMI_BIOS_VERSION, "E.WSA116_8.E1.042.bin"),
-+			DMI_MATCH(DMI_BIOS_DATE, "01/08/2020"),
-+		},
-+	},
- 	{
- 		/* Jumper EZpad 6 m4 */
- 		.driver_data = (void *)&jumper_ezpad_6_m4_data,
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 9d6033e01f2e1..b4272bd926370 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -104,6 +104,7 @@ static int blk_validate_zoned_limits(struct queue_limits *lim)
+ static int blk_validate_limits(struct queue_limits *lim)
+ {
+ 	unsigned int max_hw_sectors;
++	unsigned int logical_block_sectors;
+ 
+ 	/*
+ 	 * Unless otherwise specified, default to 512 byte logical blocks and a
+@@ -134,8 +135,11 @@ static int blk_validate_limits(struct queue_limits *lim)
+ 		lim->max_hw_sectors = BLK_SAFE_MAX_SECTORS;
+ 	if (WARN_ON_ONCE(lim->max_hw_sectors < PAGE_SECTORS))
+ 		return -EINVAL;
++	logical_block_sectors = lim->logical_block_size >> SECTOR_SHIFT;
++	if (WARN_ON_ONCE(logical_block_sectors > lim->max_hw_sectors))
++		return -EINVAL;
+ 	lim->max_hw_sectors = round_down(lim->max_hw_sectors,
+-			lim->logical_block_size >> SECTOR_SHIFT);
++			logical_block_sectors);
+ 
+ 	/*
+ 	 * The actual max_sectors value is a complex beast and also takes the
+@@ -153,7 +157,7 @@ static int blk_validate_limits(struct queue_limits *lim)
+ 		lim->max_sectors = min(max_hw_sectors, BLK_DEF_MAX_SECTORS_CAP);
+ 	}
+ 	lim->max_sectors = round_down(lim->max_sectors,
+-			lim->logical_block_size >> SECTOR_SHIFT);
++			logical_block_sectors);
+ 
+ 	/*
+ 	 * Random default for the maximum number of segments.  Driver should not
 -- 
 2.43.0
 
