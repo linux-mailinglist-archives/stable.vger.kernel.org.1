@@ -1,58 +1,69 @@
-Return-Path: <stable+bounces-48032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B168FCB71
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0822D8FCB75
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AB2C1F24BBB
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:00:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B03021F24BFD
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FDB819FA9F;
-	Wed,  5 Jun 2024 11:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB591A01BE;
+	Wed,  5 Jun 2024 11:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BTpc8MZz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KTZ4gbWC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B6E19FA94;
-	Wed,  5 Jun 2024 11:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3710B1A01A9;
+	Wed,  5 Jun 2024 11:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588284; cv=none; b=r81RTwHRj2XG1ZKSO7XfcrHkL9KRTVlFvLQLdHH/hkR3C/MKJe9Xu1sUZuqfOVuOglfWFeq+PW/49KKi/jVAp1ZDDN7dfKlFyfeLguU1/B2dUD8hS6QsUoB1xJY+PF/FUnxuLpdpGlkm1sVrBY+DS63YWCxj4VSZ6zVlVdAHFvU=
+	t=1717588289; cv=none; b=ic8rVA8P5HqgJVx/FtmOzzh2IxbNCKP6SyM1JSyOR9JPEv5JRqCQ9NJKEbj/UIgULgln+/V3N+MdvvTU97Do2Nbdsx3T3Wy7gwDXjHt8iyo13TFGON98T/zoJx/MHpSOlmyOcPaiDK9PMaxs6MPO1CbDTU+wYxozUnV3uzveBDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588284; c=relaxed/simple;
-	bh=QEYKIRsy6u5hKLiEKLK0lf/JlhZ9x4bPSHioXsk9Fqw=;
+	s=arc-20240116; t=1717588289; c=relaxed/simple;
+	bh=VDEC8kLvr3XTPKhCnFg4+8QeXod4zGth0hLIrG3ER0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAE6P5TsYofcmOuP54ba5/HL5LNUi2YeGaq4PRgTRrVD6vnJrajuwBaZKFpSxOyxrizxIWL2k7mBI3ycSEB+I/J/mnJJPKnT99XpIDRY5m+aEZgZdZf6i653gkpy8TWqbbZN+NqoFfOGLpLxCpobnPyXsXz/utsesL2k9nDLZAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BTpc8MZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25C5C3277B;
-	Wed,  5 Jun 2024 11:51:23 +0000 (UTC)
+	 MIME-Version; b=G5M7hD4nKrfu5uVeFW1t0DLG1qwwOjRphsUv34o3EE1P59B3KOUW4QFdZOUOH+5pi3Z9VdYnH5wA1LLKUDzgllKFM9aol5Vx2MI6FW6wO6x4l8DCmMWAUekvcuX2/sGGtRV7msidWFhVLdMMubqQM6A1nZM+L4ZuX63UNrddbO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KTZ4gbWC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E435BC3277B;
+	Wed,  5 Jun 2024 11:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588284;
-	bh=QEYKIRsy6u5hKLiEKLK0lf/JlhZ9x4bPSHioXsk9Fqw=;
+	s=k20201202; t=1717588288;
+	bh=VDEC8kLvr3XTPKhCnFg4+8QeXod4zGth0hLIrG3ER0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BTpc8MZz4Bhnq5LNFElMhXvSvY/QOSmwwEStwLo39N6joJyRmHnqaenzhplTnzBLC
-	 TlNbRE/SabtB5TYNbXjkNRhveC9NdTIP3dqL4gCHcDJvzZHp1R4WPFbqDk9Yw+D+QU
-	 J01x/wkXgIps8mjeHgT22wrcIfAxmyc0j3yZva51YGRG4vygSmWFFJIsRcxxKjENo/
-	 1iB9tgK+BThuzbJGU6VbLxsx8fz82pIKYoJ51bQJ7mBPXSPZ/1YTKfDUDRynTDHAar
-	 JsXBUlfyQ3nDJvZJmCzVj5KQlKr7giO7DO2JfOk4mzlYxbmY1DZRi4SM/w3f3vI3f7
-	 v3Rax0tkJHRGw==
+	b=KTZ4gbWCxNN/2a5mHU5Vewwwd2nbQNRBjViEnzLa6vPRTmcWAt8GsZ1aAkXd8Ru05
+	 OsPLOGYXA28moTdR4dH4E1qca5KBoESl3jBpKV5FzT0uI/Q7H9nsj7VSqfLd0Z4f/c
+	 ZmWE6i62ufhizfdMORWHOLp0Xp4CMKcD94IdmrO6ih6pYeH6H7BnWppprQ5Z2Gz9oR
+	 PPZW7lMtx2niHSkIwzR6YT4/lMnyM5lyAyViVwDyYdZo4zIdrUj4fCldruzRQhD04H
+	 5wd16fDHHluOg/+hz2XP4wjbvqwFrb5htq27gYXq/ZlkOaNM5LOrGnFU65ib2fcCPT
+	 XHjHn4Kfik+BQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Songyang Li <leesongyang@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Cc: Esben Haabendal <esben@geanix.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rdunlap@infradead.org,
-	bhelgaas@google.com,
-	linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 11/24] MIPS: Octeon: Add PCIe link status check
-Date: Wed,  5 Jun 2024 07:50:21 -0400
-Message-ID: <20240605115101.2962372-11-sashal@kernel.org>
+	jirislaby@kernel.org,
+	shawnguo@kernel.org,
+	u.kleine-koenig@pengutronix.de,
+	ilpo.jarvinen@linux.intel.com,
+	l.sanfilippo@kunbus.com,
+	cniedermaier@dh-electronics.com,
+	martin.fuzzey@flowbird.group,
+	robh@kernel.org,
+	tglx@linutronix.de,
+	rickaran@axis.com,
+	linux-serial@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.8 12/24] serial: imx: Introduce timeout when waiting on transmitter empty
+Date: Wed,  5 Jun 2024 07:50:22 -0400
+Message-ID: <20240605115101.2962372-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115101.2962372-1-sashal@kernel.org>
 References: <20240605115101.2962372-1-sashal@kernel.org>
@@ -67,53 +78,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.12
 Content-Transfer-Encoding: 8bit
 
-From: Songyang Li <leesongyang@outlook.com>
+From: Esben Haabendal <esben@geanix.com>
 
-[ Upstream commit 29b83a64df3b42c88c0338696feb6fdcd7f1f3b7 ]
+[ Upstream commit e533e4c62e9993e62e947ae9bbec34e4c7ae81c2 ]
 
-The standard PCIe configuration read-write interface is used to
-access the configuration space of the peripheral PCIe devices
-of the mips processor after the PCIe link surprise down, it can
-generate kernel panic caused by "Data bus error". So it is
-necessary to add PCIe link status check for system protection.
-When the PCIe link is down or in training, assigning a value
-of 0 to the configuration address can prevent read-write behavior
-to the configuration space of peripheral PCIe devices, thereby
-preventing kernel panic.
+By waiting at most 1 second for USR2_TXDC to be set, we avoid a potential
+deadlock.
 
-Signed-off-by: Songyang Li <leesongyang@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+In case of the timeout, there is not much we can do, so we simply ignore
+the transmitter state and optimistically try to continue.
+
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lore.kernel.org/r/919647898c337a46604edcabaf13d42d80c0915d.1712837613.git.esben@geanix.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/pci/pcie-octeon.c | 6 ++++++
- 1 file changed, 6 insertions(+)
- mode change 100644 => 100755 arch/mips/pci/pcie-octeon.c
+ drivers/tty/serial/imx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
-old mode 100644
-new mode 100755
-index 2583e318e8c6b..b080c7c6cc463
---- a/arch/mips/pci/pcie-octeon.c
-+++ b/arch/mips/pci/pcie-octeon.c
-@@ -230,12 +230,18 @@ static inline uint64_t __cvmx_pcie_build_config_addr(int pcie_port, int bus,
- {
- 	union cvmx_pcie_address pcie_addr;
- 	union cvmx_pciercx_cfg006 pciercx_cfg006;
-+	union cvmx_pciercx_cfg032 pciercx_cfg032;
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index e148132506161..09c1678ddfd49 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -26,6 +26,7 @@
+ #include <linux/slab.h>
+ #include <linux/of.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/dma-mapping.h>
  
- 	pciercx_cfg006.u32 =
- 	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG006(pcie_port));
- 	if ((bus <= pciercx_cfg006.s.pbnum) && (dev != 0))
- 		return 0;
+ #include <asm/irq.h>
+@@ -2010,7 +2011,7 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
+ 	struct imx_port *sport = imx_uart_ports[co->index];
+ 	struct imx_port_ucrs old_ucr;
+ 	unsigned long flags;
+-	unsigned int ucr1;
++	unsigned int ucr1, usr2;
+ 	int locked = 1;
  
-+	pciercx_cfg032.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
-+	if ((pciercx_cfg032.s.dlla == 0) || (pciercx_cfg032.s.lt == 1))
-+		return 0;
-+
- 	pcie_addr.u64 = 0;
- 	pcie_addr.config.upper = 2;
- 	pcie_addr.config.io = 1;
+ 	if (sport->port.sysrq)
+@@ -2041,8 +2042,8 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
+ 	 *	Finally, wait for transmitter to become empty
+ 	 *	and restore UCR1/2/3
+ 	 */
+-	while (!(imx_uart_readl(sport, USR2) & USR2_TXDC));
+-
++	read_poll_timeout_atomic(imx_uart_readl, usr2, usr2 & USR2_TXDC,
++				 0, USEC_PER_SEC, false, sport, USR2);
+ 	imx_uart_ucrs_restore(sport, &old_ucr);
+ 
+ 	if (locked)
 -- 
 2.43.0
 
