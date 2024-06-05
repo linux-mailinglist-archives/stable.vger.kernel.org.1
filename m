@@ -1,121 +1,100 @@
-Return-Path: <stable+bounces-48078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7C28FCC19
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:12:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623018FCBF3
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D742B22DC8
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:12:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D818CB21923
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD6E1974E0;
-	Wed,  5 Jun 2024 11:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF231B011D;
+	Wed,  5 Jun 2024 11:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJyO1eFw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gta6f3D6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD088196C9A;
-	Wed,  5 Jun 2024 11:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274E31B0117;
+	Wed,  5 Jun 2024 11:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588446; cv=none; b=FfdgXBWvYj564nw16zccpfJIx9WvOYiWTWKdVh8Vqp7TCKwhvp2JkTjAAYNwwxyuOX/d5VEW2ZXE7bCWgWdxPnTNuePTgYVhJCr61rhBZk4RL2RVFbDOaj6lknU3r8vrKvxtnFK/xxa4JG83zjLvGNxW07NRbIpQqmMzlD/4fnc=
+	t=1717588402; cv=none; b=AMJi8JnDmXPxBoEqdnDNoqCJpNVAlLcymlSkvXlEXGvZGloSge1fHZmRK0gzmTya6NZEb6rkoZuS3yZ5fpRCuOBtxY0+5XgjJl6VxRyxs5AegxyrzEPydVIWQW0J3eX97BJ4YtqL6CNhuK0YHkoAR86ukVqVVKKOn6Fj2TIaMBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588446; c=relaxed/simple;
-	bh=kiI/Lw2TK9Xytq4SD7omgBRD9aRnbSVuuUnrkQXDmf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5W/DffwO3Zt3DCpgqhUOt2/Dzy3kWd3cgINv2EB5p3qooDfUCbn2PDmGL7cr68vW3uCoye/9xyrmV1XTg8m+s4pc8YbkOal1EjOwr6KMSyj7fxfLd6uNaT3XerF//QLxa2MXt603q/9r+5Nqe72GQymzCEQoiX0MLT4/OedV80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJyO1eFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E47C32786;
-	Wed,  5 Jun 2024 11:54:05 +0000 (UTC)
+	s=arc-20240116; t=1717588402; c=relaxed/simple;
+	bh=JUFUBLSPCoj+I9mnYkjmtKDkiyT83/kvukVxvmt/7KE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CbacEDhPzx4W4kNZuHhvuGjqQnjI8ll/hpenXMPmm3YrOsd4WO8IE1GLeYt88m3uqVeIfZ8ncKuTBKO/FAWOhae8KXKh8nrPLlPxw4Lg+VnBWZjv6FJ26WV8Sc7zGB46dAJqteYn4kQSvPVoVAC9EvUQfAcuGxgIkM5peycoO5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gta6f3D6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6F6C3277B;
+	Wed,  5 Jun 2024 11:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588446;
-	bh=kiI/Lw2TK9Xytq4SD7omgBRD9aRnbSVuuUnrkQXDmf0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJyO1eFwRmdFWdWSuTAeHp3tP1NPl6lcIciiTOT4dUbrmD5+QNRcsdHoCow6dENHj
-	 OdV7irkqRA+RzFkcxPzYyx1MUFpjbpyUs1ZnRrkUKXC1Ux0QaPhs+RwRfdgvLUHQRY
-	 /dSksl+xCjaGzkpU9IDHClr/K6oHGXm5eQpyq0lPApJQtJvzbDR+27HOXrPM869gy9
-	 M0ptnwRX/pkIiFXT7HkeW//gYqhiJ77tl6TJfERy1lgKUz73+Agv58nOOeVFBcq/NN
-	 jqy07aMuGbCbXlUH0pbpwWxxBWhRJ6XM3o9XS43yBsx4cLuXckaXfFu5tj8LfAtTKi
-	 o1fN1FLWwM+Cg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Sicong Huang <congei42@163.com>,
+	s=k20201202; t=1717588401;
+	bh=JUFUBLSPCoj+I9mnYkjmtKDkiyT83/kvukVxvmt/7KE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gta6f3D6odVBdNeiHvZRcRfIvNLsNrzMCuubTl/PJpa2q44HECwEPD8iRL7h8cyK0
+	 l2tIOd0fPJgef+aOJbUd39PEUf1xaS0DfFYNMWBqtQxV/r1r6phaJOKlC8ECu1eNIe
+	 LHFJyNvsPFtW0kWRPD1kSGHWLQP+UXYlDwbulW4cVV//Pgyc+LHtd1H3eDFGT7m2h7
+	 F4SwouJwQdzDbTSK5mmUqThEaNTQRvawXIF7atrxDFq7md9f073RxNhpAg2ZlngJ/y
+	 zeEWcDEn2aV9J5DfEZdQ2boFJ2Qg6f06EovcOY2jauA6j3PZFGGOtbH+nQMdgvVWKc
+	 Sa0CNswms8GBA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1sEpCk-000000000wA-2ky3;
+	Wed, 05 Jun 2024 13:53:23 +0200
+Date: Wed, 5 Jun 2024 13:53:22 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	johan@kernel.org,
-	greybus-dev@lists.linaro.org
-Subject: [PATCH AUTOSEL 6.1 12/12] greybus: Fix use-after-free bug in gb_interface_release due to race condition.
-Date: Wed,  5 Jun 2024 07:53:17 -0400
-Message-ID: <20240605115334.2963803-12-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240605115334.2963803-1-sashal@kernel.org>
-References: <20240605115334.2963803-1-sashal@kernel.org>
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.9 16/28] usb: dwc3: core: Access XHCI address
+ space temporarily to read port info
+Message-ID: <ZmBRsqiexF9-sHpk@hovoldconsulting.com>
+References: <20240605114927.2961639-1-sashal@kernel.org>
+ <20240605114927.2961639-16-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.92
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240605114927.2961639-16-sashal@kernel.org>
 
-From: Sicong Huang <congei42@163.com>
+On Wed, Jun 05, 2024 at 07:48:45AM -0400, Sasha Levin wrote:
+> From: Krishna Kurapati <quic_kriskura@quicinc.com>
+> 
+> [ Upstream commit 921e109c6200741499ad0136e41cca9d16431c92 ]
+> 
+> All DWC3 Multi Port controllers that exist today only support host mode.
+> Temporarily map XHCI address space for host-only controllers and parse
+> XHCI Extended Capabilities registers to read number of usb2 ports and
+> usb3 ports present on multiport controller. Each USB Port is at least HS
+> capable.
+> 
+> The port info for usb2 and usb3 phy are identified as num_usb2_ports
+> and num_usb3_ports and these are used as iterators for phy operations
+> and for modifying GUSB2PHYCFG/ GUSB3PIPECTL registers accordingly.
+> 
+> Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+> Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> Link: https://lore.kernel.org/r/20240420044901.884098-3-quic_kriskura@quicinc.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-[ Upstream commit 5c9c5d7f26acc2c669c1dcf57d1bb43ee99220ce ]
+This is not a fix. Please drop.
 
-In gb_interface_create, &intf->mode_switch_completion is bound with
-gb_interface_mode_switch_work. Then it will be started by
-gb_interface_request_mode_switch. Here is the relevant code.
-if (!queue_work(system_long_wq, &intf->mode_switch_work)) {
-	...
-}
-
-If we call gb_interface_release to make cleanup, there may be an
-unfinished work. This function will call kfree to free the object
-"intf". However, if gb_interface_mode_switch_work is scheduled to
-run after kfree, it may cause use-after-free error as
-gb_interface_mode_switch_work will use the object "intf".
-The possible execution flow that may lead to the issue is as follows:
-
-CPU0                            CPU1
-
-                            |   gb_interface_create
-                            |   gb_interface_request_mode_switch
-gb_interface_release        |
-kfree(intf) (free)          |
-                            |   gb_interface_mode_switch_work
-                            |   mutex_lock(&intf->mutex) (use)
-
-Fix it by canceling the work before kfree.
-
-Signed-off-by: Sicong Huang <congei42@163.com>
-Link: https://lore.kernel.org/r/20240416080313.92306-1-congei42@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/greybus/interface.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/greybus/interface.c b/drivers/greybus/interface.c
-index 9ec949a438ef6..52ef6be9d4499 100644
---- a/drivers/greybus/interface.c
-+++ b/drivers/greybus/interface.c
-@@ -694,6 +694,7 @@ static void gb_interface_release(struct device *dev)
- 
- 	trace_gb_interface_release(intf);
- 
-+	cancel_work_sync(&intf->mode_switch_work);
- 	kfree(intf);
- }
- 
--- 
-2.43.0
-
+Johan
 
