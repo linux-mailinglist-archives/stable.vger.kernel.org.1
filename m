@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-48148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA29B8FCCFD
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:34:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A848FCCFB
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06A61B2537A
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C4E51F237B7
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD5D1C1595;
-	Wed,  5 Jun 2024 12:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD561A1863;
+	Wed,  5 Jun 2024 12:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cegeb1HP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ua+EkKi8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1559E1C158B;
-	Wed,  5 Jun 2024 12:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFDB199397;
+	Wed,  5 Jun 2024 12:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588983; cv=none; b=XM9IQ52oaVqdr4SX8ZUHsp6wpEoZKIQnmgBY7VRJeNZ2T+x4v5fQUiVZtsYINUTvnuTJfm/FjNWnQ0F0/UgmzQTTkRr+r6/Nzwk9C3WMdl1KciaVg6RPhXxbq0XxbEWbbMQjtgzly43zUqLBiCMznQdeqCTfSCfW3nGAT6UHICE=
+	t=1717588984; cv=none; b=GjA00wjM9353QaCBgA4mzAU4Sdy7RorAW9zIWKT7DQ9iUYoZpl0Kr1BahITI5FmPjlYpGY9qnKmAe+TXsfHFvTS3J6cllBzCunqL0gFOOg61wP501D+YbScVPMWAiVgdE/YczZfZ6OGXzNt1B43TQTJpLJhyeyDmK9IEfIg6iNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588983; c=relaxed/simple;
-	bh=zKphogx/8wYxjzGfOYOpMTs9aysgexbDswaF4oPT8KU=;
+	s=arc-20240116; t=1717588984; c=relaxed/simple;
+	bh=Hws0J5mHqGJewzd/hkx+aFlBWndwx/W+Wq0F05xqxQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LT2bbtmBkHv8n/Ot8B81oa0YQ5r5l2ebJwfO+LjyseVlCBCbo67WN0wgRZzXmXQYjdd8Umxz2i/tO3ZF9lLrQDKWlv1FDMlqnvu/cgd0xhv6+XgyNrPoTzFVOqckHiNq4C0dqjccHvDBqGg/A1LSmQ/6fUhi/ynZhlTnf5I7JNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cegeb1HP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B7AC32786;
-	Wed,  5 Jun 2024 12:03:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SOWH8DTyK9LhqnMpAh2saY95j+2gbjubAar9w6YTvHMfop/ea4z760CPGvDJlD6LoQJnTi0CDjotF8CXgyJER4dM9jJjkI8+qCZBiTx31by36F/IUJIB7grXW70ggylpSi75Il3XlZDAGJhUfyJ4iXKgjn0EExkoIUk4iVFcwUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ua+EkKi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD75C3277B;
+	Wed,  5 Jun 2024 12:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588983;
-	bh=zKphogx/8wYxjzGfOYOpMTs9aysgexbDswaF4oPT8KU=;
+	s=k20201202; t=1717588984;
+	bh=Hws0J5mHqGJewzd/hkx+aFlBWndwx/W+Wq0F05xqxQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cegeb1HPeeJXgdaBxlkr8llciIflxHKuyz5agMRtVDKyRnLe5lKd4bIK7wbIKu+jw
-	 B14BI37p6+mVzC2T/JMMtl5y/uD5rTXxfWpuF0Auq8Um0H+NFlNsKg5y32HQfy4fh0
-	 y32cwXn4JnqFpB+jeHJ+Ek3ZJlPAruGBDA44KChZYVxxCK2miKx3szV575vdu3WR8C
-	 tZlilqaFTeuOn3L5eTeSS7FypyLISwg5oF3O/IkvsNqC/YvYlb/YteQcA4YsnlWFKT
-	 6ddEv6c4hbbDMWTjE6JcHmqb47GsvvcuFY41MVMIW321xc0A4AZpHq+5+aDYMG4Evr
-	 +51VgoaI1EhMQ==
+	b=Ua+EkKi8nTxmGXZkJNrIORN0Wij3aEZCw8uJ5yjkTrfkM1up7sdqU7wixzrBuvfTG
+	 ngyLUMP7x4UMMVtmb0razepeC/NYrr8mmsYZxj88UwiUgx6GngDfAMwuQ8tZbfQETr
+	 lkziisJ1/8IPIWr+9UBeHSQK/w6a4BF9MNmQz4CKFsTEzsB6lp1v+BHL9hRX6hF6ci
+	 Bk30jsk5w4OKUFgufqinYO1vT+End7fhj/xQyP4JUbt1OwCwYEZ3wHK41LV9XMI2ZM
+	 /wfucOCqMUjNRSWyJ/L9CWiNiEYSwLxzKu4q9ouSIXgsnczS8lq0AxqSGs1yBa1+H2
+	 iYwK1O2lI84QQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	Feifei Xu <Feifei.Xu@amd.com>,
-	Feifei Xu <feifei.xu@amd.com>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	nathan@kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.9 21/23] Revert "drm/amdkfd: fix gfx_target_version for certain 11.0.3 devices"
-Date: Wed,  5 Jun 2024 08:02:04 -0400
-Message-ID: <20240605120220.2966127-21-sashal@kernel.org>
+	jdelvare@suse.com,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 22/23] hwmon: (dell-smm) Add Dell G15 5511 to fan control whitelist
+Date: Wed,  5 Jun 2024 08:02:05 -0400
+Message-ID: <20240605120220.2966127-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120220.2966127-1-sashal@kernel.org>
 References: <20240605120220.2966127-1-sashal@kernel.org>
@@ -69,50 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit dd2b75fd9a79bf418e088656822af06fc253dbe3 ]
+[ Upstream commit fa0bc8f297b29126b5ae983406e9bc76d48a9a8e ]
 
-This reverts commit 28ebbb4981cb1fad12e0b1227dbecc88810b1ee8.
+A user reported that he needs to disable BIOS fan control on his
+Dell G15 5511 in order to be able to control the fans.
 
-Revert this commit as apparently the LLVM code to take advantage of
-this never landed.
-
-Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Feifei Xu <feifei.xu@amd.com>
+Closes: https://github.com/Wer-Wolf/i8kutils/issues/5
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Acked-by: Pali Rohár <pali@kernel.org>
+Link: https://lore.kernel.org/r/20240522210809.294488-1-W_Armin@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/hwmon/dell-smm-hwmon.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-index 719d6d365e150..ff01610fbce3b 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -408,15 +408,8 @@ struct kfd_dev *kgd2kfd_probe(struct amdgpu_device *adev, bool vf)
- 			f2g = &gfx_v11_kfd2kgd;
- 			break;
- 		case IP_VERSION(11, 0, 3):
--			if ((adev->pdev->device == 0x7460 &&
--			     adev->pdev->revision == 0x00) ||
--			    (adev->pdev->device == 0x7461 &&
--			     adev->pdev->revision == 0x00))
--				/* Note: Compiler version is 11.0.5 while HW version is 11.0.3 */
--				gfx_target_version = 110005;
--			else
--				/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
--				gfx_target_version = 110001;
-+			/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
-+			gfx_target_version = 110001;
- 			f2g = &gfx_v11_kfd2kgd;
- 			break;
- 		case IP_VERSION(11, 5, 0):
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index efcf78673e747..b6a995c852ab4 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -1530,6 +1530,14 @@ static const struct dmi_system_id i8k_whitelist_fan_control[] __initconst = {
+ 		},
+ 		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_30A3_31A3],
+ 	},
++	{
++		.ident = "Dell G15 5511",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Dell G15 5511"),
++		},
++		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_30A3_31A3],
++	},
+ 	{ }
+ };
+ 
 -- 
 2.43.0
 
