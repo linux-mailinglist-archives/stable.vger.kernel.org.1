@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B678FCC14
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:12:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD888FCBFF
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:11:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA5728CBEB
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:10:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B18D51C229D4
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D83196DA1;
-	Wed,  5 Jun 2024 11:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50322196C72;
+	Wed,  5 Jun 2024 11:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0iMoWk1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4AGkMnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09B2196D95;
-	Wed,  5 Jun 2024 11:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7F4196DBF;
+	Wed,  5 Jun 2024 11:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588421; cv=none; b=mUYH6z5ku4AS2uvLlWGx8R7VtC/su2MciY4Cx0G4fQLz2THLz51AMq9FXiXfaW+xmpwLIEl4cp3ehIu0CPZp0/A8Fm01fSYQpwTUlKinEVVGZrP2STkTTha0RwX1G9t+mV8FibxRG3trpl/6U5lrDwj4q3m5PH8BTQnuHxjCFa4=
+	t=1717588423; cv=none; b=cTy5GFfw4y/hvTboUIHo0xvCxxTFsAZ1Yv/NbgRp/usZPjFBveCYQulRjeSufAk9DZRwlrLPLJa8dO79k2r+3umWf48+gcRPgvZEVrJHD0zfwwgBnolA8IqvZVZvqcv8twHWqFQBMpl2+JR24cHD1qGYwClAoCn6Tys3ONw4I8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588421; c=relaxed/simple;
-	bh=QpQAPRQYmwJRJjhbalApNjUg1YtzVBQoY0SC40djM98=;
+	s=arc-20240116; t=1717588423; c=relaxed/simple;
+	bh=vZPl2Rg9MMjHgwCnAcC6p7mvcU/vcb8ipMfTFMNDETU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jv/6+9wEdDdsw/WExidEmpfsZOwPPcd9r7tMXvDTu1vPDEDiZeunOJoDcqN6orHq2SyzuSm9l14nRZLqv9hGx+0n3IlmUrVtlsuINxHrTg/DPha3C/l2PPgwGCtMiRZjsQvZME850Q2/AGrI1xuSfZaxHJxYDUyNRhH32ZYMQv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0iMoWk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F5FC4AF08;
-	Wed,  5 Jun 2024 11:53:40 +0000 (UTC)
+	 MIME-Version; b=UvTrMm+hZKtIynPqXH68uY4kDZ45/z6Uzi8RSDSZbWjkadBnqyTDQRUCKANAVeWBkZftfILUtxQo3To54gANzyUK55SWEZCZjIag1ZHpBvqpzlUERSpa4EN2lWOSB7Dn1dzwa0asYLmF0PVer29IzMceLz+Lk25/iqVh+wJz9pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4AGkMnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236F5C4AF07;
+	Wed,  5 Jun 2024 11:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588421;
-	bh=QpQAPRQYmwJRJjhbalApNjUg1YtzVBQoY0SC40djM98=;
+	s=k20201202; t=1717588422;
+	bh=vZPl2Rg9MMjHgwCnAcC6p7mvcU/vcb8ipMfTFMNDETU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0iMoWk16KKAxl8PSCNOxmI1euGJvaH26JcOROzqRTPIcYXwn/3N7XufPnRNgyHnP
-	 p0TxY+BE0Fcs2vdjjL8dXDL9QXQ0JTImAO+kcaWTpA1yuTAMfL4RJ7thzpOsdhlrBa
-	 fPHzM7GeFI3/scvxLOGqcARx2HBmQAq4kVbqsV5U8woY6HOjHz9gebx+BTRy6fFWsD
-	 QVPJRfLyI/E+NPl/Z7rfCY2qSOI/8kVLY7gmg4IdK4GSuP6CiwfVEh7O8cH/IC1XVW
-	 rs4DCjtW8KcZwLYRw4x7rcgpDy7BVVFFYhhluEr5bWJI0KdoVqdnGjmPi8aYeII5UO
-	 2IpLET0/dzAag==
+	b=L4AGkMntvXb3kOxMnMqIsoamqXu/nH44GTMvGxUUtss2X9Lbs32av3r8bVTqnxJ6b
+	 lzOQxeld22hywFJkEiHjDua6iL1Xaayq22sM2LrVISvOucrkQA+tJOgo3zBhzSIP4v
+	 e+ewyPtt1buqD+TmrBWUcmmAYlbUmldbOVDw1Qm4KfwvZZxgQGWVqBB/m9gL0ngXOb
+	 k8YlOVqGwl2RogNbUU52nWRcgz5QWVlgCUyVXpCSg+a1dR0HDezRRKCqN+Q/H8cj2w
+	 9XWmWd9Ne6kk2P8loSe0WlT0DokiIDAn/3z6cLXRr6wOSARkhpy5smSfCbvRNqWULW
+	 aFoMRTMeEARiw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Roman Smirnov <r.smirnov@omp.ru>,
+	Jan Kara <jack@suse.cz>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 04/12] usb: dwc3: pci: Don't set "linux,phy_charger_detect" property on Lenovo Yoga Tab2 1380
-Date: Wed,  5 Jun 2024 07:53:09 -0400
-Message-ID: <20240605115334.2963803-4-sashal@kernel.org>
+	jack@suse.com
+Subject: [PATCH AUTOSEL 6.1 05/12] udf: udftime: prevent overflow in udf_disk_stamp_to_time()
+Date: Wed,  5 Jun 2024 07:53:10 -0400
+Message-ID: <20240605115334.2963803-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115334.2963803-1-sashal@kernel.org>
 References: <20240605115334.2963803-1-sashal@kernel.org>
@@ -66,65 +66,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.92
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 0fb782b5d5c462b2518b3b4fe7d652114c28d613 ]
+[ Upstream commit 3b84adf460381169c085e4bc09e7b57e9e16db0a ]
 
-The Lenovo Yoga Tablet 2 Pro 1380 model is the exception to the rule that
-devices which use the Crystal Cove PMIC without using ACPI for battery and
-AC power_supply class support use the USB-phy for charger detection.
+An overflow can occur in a situation where src.centiseconds
+takes the value of 255. This situation is unlikely, but there
+is no validation check anywere in the code.
 
-Unlike the Lenovo Yoga Tablet 2 830 / 1050 models this model has an extra
-LC824206XA Micro USB switch which does the charger detection.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Add a DMI quirk to not set the "linux,phy_charger_detect" property on
-the 1380 model. This quirk matches on the BIOS version to differentiate
-the 1380 model from the 830 and 1050 models which otherwise have
-the same DMI strings.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240406140127.17885-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240327132755.13945-1-r.smirnov@omp.ru>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/udf/udftime.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
-index ae25ee832ec03..6110ab1f91318 100644
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -8,6 +8,7 @@
-  *	    Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-  */
+diff --git a/fs/udf/udftime.c b/fs/udf/udftime.c
+index fce4ad976c8c2..26169b1f482c3 100644
+--- a/fs/udf/udftime.c
++++ b/fs/udf/udftime.c
+@@ -60,13 +60,18 @@ udf_disk_stamp_to_time(struct timespec64 *dest, struct timestamp src)
+ 	dest->tv_sec = mktime64(year, src.month, src.day, src.hour, src.minute,
+ 			src.second);
+ 	dest->tv_sec -= offset * 60;
+-	dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
+-			src.hundredsOfMicroseconds * 100 + src.microseconds);
++
+ 	/*
+ 	 * Sanitize nanosecond field since reportedly some filesystems are
+ 	 * recorded with bogus sub-second values.
+ 	 */
+-	dest->tv_nsec %= NSEC_PER_SEC;
++	if (src.centiseconds < 100 && src.hundredsOfMicroseconds < 100 &&
++	    src.microseconds < 100) {
++		dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
++			src.hundredsOfMicroseconds * 100 + src.microseconds);
++	} else {
++		dest->tv_nsec = 0;
++	}
+ }
  
-+#include <linux/dmi.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/slab.h>
-@@ -219,6 +220,7 @@ static int dwc3_pci_quirks(struct dwc3_pci *dwc,
- 
- 		if (pdev->device == PCI_DEVICE_ID_INTEL_BYT) {
- 			struct gpio_desc *gpio;
-+			const char *bios_ver;
- 			int ret;
- 
- 			/* On BYT the FW does not always enable the refclock */
-@@ -276,8 +278,12 @@ static int dwc3_pci_quirks(struct dwc3_pci *dwc,
- 			 * detection. These can be identified by them _not_
- 			 * using the standard ACPI battery and ac drivers.
- 			 */
-+			bios_ver = dmi_get_system_info(DMI_BIOS_VERSION);
- 			if (acpi_dev_present("INT33FD", "1", 2) &&
--			    acpi_quirk_skip_acpi_ac_and_battery()) {
-+			    acpi_quirk_skip_acpi_ac_and_battery() &&
-+			    /* Lenovo Yoga Tablet 2 Pro 1380 uses LC824206XA instead */
-+			    !(bios_ver &&
-+			      strstarts(bios_ver, "BLADE_21.X64.0005.R00.1504101516"))) {
- 				dev_info(&pdev->dev, "Using TUSB1211 phy for charger detection\n");
- 				swnode = &dwc3_pci_intel_phy_charger_detect_swnode;
- 			}
+ void
 -- 
 2.43.0
 
