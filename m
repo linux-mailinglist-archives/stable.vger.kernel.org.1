@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-48133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9A78FCCCB
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:29:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3456F8FCCCD
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF064B248D6
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:29:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDE691F25622
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EF619D068;
-	Wed,  5 Jun 2024 12:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12DE19D086;
+	Wed,  5 Jun 2024 12:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xjphsm3u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JI5W7l3h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1185D19D060;
-	Wed,  5 Jun 2024 12:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAB619D080;
+	Wed,  5 Jun 2024 12:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588953; cv=none; b=e9lQxS8lwVj/86/Le5uxU1k7QsMOnLCDc6ZACtmlv+RKjiq+dRbAXenGDqb4DUhBhWLWQS9bOjv+FaDJHBiGuqckvaWA7WuDWVrjEiPLrlUDjZEd8xpGNvm8SYEw4fRSYawtb0fy1XbdEgKid5N+jmMVwnTJpijO5pXfMFlK1Mg=
+	t=1717588954; cv=none; b=WZSOExHN9/siPkvaOIWpL5kElNOmu3yRDzX8YwVgZHQxA3YSoVSMz3wS+K2FOqz+cdfEKYPHpxdQ+Hc2z9Rgk4JS2tsJPY5vHIwYTmEPMnFKeKDnpTKRcnmPmjoY6PlzO+3n5VBRi9UpCX6JqV7Cijj+BfSGKzf7lzhbJj5LfL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588953; c=relaxed/simple;
-	bh=EpcOa/PoeA1uayk+/SDygq1AbB+riunm58LMI5D8cdI=;
+	s=arc-20240116; t=1717588954; c=relaxed/simple;
+	bh=bylK+30oXOjpzBIqsZm0C+/6jGI+3ytDovsfXtt3fpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+gX4w/MGEh84QMZ5rsSk9/VYs/m4SOElCwXjLSGDeYQiAQ5TonKTviPDmqe9LlzCojTYvN9e3WeIi+qb6a5hWuGDTrULQYbQIWwYmuZ8Dox+6mkoR0objx9zoPpdi+L4ksmi9qf3+3DOUbhg4Uo6aNN4Z6cylC3e7eb0H9FE14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xjphsm3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7B1C3277B;
-	Wed,  5 Jun 2024 12:02:31 +0000 (UTC)
+	 MIME-Version; b=qf5y1H5pdI3lYN+qbGBagU75CiDjyrvxKnS7LAFlGc2AenmCk/JCXwj55yyDj1e2JCAKrGf3jhq2Gz/m0hs7S5YfLCUDijIZZWKuQeFFLWjyZ9b1aXs/1io3WKZTl3fc6L06QcO0CkIsCh2PXOpfTAWK0TmgZOPgouXzjidOEb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JI5W7l3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E3EC32781;
+	Wed,  5 Jun 2024 12:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588952;
-	bh=EpcOa/PoeA1uayk+/SDygq1AbB+riunm58LMI5D8cdI=;
+	s=k20201202; t=1717588954;
+	bh=bylK+30oXOjpzBIqsZm0C+/6jGI+3ytDovsfXtt3fpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xjphsm3uG44XfvsRvRIhwDFEbL3pWL8vUD+YuuwaOy2QCxoYYcGeE9oyImw/5+0C/
-	 5B1x1mrzd3dT1PjpBEa2+aYWS3Z3YLvt/OU3IwVA3eQDRE12Tv4Oxnicgt5sFmQMrc
-	 sS7kBxCucoCwERMYv4QnrNqB6Y6XbK8vr3a3OZTu4Wfh+olnO+6lMIGcGpi5XpdQJ0
-	 M4EW2QC3qNtxH5vAPLLVw8OSCWwOJoCp/1NVPgsb8HkqB6cHV+13gukus3RiQHhU5F
-	 BUESO8dsKIjxGmC5Cbs883Nun33msBuvDDO1DWQhwbcNDmhMSHfSeF0uxKQ6cGszzO
-	 LgMiyXWT83b7g==
+	b=JI5W7l3hEIm1fnEY9Y3UEtOzYbWZKypnrb9O4FYy1HkfbpzcjKuFBqbii7FBMu3P0
+	 tfKQ9ooCW4gFhUjkv/0fNEAcm3ao2xX5yIXLEoDh/268mLmKRotG3ccaRVuyilE9ut
+	 KSNJ0ApEzwbuHEOUNfKoZphVS3dygYDYDG9g2wc6v/XXGOj3mXM+CQs+sbAJSEbvQ0
+	 Ze+myHGOu5WviVo0aD/Et9C5hXlQ6fFouLQWb3GdtuskGfmxxwt2Iv5qH1LLO1+tlH
+	 wAog/KKAyB3+LV0kKWB5il77NtmGAPvQ9CvWcycFAY5x4mLpo3+woWaqbRShfUMN0Z
+	 OFNMt4n702RiA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kundan Kumar <kundan.kumar@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.9 06/23] nvme: adjust multiples of NVME_CTRL_PAGE_SIZE in offset
-Date: Wed,  5 Jun 2024 08:01:49 -0400
-Message-ID: <20240605120220.2966127-6-sashal@kernel.org>
+Cc: Marc Dionne <marc.dionne@auristor.com>,
+	Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 07/23] afs: Don't cross .backup mountpoint from backup volume
+Date: Wed,  5 Jun 2024 08:01:50 -0400
+Message-ID: <20240605120220.2966127-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120220.2966127-1-sashal@kernel.org>
 References: <20240605120220.2966127-1-sashal@kernel.org>
@@ -67,43 +69,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Kundan Kumar <kundan.kumar@samsung.com>
+From: Marc Dionne <marc.dionne@auristor.com>
 
-[ Upstream commit 1bd293fcf3af84674e82ed022c049491f3768840 ]
+[ Upstream commit 29be9100aca2915fab54b5693309bc42956542e5 ]
 
-bio_vec start offset may be relatively large particularly when large
-folio gets added to the bio. A bigger offset will result in avoiding the
-single-segment mapping optimization and end up using expensive
-mempool_alloc further.
+Don't cross a mountpoint that explicitly specifies a backup volume
+(target is <vol>.backup) when starting from a backup volume.
 
-Rather than using absolute value, adjust bv_offset by
-NVME_CTRL_PAGE_SIZE while checking if segment can be fitted into one/two
-PRP entries.
+It it not uncommon to mount a volume's backup directly in the volume
+itself.  This can cause tools that are not paying attention to get
+into a loop mounting the volume onto itself as they attempt to
+traverse the tree, leading to a variety of problems.
 
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This doesn't prevent the general case of loops in a sequence of
+mountpoints, but addresses a common special case in the same way
+as other afs clients.
+
+Reported-by: Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>
+Link: http://lists.infradead.org/pipermail/linux-afs/2024-May/008454.html
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Link: http://lists.infradead.org/pipermail/linux-afs/2024-February/008074.html
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/768760.1716567475@warthog.procyon.org.uk
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/afs/mntpt.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 710043086dffa..102a9fb0c65ff 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -778,7 +778,8 @@ static blk_status_t nvme_map_data(struct nvme_dev *dev, struct request *req,
- 		struct bio_vec bv = req_bvec(req);
+diff --git a/fs/afs/mntpt.c b/fs/afs/mntpt.c
+index 97f50e9fd9eb0..297487ee83231 100644
+--- a/fs/afs/mntpt.c
++++ b/fs/afs/mntpt.c
+@@ -140,6 +140,11 @@ static int afs_mntpt_set_params(struct fs_context *fc, struct dentry *mntpt)
+ 		put_page(page);
+ 		if (ret < 0)
+ 			return ret;
++
++		/* Don't cross a backup volume mountpoint from a backup volume */
++		if (src_as->volume && src_as->volume->type == AFSVL_BACKVOL &&
++		    ctx->type == AFSVL_BACKVOL)
++			return -ENODEV;
+ 	}
  
- 		if (!is_pci_p2pdma_page(bv.bv_page)) {
--			if (bv.bv_offset + bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
-+			if ((bv.bv_offset & (NVME_CTRL_PAGE_SIZE - 1)) +
-+			     bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
- 				return nvme_setup_prp_simple(dev, req,
- 							     &cmnd->rw, &bv);
- 
+ 	return 0;
 -- 
 2.43.0
 
