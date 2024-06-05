@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-48149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A848FCCFB
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 689028FCCFF
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C4E51F237B7
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:34:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0682E1F23E51
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD561A1863;
-	Wed,  5 Jun 2024 12:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79211A256C;
+	Wed,  5 Jun 2024 12:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ua+EkKi8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGGPvpxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFDB199397;
-	Wed,  5 Jun 2024 12:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F9F1A2560;
+	Wed,  5 Jun 2024 12:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588984; cv=none; b=GjA00wjM9353QaCBgA4mzAU4Sdy7RorAW9zIWKT7DQ9iUYoZpl0Kr1BahITI5FmPjlYpGY9qnKmAe+TXsfHFvTS3J6cllBzCunqL0gFOOg61wP501D+YbScVPMWAiVgdE/YczZfZ6OGXzNt1B43TQTJpLJhyeyDmK9IEfIg6iNk=
+	t=1717588987; cv=none; b=OR71m4sLSWbZk+JETQ1BMxRHLz99gm4tTrszsIAdx3FHv2zL93UnLBNtv9Ue4axIuprgJncZ6XQr0xebkAXVbn1vgOhIdHjSuBRYgxKRUx1znMZxgbqWt7Jn4ylcpKDVQRF5JFOohrwMwlGxpQoMAmhW/0rRNLQ7XGJYM0T8z1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588984; c=relaxed/simple;
-	bh=Hws0J5mHqGJewzd/hkx+aFlBWndwx/W+Wq0F05xqxQ4=;
+	s=arc-20240116; t=1717588987; c=relaxed/simple;
+	bh=+W6S6xQ9Mr5ysKrm4VyCT5dvvfoqp7FzldkgEf13SbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SOWH8DTyK9LhqnMpAh2saY95j+2gbjubAar9w6YTvHMfop/ea4z760CPGvDJlD6LoQJnTi0CDjotF8CXgyJER4dM9jJjkI8+qCZBiTx31by36F/IUJIB7grXW70ggylpSi75Il3XlZDAGJhUfyJ4iXKgjn0EExkoIUk4iVFcwUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ua+EkKi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD75C3277B;
-	Wed,  5 Jun 2024 12:03:03 +0000 (UTC)
+	 MIME-Version; b=BkeYL2kLkH1khoNcLTL815xlWM4wXFKwFmaILYvWxWdVO8ovBI7/Qf8Xcov8DmH1h0hg40iDwUiDOvxWi/IS4dHiaraxnPH8MAYC+dK7necBSq2as+X/Eg2fo7JrviriICP1ZIdao1jfz/rHGiYoMh/AHhdAdQjjUt9xEWsp1b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGGPvpxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC49C3277B;
+	Wed,  5 Jun 2024 12:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588984;
-	bh=Hws0J5mHqGJewzd/hkx+aFlBWndwx/W+Wq0F05xqxQ4=;
+	s=k20201202; t=1717588987;
+	bh=+W6S6xQ9Mr5ysKrm4VyCT5dvvfoqp7FzldkgEf13SbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ua+EkKi8nTxmGXZkJNrIORN0Wij3aEZCw8uJ5yjkTrfkM1up7sdqU7wixzrBuvfTG
-	 ngyLUMP7x4UMMVtmb0razepeC/NYrr8mmsYZxj88UwiUgx6GngDfAMwuQ8tZbfQETr
-	 lkziisJ1/8IPIWr+9UBeHSQK/w6a4BF9MNmQz4CKFsTEzsB6lp1v+BHL9hRX6hF6ci
-	 Bk30jsk5w4OKUFgufqinYO1vT+End7fhj/xQyP4JUbt1OwCwYEZ3wHK41LV9XMI2ZM
-	 /wfucOCqMUjNRSWyJ/L9CWiNiEYSwLxzKu4q9ouSIXgsnczS8lq0AxqSGs1yBa1+H2
-	 iYwK1O2lI84QQ==
+	b=jGGPvpxQvls/iN3TSXFBQYWKOvxHyL7UIRGCZ46It6PPEFuvsFIk3Jz5h0F6+32Bq
+	 82Gou7oQ+uE4e18uakPLP27UQ4AiGFr+5+UWi4UTSiG6ZS5L9I2Ezy9hboxcCQ6UwB
+	 iqt8SllWwlhuWXmEiorQyTZ+4Q1S30D7Qx5KPmcC97VdtvBxhNGI1LNOV06Sexu1r7
+	 10yoXDLkCVopnlsZYdUSI0pbUK6ES067uPn1fYn+6NQMW++TcH+MuRvIH2+MKU+C6o
+	 P5Gd8wu6BdRdiASKEgl2d0CvtJeDzJisO7BD/pnWWXphmBhrBlZynXB0zg34A6H306
+	 LX3g+pQExSLQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	jdelvare@suse.com,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 22/23] hwmon: (dell-smm) Add Dell G15 5511 to fan control whitelist
-Date: Wed,  5 Jun 2024 08:02:05 -0400
-Message-ID: <20240605120220.2966127-22-sashal@kernel.org>
+	martin.petersen@oracle.com,
+	hare@suse.de,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 23/23] null_blk: Do not allow runt zone with zone capacity smaller then zone size
+Date: Wed,  5 Jun 2024 08:02:06 -0400
+Message-ID: <20240605120220.2966127-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120220.2966127-1-sashal@kernel.org>
 References: <20240605120220.2966127-1-sashal@kernel.org>
@@ -62,48 +64,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit fa0bc8f297b29126b5ae983406e9bc76d48a9a8e ]
+[ Upstream commit b164316808ec5de391c3e7b0148ec937d32d280d ]
 
-A user reported that he needs to disable BIOS fan control on his
-Dell G15 5511 in order to be able to control the fans.
+A zoned device with a smaller last zone together with a zone capacity
+smaller than the zone size does make any sense as that does not
+correspond to any possible setup for a real device:
+1) For ZNS and zoned UFS devices, all zones are always the same size.
+2) For SMR HDDs, all zones always have the same capacity.
+In other words, if we have a smaller last runt zone, then this zone
+capacity should always be equal to the zone size.
 
-Closes: https://github.com/Wer-Wolf/i8kutils/issues/5
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Acked-by: Pali Rohár <pali@kernel.org>
-Link: https://lore.kernel.org/r/20240522210809.294488-1-W_Armin@gmx.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Add a check in null_init_zoned_dev() to prevent a configuration to have
+both a smaller zone size and a zone capacity smaller than the zone size.
+
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240530054035.491497-2-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/dell-smm-hwmon.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/block/null_blk/zoned.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-index efcf78673e747..b6a995c852ab4 100644
---- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -1530,6 +1530,14 @@ static const struct dmi_system_id i8k_whitelist_fan_control[] __initconst = {
- 		},
- 		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_30A3_31A3],
- 	},
-+	{
-+		.ident = "Dell G15 5511",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Dell G15 5511"),
-+		},
-+		.driver_data = (void *)&i8k_fan_control_data[I8K_FAN_30A3_31A3],
-+	},
- 	{ }
- };
+diff --git a/drivers/block/null_blk/zoned.c b/drivers/block/null_blk/zoned.c
+index 1689e25841048..b638b7f7b4f80 100644
+--- a/drivers/block/null_blk/zoned.c
++++ b/drivers/block/null_blk/zoned.c
+@@ -84,6 +84,17 @@ int null_init_zoned_dev(struct nullb_device *dev,
+ 		return -EINVAL;
+ 	}
  
++	/*
++	 * If a smaller zone capacity was requested, do not allow a smaller last
++	 * zone at the same time as such zone configuration does not correspond
++	 * to any real zoned device.
++	 */
++	if (dev->zone_capacity != dev->zone_size &&
++	    dev->size & (dev->zone_size - 1)) {
++		pr_err("A smaller last zone is not allowed with zone capacity smaller than zone size.\n");
++		return -EINVAL;
++	}
++
+ 	zone_capacity_sects = mb_to_sects(dev->zone_capacity);
+ 	dev_capacity_sects = mb_to_sects(dev->size);
+ 	dev->zone_size_sects = mb_to_sects(dev->zone_size);
 -- 
 2.43.0
 
