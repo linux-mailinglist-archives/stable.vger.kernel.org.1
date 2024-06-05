@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FC78FCC3E
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:15:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF77C8FCC41
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B05C51C233E7
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:15:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 300FC2935EF
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF70198831;
-	Wed,  5 Jun 2024 11:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAE6198A10;
+	Wed,  5 Jun 2024 11:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nU3dP4oG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fv4gK/2T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359C319882A;
-	Wed,  5 Jun 2024 11:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B7D198A0A;
+	Wed,  5 Jun 2024 11:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588488; cv=none; b=YRB9zhLkx1aU7uTcLWAURwHXR1pGiNEDOaJuovaxTr3cZa71FgVQQvEyhznk09o+PsKR651vs+gmUEZBuYdlBKVPJXvhdHyO5hRPyXj1W8bAfUgD9OOpwQ4R442xYzWt0Es0bh+JySxrWYppCSEs/aJ89N/k/5kkvTBhm/IA5qs=
+	t=1717588489; cv=none; b=uIY5ukySwpcGu4QWqUQ2o7TtdJ3t9JCCz/MTHEijoXzWtE14XlJzdYj3+xfqd7kRI2SMe7VM2xSHoRPBa6nCFl01OTUDOlcMLa4vW+xOeclF3M/0xy8N0AjP9vOQUZ7U2I7hsO+fyAdOEjhWNSmtT/ZwET59o+LFnnHyzKwRq4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588488; c=relaxed/simple;
-	bh=keKYWfzN1djD6KLmxuPPa4XdGqVyHQTp9UFTeJAwljs=;
+	s=arc-20240116; t=1717588489; c=relaxed/simple;
+	bh=vZPl2Rg9MMjHgwCnAcC6p7mvcU/vcb8ipMfTFMNDETU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqOsU9xE+kg8/935jH5ND+W8xCJ0A9jBjX2mD8vVjvE1B1QRSTln5P49cN5xbLPrB7pssyITbbPht0md4CFrt9ZacSliLFTHEqPsWKYbbNu+yDyth8BJejJJO7k6nxc2o5TqrLYREsm+abAgnCLJFCEy/XlifciuALNAET4fk9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nU3dP4oG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CF3C32786;
-	Wed,  5 Jun 2024 11:54:46 +0000 (UTC)
+	 MIME-Version; b=HcKCwRaxWRHnKWY4JTRX4FbO1w/dQPeMYf0tPClmRpb8/Vyz2KK/AgiW7wjPqE8XG9EsUSswJctDU7S+QNe2ozfufwaPySwkZR69/XTcVVtQN5ZGhKjpzV3FAT5+pBj6wSBVwQzGnUsNSfYwXoAIMbU58INzaClqxlG/zOUwYkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fv4gK/2T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42030C4AF07;
+	Wed,  5 Jun 2024 11:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588487;
-	bh=keKYWfzN1djD6KLmxuPPa4XdGqVyHQTp9UFTeJAwljs=;
+	s=k20201202; t=1717588489;
+	bh=vZPl2Rg9MMjHgwCnAcC6p7mvcU/vcb8ipMfTFMNDETU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nU3dP4oGHGWshq8APClBLEUanqpxmKUBD+ZCLzbLwqUfJj++cPEL5h50Bcth3tdmN
-	 8rej/RqiRbkLueOx+8MliCrbPc/XTBnVIFbfrXwoRgJTfuzXXLDevo8JSA0LFbkPSP
-	 ESvbND2NSHr/+mcuy/KEDtEwwDmMpMR9WbWFyMnFHhHK5lcP1vys+wcYZ0BFHWyJ/M
-	 Ey6ivuhEaFMzMeNozZpHjexOIoq3xwBi0W+EZs6EeqfZp7UATXPS50lITuAjlnx39u
-	 iFLs/uwYdYFHQRulNmigjeYEPJ5d5iOLJkHFLBw/vu2FTm7vTtbgDoCfkyH3oRenrT
-	 W0yWlf44DZSRw==
+	b=Fv4gK/2TaOcisB72KzmrfetYGsm4wspqz0YqHL7f5IZxtlearIdlFn7xk0zAejtWM
+	 O42+3bIdQfWILZehaPyYx0Oa3EG4tpRTeFkqXc2uxP0I/Ve604Rn1IWC12dgbkvVK8
+	 +J7L2Lo8ED//6d889tIPOODRwzFHRvkSzlvsR3U3qLwIqTAmCMGO/ZP6yGzv4kyaZ9
+	 um/5DEDEqCM/D3tKTc2Y+UmNMVM7n03lGyoPE7jRvt051AC5ulWj/thSijV2fSmMyh
+	 5KjJoMDRAqSCEwhLJq5bgi5apz9AjaUpWOdbOIGj7L8u2OnFe/x0MG+YrEvsbf/bLi
+	 bG6VsToeHe0Pw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Henrie <alexhenrie24@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Roman Smirnov <r.smirnov@omp.ru>,
+	Jan Kara <jack@suse.cz>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
 	Sasha Levin <sashal@kernel.org>,
-	sudipm.mukherjee@gmail.com,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 2/7] usb: misc: uss720: check for incompatible versions of the Belkin F5U002
-Date: Wed,  5 Jun 2024 07:54:31 -0400
-Message-ID: <20240605115442.2964376-2-sashal@kernel.org>
+	jack@suse.com
+Subject: [PATCH AUTOSEL 5.10 3/7] udf: udftime: prevent overflow in udf_disk_stamp_to_time()
+Date: Wed,  5 Jun 2024 07:54:32 -0400
+Message-ID: <20240605115442.2964376-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115442.2964376-1-sashal@kernel.org>
 References: <20240605115442.2964376-1-sashal@kernel.org>
@@ -66,72 +66,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.218
 Content-Transfer-Encoding: 8bit
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 3295f1b866bfbcabd625511968e8a5c541f9ab32 ]
+[ Upstream commit 3b84adf460381169c085e4bc09e7b57e9e16db0a ]
 
-The incompatible device in my possession has a sticker that says
-"F5U002 Rev 2" and "P80453-B", and lsusb identifies it as
-"050d:0002 Belkin Components IEEE-1284 Controller". There is a bug
-report from 2007 from Michael Trausch who was seeing the exact same
-errors that I saw in 2024 trying to use this cable.
+An overflow can occur in a situation where src.centiseconds
+takes the value of 255. This situation is unlikely, but there
+is no validation check anywere in the code.
 
-Link: https://lore.kernel.org/all/46DE5830.9060401@trausch.us/
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Link: https://lore.kernel.org/r/20240326150723.99939-5-alexhenrie24@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240327132755.13945-1-r.smirnov@omp.ru>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/uss720.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ fs/udf/udftime.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
-index 0be8efcda15d5..d972c09629397 100644
---- a/drivers/usb/misc/uss720.c
-+++ b/drivers/usb/misc/uss720.c
-@@ -677,7 +677,7 @@ static int uss720_probe(struct usb_interface *intf,
- 	struct parport_uss720_private *priv;
- 	struct parport *pp;
- 	unsigned char reg;
--	int i;
-+	int ret;
- 
- 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
- 		le16_to_cpu(usbdev->descriptor.idVendor),
-@@ -688,8 +688,8 @@ static int uss720_probe(struct usb_interface *intf,
- 		usb_put_dev(usbdev);
- 		return -ENODEV;
- 	}
--	i = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
--	dev_dbg(&intf->dev, "set interface result %d\n", i);
-+	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
-+	dev_dbg(&intf->dev, "set interface result %d\n", ret);
- 
- 	interface = intf->cur_altsetting;
- 
-@@ -725,12 +725,18 @@ static int uss720_probe(struct usb_interface *intf,
- 	set_1284_register(pp, 7, 0x00, GFP_KERNEL);
- 	set_1284_register(pp, 6, 0x30, GFP_KERNEL);  /* PS/2 mode */
- 	set_1284_register(pp, 2, 0x0c, GFP_KERNEL);
--	/* debugging */
--	get_1284_register(pp, 0, &reg, GFP_KERNEL);
+diff --git a/fs/udf/udftime.c b/fs/udf/udftime.c
+index fce4ad976c8c2..26169b1f482c3 100644
+--- a/fs/udf/udftime.c
++++ b/fs/udf/udftime.c
+@@ -60,13 +60,18 @@ udf_disk_stamp_to_time(struct timespec64 *dest, struct timestamp src)
+ 	dest->tv_sec = mktime64(year, src.month, src.day, src.hour, src.minute,
+ 			src.second);
+ 	dest->tv_sec -= offset * 60;
+-	dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
+-			src.hundredsOfMicroseconds * 100 + src.microseconds);
 +
-+	/* The Belkin F5U002 Rev 2 P80453-B USB parallel port adapter shares the
-+	 * device ID 050d:0002 with some other device that works with this
-+	 * driver, but it itself does not. Detect and handle the bad cable
-+	 * here. */
-+	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
- 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
-+	if (ret < 0)
-+		return ret;
+ 	/*
+ 	 * Sanitize nanosecond field since reportedly some filesystems are
+ 	 * recorded with bogus sub-second values.
+ 	 */
+-	dest->tv_nsec %= NSEC_PER_SEC;
++	if (src.centiseconds < 100 && src.hundredsOfMicroseconds < 100 &&
++	    src.microseconds < 100) {
++		dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
++			src.hundredsOfMicroseconds * 100 + src.microseconds);
++	} else {
++		dest->tv_nsec = 0;
++	}
+ }
  
--	i = usb_find_last_int_in_endpoint(interface, &epd);
--	if (!i) {
-+	ret = usb_find_last_int_in_endpoint(interface, &epd);
-+	if (!ret) {
- 		dev_dbg(&intf->dev, "epaddr %d interval %d\n",
- 				epd->bEndpointAddress, epd->bInterval);
- 	}
+ void
 -- 
 2.43.0
 
