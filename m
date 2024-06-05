@@ -1,68 +1,65 @@
-Return-Path: <stable+bounces-48184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9D08FCDA4
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:48:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB648FCD75
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A81CEB2C2FD
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:43:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163D41C2160E
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFEA1CA2E8;
-	Wed,  5 Jun 2024 12:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B9D188CA9;
+	Wed,  5 Jun 2024 12:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iv6DeN51"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTWxmSWx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01E61CA2E4;
-	Wed,  5 Jun 2024 12:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8331CA2FA;
+	Wed,  5 Jun 2024 12:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589081; cv=none; b=XxEK91FGx9Eb+UcPBRz+1BxSasXxEQ9OYx0SL8yCpdvIFev+iLWyuh+6YJYfwC9SlfzeuShHhfJ9Mo2MwJcYBBsjgrYAb+lZLHhAhPjzsWOxkn0AItKTgwUwx/uVIrB2Ca3N+q98wuBlO+VcNxm5PcimfNSuWP3jNAH/dxXOxwA=
+	t=1717589083; cv=none; b=rrmnmp/cUrF99NuphEb3aXw5DUznNsWyYFH3/4O1jevaUg5B2INLUXoA3fJ/nqr5WljzKd9FGtvpIh+DuUAVws9Ba3x3Ei5UsovSV92fA6e3kejQMmuvCeotzzPbstrW0lvdy+jQ2r+IJ2dDUjN2EcqhFEV7pQlLvlgaE3d4/tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589081; c=relaxed/simple;
-	bh=Vjgiu0ILR3uskzK21Z0875GunoRwQmq+BkAqVYl9M+k=;
+	s=arc-20240116; t=1717589083; c=relaxed/simple;
+	bh=ak9Vp86IkHKL5lFnKpGX/0AEgziySgCTH33SslKVXYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F5mK5EcBZslZHCtggNTQblXZkwH2UTWbQLab35CjJNj3h+9uZN0H89uYiQHzmtkQlnJzMiWuMLTzIocKGp+P34VBWE4eWbc1pAbZKFfA9/jZ7JcSCaco0WAi54n7o7b+SSxWejiU67mgJq3DZAHT6Yup4c2kIQYFT6pR3BRhWt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iv6DeN51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F53C4AF09;
-	Wed,  5 Jun 2024 12:04:38 +0000 (UTC)
+	 MIME-Version; b=HDwvEYiJ2cJyzZTK7hZG2kwKhejDZVKOMyDboKQXjyiYv6sx5sEwoUJ9g5Fzmn50o3qwnOk9qlaODXwCkoJTVZBH0fZ3WNfm35aSwW3vTP+4d66TblZp5AgLpkXB1rkcEVKPXjMx/q8XletV/cUHamAj6bq2L6868351MSPXAio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTWxmSWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58380C3277B;
+	Wed,  5 Jun 2024 12:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589080;
-	bh=Vjgiu0ILR3uskzK21Z0875GunoRwQmq+BkAqVYl9M+k=;
+	s=k20201202; t=1717589082;
+	bh=ak9Vp86IkHKL5lFnKpGX/0AEgziySgCTH33SslKVXYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iv6DeN51QEggnAkiZVE+/TVBGNJ8z/dhDsrdGN1VrJUGkQWgrzeJ6aQ0472Tgnf+V
-	 1/myHM4lIEneJ9IjoYaxVnOlC/lywW/ZgBUbXVBkhphiXOxe5euLNsQNQwQ7mei/Qe
-	 AkV0nveOyckT0/QZbl0EuQJEOnq6m6fVfrl7f9Jz0P6s/QfasWgyy39Rh7IAqHfhbo
-	 1oWrMCBxkqfBISsMBzuZP4akNgflmwbPh3eoj36SuXnSlvFU9KikMqypKkiMcIj7oX
-	 dDB9wS7LoUI8X3ExTDBTclCwRrBCHQ9BVKrbOfx1wwCjMers/o1p1Ca8UMnhPoLD4n
-	 ctUrt1xOm+XrQ==
+	b=LTWxmSWxWpvxHjinDHvCqR7244M+HHVY/BuhoXd8TXf3t57EVAJuBF4Nu4GvVhwOt
+	 FQIlqVzRTOO4E3rV6u4mDzw5c9IyXHcj/7RYDxxBcsL2PzOF54L7qdNVGTRUfiYrQd
+	 09oQO+REXNIxOBGkmfAftiepmIu4f2rngr2ZKYDC9oRDDx9PpxbKcCHfjVwRJdDt4P
+	 rGbjWYODnVbh8xpc2BZvwgaurDRckxbVXwgHLYfXTYM1HiF2uqPl0OFKarz6ut3xN2
+	 2b+I6wWbrT0ckKsIuJvYru0IFqBvhWMsxPFa5JF9pPX6AbJm71mHHvd583czoQs42W
+	 m2+6llNRtLU9A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jesse Zhang <jesse.zhang@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	Feifei Xu <Feifei.Xu@amd.com>,
+	Feifei Xu <feifei.xu@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	Felix.Kuehling@amd.com,
+	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	Felix.Kuehling@amd.com,
-	shashank.sharma@amd.com,
-	Philip.Yang@amd.com,
-	guchun.chen@amd.com,
-	mukul.joshi@amd.com,
-	xiaogang.chen@amd.com,
+	nathan@kernel.org,
 	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 16/18] drm/amdgpu: fix dereference null return value for the function amdgpu_vm_pt_parent
-Date: Wed,  5 Jun 2024 08:03:55 -0400
-Message-ID: <20240605120409.2967044-16-sashal@kernel.org>
+	dri-devel@lists.freedesktop.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 17/18] Revert "drm/amdkfd: fix gfx_target_version for certain 11.0.3 devices"
+Date: Wed,  5 Jun 2024 08:03:56 -0400
+Message-ID: <20240605120409.2967044-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120409.2967044-1-sashal@kernel.org>
 References: <20240605120409.2967044-1-sashal@kernel.org>
@@ -72,49 +69,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit a0cf36546cc24ae1c95d72253c7795d4d2fc77aa ]
+[ Upstream commit dd2b75fd9a79bf418e088656822af06fc253dbe3 ]
 
-The pointer parent may be NULLed by the function amdgpu_vm_pt_parent.
-To make the code more robust, check the pointer parent.
+This reverts commit 28ebbb4981cb1fad12e0b1227dbecc88810b1ee8.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Revert this commit as apparently the LLVM code to take advantage of
+this never landed.
+
+Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Feifei Xu <feifei.xu@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-index 0d51222f6f8eb..026a3db947298 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-@@ -766,11 +766,15 @@ int amdgpu_vm_pde_update(struct amdgpu_vm_update_params *params,
- 			 struct amdgpu_vm_bo_base *entry)
- {
- 	struct amdgpu_vm_bo_base *parent = amdgpu_vm_pt_parent(entry);
--	struct amdgpu_bo *bo = parent->bo, *pbo;
-+	struct amdgpu_bo *bo, *pbo;
- 	struct amdgpu_vm *vm = params->vm;
- 	uint64_t pde, pt, flags;
- 	unsigned int level;
- 
-+	if (WARN_ON(!parent))
-+		return -EINVAL;
-+
-+	bo = parent->bo;
- 	for (level = 0, pbo = bo->parent; pbo; ++level)
- 		pbo = pbo->parent;
- 
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index 913c70a0ef44f..0c94bdfadaabf 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -402,15 +402,8 @@ struct kfd_dev *kgd2kfd_probe(struct amdgpu_device *adev, bool vf)
+ 			f2g = &gfx_v11_kfd2kgd;
+ 			break;
+ 		case IP_VERSION(11, 0, 3):
+-			if ((adev->pdev->device == 0x7460 &&
+-			     adev->pdev->revision == 0x00) ||
+-			    (adev->pdev->device == 0x7461 &&
+-			     adev->pdev->revision == 0x00))
+-				/* Note: Compiler version is 11.0.5 while HW version is 11.0.3 */
+-				gfx_target_version = 110005;
+-			else
+-				/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
+-				gfx_target_version = 110001;
++			/* Note: Compiler version is 11.0.1 while HW version is 11.0.3 */
++			gfx_target_version = 110001;
+ 			f2g = &gfx_v11_kfd2kgd;
+ 			break;
+ 		default:
 -- 
 2.43.0
 
