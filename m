@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-48043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDBB38FCB9B
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 132D88FCBA0
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B3321C23531
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:03:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A8141C215AA
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1C81A2FBC;
-	Wed,  5 Jun 2024 11:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775551993B1;
+	Wed,  5 Jun 2024 11:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qgz/BxL3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b0YsRj8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3061A2FB3;
-	Wed,  5 Jun 2024 11:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3266F1A2FD9;
+	Wed,  5 Jun 2024 11:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588318; cv=none; b=ePNCxOQtwn4mbRerobLDC+a6RMBh9d6ehbRg58E+D9Sqc0/h19NdFPEdM97ce7aj0sAn3PRovGf1MfWTDSQ94o6IQlj3r2g1OvsXNUuzHq+tWfq1smUhq3trtIf6DSdzD8nMBdMnXud8/PD66heX1nbLXNm6dMooEozBl6HXfPY=
+	t=1717588320; cv=none; b=BA0G6tV8cF8LeWeP1ZhkQ9OpOIDKW3IwQzd1YIY4J2ggJQq1bZskDQjYkHvYZDr2gacm53d7ONijBDdpAWJ7wpgBLY7AItMKu7Frlu4S9D/PsGlUZ+auuZiV/W3PI7FxN22d97v2raFEPKgLnIfHt7RGY/ZVp/DY2c8BWLkpxV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588318; c=relaxed/simple;
-	bh=ygbrL8SHL8c4+z+jKOhdq7/B1cK4xywxAADGwNROxQI=;
+	s=arc-20240116; t=1717588320; c=relaxed/simple;
+	bh=GfBw9xyioKxp7porRMxoMZgGzTbaY0W78q0oLcabsmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFjBqCvEhuM/gQHYyD/Sxgi/44t1ZeVBdeIiyXHyjKbmtNAAzM6Feh/dVemPWlPf3rj30dpRaMNVTUkMSxptCfuM7DiADVaj6gcaRTgW/TdhwaiiarAQ+8tUvIGi3cboliDuTji7V7uqv5mfFvolBM2CCtSWQR3BRLCWjze5sLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qgz/BxL3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F266C32786;
-	Wed,  5 Jun 2024 11:51:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pydIgGPVPv7/lRjTzROoiAp2jCTxp586kT2yxsZuGX9s8yTSTzeJcxnEGa0h1EqeCtx1l6NpNqozZpz+UvBdVGDHB4gnineTAhO+p3gI8U9i//fzcEvC96pWSyiF1Tr66bYG8BN1gvqimz6v+Z1eBTzAr7r8RcvbHezw4sVZxF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b0YsRj8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD55C4AF07;
+	Wed,  5 Jun 2024 11:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588318;
-	bh=ygbrL8SHL8c4+z+jKOhdq7/B1cK4xywxAADGwNROxQI=;
+	s=k20201202; t=1717588320;
+	bh=GfBw9xyioKxp7porRMxoMZgGzTbaY0W78q0oLcabsmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgz/BxL31xJmnR+vghFWZY6dR56JdDomUQat2fvgrhkMT8A12IdwyrMp3UKRM4EBG
-	 t/bFGH5+Xtmbf+k3grdS9b1sxPvJVMGLA910+oVTtBoC4OgUF4+kER8CsFbdJLYghF
-	 h8RLl5xyNMTqLOk6lmXd0CVc95lJUt1iEobFo46LT9ZfR//h2S0B845yNbK/UvaIPs
-	 M6Iy0aeeROC1KjxT8ghr3Tp0qboDVgYpdPFR9kBJ6G5rc4mEG5AQbPCGOYKEi72ySu
-	 k1uI1DeNOeY2tqoDIU8HHNPcUBd8ne5+fZ3pa51QzZlst436nqxLr7gbidjMUqKBOH
-	 3hOtBmNVYrR0A==
+	b=b0YsRj8rNcF1thB1dN4pWXtyPtV6iYd2ql6C1GdSqY6pRt8+Lk/amzNrogsPtType
+	 5SgzqUN6Aa+RCl5nP+J0rkR9Ij0yds9cO7xq1LuW8mDHFLzp/xln40SqtuyY6PR8S+
+	 gTGHiRjKLdgqSZZWxrheuirrlyUfRqJhPQDNNZ985MGr6CmoR76HVuCN5lm3Q6/869
+	 7600Q7H1lSTNTIuiE7GTzVjk/fBjyG+Jzz3fY7gtf21yaVAL/1LYyUyW/oSD6C5D4j
+	 lW237AIX4x0CSSrwZaIqbmtP/Hyg6xkxmHbEf3enzKgX1no3/asoSug7d2fW9SO9C9
+	 360GFzbmbhlSw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	webcaptcha <webcapcha@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 22/24] ACPI: EC: Install address space handler at the namespace root
-Date: Wed,  5 Jun 2024 07:50:32 -0400
-Message-ID: <20240605115101.2962372-22-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 23/24] PCI: Do not wait for disconnected devices when resuming
+Date: Wed,  5 Jun 2024 07:50:33 -0400
+Message-ID: <20240605115101.2962372-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115101.2962372-1-sashal@kernel.org>
 References: <20240605115101.2962372-1-sashal@kernel.org>
@@ -65,134 +61,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.12
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 60fa6ae6e6d09e377fce6f8d9b6f6a4d88769f63 ]
+[ Upstream commit 6613443ffc49d03e27f0404978f685c4eac43fba ]
 
-It is reported that _DSM evaluation fails in ucsi_acpi_dsm() on Lenovo
-IdeaPad Pro 5 due to a missing address space handler for the EC address
-space:
+On runtime resume, pci_dev_wait() is called:
 
- ACPI Error: No handler for Region [ECSI] (000000007b8176ee) [EmbeddedControl] (20230628/evregion-130)
+  pci_pm_runtime_resume()
+    pci_pm_bridge_power_up_actions()
+      pci_bridge_wait_for_secondary_bus()
+        pci_dev_wait()
 
-This happens because if there is no ECDT, the EC driver only registers
-the EC address space handler for operation regions defined in the EC
-device scope of the ACPI namespace while the operation region being
-accessed by the _DSM in question is located beyond that scope.
+While a device is runtime suspended along with its PCI hierarchy, the
+device could get disconnected. In such case, the link will not come up no
+matter how long pci_dev_wait() waits for it.
 
-To address this, modify the ACPI EC driver to install the EC address
-space handler at the root of the ACPI namespace for the first EC that
-can be found regardless of whether or not an ECDT is present.
+Besides the above mentioned case, there could be other ways to get the
+device disconnected while pci_dev_wait() is waiting for the link to come
+up.
 
-Note that this change is consistent with some examples in the ACPI
-specification in which EC operation regions located outside the EC
-device scope are used (for example, see Section 9.17.15 in ACPI 6.5),
-so the current behavior of the EC driver is arguably questionable.
+Make pci_dev_wait() exit if the device is already disconnected to avoid
+unnecessary delay.
 
-Reported-by: webcaptcha <webcapcha@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218789
-Link: https://uefi.org/specs/ACPI/6.5/09_ACPI_Defined_Devices_and_Device_Specific_Objects.html#example-asl-code
-Link: https://lore.kernel.org/linux-acpi/Zi+0whTvDbAdveHq@kuha.fi.intel.com
-Suggested-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+The use cases of pci_dev_wait() boil down to two:
+
+  1. Waiting for the device after reset
+  2. pci_bridge_wait_for_secondary_bus()
+
+The callers in both cases seem to benefit from propagating the
+disconnection as error even if device disconnection would be more
+analoguous to the case where there is no device in the first place which
+return 0 from pci_dev_wait(). In the case 2, it results in unnecessary
+marking of the devices disconnected again but that is just harmless extra
+work.
+
+Also make sure compiler does not become too clever with dev->error_state
+and use READ_ONCE() to force a fetch for the up-to-date value.
+
+Link: https://lore.kernel.org/r/20240208132322.4811-1-ilpo.jarvinen@linux.intel.com
+Reported-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c       | 25 ++++++++++++++++---------
- drivers/acpi/internal.h |  1 -
- 2 files changed, 16 insertions(+), 10 deletions(-)
+ drivers/pci/pci.c   | 5 +++++
+ include/linux/pci.h | 7 ++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 02255795b800d..e7793ee9e6498 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1482,13 +1482,14 @@ static bool install_gpio_irq_event_handler(struct acpi_ec *ec)
- static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
- 			       bool call_reg)
- {
-+	acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
- 	acpi_status status;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 9d5d08a420f1a..0658b374d988c 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1250,6 +1250,11 @@ static int pci_dev_wait(struct pci_dev *dev, char *reset_type, int timeout)
+ 	for (;;) {
+ 		u32 id;
  
- 	acpi_ec_start(ec, false);
- 
- 	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
- 		acpi_ec_enter_noirq(ec);
--		status = acpi_install_address_space_handler_no_reg(ec->handle,
-+		status = acpi_install_address_space_handler_no_reg(scope_handle,
- 								   ACPI_ADR_SPACE_EC,
- 								   &acpi_ec_space_handler,
- 								   NULL, ec);
-@@ -1497,11 +1498,10 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
- 			return -ENODEV;
- 		}
- 		set_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
--		ec->address_space_handler_holder = ec->handle;
- 	}
- 
- 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
--		acpi_execute_reg_methods(ec->handle, ACPI_ADR_SPACE_EC);
-+		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
- 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
- 	}
- 
-@@ -1553,10 +1553,13 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
- 
- static void ec_remove_handlers(struct acpi_ec *ec)
- {
-+	acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
++		if (pci_dev_is_disconnected(dev)) {
++			pci_dbg(dev, "disconnected; not waiting\n");
++			return -ENOTTY;
++		}
 +
- 	if (test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
- 		if (ACPI_FAILURE(acpi_remove_address_space_handler(
--					ec->address_space_handler_holder,
--					ACPI_ADR_SPACE_EC, &acpi_ec_space_handler)))
-+						scope_handle,
-+						ACPI_ADR_SPACE_EC,
-+						&acpi_ec_space_handler)))
- 			pr_err("failed to remove space handler\n");
- 		clear_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
- 	}
-@@ -1595,14 +1598,18 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
+ 		pci_read_config_dword(dev, PCI_COMMAND, &id);
+ 		if (!PCI_POSSIBLE_ERROR(id))
+ 			break;
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 213109d3c601d..b692472616efb 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2519,7 +2519,12 @@ static inline struct pci_dev *pcie_find_root_port(struct pci_dev *dev)
+ 
+ static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
  {
- 	int ret;
+-	return dev->error_state == pci_channel_io_perm_failure;
++	/*
++	 * error_state is set in pci_dev_set_io_state() using xchg/cmpxchg()
++	 * and read w/o common lock. READ_ONCE() ensures compiler cannot cache
++	 * the value (e.g. inside the loop in pci_dev_wait()).
++	 */
++	return READ_ONCE(dev->error_state) == pci_channel_io_perm_failure;
+ }
  
--	ret = ec_install_handlers(ec, device, call_reg);
--	if (ret)
--		return ret;
--
- 	/* First EC capable of handling transactions */
- 	if (!first_ec)
- 		first_ec = ec;
- 
-+	ret = ec_install_handlers(ec, device, call_reg);
-+	if (ret) {
-+		if (ec == first_ec)
-+			first_ec = NULL;
-+
-+		return ret;
-+	}
-+
- 	pr_info("EC_CMD/EC_SC=0x%lx, EC_DATA=0x%lx\n", ec->command_addr,
- 		ec->data_addr);
- 
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index 6588525c45efa..5749fbee96d92 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -184,7 +184,6 @@ enum acpi_ec_event_state {
- 
- struct acpi_ec {
- 	acpi_handle handle;
--	acpi_handle address_space_handler_holder;
- 	int gpe;
- 	int irq;
- 	unsigned long command_addr;
+ void pci_request_acs(void);
 -- 
 2.43.0
 
