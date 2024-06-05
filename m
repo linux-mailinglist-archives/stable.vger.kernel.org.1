@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-48204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7FB8FCDA6
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:48:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8168FCDAA
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 669E01C226E8
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:48:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCFF11F2923E
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D979C1ABE3C;
-	Wed,  5 Jun 2024 12:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C101ABE5C;
+	Wed,  5 Jun 2024 12:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpNG6NiI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZnL6RGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990051ABE32;
-	Wed,  5 Jun 2024 12:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804171ABE51;
+	Wed,  5 Jun 2024 12:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589135; cv=none; b=JN+EU9Zj+vVaAtOW3DLchxpqZFXtks28OULFXJny7dYx+VZTs+DLMUQU92mTZwUX8oMRcaEjLaRb3KxhWMcYU/EekRT2hUzhj2+MTHAsPO7c71nn4CO9P5UO+o2R5VljgkUtSwpbKb9TSySI/kLtL8MnzKa7XofF2VjHrr2afSM=
+	t=1717589136; cv=none; b=ehnev7h/FAHoFYopC10Hp03WPXvaFrsgzJYqgXnxzOY42TUObqcBvFZmeGD/y9tThAdOlKspMdqhfKcMb9z+NX1P23tOzXbCzIM2JrhJDYhAh7csoWpkZvfSmqb6aWsuLiaZpPHgscnoBcFfHcWXe6w3kKd+y6M5s5WmAhRTlQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589135; c=relaxed/simple;
-	bh=6ghHQ4oFDM/MuZh0bso4VZhlvZ9ZWfi1y9gl6T3Gy0E=;
+	s=arc-20240116; t=1717589136; c=relaxed/simple;
+	bh=dRcy6OS1IofzbD1NjQE76rjD0zXix+SxVmT62c0IwPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nz6Bzoby87mTkdxbRaQnvlPNkZBX6Bxvh53wAbBZ8tVjV8CVipWuxgzB0SkwX9tRvkFFI6M75Lm7kcEDXF+WnrAaPlLUSztyTLX3EujCRdPKPpWZQe14K76XiRQr7saiBK97igGsko8pZqKQm9b1RDp8GrBcWUKR9xj68GlvTjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpNG6NiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2989AC3277B;
-	Wed,  5 Jun 2024 12:05:34 +0000 (UTC)
+	 MIME-Version; b=QDjwm94UyJR6SRMq+X4/ud6+3nZ4yx5lxfnA4a7ORXTvuUyMf4t170qnUdjk+Q1O8mMAN7YeFyhhHduzP+tKniazOgEn08TnR+3PTyKTGbF9Xgv7nMKpepawrvmb60qn/dvjDZS/JpJ+kRvy2b1JSFFfJi6qQXu+pgnNidmwA6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZnL6RGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7540C4AF09;
+	Wed,  5 Jun 2024 12:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589135;
-	bh=6ghHQ4oFDM/MuZh0bso4VZhlvZ9ZWfi1y9gl6T3Gy0E=;
+	s=k20201202; t=1717589136;
+	bh=dRcy6OS1IofzbD1NjQE76rjD0zXix+SxVmT62c0IwPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpNG6NiIamTTsdzX7MwFOxMsyxzfsO9xxBJwfRVcJsGf5+/nsdxcfWGKnv+Qc6JNb
-	 Ou1U19gk7Vt6jpNUqdbqfRM4TbUkMil8JvKbOmhgNJkJz8pjH7XC7FqHxOBdK9nTd/
-	 nRMS5oAU8iIFB4vyizoEKejLaW1q4hMcP4yKeb9aj5oTK04WuM1/q4ZFzn0NbGGgpE
-	 IOLrPwX2gJWyO+6S3ynEJpjV62UeRRF3+r3UN6OSkYZCqKDibqd1cFqnKHeBcnkIAf
-	 ItBIfh7EAuNsfDG5/+9Haob77AkVHp2IbD5VhRc1PCDRnWYO9W/Ircluifkg5ASOZU
-	 cE0oSf6PFt2+g==
+	b=lZnL6RGTHnjXjS58b7LixhFx62X8+UC31o9jlo4hCUEZZNCUzKCCvKcImLhY/cXPw
+	 mc8tWdJPy/2dVd2xlohTzY6J2xqbpa6awoi/138ewmX8mV1bE5jn014f3QD6Ht3Bxg
+	 NXfZTHuSUUGVNxnIC9Hyw8lObSGiXO37yL/WAOYiCFt4RXe9KPpirdDEkyuOLGk+It
+	 AbnCajnmfX0ys4+jmWvRLO24AsEB33IDw4ZL/epqb6r3Vyp0GvujsaciKDcpKZDZZI
+	 2PRNANAwpNgSRiVKzTXqbgUCsdIBdJKJ+ixDztLxPRozDJvlyZKrzmQRFrE5Q0bu0P
+	 1cO9fzLTU58yg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Marc Dionne <marc.dionne@auristor.com>,
-	Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.15 04/12] afs: Don't cross .backup mountpoint from backup volume
-Date: Wed,  5 Jun 2024 08:05:14 -0400
-Message-ID: <20240605120528.2967750-4-sashal@kernel.org>
+Cc: Jim Wylder <jwylder@google.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	gregkh@linuxfoundation.org
+Subject: [PATCH AUTOSEL 5.15 05/12] regmap-i2c: Subtract reg size from max_write
+Date: Wed,  5 Jun 2024 08:05:15 -0400
+Message-ID: <20240605120528.2967750-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120528.2967750-1-sashal@kernel.org>
 References: <20240605120528.2967750-1-sashal@kernel.org>
@@ -69,53 +65,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.160
 Content-Transfer-Encoding: 8bit
 
-From: Marc Dionne <marc.dionne@auristor.com>
+From: Jim Wylder <jwylder@google.com>
 
-[ Upstream commit 29be9100aca2915fab54b5693309bc42956542e5 ]
+[ Upstream commit 611b7eb19d0a305d4de00280e4a71a1b15c507fc ]
 
-Don't cross a mountpoint that explicitly specifies a backup volume
-(target is <vol>.backup) when starting from a backup volume.
+Currently, when an adapter defines a max_write_len quirk,
+the data will be chunked into data sizes equal to the
+max_write_len quirk value.  But the payload will be increased by
+the size of the register address before transmission.  The
+resulting value always ends up larger than the limit set
+by the quirk.
 
-It it not uncommon to mount a volume's backup directly in the volume
-itself.  This can cause tools that are not paying attention to get
-into a loop mounting the volume onto itself as they attempt to
-traverse the tree, leading to a variety of problems.
+Avoid this error by setting regmap's max_write to the quirk's
+max_write_len minus the number of bytes for the register and
+padding.  This allows the chunking to work correctly for this
+limited case without impacting other use-cases.
 
-This doesn't prevent the general case of loops in a sequence of
-mountpoints, but addresses a common special case in the same way
-as other afs clients.
-
-Reported-by: Jan Henrik Sylvester <jan.henrik.sylvester@uni-hamburg.de>
-Link: http://lists.infradead.org/pipermail/linux-afs/2024-May/008454.html
-Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
-Link: http://lists.infradead.org/pipermail/linux-afs/2024-February/008074.html
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/768760.1716567475@warthog.procyon.org.uk
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Jim Wylder <jwylder@google.com>
+Link: https://msgid.link/r/20240523211437.2839942-1-jwylder@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/mntpt.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/base/regmap/regmap-i2c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/mntpt.c b/fs/afs/mntpt.c
-index bbb2c210d139d..fa8a6543142d5 100644
---- a/fs/afs/mntpt.c
-+++ b/fs/afs/mntpt.c
-@@ -146,6 +146,11 @@ static int afs_mntpt_set_params(struct fs_context *fc, struct dentry *mntpt)
- 		put_page(page);
- 		if (ret < 0)
- 			return ret;
-+
-+		/* Don't cross a backup volume mountpoint from a backup volume */
-+		if (src_as->volume && src_as->volume->type == AFSVL_BACKVOL &&
-+		    ctx->type == AFSVL_BACKVOL)
-+			return -ENODEV;
- 	}
+diff --git a/drivers/base/regmap/regmap-i2c.c b/drivers/base/regmap/regmap-i2c.c
+index 3ec611dc0c09f..a905e955bbfc7 100644
+--- a/drivers/base/regmap/regmap-i2c.c
++++ b/drivers/base/regmap/regmap-i2c.c
+@@ -350,7 +350,8 @@ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
  
- 	return 0;
+ 		if (quirks->max_write_len &&
+ 		    (bus->max_raw_write == 0 || bus->max_raw_write > quirks->max_write_len))
+-			max_write = quirks->max_write_len;
++			max_write = quirks->max_write_len -
++				(config->reg_bits + config->pad_bits) / BITS_PER_BYTE;
+ 
+ 		if (max_read || max_write) {
+ 			ret_bus = kmemdup(bus, sizeof(*bus), GFP_KERNEL);
 -- 
 2.43.0
 
