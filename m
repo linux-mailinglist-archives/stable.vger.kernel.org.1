@@ -1,69 +1,60 @@
-Return-Path: <stable+bounces-48006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AA88FCB0B
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:52:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5865C8FCB0F
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7A951F24578
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:52:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7C5528EC96
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C74188CC5;
-	Wed,  5 Jun 2024 11:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C61019309B;
+	Wed,  5 Jun 2024 11:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTBACd71"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOq2h/ku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18171188CB7;
-	Wed,  5 Jun 2024 11:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECD1192B6A;
+	Wed,  5 Jun 2024 11:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588196; cv=none; b=BX/blZwE9eflCQhluIJx3I9M4lnAu7IR7YC0qznNcqtR5O5jbfFzs0NVRFRFNrYJg0XF7/eXh5qcKb9gBx8/RitIAc+D+aIIxOklVZTxOeBspjd8f4Vl5ivQkEgHgOpKg3Gbr69rBIQgorcAXzg82pO5bWDay2xmXiUmbp0UIv0=
+	t=1717588199; cv=none; b=MNESlqt5NCejaknp8O/Wl4McXIBV78ERfS+pZmNsyltSh+m4OgzqAf3HZHg3aeLthFktL5mhHIj05lVwo6arIOzZVFW4d39bZohWieEe6sTioi8SDzNxE3xZSsqkpt+aC6+WSveR6ZYmtqnpL4JKryEThKUME1MffYsfUPnFMUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588196; c=relaxed/simple;
-	bh=VDEC8kLvr3XTPKhCnFg4+8QeXod4zGth0hLIrG3ER0s=;
+	s=arc-20240116; t=1717588199; c=relaxed/simple;
+	bh=PA03ICMifFQi7hAOsFYMtCFwyHUJlSWnycc7wgnoZuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKlO75L41Z2lZtPnJ7cmqmCdkbuoy9XlaeChcsStqqMrGlsyC3nGCNAYJKNunuLSxygoZ3RXlsoqTOu4lzBaUFQTgy7hwhJ12ROEC23A6v9qfc3QiDIFGm38RAOAW+ZlhBJo3y/VbveNQdqfcinkT2wmICwAisrMnVWUeiD55qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTBACd71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEA1C32781;
-	Wed,  5 Jun 2024 11:49:53 +0000 (UTC)
+	 MIME-Version; b=vGEZGFcgmUJUCgEmJ+eCvLPZd8dm8lSOksf3glWFH7W+99dYzi1x6pM3QlAnbL8Wz2r8xtW4psPvMS3dziPZ0npKYt3RKXfVHeerXhRMzQam4aSs6uPBfqn4m0fjdTzHmYUoA11RNGClnaO/D9WmDj291sa+estA9KItPTxqKTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOq2h/ku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF53C3277B;
+	Wed,  5 Jun 2024 11:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588195;
-	bh=VDEC8kLvr3XTPKhCnFg4+8QeXod4zGth0hLIrG3ER0s=;
+	s=k20201202; t=1717588199;
+	bh=PA03ICMifFQi7hAOsFYMtCFwyHUJlSWnycc7wgnoZuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTBACd71Ma//AdFE+/FDWc2WFdHsi8WVuXJcrLT78fnE9wUaOuM4m3HD56Sk1uBPu
-	 78+jtyLDUyXgmE08bTS2ciVvj9VN9qbZsi0dDc72g6Ro+h7amtQn9ShvOl660CkqhU
-	 hpuCdOSU0Osh6tTiYBePlU74NyeJIy5OJ1MD7RIP17IVJsb8Boke7FJXhZhfQ2xHxx
-	 2LCXHnv1qHlGIqx5FF2EiUbgZdqBmhPOhBx3EgfYuFV4H8CLRPYvtjC+bRpiMv0I1N
-	 24wNGGNi3KW1ZeeL0r1xxIGiYX8jFs0m454L+IIE++kWstgk70uvzaUt+V0tUXr/FK
-	 LwBbXk82Mdy4Q==
+	b=OOq2h/kuhzBFpbY+IZHBCj6UYtLYHuzGsX+QYmBBebCIXHhZ5QUw8Cu2EW5cR6Nlf
+	 +CmQcYwMXcJ7b3pxeLxvtkvMuMdMlq045A/GRSQ88UP3VHe3e6mj1oTZL8RAmQPhkq
+	 xAK57UmxusgfA647I7pSysZF38Og8c5URXOmfkV4bY/HhYrmMw5nuZ7Af1sY8ah1mr
+	 zaHhFWTVm2m+mzNZH94xB1eKt217n+tq5CQHtIWKjlAckJxfawfCOU7PLmHg/ZYRnz
+	 54frz2uOFXtRlmDfhiholXrzK3HmR8JRpp1+X75VC6OGdenGqv8djGusvW6ZK+s/H8
+	 RU45+ejlUlStQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Esben Haabendal <esben@geanix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: Parker Newman <pnewman@connecttech.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
 	jirislaby@kernel.org,
-	shawnguo@kernel.org,
-	u.kleine-koenig@pengutronix.de,
+	andriy.shevchenko@linux.intel.com,
+	matthew.howell@sealevel.com,
 	ilpo.jarvinen@linux.intel.com,
-	l.sanfilippo@kunbus.com,
-	cniedermaier@dh-electronics.com,
-	tglx@linutronix.de,
-	matthias.schiffer@ew.tq-group.com,
-	rickaran@axis.com,
-	martin.fuzzey@flowbird.group,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.9 13/28] serial: imx: Introduce timeout when waiting on transmitter empty
-Date: Wed,  5 Jun 2024 07:48:42 -0400
-Message-ID: <20240605114927.2961639-13-sashal@kernel.org>
+	linux-serial@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 14/28] serial: exar: adding missing CTI and Exar PCI ids
+Date: Wed,  5 Jun 2024 07:48:43 -0400
+Message-ID: <20240605114927.2961639-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605114927.2961639-1-sashal@kernel.org>
 References: <20240605114927.2961639-1-sashal@kernel.org>
@@ -78,57 +69,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Esben Haabendal <esben@geanix.com>
+From: Parker Newman <pnewman@connecttech.com>
 
-[ Upstream commit e533e4c62e9993e62e947ae9bbec34e4c7ae81c2 ]
+[ Upstream commit b86ae40ffcf5a16b9569b1016da4a08c4f352ca2 ]
 
-By waiting at most 1 second for USR2_TXDC to be set, we avoid a potential
-deadlock.
+- Added Connect Tech and Exar IDs not already in pci_ids.h
 
-In case of the timeout, there is not much we can do, so we simply ignore
-the transmitter state and optimistically try to continue.
-
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://lore.kernel.org/r/919647898c337a46604edcabaf13d42d80c0915d.1712837613.git.esben@geanix.com
+Signed-off-by: Parker Newman <pnewman@connecttech.com>
+Link: https://lore.kernel.org/r/7c3d8e795a864dd9b0a00353b722060dc27c4e09.1713270624.git.pnewman@connecttech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/tty/serial/8250/8250_exar.c | 42 +++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index e148132506161..09c1678ddfd49 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -26,6 +26,7 @@
- #include <linux/slab.h>
- #include <linux/of.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/dma-mapping.h>
+diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
+index 0440df7de1ed7..4d1e07343d0bb 100644
+--- a/drivers/tty/serial/8250/8250_exar.c
++++ b/drivers/tty/serial/8250/8250_exar.c
+@@ -46,8 +46,50 @@
+ #define PCI_DEVICE_ID_COMMTECH_4228PCIE		0x0021
+ #define PCI_DEVICE_ID_COMMTECH_4222PCIE		0x0022
  
- #include <asm/irq.h>
-@@ -2010,7 +2011,7 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	struct imx_port *sport = imx_uart_ports[co->index];
- 	struct imx_port_ucrs old_ucr;
- 	unsigned long flags;
--	unsigned int ucr1;
-+	unsigned int ucr1, usr2;
- 	int locked = 1;
++#define PCI_VENDOR_ID_CONNECT_TECH				0x12c4
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_SP_OPTO        0x0340
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_A      0x0341
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_B      0x0342
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS           0x0350
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_A         0x0351
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_B         0x0352
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS           0x0353
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_A        0x0354
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_B        0x0355
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS_OPTO      0x0360
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_A    0x0361
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_B    0x0362
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP             0x0370
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232         0x0371
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_485         0x0372
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_SP           0x0373
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_6_2_SP           0x0374
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_6_SP           0x0375
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232_NS      0x0376
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_LEFT   0x0380
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_RIGHT  0x0381
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XP_OPTO        0x0382
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_XPRS_OPTO    0x0392
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP        0x03A0
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232    0x03A1
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_485    0x03A2
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232_NS 0x03A3
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XEG001               0x0602
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_BASE           0x1000
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_2              0x1002
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_4              0x1004
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_8              0x1008
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_12             0x100C
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_16             0x1010
++#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG00X          0x110c
++#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG01X          0x110d
++#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_16                 0x1110
++
+ #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
+ #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
++#define PCI_DEVICE_ID_EXAR_XR17V252		0x0252
++#define PCI_DEVICE_ID_EXAR_XR17V254		0x0254
++#define PCI_DEVICE_ID_EXAR_XR17V258		0x0258
  
- 	if (sport->port.sysrq)
-@@ -2041,8 +2042,8 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	 *	Finally, wait for transmitter to become empty
- 	 *	and restore UCR1/2/3
- 	 */
--	while (!(imx_uart_readl(sport, USR2) & USR2_TXDC));
--
-+	read_poll_timeout_atomic(imx_uart_readl, usr2, usr2 & USR2_TXDC,
-+				 0, USEC_PER_SEC, false, sport, USR2);
- 	imx_uart_ucrs_restore(sport, &old_ucr);
- 
- 	if (locked)
+ #define PCI_SUBDEVICE_ID_USR_2980		0x0128
+ #define PCI_SUBDEVICE_ID_USR_2981		0x0129
 -- 
 2.43.0
 
