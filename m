@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-48188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C917D8FCDF1
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9714D8FCE11
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE023B28C71
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:44:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18064B218A1
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3F83DABFF;
-	Wed,  5 Jun 2024 12:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467273DAC1F;
+	Wed,  5 Jun 2024 12:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gB+c+id8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNNQ8w73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D9D1CA2FA;
-	Wed,  5 Jun 2024 12:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026631C776A;
+	Wed,  5 Jun 2024 12:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589099; cv=none; b=p2Tlid0QjLjHZ6dAvu0PilZ6vehv9tyEo5nglj9czVHesBidlLoNIrkvrB6yXh7jq3JKxH/HyZUj61BtOb9qTLhq2P1atqzLsiWk4mOMHnfCrvi0+HgM4zhykdehghzu758Vds1lgUHl1XhpBM6/fnrQ45fF9jg7eRp0JeCVl2c=
+	t=1717589100; cv=none; b=q/Zw6rYtPAu5PAO0UJP9sdfKjQCO2pR2ecccGGRisE4HioxQu8ROcaGz80NILk+x+yvfRGON0swbx0Hqvb49JjeSxbTFc/hiWVWhvy1u61qj5WyWo9KNRAqNrFFDsMs/a7jL2la4lZYii17EwIApyyPi8Vw/BBy4bphjkAiNTQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589099; c=relaxed/simple;
-	bh=B3cXj5QRC/Hj3s+cHzQMtqKF+PdRub88qOcV1NmK5CY=;
+	s=arc-20240116; t=1717589100; c=relaxed/simple;
+	bh=B0k5s6buZQwPBJm0xzZLzHx/9pO9n+AEcUzQ/fkRK88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMdQ3E+ObyCcxUG+NBsfdby06uA6O1sa0dRkLPD3zzTPt5iDDh+bzNDuMGSgAoJmxjKzgW+SO0ahwOLLSvBOYNhseyJ5ubtfQiFIrsvfzIR7g1aLAx9tu4WBAzH/TMJAz7+aOLC4m/ii8JXM7clSK0Z8E6Cnuu1NblXQswwdGPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gB+c+id8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78409C3277B;
-	Wed,  5 Jun 2024 12:04:57 +0000 (UTC)
+	 MIME-Version; b=WV2TVeLFq6bDLas52mOgJ/R218M/dndOezw/1Rm1fXupQmHPks1QELebrjzX4p2Bx2tICXD+70sSPqypzVOztUpjXbvpvUUt/u2JnwfMWTYa778EmLU9/uh4WBIdvTNFsHIZwhEL+KSddXGMvM21weBnfvtb1fX+VSdKR18MgPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNNQ8w73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A01C32786;
+	Wed,  5 Jun 2024 12:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589098;
-	bh=B3cXj5QRC/Hj3s+cHzQMtqKF+PdRub88qOcV1NmK5CY=;
+	s=k20201202; t=1717589099;
+	bh=B0k5s6buZQwPBJm0xzZLzHx/9pO9n+AEcUzQ/fkRK88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gB+c+id8lHu3GzymWcwwp9wqJh9P2Jgq96y4UWnk0lEYDfwu6iB8jZmdspwg9hhz+
-	 CxjREY5J9qvDpLWohcvyKoJiUySRLb1XuYIZ5i+yuOhSSrLWzy+qfhD+cUt9fNL3N1
-	 N+kle2fhLhgETwbZPSJM8atN9bmvBhQXA1q8weiv38s9Of1jwyIUPWZz0Uqtt7H5Tm
-	 2aeN5yVrt+iuDo2WUbyh7PUhz13RRWLNB5nerIAywchwzKpmY2D27C36fj4O+mxD4q
-	 sIAnAW0ms64vJZnPHHuWE6DTd927nEGoN/PuIuiO1+ifq1Dmld7wNBdGfGHE5WO+Qc
-	 6NHI6b7X9SxjA==
+	b=VNNQ8w73Ql4nrJ0cgbCU/RgrgjqLtlhHM6LkwoOv0Mpk2Hw1GxgT+P0Exb1w+dxuG
+	 2SgtTJx805IpzBA45MRc7xwMILnHAOddtlPmG+xQRoEYbr8bjQXp3NbOZ1oxEE/Rb5
+	 oNh1a3ZZfvGi6+9fjcRwy5dd/OpAmLNxo2MTSi+XQUyZWifWkSKDbe9OQLuYHr+InF
+	 T4mP8WdCWgPNGdy4oTQLNykWVv/zywgW6dOjUO1KjG0onpc3m0IY/HlQVBWPAEUU0y
+	 FcP03EmPpXsjlyIKxfeKwHF+az/hFLFSNbevLroQg1EaZzawBN064yiJGdEkL5VQE6
+	 HNVOOKdhziQpg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Barry Song <21cnbao@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
+Cc: Kundan Kumar <kundan.kumar@samsung.com>,
 	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	chenxiang66@hisilicon.com,
-	m.szyprowski@samsung.com,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 02/14] dma-mapping: benchmark: avoid needless copy_to_user if benchmark fails
-Date: Wed,  5 Jun 2024 08:04:35 -0400
-Message-ID: <20240605120455.2967445-2-sashal@kernel.org>
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 03/14] nvme: adjust multiples of NVME_CTRL_PAGE_SIZE in offset
+Date: Wed,  5 Jun 2024 08:04:36 -0400
+Message-ID: <20240605120455.2967445-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120455.2967445-1-sashal@kernel.org>
 References: <20240605120455.2967445-1-sashal@kernel.org>
@@ -69,36 +67,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.92
 Content-Transfer-Encoding: 8bit
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Kundan Kumar <kundan.kumar@samsung.com>
 
-[ Upstream commit f7c9ccaadffd13066353332c13d7e9bf73b8f92d ]
+[ Upstream commit 1bd293fcf3af84674e82ed022c049491f3768840 ]
 
-If do_map_benchmark() has failed, there is nothing useful to copy back
-to userspace.
+bio_vec start offset may be relatively large particularly when large
+folio gets added to the bio. A bigger offset will result in avoiding the
+single-segment mapping optimization and end up using expensive
+mempool_alloc further.
 
-Suggested-by: Barry Song <21cnbao@gmail.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Rather than using absolute value, adjust bv_offset by
+NVME_CTRL_PAGE_SIZE while checking if segment can be fitted into one/two
+PRP entries.
+
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/map_benchmark.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/host/pci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index 0520a8f4fb1df..30ebfbf756847 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -252,6 +252,9 @@ static long map_benchmark_ioctl(struct file *file, unsigned int cmd,
- 		 * dma_mask changed by benchmark
- 		 */
- 		dma_set_mask(map->dev, old_dma_mask);
-+
-+		if (ret)
-+			return ret;
- 		break;
- 	default:
- 		return -EINVAL;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 5ff09f2cacab7..32e89ea853a47 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -824,7 +824,8 @@ static blk_status_t nvme_map_data(struct nvme_dev *dev, struct request *req,
+ 		struct bio_vec bv = req_bvec(req);
+ 
+ 		if (!is_pci_p2pdma_page(bv.bv_page)) {
+-			if (bv.bv_offset + bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
++			if ((bv.bv_offset & (NVME_CTRL_PAGE_SIZE - 1)) +
++			     bv.bv_len <= NVME_CTRL_PAGE_SIZE * 2)
+ 				return nvme_setup_prp_simple(dev, req,
+ 							     &cmnd->rw, &bv);
+ 
 -- 
 2.43.0
 
