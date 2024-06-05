@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-48013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9598FCB2D
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:55:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F00178FCB33
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 13:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 794A6B24DF2
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:55:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8789928F85B
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 11:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C8C194149;
-	Wed,  5 Jun 2024 11:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5D019414C;
+	Wed,  5 Jun 2024 11:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jz3sn4f6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMskRonR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8063419885B;
-	Wed,  5 Jun 2024 11:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9818A1990D4;
+	Wed,  5 Jun 2024 11:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588215; cv=none; b=tJotDGLEoeeTqFrV5pvGZz6gBlLqyplKrTWt43ArGZPpA4FwVIUtKeNL/Yh4jc9CK6tm+WaNY6jqwcpgAi/wm0nw5+FV/LO6Hf6HuphlXoCo33Ht+d8QPuvKz8KsiYLusy7h8VEx0i/YqH2Q2VlNRfn1tw4ECuVtth0Jc/+oKOA=
+	t=1717588217; cv=none; b=H8GOXRzqVxLPrU2xvy/XBvH7Wb9lOzoqy7YSuUYXhLhtTkas1uqQhWiN7GjBMprzBcVw3u7u4R7HWoow3sTvZOxeNT7fNfDj9dCpdaqU2sL4TYmAq8zEI9IbjYXN5pwVgBFDxVK4TxVFSsrBh1/FIbTSr7Wb2O6+dRQRnkaGMo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588215; c=relaxed/simple;
-	bh=F7cpV+a+C7Mbpd4Oog7sdLoU5k2L8t8xst9Mf7jNOQc=;
+	s=arc-20240116; t=1717588217; c=relaxed/simple;
+	bh=ofMFuZutyc8UqgcT5XmcJ+uqQ0V9bPSOejxM9gZ7iic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkymNMycWoAqaNyJhVzFiHuFDzUB35RedBqzxDDlAywkOUgLP4gnCcRPusTIyWkebVu8pJK4b87QJi1uqDOe6NKTcXgxmMKVvzcNJdMRUP2C6Bea1+gHvVoeMSk+Pe9N30UQzZy00FiFpd+fnZRF4dkwCkdZUkLX2rMHuZd7lwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jz3sn4f6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909BCC4AF07;
-	Wed,  5 Jun 2024 11:50:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eKM0ZhqMUVYdPSee2tbHRxLuvqNaIuWp5KnTsIO0BPZfFZRBLL3Hu1+gFCS3bcB8AGmRwHLIBymP3vLy3+wA2lYl3riCN4sjXJlbuFnE2pXijLgeBn33hgq2GqyhELADSd5D2n4VGD/Apl6SG+KwK83uAGhZIcPVrHQZUrmBQaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fMskRonR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FE3C4AF07;
+	Wed,  5 Jun 2024 11:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588215;
-	bh=F7cpV+a+C7Mbpd4Oog7sdLoU5k2L8t8xst9Mf7jNOQc=;
+	s=k20201202; t=1717588217;
+	bh=ofMFuZutyc8UqgcT5XmcJ+uqQ0V9bPSOejxM9gZ7iic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jz3sn4f6NJBNWErnpXXRXslCw3AzEvQ+DPaKcqtAx1CvCFuCaK6we4qHZX+Nf838u
-	 HlbmOUHzXl+HjAKOEMzCnRkXwNUW7+nFnTqRhHawsdIwhiTSsgS58NIPOIL1NtiG8h
-	 7cgoUutJt9/8CEX8oJ3jiW7UqhpmDMOgDs8WPOrGbdRYUiiQ02p9y64d1uHQ28bRAM
-	 0DXhFuZGW6bN/aMplomyNqse9JidLQW7SsMScWkm/IFHXxhtRbtCTgFyKdzYuKbZHR
-	 3RT7VgXcnvo70Zr4OTZfeWBlWqPV3LXqlBVS9tij5EUN+EHHRcZjLO0VAiLMWSNXc7
-	 VEtQbiJPd0BJQ==
+	b=fMskRonRrRM6NmUpu7eFzU4ZWSt+5/GZnDifC3g5BBKW+cIyLqr00OYR8rRxZ9UsL
+	 5WFQvNnsU6NRPay7sxnmi/L7cbw0Twi85pDxxneGixBjvBodQdw3ntmd2a4kpJbbRN
+	 rQhIXHckPbbWOtUKKwfNUJ/y0iR/067B76ZOOaX0r1/NSCsgwu2S5yRBMiY7iBuZf1
+	 fDuz2gjYcniE5jgW7mJBrOKynD0taRtEo6ScCGWMZTZ0bXlUrkdbNHdvJ9KKf9MHtt
+	 NWHD4YX2sJyOfTOieCbn7d3dMJgHM9Ixc1KEi4aFpSuHw/ItNh6xukkB0zQYke9+J1
+	 c4NeqYaU1cVBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sicong Huang <congei42@163.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	johan@kernel.org,
-	greybus-dev@lists.linaro.org
-Subject: [PATCH AUTOSEL 6.9 20/28] greybus: Fix use-after-free bug in gb_interface_release due to race condition.
-Date: Wed,  5 Jun 2024 07:48:49 -0400
-Message-ID: <20240605114927.2961639-20-sashal@kernel.org>
+	aisheng.dong@nxp.com,
+	shawnguo@kernel.org,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.9 21/28] i2c: lpi2c: Avoid calling clk_get_rate during transfer
+Date: Wed,  5 Jun 2024 07:48:50 -0400
+Message-ID: <20240605114927.2961639-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605114927.2961639-1-sashal@kernel.org>
 References: <20240605114927.2961639-1-sashal@kernel.org>
@@ -61,60 +65,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.3
 Content-Transfer-Encoding: 8bit
 
-From: Sicong Huang <congei42@163.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 5c9c5d7f26acc2c669c1dcf57d1bb43ee99220ce ]
+[ Upstream commit 4268254a39484fc11ba991ae148bacbe75d9cc0a ]
 
-In gb_interface_create, &intf->mode_switch_completion is bound with
-gb_interface_mode_switch_work. Then it will be started by
-gb_interface_request_mode_switch. Here is the relevant code.
-if (!queue_work(system_long_wq, &intf->mode_switch_work)) {
-	...
-}
+Instead of repeatedly calling clk_get_rate for each transfer, lock
+the clock rate and cache the value.
+A deadlock has been observed while adding tlv320aic32x4 audio codec to
+the system. When this clock provider adds its clock, the clk mutex is
+locked already, it needs to access i2c, which in return needs the mutex
+for clk_get_rate as well.
 
-If we call gb_interface_release to make cleanup, there may be an
-unfinished work. This function will call kfree to free the object
-"intf". However, if gb_interface_mode_switch_work is scheduled to
-run after kfree, it may cause use-after-free error as
-gb_interface_mode_switch_work will use the object "intf".
-The possible execution flow that may lead to the issue is as follows:
-
-CPU0                            CPU1
-
-                            |   gb_interface_create
-                            |   gb_interface_request_mode_switch
-gb_interface_release        |
-kfree(intf) (free)          |
-                            |   gb_interface_mode_switch_work
-                            |   mutex_lock(&intf->mutex) (use)
-
-Fix it by canceling the work before kfree.
-
-Signed-off-by: Sicong Huang <congei42@163.com>
-Link: https://lore.kernel.org/r/20240416080313.92306-1-congei42@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/greybus/interface.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/greybus/interface.c b/drivers/greybus/interface.c
-index fd58a86b0888d..d022bfb5e95d7 100644
---- a/drivers/greybus/interface.c
-+++ b/drivers/greybus/interface.c
-@@ -693,6 +693,7 @@ static void gb_interface_release(struct device *dev)
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 6d72e4e126dde..36e8f6196a87b 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -99,6 +99,7 @@ struct lpi2c_imx_struct {
+ 	__u8			*rx_buf;
+ 	__u8			*tx_buf;
+ 	struct completion	complete;
++	unsigned long		rate_per;
+ 	unsigned int		msglen;
+ 	unsigned int		delivered;
+ 	unsigned int		block_data;
+@@ -212,9 +213,7 @@ static int lpi2c_imx_config(struct lpi2c_imx_struct *lpi2c_imx)
  
- 	trace_gb_interface_release(intf);
+ 	lpi2c_imx_set_mode(lpi2c_imx);
  
-+	cancel_work_sync(&intf->mode_switch_work);
- 	kfree(intf);
- }
+-	clk_rate = clk_get_rate(lpi2c_imx->clks[0].clk);
+-	if (!clk_rate)
+-		return -EINVAL;
++	clk_rate = lpi2c_imx->rate_per;
  
+ 	if (lpi2c_imx->mode == HS || lpi2c_imx->mode == ULTRA_FAST)
+ 		filt = 0;
+@@ -611,6 +610,20 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
++	/*
++	 * Lock the parent clock rate to avoid getting parent clock upon
++	 * each transfer
++	 */
++	ret = devm_clk_rate_exclusive_get(&pdev->dev, lpi2c_imx->clks[0].clk);
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret,
++				     "can't lock I2C peripheral clock rate\n");
++
++	lpi2c_imx->rate_per = clk_get_rate(lpi2c_imx->clks[0].clk);
++	if (!lpi2c_imx->rate_per)
++		return dev_err_probe(&pdev->dev, -EINVAL,
++				     "can't get I2C peripheral clock rate\n");
++
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, I2C_PM_TIMEOUT);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_get_noresume(&pdev->dev);
 -- 
 2.43.0
 
