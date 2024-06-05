@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-48197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7358FCD92
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E008FCD94
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 012B01F28522
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:46:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD1061F28692
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07E61AB914;
-	Wed,  5 Jun 2024 12:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0DA1CD452;
+	Wed,  5 Jun 2024 12:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLX/q/Af"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biwUV3T1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1F61AB909;
-	Wed,  5 Jun 2024 12:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087BF1CD448;
+	Wed,  5 Jun 2024 12:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589113; cv=none; b=KbBpEHxTLxKZFHdKq/VsDqx0S5jBObdFMLHCGgy7cxP5t90X5Ach11sngTR5Zcukph3KPPxUIDMhhjxepZbUJ/YbgYzd7tlk+tKrqG0ubPEjCeljdzZ4Is7wOkO+1/AUYa45w2E1lwDbiEOaYy5UElSaVgDNg/yxl7TwIYN59RI=
+	t=1717589115; cv=none; b=NsGhoFj3rwN4cnNnP+3Q/uMEbaHU0lWgePnGwhICfR+v8j0jhKdCDIWZJttRpPWI+ccQ0HOo7BtQrSTJou1/arGaGr27PQt8nOWijTK1p3S8LhxHVUAiF5/33wQAMjSyCY0Nm7u8PxRfCv2iN6zBtZZOKBSHxF0tUISgvpF8K+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589113; c=relaxed/simple;
-	bh=iCEqVW94eFOmJrC/ldTm/SBWtD5V6IcQttdylIMUgdE=;
+	s=arc-20240116; t=1717589115; c=relaxed/simple;
+	bh=Pvlv1exqFURZ7yFfeNaFPWfN/fe30G0y1zsVtOQXolE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRgwTgsuTcDWHBPBuhLgLRM6ITX1IikNhpRTON7/t1C+a99BXkIGkFbZaDWkbqfAZKHaXtCKMYvF9eHTw4usPHrATHn8rTqCGBO8+CZebJIl5RUZzuIs6zIwMw8cHxNyUukVEBFzsFjZNZCns8ObPRf57UMfmx6tSOudiIrUSE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLX/q/Af; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79646C3277B;
-	Wed,  5 Jun 2024 12:05:12 +0000 (UTC)
+	 MIME-Version; b=hu8Lk8Ab7wEMd3lp8zljqR0UMvBw5uunp9KFUcHOTtGTNrc6/rUnTDIOJDFoEVaxxHD/y/kMC5sMn/vwUGSbXcIrx/Dl3W7zx6pKpYIP0rWtxNcC9LaU5NAHwJSIyGrflkOUcXT0Y81EdbdADqev1rx1LldJQNqZ1Fpgm5rP60o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biwUV3T1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18D6C4AF08;
+	Wed,  5 Jun 2024 12:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589113;
-	bh=iCEqVW94eFOmJrC/ldTm/SBWtD5V6IcQttdylIMUgdE=;
+	s=k20201202; t=1717589114;
+	bh=Pvlv1exqFURZ7yFfeNaFPWfN/fe30G0y1zsVtOQXolE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLX/q/AfqwxNeNiPtofsZbobv5fc38ur1koEJoiwisCIwnFrnM1ZUXH34G/rLwz7T
-	 Fhi2Mox6fZkS75UVRLquZ5JcOtPLMZ3NhoAn3UqqjAD62q2aQgNv3tDSCLm+y/m70p
-	 RYwjtTNZ71WpM/1aSHbwmNaeQPxA4NP4RHpWg5VAa6xOsZ4e0HqBEIdT7pHHVJ9OE0
-	 anLBplkTqmuWW3LltM+LwHq2qp1fzPfQ3wjzlMwMahCT8/2IwBmltqiZNbJlyWXbLs
-	 bRbk3DV9has5FzCiLu240fhZGeNqCzl3KyjO4KrS6BVMV7u8A+opCihOj47PiIfOUA
-	 H/eUIPOn8dLvw==
+	b=biwUV3T1yDnGnrlYwFzt+MQF0rPZjBVW75H5Wqtf/818QFiA88zwHDXBLX1wJNG8A
+	 Ps+azm5V3tAUGB92hoiTnssPpOrMeJuEmAQnx1BQMfjLfUp0yBoeXYFtR0kvfdcYXS
+	 PP+nweWme+eT4c7NB/USPRcL3wgDEJU2qcbSm2lmpV+UKLUyiRuyxR4kbSkO8dqhp3
+	 C6zPzIXOBMdZvdbTJmSIp8MuJYwd2KekprUtd2nOXn9PabmqYybJ7ljgOm5Fe9b4hZ
+	 1z0L2pWvGwOj5dt+UbA05m4VAOjhkQq5kYsw3tUOB2sZDkoIpdntp+vOGPpc7VOCU7
+	 gwsroM0sFGkfg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+71bfed2b2bcea46c98f2@syzkaller.appspotmail.com,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Witold Sadowski <wsadowski@marvell.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bongsu.jeon@samsung.com,
-	krzk@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 11/14] nfc/nci: Add the inconsistency check between the input data length and count
-Date: Wed,  5 Jun 2024 08:04:44 -0400
-Message-ID: <20240605120455.2967445-11-sashal@kernel.org>
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 12/14] spi: cadence: Ensure data lines set to low during dummy-cycle period
+Date: Wed,  5 Jun 2024 08:04:45 -0400
+Message-ID: <20240605120455.2967445-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120455.2967445-1-sashal@kernel.org>
 References: <20240605120455.2967445-1-sashal@kernel.org>
@@ -68,42 +65,100 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.92
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Witold Sadowski <wsadowski@marvell.com>
 
-[ Upstream commit 068648aab72c9ba7b0597354ef4d81ffaac7b979 ]
+[ Upstream commit 4a69c1264ff41bc5bf7c03101ada0454fbf08868 ]
 
-write$nci(r0, &(0x7f0000000740)=ANY=[@ANYBLOB="610501"], 0xf)
+During dummy-cycles xSPI will switch GPIO into Hi-Z mode. In that dummy
+period voltage on data lines will slowly drop, what can cause
+unintentional modebyte transmission. Value send to SPI memory chip will
+depend on last address, and clock frequency.
+To prevent unforeseen consequences of that behaviour, force send
+single modebyte(0x00).
+Modebyte will be send only if number of dummy-cycles is not equal
+to 0. Code must also reduce dummycycle byte count by one - as one byte
+is send as modebyte.
 
-Syzbot constructed a write() call with a data length of 3 bytes but a count value
-of 15, which passed too little data to meet the basic requirements of the function
-nci_rf_intf_activated_ntf_packet().
-
-Therefore, increasing the comparison between data length and count value to avoid
-problems caused by inconsistent data length and count.
-
-Reported-and-tested-by: syzbot+71bfed2b2bcea46c98f2@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Witold Sadowski <wsadowski@marvell.com>
+Link: https://msgid.link/r/20240529074037.1345882-2-wsadowski@marvell.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/virtual_ncidev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-cadence-xspi.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nfc/virtual_ncidev.c b/drivers/nfc/virtual_ncidev.c
-index 85c06dbb2c449..9fffd4421ad5b 100644
---- a/drivers/nfc/virtual_ncidev.c
-+++ b/drivers/nfc/virtual_ncidev.c
-@@ -121,6 +121,10 @@ static ssize_t virtual_ncidev_write(struct file *file,
- 		kfree_skb(skb);
- 		return -EFAULT;
- 	}
-+	if (strnlen(skb->data, count) != count) {
-+		kfree_skb(skb);
-+		return -EINVAL;
-+	}
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index d28b8bd5b70bc..b8bed8f39d2ae 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -146,6 +146,9 @@
+ #define CDNS_XSPI_STIG_DONE_FLAG		BIT(0)
+ #define CDNS_XSPI_TRD_STATUS			0x0104
  
- 	nci_recv_frame(ndev, skb);
- 	return count;
++#define MODE_NO_OF_BYTES			GENMASK(25, 24)
++#define MODEBYTES_COUNT			1
++
+ /* Helper macros for filling command registers */
+ #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase) ( \
+ 	FIELD_PREP(CDNS_XSPI_CMD_INSTR_TYPE, (data_phase) ? \
+@@ -158,9 +161,10 @@
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR3, ((op)->addr.val >> 24) & 0xFF) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R2_ADDR4, ((op)->addr.val >> 32) & 0xFF))
+ 
+-#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op) ( \
++#define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, modebytes) ( \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_ADDR5, ((op)->addr.val >> 40) & 0xFF) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_CMD, (op)->cmd.opcode) | \
++	FIELD_PREP(MODE_NO_OF_BYTES, modebytes) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_P1_R3_NUM_ADDR_BYTES, (op)->addr.nbytes))
+ 
+ #define CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op, chipsel) ( \
+@@ -174,12 +178,12 @@
+ #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op) \
+ 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R2_DCNT_L, (op)->data.nbytes & 0xFFFF)
+ 
+-#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op) ( \
++#define CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes) ( \
+ 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_DCNT_H, \
+ 		((op)->data.nbytes >> 16) & 0xffff) | \
+ 	FIELD_PREP(CDNS_XSPI_CMD_DSEQ_R3_NUM_OF_DUMMY, \
+ 		  (op)->dummy.buswidth != 0 ? \
+-		  (((op)->dummy.nbytes * 8) / (op)->dummy.buswidth) : \
++		  (((dummybytes) * 8) / (op)->dummy.buswidth) : \
+ 		  0))
+ 
+ #define CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op, chipsel) ( \
+@@ -352,6 +356,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 	u32 cmd_regs[6];
+ 	u32 cmd_status;
+ 	int ret;
++	int dummybytes = op->dummy.nbytes;
+ 
+ 	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
+ 	if (ret < 0)
+@@ -366,7 +371,12 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 	memset(cmd_regs, 0, sizeof(cmd_regs));
+ 	cmd_regs[1] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_1(op, data_phase);
+ 	cmd_regs[2] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_2(op);
+-	cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op);
++	if (dummybytes != 0) {
++		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 1);
++		dummybytes--;
++	} else {
++		cmd_regs[3] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_3(op, 0);
++	}
+ 	cmd_regs[4] = CDNS_XSPI_CMD_FLD_P1_INSTR_CMD_4(op,
+ 						       cdns_xspi->cur_cs);
+ 
+@@ -376,7 +386,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 		cmd_regs[0] = CDNS_XSPI_STIG_DONE_FLAG;
+ 		cmd_regs[1] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_1(op);
+ 		cmd_regs[2] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_2(op);
+-		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op);
++		cmd_regs[3] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_3(op, dummybytes);
+ 		cmd_regs[4] = CDNS_XSPI_CMD_FLD_DSEQ_CMD_4(op,
+ 							   cdns_xspi->cur_cs);
+ 
 -- 
 2.43.0
 
