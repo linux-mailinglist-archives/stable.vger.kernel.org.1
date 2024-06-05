@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-48093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADEB8FCC46
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:16:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB3B8FCC4A
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 312D8293E87
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:16:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E57121F24701
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E951B4C31;
-	Wed,  5 Jun 2024 11:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434701B4C59;
+	Wed,  5 Jun 2024 11:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hI1CmksD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxL2Y70d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A161B4C2B;
-	Wed,  5 Jun 2024 11:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7861B4C26;
+	Wed,  5 Jun 2024 11:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588493; cv=none; b=q47IiA4oYUdYylyFyuPMcZJ1/v+lGEIHYuXZOkRr+lrHAWbBWUKeJe+7SpErDgjkysjAw/fTkQJdCMgyCXf7oDnCyAMd16+twsglxWWSFGl16UO8ldbSTWU1cKxvN44kE1HDTn3yTKNwYhTaSc3wH5th/QQ/mIfBuY9luslvaU0=
+	t=1717588497; cv=none; b=NnQCDJvts/rJ2XrO3vnYP35x1J0rtf71M7gBQzZAjZ1GVQQ0kYGsxGGrU0XFcRHpvnzirms+VnCSqr+imNeVsgTX4nGPEWzMMPCuPrlWAjHO+DIxKHtPDsynGkNAHBrtMD/UfVl/3hoKDlDYJdDvjhlLZmUFyt36sfiCjmUYhaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588493; c=relaxed/simple;
-	bh=ghaJ6hQdbi2GgdV2gtK7tru7aQc6vMTFxyqHR4nedXA=;
+	s=arc-20240116; t=1717588497; c=relaxed/simple;
+	bh=sc1O7xPeix1Ghi4AI3U+TX/IROk0X2kwxoGlHy37ysI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCgSMq5bM6AizJNFe5XejxmW1Cnro+hZln3h/9fmSBZCwxAmH8ud/kbr6mLvo3xL0kUkpnqqf4S1QvedPCEE68w9Jl5RRbwY3WDt+Zw+0pjL4jqbxyw7LCTxf/LbZZK+jzB8PCZ9vK706t8UyudTtpLiLX8K79+YzislBZFKQ60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hI1CmksD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05C3C3277B;
-	Wed,  5 Jun 2024 11:54:51 +0000 (UTC)
+	 MIME-Version; b=cjK925JY05aHEpAqhqkzY3Mc8W448mBIJs+k9LePoucL8f9B3KGqleFNvHOORZ0jxxE4kYpK3n40xjZf9n+cHpr6gl1qNSnfMpcLjs2VSwqsCiXTYAQuLRjHUYbZBRGNa01FeQVpxFe3puV+CcLdEs9ozMiZ9dnMjz9jpCIUDAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxL2Y70d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564F4C32781;
+	Wed,  5 Jun 2024 11:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588492;
-	bh=ghaJ6hQdbi2GgdV2gtK7tru7aQc6vMTFxyqHR4nedXA=;
+	s=k20201202; t=1717588496;
+	bh=sc1O7xPeix1Ghi4AI3U+TX/IROk0X2kwxoGlHy37ysI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hI1CmksDwIxuLZlQ5Sf3AkULf+G9GFNg9EVDBm/ThjPTBuc37bLKj72DqGOmKJh8f
-	 ch9EbPlaqyqzfrQ+REA22YYKfR0muj26fwH9F0UOb3jkQAibOyh26tgx3GQIA364/x
-	 RJmjqkT1SEW0YGbFkutpvNFmC3Bf9BdhwP4ga2YOgNun80swPqyY6NtdsWSXQNlVIK
-	 28cCTasWopm70y9OLrUJZEsazoZ3bSkY0tWS/z/eLLyqPDA6g/kwOEyE2dDN2AtDXk
-	 3SEhDTkk8Y5eH8wdi/8GMmRdGfltMg4u15CdwggvpzwQBw0+7bvzDau9UZ1R0QfQUI
-	 NwHpKEmhA1Vew==
+	b=dxL2Y70dqQffBRfbOTC4O2w8HnSTTgVUub31T8j6LOTy/6z+dvcJvicRojkARmy/A
+	 0P7O0RYmgeZefR9E+hDiT2TgAKbBg3Q70DoRnYNBNp1OEqNP5j2P2AQUPlWGKBEnHy
+	 /OrLCD5U0FksZVO9FveTebdHHL9jAEAFtlkD37n1qQ1NiCxNauiBM2Lw37I/G7Jkmq
+	 bfZRjqsIH5Bq+dLsDoQOM0HBYcEuEVYiJ2RPV6dIw49JOd84KTt7yhNWb0kC1EDJO+
+	 aW0W6Gf58j7VGob6KiowxltwdSnrcQz/4cOyUB6T00X6uIHDyT8kpJJ7RhDPCNScLl
+	 FxAbKaIy4PueA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Songyang Li <leesongyang@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Cc: Parker Newman <pnewman@connecttech.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bhelgaas@google.com,
-	rdunlap@infradead.org,
-	linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 5/7] MIPS: Octeon: Add PCIe link status check
-Date: Wed,  5 Jun 2024 07:54:34 -0400
-Message-ID: <20240605115442.2964376-5-sashal@kernel.org>
+	jirislaby@kernel.org,
+	andriy.shevchenko@linux.intel.com,
+	matthew.howell@sealevel.com,
+	ilpo.jarvinen@linux.intel.com,
+	linux-serial@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 6/7] serial: exar: adding missing CTI and Exar PCI ids
+Date: Wed,  5 Jun 2024 07:54:35 -0400
+Message-ID: <20240605115442.2964376-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115442.2964376-1-sashal@kernel.org>
 References: <20240605115442.2964376-1-sashal@kernel.org>
@@ -67,53 +69,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.218
 Content-Transfer-Encoding: 8bit
 
-From: Songyang Li <leesongyang@outlook.com>
+From: Parker Newman <pnewman@connecttech.com>
 
-[ Upstream commit 29b83a64df3b42c88c0338696feb6fdcd7f1f3b7 ]
+[ Upstream commit b86ae40ffcf5a16b9569b1016da4a08c4f352ca2 ]
 
-The standard PCIe configuration read-write interface is used to
-access the configuration space of the peripheral PCIe devices
-of the mips processor after the PCIe link surprise down, it can
-generate kernel panic caused by "Data bus error". So it is
-necessary to add PCIe link status check for system protection.
-When the PCIe link is down or in training, assigning a value
-of 0 to the configuration address can prevent read-write behavior
-to the configuration space of peripheral PCIe devices, thereby
-preventing kernel panic.
+- Added Connect Tech and Exar IDs not already in pci_ids.h
 
-Signed-off-by: Songyang Li <leesongyang@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Parker Newman <pnewman@connecttech.com>
+Link: https://lore.kernel.org/r/7c3d8e795a864dd9b0a00353b722060dc27c4e09.1713270624.git.pnewman@connecttech.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/pci/pcie-octeon.c | 6 ++++++
- 1 file changed, 6 insertions(+)
- mode change 100644 => 100755 arch/mips/pci/pcie-octeon.c
+ drivers/tty/serial/8250/8250_exar.c | 42 +++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
-old mode 100644
-new mode 100755
-index d919a0d813a17..38de2a9c3cf1a
---- a/arch/mips/pci/pcie-octeon.c
-+++ b/arch/mips/pci/pcie-octeon.c
-@@ -230,12 +230,18 @@ static inline uint64_t __cvmx_pcie_build_config_addr(int pcie_port, int bus,
- {
- 	union cvmx_pcie_address pcie_addr;
- 	union cvmx_pciercx_cfg006 pciercx_cfg006;
-+	union cvmx_pciercx_cfg032 pciercx_cfg032;
+diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
+index 7c28d2752a4cd..3d09f8f30e02a 100644
+--- a/drivers/tty/serial/8250/8250_exar.c
++++ b/drivers/tty/serial/8250/8250_exar.c
+@@ -41,8 +41,50 @@
+ #define PCI_DEVICE_ID_COMMTECH_4228PCIE		0x0021
+ #define PCI_DEVICE_ID_COMMTECH_4222PCIE		0x0022
  
- 	pciercx_cfg006.u32 =
- 	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG006(pcie_port));
- 	if ((bus <= pciercx_cfg006.s.pbnum) && (dev != 0))
- 		return 0;
- 
-+	pciercx_cfg032.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
-+	if ((pciercx_cfg032.s.dlla == 0) || (pciercx_cfg032.s.lt == 1))
-+		return 0;
++#define PCI_VENDOR_ID_CONNECT_TECH				0x12c4
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_SP_OPTO        0x0340
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_A      0x0341
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_B      0x0342
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS           0x0350
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_A         0x0351
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_B         0x0352
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS           0x0353
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_A        0x0354
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_B        0x0355
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS_OPTO      0x0360
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_A    0x0361
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_B    0x0362
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP             0x0370
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232         0x0371
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_485         0x0372
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_SP           0x0373
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_6_2_SP           0x0374
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_6_SP           0x0375
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232_NS      0x0376
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_LEFT   0x0380
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_RIGHT  0x0381
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XP_OPTO        0x0382
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_XPRS_OPTO    0x0392
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP        0x03A0
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232    0x03A1
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_485    0x03A2
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232_NS 0x03A3
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XEG001               0x0602
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_BASE           0x1000
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_2              0x1002
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_4              0x1004
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_8              0x1008
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_12             0x100C
++#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_16             0x1010
++#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG00X          0x110c
++#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG01X          0x110d
++#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_16                 0x1110
 +
- 	pcie_addr.u64 = 0;
- 	pcie_addr.config.upper = 2;
- 	pcie_addr.config.io = 1;
+ #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
+ #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
++#define PCI_DEVICE_ID_EXAR_XR17V252		0x0252
++#define PCI_DEVICE_ID_EXAR_XR17V254		0x0254
++#define PCI_DEVICE_ID_EXAR_XR17V258		0x0258
+ 
+ #define PCI_SUBDEVICE_ID_USR_2980		0x0128
+ #define PCI_SUBDEVICE_ID_USR_2981		0x0129
 -- 
 2.43.0
 
