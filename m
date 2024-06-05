@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594318FCC2C
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:14:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A5F8FCC25
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BB7E2853A9
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:13:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD4A01C22992
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF061B29D5;
-	Wed,  5 Jun 2024 11:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49DE19754D;
+	Wed,  5 Jun 2024 11:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ED+4V6to"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCCEZxpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C6B1B29CE;
-	Wed,  5 Jun 2024 11:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F151974FF;
+	Wed,  5 Jun 2024 11:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588462; cv=none; b=YYSjhTQkBlSKO//WOP13efUvWnrt18OHfHuVJGUKOgzw5bh1JWBnSbB9J6V4PrVVb3bFuKVku66vTdjeAnmNhV8zUEuh6HpFl7HjeBT9kg+JUD2Ugg9TbcHPFkZoQNGL3kvQlM+9EdxT7IRwfXgNxV6saJvXRbMofl5AqJPhrok=
+	t=1717588463; cv=none; b=Pbssk+kQKguUV9/+Uexxy2dvTn+0DHK4KWXpFVS+QTuMctmMY/GNNd4Ai3ynT5u/Lw5l/4bGAL9xQ4w34fHiGSp2cc4KPei1BcpH5IyRE8jp4hXBp1Pw7KwNEnbyJJYGKjgon2Wnk8uU1Jx1nTCU6ToGePuo8xTOOUcffqPOua0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588462; c=relaxed/simple;
-	bh=SqE/7ZxjoRP7Qu6WCwbjJ2CVGqfrbJ5xVIFIQFVoSHk=;
+	s=arc-20240116; t=1717588463; c=relaxed/simple;
+	bh=vZPl2Rg9MMjHgwCnAcC6p7mvcU/vcb8ipMfTFMNDETU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpEAffRVQRUMneFLwPYh/JyH21RyRBn0HTUfiP53J8NyA7I2CE2k0vJAhYLIQCgAFiUnBHj1grdxopJVK0ucPOY5AKBD2CFF1TyfP1VKtRgl3netgo23O7JvFiZ/MB0S31i+12g3N2pMajSafq3Hpckw1IM1GDbrfg8Gv0So9fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ED+4V6to; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094C6C3277B;
-	Wed,  5 Jun 2024 11:54:20 +0000 (UTC)
+	 MIME-Version; b=dY9y6dh7AO5V95QV9uA9RhIePorSNhg/1nbf7gWcxSmyUYnhiHZdz59BqjnSPMqkI5X+9n4tegqe/gyguzUW8LalnIIxCZiiQZyS3HWpYq8mLZVr7hTpEpqcIuoPl5M+XblAsPnR/vxmoAXDqzoE5TKle4YNRfddxIzoh5DSNgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCCEZxpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B370C32786;
+	Wed,  5 Jun 2024 11:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588461;
-	bh=SqE/7ZxjoRP7Qu6WCwbjJ2CVGqfrbJ5xVIFIQFVoSHk=;
+	s=k20201202; t=1717588463;
+	bh=vZPl2Rg9MMjHgwCnAcC6p7mvcU/vcb8ipMfTFMNDETU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ED+4V6tolaJx9JGgcTTMKy/Wc5F+MgETjZLWeP4AHOooB452dBNBMHXjH0kc7tpLN
-	 5rtnrz7PvxA0XIUYtE0qhJ0SCen2t4oEiLtLkVYzjEYWYsrSW7KFEBO8TB4eE6qt3+
-	 SxeaOa7feSyzu2pBHO2VK4MQ62Tc803dBoLMzwdPLq09yWvUE/GdqFhs0y2vPE+2zi
-	 RXBWuvzvU01V6UycmxmBfpsWLxsNu9vv/qVbNbu2g/b/06DZIJpIPygkovfo9TzDNr
-	 N0hodnRj2L2YJVzdIam6DMnh/6+U84egxzpsaiiiI1/BfnKswRjNNmRB/f9WD4djLR
-	 FiWtVNrUmL8Gw==
+	b=sCCEZxpX/zWeYEK3nmS5lRZLp+TQPa1lEiufq2I+ByLxGgLXTDPBG5GJhS56X4plj
+	 AKn+h43iyMM/fS7m/n2TkCEH6f1MODQ5scUeiuxqWXGgwo+jLV35VUVhLiD22fJjf9
+	 OV/ZE+wq+Gpiro0YUYLZDQHU7zyOp+TI1ki11ZQ3Vjd9a3g3xPvCLs7c1QnymOAR9o
+	 x53FvQaUQ18IDZzVZq491udQzTVSBiAaJ6Ac9vyra3/R2rAbaCWr1K1m/5IZM2t4BZ
+	 Tnibv6SUEOQeFQ1CMpBkrP29GgVg2m9MV8gR50W36XLaV2Su3L/SkGbFdGKw1CKEBh
+	 FkKiUWct5fwcg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Joao Pinto <Joao.Pinto@synopsys.com>,
-	Joao Pinto <jpinto@synopsys.com>,
-	Vinod Koul <vkoul@kernel.org>,
+Cc: Roman Smirnov <r.smirnov@omp.ru>,
+	Jan Kara <jack@suse.cz>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
 	Sasha Levin <sashal@kernel.org>,
-	Eugeniy.Paltsev@synopsys.com,
-	dmaengine@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 3/9] Avoid hw_desc array overrun in dw-axi-dmac
-Date: Wed,  5 Jun 2024 07:54:01 -0400
-Message-ID: <20240605115415.2964165-3-sashal@kernel.org>
+	jack@suse.com
+Subject: [PATCH AUTOSEL 5.15 4/9] udf: udftime: prevent overflow in udf_disk_stamp_to_time()
+Date: Wed,  5 Jun 2024 07:54:02 -0400
+Message-ID: <20240605115415.2964165-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605115415.2964165-1-sashal@kernel.org>
 References: <20240605115415.2964165-1-sashal@kernel.org>
@@ -67,75 +66,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.160
 Content-Transfer-Encoding: 8bit
 
-From: Joao Pinto <Joao.Pinto@synopsys.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 333e11bf47fa8d477db90e2900b1ed3c9ae9b697 ]
+[ Upstream commit 3b84adf460381169c085e4bc09e7b57e9e16db0a ]
 
-I have a use case where nr_buffers = 3 and in which each descriptor is composed by 3
-segments, resulting in the DMA channel descs_allocated to be 9. Since axi_desc_put()
-handles the hw_desc considering the descs_allocated, this scenario would result in a
-kernel panic (hw_desc array will be overrun).
+An overflow can occur in a situation where src.centiseconds
+takes the value of 255. This situation is unlikely, but there
+is no validation check anywere in the code.
 
-To fix this, the proposal is to add a new member to the axi_dma_desc structure,
-where we keep the number of allocated hw_descs (axi_desc_alloc()) and use it in
-axi_desc_put() to handle the hw_desc array correctly.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Additionally I propose to remove the axi_chan_start_first_queued() call after completing
-the transfer, since it was identified that unbalance can occur (started descriptors can
-be interrupted and transfer ignored due to DMA channel not being enabled).
-
-Signed-off-by: Joao Pinto <jpinto@synopsys.com>
-Link: https://lore.kernel.org/r/1711536564-12919-1-git-send-email-jpinto@synopsys.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20240327132755.13945-1-r.smirnov@omp.ru>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 6 ++----
- drivers/dma/dw-axi-dmac/dw-axi-dmac.h          | 1 +
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ fs/udf/udftime.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-index cfc47efcb5d93..6715ade391aa1 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-@@ -213,6 +213,7 @@ static struct axi_dma_desc *axi_desc_alloc(u32 num)
- 		kfree(desc);
- 		return NULL;
- 	}
-+	desc->nr_hw_descs = num;
- 
- 	return desc;
+diff --git a/fs/udf/udftime.c b/fs/udf/udftime.c
+index fce4ad976c8c2..26169b1f482c3 100644
+--- a/fs/udf/udftime.c
++++ b/fs/udf/udftime.c
+@@ -60,13 +60,18 @@ udf_disk_stamp_to_time(struct timespec64 *dest, struct timestamp src)
+ 	dest->tv_sec = mktime64(year, src.month, src.day, src.hour, src.minute,
+ 			src.second);
+ 	dest->tv_sec -= offset * 60;
+-	dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
+-			src.hundredsOfMicroseconds * 100 + src.microseconds);
++
+ 	/*
+ 	 * Sanitize nanosecond field since reportedly some filesystems are
+ 	 * recorded with bogus sub-second values.
+ 	 */
+-	dest->tv_nsec %= NSEC_PER_SEC;
++	if (src.centiseconds < 100 && src.hundredsOfMicroseconds < 100 &&
++	    src.microseconds < 100) {
++		dest->tv_nsec = 1000 * (src.centiseconds * 10000 +
++			src.hundredsOfMicroseconds * 100 + src.microseconds);
++	} else {
++		dest->tv_nsec = 0;
++	}
  }
-@@ -239,7 +240,7 @@ static struct axi_dma_lli *axi_desc_get(struct axi_dma_chan *chan,
- static void axi_desc_put(struct axi_dma_desc *desc)
- {
- 	struct axi_dma_chan *chan = desc->chan;
--	int count = atomic_read(&chan->descs_allocated);
-+	int count = desc->nr_hw_descs;
- 	struct axi_dma_hw_desc *hw_desc;
- 	int descs_put;
  
-@@ -1049,9 +1050,6 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
- 		/* Remove the completed descriptor from issued list before completing */
- 		list_del(&vd->node);
- 		vchan_cookie_complete(vd);
--
--		/* Submit queued descriptors after processing the completed ones */
--		axi_chan_start_first_queued(chan);
- 	}
- 
- out:
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-index 380005afde160..58fc6310ee364 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-@@ -101,6 +101,7 @@ struct axi_dma_desc {
- 	u32				completed_blocks;
- 	u32				length;
- 	u32				period_len;
-+	u32				nr_hw_descs;
- };
- 
- static inline struct device *dchan2dev(struct dma_chan *dchan)
+ void
 -- 
 2.43.0
 
