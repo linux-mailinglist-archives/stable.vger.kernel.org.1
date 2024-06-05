@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-48208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408DC8FCE33
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 15:03:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C3508FCDB8
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 14:50:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF3A5B2BB90
-	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F22CE1F29EDF
+	for <lists+stable@lfdr.de>; Wed,  5 Jun 2024 12:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942251CF0EE;
-	Wed,  5 Jun 2024 12:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A791CF119;
+	Wed,  5 Jun 2024 12:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G3W9B++Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ntiqb7sd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9A01CF0E4;
-	Wed,  5 Jun 2024 12:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53BB1CF10F;
+	Wed,  5 Jun 2024 12:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717589143; cv=none; b=hTa2QWH9OfS3Tn4xfhME52XATiGJhE6d10Eq1krVcXNIA8pfHwjUDmbte6AY192hegoeEHCUN+S/XYdQRHAqDkH8D0PxiBoCvnAg+Xxy7q+IUjENGKmJw7euePGFYD7Fmlg2opBfgrx8rkKrQAz3I0srmDxrR7qBBZTS5BuwwXQ=
+	t=1717589144; cv=none; b=uMzERByPL5Wh7TdXdLpXQ1BN/XW7AF1XG3QL7h4rF+B4ycSgn0siDA6rprbRc4gK1q7BSV3IHXpDI8j/Om7E/VvjJ5FAn2u/DBnpNf0ZqFMKJeRvvVSlXH6ulynBoqLk2Foo9ZQR3rDfZiPPNKzm6SY0A0u4Zp6jU2tPSxsz2DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717589143; c=relaxed/simple;
-	bh=PIL85le6TylC8h8GE+KSRqZYSzcb6zoB6JTiR4+ltrE=;
+	s=arc-20240116; t=1717589144; c=relaxed/simple;
+	bh=9+I3qk58P2Tix1QmChv9y7ZaEhThCOAIIu7ewW9ZtCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zf6Q/0f8RLVesqj5rMSXumlILgGCUtoKP4ukDYQe/R5HoI4jvumNSmw7GyUzTMHXrXKv5+0s2cUwfYeEzlNtM8EPE8EX0ZgcGJg3XT+L4K2rbEjbZ8pXs276NirPPxaaT/FnOLtX+1oe8lxik3Vu29B+3Rf2iD8dlWIOYY7iluA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G3W9B++Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480EBC32781;
-	Wed,  5 Jun 2024 12:05:42 +0000 (UTC)
+	 MIME-Version; b=QWk0Og2Ut2rJjAgA9DD2hG+TY2EWirU3amI/cgGlM/LqGwvIsYx+zNRbsrjjAwHnMzD+fzy2dwGm2cz2gZ7UuNiHvZfrp8RdLAQW+83BWpKIeL6ckfk/mbSx1oyAi/7/eoHda+Mk3BMiSDJgHL1b38mNI/8u0q/fQqgws7O2tXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ntiqb7sd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F897C32781;
+	Wed,  5 Jun 2024 12:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717589143;
-	bh=PIL85le6TylC8h8GE+KSRqZYSzcb6zoB6JTiR4+ltrE=;
+	s=k20201202; t=1717589144;
+	bh=9+I3qk58P2Tix1QmChv9y7ZaEhThCOAIIu7ewW9ZtCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3W9B++QGKANbZn96Dpn4hB3MxYVhtN6WlsUFDqQ7ezDx+6l5j/typ2kdPYAMoDP6
-	 02Zy97dH5e2gmLNmFbjsOZxiW+klOjYY4k7xZ7q5H+cacXFa2G/L7czajCS1bMQSMU
-	 g5rcnTjO3mRZGif6NhF3FpHjT6pMT/ZNKbZRNex61dbQPn+UYZl85kock5MLxBR1nP
-	 jY31iOPuUeuc3JuTc+z/ZPKdzPeFycuW71jqflPZZ4dKaZ9xc0XYDZ2lRdzKuH+4cp
-	 AOPmK5wCaqi2p+DzxgdzLEdGFBQ0l9uqp/4DH/pJ5mWrfif3cuAg4UTlx1dfLpxgOf
-	 My0kKhlPwl8QA==
+	b=ntiqb7sdOtqKeY4i0szQRof4wur3l4q1h2VymufQXGk0F1GjMXdYyzqp2vq3T5klV
+	 wBrbdni+au7wBspwm8OZqGE9dZXYvzorqSN4dWerVDBZkABdx/3Bz+FXt/T2CBJdh0
+	 o0NyOhCN+bRUV5Wvacct+/tNEm0z4RqY6ALVJdtlrVFn+m1GubHHz1sNvpFhUzGN6C
+	 rqJzua/Th5F82as6Lemj01VQ476GFripe3v+2GzoFzkcUdIzfGDbOlD+yioAGfSJ9G
+	 RIlfm9qwiS4ZFBfdn+W7bM3UPQj7HidGmwl6+cEWBSDWm+0xgHljeRca+NbkOUw50F
+	 d2/wlxD6educg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: hmtheboy154 <buingoc67@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+Cc: Sagi Grimberg <sagi@grimberg.me>,
+	Alex Turin <alex@vastdata.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ilpo.jarvinen@linux.intel.com,
-	linux-input@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 08/12] platform/x86: touchscreen_dmi: Add info for the EZpad 6s Pro
-Date: Wed,  5 Jun 2024 08:05:18 -0400
-Message-ID: <20240605120528.2967750-8-sashal@kernel.org>
+	kch@nvidia.com,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 09/12] nvmet: fix a possible leak when destroy a ctrl during qp establishment
+Date: Wed,  5 Jun 2024 08:05:19 -0400
+Message-ID: <20240605120528.2967750-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240605120528.2967750-1-sashal@kernel.org>
 References: <20240605120528.2967750-1-sashal@kernel.org>
@@ -67,44 +68,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.160
 Content-Transfer-Encoding: 8bit
 
-From: hmtheboy154 <buingoc67@gmail.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit 3050052613790e75b5e4a8536930426b0a8b0774 ]
+[ Upstream commit c758b77d4a0a0ed3a1292b3fd7a2aeccd1a169a4 ]
 
-The "EZpad 6s Pro" uses the same touchscreen as the "EZpad 6 Pro B",
-unlike the "Ezpad 6 Pro" which has its own touchscreen.
+In nvmet_sq_destroy we capture sq->ctrl early and if it is non-NULL we
+know that a ctrl was allocated (in the admin connect request handler)
+and we need to release pending AERs, clear ctrl->sqs and sq->ctrl
+(for nvme-loop primarily), and drop the final reference on the ctrl.
 
-Signed-off-by: hmtheboy154 <buingoc67@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240527091447.248849-3-hdegoede@redhat.com
+However, a small window is possible where nvmet_sq_destroy starts (as
+a result of the client giving up and disconnecting) concurrently with
+the nvme admin connect cmd (which may be in an early stage). But *before*
+kill_and_confirm of sq->ref (i.e. the admin connect managed to get an sq
+live reference). In this case, sq->ctrl was allocated however after it was
+captured in a local variable in nvmet_sq_destroy.
+This prevented the final reference drop on the ctrl.
+
+Solve this by re-capturing the sq->ctrl after all inflight request has
+completed, where for sure sq->ctrl reference is final, and move forward
+based on that.
+
+This issue was observed in an environment with many hosts connecting
+multiple ctrls simoutanuosly, creating a delay in allocating a ctrl
+leading up to this race window.
+
+Reported-by: Alex Turin <alex@vastdata.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/nvme/target/core.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index c59f829d397f2..4d4eae5a4153b 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -1349,6 +1349,17 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_BIOS_DATE, "04/24/2018"),
- 		},
- 	},
-+	{
-+		/* Jumper EZpad 6s Pro */
-+		.driver_data = (void *)&jumper_ezpad_6_pro_b_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Jumper"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Ezpad"),
-+			/* Above matches are too generic, add bios match */
-+			DMI_MATCH(DMI_BIOS_VERSION, "E.WSA116_8.E1.042.bin"),
-+			DMI_MATCH(DMI_BIOS_DATE, "01/08/2020"),
-+		},
-+	},
- 	{
- 		/* Jumper EZpad 6 m4 */
- 		.driver_data = (void *)&jumper_ezpad_6_m4_data,
+diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
+index 2c44d5a95c8d6..ef2e500bccfdf 100644
+--- a/drivers/nvme/target/core.c
++++ b/drivers/nvme/target/core.c
+@@ -801,6 +801,15 @@ void nvmet_sq_destroy(struct nvmet_sq *sq)
+ 	wait_for_completion(&sq->free_done);
+ 	percpu_ref_exit(&sq->ref);
+ 
++	/*
++	 * we must reference the ctrl again after waiting for inflight IO
++	 * to complete. Because admin connect may have sneaked in after we
++	 * store sq->ctrl locally, but before we killed the percpu_ref. the
++	 * admin connect allocates and assigns sq->ctrl, which now needs a
++	 * final ref put, as this ctrl is going away.
++	 */
++	ctrl = sq->ctrl;
++
+ 	if (ctrl) {
+ 		/*
+ 		 * The teardown flow may take some time, and the host may not
 -- 
 2.43.0
 
