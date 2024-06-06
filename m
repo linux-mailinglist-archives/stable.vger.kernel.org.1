@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-48833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17C88FEABE
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9181A8FEABC
 	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 477EAB23904
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475641F24684
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA19195998;
-	Thu,  6 Jun 2024 14:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253441991DD;
+	Thu,  6 Jun 2024 14:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpBD4ycZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9zGUOD8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9A819753F;
-	Thu,  6 Jun 2024 14:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8336197543;
+	Thu,  6 Jun 2024 14:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683170; cv=none; b=W9DQLemNLRDYydmiecIHJjcD4ziEJRSEMoaVwAMIg8nMkMgFjaJAJT5aXfA+6JiZW2uNJvtNsKlA3mIT1vM+fQ2QcZU16tCPogla8K7ZXpyWdW+Y7Ul8PaPk1FxXIgOHQaObHJywr9BbZ1PbaARRHaVtK9KhjiikbAG1M4a7ezs=
+	t=1717683170; cv=none; b=mvsUIrmmjBeEiuSV46EBzCTMtCSJif7Xxr3NyiL/Q9JVBsqKd0KVedDjXCclCAHNL8fyiA4eCb/2di/Ad6COsHih6eNXhva+tB3Jy6SVPzHAcSJOd7Gj5g/KITXEePawQ5k7YURGI6ZrPDL5xsqquSjFQA7iP5yEWGbsYSURz3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717683170; c=relaxed/simple;
-	bh=24tsOvnpnkjplcRYE+cFk5K0OL6cVl9XKApnT9OcDnM=;
+	bh=IKQRgDESD/QLqPh0oYWembQPfyrNuQGr0tQwGYyFlXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxoOb2OnIugOEWC0BRNrGrn265TZZTqunPlU4t7Z7xdKBPtwG4ztCvQE5Pfau/GiMnBnTqHSaqDng2ETwBcG9CuSvBYpLrrMDCK6BM/0xItns0WrO91SXQLhcHdG25si0fgICJPD/TNTAQckmrqSUPjBCsvt0BiOF6d0H9FwEeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpBD4ycZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B29C4AF09;
-	Thu,  6 Jun 2024 14:12:49 +0000 (UTC)
+	 MIME-Version; b=uI7pcKv5EKTQ6Zwx7yWroX4IBTnPu1ySCFQCpfgRKCKTnlJo0domXSTLsspp/LYWy5azw5YZZWcZ59NsgDl9OKu7wgFW8gZ4/MK/zMiq17+DZECG5eda6VS9s7ZCyEuYRsxEIBgSV323u4Prohm4+tt2+JXL6EGfCOcgKqOQFWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9zGUOD8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611F6C32782;
+	Thu,  6 Jun 2024 14:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683169;
-	bh=24tsOvnpnkjplcRYE+cFk5K0OL6cVl9XKApnT9OcDnM=;
+	s=korg; t=1717683170;
+	bh=IKQRgDESD/QLqPh0oYWembQPfyrNuQGr0tQwGYyFlXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZpBD4ycZ6SGnqt1k6yIY0lmgFVd6FSPFQLRtj+1iFypK5KjWTFbPp4sudlYmQQ8JH
-	 AP4xIRXXM8uVwsIIORV1umqr6IaHHCBiBAunbStWsq5MYFhMYObfDO4qbDBvBwhuP5
-	 pw+gVHH51r1iZ0TWNnV5dbgwiHMefo5FAbAsYm0k=
+	b=z9zGUOD83CYilq/fHqAHEnik9AfhL9tV1S3naaxA0SNZvhYcBDxPZVgOZlrF77vs9
+	 tKMH6VkXrUFXj1N35gacXqNhNbkHEGSk3CRfHZRSPBVEi5jPf1P+txhu98xeQFgTlI
+	 IeIeLA8JXamaBot52kl9NL1ek7gcjI4/58BvGFRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Mukesh Ojha <quic_mojha@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Xilin Wu <wuxilin123@gmail.com>
-Subject: [PATCH 6.6 114/744] soc: qcom: pmic_glink: notify clients about the current state
-Date: Thu,  6 Jun 2024 15:56:26 +0200
-Message-ID: <20240606131736.057521045@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 115/744] firmware: qcom: scm: Fix __scm and waitq completion variable initialization
+Date: Thu,  6 Jun 2024 15:56:27 +0200
+Message-ID: <20240606131736.088312649@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,46 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-[ Upstream commit d6cbce2cd354c9a37a558f290a8f1dfd20584f99 ]
+[ Upstream commit 2e4955167ec5c04534cebea9e8273a907e7a75e1 ]
 
-In case the client is registered after the pmic-glink recived a response
-from the Protection Domain mapper, it is going to miss the notification
-about the state. Notify clients about the current state upon
-registration.
+It is possible qcom_scm_is_available() gives wrong indication that
+if __scm is initialized while __scm->dev is not and similar issue
+is also possible with __scm->waitq_comp.
 
-Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Tested-by: Xilin Wu <wuxilin123@gmail.com> # on QCS8550 AYN Odin 2
-Link: https://lore.kernel.org/r/20240403-pmic-glink-fix-clients-v2-2-aed4e02baacc@linaro.org
+Fix this appropriately by the use of release barrier and read barrier
+that will make sure if __scm is initialized so, is all of its field
+variable.
+
+Fixes: d0f6fa7ba2d6 ("firmware: qcom: scm: Convert SCM to platform driver")
+Fixes: 6bf325992236 ("firmware: qcom: scm: Add wait-queue handling logic")
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Link: https://lore.kernel.org/r/1711034642-22860-4-git-send-email-quic_mojha@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pmic_glink.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/firmware/qcom_scm.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
-index c6dca5278e61b..062ff7b12de6a 100644
---- a/drivers/soc/qcom/pmic_glink.c
-+++ b/drivers/soc/qcom/pmic_glink.c
-@@ -86,9 +86,14 @@ struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
- 	client->pdr_notify = pdr;
- 	client->priv = priv;
+diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+index 69831f1d91e3f..ff7c155239e31 100644
+--- a/drivers/firmware/qcom_scm.c
++++ b/drivers/firmware/qcom_scm.c
+@@ -1333,7 +1333,7 @@ static int qcom_scm_find_dload_address(struct device *dev, u64 *addr)
+  */
+ bool qcom_scm_is_available(void)
+ {
+-	return !!__scm;
++	return !!READ_ONCE(__scm);
+ }
+ EXPORT_SYMBOL_GPL(qcom_scm_is_available);
  
-+	mutex_lock(&pg->state_lock);
- 	mutex_lock(&pg->client_lock);
-+
- 	list_add(&client->node, &pg->clients);
-+	client->pdr_notify(client->priv, pg->client_state);
-+
- 	mutex_unlock(&pg->client_lock);
-+	mutex_unlock(&pg->state_lock);
+@@ -1414,10 +1414,12 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	if (!scm)
+ 		return -ENOMEM;
  
- 	devres_add(dev, client);
++	scm->dev = &pdev->dev;
+ 	ret = qcom_scm_find_dload_address(&pdev->dev, &scm->dload_mode_addr);
+ 	if (ret < 0)
+ 		return ret;
  
++	init_completion(&scm->waitq_comp);
+ 	mutex_init(&scm->scm_bw_lock);
+ 
+ 	scm->path = devm_of_icc_get(&pdev->dev, NULL);
+@@ -1449,10 +1451,8 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	__scm = scm;
+-	__scm->dev = &pdev->dev;
+-
+-	init_completion(&__scm->waitq_comp);
++	/* Let all above stores be available after this */
++	smp_store_release(&__scm, scm);
+ 
+ 	irq = platform_get_irq_optional(pdev, 0);
+ 	if (irq < 0) {
 -- 
 2.43.0
 
