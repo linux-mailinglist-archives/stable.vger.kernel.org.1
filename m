@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2171E8FEC31
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52B38FEDE9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA57A1F2998C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7421C2431A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D4B1AD9FD;
-	Thu,  6 Jun 2024 14:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0659319EEA5;
+	Thu,  6 Jun 2024 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiBdbAM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcy1oqUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92446198858;
-	Thu,  6 Jun 2024 14:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F1C1990B7;
+	Thu,  6 Jun 2024 14:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683339; cv=none; b=esivL1X96mdDsPxQGmguLKJ4ULsl0vucdtgOIYN1HwvKNtEpXwMlBvOvXJUFbnGxa8xDwI9+g5m4QY9XmOTEeqnJGL/68mSgKqUpj1jjo6boWpjVkpEVvZReLpWMCg0jAEt2V2m55AYH1BjxAOx/XPn+D0b22IXvRsoo2DbyEPQ=
+	t=1717683538; cv=none; b=IPT4UVwS0aF5ieEZoVx9P529lGx64bybElebL+mx1TyjDFknfGh1eLhbtFjLH5eARKF7x28OID/r2WNl7H00jRaAQy9R9CB9pp7v4I1jmhb1U3V0LrgskoLyu3r3s533UZ/cjTVu37ldQ/TIDAYbXTjMO0qLZro1TwRTRBtDLLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683339; c=relaxed/simple;
-	bh=EulsvdkFI9ToXBiBeJ2Xn+NRhJS7KmAcwqnaoGlRlRo=;
+	s=arc-20240116; t=1717683538; c=relaxed/simple;
+	bh=qCCpJ2AOCwL9L20BCFr0qr02C5XET9qRiEoxW3wx8iE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ST+HJGPjXwuHtk4uUiJh8RJj/GJc5gB0aEw8/Y9xhGMKbd49P7tsz3OQZUKuANADqzopaNSFB3Hm9cQTQjxr9rvYzIENiGP6X8uDaxWQFboS10Rbq/5hTF6r9c+qaIdJ9edhSanglkkZSsAg4+No6OihUq27F2X7j7kN25j9v7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiBdbAM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F29BC2BD10;
-	Thu,  6 Jun 2024 14:15:39 +0000 (UTC)
+	 MIME-Version; b=FWgW8Vp4G9qMvyYesEzFbSGSZsBv0AXIw3aoIpR97DStqw2DVdwl04ean51V75lgV755NBgmzG2ndPyP9h2nB0Qt92vjSfSLtO11FG49cPeVIOnigl8nKyrDzubJvBj+5qTzdRymQBtPGMt0H+6zoYAZly2qmER2NLejV2RhVuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcy1oqUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96071C2BD10;
+	Thu,  6 Jun 2024 14:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683339;
-	bh=EulsvdkFI9ToXBiBeJ2Xn+NRhJS7KmAcwqnaoGlRlRo=;
+	s=korg; t=1717683538;
+	bh=qCCpJ2AOCwL9L20BCFr0qr02C5XET9qRiEoxW3wx8iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IiBdbAM/7CMDyskdKTBXplxekhP1zL0pje+/3YCnBftv4o9pGGRYQKHGHMyoZSAam
-	 SYR0ae1x7e6PtKib5W7Sl6ejsT+uBxBXdF6MkUUWvT2uBqiwOWuWvbJ5lro7snPb+9
-	 P3go0oU45HQEaNrcb+/v3rPtYcoDowWU6sdSni0E=
+	b=kcy1oqUU8FW3W1BcGko827mO8yx9+mbdrqFOCEUXTFsOTVbAGDBq3T01ZIGufIHIC
+	 HS1xcGXXEQpLzs/rG/0ypjGJWBkYYPSIpUlzhmP0A8wtLiPRDn8Feh+QhCuUQWaEG5
+	 RlAyhSIZjONr7z9G9ulF0At0d0U4nRq1wt3fZFPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huai-Yuan Liu <qq810974084@gmail.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 221/473] drm/arm/malidp: fix a possible null pointer dereference
+Subject: [PATCH 6.6 478/744] xfs: upgrade the extent counters in xfs_reflink_end_cow_extent later
 Date: Thu,  6 Jun 2024 16:02:30 +0200
-Message-ID: <20240606131707.196581778@linuxfoundation.org>
+Message-ID: <20240606131747.793582150@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huai-Yuan Liu <qq810974084@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit a1f95aede6285dba6dd036d907196f35ae3a11ea ]
+[ Upstream commit 99fb6b7ad1f2fb83d8df2c1382be63a1f50b1ae0 ]
 
-In malidp_mw_connector_reset, new memory is allocated with kzalloc, but
-no check is performed. In order to prevent null pointer dereferencing,
-ensure that mw_state is checked before calling
-__drm_atomic_helper_connector_reset.
+Defer the extent counter size upgrade until we know we're going to
+modify the extent mapping.  This also defers dirtying the transaction
+and will allow us safely back out later in the function in later
+changes.
 
-Fixes: 8cbc5caf36ef ("drm: mali-dp: Add writeback connector")
-Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240407063053.5481-1-qq810974084@gmail.com
+Fixes: 4f86bb4b66c9 ("xfs: Conditionally upgrade existing inodes to use large extent counters")
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/arm/malidp_mw.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_reflink.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/arm/malidp_mw.c b/drivers/gpu/drm/arm/malidp_mw.c
-index ef76d0e6ee2fc..389d32994135b 100644
---- a/drivers/gpu/drm/arm/malidp_mw.c
-+++ b/drivers/gpu/drm/arm/malidp_mw.c
-@@ -72,7 +72,10 @@ static void malidp_mw_connector_reset(struct drm_connector *connector)
- 		__drm_atomic_helper_connector_destroy_state(connector->state);
+diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
+index e5b62dc284664..2322d45ac5e78 100644
+--- a/fs/xfs/xfs_reflink.c
++++ b/fs/xfs/xfs_reflink.c
+@@ -750,14 +750,6 @@ xfs_reflink_end_cow_extent(
+ 	xfs_ilock(ip, XFS_ILOCK_EXCL);
+ 	xfs_trans_ijoin(tp, ip, 0);
  
- 	kfree(connector->state);
--	__drm_atomic_helper_connector_reset(connector, &mw_state->base);
-+	connector->state = NULL;
+-	error = xfs_iext_count_may_overflow(ip, XFS_DATA_FORK,
+-			XFS_IEXT_REFLINK_END_COW_CNT);
+-	if (error == -EFBIG)
+-		error = xfs_iext_count_upgrade(tp, ip,
+-				XFS_IEXT_REFLINK_END_COW_CNT);
+-	if (error)
+-		goto out_cancel;
+-
+ 	/*
+ 	 * In case of racing, overlapping AIO writes no COW extents might be
+ 	 * left by the time I/O completes for the loser of the race.  In that
+@@ -786,6 +778,14 @@ xfs_reflink_end_cow_extent(
+ 	del = got;
+ 	xfs_trim_extent(&del, *offset_fsb, end_fsb - *offset_fsb);
+ 
++	error = xfs_iext_count_may_overflow(ip, XFS_DATA_FORK,
++			XFS_IEXT_REFLINK_END_COW_CNT);
++	if (error == -EFBIG)
++		error = xfs_iext_count_upgrade(tp, ip,
++				XFS_IEXT_REFLINK_END_COW_CNT);
++	if (error)
++		goto out_cancel;
 +
-+	if (mw_state)
-+		__drm_atomic_helper_connector_reset(connector, &mw_state->base);
- }
- 
- static enum drm_connector_status
+ 	/* Grab the corresponding mapping in the data fork. */
+ 	nmaps = 1;
+ 	error = xfs_bmapi_read(ip, del.br_startoff, del.br_blockcount, &data,
 -- 
 2.43.0
 
