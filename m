@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-49671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBE28FEE5D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6719B8FEE5E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41E2E1F24782
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80E321C24630
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4131C2317;
-	Thu,  6 Jun 2024 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9959F1A0B03;
+	Thu,  6 Jun 2024 14:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhiBF7xW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCQRB+tY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAC3197521;
-	Thu,  6 Jun 2024 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583861991BE;
+	Thu,  6 Jun 2024 14:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683651; cv=none; b=mAMRgJMBwE1YY1v9UVirnKi6vb/TEG9ziD9JYR7UzqYjnmHkb+9S0GOPFNp1E1H2q+KTrpKzejCCrQUtdZvYUPAOW7zeEH4nmY9M/r2P/EjRzwxkX2dx54IZy/0QObaRmnn4ZEsilImqlzTr0sRsamNm/eK1ywPGxMomhAxUctk=
+	t=1717683652; cv=none; b=lLFXn3NT127pE7gbLE853R2N6R4MgkHeVsi7uxGA+5+6JFKVTj33Fb99sj7es7Wi64mP3qu3+v5FVzNm8EoiGnhBUUOs59Mp0OjQuR8ZHqEp4NolAS6TLlev8YwXVBqwhlIj+rJpgcmMJlda7sPn2W80msES0S+5sHaZPR9kcbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683651; c=relaxed/simple;
-	bh=necSJkYwQmfHwm4qrhZ4OUrGePWV90jjfYYLxQjxJxo=;
+	s=arc-20240116; t=1717683652; c=relaxed/simple;
+	bh=zM1LkJ+5VzgLT236Y1kg6OwOYH/Tw3RdBGW+ijnFHjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSJwWOQzyru9DN6o0fBgyMpO6RckJR0aOFR9kiPqPZgE12KHrsh2uwtPtnXrToWAge/2IELspwzmrnbdq2aZ+dYM0Bq1POoPuIvgO+MdpSXXbhAgzOYEXPctywe9OMqvpkcGTonqB04/aD6WtkRz6ab6fIiwh2SD6YKrP73mqB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhiBF7xW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E06AC2BD10;
-	Thu,  6 Jun 2024 14:20:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XEf7MX61IDhL68RN4qihSs2Kd/gdsKdN9r/ZuhTdu5HZBDDdLi4fKDMT3elAHy9WqnvdYrl4dzR+KrCyKNuAXNcPxUpWKr3ov6LfIG+aITOyFQRjat94RGsVfoeOkiJCSmA4GxNtgkcC3pEfoWBq4JJv70BSwqQLp90eKdczb64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCQRB+tY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348FBC2BD10;
+	Thu,  6 Jun 2024 14:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683651;
-	bh=necSJkYwQmfHwm4qrhZ4OUrGePWV90jjfYYLxQjxJxo=;
+	s=korg; t=1717683652;
+	bh=zM1LkJ+5VzgLT236Y1kg6OwOYH/Tw3RdBGW+ijnFHjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhiBF7xW9CIbQa9fFDtrt5duPHPl8iXmuAbjVcjqx4xTzNTnqWo4WBShXxEOogThb
-	 iyYYnmCnLUTvBL9B5g19Z+l2zKbTEaIqtp/z3J5zVGEixD/Mkvo253wZPc1GBKRL3I
-	 QpjgnlRGtKg13X3eWTnXCsY+IY1U/K0dmdERoH1Y=
+	b=BCQRB+tYugDrBqrAo1c7PRnGD4sJcUNf00gZkoyvIt2A0bF4dVo0N/mBhey0SnpRM
+	 XwQXEIdFTiMThMYCYmL51LbUyAo0ptzCQLe8/5A2zZUA/9AQXpwSdoeV1ah0CR2mD6
+	 C2/vqrRiRaOA38P+KwDlrxnlaserUbjqDtk3d2M0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Baron <jbaron@akamai.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Boris Pismenny <borisp@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 441/473] net/mlx5e: Fix UDP GSO for encapsulated packets
-Date: Thu,  6 Jun 2024 16:06:10 +0200
-Message-ID: <20240606131714.302772005@linuxfoundation.org>
+Subject: [PATCH 6.1 442/473] dma-buf/sw-sync: dont enable IRQ from sync_print_obj()
+Date: Thu,  6 Jun 2024 16:06:11 +0200
+Message-ID: <20240606131714.335139053@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -65,72 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 83fea49f2711fc90c0d115b0ed04046b45155b65 ]
+[ Upstream commit b794918961516f667b0c745aebdfebbb8a98df39 ]
 
-When the skb is encapsulated, adjust the inner UDP header instead of the
-outer one, and account for UDP header (instead of TCP) in the inline
-header size calculation.
+Since commit a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from
+known context") by error replaced spin_unlock_irqrestore() with
+spin_unlock_irq() for both sync_debugfs_show() and sync_print_obj() despite
+sync_print_obj() is called from sync_debugfs_show(), lockdep complains
+inconsistent lock state warning.
 
-Fixes: 689adf0d4892 ("net/mlx5e: Add UDP GSO support")
-Reported-by: Jason Baron <jbaron@akamai.com>
-Closes: https://lore.kernel.org/netdev/c42961cb-50b9-4a9a-bd43-87fe48d88d29@akamai.com/
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Boris Pismenny <borisp@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Use plain spin_{lock,unlock}() for sync_print_obj(), for
+sync_debugfs_show() is already using spin_{lock,unlock}_irq().
+
+Reported-by: syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=a225ee3df7e7f9372dbe
+Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/c2e46020-aaa6-4e06-bf73-f05823f913f0@I-love.SAKURA.ne.jp
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h   | 8 +++++++-
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c           | 6 +++++-
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/dma-buf/sync_debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
-index 07187028f0d35..1445a9a46baea 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
-@@ -102,8 +102,14 @@ static inline void
- mlx5e_udp_gso_handle_tx_skb(struct sk_buff *skb)
- {
- 	int payload_len = skb_shinfo(skb)->gso_size + sizeof(struct udphdr);
-+	struct udphdr *udphdr;
+diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
+index 101394f16930f..237bce21d1e72 100644
+--- a/drivers/dma-buf/sync_debug.c
++++ b/drivers/dma-buf/sync_debug.c
+@@ -110,12 +110,12 @@ static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
  
--	udp_hdr(skb)->len = htons(payload_len);
-+	if (skb->encapsulation)
-+		udphdr = (struct udphdr *)skb_inner_transport_header(skb);
-+	else
-+		udphdr = udp_hdr(skb);
-+
-+	udphdr->len = htons(payload_len);
+ 	seq_printf(s, "%s: %d\n", obj->name, obj->value);
+ 
+-	spin_lock_irq(&obj->lock);
++	spin_lock(&obj->lock); /* Caller already disabled IRQ. */
+ 	list_for_each(pos, &obj->pt_list) {
+ 		struct sync_pt *pt = container_of(pos, struct sync_pt, link);
+ 		sync_print_fence(s, &pt->base, false);
+ 	}
+-	spin_unlock_irq(&obj->lock);
++	spin_unlock(&obj->lock);
  }
  
- struct mlx5e_accel_tx_state {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-index a6d7e2cfcd0e1..e6e792a38a640 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-@@ -153,7 +153,11 @@ mlx5e_tx_get_gso_ihs(struct mlx5e_txqsq *sq, struct sk_buff *skb, int *hopbyhop)
- 
- 	*hopbyhop = 0;
- 	if (skb->encapsulation) {
--		ihs = skb_inner_tcp_all_headers(skb);
-+		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
-+			ihs = skb_inner_transport_offset(skb) +
-+			      sizeof(struct udphdr);
-+		else
-+			ihs = skb_inner_tcp_all_headers(skb);
- 		stats->tso_inner_packets++;
- 		stats->tso_inner_bytes += skb->len - ihs;
- 	} else {
+ static void sync_print_sync_file(struct seq_file *s,
 -- 
 2.43.0
 
