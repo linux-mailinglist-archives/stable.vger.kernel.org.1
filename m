@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40578FE966
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 918E68FEE13
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5299A287F7A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3262C1F229A0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B4019A2A3;
-	Thu,  6 Jun 2024 14:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6901B1BF90C;
+	Thu,  6 Jun 2024 14:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/YwFGx8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5tYco0Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528B319A29D;
-	Thu,  6 Jun 2024 14:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9919EEC6;
+	Thu,  6 Jun 2024 14:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683015; cv=none; b=V8an3lKByzEfndlPePtmwWhy37hJG7Ft8/MVS2sXzeN41MfA0TTgLIcajcTB6PoPL/X3TA57Zm+anQ5MOhhCajYD1aEOW2Ax1tE5YQkkTQgL7g3NaLm+Hf1/jRvxVxZZFXecsa2d46VzElb8W7UtRMRqgS/stD4jXqkUihhyYMs=
+	t=1717683556; cv=none; b=BLz7GWqb5so59bz5Z+5k3YpyYste/Ch3EVtqy9gJLrrrJLTUBesVwW9QSXxZ3a67SGsbWmqkNx88eXKZzOYphRkjEX5jyOb604IygZVGtzOdpBeN52YvTfc0LxuSb1hUD1A463LOrEWO8vdZaNSj1gDKMA1NLV46SRlF5TQO0Hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683015; c=relaxed/simple;
-	bh=7WrRFIJZL+oUkNNK0XtzkH8RGWy7haWPUO6PlNqN3kQ=;
+	s=arc-20240116; t=1717683556; c=relaxed/simple;
+	bh=TNtNhQtNQJjP/dJwf6BHV0Wy3uY7Km/UFXa4aUB2haQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDm/KKFk5itrRaP5yoqHTF3pX9x9opQNiPmOLLpHztzZJsP67H72kCx86ty2RzLIEgeqQw1esWEJ3uPETlbDgSKarbkhYLDycvV/Uh1M16Vld9Pnvd/5YlxRJB9A8mQ/OBtNOzrg+k51r4fOIK2f6+mVfn/vXtcLj98TdBXnZTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/YwFGx8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCCDC32781;
-	Thu,  6 Jun 2024 14:10:15 +0000 (UTC)
+	 MIME-Version; b=NcP82C8O1aU/X4xG4sW6c5Wh5NUIVuf2z+s9z7pfCImfzvUWXLizKxXYVl/0jVWpnwZYNBWBw3j89zMF2NJHVvtRaRXzgah289Zm8ngHZ54ARlNw4rp8lQlGY1kHOTUxQzK9R1HW4q8iD6PVEu7PSCKENnc4j1eAtqbAKWNkeV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5tYco0Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057CAC2BD10;
+	Thu,  6 Jun 2024 14:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683015;
-	bh=7WrRFIJZL+oUkNNK0XtzkH8RGWy7haWPUO6PlNqN3kQ=;
+	s=korg; t=1717683556;
+	bh=TNtNhQtNQJjP/dJwf6BHV0Wy3uY7Km/UFXa4aUB2haQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/YwFGx87deSE9rJ3apd5snJcoO5uhx8XkMKKbStpah9cP4K/sKWsbL2UZzWiFVuV
-	 Le4fiMQVgzQu1U497QPUY+54M3AYD6SABvH0IRevlN7uf0W2pSVTyvHl9Ob+AAaIrY
-	 vksdikM6vs4rcbpnDS254sw5woA2EqyH4kxiF8kA=
+	b=e5tYco0Z1tt8mth5UnFt52W5JmjSlOXvpJdaZf90yo0Fwj+NEn9I1qy+vU6yjft6o
+	 JESx302/An/adYrgSncWRlovgYSGlqxMSQDTZBp2yhnQmjhrYu/qNKQqqzg3mEUBFr
+	 GAFymPWG4LpphuzWrrjHQBOl4AyU5y/hwzmJAKgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 190/374] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
-Date: Thu,  6 Jun 2024 16:02:49 +0200
-Message-ID: <20240606131658.234186093@linuxfoundation.org>
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com>
+Subject: [PATCH 6.6 498/744] PCI/EDR: Align EDR_PORT_DPC_ENABLE_DSM with PCI Firmware r3.3
+Date: Thu,  6 Jun 2024 16:02:50 +0200
+Message-ID: <20240606131748.414355337@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
+[ Upstream commit f24ba846133d0edec785ac6430d4daf6e9c93a09 ]
 
-Couple of Minor fixes:
+The "Downstream Port Containment related Enhancements" ECN of Jan 28, 2019
+(document 12888 below), defined the EDR_PORT_DPC_ENABLE_DSM function with
+Revision ID 5 with Arg3 being an integer.  But when the ECN was integrated
+into PCI Firmware r3.3, sec 4.6.12, it was defined as Revision ID 6 with
+Arg3 being a package containing an integer.
 
-- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
-parse_ppp_data
+The implementation in acpi_enable_dpc() supplies a package as Arg3 (arg4 in
+the code), but it previously specified Revision ID 5.  Align this with PCI
+Firmware r3.3 by using Revision ID 6.
 
-- If hcall fails, values set should be at-least zero. It shouldn't be
-uninitialized values. Fix that for h_get_mpp and h_get_ppp
+If firmware implemented per the ECN, its Revision 5 function would receive
+a package as Arg3 when it expects an integer, so acpi_enable_dpc() would
+likely fail.  If such firmware exists and lacks a Revision 6 function that
+expects a package, we may have to add support for Revision 5.
 
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
+Link: https://lore.kernel.org/r/20240501022543.1626025-1-sathyanarayanan.kuppuswamy@linux.intel.com
+Link: https://members.pcisig.com/wg/PCI-SIG/document/12888
+Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+[bhelgaas: split into two patches, update commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Satish Thatchanamurthy <Satish.Thatchanamurt@Dell.com> # one platform
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/hvcall.h        | 2 +-
- arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
- arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/pci/pcie/edr.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index a41e542ba94dd..51172625fa3a5 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -570,7 +570,7 @@ struct hvcall_mpp_data {
- 	unsigned long backing_mem;
- };
+diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
+index 5f4914d313a17..fa085677c91de 100644
+--- a/drivers/pci/pcie/edr.c
++++ b/drivers/pci/pcie/edr.c
+@@ -32,10 +32,10 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
+ 	int status = 0;
  
--int h_get_mpp(struct hvcall_mpp_data *);
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data);
+ 	/*
+-	 * Behavior when calling unsupported _DSM functions is undefined,
+-	 * so check whether EDR_PORT_DPC_ENABLE_DSM is supported.
++	 * Per PCI Firmware r3.3, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
++	 * optional. Return success if it's not implemented.
+ 	 */
+-	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
++	if (!acpi_check_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
+ 			    1ULL << EDR_PORT_DPC_ENABLE_DSM))
+ 		return 0;
  
- struct hvcall_mpp_x_data {
- 	unsigned long coalesced_bytes;
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 4e9916bb03d71..c1d8bee8f7018 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -1886,10 +1886,10 @@ notrace void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
-  * h_get_mpp
-  * H_GET_MPP hcall returns info in 7 parms
-  */
--int h_get_mpp(struct hvcall_mpp_data *mpp_data)
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data)
- {
--	int rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
+@@ -46,12 +46,7 @@ static int acpi_enable_dpc(struct pci_dev *pdev)
+ 	argv4.package.count = 1;
+ 	argv4.package.elements = &req;
  
- 	rc = plpar_hcall9(H_GET_MPP, retbuf);
- 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index f73c4d1c26af9..fb0189af2dea1 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -113,8 +113,8 @@ struct hvcall_ppp_data {
-  */
- static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
- {
--	unsigned long rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
- 
- 	rc = plpar_hcall9(H_GET_PPP, retbuf);
- 
-@@ -193,7 +193,7 @@ static void parse_ppp_data(struct seq_file *m)
- 	struct hvcall_ppp_data ppp_data;
- 	struct device_node *root;
- 	const __be32 *perf_level;
--	int rc;
-+	long rc;
- 
- 	rc = h_get_ppp(&ppp_data);
- 	if (rc)
+-	/*
+-	 * Per Downstream Port Containment Related Enhancements ECN to PCI
+-	 * Firmware Specification r3.2, sec 4.6.12, EDR_PORT_DPC_ENABLE_DSM is
+-	 * optional.  Return success if it's not implemented.
+-	 */
+-	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 5,
++	obj = acpi_evaluate_dsm(adev->handle, &pci_acpi_dsm_guid, 6,
+ 				EDR_PORT_DPC_ENABLE_DSM, &argv4);
+ 	if (!obj)
+ 		return 0;
 -- 
 2.43.0
 
