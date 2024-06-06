@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0728FEECD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6543F8FE9B4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F9851F25818
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E445A289714
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D071C7D81;
-	Thu,  6 Jun 2024 14:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3C4198A2A;
+	Thu,  6 Jun 2024 14:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgaaJ6Sv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="af1pajPg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CCC1C7D76;
-	Thu,  6 Jun 2024 14:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACBF196DB3;
+	Thu,  6 Jun 2024 14:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683703; cv=none; b=jTaMwQXe6EppbfmYmxcECVY1T4har1ePM2Ur6Dr5Mur8t0rMwet6CM7mfmbfropiL0hqROTPLNikRDKUJcKSRWI/jgwO4TmLruEqIGHbzzvM7TT1DSYjqDnJA+O5TXV5ckqHzBtSrYl0Q1VW5poNdBYPiOW7Dl4RpwemfFjYG7w=
+	t=1717683057; cv=none; b=itiZoA/vA7P9bfyyHJB/dVTrHNfjQPRPNDqjZWCxdu9aSFUno6OomgMl0n3zh9dD0ngwkS1s7mCvrF6HCwCP9o8d0EtRoUFPW6BHM3FOiEx+sy7OSCF6bQur1xKmZ9UwErm/Cpon81Wdy58OVIzKuEquY71+TamTQOmcT0OF2Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683703; c=relaxed/simple;
-	bh=NWRdHdzvlMYTirI7JCvCu7syK0YtcR89UkOsV7tZuPU=;
+	s=arc-20240116; t=1717683057; c=relaxed/simple;
+	bh=keMOlsA6aW14XppwiRUBHW9qrkliGuUkOc+SSr//VtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1Ma/FxoqoniC4vOKqE4i8zrUSuLCleMYUhvwyTvgtTJTxm8hH7TlqrehZ8YvV630zWcdiB4CnFzKEWISxCODpnQjyocEsix9CaDqCdnjd8Cs6D4Sx14C/Sckg44NPyjT0RWW7xnofVGYCp5RM5M9coDgaXirpTea2ZLBR7BbIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgaaJ6Sv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67BF0C2BD10;
-	Thu,  6 Jun 2024 14:21:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=brMhCTxgCcMl+zydmDVzRqPnkw2OEb060MfbjUa0uftz+1AmMS1NIGyXNT+xIi89RM9W2cMl/gSqZqTpVhVOYY7GbX5WL2d+uj7aGNTSZPfN5HFQl6UUXDEQADZJiJHCe1hn9O0JQRIHk49gHH4iH4Vd4c8jPRglUBTTkobaIbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=af1pajPg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587B5C4AF09;
+	Thu,  6 Jun 2024 14:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683703;
-	bh=NWRdHdzvlMYTirI7JCvCu7syK0YtcR89UkOsV7tZuPU=;
+	s=korg; t=1717683057;
+	bh=keMOlsA6aW14XppwiRUBHW9qrkliGuUkOc+SSr//VtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgaaJ6SvcKQJeI02wudhF0bsSd/mIHkL9UhfAXDvOaRFxAs42CB9L3yBs0eMfb+H/
-	 BszC5jTVOHzE2IHZ4NEik0r8O9z0k6pMtxdVz/VkfgWIY2AuYSeSNTSpDD0zEua2fz
-	 j6jz49iegLhi6CzeGOxN+bZWZxNtN3ho4BNiOEQQ=
+	b=af1pajPgtYXeOsBHVIuHut63z3gbG06Y5SWsC8G94GDrLj2XnUIZWZ/41uLi6fD1A
+	 3LxSS2EfuJUVRVUijg1P1nSccpCyWYJHBss/TYIh7Wx6wPNisaWwt7h3kfVnDWRGUe
+	 2uxuB96KoYTofypHbaLUe1+62oovEpxRFQU5r7aI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Yang, Chenyuan" <cy54@illinois.edu>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
-Subject: [PATCH 6.6 610/744] media: cec: core: avoid confusing "transmit timed out" message
+	patches@lists.linux.dev,
+	syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 303/374] dma-buf/sw-sync: dont enable IRQ from sync_print_obj()
 Date: Thu,  6 Jun 2024 16:04:42 +0200
-Message-ID: <20240606131752.053623118@linuxfoundation.org>
+Message-ID: <20240606131702.009421276@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit cbe499977bc36fedae89f0a0d7deb4ccde9798fe ]
+[ Upstream commit b794918961516f667b0c745aebdfebbb8a98df39 ]
 
-If, when waiting for a transmit to finish, the wait is interrupted,
-then you might get a "transmit timed out" message, even though the
-transmit was interrupted and did not actually time out.
+Since commit a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from
+known context") by error replaced spin_unlock_irqrestore() with
+spin_unlock_irq() for both sync_debugfs_show() and sync_print_obj() despite
+sync_print_obj() is called from sync_debugfs_show(), lockdep complains
+inconsistent lock state warning.
 
-Set transmit_in_progress_aborted to true if the
-wait_for_completion_killable() call was interrupted and ensure
-that the transmit is properly marked as ABORTED.
+Use plain spin_{lock,unlock}() for sync_print_obj(), for
+sync_debugfs_show() is already using spin_{lock,unlock}_irq().
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Yang, Chenyuan <cy54@illinois.edu>
-Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
-Fixes: 590a8e564c6e ("media: cec: abort if the current transmit was canceled")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reported-by: syzbot <syzbot+a225ee3df7e7f9372dbe@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=a225ee3df7e7f9372dbe
+Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/c2e46020-aaa6-4e06-bf73-f05823f913f0@I-love.SAKURA.ne.jp
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/dma-buf/sync_debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index c15abee3e9bc4..3b67e922f9815 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -490,6 +490,15 @@ int cec_thread_func(void *_adap)
- 			goto unlock;
- 		}
+diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
+index 101394f16930f..237bce21d1e72 100644
+--- a/drivers/dma-buf/sync_debug.c
++++ b/drivers/dma-buf/sync_debug.c
+@@ -110,12 +110,12 @@ static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
  
-+		if (adap->transmit_in_progress &&
-+		    adap->transmit_in_progress_aborted) {
-+			if (adap->transmitting)
-+				cec_data_cancel(adap->transmitting,
-+						CEC_TX_STATUS_ABORTED, 0);
-+			adap->transmit_in_progress = false;
-+			adap->transmit_in_progress_aborted = false;
-+			goto unlock;
-+		}
- 		if (adap->transmit_in_progress && timeout) {
- 			/*
- 			 * If we timeout, then log that. Normally this does
-@@ -744,6 +753,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- {
- 	struct cec_data *data;
- 	bool is_raw = msg_is_raw(msg);
-+	int err;
+ 	seq_printf(s, "%s: %d\n", obj->name, obj->value);
  
- 	if (adap->devnode.unregistered)
- 		return -ENODEV;
-@@ -908,10 +918,13 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
- 	 * Release the lock and wait, retake the lock afterwards.
- 	 */
- 	mutex_unlock(&adap->lock);
--	wait_for_completion_killable(&data->c);
-+	err = wait_for_completion_killable(&data->c);
- 	cancel_delayed_work_sync(&data->work);
- 	mutex_lock(&adap->lock);
+-	spin_lock_irq(&obj->lock);
++	spin_lock(&obj->lock); /* Caller already disabled IRQ. */
+ 	list_for_each(pos, &obj->pt_list) {
+ 		struct sync_pt *pt = container_of(pos, struct sync_pt, link);
+ 		sync_print_fence(s, &pt->base, false);
+ 	}
+-	spin_unlock_irq(&obj->lock);
++	spin_unlock(&obj->lock);
+ }
  
-+	if (err)
-+		adap->transmit_in_progress_aborted = true;
-+
- 	/* Cancel the transmit if it was interrupted */
- 	if (!data->completed) {
- 		if (data->msg.tx_status & CEC_TX_STATUS_OK)
+ static void sync_print_sync_file(struct seq_file *s,
 -- 
 2.43.0
 
