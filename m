@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A049C8FEB78
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E476F8FE8C7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 420BA2895FE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D604B24E2A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA34199EB0;
-	Thu,  6 Jun 2024 14:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A433C198A06;
+	Thu,  6 Jun 2024 14:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+P3nkY5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3x2K8Ea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61443199EA4;
-	Thu,  6 Jun 2024 14:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61277198A01;
+	Thu,  6 Jun 2024 14:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683255; cv=none; b=kHGFfkjS5BIB4cjPpO0diNLQ6qccGQW86JnrnLf7f25I+ZfJg2+eK+bxRjZWt9lFxFF2USCF41pjnrXvrJbVtlye33b2ZE8TAw6gAPWhzZ5coz4zuDYMEVjmIo2RswPjkchpcjBhcZuCo2fJ8TuqBqn/6lykuYrSmeWhB5PSaYw=
+	t=1717682933; cv=none; b=sNv1MowRyV9Bm8lO0X0DkGBbCKMyXJ8zNrosj2MhPFakCom9zWPEwmhqlyUx8BBu3a7UUQHemHGBrWlW6k2zac4krjZPAGpkgIidRCPjGJHn/FzQ9qPaRybZ8qyAC2g27NRxng2ydCmMm7SVY+9GbyAQMXreHiApP+FuNMrS3N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683255; c=relaxed/simple;
-	bh=VidrXSh72vobvQ6X2rdq+NRMQwGb72UiJTFZtwQIqXQ=;
+	s=arc-20240116; t=1717682933; c=relaxed/simple;
+	bh=o15B2N6u5yBTlDlAc6SXGvRMIl3l2NOElP9MM32nutM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVLoeX2DuE74S5gw3qSLwMwFf9ofjEgwZOPtCcC4qhRoRApyijfFv86wjnrm0QG1xivrGtFgNxIqMtxidkP3mimN0Vh1fwgW/htY0bKLrcNXd1ZL/jm8aqm4nT0/lCNSp3JhweZg3cFncsUSgAe2C8CBDpmLlg6I7EDafwmlYwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+P3nkY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4181BC2BD10;
-	Thu,  6 Jun 2024 14:14:15 +0000 (UTC)
+	 MIME-Version; b=UMmpN7F6ZXD9BiSOlvFKdWCyazKG1xHDuCj2W8gKYcteD+ID8VzSeXOvtmFyNFeuVF/SHJ0FnqHdPpls2iayEzxR0CtkRT4TQT5SUQOlBeLFI4wXYkAviDb5foyAmP2b6UtVv+gYaMAzVo5672DoddcR2O79SxUtZWfnFcRn5GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3x2K8Ea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3025CC32781;
+	Thu,  6 Jun 2024 14:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683255;
-	bh=VidrXSh72vobvQ6X2rdq+NRMQwGb72UiJTFZtwQIqXQ=;
+	s=korg; t=1717682933;
+	bh=o15B2N6u5yBTlDlAc6SXGvRMIl3l2NOElP9MM32nutM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+P3nkY5Gh7quNnufZEHjmr5SvAXrpDBnZQtv4AvnZkZinOnHRF/BZS/zxv+mmzNk
-	 pVGxsfEhF+rrLYvZZIzYdyfWvOt9vVGvECXlnjldcuJxNQbX02YOMlZv6yDZnNpkfn
-	 +kw8NTGoT4AN3P68vctO746ipgqvQb7VVHyojvps=
+	b=Z3x2K8Eat7gg4rxSYnXO8X6wBce6RHMmWQx8HOHxyNVr9MY1QFrosa4uKcHWf7e8K
+	 bk0oi7zB9VlCjQMicQnVXsou5Xmc9n9qnMc11a0u/F2A9l9z8PVNEzU3aiL+w5oavB
+	 ui0qqIqvfT69tIMi7rt5XQCPzMOB41GAoBNq0IV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/473] thermal/drivers/tsens: Fix null pointer dereference
+Subject: [PATCH 6.9 081/374] dt-bindings: phy: qcom,sc8280xp-qmp-pcie-phy: fix x1e80100-gen3x2 schema
 Date: Thu,  6 Jun 2024 16:01:00 +0200
-Message-ID: <20240606131704.257945586@linuxfoundation.org>
+Message-ID: <20240606131654.564991710@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit d998ddc86a27c92140b9f7984ff41e3d1d07a48f ]
+[ Upstream commit 484b139a4cd7e629f8fcb43d71997f400c5b8537 ]
 
-compute_intercept_slope() is called from calibrate_8960() (in tsens-8960.c)
-as compute_intercept_slope(priv, p1, NULL, ONE_PT_CALIB) which lead to null
-pointer dereference (if DEBUG or DYNAMIC_DEBUG set).
-Fix this bug by adding null pointer check.
+The qcom,x1e80100-qmp-gen3x2-pcie-phy device doesn't have second reset,
+drop it from the clause enforcing second reset to be used.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: dfc1193d4dbd ("thermal/drivers/tsens: Replace custom 8960 apis with generic apis")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240411114021.12203-1-amishin@t-argos.ru
+Fixes: e94b29f2bd73 ("dt-bindings: phy: qcom,sc8280xp-qmp-pcie-phy: Document the X1E80100 QMP PCIe PHYs")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-1-f1fd15c33fb3@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/tsens.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../devicetree/bindings/phy/qcom,sc8280xp-qmp-pcie-phy.yaml      | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
-index 252c5ffdd1b66..fc58db60852a0 100644
---- a/drivers/thermal/qcom/tsens.c
-+++ b/drivers/thermal/qcom/tsens.c
-@@ -85,7 +85,7 @@ void compute_intercept_slope(struct tsens_priv *priv, u32 *p1,
- 	for (i = 0; i < priv->num_sensors; i++) {
- 		dev_dbg(priv->dev,
- 			"%s: sensor%d - data_point1:%#x data_point2:%#x\n",
--			__func__, i, p1[i], p2[i]);
-+			__func__, i, p1[i], p2 ? p2[i] : 0);
- 
- 		if (!priv->sensor[i].slope)
- 			priv->sensor[i].slope = SLOPE_DEFAULT;
+diff --git a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-pcie-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-pcie-phy.yaml
+index ba966a78a1283..7543456862b80 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-pcie-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-pcie-phy.yaml
+@@ -198,7 +198,6 @@ allOf:
+             enum:
+               - qcom,sm8550-qmp-gen4x2-pcie-phy
+               - qcom,sm8650-qmp-gen4x2-pcie-phy
+-              - qcom,x1e80100-qmp-gen3x2-pcie-phy
+               - qcom,x1e80100-qmp-gen4x2-pcie-phy
+     then:
+       properties:
 -- 
 2.43.0
 
