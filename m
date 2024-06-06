@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-48803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A448FEA9B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514908FEA9D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF8A289F8D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58D62899F0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731DF196C8C;
-	Thu,  6 Jun 2024 14:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4421991BB;
+	Thu,  6 Jun 2024 14:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BhmjXnoP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNFanryw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31796197533;
-	Thu,  6 Jun 2024 14:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D38D197533;
+	Thu,  6 Jun 2024 14:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683155; cv=none; b=N+d+QeVQk/LPU/c5nRl3N9jhONLVEQnbm7KD2E476giEWHcD7O5UO8YTFv7rHhLWUgSj9lMapibruRf+/Bpq4nWsUcovWfFJHpjMl354+I12tSyWELCS/CewRuItGWuMSI+1QWoCGkEsffvPIuRQFWQnKZLdh9uK/9cX+p5m9mk=
+	t=1717683156; cv=none; b=pUznyMpzNSxnHFsVdnCeeW7ChyQXd51ODFNuuA2ITISOWLhdpNfM1MSZD04mhswSeTwHEXpbU64qWAArL0bl0PA4vvXUFDj0dH3xtIuswRJKH89RiqA6jzCagVWAucVo0S31+HQwWtjfWPOGukJ/CIfraQ/Yu8zSuhozp7Nusc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683155; c=relaxed/simple;
-	bh=uij4OvpAi0SwUZMeNLdifvMxT0TrjqbdFcfU1iB1eCQ=;
+	s=arc-20240116; t=1717683156; c=relaxed/simple;
+	bh=ij8cBWS0KsnNpyomDoqbU3moV5fkzpEeY96DiW4m8Zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=et3B1DxiZqVhZBCPs+d43/mkPa30qxYI4/b58cIZe3bME1igM650tfMkvBg48szRootM/MMDq+ezrIRbiamL5/ZltKwV1m6tmHWosh/R7EVCoI0J4Mi+JrYn44GWIJ+wNQ5y61i2GEklOLGaFv91M08OBt1h54wPiT4VBNsfobg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BhmjXnoP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1089AC2BD10;
+	 MIME-Version; b=M5CruYC5KSoHwONk9S8XQhdh81sQamF6e3Ntb9w79EKfYmT1FkBEHXUX3C0mS/gLMgUCfU0W98nJBKW3DUABQtSszDpWOe7vrJ/HEjz47PDWQOwnrIx3bzaGfyGGtnpyXyTmtUTTZ6PWfpTm6SJW2dQX37RBsRj8YY6y5zsn4cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNFanryw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02865C2BD10;
 	Thu,  6 Jun 2024 14:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683155;
-	bh=uij4OvpAi0SwUZMeNLdifvMxT0TrjqbdFcfU1iB1eCQ=;
+	s=korg; t=1717683156;
+	bh=ij8cBWS0KsnNpyomDoqbU3moV5fkzpEeY96DiW4m8Zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BhmjXnoPyV3f6GWpGjwPCaVueDdS6AfGOjyiSeCrFVncwht+j/Xla6K2UhKKmok/h
-	 FRzoGr7fgZpFrecHvXvAQhN4jlxOGwBocAQXd9r0JizxJqpy6WcUVebQKB8MRW3yiS
-	 goQm7Zww3HnuuV9s6Nbp/4v/2TdaG/Oq8j7BwPHQ=
+	b=NNFanryw1sAN9hfXl6aLl4073W/dMqzO6VRhyy/lZIXlGh/uOy0kF4CSnVLICK4n5
+	 trNbWR1nqlTaf8jpgxNyme0HYXfqeFBOZsdoPXaiLrctLXd5TnLp3cNOL+yGiLbNwd
+	 U/kmi4McYUfutf4vKnw6kRnxZ8NzO6lufaI3PRCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Simo Sorce <simo@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.1 026/473] KEYS: asymmetric: Add missing dependencies of FIPS_SIGNATURE_SELFTEST
-Date: Thu,  6 Jun 2024 15:59:15 +0200
-Message-ID: <20240606131700.730693148@linuxfoundation.org>
+	syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/473] wifi: mac80211: dont use rate mask for scanning
+Date: Thu,  6 Jun 2024 15:59:16 +0200
+Message-ID: <20240606131700.766692554@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -68,38 +67,120 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 9d2fd8bdc12f403a5c35c971936a0e1d5cb5108e upstream.
+[ Upstream commit ab9177d83c040eba58387914077ebca56f14fae6 ]
 
-Since the signature self-test uses RSA and SHA-256, it must only be
-enabled when those algorithms are enabled.  Otherwise it fails and
-panics the kernel on boot-up.
+The rate mask is intended for use during operation, and
+can be set to only have masks for the currently active
+band. As such, it cannot be used for scanning which can
+be on other bands as well.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202404221528.51d75177-lkp@intel.com
-Fixes: 3cde3174eb91 ("certs: Add FIPS selftests")
-Cc: stable@vger.kernel.org
-Cc: Simo Sorce <simo@redhat.com>
-Cc: David Howells <dhowells@redhat.com>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Simply ignore the rate masks during scanning to avoid
+warnings from incorrect settings.
+
+Reported-by: syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fdc5123366fb9c3fdc6d
+Co-developed-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240326220854.9594cbb418ca.I7f86c0ba1f98cf7e27c2bacf6c2d417200ecea5c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/asymmetric_keys/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ include/net/mac80211.h |  3 +++
+ net/mac80211/rate.c    |  6 +++++-
+ net/mac80211/scan.c    |  1 +
+ net/mac80211/tx.c      | 13 +++++++++----
+ 4 files changed, 18 insertions(+), 5 deletions(-)
 
---- a/crypto/asymmetric_keys/Kconfig
-+++ b/crypto/asymmetric_keys/Kconfig
-@@ -84,5 +84,7 @@ config FIPS_SIGNATURE_SELFTEST
- 	depends on KEYS
- 	depends on ASYMMETRIC_KEY_TYPE
- 	depends on PKCS7_MESSAGE_PARSER
-+	depends on CRYPTO_RSA
-+	depends on CRYPTO_SHA256
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 43173204d6d5e..87a4f334c22a8 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -885,6 +885,8 @@ enum mac80211_tx_info_flags {
+  *	of their QoS TID or other priority field values.
+  * @IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX: first MLO TX, used mostly internally
+  *	for sequence number assignment
++ * @IEEE80211_TX_CTRL_SCAN_TX: Indicates that this frame is transmitted
++ *	due to scanning, not in normal operation on the interface.
+  * @IEEE80211_TX_CTRL_MLO_LINK: If not @IEEE80211_LINK_UNSPECIFIED, this
+  *	frame should be transmitted on the specific link. This really is
+  *	only relevant for frames that do not have data present, and is
+@@ -905,6 +907,7 @@ enum mac80211_tx_control_flags {
+ 	IEEE80211_TX_CTRL_NO_SEQNO		= BIT(7),
+ 	IEEE80211_TX_CTRL_DONT_REORDER		= BIT(8),
+ 	IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX	= BIT(9),
++	IEEE80211_TX_CTRL_SCAN_TX		= BIT(10),
+ 	IEEE80211_TX_CTRL_MLO_LINK		= 0xf0000000,
+ };
  
- endif # ASYMMETRIC_KEY_TYPE
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 9d33fd2377c88..a2bc9c5d92b8b 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -877,6 +877,7 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_supported_band *sband;
++	u32 mask = ~0;
+ 
+ 	rate_control_fill_sta_table(sta, info, dest, max_rates);
+ 
+@@ -889,9 +890,12 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 	if (ieee80211_is_tx_data(skb))
+ 		rate_control_apply_mask(sdata, sta, sband, dest, max_rates);
+ 
++	if (!(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX))
++		mask = sdata->rc_rateidx_mask[info->band];
++
+ 	if (dest[0].idx < 0)
+ 		__rate_control_send_low(&sdata->local->hw, sband, sta, info,
+-					sdata->rc_rateidx_mask[info->band]);
++					mask);
+ 
+ 	if (sta)
+ 		rate_fixup_ratelist(vif, sband, info, dest, max_rates);
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index c37e2576f1c13..933d02d7c1284 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -647,6 +647,7 @@ static void ieee80211_send_scan_probe_req(struct ieee80211_sub_if_data *sdata,
+ 				cpu_to_le16(IEEE80211_SN_TO_SEQ(sn));
+ 		}
+ 		IEEE80211_SKB_CB(skb)->flags |= tx_flags;
++		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_SCAN_TX;
+ 		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band);
+ 	}
+ }
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 3d62e8b718740..419baf8efddea 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -720,11 +720,16 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *tx)
+ 	txrc.bss_conf = &tx->sdata->vif.bss_conf;
+ 	txrc.skb = tx->skb;
+ 	txrc.reported_rate.idx = -1;
+-	txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
+ 
+-	if (tx->sdata->rc_has_mcs_mask[info->band])
+-		txrc.rate_idx_mcs_mask =
+-			tx->sdata->rc_rateidx_mcs_mask[info->band];
++	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX)) {
++		txrc.rate_idx_mask = ~0;
++	} else {
++		txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
++
++		if (tx->sdata->rc_has_mcs_mask[info->band])
++			txrc.rate_idx_mcs_mask =
++				tx->sdata->rc_rateidx_mcs_mask[info->band];
++	}
+ 
+ 	txrc.bss = (tx->sdata->vif.type == NL80211_IFTYPE_AP ||
+ 		    tx->sdata->vif.type == NL80211_IFTYPE_MESH_POINT ||
+-- 
+2.43.0
+
 
 
 
