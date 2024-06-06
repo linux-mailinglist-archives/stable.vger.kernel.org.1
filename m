@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-49651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1202B8FEE48
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 357068FEE4C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ECAA28349A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3595B27555
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8118A1C224E;
-	Thu,  6 Jun 2024 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A581C2251;
+	Thu,  6 Jun 2024 14:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5RGxFzl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaZqOljX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E35F1C2241;
-	Thu,  6 Jun 2024 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D58197526;
+	Thu,  6 Jun 2024 14:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683641; cv=none; b=cGOFzEOGTRo8/s7AZmnDr661rJCR8oxuXz8+KNHGW0ZnHS5tw9DSWCH96oZAATAJrwe3HPGpSbJ+4gjHxV5b6WWpcpfMnmEvu4mPFO+5OiPQBp2A0JmLVE3MuOTvdJ/QfhD/ccDTW0T7Z63yzrXKwBpCaVPtZzLS8w1KFKjEsXI=
+	t=1717683642; cv=none; b=Sd9GMtPvOdCkFAYt861QajQoOrNtTnkoUJQMLAIzaEB1CXLIrSU21GPdU7YfqNzS+vjd7A0OtKZmSOW6dAX0w8v4VKNnE5aTk8RjtTZeDKAnXC95p8z2UGh4HC92t++EKZkv2MV3OcHGXJiyONBFGv+F35AR4GSKvoK9BJmq800=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683641; c=relaxed/simple;
-	bh=ORu1IefJUZvqb0LsdHAoVkxpNbyZ94r9zTIr8JzorDg=;
+	s=arc-20240116; t=1717683642; c=relaxed/simple;
+	bh=zTEgKzrVSCzIdSxhY7p8SJPERa7Ve1C2RQNknrgWcXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJWmSHn7mIa6XBW9DgxWUpz9OJ+M7woP+umJgQFmszWGYEscpKks3JrxAWG8OZIctcrdKFT3A/YNY5kAwoP8cTqQv22VMhJeW8w5NtXKZUU0STlow7u3pYE2jUNJp6TEgPGuk72AhnmJ6rz1BdHNcRNun3oKVVSxS9M0CwEFuM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5RGxFzl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B637C32786;
-	Thu,  6 Jun 2024 14:20:41 +0000 (UTC)
+	 MIME-Version; b=nWcOTbZCiuRba4aPbdpGX326UudPlVniFsSZGONgSI67NX62C/xFqxatMxezef4zNYejLk0QZagGsRDehNWOlTydEBLB0ndxuO+pwS2do0I/InbcEvy2QjH7ckInsbsmEE+a2rYJoLcdcJaWlYaO5/CJVjHYnQK8p6UxtNrbTbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaZqOljX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168ADC2BD10;
+	Thu,  6 Jun 2024 14:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683641;
-	bh=ORu1IefJUZvqb0LsdHAoVkxpNbyZ94r9zTIr8JzorDg=;
+	s=korg; t=1717683642;
+	bh=zTEgKzrVSCzIdSxhY7p8SJPERa7Ve1C2RQNknrgWcXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5RGxFzlv61U802coFLcDwdlzXq6LoLMOIgU22zhmUybE31hmpwOay2lmZaJuaFcH
-	 24ZybTwtEdTbOay8lZmXW7F/pi7aeZafVGx+PhxORLY3Y3BCJWx5mpf7djz/I1eobS
-	 +A4zm5BGFEGaoH5LFBBeWBjgZyZiHTgcqe6kbILw=
+	b=KaZqOljXwgcvyc7ycwUn5jxxwdkZGKvdUHYUUSZ/Mo8sYv85sqr5a3KnXfI2TNnVd
+	 YCnD6RBSfm7gHQSG6NTWTTKph10EUi4vVhSwm33Lki+4tWpHdtRE17TG+Uz/gkDziB
+	 Uju4osU+KNh5IUdT65Tl7OfrEt5C+bjhqMvTpeM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 461/473] kconfig: fix comparison to constant symbols, m, n
-Date: Thu,  6 Jun 2024 16:06:30 +0200
-Message-ID: <20240606131714.923662541@linuxfoundation.org>
+Subject: [PATCH 6.1 462/473] drm/i915/guc: avoid FIELD_PREP warning
+Date: Thu,  6 Jun 2024 16:06:31 +0200
+Message-ID: <20240606131714.954576361@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -65,126 +69,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit aabdc960a283ba78086b0bf66ee74326f49e218e ]
+[ Upstream commit d4f36db62396b73bed383c0b6e48d36278cafa78 ]
 
-Currently, comparisons to 'm' or 'n' result in incorrect output.
+With gcc-7 and earlier, there are lots of warnings like
 
-[Test Code]
+In file included from <command-line>:0:0:
+In function '__guc_context_policy_add_priority.isra.66',
+    inlined from '__guc_context_set_prio.isra.67' at drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c:3292:3,
+    inlined from 'guc_context_set_prio' at drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c:3320:2:
+include/linux/compiler_types.h:399:38: error: call to '__compiletime_assert_631' declared with attribute error: FIELD_PREP: mask is not constant
+  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+                                      ^
+...
+drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c:2422:3: note: in expansion of macro 'FIELD_PREP'
+   FIELD_PREP(GUC_KLV_0_KEY, GUC_CONTEXT_POLICIES_KLV_ID_##id) | \
+   ^~~~~~~~~~
 
-    config MODULES
-            def_bool y
-            modules
+Make sure that GUC_KLV_0_KEY is an unsigned value to avoid the warning.
 
-    config A
-            def_tristate m
-
-    config B
-            def_bool A > n
-
-CONFIG_B is unset, while CONFIG_B=y is expected.
-
-The reason for the issue is because Kconfig compares the tristate values
-as strings.
-
-Currently, the .type fields in the constant symbol definitions,
-symbol_{yes,mod,no} are unspecified, i.e., S_UNKNOWN.
-
-When expr_calc_value() evaluates 'A > n', it checks the types of 'A' and
-'n' to determine how to compare them.
-
-The left-hand side, 'A', is a tristate symbol with a value of 'm', which
-corresponds to a numeric value of 1. (Internally, 'y', 'm', and 'n' are
-represented as 2, 1, and 0, respectively.)
-
-The right-hand side, 'n', has an unknown type, so it is treated as the
-string "n" during the comparison.
-
-expr_calc_value() compares two values numerically only when both can
-have numeric values. Otherwise, they are compared as strings.
-
-    symbol    numeric value    ASCII code
-    -------------------------------------
-      y           2             0x79
-      m           1             0x6d
-      n           0             0x6e
-
-'m' is greater than 'n' if compared numerically (since 1 is greater
-than 0), but smaller than 'n' if compared as strings (since the ASCII
-code 0x6d is smaller than 0x6e).
-
-Specifying .type=S_TRISTATE for symbol_{yes,mod,no} fixes the above
-test code.
-
-Doing so, however, would cause a regression to the following test code.
-
-[Test Code 2]
-
-    config MODULES
-            def_bool n
-            modules
-
-    config A
-            def_tristate n
-
-    config B
-            def_bool A = m
-
-You would get CONFIG_B=y, while CONFIG_B should not be set.
-
-The reason is because sym_get_string_value() turns 'm' into 'n' when the
-module feature is disabled. Consequently, expr_calc_value() evaluates
-'A = n' instead of 'A = m'. This oddity has been hidden because the type
-of 'm' was previously S_UNKNOWN instead of S_TRISTATE.
-
-sym_get_string_value() should not tweak the string because the tristate
-value has already been correctly calculated. There is no reason to
-return the string "n" where its tristate value is mod.
-
-Fixes: 31847b67bec0 ("kconfig: allow use of relations other than (in)equality")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 77b6f79df66e ("drm/i915/guc: Update to GuC version 69.0.3")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: Julia Filipchuk <julia.filipchuk@intel.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240430164809.482131-1-julia.filipchuk@intel.com
+(cherry picked from commit 364e039827ef628c650c21c1afe1c54d9c3296d9)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/symbol.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
-index a76925b46ce63..7b1df55b01767 100644
---- a/scripts/kconfig/symbol.c
-+++ b/scripts/kconfig/symbol.c
-@@ -13,18 +13,21 @@
+diff --git a/drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h b/drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h
+index 4a59478c3b5c4..bbeceb640d31e 100644
+--- a/drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h
++++ b/drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h
+@@ -29,9 +29,9 @@
+  */
  
- struct symbol symbol_yes = {
- 	.name = "y",
-+	.type = S_TRISTATE,
- 	.curr = { "y", yes },
- 	.flags = SYMBOL_CONST|SYMBOL_VALID,
- };
+ #define GUC_KLV_LEN_MIN				1u
+-#define GUC_KLV_0_KEY				(0xffff << 16)
+-#define GUC_KLV_0_LEN				(0xffff << 0)
+-#define GUC_KLV_n_VALUE				(0xffffffff << 0)
++#define GUC_KLV_0_KEY				(0xffffu << 16)
++#define GUC_KLV_0_LEN				(0xffffu << 0)
++#define GUC_KLV_n_VALUE				(0xffffffffu << 0)
  
- struct symbol symbol_mod = {
- 	.name = "m",
-+	.type = S_TRISTATE,
- 	.curr = { "m", mod },
- 	.flags = SYMBOL_CONST|SYMBOL_VALID,
- };
- 
- struct symbol symbol_no = {
- 	.name = "n",
-+	.type = S_TRISTATE,
- 	.curr = { "n", no },
- 	.flags = SYMBOL_CONST|SYMBOL_VALID,
- };
-@@ -775,8 +778,7 @@ const char *sym_get_string_value(struct symbol *sym)
- 		case no:
- 			return "n";
- 		case mod:
--			sym_calc_value(modules_sym);
--			return (modules_sym->curr.tri == no) ? "n" : "m";
-+			return "m";
- 		case yes:
- 			return "y";
- 		}
+ /**
+  * DOC: GuC Self Config KLVs
 -- 
 2.43.0
 
