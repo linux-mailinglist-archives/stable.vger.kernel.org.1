@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-49088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916B98FEBCC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 140FB8FED2B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E761F2966F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C19DF285510
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC7E1ABCD2;
-	Thu,  6 Jun 2024 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DC71B5802;
+	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+vGb++x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbL2bc55"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B24197A91;
-	Thu,  6 Jun 2024 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7077B198E7D;
+	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683296; cv=none; b=UAXdVfwX/c3wd7bbDRPRHgn/XicbhV7FEKlu3khiMa6V3uENBsOBUrpPitLdTliW/2EelwUiVKAW5J+SPbE3uIv3PdsAsszv5Mn+1N7mWVe+TQ3bueN7ulSQXsMb2nIwmcX8Npe0Vn9xdAx4mHl4oJmch7AGY0MdkYAMPT/0tSI=
+	t=1717683455; cv=none; b=rN4jFylU18xUZYhQwsjQv8KzwYO8LA7M4vbhZHL/BxnZEwGG6Uh0U6F/psJGS8ALBCPzbUoEK8hjl/KtQK9foyQZXIYgKcwP4RMLVE27l2RZnbRxOnxcVDuVC2c5q5aEA6kVZ11+LzhAjVW49qr7CT75DDDhukusB7IXLSiD7BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683296; c=relaxed/simple;
-	bh=vzibxs53N1YAETZvLAwBqItqMppj6pQXPlSkMorJtu4=;
+	s=arc-20240116; t=1717683455; c=relaxed/simple;
+	bh=GNeMjnqzZWB1SBKR7F3aXU8P9N+su5XT428mWbOLTbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cea4f7wScGN6PBLQjgAH39TIr8rEAAvAnjSlnj2ZaF0omUH5eXhsWd14baqWUBzdmBRA2Hg1AxHW2gGrC2S+2c3nJnxiClM5T/T5qPiMHEwZ1LElf3LXSu1JxJys5/YznTeJiZtinHLxqLxWgJBZdSnHtPZBq+ckvqR5smTpVL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+vGb++x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47025C2BD10;
-	Thu,  6 Jun 2024 14:14:56 +0000 (UTC)
+	 MIME-Version; b=mcqd/LKAYBgkVUJY5kYDdJp0gs2O9isAhoAyCvuiO3So24uH0PAOVR6nNc/q8/t3gBV71zfqMVcly70Z+Y3ts0Q/jFBoLogWhu3+HB+jf174uOY9QAcdh/qFIWU7i61aRaWqHO92DFFvNQGvXjXcR8/hERj6ynB6Ts+IWkQosMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbL2bc55; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E87C2BD10;
+	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683296;
-	bh=vzibxs53N1YAETZvLAwBqItqMppj6pQXPlSkMorJtu4=;
+	s=korg; t=1717683455;
+	bh=GNeMjnqzZWB1SBKR7F3aXU8P9N+su5XT428mWbOLTbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+vGb++xC3WsY2gwFf9uGSXsIp2EIdFdhM0E0AV2V9SriXcIEsR+xQATq9BqEQ2aG
-	 0xGYHiz16QR6nJZHfaOqjqRHwZU/fr0HWteo2ZbjP8tWayGy5hjLKefS+92xwUpFqF
-	 bg6hwmiY83qX83CZ/YcpSKv/vWf/LoLJ5sRSMLhk=
+	b=sbL2bc559vlxrgQ9ZVOsvfyMGYIsKBLmK28gJiwLHLKLkwFR2mShdwRo7hq5IxuxO
+	 sjlmtNRKovXmaBXWgmehsUr5GPqyXbdRYN34lfhad8OuKmGDAjb9BUckalgs2E+uC2
+	 kRu3VEQVgMTtnhGfJ9lkqTJGLjG68/ZPPqSBxLAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Chen <chenhao418@huawei.com>,
-	Junhao He <hejunhao3@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Will Deacon <will@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jin Yao <yao.jin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/473] drivers/perf: hisi: hns3: Actually use devm_add_action_or_reset()
+Subject: [PATCH 6.6 400/744] perf annotate: Get rid of duplicate --group option item
 Date: Thu,  6 Jun 2024 16:01:12 +0200
-Message-ID: <20240606131704.666907406@linuxfoundation.org>
+Message-ID: <20240606131745.288595321@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +69,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Chen <chenhao418@huawei.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 582c1aeee0a9e73010cf1c4cef338709860deeb0 ]
+[ Upstream commit 374af9f1f06b5e991c810d2e4983d6f58df32136 ]
 
-pci_alloc_irq_vectors() allocates an irq vector. When devm_add_action()
-fails, the irq vector is not freed, which leads to a memory leak.
+The options array in cmd_annotate() has duplicate --group options.  It
+only needs one and let's get rid of the other.
 
-Replace the devm_add_action with devm_add_action_or_reset to ensure
-the irq vector can be destroyed when it fails.
+  $ perf annotate -h 2>&1 | grep group
+        --group           Show event group information together
+        --group           Show event group information together
 
-Fixes: 66637ab137b4 ("drivers/perf: hisi: add driver for HNS3 PMU")
-Signed-off-by: Hao Chen <chenhao418@huawei.com>
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240425124627.13764-4-hejunhao3@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 7ebaf4890f63eb90 ("perf annotate: Support '--group' option")
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240322224313.423181-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hns3_pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/builtin-annotate.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/perf/hisilicon/hns3_pmu.c b/drivers/perf/hisilicon/hns3_pmu.c
-index cbdd53b0a0342..60062eaa342aa 100644
---- a/drivers/perf/hisilicon/hns3_pmu.c
-+++ b/drivers/perf/hisilicon/hns3_pmu.c
-@@ -1527,7 +1527,7 @@ static int hns3_pmu_irq_register(struct pci_dev *pdev,
- 		return ret;
- 	}
- 
--	ret = devm_add_action(&pdev->dev, hns3_pmu_free_irq, pdev);
-+	ret = devm_add_action_or_reset(&pdev->dev, hns3_pmu_free_irq, pdev);
- 	if (ret) {
- 		pci_err(pdev, "failed to add free irq action, ret = %d.\n", ret);
- 		return ret;
+diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
+index aeeb801f1ed7b..16757ea9b1a7a 100644
+--- a/tools/perf/builtin-annotate.c
++++ b/tools/perf/builtin-annotate.c
+@@ -589,8 +589,6 @@ int cmd_annotate(int argc, const char **argv)
+ 		    "Enable symbol demangling"),
+ 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
+ 		    "Enable kernel symbol demangling"),
+-	OPT_BOOLEAN(0, "group", &symbol_conf.event_group,
+-		    "Show event group information together"),
+ 	OPT_BOOLEAN(0, "show-total-period", &symbol_conf.show_total_period,
+ 		    "Show a column with the sum of periods"),
+ 	OPT_BOOLEAN('n', "show-nr-samples", &symbol_conf.show_nr_samples,
 -- 
 2.43.0
 
