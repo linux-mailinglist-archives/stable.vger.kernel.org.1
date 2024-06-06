@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-49285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0F48FECA5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB1B8FECAF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 106FDB280DD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88A14B2857D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C160A1B1500;
-	Thu,  6 Jun 2024 14:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A4A1B1505;
+	Thu,  6 Jun 2024 14:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrirLuPW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3EW2b8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EDB198A35;
-	Thu,  6 Jun 2024 14:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC945198A35;
+	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683391; cv=none; b=kQhoJGXXyd9KrUBE3zCPIxjJImb5kfswMnhBd8OLBiiy0AVxnn/4brApEuZENU0KYsC8Zap071eSDMdT60halmfBHyNtSEa5ePODn6kysjuFD25iuXZ8MlmedqDl35jCV+GaGCbpJ0qA1ypQnwE/UnMD5R2LYXxOpbCSAPYLHTc=
+	t=1717683396; cv=none; b=LRbFbrwuyypTWNkOvbJDiL1n855b36TgM/JD4EKhXlJRJBgxv+wY/gX+bDX+FSjJ9YDc8y18feOHQwRSjM5La05q/sfPn+azne9Q2kQsqjk6EqV+S4S2UyF7HXJxbualGLQ62AZFjj/y7vab/yj/iiOjF5iIp7CWnujnE2hvgpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683391; c=relaxed/simple;
-	bh=ehnc0Hv74C3a1vzgJVeKlGnQpX0Ivk3Gsi2XLHj3bzo=;
+	s=arc-20240116; t=1717683396; c=relaxed/simple;
+	bh=3cDeX4LQdcD5McCn70Mm6eoKmUsQNPNbKBpzsNrqSQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTN6KwipeL+bcpbVZMn+i8BZ29Ug14GNOCDSKTY1XTAO2SQm6Syn5xySegHJeHkVH9f3uUgyLVitZDuNEOquH0RcSGS/1O5gYoIC8IeVkz26jXCBbywE9eLRkAfoYr7DXkJHQjJZyGtIFmYArRUSoxNKZOX9YXY3gccnj/zqH6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrirLuPW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624D5C2BD10;
-	Thu,  6 Jun 2024 14:16:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NQKwD0RKJCriB8Wf/zf3SRnn7oI+Wx3b+79Qa/AfTl83DPfpxjDpFsjKYoTWwrQeY9SZtl+fVaGns6l3yrPyP0ZnGIaMsz91wzmOcq5W3fPhMKglEXj18JNa0KOJ9/y0bQusS905Z+FRmL4rFqHnlBx2R1NqSBlFeoYEsoiaslM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3EW2b8c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA5CC32781;
+	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683391;
-	bh=ehnc0Hv74C3a1vzgJVeKlGnQpX0Ivk3Gsi2XLHj3bzo=;
+	s=korg; t=1717683396;
+	bh=3cDeX4LQdcD5McCn70Mm6eoKmUsQNPNbKBpzsNrqSQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mrirLuPWpWdWLAWNm7t9wHLty8ckGu3TsvK5IExnaEceRx+byMLvZbTH8A27BDQMb
-	 cl//dbpbFOxrQZrvzRSdKBzrydK+U8wMM4dlWKeBCBqCrf4mmbuYhvuB41how1zAmi
-	 NflvivRWDUkwo3jvmMVXzODTsFID6ebPZ+S7V3eU=
+	b=v3EW2b8cF94ppI/W+I/2a2MMf2m2zxC0OdwhMv35yQsIGNHU7yn5h1OoRwxnaDK0y
+	 mwYHkiwpvWd2NngFfm8CaqNgCcrjsQsSPkg73MRwpGGU053073QPj5jubYwg6xdx5N
+	 1Owalhb6XYyJuTGDLGW3lAH+smzNqRxXQwRhO5V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 331/744] drm/rockchip: vop2: Do not divide height twice for YUV
-Date: Thu,  6 Jun 2024 16:00:03 +0200
-Message-ID: <20240606131743.057470888@linuxfoundation.org>
+Subject: [PATCH 6.6 332/744] drm/edid: Parse topology block for all DispID structure v1.x
+Date: Thu,  6 Jun 2024 16:00:04 +0200
+Message-ID: <20240606131743.099487100@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -61,87 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Detlev Casanova <detlev.casanova@collabora.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit e80c219f52861e756181d7f88b0d341116daac2b ]
+[ Upstream commit e0a200ab4b72afd581bd6f82fc1ef510a4fb5478 ]
 
-For the cbcr format, gt2 and gt4 are computed again after src_h has been
-divided by vsub.
+DisplayID spec v1.3 revision history notes do claim that
+the toplogy block was added in v1.3 so requiring structure
+v1.2 would seem correct, but there is at least one EDID in
+edid.tv with a topology block and structure v1.0. And
+there are also EDIDs with DisplayID structure v1.3 which
+seems to be totally incorrect as DisplayID spec v1.3 lists
+structure v1.2 as the only legal value.
 
-As src_h as already been divided by 2 before, introduce cbcr_src_h and
-cbcr_src_w to keep a copy of those values to be used for cbcr gt2 and
-gt4 computation.
+Unfortunately I couldn't find copies of DisplayID spec
+v1.0-v1.2 anywhere (even on vesa.org), so I'll have to
+go on empirical evidence alone.
 
-This fixes yuv planes being unaligned vertically when down scaling to
-1080 pixels from 2160.
+We used to parse the topology block on all v1.x
+structures until the check for structure v2.0 was added.
+Let's go back to doing that as the evidence does suggest
+that there are DisplayIDs in the wild that would miss
+out on the topology stuff otherwise.
 
-Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Acked-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240414182706.655270-1-detlev.casanova@collabora.com
+Also toss out DISPLAY_ID_STRUCTURE_VER_12 entirely as
+it doesn't appear we can really use it for anything.
+
+I *think* we could technically skip all the structure
+version checks as the block tags shouldn't conflict
+between v2.0 and v1.x. But no harm in having a bit of
+extra sanity checks I guess.
+
+So far I'm not aware of any user reported regressions
+from overly strict check, but I do know that it broke
+igt/kms_tiled_display's fake DisplayID as that one
+gets generated with structure v1.0.
+
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Fixes: c5a486af9df7 ("drm/edid: parse Tiled Display Topology Data Block for DisplayID 2.0")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240410180139.21352-1-ville.syrjala@linux.intel.com
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 22 +++++++++++---------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/drm_edid.c  | 2 +-
+ include/drm/drm_displayid.h | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index c306806aa3dea..c5ec4169616de 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -609,6 +609,8 @@ static void vop2_setup_scale(struct vop2 *vop2, const struct vop2_win *win,
- 	const struct drm_format_info *info;
- 	u16 hor_scl_mode, ver_scl_mode;
- 	u16 hscl_filter_mode, vscl_filter_mode;
-+	uint16_t cbcr_src_w = src_w;
-+	uint16_t cbcr_src_h = src_h;
- 	u8 gt2 = 0;
- 	u8 gt4 = 0;
- 	u32 val;
-@@ -666,27 +668,27 @@ static void vop2_setup_scale(struct vop2 *vop2, const struct vop2_win *win,
- 	vop2_win_write(win, VOP2_WIN_YRGB_VSCL_FILTER_MODE, vscl_filter_mode);
+diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+index a491280ca48c8..ee3fab115c4b5 100644
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -7321,7 +7321,7 @@ static void drm_parse_tiled_block(struct drm_connector *connector,
+ static bool displayid_is_tiled_block(const struct displayid_iter *iter,
+ 				     const struct displayid_block *block)
+ {
+-	return (displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_12 &&
++	return (displayid_version(iter) < DISPLAY_ID_STRUCTURE_VER_20 &&
+ 		block->tag == DATA_BLOCK_TILED_DISPLAY) ||
+ 		(displayid_version(iter) == DISPLAY_ID_STRUCTURE_VER_20 &&
+ 		 block->tag == DATA_BLOCK_2_TILED_DISPLAY_TOPOLOGY);
+diff --git a/include/drm/drm_displayid.h b/include/drm/drm_displayid.h
+index 566497eeb3b81..bc1f6b378195f 100644
+--- a/include/drm/drm_displayid.h
++++ b/include/drm/drm_displayid.h
+@@ -30,7 +30,6 @@ struct drm_edid;
+ #define VESA_IEEE_OUI				0x3a0292
  
- 	if (info->is_yuv) {
--		src_w /= info->hsub;
--		src_h /= info->vsub;
-+		cbcr_src_w /= info->hsub;
-+		cbcr_src_h /= info->vsub;
+ /* DisplayID Structure versions */
+-#define DISPLAY_ID_STRUCTURE_VER_12		0x12
+ #define DISPLAY_ID_STRUCTURE_VER_20		0x20
  
- 		gt4 = 0;
- 		gt2 = 0;
- 
--		if (src_h >= (4 * dst_h)) {
-+		if (cbcr_src_h >= (4 * dst_h)) {
- 			gt4 = 1;
--			src_h >>= 2;
--		} else if (src_h >= (2 * dst_h)) {
-+			cbcr_src_h >>= 2;
-+		} else if (cbcr_src_h >= (2 * dst_h)) {
- 			gt2 = 1;
--			src_h >>= 1;
-+			cbcr_src_h >>= 1;
- 		}
- 
--		hor_scl_mode = scl_get_scl_mode(src_w, dst_w);
--		ver_scl_mode = scl_get_scl_mode(src_h, dst_h);
-+		hor_scl_mode = scl_get_scl_mode(cbcr_src_w, dst_w);
-+		ver_scl_mode = scl_get_scl_mode(cbcr_src_h, dst_h);
- 
--		val = vop2_scale_factor(src_w, dst_w);
-+		val = vop2_scale_factor(cbcr_src_w, dst_w);
- 		vop2_win_write(win, VOP2_WIN_SCALE_CBCR_X, val);
- 
--		val = vop2_scale_factor(src_h, dst_h);
-+		val = vop2_scale_factor(cbcr_src_h, dst_h);
- 		vop2_win_write(win, VOP2_WIN_SCALE_CBCR_Y, val);
- 
- 		vop2_win_write(win, VOP2_WIN_VSD_CBCR_GT4, gt4);
+ /* DisplayID Structure v1r2 Data Blocks */
 -- 
 2.43.0
 
