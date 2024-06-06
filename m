@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DAD8FEBC4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4568FE8EE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D31AB26A46
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B3691F23C09
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375B51ABCD1;
-	Thu,  6 Jun 2024 14:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E30F196C99;
+	Thu,  6 Jun 2024 14:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwVUucD/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSK04gjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E841719A2B5;
-	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C88219750D;
+	Thu,  6 Jun 2024 14:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683292; cv=none; b=darESBQyxt1L7A1hFTCs8gkWWrhMvI2X7MPxTEYkkv+Im00lIGQ8EKjWmpteJRVSOa11WwJEFgJiKlqX185npE6FriT3ThKjflgcL4jo005tzMyhLM8TqWaMjZq+HWKGiBVtvmvWikmpIzJQYQFgA9msKC+yLFN5M9/EvaVvO9k=
+	t=1717682954; cv=none; b=H0E1aq3LiSC0zQrZAhPjpr1nB26J5upZNIYce0v6kDMh8NsAA7IPmxu2HhRVPUqz0MepsA5F/Iu4EbGCqx23p7KR2wz+Gm8sEkIb7KYZtmDZCJOeAvOkLpKofeVZp2SEJsn8S+RsKeBtd3CX11x3oyDr4bk8vwewh7NpesTlcBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683292; c=relaxed/simple;
-	bh=38XNr6FH1qXAaR5g+T7rWapzYnYhnOrt473FR7Hg4ng=;
+	s=arc-20240116; t=1717682954; c=relaxed/simple;
+	bh=bK7cjUiqIvpHyu0F+/vFh7gseLDVOj01+T2t6E2UN30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mO9KaCqOh83VqkfnQgVXVqDMgAeOiSZe+drDI/VcYLTf766ddjwNAKqdfi3EmDNKTlWiKG4c2dCGoZpSnOiPRS2OphfbpSySaxysjdGajli4Qg347XDqWNlRalXUPySHDu7qb9VYOgfekcER+jdvNOZdXma/QklWL5exDNUNQnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwVUucD/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8911C32781;
-	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
+	 MIME-Version; b=Qxq9N2BvfsfTj6ISB+0CB/zIUL6Ze+xarsLjo6BDke4Tiy9iPLKiU2+XDhCZorvSjFlfKkoOYSwkwUIBlsa1Kjr354h95DpxXacvMAqpA9hvxbj6ZEFVj4pcfIyiU9PNYGiQK0dJhtCzxIKOqzrdVGz+wfnICM6KPZ+SsjKD1XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSK04gjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2B8C2BD10;
+	Thu,  6 Jun 2024 14:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683291;
-	bh=38XNr6FH1qXAaR5g+T7rWapzYnYhnOrt473FR7Hg4ng=;
+	s=korg; t=1717682954;
+	bh=bK7cjUiqIvpHyu0F+/vFh7gseLDVOj01+T2t6E2UN30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FwVUucD/x+6ttvv3lyg5IWmt2w0k60qFinCzfEPanJkH+ObEzHN4gHMavqlAnRt+x
-	 jxqKmDQ36znuOvUCpeIxi7pbhHBOP48Juho8cPpZb3DTTDroIhZtM051VGkYRuCRiY
-	 lcbJ4ha/JBsucrydPQ6kCCSt0nn7LiEy11L+hAfo=
+	b=zSK04gjPfwE9yWzALhJ2wXs+7UHT/WIFwF2270CnynHpKSKIaYVbEd965h0keJlPp
+	 30FwyYb4MlrbDLWm0dJ6nD1SX0OxplMY/ndT0eqkfI09dKHJT+jW2Our4BFMWHWg0p
+	 p+eVUOsv83a1H6I1PirlqvJkjW9GppCdjheKrmxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xingwang <gaoxingwang1@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 168/473] net: ipv6: fix wrong start position when receive hop-by-hop fragment
-Date: Thu,  6 Jun 2024 16:01:37 +0200
-Message-ID: <20240606131705.496338900@linuxfoundation.org>
+Subject: [PATCH 6.9 119/374] usb: fotg210: Add missing kernel doc description
+Date: Thu,  6 Jun 2024 16:01:38 +0200
+Message-ID: <20240606131655.909741834@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gaoxingwang <gaoxingwang1@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1cd354fe1e4864eeaff62f66ee513080ec946f20 ]
+[ Upstream commit 4b653e82ae18f2dc91c7132b54f5785c4d56bab4 ]
 
-In IPv6, ipv6_rcv_core will parse the hop-by-hop type extension header and increase skb->transport_header by one extension header length.
-But if there are more other extension headers like fragment header at this time, the skb->transport_header points to the second extension header,
-not the transport layer header or the first extension header.
+kernel-doc validator is not happy:
 
-This will result in the start and nexthdrp variable not pointing to the same position in ipv6frag_thdr_trunced,
-and ipv6_skip_exthdr returning incorrect offset and frag_off.Sometimes,the length of the last sharded packet is smaller than the calculated incorrect offset, resulting in packet loss.
-We can use network header to offset and calculate the correct position to solve this problem.
+  warning: Function parameter or struct member 'fotg' not described in 'fotg210_vbus'
 
-Fixes: 9d9e937b1c8b (ipv6/netfilter: Discard first fragment not including all headers)
-Signed-off-by: Gao Xingwang <gaoxingwang1@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Add missing description.
+
+Fixes: 3e679bde529e ("usb: fotg210-udc: Implement VBUS session")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240510152641.2421298-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/reassembly.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/fotg210/fotg210-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-index ff866f2a879e0..32ba4417eb1de 100644
---- a/net/ipv6/reassembly.c
-+++ b/net/ipv6/reassembly.c
-@@ -364,7 +364,7 @@ static int ipv6_frag_rcv(struct sk_buff *skb)
- 	 * the source of the fragment, with the Pointer field set to zero.
- 	 */
- 	nexthdr = hdr->nexthdr;
--	if (ipv6frag_thdr_truncated(skb, skb_transport_offset(skb), &nexthdr)) {
-+	if (ipv6frag_thdr_truncated(skb, skb_network_offset(skb) + sizeof(struct ipv6hdr), &nexthdr)) {
- 		__IP6_INC_STATS(net, __in6_dev_get_safely(skb->dev),
- 				IPSTATS_MIB_INHDRERRORS);
- 		icmpv6_param_prob(skb, ICMPV6_HDR_INCOMP, 0);
+diff --git a/drivers/usb/fotg210/fotg210-core.c b/drivers/usb/fotg210/fotg210-core.c
+index 958fc40eae86b..0655afe7f9779 100644
+--- a/drivers/usb/fotg210/fotg210-core.c
++++ b/drivers/usb/fotg210/fotg210-core.c
+@@ -95,6 +95,7 @@ static int fotg210_gemini_init(struct fotg210 *fotg, struct resource *res,
+ 
+ /**
+  * fotg210_vbus() - Called by gadget driver to enable/disable VBUS
++ * @fotg: pointer to a private fotg210 object
+  * @enable: true to enable VBUS, false to disable VBUS
+  */
+ void fotg210_vbus(struct fotg210 *fotg, bool enable)
 -- 
 2.43.0
 
