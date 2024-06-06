@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-48458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582428FE918
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 591F98FEDC6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E956E283FE3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D24F1C23A69
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09562197543;
-	Thu,  6 Jun 2024 14:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E506F1BD4FC;
+	Thu,  6 Jun 2024 14:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnIiHlYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTTdIUFr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4E019753E;
-	Thu,  6 Jun 2024 14:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FA01974E3;
+	Thu,  6 Jun 2024 14:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682978; cv=none; b=JzqmUfURU5jYZLidZMOqRp58lI4oXoSxHxFtXTIcdosKgDm0pwJEBKcQ+LO2Z6BkFZcJow0WzKaVzwxvBqSWna2sw6AuztCy4IA047DDn3LFIFulSCs4PPmxnGWR4lbOO4nTj1N1JRnP++1tq1iXR+KtRvtw0pfN9d6CkTixnLo=
+	t=1717683524; cv=none; b=dkOFYHCKXaMXCxoJnEXlc7qRpdlQaPeZIYP2CI27iKwYpCETWecNGlltnC9iy5tBFlgzLK73r4tY4wLIc5aaejeomG6XR8rRBjeN3DZM4AQxkPR4QnarHKeP927iN9eivpOABcRlUv8c7D3xhPDimGmYWTm2/o9/4VqddjJhXsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682978; c=relaxed/simple;
-	bh=Jk/pjefwXmnQ/sdbHcEbcpSPoJqY1ME1oUr0psUc7xM=;
+	s=arc-20240116; t=1717683524; c=relaxed/simple;
+	bh=vQQHGPS7vGPlaXlCPuBEr6Glazd2ctBGsf0KkUOQa5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+OPuNMzud6MIu5HBQcOH0V1M5zvXGZnZh2xvUEuQzL3X9SkWZuC3SFR6Sg4AyBiJks5wVuj0mSZ/nvd00XF88lzd9l0dsW6eb/cBS+7x853Z3S/rXHYUkaEhXTrI5yKMY03QOZqfTdDQT0aMi+3G1HpCaN+32fKlpMsXcncB18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnIiHlYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEC4C2BD10;
-	Thu,  6 Jun 2024 14:09:38 +0000 (UTC)
+	 MIME-Version; b=El2JunuKT87/6qJH34gEYEVpQCXocZwf+qsvaeCu6QMz6yy0jEfVPtnOQ6OMTck/XNfNcR6n9crpwqcfW+ewIPVzHXTYKoR6yc2qrxsZZ90DInytlbRz2B0ovCXFsUErr9w3nMuFTJ6JL8zHHoxMOhxHtxaIKvByp5HrkhfjAbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTTdIUFr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83558C2BD10;
+	Thu,  6 Jun 2024 14:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682978;
-	bh=Jk/pjefwXmnQ/sdbHcEbcpSPoJqY1ME1oUr0psUc7xM=;
+	s=korg; t=1717683524;
+	bh=vQQHGPS7vGPlaXlCPuBEr6Glazd2ctBGsf0KkUOQa5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lnIiHlYgHGRkoT/pifxPHWPa3nhQid+B9dJuwoRI/Bp3lbHLV7Smkx6l1d6BY6Z7G
-	 KdXS9O10y2PEneaB1R/Mo+9FAte0BZW4j7p3veAp/RsNS0e0aW1YK5XHGzJ36lk2EH
-	 OBhbGhpUV3iPcUq8VOdk/Ey+1ledt6ig1Jc6hqEI=
+	b=qTTdIUFr4iyPZsZJdCm2cGpgpx8oNRCs0+Vt0XTm2C8iSC4MrxtVKNyB4udA5/8iq
+	 K3/67ifzhF3lbWvFGmEkXRFEwRjQ1pjX9hsGFLGZIxR2m97aLHXBc3eNwTyG4zdqbI
+	 9Rff0zXbxbRCYCG90x+f0+YH9EAw+YntiZ+hQLLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 158/374] media: v4l: Dont turn on privacy LED if streamon fails
+Subject: [PATCH 6.6 465/744] microblaze: Remove early printk call from cpuinfo-static.c
 Date: Thu,  6 Jun 2024 16:02:17 +0200
-Message-ID: <20240606131657.206455254@linuxfoundation.org>
+Message-ID: <20240606131747.383021753@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Michal Simek <michal.simek@amd.com>
 
-[ Upstream commit f2bf6cd8f44781349620e30a0af8987fe9af008f ]
+[ Upstream commit 58d647506c92ccd3cfa0c453c68ddd14f40bf06f ]
 
-Turn on the privacy LED only if streamon succeeds. This can be done after
-enabling streaming on the sensor.
+Early printk has been removed already that's why also remove calling it.
+Similar change has been done in cpuinfo-pvr-full.c by commit cfbd8d1979af
+("microblaze: Remove early printk setup").
 
-Fixes: b6e10ff6c23d ("media: v4l2-core: Make the v4l2-core code enable/disable the privacy LED if present")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Umang Jain <umang.jain@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/2f10db506be8188fa07b6ec331caca01af1b10f8.1712824039.git.michal.simek@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ arch/microblaze/kernel/cpu/cpuinfo-static.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index 45836f0a2b0a7..19d20871afefa 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -412,15 +412,6 @@ static int call_s_stream(struct v4l2_subdev *sd, int enable)
- 	if (WARN_ON(!!sd->enabled_streams == !!enable))
- 		return 0;
+diff --git a/arch/microblaze/kernel/cpu/cpuinfo-static.c b/arch/microblaze/kernel/cpu/cpuinfo-static.c
+index 85dbda4a08a81..03da36dc6d9c9 100644
+--- a/arch/microblaze/kernel/cpu/cpuinfo-static.c
++++ b/arch/microblaze/kernel/cpu/cpuinfo-static.c
+@@ -18,7 +18,7 @@ static const char family_string[] = CONFIG_XILINX_MICROBLAZE0_FAMILY;
+ static const char cpu_ver_string[] = CONFIG_XILINX_MICROBLAZE0_HW_VER;
  
--#if IS_REACHABLE(CONFIG_LEDS_CLASS)
--	if (!IS_ERR_OR_NULL(sd->privacy_led)) {
--		if (enable)
--			led_set_brightness(sd->privacy_led,
--					   sd->privacy_led->max_brightness);
--		else
--			led_set_brightness(sd->privacy_led, 0);
--	}
--#endif
- 	ret = sd->ops->video->s_stream(sd, enable);
+ #define err_printk(x) \
+-	early_printk("ERROR: Microblaze " x "-different for kernel and DTS\n");
++	pr_err("ERROR: Microblaze " x "-different for kernel and DTS\n");
  
- 	if (!enable && ret < 0) {
-@@ -428,9 +419,20 @@ static int call_s_stream(struct v4l2_subdev *sd, int enable)
- 		ret = 0;
- 	}
- 
--	if (!ret)
-+	if (!ret) {
- 		sd->enabled_streams = enable ? BIT(0) : 0;
- 
-+#if IS_REACHABLE(CONFIG_LEDS_CLASS)
-+		if (!IS_ERR_OR_NULL(sd->privacy_led)) {
-+			if (enable)
-+				led_set_brightness(sd->privacy_led,
-+						   sd->privacy_led->max_brightness);
-+			else
-+				led_set_brightness(sd->privacy_led, 0);
-+		}
-+#endif
-+	}
-+
- 	return ret;
- }
- 
+ void __init set_cpuinfo_static(struct cpuinfo *ci, struct device_node *cpu)
+ {
 -- 
 2.43.0
 
