@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-49512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5142B8FED93
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 203AB8FE90C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 074B21F21185
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95F85B222C7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808641BC077;
-	Thu,  6 Jun 2024 14:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD811991BC;
+	Thu,  6 Jun 2024 14:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/JIu1Rh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfcXfgGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA3C1BC063;
-	Thu,  6 Jun 2024 14:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAD8197521;
+	Thu,  6 Jun 2024 14:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683502; cv=none; b=RlUvaJt1FYxpVvbhp2adfAS7uOj2q0FyIN2orXfy79ci3LSkDZxTQJJ5v7Hws5cNZ2533LknNvmU10bddy6QjpuhMsPbrXY5mKh3tR4F/P4YqtNrHZwmkRcaWxboVgX6f1vbLtUzyfC0SiIyuR2gbymV/comp5blfyXnMrETouw=
+	t=1717682971; cv=none; b=XlJj1yOSTX5yTKKDZ/QLk96Uq20q82Ym7Tj0gO0ElnIvwCetulS8vHzoBTtg4WVu7uYl16rQE80lWJ+hqwgabHgGFArsUvZ2TW+Wb3tlpDGfNRhjV+pB2+n7rhCqnpbEt4ATIE1B66WdP3Ye9+BU+CPgdXOIYrSSsWJXtsKfc7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683502; c=relaxed/simple;
-	bh=Ebhs69Ms08mLnW2FlCb4tMheCVU3wa2QVhxkGEUkzbM=;
+	s=arc-20240116; t=1717682971; c=relaxed/simple;
+	bh=Kcwgt5OTh58/rahjlxfJtV7EwAA9K4MWAFco6Xq+1M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZA2sNDV/dpBKZ7fAcWDk64Rnb3XSssRbrtfv1fIgCk81oILNyOgicfNsNg88S8x7ne2mFd86yogXRQw4eUY55syGQcXBxdiaX82OVQ+diukHlm5q5f9iykfBUnRc27IRFWhHmYL8pNOqimGgTLAcqI3tCNUUuKE+rnJnD7/dMaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/JIu1Rh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE01C2BD10;
-	Thu,  6 Jun 2024 14:18:22 +0000 (UTC)
+	 MIME-Version; b=ChJhFdwmAiollG2fgrwKvYGl4agNFRfm92QrHrDKTHVcx/sC/n4I8ibeH0U5BPtC0mZbqwDbleZHT2jv0JDhFG5QQg/hIyjktl7lm7IR1TnRY3MbOfewDo5WlVtqH2pr0IfeXCeLsMhgpjEMsCAUviF0rNkZYx3Xz8NzEmXb4Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfcXfgGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEEBC2BD10;
+	Thu,  6 Jun 2024 14:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683502;
-	bh=Ebhs69Ms08mLnW2FlCb4tMheCVU3wa2QVhxkGEUkzbM=;
+	s=korg; t=1717682971;
+	bh=Kcwgt5OTh58/rahjlxfJtV7EwAA9K4MWAFco6Xq+1M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/JIu1RhjLjmGLp2OoQWLZKphWg4uzPhsoi7roawPR1DR6wQHJW+kfP8pUmvh8V6Q
-	 5VBJZonwaDz3PGPH0cfmOOv0g97lvPF7Cdu4O3oa4iDEPrC7nkh+j+cvY45pd4L50l
-	 hVzh++iXkpwgIqO7sCNfnj3JApcSvOmhXlkMyicA=
+	b=KfcXfgGWSQVterbl1BJHNErm1mqAxorebLFJzWcTWOk5ITltOVy8mp8tLGSdKWodo
+	 BZBLsLKuCXusxDZnHA6WUmCX1ICJTvQfGKGLlKkddVCJscWdhYLD3zdBpW1V+Kx5yx
+	 C7wnEk1yx2yIKofEzSEVhNSbWXImMlASi40sJH6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	James Clark <james.clark@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Suzuki Poulouse <suzuki.poulose@arm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 444/744] perf test shell arm_coresight: Increase buffer size for Coresight basic tests
+Subject: [PATCH 6.9 137/374] s390/ipl: Fix incorrect initialization of nvme dump block
 Date: Thu,  6 Jun 2024 16:01:56 +0200
-Message-ID: <20240606131746.742521749@linuxfoundation.org>
+Message-ID: <20240606131656.493606446@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Alexander Egorenkov <egorenar@linux.ibm.com>
 
-[ Upstream commit 10b6ee3b597b1b1b4dc390aaf9d589664af31df9 ]
+[ Upstream commit 7faacaeaf6ce12fae78751de5ad869d8f1e1cd7a ]
 
-These tests record in a mode that includes kernel trace but look for
-samples of a userspace process. This makes them sensitive to any kernel
-compilation options that increase the amount of time spent in the
-kernel. If the trace buffer is completely filled before userspace is
-reached then the test will fail. Double the buffer size to fix this.
+Initialize the correct fields of the nvme dump block.
+This bug had not been detected before because first, the fcp and nvme fields
+of struct ipl_parameter_block are part of the same union and, therefore,
+overlap in memory and second, they are identical in structure and size.
 
-The other tests in the same file aren't sensitive to this for various
-reasons, for example the iterate devices test filters by userspace trace
-only. But in order to keep coverage of all the modes, increase the
-buffer size rather than filtering by userspace for the basic tests.
-
-Fixes: d1efa4a0a696e487 ("perf cs-etm: Add separate decode paths for timeless and per-thread modes")
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20240326113749.257250-1-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: d70e38cb1dee ("s390: nvme dump support")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_arm_coresight.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/ipl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/tests/shell/test_arm_coresight.sh b/tools/perf/tests/shell/test_arm_coresight.sh
-index f1bf5621160fb..4d4e685775303 100755
---- a/tools/perf/tests/shell/test_arm_coresight.sh
-+++ b/tools/perf/tests/shell/test_arm_coresight.sh
-@@ -186,7 +186,7 @@ arm_cs_etm_snapshot_test() {
- 
- arm_cs_etm_basic_test() {
- 	echo "Recording trace with '$*'"
--	perf record -o ${perfdata} "$@" -- ls > /dev/null 2>&1
-+	perf record -o ${perfdata} "$@" -m,8M -- ls > /dev/null 2>&1
- 
- 	perf_script_branch_samples ls &&
- 	perf_report_branch_samples ls &&
+diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
+index aedd256156bd9..469e8d3fbfbf3 100644
+--- a/arch/s390/kernel/ipl.c
++++ b/arch/s390/kernel/ipl.c
+@@ -1858,9 +1858,9 @@ static int __init dump_nvme_init(void)
+ 	}
+ 	dump_block_nvme->hdr.len = IPL_BP_NVME_LEN;
+ 	dump_block_nvme->hdr.version = IPL_PARM_BLOCK_VERSION;
+-	dump_block_nvme->fcp.len = IPL_BP0_NVME_LEN;
+-	dump_block_nvme->fcp.pbt = IPL_PBT_NVME;
+-	dump_block_nvme->fcp.opt = IPL_PB0_NVME_OPT_DUMP;
++	dump_block_nvme->nvme.len = IPL_BP0_NVME_LEN;
++	dump_block_nvme->nvme.pbt = IPL_PBT_NVME;
++	dump_block_nvme->nvme.opt = IPL_PB0_NVME_OPT_DUMP;
+ 	dump_capabilities |= DUMP_TYPE_NVME;
+ 	return 0;
+ }
 -- 
 2.43.0
 
