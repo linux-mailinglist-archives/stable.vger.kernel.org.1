@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A243E8FE8C5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 729B68FECDA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F7991C21BD2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 754A01C24E18
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AA1198842;
-	Thu,  6 Jun 2024 14:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B071B3722;
+	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ad8OBHmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTP0gHXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3892B197A9F;
-	Thu,  6 Jun 2024 14:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F380E1B29CF;
+	Thu,  6 Jun 2024 14:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682932; cv=none; b=U/zflDbtDhCma0JCr3ZzFhaYSo0ThGMjVKT1U18Qx/Rq4/JIOl1fnbCMC12nxOBPp0dg/7CtseDQadRoch4xcHTSPoRtZ0bhiP1fMZougTLzlkuR23bGg/WRMtjINjG8n6xTlvjru5XcJQfNauH9sexuphlbMeYRQZPHmhRAZ9I=
+	t=1717683417; cv=none; b=mi+92vYj/TdW0ZkGzxA77kjggf17T8FMc4Cwfrn5+a5lQHCxUu6bl8UKIZHJvuNxj695p6j4xRaRH6Gq19EMDHngLhUhd611E0IaDlyj0x2HFZ+WonVobC4NGaOeIgV9Vnx4Qtnh/tf5mAcYv9TVIqeaAUoPSFy2EpvDinGyzY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682932; c=relaxed/simple;
-	bh=B7rtpqc6BnLeXFmhtbCjEsNx2s5/YxBFxGMSGy0cBjs=;
+	s=arc-20240116; t=1717683417; c=relaxed/simple;
+	bh=UrrpD+HJlYeAiZCpnVYaQSEZ0Y3Ovha3X2ilVq6Ktt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5APsBNa1dol8/2cAMgsf9U+Tnnasf9Z8NGYM6D+uRG3yY0Yf2yCKS+bgeKHtd5x4PiZiCr62ow9qE947saF4LBS17ENf0Hj3sKl/PLT1hYDNOvny0wMs0jxpRkcVecdcAnxwyM51/ZM2uURT255KE/dlZyOBZ6iote3vgSSwTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ad8OBHmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156AFC2BD10;
-	Thu,  6 Jun 2024 14:08:52 +0000 (UTC)
+	 MIME-Version; b=cpjBUmuRfGtfAGkllUIkSB72h5J1eIQIS7uFpZcePJ3N5hikgqA/XQhqtiyP4+TQ7K4XNZbks0L+52H6/o1McS4cS+e1zzzn6zokH4wbGuAq5aSH7ZbR6i71atZs45JK99iyPAau8HoWOrOd9C8ZcA8xN6W9iTbaDivSWQ6gIqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTP0gHXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2708C32781;
+	Thu,  6 Jun 2024 14:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682932;
-	bh=B7rtpqc6BnLeXFmhtbCjEsNx2s5/YxBFxGMSGy0cBjs=;
+	s=korg; t=1717683416;
+	bh=UrrpD+HJlYeAiZCpnVYaQSEZ0Y3Ovha3X2ilVq6Ktt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ad8OBHmJvIac2dFpsSDdSOFooygoWEG/LngFM5Djy5+jeVuT8IN4tuxAKxP8hmgjv
-	 1jSziZh5xZyLOlIu4UuXGaS2fz5r3k1Kpj2+GhSjRZZLBkUdWcgTEX9wFhnU4azYpO
-	 p7/kgnZ9FsQ4fdsiTmj3Fck5y1fiYuiAD0mvPGrQ=
+	b=rTP0gHXqXMm0CdVHzcc6mIpJSncaxLptlB8mV2a8hoyeLX6g90H7woNMufh9cbTG2
+	 k56n322wiQ1P6kHpELrTEicgaz8NDCGlKlcVo3E/gew+WcdK6alqJb8ZSS00UjiD3Z
+	 gvAMVCBy5xZuryOWCoQnxug1DGSnnjYisSlC+AII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 053/374] iio: pressure: dps310: support negative temperature values
+Subject: [PATCH 6.6 360/744] x86/insn: Add VEX versions of VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS
 Date: Thu,  6 Jun 2024 16:00:32 +0200
-Message-ID: <20240606131653.612430326@linuxfoundation.org>
+Message-ID: <20240606131744.030701439@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 9dd6b32e76ff714308964cd9ec91466a343dcb8b ]
+[ Upstream commit b8000264348979b60dbe479255570a40e1b3a097 ]
 
-The current implementation interprets negative values returned from
-`dps310_calculate_temp` as error codes.
-This has a side effect that when negative temperature values are
-calculated, they are interpreted as error.
+The x86 instruction decoder is used not only for decoding kernel
+instructions. It is also used by perf uprobes (user space probes) and by
+perf tools Intel Processor Trace decoding. Consequently, it needs to
+support instructions executed by user space also.
 
-Fix this by using the return value only for error handling and passing a
-pointer for the value.
+Intel Architecture Instruction Set Extensions and Future Features manual
+number 319433-044 of May 2021, documented VEX versions of instructions
+VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS, but the opcode map has them
+listed as EVEX only.
 
-Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
-Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-Link: https://lore.kernel.org/r/20240415105030.1161770-2-thomas.haemmerle@leica-geosystems.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Remove EVEX-only (ev) annotation from instructions VPDPBUSD, VPDPBUSDS,
+VPDPWSSD and VPDPWSSDS, which allows them to be decoded with either a VEX
+or EVEX prefix.
+
+Fixes: 0153d98f2dd6 ("x86/insn: Add misc instructions to x86 instruction decoder")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240502105853.5338-4-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/dps310.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/x86/lib/x86-opcode-map.txt       | 8 ++++----
+ tools/arch/x86/lib/x86-opcode-map.txt | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-index 1ff091b2f764d..d0a516d56da47 100644
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -730,7 +730,7 @@ static int dps310_read_pressure(struct dps310_data *data, int *val, int *val2,
- 	}
- }
- 
--static int dps310_calculate_temp(struct dps310_data *data)
-+static int dps310_calculate_temp(struct dps310_data *data, int *val)
- {
- 	s64 c0;
- 	s64 t;
-@@ -746,7 +746,9 @@ static int dps310_calculate_temp(struct dps310_data *data)
- 	t = c0 + ((s64)data->temp_raw * (s64)data->c1);
- 
- 	/* Convert to milliCelsius and scale the temperature */
--	return (int)div_s64(t * 1000LL, kt);
-+	*val = (int)div_s64(t * 1000LL, kt);
-+
-+	return 0;
- }
- 
- static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
-@@ -768,11 +770,10 @@ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
- 		if (rc)
- 			return rc;
- 
--		rc = dps310_calculate_temp(data);
--		if (rc < 0)
-+		rc = dps310_calculate_temp(data, val);
-+		if (rc)
- 			return rc;
- 
--		*val = rc;
- 		return IIO_VAL_INT;
- 
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
+index 940913550ed83..d1ccd06c53127 100644
+--- a/arch/x86/lib/x86-opcode-map.txt
++++ b/arch/x86/lib/x86-opcode-map.txt
+@@ -698,10 +698,10 @@ AVXcode: 2
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+ 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
+-50: vpdpbusd Vx,Hx,Wx (66),(ev)
+-51: vpdpbusds Vx,Hx,Wx (66),(ev)
+-52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
+-53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
++50: vpdpbusd Vx,Hx,Wx (66)
++51: vpdpbusds Vx,Hx,Wx (66)
++52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
++53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
+ 54: vpopcntb/w Vx,Wx (66),(ev)
+ 55: vpopcntd/q Vx,Wx (66),(ev)
+ 58: vpbroadcastd Vx,Wx (66),(v)
+diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
+index 940913550ed83..d1ccd06c53127 100644
+--- a/tools/arch/x86/lib/x86-opcode-map.txt
++++ b/tools/arch/x86/lib/x86-opcode-map.txt
+@@ -698,10 +698,10 @@ AVXcode: 2
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+ 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
+-50: vpdpbusd Vx,Hx,Wx (66),(ev)
+-51: vpdpbusds Vx,Hx,Wx (66),(ev)
+-52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
+-53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
++50: vpdpbusd Vx,Hx,Wx (66)
++51: vpdpbusds Vx,Hx,Wx (66)
++52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
++53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
+ 54: vpopcntb/w Vx,Wx (66),(ev)
+ 55: vpopcntd/q Vx,Wx (66),(ev)
+ 58: vpbroadcastd Vx,Wx (66),(v)
 -- 
 2.43.0
 
