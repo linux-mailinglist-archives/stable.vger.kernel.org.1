@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-48662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E8D8FE9F6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D19A8FEECF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E435E1C25F56
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39F611F2501D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B57819D083;
-	Thu,  6 Jun 2024 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A6D1A1860;
+	Thu,  6 Jun 2024 14:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBhGqi5P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziEsmN59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9EA19D082;
-	Thu,  6 Jun 2024 14:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C611C7D76;
+	Thu,  6 Jun 2024 14:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683085; cv=none; b=mDSnayqQ3SQGWrqcyFfXYhd1Z7PRvMqy0O32ic1j3ezdLS8fMjtHlPNKQixYdcPp0g2XU94UhR30FqjWT6vk7RAnGVFd6IxoXFOQ07n3HngVjBjf5hFwfdOCtIwuytr12DHABACv412QZSIU6KnQa1rqI+PZ3PFJr/AgAhr/Apw=
+	t=1717683704; cv=none; b=jnTgCSvrxqqJ0pPGJMgk6itFKe9pvwP5gBCxTGhmF+hQBwjKpQ/ritL0/uBO76zaXZFclmBj9KXpJMsrlsbaSbc0377yOQjTZs1LSiPfJZH0W5yoJt+nqx8eFG7Hc7jWia3hfeuH6S3hJokzu7ODcNMaFpAA7hl1tRZcl4m4mjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683085; c=relaxed/simple;
-	bh=lNSPcU2XwUVeuhVhxO45z0CBsESpO6RNcE3w2HfcOV4=;
+	s=arc-20240116; t=1717683704; c=relaxed/simple;
+	bh=9mFrghmry0Um8QT949xDe4IsFXfk1eIHNdc2/zPkQcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1ddnh0TJZhvhsxz1rlaapHQBZTgvmRWdCOShRkZZBAb2XLlzecb6RqbcfgK58VYOKGoFN4fqpuQQJkREa1S854qCfH3FJWtf0eiADP5sIG9j5ZwEutg32+DLLahXY4cAbOtlFwk2p0FtXoyBhjylTsadffewnl2++DsS7KXPME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBhGqi5P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3F6C32782;
-	Thu,  6 Jun 2024 14:11:25 +0000 (UTC)
+	 MIME-Version; b=PwFlyDphoMLh+Ty2QFYvTv8I6P0QLlvEo/lMtliA8n9NJBYcCOu7309bfv06lnQGI3QlJh2QMz5t67dVkRI8JVJsCJqwkWeZltSPyc/WJwrQSxniZhZmE6Bx7toIwys6nhO6teTjrk1Vj12agtnYYy8y8etoBWCu/cAjwy8dDaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziEsmN59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC52C32781;
+	Thu,  6 Jun 2024 14:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683085;
-	bh=lNSPcU2XwUVeuhVhxO45z0CBsESpO6RNcE3w2HfcOV4=;
+	s=korg; t=1717683704;
+	bh=9mFrghmry0Um8QT949xDe4IsFXfk1eIHNdc2/zPkQcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jBhGqi5Pw7M6ji+eLUVg1IJnR5XVJDVjIP2or05xIw5vQx1NgwCKpN1IrLjAgy1xu
-	 GqlIyXz6xAqbIJVoVNQ2TTjtnvytw+KFdYIubeuoOlYwPyZX4LwjbdDXzULbnRxI9S
-	 dRU8OIa2coEakWdGx55GKEIj9gxYB3jWvsCGZoR4=
+	b=ziEsmN59EQYHEsnIud2bwNribnJSiskz+MERD/XRiOlmijHooFJvII0xRA4HQ8KSi
+	 cDPi5/j5FjxCimwRnN69y/akP6sylNABcgJp9vT62dTEzV2fTdfkdlutKD3gb4fJmC
+	 1EZzCs7X12NdtISP0LDM1OnMa1VjwT7znr4XGo6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Schatzberg <schatzberg.dan@gmail.com>,
+	Waiman Long <longman@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 321/374] ice: fix accounting if a VLAN already exists
+Subject: [PATCH 6.6 628/744] blk-cgroup: Properly propagate the iostat update up the hierarchy
 Date: Thu,  6 Jun 2024 16:05:00 +0200
-Message-ID: <20240606131702.620511390@linuxfoundation.org>
+Message-ID: <20240606131752.631787366@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 82617b9a04649e83ee8731918aeadbb6e6d7cbc7 ]
+[ Upstream commit 9d230c09964e6e18c8f6e4f0d41ee90eef45ec1c ]
 
-The ice_vsi_add_vlan() function is used to add a VLAN filter for the target
-VSI. This function prepares a filter in the switch table for the given VSI.
-If it succeeds, the vsi->num_vlan counter is incremented.
+During a cgroup_rstat_flush() call, the lowest level of nodes are flushed
+first before their parents. Since commit 3b8cc6298724 ("blk-cgroup:
+Optimize blkcg_rstat_flush()"), iostat propagation was still done to
+the parent. Grandparent, however, may not get the iostat update if the
+parent has no blkg_iostat_set queued in its lhead lockless list.
 
-It is not considered an error to add a VLAN which already exists in the
-switch table, so the function explicitly checks and ignores -EEXIST. The
-vsi->num_vlan counter is still incremented.
+Fix this iostat propagation problem by queuing the parent's global
+blkg->iostat into one of its percpu lockless lists to make sure that
+the delta will always be propagated up to the grandparent and so on
+toward the root blkcg.
 
-This seems incorrect, as it means we can double-count in the case where the
-same VLAN is added twice by the caller. The actual table will have one less
-filter than the count.
+Note that successive calls to __blkcg_rstat_flush() are serialized by
+the cgroup_rstat_lock. So no special barrier is used in the reading
+and writing of blkg->iostat.lqueued.
 
-The ice_vsi_del_vlan() function similarly checks and handles the -ENOENT
-condition for when deleting a filter that doesn't exist. This flow only
-decrements the vsi->num_vlan if it actually deleted a filter.
-
-The vsi->num_vlan counter is used only in a few places, primarily related
-to tracking the number of non-zero VLANs. If the vsi->num_vlans gets out of
-sync, then ice_vsi_num_non_zero_vlans() will incorrectly report more VLANs
-than are present, and ice_vsi_has_non_zero_vlans() could return true
-potentially in cases where there are only VLAN 0 filters left.
-
-Fix this by only incrementing the vsi->num_vlan in the case where we
-actually added an entry, and not in the case where the entry already
-existed.
-
-Fixes: a1ffafb0b4a4 ("ice: Support configuring the device to Double VLAN Mode")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240523-net-2024-05-23-intel-net-fixes-v1-2-17a923e0bb5f@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
+Reported-by: Dan Schatzberg <schatzberg.dan@gmail.com>
+Closes: https://lore.kernel.org/lkml/ZkO6l%2FODzadSgdhC@dschatzberg-fedora-PF3DHTBV/
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20240515143059.276677-1-longman@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ block/blk-cgroup.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-index 2e9ad27cb9d13..6e8f2aab60801 100644
---- a/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vsi_vlan_lib.c
-@@ -45,14 +45,15 @@ int ice_vsi_add_vlan(struct ice_vsi *vsi, struct ice_vlan *vlan)
- 		return -EINVAL;
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 8102a23b24871..4fb045d26bd5a 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -323,6 +323,7 @@ static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
+ 	blkg->q = disk->queue;
+ 	INIT_LIST_HEAD(&blkg->q_node);
+ 	blkg->blkcg = blkcg;
++	blkg->iostat.blkg = blkg;
+ #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+ 	spin_lock_init(&blkg->async_bio_lock);
+ 	bio_list_init(&blkg->async_bios);
+@@ -1047,6 +1048,8 @@ static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu)
+ 		smp_mb();
  
- 	err = ice_fltr_add_vlan(vsi, vlan);
--	if (err && err != -EEXIST) {
-+	if (!err)
-+		vsi->num_vlan++;
-+	else if (err == -EEXIST)
-+		err = 0;
-+	else
- 		dev_err(ice_pf_to_dev(vsi->back), "Failure Adding VLAN %d on VSI %i, status %d\n",
- 			vlan->vid, vsi->vsi_num, err);
--		return err;
--	}
+ 		WRITE_ONCE(bisc->lqueued, false);
++		if (bisc == &blkg->iostat)
++			goto propagate_up; /* propagate up to parent only */
  
--	vsi->num_vlan++;
--	return 0;
-+	return err;
- }
+ 		/* fetch the current per-cpu values */
+ 		do {
+@@ -1056,10 +1059,24 @@ static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu)
  
- /**
+ 		blkcg_iostat_update(blkg, &cur, &bisc->last);
+ 
++propagate_up:
+ 		/* propagate global delta to parent (unless that's root) */
+-		if (parent && parent->parent)
++		if (parent && parent->parent) {
+ 			blkcg_iostat_update(parent, &blkg->iostat.cur,
+ 					    &blkg->iostat.last);
++			/*
++			 * Queue parent->iostat to its blkcg's lockless
++			 * list to propagate up to the grandparent if the
++			 * iostat hasn't been queued yet.
++			 */
++			if (!parent->iostat.lqueued) {
++				struct llist_head *plhead;
++
++				plhead = per_cpu_ptr(parent->blkcg->lhead, cpu);
++				llist_add(&parent->iostat.lnode, plhead);
++				parent->iostat.lqueued = true;
++			}
++		}
+ 	}
+ 	raw_spin_unlock_irqrestore(&blkg_stat_lock, flags);
+ out:
 -- 
 2.43.0
 
