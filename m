@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C3D78FEF06
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE208FE9FD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AE721C21A1B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBAF7283A4F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AE71C95DB;
-	Thu,  6 Jun 2024 14:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB7219D08E;
+	Thu,  6 Jun 2024 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+QAe+FI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5BuT+JE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DEA1A1894;
-	Thu,  6 Jun 2024 14:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F171974EC;
+	Thu,  6 Jun 2024 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683728; cv=none; b=rbTCt5fJ+9E1BsvRiU2Uo4fZgnPPagVrBBe0pE93AF713Tc3x6I7UZs1tweWH8+ThKWQXNWriOfsC0yWEwMsmVrDcP8Ced4L3y1xY9Drrxo454Eme1Tmpt3YD6foN8B/zCqxWGXmfDomxHQ7AHptyRaR8JSR9OpL7hSkB14Dd8k=
+	t=1717683089; cv=none; b=WM+/MevZBuBN/kp041YsQv01Lzx60gyPyFUtDDmXelNXDOS2clBcEH5qFuVnQ2QK+MDL2MYnj/YriK3peFV/JLc4Ka7XzKIbXDIiqArBc+eAEA9XVnaTSRYZdqCZZcaP9gitQlTwkqHLllk2d6wG8fW8dMggB1cETwsMF4D4YEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683728; c=relaxed/simple;
-	bh=T1q0HYYCgsrpuKLdqC6DjK4HtTWtI9aV0EPa/Uoczkc=;
+	s=arc-20240116; t=1717683089; c=relaxed/simple;
+	bh=pqS6+iaaZ2L7JrE8LpqcznPPBUD+MASJzj2RQKYAe3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/ixA8HZV2VqaUpOHmpucx+5uQe6ogaiNybf3EpLG+9Azvmle52b42prfGFSlsOAqJnMGzvXhY2vKGBVMYcQRena+7g2LhcWHVijzI9qEoLmqG2vofnYDtt1vlHob0phJlaDyNJmMvGBgHaCUI5j8PiptkzuTI0DFByQeOZKhhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+QAe+FI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53FAEC32782;
-	Thu,  6 Jun 2024 14:22:08 +0000 (UTC)
+	 MIME-Version; b=g8ktEZQy8uETHVfffDgh1jRXLBthBq6mphQ0TWIkLVxadPj4hVRTbJKSzpbo6XuDgxtSmh2YrrKRjIYxikq/4E/nkfmexISjpPJvE/841OWnBkwL4ILpdMAbWyq11WqH9xdZ/+BMG9Ub9GH8UV6LM+JpIzMPoDGOMY7pA/ESQm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5BuT+JE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1902C2BD10;
+	Thu,  6 Jun 2024 14:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683728;
-	bh=T1q0HYYCgsrpuKLdqC6DjK4HtTWtI9aV0EPa/Uoczkc=;
+	s=korg; t=1717683088;
+	bh=pqS6+iaaZ2L7JrE8LpqcznPPBUD+MASJzj2RQKYAe3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+QAe+FIRtBSCGOc+h9rhy2KbR97LVSmlpkVN353oRxXbk393ItRjgC9bLEXwIDGk
-	 T1TD80BG0N9Cso0XxKM6/L8JyGlioE0HFpohUu4LjoJCfvpAQSyjQu/zQD9WrvtfTo
-	 4xSebdWDKq34qu6UjSiEhlpY+oB1xIdHyzhWIFXw=
+	b=C5BuT+JETBXFIyQuhuRFY32fuX1/GUhtTc4I7zYtSk2lymkTJjbUrgrhpDGcF4ShD
+	 YSyNJILCaYLgR8iZ5cyaqLyZaEWq+4f3gDXpq/2EmsODwmGh2BHDPIQOVD8Gnymuws
+	 rsDbFORGya/UqCoeFx1UcGG3MJJTsE1eVhMWzSj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 677/744] dma-mapping: benchmark: fix up kthread-related error handling
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.9 370/374] KVM: x86: Dont advertise guest.MAXPHYADDR as host.MAXPHYADDR in CPUID
 Date: Thu,  6 Jun 2024 16:05:49 +0200
-Message-ID: <20240606131754.213763170@linuxfoundation.org>
+Message-ID: <20240606131704.278545689@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Gerd Hoffmann <kraxel@redhat.com>
 
-[ Upstream commit bb9025f4432f8c158322cf2c04c2b492f23eb511 ]
+commit 6f5c9600621b4efb5c61b482d767432eb1ad3a9c upstream.
 
-kthread creation failure is invalidly handled inside do_map_benchmark().
-The put_task_struct() calls on the error path are supposed to balance the
-get_task_struct() calls which only happen after all the kthreads are
-successfully created. Rollback using kthread_stop() for already created
-kthreads in case of such failure.
+Drop KVM's propagation of GuestPhysBits (CPUID leaf 80000008, EAX[23:16])
+to HostPhysBits (same leaf, EAX[7:0]) when advertising the address widths
+to userspace via KVM_GET_SUPPORTED_CPUID.
 
-In normal situation call kthread_stop_put() to gracefully stop kthreads
-and put their task refcounts. This should be done for all started
-kthreads.
+Per AMD, GuestPhysBits is intended for software use, and physical CPUs do
+not set that field.  I.e. GuestPhysBits will be non-zero if and only if
+KVM is running as a nested hypervisor, and in that case, GuestPhysBits is
+NOT guaranteed to capture the CPU's effective MAXPHYADDR when running with
+TDP enabled.
 
-Found by Linux Verification Center (linuxtesting.org).
+E.g. KVM will soon use GuestPhysBits to communicate the CPU's maximum
+*addressable* guest physical address, which would result in KVM under-
+reporting PhysBits when running as an L1 on a CPU with MAXPHYADDR=52,
+but without 5-level paging.
 
-Fixes: 65789daa8087 ("dma-mapping: add benchmark support for streaming DMA APIs")
-Suggested-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20240313125844.912415-2-kraxel@redhat.com
+[sean: rewrite changelog with --verbose, Cc stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/map_benchmark.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ arch/x86/kvm/cpuid.c |   21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index 02205ab53b7e9..2478957cf9f83 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -118,6 +118,8 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 		if (IS_ERR(tsk[i])) {
- 			pr_err("create dma_map thread failed\n");
- 			ret = PTR_ERR(tsk[i]);
-+			while (--i >= 0)
-+				kthread_stop(tsk[i]);
- 			goto out;
- 		}
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1232,9 +1232,8 @@ static inline int __do_cpuid_func(struct
+ 		entry->eax = entry->ebx = entry->ecx = 0;
+ 		break;
+ 	case 0x80000008: {
+-		unsigned g_phys_as = (entry->eax >> 16) & 0xff;
+-		unsigned virt_as = max((entry->eax >> 8) & 0xff, 48U);
+-		unsigned phys_as = entry->eax & 0xff;
++		unsigned int virt_as = max((entry->eax >> 8) & 0xff, 48U);
++		unsigned int phys_as;
  
-@@ -139,13 +141,17 @@ static int do_map_benchmark(struct map_benchmark_data *map)
+ 		/*
+ 		 * If TDP (NPT) is disabled use the adjusted host MAXPHYADDR as
+@@ -1242,16 +1241,16 @@ static inline int __do_cpuid_func(struct
+ 		 * reductions in MAXPHYADDR for memory encryption affect shadow
+ 		 * paging, too.
+ 		 *
+-		 * If TDP is enabled but an explicit guest MAXPHYADDR is not
+-		 * provided, use the raw bare metal MAXPHYADDR as reductions to
+-		 * the HPAs do not affect GPAs.
++		 * If TDP is enabled, use the raw bare metal MAXPHYADDR as
++		 * reductions to the HPAs do not affect GPAs.
+ 		 */
+-		if (!tdp_enabled)
+-			g_phys_as = boot_cpu_data.x86_phys_bits;
+-		else if (!g_phys_as)
+-			g_phys_as = phys_as;
++		if (!tdp_enabled) {
++			phys_as = boot_cpu_data.x86_phys_bits;
++		} else {
++			phys_as = entry->eax & 0xff;
++		}
  
- 	msleep_interruptible(map->bparam.seconds * 1000);
- 
--	/* wait for the completion of benchmark threads */
-+	/* wait for the completion of all started benchmark threads */
- 	for (i = 0; i < threads; i++) {
--		ret = kthread_stop(tsk[i]);
--		if (ret)
--			goto out;
-+		int kthread_ret = kthread_stop_put(tsk[i]);
-+
-+		if (kthread_ret)
-+			ret = kthread_ret;
- 	}
- 
-+	if (ret)
-+		goto out;
-+
- 	loops = atomic64_read(&map->loops);
- 	if (likely(loops > 0)) {
- 		u64 map_variance, unmap_variance;
-@@ -170,8 +176,6 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 	}
- 
- out:
--	for (i = 0; i < threads; i++)
--		put_task_struct(tsk[i]);
- 	put_device(map->dev);
- 	kfree(tsk);
- 	return ret;
--- 
-2.43.0
-
+-		entry->eax = g_phys_as | (virt_as << 8);
++		entry->eax = phys_as | (virt_as << 8);
+ 		entry->ecx &= ~(GENMASK(31, 16) | GENMASK(11, 8));
+ 		entry->edx = 0;
+ 		cpuid_entry_override(entry, CPUID_8000_0008_EBX);
 
 
 
