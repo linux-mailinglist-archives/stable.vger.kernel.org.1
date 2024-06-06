@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-49441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 130128FED44
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C648FE8E0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C9AF1C22F45
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BD751C24E3C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C162119D073;
-	Thu,  6 Jun 2024 14:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146A3198E8C;
+	Thu,  6 Jun 2024 14:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU2HYtPb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTvfbVTa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809D719D07C;
-	Thu,  6 Jun 2024 14:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CD41974F3;
+	Thu,  6 Jun 2024 14:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683467; cv=none; b=OWxOoSbreanM7DG7tHTF8kEWndPD22qN4g3tG/3UHyt88rt4DIo1fH90UwpwtkCw5Vcjs4BAegSTIqXvm3vCWWGc8xQttIVBmcWbE+ZSgVpHnQIVS2HxjQuAbtwYjQkDt4aWRbWkeUUfpIXfaaOBIe2XYf09lSR+rUgblfaZRv8=
+	t=1717682945; cv=none; b=J49hJOSJG4HfuPfTHfgyxh7T5wBGM1E3QvwLI7qOPF9VQznrEgT5aUxIPItddTE76ZPau+9j7jSUNDoKhvsKqqYzf73cLTvAdk2vRtVfWvD2HDiEtxqO5YMukIXVf4R27hTu455xTjmfCIPdKZridSMusN45x/arO5gPAAwtQ8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683467; c=relaxed/simple;
-	bh=w7lHfxPAzkm3V0BmRUlVsddYwnxHmsxqoFlGzTIpH+U=;
+	s=arc-20240116; t=1717682945; c=relaxed/simple;
+	bh=7rD5DQz9o8x0Atbb1scwJdg9Hp+3+1I3bQnCB1pUpzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zx8KGhj8Zfp9+w81eyNDzht1Do5hiN2xQxj767xQnkOKaa/6GqPVFs+8LdIT9xkaCKUdSjdvMzsFs09WomEPpvVQYSggPMw/UbDxFLfDtpUUKiD10Xz3GWrn7tt34i9/sId5FjltAorK7SXFcYAR97JUdA9eI2BcsE2WRq9l9vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU2HYtPb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6055FC2BD10;
-	Thu,  6 Jun 2024 14:17:47 +0000 (UTC)
+	 MIME-Version; b=rK46oe609A1yMKjZg3Si/NhPILstcxuq0O0qelzjdV6MwmCB6Huw8Nxy9Iu/VgK3uMj5inmWnPR5M9GhuiGsj9yADZMBBmIfIKytAX/eigxio5LAVFYIjTsEPRS1tHQFA+RVvXyOomT0/TokRReT3j84uOiV82mOrMQYv/NgnBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTvfbVTa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D778C2BD10;
+	Thu,  6 Jun 2024 14:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683467;
-	bh=w7lHfxPAzkm3V0BmRUlVsddYwnxHmsxqoFlGzTIpH+U=;
+	s=korg; t=1717682945;
+	bh=7rD5DQz9o8x0Atbb1scwJdg9Hp+3+1I3bQnCB1pUpzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UU2HYtPbhKKGnIEvz+ZaFjtHq48I6NWQ/1Vz2pOeDxUScZgUdqWORavFs0LRpJMs3
-	 yxW8PR1YWYw6JLaa3hZBEnRKczeq9QdTmOYIK76xMrMtD7hkp0Ub2XEKUZW1AcSrAT
-	 KnVeAb3g4EBA7WaRYbdej1/ICtBNC/L0zcBpooaU=
+	b=yTvfbVTallrJpxllwoGUuJp8oF+x3jTaAUT5cM1DaYmovVWTWoz4KO6jnVXB96CGT
+	 HTqPsoAJRqDncMgk17s6nYmfw/7+7qbmJIgWWCiv4/s5C6zA2za5cjfHd4VkFozb4s
+	 nom7jj78aqcQxecJUayWy2PAthzPygPoF8PmCfZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	James Clark <james.clark@arm.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
 	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 411/744] perf report: Convert to the global annotation_options
-Date: Thu,  6 Jun 2024 16:01:23 +0200
-Message-ID: <20240606131745.649598037@linuxfoundation.org>
+Subject: [PATCH 6.9 105/374] perf symbols: Update kcore map before merging in remaining symbols
+Date: Thu,  6 Jun 2024 16:01:24 +0200
+Message-ID: <20240606131655.444177936@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,152 +71,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit 14953f038d6b30e3dc9d1aa4d4584ac505e5a8ec ]
+[ Upstream commit f30232b20fadea8c0f2f43f764bc06e51e8cfcdf ]
 
-Use the global option and drop the local copy.
+When loading kcore, the main vmlinux map is updated in the same loop
+that merges the remaining maps. If a map that overlaps is merged in
+before kcore, the list can become unsortable when the main map addresses
+are updated. This will later trigger the check_invariants() assert:
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+  $ perf record
+  $ perf report
+
+  util/maps.c:96: check_invariants: Assertion `map__end(prev) <=
+    map__start(map) || map__start(prev) == map__start(map)' failed.
+  Aborted
+
+Fix it by moving the main map update prior to the loop so that
+maps__merge_in() can split it if necessary.
+
+Fixes: 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
+Signed-off-by: James Clark <james.clark@arm.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231128175441.721579-3-namhyung@kernel.org
+Link: https://lore.kernel.org/r/20240507141210.195939-4-james.clark@arm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: aaf494cf483a ("perf annotate: Fix annotation_calc_lines() to pass correct address to get_srcline()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-report.c | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ tools/perf/util/symbol.c | 40 +++++++++++++++++++++-------------------
+ 1 file changed, 21 insertions(+), 19 deletions(-)
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 749246817aed3..00354d16adb43 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -98,7 +98,6 @@ struct report {
- 	bool			skip_empty;
- 	int			max_stack;
- 	struct perf_read_values	show_threads_values;
--	struct annotation_options annotation_opts;
- 	const char		*pretty_printing_style;
- 	const char		*cpu_list;
- 	const char		*symbol_filter_str;
-@@ -542,7 +541,7 @@ static int evlist__tui_block_hists_browse(struct evlist *evlist, struct report *
- 		ret = report__browse_block_hists(&rep->block_reports[i++].hist,
- 						 rep->min_percent, pos,
- 						 &rep->session->header.env,
--						 &rep->annotation_opts);
-+						 &annotate_opts);
- 		if (ret != 0)
- 			return ret;
- 	}
-@@ -670,7 +669,7 @@ static int report__browse_hists(struct report *rep)
- 		}
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index cd825241e07d9..a1ca1b8156fe5 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -1287,7 +1287,7 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
+ {
+ 	struct maps *kmaps = map__kmaps(map);
+ 	struct kcore_mapfn_data md;
+-	struct map *replacement_map = NULL;
++	struct map *map_ref, *replacement_map = NULL;
+ 	struct machine *machine;
+ 	bool is_64_bit;
+ 	int err, fd;
+@@ -1365,6 +1365,24 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
+ 	if (!replacement_map)
+ 		replacement_map = list_entry(md.maps.next, struct map_list_node, node)->map;
  
- 		ret = evlist__tui_browse_hists(evlist, help, NULL, rep->min_percent,
--					       &session->header.env, true, &rep->annotation_opts);
-+					       &session->header.env, true, &annotate_opts);
- 		/*
- 		 * Usually "ret" is the last pressed key, and we only
- 		 * care if the key notifies us to switch data file.
-@@ -730,7 +729,7 @@ static int hists__resort_cb(struct hist_entry *he, void *arg)
- 	if (rep->symbol_ipc && sym && !sym->annotate2) {
- 		struct evsel *evsel = hists_to_evsel(he->hists);
++	/*
++	 * Update addresses of vmlinux map. Re-insert it to ensure maps are
++	 * correctly ordered. Do this before using maps__merge_in() for the
++	 * remaining maps so vmlinux gets split if necessary.
++	 */
++	map_ref = map__get(map);
++	maps__remove(kmaps, map_ref);
++
++	map__set_start(map_ref, map__start(replacement_map));
++	map__set_end(map_ref, map__end(replacement_map));
++	map__set_pgoff(map_ref, map__pgoff(replacement_map));
++	map__set_mapping_type(map_ref, map__mapping_type(replacement_map));
++
++	err = maps__insert(kmaps, map_ref);
++	map__put(map_ref);
++	if (err)
++		goto out_err;
++
+ 	/* Add new maps */
+ 	while (!list_empty(&md.maps)) {
+ 		struct map_list_node *new_node = list_entry(md.maps.next, struct map_list_node, node);
+@@ -1372,24 +1390,8 @@ static int dso__load_kcore(struct dso *dso, struct map *map,
  
--		symbol__annotate2(&he->ms, evsel, &rep->annotation_opts, NULL);
-+		symbol__annotate2(&he->ms, evsel, &annotate_opts, NULL);
- 	}
+ 		list_del_init(&new_node->node);
  
- 	return 0;
-@@ -1326,15 +1325,15 @@ int cmd_report(int argc, const char **argv)
- 		   "list of cpus to profile"),
- 	OPT_BOOLEAN('I', "show-info", &report.show_full_info,
- 		    "Display extended information about perf.data file"),
--	OPT_BOOLEAN(0, "source", &report.annotation_opts.annotate_src,
-+	OPT_BOOLEAN(0, "source", &annotate_opts.annotate_src,
- 		    "Interleave source code with assembly code (default)"),
--	OPT_BOOLEAN(0, "asm-raw", &report.annotation_opts.show_asm_raw,
-+	OPT_BOOLEAN(0, "asm-raw", &annotate_opts.show_asm_raw,
- 		    "Display raw encoding of assembly instructions (default)"),
- 	OPT_STRING('M', "disassembler-style", &disassembler_style, "disassembler style",
- 		   "Specify disassembler style (e.g. -M intel for intel syntax)"),
--	OPT_STRING(0, "prefix", &report.annotation_opts.prefix, "prefix",
-+	OPT_STRING(0, "prefix", &annotate_opts.prefix, "prefix",
- 		    "Add prefix to source file path names in programs (with --prefix-strip)"),
--	OPT_STRING(0, "prefix-strip", &report.annotation_opts.prefix_strip, "N",
-+	OPT_STRING(0, "prefix-strip", &annotate_opts.prefix_strip, "N",
- 		    "Strip first N entries of source file path name in programs (with --prefix)"),
- 	OPT_BOOLEAN(0, "show-total-period", &symbol_conf.show_total_period,
- 		    "Show a column with the sum of periods"),
-@@ -1386,7 +1385,7 @@ int cmd_report(int argc, const char **argv)
- 		   "Time span of interest (start,stop)"),
- 	OPT_BOOLEAN(0, "inline", &symbol_conf.inline_name,
- 		    "Show inline function"),
--	OPT_CALLBACK(0, "percent-type", &report.annotation_opts, "local-period",
-+	OPT_CALLBACK(0, "percent-type", &annotate_opts, "local-period",
- 		     "Set percent type local/global-period/hits",
- 		     annotate_parse_percent_type),
- 	OPT_BOOLEAN(0, "ns", &symbol_conf.nanosecs, "Show times in nanosecs"),
-@@ -1418,7 +1417,7 @@ int cmd_report(int argc, const char **argv)
- 	 */
- 	symbol_conf.keep_exited_threads = true;
- 
--	annotation_options__init(&report.annotation_opts);
-+	annotation_options__init(&annotate_opts);
- 
- 	ret = perf_config(report__config, &report);
- 	if (ret)
-@@ -1437,13 +1436,13 @@ int cmd_report(int argc, const char **argv)
- 	}
- 
- 	if (disassembler_style) {
--		report.annotation_opts.disassembler_style = strdup(disassembler_style);
--		if (!report.annotation_opts.disassembler_style)
-+		annotate_opts.disassembler_style = strdup(disassembler_style);
-+		if (!annotate_opts.disassembler_style)
- 			return -ENOMEM;
- 	}
- 	if (objdump_path) {
--		report.annotation_opts.objdump_path = strdup(objdump_path);
--		if (!report.annotation_opts.objdump_path)
-+		annotate_opts.objdump_path = strdup(objdump_path);
-+		if (!annotate_opts.objdump_path)
- 			return -ENOMEM;
- 	}
- 	if (addr2line_path) {
-@@ -1452,7 +1451,7 @@ int cmd_report(int argc, const char **argv)
- 			return -ENOMEM;
- 	}
- 
--	if (annotate_check_args(&report.annotation_opts) < 0) {
-+	if (annotate_check_args(&annotate_opts) < 0) {
- 		ret = -EINVAL;
- 		goto exit;
- 	}
-@@ -1684,7 +1683,7 @@ int cmd_report(int argc, const char **argv)
- 			 */
- 			symbol_conf.priv_size += sizeof(u32);
- 		}
--		annotation_config__init(&report.annotation_opts);
-+		annotation_config__init(&annotate_opts);
- 	}
- 
- 	if (symbol__init(&session->header.env) < 0)
-@@ -1738,7 +1737,7 @@ int cmd_report(int argc, const char **argv)
- 	zstd_fini(&(session->zstd_data));
- 	perf_session__delete(session);
- exit:
--	annotation_options__exit(&report.annotation_opts);
-+	annotation_options__exit(&annotate_opts);
- 	free(sort_order_help);
- 	free(field_order_help);
- 	return ret;
+-		if (RC_CHK_EQUAL(new_map, replacement_map)) {
+-			struct map *map_ref;
+-
+-			/* Ensure maps are correctly ordered */
+-			map_ref = map__get(map);
+-			maps__remove(kmaps, map_ref);
+-
+-			map__set_start(map_ref, map__start(new_map));
+-			map__set_end(map_ref, map__end(new_map));
+-			map__set_pgoff(map_ref, map__pgoff(new_map));
+-			map__set_mapping_type(map_ref, map__mapping_type(new_map));
+-
+-			err = maps__insert(kmaps, map_ref);
+-			map__put(map_ref);
+-			map__put(new_map);
+-			if (err)
+-				goto out_err;
+-		} else {
++		/* skip if replacement_map, already inserted above */
++		if (!RC_CHK_EQUAL(new_map, replacement_map)) {
+ 			/*
+ 			 * Merge kcore map into existing maps,
+ 			 * and ensure that current maps (eBPF)
 -- 
 2.43.0
 
