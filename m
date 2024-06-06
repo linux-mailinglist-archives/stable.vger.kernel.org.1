@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17998FEC58
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6CF8FE962
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A961F22684
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29643287E3D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6037519AD85;
-	Thu,  6 Jun 2024 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E0E19A28A;
+	Thu,  6 Jun 2024 14:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDJBxMmK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aaqh7a7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C56519AD95;
-	Thu,  6 Jun 2024 14:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914FC197A8A;
+	Thu,  6 Jun 2024 14:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683357; cv=none; b=J6UwVwHo5CfOBhou1/cIum14sOvKa8rI/cbbZXiMCtkk3jIhfofwsAJbRawZhweayS1YiJu1N18xkI3yNOhEgnzysEyBkidbM2pdIocGwcp5Dfw/KL7F2tc8fYj4BMpu3KqlCc8ufJvnLpM0GNOue2Er5QQM27zol2P68czJ6/U=
+	t=1717683013; cv=none; b=IzWtvWuB7n0Uro1aQvz5u7WH7T0+qUJDRF7piVlNm4UTb9cFE+cLD/j7HaHJvS5uwCvszx1cqP6Q31u2HHD/hLqDqksQCFlhz1VCso4CwvWjVzFMfYOIFTPZW26cgQT++c+x9CJ5UU5hHlhsHPLKIw5zIObe7mC3wWlogsf32a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683357; c=relaxed/simple;
-	bh=utd0oWutBDLWXwwzRv0aXHeGC6Cb3p8eMKJVz9vE/tU=;
+	s=arc-20240116; t=1717683013; c=relaxed/simple;
+	bh=ZWK2zAI4ll1amXUw01B9RePI2O0GUKyclyV0JDa0JgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GagKL0HF5oVFDQTWbJOVyV8kbhWIAk0SNcU2F8pV2aCMZXNF0GIJRfomHyONb3ocWC+zpu3rETOAvBsw+kV65l7zUF6zHZuTxRiYwHIi3ldbRxpNLUl4iunYxysyMRHFmPMj4WCu8GbLAKbxhNCyDdwNXWRzuJMPhxvki2+jPtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDJBxMmK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C05C4AF08;
-	Thu,  6 Jun 2024 14:15:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cALPgInkQAugI7BPHOXCPR6gjpF5cS/mC+X6NdR9/wuP34wlqJHOkOHvZwRF8ni56pZ2g0e54OzIqOXtEgwmT5FyQM27Bncv/P4OYdoWJYVjcNjoeZl8QhPqZU0cyaL8oJ/by8uyqcQ+rX932XBf4xT6O9fPykHLMR3n79ICfTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aaqh7a7N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C849C4AF0C;
+	Thu,  6 Jun 2024 14:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683356;
-	bh=utd0oWutBDLWXwwzRv0aXHeGC6Cb3p8eMKJVz9vE/tU=;
+	s=korg; t=1717683013;
+	bh=ZWK2zAI4ll1amXUw01B9RePI2O0GUKyclyV0JDa0JgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDJBxMmK4UmR5p2fk01ckAEaW+C9tienVBtw0Kw7q9kihB/8TYvuQ+QJ5gkQACymm
-	 Nh/yw1GzK9zxPOlfqrI+Y1tFPSY+s9zv23uCKOoRRxcwrTMDdLRBhUFiv3eCQw4gOk
-	 xFJ2E2eCcIxHmkhaW3RCHsDVkbhpYfn2clJCwMMQ=
+	b=Aaqh7a7NSY8u8QA51hoY11OBpam+fA9+NzEtUkiX35g+fEL9dPRTYuUzoe1zigtIb
+	 sp4zGTGi5UD7EYP5jGs4q24t0FNp0zA1tOLUMGpiKehF1hPUBLb/Ti2qkTfvTxbTJW
+	 /5wwBpoRsWMvSPMKGdfn3Bm6UKmtJYIHadVqKZRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 237/473] RDMA/hns: Fix return value in hns_roce_map_mr_sg
+Subject: [PATCH 6.9 187/374] tools/arch/x86/intel_sdsi: Fix meter_certificate decoding
 Date: Thu,  6 Jun 2024 16:02:46 +0200
-Message-ID: <20240606131707.667941963@linuxfoundation.org>
+Message-ID: <20240606131658.133186755@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: David E. Box <david.e.box@linux.intel.com>
 
-[ Upstream commit 203b70fda63425a4eb29f03f9074859afe821a39 ]
+[ Upstream commit 09d70ded6c566fd00886be32c26d0b2004ef239c ]
 
-As described in the ib_map_mr_sg function comment, it returns the number
-of sg elements that were mapped to the memory region. However,
-hns_roce_map_mr_sg returns the number of pages required for mapping the
-DMA area. Fix it.
+Fix errors in the calculation of the start position of the counters and in
+the display loop. While here, use a #define for the bundle count and size.
 
-Fixes: 9b2cf76c9f05 ("RDMA/hns: Optimize PBL buffer allocation process")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20240411033851.2884771-1-shaozhengchao@huawei.com
-Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 7fdc03a7370f ("tools/arch/x86: intel_sdsi: Add support for reading meter certificates")
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240411025856.2782476-8-david.e.box@linux.intel.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_mr.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ tools/arch/x86/intel_sdsi/intel_sdsi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
-index 14376490ac226..190e62da98e4b 100644
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -421,18 +421,18 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
- 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
--	int ret = 0;
-+	int ret, sg_num = 0;
+diff --git a/tools/arch/x86/intel_sdsi/intel_sdsi.c b/tools/arch/x86/intel_sdsi/intel_sdsi.c
+index ae29214da1029..ba2a6b6645ae8 100644
+--- a/tools/arch/x86/intel_sdsi/intel_sdsi.c
++++ b/tools/arch/x86/intel_sdsi/intel_sdsi.c
+@@ -394,7 +394,7 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
+ 	printf("MMRC encoding:                %.4s\n", name);
  
- 	mr->npages = 0;
- 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
- 				 sizeof(dma_addr_t), GFP_KERNEL);
- 	if (!mr->page_list)
--		return ret;
-+		return sg_num;
- 
--	ret = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
--	if (ret < 1) {
-+	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
-+	if (sg_num < 1) {
- 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
--			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, ret);
-+			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
- 		goto err_page_list;
+ 	printf("MMRC counter:                 %d\n", mc->mmrc_counter);
+-	if (mc->bundle_length % 8) {
++	if (mc->bundle_length % METER_BUNDLE_SIZE) {
+ 		fprintf(stderr, "Invalid bundle length\n");
+ 		return -1;
+ 	}
+@@ -405,15 +405,16 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
+ 		return -1;
  	}
  
-@@ -443,17 +443,16 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
- 	ret = hns_roce_mtr_map(hr_dev, mtr, mr->page_list, mr->npages);
- 	if (ret) {
- 		ibdev_err(ibdev, "failed to map sg mtr, ret = %d.\n", ret);
--		ret = 0;
-+		sg_num = 0;
- 	} else {
- 		mr->pbl_mtr.hem_cfg.buf_pg_shift = (u32)ilog2(ibmr->page_size);
--		ret = mr->npages;
+-	bec = (void *)(mc) + sizeof(mc);
++	bec = (struct bundle_encoding_counter *)(mc + 1);
+ 
+ 	printf("Number of Feature Counters:   %ld\n", BUNDLE_COUNT(mc->bundle_length));
+-	while (count++ < mc->bundle_length / 8) {
++	while (count < BUNDLE_COUNT(mc->bundle_length)) {
+ 		char feature[5];
+ 
+ 		feature[4] = '\0';
+ 		get_feature(bec[count].encoding, feature);
+ 		printf("    %s:          %d\n", feature, bec[count].counter);
++		++count;
  	}
  
- err_page_list:
- 	kvfree(mr->page_list);
- 	mr->page_list = NULL;
- 
--	return ret;
-+	return sg_num;
- }
- 
- static void hns_roce_mw_free(struct hns_roce_dev *hr_dev,
+ 	return 0;
 -- 
 2.43.0
 
