@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-49062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D10B8FEBB2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C20A8FE8E5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F6941C250E9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E24D21F239AA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6031ABCB4;
-	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDC3198E9D;
+	Thu,  6 Jun 2024 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkERkC7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCW6gNa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C575197A8F;
-	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0220198E9C;
+	Thu,  6 Jun 2024 14:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683283; cv=none; b=HJWWlQF5po+fl3Aesg/9WSM8kI9RTvCYUp0sSpprrpQkh7GQ04ZAsQMmDvWMNR3ycLC0rjD6Z8hmIpUs1BCnjG04eTe6yIRgzeY6UCE9DvgryfIFjNVibFdne6xmtiC/7dwVHs+GqiQ7ssNv3cXZ+i+XGBMXdEZZDLmqLjxdDKg=
+	t=1717682948; cv=none; b=PZoBfFEkIhOfdglXJUtJigiXZuC08ENUNNIK4M1CRFlHv9EPlc9eyavmLl1fxeDnxyDoOothNUGc7sQpso1+eORjSfl2QnS0FAj3btnueXjxWjtATsGr9jfyFohVHjG6Y6uokXTYuU06qWQ+yvE9qq5MQcNi0HF7qjsN2lisOWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683283; c=relaxed/simple;
-	bh=aLHlcXT1K6KMsiQJA1+7P400xZkXn9uBzP2zTq3M9Lo=;
+	s=arc-20240116; t=1717682948; c=relaxed/simple;
+	bh=J/SMp1S8G4XySj1w5sn9WHnYtZv0vhREu2a+uX44flY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1JL9k5Z8p0eT4GueFeCQ5MWFPb463hMGywGvRnVQlp1oYKd5GOc3nQWAANliEkanBaTBSrd6yp2s9KXW85uI5opyWdDVc7uPK2D1kNSSLcnFhp+ojCNwNcGrIZ4FuJjp1OnrIPvOtSF4cW1qhyibLrcYaY3qVMMXjNbW0QN2Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkERkC7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429BEC32781;
-	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
+	 MIME-Version; b=ir+0RbowtksxjmUeco4A1EgiYDOXlFQW0Z6Izc2h/hi4uBN2gEz5R7Vk/hNuF38ZBj7sjhs7QZNNoPyUIbu9tQstb+XBF/2imE+JUtEsafwyG4k+ARwLUgi6GJ1uqCTGm4cDmlSDF0B4f1GvTgMrX8d9pevcYF23a5aeZQ8dfC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCW6gNa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06F2C32781;
+	Thu,  6 Jun 2024 14:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683283;
-	bh=aLHlcXT1K6KMsiQJA1+7P400xZkXn9uBzP2zTq3M9Lo=;
+	s=korg; t=1717682947;
+	bh=J/SMp1S8G4XySj1w5sn9WHnYtZv0vhREu2a+uX44flY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkERkC7OoYwfm7piH1WMKDLMsi7lSv52TiUTDRmney1q8ygRB5hdV0KqAF4ZOPm+4
-	 7f8nF3HxeqS8dVVN3W9BsVB9fsUpX0x/ApIt4d7qfu/cQRc3+61aO0ET87BoPcT8LZ
-	 KYXkN+2tnDhbfGTeBjrDDoQ/KzVFdZZmfsel+UUo=
+	b=rCW6gNa1T0FsuWgOCMd2gEcvi8cqLV/s19gstCM6cT6z7Rllmk/0+U2WuvpKRhpbW
+	 +E/LwEEO9yCiSwqYkmGgFLdsHpFNiqvPetUSPc6A4tyuWNZVwsLDcJY1feuE7KsZRf
+	 d2LoCdTfquVkS8wI4bFovDx3KGR/Uj9Wy+ItM30A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 160/473] kernel/numa.c: Move logging out of numa.h
+Subject: [PATCH 6.9 110/374] f2fs: fix to release node block count in error path of f2fs_new_node_page()
 Date: Thu,  6 Jun 2024 16:01:29 +0200
-Message-ID: <20240606131705.245824038@linuxfoundation.org>
+Message-ID: <20240606131655.605484455@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,123 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit d7a73e3f089204aee3393687e23fd45a22657b08 ]
+[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
 
-Moving these stub functions to a .c file means we can kill a sched.h
-dependency on printk.h.
+It missed to call dec_valid_node_count() to release node block count
+in error path, fix it.
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Stable-dep-of: f9f67e5adc8d ("x86/numa: Fix SRAT lookup of CFMWS ranges with numa_fill_memblks()")
+Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/numa.h | 19 ++++++-------------
- kernel/Makefile      |  1 +
- kernel/numa.c        | 26 ++++++++++++++++++++++++++
- 3 files changed, 33 insertions(+), 13 deletions(-)
- create mode 100644 kernel/numa.c
+ fs/f2fs/node.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/numa.h b/include/linux/numa.h
-index 0f512c0aba54b..8fc218a55be4e 100644
---- a/include/linux/numa.h
-+++ b/include/linux/numa.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #ifndef _LINUX_NUMA_H
- #define _LINUX_NUMA_H
-+#include <linux/init.h>
- #include <linux/types.h>
- 
- #ifdef CONFIG_NODES_SHIFT
-@@ -22,34 +23,26 @@
- #endif
- 
- #ifdef CONFIG_NUMA
--#include <linux/printk.h>
- #include <asm/sparsemem.h>
- 
- /* Generic implementation available */
- int numa_map_to_online_node(int node);
- 
- #ifndef memory_add_physaddr_to_nid
--static inline int memory_add_physaddr_to_nid(u64 start)
--{
--	pr_info_once("Unknown online node for memory at 0x%llx, assuming node 0\n",
--			start);
--	return 0;
--}
-+int memory_add_physaddr_to_nid(u64 start);
- #endif
-+
- #ifndef phys_to_target_node
--static inline int phys_to_target_node(u64 start)
--{
--	pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
--			start);
--	return 0;
--}
-+int phys_to_target_node(u64 start);
- #endif
-+
- #ifndef numa_fill_memblks
- static inline int __init numa_fill_memblks(u64 start, u64 end)
- {
- 	return NUMA_NO_MEMBLK;
- }
- #endif
-+
- #else /* !CONFIG_NUMA */
- static inline int numa_map_to_online_node(int node)
- {
-diff --git a/kernel/Makefile b/kernel/Makefile
-index ebc692242b68b..c90ee75eb8043 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -112,6 +112,7 @@ obj-$(CONFIG_SHADOW_CALL_STACK) += scs.o
- obj-$(CONFIG_HAVE_STATIC_CALL) += static_call.o
- obj-$(CONFIG_HAVE_STATIC_CALL_INLINE) += static_call_inline.o
- obj-$(CONFIG_CFI_CLANG) += cfi.o
-+obj-$(CONFIG_NUMA) += numa.o
- 
- obj-$(CONFIG_PERF_EVENTS) += events/
- 
-diff --git a/kernel/numa.c b/kernel/numa.c
-new file mode 100644
-index 0000000000000..67ca6b8585c06
---- /dev/null
-+++ b/kernel/numa.c
-@@ -0,0 +1,26 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include <linux/printk.h>
-+#include <linux/numa.h>
-+
-+/* Stub functions: */
-+
-+#ifndef memory_add_physaddr_to_nid
-+int memory_add_physaddr_to_nid(u64 start)
-+{
-+	pr_info_once("Unknown online node for memory at 0x%llx, assuming node 0\n",
-+			start);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-+#endif
-+
-+#ifndef phys_to_target_node
-+int phys_to_target_node(u64 start)
-+{
-+	pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
-+			start);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(phys_to_target_node);
-+#endif
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index b3de6d6cdb021..7df5ad84cb5ea 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1319,6 +1319,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	}
+ 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
+ 		err = -EFSCORRUPTED;
++		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
+ 		goto fail;
+@@ -1345,7 +1346,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	if (ofs == 0)
+ 		inc_valid_inode_count(sbi);
+ 	return page;
+-
+ fail:
+ 	clear_node_page_dirty(page);
+ 	f2fs_put_page(page, 1);
 -- 
 2.43.0
 
