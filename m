@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BF38FEB12
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1898FECB0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B766B2539C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6BEE1F22603
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0858C1A2C32;
-	Thu,  6 Jun 2024 14:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825841B1516;
+	Thu,  6 Jun 2024 14:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Jbo/kbH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MAiNmJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1241A2C31;
-	Thu,  6 Jun 2024 14:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424E719B593;
+	Thu,  6 Jun 2024 14:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683206; cv=none; b=kMdKQAWMfe/LYCl2bkpcoDsK9E7cHW0yXhINh/LV74N8dpE2vTz6XnZ8rJCLH7w2IqxYa1f6D7fQ40OlkzIn9SXL0V+CmE1DSe6Rxu2ZI38nApy++mRrk6LqOJBbPhMVPoqQvV0Jy4LpSBTWU2Nwe9M9F1iAOcPFSRiTwbjPSY4=
+	t=1717683397; cv=none; b=JrX46k+FuBLrIMqrZ5T0fsAeQOUdVfzbk/V0uwaLT9Iei8/1frjQ/fVEqkT+Qamtg/J3mtVs7xDYyzkA9W/vZaWEIduHnZGOVO2YPSIPZcyD35DIH4grzdl9NKw+ufVgNt1NUhcIF11hZkoVaOrxWc7v91Ztzn3K3kCJ2veMPYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683206; c=relaxed/simple;
-	bh=qiVnuhkLvjoBo18J8cHsD11pF7HpYRgL6w3zw57iB9w=;
+	s=arc-20240116; t=1717683397; c=relaxed/simple;
+	bh=L3TAXphlqKjj9WN9S9JZg0n0CzZHG1RL4xm7PSnYW54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtF0sxKsuyEiZQ7EBXgkJicxA1WBuK0rAEkSCY0gLl7behu2cDbfVPSxJs4q6Xh0fzqDN0W9k+lffZxlcCFWG1zWrpD8EJpuqKFyTnAV7C1pBFJw0uVzcJHzPzy/Vca6Pie9Np3et61HbSuLtWpQeEgyIceejY1lBQMBkJMDuaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Jbo/kbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A15AC2BD10;
-	Thu,  6 Jun 2024 14:13:26 +0000 (UTC)
+	 MIME-Version; b=Eqd8wOVekA8RO8A7vdhwQtu39OEFGBlZlJOSmUoL1xgJ3K3tI9Wu7qX+9vJPa8Uama1FtzqeKrNkyxWjdzDhuDWRvxxMsq/h8aDBZwHb2UzE3DSe71c175V1/fIwOgUpCnunN5WnluQ3gVfG/7DGwc5A8bGXZvWu81DNDswGma0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MAiNmJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2772BC32781;
+	Thu,  6 Jun 2024 14:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683206;
-	bh=qiVnuhkLvjoBo18J8cHsD11pF7HpYRgL6w3zw57iB9w=;
+	s=korg; t=1717683397;
+	bh=L3TAXphlqKjj9WN9S9JZg0n0CzZHG1RL4xm7PSnYW54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Jbo/kbHYEobOIzw3nAXpyrO2aUoqP0qZ1QmDC8KHeQb0eZ0gYqlUxMMrzZz9MRaU
-	 Irct2wa6080nGFBOyqEUkvm/YlBoFOQ0eXtNRY4xcf9NB25s+Yaq3+3yl2GQNp7wWB
-	 7uCPyUATRNxlpuenpAefmQE0uLEq+/kAMgSk68Eg=
+	b=0MAiNmJ+tJFJv8B3Loum5nCixFrctu7aP2Scp6P/fKmoQNmr/zLt0MuvIyY+ibp0A
+	 lfCvFdHObuMp6Dq2ed/DRz69MAe9agr4VGPOy3KQ4tp/IIOXIQsO9F7s7bGIYpQy/X
+	 qKvCVxZWvbLfSxu1oMCwBm1TKiWRJkDgnpsRSLJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/473] soc: mediatek: cmdq: Fix typo of CMDQ_JUMP_RELATIVE
+Subject: [PATCH 6.6 341/744] RDMA/hns: Fix UAF for cq async event
 Date: Thu,  6 Jun 2024 16:00:13 +0200
-Message-ID: <20240606131702.684373312@linuxfoundation.org>
+Message-ID: <20240606131743.408803159@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit ed4d5ab179b9f0a60da87c650a31f1816db9b4b4 ]
+[ Upstream commit a942ec2745ca864cd8512142100e4027dc306a42 ]
 
-For cmdq jump command, offset 0 means relative jump and offset 1
-means absolute jump. cmdq_pkt_jump() is absolute jump, so fix the
-typo of CMDQ_JUMP_RELATIVE in cmdq_pkt_jump().
+The refcount of CQ is not protected by locks. When CQ asynchronous
+events and CQ destruction are concurrent, CQ may have been released,
+which will cause UAF.
 
-Fixes: 946f1792d3d7 ("soc: mediatek: cmdq: add jump function")
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240222154120.16959-2-chunkuang.hu@kernel.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Use the xa_lock() to protect the CQ refcount.
+
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-cmdq-helper.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_cq.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-cmdq-helper.c b/drivers/soc/mediatek/mtk-cmdq-helper.c
-index c1837a4682673..3ed8bd63f7e14 100644
---- a/drivers/soc/mediatek/mtk-cmdq-helper.c
-+++ b/drivers/soc/mediatek/mtk-cmdq-helper.c
-@@ -13,7 +13,8 @@
- #define CMDQ_POLL_ENABLE_MASK	BIT(0)
- #define CMDQ_EOC_IRQ_EN		BIT(0)
- #define CMDQ_REG_TYPE		1
--#define CMDQ_JUMP_RELATIVE	1
-+#define CMDQ_JUMP_RELATIVE	0
-+#define CMDQ_JUMP_ABSOLUTE	1
+diff --git a/drivers/infiniband/hw/hns/hns_roce_cq.c b/drivers/infiniband/hw/hns/hns_roce_cq.c
+index 736dc2f993b40..ff177466de9b4 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_cq.c
++++ b/drivers/infiniband/hw/hns/hns_roce_cq.c
+@@ -151,7 +151,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 		return ret;
+ 	}
  
- struct cmdq_instruction {
- 	union {
-@@ -396,7 +397,7 @@ int cmdq_pkt_jump(struct cmdq_pkt *pkt, dma_addr_t addr)
- 	struct cmdq_instruction inst = {};
+-	ret = xa_err(xa_store(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
++	ret = xa_err(xa_store_irq(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to xa_store CQ, ret = %d.\n", ret);
+ 		goto err_put;
+@@ -164,7 +164,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 	return 0;
  
- 	inst.op = CMDQ_CODE_JUMP;
--	inst.offset = CMDQ_JUMP_RELATIVE;
-+	inst.offset = CMDQ_JUMP_ABSOLUTE;
- 	inst.value = addr >>
- 		cmdq_get_shift_pa(((struct cmdq_client *)pkt->cl)->chan);
- 	return cmdq_pkt_append_command(pkt, inst);
+ err_xa:
+-	xa_erase(&cq_table->array, hr_cq->cqn);
++	xa_erase_irq(&cq_table->array, hr_cq->cqn);
+ err_put:
+ 	hns_roce_table_put(hr_dev, &cq_table->table, hr_cq->cqn);
+ 
+@@ -183,7 +183,7 @@ static void free_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 		dev_err(dev, "DESTROY_CQ failed (%d) for CQN %06lx\n", ret,
+ 			hr_cq->cqn);
+ 
+-	xa_erase(&cq_table->array, hr_cq->cqn);
++	xa_erase_irq(&cq_table->array, hr_cq->cqn);
+ 
+ 	/* Waiting interrupt process procedure carried out */
+ 	synchronize_irq(hr_dev->eq_table.eq[hr_cq->vector].irq);
+@@ -472,13 +472,6 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
+ 	struct ib_event event;
+ 	struct ib_cq *ibcq;
+ 
+-	hr_cq = xa_load(&hr_dev->cq_table.array,
+-			cqn & (hr_dev->caps.num_cqs - 1));
+-	if (!hr_cq) {
+-		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
+-		return;
+-	}
+-
+ 	if (event_type != HNS_ROCE_EVENT_TYPE_CQ_ID_INVALID &&
+ 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_ACCESS_ERROR &&
+ 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_OVERFLOW) {
+@@ -487,7 +480,16 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
+ 		return;
+ 	}
+ 
+-	refcount_inc(&hr_cq->refcount);
++	xa_lock(&hr_dev->cq_table.array);
++	hr_cq = xa_load(&hr_dev->cq_table.array,
++			cqn & (hr_dev->caps.num_cqs - 1));
++	if (hr_cq)
++		refcount_inc(&hr_cq->refcount);
++	xa_unlock(&hr_dev->cq_table.array);
++	if (!hr_cq) {
++		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
++		return;
++	}
+ 
+ 	ibcq = &hr_cq->ib_cq;
+ 	if (ibcq->event_handler) {
 -- 
 2.43.0
 
