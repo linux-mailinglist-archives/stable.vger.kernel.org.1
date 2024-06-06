@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4788FEE97
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1AB8FED04
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20CB5B276DF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8222F1C237A4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9746F1C53AB;
-	Thu,  6 Jun 2024 14:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D76C1B3F33;
+	Thu,  6 Jun 2024 14:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKYg2eG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTXDOG9+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569C31991D3;
-	Thu,  6 Jun 2024 14:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5E4198A36;
+	Thu,  6 Jun 2024 14:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683678; cv=none; b=IMb05PyXA3BqsBjOBMSbhCLAcbh5aIBTqJGJYk4nQFgo1d3mbVCJz6N35uyF1891T+n2JB1lF3iKViaSoUtNHfYBZxk23db9Gh2IZM3Hj4UuGO7mL8gv2TH23lw0r+HXVStuPOMnNeLyXSgZB6pJo99XU+pL+niaQZin4e2Rda4=
+	t=1717683436; cv=none; b=hnK8CXUu5d33GBCZd4/2LJ6KCSg9nqnDM+Zl7LfU2lU7OWGAkIk4VullJBdNTWTkOHMEt3WrW7LRJROUvbjNDMkY2lGOYzSR7nkdz5TjjX8dihNn4u2edeptvGhEzRiDXhhvPSGjwzXz1iyZeZYOdfCKGRRoXlnL0+03LQpNVOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683678; c=relaxed/simple;
-	bh=YePGCs4UfH2bEdac8AskEMe20QfTI2CPhe9/c/PpM5E=;
+	s=arc-20240116; t=1717683436; c=relaxed/simple;
+	bh=S86VOsFthoqRkpbtzmlS8h+jFeTAHGR2FRAgdyEn/AQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQeumhXSzrzixiAXfXcLPgctNYqOvLZHNOSpD3WFRNQRc5Fg3shpmpI7d37vtJT5TLwvSpTgdkRIYfTZE3R5Yc7sI9yfCsgR1Dm+kwJSlV62kV017sfJiiXLomgjaEUuLyH5dJaijvYSzqnC7dtXgbBEHYi2akc7tv+bT/76i2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKYg2eG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E350C32782;
-	Thu,  6 Jun 2024 14:21:18 +0000 (UTC)
+	 MIME-Version; b=RBQfcbGKbwM/nKem1JC4QYu7f+RDwhdjyjmMvDWEdAl1EqyoQcUpK3/ldHBtX/84lZGZ9m5C/7izaTZ1U5luGPKY1yfiNNemqf7FtxEpKgIA7gVv8tyEnDfiPj8XlELwyISNV6qHS4JXjNyLBhvGRrFnI1TbvPY6IN3slylVcSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTXDOG9+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021F6C2BD10;
+	Thu,  6 Jun 2024 14:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683678;
-	bh=YePGCs4UfH2bEdac8AskEMe20QfTI2CPhe9/c/PpM5E=;
+	s=korg; t=1717683436;
+	bh=S86VOsFthoqRkpbtzmlS8h+jFeTAHGR2FRAgdyEn/AQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKYg2eG5QjPh2bE5Cezcj3oKq60kdpkfX1ni+pmK0CivuTZKxzs4nOtCOixwcLdkM
-	 9gHlMXdQorAZLlYhTFAXXXw2qQccMBQ44ZAJ7Ay3o3aOYFbB+cfUK1HdlfrLSKZeta
-	 b/jXRPbmkdrn9+rUawnL9aEy8eEaLu9UdCwCZQWw=
+	b=HTXDOG9+KO2panlIO1t+eTv39KYNSbBM2WognTjID36DzZj272ck/M1RHqvfAiYQE
+	 4M9686TtNv9mCbUcanFaThTPWcPtwid6JOspp5UOpZeOmWL0+DM1xhcER7+TRX8Svx
+	 38iQv/qb68DBl5QRrTCjt78HXGllf1IYoaHNcO6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 577/744] um: Add winch to winch_handlers before registering winch IRQ
-Date: Thu,  6 Jun 2024 16:04:09 +0200
-Message-ID: <20240606131750.964511788@linuxfoundation.org>
+Subject: [PATCH 6.1 321/473] microblaze: Remove gcc flag for non existing early_printk.c file
+Date: Thu,  6 Jun 2024 16:04:10 +0200
+Message-ID: <20240606131710.544481811@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Michal Simek <michal.simek@amd.com>
 
-[ Upstream commit a0fbbd36c156b9f7b2276871d499c9943dfe5101 ]
+[ Upstream commit edc66cf0c4164aa3daf6cc55e970bb94383a6a57 ]
 
-Registering a winch IRQ is racy, an interrupt may occur before the winch is
-added to the winch_handlers list.
+early_printk support for removed long time ago but compilation flag for
+ftrace still points to already removed file that's why remove that line
+too.
 
-If that happens, register_winch_irq() adds to that list a winch that is
-scheduled to be (or has already been) freed, causing a panic later in
-winch_cleanup().
-
-Avoid the race by adding the winch to the winch_handlers list before
-registering the IRQ, and rolling back if um_request_irq() fails.
-
-Fixes: 42a359e31a0e ("uml: SIGIO support cleanup")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/5493467419cd2510a32854e2807bcd263de981a0.1712823702.git.michal.simek@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/line.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/microblaze/kernel/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
-index b98545f3edb50..375200e9aba9a 100644
---- a/arch/um/drivers/line.c
-+++ b/arch/um/drivers/line.c
-@@ -673,24 +673,26 @@ void register_winch_irq(int fd, int tty_fd, int pid, struct tty_port *port,
- 		goto cleanup;
- 	}
- 
--	*winch = ((struct winch) { .list  	= LIST_HEAD_INIT(winch->list),
--				   .fd  	= fd,
-+	*winch = ((struct winch) { .fd  	= fd,
- 				   .tty_fd 	= tty_fd,
- 				   .pid  	= pid,
- 				   .port 	= port,
- 				   .stack	= stack });
- 
-+	spin_lock(&winch_handler_lock);
-+	list_add(&winch->list, &winch_handlers);
-+	spin_unlock(&winch_handler_lock);
-+
- 	if (um_request_irq(WINCH_IRQ, fd, IRQ_READ, winch_interrupt,
- 			   IRQF_SHARED, "winch", winch) < 0) {
- 		printk(KERN_ERR "register_winch_irq - failed to register "
- 		       "IRQ\n");
-+		spin_lock(&winch_handler_lock);
-+		list_del(&winch->list);
-+		spin_unlock(&winch_handler_lock);
- 		goto out_free;
- 	}
- 
--	spin_lock(&winch_handler_lock);
--	list_add(&winch->list, &winch_handlers);
--	spin_unlock(&winch_handler_lock);
--
- 	return;
- 
-  out_free:
+diff --git a/arch/microblaze/kernel/Makefile b/arch/microblaze/kernel/Makefile
+index 4393bee64eaf8..85c4d29ef43e9 100644
+--- a/arch/microblaze/kernel/Makefile
++++ b/arch/microblaze/kernel/Makefile
+@@ -7,7 +7,6 @@ ifdef CONFIG_FUNCTION_TRACER
+ # Do not trace early boot code and low level code
+ CFLAGS_REMOVE_timer.o = -pg
+ CFLAGS_REMOVE_intc.o = -pg
+-CFLAGS_REMOVE_early_printk.o = -pg
+ CFLAGS_REMOVE_ftrace.o = -pg
+ CFLAGS_REMOVE_process.o = -pg
+ endif
 -- 
 2.43.0
 
