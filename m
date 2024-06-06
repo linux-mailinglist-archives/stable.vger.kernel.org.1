@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-49035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7358B8FEB96
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF6D8FE905
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 286401F28BD9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75B1D1F24D02
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8865F19A28F;
-	Thu,  6 Jun 2024 14:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3421991AD;
+	Thu,  6 Jun 2024 14:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCFWBTWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ub0qn27e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FA3196DA5;
-	Thu,  6 Jun 2024 14:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA3A1991AA;
+	Thu,  6 Jun 2024 14:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683269; cv=none; b=MffP7uv8QjzPhJfrOr8dI6Bh+3mNH48/atJSKTv7co59JJV5/TOS5Ipb8r5eiM3OkwxKHVsCce5e46/zZfnnCn9HrBVH5U+yzGJm/R7K9aNjz/oEn0MvwnLt430qFHLYgsSGNBTp383bc7YwLnUH5PBg79GaejeXIBRHrgxPM18=
+	t=1717682969; cv=none; b=fLhVBh1Roa2JccT9+JsnqQSnsyjCflJCrYRBW/JX4p9Ep94ebktW9sTL36HhGlaBaa7UD0vEah7Q2SfkDbSMfRljqXnmB0+lOTiZ4SrAFBF1zrQsjzEOvMIWBSorhcy1QnvCo+cjo1U8suQmuwzs4uVzVnO+E4UA69/MnLYEDvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683269; c=relaxed/simple;
-	bh=voyqgFSt3+OFgd2F+k4fPu4J3CF7DSbcyq02egCU44E=;
+	s=arc-20240116; t=1717682969; c=relaxed/simple;
+	bh=nczSeYvN80QAwebgDnnJ3FW9gqyBDSkpsIQ3IB3ox/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMCqy8VARxLAptH16UzpbNpeIqHLglnUR6JUKDcyIgf7xOZzsuXY73dCrTXDmjbW68nMR/MIknOX4+LAM4iGmb+Uh/9J+JM/ge2ZWlMlQPCiCx5j99fVqzHUNMegf7/Q6YPYrvoqISHDYNnfJg26tZZk7h9WeWl/MCh/SPsayYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCFWBTWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F65C2BD10;
-	Thu,  6 Jun 2024 14:14:29 +0000 (UTC)
+	 MIME-Version; b=d+lWBN/rR0MuyiIqfPGn3f877NAMoECUz5kO4dxx9FLey0/ikyDt5uAC+iqoBW/90jI7Qh4k+eKkQM2tR/YBzMMAwze+awyOweOdfsHp/jfLj7nKBDNbEVI0xsWVNLrqNIHy25qgnW2BCIF+bdsfiPqFzjzfpxF5Qf5+v3O/5nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ub0qn27e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC766C2BD10;
+	Thu,  6 Jun 2024 14:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683269;
-	bh=voyqgFSt3+OFgd2F+k4fPu4J3CF7DSbcyq02egCU44E=;
+	s=korg; t=1717682969;
+	bh=nczSeYvN80QAwebgDnnJ3FW9gqyBDSkpsIQ3IB3ox/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCFWBTWAPyOZ0PcpwCaPTqWyaMcPNg3J4dwwIEsebpEqdzACg1ckkdJ99jTZOaG5d
-	 NDTVMEOXaOVjQCtVh1y2aSoMi+hunPcMaRDGkXJO9cBJlOmd7ROuX4j4/T6S9gxGSp
-	 rkzzOvfR61dGbK8FMQYkgTCaCmPkgVJrpmca8FLk=
+	b=ub0qn27eZc88z8wdUGCveNZkI1+PGzpFzkBa2Z+gWSV5j80VRmH0GM8WGkJsc4GMu
+	 32Mrk4gY0qx3O2lh6vfRIf5OrsnvSMWfoRN83od68Sf+F0IyhQfQve5HiYsD5hgOXt
+	 LjUEqYdAUNSCU4r0VO6ItOGjjyrgA8uOVx6wUv0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 148/473] sh: kprobes: Merge arch_copy_kprobe() into arch_prepare_kprobe()
-Date: Thu,  6 Jun 2024 16:01:17 +0200
-Message-ID: <20240606131704.843673722@linuxfoundation.org>
+Subject: [PATCH 6.9 099/374] perf ui browser: Avoid SEGV on title
+Date: Thu,  6 Jun 2024 16:01:18 +0200
+Message-ID: <20240606131655.224221301@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +72,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 1422ae080b66134fe192082d9b721ab7bd93fcc5 ]
+[ Upstream commit 90f01afb0dfafbc9b094bb61e61a4ac297d9d0d2 ]
 
-arch/sh/kernel/kprobes.c:52:16: warning: no previous prototype for 'arch_copy_kprobe' [-Wmissing-prototypes]
+If the title is NULL then it can lead to a SEGV.
 
-Although SH kprobes support was only merged in v2.6.28, it missed the
-earlier removal of the arch_copy_kprobe() callback in v2.6.15.
-
-Based on the powerpc part of commit 49a2a1b83ba6fa40 ("[PATCH] kprobes:
-changed from using spinlock to mutex").
-
-Fixes: d39f5450146ff39f ("sh: Add kprobes support.")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/717d47a19689cc944fae6e981a1ad7cae1642c89.1709326528.git.geert+renesas@glider.be
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Fixes: 769e6a1e15bdbbaf ("perf ui browser: Don't save pointer to stack memory")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linux.dev>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240508035301.1554434-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/kprobes.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ tools/perf/ui/browser.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sh/kernel/kprobes.c b/arch/sh/kernel/kprobes.c
-index aed1ea8e2c2f0..74051b8ddf3e7 100644
---- a/arch/sh/kernel/kprobes.c
-+++ b/arch/sh/kernel/kprobes.c
-@@ -44,17 +44,12 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
- 	if (OPCODE_RTE(opcode))
- 		return -EFAULT;	/* Bad breakpoint */
- 
-+	memcpy(p->ainsn.insn, p->addr, MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
- 	p->opcode = opcode;
- 
- 	return 0;
+diff --git a/tools/perf/ui/browser.c b/tools/perf/ui/browser.c
+index c4cdf2ea69b72..19503e8387385 100644
+--- a/tools/perf/ui/browser.c
++++ b/tools/perf/ui/browser.c
+@@ -203,7 +203,7 @@ void ui_browser__refresh_dimensions(struct ui_browser *browser)
+ void ui_browser__handle_resize(struct ui_browser *browser)
+ {
+ 	ui__refresh_dimensions(false);
+-	ui_browser__show(browser, browser->title, ui_helpline__current);
++	ui_browser__show(browser, browser->title ?: "", ui_helpline__current);
+ 	ui_browser__refresh(browser);
  }
  
--void __kprobes arch_copy_kprobe(struct kprobe *p)
--{
--	memcpy(p->ainsn.insn, p->addr, MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
--	p->opcode = *p->addr;
--}
--
- void __kprobes arch_arm_kprobe(struct kprobe *p)
- {
- 	*p->addr = BREAKPOINT_INSTRUCTION;
 -- 
 2.43.0
 
