@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-49290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9567B8FECAA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72D68FEB08
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16B5AB28545
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44FF1289FC3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315CC1B150D;
-	Thu,  6 Jun 2024 14:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B273019925B;
+	Thu,  6 Jun 2024 14:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jq/k+gK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRN65ZFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF5A198A35;
-	Thu,  6 Jun 2024 14:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C26197536;
+	Thu,  6 Jun 2024 14:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683393; cv=none; b=DgacmEkL/EoV6gWzvVtiF9k/bTHF9+fuuD7NAroXuxV8z6J+z/ws9mwdH/rUkTP6b1pjoP2efx27fHV4LA/Y4wdv+dCkz1hEvmuD40XV+QrxwI3lbBSWkBBU6b09Na/d2NERsNfHNhQgf38YCHPBBH1UHyuxOxPfE+J/APxkXHs=
+	t=1717683203; cv=none; b=HbTane2qIa3vt1CPREgpODflode+sbBSyCVFN6XCDI62ey/W0tKCa+jPp880ous4XZwZ+IZoPL8jensCgj7yULNvG8KHD9Pr4Hu3PIwFvF0TQzMhCDOlyMfdMokAfQhdSoEDZnbu5sP0fTJxks9gx80Wj0m0zhbA37RA+S1BMT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683393; c=relaxed/simple;
-	bh=pftQSgbHkjJDBsc0yUOlyyfss4+Nn0J9EBqi2Nxapyk=;
+	s=arc-20240116; t=1717683203; c=relaxed/simple;
+	bh=9bPftBou+8FBJaXuEZbsMEv9EKjF1tSci4DsM8bpGRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EWzCNk8sUTXBfzQmH+THPynVIGIA/tijYqgic6a31pishmSmXTF69XaPrk3WWYVvU3FiT3NrhlA9AX2LqVcPCvHSODu4B6k7Hkq9Q8HVCxJx+cje9dWWyGXhtVB5TfT+3BO/yXpmA6PEfbCUXWhMOmwNR64j6kNaCdlyJvbZIeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jq/k+gK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8F8C2BD10;
-	Thu,  6 Jun 2024 14:16:33 +0000 (UTC)
+	 MIME-Version; b=qMNauCHZEQ8eAU3CHxvC7RCihJ6aeQploMwlwpa4sx+tGQR5LlawfNPfkc68UMfSPgGnfARfHz4HjRjgrNuXTayfoDrVSDlVjUAze44kM3STCsqFNJWzW6BSOQ04AjEzcTRjo2dO5kRn8lGsbcDwNsqTiJ7Z8Oasy3XPCaZKOCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRN65ZFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA8CC32781;
+	Thu,  6 Jun 2024 14:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683393;
-	bh=pftQSgbHkjJDBsc0yUOlyyfss4+Nn0J9EBqi2Nxapyk=;
+	s=korg; t=1717683203;
+	bh=9bPftBou+8FBJaXuEZbsMEv9EKjF1tSci4DsM8bpGRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jq/k+gK2hNrgI+qaWYHJ41oU6iNsJAW8YMELjwmXPFB60FJQVsSpdBQMKEo1UXVIM
-	 ImqlB0+QoSXnOdYh6GrnSnvcDvZ7d8dPV3CEgbHDiQOwK23le7l8Bi97Azhz7Ui9yV
-	 XPg0SnD4Uqmkmf5i04YJk07qriix47PEYKaqsnAQ=
+	b=uRN65ZFJaPnGOvJPJy1j++1KR9I1j8y5aM0mJg64Zc7xuf3L+ugUIg9fGuSFhfKGB
+	 LKWe35fa6SP2GKLsFdCgEwyRJqJ1iFJq0+ubgl1ztDshuO7syz3wDbx7rqQusURRsP
+	 NxDQY0VYwxBSO3OZbrmecmSoLL/Jeg7i08T+ztjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Nikita Kiryushin <kiryushin@ancud.ru>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 338/744] iommu: Undo pasid attachment only for the devices that have succeeded
+Subject: [PATCH 6.1 081/473] rcu: Fix buffer overflow in print_cpu_stall_info()
 Date: Thu,  6 Jun 2024 16:00:10 +0200
-Message-ID: <20240606131743.304015065@linuxfoundation.org>
+Message-ID: <20240606131702.593860085@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit b025dea63cded0d82bccd591fa105d39efc6435d ]
+[ Upstream commit 3758f7d9917bd7ef0482c4184c0ad673b4c4e069 ]
 
-There is no error handling now in __iommu_set_group_pasid(), it relies on
-its caller to loop all the devices to undo the pasid attachment. This is
-not self-contained and has drawbacks. It would result in unnecessary
-remove_dev_pasid() calls on the devices that have not been attached to the
-new domain. But the remove_dev_pasid() callback would get the new domain
-from the group->pasid_array. So for such devices, the iommu driver won't
-find the attachment under the domain, hence unable to do cleanup. This may
-not be a real problem today. But it depends on the implementation of the
-underlying iommu driver. e.g. the intel iommu driver would warn for such
-devices. Such warnings are unnecessary.
+The rcuc-starvation output from print_cpu_stall_info() might overflow the
+buffer if there is a huge difference in jiffies difference.  The situation
+might seem improbable, but computers sometimes get very confused about
+time, which can result in full-sized integers, and, in this case,
+buffer overflow.
 
-To solve the above problem, it is necessary to handle the error within
-__iommu_set_group_pasid(). It only loops the devices that have attached
-to the new domain, and undo it.
+Also, the unsigned jiffies difference is printed using %ld, which is
+normally for signed integers.  This is intentional for debugging purposes,
+but it is not obvious from the code.
 
-Fixes: 16603704559c ("iommu: Add attach/detach_dev_pasid iommu interfaces")
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20240328122958.83332-2-yi.l.liu@intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+This commit therefore changes sprintf() to snprintf() and adds a
+clarifying comment about intention of %ld format.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 245a62982502 ("rcu: Dump rcuc kthread status for CPUs not reporting quiescent state")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ kernel/rcu/tree_stall.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 3a67e636287a7..3f1029c0825e9 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -3369,15 +3369,26 @@ EXPORT_SYMBOL_GPL(iommu_group_dma_owner_claimed);
- static int __iommu_set_group_pasid(struct iommu_domain *domain,
- 				   struct iommu_group *group, ioasid_t pasid)
- {
--	struct group_device *device;
--	int ret = 0;
-+	struct group_device *device, *last_gdev;
-+	int ret;
- 
- 	for_each_group_device(group, device) {
- 		ret = domain->ops->set_dev_pasid(domain, device->dev, pasid);
- 		if (ret)
--			break;
-+			goto err_revert;
- 	}
- 
-+	return 0;
-+
-+err_revert:
-+	last_gdev = device;
-+	for_each_group_device(group, device) {
-+		const struct iommu_ops *ops = dev_iommu_ops(device->dev);
-+
-+		if (device == last_gdev)
-+			break;
-+		ops->remove_dev_pasid(device->dev, pasid);
-+	}
- 	return ret;
- }
- 
-@@ -3423,10 +3434,8 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
- 	}
- 
- 	ret = __iommu_set_group_pasid(domain, group, pasid);
--	if (ret) {
--		__iommu_remove_group_pasid(group, pasid);
-+	if (ret)
- 		xa_erase(&group->pasid_array, pasid);
--	}
- out_unlock:
- 	mutex_unlock(&group->mutex);
- 	iommu_group_put(group);
+diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+index 7d15b5b5a235a..11a82404a6cee 100644
+--- a/kernel/rcu/tree_stall.h
++++ b/kernel/rcu/tree_stall.h
+@@ -474,7 +474,8 @@ static void print_cpu_stall_info(int cpu)
+ 			rcu_dynticks_in_eqs(rcu_dynticks_snap(cpu));
+ 	rcuc_starved = rcu_is_rcuc_kthread_starving(rdp, &j);
+ 	if (rcuc_starved)
+-		sprintf(buf, " rcuc=%ld jiffies(starved)", j);
++		// Print signed value, as negative values indicate a probable bug.
++		snprintf(buf, sizeof(buf), " rcuc=%ld jiffies(starved)", j);
+ 	pr_err("\t%d-%c%c%c%c: (%lu %s) idle=%04x/%ld/%#lx softirq=%u/%u fqs=%ld%s%s\n",
+ 	       cpu,
+ 	       "O."[!!cpu_online(cpu)],
 -- 
 2.43.0
 
