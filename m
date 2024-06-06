@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-49477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0A88FED68
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3518FE9A7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3364D1F21D24
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E60A1F27002
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF671BA896;
-	Thu,  6 Jun 2024 14:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7416219ADB5;
+	Thu,  6 Jun 2024 14:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2q7rEro/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytDwkJ3z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF311BA874;
-	Thu,  6 Jun 2024 14:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335F819AD5C;
+	Thu,  6 Jun 2024 14:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683485; cv=none; b=WWCjMS6DtxoHz4G0+rjF4vfXd7Fw6QT0VJl7K+nBnVtkEKp8g0PvV+KSxLW1UmZ/K6JlsXzfKE04mHSYNnuJGV5LrZoah2bjvUhq0Lm+MpiK4jFQIXvsjHbpXs6WWqcBu+LeZ5U+Wv+IVLZnDK5grxiJlwoTQXg8lmhmN3rWbsc=
+	t=1717683051; cv=none; b=MH52iPDq5q7yAji3TZG874B1jpEYLe7C8H/xkK/xo2gTtbAGLvcgcIXe7/nUnF7klrw3UWx6IjplqVNnAB2amCHU5S3CMx4Z/YBZYpy6KvaajvYPU18MNHRzxEyOMc1039AkXSN/jj9uyJHaE8yQymf/9VPgXih1pE24IkvPMuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683485; c=relaxed/simple;
-	bh=CdjnpSpoKBWpeFfnyFxGNCtzv+aaJuSF9nPWr+06X3k=;
+	s=arc-20240116; t=1717683051; c=relaxed/simple;
+	bh=FRQbEnUe7wq1pnU3McKDQ1/tKsy/Yp3MUDckYSerQY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTH7Nn/HtyirUtTm66Oq5XTXjIcm2FFGi5IOd7Hg90twGJ+xRhc+d6v79I4btVzGK5SVZLoNPx4lD2Lh5Ias8R7/WeIQHoYJIrVgyqZRQTCJ32w1glDNKQ8l/HM4FAEkYUZNI33DGonPN+yNaCekWq3Hgo879+lezQ03g/fFSr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2q7rEro/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF31C32781;
-	Thu,  6 Jun 2024 14:18:04 +0000 (UTC)
+	 MIME-Version; b=RxmTJl3z8lzr8t6R866yyU8T2AnYQThDWp9PhenNZtUV+TFdwGWiHKwd3TEpm/LoOhfLuuOlc7BxThxacRRSpBxcMKIwzDfd3CXi98noJYy/TQ0FeCPNUa8GjKsTiODEMVg5GVV4R7NgCNsUy7biVzWeMO6VR99PRFXxXUxe7wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytDwkJ3z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1430BC4AF0F;
+	Thu,  6 Jun 2024 14:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683484;
-	bh=CdjnpSpoKBWpeFfnyFxGNCtzv+aaJuSF9nPWr+06X3k=;
+	s=korg; t=1717683051;
+	bh=FRQbEnUe7wq1pnU3McKDQ1/tKsy/Yp3MUDckYSerQY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2q7rEro/wSaOew2tUvk3MYIDzfqkQmKoPqIFnmVzanW727H1kiiv++AAJF1ERXMXR
-	 YKIZRBfqTFQGNMOFbcSoCPPlJv1OV853hRHGoyegw9lROLDDk1+7mrEG0R5miUwH/O
-	 Bn8p/RbH780Ts77Mu6/x0rfGeV1xeYYLduiAU1gU=
+	b=ytDwkJ3zrP5rkHj305jcNAh8+jkhtz2mpQrkiAFxLrOg3BPCgP/Sx+zpnHM/FUzXH
+	 OtiKnRtvq/lcCOkgE37vYvtm/X7hAcjezfDF/VfrBNrwBV+uuvFJYwDJ2H40g+qasp
+	 O/heDDhY7egq5Ptmy6C+BefVEqjlktCDq/yJlKo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 341/473] f2fs: compress: fix to update i_compr_blocks correctly
+Subject: [PATCH 6.9 291/374] nvme: fix multipath batched completion accounting
 Date: Thu,  6 Jun 2024 16:04:30 +0200
-Message-ID: <20240606131711.173551440@linuxfoundation.org>
+Message-ID: <20240606131701.633649007@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 186e7d71534df4589405925caca5597af7626c12 ]
+[ Upstream commit 2fe7b422460d14b33027d8770f7be8d26bcb2639 ]
 
-Previously, we account reserved blocks and compressed blocks into
-@compr_blocks, then, f2fs_i_compr_blocks_update(,compr_blocks) will
-update i_compr_blocks incorrectly, fix it.
+Batched completions were missing the io stats accounting and bio trace
+events. Move the common code to a helper and call it from the batched
+and non-batched functions.
 
-Meanwhile, for the case all blocks in cluster were reserved, fix to
-update dn->ofs_in_node correctly.
-
-Fixes: eb8fbaa53374 ("f2fs: compress: fix to check unreleased compressed cluster")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: d4d957b53d91ee ("nvme-multipath: support io stats on the mpath device")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/nvme/host/core.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 1c47c7cbcd6cd..69023b8fc67a7 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3588,7 +3588,8 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
- 
- 	while (count) {
- 		int compr_blocks = 0;
--		blkcnt_t reserved;
-+		blkcnt_t reserved = 0;
-+		blkcnt_t to_reserved;
- 		int ret;
- 
- 		for (i = 0; i < cluster_size; i++) {
-@@ -3608,20 +3609,26 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
- 			 * fails in release_compress_blocks(), so NEW_ADDR
- 			 * is a possible case.
- 			 */
--			if (blkaddr == NEW_ADDR ||
--				__is_valid_data_blkaddr(blkaddr)) {
-+			if (blkaddr == NEW_ADDR) {
-+				reserved++;
-+				continue;
-+			}
-+			if (__is_valid_data_blkaddr(blkaddr)) {
- 				compr_blocks++;
- 				continue;
- 			}
- 		}
- 
--		reserved = cluster_size - compr_blocks;
-+		to_reserved = cluster_size - compr_blocks - reserved;
- 
- 		/* for the case all blocks in cluster were reserved */
--		if (reserved == 1)
-+		if (to_reserved == 1) {
-+			dn->ofs_in_node += cluster_size;
- 			goto next;
-+		}
- 
--		ret = inc_valid_block_count(sbi, dn->inode, &reserved, false);
-+		ret = inc_valid_block_count(sbi, dn->inode,
-+						&to_reserved, false);
- 		if (unlikely(ret))
- 			return ret;
- 
-@@ -3632,7 +3639,7 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
- 
- 		f2fs_i_compr_blocks_update(dn->inode, compr_blocks, true);
- 
--		*reserved_blocks += reserved;
-+		*reserved_blocks += to_reserved;
- next:
- 		count -= cluster_size;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 095f59e7aa937..5008964f3ebe8 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -414,6 +414,14 @@ static inline void nvme_end_req_zoned(struct request *req)
  	}
+ }
+ 
++static inline void __nvme_end_req(struct request *req)
++{
++	nvme_end_req_zoned(req);
++	nvme_trace_bio_complete(req);
++	if (req->cmd_flags & REQ_NVME_MPATH)
++		nvme_mpath_end_request(req);
++}
++
+ static inline void nvme_end_req(struct request *req)
+ {
+ 	blk_status_t status = nvme_error_status(nvme_req(req)->status);
+@@ -424,10 +432,7 @@ static inline void nvme_end_req(struct request *req)
+ 		else
+ 			nvme_log_error(req);
+ 	}
+-	nvme_end_req_zoned(req);
+-	nvme_trace_bio_complete(req);
+-	if (req->cmd_flags & REQ_NVME_MPATH)
+-		nvme_mpath_end_request(req);
++	__nvme_end_req(req);
+ 	blk_mq_end_request(req, status);
+ }
+ 
+@@ -476,7 +481,7 @@ void nvme_complete_batch_req(struct request *req)
+ {
+ 	trace_nvme_complete_rq(req);
+ 	nvme_cleanup_cmd(req);
+-	nvme_end_req_zoned(req);
++	__nvme_end_req(req);
+ }
+ EXPORT_SYMBOL_GPL(nvme_complete_batch_req);
+ 
 -- 
 2.43.0
 
