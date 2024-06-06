@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-49262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0968FEC8D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 213108FEE5A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E14B11C25687
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 218D01C24AA8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90FEE1B1435;
-	Thu,  6 Jun 2024 14:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD491C3706;
+	Thu,  6 Jun 2024 14:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSqvX6Cm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnNdlqLk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5028619B3D9;
-	Thu,  6 Jun 2024 14:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8AC1991B6;
+	Thu,  6 Jun 2024 14:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683380; cv=none; b=PZoDCXPq+H2uSKODQFb/zhn/z8cStW6MQEVwt61GdHJJUNq1i4ptp1HrC+9f3TWg76zeGYJLPqwReV+IUecv2lIq5gKyGpr8G2PcdEjDwAPMZRz1OWEletm/2aL5khnuQHmFFFUlp2tJAxX+IfmqcxcwbDiGkeLg6N/o4s3qoJE=
+	t=1717683649; cv=none; b=XI1kbmKGzlszdpEsBWq0fIUwKuyVQ5B3iLz08U5mibLbav2WTD4fuUqfWIbVEaJcMFgVm4PhZxtI3kOmC0FtCHHToH/Naj3KK/beL6eDH2JgmblqfF3oG0xMIm1Rd7eZXc82ES9gamyO9SKUvlsUwbpuzGA97BfwGRpuJdtiC8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683380; c=relaxed/simple;
-	bh=wHyQ5zfVOCaVr+K9rFhYd2W9Eige/3Rfdq7YDmHq9cQ=;
+	s=arc-20240116; t=1717683649; c=relaxed/simple;
+	bh=wI2YT5CqnCO11sj3ndzeVXH1cejclxuS76HiZMvY5m4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdO9vcbf69hbXme1f08uTYAJAslGKBb566MX1ojJ9OHk8pggT9e7zfjVBv/Tc3RbVbBHvZ6pgI/2PHTJby85bOUFWyfpp5IPQ9g+TnEiERYNycwOIBm5MzyOoN2zSbjHZJW30x+mne4q6RKqos+nP0bIdt4w6NAoh5l0HERRB10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSqvX6Cm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AABC2BD10;
-	Thu,  6 Jun 2024 14:16:20 +0000 (UTC)
+	 MIME-Version; b=GWKgyzjpTUohAjEZGKkdKbStScB72xJ45kqMpnbFjK1rQlS2e1LVtLwkG+II35H/+Z5tDXSiUgfqu0jrAB4/ORe6FstF3kvK28S49CV33LxVZgVKCT1owOkORWxpAgXsrnmkCK7yxhXeK9VM/VGFBni1lijOanQc0n6w+me4waQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnNdlqLk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85612C2BD10;
+	Thu,  6 Jun 2024 14:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683380;
-	bh=wHyQ5zfVOCaVr+K9rFhYd2W9Eige/3Rfdq7YDmHq9cQ=;
+	s=korg; t=1717683649;
+	bh=wI2YT5CqnCO11sj3ndzeVXH1cejclxuS76HiZMvY5m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSqvX6CmM5+GHgiwreqHTTmDNo/3ULmN84dHDBZsSkgPTw9psC1FzVeNAJU3XlUyM
-	 Mo+jnQoLeyUzbIqDdqYOkohLqhJz5n0fOrn5LMt+HoQaFJZfVxidoJFegWCp/OqClm
-	 I0+LKOB7B8fnCLk5x7brCVjh1s7XhbqwvMazT2p8=
+	b=TnNdlqLkdtthUZW0M2slFGg+G+L615K3adOmyj1/nNw7NH1dMn1UcBLX97r0jhbTZ
+	 tCGIsV7TUvnNN5e4rdlYEUS8CzRhczAmx1uG1oSX2TBnWL0kpQ+pwZUf8cokzTbr7g
+	 T5dYiNoUJoGeJjeRAh8O0rfupGBMAevQkQpNZ42A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 263/473] ext4: try all groups in ext4_mb_new_blocks_simple
+Subject: [PATCH 6.6 520/744] libsubcmd: Fix parse-options memory leak
 Date: Thu,  6 Jun 2024 16:03:12 +0200
-Message-ID: <20240606131708.640179318@linuxfoundation.org>
+Message-ID: <20240606131749.120067607@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +71,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 19a043bb1fd1b5cb2652ca33536c55e6c0a70df0 ]
+[ Upstream commit 230a7a71f92212e723fa435d4ca5922de33ec88a ]
 
-ext4_mb_new_blocks_simple ignores the group before goal, so it will fail
-if free blocks reside in group before goal. Try all groups to avoid
-unexpected failure.
-Search finishes either if any free block is found or if no available
-blocks are found. Simpliy check "i >= max" to distinguish the above
-cases.
+If a usage string is built in parse_options_subcommand, also free it.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Suggested-by: Theodore Ts'o <tytso@mit.edu>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230603150327.3596033-8-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
+Fixes: 901421a5bdf605d2 ("perf tools: Remove subcmd dependencies on strbuf")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240509052015.1914670-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/lib/subcmd/parse-options.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index a809a80589857..a7801d2a7d1b4 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5875,7 +5875,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 	struct buffer_head *bitmap_bh;
- 	struct super_block *sb = ar->inode->i_sb;
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
--	ext4_group_t group;
-+	ext4_group_t group, nr;
- 	ext4_grpblk_t blkoff;
- 	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
- 	ext4_grpblk_t i = 0;
-@@ -5889,7 +5889,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+diff --git a/tools/lib/subcmd/parse-options.c b/tools/lib/subcmd/parse-options.c
+index 9fa75943f2ed1..d943d78b787ed 100644
+--- a/tools/lib/subcmd/parse-options.c
++++ b/tools/lib/subcmd/parse-options.c
+@@ -633,11 +633,10 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
+ 			const char *const subcommands[], const char *usagestr[], int flags)
+ {
+ 	struct parse_opt_ctx_t ctx;
++	char *buf = NULL;
  
- 	ar->len = 0;
- 	ext4_get_group_no_and_offset(sb, goal, &group, &blkoff);
--	for (; group < ext4_get_groups_count(sb); group++) {
-+	for (nr = ext4_get_groups_count(sb); nr > 0; nr--) {
- 		bitmap_bh = ext4_read_block_bitmap(sb, group);
- 		if (IS_ERR(bitmap_bh)) {
- 			*errp = PTR_ERR(bitmap_bh);
-@@ -5913,10 +5913,13 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 		if (i < max)
- 			break;
+ 	/* build usage string if it's not provided */
+ 	if (subcommands && !usagestr[0]) {
+-		char *buf = NULL;
+-
+ 		astrcatf(&buf, "%s %s [<options>] {", subcmd_config.exec_name, argv[0]);
  
-+		if (++group >= ext4_get_groups_count(sb))
-+			group = 0;
-+
- 		blkoff = 0;
+ 		for (int i = 0; subcommands[i]; i++) {
+@@ -679,7 +678,10 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
+ 			astrcatf(&error_buf, "unknown switch `%c'", *ctx.opt);
+ 		usage_with_options(usagestr, options);
  	}
+-
++	if (buf) {
++		usagestr[0] = NULL;
++		free(buf);
++	}
+ 	return parse_options_end(&ctx);
+ }
  
--	if (group >= ext4_get_groups_count(sb) || i >= max) {
-+	if (i >= max) {
- 		*errp = -ENOSPC;
- 		return 0;
- 	}
 -- 
 2.43.0
 
