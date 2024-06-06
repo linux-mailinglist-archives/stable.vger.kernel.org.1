@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-49295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76CC88FECAD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B3A8FE98F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F98E287671
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC4841F236C1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B4C19B58F;
-	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2677197A9F;
+	Thu,  6 Jun 2024 14:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnOyk6V3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhC/YHYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5707A198A35;
-	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17C4198831;
+	Thu,  6 Jun 2024 14:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683396; cv=none; b=Nmeuuio3FS331eUqHHfj0JMKCnvuuPVsNuKrWhIl2fgtE3lU7oOwC0X59d6VDGmCPwZL7XD6ggE2LlN1rx7MCodt+cqrAKlIbTlWscGCNruqSZg2yy9mDCcV/3Lmloa7yU0htAwnaO08COjAIrkssE9KO6BCz5MzcokrWYeBpDw=
+	t=1717683039; cv=none; b=BhHlLuzEIJeAsKwe/0yKTtOSWsORbSfTFZUZ7oA42SpLwNlCjEM8m1y57a2aO9zQqHyUEzsyOhQSh2+9VLXfRP+Qes5AgzlhwAWR4AU2MCgQRPQVo74EEneCbu2RdOSG/K0vVJjKrhnx7sh918vUz7YhKFg5PgtHK1OiWo17AwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683396; c=relaxed/simple;
-	bh=XWbiNX+If1tAe2mpZw0K0UJOBYT/Y4unW+sDbA9OkWA=;
+	s=arc-20240116; t=1717683039; c=relaxed/simple;
+	bh=NVi1TYPDHju4evz+ts1//jW0cIPnU3XcWSlm/9zBBGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geW0xUi79FPk5Nte262CIYhSB8EgA+GuzZcCzvFaAy28ia2k20bgSp5qARKWNJvez2Qd/n28+c97fKQKKMX9Z4h7FDh86I28CZ2Fya30bDgTUjaY4NlrGoXgvhzi425o5fTtMnwUEQgf7K8ORIQXpawC1y/VcpR4Dfp+ZGB04cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnOyk6V3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FD0C2BD10;
-	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
+	 MIME-Version; b=Ccf6+5sCA9MNrBAPm7h2BQwZKaF+Ms7Ri9pmsiNgBa7fKlOnBGuWRmFHwPDrsDYl3i4Jeee+nZtPwicyMXWBxfG1ISe3fA2XTuOtEa5KP6D2iX5j6I0LfrVZcmoSVE8EnRGwzReTFAc6hrVkijXMxWh8IVyih2gEi9ca6Ce62eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhC/YHYX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FC9C4DDE9;
+	Thu,  6 Jun 2024 14:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683396;
-	bh=XWbiNX+If1tAe2mpZw0K0UJOBYT/Y4unW+sDbA9OkWA=;
+	s=korg; t=1717683039;
+	bh=NVi1TYPDHju4evz+ts1//jW0cIPnU3XcWSlm/9zBBGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TnOyk6V3FWFqBab0YssA7/kWZoSM8B3RqD1d/PUp57XWG/SkNMETMLymg+ytzNINh
-	 k0BvK5PFWTWV0HmR+kqOte1yUfA3CmMJHQhihjDtP9E7TpvsjAOvwLAgd7KeAhkPOI
-	 F6iqLl3RhcbkCYpyv3nexRuLLS/7FK0iCAyHYh/s=
+	b=FhC/YHYXRH0zR1PqC16ihIvKCQ2bKaF4RpfZd8ntarmKi0F5euqYBsOQNkR5B25iL
+	 UvmgQ2Gg9gatta1vDRJEmi29BFsDCmou7VKbu8qYS2RBvpK7HQWq+FLbfY/oKhj41v
+	 U2lHpGb4jQkTk5iXh4mxvB8kZ5asRzhrZwYyLq1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Greg Thelen <gthelen@google.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Tuan Phan <tuanphan@os.amperecomputing.com>,
 	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 280/473] perf probe: Add missing libgen.h header needed for using basename()
+Subject: [PATCH 6.9 230/374] perf/arm-dmc620: Fix lockdep assert in ->event_init()
 Date: Thu,  6 Jun 2024 16:03:29 +0200
-Message-ID: <20240606131709.164107708@linuxfoundation.org>
+Message-ID: <20240606131659.515826607@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 581037151910126a7934e369e4b6ac70eda9a703 ]
+[ Upstream commit a4c5a457c6107dfe9dc65a104af1634811396bac ]
 
-This prototype is obtained indirectly, by luck, from some other header
-in probe-event.c in most systems, but recently exploded on alpine:edge:
+for_each_sibling_event() checks leader's ctx but it doesn't have the ctx
+yet if it's the leader.  Like in perf_event_validate_size(), we should
+skip checking siblings in that case.
 
-   8    13.39 alpine:edge                   : FAIL gcc version 13.2.1 20240309 (Alpine 13.2.1_git20240309)
-    util/probe-event.c: In function 'convert_exec_to_group':
-    util/probe-event.c:225:16: error: implicit declaration of function 'basename' [-Werror=implicit-function-declaration]
-      225 |         ptr1 = basename(exec_copy);
-          |                ^~~~~~~~
-    util/probe-event.c:225:14: error: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
-      225 |         ptr1 = basename(exec_copy);
-          |              ^
-    cc1: all warnings being treated as errors
-    make[3]: *** [/git/perf-6.8.0/tools/build/Makefile.build:158: util] Error 2
-
-Fix it by adding the libgen.h header where basename() is prototyped.
-
-Fixes: fb7345bbf7fad9bf ("perf probe: Support basic dwarf-based operations on uprobe events")
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/lkml/
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: f3c0eba28704 ("perf: Add a few assertions")
+Reported-by: Greg Thelen <gthelen@google.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Tuan Phan <tuanphan@os.amperecomputing.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20240514180050.182454-1-namhyung@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/probe-event.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/perf/arm_dmc620_pmu.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/probe-event.c b/tools/perf/util/probe-event.c
-index 0c24bc7afbca2..66ff8420ce2b0 100644
---- a/tools/perf/util/probe-event.c
-+++ b/tools/perf/util/probe-event.c
-@@ -11,6 +11,7 @@
- #include <sys/stat.h>
- #include <fcntl.h>
- #include <errno.h>
-+#include <libgen.h>
- #include <stdio.h>
- #include <unistd.h>
- #include <stdlib.h>
+diff --git a/drivers/perf/arm_dmc620_pmu.c b/drivers/perf/arm_dmc620_pmu.c
+index 8a81be2dd5ecf..88c17c1d6d499 100644
+--- a/drivers/perf/arm_dmc620_pmu.c
++++ b/drivers/perf/arm_dmc620_pmu.c
+@@ -542,12 +542,16 @@ static int dmc620_pmu_event_init(struct perf_event *event)
+ 	if (event->cpu < 0)
+ 		return -EINVAL;
+ 
++	hwc->idx = -1;
++
++	if (event->group_leader == event)
++		return 0;
++
+ 	/*
+ 	 * We can't atomically disable all HW counters so only one event allowed,
+ 	 * although software events are acceptable.
+ 	 */
+-	if (event->group_leader != event &&
+-			!is_software_event(event->group_leader))
++	if (!is_software_event(event->group_leader))
+ 		return -EINVAL;
+ 
+ 	for_each_sibling_event(sibling, event->group_leader) {
+@@ -556,7 +560,6 @@ static int dmc620_pmu_event_init(struct perf_event *event)
+ 			return -EINVAL;
+ 	}
+ 
+-	hwc->idx = -1;
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
