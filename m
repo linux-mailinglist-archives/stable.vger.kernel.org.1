@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBEB8FED08
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE28C8FEB74
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A25721C216BB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59B41C23DC1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0B319CD0D;
-	Thu,  6 Jun 2024 14:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC9F1AB513;
+	Thu,  6 Jun 2024 14:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOUg6RF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKo0isbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6A11B3F3E;
-	Thu,  6 Jun 2024 14:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC171993A0;
+	Thu,  6 Jun 2024 14:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683438; cv=none; b=BbXdf6XM3dDLt0eOpupYyo1glUXcTxNMiTiW+ygzIhSabL0gp83xp/2hXaklqDtRBLpyAqWHg4Fs/bzBYvdhNWIxNjyE8lk07OmLz0Ba+wgj3YlK6VXI4orHXIe9XLAqiB7KCLJYWZckZgHXT2OQvne736+Mn+J4Zyt2xJ7aU60=
+	t=1717683254; cv=none; b=hHZkE3aK1Wo/OldFgekFcoah2DgTBk18+ZMgKpRK9Aafyw2f4hQ3tV43VY7V9pKS4/IWfHel73EITyDclvojERehHHdiUV6JOzBIuFs7L1vGM+wUba6k75e1lYh72UcnCTqV0WdX0q2pqn6B4OjfsDZlFCm4YOd1TjUjPt5ypX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683438; c=relaxed/simple;
-	bh=+IJmIlqA/riTXVR2Sm6TD23VPgMbcFVSSm9YptM8dKA=;
+	s=arc-20240116; t=1717683254; c=relaxed/simple;
+	bh=Sh3nm9VxXcn/aU6pttDBb8aOiw0iIUUjcMvYj/xUAOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UT3YHQ/xIoSvxNOs0N7egWW5MqGq3RmwvIdVdkQyJEMwlsCZADTpDpwLc5cLRYdb5z27+7nMkwVEfifJ0qn/FFSY7MGE4IWMDz+ZsbzYnCSMEgdBABGCQGdsOUA8CCHSSP0ajndItV3NYsLVjgm8JzIs2yXxapP5EVuR5nlNFwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOUg6RF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9B1C2BD10;
-	Thu,  6 Jun 2024 14:17:18 +0000 (UTC)
+	 MIME-Version; b=KelLmmqFuP07a8hkEULFlw/9KsTlP5EOoK3SxvFU16awLZEH3wUV54q57iQzq0KCyWDxOuls/HBKagq/F7f+qDK0osZK+IbXEAMID9sQZcz8PkKyboT3j9YIQHPZ92TGbiPoqFXEgPKX2YC/GrGHwQYhkSgGKOhRr5DaK1ojBOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKo0isbQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3E7C4AF0B;
+	Thu,  6 Jun 2024 14:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683438;
-	bh=+IJmIlqA/riTXVR2Sm6TD23VPgMbcFVSSm9YptM8dKA=;
+	s=korg; t=1717683254;
+	bh=Sh3nm9VxXcn/aU6pttDBb8aOiw0iIUUjcMvYj/xUAOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOUg6RF2492I9QdXVCuMTZuVFhW2oCZI6p9OOjxZPt2GggvL0yZW5DtdgkOQz6WUp
-	 BBWnQJPbXyReovLDzDWzTy34xTJi10EsKibN0/f16IXSLCJqedMdM9oDE00qTeHPSv
-	 4JYC6vX5OOURMOKe4wkGN9KEvrzl5AWfGUop1iiE=
+	b=JKo0isbQSwT9RKj0FquiArJOK9jnDEQ3Jyzp5Gx0lbtSAOlwfr/sQAr5jN6QqhaOg
+	 9G8ieia7JWu4rUCwaOkFjTRxmtGjJXGDwQ8cVHC079pbE6+q4QoZfYj5hzvbkS4uYD
+	 DRq0j0VokNhgr84fsDuL8zLfwr5pGhf9j1khvdfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Theodore Tso <tytso@mit.edu>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 365/744] ext4: fix potential unnitialized variable
+Subject: [PATCH 6.1 108/473] scsi: ufs: qcom: Perform read back after writing CGC enable
 Date: Thu,  6 Jun 2024 16:00:37 +0200
-Message-ID: <20240606131744.188387826@linuxfoundation.org>
+Message-ID: <20240606131703.484209822@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 3f4830abd236d0428e50451e1ecb62e14c365e9b ]
+[ Upstream commit d9488511b3ac7eb48a91bc5eded7027525525e03 ]
 
-Smatch complains "err" can be uninitialized in the caller.
+Currently, the CGC enable bit is written and then an mb() is used to ensure
+that completes before continuing.
 
-    fs/ext4/indirect.c:349 ext4_alloc_branch()
-    error: uninitialized symbol 'err'.
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-Set the error to zero on the success path.
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
 
-Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/363a4673-0fb8-4adf-b4fb-90a499077276@moroto.mountain
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Let's do that to ensure the bit hits the device. Because the mb()'s purpose
+wasn't to add extra ordering (on top of the ordering guaranteed by
+writel()/readl()), it can safely be removed.
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-5-181252004586@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ufs/host/ufs-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index a8a3ea2fd690f..aadfeb0f5b7f3 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -6144,6 +6144,7 @@ ext4_mb_new_blocks_simple(struct ext4_allocation_request *ar, int *errp)
- 	ext4_mb_mark_bb(sb, block, 1, 1);
- 	ar->len = 1;
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index edbd3d7cf83aa..337c0ef0fab6d 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -336,7 +336,7 @@ static void ufs_qcom_enable_hw_clk_gating(struct ufs_hba *hba)
+ 		REG_UFS_CFG2);
  
-+	*errp = 0;
- 	return block;
+ 	/* Ensure that HW clock gating is enabled before next operations */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG2);
  }
  
+ static int ufs_qcom_hce_enable_notify(struct ufs_hba *hba,
 -- 
 2.43.0
 
