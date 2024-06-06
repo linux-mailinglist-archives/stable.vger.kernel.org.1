@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-48860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD978FEAD9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2B328FEC7D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3157AB2430F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A16901C24047
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DEC19922D;
-	Thu,  6 Jun 2024 14:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42ABE1B141B;
+	Thu,  6 Jun 2024 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heTpkplJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ba41CdBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B495D199227;
-	Thu,  6 Jun 2024 14:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F347419B3CA;
+	Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683182; cv=none; b=QvGvRd+FZCfWySZa6pj04vWCqxpnRAyfl8t5d7Hqwky0PzHv1UljwfGNzuLtyxocmkTj26Mqrw/dz9ZDF+MYl+RmiyjM7s8Ve/JzMaiyWBywKdbGsVnbQy+gPRPUQ7wR6VlYqK6l5kXXB48H9DpNKlwfBVaG0Su7Mwqzsm52GgY=
+	t=1717683373; cv=none; b=bqizww2uKNkI+HGLIfR26eISNA8V3xPrV+FSB+vqvgK16jLEAjg3vcfL2v0lMNbgGL3Tw4NAM1i/DyXbaz/QNzW3oGgcurjnq6jSVdUPZOIhYgmhY06tyXepB23UBcNAujW1OuffcBKnq7zCF+YQssnMpEIqUIbCZGK1wGMSYUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683182; c=relaxed/simple;
-	bh=GJxpRTw+pGQVx3DpjL9k54bPx9kcMao/oaNXZofkJHU=;
+	s=arc-20240116; t=1717683373; c=relaxed/simple;
+	bh=MGlEZu/wIakOyF6mxJEhpX6yOkzYEL2Xuh9RPo2dYBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FI2YvPik/rebo8Bv5TpObxlAWXkwXvTAN6RVlGwlO3OWOIP7AUKNPIxBdUbmPFA6Zzlua+FzwPGLQrx7S0sqPd52jeiEKzplJHYWQ8/XKTtjPmDv5/uv4axAR4Cfn+bk4C+CoFk9DJTzUjFbalyNx/9dFY2qGJxN/1qXss6W0Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heTpkplJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95206C32781;
-	Thu,  6 Jun 2024 14:13:02 +0000 (UTC)
+	 MIME-Version; b=j67ZZd7nEaRN79pzyVXrqK31rdqv6nBig0xDtXdAkHdn+Loan8F2gj4v0W4W387wGRVoObcVua8+wwG1GC1GlZqfGxYIm6tx49C/K7Qi8fcpVanCYMCPIOlH//EUAKkVzm8+E9TfNu2/1e90DY3PaTems0vRgeqLuSR5pufiHqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ba41CdBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4C5C32781;
+	Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683182;
-	bh=GJxpRTw+pGQVx3DpjL9k54bPx9kcMao/oaNXZofkJHU=;
+	s=korg; t=1717683372;
+	bh=MGlEZu/wIakOyF6mxJEhpX6yOkzYEL2Xuh9RPo2dYBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=heTpkplJMY28NgrVKdPAbvPhAbeVvOslLecehVF4rsfel3EnFPhXzUi82c/hlbKxV
-	 9AOjI22eWCAH0JwpPuXxC0PIFAkIHnN9366IFHssOMMozZjWCIaWE1Hb7EQiW0+MpP
-	 dyx5oxvcn29//ssO1xgaVj4/Tj4CPNd6ebD/x2lM=
+	b=Ba41CdBkutPMxnExgLnRLwz7M5lm8kqsjcHDycHszIqqKLLIBA1ptzodnsDPYyPUS
+	 rPs6kSVQAIiDMLK4aC5V4AaCfdQDqCUtiFU/E7Fe4hnLbfVuMOYR6Xkbvs4Rklgreb
+	 6BUfc4+g257rBCsX4C/gwkGgqX2dLEWXMN670MfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lancelot SIX <lancelot.six@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/473] drm/amdkfd: Flush the process wq before creating a kfd_process
+Subject: [PATCH 6.6 314/744] fbdev: sh7760fb: allow modular build
 Date: Thu,  6 Jun 2024 15:59:46 +0200
-Message-ID: <20240606131701.763670649@linuxfoundation.org>
+Message-ID: <20240606131742.496574844@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +69,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lancelot SIX <lancelot.six@amd.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit f5b9053398e70a0c10aa9cb4dd5910ab6bc457c5 ]
+[ Upstream commit 51084f89d687e14d96278241e5200cde4b0985c7 ]
 
-There is a race condition when re-creating a kfd_process for a process.
-This has been observed when a process under the debugger executes
-exec(3).  In this scenario:
-- The process executes exec.
- - This will eventually release the process's mm, which will cause the
-   kfd_process object associated with the process to be freed
-   (kfd_process_free_notifier decrements the reference count to the
-   kfd_process to 0).  This causes kfd_process_ref_release to enqueue
-   kfd_process_wq_release to the kfd_process_wq.
-- The debugger receives the PTRACE_EVENT_EXEC notification, and tries to
-  re-enable AMDGPU traps (KFD_IOC_DBG_TRAP_ENABLE).
- - When handling this request, KFD tries to re-create a kfd_process.
-   This eventually calls kfd_create_process and kobject_init_and_add.
+There is no reason to prohibit sh7760fb from being built as a
+loadable module as suggested by Geert, so change the config symbol
+from bool to tristate to allow that and change the FB dependency as
+needed.
 
-At this point the call to kobject_init_and_add can fail because the
-old kfd_process.kobj has not been freed yet by kfd_process_wq_release.
-
-This patch proposes to avoid this race by making sure to drain
-kfd_process_wq before creating a new kfd_process object.  This way, we
-know that any cleanup task is done executing when we reach
-kobject_init_and_add.
-
-Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: f75f71b2c418 ("fbdev/sh7760fb: Depend on FB=y")
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/video/fbdev/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index 7f68d51541e8e..5bca6abd55aef 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -823,6 +823,14 @@ struct kfd_process *kfd_create_process(struct file *filep)
- 	if (process) {
- 		pr_debug("Process already found\n");
- 	} else {
-+		/* If the process just called exec(3), it is possible that the
-+		 * cleanup of the kfd_process (following the release of the mm
-+		 * of the old process image) is still in the cleanup work queue.
-+		 * Make sure to drain any job before trying to recreate any
-+		 * resource for this process.
-+		 */
-+		flush_workqueue(kfd_process_wq);
-+
- 		process = create_process(thread);
- 		if (IS_ERR(process))
- 			goto out;
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index c29754b65c0ec..325298573e120 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -1761,8 +1761,8 @@ config FB_COBALT
+ 	depends on FB && MIPS_COBALT
+ 
+ config FB_SH7760
+-	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
+-	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
++	tristate "SH7760/SH7763/SH7720/SH7721 LCDC support"
++	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
+ 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
+ 	select FB_IOMEM_HELPERS
+ 	help
 -- 
 2.43.0
 
