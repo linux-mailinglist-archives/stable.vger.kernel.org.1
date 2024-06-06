@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-49165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A8098FEC22
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7ED8FEA88
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41D6E1C242D3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC99BB22E5A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E07219885D;
-	Thu,  6 Jun 2024 14:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FE61991A4;
+	Thu,  6 Jun 2024 14:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xvu2wVlo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi6blKCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF8B198824;
-	Thu,  6 Jun 2024 14:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA88A196C68;
+	Thu,  6 Jun 2024 14:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683334; cv=none; b=CrJRHtYE77cxuVsMWxdw1X0MSoYx8Ypr4cbIA+4i7Rf/LmNS6t3TfHlE8Tm75+aSFXtOPMugypocIJKUkkXgUc82p86fyQp14vknZVcOrfxJv0z/yN7kmDR87bWyvkp7CplsaxwyM4tASSdSPtEiC2BG86RA5q3bO5nYQPz4pKo=
+	t=1717683146; cv=none; b=IIsxw0hXioE5ReFiuKF+nQANeTBe4nvBVRLt6JZmHJr33kPRN/r8mc9/NmwIhLQlp7OWdSuHP8KvkXSA1Nt0jDU9EtlFVNgHo5byUGH/nsrZS79xB/CPYuS3xA9W37N0gTTdJWlLjkO8CAJAzU9+cfL/LvnaqaOfye7xMlpsqKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683334; c=relaxed/simple;
-	bh=rFOAfs6MZcoQJSXLbN9/UudXQGDFBRK83v5xHi1EjMA=;
+	s=arc-20240116; t=1717683146; c=relaxed/simple;
+	bh=rRCGLEomZDDrkuMmgTwiXAaqj4zPx3uY783UxhMl/Ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPEcOZRyQ/rGio4yaDMBmWOXhEC+2ynkYyoZs+y86sOjYhcv9AmSHdFpuwkqjHMmSe9Ft62slKqx2bnOBZoPLJqRQo6VDgxzf+agS+DaT3HgT9YIc/RGBjuoT9pUhAHRjFmRC7SnhYnVAGL0PUwCL9MYuCVYm7mXHjc/42figM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xvu2wVlo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8970C2BD10;
-	Thu,  6 Jun 2024 14:15:33 +0000 (UTC)
+	 MIME-Version; b=HHpf1R7brg7eINDFpZGrDFZ3EOX2X/VV0cYLXCFM1KwyXpFMbbqFckALFKRpznabS/K3yfZZeHXgBxq00tvIurkrdS4EapztFwljw5n9Ctk8o48JnIBmDGh6iUlZFPeWCPn65n/nG9M4lZYcRwTN8nfjFwwQ1cxWH2WIeN0K3Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi6blKCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2937C2BD10;
+	Thu,  6 Jun 2024 14:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683333;
-	bh=rFOAfs6MZcoQJSXLbN9/UudXQGDFBRK83v5xHi1EjMA=;
+	s=korg; t=1717683146;
+	bh=rRCGLEomZDDrkuMmgTwiXAaqj4zPx3uY783UxhMl/Ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xvu2wVlorEaeKF6+hhsCEoEB1oMgdobUEtSOXk+xvtBNuUv0heXNpbAbxrJvfU5gM
-	 vc2zZR1VHv6G5JEmcXp9nKpUjD6CoCKVtFSCKOtPSxVZWpArqlZ1MlJZ28u77Roikq
-	 joo0RHd2MsOCyW/o0J1mU2eoKP929v/bwHwEOzTE=
+	b=fi6blKCTSLSL3JNwVZokW90ele/hEU+vkec/hEna7gSkQjVtdsW+RtObCTay1Ddix
+	 AKeolW8dd26PeMvLheH4Hl3tQ1pKdG3Dcg2E6aR57sMf7wR9/jzn49zeE1JYtGgrPa
+	 BQHQ33UWn27ueLcQhZjczN6KB2zIWwppTohfBL58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Chris Down <chris@chrisdown.name>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 275/744] dev_printk: Add and use dev_no_printk()
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.1 018/473] fs/ntfs3: Taking DOS names into account during link counting
 Date: Thu,  6 Jun 2024 15:59:07 +0200
-Message-ID: <20240606131741.206799175@linuxfoundation.org>
+Message-ID: <20240606131700.445828652@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +60,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit c26ec799042a3888935d59b599f33e41efedf5f8 ]
+commit 110b24eb1a749bea3440f3ca2ff890a26179050a upstream.
 
-When printk-indexing is enabled, each dev_printk() invocation emits a
-pi_entry structure.  This is even true when the dev_printk() is
-protected by an always-false check, as is typically the case for debug
-messages: while the actual code to print the message is optimized out by
-the compiler, the pi_entry structure is still emitted.
+When counting and checking hard links in an ntfs file record,
 
-Avoid emitting pi_entry structures for unavailable dev_printk() kernel
-messages by:
-  1. Introducing a dev_no_printk() helper, mimicked after the existing
-     no_printk() helper, which calls _dev_printk() instead of
-     dev_printk(),
-  2. Replacing all "if (0) dev_printk(...)" constructs by calls to the
-     new helper.
+  struct MFT_REC {
+    struct NTFS_RECORD_HEADER rhdr; // 'FILE'
+    __le16 seq;		    // 0x10: Sequence number for this record.
+>>  __le16 hard_links;	// 0x12: The number of hard links to record.
+    __le16 attr_off;	// 0x14: Offset to attributes.
+  ...
 
-This reduces the size of an arm64 defconfig kernel with
-CONFIG_PRINTK_INDEX=y by 957 KiB.
+the ntfs3 driver ignored short names (DOS names), causing the link count
+to be reduced by 1 and messages to be output to dmesg.
 
-Fixes: ad7d61f159db7397 ("printk: index: Add indexing support to dev_printk")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Chris Down <chris@chrisdown.name>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/8583d54f1687c801c6cda8edddf2cf0344c6e883.1709127473.git.geert+renesas@glider.be
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For Windows, such a situation is a minor error, meaning chkdsk does not report
+errors on such a volume, and in the case of using the /f switch, it silently
+corrects them, reporting that no errors were found. This does not affect
+the consistency of the file system.
+
+Nevertheless, the behavior in the ntfs3 driver is incorrect and
+changes the content of the file system. This patch should fix that.
+
+PS: most likely, there has been a confusion of concepts
+MFT_REC::hard_links and inode::__i_nlink.
+
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/dev_printk.h | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ fs/ntfs3/inode.c  |    7 ++++---
+ fs/ntfs3/record.c |   11 ++---------
+ 2 files changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
-index 6bfe70decc9fb..ae80a303c216b 100644
---- a/include/linux/dev_printk.h
-+++ b/include/linux/dev_printk.h
-@@ -129,6 +129,16 @@ void _dev_info(const struct device *dev, const char *fmt, ...)
- 		_dev_printk(level, dev, fmt, ##__VA_ARGS__);		\
- 	})
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -37,7 +37,7 @@ static struct inode *ntfs_read_mft(struc
+ 	bool is_dir;
+ 	unsigned long ino = inode->i_ino;
+ 	u32 rp_fa = 0, asize, t32;
+-	u16 roff, rsize, names = 0;
++	u16 roff, rsize, names = 0, links = 0;
+ 	const struct ATTR_FILE_NAME *fname = NULL;
+ 	const struct INDEX_ROOT *root;
+ 	struct REPARSE_DATA_BUFFER rp; // 0x18 bytes
+@@ -190,11 +190,12 @@ next_attr:
+ 		    rsize < SIZEOF_ATTRIBUTE_FILENAME)
+ 			goto out;
  
-+/*
-+ * Dummy dev_printk for disabled debugging statements to use whilst maintaining
-+ * gcc's format checking.
-+ */
-+#define dev_no_printk(level, dev, fmt, ...)				\
-+	({								\
-+		if (0)							\
-+			_dev_printk(level, dev, fmt, ##__VA_ARGS__);	\
-+	})
-+
- /*
-  * #defines for all the dev_<level> macros to prefix with whatever
-  * possible use of #define dev_fmt(fmt) ...
-@@ -158,10 +168,7 @@ void _dev_info(const struct device *dev, const char *fmt, ...)
- 	dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
- #else
- #define dev_dbg(dev, fmt, ...)						\
--({									\
--	if (0)								\
--		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
--})
-+	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
- #endif
++		names += 1;
+ 		fname = Add2Ptr(attr, roff);
+ 		if (fname->type == FILE_NAME_DOS)
+ 			goto next_attr;
  
- #ifdef CONFIG_PRINTK
-@@ -247,20 +254,14 @@ do {									\
- } while (0)
- #else
- #define dev_dbg_ratelimited(dev, fmt, ...)				\
--do {									\
--	if (0)								\
--		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
--} while (0)
-+	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
- #endif
+-		names += 1;
++		links += 1;
+ 		if (name && name->len == fname->name_len &&
+ 		    !ntfs_cmp_names_cpu(name, (struct le_str *)&fname->name_len,
+ 					NULL, false))
+@@ -421,7 +422,7 @@ end_enum:
+ 		ni->mi.dirty = true;
+ 	}
  
- #ifdef VERBOSE_DEBUG
- #define dev_vdbg	dev_dbg
- #else
- #define dev_vdbg(dev, fmt, ...)						\
--({									\
--	if (0)								\
--		dev_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__); \
--})
-+	dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
- #endif
+-	set_nlink(inode, names);
++	set_nlink(inode, links);
  
- /*
--- 
-2.43.0
-
+ 	if (S_ISDIR(mode)) {
+ 		ni->std_fa |= FILE_ATTRIBUTE_DIRECTORY;
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -485,16 +485,9 @@ bool mi_remove_attr(struct ntfs_inode *n
+ 	if (aoff + asize > used)
+ 		return false;
+ 
+-	if (ni && is_attr_indexed(attr)) {
++	if (ni && is_attr_indexed(attr) && attr->type == ATTR_NAME) {
+ 		u16 links = le16_to_cpu(ni->mi.mrec->hard_links);
+-		struct ATTR_FILE_NAME *fname =
+-			attr->type != ATTR_NAME ?
+-				NULL :
+-				resident_data_ex(attr,
+-						 SIZEOF_ATTRIBUTE_FILENAME);
+-		if (fname && fname->type == FILE_NAME_DOS) {
+-			/* Do not decrease links count deleting DOS name. */
+-		} else if (!links) {
++		if (!links) {
+ 			/* minor error. Not critical. */
+ 		} else {
+ 			ni->mi.mrec->hard_links = cpu_to_le16(links - 1);
 
 
 
