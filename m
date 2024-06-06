@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611648FEE6F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0648FECB6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65D9C1C24AA8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0F61F2495A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDC819643E;
-	Thu,  6 Jun 2024 14:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25281B29A5;
+	Thu,  6 Jun 2024 14:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIzHEro9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TI1DwPUP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C181A0B14;
-	Thu,  6 Jun 2024 14:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B081B29A4;
+	Thu,  6 Jun 2024 14:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683661; cv=none; b=uGGPQ52/Ck/lEOP2IYpNQsxVfcdPAX1mx1ReP5dH6TXNuhfXCqn9f1VpN7ladKKoga88ZUNnwMYknwm0yCG1HRXATjNnhbBoskjj+G9LIQTShHepfLHlHVdxQcYC+nFWSoNV2jUk8HhLMm/a+OYl8xyJH3ZSvCSX8Uuy7y4rk6s=
+	t=1717683400; cv=none; b=BJVsO/2LrOmVsZUWhDBUz48XlIsXdUqEdD9htutACw/wxu+Y4w7sM/9BARHOF4nQ4zcBg5F9Dr291nBkImOeIMalhvHJYnBv3prdM8GJW7uccfQaHIWSOx1q7kaFwk50UNDQUnRFB4xmAKcxNT1sNM3PHsH1VmkvcK55iOkcQro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683661; c=relaxed/simple;
-	bh=HN1WbdLgdseWk4gGVD99e22W4/lCPpR8gTyWJlsHdLA=;
+	s=arc-20240116; t=1717683400; c=relaxed/simple;
+	bh=PgQuOTiMSvTQfIXBm9o8ecdj8N/nCMZVoBVQDc42KaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCPw4LcVXjlLnDjfpvmHWuW0tXQ9tvV9tWAko8uFxXX63mk8EctjdP2r7P4hEc0UpXdXe56zM7wvRQXA9BjDR9Z/j0st0uGYcMxX+oo5Spl//LlIBAM+uF2y6QvitHavBF3N28CEeIaE4sNuKp0m+GgnDkpvf5EexMgCTQ3ZpLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIzHEro9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC17C32782;
-	Thu,  6 Jun 2024 14:21:00 +0000 (UTC)
+	 MIME-Version; b=TVpzxWkD4s7PphBhwabjQEZKPeHOj4QRrb/2WVKso871HkNGkn+nRjATmYPKcjFzcXD3do03pSpUo8f1ePUw+DOF2RNeD3lENlhgVQNhYN1nw1MM8yaTUHuwJ6k7gWAw/w8e0NcOOJkNZmaq6ILbRd+IwUMyh2qaGEobIGgTcKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TI1DwPUP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E55CC2BD10;
+	Thu,  6 Jun 2024 14:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683660;
-	bh=HN1WbdLgdseWk4gGVD99e22W4/lCPpR8gTyWJlsHdLA=;
+	s=korg; t=1717683400;
+	bh=PgQuOTiMSvTQfIXBm9o8ecdj8N/nCMZVoBVQDc42KaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIzHEro9FzZA3aCp1/XOmS0IRqN3eOnIAuc/klH9TQN+/glOZHeeOIp/l/M+6vxeC
-	 LgYiIzg7Gx26CGPbhJP77oL++tnTR8MG4yQuZPXWu/xxhzwzld5GaJ5fQeAJT/Vmxg
-	 P+qceTCGnb8cBEpXUYDoOE9PXDRwjWxITA+6GeD8=
+	b=TI1DwPUPobqmb3MboiiyRUryADbIqoxDAuGy73Tm7hRItBJCoHSb9Oe4K+RRc/BfI
+	 WuifVWecX1qrresF62ZpR++cY/c/OpXVSooUPhG3c8wwO4NC6XCukzMZIzgwv3XP7w
+	 Br6USAvvOO3wZjSn3Z9kgc1vWjEC9VTiUiLu7bvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 541/744] s390/boot: Remove alt_stfle_fac_list from decompressor
+Subject: [PATCH 6.1 284/473] f2fs: fix to wait on page writeback in __clone_blkaddrs()
 Date: Thu,  6 Jun 2024 16:03:33 +0200
-Message-ID: <20240606131749.806526155@linuxfoundation.org>
+Message-ID: <20240606131709.280109276@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit e7dec0b7926f3cd493c697c4c389df77e8e8a34c ]
+[ Upstream commit d3876e34e7e789e2cbdd782360fef2a777391082 ]
 
-It is nowhere used in the decompressor, therefore remove it.
+In below race condition, dst page may become writeback status
+in __clone_blkaddrs(), it needs to wait writeback before update,
+fix it.
 
-Fixes: 17e89e1340a3 ("s390/facilities: move stfl information from lowcore to global data")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Thread A				GC Thread
+- f2fs_move_file_range
+  - filemap_write_and_wait_range(dst)
+					- gc_data_segment
+					 - f2fs_down_write(dst)
+					 - move_data_page
+					  - set_page_writeback(dst_page)
+					  - f2fs_submit_page_write
+					 - f2fs_up_write(dst)
+  - f2fs_down_write(dst)
+  - __exchange_data_block
+   - __clone_blkaddrs
+    - f2fs_get_new_data_page
+    - memcpy_page
+
+Fixes: 0a2aa8fbb969 ("f2fs: refactor __exchange_data_block for speed up")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/boot/startup.c | 1 -
- arch/s390/kernel/setup.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ fs/f2fs/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/boot/startup.c b/arch/s390/boot/startup.c
-index d08db5df60913..655bbcff81ffd 100644
---- a/arch/s390/boot/startup.c
-+++ b/arch/s390/boot/startup.c
-@@ -31,7 +31,6 @@ unsigned long __bootdata_preserved(max_mappable);
- unsigned long __bootdata(ident_map_size);
- 
- u64 __bootdata_preserved(stfle_fac_list[16]);
--u64 __bootdata_preserved(alt_stfle_fac_list[16]);
- struct oldmem_data __bootdata_preserved(oldmem_data);
- 
- struct machine_info machine;
-diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
-index de6ad0fb2328a..d48c7afe97e62 100644
---- a/arch/s390/kernel/setup.c
-+++ b/arch/s390/kernel/setup.c
-@@ -155,7 +155,7 @@ unsigned int __bootdata_preserved(zlib_dfltcc_support);
- EXPORT_SYMBOL(zlib_dfltcc_support);
- u64 __bootdata_preserved(stfle_fac_list[16]);
- EXPORT_SYMBOL(stfle_fac_list);
--u64 __bootdata_preserved(alt_stfle_fac_list[16]);
-+u64 alt_stfle_fac_list[16];
- struct oldmem_data __bootdata_preserved(oldmem_data);
- 
- unsigned long VMALLOC_START;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 2fbc8d89c600b..9b325290d6a54 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1314,6 +1314,9 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
+ 				f2fs_put_page(psrc, 1);
+ 				return PTR_ERR(pdst);
+ 			}
++
++			f2fs_wait_on_page_writeback(pdst, DATA, true, true);
++
+ 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
+ 			set_page_dirty(pdst);
+ 			set_page_private_gcing(pdst);
 -- 
 2.43.0
 
