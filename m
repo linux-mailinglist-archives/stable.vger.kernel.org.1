@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-49491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7227F8FED79
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B66B8FEED0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1183A1F21E6A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D292E1F2551B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603591BB6A7;
-	Thu,  6 Jun 2024 14:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4C91C7D82;
+	Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0sdsFrR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXNst+Xq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4AA1BB69B;
-	Thu,  6 Jun 2024 14:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC291C7D76;
+	Thu,  6 Jun 2024 14:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683492; cv=none; b=u3tVwZIoJgB0T7zdoLtddb7D0OwXzDxY3Vd75WT0PHwaFXatFxg+M0NLleRoTXr/CYjTSOFpkzjLNJezPAeeAOqeSiATZcvV8cb5cXims/BuhDwp48F8wq+85YuZCITPN0vjKY+FrvXHH1K4DyU5UE3akWik630I/TlY5kG+6G0=
+	t=1717683704; cv=none; b=iMSzhFB3m8634SHhotCL/kKrTVXdA3MrTNyhup1BR4e+ZLcdQkbcycrTT0/AdzoryBPLU1KyPFexSn0s0YYClwKLIyByLiiodpcjkbMRAa0Y3eJz6at+j9/gKE5s1F5TwgTyNmzsn+tWCkpzmpMczpY8ETU7J92Xa5UcNlP+ro4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683492; c=relaxed/simple;
-	bh=irDl9U10VWg6h4GZu3JLtXpACoWqiYZi72IKlnZGWEM=;
+	s=arc-20240116; t=1717683704; c=relaxed/simple;
+	bh=lAfAoNc346PXOIM4xjvKFtjHkD0EC/CE7aR0Oq02FZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6fWMtAEf0/mE0lY2xwYv9+zd/JNeMOqi3UsyR0seecQVAPy2q4xNXgKilZ4rm30sNelN0rKYRSbFev6qNkzKN3a5qLpBu8oMX/80Ac0dZ3aXa7d2khgJceeJiva6yKEggkXog5YIaGq15wuL5jAY5mfoBFB299e4LtcVM3HuVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0sdsFrR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A49C2BD10;
-	Thu,  6 Jun 2024 14:18:11 +0000 (UTC)
+	 MIME-Version; b=O+gYyLleQpLcuanqIs2MpBI46gupbZp7Lm7/Zdzr6MRQu5CdExUld88serv0NcKCK7IkLojNLHca88fDHVJBgyJRGnoRoTS9nyxaL5BuS1ywlA579QZGybuluIIifOQI1JJ0J8z1+Ukd4EDsqqIJM8gK6l/gOATAT0ii92tOeU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXNst+Xq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905F0C2BD10;
+	Thu,  6 Jun 2024 14:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683491;
-	bh=irDl9U10VWg6h4GZu3JLtXpACoWqiYZi72IKlnZGWEM=;
+	s=korg; t=1717683704;
+	bh=lAfAoNc346PXOIM4xjvKFtjHkD0EC/CE7aR0Oq02FZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0sdsFrRax8y2bqr8N3LvF2n3wdjncO0yRIDaFfkyX1RT7/4P2YabXEwPRHUY9t8c
-	 7WmIEOVC//L2sMAUi3+MY4vhxx/UE2T8M4PUTPZ7Co10RAYJ5w6DAnLyko0O5K1PKI
-	 jZ7L59tFGaSZ7B4r/pSSS+M4U0AIZhWlDC0m1Jn8=
+	b=mXNst+XqbTGF2CfDh/YL72TRJl+O4z+w7CRHLCtKmUJM2ovlU3HEYjPpQo1rIgfli
+	 NSGQ8M965qI+rycIRaptS9xFkdUtBHSY27tNOQGTVw6se/m76xiF2tG1pKQJOD/kHg
+	 v6+mSYBFjmeZHzmrckt0/8T3V11BzkhIYaJikpAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Macek <wmacek@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 372/473] drm/mediatek: dp: Fix mtk_dp_aux_transfer return value
+Subject: [PATCH 6.6 629/744] regulator: bd71828: Dont overwrite runtime voltages
 Date: Thu,  6 Jun 2024 16:05:01 +0200
-Message-ID: <20240606131712.188852452@linuxfoundation.org>
+Message-ID: <20240606131752.661026059@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojciech Macek <wmacek@chromium.org>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit 8431fff9e0f3fc1c5844cf99a73b49b63ceed481 ]
+[ Upstream commit 0f9f7c63c415e287cd57b5c98be61eb320dedcfc ]
 
-In case there is no DP device attached to the port the
-transfer function should return IO error, similar to what
-other drivers do.
-In case EAGAIN is returned then any read from /dev/drm_dp_aux
-device ends up in an infinite loop as the upper layers
-constantly repeats the transfer request.
+Some of the regulators on the BD71828 have common voltage setting for
+RUN/SUSPEND/IDLE/LPSR states. The enable control can be set for each
+state though.
 
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: Wojciech Macek <wmacek@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240417103819.990512-1-wmacek@chromium.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+The driver allows setting the voltage values for these states via
+device-tree. As a side effect, setting the voltages for
+SUSPEND/IDLE/LPSR will also change the RUN level voltage which is not
+desired and can break the system.
+
+The comment in code reflects this behaviour, but it is likely to not
+make people any happier. The right thing to do is to allow setting the
+enable/disable state at SUSPEND/IDLE/LPSR via device-tree, but to
+disallow setting state specific voltages for those regulators.
+
+BUCK1 is a bit different. It only shares the SUSPEND and LPSR state
+voltages. The former behaviour of allowing to silently overwrite the
+SUSPEND state voltage by LPSR state voltage is also changed here so that
+the SUSPEND voltage is prioritized over LPSR voltage.
+
+Prevent setting PMIC state specific voltages for regulators which do not
+support it.
+
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Fixes: 522498f8cb8c ("regulator: bd71828: Basic support for ROHM bd71828 PMIC regulators")
+Link: https://msgid.link/r/e1883ae1e3ae5668f1030455d4750923561f3d68.1715848512.git.mazziesaccount@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/bd71828-regulator.c | 58 +--------------------------
+ 1 file changed, 2 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 4bea46ae4dbfb..c24eeb7ffde7d 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2058,7 +2058,7 @@ static ssize_t mtk_dp_aux_transfer(struct drm_dp_aux *mtk_aux,
- 
- 	if (mtk_dp->bridge.type != DRM_MODE_CONNECTOR_eDP &&
- 	    !mtk_dp->train_info.cable_plugged_in) {
--		ret = -EAGAIN;
-+		ret = -EIO;
- 		goto err;
- 	}
- 
+diff --git a/drivers/regulator/bd71828-regulator.c b/drivers/regulator/bd71828-regulator.c
+index 08d4ee369287e..dd871ffe979c3 100644
+--- a/drivers/regulator/bd71828-regulator.c
++++ b/drivers/regulator/bd71828-regulator.c
+@@ -206,14 +206,11 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 			.suspend_reg = BD71828_REG_BUCK1_SUSP_VOLT,
+ 			.suspend_mask = BD71828_MASK_BUCK1267_VOLT,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+-			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+ 			/*
+ 			 * LPSR voltage is same as SUSPEND voltage. Allow
+-			 * setting it so that regulator can be set enabled at
+-			 * LPSR state
++			 * only enabling/disabling regulator for LPSR state
+ 			 */
+-			.lpsr_reg = BD71828_REG_BUCK1_SUSP_VOLT,
+-			.lpsr_mask = BD71828_MASK_BUCK1267_VOLT,
++			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+ 		},
+ 		.reg_inits = buck1_inits,
+ 		.reg_init_amnt = ARRAY_SIZE(buck1_inits),
+@@ -288,13 +285,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 				     ROHM_DVS_LEVEL_SUSPEND |
+ 				     ROHM_DVS_LEVEL_LPSR,
+ 			.run_reg = BD71828_REG_BUCK3_VOLT,
+-			.idle_reg = BD71828_REG_BUCK3_VOLT,
+-			.suspend_reg = BD71828_REG_BUCK3_VOLT,
+-			.lpsr_reg = BD71828_REG_BUCK3_VOLT,
+ 			.run_mask = BD71828_MASK_BUCK3_VOLT,
+-			.idle_mask = BD71828_MASK_BUCK3_VOLT,
+-			.suspend_mask = BD71828_MASK_BUCK3_VOLT,
+-			.lpsr_mask = BD71828_MASK_BUCK3_VOLT,
+ 			.idle_on_mask = BD71828_MASK_IDLE_EN,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+ 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+@@ -329,13 +320,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 				     ROHM_DVS_LEVEL_SUSPEND |
+ 				     ROHM_DVS_LEVEL_LPSR,
+ 			.run_reg = BD71828_REG_BUCK4_VOLT,
+-			.idle_reg = BD71828_REG_BUCK4_VOLT,
+-			.suspend_reg = BD71828_REG_BUCK4_VOLT,
+-			.lpsr_reg = BD71828_REG_BUCK4_VOLT,
+ 			.run_mask = BD71828_MASK_BUCK4_VOLT,
+-			.idle_mask = BD71828_MASK_BUCK4_VOLT,
+-			.suspend_mask = BD71828_MASK_BUCK4_VOLT,
+-			.lpsr_mask = BD71828_MASK_BUCK4_VOLT,
+ 			.idle_on_mask = BD71828_MASK_IDLE_EN,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+ 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+@@ -370,13 +355,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 				     ROHM_DVS_LEVEL_SUSPEND |
+ 				     ROHM_DVS_LEVEL_LPSR,
+ 			.run_reg = BD71828_REG_BUCK5_VOLT,
+-			.idle_reg = BD71828_REG_BUCK5_VOLT,
+-			.suspend_reg = BD71828_REG_BUCK5_VOLT,
+-			.lpsr_reg = BD71828_REG_BUCK5_VOLT,
+ 			.run_mask = BD71828_MASK_BUCK5_VOLT,
+-			.idle_mask = BD71828_MASK_BUCK5_VOLT,
+-			.suspend_mask = BD71828_MASK_BUCK5_VOLT,
+-			.lpsr_mask = BD71828_MASK_BUCK5_VOLT,
+ 			.idle_on_mask = BD71828_MASK_IDLE_EN,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+ 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+@@ -493,13 +472,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 				     ROHM_DVS_LEVEL_SUSPEND |
+ 				     ROHM_DVS_LEVEL_LPSR,
+ 			.run_reg = BD71828_REG_LDO1_VOLT,
+-			.idle_reg = BD71828_REG_LDO1_VOLT,
+-			.suspend_reg = BD71828_REG_LDO1_VOLT,
+-			.lpsr_reg = BD71828_REG_LDO1_VOLT,
+ 			.run_mask = BD71828_MASK_LDO_VOLT,
+-			.idle_mask = BD71828_MASK_LDO_VOLT,
+-			.suspend_mask = BD71828_MASK_LDO_VOLT,
+-			.lpsr_mask = BD71828_MASK_LDO_VOLT,
+ 			.idle_on_mask = BD71828_MASK_IDLE_EN,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+ 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+@@ -533,13 +506,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 				     ROHM_DVS_LEVEL_SUSPEND |
+ 				     ROHM_DVS_LEVEL_LPSR,
+ 			.run_reg = BD71828_REG_LDO2_VOLT,
+-			.idle_reg = BD71828_REG_LDO2_VOLT,
+-			.suspend_reg = BD71828_REG_LDO2_VOLT,
+-			.lpsr_reg = BD71828_REG_LDO2_VOLT,
+ 			.run_mask = BD71828_MASK_LDO_VOLT,
+-			.idle_mask = BD71828_MASK_LDO_VOLT,
+-			.suspend_mask = BD71828_MASK_LDO_VOLT,
+-			.lpsr_mask = BD71828_MASK_LDO_VOLT,
+ 			.idle_on_mask = BD71828_MASK_IDLE_EN,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+ 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+@@ -573,13 +540,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 				     ROHM_DVS_LEVEL_SUSPEND |
+ 				     ROHM_DVS_LEVEL_LPSR,
+ 			.run_reg = BD71828_REG_LDO3_VOLT,
+-			.idle_reg = BD71828_REG_LDO3_VOLT,
+-			.suspend_reg = BD71828_REG_LDO3_VOLT,
+-			.lpsr_reg = BD71828_REG_LDO3_VOLT,
+ 			.run_mask = BD71828_MASK_LDO_VOLT,
+-			.idle_mask = BD71828_MASK_LDO_VOLT,
+-			.suspend_mask = BD71828_MASK_LDO_VOLT,
+-			.lpsr_mask = BD71828_MASK_LDO_VOLT,
+ 			.idle_on_mask = BD71828_MASK_IDLE_EN,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+ 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+@@ -614,13 +575,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 				     ROHM_DVS_LEVEL_SUSPEND |
+ 				     ROHM_DVS_LEVEL_LPSR,
+ 			.run_reg = BD71828_REG_LDO4_VOLT,
+-			.idle_reg = BD71828_REG_LDO4_VOLT,
+-			.suspend_reg = BD71828_REG_LDO4_VOLT,
+-			.lpsr_reg = BD71828_REG_LDO4_VOLT,
+ 			.run_mask = BD71828_MASK_LDO_VOLT,
+-			.idle_mask = BD71828_MASK_LDO_VOLT,
+-			.suspend_mask = BD71828_MASK_LDO_VOLT,
+-			.lpsr_mask = BD71828_MASK_LDO_VOLT,
+ 			.idle_on_mask = BD71828_MASK_IDLE_EN,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+ 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+@@ -655,13 +610,7 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 				     ROHM_DVS_LEVEL_SUSPEND |
+ 				     ROHM_DVS_LEVEL_LPSR,
+ 			.run_reg = BD71828_REG_LDO5_VOLT,
+-			.idle_reg = BD71828_REG_LDO5_VOLT,
+-			.suspend_reg = BD71828_REG_LDO5_VOLT,
+-			.lpsr_reg = BD71828_REG_LDO5_VOLT,
+ 			.run_mask = BD71828_MASK_LDO_VOLT,
+-			.idle_mask = BD71828_MASK_LDO_VOLT,
+-			.suspend_mask = BD71828_MASK_LDO_VOLT,
+-			.lpsr_mask = BD71828_MASK_LDO_VOLT,
+ 			.idle_on_mask = BD71828_MASK_IDLE_EN,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+ 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
+@@ -720,9 +669,6 @@ static const struct bd71828_regulator_data bd71828_rdata[] = {
+ 			.suspend_reg = BD71828_REG_LDO7_VOLT,
+ 			.lpsr_reg = BD71828_REG_LDO7_VOLT,
+ 			.run_mask = BD71828_MASK_LDO_VOLT,
+-			.idle_mask = BD71828_MASK_LDO_VOLT,
+-			.suspend_mask = BD71828_MASK_LDO_VOLT,
+-			.lpsr_mask = BD71828_MASK_LDO_VOLT,
+ 			.idle_on_mask = BD71828_MASK_IDLE_EN,
+ 			.suspend_on_mask = BD71828_MASK_SUSP_EN,
+ 			.lpsr_on_mask = BD71828_MASK_LPSR_EN,
 -- 
 2.43.0
 
