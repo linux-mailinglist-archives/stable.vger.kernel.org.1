@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8913A8FEB6D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E938FE8C1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D4AF1C21FF7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20ED81C23FCB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66961196D9E;
-	Thu,  6 Jun 2024 14:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B982198825;
+	Thu,  6 Jun 2024 14:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RX6HVej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jq7xufWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247311993A0;
-	Thu,  6 Jun 2024 14:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCE8196C72;
+	Thu,  6 Jun 2024 14:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683251; cv=none; b=hTDRJ8l8tkzXsa3O2RkTdgYT5sygVxbW5yJl/UamfD5YwOZzcu4PDwPh2PgQrr/41a0zUfRnxHWqV7BPWF1SdUNJUauVdDN05QmLVcFCTRjMSlCQGNs50A6dQC5wzabw1b0tl3Z+QDak3QZL1OG650LJu9GnM+Qj6FyhslZePlk=
+	t=1717682931; cv=none; b=iqoAloVAxaaB6ScOv98QjrrNT07v5rlLQRCjrsmGHfqIa21eTQ18FjjPzcgaW7+nbY23q7jsr60hG06YSrgtUuyiSkfnanzvYhrTaDT/7I1fxY2m/roTzKojNqk0jE4pF/QVhVxd/ZCbzo9bBrVnFnnqvDw2+tFIjwMAbcZVy9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683251; c=relaxed/simple;
-	bh=G4tKwEePAqqVfdacfwcFx308VNBwCcpSZsx8oy1E7K4=;
+	s=arc-20240116; t=1717682931; c=relaxed/simple;
+	bh=Y1JSlawi8Xul543Ka7hDowbg86eMQOzdlJspZfCJg9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nd/VQajpmrh1esvdfQaNxJcLLjidshZLQ8diHqC/Pqu1BhsitgykvK4VNGqycUThuLYjU0JUA+Yss10T1h4iyOCaOVn3rjY/Q3xb0uEaj1cd35rZqeVu2Z1s0GwFSkmTOxz2D8fcY4y++aEnE2EFHn3bbLT9TMa/FL4QLWJqotI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RX6HVej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B99C2BD10;
-	Thu,  6 Jun 2024 14:14:10 +0000 (UTC)
+	 MIME-Version; b=jHlftyYMkLMUw6T1qRsfmUX4faIZgGi+cJSj7Z0PHQvn6ANixoPXkpDeVyp3VYpefdc23qv4U/2ULb3smk14XA0u2liI9KoSoAiniM9Z2qACGgEB1k52TyusUqU/h2dGmMoc3tmC+NFjDTSAwLaFOBD5u1vfTpjOT+MI5TKnxbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jq7xufWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80582C4AF0E;
+	Thu,  6 Jun 2024 14:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683251;
-	bh=G4tKwEePAqqVfdacfwcFx308VNBwCcpSZsx8oy1E7K4=;
+	s=korg; t=1717682930;
+	bh=Y1JSlawi8Xul543Ka7hDowbg86eMQOzdlJspZfCJg9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1RX6HVejE7hrNHazRSoHJ2/5SAVga4qv45YTAsiC+zxEYc1gNfj08Q7cVsSwEzsbm
-	 ZNqgQTwlJ9NAU/UQfgD5VQXOjxIgZ5LQ7mmBnamLehNVNGTE8sVWm4eeOcvRYXlQDt
-	 BNZ0UEHG80+vFt0Jc4SzLJtJflV0yuvgxkbhQExw=
+	b=Jq7xufWuEQuEA0JsAcvMZKhYhiHTZcfDX+exqPjwuQwHcDzyZTcC8WIZV1uubz9R0
+	 2Leir8+bg9940NQBQqrMB7JSoDRNNUj4jMCsHYqC1YIb1Ut9/TQdCuWIw5r/iH0tCG
+	 YcRc7NH3E7A8YPDkkquHgfdrLjHExosBTqKFzZBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/473] cppc_cpufreq: Fix possible null pointer dereference
+Subject: [PATCH 6.9 077/374] iio: adc: PAC1934: fix accessing out of bounds array index
 Date: Thu,  6 Jun 2024 16:00:56 +0200
-Message-ID: <20240606131704.137943127@linuxfoundation.org>
+Message-ID: <20240606131654.431057048@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Marius Cristea <marius.cristea@microchip.com>
 
-[ Upstream commit cf7de25878a1f4508c69dc9f6819c21ba177dbfe ]
+[ Upstream commit 51fafb3cd7fcf4f4682693b4d2883e2a5bfffe33 ]
 
-cppc_cpufreq_get_rate() and hisi_cppc_cpufreq_get_rate() can be called from
-different places with various parameters. So cpufreq_cpu_get() can return
-null as 'policy' in some circumstances.
-Fix this bug by adding null return check.
+Fix accessing out of bounds array index for average
+current and voltage measurements. The device itself has
+only 4 channels, but in sysfs there are "fake"
+channels for the average voltages and currents too.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: a28b2bfc099c ("cppc_cpufreq: replace per-cpu data array with a list")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 0fb528c8255b ("iio: adc: adding support for PAC193x")
+Reported-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+Closes: https://lore.kernel.org/linux-iio/20240405-embellish-bonnet-ab5f10560d93@wendy/
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20240425114232.81390-1-marius.cristea@microchip.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/iio/adc/pac1934.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 022e3555407c8..8791a88c7741c 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -841,10 +841,15 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
- {
- 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
- 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
--	struct cppc_cpudata *cpu_data = policy->driver_data;
-+	struct cppc_cpudata *cpu_data;
- 	u64 delivered_perf;
- 	int ret;
+diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
+index e0c2742da5236..8a0c357422121 100644
+--- a/drivers/iio/adc/pac1934.c
++++ b/drivers/iio/adc/pac1934.c
+@@ -787,6 +787,15 @@ static int pac1934_read_raw(struct iio_dev *indio_dev,
+ 	s64 curr_energy;
+ 	int ret, channel = chan->channel - 1;
  
-+	if (!policy)
-+		return -ENODEV;
++	/*
++	 * For AVG the index should be between 5 to 8.
++	 * To calculate PAC1934_CH_VOLTAGE_AVERAGE,
++	 * respectively PAC1934_CH_CURRENT real index, we need
++	 * to remove the added offset (PAC1934_MAX_NUM_CHANNELS).
++	 */
++	if (channel >= PAC1934_MAX_NUM_CHANNELS)
++		channel = channel - PAC1934_MAX_NUM_CHANNELS;
 +
-+	cpu_data = policy->driver_data;
-+
- 	cpufreq_cpu_put(policy);
- 
- 	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
-@@ -924,10 +929,15 @@ static struct cpufreq_driver cppc_cpufreq_driver = {
- static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu)
- {
- 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
--	struct cppc_cpudata *cpu_data = policy->driver_data;
-+	struct cppc_cpudata *cpu_data;
- 	u64 desired_perf;
- 	int ret;
- 
-+	if (!policy)
-+		return -ENODEV;
-+
-+	cpu_data = policy->driver_data;
-+
- 	cpufreq_cpu_put(policy);
- 
- 	ret = cppc_get_desired_perf(cpu, &desired_perf);
+ 	ret = pac1934_retrieve_data(info, PAC1934_MIN_UPDATE_WAIT_TIME_US);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.43.0
 
