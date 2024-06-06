@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9278FE9B2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978998FED42
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FF0B28966F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32D3FB252D9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C34119B3CF;
-	Thu,  6 Jun 2024 14:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5C619D085;
+	Thu,  6 Jun 2024 14:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1x8ikzEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOw+nPt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EE5198A20;
-	Thu,  6 Jun 2024 14:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5B01B5831;
+	Thu,  6 Jun 2024 14:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683056; cv=none; b=aCW/uDZO/3wJ+wgnbUBS3PP0zf4pWp3GaR04t0wo0IV0zFTzkvLOx0iXy2L/WmJKQtwgwPFCB34THeoX7u1EWzCTjRx4DB+nkUe+T6JdNcfBXnh0CDuHz3YLVWIOeMM0Kt65fNCiDsueRSud0zJaPVy8S0/Nw7fSCGu21XkL41Y=
+	t=1717683466; cv=none; b=VvQnoYMmpsIZZObsV3T/hGfyIVxG98JSFxYCw9HRmIiB5rXqJ445LQaCpVybVOer7XwdQXauDekNMzA9Wa3xwYj9y8cryBvGXcNUtsFdoKJeFugAB9aJmriOWXOE6T7jIzUVkPJLKCqck6Oaan3KoKmqtZ4J9i+zGy3rG85yp/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683056; c=relaxed/simple;
-	bh=PxNigt2YiXakhLNNcfs5dLJWil0McD00UI9D3S7cPcg=;
+	s=arc-20240116; t=1717683466; c=relaxed/simple;
+	bh=Mv5JH9VWk4MQUvOCeRk3YGtY7fkNO0A4aQD312XuAU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8MG6eqbWnwoXKjlov+5gcs1Cx8ook5HUHKrbOYh8RJDl/aeuJHY75zFvam1wN1xIEOYSvrinzw55ZLt2E8nhzpkgu9HAUdscsjbigG9wmNBwrYZVP7chtO49hjcbiXR9If6O32c7NUa+uhefLdk1QELnYmAtBHfDHIPUxBKkZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1x8ikzEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62EB9C4AF08;
-	Thu,  6 Jun 2024 14:10:56 +0000 (UTC)
+	 MIME-Version; b=nLu3MxllFUBV0rosT55i6n22s45Pc6I/YLd10PCL0/g5JSeim5E3wXyV0+6RcOLoQTaTrToVmcTL7CwZN7Ysz8xQCH7pJ3YrVbJNzkWrUsAiziUTk4p89sXAKYI5cACIHffKreiIhusluX4ZLN4EmdNQo0YSzIpqtFoDmLa2XZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOw+nPt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE972C32781;
+	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683056;
-	bh=PxNigt2YiXakhLNNcfs5dLJWil0McD00UI9D3S7cPcg=;
+	s=korg; t=1717683465;
+	bh=Mv5JH9VWk4MQUvOCeRk3YGtY7fkNO0A4aQD312XuAU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1x8ikzEgwbsqlYQMpcsOIgoVfXKvjzWEGXbVvCbTTJdHUlKlrYzWMSvU7K/m9wYx8
-	 o81/L852gabwLgV8JwPXZrU3/t3d3ooLQCtPEL/g0VWCTbGPaepn4wlRlPsVAwZxfA
-	 O5CZnhh2uM3lGDgeQDflEjKA3FoJdtmB5Zr/4WiY=
+	b=bOw+nPt2rGRV685W54Y0Ko6OhkNdACyuZLCcXKXOwxDNPOjaVNPr+a0IurJYO60Te
+	 5WY2eSEySMd+NyiVAQfkUvD6lYvnjWXMdoBY4nn68bC2XvHb3IebPnxc7ur41RSC61
+	 VJIVGvF1V1Okzwte0U5BA+z+DJKBTyYZT9ZKDAn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 301/374] net/mlx5e: Use rx_missed_errors instead of rx_dropped for reporting buffer exhaustion
-Date: Thu,  6 Jun 2024 16:04:40 +0200
-Message-ID: <20240606131701.937309350@linuxfoundation.org>
+Subject: [PATCH 6.1 352/473] s390/vdso64: filter out munaligned-symbols flag for vdso
+Date: Thu,  6 Jun 2024 16:04:41 +0200
+Message-ID: <20240606131711.549572655@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-[ Upstream commit 5c74195d5dd977e97556e6fa76909b831c241230 ]
+[ Upstream commit 8192a1b3807510d0ed5be1f8988c08f8d41cced9 ]
 
-Previously, the driver incorrectly used rx_dropped to report device
-buffer exhaustion.
+Gcc recently implemented an optimization [1] for loading symbols without
+explicit alignment, aligning with the IBM Z ELF ABI. This ABI mandates
+symbols to reside on a 2-byte boundary, enabling the use of the larl
+instruction. However, kernel linker scripts may still generate unaligned
+symbols. To address this, a new -munaligned-symbols option has been
+introduced [2] in recent gcc versions.
 
-According to the documentation, rx_dropped should not be used to count
-packets dropped due to buffer exhaustion, which is the purpose of
-rx_missed_errors.
+[1] https://gcc.gnu.org/pipermail/gcc-patches/2023-June/622872.html
+[2] https://gcc.gnu.org/pipermail/gcc-patches/2023-August/625986.html
 
-Use rx_missed_errors as intended for counting packets dropped due to
-buffer exhaustion.
+However, when -munaligned-symbols  is used in vdso code, it leads to the
+following compilation error:
+`.data.rel.ro.local' referenced in section `.text' of
+arch/s390/kernel/vdso64/vdso64_generic.o: defined in discarded section
+`.data.rel.ro.local' of arch/s390/kernel/vdso64/vdso64_generic.o
 
-Fixes: 269e6b3af3bf ("net/mlx5e: Report additional error statistics in get stats ndo")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+vdso linker script discards .data section to make it lightweight.
+However, -munaligned-symbols in vdso object files references literal
+pool and accesses _vdso_data. Hence, compile vdso code without
+-munaligned-symbols.  This means in the future, vdso code should deal
+with alignment of newly introduced unaligned linker symbols.
+
+Acked-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240219132734.22881-2-sumanthk@linux.ibm.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Stable-dep-of: 10f705253651 ("s390/vdso: Generate unwind information for C modules")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/vdso64/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 64497b6eebd36..47be07af214ff 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -3790,7 +3790,7 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
- 		mlx5e_fold_sw_stats64(priv, stats);
- 	}
+diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
+index 08e87b083647c..e2e031e4d9243 100644
+--- a/arch/s390/kernel/vdso64/Makefile
++++ b/arch/s390/kernel/vdso64/Makefile
+@@ -26,6 +26,7 @@ KBUILD_AFLAGS_64 += -m64 -s
  
--	stats->rx_dropped = priv->stats.qcnt.rx_out_of_buffer;
-+	stats->rx_missed_errors = priv->stats.qcnt.rx_out_of_buffer;
- 
- 	stats->rx_length_errors =
- 		PPORT_802_3_GET(pstats, a_in_range_length_errors) +
+ KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
+ KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
++KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin
+ ldflags-y := -shared -soname=linux-vdso64.so.1 \
+ 	     --hash-style=both --build-id=sha1 -T
 -- 
 2.43.0
 
