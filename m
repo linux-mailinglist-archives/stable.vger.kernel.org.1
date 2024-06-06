@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08798FED69
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2527F8FE9A2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEB571C20F86
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38E49288669
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E01D1BA89F;
-	Thu,  6 Jun 2024 14:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EB2198A0A;
+	Thu,  6 Jun 2024 14:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiQzm2ud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxPS8wVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14CF1BA89C;
-	Thu,  6 Jun 2024 14:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A4119ADA2;
+	Thu,  6 Jun 2024 14:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683486; cv=none; b=sOWbJg/WXaPoVU5oK+mHrV40srzWd6h7hfmy2IEafoAcu9XI+LWB9fP9mmINP+nmZCuhk45jZjFxbyKAFT5OJs/v8b/dnHnltQL66G1GGgoF9roNalRkxJIZenNDVQ2wF07aC23nzJxcLVrNSFVyCqD2u1xEHERc4JBzgetVDbs=
+	t=1717683048; cv=none; b=S4Ki9Dh5RNsH3EilfFNYbv7MiU6GH3XGiDaXdTDPxc8LyeW9vAMBFeD89ZR6dP5bsEAl/hOmkidzTrLq//K3/HdLQlStL00BzL+KRbJw0y+30dnRsahFPIdQOn2omWW7DBBR/JPfwe3+qDLwJwyKEuswQoDSybwHJ2nFhpI8fC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683486; c=relaxed/simple;
-	bh=nOoadrH0Ai7HfWRTYw5+C7hWubiCzZ33ZXcM0DpOAPc=;
+	s=arc-20240116; t=1717683048; c=relaxed/simple;
+	bh=ThaqRi+cN+Ptt8YfUNn6bb8SvXgkU88NOL9NTpRJhFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UY++0yo1Afz7dM8xovvg0lvdSY/UBkCaIdJzN6Lgof5ayF87PnX72CEpSzdAbPJ5SQ4pD+q9c0Lh3CCXFA5sYorA48retIPIElq07VNsn3raz3VH07k1HX59AE1T6bQ7tW2nlWzP9WXNKzv+D+9NzpvgTfbHaj8CgkCzdslnPMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiQzm2ud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A0CC32782;
-	Thu,  6 Jun 2024 14:18:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pzWlWuyo+CW5OwfL6O0DrG+TB86EHv4/PJ1U5h7RtC7HaV27DW9FrWUf6qRT6BgTUwNL0RtHdxSEBTlnwOQMpNPwnlbiiOBZDyj+0L8hirvQ4TGdGyGOeFV2H4e+WuEVFTGqselXvQrlDcfO0xbUUSp3pG7iQcEj5ZwzS5I8jfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxPS8wVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997DEC4AF0A;
+	Thu,  6 Jun 2024 14:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683485;
-	bh=nOoadrH0Ai7HfWRTYw5+C7hWubiCzZ33ZXcM0DpOAPc=;
+	s=korg; t=1717683048;
+	bh=ThaqRi+cN+Ptt8YfUNn6bb8SvXgkU88NOL9NTpRJhFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KiQzm2udoQTyOzIh2c0RL39+xHdal2ZoaXIARfee57gLWrZJZ9BSH3nASRkrK+JLJ
-	 iq/X6pqsj7IxVBiKH3+OT5/NcodLVnvqATxSqXtKCNmTj0B4xCQu2l1JzqZudx9n4X
-	 aZ/UperIlbW+TLC9CfhfQG7M/2EoaeXFyqJJdgB8=
+	b=KxPS8wVH1rfEOfI0iTr7XdpKsEV4R7mYOHgoi3l324Kjmz9ProyPl5zXj7uDzhZCh
+	 5rYZe/ItA4ISn3ApXnyysOIwyz+sUI2zNzFvXdTZjenax9Ol1X+Lwx67YKghjYhOWT
+	 CE34XBHAF+PDku742CPGXbcGmq8QrtiwlHDIXI3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 336/473] extcon: max8997: select IRQ_DOMAIN instead of depending on it
-Date: Thu,  6 Jun 2024 16:04:25 +0200
-Message-ID: <20240606131711.031115010@linuxfoundation.org>
+Subject: [PATCH 6.9 287/374] spi: stm32: Revert change that enabled controller before asserting CS
+Date: Thu,  6 Jun 2024 16:04:26 +0200
+Message-ID: <20240606131701.507920283@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
+[ Upstream commit a827ad9b3c2fc243e058595533f91ce41a312527 ]
 
-IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
-it directly thru "make *config", so drivers should select it instead
-of depending on it if they need it.
-Relying on it being set for a dependency is risky.
+On stm32mp157 enabling the controller before asserting CS makes the
+hardware trigger spurious interrupts in a tight loop and the transfers
+fail. Revert the commit that swapped the order of enable and CS. This
+reintroduces the problem that swapping was supposed to fix, which
+however is less grave.
 
-Consistently using "select" or "depends on" can also help reduce
-Kconfig circular dependency issues.
-
-Therefore, change EXTCON_MAX8997's use of "depends on" for
-IRQ_DOMAIN to "select".
-
-Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
-Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Reported-by: Leonard Göhrs <l.goehrs@pengutronix.de>
+Link: https://lore.kernel.org/all/39033ed7-3e57-4339-80b4-fc8919e26aa7@pengutronix.de/
+Fixes: 52b62e7a5d4f ("spi: stm32: enable controller before asserting CS")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://msgid.link/r/20240523103326.792907-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-stm32.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
-index 4dd52a6a5b48d..e54e5e64d9abe 100644
---- a/drivers/extcon/Kconfig
-+++ b/drivers/extcon/Kconfig
-@@ -116,7 +116,8 @@ config EXTCON_MAX77843
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 4a68abcdcc353..e4e7ddb7524a9 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1016,8 +1016,10 @@ static irqreturn_t stm32fx_spi_irq_event(int irq, void *dev_id)
+ static irqreturn_t stm32fx_spi_irq_thread(int irq, void *dev_id)
+ {
+ 	struct spi_controller *ctrl = dev_id;
++	struct stm32_spi *spi = spi_controller_get_devdata(ctrl);
  
- config EXTCON_MAX8997
- 	tristate "Maxim MAX8997 EXTCON Support"
--	depends on MFD_MAX8997 && IRQ_DOMAIN
-+	depends on MFD_MAX8997
-+	select IRQ_DOMAIN
- 	help
- 	  If you say yes here you get support for the MUIC device of
- 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
+ 	spi_finalize_current_transfer(ctrl);
++	stm32fx_spi_disable(spi);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -1185,8 +1187,6 @@ static int stm32_spi_prepare_msg(struct spi_controller *ctrl,
+ 			 ~clrb) | setb,
+ 			spi->base + spi->cfg->regs->cpol.reg);
+ 
+-	stm32_spi_enable(spi);
+-
+ 	spin_unlock_irqrestore(&spi->lock, flags);
+ 
+ 	return 0;
+@@ -1204,6 +1204,7 @@ static void stm32fx_spi_dma_tx_cb(void *data)
+ 
+ 	if (spi->cur_comm == SPI_SIMPLEX_TX || spi->cur_comm == SPI_3WIRE_TX) {
+ 		spi_finalize_current_transfer(spi->ctrl);
++		stm32fx_spi_disable(spi);
+ 	}
+ }
+ 
+@@ -1218,6 +1219,7 @@ static void stm32_spi_dma_rx_cb(void *data)
+ 	struct stm32_spi *spi = data;
+ 
+ 	spi_finalize_current_transfer(spi->ctrl);
++	spi->cfg->disable(spi);
+ }
+ 
+ /**
+@@ -1305,6 +1307,8 @@ static int stm32fx_spi_transfer_one_irq(struct stm32_spi *spi)
+ 
+ 	stm32_spi_set_bits(spi, STM32FX_SPI_CR2, cr2);
+ 
++	stm32_spi_enable(spi);
++
+ 	/* starting data transfer when buffer is loaded */
+ 	if (spi->tx_buf)
+ 		spi->cfg->write_tx(spi);
+@@ -1341,6 +1345,8 @@ static int stm32h7_spi_transfer_one_irq(struct stm32_spi *spi)
+ 
+ 	spin_lock_irqsave(&spi->lock, flags);
+ 
++	stm32_spi_enable(spi);
++
+ 	/* Be sure to have data in fifo before starting data transfer */
+ 	if (spi->tx_buf)
+ 		stm32h7_spi_write_txfifo(spi);
+@@ -1372,6 +1378,8 @@ static void stm32fx_spi_transfer_one_dma_start(struct stm32_spi *spi)
+ 		 */
+ 		stm32_spi_set_bits(spi, STM32FX_SPI_CR2, STM32FX_SPI_CR2_ERRIE);
+ 	}
++
++	stm32_spi_enable(spi);
+ }
+ 
+ /**
+@@ -1405,6 +1413,8 @@ static void stm32h7_spi_transfer_one_dma_start(struct stm32_spi *spi)
+ 
+ 	stm32_spi_set_bits(spi, STM32H7_SPI_IER, ier);
+ 
++	stm32_spi_enable(spi);
++
+ 	if (STM32_SPI_HOST_MODE(spi))
+ 		stm32_spi_set_bits(spi, STM32H7_SPI_CR1, STM32H7_SPI_CR1_CSTART);
+ }
 -- 
 2.43.0
 
