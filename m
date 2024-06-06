@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-49708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4280C8FEE83
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD70C8FEE88
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8C04282CCD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10761C252EA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FEA1C538A;
-	Thu,  6 Jun 2024 14:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A93F1A0DCF;
+	Thu,  6 Jun 2024 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyR8NliJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWicAOAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D804E1991D0;
-	Thu,  6 Jun 2024 14:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE26F196D90;
+	Thu,  6 Jun 2024 14:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683669; cv=none; b=EllrcWEpFbx4KNUvvXCQk09h3qhFoKTxXP4mLBdHmb/hQahVw/l/j++//mVPDVUxTKNaeUK9KZ9yxyhnq0RfVUpLwT0KUd04lcI2aqx0alhw+Jq7Qsvs9pRyKfeFa8IDj6GMJeNUj+1IGePz7ohNyt2PDXCEshILFcjlTiOPZRU=
+	t=1717683672; cv=none; b=khXMAqYGdqvdPWy4k7laA5FWV0zJju2b9ybKuP115w9LmId3+MrgYc7qWXF08UTk20Tim7KIHWiQHNs2X1MN58XYiXZO83UuQDcGXapJ3RLELsz0Kswt7vvM61yCibyh24JkIZkEOYdPjtrbxMOYpVv3pGef9VqJiBXbEOEsJAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683669; c=relaxed/simple;
-	bh=q+EMp0gPE4Kda/IHt8LGjuZSx7rjKp5aRFbwPIF3F08=;
+	s=arc-20240116; t=1717683672; c=relaxed/simple;
+	bh=8kcvULjBdULHRcWQRHyi1/araJ5pPxOSVJCgWuMY+rQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ehoo9sBe4zVVj0JSiPO0W3Cpun/7Gd4sm1JwPEife3Pg30dh3aID62kKD4CQnO3alcfrh2FhIm6odLPjZ+ro5ZSY8GC8dfE3BezlIc26RLBnNNRuOYf9Cq2pwPhBVgPcKQhN87Ptzfd2JctEXpbBCRQ9s/DDzR3u/oiXb7+VcIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyR8NliJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B585BC2BD10;
-	Thu,  6 Jun 2024 14:21:09 +0000 (UTC)
+	 MIME-Version; b=u+TExLcaWNjefbi4xkuJYQaA3OE/IoUSqzAnkUdCaasXfC7v6OFvXMRRkZsSTuTcmc7bxSSKDoYi8qAbeCuALLv2ih/kOiDA5CxFmk0DKEhCfSQi7xutbVuBQfUbOzGuAvome7nB9D9LhU6CpY05aaNhHwXg39okFuYBXU4a1ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWicAOAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC759C2BD10;
+	Thu,  6 Jun 2024 14:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683669;
-	bh=q+EMp0gPE4Kda/IHt8LGjuZSx7rjKp5aRFbwPIF3F08=;
+	s=korg; t=1717683672;
+	bh=8kcvULjBdULHRcWQRHyi1/araJ5pPxOSVJCgWuMY+rQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DyR8NliJSZ33i7ZNS34uHYgrqsloTtC675e1F7KISLklHdD1jmJCrYPJoQUKbJ7FW
-	 oq6RHYkDqnFWWMPjSxWXlDGMDPgugsETEBGCCjOwEiIv9wF73/OLE3TvzfhmQnHhVq
-	 d6aOOBgljuQDkX9NjOtzNZO+PtvuGQRsSuNCGeXA=
+	b=EWicAOAzV/rdcqLFFspGChYIKHnKX1OUYxuDyM+myVwHobysFcWpZZhJdmPOzllkQ
+	 nWlMTxs3VA0Zg6O2ihb1mbhrPF25e9E3iykHP/YsC/ftKUYrZzIWUK7r11XIgfRSQv
+	 2V307y2Tl/LOFKcL2jpqzudaejsF/2ieX/sOIf0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 522/744] f2fs: fix to add missing iput() in gc_data_segment()
-Date: Thu,  6 Jun 2024 16:03:14 +0200
-Message-ID: <20240606131749.187535838@linuxfoundation.org>
+Subject: [PATCH 6.6 523/744] usb: fotg210: Add missing kernel doc description
+Date: Thu,  6 Jun 2024 16:03:15 +0200
+Message-ID: <20240606131749.219652833@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,44 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a798ff17cd2dabe47d5d4ed3d509631793c36e19 ]
+[ Upstream commit 4b653e82ae18f2dc91c7132b54f5785c4d56bab4 ]
 
-During gc_data_segment(), if inode state is abnormal, it missed to call
-iput(), fix it.
+kernel-doc validator is not happy:
 
-Fixes: b73e52824c89 ("f2fs: reposition unlock_new_inode to prevent accessing invalid inode")
-Fixes: 9056d6489f5a ("f2fs: fix to do sanity check on inode type during garbage collection")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+  warning: Function parameter or struct member 'fotg' not described in 'fotg210_vbus'
+
+Add missing description.
+
+Fixes: 3e679bde529e ("usb: fotg210-udc: Implement VBUS session")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240510152641.2421298-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/fotg210/fotg210-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index ab8e54d8bfe04..3f0632dd9d2e6 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1551,10 +1551,15 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- 			int err;
+diff --git a/drivers/usb/fotg210/fotg210-core.c b/drivers/usb/fotg210/fotg210-core.c
+index 958fc40eae86b..0655afe7f9779 100644
+--- a/drivers/usb/fotg210/fotg210-core.c
++++ b/drivers/usb/fotg210/fotg210-core.c
+@@ -95,6 +95,7 @@ static int fotg210_gemini_init(struct fotg210 *fotg, struct resource *res,
  
- 			inode = f2fs_iget(sb, dni.ino);
--			if (IS_ERR(inode) || is_bad_inode(inode) ||
--					special_file(inode->i_mode))
-+			if (IS_ERR(inode))
- 				continue;
- 
-+			if (is_bad_inode(inode) ||
-+					special_file(inode->i_mode)) {
-+				iput(inode);
-+				continue;
-+			}
-+
- 			err = f2fs_gc_pinned_control(inode, gc_type, segno);
- 			if (err == -EAGAIN) {
- 				iput(inode);
+ /**
+  * fotg210_vbus() - Called by gadget driver to enable/disable VBUS
++ * @fotg: pointer to a private fotg210 object
+  * @enable: true to enable VBUS, false to disable VBUS
+  */
+ void fotg210_vbus(struct fotg210 *fotg, bool enable)
 -- 
 2.43.0
 
