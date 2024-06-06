@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C20E8FEE99
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C708FED0B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D4661C222E3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 243521F21E6A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFD91C53B2;
-	Thu,  6 Jun 2024 14:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F8D19CD13;
+	Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBfQeY2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDYby8sy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9ED1C53B1;
-	Thu,  6 Jun 2024 14:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8902119CD12;
+	Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683680; cv=none; b=GrQDP4fNlq9dP6/llqVur/uZMdcogBntY3SV2a8et0jWTe8Tsj4f/St/dZpSlaeOHVb8RSgAQj0fdqHS/0x3/jYjKECebD3z0G0DmHpyudU0YOkrDLVOPSBfZWfQ11MHywCv99zn6j5vHAhr81w3iSE4ER8x8Mbtt2M9H4G7p1g=
+	t=1717683439; cv=none; b=Fa+p90G6uUHWShoVTEJLEqzeEyLDUxNmVQrtiKauxhQHQtAMaxq/6NMn5rIwYUBKH1O2Tu0Y2/djqrLtNrGSdatGLdSLP9GyGSdBqa873tVV20Bm6j5N1QRgVG3n6c3URjmfH9b48A4jNdsWPlwjV/RVIqkNeRDt4G0ENmELfX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683680; c=relaxed/simple;
-	bh=QR6pzWgVXzndOv4aNkF3gS7HnBZFaWxcuFP3uT5cY94=;
+	s=arc-20240116; t=1717683439; c=relaxed/simple;
+	bh=iljrgyoQBfLOT8UFLk0YJgllzbyTDiVH+3WZYW5NZHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6CdBrv/bvIiBMJfmuxG/90UUOQfagvlq09n6+3/uqajwdjJs7/6nFH4zE/BFr3ODaw51AHTlK4krpVNQoAJG3PyQ0FqVs21Gaje4JvemxVHIVXlGCLSR6Llj2NbK5wmiWc4e4JntRcYAERv/JBOaNicsx0cqF7JhsV5RlR/gBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBfQeY2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D416C2BD10;
-	Thu,  6 Jun 2024 14:21:20 +0000 (UTC)
+	 MIME-Version; b=PNzWBeij+IO9WTXw9neXnnsW9uIciEhIFXQLEjb4nsFie6cVy7pNLpCcZUtZpSqyXFeyOQB9yjBcKKLILO7hbOXKBlBbWKf3riX5B+hGNgXjxXAIIzFgUJwrmOa42z5/MTLPii2VSkdoqdcMiOfR2VkyrWJh2hPJS7ls6zOD1no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDYby8sy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6944FC2BD10;
+	Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683680;
-	bh=QR6pzWgVXzndOv4aNkF3gS7HnBZFaWxcuFP3uT5cY94=;
+	s=korg; t=1717683439;
+	bh=iljrgyoQBfLOT8UFLk0YJgllzbyTDiVH+3WZYW5NZHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBfQeY2sNi4DowJfXp+cCyV83/SXIk167jochvII1syhlibCASPHPEDolA7XyErok
-	 st0nHjX8J9WY8zaWrAysMwPMe7lkiO/PPIe4ov3Cwrw16dLrbLHaJKCLrnYGYFjEfj
-	 iriJc6OzKB9yVOjYrVlhP2D5jmzvHPY5kTFUZHeo=
+	b=LDYby8syzlusJEZferUCwYoyMn51OXEe3q7ZESqOBeY0CNW6pgLNM8U6YbBFShL80
+	 qRdK6aQSeFBzJBY8PE/+itzTscmhKN1GeAxfumymQKf9n9OZp4SRA5kBLfqiWK9mA7
+	 Sv+t0xXyoj8bKWsGFdkzQij+016MhvmLePmdHVkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 581/744] fs/ntfs3: Use variable length array instead of fixed size
+Subject: [PATCH 6.1 324/473] ovl: remove upper umask handling from ovl_create_upper()
 Date: Thu,  6 Jun 2024 16:04:13 +0200
-Message-ID: <20240606131751.095282046@linuxfoundation.org>
+Message-ID: <20240606131710.640553834@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 1997cdc3e727526aa5d84b32f7cbb3f56459b7ef ]
+[ Upstream commit 096802748ea1dea8b476938e0a8dc16f4bd2f1ad ]
 
-Should fix smatch warning:
-	ntfs_set_label() error: __builtin_memcpy() 'uni->name' too small (20 vs 256)
+This is already done by vfs_prepare_mode() when creating the upper object
+by vfs_create(), vfs_mkdir() and vfs_mknod().
 
-Fixes: 4534a70b7056f ("fs/ntfs3: Add headers and misc files")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202401091421.3RJ24Mn3-lkp@intel.com/
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+No regressions have been observed in xfstests run with posix acls turned
+off for the upper filesystem.
+
+Fixes: 1639a49ccdce ("fs: move S_ISGID stripping into the vfs_*() helpers")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/ntfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/dir.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index f61f5b3adb03a..b70288cc5f6fa 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -59,7 +59,7 @@ struct GUID {
- struct cpu_str {
- 	u8 len;
- 	u8 unused;
--	u16 name[10];
-+	u16 name[];
- };
+diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
+index 5339ff08bd0f4..582d4bd50a1fb 100644
+--- a/fs/overlayfs/dir.c
++++ b/fs/overlayfs/dir.c
+@@ -327,9 +327,6 @@ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
+ 	struct dentry *newdentry;
+ 	int err;
  
- struct le_str {
+-	if (!attr->hardlink && !IS_POSIXACL(udir))
+-		attr->mode &= ~current_umask();
+-
+ 	inode_lock_nested(udir, I_MUTEX_PARENT);
+ 	newdentry = ovl_create_real(ofs, udir,
+ 				    ovl_lookup_upper(ofs, dentry->d_name.name,
 -- 
 2.43.0
 
