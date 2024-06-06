@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DD48FECBC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5218FEB1E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF5031C25D9D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E8AE1C2572C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D108B1B29B0;
-	Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598EE1A2FAF;
+	Thu,  6 Jun 2024 14:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhPk8OgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyU0rQm1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D57C19B3F3;
-	Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E60199386;
+	Thu,  6 Jun 2024 14:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683403; cv=none; b=fWjJYCDidQCpjfT3jSDsn/LaldCnVMq3VS5zl5GTkVA1mLlip9bTOMNqxcnjdfHXx5Z9p+PnG7eQmXdd2QMcLXXJqm2c33sTnXSsL0MQndflKqIu5IGMkYgGS9JVEpVqmnyEAiA9RG1/D0bv0mYf8t44LvVHbBWVsWmN5Guz6so=
+	t=1717683214; cv=none; b=cwt8DdpP0b05i4X3Ul9BJ4DgrCwPdUi+d2mL+sNqo9Vttqa2n7OmzxnPjoofUCFXtlPwjAvwda/0Tyqa4JeW/3mzT6MU0U/xdmATQOfhlKNc55uKDEzFNPskS4DX5hbclCrzqAK1+gO/OeKj7XaNth13mKOvIVPkMpfWFNaDgqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683403; c=relaxed/simple;
-	bh=n+7WWibWjur7AIQaaRStphCk7NUYYcwp2eO4LEn9tIU=;
+	s=arc-20240116; t=1717683214; c=relaxed/simple;
+	bh=pc4TepDZRifszbojm5BKJOcmwLI4MaT4+/vIh+5KqQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dptlNPXn2juusaBAatJUwzW1FUtmqdliTOusa0Gq3sjtfWlNaCJJBcL6qK/P/8I62gfMEFIWgAzQixVBbLJvHmx5pUBvJLMhvJcjPT/2BCneekEvwyuVeYjrEOZz2J1A18HHc7BcBp13hE8Fvzj73gl6kT+xHcHY3AvzNGXX+ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhPk8OgD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE3DC2BD10;
-	Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
+	 MIME-Version; b=pw6TDwna811vVoVugDgMHYiRxTPIf+jGPFvKGhM30vVM1edGRBEZJfEoXx3IReljFFyePWxtmsAyB404j04AeuaadEi0Hm60M8dtWGrWqe+oBrNXYGUedTj0G1ne4Tp5Wfxp5GhP2fdTAU0OpBo3LyfKoy6mCXYyeJCAQ6fg+N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyU0rQm1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8672C32782;
+	Thu,  6 Jun 2024 14:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683403;
-	bh=n+7WWibWjur7AIQaaRStphCk7NUYYcwp2eO4LEn9tIU=;
+	s=korg; t=1717683214;
+	bh=pc4TepDZRifszbojm5BKJOcmwLI4MaT4+/vIh+5KqQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MhPk8OgD6DUJcgNuyVT+zt/1GsbczXPET6aS43JVJNW9/3hX9L3wlbiGQpG3yeKSj
-	 2pccvr5A2awDf9iGtWuZ6hnORUoTq7E4+65134AlWiOErs/dM8r8Yo4RPnzM3i7p7S
-	 b4QmQrwAlnIST7xYc0DRWD/lK3GJTa9umySnZYyg=
+	b=nyU0rQm1jdq5Yl4QPs+5Vh2bfh29F23yTYltq0vz5QQd3MJqaQNJvJoMGNp1idzTv
+	 jnhRvzekh1r0MbFKah1JTuPhblRJzxq8O/o91MMKyvcIXXNBfFzp3e2snv2tAGFxLZ
+	 +QmjWyzhxWu6PQ9dMLU/VAInQ5aiEg1KUt61cAhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 347/744] clk: qcom: clk-alpha-pll: remove invalid Stromer register offset
-Date: Thu,  6 Jun 2024 16:00:19 +0200
-Message-ID: <20240606131743.597685797@linuxfoundation.org>
+Subject: [PATCH 6.1 091/473] wifi: brcmfmac: pcie: handle randbuf allocation failure
+Date: Thu,  6 Jun 2024 16:00:20 +0200
+Message-ID: <20240606131702.920586186@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 4f2bc4acbb1916b8cd2ce4bb3ba7b1cd7cb705fa ]
+[ Upstream commit 316f790ebcf94bdf59f794b7cdea4068dc676d4c ]
 
-The offset of the CONFIG_CTL_U register defined for the Stromer
-PLL is wrong. It is not aligned on a 4 bytes boundary which might
-causes errors in regmap operations.
+The kzalloc() in brcmf_pcie_download_fw_nvram() will return null
+if the physical memory has run out. As a result, if we use
+get_random_bytes() to generate random bytes in the randbuf, the
+null pointer dereference bug will happen.
 
-Maybe the intention behind of using the 0xff value was to indicate
-that the register is not implemented in the PLL, but this is not
-verified anywhere in the code. Moreover, this value is not used
-even in other register offset arrays despite that those PLLs also
-have unimplemented registers.
+In order to prevent allocation failure, this patch adds a separate
+function using buffer on kernel stack to generate random bytes in
+the randbuf, which could prevent the kernel stack from overflow.
 
-Additionally, on the Stromer PLLs the current code only touches
-the CONFIG_CTL_U register if the result of pll_has_64bit_config()
-is true which condition is not affected by the change.
-
-Due to the reasons above, simply remove the CONFIG_CTL_U entry
-from the Stromer specific array.
-
-Fixes: e47a4f55f240 ("clk: qcom: clk-alpha-pll: Add support for Stromer PLLs")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240311-alpha-pll-stromer-cleanup-v1-1-f7c0c5607cca@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 91918ce88d9f ("wifi: brcmfmac: pcie: Provide a buffer of random bytes to the device")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240306140437.18177-1-duoming@zju.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c | 1 -
- 1 file changed, 1 deletion(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-index 892f2efc1c32c..82420e81da35b 100644
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -212,7 +212,6 @@ const u8 clk_alpha_pll_regs[][PLL_OFF_MAX_REGS] = {
- 		[PLL_OFF_USER_CTL] = 0x18,
- 		[PLL_OFF_USER_CTL_U] = 0x1c,
- 		[PLL_OFF_CONFIG_CTL] = 0x20,
--		[PLL_OFF_CONFIG_CTL_U] = 0xff,
- 		[PLL_OFF_TEST_CTL] = 0x30,
- 		[PLL_OFF_TEST_CTL_U] = 0x34,
- 		[PLL_OFF_STATUS] = 0x28,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index 3b1277a8bd617..99cc41135473a 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -1640,6 +1640,15 @@ struct brcmf_random_seed_footer {
+ #define BRCMF_RANDOM_SEED_MAGIC		0xfeedc0de
+ #define BRCMF_RANDOM_SEED_LENGTH	0x100
+ 
++static noinline_for_stack void
++brcmf_pcie_provide_random_bytes(struct brcmf_pciedev_info *devinfo, u32 address)
++{
++	u8 randbuf[BRCMF_RANDOM_SEED_LENGTH];
++
++	get_random_bytes(randbuf, BRCMF_RANDOM_SEED_LENGTH);
++	memcpy_toio(devinfo->tcm + address, randbuf, BRCMF_RANDOM_SEED_LENGTH);
++}
++
+ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 					const struct firmware *fw, void *nvram,
+ 					u32 nvram_len)
+@@ -1682,7 +1691,6 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 				.length = cpu_to_le32(rand_len),
+ 				.magic = cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
+ 			};
+-			void *randbuf;
+ 
+ 			/* Some Apple chips/firmwares expect a buffer of random
+ 			 * data to be present before NVRAM
+@@ -1694,10 +1702,7 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 				    sizeof(footer));
+ 
+ 			address -= rand_len;
+-			randbuf = kzalloc(rand_len, GFP_KERNEL);
+-			get_random_bytes(randbuf, rand_len);
+-			memcpy_toio(devinfo->tcm + address, randbuf, rand_len);
+-			kfree(randbuf);
++			brcmf_pcie_provide_random_bytes(devinfo, address);
+ 		}
+ 	} else {
+ 		brcmf_dbg(PCIE, "No matching NVRAM file found %s\n",
 -- 
 2.43.0
 
