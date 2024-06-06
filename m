@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-49705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8518FEE80
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FAE8FE978
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7D401F24C87
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E714282356
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976FA1A0B04;
-	Thu,  6 Jun 2024 14:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EFA19AA57;
+	Thu,  6 Jun 2024 14:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tm9Nig2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds2RHbNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57524196D90;
-	Thu,  6 Jun 2024 14:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167B719645B;
+	Thu,  6 Jun 2024 14:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683668; cv=none; b=HKbG1VuOv4jBiq2R5IWBRCA4PhwmMgubGkSQAUYZaByzYy08O35TbV6aMiZYd4F3HAYGmQu2pgZ7UfBIl8letV+7N+GmfKRixFscHGCSqD8FrKHAw93IBgU9Iu9G3g4mQPH9aHZraOSB3VE9ccg9IPrENGT/4mdynz/Yl0gwtok=
+	t=1717683028; cv=none; b=MMCx2SfHTPvzek64qVOU3UpQQox8wArpMpV/P436H4BjQLe8qgFLcqeETTnX1pkA2dJeTIBcQCAi7a212qYqKQIXbpesFr4f04yqTBB4eSF1rIlz5J0nVF6P54rt1yB8AAR2+82xmoV7cCtii8Yd7/TCxgg2qHLoHj2YLL9D10A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683668; c=relaxed/simple;
-	bh=z0B46F1NaHIOf2abid2fSkizNmm7lCAIaGt3V6ytoN4=;
+	s=arc-20240116; t=1717683028; c=relaxed/simple;
+	bh=NLhxo9T39QlNmQcpPZlAtehdHN8mVyXvVAk4fM2ugw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KASVrOApDa6l+1TrWofThr3fXlVSkFyjhMSJet+9lcvoqyCjL8Q6swjXH3s69/4gIYH0EP5pBfKAhDx5cP0h9DjK7+qjONOJlDL2QysL+vGbh5FmJer6gvE7YND3ZrMZ7D5IzG4FVDo7YbajTGtxb/gSvXH+CBuOsQ6jk/u+Ufc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tm9Nig2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BADC2BD10;
-	Thu,  6 Jun 2024 14:21:08 +0000 (UTC)
+	 MIME-Version; b=OLiPThXhrkoBYNAdBmyQWLGVWakQy+G9ZYZcEKiAve/gm8Phy8EwdZh9YsDrcQ/d1w//cSyWay0Y5/JGmrsGQm18zNLx8CZWrnSBvMbN9PIQHgTXNeGMNW+tqKzuISzcqhe3zythpNeSdJvrLegHqnN4TuoxqnyLbm5+sV7N+pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds2RHbNF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B44C32782;
+	Thu,  6 Jun 2024 14:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683668;
-	bh=z0B46F1NaHIOf2abid2fSkizNmm7lCAIaGt3V6ytoN4=;
+	s=korg; t=1717683028;
+	bh=NLhxo9T39QlNmQcpPZlAtehdHN8mVyXvVAk4fM2ugw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tm9Nig2sGYhlkK5PeXTeWCg8TggDbduWMfva4cyT+Lb3AGvSNR7qkIwxojt6nUl6H
-	 w2VRcb4jnQ+jgET3ZRgb4WtfsQDKyPeAb0QQoI7PK5BfaG3oFUBT9MdSkg1eeZqXMl
-	 1uA94dANyJoay9Om2u8IzC6w2+PFHy5EyNCebJL8=
+	b=ds2RHbNFBwYWZGBzDojn0Z6nWwk+/DXlFNbEUi8oVR6pKJ+buIJ8blIjYyHimFeE1
+	 2NC34oQp2bTVsAMPSs2OtaDpAblb2ID0SBb+G9NcfHC+VKWnqBjSTJ+2jotQ8ahKJR
+	 nWkR4TqUj9K0MUecO4oM+xGRCchUwFmFpaNCDnnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 555/744] eventfs: Free all of the eventfs_inode after RCU
+Subject: [PATCH 6.9 248/374] selftests: forwarding: Have RET track kselftest framework constants
 Date: Thu,  6 Jun 2024 16:03:47 +0200
-Message-ID: <20240606131750.259086002@linuxfoundation.org>
+Message-ID: <20240606131700.127664592@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit ee4e0379475e4fe723986ae96293e465014fa8d9 ]
+[ Upstream commit 596c8819cb78c047acc0cab03a863a9983a3cc62 ]
 
-The freeing of eventfs_inode via a kfree_rcu() callback. But the content
-of the eventfs_inode was being freed after the last kref. This is
-dangerous, as changes are being made that can access the content of an
-eventfs_inode from an RCU loop.
+The variable RET keeps track of whether the test under execution has so far
+failed or not. Currently it works in binary fashion: zero means everything
+is fine, non-zero means something failed. log_test() then uses the value to
+given a human-readable message.
 
-Instead of using kfree_rcu() use call_rcu() that calls a function to do
-all the freeing of the eventfs_inode after a RCU grace period has expired.
+In order to allow log_test() to report skips and xfails, the semantics of
+RET need to be more fine-grained. Therefore have RET value be one of
+kselftest framework constants: $ksft_fail, $ksft_xfail, etc.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.370261163@goodmis.org
+The current logic in check_err() is such that first non-zero value of RET
+trumps all those that follow. But that is not right when RET has more
+fine-grained value semantics. Different outcomes have different weights.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 43aa6f97c2d03 ("eventfs: Get rid of dentry pointers without refcounts")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+The results of PASS and XFAIL are mostly the same: they both communicate a
+test that did not go wrong. SKIP communicates lack of tooling, which the
+user should go and try to fix, and as such should not be overridden by the
+passes. So far, the higher-numbered statuses can be considered weightier.
+But FAIL should be the weightiest.
+
+Add a helper, ksft_status_merge(), which merges two statuses in a way that
+respects the above conditions. Express it in a generic manner, because exit
+status merge is subtly different, and we want to reuse the same logic.
+
+Use the new helper when setting RET in check_err().
+
+Re-express check_fail() in terms of check_err() to avoid duplication.
+
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://lore.kernel.org/r/7dfff51cc925c7a3ac879b9050a0d6a327c8d21f.1711464583.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ea63ac142925 ("selftests/net: use tc rule to filter the na packet")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ tools/testing/selftests/net/forwarding/lib.sh | 21 ++++++++-----
+ tools/testing/selftests/net/lib.sh            | 30 +++++++++++++++++++
+ 2 files changed, 44 insertions(+), 7 deletions(-)
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index a598fec065684..fd111e10f04e4 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -72,6 +72,21 @@ enum {
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+index 9042fe92ca465..258d2082aa991 100644
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -358,14 +358,24 @@ EXIT_STATUS=0
+ # Per-test return value. Clear at the beginning of each test.
+ RET=0
  
- #define EVENTFS_MODE_MASK	(EVENTFS_SAVE_MODE - 1)
- 
-+static void free_ei_rcu(struct rcu_head *rcu)
++ret_set_ksft_status()
 +{
-+	struct eventfs_inode *ei = container_of(rcu, struct eventfs_inode, rcu);
-+	struct eventfs_root_inode *rei;
++	local ksft_status=$1; shift
++	local msg=$1; shift
 +
-+	kfree(ei->entry_attrs);
-+	kfree_const(ei->name);
-+	if (ei->is_events) {
-+		rei = get_root_inode(ei);
-+		kfree(rei);
-+	} else {
-+		kfree(ei);
-+	}
++	RET=$(ksft_status_merge $RET $ksft_status)
++	if (( $? )); then
++		retmsg=$msg
++	fi
 +}
 +
- /*
-  * eventfs_inode reference count management.
-  *
-@@ -84,7 +99,6 @@ static void release_ei(struct kref *ref)
+ check_err()
  {
- 	struct eventfs_inode *ei = container_of(ref, struct eventfs_inode, kref);
- 	const struct eventfs_entry *entry;
--	struct eventfs_root_inode *rei;
+ 	local err=$1
+ 	local msg=$2
  
- 	WARN_ON_ONCE(!ei->is_freed);
- 
-@@ -94,14 +108,7 @@ static void release_ei(struct kref *ref)
- 			entry->release(entry->name, ei->data);
- 	}
- 
--	kfree(ei->entry_attrs);
--	kfree_const(ei->name);
--	if (ei->is_events) {
--		rei = get_root_inode(ei);
--		kfree_rcu(rei, ei.rcu);
--	} else {
--		kfree_rcu(ei, rcu);
--	}
-+	call_rcu(&ei->rcu, free_ei_rcu);
+-	if [[ $RET -eq 0 && $err -ne 0 ]]; then
+-		RET=$err
+-		retmsg=$msg
++	if ((err)); then
++		ret_set_ksft_status $ksft_fail "$msg"
+ 	fi
  }
  
- static inline void put_ei(struct eventfs_inode *ei)
+@@ -374,10 +384,7 @@ check_fail()
+ 	local err=$1
+ 	local msg=$2
+ 
+-	if [[ $RET -eq 0 && $err -eq 0 ]]; then
+-		RET=1
+-		retmsg=$msg
+-	fi
++	check_err $((!err)) "$msg"
+ }
+ 
+ check_err_fail()
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index 56a9454b7ba35..b0bbde83b8461 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -14,6 +14,36 @@ NS_LIST=""
+ 
+ ##############################################################################
+ # Helpers
++
++__ksft_status_merge()
++{
++	local a=$1; shift
++	local b=$1; shift
++	local -A weights
++	local weight=0
++
++	for i in "$@"; do
++		weights[$i]=$((weight++))
++	done
++
++	if [[ ${weights[$a]} > ${weights[$b]} ]]; then
++		echo "$a"
++		return 0
++	else
++		echo "$b"
++		return 1
++	fi
++}
++
++ksft_status_merge()
++{
++	local a=$1; shift
++	local b=$1; shift
++
++	__ksft_status_merge "$a" "$b" \
++		$ksft_pass $ksft_xfail $ksft_skip $ksft_fail
++}
++
+ busywait()
+ {
+ 	local timeout=$1; shift
 -- 
 2.43.0
 
