@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-49707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6D28FEE82
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133F38FECDB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3260B1C2526E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8714BB28AF1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBEA1C5388;
-	Thu,  6 Jun 2024 14:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ACE1B3724;
+	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUfdJrTH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UD+VQDWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4861991D0;
-	Thu,  6 Jun 2024 14:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C2D198E66;
+	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683669; cv=none; b=gGHq5SzYPojmHDp6m5JUoXm4rWdIbqjT1RESDeA4TrHf/Gb0zyz8P0QXMviQKzOxZLqjdd1JmlYjdOjDbNvakIzJPZSExSf2Y1ZbMt7TS1OlYCdvxnvCjvTAhQfcRXuCBSzc9Ul6sLEuwP4baSLKcMzjPRQc78dvt7OXcP/3EQI=
+	t=1717683417; cv=none; b=or2oYbUafKkFRmRTw7QNr/K6H8vtWAYlKoOjbsojfMsq8fA7YqoIV1d6oADul6P9gN9HwTiaYOCQ7rEN95F16k/qbzSjZV8iJlwUtIYXUCigbwbGOglx6gUTANTjne7umj/Cre9VNQaBC7m7WU5p5MyV2T5sN16P+EqaogOCGKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683669; c=relaxed/simple;
-	bh=C8bPFIdnHZouphxm54x6QpqfXldRUWYWyblCYxuG+BY=;
+	s=arc-20240116; t=1717683417; c=relaxed/simple;
+	bh=5YEfUUYN2ULVg1tl1Ya4pkZaNCKiVoVA6u4YD9TaR+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2NpFCllpdNGQnVCUDxLXiEAOqIwRd0UTEz3xz5T/MVUAM3ExxAV6AUZQjYKILdjMJCLC6IiQdXGSuoi/gnsjrtfvcyxgKSxcpXTOJ8o+cioOw9traKWfy1Vu54pTqQY98KYVV1//trq1nLntnZ/3OHEjreDvfvWYWyOX/JtGWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUfdJrTH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7D3C2BD10;
-	Thu,  6 Jun 2024 14:21:09 +0000 (UTC)
+	 MIME-Version; b=d+vMYtqm0uhe2WyTMkOtpXez3Ib2FxwK7ilEC4/BAG8s8rFfL/o2Ud8gJiGdGz9R0Q8We1IXD9SbsD6XesvBc/sKXa7cp6Z2gnKLHh185pCLKYfYMJVIZw32WkDhsOWjuYacdCDi4lfqQUHHo9ogksxbLff5P5MDQpJZMBcg4Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UD+VQDWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCDEC4AF08;
+	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683669;
-	bh=C8bPFIdnHZouphxm54x6QpqfXldRUWYWyblCYxuG+BY=;
+	s=korg; t=1717683417;
+	bh=5YEfUUYN2ULVg1tl1Ya4pkZaNCKiVoVA6u4YD9TaR+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUfdJrTH2Xul1INZ4XWvxwRQstsMisY05cBozjneX4grplQhcScvwkB3KIUMKDtPm
-	 QAslz+CEtYr+nPts7NGl3mWcJGAMs84tB9wkdd3A8NtTs7RCK31OxAjZ5T8x4gIULG
-	 AhEUHMoYGER1hl6RNOaRGTZg8EM7uS3NceY3Majs=
+	b=UD+VQDWK+tffHsvky9ZCLn+bBfvlu63m+LG+lokycpEqvDoDO9417aryp2sbF7pcL
+	 LcT+nM1YMxIVYgkmGajN/4URE5ldlONA+Bo8vtMzrEfvtX40RYPI/h8RvYv6UgL5nZ
+	 6NYTHdZLwlBzH8nMa4QONjM4Y3FuJFZcL3c/Wymk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Zhengjun Xing <zhengjun.xing@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 557/744] dt-bindings: adc: axi-adc: update bindings for backend framework
+Subject: [PATCH 6.1 300/473] perf test: Add leafloop test workload
 Date: Thu,  6 Jun 2024 16:03:49 +0200
-Message-ID: <20240606131750.324373908@linuxfoundation.org>
+Message-ID: <20240606131709.839849773@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +72,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit a032b921bdeba2274866daafc8e791edd609eb13 ]
+[ Upstream commit 41522f7442905814c654dbe2ca7b8d3605c7e0cc ]
 
-'adi,adc-dev' is now deprecated and must not be used anymore. Hence,
-also remove it from being required.
+The leafloop workload is to run an infinite loop in the test_leaf
+function.  This is needed for the ARM fp callgraph test to verify if it
+gets the correct callchains.
 
-The reason why it's being deprecated is because the axi-adc CORE is now
-an IIO service provider hardware (IIO backends) for consumers to make use
-of. Before, the logic with 'adi,adc-dev' was the opposite (it was kind
-of consumer referencing other nodes/devices) and that proved to be wrong
-and to not scale.
+  $ perf test -w leafloop
 
-Now, IIO consumers of this hardware are expected to reference it using the
-io-backends property. Hence, the new '#io-backend-cells' is being added
-so the device is easily identified as a provider.
+Committer notes:
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240210-iio-backend-v11-2-f5242a5fb42a@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 19fb11d7220b ("dt-bindings: adc: axi-adc: add clocks property")
+Add a:
+
+  -U_FORTIFY_SOURCE
+
+to the leafloop CFLAGS as the main perf flags set it and it requires
+building with optimization, and this new test has a -O0.
+
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Zhengjun Xing <zhengjun.xing@linux.intel.com>
+Link: https://lore.kernel.org/r/20221116233854.1596378-6-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 256ef072b384 ("perf tests: Make "test data symbol" more robust on Neoverse N1")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/iio/adc/adi,axi-adc.yaml          | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tools/perf/tests/builtin-test.c       |  1 +
+ tools/perf/tests/tests.h              |  1 +
+ tools/perf/tests/workloads/Build      |  3 +++
+ tools/perf/tests/workloads/leafloop.c | 34 +++++++++++++++++++++++++++
+ 4 files changed, 39 insertions(+)
+ create mode 100644 tools/perf/tests/workloads/leafloop.c
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-index 9996dd93f84b2..3d49d21ad33df 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-@@ -39,12 +39,15 @@ properties:
-     $ref: /schemas/types.yaml#/definitions/phandle
-     description:
-       A reference to a the actual ADC to which this FPGA ADC interfaces to.
-+    deprecated: true
+diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
+index 161f38476e77b..0ed5ac452f6ee 100644
+--- a/tools/perf/tests/builtin-test.c
++++ b/tools/perf/tests/builtin-test.c
+@@ -121,6 +121,7 @@ static struct test_suite **tests[] = {
+ static struct test_workload *workloads[] = {
+ 	&workload__noploop,
+ 	&workload__thloop,
++	&workload__leafloop,
+ };
+ 
+ static int num_subtests(const struct test_suite *t)
+diff --git a/tools/perf/tests/tests.h b/tools/perf/tests/tests.h
+index e6edfeeadaeba..86804dd6452b7 100644
+--- a/tools/perf/tests/tests.h
++++ b/tools/perf/tests/tests.h
+@@ -202,5 +202,6 @@ struct test_workload workload__##work = {	\
+ /* The list of test workloads */
+ DECLARE_WORKLOAD(noploop);
+ DECLARE_WORKLOAD(thloop);
++DECLARE_WORKLOAD(leafloop);
+ 
+ #endif /* TESTS_H */
+diff --git a/tools/perf/tests/workloads/Build b/tools/perf/tests/workloads/Build
+index b8964b1099c0e..03dc675a4a7c8 100644
+--- a/tools/perf/tests/workloads/Build
++++ b/tools/perf/tests/workloads/Build
+@@ -2,3 +2,6 @@
+ 
+ perf-y += noploop.o
+ perf-y += thloop.o
++perf-y += leafloop.o
 +
-+  '#io-backend-cells':
-+    const: 0
- 
- required:
-   - compatible
-   - dmas
-   - reg
--  - adi,adc-dev
- 
- additionalProperties: false
- 
-@@ -55,7 +58,6 @@ examples:
-         reg = <0x44a00000 0x10000>;
-         dmas = <&rx_dma 0>;
-         dma-names = "rx";
--
--        adi,adc-dev = <&spi_adc>;
-+        #io-backend-cells = <0>;
-     };
- ...
++CFLAGS_leafloop.o         = -g -O0 -fno-inline -fno-omit-frame-pointer -U_FORTIFY_SOURCE
+diff --git a/tools/perf/tests/workloads/leafloop.c b/tools/perf/tests/workloads/leafloop.c
+new file mode 100644
+index 0000000000000..1bf5cc97649b0
+--- /dev/null
++++ b/tools/perf/tests/workloads/leafloop.c
+@@ -0,0 +1,34 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#include <stdlib.h>
++#include <linux/compiler.h>
++#include "../tests.h"
++
++/* We want to check these symbols in perf script */
++noinline void leaf(volatile int b);
++noinline void parent(volatile int b);
++
++static volatile int a;
++
++noinline void leaf(volatile int b)
++{
++	for (;;)
++		a += b;
++}
++
++noinline void parent(volatile int b)
++{
++	leaf(b);
++}
++
++static int leafloop(int argc, const char **argv)
++{
++	int c = 1;
++
++	if (argc > 0)
++		c = atoi(argv[0]);
++
++	parent(c);
++	return 0;
++}
++
++DEFINE_WORKLOAD(leafloop);
 -- 
 2.43.0
 
