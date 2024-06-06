@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967018FE8F8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75D88FED77
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A2821F2523C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8B421C23695
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304301990CC;
-	Thu,  6 Jun 2024 14:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9D71BB6A2;
+	Thu,  6 Jun 2024 14:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW5GDrFq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJYpI4TD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C2819750E;
-	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB34F1BB69D;
+	Thu,  6 Jun 2024 14:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682961; cv=none; b=f21m6WjXtJmU2ZIXMIztclIPzI4lfgLvwyp7Jkb2PPDp8jIoytoW6pvZlv/8wCGzyG+tLI/duGNDbIU6wDFZDi+YhvgdqiSeqdMrkss5QyZa6Yrg3QeB90h97LcrlS2MjdFgfoKP23fyzV+gpFjtVJPmmSDrRnerftRdDaN1Fvo=
+	t=1717683491; cv=none; b=SiKHEpBA+DKmwbQnr8Mbz1v1UIaVSO/QFJNiCtDwEVX/NTP8B4ddY+KOdQvbkz1tu3jTVkvGAxqGoSOGcIJkTfYNvbTcusahv4yn5Ta9IHXfX+4aef7JgFHMOe1enk7TRByWrjqIQGfBqdVFzQEDizqpb9xbonI6vJ3d9Sn8Sko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682961; c=relaxed/simple;
-	bh=vXD4GgbOIo10lSpjmIptZ+b/CvKKYqKFO2YvDYCCNLE=;
+	s=arc-20240116; t=1717683491; c=relaxed/simple;
+	bh=aJ0t4koR/Xl6ceWtvqTdfNjIob6D7NjitTE1zLhr+fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHQvXWcb0v6zroS6q3almH090y0LuhPaZvPZ0F5J2a22LYdoJZHq8gEEZiP1EQmXxR5rvDuxSlsVrdImf9o4LMm8lu9s1lLT1H68B4JM9vgPJ9hlAhsFX4j+mTdX4U4gtICBv3NiOjEE4ATz/Rar3t9p1e8uNMeVYSGBm3LiPV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW5GDrFq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BB5C32781;
-	Thu,  6 Jun 2024 14:09:20 +0000 (UTC)
+	 MIME-Version; b=i3vXJTP2O6TTtbSlbryzuL8IZ/iRnUHVEdv9WXyQVOD+KsTRNA3IZ2YuwRA3qPadh84j7vF0KVhoAPOOr63J1KGxEhqxQOF0I1kX67iR+7fcpAhPQ576sSu6SZ3e2Z2cjQzWqE0g/r8Wjz5qf/KO1R+jn3ZAfdeQjaZvgYyyQJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJYpI4TD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3686AC32782;
+	Thu,  6 Jun 2024 14:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682960;
-	bh=vXD4GgbOIo10lSpjmIptZ+b/CvKKYqKFO2YvDYCCNLE=;
+	s=korg; t=1717683491;
+	bh=aJ0t4koR/Xl6ceWtvqTdfNjIob6D7NjitTE1zLhr+fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WW5GDrFqIZOifhMTo1U7Bi44bn8JdRQ5mxeTj3gfqEcBTW6WfkknOwp3Ff3PeEwqv
-	 bqL5H3l2mGBNOAR/zyh9XmprdejJpm14pSbuJTNMNVVyshUPVa9XD4th0IXHtnasTk
-	 X17f7oOdJvG5GLdR5W4Tvy7QRQxoZcw9gV1U7mC0=
+	b=ZJYpI4TDj3H+wHk6APf2fLpD8rgDyEidup66BX8XKqqv3frh38WzzuOZPz+BOrUFq
+	 RwTaYeGXGzGB76wYDyQxPfyLfX7y69uncAeKq5LOls4liv205spdrpXWvSsACGsUME
+	 2kJ2lM3S2NhqKRKq7NT/vUdUxeoaDqu7Gy149uqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 127/374] s390/vdso: Generate unwind information for C modules
+Subject: [PATCH 6.6 434/744] f2fs: fix to relocate check condition in f2fs_fallocate()
 Date: Thu,  6 Jun 2024 16:01:46 +0200
-Message-ID: <20240606131656.153113519@linuxfoundation.org>
+Message-ID: <20240606131746.393997959@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Remus <jremus@linux.ibm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 10f70525365146046dddcc3d36bfaea2aee0376a ]
+[ Upstream commit 278a6253a673611dbc8ab72a3b34b151a8e75822 ]
 
-GDB fails to unwind vDSO functions with error message "PC not saved",
-for instance when stepping through gettimeofday().
+compress and pinfile flag should be checked after inode lock held to
+avoid race condition, fix it.
 
-Add -fasynchronous-unwind-tables to CFLAGS to generate .eh_frame
-DWARF unwind information for the vDSO C modules.
-
-Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Fixes: 5fed0be8583f ("f2fs: do not allow partial truncation on pinned file")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vdso32/Makefile | 3 ++-
- arch/s390/kernel/vdso64/Makefile | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
-index b12a274cbb473..9090c0e5de254 100644
---- a/arch/s390/kernel/vdso32/Makefile
-+++ b/arch/s390/kernel/vdso32/Makefile
-@@ -20,7 +20,8 @@ KBUILD_AFLAGS_32 += -m31 -s
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 420939ca36422..d908ef72fef6e 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1797,15 +1797,6 @@ static long f2fs_fallocate(struct file *file, int mode,
+ 		(mode & (FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_INSERT_RANGE)))
+ 		return -EOPNOTSUPP;
  
- KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
- KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
--KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin
-+KBUILD_CFLAGS_32 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_32))
-+KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin -fasynchronous-unwind-tables
+-	/*
+-	 * Pinned file should not support partial truncation since the block
+-	 * can be used by applications.
+-	 */
+-	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
+-		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
+-			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE)))
+-		return -EOPNOTSUPP;
+-
+ 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |
+ 			FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_ZERO_RANGE |
+ 			FALLOC_FL_INSERT_RANGE))
+@@ -1813,6 +1804,17 @@ static long f2fs_fallocate(struct file *file, int mode,
  
- LDFLAGS_vdso32.so.dbg += -shared -soname=linux-vdso32.so.1 \
- 	--hash-style=both --build-id=sha1 -melf_s390 -T
-diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-index ef98327260972..a44f51de1f1ea 100644
---- a/arch/s390/kernel/vdso64/Makefile
-+++ b/arch/s390/kernel/vdso64/Makefile
-@@ -26,7 +26,8 @@ KBUILD_AFLAGS_64 += -m64
- KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
- KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
--KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin
-+KBUILD_CFLAGS_64 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_64))
-+KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin -fasynchronous-unwind-tables
- ldflags-y := -shared -soname=linux-vdso64.so.1 \
- 	     --hash-style=both --build-id=sha1 -T
+ 	inode_lock(inode);
  
++	/*
++	 * Pinned file should not support partial truncation since the block
++	 * can be used by applications.
++	 */
++	if ((f2fs_compressed_file(inode) || f2fs_is_pinned_file(inode)) &&
++		(mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_COLLAPSE_RANGE |
++			FALLOC_FL_ZERO_RANGE | FALLOC_FL_INSERT_RANGE))) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
+ 	ret = file_modified(file);
+ 	if (ret)
+ 		goto out;
 -- 
 2.43.0
 
