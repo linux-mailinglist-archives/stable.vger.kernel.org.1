@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-48402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB6A8FE8DE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A49F18FED41
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A74651F24800
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A5532821D7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE341974F7;
-	Thu,  6 Jun 2024 14:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C691A1B5832;
+	Thu,  6 Jun 2024 14:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/7KXbxz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwU1p8rO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2FC1974F3;
-	Thu,  6 Jun 2024 14:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8586819D073;
+	Thu,  6 Jun 2024 14:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682944; cv=none; b=dAV8Q92N5s2xaC5Akzlr0VCB1rsB8RZ5JADt2YflbIt98r4S/3nkDc0T42nN4v8M2qUwVmQAu8rOb6BoLJPEN0bRkBbwUH8CbYAz0tgzllgwMuCjaurhBEbi5tmMSYvgjzK/8+KInxbOV3ZwdwbF0Z8MsqGeykkPhwmkGW4evRY=
+	t=1717683466; cv=none; b=Y+Qg42kTb5Uko6q5b6v4Pq+NjaW/y094byqwEYNYW5NFOuYc+b1Wk3PzrLkLVumjgwOfvg8g4/K2OBrCZiXlDyxyQ6+76TFstDt+YA+DcabVHs9TFm/g3JP/tg95fMSPh+hWT7X70nrxn6CkK2Zbe2+WVXzlrvG4g+nThjaxi8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682944; c=relaxed/simple;
-	bh=vYgYAwLgR4nu9TwTVle8QAURdA/Z8r9dUctVVEM9MPU=;
+	s=arc-20240116; t=1717683466; c=relaxed/simple;
+	bh=mhHWH/dzVe8rIf84z+TpfNFKxWqp3UvaBYYDraIaDdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMFT3s2oeHEX9BkN/GO3iHBgvOakjc2h8sB/V2+FwbNw3gSZZtwTXdgpcF5puxqhZ7oOkFN+HFd4nufbO08ByHrtQ5ZkLt3Sw/SHYCXugTOsoyQv2hk72Ns4vbUKvqxA5qK5BIpvLKUNkbnGgtFIwNzXFaGEkaa+Z+Uok6BaNkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/7KXbxz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57253C32782;
-	Thu,  6 Jun 2024 14:09:04 +0000 (UTC)
+	 MIME-Version; b=XsJDGM1aoWe17Ebk2ghpzvML99iUOhpvUbFZMooPlaT+So8Ve+EL1ZBFY9bMeHNB0VEvzXqXxwS7QsRPFfoxY32xlonXZbAHkW9hePgqr4TVSk9kNrz0jfZ5VpAGHXeC9c9pyRQFcU5Bf9bj6Q2oxZd7e0Acjhle58Q0N7nh+E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwU1p8rO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E7CC2BD10;
+	Thu,  6 Jun 2024 14:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682944;
-	bh=vYgYAwLgR4nu9TwTVle8QAURdA/Z8r9dUctVVEM9MPU=;
+	s=korg; t=1717683466;
+	bh=mhHWH/dzVe8rIf84z+TpfNFKxWqp3UvaBYYDraIaDdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/7KXbxzuw0XsZzgtiyOtaVrPCLVZzv5y+y13IbVzOUvP0qRFKqRbKZmDwWdW2Mv8
-	 J0kdEHxyH8QBLhCXIfIriEWb4ncZ6s/KtZhwXMuV4xUDM+lU7sk9VuzU9D/f/tb50i
-	 e4QCSMXFRLToBHCm3si3RBpHRId9V63cg6mokFEw=
+	b=KwU1p8rO/iDA5h6vqd8WxnN5e8LdvUr9FQs1mCbKH2El8rcjxK1iV24quPJ5oYLi6
+	 sQahrVFA1CjIi5zX686uK4p4fknJDcXrlGDZ+Mo7xC/zeqGiSGRMoGwMVOCrsLZf0R
+	 27Xi3GitucJFARzk8mktd2RM31IFXYYNUfDAmQaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Jiri Olsa <jolsa@kernel.org>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 103/374] perf dwarf-aux: Fix build with HAVE_DWARF_CFI_SUPPORT
+Subject: [PATCH 6.6 410/744] perf annotate: Introduce global annotation_options
 Date: Thu,  6 Jun 2024 16:01:22 +0200
-Message-ID: <20240606131655.375756782@linuxfoundation.org>
+Message-ID: <20240606131745.616624206@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,118 +67,212 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit c9d492378faec5c1fb8ea1534c620f7320bbb23a ]
+[ Upstream commit 9d03194a36345796d4f0f8d6b72eb770a45d614e ]
 
-check_allowed_ops() is used from both HAVE_DWARF_GETLOCATIONS_SUPPORT
-and HAVE_DWARF_CFI_SUPPORT sections, so move it into the right place so
-that it's available when either are defined. This shows up when doing
-a static cross compile for arm64:
+The annotation options are to control the behavior of objdump and the
+output.  It's basically used by 'perf annotate' but 'perf report' and
+'perf top' can call it on TUI dynamically.
 
-  $ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- LDFLAGS="-static" \
-    EXTRA_PERFLIBS="-lexpat"
+But it doesn't need to have a copy of annotation options in many places.
 
-  util/dwarf-aux.c:1723:6: error: implicit declaration of function 'check_allowed_ops'
+As most of the work is done in the util/annotate.c file, add a global
+variable and set/use it instead of having their own copies.
 
-Fixes: 55442cc2f22d0727 ("perf dwarf-aux: Check allowed DWARF Ops")
 Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Ingo Molnar <mingo@kernel.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240508141458.439017-1-james.clark@arm.com
+Link: https://lore.kernel.org/r/20231128175441.721579-2-namhyung@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: aaf494cf483a ("perf annotate: Fix annotation_calc_lines() to pass correct address to get_srcline()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/dwarf-aux.c | 56 ++++++++++++++++++-------------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ tools/perf/builtin-annotate.c | 43 +++++++++++++++++------------------
+ tools/perf/util/annotate.c    |  3 +++
+ tools/perf/util/annotate.h    |  2 ++
+ 3 files changed, 26 insertions(+), 22 deletions(-)
 
-diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
-index ff1874ae0832e..f93e57e2fc42e 100644
---- a/tools/perf/util/dwarf-aux.c
-+++ b/tools/perf/util/dwarf-aux.c
-@@ -1168,6 +1168,34 @@ static int offset_from_dwarf_op(Dwarf_Op *op)
- 	}
- 	return -1;
- }
-+
-+static bool check_allowed_ops(Dwarf_Op *ops, size_t nops)
-+{
-+	/* The first op is checked separately */
-+	ops++;
-+	nops--;
-+
-+	/*
-+	 * It needs to make sure if the location expression matches to the given
-+	 * register and offset exactly.  Thus it rejects any complex expressions
-+	 * and only allows a few of selected operators that doesn't change the
-+	 * location.
-+	 */
-+	while (nops) {
-+		switch (ops->atom) {
-+		case DW_OP_stack_value:
-+		case DW_OP_deref_size:
-+		case DW_OP_deref:
-+		case DW_OP_piece:
-+			break;
-+		default:
-+			return false;
-+		}
-+		ops++;
-+		nops--;
-+	}
-+	return true;
-+}
- #endif /* HAVE_DWARF_GETLOCATIONS_SUPPORT || HAVE_DWARF_CFI_SUPPORT */
- 
- #ifdef HAVE_DWARF_GETLOCATIONS_SUPPORT
-@@ -1345,34 +1373,6 @@ static bool match_var_offset(Dwarf_Die *die_mem, struct find_var_data *data,
- 	return true;
- }
- 
--static bool check_allowed_ops(Dwarf_Op *ops, size_t nops)
--{
--	/* The first op is checked separately */
--	ops++;
--	nops--;
--
--	/*
--	 * It needs to make sure if the location expression matches to the given
--	 * register and offset exactly.  Thus it rejects any complex expressions
--	 * and only allows a few of selected operators that doesn't change the
--	 * location.
--	 */
--	while (nops) {
--		switch (ops->atom) {
--		case DW_OP_stack_value:
--		case DW_OP_deref_size:
--		case DW_OP_deref:
--		case DW_OP_piece:
--			break;
--		default:
--			return false;
--		}
--		ops++;
--		nops--;
--	}
--	return true;
--}
--
- /* Only checks direct child DIEs in the given scope. */
- static int __die_find_var_reg_cb(Dwarf_Die *die_mem, void *arg)
+diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
+index 16757ea9b1a7a..d3d410cdd9ba5 100644
+--- a/tools/perf/builtin-annotate.c
++++ b/tools/perf/builtin-annotate.c
+@@ -45,7 +45,6 @@
+ struct perf_annotate {
+ 	struct perf_tool tool;
+ 	struct perf_session *session;
+-	struct annotation_options opts;
+ #ifdef HAVE_SLANG_SUPPORT
+ 	bool	   use_tui;
+ #endif
+@@ -315,9 +314,9 @@ static int hist_entry__tty_annotate(struct hist_entry *he,
+ 				    struct perf_annotate *ann)
  {
+ 	if (!ann->use_stdio2)
+-		return symbol__tty_annotate(&he->ms, evsel, &ann->opts);
++		return symbol__tty_annotate(&he->ms, evsel, &annotate_opts);
+ 
+-	return symbol__tty_annotate2(&he->ms, evsel, &ann->opts);
++	return symbol__tty_annotate2(&he->ms, evsel, &annotate_opts);
+ }
+ 
+ static void hists__find_annotations(struct hists *hists,
+@@ -373,14 +372,14 @@ static void hists__find_annotations(struct hists *hists,
+ 				return;
+ 			}
+ 
+-			ret = annotate(he, evsel, &ann->opts, NULL);
++			ret = annotate(he, evsel, &annotate_opts, NULL);
+ 			if (!ret || !ann->skip_missing)
+ 				return;
+ 
+ 			/* skip missing symbols */
+ 			nd = rb_next(nd);
+ 		} else if (use_browser == 1) {
+-			key = hist_entry__tui_annotate(he, evsel, NULL, &ann->opts);
++			key = hist_entry__tui_annotate(he, evsel, NULL, &annotate_opts);
+ 
+ 			switch (key) {
+ 			case -1:
+@@ -422,9 +421,9 @@ static int __cmd_annotate(struct perf_annotate *ann)
+ 			goto out;
+ 	}
+ 
+-	if (!ann->opts.objdump_path) {
++	if (!annotate_opts.objdump_path) {
+ 		ret = perf_env__lookup_objdump(&session->header.env,
+-					       &ann->opts.objdump_path);
++					       &annotate_opts.objdump_path);
+ 		if (ret)
+ 			goto out;
+ 	}
+@@ -558,9 +557,9 @@ int cmd_annotate(int argc, const char **argv)
+ 		   "file", "vmlinux pathname"),
+ 	OPT_BOOLEAN('m', "modules", &symbol_conf.use_modules,
+ 		    "load module symbols - WARNING: use only with -k and LIVE kernel"),
+-	OPT_BOOLEAN('l', "print-line", &annotate.opts.print_lines,
++	OPT_BOOLEAN('l', "print-line", &annotate_opts.print_lines,
+ 		    "print matching source lines (may be slow)"),
+-	OPT_BOOLEAN('P', "full-paths", &annotate.opts.full_path,
++	OPT_BOOLEAN('P', "full-paths", &annotate_opts.full_path,
+ 		    "Don't shorten the displayed pathnames"),
+ 	OPT_BOOLEAN(0, "skip-missing", &annotate.skip_missing,
+ 		    "Skip symbols that cannot be annotated"),
+@@ -571,15 +570,15 @@ int cmd_annotate(int argc, const char **argv)
+ 	OPT_CALLBACK(0, "symfs", NULL, "directory",
+ 		     "Look for files with symbols relative to this directory",
+ 		     symbol__config_symfs),
+-	OPT_BOOLEAN(0, "source", &annotate.opts.annotate_src,
++	OPT_BOOLEAN(0, "source", &annotate_opts.annotate_src,
+ 		    "Interleave source code with assembly code (default)"),
+-	OPT_BOOLEAN(0, "asm-raw", &annotate.opts.show_asm_raw,
++	OPT_BOOLEAN(0, "asm-raw", &annotate_opts.show_asm_raw,
+ 		    "Display raw encoding of assembly instructions (default)"),
+ 	OPT_STRING('M', "disassembler-style", &disassembler_style, "disassembler style",
+ 		   "Specify disassembler style (e.g. -M intel for intel syntax)"),
+-	OPT_STRING(0, "prefix", &annotate.opts.prefix, "prefix",
++	OPT_STRING(0, "prefix", &annotate_opts.prefix, "prefix",
+ 		    "Add prefix to source file path names in programs (with --prefix-strip)"),
+-	OPT_STRING(0, "prefix-strip", &annotate.opts.prefix_strip, "N",
++	OPT_STRING(0, "prefix-strip", &annotate_opts.prefix_strip, "N",
+ 		    "Strip first N entries of source file path name in programs (with --prefix)"),
+ 	OPT_STRING(0, "objdump", &objdump_path, "path",
+ 		   "objdump binary to use for disassembly and annotations"),
+@@ -596,7 +595,7 @@ int cmd_annotate(int argc, const char **argv)
+ 	OPT_CALLBACK_DEFAULT(0, "stdio-color", NULL, "mode",
+ 			     "'always' (default), 'never' or 'auto' only applicable to --stdio mode",
+ 			     stdio__config_color, "always"),
+-	OPT_CALLBACK(0, "percent-type", &annotate.opts, "local-period",
++	OPT_CALLBACK(0, "percent-type", &annotate_opts, "local-period",
+ 		     "Set percent type local/global-period/hits",
+ 		     annotate_parse_percent_type),
+ 	OPT_CALLBACK(0, "percent-limit", &annotate, "percent",
+@@ -612,13 +611,13 @@ int cmd_annotate(int argc, const char **argv)
+ 	set_option_flag(options, 0, "show-total-period", PARSE_OPT_EXCLUSIVE);
+ 	set_option_flag(options, 0, "show-nr-samples", PARSE_OPT_EXCLUSIVE);
+ 
+-	annotation_options__init(&annotate.opts);
++	annotation_options__init(&annotate_opts);
+ 
+ 	ret = hists__init();
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	annotation_config__init(&annotate.opts);
++	annotation_config__init(&annotate_opts);
+ 
+ 	argc = parse_options(argc, argv, options, annotate_usage, 0);
+ 	if (argc) {
+@@ -633,13 +632,13 @@ int cmd_annotate(int argc, const char **argv)
+ 	}
+ 
+ 	if (disassembler_style) {
+-		annotate.opts.disassembler_style = strdup(disassembler_style);
+-		if (!annotate.opts.disassembler_style)
++		annotate_opts.disassembler_style = strdup(disassembler_style);
++		if (!annotate_opts.disassembler_style)
+ 			return -ENOMEM;
+ 	}
+ 	if (objdump_path) {
+-		annotate.opts.objdump_path = strdup(objdump_path);
+-		if (!annotate.opts.objdump_path)
++		annotate_opts.objdump_path = strdup(objdump_path);
++		if (!annotate_opts.objdump_path)
+ 			return -ENOMEM;
+ 	}
+ 	if (addr2line_path) {
+@@ -648,7 +647,7 @@ int cmd_annotate(int argc, const char **argv)
+ 			return -ENOMEM;
+ 	}
+ 
+-	if (annotate_check_args(&annotate.opts) < 0)
++	if (annotate_check_args(&annotate_opts) < 0)
+ 		return -EINVAL;
+ 
+ #ifdef HAVE_GTK2_SUPPORT
+@@ -729,7 +728,7 @@ int cmd_annotate(int argc, const char **argv)
+ #ifndef NDEBUG
+ 	perf_session__delete(annotate.session);
+ #endif
+-	annotation_options__exit(&annotate.opts);
++	annotation_options__exit(&annotate_opts);
+ 
+ 	return ret;
+ }
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index 99ff3bb9cad8d..2a22bd30a98b7 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -57,6 +57,9 @@
+ 
+ #include <linux/ctype.h>
+ 
++/* global annotation options */
++struct annotation_options annotate_opts;
++
+ static regex_t	 file_lineno;
+ 
+ static struct ins_ops *ins__find(struct arch *arch, const char *name);
+diff --git a/tools/perf/util/annotate.h b/tools/perf/util/annotate.h
+index 19bc2f0391757..d45a777f7229b 100644
+--- a/tools/perf/util/annotate.h
++++ b/tools/perf/util/annotate.h
+@@ -101,6 +101,8 @@ struct annotation_options {
+ 	unsigned int percent_type;
+ };
+ 
++extern struct annotation_options annotate_opts;
++
+ enum {
+ 	ANNOTATION__OFFSET_JUMP_TARGETS = 1,
+ 	ANNOTATION__OFFSET_CALL,
 -- 
 2.43.0
 
