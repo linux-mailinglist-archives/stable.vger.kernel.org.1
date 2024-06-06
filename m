@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030998FEC73
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4798FE945
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FDADB2595F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E4621C2556B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6251B0139;
-	Thu,  6 Jun 2024 14:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022E2199394;
+	Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqJvIKpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXzahBg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C0819B3C5;
-	Thu,  6 Jun 2024 14:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57B7196D99;
+	Thu,  6 Jun 2024 14:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683368; cv=none; b=sbiXqbiqW27MCxK2c4nSgQTHhap+c51l7vFR19fm1mgWONCJCFq3v8jP/aavORlvagb3nPBew4QCiXnJhS+HxbD3poaweNzo1PHKRaLd1Cx6xzY+4PD32RWZPs/z3BsxbAuxZD7XSs+o7vEe5mKzpYLJDQIBiKK4w+3bcVXjzlE=
+	t=1717683000; cv=none; b=pAKRghQObNJCIzbGzgrp3xoa+ljgOsyE/PWYL8nA0PySHjJtYLvfdSn5ezZrzC0oaDvfr9+CCcSn6tFL7lac+vViDND7HnqPawAqKHDg2inFolvoITE9rcFjP6+tHD66Sm6+2u/Py23otAvjPg0X1dZChJupcODPQmUaqK+2uDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683368; c=relaxed/simple;
-	bh=sLPPUQWRUr7MpKu92iJv3KBn5yFBvhSai/LDzn2GekQ=;
+	s=arc-20240116; t=1717683000; c=relaxed/simple;
+	bh=ZrEhaPC4fVUq2cSW/VJOzXxCSGicvPp5yn1TPkcblb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8b/tZv7XkT/PLn3AovmoH36wSjee3NO4Zx2uo4Ua8Da/Yy8FbwI2D613pcwko9nHUAAGD6K2kqhP5qFRRl05g1wCfRBdqxpaYYUtNSI08pO7zhSiQbvwaUghbG6sNEIEubP3K/aQSlDSTxXU2hn7ouubUTYdxSEVT0mYQQbeDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqJvIKpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A5AC32782;
-	Thu,  6 Jun 2024 14:16:08 +0000 (UTC)
+	 MIME-Version; b=qVy41GAaBJ2qdHxEnwGF3R94CkyVnuA6JFt6cs3heRO+ePC8MrNllEj67UvtBc8bVuE0F9zmUoO7StXyohB353fNwYRrX/Fx3IBlMGk5yuvWQGmkdlwhcDCpwYL/5T170OkzQNDDS+6swqWDcA9nSPXVyrTRzNXh8JlopN3kEts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXzahBg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947A3C32786;
+	Thu,  6 Jun 2024 14:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683368;
-	bh=sLPPUQWRUr7MpKu92iJv3KBn5yFBvhSai/LDzn2GekQ=;
+	s=korg; t=1717683000;
+	bh=ZrEhaPC4fVUq2cSW/VJOzXxCSGicvPp5yn1TPkcblb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqJvIKpOlfjaq5FG1lBnxsAyS/KR+Gy+8yWbQulJ2SsfrMWpykNoDY77QR35g/DIr
-	 dUlM9Wlpl0I0DyHsCmfgFWk0+v+twuxQN3G9noax8aHpi++qbuuRKNb69St3Bwi2lU
-	 s4W4PRm1VTGL9cFnUsG1OnOZBLu9QpDObh/hVTW0=
+	b=GXzahBg+/H5QQA3QGAE6fk5fHuK83ovbspnkms+Av+g9NEpIFN5q12F4LRyDsovIc
+	 HzMxGV1/iTbk0VZFLoUxgbg0UwiEq62zEcCkl3RntMGEypml0ASkAaayc53T1k0fLQ
+	 U87q3h3ONXsI6tIasvxsMqD/QdV2kMJZz6PwkRhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 252/473] clk: qcom: dispcc-sm8450: fix DisplayPort clocks
-Date: Thu,  6 Jun 2024 16:03:01 +0200
-Message-ID: <20240606131708.308717757@linuxfoundation.org>
+Subject: [PATCH 6.9 203/374] drm: zynqmp_dpsub: Always register bridge
+Date: Thu,  6 Jun 2024 16:03:02 +0200
+Message-ID: <20240606131658.635626461@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit e801038a02ce1e8c652a0b668dd233a4ee48aeb7 ]
+[ Upstream commit be3f3042391d061cfca2bd22630e0d101acea5fc ]
 
-On SM8450 DisplayPort link clocks use frequency tables inherited from
-the vendor kernel, it is not applicable in the upstream kernel. Drop
-frequency tables and use clk_byte2_ops for those clocks.
+We must always register the DRM bridge, since zynqmp_dp_hpd_work_func
+calls drm_bridge_hpd_notify, which in turn expects hpd_mutex to be
+initialized. We do this before zynqmp_dpsub_drm_init since that calls
+drm_bridge_attach. This fixes the following lockdep warning:
 
-This fixes frequency selection in the OPP core (which otherwise attempts
-to use invalid 810 KHz as DP link rate), also fixing the following
-message:
-msm-dp-display ae90000.displayport-controller: _opp_config_clk_single: failed to set clock rate: -22
+[   19.217084] ------------[ cut here ]------------
+[   19.227530] DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+[   19.227768] WARNING: CPU: 0 PID: 140 at kernel/locking/mutex.c:582 __mutex_lock+0x4bc/0x550
+[   19.241696] Modules linked in:
+[   19.244937] CPU: 0 PID: 140 Comm: kworker/0:4 Not tainted 6.6.20+ #96
+[   19.252046] Hardware name: xlnx,zynqmp (DT)
+[   19.256421] Workqueue: events zynqmp_dp_hpd_work_func
+[   19.261795] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   19.269104] pc : __mutex_lock+0x4bc/0x550
+[   19.273364] lr : __mutex_lock+0x4bc/0x550
+[   19.277592] sp : ffffffc085c5bbe0
+[   19.281066] x29: ffffffc085c5bbe0 x28: 0000000000000000 x27: ffffff88009417f8
+[   19.288624] x26: ffffff8800941788 x25: ffffff8800020008 x24: ffffffc082aa3000
+[   19.296227] x23: ffffffc080d90e3c x22: 0000000000000002 x21: 0000000000000000
+[   19.303744] x20: 0000000000000000 x19: ffffff88002f5210 x18: 0000000000000000
+[   19.311295] x17: 6c707369642e3030 x16: 3030613464662072 x15: 0720072007200720
+[   19.318922] x14: 0000000000000000 x13: 284e4f5f4e524157 x12: 0000000000000001
+[   19.326442] x11: 0001ffc085c5b940 x10: 0001ff88003f388b x9 : 0001ff88003f3888
+[   19.334003] x8 : 0001ff88003f3888 x7 : 0000000000000000 x6 : 0000000000000000
+[   19.341537] x5 : 0000000000000000 x4 : 0000000000001668 x3 : 0000000000000000
+[   19.349054] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffffff88003f3880
+[   19.356581] Call trace:
+[   19.359160]  __mutex_lock+0x4bc/0x550
+[   19.363032]  mutex_lock_nested+0x24/0x30
+[   19.367187]  drm_bridge_hpd_notify+0x2c/0x6c
+[   19.371698]  zynqmp_dp_hpd_work_func+0x44/0x54
+[   19.376364]  process_one_work+0x3ac/0x988
+[   19.380660]  worker_thread+0x398/0x694
+[   19.384736]  kthread+0x1bc/0x1c0
+[   19.388241]  ret_from_fork+0x10/0x20
+[   19.392031] irq event stamp: 183
+[   19.395450] hardirqs last  enabled at (183): [<ffffffc0800b9278>] finish_task_switch.isra.0+0xa8/0x2d4
+[   19.405140] hardirqs last disabled at (182): [<ffffffc081ad3754>] __schedule+0x714/0xd04
+[   19.413612] softirqs last  enabled at (114): [<ffffffc080133de8>] srcu_invoke_callbacks+0x158/0x23c
+[   19.423128] softirqs last disabled at (110): [<ffffffc080133de8>] srcu_invoke_callbacks+0x158/0x23c
+[   19.432614] ---[ end trace 0000000000000000 ]---
 
-Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240424-dispcc-dp-clocks-v2-1-b44038f3fa96@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: eb2d64bfcc17 ("drm: xlnx: zynqmp_dpsub: Report HPD through the bridge")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240308204741.3631919-1-sean.anderson@linux.dev
+(cherry picked from commit 61ba791c4a7a09a370c45b70a81b8c7d4cf6b2ae)
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8450.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/xlnx/zynqmp_dpsub.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8450.c b/drivers/clk/qcom/dispcc-sm8450.c
-index 64626f620a01b..e7dd45a2058c1 100644
---- a/drivers/clk/qcom/dispcc-sm8450.c
-+++ b/drivers/clk/qcom/dispcc-sm8450.c
-@@ -309,26 +309,17 @@ static struct clk_rcg2 disp_cc_mdss_dptx0_aux_clk_src = {
- 	},
- };
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+index 88eb33acd5f0d..face8d6b2a6fb 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+@@ -256,12 +256,12 @@ static int zynqmp_dpsub_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_dp;
  
--static const struct freq_tbl ftbl_disp_cc_mdss_dptx0_link_clk_src[] = {
--	F(162000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
--	F(270000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
--	F(540000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
--	F(810000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
--	{ }
--};
--
- static struct clk_rcg2 disp_cc_mdss_dptx0_link_clk_src = {
- 	.cmd_rcgr = 0x819c,
- 	.mnd_width = 0,
- 	.hid_width = 5,
- 	.parent_map = disp_cc_parent_map_3,
--	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data) {
- 		.name = "disp_cc_mdss_dptx0_link_clk_src",
- 		.parent_data = disp_cc_parent_data_3,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_byte2_ops,
- 	},
- };
++	drm_bridge_add(dpsub->bridge);
++
+ 	if (dpsub->dma_enabled) {
+ 		ret = zynqmp_dpsub_drm_init(dpsub);
+ 		if (ret)
+ 			goto err_disp;
+-	} else {
+-		drm_bridge_add(dpsub->bridge);
+ 	}
  
-@@ -382,13 +373,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_link_clk_src = {
- 	.mnd_width = 0,
- 	.hid_width = 5,
- 	.parent_map = disp_cc_parent_map_3,
--	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data) {
- 		.name = "disp_cc_mdss_dptx1_link_clk_src",
- 		.parent_data = disp_cc_parent_data_3,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_byte2_ops,
- 	},
- };
+ 	dev_info(&pdev->dev, "ZynqMP DisplayPort Subsystem driver probed");
+@@ -288,9 +288,8 @@ static void zynqmp_dpsub_remove(struct platform_device *pdev)
  
-@@ -442,13 +432,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx2_link_clk_src = {
- 	.mnd_width = 0,
- 	.hid_width = 5,
- 	.parent_map = disp_cc_parent_map_3,
--	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data) {
- 		.name = "disp_cc_mdss_dptx2_link_clk_src",
- 		.parent_data = disp_cc_parent_data_3,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_byte2_ops,
- 	},
- };
+ 	if (dpsub->drm)
+ 		zynqmp_dpsub_drm_cleanup(dpsub);
+-	else
+-		drm_bridge_remove(dpsub->bridge);
  
-@@ -502,13 +491,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx3_link_clk_src = {
- 	.mnd_width = 0,
- 	.hid_width = 5,
- 	.parent_map = disp_cc_parent_map_3,
--	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
- 	.clkr.hw.init = &(struct clk_init_data) {
- 		.name = "disp_cc_mdss_dptx3_link_clk_src",
- 		.parent_data = disp_cc_parent_data_3,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_byte2_ops,
- 	},
- };
++	drm_bridge_remove(dpsub->bridge);
+ 	zynqmp_disp_remove(dpsub);
+ 	zynqmp_dp_remove(dpsub);
  
 -- 
 2.43.0
