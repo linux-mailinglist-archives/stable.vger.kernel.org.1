@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-48550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96BF8FE97A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FB08FEE84
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF2D61C242E8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F6B31C25713
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D8219AA5D;
-	Thu,  6 Jun 2024 14:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3421C538D;
+	Thu,  6 Jun 2024 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnaIv7+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOp9mLaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7B719AA5C;
-	Thu,  6 Jun 2024 14:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEDC1991D0;
+	Thu,  6 Jun 2024 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683029; cv=none; b=jh5EwzSjjW4VIfgtBrqRP8/cVVYRtLxsnoOjCG9IhujRUkzOCgQDnEzSPfPVXE43YfVoI02SbXcmZMpz/zWEYrv00qjzv4Kb7oMfSe6OdT98z3O/o0pJYGh9bFC+Sc1sw30pcFtLyyzBKN+9otDzwN7YXP+6bAMlmzpftOElKEg=
+	t=1717683670; cv=none; b=j3WUvNsQO4aZfpkK70jQmPXhYIZLumUQpsYVB4lqzYC/3W62z93spkRPEXbxg6meR4m2Tj/AzrXSmd+qSiyNM4lpc2Y2xxxGM1G318n8Vho63t80+nURIrgOcwCvWCeju4ygyaDgqYnGwLpy/Z15bER5kP62Uws+bnp6/Dye1gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683029; c=relaxed/simple;
-	bh=eNE7NWfYPr/gY5KIOl12D9npsrK175Xy0KckwFewDIY=;
+	s=arc-20240116; t=1717683670; c=relaxed/simple;
+	bh=YYcXYmfz1PtXxiTYrv84rcZ6NRR0b2TZUDeG7v2i7GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYSOfxbRWcwO3Eqkykr+ZtHgLT0g1yByniDi5HVu2cIeG1VbhJOdBx27qUcpZnbn+yP3ZFFolUaTlvewEe5Vucvae+6Vq5kE5gz/5aM8BsjRlQN5rRufc0Neeo1+Go/ep32VEVXcbneLsBEuR3U4XZ15A+5PERrCgidm+rIHfJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnaIv7+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E8DC32781;
-	Thu,  6 Jun 2024 14:10:28 +0000 (UTC)
+	 MIME-Version; b=sebYChcGCs/F1XFX4b2sS/aIKOfw1rVpOvZFwxU+7Y96r3ML5vkJD/j6Zy8Xy6ZCtgvxFk4llFxV8Y3TwQqzrBEyQYS93EPg1vqlZ2BawDiuWdpTkZA8Mllp5vq/E/bdlXoEC8/ETMP+UXxSuvTBj1MjuxzQEbfId40CYmmCk2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOp9mLaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE4EC2BD10;
+	Thu,  6 Jun 2024 14:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683028;
-	bh=eNE7NWfYPr/gY5KIOl12D9npsrK175Xy0KckwFewDIY=;
+	s=korg; t=1717683670;
+	bh=YYcXYmfz1PtXxiTYrv84rcZ6NRR0b2TZUDeG7v2i7GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FnaIv7+J0BcFJNPUeKY9Z7rvs/+MLXFo4oZPzqv+I9mj4kIx/KSOFKi0/7O1Pv0Dt
-	 7uVrtB1YfwvHoIGbjD5bAQgd07f6hL+xhHCBoQhANkOhjX5/9nSLd0f4ZDElah3sFM
-	 IlSWx0Sap21RMpKXuZvZJl6nX8h45PiO28Ay6e5o=
+	b=XOp9mLaYQnUwqUyKqu1tcfMdE9ePJ59EpohC3qlYyd0SVoaNXvGxjBWfXCyYY5frB
+	 GQ0//e8k3y3EJFggP1wg86bS6XX/PRSiGvF8bzKxuIf/i9DjEPt0VluSGpdN/YYzdh
+	 /HjxKZ8wfgimNyFCEjUVbxaYDBu50hhmBbJSPrTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@ver.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 250/374] selftests: net: Unify code of busywait() and slowwait()
-Date: Thu,  6 Jun 2024 16:03:49 +0200
-Message-ID: <20240606131700.197785975@linuxfoundation.org>
+Subject: [PATCH 6.6 558/744] dt-bindings: adc: axi-adc: add clocks property
+Date: Thu,  6 Jun 2024 16:03:50 +0200
+Message-ID: <20240606131750.356074577@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit a4022a332f437ae5b10921d66058ce98a2db2c20 ]
+[ Upstream commit 19fb11d7220b8abc016aa254dc7e6d9f2d49b178 ]
 
-Bodies of busywait() and slowwait() functions are almost identical. Extract
-the common code into a helper, loopy_wait, and convert busywait() and
-slowwait() into trivial wrappers.
+Add a required clock property as we can't access the device registers if
+the AXI bus clock is not properly enabled.
 
-Moreover, the fact that slowwait() uses seconds for units is really not
-intuitive, and the comment does not help much. Instead make the unit part
-of the name of the argument to further clarify what units are expected.
+Note this clock is a very fundamental one that is typically enabled
+pretty early during boot. Independently of that, we should really rely on
+it to be enabled.
 
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: ea63ac142925 ("selftests/net: use tc rule to filter the na packet")
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 96553a44e96d ("dt-bindings: iio: adc: add bindings doc for AXI ADC driver")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240426-ad9467-new-features-v2-3-6361fc3ba1cc@analog.com
+Cc: <Stable@ver.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/lib.sh | 22 ++-----------------
- tools/testing/selftests/net/lib.sh            | 16 +++++++++++---
- 2 files changed, 15 insertions(+), 23 deletions(-)
+ Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
-index 99ab42319e3e3..01322758255f7 100644
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -41,27 +41,9 @@ source "$net_forwarding_dir/../lib.sh"
- # timeout in seconds
- slowwait()
- {
--	local timeout=$1; shift
--
--	local start_time="$(date -u +%s)"
--	while true
--	do
--		local out
--		out=$("$@")
--		local ret=$?
--		if ((!ret)); then
--			echo -n "$out"
--			return 0
--		fi
-+	local timeout_sec=$1; shift
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+index 3d49d21ad33df..e1f450b80db27 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+@@ -28,6 +28,9 @@ properties:
+   reg:
+     maxItems: 1
  
--		local current_time="$(date -u +%s)"
--		if ((current_time - start_time > timeout)); then
--			echo -n "$out"
--			return 1
--		fi
--
--		sleep 0.1
--	done
-+	loopy_wait "sleep 0.1" "$((timeout_sec * 1000))" "$@"
- }
- 
- ##############################################################################
-diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-index e826ec1cc9d88..308c3b0bcf210 100644
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -53,9 +53,10 @@ ksft_exit_status_merge()
- 		$ksft_xfail $ksft_pass $ksft_skip $ksft_fail
- }
- 
--busywait()
-+loopy_wait()
- {
--	local timeout=$1; shift
-+	local sleep_cmd=$1; shift
-+	local timeout_ms=$1; shift
- 
- 	local start_time="$(date -u +%s%3N)"
- 	while true
-@@ -69,13 +70,22 @@ busywait()
- 		fi
- 
- 		local current_time="$(date -u +%s%3N)"
--		if ((current_time - start_time > timeout)); then
-+		if ((current_time - start_time > timeout_ms)); then
- 			echo -n "$out"
- 			return 1
- 		fi
++  clocks:
++    maxItems: 1
 +
-+		$sleep_cmd
- 	done
- }
+   dmas:
+     maxItems: 1
  
-+busywait()
-+{
-+	local timeout_ms=$1; shift
-+
-+	loopy_wait : "$timeout_ms" "$@"
-+}
-+
- cleanup_ns()
- {
- 	local ns=""
+@@ -48,6 +51,7 @@ required:
+   - compatible
+   - dmas
+   - reg
++  - clocks
+ 
+ additionalProperties: false
+ 
+@@ -58,6 +62,7 @@ examples:
+         reg = <0x44a00000 0x10000>;
+         dmas = <&rx_dma 0>;
+         dma-names = "rx";
++        clocks = <&axi_clk>;
+         #io-backend-cells = <0>;
+     };
+ ...
 -- 
 2.43.0
 
