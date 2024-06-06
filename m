@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-48816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A618FEAA8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFDD8FEC49
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E2381F23CA3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52A7928282D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B651E19643E;
-	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C654A1AED5D;
+	Thu,  6 Jun 2024 14:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGeay8A8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VF9RuiHV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75062197538;
-	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85568196DB4;
+	Thu,  6 Jun 2024 14:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683161; cv=none; b=a1z6C1AVGqJCMwvsbn5SELGxMd4iWuM/w+15mI2E8pTd0qmTuWTq8sC/s0WNJZvSuFZNATKgZRdBwM0NIazIRWI+P6PkuEKXWxgkmy2eVq1t3/2nuDe83scwe3oWTxvyCgVsTuhra+AWL2scyVLSpGyTmu4ILkqJWYkPLkTuSJE=
+	t=1717683349; cv=none; b=ktEITAZ+fuojeLPw4UCbp4rIL+4XLn6sTqMgczzPkwobmRzYedBMOY/EXgIbxRdaTyY3RGSNqMbuAyihd2rzC5Fz41ul5CegE8qIj6KqxPpDiMVUNG04L25+jBPmM7gMMZUllmJJwGm/48nWwbHnE8rSs26Av3lKXj6zvTBA670=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683161; c=relaxed/simple;
-	bh=AYvZIzyQ++ggfuHP8WVHSGwXjeuNxmdTHzVUpL+g1t0=;
+	s=arc-20240116; t=1717683349; c=relaxed/simple;
+	bh=CPgqF1YYrJANJfVyKEfUHj6XIxf/KBI98jQysTbZNyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6E8r1jPmuacehAaxeim4vaDz8mb0rZlzQLW1BKkwvzOy44VaBpln6U2lsBdQa8Au4mtFq7frE4Ddx4ofCmski7BEWhJZs3DmqqdMBWPb9ByP1qq3R+pc/pDCSouAWxANq+Fc4csb0lgXnz7xKw2/Mqj7PBs0vG3fEWt/M37w0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGeay8A8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA50C32782;
-	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
+	 MIME-Version; b=nI5vjzdfK9HVo46eOeYJ6/wBTNLRUFMPg5tMT3VK40cJOSgtE6MRrcrTn+EWF/pv9dL1DQoZdzZjPh50Il8yat1bidrr1BI4NGdnSK/xq3T3Mov7zW5IqE+FZwWfF+yp0vV12QiOCn0gi2qQ6lpbaZOd/VvKbQ77cI2NEZ47hLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VF9RuiHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EFFC2BD10;
+	Thu,  6 Jun 2024 14:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683161;
-	bh=AYvZIzyQ++ggfuHP8WVHSGwXjeuNxmdTHzVUpL+g1t0=;
+	s=korg; t=1717683349;
+	bh=CPgqF1YYrJANJfVyKEfUHj6XIxf/KBI98jQysTbZNyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aGeay8A8wkbonZ5Fx+gVmiLWcqycnJrnUGt46khc6uK2zmDoVWDcO3CxbAiJNLEDu
-	 BLXIiMommF79dNFeZZRHr+e8SqPAnzVSXvWGmMAwEYjDrG5MP4ZzLPb5J99WEGxgFJ
-	 04givJ3P0iyYEPySldVX6MqYMpm8QRY0Gc/deoEY=
+	b=VF9RuiHVsD1mDABGpYt3iTNeBu+ITmVVTmFXNt+nI2/M8QkYC17tgJSwcSvr7NDJk
+	 KPf4VVygwZzZ/p9WXcPnlw2b2b+qJJ/jMV8SIMm7VrdYnQh/oPq/EOxsCABGlZruGP
+	 Rb+Fn9ZgwXK+f5b8V2DwjttKCu8J5KTXOlHx6aAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Ashton <joshua@froggi.es>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Arun T <arun.t@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/473] drm/amd/display: Set color_mgmt_changed to true on unsuspend
-Date: Thu,  6 Jun 2024 15:59:21 +0200
-Message-ID: <20240606131700.950195296@linuxfoundation.org>
+Subject: [PATCH 6.6 290/744] ASoC: Intel: common: add ACPI matching tables for Arrow Lake
+Date: Thu,  6 Jun 2024 15:59:22 +0200
+Message-ID: <20240606131741.705555319@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +66,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Ashton <joshua@froggi.es>
+From: Arun T <arun.t@intel.com>
 
-[ Upstream commit 2eb9dd497a698dc384c0dd3e0311d541eb2e13dd ]
+[ Upstream commit 24af0d7c0f9f49a243b77e607e3f4a4737386b59 ]
 
-Otherwise we can end up with a frame on unsuspend where color management
-is not applied when userspace has not committed themselves.
+Initial support for ARL w/ RT711
 
-Fixes re-applying color management on Steam Deck/Gamescope on S3 resume.
-
-Signed-off-by: Joshua Ashton <joshua@froggi.es>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Arun T <arun.t@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20230915080635.1619942-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 1f1b820dc3c6 ("ASoC: SOF: Intel: mtl: Correct rom_status_reg")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/sound/soc-acpi-intel-match.h          |  2 +
+ sound/soc/intel/common/Makefile               |  1 +
+ .../intel/common/soc-acpi-intel-arl-match.c   | 51 +++++++++++++++++++
+ 3 files changed, 54 insertions(+)
+ create mode 100644 sound/soc/intel/common/soc-acpi-intel-arl-match.c
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index ff460c9802eb2..31bae620aeffc 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2964,6 +2964,7 @@ static int dm_resume(void *handle)
- 			dc_stream_release(dm_new_crtc_state->stream);
- 			dm_new_crtc_state->stream = NULL;
- 		}
-+		dm_new_crtc_state->base.color_mgmt_changed = true;
- 	}
+diff --git a/include/sound/soc-acpi-intel-match.h b/include/sound/soc-acpi-intel-match.h
+index e49b97d9e3ff2..845e7608ac375 100644
+--- a/include/sound/soc-acpi-intel-match.h
++++ b/include/sound/soc-acpi-intel-match.h
+@@ -32,6 +32,7 @@ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_adl_machines[];
+ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_rpl_machines[];
+ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_mtl_machines[];
+ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_machines[];
++extern struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_machines[];
  
- 	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
+ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_cnl_sdw_machines[];
+ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_cfl_sdw_machines[];
+@@ -42,6 +43,7 @@ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_adl_sdw_machines[];
+ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_rpl_sdw_machines[];
+ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_mtl_sdw_machines[];
+ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_sdw_machines[];
++extern struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[];
+ 
+ /*
+  * generic table used for HDA codec-based platforms, possibly with
+diff --git a/sound/soc/intel/common/Makefile b/sound/soc/intel/common/Makefile
+index 07aa37dd90e99..f7370e5b4e9e4 100644
+--- a/sound/soc/intel/common/Makefile
++++ b/sound/soc/intel/common/Makefile
+@@ -10,6 +10,7 @@ snd-soc-acpi-intel-match-objs := soc-acpi-intel-byt-match.o soc-acpi-intel-cht-m
+ 	soc-acpi-intel-tgl-match.o soc-acpi-intel-ehl-match.o \
+ 	soc-acpi-intel-jsl-match.o soc-acpi-intel-adl-match.o \
+ 	soc-acpi-intel-rpl-match.o soc-acpi-intel-mtl-match.o \
++	soc-acpi-intel-arl-match.o \
+ 	soc-acpi-intel-lnl-match.o \
+ 	soc-acpi-intel-hda-match.o \
+ 	soc-acpi-intel-sdw-mockup-match.o
+diff --git a/sound/soc/intel/common/soc-acpi-intel-arl-match.c b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
+new file mode 100644
+index 0000000000000..e52797aae6e65
+--- /dev/null
++++ b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
+@@ -0,0 +1,51 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * soc-apci-intel-arl-match.c - tables and support for ARL ACPI enumeration.
++ *
++ * Copyright (c) 2023 Intel Corporation.
++ */
++
++#include <sound/soc-acpi.h>
++#include <sound/soc-acpi-intel-match.h>
++
++static const struct snd_soc_acpi_endpoint single_endpoint = {
++	.num = 0,
++	.aggregated = 0,
++	.group_position = 0,
++	.group_id = 0,
++};
++
++static const struct snd_soc_acpi_adr_device rt711_0_adr[] = {
++	{
++		.adr = 0x000020025D071100ull,
++		.num_endpoints = 1,
++		.endpoints = &single_endpoint,
++		.name_prefix = "rt711"
++	}
++};
++
++static const struct snd_soc_acpi_link_adr arl_rvp[] = {
++	{
++		.mask = BIT(0),
++		.num_adr = ARRAY_SIZE(rt711_0_adr),
++		.adr_d = rt711_0_adr,
++	},
++	{}
++};
++
++struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_machines[] = {
++	{},
++};
++EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_arl_machines);
++
++/* this table is used when there is no I2S codec present */
++struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[] = {
++	{
++		.link_mask = 0x1, /* link0 required */
++		.links = arl_rvp,
++		.drv_name = "sof_sdw",
++		.sof_tplg_filename = "sof-arl-rt711.tplg",
++	},
++	{},
++};
++EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_arl_sdw_machines);
 -- 
 2.43.0
 
