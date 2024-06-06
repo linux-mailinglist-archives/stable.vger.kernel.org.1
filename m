@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-48962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425408FEB49
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 131818FEB54
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A342874FD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274241C21AC9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243FC1A3BA3;
-	Thu,  6 Jun 2024 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EA31A3BBA;
+	Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExYmSsbR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlLGz0nD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85941993A8;
-	Thu,  6 Jun 2024 14:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21669197A75;
+	Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683232; cv=none; b=gwFCZn9GkAINN2WWb92O+MvmbvxXMlz65K5zqJyJXM1/3p5udQk7n1A7MRLkEfoeC+HTQwTqx81PkdaWxPxVCA2vhZAOL7N9vhcrvuJido0FJHomZ38+8yAdvOwtTCzef1H+cXIr9KwMN4Z5BY23w/fiGJYrr7NWIps2a6b5hdg=
+	t=1717683238; cv=none; b=cpJxzJRtC+QQDUzJVUMzD62kPuH/GdmKacvfFYe7RhA6P8nNAm0P7hG9452guDOGLifAu76R5usEgljYPllqNJd0kAuigF3itC87Y3OpJJdSGu7Y+Kf3Hp/hujQvJ1DxB4/vs+ElipkFtfwtrH5EE4iWIn0a8xJyhvwPmuDRdhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683232; c=relaxed/simple;
-	bh=iCrCN50XgIHDGW0TcqU9hz8C9DzoBl1ghnFvEf/zQ/g=;
+	s=arc-20240116; t=1717683238; c=relaxed/simple;
+	bh=1VwTZhfn9W1RDV+7Qho0wyi8ma4hl4ROxAi1iJlAea8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s774B5/QHIulC/9hn3b1g9cG4+AuWo5riZYsrno1EknksOAPjZIbKSVEsM8D/B0VugiIedZ4iA/DxMtNtnjAXCATBstckCOSEzQ7Ys2gUp3R3c7iU85qrzjVFB1x3wZWx5Rq98oLqGP6MraX4SyE++X5ktYuQjycYByWlPRoZ1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExYmSsbR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B522FC2BD10;
-	Thu,  6 Jun 2024 14:13:52 +0000 (UTC)
+	 MIME-Version; b=Wfz0YAGjl3QyI3YZtDusJRBKszgXuC5ie5CuGyrRpSE9LJHkb89vgPTnACgzvNEWy3LTRr3NBGg7iVz3RLT/vUv8hrrMxruYCRJ84xvKwNsabJIkOnBlCZ//Yhsj3pkHhvcSIXFooGHESWDWIfGC1kImud7rIGeZwNVJwLBC1KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlLGz0nD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B90C32781;
+	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683232;
-	bh=iCrCN50XgIHDGW0TcqU9hz8C9DzoBl1ghnFvEf/zQ/g=;
+	s=korg; t=1717683238;
+	bh=1VwTZhfn9W1RDV+7Qho0wyi8ma4hl4ROxAi1iJlAea8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExYmSsbRwsGPDN5xSF7sxoRAhYirU1immAbz2+KYKGihf2Fb9XtVAwh9Tr3zz99nX
-	 HC4YtSIMSQimJ2vgLbV2rrTRMIBBEt5+J2xhyIYm9VOzkDsPzs75I+3SK8AUqC0RZb
-	 XP24LJQsUvz5bHft2cMDZmdmpvjfldBhlMdved88=
+	b=hlLGz0nDYOpcA96e9LtOGgAByrRSJb2hW/tKuwff0ATn3rLH1XgWgulG/eoO5UrcW
+	 +sYHi978TEUwUTR1kGCEpxMCOjzHY3mBdjlqmv38bnnG9LYGdNavXHc/M2fACBXhf6
+	 YE2YklyUkpuVdcEaug/PIXYAEa6hsiAkMH3RHmC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenz Bauer <lmb@isovalent.com>,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Stafford Horne <shorne@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/744] udp: Avoid call to compute_score on multiple sites
-Date: Thu,  6 Jun 2024 15:57:25 +0200
-Message-ID: <20240606131737.975632918@linuxfoundation.org>
+Subject: [PATCH 6.6 174/744] openrisc: traps: Dont send signals to kernel mode threads
+Date: Thu,  6 Jun 2024 15:57:26 +0200
+Message-ID: <20240606131738.009707660@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,162 +65,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Stafford Horne <shorne@gmail.com>
 
-[ Upstream commit 50aee97d15113b95a68848db1f0cb2a6c09f753a ]
+[ Upstream commit c88cfb5cea5f8f9868ef02cc9ce9183a26dcf20f ]
 
-We've observed a 7-12% performance regression in iperf3 UDP ipv4 and
-ipv6 tests with multiple sockets on Zen3 cpus, which we traced back to
-commit f0ea27e7bfe1 ("udp: re-score reuseport groups when connected
-sockets are present").  The failing tests were those that would spawn
-UDP sockets per-cpu on systems that have a high number of cpus.
+OpenRISC exception handling sends signals to user processes on floating
+point exceptions and trap instructions (for debugging) among others.
+There is a bug where the trap handling logic may send signals to kernel
+threads, we should not send these signals to kernel threads, if that
+happens we treat it as an error.
 
-Unsurprisingly, it is not caused by the extra re-scoring of the reused
-socket, but due to the compiler no longer inlining compute_score, once
-it has the extra call site in udp4_lib_lookup2.  This is augmented by
-the "Safe RET" mitigation for SRSO, needed in our Zen3 cpus.
+This patch adds conditions to die if the kernel receives these
+exceptions in kernel mode code.
 
-We could just explicitly inline it, but compute_score() is quite a large
-function, around 300b.  Inlining in two sites would almost double
-udp4_lib_lookup2, which is a silly thing to do just to workaround a
-mitigation.  Instead, this patch shuffles the code a bit to avoid the
-multiple calls to compute_score.  Since it is a static function used in
-one spot, the compiler can safely fold it in, as it did before, without
-increasing the text size.
-
-With this patch applied I ran my original iperf3 testcases.  The failing
-cases all looked like this (ipv4):
-	iperf3 -c 127.0.0.1 --udp -4 -f K -b $R -l 8920 -t 30 -i 5 -P 64 -O 2
-
-where $R is either 1G/10G/0 (max, unlimited).  I ran 3 times each.
-baseline is v6.9-rc3. harmean == harmonic mean; CV == coefficient of
-variation.
-
-ipv4:
-                 1G                10G                  MAX
-	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
-baseline 1743852.66(0.0208) 1725933.02(0.0167) 1705203.78(0.0386)
-patched  1968727.61(0.0035) 1962283.22(0.0195) 1923853.50(0.0256)
-
-ipv6:
-                 1G                10G                  MAX
-	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
-baseline 1729020.03(0.0028) 1691704.49(0.0243) 1692251.34(0.0083)
-patched  1900422.19(0.0067) 1900968.01(0.0067) 1568532.72(0.1519)
-
-This restores the performance we had before the change above with this
-benchmark.  We obviously don't expect any real impact when mitigations
-are disabled, but just to be sure it also doesn't regresses:
-
-mitigations=off ipv4:
-                 1G                10G                  MAX
-	    HARMEAN  (CV)      HARMEAN  (CV)    HARMEAN     (CV)
-baseline 3230279.97(0.0066) 3229320.91(0.0060) 2605693.19(0.0697)
-patched  3242802.36(0.0073) 3239310.71(0.0035) 2502427.19(0.0882)
-
-Cc: Lorenz Bauer <lmb@isovalent.com>
-Fixes: f0ea27e7bfe1 ("udp: re-score reuseport groups when connected sockets are present")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 27267655c531 ("openrisc: Support floating point user api")
+Signed-off-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c | 21 ++++++++++++++++-----
- net/ipv6/udp.c | 20 ++++++++++++++++----
- 2 files changed, 32 insertions(+), 9 deletions(-)
+ arch/openrisc/kernel/traps.c | 48 ++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 19 deletions(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index ca576587f6d21..16ca211c8619d 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -429,15 +429,21 @@ static struct sock *udp4_lib_lookup2(struct net *net,
+diff --git a/arch/openrisc/kernel/traps.c b/arch/openrisc/kernel/traps.c
+index 9370888c9a7e3..90554a5558fbc 100644
+--- a/arch/openrisc/kernel/traps.c
++++ b/arch/openrisc/kernel/traps.c
+@@ -180,29 +180,39 @@ asmlinkage void unhandled_exception(struct pt_regs *regs, int ea, int vector)
+ 
+ asmlinkage void do_fpe_trap(struct pt_regs *regs, unsigned long address)
  {
- 	struct sock *sk, *result;
- 	int score, badness;
-+	bool need_rescore;
- 
- 	result = NULL;
- 	badness = 0;
- 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
--		score = compute_score(sk, net, saddr, sport,
--				      daddr, hnum, dif, sdif);
-+		need_rescore = false;
-+rescore:
-+		score = compute_score(need_rescore ? result : sk, net, saddr,
-+				      sport, daddr, hnum, dif, sdif);
- 		if (score > badness) {
- 			badness = score;
- 
-+			if (need_rescore)
-+				continue;
-+
- 			if (sk->sk_state == TCP_ESTABLISHED) {
- 				result = sk;
- 				continue;
-@@ -458,9 +464,14 @@ static struct sock *udp4_lib_lookup2(struct net *net,
- 			if (IS_ERR(result))
- 				continue;
- 
--			badness = compute_score(result, net, saddr, sport,
--						daddr, hnum, dif, sdif);
+-	int code = FPE_FLTUNK;
+-	unsigned long fpcsr = regs->fpcsr;
 -
-+			/* compute_score is too long of a function to be
-+			 * inlined, and calling it again here yields
-+			 * measureable overhead for some
-+			 * workloads. Work around it by jumping
-+			 * backwards to rescore 'result'.
-+			 */
-+			need_rescore = true;
-+			goto rescore;
- 		}
- 	}
- 	return result;
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 124cf2bb2a6d7..c77ee9a3cde24 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -171,15 +171,21 @@ static struct sock *udp6_lib_lookup2(struct net *net,
- {
- 	struct sock *sk, *result;
- 	int score, badness;
-+	bool need_rescore;
- 
- 	result = NULL;
- 	badness = -1;
- 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
--		score = compute_score(sk, net, saddr, sport,
--				      daddr, hnum, dif, sdif);
-+		need_rescore = false;
-+rescore:
-+		score = compute_score(need_rescore ? result : sk, net, saddr,
-+				      sport, daddr, hnum, dif, sdif);
- 		if (score > badness) {
- 			badness = score;
- 
-+			if (need_rescore)
-+				continue;
+-	if (fpcsr & SPR_FPCSR_IVF)
+-		code = FPE_FLTINV;
+-	else if (fpcsr & SPR_FPCSR_OVF)
+-		code = FPE_FLTOVF;
+-	else if (fpcsr & SPR_FPCSR_UNF)
+-		code = FPE_FLTUND;
+-	else if (fpcsr & SPR_FPCSR_DZF)
+-		code = FPE_FLTDIV;
+-	else if (fpcsr & SPR_FPCSR_IXF)
+-		code = FPE_FLTRES;
+-
+-	/* Clear all flags */
+-	regs->fpcsr &= ~SPR_FPCSR_ALLF;
+-
+-	force_sig_fault(SIGFPE, code, (void __user *)regs->pc);
++	if (user_mode(regs)) {
++		int code = FPE_FLTUNK;
++		unsigned long fpcsr = regs->fpcsr;
 +
- 			if (sk->sk_state == TCP_ESTABLISHED) {
- 				result = sk;
- 				continue;
-@@ -200,8 +206,14 @@ static struct sock *udp6_lib_lookup2(struct net *net,
- 			if (IS_ERR(result))
- 				continue;
++		if (fpcsr & SPR_FPCSR_IVF)
++			code = FPE_FLTINV;
++		else if (fpcsr & SPR_FPCSR_OVF)
++			code = FPE_FLTOVF;
++		else if (fpcsr & SPR_FPCSR_UNF)
++			code = FPE_FLTUND;
++		else if (fpcsr & SPR_FPCSR_DZF)
++			code = FPE_FLTDIV;
++		else if (fpcsr & SPR_FPCSR_IXF)
++			code = FPE_FLTRES;
++
++		/* Clear all flags */
++		regs->fpcsr &= ~SPR_FPCSR_ALLF;
++
++		force_sig_fault(SIGFPE, code, (void __user *)regs->pc);
++	} else {
++		pr_emerg("KERNEL: Illegal fpe exception 0x%.8lx\n", regs->pc);
++		die("Die:", regs, SIGFPE);
++	}
+ }
  
--			badness = compute_score(sk, net, saddr, sport,
--						daddr, hnum, dif, sdif);
-+			/* compute_score is too long of a function to be
-+			 * inlined, and calling it again here yields
-+			 * measureable overhead for some
-+			 * workloads. Work around it by jumping
-+			 * backwards to rescore 'result'.
-+			 */
-+			need_rescore = true;
-+			goto rescore;
- 		}
- 	}
- 	return result;
+ asmlinkage void do_trap(struct pt_regs *regs, unsigned long address)
+ {
+-	force_sig_fault(SIGTRAP, TRAP_BRKPT, (void __user *)regs->pc);
++	if (user_mode(regs)) {
++		force_sig_fault(SIGTRAP, TRAP_BRKPT, (void __user *)regs->pc);
++	} else {
++		pr_emerg("KERNEL: Illegal trap exception 0x%.8lx\n", regs->pc);
++		die("Die:", regs, SIGILL);
++	}
+ }
+ 
+ asmlinkage void do_unaligned_access(struct pt_regs *regs, unsigned long address)
 -- 
 2.43.0
 
