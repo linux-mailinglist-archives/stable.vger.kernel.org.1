@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-49349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195988FECE5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 366E88FE883
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 823311F270B9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5E8D28218E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0D91B373F;
-	Thu,  6 Jun 2024 14:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912D9196DA8;
+	Thu,  6 Jun 2024 14:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osdsy9Dz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mRy6f7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC8419CCE3;
-	Thu,  6 Jun 2024 14:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C985196DA2;
+	Thu,  6 Jun 2024 14:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683422; cv=none; b=pcW3Fpu8EJngeA9H9dujHhiYj1URPwJfTKoxeYnKUc3rbm6aHMZu5tLguLyIehDd21kgSjCtmCLH7ye4KzjxKQwPRiKvliRfgxwJO0Ze+IRhrfnwTInUFx25uvZQQE77W+MRnXez4g53B8PH/tm1kZbPOtiHEfbWXT8Y8AReK/c=
+	t=1717682902; cv=none; b=qdZj7Jp+Hl4EDKl32R1fXAqmfYlA7bM4iEa7K5QcBOpYfvxzrE2B3irXDGSG55CdoiNNXwJ78L/Ej8Sg8ql4aZ6RvS4SCP8iZQudBw2nduryJ7s77nzu4VphU7/YcPlKJEt2JJ6yqXqFIaPejBjXcH6ZwDVtW5xAk+l2IX5WnIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683422; c=relaxed/simple;
-	bh=+bkJF8xz6SUZ9/qXk69MqNMNdqPq3TRdxA3lFepzr4o=;
+	s=arc-20240116; t=1717682902; c=relaxed/simple;
+	bh=b4Uj0XQOEJEMvBzYSDQ9uCckBWfG67210yA+119Qk5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jatzej3SmR60mAWMADEXtROBsynk3gxcDhIfhRmVzm+EOj82mexjv2fZJcBLkhNGD9ilY6GSVXklBd3yi1C07+M81UIAzqZRAiFdbzDlNaRXr9eSwQW83k4LsGaV26P8ZlADInJHQY/TH8aqatMFk1o+V5oxNuDQM6Q/br2D3WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osdsy9Dz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F023C2BD10;
-	Thu,  6 Jun 2024 14:17:02 +0000 (UTC)
+	 MIME-Version; b=LbBBDWStzpLGGPq79mUi/+y9WpOSkai/Adm5gpoQTCoC6KjgQKZygtxDlwE9WGuo5oQxzvVPv/DeJ8RhTpo+HW8A5LTte7DC2/Hyh/lDLTd+Q7dT2pquDwOLdQNufV2GWRKYOMOrLfn3YXq7KloFENEcb6UeEyHRTFHg4d62Cac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mRy6f7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29300C32781;
+	Thu,  6 Jun 2024 14:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683422;
-	bh=+bkJF8xz6SUZ9/qXk69MqNMNdqPq3TRdxA3lFepzr4o=;
+	s=korg; t=1717682902;
+	bh=b4Uj0XQOEJEMvBzYSDQ9uCckBWfG67210yA+119Qk5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=osdsy9DzJDz1by3zLnBfg5pQA1dURyG2QNMCkH2NUObI16E2gXQGQ26g3XMgN1ktK
-	 obkphyC+PI3E6pFN8kQ+PPprAuCGJOTqm2DFq1V17syzutbRWDPRzM2gk+oUP1VXYT
-	 995NJv1xCuitoYyUDKXBxtpNZe0OtSb0XhouLeOY=
+	b=0mRy6f7Ba2g5pOqZbL5dmIOIBU0iXxJiLqXk3S8QWsVYJtT2K0p0h8ZOmbQnVNnsp
+	 iBI7KyGKRcdN/qwabYTL518YOUE55RkPsW1ZbAsSCP1vjuzicEWFBOU+iep2nMAhV5
+	 kIFGUqJtoo/d6+iSgljU7ubFx9w42dK2QgjEkdLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devinder Khroad <dkhroad@logitech.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 330/744] media: uvcvideo: Add quirk for Logitech Rally Bar
+Subject: [PATCH 6.9 023/374] perf annotate: Fix annotation_calc_lines() to pass correct address to get_srcline()
 Date: Thu,  6 Jun 2024 16:00:02 +0200
-Message-ID: <20240606131743.024096592@linuxfoundation.org>
+Message-ID: <20240606131652.574129161@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +68,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 07731053d11f7647d5d8bc23caac997a4d562dfe ]
+[ Upstream commit aaf494cf483a1a835c44e942861429b30a00cab0 ]
 
-Logitech Rally Bar devices, despite behaving as UVC cameras, have a
-different power management system that the other cameras from Logitech.
+It should pass a proper address (i.e. suitable for objdump or addr2line)
+to get_srcline() in order to work correctly.  It used to pass an address
+with map__rip_2objdump() as the second argument but later it's changed
+to use notes->start.  It's ok in normal cases but it can be changed when
+annotate_opts.full_addr is set.  So let's convert the address directly
+instead of using the notes->start.
 
-USB_QUIRK_RESET_RESUME is applied to all the UVC cameras from Logitech
-at the usb core. Unfortunately, USB_QUIRK_RESET_RESUME causes undesired
-USB disconnects in the Rally Bar that make them completely unusable.
+Also the last argument is an IP to print symbol offset if requested.  So
+it should pass symbol-relative address.
 
-There is an open discussion about if we should fix this in the core or
-add a quirk in the UVC driver. In order to enable this hardware, let's
-land this patch first, and we can revert it later if there is a
-different conclusion.
-
-Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Devinder Khroad <dkhroad@logitech.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20240404-rallybar-v6-1-6d67bb6b69af@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: 7d18a824b5e57ddd ("perf annotate: Toggle full address <-> offset display")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240404175716.1225482-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 31 ++++++++++++++++++++++++++++++
- drivers/media/usb/uvc/uvcvideo.h   |  1 +
- 2 files changed, 32 insertions(+)
+ tools/perf/util/annotate.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index bbd90123a4e76..91a41aa3ced24 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/usb.h>
-+#include <linux/usb/quirks.h>
- #include <linux/usb/uvc.h>
- #include <linux/videodev2.h>
- #include <linux/vmalloc.h>
-@@ -2232,6 +2233,9 @@ static int uvc_probe(struct usb_interface *intf,
- 		goto error;
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index 50ca92255ff62..2ebe2fe92a10b 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -3025,7 +3025,7 @@ void annotation__toggle_full_addr(struct annotation *notes, struct map_symbol *m
+ 	annotation__update_column_widths(notes);
+ }
+ 
+-static void annotation__calc_lines(struct annotation *notes, struct map *map,
++static void annotation__calc_lines(struct annotation *notes, struct map_symbol *ms,
+ 				   struct rb_root *root)
+ {
+ 	struct annotation_line *al;
+@@ -3033,6 +3033,7 @@ static void annotation__calc_lines(struct annotation *notes, struct map *map,
+ 
+ 	list_for_each_entry(al, &notes->src->source, node) {
+ 		double percent_max = 0.0;
++		u64 addr;
+ 		int i;
+ 
+ 		for (i = 0; i < al->data_nr; i++) {
+@@ -3048,8 +3049,9 @@ static void annotation__calc_lines(struct annotation *notes, struct map *map,
+ 		if (percent_max <= 0.5)
+ 			continue;
+ 
+-		al->path = get_srcline(map__dso(map), notes->start + al->offset, NULL,
+-				       false, true, notes->start + al->offset);
++		addr = map__rip_2objdump(ms->map, ms->sym->start);
++		al->path = get_srcline(map__dso(ms->map), addr + al->offset, NULL,
++				       false, true, ms->sym->start + al->offset);
+ 		insert_source_line(&tmp_root, al);
  	}
  
-+	if (dev->quirks & UVC_QUIRK_NO_RESET_RESUME)
-+		udev->quirks &= ~USB_QUIRK_RESET_RESUME;
-+
- 	uvc_dbg(dev, PROBE, "UVC device initialized\n");
- 	usb_enable_autosuspend(udev);
- 	return 0;
-@@ -2574,6 +2578,33 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceSubClass	= 1,
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT) },
-+	/* Logitech Rally Bar Huddle */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x046d,
-+	  .idProduct		= 0x087c,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_NO_RESET_RESUME) },
-+	/* Logitech Rally Bar */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x046d,
-+	  .idProduct		= 0x089b,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_NO_RESET_RESUME) },
-+	/* Logitech Rally Bar Mini */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x046d,
-+	  .idProduct		= 0x08d3,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_NO_RESET_RESUME) },
- 	/* Chicony CNF7129 (Asus EEE 100HE) */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 6fb0a78b1b009..88218693f6f0b 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -73,6 +73,7 @@
- #define UVC_QUIRK_FORCE_Y8		0x00000800
- #define UVC_QUIRK_FORCE_BPP		0x00001000
- #define UVC_QUIRK_WAKE_AUTOSUSPEND	0x00002000
-+#define UVC_QUIRK_NO_RESET_RESUME	0x00004000
+@@ -3060,7 +3062,7 @@ static void symbol__calc_lines(struct map_symbol *ms, struct rb_root *root)
+ {
+ 	struct annotation *notes = symbol__annotation(ms->sym);
  
- /* Format flags */
- #define UVC_FMT_FLAG_COMPRESSED		0x00000001
+-	annotation__calc_lines(notes, ms->map, root);
++	annotation__calc_lines(notes, ms, root);
+ }
+ 
+ int symbol__tty_annotate2(struct map_symbol *ms, struct evsel *evsel)
 -- 
 2.43.0
 
