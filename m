@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720EE8FE94E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B28E88FEC8B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89DEB1C21AB3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 448B228563A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46F51993AE;
-	Thu,  6 Jun 2024 14:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9899319B3DA;
+	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RH4CLEUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZoZU67L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613F8196D9B;
-	Thu,  6 Jun 2024 14:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58122196DAB;
+	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683005; cv=none; b=pYS8mmPVVEGSo4BnzPo/rSZBIg6e+45EQO/a0Ew5aOPDTGAlprJtYm32FhK0aPVChR7Te/Ly1cEydKakCPu+bubC2nwe/NtVHzlvKKRqo3fSL61nsrNYLlGmTtfAhPFoqdZ49bH9IrgV/StTdcBOAcdRTvV/hIfu8YqLA9+yIfM=
+	t=1717683379; cv=none; b=fw46SSC1umGerz2pflPSbst2N3VGHtDyOFcwoW5Fplwvqp8LN8CYeF1c2/WNIK6Ne689x1DJWucJkqtqnY3J8DVAssUZW43YkCtNSFCO6doTRsXvPSVJJorBRO+SJLooXRoKpQo6iHYOWhGyJ1uPoyxIUzHzG55FodZQK9VSr8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683005; c=relaxed/simple;
-	bh=bnRQTsfgjJs6iRUNNT0hqUP+82wURI8lYjdUaMmgdiA=;
+	s=arc-20240116; t=1717683379; c=relaxed/simple;
+	bh=OtFkjlumPLXyjMu+MsykojxjLdIGZuKe+oAZryC2zI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GXx4Uuf5+q3umF4k3kq3liAQ1ett3C5hiiorDLUgWT5D+c0L2u80uRasUTvF8ndiFg4rHdD9Ubfd60JcGSl5jF5Ht1h6yAwQaamTFR7XkEUrDZa6wljpLC27mVxFH5Ovkh3tzZnwrAIAvkeJpry4Khimb6nFTFAzTXubCXmjlEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RH4CLEUY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40525C2BD10;
-	Thu,  6 Jun 2024 14:10:05 +0000 (UTC)
+	 MIME-Version; b=ucR8PROYCe42uv1xBgKI7tc29xT6Zau+vx649Xvz9WDMiMDza4mlUQX6meam8Cs6kiNY4XGNAgMBU0uQaY0zF5iD8ud7PO+UG/TXBpr7mm88txx05AcElVd9nAuOntajujW99TRnm3VQ/DW9bFvR4LJjR5DAYArTN9pfdrS2jZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZoZU67L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D15C2BD10;
+	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683005;
-	bh=bnRQTsfgjJs6iRUNNT0hqUP+82wURI8lYjdUaMmgdiA=;
+	s=korg; t=1717683379;
+	bh=OtFkjlumPLXyjMu+MsykojxjLdIGZuKe+oAZryC2zI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RH4CLEUYJwpjWAk8MCXOl1EazW6kxspczFv2QEcyydafBVTk8KEvo/sVCz/Fla1WJ
-	 86w521mWylJ7DMBOolCrln+sAEpAki6WkVyo2UGC6MFn2wDxXvc8QYiQYeBVHlZjOY
-	 Ha0+nbMobCMq6RvjEApS7/sP4kSMvuDYPGuyQTeI=
+	b=EZoZU67LwMz5yE4abju04w9GyKxys8mDEfJn+qfkib4oPpGv8xEmw3ChRN2sBMnW5
+	 1C6rCfD01H5HBJqViLSAsEYN8KG8/XGsRuksBgsqCIuwsYi7Z6/GgWbZklRev8nkNV
+	 YvuHfcemJVfz5GUryFu+r0issIaLiJrtOmjgJGRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 211/374] powerpc/bpf/32: Fix failing test_bpf tests
-Date: Thu,  6 Jun 2024 16:03:10 +0200
-Message-ID: <20240606131658.878222586@linuxfoundation.org>
+Subject: [PATCH 6.1 262/473] ext4: fix unit mismatch in ext4_mb_new_blocks_simple
+Date: Thu,  6 Jun 2024 16:03:11 +0200
+Message-ID: <20240606131708.613133720@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,357 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 8ecf3c1dab1c675721d3d0255556abe2306fa340 ]
+[ Upstream commit 497885f72d930305d8e61b6b616b22b4da1adf90 ]
 
-Recent additions in BPF like cpu v4 instructions, test_bpf module
-exhibits the following failures:
+The "i" returned from mb_find_next_zero_bit is in cluster unit and we
+need offset "block" corresponding to "i" in block unit. Convert "i" to
+block unit to fix the unit mismatch.
 
-  test_bpf: #82 ALU_MOVSX | BPF_B jited:1 ret 2 != 1 (0x2 != 0x1)FAIL (1 times)
-  test_bpf: #83 ALU_MOVSX | BPF_H jited:1 ret 2 != 1 (0x2 != 0x1)FAIL (1 times)
-  test_bpf: #84 ALU64_MOVSX | BPF_B jited:1 ret 2 != 1 (0x2 != 0x1)FAIL (1 times)
-  test_bpf: #85 ALU64_MOVSX | BPF_H jited:1 ret 2 != 1 (0x2 != 0x1)FAIL (1 times)
-  test_bpf: #86 ALU64_MOVSX | BPF_W jited:1 ret 2 != 1 (0x2 != 0x1)FAIL (1 times)
-
-  test_bpf: #165 ALU_SDIV_X: -6 / 2 = -3 jited:1 ret 2147483645 != -3 (0x7ffffffd != 0xfffffffd)FAIL (1 times)
-  test_bpf: #166 ALU_SDIV_K: -6 / 2 = -3 jited:1 ret 2147483645 != -3 (0x7ffffffd != 0xfffffffd)FAIL (1 times)
-
-  test_bpf: #169 ALU_SMOD_X: -7 % 2 = -1 jited:1 ret 1 != -1 (0x1 != 0xffffffff)FAIL (1 times)
-  test_bpf: #170 ALU_SMOD_K: -7 % 2 = -1 jited:1 ret 1 != -1 (0x1 != 0xffffffff)FAIL (1 times)
-
-  test_bpf: #172 ALU64_SMOD_K: -7 % 2 = -1 jited:1 ret 1 != -1 (0x1 != 0xffffffff)FAIL (1 times)
-
-  test_bpf: #313 BSWAP 16: 0x0123456789abcdef -> 0xefcd
-  eBPF filter opcode 00d7 (@2) unsupported
-  jited:0 301 PASS
-  test_bpf: #314 BSWAP 32: 0x0123456789abcdef -> 0xefcdab89
-  eBPF filter opcode 00d7 (@2) unsupported
-  jited:0 555 PASS
-  test_bpf: #315 BSWAP 64: 0x0123456789abcdef -> 0x67452301
-  eBPF filter opcode 00d7 (@2) unsupported
-  jited:0 268 PASS
-  test_bpf: #316 BSWAP 64: 0x0123456789abcdef >> 32 -> 0xefcdab89
-  eBPF filter opcode 00d7 (@2) unsupported
-  jited:0 269 PASS
-  test_bpf: #317 BSWAP 16: 0xfedcba9876543210 -> 0x1032
-  eBPF filter opcode 00d7 (@2) unsupported
-  jited:0 460 PASS
-  test_bpf: #318 BSWAP 32: 0xfedcba9876543210 -> 0x10325476
-  eBPF filter opcode 00d7 (@2) unsupported
-  jited:0 320 PASS
-  test_bpf: #319 BSWAP 64: 0xfedcba9876543210 -> 0x98badcfe
-  eBPF filter opcode 00d7 (@2) unsupported
-  jited:0 222 PASS
-  test_bpf: #320 BSWAP 64: 0xfedcba9876543210 >> 32 -> 0x10325476
-  eBPF filter opcode 00d7 (@2) unsupported
-  jited:0 273 PASS
-
-  test_bpf: #344 BPF_LDX_MEMSX | BPF_B
-  eBPF filter opcode 0091 (@5) unsupported
-  jited:0 432 PASS
-  test_bpf: #345 BPF_LDX_MEMSX | BPF_H
-  eBPF filter opcode 0089 (@5) unsupported
-  jited:0 381 PASS
-  test_bpf: #346 BPF_LDX_MEMSX | BPF_W
-  eBPF filter opcode 0081 (@5) unsupported
-  jited:0 505 PASS
-
-  test_bpf: #490 JMP32_JA: Unconditional jump: if (true) return 1
-  eBPF filter opcode 0006 (@1) unsupported
-  jited:0 261 PASS
-
-  test_bpf: Summary: 1040 PASSED, 10 FAILED, [924/1038 JIT'ed]
-
-Fix them by adding missing processing.
-
-Fixes: daabb2b098e0 ("bpf/tests: add tests for cpuv4 instructions")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/91de862dda99d170697eb79ffb478678af7e0b27.1709652689.git.christophe.leroy@csgroup.eu
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230603150327.3596033-3-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/ppc-opcode.h |   4 +
- arch/powerpc/net/bpf_jit_comp32.c     | 137 ++++++++++++++++++++------
- 2 files changed, 110 insertions(+), 31 deletions(-)
+ fs/ext4/mballoc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index 005601243dda4..076ae60b4a55d 100644
---- a/arch/powerpc/include/asm/ppc-opcode.h
-+++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -510,6 +510,7 @@
- #define PPC_RAW_STB(r, base, i)		(0x98000000 | ___PPC_RS(r) | ___PPC_RA(base) | IMM_L(i))
- #define PPC_RAW_LBZ(r, base, i)		(0x88000000 | ___PPC_RT(r) | ___PPC_RA(base) | IMM_L(i))
- #define PPC_RAW_LDX(r, base, b)		(0x7c00002a | ___PPC_RT(r) | ___PPC_RA(base) | ___PPC_RB(b))
-+#define PPC_RAW_LHA(r, base, i)		(0xa8000000 | ___PPC_RT(r) | ___PPC_RA(base) | IMM_L(i))
- #define PPC_RAW_LHZ(r, base, i)		(0xa0000000 | ___PPC_RT(r) | ___PPC_RA(base) | IMM_L(i))
- #define PPC_RAW_LHBRX(r, base, b)	(0x7c00062c | ___PPC_RT(r) | ___PPC_RA(base) | ___PPC_RB(b))
- #define PPC_RAW_LWBRX(r, base, b)	(0x7c00042c | ___PPC_RT(r) | ___PPC_RA(base) | ___PPC_RB(b))
-@@ -532,6 +533,7 @@
- #define PPC_RAW_MULW(d, a, b)		(0x7c0001d6 | ___PPC_RT(d) | ___PPC_RA(a) | ___PPC_RB(b))
- #define PPC_RAW_MULHWU(d, a, b)		(0x7c000016 | ___PPC_RT(d) | ___PPC_RA(a) | ___PPC_RB(b))
- #define PPC_RAW_MULI(d, a, i)		(0x1c000000 | ___PPC_RT(d) | ___PPC_RA(a) | IMM_L(i))
-+#define PPC_RAW_DIVW(d, a, b)		(0x7c0003d6 | ___PPC_RT(d) | ___PPC_RA(a) | ___PPC_RB(b))
- #define PPC_RAW_DIVWU(d, a, b)		(0x7c000396 | ___PPC_RT(d) | ___PPC_RA(a) | ___PPC_RB(b))
- #define PPC_RAW_DIVDU(d, a, b)		(0x7c000392 | ___PPC_RT(d) | ___PPC_RA(a) | ___PPC_RB(b))
- #define PPC_RAW_DIVDE(t, a, b)		(0x7c000352 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
-@@ -550,6 +552,8 @@
- #define PPC_RAW_XOR(d, a, b)		(0x7c000278 | ___PPC_RA(d) | ___PPC_RS(a) | ___PPC_RB(b))
- #define PPC_RAW_XORI(d, a, i)		(0x68000000 | ___PPC_RA(d) | ___PPC_RS(a) | IMM_L(i))
- #define PPC_RAW_XORIS(d, a, i)		(0x6c000000 | ___PPC_RA(d) | ___PPC_RS(a) | IMM_L(i))
-+#define PPC_RAW_EXTSB(d, a)		(0x7c000774 | ___PPC_RA(d) | ___PPC_RS(a))
-+#define PPC_RAW_EXTSH(d, a)		(0x7c000734 | ___PPC_RA(d) | ___PPC_RS(a))
- #define PPC_RAW_EXTSW(d, a)		(0x7c0007b4 | ___PPC_RA(d) | ___PPC_RS(a))
- #define PPC_RAW_SLW(d, a, s)		(0x7c000030 | ___PPC_RA(d) | ___PPC_RS(a) | ___PPC_RB(s))
- #define PPC_RAW_SLD(d, a, s)		(0x7c000036 | ___PPC_RA(d) | ___PPC_RS(a) | ___PPC_RB(s))
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index 2f39c50ca729e..43b97032a91c0 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -450,10 +450,16 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			}
- 			break;
- 		case BPF_ALU | BPF_DIV | BPF_X: /* (u32) dst /= (u32) src */
--			EMIT(PPC_RAW_DIVWU(dst_reg, src2_reg, src_reg));
-+			if (off)
-+				EMIT(PPC_RAW_DIVW(dst_reg, src2_reg, src_reg));
-+			else
-+				EMIT(PPC_RAW_DIVWU(dst_reg, src2_reg, src_reg));
- 			break;
- 		case BPF_ALU | BPF_MOD | BPF_X: /* (u32) dst %= (u32) src */
--			EMIT(PPC_RAW_DIVWU(_R0, src2_reg, src_reg));
-+			if (off)
-+				EMIT(PPC_RAW_DIVW(_R0, src2_reg, src_reg));
-+			else
-+				EMIT(PPC_RAW_DIVWU(_R0, src2_reg, src_reg));
- 			EMIT(PPC_RAW_MULW(_R0, src_reg, _R0));
- 			EMIT(PPC_RAW_SUB(dst_reg, src2_reg, _R0));
- 			break;
-@@ -467,10 +473,16 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			if (imm == 1) {
- 				EMIT(PPC_RAW_MR(dst_reg, src2_reg));
- 			} else if (is_power_of_2((u32)imm)) {
--				EMIT(PPC_RAW_SRWI(dst_reg, src2_reg, ilog2(imm)));
-+				if (off)
-+					EMIT(PPC_RAW_SRAWI(dst_reg, src2_reg, ilog2(imm)));
-+				else
-+					EMIT(PPC_RAW_SRWI(dst_reg, src2_reg, ilog2(imm)));
- 			} else {
- 				PPC_LI32(_R0, imm);
--				EMIT(PPC_RAW_DIVWU(dst_reg, src2_reg, _R0));
-+				if (off)
-+					EMIT(PPC_RAW_DIVW(dst_reg, src2_reg, _R0));
-+				else
-+					EMIT(PPC_RAW_DIVWU(dst_reg, src2_reg, _R0));
- 			}
- 			break;
- 		case BPF_ALU | BPF_MOD | BPF_K: /* (u32) dst %= (u32) imm */
-@@ -480,11 +492,19 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			if (!is_power_of_2((u32)imm)) {
- 				bpf_set_seen_register(ctx, tmp_reg);
- 				PPC_LI32(tmp_reg, imm);
--				EMIT(PPC_RAW_DIVWU(_R0, src2_reg, tmp_reg));
-+				if (off)
-+					EMIT(PPC_RAW_DIVW(_R0, src2_reg, tmp_reg));
-+				else
-+					EMIT(PPC_RAW_DIVWU(_R0, src2_reg, tmp_reg));
- 				EMIT(PPC_RAW_MULW(_R0, tmp_reg, _R0));
- 				EMIT(PPC_RAW_SUB(dst_reg, src2_reg, _R0));
- 			} else if (imm == 1) {
- 				EMIT(PPC_RAW_LI(dst_reg, 0));
-+			} else if (off) {
-+				EMIT(PPC_RAW_SRAWI(_R0, src2_reg, ilog2(imm)));
-+				EMIT(PPC_RAW_ADDZE(_R0, _R0));
-+				EMIT(PPC_RAW_SLWI(_R0, _R0, ilog2(imm)));
-+				EMIT(PPC_RAW_SUB(dst_reg, src2_reg, _R0));
- 			} else {
- 				imm = ilog2((u32)imm);
- 				EMIT(PPC_RAW_RLWINM(dst_reg, src2_reg, 0, 32 - imm, 31));
-@@ -497,11 +517,21 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 				imm = -imm;
- 			if (!is_power_of_2(imm))
- 				return -EOPNOTSUPP;
--			if (imm == 1)
-+			if (imm == 1) {
- 				EMIT(PPC_RAW_LI(dst_reg, 0));
--			else
-+				EMIT(PPC_RAW_LI(dst_reg_h, 0));
-+			} else if (off) {
-+				EMIT(PPC_RAW_SRAWI(dst_reg_h, src2_reg_h, 31));
-+				EMIT(PPC_RAW_XOR(dst_reg, src2_reg, dst_reg_h));
-+				EMIT(PPC_RAW_SUBFC(dst_reg, dst_reg_h, dst_reg));
-+				EMIT(PPC_RAW_RLWINM(dst_reg, dst_reg, 0, 32 - ilog2(imm), 31));
-+				EMIT(PPC_RAW_XOR(dst_reg, dst_reg, dst_reg_h));
-+				EMIT(PPC_RAW_SUBFC(dst_reg, dst_reg_h, dst_reg));
-+				EMIT(PPC_RAW_SUBFE(dst_reg_h, dst_reg_h, dst_reg_h));
-+			} else {
- 				EMIT(PPC_RAW_RLWINM(dst_reg, src2_reg, 0, 32 - ilog2(imm), 31));
--			EMIT(PPC_RAW_LI(dst_reg_h, 0));
-+				EMIT(PPC_RAW_LI(dst_reg_h, 0));
-+			}
- 			break;
- 		case BPF_ALU64 | BPF_DIV | BPF_K: /* dst /= imm */
- 			if (!imm)
-@@ -727,15 +757,30 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 		 * MOV
- 		 */
- 		case BPF_ALU64 | BPF_MOV | BPF_X: /* dst = src */
--			if (dst_reg == src_reg)
--				break;
--			EMIT(PPC_RAW_MR(dst_reg, src_reg));
--			EMIT(PPC_RAW_MR(dst_reg_h, src_reg_h));
-+			if (off == 8) {
-+				EMIT(PPC_RAW_EXTSB(dst_reg, src_reg));
-+				EMIT(PPC_RAW_SRAWI(dst_reg_h, dst_reg, 31));
-+			} else if (off == 16) {
-+				EMIT(PPC_RAW_EXTSH(dst_reg, src_reg));
-+				EMIT(PPC_RAW_SRAWI(dst_reg_h, dst_reg, 31));
-+			} else if (off == 32 && dst_reg == src_reg) {
-+				EMIT(PPC_RAW_SRAWI(dst_reg_h, src_reg, 31));
-+			} else if (off == 32) {
-+				EMIT(PPC_RAW_MR(dst_reg, src_reg));
-+				EMIT(PPC_RAW_SRAWI(dst_reg_h, src_reg, 31));
-+			} else if (dst_reg != src_reg) {
-+				EMIT(PPC_RAW_MR(dst_reg, src_reg));
-+				EMIT(PPC_RAW_MR(dst_reg_h, src_reg_h));
-+			}
- 			break;
- 		case BPF_ALU | BPF_MOV | BPF_X: /* (u32) dst = src */
- 			/* special mov32 for zext */
- 			if (imm == 1)
- 				EMIT(PPC_RAW_LI(dst_reg_h, 0));
-+			else if (off == 8)
-+				EMIT(PPC_RAW_EXTSB(dst_reg, src_reg));
-+			else if (off == 16)
-+				EMIT(PPC_RAW_EXTSH(dst_reg, src_reg));
- 			else if (dst_reg != src_reg)
- 				EMIT(PPC_RAW_MR(dst_reg, src_reg));
- 			break;
-@@ -751,6 +796,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 		 * BPF_FROM_BE/LE
- 		 */
- 		case BPF_ALU | BPF_END | BPF_FROM_LE:
-+		case BPF_ALU64 | BPF_END | BPF_FROM_LE:
- 			switch (imm) {
- 			case 16:
- 				/* Copy 16 bits to upper part */
-@@ -785,6 +831,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 				EMIT(PPC_RAW_MR(dst_reg_h, tmp_reg));
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index eaa5db60865a4..a809a80589857 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5874,6 +5874,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ {
+ 	struct buffer_head *bitmap_bh;
+ 	struct super_block *sb = ar->inode->i_sb;
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	ext4_group_t group;
+ 	ext4_grpblk_t blkoff;
+ 	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
+@@ -5902,7 +5903,8 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 			if (i >= max)
  				break;
- 			}
-+			if (BPF_CLASS(code) == BPF_ALU64 && imm != 64)
-+				EMIT(PPC_RAW_LI(dst_reg_h, 0));
- 			break;
- 		case BPF_ALU | BPF_END | BPF_FROM_BE:
- 			switch (imm) {
-@@ -918,11 +966,17 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 		 * BPF_LDX
- 		 */
- 		case BPF_LDX | BPF_MEM | BPF_B: /* dst = *(u8 *)(ul) (src + off) */
-+		case BPF_LDX | BPF_MEMSX | BPF_B:
- 		case BPF_LDX | BPF_PROBE_MEM | BPF_B:
-+		case BPF_LDX | BPF_PROBE_MEMSX | BPF_B:
- 		case BPF_LDX | BPF_MEM | BPF_H: /* dst = *(u16 *)(ul) (src + off) */
-+		case BPF_LDX | BPF_MEMSX | BPF_H:
- 		case BPF_LDX | BPF_PROBE_MEM | BPF_H:
-+		case BPF_LDX | BPF_PROBE_MEMSX | BPF_H:
- 		case BPF_LDX | BPF_MEM | BPF_W: /* dst = *(u32 *)(ul) (src + off) */
-+		case BPF_LDX | BPF_MEMSX | BPF_W:
- 		case BPF_LDX | BPF_PROBE_MEM | BPF_W:
-+		case BPF_LDX | BPF_PROBE_MEMSX | BPF_W:
- 		case BPF_LDX | BPF_MEM | BPF_DW: /* dst = *(u64 *)(ul) (src + off) */
- 		case BPF_LDX | BPF_PROBE_MEM | BPF_DW:
- 			/*
-@@ -931,7 +985,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			 * load only if addr is kernel address (see is_kernel_addr()), otherwise
- 			 * set dst_reg=0 and move on.
- 			 */
--			if (BPF_MODE(code) == BPF_PROBE_MEM) {
-+			if (BPF_MODE(code) == BPF_PROBE_MEM || BPF_MODE(code) == BPF_PROBE_MEMSX) {
- 				PPC_LI32(_R0, TASK_SIZE - off);
- 				EMIT(PPC_RAW_CMPLW(src_reg, _R0));
- 				PPC_BCC_SHORT(COND_GT, (ctx->idx + 4) * 4);
-@@ -953,30 +1007,48 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 				 * as there are two load instructions for dst_reg_h & dst_reg
- 				 * respectively.
- 				 */
--				if (size == BPF_DW)
-+				if (size == BPF_DW ||
-+				    (size == BPF_B && BPF_MODE(code) == BPF_PROBE_MEMSX))
- 					PPC_JMP((ctx->idx + 3) * 4);
- 				else
- 					PPC_JMP((ctx->idx + 2) * 4);
- 			}
+ 			if (ext4_fc_replay_check_excluded(sb,
+-				ext4_group_first_block_no(sb, group) + i)) {
++				ext4_group_first_block_no(sb, group) +
++				EXT4_C2B(sbi, i))) {
+ 				blkoff = i + 1;
+ 			} else
+ 				break;
+@@ -5919,7 +5921,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+ 		return 0;
+ 	}
  
--			switch (size) {
--			case BPF_B:
--				EMIT(PPC_RAW_LBZ(dst_reg, src_reg, off));
--				break;
--			case BPF_H:
--				EMIT(PPC_RAW_LHZ(dst_reg, src_reg, off));
--				break;
--			case BPF_W:
--				EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off));
--				break;
--			case BPF_DW:
--				EMIT(PPC_RAW_LWZ(dst_reg_h, src_reg, off));
--				EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off + 4));
--				break;
--			}
-+			if (BPF_MODE(code) == BPF_MEMSX || BPF_MODE(code) == BPF_PROBE_MEMSX) {
-+				switch (size) {
-+				case BPF_B:
-+					EMIT(PPC_RAW_LBZ(dst_reg, src_reg, off));
-+					EMIT(PPC_RAW_EXTSB(dst_reg, dst_reg));
-+					break;
-+				case BPF_H:
-+					EMIT(PPC_RAW_LHA(dst_reg, src_reg, off));
-+					break;
-+				case BPF_W:
-+					EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off));
-+					break;
-+				}
-+				if (!fp->aux->verifier_zext)
-+					EMIT(PPC_RAW_SRAWI(dst_reg_h, dst_reg, 31));
+-	block = ext4_group_first_block_no(sb, group) + i;
++	block = ext4_group_first_block_no(sb, group) + EXT4_C2B(sbi, i);
+ 	ext4_mb_mark_bb(sb, block, 1, 1);
+ 	ar->len = 1;
  
--			if (size != BPF_DW && !fp->aux->verifier_zext)
--				EMIT(PPC_RAW_LI(dst_reg_h, 0));
-+			} else {
-+				switch (size) {
-+				case BPF_B:
-+					EMIT(PPC_RAW_LBZ(dst_reg, src_reg, off));
-+					break;
-+				case BPF_H:
-+					EMIT(PPC_RAW_LHZ(dst_reg, src_reg, off));
-+					break;
-+				case BPF_W:
-+					EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off));
-+					break;
-+				case BPF_DW:
-+					EMIT(PPC_RAW_LWZ(dst_reg_h, src_reg, off));
-+					EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off + 4));
-+					break;
-+				}
-+				if (size != BPF_DW && !fp->aux->verifier_zext)
-+					EMIT(PPC_RAW_LI(dst_reg_h, 0));
-+			}
- 
- 			if (BPF_MODE(code) == BPF_PROBE_MEM) {
- 				int insn_idx = ctx->idx - 1;
-@@ -1068,6 +1140,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 		case BPF_JMP | BPF_JA:
- 			PPC_JMP(addrs[i + 1 + off]);
- 			break;
-+		case BPF_JMP32 | BPF_JA:
-+			PPC_JMP(addrs[i + 1 + imm]);
-+			break;
- 
- 		case BPF_JMP | BPF_JGT | BPF_K:
- 		case BPF_JMP | BPF_JGT | BPF_X:
 -- 
 2.43.0
 
