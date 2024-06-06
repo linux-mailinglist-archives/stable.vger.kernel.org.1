@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-49641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28D58FEE3E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:43:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A51FC8FEE42
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B88291C24523
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:43:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EEF6B2321C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91C71A0AE0;
-	Thu,  6 Jun 2024 14:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DA21A01D0;
+	Thu,  6 Jun 2024 14:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY/6iAZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpIGU2WG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CC91A01DA;
-	Thu,  6 Jun 2024 14:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B584E1A01D4;
+	Thu,  6 Jun 2024 14:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683636; cv=none; b=TlFoCa0Vb4Equ+H2yfCB2+IxpOKYkdh4ppK3Ar8r54au4idl3AYgPJih+JTNGSlI1WNzj383eoRHj6oSwRQRLzWlIjo+GZB2M3nCfga7uq6etyc3/hlzTUZOvpdI9FB8JiX1jDHerrGSsFp3u0G1ksfkJADEyZ5MiVTrHZecHH8=
+	t=1717683637; cv=none; b=gDKugj8IZx549a1EZLNqyQKnIQYVsXpQTyLAR87PHl29AXTlmtPGbGwPyyY/uv3ujVcBIn0BRWlLwfdqEjgVi7w4OTC3w1dNyJYgbgQNwSD49XxfzhI+WZV3CDZj1tO8O2vnGRYabQJFUbpMEZjB1lbDg2FFtoL0MfyrVZCPydI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683636; c=relaxed/simple;
-	bh=BedvyeTFZwaUcKmXmRt4iV4uGvr/r6HEtziwLdyI4aE=;
+	s=arc-20240116; t=1717683637; c=relaxed/simple;
+	bh=GZ4rCTS0fjRQkr/h9WgKGwLZzfs3rYhiKzzZpHnlgbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kn02v/8+d5LVb6mIHkeLnEUjNBCbfiWQeJf3ZNcZ7iKMMFz5R2/0X5Ye3VObHROFk0x4fP9jtKJpBtkExRP8V8ZRIl6CcypoDE+puk+TFqCm1RdaBNgoAiJwnQ9wDT8+1/S6i4OSZqWFsTc785Ty2Bb4WPSn+6ZTNZUCHA4m874=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY/6iAZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1851FC2BD10;
-	Thu,  6 Jun 2024 14:20:36 +0000 (UTC)
+	 MIME-Version; b=tesjU+mcomnnFO6zhtwdAA+rypDdQapuw5YJJN3wqFSbDQc6LxkfFn5McoFY/507WwczWkaL6BJ+Ucu1pXx0JAebEZApHef3ZYcF6cNt2jNQnB/kZTG4rC9HpxonMdJtOjRLx10T6xuRNhH5OCb5xWYoyWz0cSMw7VF/tgsHdLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpIGU2WG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCFEC2BD10;
+	Thu,  6 Jun 2024 14:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683636;
-	bh=BedvyeTFZwaUcKmXmRt4iV4uGvr/r6HEtziwLdyI4aE=;
+	s=korg; t=1717683637;
+	bh=GZ4rCTS0fjRQkr/h9WgKGwLZzfs3rYhiKzzZpHnlgbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XY/6iAZNQ5tQj/mKdo+YyUuIo6yIZRPIPm5z8V/cv+eQr6RLOHx85RiBNiDg6AVGP
-	 8DIt8R7I1Sz0YmblycX6bxw7eliYl5VOT0fYfxi5P5q5ujNY2T4OCYW/MFlr6bE+oT
-	 ygrHLrbJ6W6j9WtUG+B9seWHVQwXQSqckHLuF85A=
+	b=BpIGU2WGZwa2JD3F7XLLIPRgW2WL2PCy/woJG9fCC9h1sstwbEE402akfsOu3EqVQ
+	 r8Pfxs7MHbzX9X6BgRs1t11+/gxEBQ/VH2iIM0SzzmwfYzQwrVXMEfvLwsCfPGxXOQ
+	 U8F7QECWthVf1QHnaC0gYnK3c6cX8EomvFcJXuoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -55,9 +55,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 508/744] perf report: Avoid SEGV in report__setup_sample_type()
-Date: Thu,  6 Jun 2024 16:03:00 +0200
-Message-ID: <20240606131748.747506858@linuxfoundation.org>
+Subject: [PATCH 6.6 509/744] perf thread: Fixes to thread__new() related to initializing comm
+Date: Thu,  6 Jun 2024 16:03:01 +0200
+Message-ID: <20240606131748.784605579@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -78,12 +78,14 @@ Content-Transfer-Encoding: 8bit
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 45b4f402a6b782352c4bafcff682bfb01da9ca05 ]
+[ Upstream commit 3536c2575e88a890cf696b4ccd3da36bc937853b ]
 
-In some cases evsel->name is lazily initialized in evsel__name(). If not
-initialized passing NULL to strstr() leads to a SEGV.
+Freeing the thread on failure won't work with reference count checking,
+use thread__delete().
 
-Fixes: ccb17caecfbd542f ("perf report: Set PERF_SAMPLE_DATA_SRC bit for Arm SPE event")
+Don't allocate the comm_str, use a stack allocation instead.
+
+Fixes: f6005cafebab72f8 ("perf thread: Add reference count checking")
 Signed-off-by: Ian Rogers <irogers@google.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
@@ -95,26 +97,57 @@ Cc: Leo Yan <leo.yan@linux.dev>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240508035301.1554434-4-irogers@google.com
+Link: https://lore.kernel.org/r/20240508035301.1554434-5-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-report.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/thread.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 169c64e9a01a8..2a8889c6d7f97 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -426,7 +426,7 @@ static int report__setup_sample_type(struct report *rep)
- 		 * compatibility, set the bit if it's an old perf data file.
- 		 */
- 		evlist__for_each_entry(session->evlist, evsel) {
--			if (strstr(evsel->name, "arm_spe") &&
-+			if (strstr(evsel__name(evsel), "arm_spe") &&
- 				!(sample_type & PERF_SAMPLE_DATA_SRC)) {
- 				evsel->core.attr.sample_type |= PERF_SAMPLE_DATA_SRC;
- 				sample_type |= PERF_SAMPLE_DATA_SRC;
+diff --git a/tools/perf/util/thread.c b/tools/perf/util/thread.c
+index fe5e6991ae4b4..61e9f449c7258 100644
+--- a/tools/perf/util/thread.c
++++ b/tools/perf/util/thread.c
+@@ -39,12 +39,13 @@ int thread__init_maps(struct thread *thread, struct machine *machine)
+ 
+ struct thread *thread__new(pid_t pid, pid_t tid)
+ {
+-	char *comm_str;
+-	struct comm *comm;
+ 	RC_STRUCT(thread) *_thread = zalloc(sizeof(*_thread));
+ 	struct thread *thread;
+ 
+ 	if (ADD_RC_CHK(thread, _thread) != NULL) {
++		struct comm *comm;
++		char comm_str[32];
++
+ 		thread__set_pid(thread, pid);
+ 		thread__set_tid(thread, tid);
+ 		thread__set_ppid(thread, -1);
+@@ -56,13 +57,8 @@ struct thread *thread__new(pid_t pid, pid_t tid)
+ 		init_rwsem(thread__namespaces_lock(thread));
+ 		init_rwsem(thread__comm_lock(thread));
+ 
+-		comm_str = malloc(32);
+-		if (!comm_str)
+-			goto err_thread;
+-
+-		snprintf(comm_str, 32, ":%d", tid);
++		snprintf(comm_str, sizeof(comm_str), ":%d", tid);
+ 		comm = comm__new(comm_str, 0, false);
+-		free(comm_str);
+ 		if (!comm)
+ 			goto err_thread;
+ 
+@@ -76,7 +72,7 @@ struct thread *thread__new(pid_t pid, pid_t tid)
+ 	return thread;
+ 
+ err_thread:
+-	free(thread);
++	thread__delete(thread);
+ 	return NULL;
+ }
+ 
 -- 
 2.43.0
 
