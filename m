@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-48412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8090E8FE8E8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CAF8FED30
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FF3D1C25559
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A6C282156
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F531990A2;
-	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B42019D069;
+	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MANauAkj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NPgTCtj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE74F196C8D;
-	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9C938D;
+	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682949; cv=none; b=m05itrxL/kKZwSRtmmyPLviyW+xCeeArFqU5bvHVwSfVWvh156cs/qm5apApPHJVRrif9xdPj/HuVxj60nGN7s3QNB6wyVFaKZjbQI7TYwZepzWl0TUYFZbay63kqzoVnQmCPEiU1PJ8rCKeOjf0ryss1BPI7Sole6VipwgrAxI=
+	t=1717683457; cv=none; b=V+pPQ6D3h5azyQ6PVuNng4FNCiajwkfz8NjLG3Bl2V62p6yLLb5aopTIbjsdGGxVze5B1Q89BHAWO7iAvHAavFi+LGx3CGo/Ih3ELQuLJn3gCoGQoh2OcOADfqn023TtiQR+DhShkeZbkfogtGeo+PD4I9YEr+Y5FqVLpMeK9HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682949; c=relaxed/simple;
-	bh=VId0kwqDIYkXhFNxKId0L3tA3FyknH8JXNe1wNgOPUE=;
+	s=arc-20240116; t=1717683457; c=relaxed/simple;
+	bh=SyUebccWWwPBHgWsHKom0XZqG1C9mqNy0KOBmudkRxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvX6WquCRg5PaL/jh5ay70CK6SGGLNYgvJQQPd/pGHYERHBAja0duG2SE+SPTmQoqeeOdAFDQFWEEJ1z5flNrAhMjfs720lWR0QdIkMgIZJaYuPcy1Hhq/u+6x9ZfixImAFvIviI2iLeuryN9G2XEUyjjg9Yv98HfgFsaZS3h7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MANauAkj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB52C2BD10;
-	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
+	 MIME-Version; b=PWMp4KDrrqOVNnCdKqH5vAlu/rLNX9Bs1xlf/hc5BC3iwLban8A2mkKz5VXu/OQnECldkqGOspYllhXD0jrst0qnMwnhnGmPHY7TwTnX6CfgdCmJfu16/h1bnamyGseMMAS3RXCXezNOXO5MyRrdq6+pJd0nLqB8fd80M/EM+ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NPgTCtj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A75C32781;
+	Thu,  6 Jun 2024 14:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682949;
-	bh=VId0kwqDIYkXhFNxKId0L3tA3FyknH8JXNe1wNgOPUE=;
+	s=korg; t=1717683457;
+	bh=SyUebccWWwPBHgWsHKom0XZqG1C9mqNy0KOBmudkRxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MANauAkj2A3bg1rl2qGk9kkchFvHoJu3axlg5u/arrUvAOXgB1KpTw/5sIA4MNLK9
-	 dIxa4m8GP3+C7T8k5nNfEFp7kRgLVCDBPILBZvYuLLgy/P3fFEUEkdRzJEGXCRFK7T
-	 /LGiRGS0bL/rr+URmX57MKzM9SI8bRmLt/Eqb004=
+	b=1NPgTCtjKCRCXUM83Sk3CiA64gHTS6nUypNI89irYhswVgzbFCeI9294pZEGZPUVm
+	 umlaAKr5lxGCWJ0Cf+CVJTJe30KvFIm2SvWS2xETkFDfZaiVkvB2SwFKkTx+6RSKJF
+	 1hu1e/JVZg1tlxhoiRc5eeUOxVO46CbWwBNuNFBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	David Collins <quic_collinsd@quicinc.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 095/374] spmi: pmic-arb: Replace three IS_ERR() calls by null pointer checks in spmi_pmic_arb_probe()
+Subject: [PATCH 6.6 402/744] usb: typec: ucsi: simplify partners PD caps registration
 Date: Thu,  6 Jun 2024 16:01:14 +0200
-Message-ID: <20240606131655.083232675@linuxfoundation.org>
+Message-ID: <20240606131745.351354916@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit c86f90e30a347ef0a28d0df3975c46389d0cc7fc ]
+[ Upstream commit 41e1cd1401fcd1f1ae9e47574af2d9fc44a870b3 ]
 
-The devm_ioremap() function does not return error pointers.
-It returns NULL on error.
-This issue was detected once more also by using the Coccinelle software.
+In a way similar to the previous commit, move
+typec_partner_set_usb_power_delivery() to be called after reading the PD
+caps. This also removes calls to
+usb_power_delivery_unregister_capabilities() from the error path. Keep
+all capabilities registered until they are cleared by
+ucsi_unregister_partner_pdos().
 
-Update three checks (and corresponding error codes) for failed
-function calls accordingly.
-
-Fixes: ffdfbafdc4f4 ("spmi: Use devm_spmi_controller_alloc()")
-Fixes: 231601cd22bd ("spmi: pmic-arb: Add support for PMIC v7")
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Link: https://lore.kernel.org/r/82a0768e-95b0-4091-bdd1-14c3e893726b@web.de
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: David Collins <quic_collinsd@quicinc.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240507210809.3479953-6-sboyd@kernel.org
+Fixes: b04e1747fbcc ("usb: typec: ucsi: Register USB Power Delivery Capabilities")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240329-qcom-ucsi-fixes-v2-5-0f5d37ed04db@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spmi/spmi-pmic-arb.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/drivers/spmi/spmi-pmic-arb.c b/drivers/spmi/spmi-pmic-arb.c
-index 9ed1180fe31f1..937c15324513f 100644
---- a/drivers/spmi/spmi-pmic-arb.c
-+++ b/drivers/spmi/spmi-pmic-arb.c
-@@ -1462,8 +1462,8 @@ static int spmi_pmic_arb_probe(struct platform_device *pdev)
- 	 */
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "core");
- 	core = devm_ioremap(&ctrl->dev, res->start, resource_size(res));
--	if (IS_ERR(core))
--		return PTR_ERR(core);
-+	if (!core)
-+		return -ENOMEM;
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 4aac2a719b7cd..7f575b9b3debe 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -694,12 +694,6 @@ static int ucsi_register_partner_pdos(struct ucsi_connector *con)
+ 			return PTR_ERR(cap);
  
- 	pmic_arb->core_size = resource_size(res);
- 
-@@ -1495,15 +1495,15 @@ static int spmi_pmic_arb_probe(struct platform_device *pdev)
- 						   "obsrvr");
- 		pmic_arb->rd_base = devm_ioremap(&ctrl->dev, res->start,
- 						 resource_size(res));
--		if (IS_ERR(pmic_arb->rd_base))
--			return PTR_ERR(pmic_arb->rd_base);
-+		if (!pmic_arb->rd_base)
-+			return -ENOMEM;
- 
- 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
- 						   "chnls");
- 		pmic_arb->wr_base = devm_ioremap(&ctrl->dev, res->start,
- 						 resource_size(res));
--		if (IS_ERR(pmic_arb->wr_base))
--			return PTR_ERR(pmic_arb->wr_base);
-+		if (!pmic_arb->wr_base)
-+			return -ENOMEM;
+ 		con->partner_source_caps = cap;
+-
+-		ret = typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
+-		if (ret) {
+-			usb_power_delivery_unregister_capabilities(con->partner_source_caps);
+-			return ret;
+-		}
  	}
  
- 	pmic_arb->max_periphs = PMIC_ARB_MAX_PERIPHS;
+ 	ret = ucsi_get_pdos(con, TYPEC_SINK, 1, caps.pdo);
+@@ -714,15 +708,9 @@ static int ucsi_register_partner_pdos(struct ucsi_connector *con)
+ 			return PTR_ERR(cap);
+ 
+ 		con->partner_sink_caps = cap;
+-
+-		ret = typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
+-		if (ret) {
+-			usb_power_delivery_unregister_capabilities(con->partner_sink_caps);
+-			return ret;
+-		}
+ 	}
+ 
+-	return 0;
++	return typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
+ }
+ 
+ static void ucsi_unregister_partner_pdos(struct ucsi_connector *con)
 -- 
 2.43.0
 
