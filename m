@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-48815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605CC8FEAA6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B11F58FEAA9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA201C25655
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3A028957C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FB71991CD;
-	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2295E197532;
+	Thu,  6 Jun 2024 14:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrtdQVVK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miO2UJYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D621A0B04;
-	Thu,  6 Jun 2024 14:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E571991C1;
+	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683161; cv=none; b=JmiIdsrsGD2xxbjOn+DzpgrxM5h0wTapcLTp9FD7gwAU4NI9t8J+4DB1JBNNCpS7Y25AWCc4sCuzqnzLKk2Xi+hPRmPZGvaPoVaG86JCb+rT8r35nrf79cM6sA6+yw3G3vieX5ga8XY7iNOsqj45SuuhESDNDg8M2B2w1CoV7cE=
+	t=1717683161; cv=none; b=LXFhye5ITWV3gsjpUA4ibBNHerLjv0Wqk98YsfiBfxpyHO++VSez+qCnvUGiLw3dQoJCFFw2IwcZpHAc7E2Rzze7RYuaPdp7nwdI7C2UU6EpcBBLe5d3InnzTXO5WKTZqbcusEGDZ0dzbc5sHyE4GcxxbMfo4gxyD4hGN4loTz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717683161; c=relaxed/simple;
-	bh=J4HJtHV5bbQcAFXoblcyKqutTr7QGyekM2oIAijciOE=;
+	bh=R/Mdd7Kl4ew6HznYWAYcZl9Vu8FKrb1lCFcqx8uMggI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WlHOqjcv9lbm4Eu9LKG3rkob06hsj2vZbG1y/DBDaxx4W4xdAcB5qvnEe/F3/Y2oqJLsDqrmaheM/gs3fvFzNs9lHKyuqaIomkBu+iEmr7eiGY4A9BB2smEmqoZ/KB3KXqSTQfpZB7l0OS0hu6XyWT7lpXiAiMZ508esxGjMoxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrtdQVVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C42C2BD10;
-	Thu,  6 Jun 2024 14:12:40 +0000 (UTC)
+	 MIME-Version; b=juI/S12Szw6uubxa8FfhPLfE4yqMTuI2hS15MAVGwtXdjG7teo/POUCTZGUPyWzrgeB0i7OYNJTl5r6er9ojvSPeSZDEeAY14SMoqFO/N9uIrC0UDUJuiqf32Cz0lQ+wI2ksMNch04FT5X+RbqR/KrSE+MBN3EEdYYqmlu0wGRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miO2UJYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2838C32781;
+	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683160;
-	bh=J4HJtHV5bbQcAFXoblcyKqutTr7QGyekM2oIAijciOE=;
+	s=korg; t=1717683161;
+	bh=R/Mdd7Kl4ew6HznYWAYcZl9Vu8FKrb1lCFcqx8uMggI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MrtdQVVKM+5v8Xu7UgCWys2r3jMq3HTRMNGAzt/6FCV/1Wc7p3BQi8e9EKakkzGce
-	 EgyMutfsZexZenkpxTTy/iLtUM7AHBqNeAe9txAIDEGy49OcwTNGqSGVeca2dHdtVP
-	 HRpScYPEBBVuMbkVQ48hGNFmaflAYVRgTs/vzd+8=
+	b=miO2UJYyMeafVVZMT0VjITgY757EjEcBG8iYtiep9srOrQj+F6gWSAeJSBIorhDWc
+	 nxBHUph+eerUcP4si8v3tQ6PlHBGXvsYZOcdWkjsDtWQeSMkSqVRx2FIKJOkwV7ogx
+	 8T72Q/S2wgTWsArpVXlUWLrqY9ItYz0X98VenHCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Nikita Kiryushin <kiryushin@ancud.ru>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/744] io_uring: use the right type for work_llist empty check
-Date: Thu,  6 Jun 2024 15:56:17 +0200
-Message-ID: <20240606131735.756411901@linuxfoundation.org>
+Subject: [PATCH 6.6 106/744] rcu-tasks: Fix show_rcu_tasks_trace_gp_kthread buffer overflow
+Date: Thu,  6 Jun 2024 15:56:18 +0200
+Message-ID: <20240606131735.790546221@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -65,35 +68,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit 22537c9f79417fed70b352d54d01d2586fee9521 ]
+[ Upstream commit cc5645fddb0ce28492b15520306d092730dffa48 ]
 
-io_task_work_pending() uses wq_list_empty() on ctx->work_llist, but it's
-not an io_wq_work_list, it's a struct llist_head. They both have
-->first as head-of-list, and it turns out the checks are identical. But
-be proper and use the right helper.
+There is a possibility of buffer overflow in
+show_rcu_tasks_trace_gp_kthread() if counters, passed
+to sprintf() are huge. Counter numbers, needed for this
+are unrealistically high, but buffer overflow is still
+possible.
 
-Fixes: dac6a0eae793 ("io_uring: ensure iopoll runs local task work as well")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Use snprintf() with buffer size instead of sprintf().
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: edf3775f0ad6 ("rcu-tasks: Add count for idle tasks on offline CPUs")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.h | 2 +-
+ kernel/rcu/tasks.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/io_uring.h b/io_uring/io_uring.h
-index 411c883b37a95..19ac1b2f1ea45 100644
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -304,7 +304,7 @@ static inline int io_run_task_work(void)
- 
- static inline bool io_task_work_pending(struct io_ring_ctx *ctx)
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index 65e000ca332cc..305e960c08ac5 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -1938,7 +1938,7 @@ void show_rcu_tasks_trace_gp_kthread(void)
  {
--	return task_work_pending(current) || !wq_list_empty(&ctx->work_llist);
-+	return task_work_pending(current) || !llist_empty(&ctx->work_llist);
- }
+ 	char buf[64];
  
- static inline void io_tw_lock(struct io_ring_ctx *ctx, struct io_tw_state *ts)
+-	sprintf(buf, "N%lu h:%lu/%lu/%lu",
++	snprintf(buf, sizeof(buf), "N%lu h:%lu/%lu/%lu",
+ 		data_race(n_trc_holdouts),
+ 		data_race(n_heavy_reader_ofl_updates),
+ 		data_race(n_heavy_reader_updates),
 -- 
 2.43.0
 
