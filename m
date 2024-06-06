@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4757F8FEE6D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E728FECB1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07A61F2391B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD009287788
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD91F1C3725;
-	Thu,  6 Jun 2024 14:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012E11B1502;
+	Thu,  6 Jun 2024 14:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERqzS2ey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtWcp5gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0D91A0B06;
-	Thu,  6 Jun 2024 14:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F7A1B1519;
+	Thu,  6 Jun 2024 14:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683659; cv=none; b=iHsXrs+sS/JynKbno7qur9DcQwR4wFml8vaqkKJ0/n5OhUEZSNu0xCVB3pV45zdVdpHibflJSW5PehRb2szTJs+Vlj/jWOXeX0za8EryMpZJm5DTZPhWbPYJrehE4+v8Mss4OdVueI8Rfz8Z/FOYgxNC2To43V3rDil0xhOwBqA=
+	t=1717683397; cv=none; b=Ucv/CJ2nuHIiNvQXriptx6o0haRNe5czHBcfzFze2tMUxOvSb+65Jg3Vwp0RtA+LqO3Dtw+aYK4vX+7mat9TxSAirc3ePfJeqgkwjNIaSw/z9byywFvXuRPbRLcaIkqsX54ez/PJlizijR2WP+MVhjtmczklyJrLLTcHNyp7sIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683659; c=relaxed/simple;
-	bh=9votOwkAVc/1V1bb8EcXD8jwJ63Urs/IfScIvC3V8NA=;
+	s=arc-20240116; t=1717683397; c=relaxed/simple;
+	bh=iOsWejZw8qIBGumMVSQxMgM1SGbdMm5ySHhMAScpO9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVxAMGqqEQPxsv7805OKRpqRXUYd4IJoaN87eoX1mNA5mp9DEMuPsCUHBH8KmxTnQ65Q2JdGbh70DY7eLdVTBLCxK21xn4FtWrWGGwpnMn9uDMvUDHlORHec1DeiMu0o3b5b9j3rg5whIYdUOYQxTLi9T8Ui1DqCAz8BCqXbHrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERqzS2ey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD58C2BD10;
-	Thu,  6 Jun 2024 14:20:59 +0000 (UTC)
+	 MIME-Version; b=onfSVUPxr3+y3VofoWOdsKlLMGXmx7BLfGWzxaM+QB91Kv4DtIJR5xCRdt8SExWQjjWSahvJqo5jAthHx+6zxboyXtQaSEyV3G4GrDTcVDVjFEWBSm//9VHYRHJkmL4+jCQ8HHJjufwlc0+Gvk0TQDjWUqo3GXRlZNin7Ht1FhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtWcp5gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E73C32781;
+	Thu,  6 Jun 2024 14:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683659;
-	bh=9votOwkAVc/1V1bb8EcXD8jwJ63Urs/IfScIvC3V8NA=;
+	s=korg; t=1717683397;
+	bh=iOsWejZw8qIBGumMVSQxMgM1SGbdMm5ySHhMAScpO9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERqzS2ey9dI9b4ctzrMOU54cAGuvrfY9TFBk9QIZR4ptkKIYBRogrhCs6x/+Yvwi6
-	 UQJ85MVMjw6ceq1Vwoqbv13+XrSDpNczzXWyvGOYo+t+hs3kwrF7H1QdfKSSczdjPh
-	 vVC9gX93uJ4J/a6MxYA3tyyy5wIaLQaMaK+HvH2Y=
+	b=XtWcp5gcrPYpuW+cq6q9zuTR76o7wWyVJnhWP45JUn2tcTp/5b316NsR4CVtvAtyp
+	 glQRN/vZD/5btd7crY2iDzcynulFdoh7al3OJnS615oYWfncgENe+MgZNCkuhAAKu8
+	 EjpmJRv8sRWrstvqPvzh2XkaP8w0LoawQpvCHO38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 538/744] s390/vdso: Use standard stack frame layout
+Subject: [PATCH 6.1 281/473] iio: core: Leave private pointer NULL when no private data supplied
 Date: Thu,  6 Jun 2024 16:03:30 +0200
-Message-ID: <20240606131749.714648694@linuxfoundation.org>
+Message-ID: <20240606131709.195613515@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 185445c7c137822ad856aae91a41e199370cb534 ]
+[ Upstream commit f0245ab389330cbc1d187e358a5b890d9f5383db ]
 
-By default user space is compiled with standard stack frame layout and not
-with the packed stack layout. The vdso code however inherited the
--mpacked-stack compiler option from the kernel. Remove this option to make
-sure the vdso is compiled with standard stack frame layout.
+In iio_device_alloc() when size of the private data is 0,
+the private pointer is calculated to point behind the valid data.
+Leave it NULL when no private data supplied.
 
-This makes sure that the stack frame backchain location for vdso generated
-stack frames is the same like for calling code (if compiled with default
-options). This allows to manually walk stack frames without DWARF
-information, like the kernel is doing it e.g. with arch_stack_walk_user().
-
-Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
-Reviewed-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 6d4ebd565d15 ("iio: core: wrap IIO device into an iio_dev_opaque object")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20240304140650.977784-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vdso32/Makefile | 1 +
- arch/s390/kernel/vdso64/Makefile | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/iio/industrialio-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
-index 9090c0e5de254..4800d80decee6 100644
---- a/arch/s390/kernel/vdso32/Makefile
-+++ b/arch/s390/kernel/vdso32/Makefile
-@@ -19,6 +19,7 @@ KBUILD_AFLAGS_32 := $(filter-out -m64,$(KBUILD_AFLAGS))
- KBUILD_AFLAGS_32 += -m31 -s
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index a2f8278f00856..135a86fc94531 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1670,8 +1670,10 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 		return NULL;
  
- KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
-+KBUILD_CFLAGS_32 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS))
- KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
- KBUILD_CFLAGS_32 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_32))
- KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin -fasynchronous-unwind-tables
-diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-index a44f51de1f1ea..2f2e4e997030c 100644
---- a/arch/s390/kernel/vdso64/Makefile
-+++ b/arch/s390/kernel/vdso64/Makefile
-@@ -24,6 +24,7 @@ KBUILD_AFLAGS_64 := $(filter-out -m64,$(KBUILD_AFLAGS))
- KBUILD_AFLAGS_64 += -m64
+ 	indio_dev = &iio_dev_opaque->indio_dev;
+-	indio_dev->priv = (char *)iio_dev_opaque +
+-		ALIGN(sizeof(struct iio_dev_opaque), IIO_DMA_MINALIGN);
++
++	if (sizeof_priv)
++		indio_dev->priv = (char *)iio_dev_opaque +
++			ALIGN(sizeof(*iio_dev_opaque), IIO_DMA_MINALIGN);
  
- KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
-+KBUILD_CFLAGS_64 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_64))
+ 	indio_dev->dev.parent = parent;
+ 	indio_dev->dev.type = &iio_device_type;
 -- 
 2.43.0
 
