@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-48431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090518FE8FA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6524D8FEBD4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A3F91C2458B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05930286B20
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A945E1990BE;
-	Thu,  6 Jun 2024 14:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B85A1ABE32;
+	Thu,  6 Jun 2024 14:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YG4PMCD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oobLVul9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683D019751E;
-	Thu,  6 Jun 2024 14:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18883196DA8;
+	Thu,  6 Jun 2024 14:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682962; cv=none; b=fEv5o/sO3LgP079MYPnpX0CIVNC3ejldhvZ6S4D76OOgfiSt7ftYyBWrj0PB9yMNn+dPdwEhwZVWKtXpbATcvhXI6L3WgD2JqzSJwU825BD0ohsg9K2WpsF16D7mHsV1BR1zRmG8hGWg+sJI21LedCjY5mK19q0kKWWg+tuijGI=
+	t=1717683300; cv=none; b=nVBr9xv6UmcxjSphtYkcabSE3cQ7WJg6Genr7Q4w6XigdDwRuBZkNZkugdj18FuY2Jms1uyqvVVIZA+eQN3M2zdHhhoBi6MIfA2rniwn+wrgbPmEbH6vldKErQLPbeQXZ17lrVos83ujeTRJ1cclmzBR0fitPAB2ifsmGQkiUvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682962; c=relaxed/simple;
-	bh=7O2248+SllAvOd8iZ0pJj8OJOZDjzxnbgJBy9860FtI=;
+	s=arc-20240116; t=1717683300; c=relaxed/simple;
+	bh=9MPj+djPZQSxKl+rnvbYERtbhDjagy4Z41Kj9QLliCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqHvUZGTeQn7zjc92w0nWkvdd75HjCsbrgvVMic815HXXQxGkvzdmIU5l3XLueig1DXcyKpGQ3PSwIjk9d5IGiWNoe3dqS/KrW7g29028GiDgIurk9nZFR4PfICM9WD6wrnRKnuttDiSG70vyWmN1rUi0WaDQZfCTXwm/bvNclE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YG4PMCD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DB7C32786;
-	Thu,  6 Jun 2024 14:09:22 +0000 (UTC)
+	 MIME-Version; b=nMI/PflooX6m4ecoaSMCJ0YX7bIu+R7DGuQOtQn1eLvoL+oyi79I0nJsc79fglH/FdgzKCFvAxLANnHi9+TTuz62U2NnYoFbybDyIsB6FqSt8WKyXgs/mxdc6CJEtTfk0Bj5/R/eJyFriEek3hKJwcR7Q6PIob6Uf7ZYWcv0+ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oobLVul9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A054CC32781;
+	Thu,  6 Jun 2024 14:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682962;
-	bh=7O2248+SllAvOd8iZ0pJj8OJOZDjzxnbgJBy9860FtI=;
+	s=korg; t=1717683299;
+	bh=9MPj+djPZQSxKl+rnvbYERtbhDjagy4Z41Kj9QLliCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YG4PMCD4amjM9UpBmA4dq0XL+NUFCX1OUdUVvnJWRhBdcOG9v8Kc9XEoVXewVJh9I
-	 lWAnUM46gwX9eeZuWtRvVsKldReezcDuucidnIoCRZQ30weX9JnjWPiv1tC3WQmgN1
-	 2y9WI5dzWOok1j5ue/VorGRt6bhggzy8Zph2+/EA=
+	b=oobLVul9cnUPoOHSWvqVh4AqvM3t1hc6YHlCJCcyWXrFYnC/BmYJovmktGtYYw6iA
+	 AVrznVCZk1db/t1kFhCERX7D07O64Q6Q2WilpnlIj99pUkCMmddYvXTTO/eetJVj07
+	 Eqs+PBCabs03a3TM1vz0kLwYxV5RTRNkMCn0qkc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Puranjay Mohan <puranjay12@gmail.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 130/374] s390/ftrace: Use unwinder instead of __builtin_return_address()
+Subject: [PATCH 6.1 180/473] s390/bpf: Emit a barrier for BPF_FETCH instructions
 Date: Thu,  6 Jun 2024 16:01:49 +0200
-Message-ID: <20240606131656.254449843@linuxfoundation.org>
+Message-ID: <20240606131705.881350928@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit cae74ba8c295bc41bda749ef27a8f2b3ee957a41 ]
+[ Upstream commit 68378982f0b21de02ac3c6a11e2420badefcb4bc ]
 
-Using __builtin_return_address(n) might return undefined values
-when used with values of n outside of the stack. This was noticed
-when __builtin_return_address() was called in ftrace on top level
-functions like the interrupt handlers.
+BPF_ATOMIC_OP() macro documentation states that "BPF_ADD | BPF_FETCH"
+should be the same as atomic_fetch_add(), which is currently not the
+case on s390x: the serialization instruction "bcr 14,0" is missing.
+This applies to "and", "or" and "xor" variants too.
 
-As this behaviour cannot be fixed, use the s390 stack unwinder and
-remove the ftrace compilation flags for unwind_bc.c and stacktrace.c
-to prevent the unwinding function polluting function traces.
+s390x is allowed to reorder stores with subsequent fetches from
+different addresses, so code relying on BPF_FETCH acting as a barrier,
+for example:
 
-Another advantage is that this also works with clang.
+  stw [%r0], 1
+  afadd [%r1], %r2
+  ldxw %r3, [%r4]
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: ebd912ff9919 ("s390/stacktrace: Merge perf_callchain_user() and arch_stack_walk_user()")
+may be broken. Fix it by emitting "bcr 14,0".
+
+Note that a separate serialization instruction is not needed for
+BPF_XCHG and BPF_CMPXCHG, because COMPARE AND SWAP performs
+serialization itself.
+
+Fixes: ba3b86b9cef0 ("s390/bpf: Implement new atomic ops")
+Reported-by: Puranjay Mohan <puranjay12@gmail.com>
+Closes: https://lore.kernel.org/bpf/mb61p34qvq3wf.fsf@kernel.org/
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
+Link: https://lore.kernel.org/r/20240507000557.12048-1-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/ftrace.h |  8 ++------
- arch/s390/kernel/Makefile      |  2 ++
- arch/s390/kernel/stacktrace.c  | 19 +++++++++++++++++++
- 3 files changed, 23 insertions(+), 6 deletions(-)
+ arch/s390/net/bpf_jit_comp.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/include/asm/ftrace.h b/arch/s390/include/asm/ftrace.h
-index 621f23d5ae30a..77e479d44f1e3 100644
---- a/arch/s390/include/asm/ftrace.h
-+++ b/arch/s390/include/asm/ftrace.h
-@@ -8,12 +8,8 @@
- 
- #ifndef __ASSEMBLY__
- 
--#ifdef CONFIG_CC_IS_CLANG
--/* https://llvm.org/pr41424 */
--#define ftrace_return_address(n) 0UL
--#else
--#define ftrace_return_address(n) __builtin_return_address(n)
--#endif
-+unsigned long return_address(unsigned int n);
-+#define ftrace_return_address(n) return_address(n)
- 
- void ftrace_caller(void);
- 
-diff --git a/arch/s390/kernel/Makefile b/arch/s390/kernel/Makefile
-index fa029d0dc28ff..db2d9ba5a86d2 100644
---- a/arch/s390/kernel/Makefile
-+++ b/arch/s390/kernel/Makefile
-@@ -11,6 +11,8 @@ CFLAGS_REMOVE_ftrace.o		= $(CC_FLAGS_FTRACE)
- # Do not trace early setup code
- CFLAGS_REMOVE_early.o		= $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_rethook.o		= $(CC_FLAGS_FTRACE)
-+CFLAGS_REMOVE_stacktrace.o	= $(CC_FLAGS_FTRACE)
-+CFLAGS_REMOVE_unwind_bc.o	= $(CC_FLAGS_FTRACE)
- 
- endif
- 
-diff --git a/arch/s390/kernel/stacktrace.c b/arch/s390/kernel/stacktrace.c
-index 94f440e383031..7c294da45bf52 100644
---- a/arch/s390/kernel/stacktrace.c
-+++ b/arch/s390/kernel/stacktrace.c
-@@ -101,3 +101,22 @@ void arch_stack_walk_user(stack_trace_consume_fn consume_entry, void *cookie,
- 	}
- 	pagefault_enable();
- }
-+
-+unsigned long return_address(unsigned int n)
-+{
-+	struct unwind_state state;
-+	unsigned long addr;
-+
-+	/* Increment to skip current stack entry */
-+	n++;
-+
-+	unwind_for_each_frame(&state, NULL, NULL, 0) {
-+		addr = unwind_get_return_address(&state);
-+		if (!addr)
-+			break;
-+		if (!n--)
-+			return addr;
-+	}
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(return_address);
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index fbdba4c306bea..8623863935576 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -1207,8 +1207,12 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 	EMIT6_DISP_LH(0xeb000000, is32 ? (op32) : (op64),		\
+ 		      (insn->imm & BPF_FETCH) ? src_reg : REG_W0,	\
+ 		      src_reg, dst_reg, off);				\
+-	if (is32 && (insn->imm & BPF_FETCH))				\
+-		EMIT_ZERO(src_reg);					\
++	if (insn->imm & BPF_FETCH) {					\
++		/* bcr 14,0 - see atomic_fetch_{add,and,or,xor}() */	\
++		_EMIT2(0x07e0);						\
++		if (is32)                                               \
++			EMIT_ZERO(src_reg);				\
++	}								\
+ } while (0)
+ 		case BPF_ADD:
+ 		case BPF_ADD | BPF_FETCH:
 -- 
 2.43.0
 
