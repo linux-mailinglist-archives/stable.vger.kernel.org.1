@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F343B8FEEA8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2131D8FE9A1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E843285B75
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA50E1F25F55
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D801C616B;
-	Thu,  6 Jun 2024 14:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886F219AD8B;
+	Thu,  6 Jun 2024 14:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykVAUNE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKz/4ZiI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBBA1991D7;
-	Thu,  6 Jun 2024 14:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4751419AD92;
+	Thu,  6 Jun 2024 14:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683687; cv=none; b=gOGHzDRNwFyih7mUXDvHzZTB7h37Gs/PrMTNHddMRcph/v92EcJR3NFFDDobgo2KnOpmhKI1ax5rnCQDn4m0+PR2Q8C2D2HMIBtj4Wm0gtgIh/EPVztP5OM+WQWOXXNXHvgKM7ANMp4tAZY1D0UJXtOR6uiarANxCeKpFlpH8BQ=
+	t=1717683048; cv=none; b=dgKNCJO8z601yInBUMp2jZF6oU+gBS14gyII0B41k2mghyzMGFSdp0YOkl8NJAefHiNrpxAry1vFma6w30CNCdsBIPrMUPc9MI9EEiGHpnNMscBgOLM3z1tmUGAVN11kkN/0FvU9nMl85Y9wgFjDNBOLRnFIcj4yNZdCm0Fao7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683687; c=relaxed/simple;
-	bh=5w/9+1MVGhow1fi1+wuxdeYulmf3QDff2aZaWoIHVJw=;
+	s=arc-20240116; t=1717683048; c=relaxed/simple;
+	bh=HPqJ9b9+jsE+fDR7D6xFZPCprs2Lb/R+CAelJPYCfcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuD6Z0jldXBkxwekKV/5NgZZW3xbzXjtfPjNZqhmXHT8C316ItvTPyCrIosHJJt+Q1GH6DNCGkE46NTgo8dCOY1yQk42VHFzpao5HerXuu44P0/+JiWkPfXe+cXs7ZBGU+SzjOLQggfQlmfrOgRTBGjNTYhTtQJRc+XwTAdqFDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykVAUNE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34DBC4AF09;
-	Thu,  6 Jun 2024 14:21:26 +0000 (UTC)
+	 MIME-Version; b=n6p1vknLWD6lRoUTpNXvd9nWmzAdHTx5eT8Pd1+g7Te6z6IxtG2i2fC6fhQHy8jCKKJn/RcrL5Rkp3sgyGDW9gwFHNlgyTzjnrxI+r1UQiCinQgAHJNWSYGfgtcOLCQDdSycL+2CVceXmxSbAnXYZLY0GXhE4HzPbNVKyT8OzNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKz/4ZiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF32C32786;
+	Thu,  6 Jun 2024 14:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683687;
-	bh=5w/9+1MVGhow1fi1+wuxdeYulmf3QDff2aZaWoIHVJw=;
+	s=korg; t=1717683048;
+	bh=HPqJ9b9+jsE+fDR7D6xFZPCprs2Lb/R+CAelJPYCfcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ykVAUNE+yztXujwOgkGnJn2nwpBvQMReM34T8CoK3BPA4WNizggrHcyFzAFkwccwV
-	 9+JvIAFK/X648vmCiowdjoMIIGvrtW1FJpTTQL5aFI8v/KQbAvyUYLVzPbSDhmBXyY
-	 4ONHoIiBkL76tdbZoinNDz5iBXtSeaaiu8G48WCs=
+	b=VKz/4ZiILMWlIAfMBnMQ6vt8J7qcooYar7PZNKTLhqyZOXnR7BSNcZJJ08+GJMYOY
+	 BhOj0e82o+P6aGCOaFfFo7pO9ZzCtvRjVOb6oRkmGpbBI+IABRnnaktXmiHCkZQsf5
+	 0SVzUR/pd32op3vxeBGbsZa2FI7N+PNFvNmmlVbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Irui Wang <irui.wang@mediatek.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 593/744] media: mediatek: vcodec: add encoder power management helper functions
+Subject: [PATCH 6.9 286/374] spi: Dont mark message DMA mapped when no transfer in it is
 Date: Thu,  6 Jun 2024 16:04:25 +0200
-Message-ID: <20240606131751.492810321@linuxfoundation.org>
+Message-ID: <20240606131701.471073232@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,183 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Irui Wang <irui.wang@mediatek.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 3568cb6556695af163e930a75b1ed8f6dfa848ba ]
+[ Upstream commit 9f788ba457b45b0ce422943fcec9fa35c4587764 ]
 
-Remove PM functions at start/stop streaming, add PM helper functions
-to get PM before encoding frame start and put PM after encoding frame
-done. Meanwhile, remove unnecessary clock operations.
+There is no need to set the DMA mapped flag of the message if it has
+no mapped transfers. Moreover, it may give the code a chance to take
+the wrong paths, i.e. to exercise DMA related APIs on unmapped data.
+Make __spi_map_msg() to bail earlier on the above mentioned cases.
 
-Signed-off-by: Irui Wang <irui.wang@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: c28d4921a1e3 ("media: mediatek: vcodec: fix possible unbalanced PM counter")
+Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://msgid.link/r/20240522171018.3362521-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mediatek/vcodec/encoder/mtk_vcodec_enc.c  | 21 +++----------------
- .../vcodec/encoder/mtk_vcodec_enc_pm.c        | 18 ++++++++++++++++
- .../vcodec/encoder/mtk_vcodec_enc_pm.h        |  3 ++-
- .../mediatek/vcodec/encoder/venc_drv_if.c     |  8 ++-----
- 4 files changed, 25 insertions(+), 25 deletions(-)
+ drivers/spi/spi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc.c b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc.c
-index 04948d3eb011a..eb381fa6e7d14 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc.c
-@@ -866,7 +866,7 @@ static int vb2ops_venc_start_streaming(struct vb2_queue *q, unsigned int count)
- {
- 	struct mtk_vcodec_enc_ctx *ctx = vb2_get_drv_priv(q);
- 	struct venc_enc_param param;
--	int ret, pm_ret;
-+	int ret;
- 	int i;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a2c467d9e92f5..2cea7aeb10f95 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1242,6 +1242,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 	else
+ 		rx_dev = ctlr->dev.parent;
  
- 	/* Once state turn into MTK_STATE_ABORT, we need stop_streaming
-@@ -886,18 +886,12 @@ static int vb2ops_venc_start_streaming(struct vb2_queue *q, unsigned int count)
- 			return 0;
- 	}
- 
--	ret = pm_runtime_resume_and_get(&ctx->dev->plat_dev->dev);
--	if (ret < 0) {
--		mtk_v4l2_venc_err(ctx, "pm_runtime_resume_and_get fail %d", ret);
--		goto err_start_stream;
--	}
--
- 	mtk_venc_set_param(ctx, &param);
- 	ret = venc_if_set_param(ctx, VENC_SET_PARAM_ENC, &param);
- 	if (ret) {
- 		mtk_v4l2_venc_err(ctx, "venc_if_set_param failed=%d", ret);
- 		ctx->state = MTK_STATE_ABORT;
--		goto err_set_param;
-+		goto err_start_stream;
- 	}
- 	ctx->param_change = MTK_ENCODE_PARAM_NONE;
- 
-@@ -910,18 +904,13 @@ static int vb2ops_venc_start_streaming(struct vb2_queue *q, unsigned int count)
- 		if (ret) {
- 			mtk_v4l2_venc_err(ctx, "venc_if_set_param failed=%d", ret);
- 			ctx->state = MTK_STATE_ABORT;
--			goto err_set_param;
-+			goto err_start_stream;
++	ret = -ENOMSG;
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		/* The sync is done before each transfer. */
+ 		unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
+@@ -1271,6 +1272,9 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 			}
  		}
- 		ctx->state = MTK_STATE_HEADER;
  	}
- 
- 	return 0;
- 
--err_set_param:
--	pm_ret = pm_runtime_put(&ctx->dev->plat_dev->dev);
--	if (pm_ret < 0)
--		mtk_v4l2_venc_err(ctx, "pm_runtime_put fail %d", pm_ret);
--
- err_start_stream:
- 	for (i = 0; i < q->num_buffers; ++i) {
- 		struct vb2_buffer *buf = vb2_get_buffer(q, i);
-@@ -1004,10 +993,6 @@ static void vb2ops_venc_stop_streaming(struct vb2_queue *q)
- 	if (ret)
- 		mtk_v4l2_venc_err(ctx, "venc_if_deinit failed=%d", ret);
- 
--	ret = pm_runtime_put(&ctx->dev->plat_dev->dev);
--	if (ret < 0)
--		mtk_v4l2_venc_err(ctx, "pm_runtime_put fail %d", ret);
--
- 	ctx->state = MTK_STATE_FREE;
- }
- 
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c
-index 3fce936e61b9f..a22b7dfc656e1 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c
-@@ -58,6 +58,24 @@ int mtk_vcodec_init_enc_clk(struct mtk_vcodec_enc_dev *mtkdev)
- 	return 0;
- }
- 
-+void mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm)
-+{
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(pm->dev);
++	/* No transfer has been mapped, bail out with success */
 +	if (ret)
-+		dev_err(pm->dev, "pm_runtime_resume_and_get fail: %d", ret);
-+}
-+
-+void mtk_vcodec_enc_pw_off(struct mtk_vcodec_pm *pm)
-+{
-+	int ret;
-+
-+	ret = pm_runtime_put(pm->dev);
-+	if (ret && ret != -EAGAIN)
-+		dev_err(pm->dev, "pm_runtime_put fail %d", ret);
-+}
-+
- void mtk_vcodec_enc_clock_on(struct mtk_vcodec_pm *pm)
- {
- 	struct mtk_vcodec_clk *enc_clk = &pm->venc_clk;
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h
-index e50be0575190a..157ea08ba9e36 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h
-@@ -10,7 +10,8 @@
- #include "mtk_vcodec_enc_drv.h"
++		return 0;
  
- int mtk_vcodec_init_enc_clk(struct mtk_vcodec_enc_dev *dev);
--
-+void mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm);
-+void mtk_vcodec_enc_pw_off(struct mtk_vcodec_pm *pm);
- void mtk_vcodec_enc_clock_on(struct mtk_vcodec_pm *pm);
- void mtk_vcodec_enc_clock_off(struct mtk_vcodec_pm *pm);
- 
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c b/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c
-index 1bdaecdd64a79..c402a686f3cb2 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c
-@@ -32,9 +32,7 @@ int venc_if_init(struct mtk_vcodec_enc_ctx *ctx, unsigned int fourcc)
- 	}
- 
- 	mtk_venc_lock(ctx);
--	mtk_vcodec_enc_clock_on(&ctx->dev->pm);
- 	ret = ctx->enc_if->init(ctx);
--	mtk_vcodec_enc_clock_off(&ctx->dev->pm);
- 	mtk_venc_unlock(ctx);
- 
- 	return ret;
-@@ -46,9 +44,7 @@ int venc_if_set_param(struct mtk_vcodec_enc_ctx *ctx,
- 	int ret = 0;
- 
- 	mtk_venc_lock(ctx);
--	mtk_vcodec_enc_clock_on(&ctx->dev->pm);
- 	ret = ctx->enc_if->set_param(ctx->drv_handle, type, in);
--	mtk_vcodec_enc_clock_off(&ctx->dev->pm);
- 	mtk_venc_unlock(ctx);
- 
- 	return ret;
-@@ -68,10 +64,12 @@ int venc_if_encode(struct mtk_vcodec_enc_ctx *ctx,
- 	ctx->dev->curr_ctx = ctx;
- 	spin_unlock_irqrestore(&ctx->dev->irqlock, flags);
- 
-+	mtk_vcodec_enc_pw_on(&ctx->dev->pm);
- 	mtk_vcodec_enc_clock_on(&ctx->dev->pm);
- 	ret = ctx->enc_if->encode(ctx->drv_handle, opt, frm_buf,
- 				  bs_buf, result);
- 	mtk_vcodec_enc_clock_off(&ctx->dev->pm);
-+	mtk_vcodec_enc_pw_off(&ctx->dev->pm);
- 
- 	spin_lock_irqsave(&ctx->dev->irqlock, flags);
- 	ctx->dev->curr_ctx = NULL;
-@@ -89,9 +87,7 @@ int venc_if_deinit(struct mtk_vcodec_enc_ctx *ctx)
- 		return 0;
- 
- 	mtk_venc_lock(ctx);
--	mtk_vcodec_enc_clock_on(&ctx->dev->pm);
- 	ret = ctx->enc_if->deinit(ctx->drv_handle);
--	mtk_vcodec_enc_clock_off(&ctx->dev->pm);
- 	mtk_venc_unlock(ctx);
- 
- 	ctx->drv_handle = NULL;
+ 	ctlr->cur_rx_dma_dev = rx_dev;
+ 	ctlr->cur_tx_dma_dev = tx_dev;
 -- 
 2.43.0
 
