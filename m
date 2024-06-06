@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-49302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AB88FECB5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C198FE992
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 065291C22CDC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B98621C24F6F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8BE19B59B;
-	Thu,  6 Jun 2024 14:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323CE19AD57;
+	Thu,  6 Jun 2024 14:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="csoDku1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5IhAJY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D83C1B29A2;
-	Thu,  6 Jun 2024 14:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59DB198853;
+	Thu,  6 Jun 2024 14:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683399; cv=none; b=NhColpIJ37a1oKvMKT5WCFy8ur1ohN1ZawESSW+y+PMI7CDUyrO/o3trDK6YP0EAhnnROCm17Hba0JTEyhU4ov2sqXL/Z+4Y9Rh69dRtDwSN4kwZ58EbzahQQYU72B8hC1UHDOatxV4xgx2EZnC9l+gQ/ZahxaGpqj9hgu1yoAU=
+	t=1717683041; cv=none; b=uDISP8+lxZYaJHsNGg2KmhjqXCskacw08CA7u91g9qAgVx/ljSB3KyWDo67adXO2vw4sjhsf1FM9125yoeATR9huuQQGkKTFDE4HZ4D68VLfK966BMT8PK7D6+YY+ZKl3VNNvm3ItzEVWVIKOkx70E2Yzp7i0sS2zWPM42+uX5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683399; c=relaxed/simple;
-	bh=lLIRAd0r/T68IkT+JaiwKjtWi2dgZDoVKAhMbnaf/3w=;
+	s=arc-20240116; t=1717683041; c=relaxed/simple;
+	bh=UBWvpjzpNhhUBxwZJpwa5FQpmATKS5PxxvYXuFUzvGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjoEEN9qQzCNPpb0yWER1DR+3UrVqdVdkwZgT7eqAcql0wiYKmtMqt5ZMMAJgejmjUWtYQfvVGO/8YzIb7s1W3D6PEyXR7xac1qpM49AcfslStC//SRruWMovKoho9RZMEiC+s7M/uYplBVA96L0EN2qCQlbw/5VjQZtc32Ge60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=csoDku1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79656C2BD10;
-	Thu,  6 Jun 2024 14:16:39 +0000 (UTC)
+	 MIME-Version; b=XZK6bY7ySlgDk7bUP9nMlAvRKbalD1BCwiDZIms2N54uQ3rZ4uJl0oy9/yQwDN/XUq6Fn25Mt3P+zXWapok0zNR0XCekNENmo4Tt7nTKPYn9qXcE6iG9TrNicXvAykkNILNy2EBMC6WH3YdhNe6nf9wzMFalB8Uursm8PE7Ej04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5IhAJY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8B5C4AF07;
+	Thu,  6 Jun 2024 14:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683399;
-	bh=lLIRAd0r/T68IkT+JaiwKjtWi2dgZDoVKAhMbnaf/3w=;
+	s=korg; t=1717683040;
+	bh=UBWvpjzpNhhUBxwZJpwa5FQpmATKS5PxxvYXuFUzvGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=csoDku1iyZ66kov3bIP0NAOxN/6BTIKpzsrKbSkZZbejwmTHmmqrEvUnlSz3b4AVR
-	 6NJzrLpKNRxQpqsK00t3Qr/tPzMWzEV1nqO8rrDyu77rS4SI7grt2TOk6BZZClxGAx
-	 hdf4CpuGOF7R2dHRVUa8bvrLtW5H0temliLogSOk=
+	b=D5IhAJY7guDLkKHUgo/XlibW44OJAYsnvHgE3xin4Vg4Inzdw8hD4rwP6E7VixkQ8
+	 8sFTomjqJHLctOIAAAQatEy8ki4fLX8zXJtguqxUXjRmXO/PFXXkAWKjNTMJZYpXRm
+	 ykgKfDcbPH3cIPUoFpUMmwieciNjMsLIoLbGyAF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Stephen Langstaff <stephenlangstaff1@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 283/473] f2fs: multidev: fix to recognize valid zero block address
+Subject: [PATCH 6.9 233/374] net: Always descend into dsa/ folder with CONFIG_NET_DSA enabled
 Date: Thu,  6 Jun 2024 16:03:32 +0200
-Message-ID: <20240606131709.251296465@linuxfoundation.org>
+Message-ID: <20240606131659.622418548@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 33e62cd7b4c281cd737c62e5d8c4f0e602a8c5c5 ]
+[ Upstream commit b1fa60ec252fba39130107074becd12d0b3f83ec ]
 
-As reported by Yi Zhang in mailing list [1], kernel warning was catched
-during zbd/010 test as below:
+Stephen reported that he was unable to get the dsa_loop driver to get
+probed, and the reason ended up being because he had CONFIG_FIXED_PHY=y
+in his kernel configuration. As Masahiro explained it:
 
-./check zbd/010
-zbd/010 (test gap zone support with F2FS)                    [failed]
-    runtime    ...  3.752s
-    something found in dmesg:
-    [ 4378.146781] run blktests zbd/010 at 2024-02-18 11:31:13
-    [ 4378.192349] null_blk: module loaded
-    [ 4378.209860] null_blk: disk nullb0 created
-    [ 4378.413285] scsi_debug:sdebug_driver_probe: scsi_debug: trim
-poll_queues to 0. poll_q/nr_hw = (0/1)
-    [ 4378.422334] scsi host15: scsi_debug: version 0191 [20210520]
-                     dev_size_mb=1024, opts=0x0, submit_queues=1, statistics=0
-    [ 4378.434922] scsi 15:0:0:0: Direct-Access-ZBC Linux
-scsi_debug       0191 PQ: 0 ANSI: 7
-    [ 4378.443343] scsi 15:0:0:0: Power-on or device reset occurred
-    [ 4378.449371] sd 15:0:0:0: Attached scsi generic sg5 type 20
-    [ 4378.449418] sd 15:0:0:0: [sdf] Host-managed zoned block device
-    ...
-    (See '/mnt/tests/gitlab.com/api/v4/projects/19168116/repository/archive.zip/storage/blktests/blk/blktests/results/nodev/zbd/010.dmesg'
+  "obj-m += dsa/" means everything under dsa/ must be modular.
 
-WARNING: CPU: 22 PID: 44011 at fs/iomap/iter.c:51
-CPU: 22 PID: 44011 Comm: fio Not tainted 6.8.0-rc3+ #1
-RIP: 0010:iomap_iter+0x32b/0x350
-Call Trace:
- <TASK>
- __iomap_dio_rw+0x1df/0x830
- f2fs_file_read_iter+0x156/0x3d0 [f2fs]
- aio_read+0x138/0x210
- io_submit_one+0x188/0x8c0
- __x64_sys_io_submit+0x8c/0x1a0
- do_syscall_64+0x86/0x170
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
+  If there is a built-in object under dsa/ with CONFIG_NET_DSA=m,
+  you cannot do  "obj-$(CONFIG_NET_DSA) += dsa/".
 
-Shinichiro Kawasaki helps to analyse this issue and proposes a potential
-fixing patch in [2].
+  You need to change it back to "obj-y += dsa/".
 
-Quoted from reply of Shinichiro Kawasaki:
+This was the case here whereby CONFIG_NET_DSA=m, and so the
+obj-$(CONFIG_FIXED_PHY) += dsa_loop_bdinfo.o rule is not executed and
+the DSA loop mdio_board info structure is not registered with the
+kernel, and eventually the device is simply not found.
 
-"I confirmed that the trigger commit is dbf8e63f48af as Yi reported. I took a
-look in the commit, but it looks fine to me. So I thought the cause is not
-in the commit diff.
+To preserve the intention of the original commit of limiting the amount
+of folder descending, conditionally descend into drivers/net/dsa when
+CONFIG_NET_DSA is enabled.
 
-I found the WARN is printed when the f2fs is set up with multiple devices,
-and read requests are mapped to the very first block of the second device in the
-direct read path. In this case, f2fs_map_blocks() and f2fs_map_blocks_cached()
-modify map->m_pblk as the physical block address from each block device. It
-becomes zero when it is mapped to the first block of the device. However,
-f2fs_iomap_begin() assumes that map->m_pblk is the physical block address of the
-whole f2fs, across the all block devices. It compares map->m_pblk against
-NULL_ADDR == 0, then go into the unexpected branch and sets the invalid
-iomap->length. The WARN catches the invalid iomap->length.
-
-This WARN is printed even for non-zoned block devices, by following steps.
-
- - Create two (non-zoned) null_blk devices memory backed with 128MB size each:
-   nullb0 and nullb1.
- # mkfs.f2fs /dev/nullb0 -c /dev/nullb1
- # mount -t f2fs /dev/nullb0 "${mount_dir}"
- # dd if=/dev/zero of="${mount_dir}/test.dat" bs=1M count=192
- # dd if="${mount_dir}/test.dat" of=/dev/null bs=1M count=192 iflag=direct
-
-..."
-
-So, the root cause of this issue is: when multi-devices feature is on,
-f2fs_map_blocks() may return zero blkaddr in non-primary device, which is
-a verified valid block address, however, f2fs_iomap_begin() treats it as
-an invalid block address, and then it triggers the warning in iomap
-framework code.
-
-Finally, as discussed, we decide to use a more simple and direct way that
-checking (map.m_flags & F2FS_MAP_MAPPED) condition instead of
-(map.m_pblk != NULL_ADDR) to fix this issue.
-
-Thanks a lot for the effort of Yi Zhang and Shinichiro Kawasaki on this
-issue.
-
-[1] https://lore.kernel.org/linux-f2fs-devel/CAHj4cs-kfojYC9i0G73PRkYzcxCTex=-vugRFeP40g_URGvnfQ@mail.gmail.com/
-[2] https://lore.kernel.org/linux-f2fs-devel/gngdj77k4picagsfdtiaa7gpgnup6fsgwzsltx6milmhegmjff@iax2n4wvrqye/
-
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/linux-f2fs-devel/CAHj4cs-kfojYC9i0G73PRkYzcxCTex=-vugRFeP40g_URGvnfQ@mail.gmail.com/
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Fixes: 1517c1a7a445 ("f2fs: implement iomap operations")
-Fixes: 8d3c1fa3fa5e ("f2fs: don't rely on F2FS_MAP_* in f2fs_iomap_begin")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 227d72063fcc ("dsa: simplify Kconfig symbols and dependencies")
+Reported-by: Stephen Langstaff <stephenlangstaff1@gmail.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/Makefile | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index b83b8ac29f430..ea9b78b5a1ebe 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -4195,7 +4195,7 @@ static int f2fs_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
- 	if (WARN_ON_ONCE(map.m_pblk == COMPRESS_ADDR))
- 		return -EINVAL;
- 
--	if (map.m_pblk != NULL_ADDR) {
-+	if (map.m_flags & F2FS_MAP_MAPPED) {
- 		iomap->length = blks_to_bytes(inode, map.m_len);
- 		iomap->type = IOMAP_MAPPED;
- 		iomap->flags |= IOMAP_F_MERGED;
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 7cab36f94782e..db55ffdb5792d 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -48,7 +48,9 @@ obj-$(CONFIG_MHI_NET) += mhi_net.o
+ obj-$(CONFIG_ARCNET) += arcnet/
+ obj-$(CONFIG_CAIF) += caif/
+ obj-$(CONFIG_CAN) += can/
+-obj-$(CONFIG_NET_DSA) += dsa/
++ifdef CONFIG_NET_DSA
++obj-y += dsa/
++endif
+ obj-$(CONFIG_ETHERNET) += ethernet/
+ obj-$(CONFIG_FDDI) += fddi/
+ obj-$(CONFIG_HIPPI) += hippi/
 -- 
 2.43.0
 
