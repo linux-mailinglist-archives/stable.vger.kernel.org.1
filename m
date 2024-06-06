@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0865B8FEECB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A82778FE9EE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E4752863DA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 381862842D9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F201C7D7D;
-	Thu,  6 Jun 2024 14:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5A319D075;
+	Thu,  6 Jun 2024 14:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N87DcjBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfe0sHbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F57B1A1866;
-	Thu,  6 Jun 2024 14:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6BF19D066;
+	Thu,  6 Jun 2024 14:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683702; cv=none; b=g6SrtlOI+Ap6e6lHvOtxcTBEIdA3bitBQgi0A5MW2glKqchncEWqyyPkaGCYK/yVt/cit4I1TBdhf4c7kdnuh49YfdsgGrGVokWnVv+5wbQ5ax8iNbZr5JJGGa8aQsGxRJ8QGepmMtEpQzsPpMW3jB4IXltDH2BtYxsHENQ7QI0=
+	t=1717683082; cv=none; b=ZUaSCBip2dSpL4ZoFRgPDB0gdfvHvqiPH2dh/phZAhBRgYey2LoVl74Rw50T0d4nPfJ3L1I/YthSbrd/X9q3OvNlX+QGApKOvPW6O8aGdqM9uVhCzbx7FZ4QA0KRDWlU91q92ivjKTkxd7n6rR8aHTOZYDlnXYh4vG9I7YlQBFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683702; c=relaxed/simple;
-	bh=HR+NIUSKOVxwVSR/KZ+XKbGrfjVYrurA+a/V6+qnXMg=;
+	s=arc-20240116; t=1717683082; c=relaxed/simple;
+	bh=uTzbGQHnCQUzMgw5iq/w5X1+FvVd1iXc10Y10vtXRN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fr35XEI6szfqjOlgsSk80Y9eQGWlvw4RJ7Dm7bZmz3o15Js25bqoRvVR7lzquQIHCUbA4RsZSrdWF6rGIlP0Gco18u3oqpDHTL6kYlFRydCmhxcJOiFq7paf12DjTzR9aapGUes9g54Ny7OcKWZJ6a12kDFu3RdQnHfRBTCbs9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N87DcjBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D0FC2BD10;
-	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
+	 MIME-Version; b=e80dF0+aXMejZYquBhNNft0ikmDkn/IvB2omW0yyIzazYmhCqWqfh5CjoSY3N/ZwAhp7qM28Nlb3VZy1uaxT3BOahCVRNhV5qf9pyi1crWeM3CQFtEwcJSPChFzZU9f4kb4YXooPlzCo3DF7ePYkDFzc5Zdfc8vVUvMMLV4SMwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfe0sHbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D241C4AF14;
+	Thu,  6 Jun 2024 14:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683702;
-	bh=HR+NIUSKOVxwVSR/KZ+XKbGrfjVYrurA+a/V6+qnXMg=;
+	s=korg; t=1717683082;
+	bh=uTzbGQHnCQUzMgw5iq/w5X1+FvVd1iXc10Y10vtXRN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N87DcjBJCTV79Dei4ojWiDk0b/NqvizsjU+/bn297l+v5WLhJDaDmTHiP3T65I3Jl
-	 LuUvZCG59Drwtk0e7Pj0Hf/kF5dTSQmX5ZL/1mZKzdHCcuLH01B3pEkc7b33inFC5y
-	 MF2L2qusahHs+9qEmvUY0PJod1ykiXsx4xtp7QUI=
+	b=vfe0sHbv3DBZaK361QxSivVuaW0e/2o0i0ncBmWA+TxOOepCSE2Td61ITurgoqdRm
+	 zzTEoGc2xWJ7ywR8vmJoxYlPtcg4xb+56qExPvWRXLES01j5DHZm5HxZ4s8yyQDgk1
+	 wQpcKzLYSZCvBaezxSX+gIKIVhsRM99ene8eoxSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>,
-	Faith Ekstrand <faith.ekstrand@collabora.com>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 625/744] drm/nouveau: use tile_mode and pte_kind for VM_BIND bo allocations
+Subject: [PATCH 6.9 318/374] net:fec: Add fec_enet_deinit()
 Date: Thu,  6 Jun 2024 16:04:57 +0200
-Message-ID: <20240606131752.543024025@linuxfoundation.org>
+Message-ID: <20240606131702.527405551@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit aed9a1a4f7106ff99a882ad06318cebfa71016a2 ]
+[ Upstream commit bf0497f53c8535f99b72041529d3f7708a6e2c0d ]
 
-Allow PTE kind and tile mode on BO create with VM_BIND, and add a
-GETPARAM to indicate this change. This is needed to support modifiers in
-NVK and ensure correctness when dealing with the nouveau GL driver.
+When fec_probe() fails or fec_drv_remove() needs to release the
+fec queue and remove a NAPI context, therefore add a function
+corresponding to fec_enet_init() and call fec_enet_deinit() which
+does the opposite to release memory and remove a NAPI context.
 
-The userspace modifiers implementation this is for can be found here:
-https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/24795
-
-Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
-Signed-off-by: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
-Reviewed-by: Faith Ekstrand <faith.ekstrand@collabora.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240509204352.7597-1-mohamedahmedegypt2001@gmail.com
+Fixes: 59d0f7465644 ("net: fec: init multi queue date structure")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240524050528.4115581-1-xiaolei.wang@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_abi16.c |  3 ++
- drivers/gpu/drm/nouveau/nouveau_bo.c    | 44 +++++++++++--------------
- include/uapi/drm/nouveau_drm.h          |  7 ++++
- 3 files changed, 29 insertions(+), 25 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_abi16.c b/drivers/gpu/drm/nouveau/nouveau_abi16.c
-index 0fbc9c841666e..b3f0e10f83fef 100644
---- a/drivers/gpu/drm/nouveau/nouveau_abi16.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_abi16.c
-@@ -277,6 +277,9 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
- 		getparam->value = (u64)ttm_resource_manager_usage(vram_mgr) << PAGE_SHIFT;
- 		break;
- 	}
-+	case NOUVEAU_GETPARAM_HAS_VMA_TILEMODE:
-+		getparam->value = 1;
-+		break;
- 	default:
- 		NV_PRINTK(dbg, cli, "unknown parameter %lld\n", getparam->param);
- 		return -EINVAL;
-diff --git a/drivers/gpu/drm/nouveau/nouveau_bo.c b/drivers/gpu/drm/nouveau/nouveau_bo.c
-index 254d6c9ef2023..3a7f4ce34aa31 100644
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -234,28 +234,28 @@ nouveau_bo_alloc(struct nouveau_cli *cli, u64 *size, int *align, u32 domain,
- 	}
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index a72d8a2eb0b31..881ece735dcf1 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -4130,6 +4130,14 @@ static int fec_enet_init(struct net_device *ndev)
+ 	return ret;
+ }
  
- 	nvbo->contig = !(tile_flags & NOUVEAU_GEM_TILE_NONCONTIG);
--	if (!nouveau_cli_uvmm(cli) || internal) {
--		/* for BO noVM allocs, don't assign kinds */
--		if (cli->device.info.family >= NV_DEVICE_INFO_V0_FERMI) {
--			nvbo->kind = (tile_flags & 0x0000ff00) >> 8;
--			if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
--				kfree(nvbo);
--				return ERR_PTR(-EINVAL);
--			}
- 
--			nvbo->comp = mmu->kind[nvbo->kind] != nvbo->kind;
--		} else if (cli->device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
--			nvbo->kind = (tile_flags & 0x00007f00) >> 8;
--			nvbo->comp = (tile_flags & 0x00030000) >> 16;
--			if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
--				kfree(nvbo);
--				return ERR_PTR(-EINVAL);
--			}
--		} else {
--			nvbo->zeta = (tile_flags & 0x00000007);
-+	if (cli->device.info.family >= NV_DEVICE_INFO_V0_FERMI) {
-+		nvbo->kind = (tile_flags & 0x0000ff00) >> 8;
-+		if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
-+			kfree(nvbo);
-+			return ERR_PTR(-EINVAL);
-+		}
++static void fec_enet_deinit(struct net_device *ndev)
++{
++	struct fec_enet_private *fep = netdev_priv(ndev);
 +
-+		nvbo->comp = mmu->kind[nvbo->kind] != nvbo->kind;
-+	} else if (cli->device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
-+		nvbo->kind = (tile_flags & 0x00007f00) >> 8;
-+		nvbo->comp = (tile_flags & 0x00030000) >> 16;
-+		if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
-+			kfree(nvbo);
-+			return ERR_PTR(-EINVAL);
- 		}
--		nvbo->mode = tile_mode;
-+	} else {
-+		nvbo->zeta = (tile_flags & 0x00000007);
-+	}
-+	nvbo->mode = tile_mode;
- 
-+	if (!nouveau_cli_uvmm(cli) || internal) {
- 		/* Determine the desirable target GPU page size for the buffer. */
- 		for (i = 0; i < vmm->page_nr; i++) {
- 			/* Because we cannot currently allow VMM maps to fail
-@@ -297,12 +297,6 @@ nouveau_bo_alloc(struct nouveau_cli *cli, u64 *size, int *align, u32 domain,
- 		}
- 		nvbo->page = vmm->page[pi].shift;
- 	} else {
--		/* reject other tile flags when in VM mode. */
--		if (tile_mode)
--			return ERR_PTR(-EINVAL);
--		if (tile_flags & ~NOUVEAU_GEM_TILE_NONCONTIG)
--			return ERR_PTR(-EINVAL);
--
- 		/* Determine the desirable target GPU page size for the buffer. */
- 		for (i = 0; i < vmm->page_nr; i++) {
- 			/* Because we cannot currently allow VMM maps to fail
-diff --git a/include/uapi/drm/nouveau_drm.h b/include/uapi/drm/nouveau_drm.h
-index 77d7ff0d5b110..c3d8dc7512971 100644
---- a/include/uapi/drm/nouveau_drm.h
-+++ b/include/uapi/drm/nouveau_drm.h
-@@ -68,6 +68,13 @@ extern "C" {
-  */
- #define NOUVEAU_GETPARAM_VRAM_USED 19
- 
-+/*
-+ * NOUVEAU_GETPARAM_HAS_VMA_TILEMODE
-+ *
-+ * Query whether tile mode and PTE kind are accepted with VM allocs or not.
-+ */
-+#define NOUVEAU_GETPARAM_HAS_VMA_TILEMODE 20
++	netif_napi_del(&fep->napi);
++	fec_enet_free_queue(ndev);
++}
 +
- struct drm_nouveau_getparam {
- 	__u64 param;
- 	__u64 value;
+ #ifdef CONFIG_OF
+ static int fec_reset_phy(struct platform_device *pdev)
+ {
+@@ -4524,6 +4532,7 @@ fec_probe(struct platform_device *pdev)
+ 	fec_enet_mii_remove(fep);
+ failed_mii_init:
+ failed_irq:
++	fec_enet_deinit(ndev);
+ failed_init:
+ 	fec_ptp_stop(pdev);
+ failed_reset:
+@@ -4587,6 +4596,7 @@ fec_drv_remove(struct platform_device *pdev)
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
++	fec_enet_deinit(ndev);
+ 	free_netdev(ndev);
+ }
+ 
 -- 
 2.43.0
 
