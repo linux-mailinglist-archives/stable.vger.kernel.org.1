@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-49239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 966758FEC74
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C048FE876
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 306301F299A3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 501001F239D5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A9B19ADBA;
-	Thu,  6 Jun 2024 14:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC11196C7B;
+	Thu,  6 Jun 2024 14:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Syr/a7dH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hR1ag1Q+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FAE19AD8E;
-	Thu,  6 Jun 2024 14:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B946196434;
+	Thu,  6 Jun 2024 14:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683369; cv=none; b=gg2PhRQvmmiafxXlszuzYAkcSCX/jCYDwIiJE+9GxGQxf0SIqw0ps64htLKajwLaTcB9rlnNGof8aMAPL1WK/dPyTr8BqNHFa/8gPRk+DDEe/4QwCSxUQsDwxGmPFuQqwdh//A7/8ruDCLjnjzzaP22VcYsYXG2ibG4Hmd452Yw=
+	t=1717682896; cv=none; b=uSR9otMXhbByl6l51znfnf/xhgDjH5Nq1j2gzpMa40K+JAtd64ewY3detGG2DUKxkRB/jZAcizA93it5roQ/J266/Qx4SCbIh4DWvK75MLqXV4ga8046rIvjlJIv+EgShmsdAAugopD9kqCDDFObclLgPA5/dpNNRklegmUW8sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683369; c=relaxed/simple;
-	bh=3lIISSN9yCdnwJjCxlWhpB45nf1wX0X8sSpH8ZZYuSY=;
+	s=arc-20240116; t=1717682896; c=relaxed/simple;
+	bh=EFHXELxFA5IGFZSz3j8MECwXArUmFYluL2JJdwgZsPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acXIcnYefLEdJ3Z2UiYrsBDyufvSyvpH+H/C8r7CrUAq1PC87kUR1l5I0LXXhIio9YFR2Qw7oU6ntl2cvn81KKmCc/yOGH0jGUodvApXVCWhHZvrdtto+ABb6mhSQHbRnNM6Eio3I1atfcls3bcjYLid+/43ndZT55/N0TsUrGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Syr/a7dH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963AAC32782;
-	Thu,  6 Jun 2024 14:16:09 +0000 (UTC)
+	 MIME-Version; b=RTR/yKjMSFLbWPLrKFUX9TgVo7icEU/j88YOlVkH8zgYomB8JHgJ2Cyjlm1trFyE1cUEV3kbwnBdaSIX/pBv1PQBdhODlS6qiy/qHxSg89KO2dttiZftolEAB/PU6ndYsl/XrMNekhlGI5OBPIO3gjfXM9Z3LNstoFBBelmswqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hR1ag1Q+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44353C4AF0F;
+	Thu,  6 Jun 2024 14:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683369;
-	bh=3lIISSN9yCdnwJjCxlWhpB45nf1wX0X8sSpH8ZZYuSY=;
+	s=korg; t=1717682896;
+	bh=EFHXELxFA5IGFZSz3j8MECwXArUmFYluL2JJdwgZsPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Syr/a7dHOtSzCnIg58c+EVKKtUlP3ncRxrMX+jewpPkq5+bguLWwsplur7bH87dN0
-	 UZutRs2AZe1L4ciNzdija4/VAlZ2Uu41tiCOLwaynV+fRgunanFqCZal6X+753p+IZ
-	 zm4q7sjB5b/BZ84XWVcAvX3vNRVIgEFKS3vNWWnc=
+	b=hR1ag1Q+5szpC2zmBpbTBYSrsz6mYbUFBqYswl3omxN5c6nc7aS79r/VLuRGLif2n
+	 hlGQt1Q4r3Zhh4Ur3k+JKm5vNeJlLJg8bUGMrNcfH1LTHjiv1P27d1KwWU5q05Y8X+
+	 qxqqJXArcfHkwEV0NPtOKmITlZ+hh3DZoDmybdB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Rob Herring <robh@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 311/744] media: dt-bindings: ovti,ov2680: Fix the power supply names
+Subject: [PATCH 6.9 004/374] perf probe: Add missing libgen.h header needed for using basename()
 Date: Thu,  6 Jun 2024 15:59:43 +0200
-Message-ID: <20240606131742.376230605@linuxfoundation.org>
+Message-ID: <20240606131651.857956588@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit e2f6ea61b6f3e4ebbb7dff857eea6220c18cd17b ]
+[ Upstream commit 581037151910126a7934e369e4b6ac70eda9a703 ]
 
-The original .txt bindings had the OV2680 power supply names correct,
-but the transition from .txt to yaml spelled them incorrectly.
+This prototype is obtained indirectly, by luck, from some other header
+in probe-event.c in most systems, but recently exploded on alpine:edge:
 
-Fix the OV2680 power supply names as the original .txt bindings
-as these are the names used by the OV2680 driver and in devicetree.
+   8    13.39 alpine:edge                   : FAIL gcc version 13.2.1 20240309 (Alpine 13.2.1_git20240309)
+    util/probe-event.c: In function 'convert_exec_to_group':
+    util/probe-event.c:225:16: error: implicit declaration of function 'basename' [-Werror=implicit-function-declaration]
+      225 |         ptr1 = basename(exec_copy);
+          |                ^~~~~~~~
+    util/probe-event.c:225:14: error: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+      225 |         ptr1 = basename(exec_copy);
+          |              ^
+    cc1: all warnings being treated as errors
+    make[3]: *** [/git/perf-6.8.0/tools/build/Makefile.build:158: util] Error 2
 
-Fixes: 57226cd8c8bf ("media: dt-bindings: ov2680: convert bindings to yaml")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fix it by adding the libgen.h header where basename() is prototyped.
+
+Fixes: fb7345bbf7fad9bf ("perf probe: Support basic dwarf-based operations on uprobe events")
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/lkml/
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/media/i2c/ovti,ov2680.yaml        | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ tools/perf/util/probe-event.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-index cf456f8d9ddcb..c87677f5e2a25 100644
---- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-@@ -37,15 +37,15 @@ properties:
-       active low.
-     maxItems: 1
- 
--  dovdd-supply:
-+  DOVDD-supply:
-     description:
-       Definition of the regulator used as interface power supply.
- 
--  avdd-supply:
-+  AVDD-supply:
-     description:
-       Definition of the regulator used as analog power supply.
- 
--  dvdd-supply:
-+  DVDD-supply:
-     description:
-       Definition of the regulator used as digital power supply.
- 
-@@ -59,9 +59,9 @@ required:
-   - reg
-   - clocks
-   - clock-names
--  - dovdd-supply
--  - avdd-supply
--  - dvdd-supply
-+  - DOVDD-supply
-+  - AVDD-supply
-+  - DVDD-supply
-   - reset-gpios
-   - port
- 
-@@ -82,9 +82,9 @@ examples:
-                 clock-names = "xvclk";
-                 reset-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
- 
--                dovdd-supply = <&sw2_reg>;
--                dvdd-supply = <&sw2_reg>;
--                avdd-supply = <&reg_peri_3p15v>;
-+                DOVDD-supply = <&sw2_reg>;
-+                DVDD-supply = <&sw2_reg>;
-+                AVDD-supply = <&reg_peri_3p15v>;
- 
-                 port {
-                         ov2680_to_mipi: endpoint {
+diff --git a/tools/perf/util/probe-event.c b/tools/perf/util/probe-event.c
+index 2a0ad9ecf0a20..5c12459e9765f 100644
+--- a/tools/perf/util/probe-event.c
++++ b/tools/perf/util/probe-event.c
+@@ -11,6 +11,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <errno.h>
++#include <libgen.h>
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <stdlib.h>
 -- 
 2.43.0
 
