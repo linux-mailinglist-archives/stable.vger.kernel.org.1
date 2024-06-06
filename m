@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF7D8FED40
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83EE98FEB99
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFC4BB25DEB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 395BB1F28C59
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D2A19D087;
-	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03431AB8EA;
+	Thu,  6 Jun 2024 14:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUHzQpPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTL8vtR7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FADF198E79;
-	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F603196DA5;
+	Thu,  6 Jun 2024 14:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683465; cv=none; b=gn7vcgJmzhF/G5AyawH6me0q3i4fxreQtTmCp/5N8HAVDD4ffjAUa4vd8jXXi0WD6vO+ZP4QHlSbJdbYWa7pmYAJuadnBtyW2JfS9VebogL6p00unjLHi92XLnCoS2wnl3EHnMOgvl0Tcvs0ZwLYVNAhqUAWB+77OKYE9tvPsas=
+	t=1717683271; cv=none; b=BJgT1r3Q6UW5IG9ThcOjRfHe6b47onMYc2j0dEAv63SH7c0J0/2NRNWBXFPT862TUNSxCvxX2mR0bClEmEa97bYTNzdeL9+dcuH1t4Kz1qqTKJFmJlYeU53O05s2ruyvLUDMP1FjICTpJR9Wjb7D0yTCsUQtH4Js8TBwnRmOocU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683465; c=relaxed/simple;
-	bh=eyHpBuJE9XcnxwqN9apNk32vHJdUxNc5ejXYzVQtI/k=;
+	s=arc-20240116; t=1717683271; c=relaxed/simple;
+	bh=uRRpW8JdGsrkptbxiTeRRP/sKiBxn4G+NA3ieJwMRFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2xCF36fCPVHB9K+Dy6hraPU22GE8JphGj2K502ozqbzFs1Z8r78UcYZf0hozsj+OALBt1QNSaPRB8+xKQioeL5KJh1nHEQgl/APP+/82PPWBTR8WQ1ROH8Qc/Mdg5a6S1B2OqkSP4h7Aqkt0s2BX61DaMuQ8f1pTnaIBK5r+YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUHzQpPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648FAC32782;
-	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ff5YCXACiJRtmZMHVJKwU9sI5DcahOW5A3CTCImxw/Bb+YlH2dVT37jYs23wjmh2fUTJC4Rne1OHVS0HNFO1Mv5LL+XU+PsQ4KVEGf4sJTNaqZEdnjf6twcS50y+I/rZDdGu1R850zHWOI9kzifoH5upATcIF0ySkj1fSK//9Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTL8vtR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485D2C2BD10;
+	Thu,  6 Jun 2024 14:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683465;
-	bh=eyHpBuJE9XcnxwqN9apNk32vHJdUxNc5ejXYzVQtI/k=;
+	s=korg; t=1717683271;
+	bh=uRRpW8JdGsrkptbxiTeRRP/sKiBxn4G+NA3ieJwMRFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUHzQpPEa3cRkUKuPVdIAy7xwJnZTSe6HJtq+Py5WnXgdGqRNS+3lEZVAX/5fxTRw
-	 OLBFMOt4OgCy73oG8uhH7FVAigMZmz3A+xF6G5dW31tiss2kz5OH5D7GcuREtVUizA
-	 viumde97F08AZg4f0qrY0DYXlZAmVHK5Cl6AGPOc=
+	b=dTL8vtR7IaKDqZQ9KZne0eWIn+1iGmtHwRMZ9Ek5w7GLAoeWMF6rc8uQtRKrOFJB1
+	 WRt3GWQOPMRBQyfK7v6fCq0EqEfCQAXnY8spYt4vnwiuHzSEtPRfMKAqWQz+qC74rK
+	 LJZs4mEBN/1bUdaQuiZA39PUQKlGBUbldbESujUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 396/744] f2fs: fix to wait on page writeback in __clone_blkaddrs()
-Date: Thu,  6 Jun 2024 16:01:08 +0200
-Message-ID: <20240606131745.163280532@linuxfoundation.org>
+Subject: [PATCH 6.1 140/473] pwm: sti: Simplify probe function using devm functions
+Date: Thu,  6 Jun 2024 16:01:09 +0200
+Message-ID: <20240606131704.568391315@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +59,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit d3876e34e7e789e2cbdd782360fef2a777391082 ]
+[ Upstream commit 5bb0b194aeee5d5da6881232f4e9989b35957c25 ]
 
-In below race condition, dst page may become writeback status
-in __clone_blkaddrs(), it needs to wait writeback before update,
-fix it.
+Instead of of_clk_get_by_name() use devm_clk_get_prepared() which has
+several advantages:
 
-Thread A				GC Thread
-- f2fs_move_file_range
-  - filemap_write_and_wait_range(dst)
-					- gc_data_segment
-					 - f2fs_down_write(dst)
-					 - move_data_page
-					  - set_page_writeback(dst_page)
-					  - f2fs_submit_page_write
-					 - f2fs_up_write(dst)
-  - f2fs_down_write(dst)
-  - __exchange_data_block
-   - __clone_blkaddrs
-    - f2fs_get_new_data_page
-    - memcpy_page
+ - Combines getting the clock and a call to clk_prepare(). The latter
+   can be dropped from sti_pwm_probe() accordingly.
+ - Cares for calling clk_put() which is missing in both probe's error
+   path and the remove function.
+ - Cares for calling clk_unprepare() which can be dropped from the error
+   paths and the remove function. (Note that not all error path got this
+   right.)
 
-Fixes: 0a2aa8fbb969 ("f2fs: refactor __exchange_data_block for speed up")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+With additionally using devm_pwmchip_add() instead of pwmchip_add() the
+remove callback can be dropped completely. With it the last user of
+platform_get_drvdata() goes away and so platform_set_drvdata() can be
+dropped from the probe function, too.
+
+Fixes: 378fe115d19d ("pwm: sti: Add new driver for ST's PWM IP")
+Link: https://lore.kernel.org/r/81f0e1d173652f435afda6719adaed1922fe059a.1710068192.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pwm/pwm-sti.c | 39 +++------------------------------------
+ 1 file changed, 3 insertions(+), 36 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index ee5df9adaf775..7f631a617ee99 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1305,6 +1305,9 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
- 				f2fs_put_page(psrc, 1);
- 				return PTR_ERR(pdst);
- 			}
-+
-+			f2fs_wait_on_page_writeback(pdst, DATA, true, true);
-+
- 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
- 			set_page_dirty(pdst);
- 			set_page_private_gcing(pdst);
+diff --git a/drivers/pwm/pwm-sti.c b/drivers/pwm/pwm-sti.c
+index 8f7aff51787be..a0467f0b549c2 100644
+--- a/drivers/pwm/pwm-sti.c
++++ b/drivers/pwm/pwm-sti.c
+@@ -625,32 +625,20 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	if (cdata->pwm_num_devs) {
+-		pc->pwm_clk = of_clk_get_by_name(dev->of_node, "pwm");
++		pc->pwm_clk = devm_clk_get_prepared(dev, "pwm");
+ 		if (IS_ERR(pc->pwm_clk)) {
+ 			dev_err(dev, "failed to get PWM clock\n");
+ 			return PTR_ERR(pc->pwm_clk);
+ 		}
+-
+-		ret = clk_prepare(pc->pwm_clk);
+-		if (ret) {
+-			dev_err(dev, "failed to prepare clock\n");
+-			return ret;
+-		}
+ 	}
+ 
+ 	if (cdata->cpt_num_devs) {
+-		pc->cpt_clk = of_clk_get_by_name(dev->of_node, "capture");
++		pc->cpt_clk = devm_clk_get_prepared(dev, "capture");
+ 		if (IS_ERR(pc->cpt_clk)) {
+ 			dev_err(dev, "failed to get PWM capture clock\n");
+ 			return PTR_ERR(pc->cpt_clk);
+ 		}
+ 
+-		ret = clk_prepare(pc->cpt_clk);
+-		if (ret) {
+-			dev_err(dev, "failed to prepare clock\n");
+-			return ret;
+-		}
+-
+ 		cdata->ddata = devm_kzalloc(dev, cdata->cpt_num_devs * sizeof(*cdata->ddata), GFP_KERNEL);
+ 		if (!cdata->ddata)
+ 			return -ENOMEM;
+@@ -667,27 +655,7 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ 		mutex_init(&ddata->lock);
+ 	}
+ 
+-	ret = pwmchip_add(chip);
+-	if (ret < 0) {
+-		clk_unprepare(pc->pwm_clk);
+-		clk_unprepare(pc->cpt_clk);
+-		return ret;
+-	}
+-
+-	platform_set_drvdata(pdev, chip);
+-
+-	return 0;
+-}
+-
+-static void sti_pwm_remove(struct platform_device *pdev)
+-{
+-	struct pwm_chip *chip = platform_get_drvdata(pdev);
+-	struct sti_pwm_chip *pc = to_sti_pwmchip(chip);
+-
+-	pwmchip_remove(chip);
+-
+-	clk_unprepare(pc->pwm_clk);
+-	clk_unprepare(pc->cpt_clk);
++	return devm_pwmchip_add(dev, chip);
+ }
+ 
+ static const struct of_device_id sti_pwm_of_match[] = {
+@@ -702,7 +670,6 @@ static struct platform_driver sti_pwm_driver = {
+ 		.of_match_table = sti_pwm_of_match,
+ 	},
+ 	.probe = sti_pwm_probe,
+-	.remove_new = sti_pwm_remove,
+ };
+ module_platform_driver(sti_pwm_driver);
+ 
 -- 
 2.43.0
 
