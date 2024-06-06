@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-49366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631CD8FECF8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F6B8FE8B4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66A061C261E4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC021F23ADF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6A019CCFB;
-	Thu,  6 Jun 2024 14:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBF2197A8F;
+	Thu,  6 Jun 2024 14:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOpeIrNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZbdsgrb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C27219CCF9;
-	Thu,  6 Jun 2024 14:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AF2196D9C;
+	Thu,  6 Jun 2024 14:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683430; cv=none; b=DLbq634p2Obe6gUch9MufQuY3jI0cgQ0sJtMeHr5syck7BZhipc9WwFqfm2WfN/x1Ip00VsOM5kP2gg+QIJJAqUCHufu1hbQxmseEpOJNGChoDVrr5mezPeKtReMODNVRGY+LzEj1S/bBh0iYr8pFbRkxuyc3ydzwI1Uouv5VJo=
+	t=1717682926; cv=none; b=XQLsuWYJYPz1jcZrYSpr9SC5k6zZFTpe8+zndhW23bYZs0f2GWTnN5BLAaQNtJsfzsgz4XIPTChmd+eqU08xR5t4nAC1N7Lgyytu8b+gKjqX404+MgsXJfWR90cp5w6DpzIkNdO5ExzBmzeqqSKY/pzOh7lQQ0chOlR2KP77r9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683430; c=relaxed/simple;
-	bh=P1+iGhauiYVBbvpqVycRvibLOvnzmh/ZxkJGMfV0ZGQ=;
+	s=arc-20240116; t=1717682926; c=relaxed/simple;
+	bh=unRsShBNe/N0U2GfSjd6mQYRIffBHoMtYWbOVSs7fgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PaFAgJfkPpt15ZBm/if7QBtalh6P2l3vlMztt6WDs1LryENDPhqW1IBTuTzvyV46lUKZfYtO125sfqOexaC4XXs18RagORMo6wyRK2x8Sp0G8sYTzavYMOi2DGrygUf1vy7qEmvkMLsInLo+d3t9qmw8s0EEZfjE0afhO6cgDOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOpeIrNP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB00C32781;
-	Thu,  6 Jun 2024 14:17:10 +0000 (UTC)
+	 MIME-Version; b=EjD2XxnfonpChebGGKLw7nYy4GUYWyT8KrlW0CWPOp7Iby6VUd3xm50Gi7dop7fAdECsCoUaVVG7LpFbTknhqE3zuVJK5zPmee1IS4AiPyDsURecf13E68qZEZHsj+oOoV868S3kNgg9XDY0Qz5gRwAXzViZD/phPSPB3+sXIpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZbdsgrb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9B1C32782;
+	Thu,  6 Jun 2024 14:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683430;
-	bh=P1+iGhauiYVBbvpqVycRvibLOvnzmh/ZxkJGMfV0ZGQ=;
+	s=korg; t=1717682925;
+	bh=unRsShBNe/N0U2GfSjd6mQYRIffBHoMtYWbOVSs7fgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOpeIrNP+9orI5uFdGKZIL8VW6SRtTDXl5lAp7P7xzdj54tcMSZ3wsgifGmj7DbPy
-	 zPpoyhPRf7RuaDIXJftljHxUMKL18BiTuf0Tw8YRqATguN4GGUjeVGtj3YMjSynwg+
-	 kC1ZpKCIrSGtoKGfb0yR8W0GIQpy+y4ugCibU/L8=
+	b=bZbdsgrbv9VWET1KFXCDCnxyKps94/pni7lUk7rrGq6j2svOitCoTRzaG/tbZkt5c
+	 5YrUrMqBx9eCc97ihGmM0E7NCyAv90TbcpIOO1dUs5giRlsA97aU17d1x+EaURPf/k
+	 bU72G+QkGfkD73SFMzkNo/ol01hiM4DCt3ChrV6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Ramona Gradinariu <ramona.gradinariu@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 375/744] RDMA/IPoIB: Fix format truncation compilation errors
-Date: Thu,  6 Jun 2024 16:00:47 +0200
-Message-ID: <20240606131744.507043210@linuxfoundation.org>
+Subject: [PATCH 6.9 069/374] docs: iio: adis16475: fix device files tables
+Date: Thu,  6 Jun 2024 16:00:48 +0200
+Message-ID: <20240606131654.143778374@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 
-[ Upstream commit 49ca2b2ef3d003402584c68ae7b3055ba72e750a ]
+[ Upstream commit c19f273cae8ac785f83345f6eb2b2813d35ec148 ]
 
-Truncate the device name to store IPoIB VLAN name.
+Remove in_accel_calibbias_x and in_anglvel_calibbias_x device files
+description, as they do not exist and were added by mistake.
+Add correct naming for in_accel_y_calibbias and in_anglvel_y_calibbias
+device files and update their description.
 
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 allmodconfig
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 W=1 drivers/infiniband/ulp/ipoib/
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c: In function ‘ipoib_vlan_add’:
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:52: error: ‘%04x’
-directive output may be truncated writing 4 bytes into a region of size
-between 0 and 15 [-Werror=format-truncation=]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                    ^~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:48: note: directive
-argument in the range [0, 65535]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                ^~~~~~~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:9: note: ‘snprintf’ output
-between 6 and 21 bytes into a destination of size 16
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  188 |                  ppriv->dev->name, pkey);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/ulp/ipoib/ipoib_vlan.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
-
-Fixes: 9baa0b036410 ("IB/ipoib: Add rtnl_link_ops support")
-Link: https://lore.kernel.org/r/e9d3e1fef69df4c9beaf402cc3ac342bad680791.1715240029.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: 8243b2877eef ("docs: iio: add documentation for adis16475 driver")
+Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Link: https://lore.kernel.org/r/20240424094152.103667-2-ramona.gradinariu@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_vlan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ Documentation/iio/adis16475.rst | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-index 4bd161e86f8dd..562df2b3ef187 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-@@ -184,8 +184,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
- 
- 	ppriv = ipoib_priv(pdev);
- 
--	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
--		 ppriv->dev->name, pkey);
-+	/* If you increase IFNAMSIZ, update snprintf below
-+	 * to allow longer names.
-+	 */
-+	BUILD_BUG_ON(IFNAMSIZ != 16);
-+	snprintf(intf_name, sizeof(intf_name), "%.10s.%04x", ppriv->dev->name,
-+		 pkey);
- 
- 	ndev = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
- 	if (IS_ERR(ndev)) {
+diff --git a/Documentation/iio/adis16475.rst b/Documentation/iio/adis16475.rst
+index 91cabb7d8d057..130f9e97cc17c 100644
+--- a/Documentation/iio/adis16475.rst
++++ b/Documentation/iio/adis16475.rst
+@@ -66,11 +66,9 @@ specific device folder path ``/sys/bus/iio/devices/iio:deviceX``.
+ +-------------------------------------------+----------------------------------------------------------+
+ | in_accel_x_calibbias                      | Calibration offset for the X-axis accelerometer channel. |
+ +-------------------------------------------+----------------------------------------------------------+
+-| in_accel_calibbias_x                      | x-axis acceleration offset correction                    |
+-+-------------------------------------------+----------------------------------------------------------+
+ | in_accel_x_raw                            | Raw X-axis accelerometer channel value.                  |
+ +-------------------------------------------+----------------------------------------------------------+
+-| in_accel_calibbias_y                      | y-axis acceleration offset correction                    |
++| in_accel_y_calibbias                      | Calibration offset for the Y-axis accelerometer channel. |
+ +-------------------------------------------+----------------------------------------------------------+
+ | in_accel_y_raw                            | Raw Y-axis accelerometer channel value.                  |
+ +-------------------------------------------+----------------------------------------------------------+
+@@ -94,11 +92,9 @@ specific device folder path ``/sys/bus/iio/devices/iio:deviceX``.
+ +---------------------------------------+------------------------------------------------------+
+ | in_anglvel_x_calibbias                | Calibration offset for the X-axis gyroscope channel. |
+ +---------------------------------------+------------------------------------------------------+
+-| in_anglvel_calibbias_x                | x-axis gyroscope offset correction                   |
+-+---------------------------------------+------------------------------------------------------+
+ | in_anglvel_x_raw                      | Raw X-axis gyroscope channel value.                  |
+ +---------------------------------------+------------------------------------------------------+
+-| in_anglvel_calibbias_y                | y-axis gyroscope offset correction                   |
++| in_anglvel_y_calibbias                | Calibration offset for the Y-axis gyroscope channel. |
+ +---------------------------------------+------------------------------------------------------+
+ | in_anglvel_y_raw                      | Raw Y-axis gyroscope channel value.                  |
+ +---------------------------------------+------------------------------------------------------+
 -- 
 2.43.0
 
