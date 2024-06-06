@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63CE48FEB01
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954DA8FE882
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B56C7289EEB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 340D31F2343F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E021A2C12;
-	Thu,  6 Jun 2024 14:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D36196DA9;
+	Thu,  6 Jun 2024 14:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnVSX321"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlkliNdV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87E419924D;
-	Thu,  6 Jun 2024 14:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C544D196DA2;
+	Thu,  6 Jun 2024 14:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683200; cv=none; b=icKmxUQq+muKebgFmQzz0Ck4i1137u1aYWYfr1e4r36ubgE47pCZK9K+Os6QwfkFmIgdsGuiAmfIQNZZjNyhK52BtuiY0+QmlkiQg88dR6fojt2rPr3A/cWDQO98nnr1aPhWZFaMERNobDzkPZfGfl+BbiTIajDWRp4ReR7Zq2g=
+	t=1717682901; cv=none; b=ITvMs9DuaLbC3YQgiBMZKAYiAJjxx3Ys4Uvr2bjzvCw7rrpChnVvLppI7ocKb88xQoyPLFglMCh3AP3yCcsVFb8AjG/ekr0v9ru1hvnPkJe85ryKOt8p+R1ltFVUHhOhDG/1s2cSZXGQgu0ydLHiEkv8ntaYYdIaiNwWXwFCsps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683200; c=relaxed/simple;
-	bh=SKJTGNp49ZIz/TzbWXiqAkFkkz2GkGq8AU/6VCPldw0=;
+	s=arc-20240116; t=1717682901; c=relaxed/simple;
+	bh=NV9H+NQTIFbEcRVW4/75hCKJ1uUg1aFmAHc0EDupkJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQUabULkmN7HPwXyJ/Nsuxaf3jf0Cfg2XVTFaoUMo5Ah9l6g7hI3vdQH1w0DFkezHXvqShmK6jFey8vgOp4Qyg5+yTameelxiPRcQXT6mfBdRa9czg/iZpIlIqxfEeQS2H31eCWnypbkK64+9DR02mj3k+RTXUY39k6ddpdtYhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnVSX321; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C833CC2BD10;
-	Thu,  6 Jun 2024 14:13:19 +0000 (UTC)
+	 MIME-Version; b=KR6oN1yilBaxPKR7fGWeP3NjlhW0VVQVLDf8IZVPFxRH0vprMwgHJ9XI8bPs/J262Tb/IY6HzK9g7KxvbA8YmSphhL06T9Pzd6LLwXQHjDAZd+ITUuc2VrBoU/V4c01VvBwUM+p+HegiCS4fx3+ctoqnshwH732ughq7A1+o0hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlkliNdV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C009C32781;
+	Thu,  6 Jun 2024 14:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683199;
-	bh=SKJTGNp49ZIz/TzbWXiqAkFkkz2GkGq8AU/6VCPldw0=;
+	s=korg; t=1717682901;
+	bh=NV9H+NQTIFbEcRVW4/75hCKJ1uUg1aFmAHc0EDupkJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CnVSX321YCBE91v5C+k+rdyhRXbr6j0jy40Qk9BNMjlZeF5VFh8tyzOpEb9zj7lpJ
-	 PS3NGwDb+eihifwidWww5LTMLMwUKTsa2sTL0DhACpsBZ+zgnwzBL0sJ0/UJX6nvuZ
-	 apC1uS8+0CUlORkL+oOZvTEWNuMYztqIq1x+hP+w=
+	b=IlkliNdVFOhLNOENZ3mBLyKJidfa2fJmCR7IQ9K/+sQCq4qjTr0g2eUonW7kCTCHu
+	 aokp5VpvLl+RGNfTSdf1jBeImPLsKS2M99ALvF/qXdLdFRvZmDyd60q+X3wEyPL/NI
+	 TLi74+xxv5p2e+xVfXNbWEvq8Iv9ywW7epK5SPOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jean Delvare <jdelvare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/473] parisc: add missing export of __cmpxchg_u8()
+Subject: [PATCH 6.9 022/374] firmware: dmi-id: add a release callback function
 Date: Thu,  6 Jun 2024 16:00:01 +0200
-Message-ID: <20240606131702.264219624@linuxfoundation.org>
+Message-ID: <20240606131652.533305270@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit c57e5dccb06decf3cb6c272ab138c033727149b5 ]
+[ Upstream commit cf770af5645a41a753c55a053fa1237105b0964a ]
 
-__cmpxchg_u8() had been added (initially) for the sake of
-drivers/phy/ti/phy-tusb1210.c; the thing is, that drivers is
-modular, so we need an export
+dmi_class uses kfree() as the .release function, but that now causes
+a warning with clang-16 as it violates control flow integrity (KCFI)
+rules:
 
-Fixes: b344d6a83d01 "parisc: add support for cmpxchg on u8 pointers"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+drivers/firmware/dmi-id.c:174:17: error: cast from 'void (*)(const void *)' to 'void (*)(struct device *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  174 |         .dev_release = (void(*)(struct device *)) kfree,
+
+Add an explicit function to call kfree() instead.
+
+Fixes: 4f5c791a850e ("DMI-based module autoloading")
+Link: https://lore.kernel.org/lkml/20240213100238.456912-1-arnd@kernel.org/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/parisc_ksyms.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/dmi-id.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/parisc/kernel/parisc_ksyms.c b/arch/parisc/kernel/parisc_ksyms.c
-index 00297e8e1c888..317508493b81c 100644
---- a/arch/parisc/kernel/parisc_ksyms.c
-+++ b/arch/parisc/kernel/parisc_ksyms.c
-@@ -21,6 +21,7 @@ EXPORT_SYMBOL(memset);
- #include <linux/atomic.h>
- EXPORT_SYMBOL(__xchg8);
- EXPORT_SYMBOL(__xchg32);
-+EXPORT_SYMBOL(__cmpxchg_u8);
- EXPORT_SYMBOL(__cmpxchg_u32);
- EXPORT_SYMBOL(__cmpxchg_u64);
- #ifdef CONFIG_SMP
+diff --git a/drivers/firmware/dmi-id.c b/drivers/firmware/dmi-id.c
+index 5f3a3e913d28f..d19c78a78ae3a 100644
+--- a/drivers/firmware/dmi-id.c
++++ b/drivers/firmware/dmi-id.c
+@@ -169,9 +169,14 @@ static int dmi_dev_uevent(const struct device *dev, struct kobj_uevent_env *env)
+ 	return 0;
+ }
+ 
++static void dmi_dev_release(struct device *dev)
++{
++	kfree(dev);
++}
++
+ static struct class dmi_class = {
+ 	.name = "dmi",
+-	.dev_release = (void(*)(struct device *)) kfree,
++	.dev_release = dmi_dev_release,
+ 	.dev_uevent = dmi_dev_uevent,
+ };
+ 
 -- 
 2.43.0
 
