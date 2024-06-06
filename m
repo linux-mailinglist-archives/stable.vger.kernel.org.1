@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-48971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6998FEB52
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E958FEB56
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D4001C23859
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 632FDB254C5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686ED1A3BB5;
-	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39AA1993BE;
+	Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kkZv/Fy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYUkWiao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282FF197A75;
-	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941B61A3BBD;
+	Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683237; cv=none; b=bx4OWDUB5VAN6bRnXW2dxNhkEnTPxTZ2thDUGKXRd9tr0eHcBIzp6TB+w3LWbEfRKQpwLEn1y47ZteNW3yDfIe9BVu8C4+0wrsA5unuOe23Uz9I1jzQFA+uEBTgXb3vKOV0DhIhFcFF3EUtsMoqoQVtgoGueOufuDj47HFNJYR0=
+	t=1717683238; cv=none; b=LMZoQVl7uwcy7hEOxjPl+ufj3P901TiFG6kWebReNriX3eAf/yEZ3KyBi6mCSyOCcoZ9/Qh6KKXVc+I1LDoFYJW8FZBKnJUGpxLIizGamMOWLHrzodJW1ZMkO5xSjydF08fQurQfFoHO4VRBqA7ILpvgKwJhoodbl6B7Kam4gSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683237; c=relaxed/simple;
-	bh=1XSlR8qSHvwVbpEHzsVDkcpsYlupBYFAuO8Nrt0691k=;
+	s=arc-20240116; t=1717683238; c=relaxed/simple;
+	bh=70uRE1xtpiaLtfhTTyVF7y9uUV0cZKI95A/34f+IdAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCsP0HSo7j7dDbeHj5znWUBpRvTH6cmLBK5aPQNQrwAKAbOhHm8hfPsu+xJx5y1+lrt6nvDTvKWU4amEXekN7SN/YYorzDpc1blaVoRO6Ys7EcJiEnWDDNrOI6LcUgz3L4c79vUE4c4eJQRHvark6gO0VWFTYIxTV8cnCLFc0E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kkZv/Fy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AE3C32781;
-	Thu,  6 Jun 2024 14:13:56 +0000 (UTC)
+	 MIME-Version; b=fy2s7pmpwrPqUUdcbAhM4ghigiI6mOVqTFxYL4S4FXagOSxxpLiQXPD3zaL9U6HlETGabBWmp7t3TfQWPAtA0ofQJS1JNbSetmON0O17NIFgNH6rFJZYOPyA95FP0Y8OaV15tDiyRqwhgtIN1jI0ujtnjNvJ6qkiCpLyee+C+k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYUkWiao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FE1C2BD10;
+	Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683237;
-	bh=1XSlR8qSHvwVbpEHzsVDkcpsYlupBYFAuO8Nrt0691k=;
+	s=korg; t=1717683238;
+	bh=70uRE1xtpiaLtfhTTyVF7y9uUV0cZKI95A/34f+IdAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kkZv/Fy8iwcgjyXVWx7DoBwA4r9RwR7VIbG7vhOuQG8wQDyNTp6MiJJDPq7Tgs2T
-	 vBuZewPCkDi+e0RnRcIRbGRM5N/RTGZsEtrKNFCVU0aYYDWnStkd2Y3kOmLS6ZYucb
-	 zLXH+L4FFuhOTYHSI668nrAguZ3Vb8ANjDMjEpaA=
+	b=RYUkWiaoueRMpiXdq3VTorDEGzMA/QVAWB3X4SSQqTSsiHxxRFTMW1kk0/WJ434Nw
+	 aIgW5xQLGp7mE4ZJ0D4hKLxutLXFQ0lltuZAn9VItxXzVBr+DJicvRPvwFqFvaP28k
+	 DH7XvGh0bJeYAqxHQto98jYvv+QKVz4uiE1uZ6sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
 	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Rob Herring <robh@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/744] dt-bindings: thermal: loongson,ls2k-thermal: Fix binding check issues
-Date: Thu,  6 Jun 2024 15:57:34 +0200
-Message-ID: <20240606131738.269042332@linuxfoundation.org>
+Subject: [PATCH 6.6 183/744] dt-bindings: thermal: loongson,ls2k-thermal: Add Loongson-2K0500 compatible
+Date: Thu,  6 Jun 2024 15:57:35 +0200
+Message-ID: <20240606131738.296296732@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -70,66 +70,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Binbin Zhou <zhoubinbin@loongson.cn>
 
-[ Upstream commit 88071e31e994ee23356674e0c5461b25e2a95cdc ]
+[ Upstream commit 25c7d8472f6e90390931e93f59135478af3e5d86 ]
 
-Add the missing 'thermal-sensor-cells' property which is required for
-every thermal sensor as it's used when using phandles.
-And add the thermal-sensor.yaml reference.
+The thermal on the Loongson-2K0500 shares the design with the
+Loongson-2K1000. Define corresponding compatible string, having the
+loongson,ls2k1000-thermal as a fallback.
 
-In fact, it was a careless mistake when submitting the driver that
-caused it to not work properly. So the fix is necessary, although it
-will result in the ABI break.
-
-Fixes: 72684d99a854 ("thermal: dt-bindings: add loongson-2 thermal")
-Cc: Yinbo Zhu <zhuyinbo@loongson.cn>
 Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/6d69362632271ab0af9a5fbfa3bc46a0894f1d54.1700817227.git.zhoubinbin@loongson.cn
+Link: https://lore.kernel.org/r/26524a63abd2d032e4c45efe6ce3fedb46841768.1713837379.git.zhoubinbin@loongson.cn
 Stable-dep-of: c8c435368577 ("dt-bindings: thermal: loongson,ls2k-thermal: Fix incorrect compatible definition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/thermal/loongson,ls2k-thermal.yaml        | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/thermal/loongson,ls2k-thermal.yaml       | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/Documentation/devicetree/bindings/thermal/loongson,ls2k-thermal.yaml b/Documentation/devicetree/bindings/thermal/loongson,ls2k-thermal.yaml
-index 7538469997f9e..b634f57cd011d 100644
+index b634f57cd011d..9748a479dcd4d 100644
 --- a/Documentation/devicetree/bindings/thermal/loongson,ls2k-thermal.yaml
 +++ b/Documentation/devicetree/bindings/thermal/loongson,ls2k-thermal.yaml
-@@ -10,6 +10,9 @@ maintainers:
-   - zhanghongchen <zhanghongchen@loongson.cn>
-   - Yinbo Zhu <zhuyinbo@loongson.cn>
+@@ -20,6 +20,7 @@ properties:
+           - loongson,ls2k1000-thermal
+       - items:
+           - enum:
++              - loongson,ls2k0500-thermal
+               - loongson,ls2k2000-thermal
+           - const: loongson,ls2k1000-thermal
  
-+allOf:
-+  - $ref: /schemas/thermal/thermal-sensor.yaml#
-+
- properties:
-   compatible:
-     oneOf:
-@@ -26,12 +29,16 @@ properties:
-   interrupts:
-     maxItems: 1
- 
-+  '#thermal-sensor-cells':
-+    const: 1
-+
- required:
-   - compatible
-   - reg
-   - interrupts
-+  - '#thermal-sensor-cells'
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
-@@ -41,4 +48,5 @@ examples:
-         reg = <0x1fe01500 0x30>;
-         interrupt-parent = <&liointc0>;
-         interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
-+        #thermal-sensor-cells = <1>;
-     };
 -- 
 2.43.0
 
