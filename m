@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-48317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13DA8FE87D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C59E08FEAF7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35AEFB24780
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62CB0B24DEE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E32B196D8D;
-	Thu,  6 Jun 2024 14:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4BF1A2C02;
+	Thu,  6 Jun 2024 14:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQAlIlbY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7hSZ2i0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC98196D86;
-	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0461196D98;
+	Thu,  6 Jun 2024 14:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682900; cv=none; b=TyYa8+4EUT2hDfiIR2M8J/fg30NskV1Lbpgwvv13SjwyRgSvR4Zx6zwNzhhWe1erGSmU6C8vBzykbCzL0mJy1z00HeUrjS4UCg3+1zLhNZa16jjJNuCbNE1ohMS1Xc+T0oazMOJP1Kfpt6ghVAu1mYALN2SSUmWN+w3Hd3GXSkg=
+	t=1717683195; cv=none; b=kBq9dJ5cqbasQmSe1WSNYCoRm2Zl8O1MBKsrGawg1jpXdqRI7VN2ZzN2+qo+nfYSljif6vPxecf8ijCexHbCCLZU70q1A4M2gjNDb5hC+V7eI4drbYxcKHIqW4pLNUqCaLYcVKRFLMHKnk0pBM1D4tEiChaUZStDhcrg7Qf+NnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682900; c=relaxed/simple;
-	bh=Z8cK9KMcjFg40NQ1Xo+JA38MsCPA/9YoBUX/m+1vjb8=;
+	s=arc-20240116; t=1717683195; c=relaxed/simple;
+	bh=j7sucH7T0cWFkLXmBcpzi1ChCBKiNaklZYd2zaqeFJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LB8akN4yx+ypgld1LzvbnVvpx4O+RPNB7ml0x3N4HYSdhvKN+6/XQTii5YqNbMBEjrR4aslZsYa29xA/RxNY17+qMVm21pPLvdmZjtw8GhUkhA3JRmUR5O4wxCwfCAheQp9Y+vTifr7kFvUWaIGqq4duomIU7XLxg2Qb+Nk1gwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQAlIlbY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A92DC4AF07;
-	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
+	 MIME-Version; b=XUIx+KB7JV69nOSVUkH1uh2Sr6xs3blIsKtd3D2mOeAUtyURCrbLC4WV58UIkcCmxSB5c9Z+bCW/mgyke7tcmrDDOSYtXLZ+wkwzCvdpOLjvd4ft8Ljgc8Zxf0fCI3s9jYJf42IJg5ld3wP/6KJKP8U39K5hgtZjr1ndcGVd0oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7hSZ2i0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00E3C2BD10;
+	Thu,  6 Jun 2024 14:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682899;
-	bh=Z8cK9KMcjFg40NQ1Xo+JA38MsCPA/9YoBUX/m+1vjb8=;
+	s=korg; t=1717683194;
+	bh=j7sucH7T0cWFkLXmBcpzi1ChCBKiNaklZYd2zaqeFJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQAlIlbY+QpKpuro8FA5AU5n6h+kAhQcdcNVE+vj462vdgjqk6ix0asbNHV+AsTpp
-	 PGyh8N22AWdMX8axm/toyqlCH40e2KTr9L1ctmqNHWodRcSeDq26Ej86h2ouT5GQ5P
-	 KlJV+OUFfhYtamCzKkg6H+BjXg+nt4LUk5CSTnbc=
+	b=Y7hSZ2i0sOg6OZmW5Ingh61VUfjUcTZXNNNFzOA9RqVdsrvlP8Yp8aEkyKgUfT4B9
+	 0Wz5j0lXRxjGMlppRR8OoFPII+lct2xpz5oLJj9N5fVPVxQqOPiKNjxz+5DcXI08lM
+	 MBT9EHguZ5ZwNa+XvjJRDyG9+wVmLBQr9ob7S2/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Oliver Glitta <glittao@gmail.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Daniel Latypov <dlatypov@google.com>,
+	Marco Elver <elver@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 018/374] perf report: Fix PAI counter names for s390 virtual machines
+Subject: [PATCH 6.1 068/473] mm/slub, kunit: Use inverted data to corrupt kmem cache
 Date: Thu,  6 Jun 2024 15:59:57 +0200
-Message-ID: <20240606131652.385659822@linuxfoundation.org>
+Message-ID: <20240606131702.128529466@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit b74bc5a633a7d72f89141d481d835e73bda3c3ae ]
+[ Upstream commit b1080c667b3b2c8c38a7fa83ca5567124887abae ]
 
-s390 introduced the Processor Activity Instrumentation (PAI) counter
-facility on LPAR and virtual machines z/VM for models 3931 and 3932.
+Two failure patterns are seen randomly when running slub_kunit tests with
+CONFIG_SLAB_FREELIST_RANDOM and CONFIG_SLAB_FREELIST_HARDENED enabled.
 
-These counters are stored as raw data in the perf.data file and are
-displayed with:
+Pattern 1:
+     # test_clobber_zone: pass:1 fail:0 skip:0 total:1
+     ok 1 test_clobber_zone
+     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:72
+     Expected 3 == slab_errors, but
+         slab_errors == 0 (0x0)
+     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:84
+     Expected 2 == slab_errors, but
+         slab_errors == 0 (0x0)
+     # test_next_pointer: pass:0 fail:1 skip:0 total:1
+     not ok 2 test_next_pointer
 
- # perf report -i /tmp//perfout-635468 -D | grep Counter
-	Counter:007 <unknown> Value:0x00000000000186a0
-	Counter:032 <unknown> Value:0x0000000000000001
-	Counter:032 <unknown> Value:0x0000000000000001
-	Counter:032 <unknown> Value:0x0000000000000001
- #
+In this case, test_next_pointer() overwrites p[s->offset], but the data
+at p[s->offset] is already 0x12.
 
-However on z/VM virtual machines, the counter names are not retrieved
-from the PMU and are shown as '<unknown>'.  This is caused by the CPU
-string saved in the mapfile.csv for this machine:
+Pattern 2:
+     ok 1 test_clobber_zone
+     # test_next_pointer: EXPECTATION FAILED at lib/slub_kunit.c:72
+     Expected 3 == slab_errors, but
+         slab_errors == 2 (0x2)
+     # test_next_pointer: pass:0 fail:1 skip:0 total:1
+     not ok 2 test_next_pointer
 
-   ^IBM.393[12].*3\.7.[[:xdigit:]]+$,3,cf_z16,core
+In this case, p[s->offset] has a value other than 0x12, but one of the
+expected failures is nevertheless missing.
 
-This string contains the CPU Measurement facility first and second
-version number and authorization level (3\.7.[[:xdigit:]]+).  These
-numbers do not apply to the PAI counter facility.  In fact they can be
-omitted.
+Invert data instead of writing a fixed value to corrupt the cache data
+structures to fix the problem.
 
-Shorten the CPU identification string for this machine to manufacturer
-and model. This is sufficient for all PMU devices.
-
-Output after:
-
- # perf report -i /tmp//perfout-635468 -D | grep Counter
-	Counter:007 km_aes_128 Value:0x00000000000186a0
-	Counter:032 kma_gcm_aes_256 Value:0x0000000000000001
-	Counter:032 kma_gcm_aes_256 Value:0x0000000000000001
-	Counter:032 kma_gcm_aes_256 Value:0x0000000000000001
- #
-
-Fixes: b539deafbadb2fc6 ("perf report: Add s390 raw data interpretation for PAI counters")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240404064806.1362876-1-tmricht@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 1f9f78b1b376 ("mm/slub, kunit: add a KUnit test for SLUB debugging functionality")
+Cc: Oliver Glitta <glittao@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+CC: Daniel Latypov <dlatypov@google.com>
+Cc: Marco Elver <elver@google.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/s390/mapfile.csv | 2 +-
+ lib/slub_kunit.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/pmu-events/arch/s390/mapfile.csv b/tools/perf/pmu-events/arch/s390/mapfile.csv
-index a918e1af77a57..b22648d127517 100644
---- a/tools/perf/pmu-events/arch/s390/mapfile.csv
-+++ b/tools/perf/pmu-events/arch/s390/mapfile.csv
-@@ -5,4 +5,4 @@ Family-model,Version,Filename,EventType
- ^IBM.296[45].*[13]\.[1-5].[[:xdigit:]]+$,1,cf_z13,core
- ^IBM.390[67].*[13]\.[1-5].[[:xdigit:]]+$,3,cf_z14,core
- ^IBM.856[12].*3\.6.[[:xdigit:]]+$,3,cf_z15,core
--^IBM.393[12].*3\.7.[[:xdigit:]]+$,3,cf_z16,core
-+^IBM.393[12].*$,3,cf_z16,core
+diff --git a/lib/slub_kunit.c b/lib/slub_kunit.c
+index 7a0564d7cb7ae..9384747d90e5f 100644
+--- a/lib/slub_kunit.c
++++ b/lib/slub_kunit.c
+@@ -39,7 +39,7 @@ static void test_next_pointer(struct kunit *test)
+ 
+ 	ptr_addr = (unsigned long *)(p + s->offset);
+ 	tmp = *ptr_addr;
+-	p[s->offset] = 0x12;
++	p[s->offset] = ~p[s->offset];
+ 
+ 	/*
+ 	 * Expecting three errors.
 -- 
 2.43.0
 
