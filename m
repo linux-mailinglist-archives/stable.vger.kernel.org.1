@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BF38FEE0F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C40578FE966
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8D7E1F2308E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5299A287F7A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2A919EEC3;
-	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B4019A2A3;
+	Thu,  6 Jun 2024 14:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODUxg74R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/YwFGx8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8E419EEAD;
-	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528B319A29D;
+	Thu,  6 Jun 2024 14:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683555; cv=none; b=I0GqfJ0UftWp2MRqLeoeAWNHLR0CGZEeEe5YqOKHf90jh0VBkDKEgqS1Ijjz53X1ghHlIR8CyE3kFJw328+X0246Mlcgd7xhUaBXh9FvNk8bkCSVdwCEd3q2yJxkh+AfAKCyHjZbXH8YlzVp1l6hmbCOawUGz/80rf3yUUm2r0s=
+	t=1717683015; cv=none; b=V8an3lKByzEfndlPePtmwWhy37hJG7Ft8/MVS2sXzeN41MfA0TTgLIcajcTB6PoPL/X3TA57Zm+anQ5MOhhCajYD1aEOW2Ax1tE5YQkkTQgL7g3NaLm+Hf1/jRvxVxZZFXecsa2d46VzElb8W7UtRMRqgS/stD4jXqkUihhyYMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683555; c=relaxed/simple;
-	bh=4F9vNeEzXms5gBPDNKMuWbsWc6jQsegH3g0b//syX2c=;
+	s=arc-20240116; t=1717683015; c=relaxed/simple;
+	bh=7WrRFIJZL+oUkNNK0XtzkH8RGWy7haWPUO6PlNqN3kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E82v7AqtqSfCoaob7mumzF5cUwAFHp9/ctxwzM2tYKSNN9vLMmVE32++4ucrT6X6mnfhgx7+sGsKDNf9bw4DFq8tTgTBuTogVLguuWCOyA6iMIbIJeHOBTh6rDUTib/oO2uW9NK/DSaBuPCh2/dv+igGKnLt0DQdd4GF66PJeck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODUxg74R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6FEC2BD10;
-	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
+	 MIME-Version; b=lDm/KKFk5itrRaP5yoqHTF3pX9x9opQNiPmOLLpHztzZJsP67H72kCx86ty2RzLIEgeqQw1esWEJ3uPETlbDgSKarbkhYLDycvV/Uh1M16Vld9Pnvd/5YlxRJB9A8mQ/OBtNOzrg+k51r4fOIK2f6+mVfn/vXtcLj98TdBXnZTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/YwFGx8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCCDC32781;
+	Thu,  6 Jun 2024 14:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683555;
-	bh=4F9vNeEzXms5gBPDNKMuWbsWc6jQsegH3g0b//syX2c=;
+	s=korg; t=1717683015;
+	bh=7WrRFIJZL+oUkNNK0XtzkH8RGWy7haWPUO6PlNqN3kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODUxg74RUn137zSG6Peto5nqCZ0YQTczlQLwQc/QASnFa8or1mhVkCJ14+RdCuhr6
-	 1Di9p+nup1GMd84m0+cgSuL/+qDL9AuPti/00k/XPPNbHXKrNxULC0zVcqs7MAltNn
-	 /hwJ6jp0Ts4qX8ZRnQmk2zlLBhUQ7txouVqKqs9M=
+	b=X/YwFGx87deSE9rJ3apd5snJcoO5uhx8XkMKKbStpah9cP4K/sKWsbL2UZzWiFVuV
+	 Le4fiMQVgzQu1U497QPUY+54M3AYD6SABvH0IRevlN7uf0W2pSVTyvHl9Ob+AAaIrY
+	 vksdikM6vs4rcbpnDS254sw5woA2EqyH4kxiF8kA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 497/744] dt-bindings: spmi: hisilicon,hisi-spmi-controller: fix binding references
+Subject: [PATCH 6.9 190/374] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
 Date: Thu,  6 Jun 2024 16:02:49 +0200
-Message-ID: <20240606131748.384450114@linuxfoundation.org>
+Message-ID: <20240606131658.234186093@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-[ Upstream commit c6c1b27f9a9a20ad2db663628fccaed72c6a0f1f ]
+[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
 
-Fix up the free text binding references which were not updated when
-moving the bindings out of staging and which had a leading current
-directory component, respectively.
+Couple of Minor fixes:
 
-Fixes: 9bd9e0de1cf5 ("mfd: hi6421-spmi-pmic: move driver from staging")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231130173757.13011-2-johan+linaro@kernel.org
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240507210809.3479953-3-sboyd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
+parse_ppp_data
+
+- If hcall fails, values set should be at-least zero. It shouldn't be
+uninitialized values. Fix that for h_get_mpp and h_get_ppp
+
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/spmi/hisilicon,hisi-spmi-controller.yaml         | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/hvcall.h        | 2 +-
+ arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
+ arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spmi/hisilicon,hisi-spmi-controller.yaml b/Documentation/devicetree/bindings/spmi/hisilicon,hisi-spmi-controller.yaml
-index f882903769f95..eee7c8d4cf4a2 100644
---- a/Documentation/devicetree/bindings/spmi/hisilicon,hisi-spmi-controller.yaml
-+++ b/Documentation/devicetree/bindings/spmi/hisilicon,hisi-spmi-controller.yaml
-@@ -14,7 +14,7 @@ description: |
-   It is a MIPI System Power Management (SPMI) controller.
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index a41e542ba94dd..51172625fa3a5 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -570,7 +570,7 @@ struct hvcall_mpp_data {
+ 	unsigned long backing_mem;
+ };
  
-   The PMIC part is provided by
--  ./Documentation/devicetree/bindings/mfd/hisilicon,hi6421-spmi-pmic.yaml.
-+  Documentation/devicetree/bindings/mfd/hisilicon,hi6421-spmi-pmic.yaml.
+-int h_get_mpp(struct hvcall_mpp_data *);
++long h_get_mpp(struct hvcall_mpp_data *mpp_data);
  
- allOf:
-   - $ref: spmi.yaml#
-@@ -48,7 +48,7 @@ patternProperties:
-       PMIC properties, which are specific to the used SPMI PMIC device(s).
-       When used in combination with HiSilicon 6421v600, the properties
-       are documented at
--      drivers/staging/hikey9xx/hisilicon,hi6421-spmi-pmic.yaml.
-+      Documentation/devicetree/bindings/mfd/hisilicon,hi6421-spmi-pmic.yaml
+ struct hvcall_mpp_x_data {
+ 	unsigned long coalesced_bytes;
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 4e9916bb03d71..c1d8bee8f7018 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -1886,10 +1886,10 @@ notrace void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
+  * h_get_mpp
+  * H_GET_MPP hcall returns info in 7 parms
+  */
+-int h_get_mpp(struct hvcall_mpp_data *mpp_data)
++long h_get_mpp(struct hvcall_mpp_data *mpp_data)
+ {
+-	int rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
  
- unevaluatedProperties: false
+ 	rc = plpar_hcall9(H_GET_MPP, retbuf);
  
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index f73c4d1c26af9..fb0189af2dea1 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -113,8 +113,8 @@ struct hvcall_ppp_data {
+  */
+ static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
+ {
+-	unsigned long rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
+ 
+ 	rc = plpar_hcall9(H_GET_PPP, retbuf);
+ 
+@@ -193,7 +193,7 @@ static void parse_ppp_data(struct seq_file *m)
+ 	struct hvcall_ppp_data ppp_data;
+ 	struct device_node *root;
+ 	const __be32 *perf_level;
+-	int rc;
++	long rc;
+ 
+ 	rc = h_get_ppp(&ppp_data);
+ 	if (rc)
 -- 
 2.43.0
 
