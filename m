@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EDFA8FE8D2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF7D8FED40
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B460F1C22442
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFC4BB25DEB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A88198E73;
-	Thu,  6 Jun 2024 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D2A19D087;
+	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFaJxx9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUHzQpPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754F5198E70;
-	Thu,  6 Jun 2024 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FADF198E79;
+	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682937; cv=none; b=g+zgoh4TB6XNVLTjwDfru80Y1uNtxC9Joyx6S/vZEREmEG8JUU2719O0lMkt/25QppU6TGBunDsnTT4zES6baiEV7lS/0EEHRx2TVJOCa7Vq2M2n2quozBxxfaON5MIjdJ/JgL/D/Y8R8gp+dJY32RdS43mVk1Nht1jrthrUCpo=
+	t=1717683465; cv=none; b=gn7vcgJmzhF/G5AyawH6me0q3i4fxreQtTmCp/5N8HAVDD4ffjAUa4vd8jXXi0WD6vO+ZP4QHlSbJdbYWa7pmYAJuadnBtyW2JfS9VebogL6p00unjLHi92XLnCoS2wnl3EHnMOgvl0Tcvs0ZwLYVNAhqUAWB+77OKYE9tvPsas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682937; c=relaxed/simple;
-	bh=C5obL2/HySdR11mXAom24xfy12nHSr0gss4Q3LB4t7U=;
+	s=arc-20240116; t=1717683465; c=relaxed/simple;
+	bh=eyHpBuJE9XcnxwqN9apNk32vHJdUxNc5ejXYzVQtI/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbrO3mn+xqoxIFgq4k9zLq4o1+avYSyM+S2VEWlua0bLIa/G+yqLej6EJsCVcEzubHs9il0neY2ZbmdNjYnC0auniF+Kble/7b38CT6FRvOfPIS8dXUjq6QjVq7PwJTeUcOeEboXS641aEATFYFTWTq+lInM/InVD+IQsYYlRJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFaJxx9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56292C32781;
-	Thu,  6 Jun 2024 14:08:57 +0000 (UTC)
+	 MIME-Version; b=h2xCF36fCPVHB9K+Dy6hraPU22GE8JphGj2K502ozqbzFs1Z8r78UcYZf0hozsj+OALBt1QNSaPRB8+xKQioeL5KJh1nHEQgl/APP+/82PPWBTR8WQ1ROH8Qc/Mdg5a6S1B2OqkSP4h7Aqkt0s2BX61DaMuQ8f1pTnaIBK5r+YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUHzQpPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648FAC32782;
+	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682937;
-	bh=C5obL2/HySdR11mXAom24xfy12nHSr0gss4Q3LB4t7U=;
+	s=korg; t=1717683465;
+	bh=eyHpBuJE9XcnxwqN9apNk32vHJdUxNc5ejXYzVQtI/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JFaJxx9nvQEGyLDtuJASaJcP9o+LMTj6EdCqGsiXiCU3DmDloVdb26XiFmMI9AV31
-	 brfHpufeh999w29IjzHR6Wyhn1XHXdWzzGKKiWkXRIUNdovaXMgTCB7ORvWSl4k2oj
-	 S3/MWACqoy9ENdRq4ssZ+Ltgy0bsjjsDwNh6ErcE=
+	b=cUHzQpPEa3cRkUKuPVdIAy7xwJnZTSe6HJtq+Py5WnXgdGqRNS+3lEZVAX/5fxTRw
+	 OLBFMOt4OgCy73oG8uhH7FVAigMZmz3A+xF6G5dW31tiss2kz5OH5D7GcuREtVUizA
+	 viumde97F08AZg4f0qrY0DYXlZAmVHK5Cl6AGPOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 089/374] i2c: cadence: Avoid fifo clear after start
+Subject: [PATCH 6.6 396/744] f2fs: fix to wait on page writeback in __clone_blkaddrs()
 Date: Thu,  6 Jun 2024 16:01:08 +0200
-Message-ID: <20240606131654.864749631@linuxfoundation.org>
+Message-ID: <20240606131745.163280532@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit c2e55b449de7298a751ed0256251019d302af453 ]
+[ Upstream commit d3876e34e7e789e2cbdd782360fef2a777391082 ]
 
-The Driver unintentionally programs ctrl reg to clear the fifo, which
-happens after the start of transaction. Previously, this was not an issue
-as it involved read-modified-write. However, this issue breaks i2c reads
-on QEMU, as i2c-read is executed before guest starts programming control
-register.
+In below race condition, dst page may become writeback status
+in __clone_blkaddrs(), it needs to wait writeback before update,
+fix it.
 
-Fixes: ff0cf7bca630 ("i2c: cadence: Remove unnecessary register reads")
-Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Thread A				GC Thread
+- f2fs_move_file_range
+  - filemap_write_and_wait_range(dst)
+					- gc_data_segment
+					 - f2fs_down_write(dst)
+					 - move_data_page
+					  - set_page_writeback(dst_page)
+					  - f2fs_submit_page_write
+					 - f2fs_up_write(dst)
+  - f2fs_down_write(dst)
+  - __exchange_data_block
+   - __clone_blkaddrs
+    - f2fs_get_new_data_page
+    - memcpy_page
+
+Fixes: 0a2aa8fbb969 ("f2fs: refactor __exchange_data_block for speed up")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-cadence.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-cadence.c b/drivers/i2c/busses/i2c-cadence.c
-index 4bb7d6756947c..2fce3e84ba646 100644
---- a/drivers/i2c/busses/i2c-cadence.c
-+++ b/drivers/i2c/busses/i2c-cadence.c
-@@ -633,6 +633,7 @@ static void cdns_i2c_mrecv(struct cdns_i2c *id)
- 
- 	if (hold_clear) {
- 		ctrl_reg &= ~CDNS_I2C_CR_HOLD;
-+		ctrl_reg &= ~CDNS_I2C_CR_CLR_FIFO;
- 		/*
- 		 * In case of Xilinx Zynq SOC, clear the HOLD bit before transfer size
- 		 * register reaches '0'. This is an IP bug which causes transfer size
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index ee5df9adaf775..7f631a617ee99 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1305,6 +1305,9 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
+ 				f2fs_put_page(psrc, 1);
+ 				return PTR_ERR(pdst);
+ 			}
++
++			f2fs_wait_on_page_writeback(pdst, DATA, true, true);
++
+ 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
+ 			set_page_dirty(pdst);
+ 			set_page_private_gcing(pdst);
 -- 
 2.43.0
 
