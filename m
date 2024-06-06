@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C562F8FED45
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4C28FEED9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ED87282803
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFE1A1F2597A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AED19D08C;
-	Thu,  6 Jun 2024 14:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606D21C7D9A;
+	Thu,  6 Jun 2024 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFZC+sT3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImLvG/pg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020EA198E79;
-	Thu,  6 Jun 2024 14:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD861A186C;
+	Thu,  6 Jun 2024 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683468; cv=none; b=RgqFimZACllzyydU7wrQLUCPyazRCb4oQROG/xw2kIPWrAiC7PTiJCeN0M3dCrBek7BH7QQmB37Fw2nRFXZL6e4bPojJxT7o4ZWW8q7NW8aIQNtH/+Piu2wvwhELvmr+z/6wJnARo5u6bCkcHZtYv/b2sMxiDhP/Qu6tTWcTTMA=
+	t=1717683709; cv=none; b=TR4+R6krMts0jt/E+g8+fiHV4XhLrfv1mdVcZjXzMfmp3p+4cCQ/6DbTHNhdT+wzhDDCeAMRKpA14rWh5RV+HfkTY5WCkAIShxdwIJU4yOIeCPEAQtvncmVh8UKwDptaEEPdvGSYtNLx3YXS1hDnnbntlGZkKc997pRMs6mwv2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683468; c=relaxed/simple;
-	bh=Jt6nlVRIf6KtO2M0w5MjdEGJvRhmi1wV1rn/Gr1fcnY=;
+	s=arc-20240116; t=1717683709; c=relaxed/simple;
+	bh=qqSw+wEHom9nm0wdBH15YMtVMAu71sYiF2IarTv0/Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZkfKz2Mdtu1bsv2gqhNT3/A04x716BetH3KOs0r3bIrsW3ZnNR231fLdO3H6saxaym/SDTZEdevdzz2aVxmua3TG9157Bu+0ZSw+t6Ahw3N52LaIIQaU+mDd5gRKwzQta/hhmdX9H0P4yazWC4USRKWUIfSxuV92aRL2aAzUk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFZC+sT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EF1C32781;
-	Thu,  6 Jun 2024 14:17:47 +0000 (UTC)
+	 MIME-Version; b=plX5HTSqNehizEGpj9jw988kSWaCPSLHaRLJzD4mEJdyQagV7dQgyCY/uXxgs6khRCny2F+q35TpNIYhAOfcA51LaL86lEDyQL2dpHmP/XwK5Jrj40foFpahY4cDZ+3t2r+f3VYQtDd9nl0de9SuSWqyFFWJ8H9VAEGzqLdN4f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImLvG/pg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B07C32781;
+	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683467;
-	bh=Jt6nlVRIf6KtO2M0w5MjdEGJvRhmi1wV1rn/Gr1fcnY=;
+	s=korg; t=1717683709;
+	bh=qqSw+wEHom9nm0wdBH15YMtVMAu71sYiF2IarTv0/Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFZC+sT3gMOiP2V9u7WP/dTZhZWrhEu7rBZaoCiR2s1/fB06TfTIdEV4vr6u5eUt+
-	 GCKZEM6Fr+xZ1uiMuKrlmVJneznxhu2i3Jq56iYOllnt/+H4ZJSlg/0DJOHMjPaLs3
-	 EqS02QX0N0ZXwstcST0YDibdmMCqm6lzvDOvbHEA=
+	b=ImLvG/pgOMk7JSCEBLFvgnczsTKDR1adH9YJnVH6p7tDbmh9yKwMFvQrOstCYFWX4
+	 AVc6V4XmNQe/u/l24MFHTycQtRFARqjTn6Z+KMOOlDJR9+I6X9IVkuOB1fWS7p8Xvd
+	 I5qBqJ3yfDsHSrxfry6vgY8EJ+TvxQ3oNO4ecEfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Robert Foss <rfoss@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 354/473] s390/vdso: Use standard stack frame layout
+Subject: [PATCH 6.6 611/744] Revert "drm/bridge: ti-sn65dsi83: Fix enable error path"
 Date: Thu,  6 Jun 2024 16:04:43 +0200
-Message-ID: <20240606131711.612836142@linuxfoundation.org>
+Message-ID: <20240606131752.086952453@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit 185445c7c137822ad856aae91a41e199370cb534 ]
+[ Upstream commit ad81feb5b6f1f5461641706376dcf7a9914ed2e7 ]
 
-By default user space is compiled with standard stack frame layout and not
-with the packed stack layout. The vdso code however inherited the
--mpacked-stack compiler option from the kernel. Remove this option to make
-sure the vdso is compiled with standard stack frame layout.
+This reverts commit 8a91b29f1f50ce7742cdbe5cf11d17f128511f3f.
 
-This makes sure that the stack frame backchain location for vdso generated
-stack frames is the same like for calling code (if compiled with default
-options). This allows to manually walk stack frames without DWARF
-information, like the kernel is doing it e.g. with arch_stack_walk_user().
+The regulator_disable() added by the original commit solves one kind of
+regulator imbalance but adds another one as it allows the regulator to be
+disabled one more time than it is enabled in the following scenario:
 
-Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
-Reviewed-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+ 1. Start video pipeline -> sn65dsi83_atomic_pre_enable -> regulator_enable
+ 2. PLL lock fails -> regulator_disable
+ 3. Stop video pipeline -> sn65dsi83_atomic_disable -> regulator_disable
+
+The reason is clear from the code flow, which looks like this (after
+removing unrelated code):
+
+  static void sn65dsi83_atomic_pre_enable()
+  {
+      regulator_enable(ctx->vcc);
+
+      if (PLL failed locking) {
+          regulator_disable(ctx->vcc);  <---- added by patch being reverted
+          return;
+      }
+  }
+
+  static void sn65dsi83_atomic_disable()
+  {
+      regulator_disable(ctx->vcc);
+  }
+
+The use case for introducing the additional regulator_disable() was
+removing the module for debugging (see link below for the discussion). If
+the module is removed after a .atomic_pre_enable, i.e. with an active
+pipeline from the DRM point of view, .atomic_disable is not called and thus
+the regulator would not be disabled.
+
+According to the discussion however there is no actual use case for
+removing the module with an active pipeline, except for
+debugging/development.
+
+On the other hand, the occurrence of a PLL lock failure is possible due to
+any physical reason (e.g. a temporary hardware failure for electrical
+reasons) so handling it gracefully should be supported. As there is no way
+for .atomic[_pre]_enable to report an error to the core, the only clean way
+to support it is calling regulator_disabled() only in .atomic_disable,
+unconditionally, as it was before.
+
+Link: https://lore.kernel.org/all/15244220.uLZWGnKmhe@steina-w/
+Fixes: 8a91b29f1f50 ("drm/bridge: ti-sn65dsi83: Fix enable error path")
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240426122259.46808-1-luca.ceresoli@bootlin.com
+(cherry picked from commit 2940ee03b23281071620dda1d790cd644dabd394)
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vdso32/Makefile | 1 +
- arch/s390/kernel/vdso64/Makefile | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
-index bf30997657ac8..2e1591d97a428 100644
---- a/arch/s390/kernel/vdso32/Makefile
-+++ b/arch/s390/kernel/vdso32/Makefile
-@@ -20,6 +20,7 @@ KBUILD_AFLAGS_32 := $(filter-out -m64,$(KBUILD_AFLAGS))
- KBUILD_AFLAGS_32 += -m31 -s
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+index 061e8bd5915de..8a23116346a8a 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+@@ -478,7 +478,6 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
+ 		dev_err(ctx->dev, "failed to lock PLL, ret=%i\n", ret);
+ 		/* On failure, disable PLL again and exit. */
+ 		regmap_write(ctx->regmap, REG_RC_PLL_EN, 0x00);
+-		regulator_disable(ctx->vcc);
+ 		return;
+ 	}
  
- KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
-+KBUILD_CFLAGS_32 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS))
- KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
- KBUILD_CFLAGS_32 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_32))
- KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin -fasynchronous-unwind-tables
-diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-index f8643d50ba6a6..b260c0bc90125 100644
---- a/arch/s390/kernel/vdso64/Makefile
-+++ b/arch/s390/kernel/vdso64/Makefile
-@@ -25,6 +25,7 @@ KBUILD_AFLAGS_64 := $(filter-out -m64,$(KBUILD_AFLAGS))
- KBUILD_AFLAGS_64 += -m64 -s
- 
- KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
-+KBUILD_CFLAGS_64 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_64))
 -- 
 2.43.0
 
