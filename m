@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258648FEC5F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F9A88FE916
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 397971C20C14
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9A8F1F210AE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7F61B0125;
-	Thu,  6 Jun 2024 14:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054CD1991D8;
+	Thu,  6 Jun 2024 14:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/1Na3tn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBbjgmfI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6DE1B0121;
-	Thu,  6 Jun 2024 14:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8723196C9F;
+	Thu,  6 Jun 2024 14:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683360; cv=none; b=tSmVYR4CohdOGEz+aen0/mk/4T+aNXf4+SDQtRULhg0AgbhNZlH7JcmWHKY2G+CtA6Ij2nxCVkHY+3i+emMBZtByaAAsBffuqGR11Zh9iwDfV1mtBZ4J9sKv+rQIQQ12jcuPKOPiCdi1X3kR9vGYW2jyB1RQyIpKPK0YK/WuQLg=
+	t=1717682977; cv=none; b=amr0Sq8rrdyAi12G+whzY+kweWuJdKVzI/lT3gOpRG/UYxSWMi/EbH9tahlj9XhvHqx9+SWxpIbiBVLyTNYG2L89Y+RjhltmquvmfogwTtXn6ktHkWrPV41Y5M3gDHv8V7eycYb2UVh6f/42FJinrwTcVm0YBiVre6scn3krQLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683360; c=relaxed/simple;
-	bh=0Y7wPDzg5HPLr1tVQXvl+9t8qHJ/fMy90r4ywgvWKEI=;
+	s=arc-20240116; t=1717682977; c=relaxed/simple;
+	bh=R+FWY2vJjHuQ2xTaROQDiQgk1lcEzcOAxAYoaoKrEZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6QfQ3ALFL3BXYNpt262OkvFzZ0IqIePvO3tT3TJpVfW8mwiAWgkalMqQ4zUL7b+MGbwonJZaZ70O7sdiP+xLm7gP4/PTt+xxI0Av82KfdEgN9A+m9D0O23g9UTZ5eJVFPIXhoHYOZ+kFUYlWVhEQ4YdulG+SjsaGLyp31T+fPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/1Na3tn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE69EC2BD10;
-	Thu,  6 Jun 2024 14:15:59 +0000 (UTC)
+	 MIME-Version; b=QyaI1/NT+oQjHPubgUCBigfU93qodbJKaCasDBLfxicOch+pwlzdtHUnaVIQ1EmTimcycMN6sbFApInsHsyzxPAEV8sBeHlfuSiw0VyyATy7mt3mVarVdWVJ+YK8nYKUuUNaLn1+uN4QMHzpLSHEA6Wprkkl0A29dzbzy0j2Fkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBbjgmfI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BA9C2BD10;
+	Thu,  6 Jun 2024 14:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683359;
-	bh=0Y7wPDzg5HPLr1tVQXvl+9t8qHJ/fMy90r4ywgvWKEI=;
+	s=korg; t=1717682977;
+	bh=R+FWY2vJjHuQ2xTaROQDiQgk1lcEzcOAxAYoaoKrEZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/1Na3tnf4Q004vIK0rKkUKQakB60sSXk3m3BziWdvPgnd0IKNTyNDQEeXOS7DTgI
-	 CmW8I2GstadyHARj5GvtOd7E2HiXU+0i6laLctcy7ALz3M9ju3n6CN1bMNh7FfDzKN
-	 sof34BRurSTP35zz6puL90RNVB+IWq5n2XHROark=
+	b=cBbjgmfIDPYR7qWI9mP1ZQQUWFIBcwFJJ3aEH9JFv8/inrN1nmL5hCMgCklprsFzI
+	 zBLHre54SuOP/Z1DaJfnsU82VW0BSL04fTNsJk9G7jm4+gfuTf+VGQcsa7Zsw8ar/K
+	 isJPHD0q/+gNWfzMbjS3M4+uAlBCcQqucmihF+xY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Helge Deller <deller@gmx.de>,
+	Fenglin Wu <quic_fenglinw@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 206/473] fbdev: sisfb: hide unused variables
+Subject: [PATCH 6.9 156/374] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
 Date: Thu,  6 Jun 2024 16:02:15 +0200
-Message-ID: <20240606131706.736142629@linuxfoundation.org>
+Message-ID: <20240606131657.142112821@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Fenglin Wu <quic_fenglinw@quicinc.com>
 
-[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
+[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
 
-Building with W=1 shows that a couple of variables in this driver are only
-used in certain configurations:
+The output voltage is inclusive hence the max level calculation is
+off-by-one-step. Correct it.
 
-drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
-  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
-  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
-  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
-  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
-  184 | static const unsigned char SiS_Part2CLVX_2[] = {
-      |                            ^~~~~~~~~~~~~~~
-drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
-  176 | static const unsigned char SiS_Part2CLVX_1[] = {
-      |                            ^~~~~~~~~~~~~~~
+iWhile we are at it also add a define for the step size instead of
+using the magic value.
 
-This started showing up after the definitions were moved into the
-source file from the header, which was not flagged by the compiler.
-Move the definition into the appropriate #ifdef block that already
-exists next to them.
-
-Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
+Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sis/init301.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
-index a8fb41f1a2580..09329072004f4 100644
---- a/drivers/video/fbdev/sis/init301.c
-+++ b/drivers/video/fbdev/sis/init301.c
-@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
- };
+diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
+index 5c288fe7accf1..79f478d3a9b37 100644
+--- a/drivers/input/misc/pm8xxx-vibrator.c
++++ b/drivers/input/misc/pm8xxx-vibrator.c
+@@ -13,7 +13,8 @@
  
- /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
--
-+#ifdef CONFIG_FB_SIS_315
- static const unsigned char SiS_Part2CLVX_1[] = {
-     0x00,0x00,
-     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
-@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
-     0xFF,0xFF,
- };
+ #define VIB_MAX_LEVEL_mV	(3100)
+ #define VIB_MIN_LEVEL_mV	(1200)
+-#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
++#define VIB_PER_STEP_mV		(100)
++#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
  
--#ifdef CONFIG_FB_SIS_315
- /* 661 et al LCD data structure (2.03.00) */
- static const unsigned char SiS_LCDStruct661[] = {
-     /* 1024x768 */
+ #define MAX_FF_SPEED		0xff
+ 
+@@ -117,10 +118,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
+ 		vib->active = true;
+ 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
+ 						VIB_MIN_LEVEL_mV;
+-		vib->level /= 100;
++		vib->level /= VIB_PER_STEP_mV;
+ 	} else {
+ 		vib->active = false;
+-		vib->level = VIB_MIN_LEVEL_mV / 100;
++		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
+ 	}
+ 
+ 	pm8xxx_vib_set(vib, vib->active);
 -- 
 2.43.0
 
