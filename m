@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-48476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C818FE92A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E635E8FE92D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 011921C2570D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 546BCB254B3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF1A4199239;
-	Thu,  6 Jun 2024 14:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AC619753A;
+	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6Ai941/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XF/wgTtk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E78019753A;
-	Thu,  6 Jun 2024 14:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636C2199242;
+	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682987; cv=none; b=LWFgNXZMOny6UNAgCoo7MQy7SASLYLtzroiO2C/MrzQaHpTDz18IFrqOGt2GqR0vor3YMbVHtDpl3y/04sRBm83H2UtrBNXDI8lvIuCFnla0a21fPqT4O60C/FdXq1koU3iBHTzeEveN7Ya+pjRydrA6uDfPtUkaplUPBziOd1o=
+	t=1717682988; cv=none; b=tmbom8NIATtMcgPSN7TXk8BWGZI6PYR9pZR12qJdvsyAOSWx5qIRHx78+QA5Pfn5jFyppM0NhvYWLIoqpPgbPW7iVZ65z1mKZtDLl6vtwxsRy3WdPMWBYU+cehUeKGrim5PTHQKtW9f8o8iiVCNjJ1RsgRg/NqdKyf0s1tQCexI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682987; c=relaxed/simple;
-	bh=UBv0ei0u+GS+vy/9GboiPJ4ZlP5g+O7SX89gjDBzZeQ=;
+	s=arc-20240116; t=1717682988; c=relaxed/simple;
+	bh=QXuo7h5724iPyBDbrHQi6RnDbjN5C7igPNHAdb3hvDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WP0FxuiE2RHv2IK0P+zrPVbLKqvI0ev2yQ3MOZy61MRavoHoMrOMn+IxONv0/EFRZO7KvPie3k/dLYdAY1bvHE6KFX+MJdnwEGFCFKxlk6N/vcmk+lx4vw0qzpY4PgnYuotOeqoyUt/Dt95s7SA8EgAeipYwoyV+FKzNNCHACTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6Ai941/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A389C2BD10;
-	Thu,  6 Jun 2024 14:09:47 +0000 (UTC)
+	 MIME-Version; b=dUxh1sGucIyeMJ4B5Hkl52yp1zG8VYvOUWoTPvIdmEHHDn5mIcBT/5ak2r5nFjt8k7XGHu1g09Z00of4SAzvSP2s8R/pbaEyS2edEspLNgSR1GPJCi4/h2489jKVHdszGkztjf0KHAJ99hGPXosoj69Z313cc+17bQ7Mbc6dXJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XF/wgTtk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8A6C32781;
+	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682987;
-	bh=UBv0ei0u+GS+vy/9GboiPJ4ZlP5g+O7SX89gjDBzZeQ=;
+	s=korg; t=1717682988;
+	bh=QXuo7h5724iPyBDbrHQi6RnDbjN5C7igPNHAdb3hvDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6Ai941/DzAUKnSHKf+WZhw+jpzqGEYGiy35aQFQG49FNZLoyw4od9iXYJI9+pxDT
-	 HvNmGddn/r1GssZechv7dBWQUVwBGPj0VemnWXDFBHCETV4rh87iB3E7eIqtJo209n
-	 LWFN1AeGuLRHXl+CTWmCPDTL6Q/2atX0/H+rDkuM=
+	b=XF/wgTtk++M48nnIs1J3J3TVcyktTzafjPz9H+EEixS7yEtbDKw3g+fCjO32wMb8l
+	 Qkd7+EUvoXfY2aMY//ECWn6yiTx3Xu80jV1TTu7VbrOqhw74QY2tTHiIUUQZnK3qJf
+	 Iv/ilm3O+m5+is03AnSynV/eBUBPJwH4vQGfwDMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	kernel test robot <lkp@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 175/374] media: stk1160: fix bounds checking in stk1160_copy_video()
-Date: Thu,  6 Jun 2024 16:02:34 +0200
-Message-ID: <20240606131657.755201510@linuxfoundation.org>
+Subject: [PATCH 6.9 176/374] drm: Make drivers depends on DRM_DW_HDMI
+Date: Thu,  6 Jun 2024 16:02:35 +0200
+Message-ID: <20240606131657.782089059@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
 References: <20240606131651.683718371@linuxfoundation.org>
@@ -67,82 +67,148 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit faa4364bef2ec0060de381ff028d1d836600a381 ]
+[ Upstream commit c0e0f139354c01e0213204e4a96e7076e5a3e396 ]
 
-The subtract in this condition is reversed.  The ->length is the length
-of the buffer.  The ->bytesused is how many bytes we have copied thus
-far.  When the condition is reversed that means the result of the
-subtraction is always negative but since it's unsigned then the result
-is a very high positive value.  That means the overflow check is never
-true.
+DRM_DW_HDMI has a number of dependencies that might not be enabled.
+However, drivers were used to selecting it while not enforcing the
+DRM_DW_HDMI dependencies.
 
-Additionally, the ->bytesused doesn't actually work for this purpose
-because we're not writing to "buf->mem + buf->bytesused".  Instead, the
-math to calculate the destination where we are writing is a bit
-involved.  You calculate the number of full lines already written,
-multiply by two, skip a line if necessary so that we start on an odd
-numbered line, and add the offset into the line.
+This could result in Kconfig warnings (and further build breakages) such
+as:
 
-To fix this buffer overflow, just take the actual destination where we
-are writing, if the offset is already out of bounds print an error and
-return.  Otherwise, write up to buf->length bytes.
+  Kconfig warnings: (for reference only)
+     WARNING: unmet direct dependencies detected for DRM_DW_HDMI
+     Depends on [n]: HAS_IOMEM [=y] && DRM [=m] && DRM_BRIDGE [=y] && DRM_DISPLAY_HELPER [=n]
+     Selected by [m]:
+     - DRM_SUN8I_DW_HDMI [=m] && HAS_IOMEM [=y] && DRM_SUN4I [=m]
 
-Fixes: 9cb2173e6ea8 ("[media] media: Add stk1160 new driver (easycap replacement)")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202403262127.kZkttfNz-lkp@intel.com/
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lore.kernel.org/r/20240327-kms-kconfig-helpers-v3-7-eafee11b84b3@kernel.org
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Stable-dep-of: cbdbd9ca718e ("drm/bridge: imx: Fix unmet depenency for PHY_FSL_SAMSUNG_HDMI_PHY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/stk1160/stk1160-video.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/bridge/imx/Kconfig      | 4 ++--
+ drivers/gpu/drm/imx/ipuv3/Kconfig       | 5 +++--
+ drivers/gpu/drm/ingenic/Kconfig         | 2 +-
+ drivers/gpu/drm/meson/Kconfig           | 2 +-
+ drivers/gpu/drm/renesas/rcar-du/Kconfig | 2 +-
+ drivers/gpu/drm/rockchip/Kconfig        | 2 +-
+ drivers/gpu/drm/sun4i/Kconfig           | 2 +-
+ 7 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
-index 366f0e4a5dc0d..e79c45db60ab5 100644
---- a/drivers/media/usb/stk1160/stk1160-video.c
-+++ b/drivers/media/usb/stk1160/stk1160-video.c
-@@ -99,7 +99,7 @@ void stk1160_buffer_done(struct stk1160 *dev)
- static inline
- void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- {
--	int linesdone, lineoff, lencopy;
-+	int linesdone, lineoff, lencopy, offset;
- 	int bytesperline = dev->width * 2;
- 	struct stk1160_buffer *buf = dev->isoc_ctl.buf;
- 	u8 *dst = buf->mem;
-@@ -139,8 +139,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- 	 * Check if we have enough space left in the buffer.
- 	 * In that case, we force loop exit after copy.
- 	 */
--	if (lencopy > buf->bytesused - buf->length) {
--		lencopy = buf->bytesused - buf->length;
-+	offset = dst - (u8 *)buf->mem;
-+	if (offset > buf->length) {
-+		dev_warn_ratelimited(dev->dev, "out of bounds offset\n");
-+		return;
-+	}
-+	if (lencopy > buf->length - offset) {
-+		lencopy = buf->length - offset;
- 		remain = lencopy;
- 	}
+diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
+index 5965e8027529a..7687ed652df5b 100644
+--- a/drivers/gpu/drm/bridge/imx/Kconfig
++++ b/drivers/gpu/drm/bridge/imx/Kconfig
+@@ -5,9 +5,9 @@ config DRM_IMX_LDB_HELPER
  
-@@ -182,8 +187,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
- 		 * Check if we have enough space left in the buffer.
- 		 * In that case, we force loop exit after copy.
- 		 */
--		if (lencopy > buf->bytesused - buf->length) {
--			lencopy = buf->bytesused - buf->length;
-+		offset = dst - (u8 *)buf->mem;
-+		if (offset > buf->length) {
-+			dev_warn_ratelimited(dev->dev, "offset out of bounds\n");
-+			return;
-+		}
-+		if (lencopy > buf->length - offset) {
-+			lencopy = buf->length - offset;
- 			remain = lencopy;
- 		}
+ config DRM_IMX8MP_DW_HDMI_BRIDGE
+ 	tristate "Freescale i.MX8MP HDMI-TX bridge support"
+-	depends on OF
+ 	depends on COMMON_CLK
+-	select DRM_DW_HDMI
++	depends on DRM_DW_HDMI
++	depends on OF
+ 	select DRM_IMX8MP_HDMI_PVI
+ 	select PHY_FSL_SAMSUNG_HDMI_PHY
+ 	help
+diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv3/Kconfig
+index bacf0655ebaf3..5d810ac02171d 100644
+--- a/drivers/gpu/drm/imx/ipuv3/Kconfig
++++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
+@@ -35,7 +35,8 @@ config DRM_IMX_LDB
  
+ config DRM_IMX_HDMI
+ 	tristate "Freescale i.MX DRM HDMI"
+-	select DRM_DW_HDMI
+-	depends on DRM_IMX && OF
++	depends on DRM_DW_HDMI
++	depends on DRM_IMX
++	depends on OF
+ 	help
+ 	  Choose this if you want to use HDMI on i.MX6.
+diff --git a/drivers/gpu/drm/ingenic/Kconfig b/drivers/gpu/drm/ingenic/Kconfig
+index 3db117c5edd91..23effeb2ac721 100644
+--- a/drivers/gpu/drm/ingenic/Kconfig
++++ b/drivers/gpu/drm/ingenic/Kconfig
+@@ -27,8 +27,8 @@ config DRM_INGENIC_IPU
+ 
+ config DRM_INGENIC_DW_HDMI
+ 	tristate "Ingenic specific support for Synopsys DW HDMI"
++	depends on DRM_DW_HDMI
+ 	depends on MACH_JZ4780
+-	select DRM_DW_HDMI
+ 	help
+ 	  Choose this option to enable Synopsys DesignWare HDMI based driver.
+ 	  If you want to enable HDMI on Ingenic JZ4780 based SoC, you should
+diff --git a/drivers/gpu/drm/meson/Kconfig b/drivers/gpu/drm/meson/Kconfig
+index 615fdd0ce41b4..5520b9e3f0107 100644
+--- a/drivers/gpu/drm/meson/Kconfig
++++ b/drivers/gpu/drm/meson/Kconfig
+@@ -13,9 +13,9 @@ config DRM_MESON
+ 
+ config DRM_MESON_DW_HDMI
+ 	tristate "HDMI Synopsys Controller support for Amlogic Meson Display"
++	depends on DRM_DW_HDMI
+ 	depends on DRM_MESON
+ 	default y if DRM_MESON
+-	select DRM_DW_HDMI
+ 	imply DRM_DW_HDMI_I2S_AUDIO
+ 
+ config DRM_MESON_DW_MIPI_DSI
+diff --git a/drivers/gpu/drm/renesas/rcar-du/Kconfig b/drivers/gpu/drm/renesas/rcar-du/Kconfig
+index 53c356aed5d52..2dc739db2ba33 100644
+--- a/drivers/gpu/drm/renesas/rcar-du/Kconfig
++++ b/drivers/gpu/drm/renesas/rcar-du/Kconfig
+@@ -25,8 +25,8 @@ config DRM_RCAR_CMM
+ config DRM_RCAR_DW_HDMI
+ 	tristate "R-Car Gen3 and RZ/G2 DU HDMI Encoder Support"
+ 	depends on DRM && OF
++	depends on DRM_DW_HDMI
+ 	depends on DRM_RCAR_DU || COMPILE_TEST
+-	select DRM_DW_HDMI
+ 	help
+ 	  Enable support for R-Car Gen3 or RZ/G2 internal HDMI encoder.
+ 
+diff --git a/drivers/gpu/drm/rockchip/Kconfig b/drivers/gpu/drm/rockchip/Kconfig
+index 1bf3e2829cd07..0d5260e10f272 100644
+--- a/drivers/gpu/drm/rockchip/Kconfig
++++ b/drivers/gpu/drm/rockchip/Kconfig
+@@ -7,7 +7,6 @@ config DRM_ROCKCHIP
+ 	select DRM_PANEL
+ 	select VIDEOMODE_HELPERS
+ 	select DRM_ANALOGIX_DP if ROCKCHIP_ANALOGIX_DP
+-	select DRM_DW_HDMI if ROCKCHIP_DW_HDMI
+ 	select DRM_DW_MIPI_DSI if ROCKCHIP_DW_MIPI_DSI
+ 	select GENERIC_PHY if ROCKCHIP_DW_MIPI_DSI
+ 	select GENERIC_PHY_MIPI_DPHY if ROCKCHIP_DW_MIPI_DSI
+@@ -57,6 +56,7 @@ config ROCKCHIP_CDN_DP
+ 
+ config ROCKCHIP_DW_HDMI
+ 	bool "Rockchip specific extensions for Synopsys DW HDMI"
++	depends on DRM_DW_HDMI
+ 	help
+ 	  This selects support for Rockchip SoC specific extensions
+ 	  for the Synopsys DesignWare HDMI driver. If you want to
+diff --git a/drivers/gpu/drm/sun4i/Kconfig b/drivers/gpu/drm/sun4i/Kconfig
+index 4741d9f6544c2..5b19c7cb7b7eb 100644
+--- a/drivers/gpu/drm/sun4i/Kconfig
++++ b/drivers/gpu/drm/sun4i/Kconfig
+@@ -57,8 +57,8 @@ config DRM_SUN6I_DSI
+ config DRM_SUN8I_DW_HDMI
+ 	tristate "Support for Allwinner version of DesignWare HDMI"
+ 	depends on DRM_SUN4I
++	depends on DRM_DW_HDMI
+ 	default DRM_SUN4I
+-	select DRM_DW_HDMI
+ 	help
+ 	  Choose this option if you have an Allwinner SoC with the
+ 	  DesignWare HDMI controller. SoCs that support HDMI and
 -- 
 2.43.0
 
