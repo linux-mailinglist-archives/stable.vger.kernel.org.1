@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-49894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B7A8FEF4A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD318FEE10
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B50D1C24152
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C855C285492
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6BF1CBE8B;
-	Thu,  6 Jun 2024 14:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4BE1BF908;
+	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBupHqCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m22ZiuG/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4981A257D;
-	Thu,  6 Jun 2024 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D14019EEC6;
+	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683764; cv=none; b=jEf87g9ByHgfowEnC/5obulgO8liLXgYSJozTh2ixkLPA+JXG53h9VrIdIHGweezLxi/0gUUc5yG2/b+8/73LVHJNQ5fBo+FxfhPBlWAr3pdtWkAQiw0JIt46A0L4t5Lotmu+3r4cePZKOCIRds8sER/Q4Q0gznDXtPB88u75SI=
+	t=1717683555; cv=none; b=fR+8bOLMy627dtKl87IPczUjpeN33SWffU9Bp0mxxzcBXPEcV75ZNbqSt4AzF9oC2/TKpJK+lrbGJh5sFi79sLlqN+zVDdBOi0mB1uDEr4P7VtCEUHSwohmGQYZY2y3y6vB3o2pxCmvyQZJd2Kj5lsN6rIs04nqJkuI9EkKTvps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683764; c=relaxed/simple;
-	bh=fh1L0DzA1oNvpAipzLqEDWL5x29uxq4mq2PaPKl7if8=;
+	s=arc-20240116; t=1717683555; c=relaxed/simple;
+	bh=WB31M6Vs2xxfLampbPMpvsjqByiUSXfG0JOMEuvD0OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RzsjPydEIm9WTIMpuTa8WduDfqafWXZpzrh+G7JBGErLDg/wEx8q1MIgprKZPequJ+zMIqTcVb62EQYCH6sRJqdVEcs1Ea9XUj7BeSOmjsccLAAvT03V+8szSdNs74662oZyXIATVJl9AZrELJVZE+Y8lIG8eYnrViAgLSHhrCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBupHqCo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1638C2BD10;
-	Thu,  6 Jun 2024 14:22:43 +0000 (UTC)
+	 MIME-Version; b=hUcZy63eZaqIdI4bUla97W4qSjzeWwTMzZmEJnkgBzI8Hh6gdRZfLQUl9RROgKZdPhaxHtwv8V1fSLSBwmZQW3t0mI/AGgPq0RsAF7BIhZWjx10+0Hj7ZTwHbbm+5rdPRi0fQz2nWtHdL+cFTEj4H5Nu9wSai0rTo8KARM18K+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m22ZiuG/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D805C32781;
+	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683763;
-	bh=fh1L0DzA1oNvpAipzLqEDWL5x29uxq4mq2PaPKl7if8=;
+	s=korg; t=1717683555;
+	bh=WB31M6Vs2xxfLampbPMpvsjqByiUSXfG0JOMEuvD0OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBupHqCoelUZMMjYflRzNyqBM4SEup6XGxc7n+cgAe+5aPbViitV7RUlDOMs6XBaT
-	 Bj4s8j2pxVkyMsDd1gy6yb3pCs5IJs6r6BbU8YlSw2t+0xZXEtwIMxVpx1NJKpWG9j
-	 D4XxNBvIR/3Jb1ucR38T5OslhVj563ZLr053o9C4=
+	b=m22ZiuG/vP+Ha+TzS5xs/eQjVpQQfIjAY2jSCgxEUnudd3GHS7GXvVJF0g166p1Ky
+	 HWMkDt1AYrIOlNtIFpjxWkultASWrKADJtGEkLVNZFeIdOmLdwfzzvQwjGqMavJLZh
+	 VG/Ek3BPdbn1B7+W5JGsiEpnQyW7S1HpfgijvQrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	syzbot+ec941d6e24f633a59172@syzkaller.appspotmail.com,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 702/744] bpf: Allow delete from sockmap/sockhash only if update is allowed
-Date: Thu,  6 Jun 2024 16:06:14 +0200
-Message-ID: <20240606131754.993583455@linuxfoundation.org>
+Subject: [PATCH 6.1 446/473] ALSA: hda/realtek: Add quirk for ASUS ROG G634Z
+Date: Thu,  6 Jun 2024 16:06:15 +0200
+Message-ID: <20240606131714.462793568@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Sitnicki <jakub@cloudflare.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 98e948fb60d41447fd8d2d0c3b8637fc6b6dc26d ]
+[ Upstream commit 555434fd5c6b3589d9511ab6e88faf50346e19da ]
 
-We have seen an influx of syzkaller reports where a BPF program attached to
-a tracepoint triggers a locking rule violation by performing a map_delete
-on a sockmap/sockhash.
+Adds the required quirk to enable the Cirrus amp and correct pins
+on the ASUS ROG G634Z series.
 
-We don't intend to support this artificial use scenario. Extend the
-existing verifier allowed-program-type check for updating sockmap/sockhash
-to also cover deleting from a map.
+While this works if the related _DSD properties are made available, these
+aren't included in the ACPI of these laptops (yet).
 
->From now on only BPF programs which were previously allowed to update
-sockmap/sockhash can delete from these map types.
-
-Fixes: ff9105993240 ("bpf, sockmap: Prevent lock inversion deadlock in map delete elem")
-Reported-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Reported-by: syzbot+ec941d6e24f633a59172@syzkaller.appspotmail.com
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+ec941d6e24f633a59172@syzkaller.appspotmail.com
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=ec941d6e24f633a59172
-Link: https://lore.kernel.org/bpf/20240527-sockmap-verify-deletes-v1-1-944b372f2101@cloudflare.com
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lore.kernel.org/r/20230619060320.1336455-1-luke@ljones.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 2be46155d792 ("ALSA: hda/realtek: Adjust G814JZR to use SPI init for amp")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 1385d01a21e4f..24d7a32f1710e 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -8742,7 +8742,8 @@ static bool may_update_sockmap(struct bpf_verifier_env *env, int func_id)
- 	enum bpf_attach_type eatype = env->prog->expected_attach_type;
- 	enum bpf_prog_type type = resolve_prog_type(env->prog);
- 
--	if (func_id != BPF_FUNC_map_update_elem)
-+	if (func_id != BPF_FUNC_map_update_elem &&
-+	    func_id != BPF_FUNC_map_delete_elem)
- 		return false;
- 
- 	/* It's not possible to get access to a locked struct sock in these
-@@ -8753,6 +8754,11 @@ static bool may_update_sockmap(struct bpf_verifier_env *env, int func_id)
- 		if (eatype == BPF_TRACE_ITER)
- 			return true;
- 		break;
-+	case BPF_PROG_TYPE_SOCK_OPS:
-+		/* map_update allowed only via dedicated helpers with event type checks */
-+		if (func_id == BPF_FUNC_map_delete_elem)
-+			return true;
-+		break;
- 	case BPF_PROG_TYPE_SOCKET_FILTER:
- 	case BPF_PROG_TYPE_SCHED_CLS:
- 	case BPF_PROG_TYPE_SCHED_ACT:
-@@ -8848,7 +8854,6 @@ static int check_map_func_compatibility(struct bpf_verifier_env *env,
- 	case BPF_MAP_TYPE_SOCKMAP:
- 		if (func_id != BPF_FUNC_sk_redirect_map &&
- 		    func_id != BPF_FUNC_sock_map_update &&
--		    func_id != BPF_FUNC_map_delete_elem &&
- 		    func_id != BPF_FUNC_msg_redirect_map &&
- 		    func_id != BPF_FUNC_sk_select_reuseport &&
- 		    func_id != BPF_FUNC_map_lookup_elem &&
-@@ -8858,7 +8863,6 @@ static int check_map_func_compatibility(struct bpf_verifier_env *env,
- 	case BPF_MAP_TYPE_SOCKHASH:
- 		if (func_id != BPF_FUNC_sk_redirect_hash &&
- 		    func_id != BPF_FUNC_sock_hash_update &&
--		    func_id != BPF_FUNC_map_delete_elem &&
- 		    func_id != BPF_FUNC_msg_redirect_hash &&
- 		    func_id != BPF_FUNC_sk_select_reuseport &&
- 		    func_id != BPF_FUNC_map_lookup_elem &&
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 7aa961f613f88..4d7c23b20cce0 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9860,6 +9860,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1c23, "Asus X55U", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
++	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1d1f, "ASUS ROG Strix G17 2023 (G713PV)", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
 -- 
 2.43.0
 
