@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8267A8FECBB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AC78FEB1F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15230287EDE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1376B25A81
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F7B1B29AD;
-	Thu,  6 Jun 2024 14:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6001C1A2FA9;
+	Thu,  6 Jun 2024 14:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PllaH59p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muNUIXZo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903DA19B3F3;
-	Thu,  6 Jun 2024 14:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D67B19755E;
+	Thu,  6 Jun 2024 14:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683402; cv=none; b=Vja+htpRZNku1KgCBRipP9+CazTvGG6WSYIL55C1XmXv5e6eJfDgNEzqH3M6D6wCM9SqHCgKQz45MbBxOaTi3vv5qxlcsMEJgr+WwD3YP364fiHgG9JouQeRKx0eew07BLUztGWtLbQxKE70l+YVy420cUvDJ8eutmUZ8TZlFx0=
+	t=1717683213; cv=none; b=bguxO8xumOX0lcRR7sNf3iGNX+gcKSD4eorCMK7VyeMtAK5/4ZLCDWyFEuUllVAp7GORyKxDo3ClIt0fSyTqtA71ytW/oB264DfCGyH4RKQW6kMT7FdYcI0ZGNczWoKpqx+I+e48ssQQgjtoCKJ2wJEiA5eRFw9iaLTZYE9RUQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683402; c=relaxed/simple;
-	bh=rS3E/BIzXBtG/Sg0fJKq/WW/xrN8I+QtwWEoiLcrglM=;
+	s=arc-20240116; t=1717683213; c=relaxed/simple;
+	bh=TodgvRNuz3BaccTrLMAf0q9k5LS/f6TAW00aiRNjGiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIuaCdw1Uq+99tYNYs6eIBStX4VFaugFEMBu7PWoWe0KZhFiCHwz1JqWqkR00O0OSnN0r5JpGSBkxEAlbWnIStzFOy0OuG60lGpBA/0nRXACbRSLn3pcwU0J7XghtiB/6Hh4D7i46RS5UL4DwXbSaT8fVFp6rLTsq5qOKMqzP64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PllaH59p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718FDC32782;
-	Thu,  6 Jun 2024 14:16:42 +0000 (UTC)
+	 MIME-Version; b=KuGdBPJD4lMs3Xl5UgotxgbcoSPvhlS/6PSeeioChQZDdkQKlCoqzf1Vgg78MQWSNfAbfRaNMn3E9BYE1xExLkzsgvRCMNadRc5r4CJWKlbK6IG9vghsL1H7Ej2w8TZrJgdhnejS6WhEnYG7cx/CNUrkZmRwKYKXdHYiuX4qcfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muNUIXZo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07D5C2BD10;
+	Thu,  6 Jun 2024 14:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683402;
-	bh=rS3E/BIzXBtG/Sg0fJKq/WW/xrN8I+QtwWEoiLcrglM=;
+	s=korg; t=1717683213;
+	bh=TodgvRNuz3BaccTrLMAf0q9k5LS/f6TAW00aiRNjGiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PllaH59pK4kZfRttPWlvpQXXgo7UmLx15J3D2FDQjSuzBb65M0F+mJZBDxIatqbid
-	 8K1/9/R/GLEARt+YT2FA0U1H6hbG+5Kf0Zu6Dwtogc9VS2rr8mvOFBiGbMf0JK3fPJ
-	 afHRMQ2abKaZJUbo4WbMvEZ8xOi0GqdlAk/ZrFy8=
+	b=muNUIXZoxDfsh11cpjuLwoLBNljkBxQvphWqf0OL00kNhSGVx6Xmpmfg5z3/M8fnC
+	 t1weeEiJcFDYXBRfiu8bvbYYC+jq63u9dcx6DNHWQdcfdCSVZglvvpzsm94nsGPk1w
+	 iOFnRktj03xGAIOq3EJGMJVAxNrnXNwEahTf9ivA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Popescu <catalin.popescu@leica-geosystems.com>,
-	Marek Vasut <marex@denx.de>,
-	Stephen Boyd <sboyd@kernel.org>,
+	James Prestwood <prestwoj@gmail.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 346/744] clk: rs9: fix wrong default value for clock amplitude
-Date: Thu,  6 Jun 2024 16:00:18 +0200
-Message-ID: <20240606131743.565577775@linuxfoundation.org>
+Subject: [PATCH 6.1 090/473] wifi: ath10k: poll service ready message before failing
+Date: Thu,  6 Jun 2024 16:00:19 +0200
+Message-ID: <20240606131702.887593169@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 1758c68c81b8b881818fcebaaeb91055362a82f8 ]
+[ Upstream commit e57b7d62a1b2f496caf0beba81cec3c90fad80d5 ]
 
-According to 9FGV0241, 9FGV0441 & 9FGV0841 datasheets, the default
-value for the clock amplitude is 0.8V, while the driver assumes 0.7V.
+Currently host relies on CE interrupts to get notified that
+the service ready message is ready. This results in timeout
+issue if the interrupt is not fired, due to some unknown
+reasons. See below logs:
 
-Additionally, define constants for default values for both clock
-amplitude and spread spectrum and use them.
+[76321.937866] ath10k_pci 0000:02:00.0: wmi service ready event not received
+...
+[76322.016738] ath10k_pci 0000:02:00.0: Could not init core: -110
 
-Fixes: 892e0ddea1aa ("clk: rs9: Add Renesas 9-series PCIe clock generator driver")
-Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20240415140348.2887619-1-catalin.popescu@leica-geosystems.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+And finally it causes WLAN interface bring up failure.
+
+Change to give it one more chance here by polling CE rings,
+before failing directly.
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
+
+Fixes: 5e3dd157d7e7 ("ath10k: mac80211 driver for Qualcomm Atheros 802.11ac CQA98xx devices")
+Reported-by: James Prestwood <prestwoj@gmail.com>
+Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
+Link: https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240227030409.89702-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-renesas-pcie.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/clk-renesas-pcie.c b/drivers/clk/clk-renesas-pcie.c
-index 3b6ad2307a41f..b00c38469cfad 100644
---- a/drivers/clk/clk-renesas-pcie.c
-+++ b/drivers/clk/clk-renesas-pcie.c
-@@ -24,10 +24,12 @@
- #define RS9_REG_SS_AMP_0V7			0x1
- #define RS9_REG_SS_AMP_0V8			0x2
- #define RS9_REG_SS_AMP_0V9			0x3
-+#define RS9_REG_SS_AMP_DEFAULT			RS9_REG_SS_AMP_0V8
- #define RS9_REG_SS_AMP_MASK			0x3
- #define RS9_REG_SS_SSC_100			0
- #define RS9_REG_SS_SSC_M025			(1 << 3)
- #define RS9_REG_SS_SSC_M050			(3 << 3)
-+#define RS9_REG_SS_SSC_DEFAULT			RS9_REG_SS_SSC_100
- #define RS9_REG_SS_SSC_MASK			(3 << 3)
- #define RS9_REG_SS_SSC_LOCK			BIT(5)
- #define RS9_REG_SR				0x2
-@@ -211,8 +213,8 @@ static int rs9_get_common_config(struct rs9_driver_data *rs9)
- 	int ret;
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 980d4124fa287..8a5a44d75b141 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1762,12 +1762,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
  
- 	/* Set defaults */
--	rs9->pll_amplitude = RS9_REG_SS_AMP_0V7;
--	rs9->pll_ssc = RS9_REG_SS_SSC_100;
-+	rs9->pll_amplitude = RS9_REG_SS_AMP_DEFAULT;
-+	rs9->pll_ssc = RS9_REG_SS_SSC_DEFAULT;
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
+ {
+-	unsigned long time_left;
++	unsigned long time_left, i;
  
- 	/* Output clock amplitude */
- 	ret = of_property_read_u32(np, "renesas,out-amplitude-microvolt",
-@@ -253,13 +255,13 @@ static void rs9_update_config(struct rs9_driver_data *rs9)
- 	int i;
+ 	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+ 						WMI_SERVICE_READY_TIMEOUT_HZ);
+-	if (!time_left)
+-		return -ETIMEDOUT;
++	if (!time_left) {
++		/* Sometimes the PCI HIF doesn't receive interrupt
++		 * for the service ready message even if the buffer
++		 * was completed. PCIe sniffer shows that it's
++		 * because the corresponding CE ring doesn't fires
++		 * it. Workaround here by polling CE rings once.
++		 */
++		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
++
++		for (i = 0; i < CE_COUNT; i++)
++			ath10k_hif_send_complete_check(ar, i, 1);
++
++		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
++							WMI_SERVICE_READY_TIMEOUT_HZ);
++		if (!time_left) {
++			ath10k_warn(ar, "polling timed out\n");
++			return -ETIMEDOUT;
++		}
++
++		ath10k_warn(ar, "service ready completion received, continuing normally\n");
++	}
++
+ 	return 0;
+ }
  
- 	/* If amplitude is non-default, update it. */
--	if (rs9->pll_amplitude != RS9_REG_SS_AMP_0V7) {
-+	if (rs9->pll_amplitude != RS9_REG_SS_AMP_DEFAULT) {
- 		regmap_update_bits(rs9->regmap, RS9_REG_SS, RS9_REG_SS_AMP_MASK,
- 				   rs9->pll_amplitude);
- 	}
- 
- 	/* If SSC is non-default, update it. */
--	if (rs9->pll_ssc != RS9_REG_SS_SSC_100) {
-+	if (rs9->pll_ssc != RS9_REG_SS_SSC_DEFAULT) {
- 		regmap_update_bits(rs9->regmap, RS9_REG_SS, RS9_REG_SS_SSC_MASK,
- 				   rs9->pll_ssc);
- 	}
 -- 
 2.43.0
 
