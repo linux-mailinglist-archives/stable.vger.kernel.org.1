@@ -1,59 +1,70 @@
-Return-Path: <stable+bounces-49103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4BB8FEBDE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8428FE8F5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C63CF1C255C8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332481F2437C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB171ABE47;
-	Thu,  6 Jun 2024 14:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52251990C3;
+	Thu,  6 Jun 2024 14:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeIYysVa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCOmK5KV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE1E197537;
-	Thu,  6 Jun 2024 14:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650A019750E;
+	Thu,  6 Jun 2024 14:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683303; cv=none; b=tAdkKPPkLfK2bbXf2WbkGQg4mjlMpTPciZ6bsSxubfQG7oNjZ7N8SDHvL9vWEeBWxTnmkwVbh/WziHwBCxH5mjPQAwlHEFuHmbJnn7wtbw16N+2IGayt8KqvlDmuP40AVJBvXdVPOUI+yFSKUw2LGk4RAFh2jSD8tPB0Mv+LyYE=
+	t=1717682959; cv=none; b=CBuS7hN2kSchrc7Bomku/O+8GWx1r1PTQ7HF2TJOWROMbV7/PBkI7uByI9+eVLnPezlHbMJf7IGUsrmPgjK9GjUcxyeClzGIXHH8Gzy5yJJgjVHbmA5xGy1P71+8JBGLw084goSCgH5rjs99HRYn2ruZYRDNz3bHFtHFP/3sgSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683303; c=relaxed/simple;
-	bh=HZqZAvryNye6rhbjtEcTgnCpEeavxJO1W4h7CTxh0fE=;
+	s=arc-20240116; t=1717682959; c=relaxed/simple;
+	bh=JHq7ywA1T1xfF7Snz3z++dS3Y/yQzo4Q/gwTY54bbNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAIC37xAwKxfcOFcTHyW2hnZWSt4Y8JPBO/Iz6tEzN8uN1DsT08B5ApNdfxqdTcw25VM3PtoYalNuKxVkanmxtFjBxc08zfmIyavx2ZLa8JU1Qjq7AxismbZDXDLeqSfURlBGWk2ZBshZqISpYTvnGcc0RLrxTJ/YnwQWKOOsn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeIYysVa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33447C32781;
-	Thu,  6 Jun 2024 14:15:03 +0000 (UTC)
+	 MIME-Version; b=pbCQUEW2PfzlvmYEq4QdqU26V5bHh2gWSgMa7NgCMiofpgFA58A/Q4MJBgWAAxnst4vSbwle94/LHbfW5Dx0HsQQSGGfsbWZWwbpP9iPJ+YMIXS7MDBpkXIyIoaPvO/UxlMEDMja4XQwbD5Rux9P/APhP1iVCgriir5nJ6Cx4SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCOmK5KV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3735FC32786;
+	Thu,  6 Jun 2024 14:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683303;
-	bh=HZqZAvryNye6rhbjtEcTgnCpEeavxJO1W4h7CTxh0fE=;
+	s=korg; t=1717682959;
+	bh=JHq7ywA1T1xfF7Snz3z++dS3Y/yQzo4Q/gwTY54bbNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeIYysVaSajtefC4VXXh0fshF7rGi0IoPbbnTwI8yE6mg8JuqNtL44VzlbZ83453h
-	 gZPYh4l+E1DXsNLNuOH55VbynD8rAhaiFhgMXtY77Vr899mLzYmKlEGQl9DRTaDvbC
-	 6tncPQ7slKuX+LsHHTQ2fXrY6H9DF/X34Na+Vy/s=
+	b=pCOmK5KVHcwrxpzrfMZmAWZMbVzlALk903kvtwM+tUSmdQbvP1wParqhxuLWas79W
+	 YY1pbpzhFVHxYN0c7P3mjxgbsZh4bhOSNy0RuTJWvlqQAekq3m1tk1ay+rizUqFf/q
+	 4vchtrCUX8/dp0tLpemeGpMr8HrHhN21XT0IIc7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonin Bas <antonin.bas@broadcom.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jing Zhang <renyu.zj@linux.alibaba.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/473] net: openvswitch: fix overwriting ct original tuple for ICMPv6
+Subject: [PATCH 6.9 124/374] perf pmu: Assume sysfs events are always the same case
 Date: Thu,  6 Jun 2024 16:01:43 +0200
-Message-ID: <20240606131705.691224533@linuxfoundation.org>
+Message-ID: <20240606131656.063466115@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +76,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 7c988176b6c16c516474f6fceebe0f055af5eb56 ]
+[ Upstream commit 7b6dd7a923281a7ccb980a0f768d6926721eb3cc ]
 
-OVS_PACKET_CMD_EXECUTE has 3 main attributes:
- - OVS_PACKET_ATTR_KEY - Packet metadata in a netlink format.
- - OVS_PACKET_ATTR_PACKET - Binary packet content.
- - OVS_PACKET_ATTR_ACTIONS - Actions to execute on the packet.
+Perf event names aren't case sensitive. For sysfs events the entire
+directory of events is read then iterated comparing names in a case
+insensitive way, most often to see if an event is present.
 
-OVS_PACKET_ATTR_KEY is parsed first to populate sw_flow_key structure
-with the metadata like conntrack state, input port, recirculation id,
-etc.  Then the packet itself gets parsed to populate the rest of the
-keys from the packet headers.
+Consider:
 
-Whenever the packet parsing code starts parsing the ICMPv6 header, it
-first zeroes out fields in the key corresponding to Neighbor Discovery
-information even if it is not an ND packet.
+  $ perf stat -e inst_retired.any true
 
-It is an 'ipv6.nd' field.  However, the 'ipv6' is a union that shares
-the space between 'nd' and 'ct_orig' that holds the original tuple
-conntrack metadata parsed from the OVS_PACKET_ATTR_KEY.
+The event inst_retired.any may be present in any PMU, so every PMU's
+sysfs events are loaded and then searched with strcasecmp to see if
+any match. This event is only present on the cpu PMU as a JSON event
+so a lot of events were loaded from sysfs unnecessarily just to prove
+an event didn't exist there.
 
-ND packets should not normally have conntrack state, so it's fine to
-share the space, but normal ICMPv6 Echo packets or maybe other types of
-ICMPv6 can have the state attached and it should not be overwritten.
+This change avoids loading all the events by assuming sysfs event
+names are always either lower or uppercase. It uses file exists and
+only loads the events when the desired event is present.
 
-The issue results in all but the last 4 bytes of the destination
-address being wiped from the original conntrack tuple leading to
-incorrect packet matching and potentially executing wrong actions
-in case this packet recirculates within the datapath or goes back
-to userspace.
+For the example above, the number of openat calls measured by 'perf
+trace' on a tigerlake laptop goes from 325 down to 255. The reduction
+will be larger for machines with many PMUs, particularly replicated
+uncore PMUs.
 
-ND fields should not be accessed in non-ND packets, so not clearing
-them should be fine.  Executing memset() only for actual ND packets to
-avoid the issue.
+Ensure pmu_aliases_parse() is called before all uses of the aliases
+list, but remove some "pmu->sysfs_aliases_loaded" tests as they are now
+part of the function.
 
-Initializing the whole thing before parsing is needed because ND packet
-may not contain all the options.
-
-The issue only affects the OVS_PACKET_CMD_EXECUTE path and doesn't
-affect packets entering OVS datapath from network interfaces, because
-in this case CT metadata is populated from skb after the packet is
-already parsed.
-
-Fixes: 9dd7f8907c37 ("openvswitch: Add original direction conntrack tuple to sw_flow_key.")
-Reported-by: Antonin Bas <antonin.bas@broadcom.com>
-Closes: https://github.com/openvswitch/ovs-issues/issues/327
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://lore.kernel.org/r/20240509094228.1035477-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jing Zhang <renyu.zj@linux.alibaba.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240502213507.2339733-7-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/perf/util/pmu.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-index e20d1a9734175..78960a8a38925 100644
---- a/net/openvswitch/flow.c
-+++ b/net/openvswitch/flow.c
-@@ -558,7 +558,6 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
- 	 */
- 	key->tp.src = htons(icmp->icmp6_type);
- 	key->tp.dst = htons(icmp->icmp6_code);
--	memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index 8695b47491f0a..feab54606a995 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -425,9 +425,30 @@ static struct perf_pmu_alias *perf_pmu__find_alias(struct perf_pmu *pmu,
+ {
+ 	struct perf_pmu_alias *alias;
  
- 	if (icmp->icmp6_code == 0 &&
- 	    (icmp->icmp6_type == NDISC_NEIGHBOUR_SOLICITATION ||
-@@ -567,6 +566,8 @@ static int parse_icmpv6(struct sk_buff *skb, struct sw_flow_key *key,
- 		struct nd_msg *nd;
- 		int offset;
+-	if (load && !pmu->sysfs_aliases_loaded)
+-		pmu_aliases_parse(pmu);
++	if (load && !pmu->sysfs_aliases_loaded) {
++		bool has_sysfs_event;
++		char event_file_name[FILENAME_MAX + 8];
  
-+		memset(&key->ipv6.nd, 0, sizeof(key->ipv6.nd));
++		/*
++		 * Test if alias/event 'name' exists in the PMU's sysfs/events
++		 * directory. If not skip parsing the sysfs aliases. Sysfs event
++		 * name must be all lower or all upper case.
++		 */
++		scnprintf(event_file_name, sizeof(event_file_name), "events/%s", name);
++		for (size_t i = 7, n = 7 + strlen(name); i < n; i++)
++			event_file_name[i] = tolower(event_file_name[i]);
 +
- 		/* In order to process neighbor discovery options, we need the
- 		 * entire packet.
- 		 */
++		has_sysfs_event = perf_pmu__file_exists(pmu, event_file_name);
++		if (!has_sysfs_event) {
++			for (size_t i = 7, n = 7 + strlen(name); i < n; i++)
++				event_file_name[i] = toupper(event_file_name[i]);
++
++			has_sysfs_event = perf_pmu__file_exists(pmu, event_file_name);
++		}
++		if (has_sysfs_event)
++			pmu_aliases_parse(pmu);
++
++	}
+ 	list_for_each_entry(alias, &pmu->aliases, list) {
+ 		if (!strcasecmp(alias->name, name))
+ 			return alias;
+@@ -1632,9 +1653,7 @@ size_t perf_pmu__num_events(struct perf_pmu *pmu)
+ {
+ 	size_t nr;
+ 
+-	if (!pmu->sysfs_aliases_loaded)
+-		pmu_aliases_parse(pmu);
+-
++	pmu_aliases_parse(pmu);
+ 	nr = pmu->sysfs_aliases;
+ 
+ 	if (pmu->cpu_aliases_added)
+@@ -1693,6 +1712,7 @@ int perf_pmu__for_each_event(struct perf_pmu *pmu, bool skip_duplicate_pmus,
+ 	struct strbuf sb;
+ 
+ 	strbuf_init(&sb, /*hint=*/ 0);
++	pmu_aliases_parse(pmu);
+ 	pmu_add_cpu_aliases(pmu);
+ 	list_for_each_entry(event, &pmu->aliases, list) {
+ 		size_t buf_used;
+@@ -2093,6 +2113,7 @@ const char *perf_pmu__name_from_config(struct perf_pmu *pmu, u64 config)
+ 	if (!pmu)
+ 		return NULL;
+ 
++	pmu_aliases_parse(pmu);
+ 	pmu_add_cpu_aliases(pmu);
+ 	list_for_each_entry(event, &pmu->aliases, list) {
+ 		struct perf_event_attr attr = {.config = 0,};
 -- 
 2.43.0
 
