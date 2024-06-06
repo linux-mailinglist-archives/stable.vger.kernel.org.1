@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-49083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B3B8FEBC8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED7C8FEBCA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA9C91C251E2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C9BF285A5D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347871ABCDA;
-	Thu,  6 Jun 2024 14:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D00C1ABCD7;
+	Thu,  6 Jun 2024 14:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MarV953L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZncMbs3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84D8197A93;
-	Thu,  6 Jun 2024 14:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E097C197A91;
+	Thu,  6 Jun 2024 14:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683294; cv=none; b=MYJEnhnA2nZSbyCpio8PY1r0Huti7zLB3YPVh6tH824Ir4JgBVBTcKE9VtxXq+CW/5TaF21F12wQ/JpsY+6gL+cHgALIzfoAgEP/EY/KxV/0CSig/lsHo+r/1Dw+zfj2p6w6ucEPxsDLvRkduogjgRtpJ+UloTi32BEmCMVopIE=
+	t=1717683295; cv=none; b=biL6kotJC44XM/JiFL5y+7nYaigojsoEfEfPSaMPINAU3yNe7yX0EIwGSXT3stEafj8CN6t3+0Ap/WE8yZN5op0qpOlG+EUy4r832fp0LRcP9zwifaJAWi3ptyJVWpQXibfrxdhfHA7hGzvdKyNc2v3PHs+X15ljpwZ8HXDkiys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683294; c=relaxed/simple;
-	bh=x61NJ8eaemQXqxSMh0qoMOXw7NE7CMWYnB1BVkmwFu4=;
+	s=arc-20240116; t=1717683295; c=relaxed/simple;
+	bh=91i5QrzHG1G+vHB4Dgam1AMTHwio6ktz8VMRvQdcWik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlRBcj+EGyhQ6j088wzsXDsRVVTaBj/WXM8sG3wcWanQRFOgOsywm6I/fpMh1ME1YDr5qBbmXxH3dJrrGbGWVemag9ruIjvductT21rW9kpGlwcRU+dxsn835VhHB+dFmhgiQOStEdM0FJUU2Qwe0AXfXpVb8sB68d/Cdkj09RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MarV953L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C465DC2BD10;
-	Thu,  6 Jun 2024 14:14:53 +0000 (UTC)
+	 MIME-Version; b=b6RNdqiNVqIzzLaBnDIA0uECmv2zQWtCID5KlEYNJPgHgJLpZzM7En+h79fZ5QODOrQZrQ51e3pR13NVTXVFdqpvW+NPhKLH8lZNyM8yOnhPJH0VqVblIJekVnarOL3dYAqoxwJeZPo6HtYjOGj5eOYnA/J3jUq0dDtNjHKXvIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZncMbs3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CD4C32782;
+	Thu,  6 Jun 2024 14:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683293;
-	bh=x61NJ8eaemQXqxSMh0qoMOXw7NE7CMWYnB1BVkmwFu4=;
+	s=korg; t=1717683294;
+	bh=91i5QrzHG1G+vHB4Dgam1AMTHwio6ktz8VMRvQdcWik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MarV953L+wOZ7Z09vaXQ9thG6lR8Tkvrn1tEejXk9j+t+siwOgkTCsA/DShWG97gZ
-	 1qxnIZRDjFpgGx8WJNMFG/9Gx62pHeGretyXmXeo2qboJE/gvdAAP9vl5QbtP6riOP
-	 vXiJHrBwciKIblOyUoXdK1aEEW8j/qo+hSXMI5ow=
+	b=GZncMbs35MsnRzVB1Va8OfYL1wBCgyrgepvhCfu4i71cOjLeDJnvdS5yiCI9uJRkb
+	 bnkU/i7SdT7zFAfbCLwFLL2TypTV1hupOQ6NPJTC8/nSEPrrtN2lhlIEa3VfzHF2Ko
+	 VRo9T77bK1z3TWxlepU/iKTEoSNh9E0oO6KbNtls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 234/744] net: usb: sr9700: stop lying about skb->truesize
-Date: Thu,  6 Jun 2024 15:58:26 +0200
-Message-ID: <20240606131739.895062793@linuxfoundation.org>
+Subject: [PATCH 6.6 235/744] m68k: Fix spinlock race in kernel thread creation
+Date: Thu,  6 Jun 2024 15:58:27 +0200
+Message-ID: <20240606131739.928954461@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,57 +67,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit 05417aa9c0c038da2464a0c504b9d4f99814a23b ]
+[ Upstream commit da89ce46f02470ef08f0f580755d14d547da59ed ]
 
-Some usb drivers set small skb->truesize and break
-core networking stacks.
+Context switching does take care to retain the correct lock owner across
+the switch from 'prev' to 'next' tasks.  This does rely on interrupts
+remaining disabled for the entire duration of the switch.
 
-In this patch, I removed one of the skb->truesize override.
+This condition is guaranteed for normal process creation and context
+switching between already running processes, because both 'prev' and
+'next' already have interrupts disabled in their saved copies of the
+status register.
 
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
+The situation is different for newly created kernel threads.  The status
+register is set to PS_S in copy_thread(), which does leave the IPL at 0.
+Upon restoring the 'next' thread's status register in switch_to() aka
+resume(), interrupts then become enabled prematurely.  resume() then
+returns via ret_from_kernel_thread() and schedule_tail() where run queue
+lock is released (see finish_task_switch() and finish_lock_switch()).
 
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240506143939.3673865-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+A timer interrupt calling scheduler_tick() before the lock is released
+in finish_task_switch() will find the lock already taken, with the
+current task as lock owner.  This causes a spinlock recursion warning as
+reported by Guenter Roeck.
+
+As far as I can ascertain, this race has been opened in commit
+533e6903bea0 ("m68k: split ret_from_fork(), simplify kernel_thread()")
+but I haven't done a detailed study of kernel history so it may well
+predate that commit.
+
+Interrupts cannot be disabled in the saved status register copy for
+kernel threads (init will complain about interrupts disabled when
+finally starting user space).  Disable interrupts temporarily when
+switching the tasks' register sets in resume().
+
+Note that a simple oriw 0x700,%sr after restoring sr is not enough here
+- this leaves enough of a race for the 'spinlock recursion' warning to
+still be observed.
+
+Tested on ARAnyM and qemu (Quadra 800 emulation).
+
+Fixes: 533e6903bea0 ("m68k: split ret_from_fork(), simplify kernel_thread()")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/all/07811b26-677c-4d05-aeb4-996cd880b789@roeck-us.net
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20240411033631.16335-1-schmitzmic@gmail.com
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/sr9700.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ arch/m68k/kernel/entry.S | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index 3164451e1010c..0a662e42ed965 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -421,19 +421,15 @@ static int sr9700_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			skb_pull(skb, 3);
- 			skb->len = len;
- 			skb_set_tail_pointer(skb, len);
--			skb->truesize = len + sizeof(struct sk_buff);
- 			return 2;
- 		}
+diff --git a/arch/m68k/kernel/entry.S b/arch/m68k/kernel/entry.S
+index 4dd2fd7acba9e..2e1e9ad4f98ca 100644
+--- a/arch/m68k/kernel/entry.S
++++ b/arch/m68k/kernel/entry.S
+@@ -433,7 +433,9 @@ resume:
+ 	movec	%a0,%dfc
  
--		/* skb_clone is used for address align */
--		sr_skb = skb_clone(skb, GFP_ATOMIC);
-+		sr_skb = netdev_alloc_skb_ip_align(dev->net, len);
- 		if (!sr_skb)
- 			return 0;
+ 	/* restore status register */
+-	movew	%a1@(TASK_THREAD+THREAD_SR),%sr
++	movew	%a1@(TASK_THREAD+THREAD_SR),%d0
++	oriw	#0x0700,%d0
++	movew	%d0,%sr
  
--		sr_skb->len = len;
--		sr_skb->data = skb->data + 3;
--		skb_set_tail_pointer(sr_skb, len);
--		sr_skb->truesize = len + sizeof(struct sk_buff);
-+		skb_put(sr_skb, len);
-+		memcpy(sr_skb->data, skb->data + 3, len);
- 		usbnet_skb_return(dev, sr_skb);
+ 	rts
  
- 		skb_pull(skb, len + SR_RX_OVERHEAD);
 -- 
 2.43.0
 
