@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44A28FEF43
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F340F8FEE0E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF5211C227AE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6541C284225
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A391CBE80;
-	Thu,  6 Jun 2024 14:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEE71BF906;
+	Thu,  6 Jun 2024 14:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtWPWYVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEpuTonY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F831A2578;
-	Thu,  6 Jun 2024 14:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB99719EEAD;
+	Thu,  6 Jun 2024 14:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683760; cv=none; b=MTATL2UtEvV+1NFf1PBVx+hMNgrtZf0PjhB/gLgObeymHxlbkqT2nkdH/kpCu+Dz7GqOhKeIfED4+FeSVfZ+y30/TPzCnwYxOIkiGqcNGJWgrYs2lEXzjafF6Myj/zVMUuK2ehjAKJeiQ1wUlJjnVT2dqp5dQHejdJSwBXgyHfc=
+	t=1717683554; cv=none; b=FspIVrRCgfE0su/D5Tijqmx90Kv1Ktzo6gy9DjJSmzmK4K5FCcG8q2LmQE1cPQAlO34sVZ7zkwabrRuKscEgZsOmdPWYt6SQ+p9Hqvi0sg6UujDrVZDIhYmExbsgA0aSpeljGSMILy4LGhBZtY9zt7SSFJ4ErHOZqHAs+OtrKMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683760; c=relaxed/simple;
-	bh=/+YGM8nM9My9H2PdxICFyphUC0rjYKqW6gD0sV0X60Q=;
+	s=arc-20240116; t=1717683554; c=relaxed/simple;
+	bh=j5Mu52WztLpT1SdPIpEY5iyVvS63cIEyKxOYtzQB33U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQxQt6AHCkQFC3o2DAJaIIxoPoIzJ8TjQwopIDv26hrYRXDVRzGxrVy6GN+Pgv8vs3eh16T+i0vxbUWJFbF5xr1EZG09VkR4cHvuDejB71JgY30o1TzkfNFNumUXrpsLh+/7XUU9XtePCRK8KEj4sAGlE4KDDlN4WeTNbwzuQjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtWPWYVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E3DC2BD10;
-	Thu,  6 Jun 2024 14:22:40 +0000 (UTC)
+	 MIME-Version; b=CYxNaEQPaRjIDTqxAvWHkDnbmt+za0y2jSyVHtyBbQlCf7WxZw+J5hHR31CKXcqnSontnsrP6j0c0vt2phDktS3KQSbQesHQu3E1R2kdVf0HZOFj5+i2VmVWaVwzVKP5ZEhRqrxCNijN0jk/hEvByqThzBLK5Vy1q4DhBRvrAYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEpuTonY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAA0C32786;
+	Thu,  6 Jun 2024 14:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683760;
-	bh=/+YGM8nM9My9H2PdxICFyphUC0rjYKqW6gD0sV0X60Q=;
+	s=korg; t=1717683554;
+	bh=j5Mu52WztLpT1SdPIpEY5iyVvS63cIEyKxOYtzQB33U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wtWPWYVJ62CEkjUnoj7T9yeIfclKp66Q9S7oln/wvs4T9ibIogWbmjUvX8F77Y/ZH
-	 H+BzT824GImcrCUdFPiujZl35FvAVimmyAsDU2jJujazJnvQteDSEERj782ScuprMG
-	 QSQYbTw4yLUB+O1lED9BZJrAz5XFfo26V9a6D1zQ=
+	b=pEpuTonYp5vpWJRwKJ27eDfaISxKhcRemcaX+iATiJAvWBXZY2emSkJw2s6PL+scd
+	 g3kM3i+vf4x0UqB87S+btt9up9xfSuhldu1WtghMgrkPJbwngOS94OXW40LaOnx2/A
+	 y8zdsqrWyQw/mM2P7uIyy9lJIDU3s2doeuWVmauM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 701/744] ASoC: cs42l43: Only restrict 44.1kHz for the ASP
-Date: Thu,  6 Jun 2024 16:06:13 +0200
-Message-ID: <20240606131754.961101311@linuxfoundation.org>
+Subject: [PATCH 6.1 445/473] ALSA: core: Remove debugfs at disconnection
+Date: Thu,  6 Jun 2024 16:06:14 +0200
+Message-ID: <20240606131714.435306904@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 797c525e85d1e44cf0e6f338890e8e0c661f524a ]
+[ Upstream commit 495000a38634e640e2fd02f7e4f1512ccc92d770 ]
 
-The SoundWire interface can always support 44.1kHz using flow controlled
-mode, and whether the ASP is in master mode should obviously only affect
-the ASP. Update cs42l43_startup() to only restrict the rates for the ASP
-DAI.
+The card-specific debugfs entries are removed at the last stage of
+card free phase, and it's performed after synchronization of the
+closes of all opened fds.  This works fine for most cases, but it can
+be potentially problematic for a hotplug device like USB-audio.  Due
+to the nature of snd_card_free_when_closed(), the card free isn't
+called immediately after the driver removal for a hotplug device, but
+it's left until the last fd is closed.  It implies that the card
+debugfs entries also remain.  Meanwhile, when a new device is inserted
+before the last close and the very same card slot is assigned, the
+driver tries to create the card debugfs root again on the very same
+path.  This conflicts with the remaining entry, and results in the
+kernel warning such as:
+  debugfs: Directory 'card0' with parent 'sound' already present!
+with the missing debugfs entry afterwards.
 
-Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://msgid.link/r/20240527100840.439832-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For avoiding such conflicts, remove debugfs entries at the device
+disconnection phase instead.  The jack kctl debugfs entries get
+removed in snd_jack_dev_disconnect() instead of each kctl
+private_free.
+
+Fixes: 2d670ea2bd53 ("ALSA: jack: implement software jack injection via debugfs")
+Link: https://lore.kernel.org/r/20240524151256.32521-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs42l43.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/core/init.c |  9 +++++----
+ sound/core/jack.c | 21 ++++++++++++++-------
+ 2 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/sound/soc/codecs/cs42l43.c b/sound/soc/codecs/cs42l43.c
-index 8015f4b7a5b32..1443eb1dc0b17 100644
---- a/sound/soc/codecs/cs42l43.c
-+++ b/sound/soc/codecs/cs42l43.c
-@@ -220,8 +220,9 @@ static int cs42l43_startup(struct snd_pcm_substream *substream, struct snd_soc_d
- 	struct snd_soc_component *component = dai->component;
- 	struct cs42l43_codec *priv = snd_soc_component_get_drvdata(component);
- 	struct cs42l43 *cs42l43 = priv->core;
--	int provider = !!regmap_test_bits(cs42l43->regmap, CS42L43_ASP_CLK_CONFIG2,
--					  CS42L43_ASP_MASTER_MODE_MASK);
-+	int provider = !dai->id || !!regmap_test_bits(cs42l43->regmap,
-+						      CS42L43_ASP_CLK_CONFIG2,
-+						      CS42L43_ASP_MASTER_MODE_MASK);
+diff --git a/sound/core/init.c b/sound/core/init.c
+index 83e45efed61ed..3f08104e9366b 100644
+--- a/sound/core/init.c
++++ b/sound/core/init.c
+@@ -541,6 +541,11 @@ int snd_card_disconnect(struct snd_card *card)
+ 		synchronize_irq(card->sync_irq);
  
- 	if (provider)
- 		priv->constraint.mask = CS42L43_PROVIDER_RATE_MASK;
+ 	snd_info_card_disconnect(card);
++#ifdef CONFIG_SND_DEBUG
++	debugfs_remove(card->debugfs_root);
++	card->debugfs_root = NULL;
++#endif
++
+ 	if (card->registered) {
+ 		device_del(&card->card_dev);
+ 		card->registered = false;
+@@ -602,10 +607,6 @@ static int snd_card_do_free(struct snd_card *card)
+ 		dev_warn(card->dev, "unable to free card info\n");
+ 		/* Not fatal error */
+ 	}
+-#ifdef CONFIG_SND_DEBUG
+-	debugfs_remove(card->debugfs_root);
+-	card->debugfs_root = NULL;
+-#endif
+ 	if (card->release_completion)
+ 		complete(card->release_completion);
+ 	if (!card->managed)
+diff --git a/sound/core/jack.c b/sound/core/jack.c
+index 191357d619131..bd795452e57bf 100644
+--- a/sound/core/jack.c
++++ b/sound/core/jack.c
+@@ -37,11 +37,15 @@ static const int jack_switch_types[SND_JACK_SWITCH_TYPES] = {
+ };
+ #endif /* CONFIG_SND_JACK_INPUT_DEV */
+ 
++static void snd_jack_remove_debugfs(struct snd_jack *jack);
++
+ static int snd_jack_dev_disconnect(struct snd_device *device)
+ {
+-#ifdef CONFIG_SND_JACK_INPUT_DEV
+ 	struct snd_jack *jack = device->device_data;
+ 
++	snd_jack_remove_debugfs(jack);
++
++#ifdef CONFIG_SND_JACK_INPUT_DEV
+ 	guard(mutex)(&jack->input_dev_lock);
+ 	if (!jack->input_dev)
+ 		return 0;
+@@ -383,10 +387,14 @@ static int snd_jack_debugfs_add_inject_node(struct snd_jack *jack,
+ 	return 0;
+ }
+ 
+-static void snd_jack_debugfs_clear_inject_node(struct snd_jack_kctl *jack_kctl)
++static void snd_jack_remove_debugfs(struct snd_jack *jack)
+ {
+-	debugfs_remove(jack_kctl->jack_debugfs_root);
+-	jack_kctl->jack_debugfs_root = NULL;
++	struct snd_jack_kctl *jack_kctl;
++
++	list_for_each_entry(jack_kctl, &jack->kctl_list, list) {
++		debugfs_remove(jack_kctl->jack_debugfs_root);
++		jack_kctl->jack_debugfs_root = NULL;
++	}
+ }
+ #else /* CONFIG_SND_JACK_INJECTION_DEBUG */
+ static int snd_jack_debugfs_add_inject_node(struct snd_jack *jack,
+@@ -395,7 +403,7 @@ static int snd_jack_debugfs_add_inject_node(struct snd_jack *jack,
+ 	return 0;
+ }
+ 
+-static void snd_jack_debugfs_clear_inject_node(struct snd_jack_kctl *jack_kctl)
++static void snd_jack_remove_debugfs(struct snd_jack *jack)
+ {
+ }
+ #endif /* CONFIG_SND_JACK_INJECTION_DEBUG */
+@@ -406,7 +414,6 @@ static void snd_jack_kctl_private_free(struct snd_kcontrol *kctl)
+ 
+ 	jack_kctl = kctl->private_data;
+ 	if (jack_kctl) {
+-		snd_jack_debugfs_clear_inject_node(jack_kctl);
+ 		list_del(&jack_kctl->list);
+ 		kfree(jack_kctl);
+ 	}
+@@ -499,8 +506,8 @@ int snd_jack_new(struct snd_card *card, const char *id, int type,
+ 		.dev_free = snd_jack_dev_free,
+ #ifdef CONFIG_SND_JACK_INPUT_DEV
+ 		.dev_register = snd_jack_dev_register,
+-		.dev_disconnect = snd_jack_dev_disconnect,
+ #endif /* CONFIG_SND_JACK_INPUT_DEV */
++		.dev_disconnect = snd_jack_dev_disconnect,
+ 	};
+ 
+ 	if (initial_kctl) {
 -- 
 2.43.0
 
