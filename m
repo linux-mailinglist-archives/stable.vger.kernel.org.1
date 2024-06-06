@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-48975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC3D8FEB55
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFFA8FE8B2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D53C28826C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 843D2B2421C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7541A3BBE;
-	Thu,  6 Jun 2024 14:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2BD196DA0;
+	Thu,  6 Jun 2024 14:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ0ldA8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlr/M8H6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1EA1993BF;
-	Thu,  6 Jun 2024 14:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696B6196D9C;
+	Thu,  6 Jun 2024 14:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683239; cv=none; b=m7ESoNEzHetk38hJbopGq2zIZHBTSho4lq3Z3E3hoDpn+ndbDo6oJcbDNoM62dBLu+uWORo7tsIx8A766qjZO0R0gx85qp7pOw02KziMT+xALaPWmW7EaKMLfdREA9h1Bn+Dkvb8Nex/HUELqnIw0ft4EQiqoKBhK5V9GK2lZ/k=
+	t=1717682924; cv=none; b=Z5KV0fm+H04Tl5u5FAmBG46+QiOOFFtOVRlodx+ieMqYq6x/FwVsqhV1SvXiFXLV5R6PpyMGA9BX3wH33QOisf39vnXF9hQn7x/hVk/AmVp7DFgTatkS0ARcTPgVp3iY8WQvzEtTv3WrkrWUC27A5mzO9FALRQlvSM0p0mUP0xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683239; c=relaxed/simple;
-	bh=8aEueV8MFeCv3ELdSEIynKnZG8FHhVUmBAPx7EPGXy0=;
+	s=arc-20240116; t=1717682924; c=relaxed/simple;
+	bh=gKHrmOY6iwxjMkXV9vSgOb+FD0C/HX4jud+me9CdNNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZGB0PaqoT/B2p/FHm0qhWQdoxpDc5uS90YDmB3XlETdhYBHzC+EijhtvzlSgVRAtUQWh8eOa8lzWmfSl1PmzB0kuNzD+M9L4zfF+EeWsjwNXkGaOESKOavT92qb26RfAa0Fm1lymIq3HHJTt9yfT7lzij2MYWq6UUwaNlHmqWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ0ldA8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2331C2BD10;
-	Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GoniyqJDi7YfMJwSudczN6TOe4dljoHMSka9zRk55uIgq8zbWUfTMd8hup1d9/E3TR9qijWwpbO+4rpq9IXFsdmYU1ljTmoELUgApUZmuLDsm/sy/3CVQQfdK89bYS2/vQKOR2iN1DnP7k+wjoLQISLgFp8s6kXC8Zcqx/svsOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlr/M8H6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442E3C4AF08;
+	Thu,  6 Jun 2024 14:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683239;
-	bh=8aEueV8MFeCv3ELdSEIynKnZG8FHhVUmBAPx7EPGXy0=;
+	s=korg; t=1717682924;
+	bh=gKHrmOY6iwxjMkXV9vSgOb+FD0C/HX4jud+me9CdNNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJ0ldA8D7wRWtu06KeEbZoku/a8rOEtJbSvq8FeZoUgBsLUagtvubqDdORRRIC3Pq
-	 RVEKQ5CngrtbJG4P0ct/Da8SfjTLtDRCEM9sA0fBK+OIFjmoXN/oHS723J4X0hWAcd
-	 BEdBdxqBDg8ASDkjnj5gFgHnpngf4nsU13jZ8f+c=
+	b=dlr/M8H6rKzzuIgPcIK815qA5SNQ9HUypdxedhfUy6PKZkxoqJBXY3psm0IwPBGfZ
+	 xOUSNd3i6Nia3gp87zIFZn2a7mhj5skOO9DJqhxbpw/W+TTT1gxSvRlOSU55IhSAPW
+	 yOzksj7c3yI8wRkMs4pNgATcQOD4Ru/xTI+ut7Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/473] gfs2: Dont forget to complete delayed withdraw
+Subject: [PATCH 6.9 066/374] PCI: Wait for Link Training==0 before starting Link retrain
 Date: Thu,  6 Jun 2024 16:00:45 +0200
-Message-ID: <20240606131703.781704370@linuxfoundation.org>
+Message-ID: <20240606131654.048664683@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit b01189333ee91c1ae6cd96dfd1e3a3c2e69202f0 ]
+[ Upstream commit 73cb3a35f94db723c0211ad099bce55b2155e3f0 ]
 
-Commit fffe9bee14b0 ("gfs2: Delay withdraw from atomic context")
-switched from gfs2_withdraw() to gfs2_withdraw_delayed() in
-gfs2_ail_error(), but failed to then check if a delayed withdraw had
-occurred.  Fix that by adding the missing check in __gfs2_ail_flush(),
-where the spin locks are already dropped and a withdraw is possible.
+Two changes were made in link retraining logic independent of each other.
 
-Fixes: fffe9bee14b0 ("gfs2: Delay withdraw from atomic context")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+The commit e7e39756363a ("PCI/ASPM: Avoid link retraining race") added a
+check to pcie_retrain_link() to ensure no Link Training is currently active
+to address the Implementation Note in PCIe r6.1 sec 7.5.3.7. At that time
+pcie_wait_for_retrain() only checked for the Link Training (LT) bit being
+cleared.
+
+The commit 680e9c47a229 ("PCI: Add support for polling DLLLA to
+pcie_retrain_link()") generalized pcie_wait_for_retrain() into
+pcie_wait_for_link_status() which can wait either for LT or the Data Link
+Layer Link Active (DLLLA) bit with 'use_lt' argument and supporting waiting
+for either cleared or set using 'active' argument.
+
+In the merge commit 1abb47390350 ("Merge branch 'pci/enumeration'"), those
+two divergent branches converged. The merge changed LT bit checking added
+in the commit e7e39756363a ("PCI/ASPM: Avoid link retraining race") to now
+wait for completion of any ongoing Link Training using DLLLA bit being set
+if 'use_lt' is false.
+
+When 'use_lt' is false, the pseudo-code steps of what occurs in
+pcie_retrain_link():
+
+	1. Wait for DLLLA==1
+	2. Trigger link to retrain
+	3. Wait for DLLLA==1
+
+Step 3 waits for the link to come up from the retraining triggered by Step
+2. As Step 1 is supposed to wait for any ongoing retraining to end, using
+DLLLA also for it does not make sense because link training being active is
+still indicated using LT bit, not with DLLLA.
+
+Correct the pcie_wait_for_link_status() parameters in Step 1 to only wait
+for LT==0 to ensure there is no ongoing Link Training.
+
+This only impacts the Target Speed quirk, which is the only case where
+waiting for DLLLA bit is used. It currently works in the problematic case
+by means of link training getting initiated by hardware repeatedly and
+respecting the new link parameters set by the caller, which then make
+training succeed and bring the link up, setting DLLLA and causing
+pcie_wait_for_link_status() to return success. We are not supposed to rely
+on luck and need to make sure that LT transitioned through the inactive
+state though before we initiate link training by hand via RL (Retrain Link)
+bit.
+
+Fixes: 1abb47390350 ("Merge branch 'pci/enumeration'")
+Link: https://lore.kernel.org/r/20240423130820.43824-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glops.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index 7762483f5f20f..91a542b9d81e8 100644
---- a/fs/gfs2/glops.c
-+++ b/fs/gfs2/glops.c
-@@ -82,6 +82,9 @@ static void __gfs2_ail_flush(struct gfs2_glock *gl, bool fsync,
- 	GLOCK_BUG_ON(gl, !fsync && atomic_read(&gl->gl_ail_count));
- 	spin_unlock(&sdp->sd_ail_lock);
- 	gfs2_log_unlock(sdp);
-+
-+	if (gfs2_withdrawing(sdp))
-+		gfs2_withdraw(sdp);
- }
- 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index e5f243dd42884..70b8c87055cb6 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4629,7 +4629,7 @@ int pcie_retrain_link(struct pci_dev *pdev, bool use_lt)
+ 	 * avoid LTSSM race as recommended in Implementation Note at the
+ 	 * end of PCIe r6.0.1 sec 7.5.3.7.
+ 	 */
+-	rc = pcie_wait_for_link_status(pdev, use_lt, !use_lt);
++	rc = pcie_wait_for_link_status(pdev, true, false);
+ 	if (rc)
+ 		return rc;
  
 -- 
 2.43.0
