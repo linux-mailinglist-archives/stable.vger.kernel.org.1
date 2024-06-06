@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2978FED6E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C8D8FEED5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5705FB25E9C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C141C25BAB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7B8198E91;
-	Thu,  6 Jun 2024 14:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CF21C7D92;
+	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lALYT9C0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9PUduSU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D1C198E92;
-	Thu,  6 Jun 2024 14:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2609E1C7D76;
+	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683487; cv=none; b=CCBZhuy929gZ5YcKt/nNFtNvOc9wu8kLT+LpQBU27Qtmi3qSAi9GPlhU7jJTpUTlT4q8XrVkP7hx2KaHrEG0aFey/9Gv5aYDw8I/z9ZRW9cvdTZkrBgBpBtQvVJDSugdZbdHQPA2PZIlYuw41irmmUQIuHm09CciPCe4+pUU7eU=
+	t=1717683707; cv=none; b=Jtgu/QtQfYAjVlVxwuiqrmdIxKycr1sc7w6DFYzfCGbYaLwQySU+fvamUOGTogccYS3zqBxSfaLyv3MgxVRFxjThW4xEnmunt3WI/5fATmPPVc7FLBqu4D5K9J3W2t3cUsZFpPYnjgG+hg4eSh56K3LBFYp+6Z49tOYAK+PAr6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683487; c=relaxed/simple;
-	bh=FrNdciAJOpTcTXQzfRWqY9E/Z7NCNkKQsLQTIaIbSFY=;
+	s=arc-20240116; t=1717683707; c=relaxed/simple;
+	bh=Ko88NHpCHNitBZJ6lDs1lKvfQB3MeoHflwI1F2njMbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EwX/QmHWrYKRIR/s2z6SWT5Z0E8KMkSAwizQVD7lHtWqeMFYA0VV6HnZUfP5o+9dq3BYBP0sHauSlM00XYrUAughl6bXlJNo9t8X6IznmchFudhF52YK91GmYdKGn7KPUqa9VOVSb61IYYIWOi3hCingRtIyi4/n4FFEFpezxLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lALYT9C0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2602C2BD10;
-	Thu,  6 Jun 2024 14:18:06 +0000 (UTC)
+	 MIME-Version; b=C1bOgnjT5EZHrsAthDnp3pFR9rHm8oTbNF//TNt5DhdndQNwjvnDNVFav/L6HkJNlT2noCxFD9xRxk2bjk+TlqEooHlI7e1a2iTrWACydHQxCQTo3MXnLKHF/BetMhIrqWwVnYZGxBOqouwFzWHWBsXmBJXifJzgAOrUSCxU4b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9PUduSU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A9AC2BD10;
+	Thu,  6 Jun 2024 14:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683486;
-	bh=FrNdciAJOpTcTXQzfRWqY9E/Z7NCNkKQsLQTIaIbSFY=;
+	s=korg; t=1717683707;
+	bh=Ko88NHpCHNitBZJ6lDs1lKvfQB3MeoHflwI1F2njMbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lALYT9C0ck5B5sW1cRMyFtQ/yhOHEzhRCk+YMBKwjgKZNPGl0OIRzTLTK8xkGYpx+
-	 mY05edoLD7ARkYmlGItZzeRm6owtqQaaafN4KO8k8JhddRAQym7Gx9myFTvCSGWVHa
-	 m7X3y1vE+l2qTFFWBL/WGe9KT5ZxKxrW2w5DGLio=
+	b=l9PUduSUm3sW5CXNKuyKisquprMEIjI2zTSjJJEjsBPbSkP8UnQHZeKWT1mvC0QAe
+	 n1x1jeXGigU7yaCwAr1weJptM7c66r1wIy7v//Q9i4XaygSVvnrHjMHZYiHbgwaqP9
+	 5g7QTp3Qt8EIzsmrNkpGQTyEXgJCACWlMY3Rul5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 377/473] fs/ntfs3: Use variable length array instead of fixed size
+Subject: [PATCH 6.6 634/744] ipv6: sr: fix missing sk_buff release in seg6_input_core
 Date: Thu,  6 Jun 2024 16:05:06 +0200
-Message-ID: <20240606131712.337451808@linuxfoundation.org>
+Message-ID: <20240606131752.814720406@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
 
-[ Upstream commit 1997cdc3e727526aa5d84b32f7cbb3f56459b7ef ]
+[ Upstream commit 5447f9708d9e4c17a647b16a9cb29e9e02820bd9 ]
 
-Should fix smatch warning:
-	ntfs_set_label() error: __builtin_memcpy() 'uni->name' too small (20 vs 256)
+The seg6_input() function is responsible for adding the SRH into a
+packet, delegating the operation to the seg6_input_core(). This function
+uses the skb_cow_head() to ensure that there is sufficient headroom in
+the sk_buff for accommodating the link-layer header.
+In the event that the skb_cow_header() function fails, the
+seg6_input_core() catches the error but it does not release the sk_buff,
+which will result in a memory leak.
 
-Fixes: 4534a70b7056f ("fs/ntfs3: Add headers and misc files")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202401091421.3RJ24Mn3-lkp@intel.com/
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+This issue was introduced in commit af3b5158b89d ("ipv6: sr: fix BUG due
+to headroom too small after SRH push") and persists even after commit
+7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane"),
+where the entire seg6_input() code was refactored to deal with netfilter
+hooks.
+
+The proposed patch addresses the identified memory leak by requiring the
+seg6_input_core() function to release the sk_buff in the event that
+skb_cow_head() fails.
+
+Fixes: af3b5158b89d ("ipv6: sr: fix BUG due to headroom too small after SRH push")
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/ntfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/seg6_iptunnel.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index ba26a465b3091..324c0b036fdc1 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -59,7 +59,7 @@ struct GUID {
- struct cpu_str {
- 	u8 len;
- 	u8 unused;
--	u16 name[10];
-+	u16 name[];
- };
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 03b877ff45588..a75df2ec8db0d 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -459,10 +459,8 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 	int err;
  
- struct le_str {
+ 	err = seg6_do_srh(skb);
+-	if (unlikely(err)) {
+-		kfree_skb(skb);
+-		return err;
+-	}
++	if (unlikely(err))
++		goto drop;
+ 
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+@@ -486,7 +484,7 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
+-		return err;
++		goto drop;
+ 
+ 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+ 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
+@@ -494,6 +492,9 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 			       skb_dst(skb)->dev, seg6_input_finish);
+ 
+ 	return seg6_input_finish(dev_net(skb->dev), NULL, skb);
++drop:
++	kfree_skb(skb);
++	return err;
+ }
+ 
+ static int seg6_input_nf(struct sk_buff *skb)
 -- 
 2.43.0
 
