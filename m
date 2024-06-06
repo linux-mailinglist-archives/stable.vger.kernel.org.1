@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5B88FEC7A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E7788FEE47
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D0F32842A1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA511F22197
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1211B1410;
-	Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AF61C2246;
+	Thu,  6 Jun 2024 14:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFwX42V+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUUrR0Tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1D31B140F;
-	Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D35195B08;
+	Thu,  6 Jun 2024 14:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683371; cv=none; b=T9fxUozB9NpR/CAijmFEYpWzY7WW4DfEE3hb09O6xskKEvqriNjHi4bnhZau2KCRb1J5grP67+bf8wKYQZZFHJIyZ26nHbXjj8KV7HUfYDzxvgmZW9FSTX2LrC0diHQNF0dDEq8GVLHLtEgXcCTPflT7b00ZPkFLrBpcjl53X9o=
+	t=1717683641; cv=none; b=ANtDtqfj69RaEDRFEmzB7C4ftjn3ZCqri36fS7vYzjyBZDBJiii3CNoNg2J9C2FmE0kz4YlgyqoAXhYatyJcCynf1HKHIgmM639wcvbEqhCZ3xJUK1Lw+f2THAH/7UW/pCh3v2XzKoccdZUNbuL9F27iLtt/gs3u+0ErNjHuBlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683371; c=relaxed/simple;
-	bh=jYtTY6z/PGG2FoOUSTWqx3dtPLYnUBFDgcECd0PwePE=;
+	s=arc-20240116; t=1717683641; c=relaxed/simple;
+	bh=AWylH96WfwEiEXk4Cvo0EAbrxL6SljHFRh/MKP30YiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJ0+Xa3kQy8kcUhJmh3tfGSd7gHemZXMKRPSAaQOfYv/Tu7OTQoz2SO+59CW/ZQkFM42TazVI7c4/zr34LY/W0/wMq8OqKeJQsn0I+z7QGMO5ZKCHlxldz5BbqJYt9J7Bp4MStGlJYPwsZKKeIlG5UErjc8+NcOtV6mxd/gLXvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFwX42V+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE87C2BD10;
-	Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
+	 MIME-Version; b=AX6cXmvzXOzQeVpiZ5ch/HNV/Sas6SeJK9HNQrC3kaouM+yKQShj/dsWKU18Pc065lTLd4X0AzKvE0N+Bez6TXe0ErwRI9XUJOyRAoS2ck/Ow04N2DzuD1VXtwgxGibtsWrTuZLCkrmTjEEJYLJAHz9yFWjJ46JRgnYeaWkhDPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUUrR0Tk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03C1C32781;
+	Thu,  6 Jun 2024 14:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683371;
-	bh=jYtTY6z/PGG2FoOUSTWqx3dtPLYnUBFDgcECd0PwePE=;
+	s=korg; t=1717683640;
+	bh=AWylH96WfwEiEXk4Cvo0EAbrxL6SljHFRh/MKP30YiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fFwX42V+dN8phHCRFgkh81V63FiQNQZH7+xldUkxJLcNP79cBC5tD6wmDVeKj6sKw
-	 47lYDLkYv8w3t5iLexR0Wls8R70S/tcr81GWFy7ba6qKmmEcbJ42GWjP3+NLL12zt7
-	 tMZsD8wgkpakkhTxeiZIP7httP2zg09p98il1efQ=
+	b=cUUrR0TkqtiTk1TFTiY3kKtNFA+/vXeR0qho+UrrefGRrG7vOssONvEB6MNaFzlAq
+	 bPjHym3duywFg74qBmYaEdu+hYsPbL4qHVV++Nsx3bTrw44BTGREvlUN8lntc1UfSf
+	 x2sQOYA1pd46mQWDX9Ns5j7tEQRKLsYymuFglc9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 255/473] x86/insn: Fix PUSH instruction in x86 instruction decoder opcode map
+Subject: [PATCH 6.6 512/744] f2fs: compress: fix to update i_compr_blocks correctly
 Date: Thu,  6 Jun 2024 16:03:04 +0200
-Message-ID: <20240606131708.398818091@linuxfoundation.org>
+Message-ID: <20240606131748.870724765@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 59162e0c11d7257cde15f907d19fefe26da66692 ]
+[ Upstream commit 186e7d71534df4589405925caca5597af7626c12 ]
 
-The x86 instruction decoder is used not only for decoding kernel
-instructions. It is also used by perf uprobes (user space probes) and by
-perf tools Intel Processor Trace decoding. Consequently, it needs to
-support instructions executed by user space also.
+Previously, we account reserved blocks and compressed blocks into
+@compr_blocks, then, f2fs_i_compr_blocks_update(,compr_blocks) will
+update i_compr_blocks incorrectly, fix it.
 
-Opcode 0x68 PUSH instruction is currently defined as 64-bit operand size
-only i.e. (d64). That was based on Intel SDM Opcode Map. However that is
-contradicted by the Instruction Set Reference section for PUSH in the
-same manual.
+Meanwhile, for the case all blocks in cluster were reserved, fix to
+update dn->ofs_in_node correctly.
 
-Remove 64-bit operand size only annotation from opcode 0x68 PUSH
-instruction.
-
-Example:
-
-  $ cat pushw.s
-  .global  _start
-  .text
-  _start:
-          pushw   $0x1234
-          mov     $0x1,%eax   # system call number (sys_exit)
-          int     $0x80
-  $ as -o pushw.o pushw.s
-  $ ld -s -o pushw pushw.o
-  $ objdump -d pushw | tail -4
-  0000000000401000 <.text>:
-    401000:       66 68 34 12             pushw  $0x1234
-    401004:       b8 01 00 00 00          mov    $0x1,%eax
-    401009:       cd 80                   int    $0x80
-  $ perf record -e intel_pt//u ./pushw
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.014 MB perf.data ]
-
- Before:
-
-  $ perf script --insn-trace=disasm
-  Warning:
-  1 instruction trace errors
-           pushw   10349 [000] 10586.869237014:            401000 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           pushw $0x1234
-           pushw   10349 [000] 10586.869237014:            401006 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %al, (%rax)
-           pushw   10349 [000] 10586.869237014:            401008 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %cl, %ch
-           pushw   10349 [000] 10586.869237014:            40100a [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb $0x2e, (%rax)
-   instruction trace error type 1 time 10586.869237224 cpu 0 pid 10349 tid 10349 ip 0x40100d code 6: Trace doesn't match instruction
-
- After:
-
-  $ perf script --insn-trace=disasm
-             pushw   10349 [000] 10586.869237014:            401000 [unknown] (./pushw)           pushw $0x1234
-             pushw   10349 [000] 10586.869237014:            401004 [unknown] (./pushw)           movl $1, %eax
-
-Fixes: eb13296cfaf6 ("x86: Instruction decoder API")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240502105853.5338-3-adrian.hunter@intel.com
+Fixes: eb8fbaa53374 ("f2fs: compress: fix to check unreleased compressed cluster")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/x86-opcode-map.txt       | 2 +-
- tools/arch/x86/lib/x86-opcode-map.txt | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index d12d1358f96d2..d94bc4e3e5849 100644
---- a/arch/x86/lib/x86-opcode-map.txt
-+++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -148,7 +148,7 @@ AVXcode:
- 65: SEG=GS (Prefix)
- 66: Operand-Size (Prefix)
- 67: Address-Size (Prefix)
--68: PUSH Iz (d64)
-+68: PUSH Iz
- 69: IMUL Gv,Ev,Iz
- 6a: PUSH Ib (d64)
- 6b: IMUL Gv,Ev,Ib
-diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index d12d1358f96d2..d94bc4e3e5849 100644
---- a/tools/arch/x86/lib/x86-opcode-map.txt
-+++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -148,7 +148,7 @@ AVXcode:
- 65: SEG=GS (Prefix)
- 66: Operand-Size (Prefix)
- 67: Address-Size (Prefix)
--68: PUSH Iz (d64)
-+68: PUSH Iz
- 69: IMUL Gv,Ev,Iz
- 6a: PUSH Ib (d64)
- 6b: IMUL Gv,Ev,Ib
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 20dc11b58bb69..206cb01875c48 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3622,7 +3622,8 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
+ 
+ 	while (count) {
+ 		int compr_blocks = 0;
+-		blkcnt_t reserved;
++		blkcnt_t reserved = 0;
++		blkcnt_t to_reserved;
+ 		int ret;
+ 
+ 		for (i = 0; i < cluster_size; i++) {
+@@ -3642,20 +3643,26 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
+ 			 * fails in release_compress_blocks(), so NEW_ADDR
+ 			 * is a possible case.
+ 			 */
+-			if (blkaddr == NEW_ADDR ||
+-				__is_valid_data_blkaddr(blkaddr)) {
++			if (blkaddr == NEW_ADDR) {
++				reserved++;
++				continue;
++			}
++			if (__is_valid_data_blkaddr(blkaddr)) {
+ 				compr_blocks++;
+ 				continue;
+ 			}
+ 		}
+ 
+-		reserved = cluster_size - compr_blocks;
++		to_reserved = cluster_size - compr_blocks - reserved;
+ 
+ 		/* for the case all blocks in cluster were reserved */
+-		if (reserved == 1)
++		if (to_reserved == 1) {
++			dn->ofs_in_node += cluster_size;
+ 			goto next;
++		}
+ 
+-		ret = inc_valid_block_count(sbi, dn->inode, &reserved, false);
++		ret = inc_valid_block_count(sbi, dn->inode,
++						&to_reserved, false);
+ 		if (unlikely(ret))
+ 			return ret;
+ 
+@@ -3666,7 +3673,7 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
+ 
+ 		f2fs_i_compr_blocks_update(dn->inode, compr_blocks, true);
+ 
+-		*reserved_blocks += reserved;
++		*reserved_blocks += to_reserved;
+ next:
+ 		count -= cluster_size;
+ 	}
 -- 
 2.43.0
 
