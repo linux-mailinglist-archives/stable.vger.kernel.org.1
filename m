@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208738FEC88
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF82A8FEE55
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37A251C2570F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 742841F21658
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F41F1B142E;
-	Thu,  6 Jun 2024 14:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937461991B1;
+	Thu,  6 Jun 2024 14:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcnK0+pv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muaM2AOD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD8A196DAB;
-	Thu,  6 Jun 2024 14:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B981C2324;
+	Thu,  6 Jun 2024 14:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683378; cv=none; b=RO+NSMHiWcwLg4sFTP607GUlkpEE3ffBuzHUHZGcYhUK0nZNYjkYMxfwmxtQYZi4vdiXguPjYuINYxKJRX1TOmmWr6+gx2T1lqdRNQjh9NWNBVFbwd4D1pZe6dhF9ELsS2s0ZBLIsdzE+TZqvZ1/+2A6oDjIC8HgZGigyJcaGqw=
+	t=1717683647; cv=none; b=iL8adOPzUVTFFLnWk1MCnWfdReq+iTcK6tgdmUtVYs+t89JP0TIoJpbDvdiO6rHahgM4eS6fp8VGHn6iIWAWgzFUSN0fiiC4VQ6f7mXazoBTUW4Vva56bMpI2+wdRRgjE7MXZRrwjTVns7uFGIaZJHZXq7nuFmEOmgayI1UXjyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683378; c=relaxed/simple;
-	bh=c1Lu6vbQ6hnX+Mx/M1uj7jd+WATvAUqSOteOz69J6wU=;
+	s=arc-20240116; t=1717683647; c=relaxed/simple;
+	bh=3SymHkJBg4LjPDXY2J0RVqoYJBM/xw5iPS4ddcS4QQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwX4k3ttHAASRY6wLIOBYUt6Tm3Rbun14OA4EKl7xgas4h/kcAEodu4129XZxXtZMnvzM0uCeYjWY8ruyMeLlw86Kt0NrZ5s0dF5DJfP60YNIDv7SVAsS6fb119pk/RwMBE+3r56EHoiimChY2Hwte3Sj6rRAevprtpHb8zHMW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcnK0+pv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0B5C2BD10;
-	Thu,  6 Jun 2024 14:16:18 +0000 (UTC)
+	 MIME-Version; b=f0tn0T2joSMco0bO38ACYT44CToxdhwwuqFnS+H5IsIxfCw/9zCsaeIGSvEE0JKQ+AtFaJDuaPrdxzry0RcLtRnWhIZt5Dn536Xeu5M8Q5sd6Z6vuXVusdGa9xldDDlETjh/IxafpW4bq94FWYua2jnU57tAF1LmTuQSWedXnYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muaM2AOD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE01C32781;
+	Thu,  6 Jun 2024 14:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683378;
-	bh=c1Lu6vbQ6hnX+Mx/M1uj7jd+WATvAUqSOteOz69J6wU=;
+	s=korg; t=1717683647;
+	bh=3SymHkJBg4LjPDXY2J0RVqoYJBM/xw5iPS4ddcS4QQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcnK0+pvlKyfudRIlOZwldH87JSLyEpX/j5a683iFXzLhlqBrrv0hgLz/AYDrIR97
-	 q5TfN1s/viSwRkidhN51qazTgSm6jQTxsfDo6EXwg1kLBaA2PRCcyymcIVVuThHQdb
-	 ppX5xS7R8IcFx9cb9jElo9kwPEliDP9hcQeq8Xk8=
+	b=muaM2AODm8JrFz9ok5wszH0i2+g7XUpV7UkZofqsNZ9nmGUHfQIBVl5EX1FpS4xt2
+	 8Byt7hCj3tVHyR58W44Qn7JJkQbzeA6qPTBj+sZRBMsb5p/7slWhYUaP13KlPy+8Nb
+	 QNAsNghBngbPiOMi9GliRZE8M0c1rm+R/7QlrsN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 261/473] ext4: simplify calculation of blkoff in ext4_mb_new_blocks_simple
+Subject: [PATCH 6.6 518/744] f2fs: compress: dont allow unaligned truncation on released compress inode
 Date: Thu,  6 Jun 2024 16:03:10 +0200
-Message-ID: <20240606131708.588884151@linuxfoundation.org>
+Message-ID: <20240606131749.056135759@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 253cacb0de89235673ad5889d61f275a73dbee79 ]
+[ Upstream commit 29ed2b5dd521ce7c5d8466cd70bf0cc9d07afeee ]
 
-We try to allocate a block from goal in ext4_mb_new_blocks_simple. We
-only need get blkoff in first group with goal and set blkoff to 0 for
-the rest groups.
+f2fs image may be corrupted after below testcase:
+- mkfs.f2fs -O extra_attr,compression -f /dev/vdb
+- mount /dev/vdb /mnt/f2fs
+- touch /mnt/f2fs/file
+- f2fs_io setflags compression /mnt/f2fs/file
+- dd if=/dev/zero of=/mnt/f2fs/file bs=4k count=4
+- f2fs_io release_cblocks /mnt/f2fs/file
+- truncate -s 8192 /mnt/f2fs/file
+- umount /mnt/f2fs
+- fsck.f2fs /dev/vdb
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Link: https://lore.kernel.org/r/20230303172120.3800725-21-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
+[ASSERT] (fsck_chk_inode_blk:1256)  --> ino: 0x5 has i_blocks: 0x00000002, but has 0x3 blocks
+[FSCK] valid_block_count matching with CP             [Fail] [0x4, 0x5]
+[FSCK] other corrupted bugs                           [Fail]
+
+The reason is: partial truncation assume compressed inode has reserved
+blocks, after partial truncation, valid block count may change w/o
+.i_blocks and .total_valid_block_count update, result in corruption.
+
+This patch only allow cluster size aligned truncation on released
+compress inode for fixing.
+
+Fixes: c61404153eb6 ("f2fs: introduce FI_COMPRESS_RELEASED instead of using IMMUTABLE bit")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/f2fs/file.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index a843f964332c2..eaa5db60865a4 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5896,9 +5896,6 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 			return 0;
- 		}
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index ac592059c68be..154c55c1a0f47 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -929,9 +929,14 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 				  ATTR_GID | ATTR_TIMES_SET))))
+ 		return -EPERM;
  
--		ext4_get_group_no_and_offset(sb,
--			max(ext4_group_first_block_no(sb, group), goal),
--			NULL, &blkoff);
- 		while (1) {
- 			i = mb_find_next_zero_bit(bitmap_bh->b_data, max,
- 						blkoff);
-@@ -5913,6 +5910,8 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 		brelse(bitmap_bh);
- 		if (i < max)
- 			break;
-+
-+		blkoff = 0;
- 	}
+-	if ((attr->ia_valid & ATTR_SIZE) &&
+-		!f2fs_is_compress_backend_ready(inode))
+-		return -EOPNOTSUPP;
++	if ((attr->ia_valid & ATTR_SIZE)) {
++		if (!f2fs_is_compress_backend_ready(inode))
++			return -EOPNOTSUPP;
++		if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED) &&
++			!IS_ALIGNED(attr->ia_size,
++			F2FS_BLK_TO_BYTES(F2FS_I(inode)->i_cluster_size)))
++			return -EINVAL;
++	}
  
- 	if (group >= ext4_get_groups_count(sb) || i >= max) {
+ 	err = setattr_prepare(idmap, dentry, attr);
+ 	if (err)
 -- 
 2.43.0
 
