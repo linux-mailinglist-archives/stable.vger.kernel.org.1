@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-49189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD908FEC40
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D8A8FEC57
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38971B23093
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD7D11F2994A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0AF1AED43;
-	Thu,  6 Jun 2024 14:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2016B19AD94;
+	Thu,  6 Jun 2024 14:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0HzVslm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPRpnAE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1D119AD78;
-	Thu,  6 Jun 2024 14:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D353819AD8B;
+	Thu,  6 Jun 2024 14:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683345; cv=none; b=LibZDDAP8uEjbwXyK03Ry3Eq3zFo5gDB/DUVaAj6u1vRbYtXmmZo++pEmHG8isPLQQc0pwE11A0LYF7tF7bou44QvGNeNxfW32lUx+IBVv7vU40fu0tJzln0m+Ebbiz4eUlc62Jvek2r1CPbsMvp2kfEvhZnNK+juFhlKNn09wg=
+	t=1717683355; cv=none; b=mo9UCZ79TQcb6xY1y+ng0BBcyULBEGycvL/72icdzlwSJUd/RyK4fzwyZgqvpvPmAABIYV+jg6oP8fqRZEnZbIc3FAZ3mB7F8krBKaNs9Pti/6AWYay79NRbzS0kP+ZvcESvIlVV55g3vKENpSWtmLakwehCqyd6dwVJpE0eRFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683345; c=relaxed/simple;
-	bh=SVdIbJvfoAQUAAbBC09gBdlV1Ne1qWv7nDMFayfXNko=;
+	s=arc-20240116; t=1717683355; c=relaxed/simple;
+	bh=TCU1rN5FoD7IxvYAjzBbfwDVI7mIZhBCFqNwokoxr9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3Kr45d3wy0hi4Dtp2d6ZOroDP1SLl7zRVIUtoCHteOcMoqciqNAyzs5dJX1mIQFXzEofegebaVZc/E//nveJPatwlQpZTIASjkfiEWWgmoqLmE0LPXH0L8end4uEGETZFsA2b/XX4lrBOgU5/q0XpPD+8oPacNjZuAw06fWETE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0HzVslm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACBAC32782;
-	Thu,  6 Jun 2024 14:15:45 +0000 (UTC)
+	 MIME-Version; b=Z185TvrGbUmRyk3Lqq8cNoA0PiO6knTgDgdWIkGhs+hdw9Jrsd/v6aCiLg74vFs+zDAc8B0T45UbKKLEoijoet4o7zuf/JcS/vK5p5X83wp4/cRoVIbF+biRkaj0Yhbc2iT1+DRhpim1uxiUIzb0cWnGqTZThqQKqkGIIYvsK0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPRpnAE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F8FC2BD10;
+	Thu,  6 Jun 2024 14:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683345;
-	bh=SVdIbJvfoAQUAAbBC09gBdlV1Ne1qWv7nDMFayfXNko=;
+	s=korg; t=1717683355;
+	bh=TCU1rN5FoD7IxvYAjzBbfwDVI7mIZhBCFqNwokoxr9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0HzVslmIebW6TbehWemJZYtJp0EUdqMOEVF1addK/nWFb2IlfAj1XFvlC84/UZ1+
-	 a0IBDH7mNnDh3IoPUYpVts+l4ARDm5PwuqjQg5/Gx8X0fWW1CJk2riXG4tZwXxE5rk
-	 us/uWN/JFChmzFUjl/W1yUY2Mz1IpN2Dhc3ixZvU=
+	b=JPRpnAE+1FrW5QdHLZ1g6PhYAaNJ1ux5/G6kqmxx5hjAPOPF7aX0R9SQAHexFN7bA
+	 M7lwkxLWsP+6/DStCiVuiG/jTNH3rzubSDEtRlmfusCT9eztrDD2SSghU/5ok72VaW
+	 aT1OwU6NCPxrwSMSCI9bb3LMQ0dbVhGbUk/ekzAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Helen Koike <helen.koike@collabora.com>,
-	Vignesh Raman <vignesh.raman@collabora.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
 	David Heidelberg <david.heidelberg@collabora.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/744] drm/ci: uprev mesa version: fix container build & crosvm
-Date: Thu,  6 Jun 2024 15:59:00 +0200
-Message-ID: <20240606131740.976769277@linuxfoundation.org>
+Subject: [PATCH 6.6 269/744] drm/ci: add subset-1-gfx to LAVA_TAGS and adjust shards
+Date: Thu,  6 Jun 2024 15:59:01 +0200
+Message-ID: <20240606131741.005232238@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -71,127 +69,166 @@ Content-Transfer-Encoding: 8bit
 
 From: Helen Koike <helen.koike@collabora.com>
 
-[ Upstream commit 1887de00867d7a700babefc9647ccb9e0d11ee56 ]
+[ Upstream commit 68a3f17732d1d72be958576b6ce0e6c29686a40b ]
 
-When building containers, some rust packages were installed without
-locking the dependencies version, which got updated and started giving
-errors like:
+The Collabora Lava farm added a tag called `subset-1-gfx` to half of
+devices the graphics community use.
 
-error: failed to compile `bindgen-cli v0.62.0`, intermediate artifacts can be found at `/tmp/cargo-installkNKRwf`
-Caused by:
-  package `rustix v0.38.13` cannot be built because it requires rustc 1.63 or newer, while the currently active rustc version is 1.60.0
+Lets use this tag so we don't occupy all the resources.
 
-A patch to Mesa was added fixing this error, so update it.
-
-Also, commit in linux kernel 6.6 rc3 broke booting in crosvm.
-Mesa has upreved crosvm to fix this issue.
+This is particular important because Mesa3D shares the resources with
+DRM-CI and use them to do pre-merge tests, so it can block developers
+from getting their patches merged.
 
 Signed-off-by: Helen Koike <helen.koike@collabora.com>
-[crosvm mesa update]
-Co-Developed-by: Vignesh Raman <vignesh.raman@collabora.com>
-Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
-[v1 container build uprev]
-Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
 Reviewed-by: David Heidelberg <david.heidelberg@collabora.com>
-Link: https://lore.kernel.org/r/20231024004525.169002-2-helen.koike@collabora.com
+Link: https://lore.kernel.org/r/20231024004525.169002-7-helen.koike@collabora.com
 Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Stable-dep-of: a2c71b711e7e ("drm/ci: update device type for volteer devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ci/build.yml      |  1 +
- drivers/gpu/drm/ci/gitlab-ci.yml  | 20 +++++++++++++++++++-
- drivers/gpu/drm/ci/image-tags.yml |  2 +-
- drivers/gpu/drm/ci/lava-submit.sh |  2 +-
- 4 files changed, 22 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/ci/gitlab-ci.yml |  2 +-
+ drivers/gpu/drm/ci/test.yml      | 23 ++++++++++++++---------
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/ci/build.yml b/drivers/gpu/drm/ci/build.yml
-index e6503f1c5927b..17ab38304885c 100644
---- a/drivers/gpu/drm/ci/build.yml
-+++ b/drivers/gpu/drm/ci/build.yml
-@@ -1,6 +1,7 @@
- .build:
-   extends:
-     - .build-rules
-+    - .container+build-rules
-   stage: build
-   artifacts:
-     paths:
 diff --git a/drivers/gpu/drm/ci/gitlab-ci.yml b/drivers/gpu/drm/ci/gitlab-ci.yml
-index 2c4df53f5dfe3..452b9c2532ae5 100644
+index 452b9c2532ae5..3694924367480 100644
 --- a/drivers/gpu/drm/ci/gitlab-ci.yml
 +++ b/drivers/gpu/drm/ci/gitlab-ci.yml
-@@ -1,6 +1,6 @@
- variables:
-   DRM_CI_PROJECT_PATH: &drm-ci-project-path mesa/mesa
--  DRM_CI_COMMIT_SHA: &drm-ci-commit-sha 0dc961645c4f0241f8512cb0ec3ad59635842072
-+  DRM_CI_COMMIT_SHA: &drm-ci-commit-sha edfbf74df1d4d6ce54ffe24566108be0e1a98c3d
- 
-   UPSTREAM_REPO: git://anongit.freedesktop.org/drm/drm
-   TARGET_BRANCH: drm-next
-@@ -24,6 +24,8 @@ variables:
-   PIPELINE_ARTIFACTS_BASE: ${S3_HOST}/artifacts/${CI_PROJECT_PATH}/${CI_PIPELINE_ID}
-   # per-job artifact storage on MinIO
+@@ -26,7 +26,7 @@ variables:
    JOB_ARTIFACTS_BASE: ${PIPELINE_ARTIFACTS_BASE}/${CI_JOB_ID}
-+  # default kernel for rootfs before injecting the current kernel tree
-+  KERNEL_IMAGE_BASE: https://${S3_HOST}/mesa-lava/gfx-ci/linux/v6.4.12-for-mesa-ci-f6b4ad45f48d
- 
+   # default kernel for rootfs before injecting the current kernel tree
+   KERNEL_IMAGE_BASE: https://${S3_HOST}/mesa-lava/gfx-ci/linux/v6.4.12-for-mesa-ci-f6b4ad45f48d
+-
++  LAVA_TAGS: subset-1-gfx
    LAVA_JOB_PRIORITY: 30
  
-@@ -86,6 +88,17 @@ include:
-       - '/.gitlab-ci/container/gitlab-ci.yml'
-       - '/.gitlab-ci/test/gitlab-ci.yml'
-       - '/.gitlab-ci/lava/lava-gitlab-ci.yml'
-+      - '/src/microsoft/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/zink/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/crocus/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/softpipe/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/llvmpipe/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/virgl/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/drivers/nouveau/ci/gitlab-ci-inc.yml'
-+      - '/src/gallium/frontends/lavapipe/ci/gitlab-ci-inc.yml'
-+      - '/src/intel/ci/gitlab-ci-inc.yml'
-+      - '/src/freedreno/ci/gitlab-ci-inc.yml'
-+      - '/src/amd/ci/gitlab-ci-inc.yml'
-   - drivers/gpu/drm/ci/image-tags.yml
-   - drivers/gpu/drm/ci/container.yml
-   - drivers/gpu/drm/ci/static-checks.yml
-@@ -154,6 +167,11 @@ stages:
-     # Run automatically once all dependency jobs have passed
-     - when: on_success
- 
-+# When to automatically run the CI for container jobs
-+.container+build-rules:
-+  rules:
-+    - !reference [.no_scheduled_pipelines-rules, rules]
-+    - when: manual
- 
- .ci-deqp-artifacts:
-   artifacts:
-diff --git a/drivers/gpu/drm/ci/image-tags.yml b/drivers/gpu/drm/ci/image-tags.yml
-index f051b6c547c53..157d987149f07 100644
---- a/drivers/gpu/drm/ci/image-tags.yml
-+++ b/drivers/gpu/drm/ci/image-tags.yml
-@@ -1,5 +1,5 @@
- variables:
--   CONTAINER_TAG: "2023-08-10-mesa-uprev"
-+   CONTAINER_TAG: "2023-10-11-mesa-uprev"
-    DEBIAN_X86_64_BUILD_BASE_IMAGE: "debian/x86_64_build-base"
-    DEBIAN_BASE_TAG: "${CONTAINER_TAG}"
- 
-diff --git a/drivers/gpu/drm/ci/lava-submit.sh b/drivers/gpu/drm/ci/lava-submit.sh
-index 0c4456b21b0fc..379f26ea87cc0 100755
---- a/drivers/gpu/drm/ci/lava-submit.sh
-+++ b/drivers/gpu/drm/ci/lava-submit.sh
-@@ -22,7 +22,7 @@ cp "$SCRIPTS_DIR"/setup-test-env.sh results/job-rootfs-overlay/
- 
- # Prepare env vars for upload.
- section_start variables "Variables passed through:"
--KERNEL_IMAGE_BASE_URL="https://${BASE_SYSTEM_HOST_PATH}" \
-+KERNEL_IMAGE_BASE="https://${BASE_SYSTEM_HOST_PATH}" \
- 	artifacts/ci-common/generate-env.sh | tee results/job-rootfs-overlay/set-job-env-vars.sh
- section_end variables
- 
+ default:
+diff --git a/drivers/gpu/drm/ci/test.yml b/drivers/gpu/drm/ci/test.yml
+index e5b7d309ca186..7b5c5fe121d9d 100644
+--- a/drivers/gpu/drm/ci/test.yml
++++ b/drivers/gpu/drm/ci/test.yml
+@@ -86,7 +86,7 @@ msm:sc7180:
+   extends:
+     - .lava-igt:arm64
+   stage: msm
+-  parallel: 2
++  parallel: 4
+   variables:
+     DRIVER_NAME: msm
+     DEVICE_TYPE: sc7180-trogdor-lazor-limozeen
+@@ -158,7 +158,7 @@ rockchip:rk3399:
+   extends:
+     - .lava-igt:arm64
+   stage: rockchip
+-  parallel: 3
++  parallel: 2
+   variables:
+     DRIVER_NAME: rockchip
+     DEVICE_TYPE: rk3399-gru-kevin
+@@ -181,7 +181,7 @@ rockchip:rk3399:
+ i915:apl:
+   extends:
+     - .i915
+-  parallel: 12
++  parallel: 3
+   variables:
+     DEVICE_TYPE: asus-C523NA-A20057-coral
+     GPU_VERSION: apl
+@@ -190,7 +190,7 @@ i915:apl:
+ i915:glk:
+   extends:
+     - .i915
+-  parallel: 5
++  parallel: 2
+   variables:
+     DEVICE_TYPE: hp-x360-12b-ca0010nr-n4020-octopus
+     GPU_VERSION: glk
+@@ -199,7 +199,7 @@ i915:glk:
+ i915:amly:
+   extends:
+     - .i915
+-  parallel: 8
++  parallel: 2
+   variables:
+     DEVICE_TYPE: asus-C433TA-AJ0005-rammus
+     GPU_VERSION: amly
+@@ -208,7 +208,7 @@ i915:amly:
+ i915:kbl:
+   extends:
+     - .i915
+-  parallel: 5
++  parallel: 3
+   variables:
+     DEVICE_TYPE: hp-x360-14-G1-sona
+     GPU_VERSION: kbl
+@@ -217,7 +217,7 @@ i915:kbl:
+ i915:whl:
+   extends:
+     - .i915
+-  parallel: 8
++  parallel: 2
+   variables:
+     DEVICE_TYPE: dell-latitude-5400-8665U-sarien
+     GPU_VERSION: whl
+@@ -226,7 +226,7 @@ i915:whl:
+ i915:cml:
+   extends:
+     - .i915
+-  parallel: 6
++  parallel: 2
+   variables:
+     DEVICE_TYPE: asus-C436FA-Flip-hatch
+     GPU_VERSION: cml
+@@ -235,7 +235,7 @@ i915:cml:
+ i915:tgl:
+   extends:
+     - .i915
+-  parallel: 6
++  parallel: 8
+   variables:
+     DEVICE_TYPE: asus-cx9400-volteer
+     GPU_VERSION: tgl
+@@ -254,6 +254,7 @@ i915:tgl:
+ amdgpu:stoney:
+   extends:
+     - .amdgpu
++  parallel: 2
+   variables:
+     DEVICE_TYPE: hp-11A-G6-EE-grunt
+     GPU_VERSION: stoney
+@@ -272,6 +273,7 @@ amdgpu:stoney:
+ mediatek:mt8173:
+   extends:
+     - .mediatek
++  parallel: 4
+   variables:
+     DEVICE_TYPE: mt8173-elm-hana
+     GPU_VERSION: mt8173
+@@ -283,6 +285,7 @@ mediatek:mt8173:
+ mediatek:mt8183:
+   extends:
+     - .mediatek
++  parallel: 3
+   variables:
+     DEVICE_TYPE: mt8183-kukui-jacuzzi-juniper-sku16
+     GPU_VERSION: mt8183
+@@ -292,6 +295,7 @@ mediatek:mt8183:
+ .mediatek:mt8192:
+   extends:
+     - .mediatek
++  parallel: 3
+   variables:
+     DEVICE_TYPE: mt8192-asurada-spherion-r0
+     GPU_VERSION: mt8192
+@@ -310,6 +314,7 @@ mediatek:mt8183:
+ meson:g12b:
+   extends:
+     - .meson
++  parallel: 3
+   variables:
+     DEVICE_TYPE: meson-g12b-a311d-khadas-vim3
+     GPU_VERSION: g12b
 -- 
 2.43.0
 
