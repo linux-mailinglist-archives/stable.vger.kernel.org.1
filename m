@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097538FED3E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9278FE9B2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66796B25258
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FF0B28966F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E1B1B5828;
-	Thu,  6 Jun 2024 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C34119B3CF;
+	Thu,  6 Jun 2024 14:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGosyS99"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1x8ikzEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80112198E79;
-	Thu,  6 Jun 2024 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EE5198A20;
+	Thu,  6 Jun 2024 14:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683464; cv=none; b=Bgpulg6aApXrYXXPesEnsu3/2zYWhnAEQ+q80qZdLygdPksxFlaMPSWZn445X4RVEsakfmZUUGRkSJJ0Pefr21bGQryMGo6MQYqCwulsRKBQ2ZvKAsWQ7/QiXEnFz+sHzUUN0qxiY+5vG0o9pcOWnYPHwKgRotELKtbawGGUn2o=
+	t=1717683056; cv=none; b=aCW/uDZO/3wJ+wgnbUBS3PP0zf4pWp3GaR04t0wo0IV0zFTzkvLOx0iXy2L/WmJKQtwgwPFCB34THeoX7u1EWzCTjRx4DB+nkUe+T6JdNcfBXnh0CDuHz3YLVWIOeMM0Kt65fNCiDsueRSud0zJaPVy8S0/Nw7fSCGu21XkL41Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683464; c=relaxed/simple;
-	bh=4ndZpdOflqB5IQP+ULw8VVm8/0Yz9D4sIsKI2ceykQ0=;
+	s=arc-20240116; t=1717683056; c=relaxed/simple;
+	bh=PxNigt2YiXakhLNNcfs5dLJWil0McD00UI9D3S7cPcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfnMLl6PPNT1J2raYbJnxOSgtuZ7LfCRXJKu2kJVTOLEmpGVd5DubHfNw8RlHAkLugdKLN7gSHRQ+EAmwUqvxrnLHItwxRA1GlhnFtw3LsDAzy9XHO71yFjQcLQRta4tav+bln7EfllKoEdKBIkSeSR4gih213tHbDKuZZ2P6xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGosyS99; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFA6C32781;
-	Thu,  6 Jun 2024 14:17:44 +0000 (UTC)
+	 MIME-Version; b=b8MG6eqbWnwoXKjlov+5gcs1Cx8ook5HUHKrbOYh8RJDl/aeuJHY75zFvam1wN1xIEOYSvrinzw55ZLt2E8nhzpkgu9HAUdscsjbigG9wmNBwrYZVP7chtO49hjcbiXR9If6O32c7NUa+uhefLdk1QELnYmAtBHfDHIPUxBKkZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1x8ikzEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62EB9C4AF08;
+	Thu,  6 Jun 2024 14:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683464;
-	bh=4ndZpdOflqB5IQP+ULw8VVm8/0Yz9D4sIsKI2ceykQ0=;
+	s=korg; t=1717683056;
+	bh=PxNigt2YiXakhLNNcfs5dLJWil0McD00UI9D3S7cPcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aGosyS99516Fep9bVQouN5ePykbYY7pfNFVxOVaK30s3gT3bOhWACouGj+ExwjDbG
-	 qH5ARf9vBUZQ0CWs3TjKjwl1lS+adzsdxiO/MhScvql1LjS3gZe+R4cAnrquKeiDPQ
-	 liXsLbLu6o0Qf823/v9bB8D5DdNbSHAyTvQgxrQc=
+	b=1x8ikzEgwbsqlYQMpcsOIgoVfXKvjzWEGXbVvCbTTJdHUlKlrYzWMSvU7K/m9wYx8
+	 o81/L852gabwLgV8JwPXZrU3/t3d3ooLQCtPEL/g0VWCTbGPaepn4wlRlPsVAwZxfA
+	 O5CZnhh2uM3lGDgeQDflEjKA3FoJdtmB5Zr/4WiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 351/473] s390/vdso: filter out mno-pic-data-is-text-relative cflag
+Subject: [PATCH 6.9 301/374] net/mlx5e: Use rx_missed_errors instead of rx_dropped for reporting buffer exhaustion
 Date: Thu,  6 Jun 2024 16:04:40 +0200
-Message-ID: <20240606131711.513839377@linuxfoundation.org>
+Message-ID: <20240606131701.937309350@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit d15e4314abec83e4f910659437bc809b0889e3a5 ]
+[ Upstream commit 5c74195d5dd977e97556e6fa76909b831c241230 ]
 
-cmd_vdso_check checks if there are any dynamic relocations in
-vdso64.so.dbg. When kernel is compiled with
--mno-pic-data-is-text-relative, R_390_RELATIVE relocs are generated and
-this results in kernel build error.
+Previously, the driver incorrectly used rx_dropped to report device
+buffer exhaustion.
 
-kpatch uses -mno-pic-data-is-text-relative option when building the
-kernel to prevent relative addressing between code and data. The flag
-avoids relocation error when klp text and data are too far apart
+According to the documentation, rx_dropped should not be used to count
+packets dropped due to buffer exhaustion, which is the purpose of
+rx_missed_errors.
 
-kpatch does not patch vdso code and hence the
-mno-pic-data-is-text-relative flag is not essential.
+Use rx_missed_errors as intended for counting packets dropped due to
+buffer exhaustion.
 
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: 10f705253651 ("s390/vdso: Generate unwind information for C modules")
+Fixes: 269e6b3af3bf ("net/mlx5e: Report additional error statistics in get stats ndo")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vdso32/Makefile | 1 +
- arch/s390/kernel/vdso64/Makefile | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
-index cc513add48eb5..1783e4d335136 100644
---- a/arch/s390/kernel/vdso32/Makefile
-+++ b/arch/s390/kernel/vdso32/Makefile
-@@ -20,6 +20,7 @@ KBUILD_AFLAGS_32 := $(filter-out -m64,$(KBUILD_AFLAGS))
- KBUILD_AFLAGS_32 += -m31 -s
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 64497b6eebd36..47be07af214ff 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -3790,7 +3790,7 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
+ 		mlx5e_fold_sw_stats64(priv, stats);
+ 	}
  
- KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
-+KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
- KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin
+-	stats->rx_dropped = priv->stats.qcnt.rx_out_of_buffer;
++	stats->rx_missed_errors = priv->stats.qcnt.rx_out_of_buffer;
  
- LDFLAGS_vdso32.so.dbg += -shared -soname=linux-vdso32.so.1 \
-diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-index 42d918d50a1ff..08e87b083647c 100644
---- a/arch/s390/kernel/vdso64/Makefile
-+++ b/arch/s390/kernel/vdso64/Makefile
-@@ -25,6 +25,7 @@ KBUILD_AFLAGS_64 := $(filter-out -m64,$(KBUILD_AFLAGS))
- KBUILD_AFLAGS_64 += -m64 -s
- 
- KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
-+KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin
- ldflags-y := -shared -soname=linux-vdso64.so.1 \
- 	     --hash-style=both --build-id=sha1 -T
+ 	stats->rx_length_errors =
+ 		PPORT_802_3_GET(pstats, a_in_range_length_errors) +
 -- 
 2.43.0
 
