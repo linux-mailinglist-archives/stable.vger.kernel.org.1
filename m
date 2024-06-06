@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B968FEEE1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9508FED85
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A03B1284FAA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ADF5282676
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD561A1875;
-	Thu,  6 Jun 2024 14:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC0E1BBBE1;
+	Thu,  6 Jun 2024 14:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pI+2Pw7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sfR8GPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC4A1C89EF;
-	Thu,  6 Jun 2024 14:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A62219DF67;
+	Thu,  6 Jun 2024 14:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683712; cv=none; b=jXX4Staqie+40ZM7EwYLbm3ItgekUHVW6JW7W4XSgyds1KfhUFP1s7lbM8qNXS4jqgmUQrnhxaPnud3oOGTt7yZ4ZbB7JMGrgWalPGExWBoykSpbrnWTSiqNH6snLJa8gyAvx31AmksX9SzS/Iy9xsb9g+ZZvnEWIh/yvfEeGt4=
+	t=1717683496; cv=none; b=UQ0hChXLv5L2l7B+fGgm91BzcDHHSllyRuR+YkpsZm4RR5BcUD+1httW1DkdQFqJQaKmbzJ0MwmBGuFRnogY0NSz6C18UuDkWaz/i2C4SWOCcon3uMOH63PxSDZYYRMfzxUAUE93txkdVf3XobsY11O23C/6eHsloHUV3ulAdNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683712; c=relaxed/simple;
-	bh=3bKBLLX2J7ffgaCdWSGiq71yAghlEr8PyXwJzvbRALI=;
+	s=arc-20240116; t=1717683496; c=relaxed/simple;
+	bh=Snr7mB1LymYMymSvudC1cg40CH1oHrHO7mvsoIE2cHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XINsyMd/FkqhT2KfhxOp7Bswr6wzCSqM1/PxFyWnt3Q8iD4gwedrSHHwjgRL0e8V8FOM385AUFlvnGHLUnQjanFFhBXO4YYixBYnsmTgzahpwj1u7ON74kbGuYHqJpQsmRelAurG6q/6A9ajcidcNTdmjwxURTO3YhWtO0XY8Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pI+2Pw7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F82C32782;
-	Thu,  6 Jun 2024 14:21:51 +0000 (UTC)
+	 MIME-Version; b=Kx4+Fg/u7UfeL96qiFV7OypQTQsSqe5xE4WZznYhTiZJ1zsATZdgf3JWpm4nswdqYaJhZ5kJIz3znXaHv0yxABn20JgXOQYBKy7lEBxVznvm2XL3tFvO3RE00+1UaQ4wyTD2LOI5cMdhwK8AqBKcthWKoDQ9mFyny9t7DgFOimg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sfR8GPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059E3C32781;
+	Thu,  6 Jun 2024 14:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683712;
-	bh=3bKBLLX2J7ffgaCdWSGiq71yAghlEr8PyXwJzvbRALI=;
+	s=korg; t=1717683496;
+	bh=Snr7mB1LymYMymSvudC1cg40CH1oHrHO7mvsoIE2cHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pI+2Pw7CNlUNkwlL2FiYBlnkdkQqLO/mPjapfm6o2LNGKcZ4uKrxMeP8Ea+OaxK/4
-	 BgiZAR2+/sckAmfjE5hthXqwaqGp3ioxkKUs+5QLNNlZJsJXmxJlH3rnGOBxOnMYLF
-	 Ox3p0j0BGEkydxBI3bts1MDdNH3gINR1J5Shc4HI=
+	b=0sfR8GPy+9aG5lapNUvAqviCjqSKBNpNL1YAVc5Zxr7FHY5iu1870IQJ3zANvZG8y
+	 O8wWDg+ZJ6B85dM3MDGLoLc6aopWOyX+28/N6WV1+5ukvQB0vS5qWmZwUjXJgBAiuo
+	 hsBUyji/uJ9vA1PKTQOIqASAi+p0TivFuehQ9ACY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 643/744] regulator: pickable ranges: dont always cache vsel
+Subject: [PATCH 6.1 386/473] um: Fix the declaration of kasan_map_memory
 Date: Thu,  6 Jun 2024 16:05:15 +0200
-Message-ID: <20240606131753.095741971@linuxfoundation.org>
+Message-ID: <20240606131712.613993056@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit f4f4276f985a5aac7b310a4ed040b47e275e7591 ]
+[ Upstream commit 6a85e34c4d07d2ec0c153067baff338ac0db55ca ]
 
-Some PMICs treat the vsel_reg same as apply-bit. Eg, when voltage range
-is changed, the new voltage setting is not taking effect until the vsel
-register is written.
+Make it match its definition (size_t vs unsigned long). And declare
+it in a shared header to fix the -Wmissing-prototypes warning, as it
+is defined in the user code and called in the kernel code.
 
-Add a flag 'range_applied_by_vsel' to the regulator desc to indicate this
-behaviour and to force the vsel value to be written to hardware if range
-was changed, even if the old selector was same as the new one.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://msgid.link/r/ZktCpcGZdgHWuN_L@fedora
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 1ace99d7c7c4 ("regulator: tps6287x: Force writing VSEL bit")
+Fixes: 5b301409e8bc ("UML: add support for KASAN under x86_64")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/helpers.c      | 43 ++++++++++++++++++++++----------
- include/linux/regulator/driver.h |  3 +++
- 2 files changed, 33 insertions(+), 13 deletions(-)
+ arch/um/include/asm/kasan.h        | 1 -
+ arch/um/include/shared/kern_util.h | 2 ++
+ arch/um/os-Linux/mem.c             | 1 +
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/helpers.c b/drivers/regulator/helpers.c
-index d492683365532..6e1ace660b8cf 100644
---- a/drivers/regulator/helpers.c
-+++ b/drivers/regulator/helpers.c
-@@ -161,6 +161,32 @@ int regulator_get_voltage_sel_pickable_regmap(struct regulator_dev *rdev)
- }
- EXPORT_SYMBOL_GPL(regulator_get_voltage_sel_pickable_regmap);
+diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
+index 0d6547f4ec85c..f97bb1f7b8514 100644
+--- a/arch/um/include/asm/kasan.h
++++ b/arch/um/include/asm/kasan.h
+@@ -24,7 +24,6 @@
  
-+static int write_separate_vsel_and_range(struct regulator_dev *rdev,
-+					 unsigned int sel, unsigned int range)
-+{
-+	bool range_updated;
-+	int ret;
-+
-+	ret = regmap_update_bits_base(rdev->regmap, rdev->desc->vsel_range_reg,
-+				      rdev->desc->vsel_range_mask,
-+				      range, &range_updated, false, false);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Some PMICs treat the vsel_reg same as apply-bit. Force it to be
-+	 * written if the range changed, even if the old selector was same as
-+	 * the new one
-+	 */
-+	if (rdev->desc->range_applied_by_vsel && range_updated)
-+		return regmap_write_bits(rdev->regmap,
-+					rdev->desc->vsel_reg,
-+					rdev->desc->vsel_mask, sel);
-+
-+	return regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
-+				  rdev->desc->vsel_mask, sel);
-+}
-+
- /**
-  * regulator_set_voltage_sel_pickable_regmap - pickable range set_voltage_sel
-  *
-@@ -199,21 +225,12 @@ int regulator_set_voltage_sel_pickable_regmap(struct regulator_dev *rdev,
- 	range = rdev->desc->linear_range_selectors_bitfield[i];
- 	range <<= ffs(rdev->desc->vsel_range_mask) - 1;
+ #ifdef CONFIG_KASAN
+ void kasan_init(void);
+-void kasan_map_memory(void *start, unsigned long len);
+ extern int kasan_um_is_ready;
  
--	if (rdev->desc->vsel_reg == rdev->desc->vsel_range_reg) {
--		ret = regmap_update_bits(rdev->regmap,
--					 rdev->desc->vsel_reg,
-+	if (rdev->desc->vsel_reg == rdev->desc->vsel_range_reg)
-+		ret = regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
- 					 rdev->desc->vsel_range_mask |
- 					 rdev->desc->vsel_mask, sel | range);
--	} else {
--		ret = regmap_update_bits(rdev->regmap,
--					 rdev->desc->vsel_range_reg,
--					 rdev->desc->vsel_range_mask, range);
--		if (ret)
--			return ret;
--
--		ret = regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
--				  rdev->desc->vsel_mask, sel);
--	}
-+	else
-+		ret = write_separate_vsel_and_range(rdev, sel, range);
+ #ifdef CONFIG_STATIC_LINK
+diff --git a/arch/um/include/shared/kern_util.h b/arch/um/include/shared/kern_util.h
+index 444bae755b16a..7372746c16875 100644
+--- a/arch/um/include/shared/kern_util.h
++++ b/arch/um/include/shared/kern_util.h
+@@ -67,4 +67,6 @@ extern void fatal_sigsegv(void) __attribute__ ((noreturn));
  
- 	if (ret)
- 		return ret;
-diff --git a/include/linux/regulator/driver.h b/include/linux/regulator/driver.h
-index 4b7eceb3828b0..2dbf87233f85a 100644
---- a/include/linux/regulator/driver.h
-+++ b/include/linux/regulator/driver.h
-@@ -304,6 +304,8 @@ enum regulator_type {
-  * @vsel_range_reg: Register for range selector when using pickable ranges
-  *		    and ``regulator_map_*_voltage_*_pickable`` functions.
-  * @vsel_range_mask: Mask for register bitfield used for range selector
-+ * @range_applied_by_vsel: A flag to indicate that changes to vsel_range_reg
-+ *			   are only effective after vsel_reg is written
-  * @vsel_reg: Register for selector when using ``regulator_map_*_voltage_*``
-  * @vsel_mask: Mask for register bitfield used for selector
-  * @vsel_step: Specify the resolution of selector stepping when setting
-@@ -394,6 +396,7 @@ struct regulator_desc {
+ void um_idle_sleep(void);
  
- 	unsigned int vsel_range_reg;
- 	unsigned int vsel_range_mask;
-+	bool range_applied_by_vsel;
- 	unsigned int vsel_reg;
- 	unsigned int vsel_mask;
- 	unsigned int vsel_step;
++void kasan_map_memory(void *start, size_t len);
++
+ #endif
+diff --git a/arch/um/os-Linux/mem.c b/arch/um/os-Linux/mem.c
+index 8530b2e086049..c6c9495b14321 100644
+--- a/arch/um/os-Linux/mem.c
++++ b/arch/um/os-Linux/mem.c
+@@ -15,6 +15,7 @@
+ #include <sys/vfs.h>
+ #include <linux/magic.h>
+ #include <init.h>
++#include <kern_util.h>
+ #include <os.h>
+ 
+ /*
 -- 
 2.43.0
 
