@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-49621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA328FEE15
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A79B8FE942
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36E21C244CE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAF021F224BF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4071BF910;
-	Thu,  6 Jun 2024 14:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745A1197A6C;
+	Thu,  6 Jun 2024 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gzl4wAi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHjhzou8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A6D19EEC6;
-	Thu,  6 Jun 2024 14:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331F3196D99;
+	Thu,  6 Jun 2024 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683557; cv=none; b=XR21FbBjcCeTP3AQkN1zjpR4UJzQNkcz7HmvzYrU+m8kQVQUiVo+avjSwtdqpZqajFMjP+nrzClyPFpCLO88oMboXdHsvE8ABGKZxrvEGlxh2DnTUR+hs8ZxSyqvleY4yMgXuOCklKbjvDlHUyh7HFqGZ0e6iiK7Hz5WZ7hVol8=
+	t=1717682999; cv=none; b=NbOukFollkStM4fJZ9I6orLWH8z7ciURrSuTNbgGfKtFM9mnvjvBUdsXumXBLrZri8J+yNI4CfOmPwahvYTHvm9cjEpnzHbM9pczYlInky+6MXHHpPSK+qz+VHofxSx0rncIVwOxI52EpTZlKREzdwqS5fmtz5NyAqrJydIz7qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683557; c=relaxed/simple;
-	bh=BGoTOA299Jjgum1dJlZI/XY8SlImY/QblUXHARRunuo=;
+	s=arc-20240116; t=1717682999; c=relaxed/simple;
+	bh=Hodao7h8MrVV2SRQkU2GotEZ82pDcxHwhlesq09+aG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKG9NlhOAZAhYtW15v2xtJVjNFwNIXo1TTALVUtu/RM+NVrEjZzsE3yoqkPDr1bp7oqOb5hO9UsW0WI+09pXQ2NPKjhogIJutqpL6C67KGVrf6J+azT4tPKYXrP8JXQg8D7waKz3qRiUtarps+OS1oFWngOZMjkEE2xAY2DeZfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gzl4wAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACACC32782;
-	Thu,  6 Jun 2024 14:19:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SMrETigZclbBTltRLnPkutKyQhgej9R3C5RknToWMOL6QEHtK83AGn/RM3GNCrhvmpnxyQf0cMIs4z5HJilkmPQNRYUcTjj7LtVYFMZi8sqIYtUKy7qAxgZDfLP0+w34uMhDu8q4wLpi2R0ReCmiPXnIW01HQRNGwl7SEbTYMfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHjhzou8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD25C32786;
+	Thu,  6 Jun 2024 14:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683557;
-	bh=BGoTOA299Jjgum1dJlZI/XY8SlImY/QblUXHARRunuo=;
+	s=korg; t=1717682999;
+	bh=Hodao7h8MrVV2SRQkU2GotEZ82pDcxHwhlesq09+aG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gzl4wAitXkm0EPZK7dsDYpGxx/iaWZyQN1VQVxPTae6GcNP+NVPJf9wg40cAy0vp
-	 VQLRJToC2mcq7EPGzyLAZ/uWBEfXGBE6HodQ5Mm5exE1t6p0Yn7+KrO1dIJIgffr+2
-	 v0yrHYsB0NNWExg6OGZ4MTXhsiZL6uuojY+NqplU=
+	b=GHjhzou8WTlgWsXZbCUbR1ATTxpf2VUMcfVLFTQRoaCw8hLyJpEljayKOPUonbDi7
+	 tKs9/WlLmOnHV1lafV/RQKQYnyiKZYYoaZv5mpC5VquOPmd76CQBxfK5CERigQi9M2
+	 LWNV/pQassdJiVLufKG4vpEVb37gmHTbScRVcnYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 490/744] ppdev: Remove usage of the deprecated ida_simple_xx() API
+Subject: [PATCH 6.9 183/374] drm/amdgpu: Fix buffer size in gfx_v9_4_3_init_ cp_compute_microcode() and rlc_microcode()
 Date: Thu,  6 Jun 2024 16:02:42 +0200
-Message-ID: <20240606131748.159390643@linuxfoundation.org>
+Message-ID: <20240606131658.000725256@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit d8407f71ebeaeb6f50bd89791837873e44609708 ]
+[ Upstream commit acce6479e30f73ab0872e93a75aed1fb791d04ec ]
 
-ida_alloc() and ida_free() should be preferred to the deprecated
-ida_simple_get() and ida_simple_remove().
+The function gfx_v9_4_3_init_microcode in gfx_v9_4_3.c was generating
+about potential truncation of output when using the snprintf function.
+The issue was due to the size of the buffer 'ucode_prefix' being too
+small to accommodate the maximum possible length of the string being
+written into it.
 
-This is less verbose.
+The string being written is "amdgpu/%s_mec.bin" or "amdgpu/%s_rlc.bin",
+where %s is replaced by the value of 'chip_name'. The length of this
+string without the %s is 16 characters. The warning message indicated
+that 'chip_name' could be up to 29 characters long, resulting in a total
+of 45 characters, which exceeds the buffer size of 30 characters.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/ba9da12fdd5cdb2c28180b7160af5042447d803f.1702962092.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: fbf740aeb86a ("ppdev: Add an error check in register_device")
+To resolve this issue, the size of the 'ucode_prefix' buffer has been
+reduced from 30 to 15. This ensures that the maximum possible length of
+the string being written into the buffer will not exceed its size, thus
+preventing potential buffer overflow and truncation issues.
+
+Fixes the below with gcc W=1:
+drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c: In function ‘gfx_v9_4_3_early_init’:
+drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c:379:52: warning: ‘%s’ directive output may be truncated writing up to 29 bytes into a region of size 23 [-Wformat-truncation=]
+  379 |         snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc.bin", chip_name);
+      |                                                    ^~
+......
+  439 |         r = gfx_v9_4_3_init_rlc_microcode(adev, ucode_prefix);
+      |                                                 ~~~~~~~~~~~~
+drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c:379:9: note: ‘snprintf’ output between 16 and 45 bytes into a destination of size 30
+  379 |         snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc.bin", chip_name);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c:413:52: warning: ‘%s’ directive output may be truncated writing up to 29 bytes into a region of size 23 [-Wformat-truncation=]
+  413 |         snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mec.bin", chip_name);
+      |                                                    ^~
+......
+  443 |         r = gfx_v9_4_3_init_cp_compute_microcode(adev, ucode_prefix);
+      |                                                        ~~~~~~~~~~~~
+drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c:413:9: note: ‘snprintf’ output between 16 and 45 bytes into a destination of size 30
+  413 |         snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mec.bin", chip_name);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: 86301129698b ("drm/amdgpu: split gc v9_4_3 functionality from gc v9_0")
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ppdev.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
-index 4c188e9e477cd..ee951b265213f 100644
---- a/drivers/char/ppdev.c
-+++ b/drivers/char/ppdev.c
-@@ -299,7 +299,7 @@ static int register_device(int minor, struct pp_struct *pp)
- 		goto err;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+index f4d48d6d7e777..d89d6829f1df4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -431,7 +431,7 @@ static int gfx_v9_4_3_init_cp_compute_microcode(struct amdgpu_device *adev,
  
--	index = ida_simple_get(&ida_index, 0, 0, GFP_KERNEL);
-+	index = ida_alloc(&ida_index, GFP_KERNEL);
- 	memset(&ppdev_cb, 0, sizeof(ppdev_cb));
- 	ppdev_cb.irq_func = pp_irq;
- 	ppdev_cb.flags = (pp->flags & PP_EXCL) ? PARPORT_FLAG_EXCL : 0;
-@@ -310,7 +310,7 @@ static int register_device(int minor, struct pp_struct *pp)
- 	if (!pdev) {
- 		pr_warn("%s: failed to register device!\n", name);
- 		rc = -ENXIO;
--		ida_simple_remove(&ida_index, index);
-+		ida_free(&ida_index, index);
- 		goto err;
- 	}
+ static int gfx_v9_4_3_init_microcode(struct amdgpu_device *adev)
+ {
+-	char ucode_prefix[30];
++	char ucode_prefix[15];
+ 	int r;
  
-@@ -750,7 +750,7 @@ static int pp_release(struct inode *inode, struct file *file)
- 
- 	if (pp->pdev) {
- 		parport_unregister_device(pp->pdev);
--		ida_simple_remove(&ida_index, pp->index);
-+		ida_free(&ida_index, pp->index);
- 		pp->pdev = NULL;
- 		pr_debug(CHRDEV "%x: unregistered pardevice\n", minor);
- 	}
+ 	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
 -- 
 2.43.0
 
