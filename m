@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E858FEEBD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CF68FE98B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3C51C259C5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93D281F24722
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA7C1C618F;
-	Thu,  6 Jun 2024 14:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FFC19884B;
+	Thu,  6 Jun 2024 14:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSVvPn2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zy7YN8Zf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAB41C6193;
-	Thu,  6 Jun 2024 14:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6576D19AD42;
+	Thu,  6 Jun 2024 14:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683696; cv=none; b=lvtVIENkTqK3zSZCDsAWsh/r6DPu6fkGCVKi5aqA4N+ITYBHrDoooRfGFt/0kmC3EmLhNrTSmsKR4YB7aIpea51yREf0uGk0oz0pt0Kw5Fwqo7VfWG2J6BE8rM1uIg3+CA6HkLg5Rk2AlJJ0fYnP7gKxAOXJ8d+iPNzkX8WAFZM=
+	t=1717683037; cv=none; b=FXiiEtH02khLuEDd6cx1TBk0agyCN6ZA2voRkFKCYLBcvB2OcEbjMe0DQOJcTwfED8X6dKaTGAAPluDJnHcp3BS3C8q5dSNKgV2LUqHwPQP37OpyEZ+4aQCKQrbfM3Uumfk/onfIjQ686NFAoZirEqCOo9hqTszZjImwPP/2sQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683696; c=relaxed/simple;
-	bh=7QoBJZXHja3KzCO72Yd0u2RSSvz37Pnl7COOY338JYA=;
+	s=arc-20240116; t=1717683037; c=relaxed/simple;
+	bh=c6738XYR76zAoKb8JQp5nF4GH3YBVba9Avr7v02bFVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGPYYKFthSI0QgdOvB76tMExCvN/l7UJHwnyw9FCdo2nIktcsfhXz4b1pqTJ8dH0qYM00Cwg2q5KejgmklllYPg8NfLAzejJTVu4y3QbZ16js4+2qGE3qn+q6t50hy5PKrrHoXftQV/udeVIobfKXT491GbDUDVJIGSZwHxLv9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSVvPn2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F92C2BD10;
-	Thu,  6 Jun 2024 14:21:36 +0000 (UTC)
+	 MIME-Version; b=oAwdeNHuJ7WGQEebvjT1k2CuFf7rfHsdBfDNuEfBXmVZBij1K/Z5fGpJi6KConbxMfzsB28oN7NyUAJwA6ky+zZ0PNxLJFKrJWcclZA1cezoCufFW/ZRb6r9BlVKpw3azJkxVYbRny4gExw7gklgtAMH9SQZTy9XMqi9qHUn8hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zy7YN8Zf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439A8C4AF62;
+	Thu,  6 Jun 2024 14:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683696;
-	bh=7QoBJZXHja3KzCO72Yd0u2RSSvz37Pnl7COOY338JYA=;
+	s=korg; t=1717683037;
+	bh=c6738XYR76zAoKb8JQp5nF4GH3YBVba9Avr7v02bFVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSVvPn2np6BypZYHKFpZqYNOyO55joU7v82ep7SoBVLQepYrrJodA9q+XaA2SSDLt
-	 0O0UicWWWpH0qqFOXg7qXmccaHVJOnXz3l3+YAEcwdSfSjQNNtWNzd1QJ2ouH6uovE
-	 ZKFkZjnu9Wts1HDatxFI1sQllrzIa9K+iErg8lTg=
+	b=zy7YN8ZfV6nEjBZX/Z2REaR8BPvxewvubJebGhLb5YEfG6Au+w1QfXaGZNM9QlltD
+	 ibk9KfrOCjeFsUH2OdM9ssZzsxYLQ9mej7V3bS8ZvHO7M5qPfgsm8WpocxEmsxPe9e
+	 Vqc5qAlndm/D1Ot2US59PXZXeU1VSpaVojfmTuO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Fabio Estevam <festevam@denx.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 571/744] media: ov2680: Do not fail if data-lanes property is absent
-Date: Thu,  6 Jun 2024 16:04:03 +0200
-Message-ID: <20240606131750.771746813@linuxfoundation.org>
+Subject: [PATCH 6.9 265/374] riscv: selftests: Add hwprobe binaries to .gitignore
+Date: Thu,  6 Jun 2024 16:04:04 +0200
+Message-ID: <20240606131700.776777584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +64,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Charlie Jenkins <charlie@rivosinc.com>
 
-[ Upstream commit 24034af644fc01126bec9850346a06ef1450181f ]
+[ Upstream commit f8ea6ab92748e69216b44b07ea7213cb02070dba ]
 
-Since commit 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint
-property verification") the ov2680 driver no longer probes when the
-'data-lanes' property is absent.
+The cbo and which-cpu hwprobe selftests leave their artifacts in the
+kernel tree and end up being tracked by git. Add the binaries to the
+hwprobe selftest .gitignore so this no longer happens.
 
-The OV2680 sensor has only one data lane, so there is no need for
-describing it the devicetree.
-
-Remove the unnecessary data-lanes property check.
-
-Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Fixes: 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint property verification")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+Fixes: a29e2a48afe3 ("RISC-V: selftests: Add CBO tests")
+Fixes: ef7d6abb2cf5 ("RISC-V: selftests: Add which-cpus hwprobe test")
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240425-gitignore_hwprobe_artifacts-v1-1-dfc5a20da469@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 7 -------
- 1 file changed, 7 deletions(-)
+ tools/testing/selftests/riscv/hwprobe/.gitignore | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 1163062c41c59..6436879f95c01 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -1104,13 +1104,6 @@ static int ov2680_parse_dt(struct ov2680_dev *sensor)
- 	sensor->pixel_rate = sensor->link_freq[0] * 2;
- 	do_div(sensor->pixel_rate, 10);
- 
--	/* Verify bus cfg */
--	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 1) {
--		ret = dev_err_probe(dev, -EINVAL,
--				    "only a 1-lane CSI2 config is supported");
--		goto out_free_bus_cfg;
--	}
--
- 	if (!bus_cfg.nr_of_link_frequencies) {
- 		dev_warn(dev, "Consider passing 'link-frequencies' in DT\n");
- 		goto skip_link_freq_validation;
+diff --git a/tools/testing/selftests/riscv/hwprobe/.gitignore b/tools/testing/selftests/riscv/hwprobe/.gitignore
+index 8113dc3bdd03a..6e384e80ea1a8 100644
+--- a/tools/testing/selftests/riscv/hwprobe/.gitignore
++++ b/tools/testing/selftests/riscv/hwprobe/.gitignore
+@@ -1 +1,3 @@
+ hwprobe
++cbo
++which-cpus
 -- 
 2.43.0
 
