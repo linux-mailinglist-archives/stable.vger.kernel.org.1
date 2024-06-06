@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-48903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6428FEB0A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C808FEB0C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D2611F262EF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C352A287920
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350A41A2C25;
-	Thu,  6 Jun 2024 14:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9421A2C26;
+	Thu,  6 Jun 2024 14:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKKzBXeZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qsmSx2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F6E197536;
-	Thu,  6 Jun 2024 14:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05DB19925C;
+	Thu,  6 Jun 2024 14:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683204; cv=none; b=WbcXlQMh41wlyT8Mwi4RFFAQTRP3NyiVl8KQpVKZtn099zVUjTacJTXziCpBweAeUC+0FWohOSH72+rlPSIcmVktjNJ/GJtr/5KodSMV2/JL5pu93chCIgl3lSMjYwtG9otNczA/qJlDzA9ql9G4mzma9jco5b1JQjP65OUSUeo=
+	t=1717683205; cv=none; b=X4jEoPdJOfHPezXdwyUXMF7xN44wGVEc38sLPPY7sIJ9MnsdzB1dizjQV+bckZE+aJSAUGFNsUco4XuJtxRWU2DnI+tOSNUGpF22XiLkYoA4y3qo+IELslqIyr4ZuH2O2/Ik1hu6TIkFbu1Ne5NWpNzJxMGOCzyGvjvb0uFOBjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683204; c=relaxed/simple;
-	bh=EWGMn+IEPIcg2J+TzwbjTQDB/0WS/OR9HRqNaZXVNsc=;
+	s=arc-20240116; t=1717683205; c=relaxed/simple;
+	bh=zaeMdZ/e3mEnIGmnp/z90U8vEsjf7dDAQwf+KMlvCdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zs6PDycRzIG0KGY5QkoB4Zz8FKXuz//210jTcl63lboPiDjgn7Umn1FWzqn37+5H+f4RhisVpIzMbJzRe3YFByydZQdGbFSwHJ+WbkWbR+cjEH/553cT2+2zE93bIlagdoq+4/zo8LwPT8sm8toDCJTcaJ6PLtYpn3Jg+dC+r8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKKzBXeZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77CFC2BD10;
-	Thu,  6 Jun 2024 14:13:23 +0000 (UTC)
+	 MIME-Version; b=KrL4EvDvIViP6MNCCHXzHcMi4yUXPaYHxnJMUE3yiztFD5MbBSxjN05WO9IqGjKhSM4A+bFIfOQ8mSAGy7W0GG+qdbM4zngh5TDBY6cgaGfar7gt+0GJnS04bUytOFljPBmUgAbBhyr8ZFZzMdoqI2TFbhPcOCD6LxBD1ptNGuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qsmSx2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD13CC2BD10;
+	Thu,  6 Jun 2024 14:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683203;
-	bh=EWGMn+IEPIcg2J+TzwbjTQDB/0WS/OR9HRqNaZXVNsc=;
+	s=korg; t=1717683204;
+	bh=zaeMdZ/e3mEnIGmnp/z90U8vEsjf7dDAQwf+KMlvCdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gKKzBXeZ0e6mlMKR8pOnS6JBLYbbW7HBrlTkfRTi3u7mUmpUIsnehaJrtEbOT2zqk
-	 Fdz0jI6Q/RQGe3ODNExzwP/FMu8640EO2loxdGL99UxJnRqCJ/ce5+J0KS/bUQ0wX9
-	 Q0LUMKOOr0kLGhveBXsJOy1p6wW7979DZDVKL1ZU=
+	b=2qsmSx2pHFzAAK0XsS5mHkPcKGMamWL6LD0Tm2XYwJ/VfPmg/Ga9qU/K57cFW3P30
+	 PQ8/5Fuxd6m+Giw1oehSQlZCmfbs45/wo3hWe+PfGPbqfQdRcsPJlyDfdtIvrombXu
+	 iSPelkWwVnH0T2Qt1wum3dH9SlcB0QH2LxOpL+DM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sahil Siddiq <icegambit91@gmail.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Anton Protopopov <aspsk@isovalent.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/744] bpftool: Mount bpffs on provided dir instead of parent dir
-Date: Thu,  6 Jun 2024 15:56:59 +0200
-Message-ID: <20240606131737.126874314@linuxfoundation.org>
+Subject: [PATCH 6.6 148/744] bpf: Pack struct bpf_fib_lookup
+Date: Thu,  6 Jun 2024 15:57:00 +0200
+Message-ID: <20240606131737.159558216@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,262 +69,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sahil Siddiq <icegambit91@gmail.com>
+From: Anton Protopopov <aspsk@isovalent.com>
 
-[ Upstream commit 478a535ae54ad3831371904d93b5dfc403222e17 ]
+[ Upstream commit f91717007217d975aa975ddabd91ae1a107b9bff ]
 
-When pinning programs/objects under PATH (eg: during "bpftool prog
-loadall") the bpffs is mounted on the parent dir of PATH in the
-following situations:
-- the given dir exists but it is not bpffs.
-- the given dir doesn't exist and the parent dir is not bpffs.
+The struct bpf_fib_lookup is supposed to be of size 64. A recent commit
+59b418c7063d ("bpf: Add a check for struct bpf_fib_lookup size") added
+a static assertion to check this property so that future changes to the
+structure will not accidentally break this assumption.
 
-Mounting on the parent dir can also have the unintentional side-
-effect of hiding other files located under the parent dir.
+As it immediately turned out, on some 32-bit arm systems, when AEABI=n,
+the total size of the structure was equal to 68, see [1]. This happened
+because the bpf_fib_lookup structure contains a union of two 16-bit
+fields:
 
-If the given dir exists but is not bpffs, then the bpffs should
-be mounted on the given dir and not its parent dir.
+    union {
+            __u16 tot_len;
+            __u16 mtu_result;
+    };
 
-Similarly, if the given dir doesn't exist and its parent dir is not
-bpffs, then the given dir should be created and the bpffs should be
-mounted on this new dir.
+which was supposed to compile to a 16-bit-aligned 16-bit field. On the
+aforementioned setups it was instead both aligned and padded to 32-bits.
 
-Fixes: 2a36c26fe3b8 ("bpftool: Support bpffs mountpoint as pin path for prog loadall")
-Signed-off-by: Sahil Siddiq <icegambit91@gmail.com>
+Declare this inner union as __attribute__((packed, aligned(2))) such
+that it always is of size 2 and is aligned to 16 bits.
+
+  [1] https://lore.kernel.org/all/CA+G9fYtsoP51f-oP_Sp5MOq-Ffv8La2RztNpwvE6+R1VtFiLrw@mail.gmail.com/#t
+
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: e1850ea9bd9e ("bpf: bpf_fib_lookup return MTU value as output when looked up")
+Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/2da44d24-74ae-a564-1764-afccf395eeec@isovalent.com/T/#t
-Link: https://lore.kernel.org/bpf/20240404192219.52373-1-icegambit91@gmail.com
-
-Closes: https://github.com/libbpf/bpftool/issues/100
-
-Changes since v1:
- - Split "mount_bpffs_for_pin" into two functions.
-   This is done to improve maintainability and readability.
-
-Changes since v2:
-- mount_bpffs_for_pin: rename to "create_and_mount_bpffs_dir".
-- mount_bpffs_given_file: rename to "mount_bpffs_given_file".
-- create_and_mount_bpffs_dir:
-  - introduce "dir_exists" boolean.
-  - remove new dir if "mnt_fs" fails.
-- improve error handling and error messages.
-
-Changes since v3:
-- Rectify function name.
-- Improve error messages and formatting.
-- mount_bpffs_for_file:
-  - Check if dir exists before block_mount check.
-
-Changes since v4:
-- Use strdup instead of strcpy.
-- create_and_mount_bpffs_dir:
-  - Use S_IRWXU instead of 0700.
-- Improve error handling and formatting.
-
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240403123303.1452184-1-aspsk@isovalent.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/common.c     | 96 +++++++++++++++++++++++++++++-----
- tools/bpf/bpftool/iter.c       |  2 +-
- tools/bpf/bpftool/main.h       |  3 +-
- tools/bpf/bpftool/prog.c       |  5 +-
- tools/bpf/bpftool/struct_ops.c |  2 +-
- 5 files changed, 92 insertions(+), 16 deletions(-)
+ include/uapi/linux/bpf.h       | 2 +-
+ tools/include/uapi/linux/bpf.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index cc6e6aae2447d..958e92acca8e2 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -244,29 +244,101 @@ int open_obj_pinned_any(const char *path, enum bpf_obj_type exp_type)
- 	return fd;
- }
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 366df8a1a5fc8..fb09fd1767f28 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -6994,7 +6994,7 @@ struct bpf_fib_lookup {
  
--int mount_bpffs_for_pin(const char *name, bool is_dir)
-+int create_and_mount_bpffs_dir(const char *dir_name)
- {
- 	char err_str[ERR_MAX_LEN];
--	char *file;
--	char *dir;
-+	bool dir_exists;
- 	int err = 0;
+ 		/* output: MTU value */
+ 		__u16	mtu_result;
+-	};
++	} __attribute__((packed, aligned(2)));
+ 	/* input: L3 device index for lookup
+ 	 * output: device index from FIB lookup
+ 	 */
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 366df8a1a5fc8..fb09fd1767f28 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -6994,7 +6994,7 @@ struct bpf_fib_lookup {
  
--	if (is_dir && is_bpffs(name))
-+	if (is_bpffs(dir_name))
- 		return err;
- 
--	file = malloc(strlen(name) + 1);
--	if (!file) {
-+	dir_exists = access(dir_name, F_OK) == 0;
-+
-+	if (!dir_exists) {
-+		char *temp_name;
-+		char *parent_name;
-+
-+		temp_name = strdup(dir_name);
-+		if (!temp_name) {
-+			p_err("mem alloc failed");
-+			return -1;
-+		}
-+
-+		parent_name = dirname(temp_name);
-+
-+		if (is_bpffs(parent_name)) {
-+			/* nothing to do if already mounted */
-+			free(temp_name);
-+			return err;
-+		}
-+
-+		if (access(parent_name, F_OK) == -1) {
-+			p_err("can't create dir '%s' to pin BPF object: parent dir '%s' doesn't exist",
-+			      dir_name, parent_name);
-+			free(temp_name);
-+			return -1;
-+		}
-+
-+		free(temp_name);
-+	}
-+
-+	if (block_mount) {
-+		p_err("no BPF file system found, not mounting it due to --nomount option");
-+		return -1;
-+	}
-+
-+	if (!dir_exists) {
-+		err = mkdir(dir_name, S_IRWXU);
-+		if (err) {
-+			p_err("failed to create dir '%s': %s", dir_name, strerror(errno));
-+			return err;
-+		}
-+	}
-+
-+	err = mnt_fs(dir_name, "bpf", err_str, ERR_MAX_LEN);
-+	if (err) {
-+		err_str[ERR_MAX_LEN - 1] = '\0';
-+		p_err("can't mount BPF file system on given dir '%s': %s",
-+		      dir_name, err_str);
-+
-+		if (!dir_exists)
-+			rmdir(dir_name);
-+	}
-+
-+	return err;
-+}
-+
-+int mount_bpffs_for_file(const char *file_name)
-+{
-+	char err_str[ERR_MAX_LEN];
-+	char *temp_name;
-+	char *dir;
-+	int err = 0;
-+
-+	if (access(file_name, F_OK) != -1) {
-+		p_err("can't pin BPF object: path '%s' already exists", file_name);
-+		return -1;
-+	}
-+
-+	temp_name = strdup(file_name);
-+	if (!temp_name) {
- 		p_err("mem alloc failed");
- 		return -1;
- 	}
- 
--	strcpy(file, name);
--	dir = dirname(file);
-+	dir = dirname(temp_name);
- 
- 	if (is_bpffs(dir))
- 		/* nothing to do if already mounted */
- 		goto out_free;
- 
-+	if (access(dir, F_OK) == -1) {
-+		p_err("can't pin BPF object: dir '%s' doesn't exist", dir);
-+		err = -1;
-+		goto out_free;
-+	}
-+
- 	if (block_mount) {
- 		p_err("no BPF file system found, not mounting it due to --nomount option");
- 		err = -1;
-@@ -276,12 +348,12 @@ int mount_bpffs_for_pin(const char *name, bool is_dir)
- 	err = mnt_fs(dir, "bpf", err_str, ERR_MAX_LEN);
- 	if (err) {
- 		err_str[ERR_MAX_LEN - 1] = '\0';
--		p_err("can't mount BPF file system to pin the object (%s): %s",
--		      name, err_str);
-+		p_err("can't mount BPF file system to pin the object '%s': %s",
-+		      file_name, err_str);
- 	}
- 
- out_free:
--	free(file);
-+	free(temp_name);
- 	return err;
- }
- 
-@@ -289,7 +361,7 @@ int do_pin_fd(int fd, const char *name)
- {
- 	int err;
- 
--	err = mount_bpffs_for_pin(name, false);
-+	err = mount_bpffs_for_file(name);
- 	if (err)
- 		return err;
- 
-diff --git a/tools/bpf/bpftool/iter.c b/tools/bpf/bpftool/iter.c
-index 6b0e5202ca7a9..5c39c2ed36a2b 100644
---- a/tools/bpf/bpftool/iter.c
-+++ b/tools/bpf/bpftool/iter.c
-@@ -76,7 +76,7 @@ static int do_pin(int argc, char **argv)
- 		goto close_obj;
- 	}
- 
--	err = mount_bpffs_for_pin(path, false);
-+	err = mount_bpffs_for_file(path);
- 	if (err)
- 		goto close_link;
- 
-diff --git a/tools/bpf/bpftool/main.h b/tools/bpf/bpftool/main.h
-index b8bb08d10dec9..9eb764fe4cc8b 100644
---- a/tools/bpf/bpftool/main.h
-+++ b/tools/bpf/bpftool/main.h
-@@ -142,7 +142,8 @@ const char *get_fd_type_name(enum bpf_obj_type type);
- char *get_fdinfo(int fd, const char *key);
- int open_obj_pinned(const char *path, bool quiet);
- int open_obj_pinned_any(const char *path, enum bpf_obj_type exp_type);
--int mount_bpffs_for_pin(const char *name, bool is_dir);
-+int mount_bpffs_for_file(const char *file_name);
-+int create_and_mount_bpffs_dir(const char *dir_name);
- int do_pin_any(int argc, char **argv, int (*get_fd_by_id)(int *, char ***));
- int do_pin_fd(int fd, const char *name);
- 
-diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-index f186f1cee465b..086b93939ce93 100644
---- a/tools/bpf/bpftool/prog.c
-+++ b/tools/bpf/bpftool/prog.c
-@@ -1774,7 +1774,10 @@ static int load_with_options(int argc, char **argv, bool first_prog_only)
- 		goto err_close_obj;
- 	}
- 
--	err = mount_bpffs_for_pin(pinfile, !first_prog_only);
-+	if (first_prog_only)
-+		err = mount_bpffs_for_file(pinfile);
-+	else
-+		err = create_and_mount_bpffs_dir(pinfile);
- 	if (err)
- 		goto err_close_obj;
- 
-diff --git a/tools/bpf/bpftool/struct_ops.c b/tools/bpf/bpftool/struct_ops.c
-index 3ebc9fe91e0e1..d110c6ad8175c 100644
---- a/tools/bpf/bpftool/struct_ops.c
-+++ b/tools/bpf/bpftool/struct_ops.c
-@@ -509,7 +509,7 @@ static int do_register(int argc, char **argv)
- 	if (argc == 1)
- 		linkdir = GET_ARG();
- 
--	if (linkdir && mount_bpffs_for_pin(linkdir, true)) {
-+	if (linkdir && create_and_mount_bpffs_dir(linkdir)) {
- 		p_err("can't mount bpffs for pinning");
- 		return -1;
- 	}
+ 		/* output: MTU value */
+ 		__u16	mtu_result;
+-	};
++	} __attribute__((packed, aligned(2)));
+ 	/* input: L3 device index for lookup
+ 	 * output: device index from FIB lookup
+ 	 */
 -- 
 2.43.0
 
