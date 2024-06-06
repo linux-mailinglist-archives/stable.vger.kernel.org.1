@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53938FEE1A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D4D8FEC9B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C3DE286745
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76D6E1C24538
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD34B1C0DC4;
-	Thu,  6 Jun 2024 14:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C90198A28;
+	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGOeiheA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImIjUj/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4201C0DC0;
-	Thu,  6 Jun 2024 14:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073C419B3ED;
+	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683558; cv=none; b=Dzu0sApqkQSaRYDg3PmK31MGa0130YukZBrtIllvrOTa4oHGEAuDbuM1/j9URe7s6d6hFBVYmHcMV6MDKPugLQcyt8NyXC+8gjip0lj9WJvG9WQVKEtBEDv6vrTaNc9KL5Xp7DXNsOaveWpy2VaudJM1QOKYFFMjdVtcO2XMjm0=
+	t=1717683387; cv=none; b=ahNlgY+wzN/UtnnncU3FuUK4CK9qTf6WmW42siXE/p+82QoR1Jem1ChZ/KK70lAeb5wrSmkrYbi3Mkgm7Sobrz+m/T+e7DpZcGqYUsYr4K3bS2LNmNKPSI+EkJNE1XmmYa6v6SFFlTbJn6BR38LSbDq9tYSDww+gKjlufGEPM5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683558; c=relaxed/simple;
-	bh=31x/cBW2r5Tm/ZAiJIDy599WR2A/NvK72YA5JLfQ4fI=;
+	s=arc-20240116; t=1717683387; c=relaxed/simple;
+	bh=PrhGLQsmoZaPZH+yE8WwbwWoGKSrD5AZ8ouTObKp/TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnERL5P+HfIkdo6IbXWwGjzbrHJQ+zmxTfjv4qnObFkyiFlnK+6YT4Il5B7j7UG8smClZ/t1muRw6/i2tBxCjsT8dC9ARTQD2KdDyzY7zIHzOh5fMsKgHAPQEWB/3D/S0Vz6ks7/X5F6THhssySwxERJj1V682LPyK8a9gcbI88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGOeiheA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C941C2BD10;
-	Thu,  6 Jun 2024 14:19:18 +0000 (UTC)
+	 MIME-Version; b=fzqjMatmEcvkK6g7B21aIQzsGjXfiG8vyBqRZc632dX4Wowb7DdLH4GMVb86S4G5bbSprBvQwGbB1up7pQe/eLRpYcQ9njFWMTwV/DpmJVw1DDWDVQPwbAlHhw8+ma66ArHet7o3rE0j9BoBkNi74Ed+5DJ+UUJjbbB/nes2ygY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImIjUj/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFA7C2BD10;
+	Thu,  6 Jun 2024 14:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683558;
-	bh=31x/cBW2r5Tm/ZAiJIDy599WR2A/NvK72YA5JLfQ4fI=;
+	s=korg; t=1717683386;
+	bh=PrhGLQsmoZaPZH+yE8WwbwWoGKSrD5AZ8ouTObKp/TQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NGOeiheAy0ug0NW77WDBbajlUlSCJn94DHhoEdhHtl/AqBwDn8Cw8cALkIXbT5qdU
-	 oO5CeFy6yCUIg7v0BspjXmYTGODZv4MwD17QuiBnd1LkLVz6RqqIFhUgpdtSC4XFdt
-	 p84AvVnIQ7i4YRVQaQhIeetz0Jo3yg+ZjlOkWpnY=
+	b=ImIjUj/MJtLMlRlqqxi0/wXt6ELK66xHozoAghm9XlIBWKe6oQs0QEa8shF+lHec+
+	 34flKznU78XRdsaiSjE8x2ofYM7dy5fL+CfAS+UU3TjnaZ4pvy9DIm5WEUfjHtnPZk
+	 oB69wLtqUG5j0GG57upsIbNQEFkwFM1aBwp1TNyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	KaiLong Wang <wangkailong@jari.cn>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 500/744] f2fs: Clean up errors in segment.h
+Subject: [PATCH 6.1 243/473] clk: mediatek: mt8365-mm: fix DPI0 parent
 Date: Thu,  6 Jun 2024 16:02:52 +0200
-Message-ID: <20240606131748.476829432@linuxfoundation.org>
+Message-ID: <20240606131707.870411734@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: KaiLong Wang <wangkailong@jari.cn>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-[ Upstream commit 37768434b7a7d00ac5a08b2c1d31aa7aaa0846a0 ]
+[ Upstream commit 4c0c087772d7e29bc2489ddb068d5167140bfc38 ]
 
-Fix the following errors reported by checkpatch:
+To have a working display through DPI, a workaround has been
+implemented downstream to add "mm_dpi0_dpi0" and "dpi0_sel" to
+the DPI node. Shortly, that add an extra clock.
 
-ERROR: spaces required around that ':' (ctx:VxW)
+It seems consistent to have the "dpi0_sel" as parent.
+Additionnaly, "vpll_dpix" isn't used/managed.
 
-Signed-off-by: KaiLong Wang <wangkailong@jari.cn>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: aa4074e8fec4 ("f2fs: fix block migration when section is not aligned to pow2")
+Then, set the "mm_dpi0_dpi0" parent clock to "dpi0_sel".
+
+The new clock tree is:
+
+clk26m
+  lvdspll
+    lvdspll_X (2, 4, 8, 16)
+      dpi0_sel
+        mm_dpi0_dpi0
+
+Fixes: d46adccb7966 ("clk: mediatek: add driver for MT8365 SoC")
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Link: https://lore.kernel.org/r/20231023-display-support-v3-12-53388f3ed34b@baylibre.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/mediatek/clk-mt8365-mm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 20580ebd24138..c77a562831493 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -108,11 +108,11 @@ static inline void sanity_check_seg_type(struct f2fs_sb_info *sbi,
- 	((sbi)->segs_per_sec - ((sbi)->unusable_blocks_per_sec >>\
- 	(sbi)->log_blocks_per_seg))
- #define GET_SEC_FROM_SEG(sbi, segno)				\
--	(((segno) == -1) ? -1: (segno) / (sbi)->segs_per_sec)
-+	(((segno) == -1) ? -1 : (segno) / (sbi)->segs_per_sec)
- #define GET_SEG_FROM_SEC(sbi, secno)				\
- 	((secno) * (sbi)->segs_per_sec)
- #define GET_ZONE_FROM_SEC(sbi, secno)				\
--	(((secno) == -1) ? -1: (secno) / (sbi)->secs_per_zone)
-+	(((secno) == -1) ? -1 : (secno) / (sbi)->secs_per_zone)
- #define GET_ZONE_FROM_SEG(sbi, segno)				\
- 	GET_ZONE_FROM_SEC(sbi, GET_SEC_FROM_SEG(sbi, segno))
- 
+diff --git a/drivers/clk/mediatek/clk-mt8365-mm.c b/drivers/clk/mediatek/clk-mt8365-mm.c
+index 22c75a03a6452..bc0b1162ed431 100644
+--- a/drivers/clk/mediatek/clk-mt8365-mm.c
++++ b/drivers/clk/mediatek/clk-mt8365-mm.c
+@@ -53,7 +53,7 @@ static const struct mtk_gate mm_clks[] = {
+ 	GATE_MM0(CLK_MM_MM_DSI0, "mm_dsi0", "mm_sel", 17),
+ 	GATE_MM0(CLK_MM_MM_DISP_RDMA1, "mm_disp_rdma1", "mm_sel", 18),
+ 	GATE_MM0(CLK_MM_MM_MDP_RDMA1, "mm_mdp_rdma1", "mm_sel", 19),
+-	GATE_MM0(CLK_MM_DPI0_DPI0, "mm_dpi0_dpi0", "vpll_dpix", 20),
++	GATE_MM0(CLK_MM_DPI0_DPI0, "mm_dpi0_dpi0", "dpi0_sel", 20),
+ 	GATE_MM0(CLK_MM_MM_FAKE, "mm_fake", "mm_sel", 21),
+ 	GATE_MM0(CLK_MM_MM_SMI_COMMON, "mm_smi_common", "mm_sel", 22),
+ 	GATE_MM0(CLK_MM_MM_SMI_LARB0, "mm_smi_larb0", "mm_sel", 23),
 -- 
 2.43.0
 
