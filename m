@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7788FEE47
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF068FE947
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA511F22197
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11ECA1C20B31
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AF61C2246;
-	Thu,  6 Jun 2024 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183F6197534;
+	Thu,  6 Jun 2024 14:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUUrR0Tk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wfjq9B0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D35195B08;
-	Thu,  6 Jun 2024 14:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F39196D99;
+	Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683641; cv=none; b=ANtDtqfj69RaEDRFEmzB7C4ftjn3ZCqri36fS7vYzjyBZDBJiii3CNoNg2J9C2FmE0kz4YlgyqoAXhYatyJcCynf1HKHIgmM639wcvbEqhCZ3xJUK1Lw+f2THAH/7UW/pCh3v2XzKoccdZUNbuL9F27iLtt/gs3u+0ErNjHuBlM=
+	t=1717683001; cv=none; b=SRtv3HV+QQJz2db/HYWa5GRYtk1oAyUuwbCjxwRUdTQoyvlDni42nOY4KWxPnyI/Nli9CHVyh3R46IciyN26IFkbd+BIVli1HBFtB6Q62EMZ+aVjRT/k1ROwynlYXLRhmMRPC3HFNzg2a6TTWvLzKBMVtaNNwDLrXqtRuABQHUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683641; c=relaxed/simple;
-	bh=AWylH96WfwEiEXk4Cvo0EAbrxL6SljHFRh/MKP30YiA=;
+	s=arc-20240116; t=1717683001; c=relaxed/simple;
+	bh=4a9sXtWlA6bm1PDKdgO75Z9MJJLmO1hdseTp/MIlGrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AX6cXmvzXOzQeVpiZ5ch/HNV/Sas6SeJK9HNQrC3kaouM+yKQShj/dsWKU18Pc065lTLd4X0AzKvE0N+Bez6TXe0ErwRI9XUJOyRAoS2ck/Ow04N2DzuD1VXtwgxGibtsWrTuZLCkrmTjEEJYLJAHz9yFWjJ46JRgnYeaWkhDPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUUrR0Tk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03C1C32781;
-	Thu,  6 Jun 2024 14:20:40 +0000 (UTC)
+	 MIME-Version; b=atg2DIV5lsM7lBcOXlkZW3wG0DHkW3M9R1KkQ8Y4M/rDz0Jc9eO8xBsQKNA63rfZ7UKeqToN4WZhbiAFvu2FGyFP1UhY5b9cgkhyT7OijK2Fit6vnEpPcwm9HmS+wOqWwOi/A84OTJdmggMkz8ErCJN8duBo4mMHMFj0uhdwSOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wfjq9B0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C012C2BD10;
+	Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683640;
-	bh=AWylH96WfwEiEXk4Cvo0EAbrxL6SljHFRh/MKP30YiA=;
+	s=korg; t=1717683001;
+	bh=4a9sXtWlA6bm1PDKdgO75Z9MJJLmO1hdseTp/MIlGrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUUrR0TkqtiTk1TFTiY3kKtNFA+/vXeR0qho+UrrefGRrG7vOssONvEB6MNaFzlAq
-	 bPjHym3duywFg74qBmYaEdu+hYsPbL4qHVV++Nsx3bTrw44BTGREvlUN8lntc1UfSf
-	 x2sQOYA1pd46mQWDX9Ns5j7tEQRKLsYymuFglc9E=
+	b=Wfjq9B0KrGOAEVeXbMRXNw/8k6DfWQ6jIJEIzmeKTY5vhOvNGfD8BSp+1sLFZHSCB
+	 b+DMpp7XYIaiz7/AL/ZjUWQ3P8VxY+WN9Xy/TGBsveBjBW4wzTjx4CBGp1rp5rcqhs
+	 Uakt8s9Sg/n261j1p+WHXKYvz0LMzKelVSFqojUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Benjamin Gray <bgray@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 512/744] f2fs: compress: fix to update i_compr_blocks correctly
+Subject: [PATCH 6.9 205/374] selftests/powerpc/dexcr: Add -no-pie to hashchk tests
 Date: Thu,  6 Jun 2024 16:03:04 +0200
-Message-ID: <20240606131748.870724765@linuxfoundation.org>
+Message-ID: <20240606131658.693091996@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Benjamin Gray <bgray@linux.ibm.com>
 
-[ Upstream commit 186e7d71534df4589405925caca5597af7626c12 ]
+[ Upstream commit d7228a58d9438d6f219dc7f33eab0d1980b3bd2f ]
 
-Previously, we account reserved blocks and compressed blocks into
-@compr_blocks, then, f2fs_i_compr_blocks_update(,compr_blocks) will
-update i_compr_blocks incorrectly, fix it.
+The hashchk tests want to verify that the hash key is changed over exec.
+It does so by calculating hashes at the same address across an exec.
+This is made simpler by disabling PIE functionality, so we can
+re-execute ourselves and be using the same addresses in the child.
 
-Meanwhile, for the case all blocks in cluster were reserved, fix to
-update dn->ofs_in_node correctly.
+While -fno-pie is already added, -no-pie is also required.
 
-Fixes: eb8fbaa53374 ("f2fs: compress: fix to check unreleased compressed cluster")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: bdb07f35a52f ("selftests/powerpc/dexcr: Add hashst/hashchk test")
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240417112325.728010-2-bgray@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ tools/testing/selftests/powerpc/dexcr/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 20dc11b58bb69..206cb01875c48 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3622,7 +3622,8 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
+diff --git a/tools/testing/selftests/powerpc/dexcr/Makefile b/tools/testing/selftests/powerpc/dexcr/Makefile
+index 76210f2bcec3c..829ad075b4a44 100644
+--- a/tools/testing/selftests/powerpc/dexcr/Makefile
++++ b/tools/testing/selftests/powerpc/dexcr/Makefile
+@@ -3,7 +3,7 @@ TEST_GEN_FILES := lsdexcr
  
- 	while (count) {
- 		int compr_blocks = 0;
--		blkcnt_t reserved;
-+		blkcnt_t reserved = 0;
-+		blkcnt_t to_reserved;
- 		int ret;
+ include ../../lib.mk
  
- 		for (i = 0; i < cluster_size; i++) {
-@@ -3642,20 +3643,26 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
- 			 * fails in release_compress_blocks(), so NEW_ADDR
- 			 * is a possible case.
- 			 */
--			if (blkaddr == NEW_ADDR ||
--				__is_valid_data_blkaddr(blkaddr)) {
-+			if (blkaddr == NEW_ADDR) {
-+				reserved++;
-+				continue;
-+			}
-+			if (__is_valid_data_blkaddr(blkaddr)) {
- 				compr_blocks++;
- 				continue;
- 			}
- 		}
+-$(OUTPUT)/hashchk_test: CFLAGS += -fno-pie $(call cc-option,-mno-rop-protect)
++$(OUTPUT)/hashchk_test: CFLAGS += -fno-pie -no-pie $(call cc-option,-mno-rop-protect)
  
--		reserved = cluster_size - compr_blocks;
-+		to_reserved = cluster_size - compr_blocks - reserved;
- 
- 		/* for the case all blocks in cluster were reserved */
--		if (reserved == 1)
-+		if (to_reserved == 1) {
-+			dn->ofs_in_node += cluster_size;
- 			goto next;
-+		}
- 
--		ret = inc_valid_block_count(sbi, dn->inode, &reserved, false);
-+		ret = inc_valid_block_count(sbi, dn->inode,
-+						&to_reserved, false);
- 		if (unlikely(ret))
- 			return ret;
- 
-@@ -3666,7 +3673,7 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
- 
- 		f2fs_i_compr_blocks_update(dn->inode, compr_blocks, true);
- 
--		*reserved_blocks += reserved;
-+		*reserved_blocks += to_reserved;
- next:
- 		count -= cluster_size;
- 	}
+ $(TEST_GEN_PROGS): ../harness.c ../utils.c ./dexcr.c
+ $(TEST_GEN_FILES): ../utils.c ./dexcr.c
 -- 
 2.43.0
 
