@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-49495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398308FED80
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B558FED82
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48F831C22CD4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 355311C240B3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000C71BBBCC;
-	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96F01BBBD0;
+	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZMNKQ9C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqNNkj1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31D11BBBC4;
-	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EA61BB6AF;
+	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683493; cv=none; b=gPOVIB+5Ebl0YOURf9O3QcfpPtW13N5/sgWt5cayiCKBuIMz4G5H7XxNSYlBzqVCI+rPCH+XOlwEynLnRv7/8pSFmWwuY/d7dx93dX8I57JXWzHZGGki6Qkhyql1xSZACdkDpNcWcQHigS9+NGnHjiZV7CAF5A4pCs01U762Yhc=
+	t=1717683494; cv=none; b=bgyAutrDis8HMDJgPDSd93rVaCkU9Qh3xLIRz/4x4ZIH5b9l4arYh20b8x6JwRucayhNEymbN9WPdIuvWz2gqeE/5MuUF624anSpfRVZwCI4OMqpjtaB4GcF6A5PSIkB6/hDV51bU82EvzKyPmdLhy19izPXPmVhAJpbkcYX/vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683493; c=relaxed/simple;
-	bh=talaWayOweaTyY744o++qJfH/rAEgM/cXtexHEVnwNw=;
+	s=arc-20240116; t=1717683494; c=relaxed/simple;
+	bh=VSiHb8hGKXD1T4Az9TGQY4YlBBptCxDl8CWIY5Zf0rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBbN+uoiSCrBajPCKr2Td/bFN450RXI5pezu4evKY8YJR9ImkvPL0BX0RUcZI3HcARBJ2+v/U9cnMnovMtw6+yMOgr5LXLtIfDvi0eD5225Dz/bnI8tkkhusSiOy6hMl3Ch4MOsy2wT5JTxz2Rn/OiJC5Wmaw85egUJ6P6RfUDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZMNKQ9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B5CC2BD10;
-	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
+	 MIME-Version; b=gkgdf1jXVlpzhO6ilKINTA4bv4bdD3qOvptyWhQuXhgOvOohMVAEyJUHGpp0i8stWulOjqKMpLZQnC9ARwii3IZ50vGQzvS4XB0wML9ELRLMvH+mBtLUCFjP3diyGVQeVn8yQaqTnMvGKozFM8izERk7N6mHNxqa9VzmumggkdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqNNkj1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8628EC2BD10;
+	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683493;
-	bh=talaWayOweaTyY744o++qJfH/rAEgM/cXtexHEVnwNw=;
+	s=korg; t=1717683494;
+	bh=VSiHb8hGKXD1T4Az9TGQY4YlBBptCxDl8CWIY5Zf0rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZMNKQ9C/L21fiWH5lIu+w01dZiDC5FanrbKL4hba4sZmBLSg1DW6ymHryVh2eXpX
-	 whpQjdgPazGsy40/46Rh02usp9/7WTuiDBGUNqgiiMJmzI13sm7v7r4Ovaxgh+AnOt
-	 l1Ngj5/KDY7TS2QDbljDrixCFrsTxdspp5Bv+zTs=
+	b=RqNNkj1F6XKk6QurzSPKXsrQIMDSyH5w402yLh4vmURwLPSyEBqdpaP44PNuLoCB9
+	 ZWZKeN3DG2H2qVvNvoj66STuaH0efTwWQgjHm4ViNXdFlWKiLwKRfysbOsY3yTfb4/
+	 PTcAFyNYwbt+egM1AgVZjVqaf8mHXj7gXcnoWNeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Hannah Peuckmann <hannah.peuckmann@canonical.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 436/744] iio: adc: stm32: Fixing err code to not indicate success
-Date: Thu,  6 Jun 2024 16:01:48 +0200
-Message-ID: <20240606131746.462391981@linuxfoundation.org>
+Subject: [PATCH 6.6 437/744] riscv: dts: starfive: visionfive 2: Remove non-existing TDM hardware
+Date: Thu,  6 Jun 2024 16:01:49 +0200
+Message-ID: <20240606131746.495613556@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,34 +67,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Hannah Peuckmann <hannah.peuckmann@canonical.com>
 
-[ Upstream commit 3735ca0b072656c3aa2cedc617a5e639b583a472 ]
+[ Upstream commit dcde4e97b122ac318aaa71e8bcd2857dc28a0d12 ]
 
-This path would result in returning 0 / success on an error path.
+This partially reverts
+commit e7c304c0346d ("riscv: dts: starfive: jh7110: add the node and pins configuration for tdm")
 
-Cc: Olivier Moysan <olivier.moysan@foss.st.com>
-Fixes: 95bc818404b2 ("iio: adc: stm32-adc: add support of generic channels binding")
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20240330185305.1319844-4-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This added device tree nodes for TDM hardware that is not actually on the
+VisionFive 2 board, but connected on the 40pin header. Many different extension
+boards could be added on those pins, so this should be handled by overlays
+instead.
+This also conflicts with the I2S node which also attempts to grab GPIO 44:
+
+  starfive-jh7110-sys-pinctrl 13040000.pinctrl: pin GPIO44 already requested by 10090000.tdm; cannot claim for 120c0000.i2s
+
+Fixes: e7c304c0346d ("riscv: dts: starfive: jh7110: add the node and pins configuration for tdm")
+Signed-off-by: Hannah Peuckmann <hannah.peuckmann@canonical.com>
+Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Tested-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stm32-adc.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../jh7110-starfive-visionfive-2.dtsi         | 40 -------------------
+ 1 file changed, 40 deletions(-)
 
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index f7613efb870d5..0b3e487440a66 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -2234,6 +2234,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
- 			if (vin[0] != val || vin[1] >= adc_info->max_channels) {
- 				dev_err(&indio_dev->dev, "Invalid channel in%d-in%d\n",
- 					vin[0], vin[1]);
-+				ret = -EINVAL;
- 				goto err;
- 			}
- 		} else if (ret != -EINVAL) {
+diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+index 2c02358abd711..c9b212c0eaa8f 100644
+--- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
++++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+@@ -440,40 +440,6 @@ GPOEN_ENABLE,
+ 		};
+ 	};
+ 
+-	tdm_pins: tdm-0 {
+-		tx-pins {
+-			pinmux = <GPIOMUX(44, GPOUT_SYS_TDM_TXD,
+-					      GPOEN_ENABLE,
+-					      GPI_NONE)>;
+-			bias-pull-up;
+-			drive-strength = <2>;
+-			input-disable;
+-			input-schmitt-disable;
+-			slew-rate = <0>;
+-		};
+-
+-		rx-pins {
+-			pinmux = <GPIOMUX(61, GPOUT_HIGH,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_TDM_RXD)>;
+-			input-enable;
+-		};
+-
+-		sync-pins {
+-			pinmux = <GPIOMUX(63, GPOUT_HIGH,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_TDM_SYNC)>;
+-			input-enable;
+-		};
+-
+-		pcmclk-pins {
+-			pinmux = <GPIOMUX(38, GPOUT_HIGH,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_TDM_CLK)>;
+-			input-enable;
+-		};
+-	};
+-
+ 	uart0_pins: uart0-0 {
+ 		tx-pins {
+ 			pinmux = <GPIOMUX(5, GPOUT_SYS_UART0_TX,
+@@ -499,12 +465,6 @@ GPOEN_DISABLE,
+ 	};
+ };
+ 
+-&tdm {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&tdm_pins>;
+-	status = "okay";
+-};
+-
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins>;
 -- 
 2.43.0
 
