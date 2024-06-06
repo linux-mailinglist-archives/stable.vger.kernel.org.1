@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-49438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978998FED42
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ADCE8FE9B3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32D3FB252D9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC1301F2624A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5C619D085;
-	Thu,  6 Jun 2024 14:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FDA19B3D3;
+	Thu,  6 Jun 2024 14:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOw+nPt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kL/Y3dQH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5B01B5831;
-	Thu,  6 Jun 2024 14:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3ED2198A2A;
+	Thu,  6 Jun 2024 14:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683466; cv=none; b=VvQnoYMmpsIZZObsV3T/hGfyIVxG98JSFxYCw9HRmIiB5rXqJ445LQaCpVybVOer7XwdQXauDekNMzA9Wa3xwYj9y8cryBvGXcNUtsFdoKJeFugAB9aJmriOWXOE6T7jIzUVkPJLKCqck6Oaan3KoKmqtZ4J9i+zGy3rG85yp/A=
+	t=1717683057; cv=none; b=XHUidsu7zgEPEJsyCwbOXgp5/pAxkIgGOff7dXzcni3KqC1KWw4jteVsCWNVvioOPmEua2oM4AGJmfXUO1skzhkFGCpvyx8snPt3zunhZxjAReyBkRkKv4TURx4F9UJgD6MMpnBSJ9zkCpeORG6fEv4rvpekzIEWvnyi9mKcUZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683466; c=relaxed/simple;
-	bh=Mv5JH9VWk4MQUvOCeRk3YGtY7fkNO0A4aQD312XuAU4=;
+	s=arc-20240116; t=1717683057; c=relaxed/simple;
+	bh=aAfJ1iphCBPe3qJJrMvTyU32TvXdIG5Ofiwqsl/oUG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLu3MxllFUBV0rosT55i6n22s45Pc6I/YLd10PCL0/g5JSeim5E3wXyV0+6RcOLoQTaTrToVmcTL7CwZN7Ysz8xQCH7pJ3YrVbJNzkWrUsAiziUTk4p89sXAKYI5cACIHffKreiIhusluX4ZLN4EmdNQo0YSzIpqtFoDmLa2XZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOw+nPt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE972C32781;
-	Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
+	 MIME-Version; b=txkjye4Dziujd2Em4FEiptOqcIO82o09HruPYS/tB/jbvTWi2NwWkhU5fu21Np9ZxEyxugS7TW+BfmWSLFOzj9BbUNCWjaJA0NOP87nNeuS77hTa0QAjtPG4n6ykfVO4b4wBsWDKS1/qL31VJjcRjKB/HNI0QH7aG1V8aEBho/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kL/Y3dQH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EADC32782;
+	Thu,  6 Jun 2024 14:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683465;
-	bh=Mv5JH9VWk4MQUvOCeRk3YGtY7fkNO0A4aQD312XuAU4=;
+	s=korg; t=1717683056;
+	bh=aAfJ1iphCBPe3qJJrMvTyU32TvXdIG5Ofiwqsl/oUG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOw+nPt2rGRV685W54Y0Ko6OhkNdACyuZLCcXKXOwxDNPOjaVNPr+a0IurJYO60Te
-	 5WY2eSEySMd+NyiVAQfkUvD6lYvnjWXMdoBY4nn68bC2XvHb3IebPnxc7ur41RSC61
-	 VJIVGvF1V1Okzwte0U5BA+z+DJKBTyYZT9ZKDAn4=
+	b=kL/Y3dQH0ZnVt35+XIVPEbvjuCvaIrv8DkMswPLwWYSVkh4yDn9bW4bqw6M8nSkbQ
+	 DmV40rqTe1gdRUw2bN0QRI+W5k8BC12iaQ0Cf5magCrrkQOgGwRKSwxjzle+vwgEoX
+	 NvL1fMULchW14bL75I149UfhDUpDQkVr8PJLJY9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Jason Baron <jbaron@akamai.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Boris Pismenny <borisp@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 352/473] s390/vdso64: filter out munaligned-symbols flag for vdso
+Subject: [PATCH 6.9 302/374] net/mlx5e: Fix UDP GSO for encapsulated packets
 Date: Thu,  6 Jun 2024 16:04:41 +0200
-Message-ID: <20240606131711.549572655@linuxfoundation.org>
+Message-ID: <20240606131701.971255117@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +67,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 8192a1b3807510d0ed5be1f8988c08f8d41cced9 ]
+[ Upstream commit 83fea49f2711fc90c0d115b0ed04046b45155b65 ]
 
-Gcc recently implemented an optimization [1] for loading symbols without
-explicit alignment, aligning with the IBM Z ELF ABI. This ABI mandates
-symbols to reside on a 2-byte boundary, enabling the use of the larl
-instruction. However, kernel linker scripts may still generate unaligned
-symbols. To address this, a new -munaligned-symbols option has been
-introduced [2] in recent gcc versions.
+When the skb is encapsulated, adjust the inner UDP header instead of the
+outer one, and account for UDP header (instead of TCP) in the inline
+header size calculation.
 
-[1] https://gcc.gnu.org/pipermail/gcc-patches/2023-June/622872.html
-[2] https://gcc.gnu.org/pipermail/gcc-patches/2023-August/625986.html
-
-However, when -munaligned-symbols  is used in vdso code, it leads to the
-following compilation error:
-`.data.rel.ro.local' referenced in section `.text' of
-arch/s390/kernel/vdso64/vdso64_generic.o: defined in discarded section
-`.data.rel.ro.local' of arch/s390/kernel/vdso64/vdso64_generic.o
-
-vdso linker script discards .data section to make it lightweight.
-However, -munaligned-symbols in vdso object files references literal
-pool and accesses _vdso_data. Hence, compile vdso code without
--munaligned-symbols.  This means in the future, vdso code should deal
-with alignment of newly introduced unaligned linker symbols.
-
-Acked-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240219132734.22881-2-sumanthk@linux.ibm.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Stable-dep-of: 10f705253651 ("s390/vdso: Generate unwind information for C modules")
+Fixes: 689adf0d4892 ("net/mlx5e: Add UDP GSO support")
+Reported-by: Jason Baron <jbaron@akamai.com>
+Closes: https://lore.kernel.org/netdev/c42961cb-50b9-4a9a-bd43-87fe48d88d29@akamai.com/
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Boris Pismenny <borisp@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vdso64/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ .../net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h   | 8 +++++++-
+ drivers/net/ethernet/mellanox/mlx5/core/en_tx.c           | 6 +++++-
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-index 08e87b083647c..e2e031e4d9243 100644
---- a/arch/s390/kernel/vdso64/Makefile
-+++ b/arch/s390/kernel/vdso64/Makefile
-@@ -26,6 +26,7 @@ KBUILD_AFLAGS_64 += -m64 -s
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
+index caa34b9c161e5..33e32584b07f5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
+@@ -102,8 +102,14 @@ static inline void
+ mlx5e_udp_gso_handle_tx_skb(struct sk_buff *skb)
+ {
+ 	int payload_len = skb_shinfo(skb)->gso_size + sizeof(struct udphdr);
++	struct udphdr *udphdr;
  
- KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
- KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
-+KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin
- ldflags-y := -shared -soname=linux-vdso64.so.1 \
- 	     --hash-style=both --build-id=sha1 -T
+-	udp_hdr(skb)->len = htons(payload_len);
++	if (skb->encapsulation)
++		udphdr = (struct udphdr *)skb_inner_transport_header(skb);
++	else
++		udphdr = udp_hdr(skb);
++
++	udphdr->len = htons(payload_len);
+ }
+ 
+ struct mlx5e_accel_tx_state {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+index e21a3b4128ce8..0964b16ca5619 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+@@ -153,7 +153,11 @@ mlx5e_tx_get_gso_ihs(struct mlx5e_txqsq *sq, struct sk_buff *skb, int *hopbyhop)
+ 
+ 	*hopbyhop = 0;
+ 	if (skb->encapsulation) {
+-		ihs = skb_inner_tcp_all_headers(skb);
++		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
++			ihs = skb_inner_transport_offset(skb) +
++			      sizeof(struct udphdr);
++		else
++			ihs = skb_inner_tcp_all_headers(skb);
+ 		stats->tso_inner_packets++;
+ 		stats->tso_inner_bytes += skb->len - ihs;
+ 	} else {
 -- 
 2.43.0
 
