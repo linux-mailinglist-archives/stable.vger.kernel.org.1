@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9A88FE916
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D268FEDC1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9A8F1F210AE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E3BD1C22D84
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054CD1991D8;
-	Thu,  6 Jun 2024 14:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D851BD4EB;
+	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBbjgmfI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oODbcTOv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8723196C9F;
-	Thu,  6 Jun 2024 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D9419E7E3;
+	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682977; cv=none; b=amr0Sq8rrdyAi12G+whzY+kweWuJdKVzI/lT3gOpRG/UYxSWMi/EbH9tahlj9XhvHqx9+SWxpIbiBVLyTNYG2L89Y+RjhltmquvmfogwTtXn6ktHkWrPV41Y5M3gDHv8V7eycYb2UVh6f/42FJinrwTcVm0YBiVre6scn3krQLw=
+	t=1717683522; cv=none; b=BQVfUAi30RHi9eIgGKpBzwwALJcSMu9XTPJV1aBAXJxrsYAtKMn21K5JMl6hwOJr9k9Wtky9lhnjnYg1n/2tceIprA6t/C3hUFoNRlPnmVoFjtxlq2PsWehRRCRyA2716YQ4gXdiF2buRPkS9pYu78ROrAQCrglV25jrSo7yD8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682977; c=relaxed/simple;
-	bh=R+FWY2vJjHuQ2xTaROQDiQgk1lcEzcOAxAYoaoKrEZA=;
+	s=arc-20240116; t=1717683522; c=relaxed/simple;
+	bh=yrmvln2ageEiyDq+JGbJoUrWQ/BSXm2ZPgaO1i4jLJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyaI1/NT+oQjHPubgUCBigfU93qodbJKaCasDBLfxicOch+pwlzdtHUnaVIQ1EmTimcycMN6sbFApInsHsyzxPAEV8sBeHlfuSiw0VyyATy7mt3mVarVdWVJ+YK8nYKUuUNaLn1+uN4QMHzpLSHEA6Wprkkl0A29dzbzy0j2Fkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBbjgmfI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BA9C2BD10;
-	Thu,  6 Jun 2024 14:09:37 +0000 (UTC)
+	 MIME-Version; b=YB4UnNgDxT8knTXZE+v45pGg68MLdgkebzI9qkWVR7Mds2oOe6RxTHH8AWrzF4vkWacQXRKOvTHsKLTjHT9F0XUrxBgFMitWhHyky86vvypVpzhsjYpUtlkOFzv5L8Sngx++fo6mKA2Cxk46BjFCP3D3uZhSMbht2nch9OG02hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oODbcTOv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0472FC32781;
+	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682977;
-	bh=R+FWY2vJjHuQ2xTaROQDiQgk1lcEzcOAxAYoaoKrEZA=;
+	s=korg; t=1717683522;
+	bh=yrmvln2ageEiyDq+JGbJoUrWQ/BSXm2ZPgaO1i4jLJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBbjgmfIDPYR7qWI9mP1ZQQUWFIBcwFJJ3aEH9JFv8/inrN1nmL5hCMgCklprsFzI
-	 zBLHre54SuOP/Z1DaJfnsU82VW0BSL04fTNsJk9G7jm4+gfuTf+VGQcsa7Zsw8ar/K
-	 isJPHD0q/+gNWfzMbjS3M4+uAlBCcQqucmihF+xY=
+	b=oODbcTOvEhi1/d8Ckpb4KAXmF+iCANbeC3Vqhlx/z7NNxrQSCi3XN8Z3Ha/g+mZxr
+	 3vmZEr5wKXOlwc5IeiQTC1HFIlS6Xd7xYdYF9bC3AV+Wt/IH2AIq9VrQOCOEtlkPRI
+	 QojGB8WYqpf7aSFjfJp+RRQ0A+r5+tAYpPZIDxkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fenglin Wu <quic_fenglinw@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 156/374] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
+Subject: [PATCH 6.6 463/744] xfs: require XFS_SB_FEAT_INCOMPAT_LOG_XATTRS for attr log intent item recovery
 Date: Thu,  6 Jun 2024 16:02:15 +0200
-Message-ID: <20240606131657.142112821@linuxfoundation.org>
+Message-ID: <20240606131747.322385394@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenglin Wu <quic_fenglinw@quicinc.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
+[ Upstream commit 8ef1d96a985e4dc07ffbd71bd7fc5604a80cc644 ]
 
-The output voltage is inclusive hence the max level calculation is
-off-by-one-step. Correct it.
+The XFS_SB_FEAT_INCOMPAT_LOG_XATTRS feature bit protects a filesystem
+from old kernels that do not know how to recover extended attribute log
+intent items.  Make this check mandatory instead of a debugging assert.
 
-iWhile we are at it also add a define for the step size instead of
-using the magic value.
-
-Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
-Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: fd920008784ea ("xfs: Set up infrastructure for log attribute replay")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/xfs/xfs_attr_item.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
-index 5c288fe7accf1..79f478d3a9b37 100644
---- a/drivers/input/misc/pm8xxx-vibrator.c
-+++ b/drivers/input/misc/pm8xxx-vibrator.c
-@@ -13,7 +13,8 @@
+diff --git a/fs/xfs/xfs_attr_item.c b/fs/xfs/xfs_attr_item.c
+index 82775e9537df8..ebf656aaf3012 100644
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -510,6 +510,9 @@ xfs_attri_validate(
+ 	unsigned int			op = attrp->alfi_op_flags &
+ 					     XFS_ATTRI_OP_FLAGS_TYPE_MASK;
  
- #define VIB_MAX_LEVEL_mV	(3100)
- #define VIB_MIN_LEVEL_mV	(1200)
--#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
-+#define VIB_PER_STEP_mV		(100)
-+#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
++	if (!xfs_sb_version_haslogxattrs(&mp->m_sb))
++		return false;
++
+ 	if (attrp->__pad != 0)
+ 		return false;
  
- #define MAX_FF_SPEED		0xff
+@@ -602,8 +605,6 @@ xfs_attri_item_recover(
+ 	args->op_flags = XFS_DA_OP_RECOVERY | XFS_DA_OP_OKNOENT |
+ 			 XFS_DA_OP_LOGGED;
  
-@@ -117,10 +118,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
- 		vib->active = true;
- 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
- 						VIB_MIN_LEVEL_mV;
--		vib->level /= 100;
-+		vib->level /= VIB_PER_STEP_mV;
- 	} else {
- 		vib->active = false;
--		vib->level = VIB_MIN_LEVEL_mV / 100;
-+		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
- 	}
- 
- 	pm8xxx_vib_set(vib, vib->active);
+-	ASSERT(xfs_sb_version_haslogxattrs(&mp->m_sb));
+-
+ 	switch (attr->xattri_op_flags) {
+ 	case XFS_ATTRI_OP_FLAGS_SET:
+ 	case XFS_ATTRI_OP_FLAGS_REPLACE:
 -- 
 2.43.0
 
