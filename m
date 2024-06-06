@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-49807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513E68FEEF0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2158FE9BE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022E71F212BB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA361C25E83
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524A91C8FA0;
-	Thu,  6 Jun 2024 14:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0820A19B3ED;
+	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDyx5kwT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUqZZIgz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1229419754E;
-	Thu,  6 Jun 2024 14:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0A2198A31;
+	Thu,  6 Jun 2024 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683719; cv=none; b=KKD//8S4Z6dOm34w1i6Q96stc+3s0SnIlSMYJrY9iYDLZps2RjtzyH0H/VRkEP1GGZCcps3yWwLvbEtI+4VO5Vys9H1E4B7NdAuxQbnBT/eFKLcKnsH6rOn7bavgj9zpZ/4OrmnEAu8fWa5tvF68XNmW+Myzu9H3nYPO5yWwdzE=
+	t=1717683061; cv=none; b=T2yLmN3hFY71vvOBMiErixIpWXkSQLGyULo/4lh62H2+SZuL17Edo5RyOPxixRlyuAgjMaCLh1DoO+A0fSojo1xTO/P0nhdgTB/IJV/C5Omxq04ajRT/KAUklCXY6d7VkmcT2Bpk5eZeQjiftFunauZceU10EH8tTVdAS4Y7DOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683719; c=relaxed/simple;
-	bh=LKnffkIVAGBlbUt/YZm1L2+JaBVA3raQLY0ZLbWUCok=;
+	s=arc-20240116; t=1717683061; c=relaxed/simple;
+	bh=OAbFNoRKrEldX4qXDJT0pOLFVXCHL4w2SOWF30eFrJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJ7B4NZGEtiozktqOcrJ0C8X+fKxq5CNyFrNRZY7zDgiwxUqKheW9yuumEzgndvrET8gIDL0jpzSjDqY7cnkrWT81HmM3SLXSO6/xdtqYM8HFW5/1fV3bRlRJBnS+HzqaLQ2lJvBIn41fwhX+H6Wj5WsW7MGkO6GXHlmKkibyO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDyx5kwT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E637DC2BD10;
-	Thu,  6 Jun 2024 14:21:58 +0000 (UTC)
+	 MIME-Version; b=tVSL3nGImoVIg0XOY7Cfz9ehBpNPbai9EjCnOHn2bOhQGDmfP2/MT/W4eZVlvo6DIu0AlL9uv9Me58/9PrnDc5g4Zg8/UGvfoLuE3BqPYcBj0F6KCiCzrG3CWtsqQexmkGj44EThmoEcEIw6J3P2FZXuluK4x1v/UzfagBKv5bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUqZZIgz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA8CC4AF1A;
+	Thu,  6 Jun 2024 14:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683719;
-	bh=LKnffkIVAGBlbUt/YZm1L2+JaBVA3raQLY0ZLbWUCok=;
+	s=korg; t=1717683061;
+	bh=OAbFNoRKrEldX4qXDJT0pOLFVXCHL4w2SOWF30eFrJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDyx5kwTQtEA6gfPm5R/etlUq309z3g9F0pVIbXRI0DvqFHt40QHII+rAqWzRnDTy
-	 xzSoWURsSo23GiLVwq7Ec+oEtQ8NN37Iy5DnVYpPIHQhHvGRfuzjQphlGU1uq9vI3q
-	 28kr9DI1yXMCOh1c/4FKKVCnDZDXmaJrxtQ0DA0E=
+	b=BUqZZIgzilJlpUMlUuMe0aUXrNBziudpN1uAfhyZho+eXzvzSYhKd/NcCUg/c9jo2
+	 Os+tBzJaoAx4RCwV/Ex2lv5Ik+3aoL7758Lxt+kweyCA4i/xKyYJ+olfiC0tj0+Kgr
+	 hslOa8/4J1tXs9VrgcIJ+kd0mtFMSyzCut9gGaZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	kernel test robot <lkp@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 617/744] nilfs2: make superblock data array index computation sparse friendly
-Date: Thu,  6 Jun 2024 16:04:49 +0200
-Message-ID: <20240606131752.295435490@linuxfoundation.org>
+Subject: [PATCH 6.9 311/374] af_unix: Read sk->sk_hash under bindlock during bind().
+Date: Thu,  6 Jun 2024 16:04:50 +0200
+Message-ID: <20240606131702.265919682@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 91d743a9c8299de1fc1b47428d8bb4c85face00f ]
+[ Upstream commit 51d1b25a720982324871338b1a36b197ec9bd6f0 ]
 
-Upon running sparse, "warning: dubious: x & !y" is output at an array
-index calculation within nilfs_load_super_block().
+syzkaller reported data-race of sk->sk_hash in unix_autobind() [0],
+and the same ones exist in unix_bind_bsd() and unix_bind_abstract().
 
-The calculation is not wrong, but to eliminate the sparse warning, replace
-it with an equivalent calculation.
+The three bind() functions prefetch sk->sk_hash locklessly and
+use it later after validating that unix_sk(sk)->addr is NULL under
+unix_sk(sk)->bindlock.
 
-Also, add a comment to make it easier to understand what the unintuitive
-array index calculation is doing and whether it's correct.
+The prefetched sk->sk_hash is the hash value of unbound socket set
+in unix_create1() and does not change until bind() completes.
 
-Link: https://lkml.kernel.org/r/20240430080019.4242-3-konishi.ryusuke@gmail.com
-Fixes: e339ad31f599 ("nilfs2: introduce secondary super block")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: kernel test robot <lkp@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+There could be a chance that sk->sk_hash changes after the lockless
+read.  However, in such a case, non-NULL unix_sk(sk)->addr is visible
+under unix_sk(sk)->bindlock, and bind() returns -EINVAL without using
+the prefetched value.
+
+The KCSAN splat is false-positive, but let's silence it by reading
+sk->sk_hash under unix_sk(sk)->bindlock.
+
+[0]:
+BUG: KCSAN: data-race in unix_autobind / unix_autobind
+
+write to 0xffff888034a9fb88 of 4 bytes by task 4468 on cpu 0:
+ __unix_set_addr_hash net/unix/af_unix.c:331 [inline]
+ unix_autobind+0x47a/0x7d0 net/unix/af_unix.c:1185
+ unix_dgram_connect+0x7e3/0x890 net/unix/af_unix.c:1373
+ __sys_connect_file+0xd7/0xe0 net/socket.c:2048
+ __sys_connect+0x114/0x140 net/socket.c:2065
+ __do_sys_connect net/socket.c:2075 [inline]
+ __se_sys_connect net/socket.c:2072 [inline]
+ __x64_sys_connect+0x40/0x50 net/socket.c:2072
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x4f/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x46/0x4e
+
+read to 0xffff888034a9fb88 of 4 bytes by task 4465 on cpu 1:
+ unix_autobind+0x28/0x7d0 net/unix/af_unix.c:1134
+ unix_dgram_connect+0x7e3/0x890 net/unix/af_unix.c:1373
+ __sys_connect_file+0xd7/0xe0 net/socket.c:2048
+ __sys_connect+0x114/0x140 net/socket.c:2065
+ __do_sys_connect net/socket.c:2075 [inline]
+ __se_sys_connect net/socket.c:2072 [inline]
+ __x64_sys_connect+0x40/0x50 net/socket.c:2072
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x4f/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x46/0x4e
+
+value changed: 0x000000e4 -> 0x000001e3
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 4465 Comm: syz-executor.0 Not tainted 6.8.0-12822-gcd51db110a7e #12
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: afd20b9290e1 ("af_unix: Replace the big lock with small locks.")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240522154218.78088-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/the_nilfs.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ net/unix/af_unix.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nilfs2/the_nilfs.c b/fs/nilfs2/the_nilfs.c
-index 71400496ed365..3e3c1d32da180 100644
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -592,7 +592,7 @@ static int nilfs_load_super_block(struct the_nilfs *nilfs,
- 	struct nilfs_super_block **sbp = nilfs->ns_sbp;
- 	struct buffer_head **sbh = nilfs->ns_sbh;
- 	u64 sb2off, devsize = bdev_nr_bytes(nilfs->ns_bdev);
--	int valid[2], swp = 0;
-+	int valid[2], swp = 0, older;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 6498e41e2ecf9..439c531744a27 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1131,8 +1131,8 @@ static struct sock *unix_find_other(struct net *net,
  
- 	if (devsize < NILFS_SEG_MIN_BLOCKS * NILFS_MIN_BLOCK_SIZE + 4096) {
- 		nilfs_err(sb, "device size too small");
-@@ -648,9 +648,25 @@ static int nilfs_load_super_block(struct the_nilfs *nilfs,
- 	if (swp)
- 		nilfs_swap_super_block(nilfs);
+ static int unix_autobind(struct sock *sk)
+ {
+-	unsigned int new_hash, old_hash = sk->sk_hash;
+ 	struct unix_sock *u = unix_sk(sk);
++	unsigned int new_hash, old_hash;
+ 	struct net *net = sock_net(sk);
+ 	struct unix_address *addr;
+ 	u32 lastnum, ordernum;
+@@ -1155,6 +1155,7 @@ static int unix_autobind(struct sock *sk)
+ 	addr->name->sun_family = AF_UNIX;
+ 	refcount_set(&addr->refcnt, 1);
  
-+	/*
-+	 * Calculate the array index of the older superblock data.
-+	 * If one has been dropped, set index 0 pointing to the remaining one,
-+	 * otherwise set index 1 pointing to the old one (including if both
-+	 * are the same).
-+	 *
-+	 *  Divided case             valid[0]  valid[1]  swp  ->  older
-+	 *  -------------------------------------------------------------
-+	 *  Both SBs are invalid        0         0       N/A (Error)
-+	 *  SB1 is invalid              0         1       1         0
-+	 *  SB2 is invalid              1         0       0         0
-+	 *  SB2 is newer                1         1       1         0
-+	 *  SB2 is older or the same    1         1       0         1
-+	 */
-+	older = valid[1] ^ swp;
-+
- 	nilfs->ns_sbwcount = 0;
- 	nilfs->ns_sbwtime = le64_to_cpu(sbp[0]->s_wtime);
--	nilfs->ns_prot_seq = le64_to_cpu(sbp[valid[1] & !swp]->s_last_seq);
-+	nilfs->ns_prot_seq = le64_to_cpu(sbp[older]->s_last_seq);
- 	*sbpp = sbp[0];
- 	return 0;
- }
++	old_hash = sk->sk_hash;
+ 	ordernum = get_random_u32();
+ 	lastnum = ordernum & 0xFFFFF;
+ retry:
+@@ -1195,8 +1196,8 @@ static int unix_bind_bsd(struct sock *sk, struct sockaddr_un *sunaddr,
+ {
+ 	umode_t mode = S_IFSOCK |
+ 	       (SOCK_INODE(sk->sk_socket)->i_mode & ~current_umask());
+-	unsigned int new_hash, old_hash = sk->sk_hash;
+ 	struct unix_sock *u = unix_sk(sk);
++	unsigned int new_hash, old_hash;
+ 	struct net *net = sock_net(sk);
+ 	struct mnt_idmap *idmap;
+ 	struct unix_address *addr;
+@@ -1234,6 +1235,7 @@ static int unix_bind_bsd(struct sock *sk, struct sockaddr_un *sunaddr,
+ 	if (u->addr)
+ 		goto out_unlock;
+ 
++	old_hash = sk->sk_hash;
+ 	new_hash = unix_bsd_hash(d_backing_inode(dentry));
+ 	unix_table_double_lock(net, old_hash, new_hash);
+ 	u->path.mnt = mntget(parent.mnt);
+@@ -1261,8 +1263,8 @@ static int unix_bind_bsd(struct sock *sk, struct sockaddr_un *sunaddr,
+ static int unix_bind_abstract(struct sock *sk, struct sockaddr_un *sunaddr,
+ 			      int addr_len)
+ {
+-	unsigned int new_hash, old_hash = sk->sk_hash;
+ 	struct unix_sock *u = unix_sk(sk);
++	unsigned int new_hash, old_hash;
+ 	struct net *net = sock_net(sk);
+ 	struct unix_address *addr;
+ 	int err;
+@@ -1280,6 +1282,7 @@ static int unix_bind_abstract(struct sock *sk, struct sockaddr_un *sunaddr,
+ 		goto out_mutex;
+ 	}
+ 
++	old_hash = sk->sk_hash;
+ 	new_hash = unix_abstract_hash(addr->name, addr->len, sk->sk_type);
+ 	unix_table_double_lock(net, old_hash, new_hash);
+ 
 -- 
 2.43.0
 
