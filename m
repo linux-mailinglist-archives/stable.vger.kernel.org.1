@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-48525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8A68FE95F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 542038FECD1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FED01C21DDA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B44F1F26795
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56759196DA0;
-	Thu,  6 Jun 2024 14:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25CE1B29CD;
+	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJ7/zZ65"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kh0v4IS/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135A919938F;
-	Thu,  6 Jun 2024 14:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07CC198E65;
+	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683012; cv=none; b=VWRfcfn/c+pnDWwjP8MZiIuMp1YAh8BbVLaqf/WsNGBkuc+GWIwYNGp81y9AJ14wo/Lu3A6K/2L3lKiy3uMefgjmT1v8EwPt5LHdne0UHEtAUCGX046TtLeDR0A42GNfEeYnSc5XTQbVmccPM1f1jKYw49k+akE6OiaG9nunT7I=
+	t=1717683412; cv=none; b=XfU3M6r7mX6OQYY6gE+QEmFWtRrJl59ddLI7Cp26pYQiTLlZoB6HKVvbSkQlxczb480HsPz6bUuD7RKwGocQAbXrcbCT2NGFBvq94VZtRhBCx518LOnJH7UoS4bFXC583ZqcVgnqh8TXiQLRgNqhzbP6dQ42cuioTwV/6EgWhcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683012; c=relaxed/simple;
-	bh=BjHTP4YK/N+87R4CdTSKVhcDnOut1zGE8cPnfWGKmao=;
+	s=arc-20240116; t=1717683412; c=relaxed/simple;
+	bh=O3Ix9t3vmVSX4d8r+uxEeWGD61u4vZwPwIeKHyGy5p0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njTWECpP2f+GF12evE3wz7afq4jv3MLwO+43n9dNOW9fe8l1f1LiZFNaQsujwNbdck2eGUJUkpf+i8CR4WjMh9XSnvX9FmMgQQniyjnCa9oKQWkJN461KPztr5DWQnI/x0vVc7ihRRT2pTO8cGqc21wYSZbXf7Q8j9m5Cxmq0Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJ7/zZ65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19D5C32786;
-	Thu,  6 Jun 2024 14:10:11 +0000 (UTC)
+	 MIME-Version; b=dq9wVMbYtSdh8He4iPtVbu6IEk8xImQfrelD0G9MPIbmbRuM4Fl0Ul03c7MOwhVJTgpMheT4ee0H4woOsoNGTP2c/994meo8fYFM4Vdo8J/ORhlbjEyoAHJV8c8J1jCjGgA58vDhQY+/yIq9zb27SmVZTrNKjQP1Ldhn1e8IqQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kh0v4IS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E91EC2BD10;
+	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683012;
-	bh=BjHTP4YK/N+87R4CdTSKVhcDnOut1zGE8cPnfWGKmao=;
+	s=korg; t=1717683412;
+	bh=O3Ix9t3vmVSX4d8r+uxEeWGD61u4vZwPwIeKHyGy5p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJ7/zZ65X/4aLiThYYtBma5XXr2LcXH/6OFds9XO9zMnIZP03AObIaY9dSc5qFxTm
-	 X7OPtJrzeOYoO0q3hL+D8Wm8rdtIPX8D2VMbqoU2BEr24IvVp07Z0RayfeE2Tu9A+M
-	 u7HK2dsnEU0IKXQbrem49lhYbMj0PKQ/ILBaSOhE=
+	b=Kh0v4IS/pEYp6HLNhEt9RsZpGnBizDl4II2+bIuSGB8/iUDwdfljmET+yhj6QvvVv
+	 TaMVtvoYBwyixPwgJsHkdBTQHyjAtbek4uH0mSa790tD8hPytMNInIeJ6D+IeSSaLg
+	 1+vYrtuBbxOv1Ktu14VaswKMLVwPoqd7xBHEewgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 223/374] Bluetooth: ISO: Handle PA sync when no BIGInfo reports are generated
+Subject: [PATCH 6.1 273/473] net: qrtr: ns: Fix module refcnt
 Date: Thu,  6 Jun 2024 16:03:22 +0200
-Message-ID: <20240606131659.272790105@linuxfoundation.org>
+Message-ID: <20240606131708.948029859@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,374 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Chris Lew <quic_clew@quicinc.com>
 
-[ Upstream commit d356c924e7a3adbea1e3e4ff4e098bcd9b99a82d ]
+[ Upstream commit fd76e5ccc48f9f54eb44909dd7c0b924005f1582 ]
 
-In case of a Broadcast Source that has PA enabled but no active BIG,
-a Broadcast Sink needs to establish PA sync and parse BASE from PA
-reports.
+The qrtr protocol core logic and the qrtr nameservice are combined into
+a single module. Neither the core logic or nameservice provide much
+functionality by themselves; combining the two into a single module also
+prevents any possible issues that may stem from client modules loading
+inbetween qrtr and the ns.
 
-This commit moves the allocation of a PA sync hcon from the BIGInfo
-advertising report event to the PA sync established event. After the
-first complete PA report, the hcon is notified to the ISO layer. A
-child socket is allocated and enqueued in the parent's accept queue.
+Creating a socket takes two references to the module that owns the
+socket protocol. Since the ns needs to create the control socket, this
+creates a scenario where there are always two references to the qrtr
+module. This prevents the execution of 'rmmod' for qrtr.
 
-BIGInfo reports also need to be processed, to extract the encryption
-field and inform userspace. After the first BIGInfo report is received,
-the PA sync hcon is notified again to the ISO layer. Since a socket will
-be found this time, the socket state will transition to BT_CONNECTED and
-the userspace will be woken up using sk_state_change.
+To resolve this, forcefully put the module refcount for the socket
+opened by the nameservice.
 
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: a5b862c6a221 ("Bluetooth: L2CAP: Fix div-by-zero in l2cap_le_flowctl_init()")
+Fixes: a365023a76f2 ("net: qrtr: combine nameservice into main module")
+Reported-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Chris Lew <quic_clew@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h |  3 +-
- net/bluetooth/hci_event.c        | 58 +++++++++++---------
- net/bluetooth/iso.c              | 94 ++++++++++++++------------------
- 3 files changed, 74 insertions(+), 81 deletions(-)
+ net/qrtr/ns.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 5277c6d5134ca..970101184cf10 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1335,8 +1335,7 @@ hci_conn_hash_lookup_pa_sync_handle(struct hci_dev *hdev, __u16 sync_handle)
- 	rcu_read_lock();
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 4a13b9f7abb44..3c513e7ca2d5c 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -807,6 +807,24 @@ int qrtr_ns_init(void)
+ 	if (ret < 0)
+ 		goto err_wq;
  
- 	list_for_each_entry_rcu(c, &h->list, list) {
--		if (c->type != ISO_LINK ||
--			!test_bit(HCI_CONN_PA_SYNC, &c->flags))
-+		if (c->type != ISO_LINK)
- 			continue;
- 
- 		if (c->sync_handle == sync_handle) {
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index cce73749f2dce..5449c6c086aa4 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -1,7 +1,7 @@
- /*
-    BlueZ - Bluetooth protocol stack for Linux
-    Copyright (c) 2000-2001, 2010, Code Aurora Forum. All rights reserved.
--   Copyright 2023 NXP
-+   Copyright 2023-2024 NXP
- 
-    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
- 
-@@ -6359,14 +6359,16 @@ static void hci_le_pa_sync_estabilished_evt(struct hci_dev *hdev, void *data,
- 	if (!(flags & HCI_PROTO_DEFER))
- 		goto unlock;
- 
--	if (ev->status) {
--		/* Add connection to indicate the failed PA sync event */
--		pa_sync = hci_conn_add_unset(hdev, ISO_LINK, BDADDR_ANY,
--					     HCI_ROLE_SLAVE);
-+	/* Add connection to indicate PA sync event */
-+	pa_sync = hci_conn_add_unset(hdev, ISO_LINK, BDADDR_ANY,
-+				     HCI_ROLE_SLAVE);
- 
--		if (!pa_sync)
--			goto unlock;
-+	if (!pa_sync)
-+		goto unlock;
- 
-+	pa_sync->sync_handle = le16_to_cpu(ev->handle);
++	/* As the qrtr ns socket owner and creator is the same module, we have
++	 * to decrease the qrtr module reference count to guarantee that it
++	 * remains zero after the ns socket is created, otherwise, executing
++	 * "rmmod" command is unable to make the qrtr module deleted after the
++	 *  qrtr module is inserted successfully.
++	 *
++	 * However, the reference count is increased twice in
++	 * sock_create_kern(): one is to increase the reference count of owner
++	 * of qrtr socket's proto_ops struct; another is to increment the
++	 * reference count of owner of qrtr proto struct. Therefore, we must
++	 * decrement the module reference count twice to ensure that it keeps
++	 * zero after server's listening socket is created. Of course, we
++	 * must bump the module reference count twice as well before the socket
++	 * is closed.
++	 */
++	module_put(qrtr_ns.sock->ops->owner);
++	module_put(qrtr_ns.sock->sk->sk_prot_creator->owner);
 +
-+	if (ev->status) {
- 		set_bit(HCI_CONN_PA_SYNC_FAILED, &pa_sync->flags);
+ 	return 0;
  
- 		/* Notify iso layer */
-@@ -6383,6 +6385,7 @@ static void hci_le_per_adv_report_evt(struct hci_dev *hdev, void *data,
- 	struct hci_ev_le_per_adv_report *ev = data;
- 	int mask = hdev->link_mode;
- 	__u8 flags = 0;
-+	struct hci_conn *pa_sync;
- 
- 	bt_dev_dbg(hdev, "sync_handle 0x%4.4x", le16_to_cpu(ev->sync_handle));
- 
-@@ -6390,8 +6393,28 @@ static void hci_le_per_adv_report_evt(struct hci_dev *hdev, void *data,
- 
- 	mask |= hci_proto_connect_ind(hdev, BDADDR_ANY, ISO_LINK, &flags);
- 	if (!(mask & HCI_LM_ACCEPT))
--		hci_le_pa_term_sync(hdev, ev->sync_handle);
-+		goto unlock;
- 
-+	if (!(flags & HCI_PROTO_DEFER))
-+		goto unlock;
-+
-+	pa_sync = hci_conn_hash_lookup_pa_sync_handle
-+			(hdev,
-+			le16_to_cpu(ev->sync_handle));
-+
-+	if (!pa_sync)
-+		goto unlock;
-+
-+	if (ev->data_status == LE_PA_DATA_COMPLETE &&
-+	    !test_and_set_bit(HCI_CONN_PA_SYNC, &pa_sync->flags)) {
-+		/* Notify iso layer */
-+		hci_connect_cfm(pa_sync, 0);
-+
-+		/* Notify MGMT layer */
-+		mgmt_device_connected(hdev, pa_sync, NULL, 0);
-+	}
-+
-+unlock:
- 	hci_dev_unlock(hdev);
- }
- 
-@@ -6926,10 +6949,8 @@ static void hci_le_big_info_adv_report_evt(struct hci_dev *hdev, void *data,
- 	hci_dev_lock(hdev);
- 
- 	mask |= hci_proto_connect_ind(hdev, BDADDR_ANY, ISO_LINK, &flags);
--	if (!(mask & HCI_LM_ACCEPT)) {
--		hci_le_pa_term_sync(hdev, ev->sync_handle);
-+	if (!(mask & HCI_LM_ACCEPT))
- 		goto unlock;
--	}
- 
- 	if (!(flags & HCI_PROTO_DEFER))
- 		goto unlock;
-@@ -6938,24 +6959,11 @@ static void hci_le_big_info_adv_report_evt(struct hci_dev *hdev, void *data,
- 			(hdev,
- 			le16_to_cpu(ev->sync_handle));
- 
--	if (pa_sync)
--		goto unlock;
--
--	/* Add connection to indicate the PA sync event */
--	pa_sync = hci_conn_add_unset(hdev, ISO_LINK, BDADDR_ANY,
--				     HCI_ROLE_SLAVE);
--
- 	if (IS_ERR(pa_sync))
- 		goto unlock;
- 
--	pa_sync->sync_handle = le16_to_cpu(ev->sync_handle);
--	set_bit(HCI_CONN_PA_SYNC, &pa_sync->flags);
--
- 	/* Notify iso layer */
--	hci_connect_cfm(pa_sync, 0x00);
--
--	/* Notify MGMT layer */
--	mgmt_device_connected(hdev, pa_sync, NULL, 0);
-+	hci_connect_cfm(pa_sync, 0);
- 
- unlock:
- 	hci_dev_unlock(hdev);
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 6cb41f9d174e2..00c0d8413c638 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -54,7 +54,6 @@ static void iso_sock_kill(struct sock *sk);
- enum {
- 	BT_SK_BIG_SYNC,
- 	BT_SK_PA_SYNC,
--	BT_SK_PA_SYNC_TERM,
- };
- 
- struct iso_pinfo {
-@@ -81,6 +80,7 @@ static bool check_ucast_qos(struct bt_iso_qos *qos);
- static bool check_bcast_qos(struct bt_iso_qos *qos);
- static bool iso_match_sid(struct sock *sk, void *data);
- static bool iso_match_sync_handle(struct sock *sk, void *data);
-+static bool iso_match_sync_handle_pa_report(struct sock *sk, void *data);
- static void iso_sock_disconn(struct sock *sk);
- 
- typedef bool (*iso_sock_match_t)(struct sock *sk, void *data);
-@@ -197,21 +197,10 @@ static void iso_chan_del(struct sock *sk, int err)
- 	sock_set_flag(sk, SOCK_ZAPPED);
- }
- 
--static bool iso_match_conn_sync_handle(struct sock *sk, void *data)
--{
--	struct hci_conn *hcon = data;
--
--	if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags))
--		return false;
--
--	return hcon->sync_handle == iso_pi(sk)->sync_handle;
--}
--
- static void iso_conn_del(struct hci_conn *hcon, int err)
+ err_wq:
+@@ -821,6 +839,15 @@ void qrtr_ns_remove(void)
  {
- 	struct iso_conn *conn = hcon->iso_data;
- 	struct sock *sk;
--	struct sock *parent;
- 
- 	if (!conn)
- 		return;
-@@ -227,26 +216,6 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
- 
- 	if (sk) {
- 		lock_sock(sk);
--
--		/* While a PA sync hcon is in the process of closing,
--		 * mark parent socket with a flag, so that any residual
--		 * BIGInfo adv reports that arrive before PA sync is
--		 * terminated are not processed anymore.
--		 */
--		if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags)) {
--			parent = iso_get_sock(&hcon->src,
--					      &hcon->dst,
--					      BT_LISTEN,
--					      iso_match_conn_sync_handle,
--					      hcon);
--
--			if (parent) {
--				set_bit(BT_SK_PA_SYNC_TERM,
--					&iso_pi(parent)->flags);
--				sock_put(parent);
--			}
--		}
--
- 		iso_sock_clear_timer(sk);
- 		iso_chan_del(sk, err);
- 		release_sock(sk);
-@@ -860,6 +829,7 @@ static struct sock *iso_sock_alloc(struct net *net, struct socket *sock,
- 	iso_pi(sk)->src_type = BDADDR_LE_PUBLIC;
- 
- 	iso_pi(sk)->qos = default_qos;
-+	iso_pi(sk)->sync_handle = -1;
- 
- 	bt_sock_link(&iso_sk_list, sk);
- 	return sk;
-@@ -907,7 +877,6 @@ static int iso_sock_bind_bc(struct socket *sock, struct sockaddr *addr,
- 		return -EINVAL;
- 
- 	iso_pi(sk)->dst_type = sa->iso_bc->bc_bdaddr_type;
--	iso_pi(sk)->sync_handle = -1;
- 
- 	if (sa->iso_bc->bc_sid > 0x0f)
- 		return -EINVAL;
-@@ -984,7 +953,8 @@ static int iso_sock_bind(struct socket *sock, struct sockaddr *addr,
- 	/* Allow the user to bind a PA sync socket to a number
- 	 * of BISes to sync to.
- 	 */
--	if (sk->sk_state == BT_CONNECT2 &&
-+	if ((sk->sk_state == BT_CONNECT2 ||
-+	     sk->sk_state == BT_CONNECTED) &&
- 	    test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags)) {
- 		err = iso_sock_bind_pa_sk(sk, sa, addr_len);
- 		goto done;
-@@ -1396,6 +1366,16 @@ static int iso_sock_recvmsg(struct socket *sock, struct msghdr *msg,
- 			}
- 			release_sock(sk);
- 			return 0;
-+		case BT_CONNECTED:
-+			if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags)) {
-+				iso_conn_big_sync(sk);
-+				sk->sk_state = BT_LISTEN;
-+				release_sock(sk);
-+				return 0;
-+			}
+ 	cancel_work_sync(&qrtr_ns.work);
+ 	destroy_workqueue(qrtr_ns.workqueue);
 +
-+			release_sock(sk);
-+			break;
- 		case BT_CONNECT:
- 			release_sock(sk);
- 			return iso_connect_cis(sk);
-@@ -1541,7 +1521,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 
- 	case BT_ISO_QOS:
- 		if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND &&
--		    sk->sk_state != BT_CONNECT2) {
-+		    sk->sk_state != BT_CONNECT2 &&
-+		    (!test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags) ||
-+		    sk->sk_state != BT_CONNECTED)) {
- 			err = -EINVAL;
- 			break;
- 		}
-@@ -1762,7 +1744,7 @@ static void iso_conn_ready(struct iso_conn *conn)
- 	struct sock *sk = conn->sk;
- 	struct hci_ev_le_big_sync_estabilished *ev = NULL;
- 	struct hci_ev_le_pa_sync_established *ev2 = NULL;
--	struct hci_evt_le_big_info_adv_report *ev3 = NULL;
-+	struct hci_ev_le_per_adv_report *ev3 = NULL;
- 	struct hci_conn *hcon;
- 
- 	BT_DBG("conn %p", conn);
-@@ -1799,12 +1781,12 @@ static void iso_conn_ready(struct iso_conn *conn)
- 						      iso_match_sid, ev2);
- 		} else if (test_bit(HCI_CONN_PA_SYNC, &hcon->flags)) {
- 			ev3 = hci_recv_event_data(hcon->hdev,
--						  HCI_EVT_LE_BIG_INFO_ADV_REPORT);
-+						  HCI_EV_LE_PER_ADV_REPORT);
- 			if (ev3)
- 				parent = iso_get_sock(&hcon->src,
- 						      &hcon->dst,
- 						      BT_LISTEN,
--						      iso_match_sync_handle,
-+						      iso_match_sync_handle_pa_report,
- 						      ev3);
- 		}
- 
-@@ -1847,7 +1829,6 @@ static void iso_conn_ready(struct iso_conn *conn)
- 
- 		if (ev3) {
- 			iso_pi(sk)->qos = iso_pi(parent)->qos;
--			iso_pi(sk)->qos.bcast.encryption = ev3->encryption;
- 			hcon->iso_qos = iso_pi(sk)->qos;
- 			iso_pi(sk)->bc_num_bis = iso_pi(parent)->bc_num_bis;
- 			memcpy(iso_pi(sk)->bc_bis, iso_pi(parent)->bc_bis, ISO_MAX_NUM_BIS);
-@@ -1941,26 +1922,29 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 
- 	ev2 = hci_recv_event_data(hdev, HCI_EVT_LE_BIG_INFO_ADV_REPORT);
- 	if (ev2) {
--		/* Try to get PA sync listening socket, if it exists */
--		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
--				  iso_match_pa_sync_flag, NULL);
--
--		if (!sk) {
--			sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
--					  iso_match_sync_handle, ev2);
--
--			/* If PA Sync is in process of terminating,
--			 * do not handle any more BIGInfo adv reports.
--			 */
--
--			if (sk && test_bit(BT_SK_PA_SYNC_TERM,
--					   &iso_pi(sk)->flags))
--				return 0;
-+		/* Check if BIGInfo report has already been handled */
-+		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_CONNECTED,
-+				  iso_match_sync_handle, ev2);
-+		if (sk) {
-+			sock_put(sk);
-+			sk = NULL;
-+			goto done;
- 		}
- 
-+		/* Try to get PA sync socket, if it exists */
-+		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_CONNECT2,
-+				  iso_match_sync_handle, ev2);
-+		if (!sk)
-+			sk = iso_get_sock(&hdev->bdaddr, bdaddr,
-+					  BT_LISTEN,
-+					  iso_match_sync_handle,
-+					  ev2);
-+
- 		if (sk) {
- 			int err;
- 
-+			iso_pi(sk)->qos.bcast.encryption = ev2->encryption;
-+
- 			if (ev2->num_bis < iso_pi(sk)->bc_num_bis)
- 				iso_pi(sk)->bc_num_bis = ev2->num_bis;
- 
-@@ -1979,6 +1963,8 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 				}
- 			}
- 		}
-+
-+		goto done;
- 	}
- 
- 	ev3 = hci_recv_event_data(hdev, HCI_EV_LE_PER_ADV_REPORT);
++	/* sock_release() expects the two references that were put during
++	 * qrtr_ns_init(). This function is only called during module remove,
++	 * so try_stop_module() has already set the refcnt to 0. Use
++	 * __module_get() instead of try_module_get() to successfully take two
++	 * references.
++	 */
++	__module_get(qrtr_ns.sock->ops->owner);
++	__module_get(qrtr_ns.sock->sk->sk_prot_creator->owner);
+ 	sock_release(qrtr_ns.sock);
+ }
+ EXPORT_SYMBOL_GPL(qrtr_ns_remove);
 -- 
 2.43.0
 
