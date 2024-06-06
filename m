@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-48868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC1A8FEAE0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 821648FEAE2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01B581F25390
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3601A1F238AF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE2F1A1882;
-	Thu,  6 Jun 2024 14:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D570C19923A;
+	Thu,  6 Jun 2024 14:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfvTI+w/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="magY3mFW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7E91A1872;
-	Thu,  6 Jun 2024 14:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962BA199237;
+	Thu,  6 Jun 2024 14:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683186; cv=none; b=KK4htNmlE+MVhszJ41e7IdpGJEEn7nXV+05xpw5JGGm++5hu0QrdqQRdsNyv6OkanIbun3hwAIMDieB5pgRUkiIXCLabrY8sDnwV90SNdpfx0fKkIhP5ewr0ssgGi1n90jZrCRCjLV4wfISMv9S9E+q7756+L88JJlxhuonuO1o=
+	t=1717683187; cv=none; b=UgUbKUW3JAYjlmV2/n47THSntq/I04wWe9KNyUksL6c+WxxJRGBBNiRGT2yWrB03U79ARHoSvCEkIBa9aN074qrEV8/JP0SpkDaZOrx4r+XNMkmhsdZlZnCbDuM0rzn2zSlzaKkwlVcXTwEwqhLSSqWvw9M+kMkk94DuXNFwP1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683186; c=relaxed/simple;
-	bh=GJa2xQX3YW6SAQxlTJeM8fY2g0XHs9g2kf1DXiZjc6w=;
+	s=arc-20240116; t=1717683187; c=relaxed/simple;
+	bh=VNbSQQ1/2CtS+AOOfhhKXYZHu1envVop4N334ZdAEMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ee7CDV5YuomFPy2U4WEDElyV9Lifm7JGBD6xcrlE+PKUvLKTLvZTLkn0CVHCV6DlsXD+xIdBpwBX0wTweLich+V5i8op6TecFUnOIY/BUBI4uqwmkSpmKQIfV9nHifyP/9hr8BqoaZCMdveFHTE9XO3avIQH9rxQwd/X9MoRCzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfvTI+w/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3A4C2BD10;
-	Thu,  6 Jun 2024 14:13:06 +0000 (UTC)
+	 MIME-Version; b=c1ZdPTx/GXxPTioxSMZhLVYdW98qU5lzxlcHMWDGqi28pPaEaaKxSDgHqxS6OmtjKb/poEV9uqDj0/fJhavoYdF2yAmO8lydo4l+zQCdsdQWEVyY5/j8uwdj8KyB0sy/uJ1LWMa6IVEJpVV2NV0LAuGWL6EViGc8GzkbGxUqkGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=magY3mFW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8C7C2BD10;
+	Thu,  6 Jun 2024 14:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683186;
-	bh=GJa2xQX3YW6SAQxlTJeM8fY2g0XHs9g2kf1DXiZjc6w=;
+	s=korg; t=1717683187;
+	bh=VNbSQQ1/2CtS+AOOfhhKXYZHu1envVop4N334ZdAEMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EfvTI+w/NDG7WC7lHhRFuqJM084Wydb4+k7txGIEM1iN/dJIb+yBXuZFDP8Dh1a2l
-	 yBYsI6+DfORX6FdloQtyTCtVSmFv00soWzWZ6fGeOxw54HjyHoUlv6U9o6Ua6kNpzK
-	 uaG0/Yr+bb2Y3eVx6Wy1Sb3psHiIcjR/fjG5oGUQ=
+	b=magY3mFWIvzssgZpFfV/eK6HihDPlDVCQf4zHv65ls1X7QzoavmQaxYFOLb+/VAcI
+	 GOLX262RmNfX2QsDL4aHLxrHRRN5uWni0w98BNmf/qUyk+TBXgDe6W/7LDZQNM2blA
+	 iUL2aTSP3PJgNPhkF4+r/q+fMEXd2aL+8vrEgJAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aloka Dixit <quic_alokad@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/744] wifi: ath12k: use correct flag field for 320 MHz channels
-Date: Thu,  6 Jun 2024 15:56:42 +0200
-Message-ID: <20240606131736.601806707@linuxfoundation.org>
+Subject: [PATCH 6.6 131/744] wifi: mt76: mt7915: workaround too long expansion sparse warnings
+Date: Thu,  6 Jun 2024 15:56:43 +0200
+Message-ID: <20240606131736.631029287@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,42 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aloka Dixit <quic_alokad@quicinc.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 020e08ae5e68cbc0791e8d842443a86eb6aa99f6 ]
+[ Upstream commit 2d5cde1143eca31c72547dfd589702c6b4a7e684 ]
 
-Due to an error during rebasing the patchset 320 MHz channel support got
-broken. ath12k was setting the QoS bit instead of the correct flag.
-WMI_PEER_EXT_320MHZ (0x2) is defined as an extended flag, replace
-peer_flags by peer_flags_ext while sending peer data.
+Fix the following sparse warnings:
 
-This affected both QCN9274 and WCN7850 which use the same flag.
+drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
+drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
+drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
+drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c:1133:29: error: too long token expansion
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+No functional changes, compile tested only.
 
-Fixes: 6734cf9b4cc7 ("wifi: ath12k: peer assoc for 320 MHz")
-Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240314204651.11075-1-quic_alokad@quicinc.com
+Fixes: e3296759f347 ("wifi: mt76: mt7915: enable per bandwidth power limit support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Acked-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/5457b92e41909dd75ab3db7a0e9ec372b917a386.1710858172.git.lorenzo@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index d308a0e7f1871..cd89032fa25e1 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -1834,7 +1834,7 @@ static void ath12k_wmi_copy_peer_flags(struct wmi_peer_assoc_complete_cmd *cmd,
- 		if (arg->bw_160)
- 			cmd->peer_flags |= cpu_to_le32(WMI_PEER_160MHZ);
- 		if (arg->bw_320)
--			cmd->peer_flags |= cpu_to_le32(WMI_PEER_EXT_320MHZ);
-+			cmd->peer_flags_ext |= cpu_to_le32(WMI_PEER_EXT_320MHZ);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+index 6c3696c8c7002..450f4d221184b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/debugfs.c
+@@ -1049,6 +1049,7 @@ static ssize_t
+ mt7915_rate_txpower_set(struct file *file, const char __user *user_buf,
+ 			size_t count, loff_t *ppos)
+ {
++	int i, ret, pwr, pwr160 = 0, pwr80 = 0, pwr40 = 0, pwr20 = 0;
+ 	struct mt7915_phy *phy = file->private_data;
+ 	struct mt7915_dev *dev = phy->dev;
+ 	struct mt76_phy *mphy = phy->mt76;
+@@ -1057,7 +1058,6 @@ mt7915_rate_txpower_set(struct file *file, const char __user *user_buf,
+ 		.band_idx = phy->mt76->band_idx,
+ 	};
+ 	char buf[100];
+-	int i, ret, pwr160 = 0, pwr80 = 0, pwr40 = 0, pwr20 = 0;
+ 	enum mac80211_rx_encoding mode;
+ 	u32 offs = 0, len = 0;
  
- 		/* Typically if STBC is enabled for VHT it should be enabled
- 		 * for HT as well
+@@ -1130,8 +1130,8 @@ mt7915_rate_txpower_set(struct file *file, const char __user *user_buf,
+ 	if (ret)
+ 		goto out;
+ 
+-	mphy->txpower_cur = max(mphy->txpower_cur,
+-				max(pwr160, max(pwr80, max(pwr40, pwr20))));
++	pwr = max3(pwr80, pwr40, pwr20);
++	mphy->txpower_cur = max3(mphy->txpower_cur, pwr160, pwr);
+ out:
+ 	mutex_unlock(&dev->mt76.mutex);
+ 
 -- 
 2.43.0
 
