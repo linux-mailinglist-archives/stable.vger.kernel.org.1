@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12A58FEC62
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BF38FEE0F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FF8EB23884
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8D7E1F2308E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F0E19ADA4;
-	Thu,  6 Jun 2024 14:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2A919EEC3;
+	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbaPh32S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODUxg74R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D690419ADAC;
-	Thu,  6 Jun 2024 14:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8E419EEAD;
+	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683360; cv=none; b=Aw79mn1M23werctu/nIqUsU9QQTuXvJg7DhnSi37V5G+H9H331CeFmkOU9hpou4JplR3SFBcTO5wJ2vcJD+x9DLqrxhktIj4OVHcootBHsjIWTsXVrDHxlTxfj+0HRjymVxx8G7fZ6q5jhkCo4r8b3cPYI7hzP2mu0GxmnebJRo=
+	t=1717683555; cv=none; b=I0GqfJ0UftWp2MRqLeoeAWNHLR0CGZEeEe5YqOKHf90jh0VBkDKEgqS1Ijjz53X1ghHlIR8CyE3kFJw328+X0246Mlcgd7xhUaBXh9FvNk8bkCSVdwCEd3q2yJxkh+AfAKCyHjZbXH8YlzVp1l6hmbCOawUGz/80rf3yUUm2r0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683360; c=relaxed/simple;
-	bh=AbldccbUkSGv1XhBW7gRO2Z0xBnpBcKlea+7Lq5zLsU=;
+	s=arc-20240116; t=1717683555; c=relaxed/simple;
+	bh=4F9vNeEzXms5gBPDNKMuWbsWc6jQsegH3g0b//syX2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eV+WpBP5YvjF9oz/DagcqonMbsv+9IZYIIDj7DFUd6ld8yz4vt86fhUWq9jjjn+97emsbiZ/2Xa8lL9weetRmDXL9Eva+WnipjJbXw64IcIlYapDevcFypxaChNuOy4DqTo6pYkJz5N7bNkfN5KfpnbnJUZaWCU6Ri3oVIa7XDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbaPh32S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CB9C2BD10;
-	Thu,  6 Jun 2024 14:16:00 +0000 (UTC)
+	 MIME-Version; b=E82v7AqtqSfCoaob7mumzF5cUwAFHp9/ctxwzM2tYKSNN9vLMmVE32++4ucrT6X6mnfhgx7+sGsKDNf9bw4DFq8tTgTBuTogVLguuWCOyA6iMIbIJeHOBTh6rDUTib/oO2uW9NK/DSaBuPCh2/dv+igGKnLt0DQdd4GF66PJeck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODUxg74R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6FEC2BD10;
+	Thu,  6 Jun 2024 14:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683360;
-	bh=AbldccbUkSGv1XhBW7gRO2Z0xBnpBcKlea+7Lq5zLsU=;
+	s=korg; t=1717683555;
+	bh=4F9vNeEzXms5gBPDNKMuWbsWc6jQsegH3g0b//syX2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbaPh32SVeHVDlIhETdtd7en5phRkvuWAyuCkmWKubiHpmS30A18CXSunT26qqP+H
-	 Apj9jtu8NOGdhX74gv3wxtuIri9ZzMBVzs/nwdazNBJze9wFoqr6b8Ga9bkZ9/u3lU
-	 MbP/4HSEkSIepUxyR/lVjxEflf5zM6uj8K7TpVto=
+	b=ODUxg74RUn137zSG6Peto5nqCZ0YQTczlQLwQc/QASnFa8or1mhVkCJ14+RdCuhr6
+	 1Di9p+nup1GMd84m0+cgSuL/+qDL9AuPti/00k/XPPNbHXKrNxULC0zVcqs7MAltNn
+	 /hwJ6jp0Ts4qX8ZRnQmk2zlLBhUQ7txouVqKqs9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/473] RDMA/hns: Fix GMV table pagesize
+Subject: [PATCH 6.6 497/744] dt-bindings: spmi: hisilicon,hisi-spmi-controller: fix binding references
 Date: Thu,  6 Jun 2024 16:02:49 +0200
-Message-ID: <20240606131707.765745085@linuxfoundation.org>
+Message-ID: <20240606131748.384450114@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit ee045493283403969591087bd405fa280103282a ]
+[ Upstream commit c6c1b27f9a9a20ad2db663628fccaed72c6a0f1f ]
 
-GMV's BA table only supports 4K pages. Currently, PAGESIZE is used to
-calculate gmv_bt_num, which will cause an abnormal number of gmv_bt_num
-in a 64K OS.
+Fix up the free text binding references which were not updated when
+moving the bindings out of staging and which had a leading current
+directory component, respectively.
 
-Fixes: d6d91e46210f ("RDMA/hns: Add support for configuring GMV table")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-8-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 9bd9e0de1cf5 ("mfd: hi6421-spmi-pmic: move driver from staging")
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231130173757.13011-2-johan+linaro@kernel.org
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240507210809.3479953-3-sboyd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../bindings/spmi/hisilicon,hisi-spmi-controller.yaml         | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index d06b19e69a151..08e2e9569a52a 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -2229,7 +2229,7 @@ static void apply_func_caps(struct hns_roce_dev *hr_dev)
- 		caps->gid_table_len[0] = caps->gmv_bt_num *
- 					(HNS_HW_PAGE_SIZE / caps->gmv_entry_sz);
+diff --git a/Documentation/devicetree/bindings/spmi/hisilicon,hisi-spmi-controller.yaml b/Documentation/devicetree/bindings/spmi/hisilicon,hisi-spmi-controller.yaml
+index f882903769f95..eee7c8d4cf4a2 100644
+--- a/Documentation/devicetree/bindings/spmi/hisilicon,hisi-spmi-controller.yaml
++++ b/Documentation/devicetree/bindings/spmi/hisilicon,hisi-spmi-controller.yaml
+@@ -14,7 +14,7 @@ description: |
+   It is a MIPI System Power Management (SPMI) controller.
  
--		caps->gmv_entry_num = caps->gmv_bt_num * (PAGE_SIZE /
-+		caps->gmv_entry_num = caps->gmv_bt_num * (HNS_HW_PAGE_SIZE /
- 							  caps->gmv_entry_sz);
- 	} else {
- 		u32 func_num = max_t(u32, 1, hr_dev->func_num);
+   The PMIC part is provided by
+-  ./Documentation/devicetree/bindings/mfd/hisilicon,hi6421-spmi-pmic.yaml.
++  Documentation/devicetree/bindings/mfd/hisilicon,hi6421-spmi-pmic.yaml.
+ 
+ allOf:
+   - $ref: spmi.yaml#
+@@ -48,7 +48,7 @@ patternProperties:
+       PMIC properties, which are specific to the used SPMI PMIC device(s).
+       When used in combination with HiSilicon 6421v600, the properties
+       are documented at
+-      drivers/staging/hikey9xx/hisilicon,hi6421-spmi-pmic.yaml.
++      Documentation/devicetree/bindings/mfd/hisilicon,hi6421-spmi-pmic.yaml
+ 
+ unevaluatedProperties: false
+ 
 -- 
 2.43.0
 
