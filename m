@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-49344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16868FECE0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1C28FEE85
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 691972857F4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6713C1C242A4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248B0190484;
-	Thu,  6 Jun 2024 14:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47511C538B;
+	Thu,  6 Jun 2024 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xT+///D3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqE7P5K1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C441B372F;
-	Thu,  6 Jun 2024 14:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AD8196D90;
+	Thu,  6 Jun 2024 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683419; cv=none; b=XT3bgIfqGMn5Nd6HNS2fJfYNxRB9P57V18bknCuSkTGQhsD7Edslo4l1S0Ze7U7TkR0i4o5IPNF+Ieeq7uOnDg/SXyrsuBFIxpzbwNIaEzFNwAuLPpyOMnMqkSuCNNe+DnakmQ5232tBQadzXAnyw+KQyCsKnNoiNQrm05QO0jo=
+	t=1717683671; cv=none; b=tHRPsyTb6m09p3j3PKZ7oaXu0XjLzdNluKyprarCvnKehbXN5IJ9Gh93unuVn6cBwWrr1AHVl8kY8ocMitabRIPt9ajJLH0RhhEu1G9eHtER2pgxcyYqvA1I1gQ2Ql5/RY8SLevMt2uZKi6lH+Ex9Hitydw6qZJmmuaod9cblJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683419; c=relaxed/simple;
-	bh=RFfKoTrviFOB8K3SdNiG0Q4IaW7yNO+5HNf2n1IQ+g0=;
+	s=arc-20240116; t=1717683671; c=relaxed/simple;
+	bh=+kOt4ntjqKiQv/f7txchd3u4wA0I2fyF+kfQj/aXP3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NbwO7027x/HBsjrUDrFMDhnAcFhHt8yeGb3OwQwUOWMHGGzNULXy7vyGTAmz4buX1e+jNuKJSBbjsMGvPjfc9l7i1PpMiiwJg780OsRYwzGrJempe9SkbzBXapBHwvAKrlaGzmxGTwz/nxFnKwuyvwwXKV5460mCQGfRayBAOW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xT+///D3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AABF9C32781;
-	Thu,  6 Jun 2024 14:16:59 +0000 (UTC)
+	 MIME-Version; b=ABCrevHeBMMQ9YQ4vsyDIFssrZ+30G/Ju8cpDnwTTDHEal4poaG7eZDBBUNOgnVvSugALtsi2P06Ep8HLjOsQRc0k25654rkE6p4VgMZ9HidM15Opdf0KkuckWh3h32UzsddvRUDY7zb/ExwVlqBnTNTqd62sNOgjTObti4iX+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqE7P5K1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED63C2BD10;
+	Thu,  6 Jun 2024 14:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683419;
-	bh=RFfKoTrviFOB8K3SdNiG0Q4IaW7yNO+5HNf2n1IQ+g0=;
+	s=korg; t=1717683671;
+	bh=+kOt4ntjqKiQv/f7txchd3u4wA0I2fyF+kfQj/aXP3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xT+///D3SA+fkLF9CYF2PjzwYI58B6div/8zvpOpgP/88gcLEsbIoSb3uSJWTwpfx
-	 +hN+4WXVM3cHArckH1oSq5rpa3/dm1kPnXNIH+fsifYiJRHcUzL97VrY/TU1SfPPQU
-	 N3aYzesfZuAYGykgPvXEj8Kfn5jpAhExYQXHen8g=
+	b=LqE7P5K1kWC6VnHU9uDvG4UccicOwZSpS3P7zWmH5iz61wmyQKT+c02XdsXQvWCyj
+	 IaoN/VyPCsug6CnlsPRtDKw+3u+4xFMRpCb96sglG6QtoaATGS6wvCYEzwyXxv9rzb
+	 GUilIlp/a0nv8GZbnVj2TETn6ZtVeVbg1wqMgiAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
+	Judith Mendez <jm@ti.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
-	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
-	German Gomez <german.gomez@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Leo Yan <leo.yan@linaro.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Zhengjun Xing <zhengjun.xing@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 302/473] perf test: Add brstack test workload
-Date: Thu,  6 Jun 2024 16:03:51 +0200
-Message-ID: <20240606131709.917855252@linuxfoundation.org>
+Subject: [PATCH 6.6 560/744] mmc: sdhci_am654: Add tuning algorithm for delay chain
+Date: Thu,  6 Jun 2024 16:03:52 +0200
+Message-ID: <20240606131750.427204032@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,131 +63,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit a104f0ea99d846df19aad8a5476eb9bc39fa42ca ]
+[ Upstream commit 6231d99dd4119312ad41abf9383e18fec66cbe4b ]
 
-The brstack is to run different kinds of branches repeatedly.  This is
-necessary for brstack test case to verify if it has correct branch info.
+Currently the sdhci_am654 driver only supports one tuning
+algorithm which should be used only when DLL is enabled. The
+ITAPDLY is selected from the largest passing window and the
+buffer is viewed as a circular buffer.
 
-  $ perf test -w brstack
+The new algorithm should be used when the delay chain
+is enabled. The ITAPDLY is selected from the largest passing
+window and the buffer is not viewed as a circular buffer.
 
-I renamed the internal functions to have brstack_ prefix as it's too
-generic name.
+This implementation is based off of the following paper: [1].
 
-Add a -U_FORTIFY_SOURCE to the brstack CFLAGS, as the main perf flags
-set it and it requires building with optimization, and this new test has
-a -O0.
+Also add support for multiple failing windows.
 
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Zhengjun Xing <zhengjun.xing@linux.intel.com>
-Link: https://lore.kernel.org/r/20221116233854.1596378-10-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 256ef072b384 ("perf tests: Make "test data symbol" more robust on Neoverse N1")
+[1] https://www.ti.com/lit/an/spract9/spract9.pdf
+
+Fixes: 13ebeae68ac9 ("mmc: sdhci_am654: Add support for software tuning")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240320223837.959900-2-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/builtin-test.c      |  1 +
- tools/perf/tests/tests.h             |  1 +
- tools/perf/tests/workloads/Build     |  2 ++
- tools/perf/tests/workloads/brstack.c | 40 ++++++++++++++++++++++++++++
- 4 files changed, 44 insertions(+)
- create mode 100644 tools/perf/tests/workloads/brstack.c
+ drivers/mmc/host/sdhci_am654.c | 112 +++++++++++++++++++++++++++------
+ 1 file changed, 92 insertions(+), 20 deletions(-)
 
-diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
-index 9acb7a93eeb97..69fa56939309b 100644
---- a/tools/perf/tests/builtin-test.c
-+++ b/tools/perf/tests/builtin-test.c
-@@ -123,6 +123,7 @@ static struct test_workload *workloads[] = {
- 	&workload__thloop,
- 	&workload__leafloop,
- 	&workload__sqrtloop,
-+	&workload__brstack,
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index 967bd2dfcda1b..c3b07957736e9 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -150,10 +150,17 @@ struct sdhci_am654_data {
+ 	int strb_sel;
+ 	u32 flags;
+ 	u32 quirks;
++	bool dll_enable;
+ 
+ #define SDHCI_AM654_QUIRK_FORCE_CDTEST BIT(0)
  };
  
- static int num_subtests(const struct test_suite *t)
-diff --git a/tools/perf/tests/tests.h b/tools/perf/tests/tests.h
-index 18c40319e67c7..dc96f59cac2ef 100644
---- a/tools/perf/tests/tests.h
-+++ b/tools/perf/tests/tests.h
-@@ -204,5 +204,6 @@ DECLARE_WORKLOAD(noploop);
- DECLARE_WORKLOAD(thloop);
- DECLARE_WORKLOAD(leafloop);
- DECLARE_WORKLOAD(sqrtloop);
-+DECLARE_WORKLOAD(brstack);
++struct window {
++	u8 start;
++	u8 end;
++	u8 length;
++};
++
+ struct sdhci_am654_driver_data {
+ 	const struct sdhci_pltfm_data *pdata;
+ 	u32 flags;
+@@ -295,10 +302,13 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
  
- #endif /* TESTS_H */
-diff --git a/tools/perf/tests/workloads/Build b/tools/perf/tests/workloads/Build
-index 2312a338f01c0..ae06a5538b171 100644
---- a/tools/perf/tests/workloads/Build
-+++ b/tools/perf/tests/workloads/Build
-@@ -4,6 +4,8 @@ perf-y += noploop.o
- perf-y += thloop.o
- perf-y += leafloop.o
- perf-y += sqrtloop.o
-+perf-y += brstack.o
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, mask, val);
  
- CFLAGS_sqrtloop.o         = -g -O0 -fno-inline -U_FORTIFY_SOURCE
- CFLAGS_leafloop.o         = -g -O0 -fno-inline -fno-omit-frame-pointer -U_FORTIFY_SOURCE
-+CFLAGS_brstack.o          = -g -O0 -fno-inline -U_FORTIFY_SOURCE
-diff --git a/tools/perf/tests/workloads/brstack.c b/tools/perf/tests/workloads/brstack.c
-new file mode 100644
-index 0000000000000..0b60bd37b9d1a
---- /dev/null
-+++ b/tools/perf/tests/workloads/brstack.c
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#include <stdlib.h>
-+#include "../tests.h"
+-	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ)
++	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
+ 		sdhci_am654_setup_dll(host, clock);
+-	else
++		sdhci_am654->dll_enable = true;
++	} else {
+ 		sdhci_am654_setup_delay_chain(sdhci_am654, timing);
++		sdhci_am654->dll_enable = false;
++	}
+ 
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, CLKBUFSEL_MASK,
+ 			   sdhci_am654->clkbuf_sel);
+@@ -416,39 +426,101 @@ static u32 sdhci_am654_cqhci_irq(struct sdhci_host *host, u32 intmask)
+ 	return 0;
+ }
+ 
+-#define ITAP_MAX	32
++#define ITAPDLY_LENGTH 32
++#define ITAPDLY_LAST_INDEX (ITAPDLY_LENGTH - 1)
 +
-+#define BENCH_RUNS 999999
-+
-+static volatile int cnt;
-+
-+static void brstack_bar(void) {
-+}				/* return */
-+
-+static void brstack_foo(void) {
-+	brstack_bar();		/* call */
-+}				/* return */
-+
-+static void brstack_bench(void) {
-+	void (*brstack_foo_ind)(void) = brstack_foo;
-+
-+	if ((cnt++) % 3)	/* branch (cond) */
-+		brstack_foo();	/* call */
-+	brstack_bar();		/* call */
-+	brstack_foo_ind();	/* call (ind) */
-+}
-+
-+static int brstack(int argc, const char **argv)
++static u32 sdhci_am654_calculate_itap(struct sdhci_host *host, struct window
++			  *fail_window, u8 num_fails, bool circular_buffer)
 +{
-+	int num_loops = BENCH_RUNS;
++	u8 itap = 0, start_fail = 0, end_fail = 0, pass_length = 0;
++	u8 first_fail_start = 0, last_fail_end = 0;
++	struct device *dev = mmc_dev(host->mmc);
++	struct window pass_window = {0, 0, 0};
++	int prev_fail_end = -1;
++	u8 i;
 +
-+	if (argc > 0)
-+		num_loops = atoi(argv[0]);
++	if (!num_fails)
++		return ITAPDLY_LAST_INDEX >> 1;
 +
-+	while (1) {
-+		if ((cnt++) > num_loops)
-+			break;
-+		brstack_bench();/* call */
-+	}			/* branch (uncond) */
-+	return 0;
++	if (fail_window->length == ITAPDLY_LENGTH) {
++		dev_err(dev, "No passing ITAPDLY, return 0\n");
++		return 0;
++	}
++
++	first_fail_start = fail_window->start;
++	last_fail_end = fail_window[num_fails - 1].end;
++
++	for (i = 0; i < num_fails; i++) {
++		start_fail = fail_window[i].start;
++		end_fail = fail_window[i].end;
++		pass_length = start_fail - (prev_fail_end + 1);
++
++		if (pass_length > pass_window.length) {
++			pass_window.start = prev_fail_end + 1;
++			pass_window.length = pass_length;
++		}
++		prev_fail_end = end_fail;
++	}
++
++	if (!circular_buffer)
++		pass_length = ITAPDLY_LAST_INDEX - last_fail_end;
++	else
++		pass_length = ITAPDLY_LAST_INDEX - last_fail_end + first_fail_start;
++
++	if (pass_length > pass_window.length) {
++		pass_window.start = last_fail_end + 1;
++		pass_window.length = pass_length;
++	}
++
++	if (!circular_buffer)
++		itap = pass_window.start + (pass_window.length >> 1);
++	else
++		itap = (pass_window.start + (pass_window.length >> 1)) % ITAPDLY_LENGTH;
++
++	return (itap > ITAPDLY_LAST_INDEX) ? ITAPDLY_LAST_INDEX >> 1 : itap;
 +}
 +
-+DEFINE_WORKLOAD(brstack);
+ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
+ 					       u32 opcode)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_am654_data *sdhci_am654 = sdhci_pltfm_priv(pltfm_host);
+-	int cur_val, prev_val = 1, fail_len = 0, pass_window = 0, pass_len;
+-	u32 itap;
++	struct window fail_window[ITAPDLY_LENGTH];
++	u8 curr_pass, itap;
++	u8 fail_index = 0;
++	u8 prev_pass = 1;
++
++	memset(fail_window, 0, sizeof(fail_window));
+ 
+ 	/* Enable ITAPDLY */
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPDLYENA_MASK,
+ 			   1 << ITAPDLYENA_SHIFT);
+ 
+-	for (itap = 0; itap < ITAP_MAX; itap++) {
++	for (itap = 0; itap < ITAPDLY_LENGTH; itap++) {
+ 		sdhci_am654_write_itapdly(sdhci_am654, itap);
+ 
+-		cur_val = !mmc_send_tuning(host->mmc, opcode, NULL);
+-		if (cur_val && !prev_val)
+-			pass_window = itap;
++		curr_pass = !mmc_send_tuning(host->mmc, opcode, NULL);
+ 
+-		if (!cur_val)
+-			fail_len++;
++		if (!curr_pass && prev_pass)
++			fail_window[fail_index].start = itap;
+ 
+-		prev_val = cur_val;
++		if (!curr_pass) {
++			fail_window[fail_index].end = itap;
++			fail_window[fail_index].length++;
++		}
++
++		if (curr_pass && !prev_pass)
++			fail_index++;
++
++		prev_pass = curr_pass;
+ 	}
+-	/*
+-	 * Having determined the length of the failing window and start of
+-	 * the passing window calculate the length of the passing window and
+-	 * set the final value halfway through it considering the range as a
+-	 * circular buffer
+-	 */
+-	pass_len = ITAP_MAX - fail_len;
+-	itap = (pass_window + (pass_len >> 1)) % ITAP_MAX;
++
++	if (fail_window[fail_index].length != 0)
++		fail_index++;
++
++	itap = sdhci_am654_calculate_itap(host, fail_window, fail_index,
++					  sdhci_am654->dll_enable);
++
+ 	sdhci_am654_write_itapdly(sdhci_am654, itap);
+ 
+ 	return 0;
 -- 
 2.43.0
 
