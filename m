@@ -1,150 +1,126 @@
-Return-Path: <stable+bounces-49903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C208B8FEF66
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 509E98FEF84
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C22991C245A5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:51:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5281D1C20A98
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257671993B4;
-	Thu,  6 Jun 2024 14:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327801ABCD0;
+	Thu,  6 Jun 2024 14:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="LS5qYWve"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="T0ggKR6R"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7ABF1A2FC8
-	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 14:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEDD19AA53
+	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 14:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683878; cv=none; b=Nk07EV0xJA0qLxD/mva4+akYKxTDazNkcDFzd6x1mhas9C9QlLu7Wky7EIIJLxPhIMo9UwGGcTJQI8a/spWLq4rxJKdqItRxB1QiBX3oGZNhhr711SAw315bKFd2mAmMbFgM3dXTQaiYhxQ38nw7mhR31eC0KsOu1oXhXMe9kLU=
+	t=1717684066; cv=none; b=NPIRUNLR7a266R0COBGyywdeFD7nvI7JVqVroIJViFGrBzvnaDDYqBFW/qy8jkdfBFhBAKLC797O+0MLmio8+w7Xlto1vzhdfFX1WTXgiBzZrTOJfHNeY5OBmcU5WHiXC2eC4myJg3sZTcUHQkknSHN+7WfAwIBlNVgFc6mYvJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683878; c=relaxed/simple;
-	bh=W70RagmsDGgtPDu/aaHWY/Mb0j+9B+i6xVMyeXyvsjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmqhYaZcQdNG33GGrbVLcq7N9VT9bRGTo7+S2cYcn3y8sa5HfCR7u2EbOq3mA6kFTAPz5YVvZKeGTnO9Lv0Jc2xqoEGNwFYkDIgrDinSfnnHAlRyBhiE46zFVIvUbhhiM3XbUbgss3TOr3j5urzCzEiuGrN2xMMNqJxIJ5I46iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=LS5qYWve; arc=none smtp.client-ip=217.72.192.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1717683851; x=1718288651; i=christian@heusel.eu;
-	bh=4TqXY4gy1E4TcZhTqo5vaPWzo6u3lyaqch1eF7C89Zg=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=LS5qYWveOGH+yBzPRbm1+oQHDJ16AgCMFsBPp6C1j8shoskRS9dBN2GXpGtzhDnP
-	 iV8LBke4l/rki1onirYhKb/IJkjRUwbVCvaOnwm2W3FBVDKe6W6P4P0LtfaVeisi4
-	 SyHjVF5SFCLFNZhVIhcN5Y0TSqZs5IboA9fcVasZ1J+si4NFIxuLlx0lQr2qFCfL3
-	 5JJkMWlLE/5xiGtctBiCuADQDSxfQq+Z/CYJUDI+/W8Ya0uz08P34INs1NM1Jc5YB
-	 RPgLqdO5tmSkKL/sc7WQm0to6GL44K/WnpueoAB2kbGM/eYOFIaLXXwnsNrT7LNTu
-	 i3N9c/MD6/Dn5Amhng==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from meterpeter.chris.vpn.heusel.eu ([141.70.80.5]) by
- mrelayeu.kundenserver.de (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis)
- id 1Mi23L-1ssQbi1v73-00pY9E; Thu, 06 Jun 2024 16:24:11 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Tim Teichmann <teichmanntim@outlook.de>,
-	Christian Heusel <christian@heusel.eu>,
-	Borislav Petkov <bp@alien8.de>
-Subject: [PATCH 6.9.y] x86/topology/amd: Evaluate SMT in CPUID leaf 0x8000001e only on family 0x17 and greater
-Date: Thu,  6 Jun 2024 16:23:50 +0200
-Message-ID: <20240606142350.24452-1-christian@heusel.eu>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024060624-platinum-ladies-9214@gregkh>
-References: <2024060624-platinum-ladies-9214@gregkh>
+	s=arc-20240116; t=1717684066; c=relaxed/simple;
+	bh=zgz2bLOFJRkBwOEW5RaCFDEbiZHMyOTfAejaJyCZblg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T4GqnzEcooJ4vef4wo21YdyRsFaIc7xB0qP3cG/8MKvvLk1krrsGd6NeToX8OcDu1FxA+THtTIT7qmASXfOWKU+HLCg1mu/AJctLAkRiTx1sjM3c0EPCWw67dmmyxo2phNvNANggHc56Ts6M2+Nhh5X5AqKdObq7dkNnhMdL3ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=T0ggKR6R; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-57a44c2ce80so1166535a12.0
+        for <stable@vger.kernel.org>; Thu, 06 Jun 2024 07:27:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717684062; x=1718288862; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DXB1vdhxU7ozzaIOv3LXxHYx4cJj0wQEg5HvR8ydDjc=;
+        b=T0ggKR6Rr9DJJ0xca52554+6PUnuOKGLzlJ8+TCCjQLBBPjXncDYJgHL/ILrnmeCWY
+         gr3bAJIRdgfItiYNELe03WZE5iucyBWi/vSCdOdXUR2y7A9l1vWMzWcBINT/37d5ouvY
+         77temUAk1dpUQAM/LOZL1c+VrgshuG/vVAy25/EQsUmvUjPUINRt7aynoSK7WCfIQ7MP
+         4kwLzvoG+l0elZXqYKx2NflaMUTXVXUr2EdLbcT5horQ5FGjC0NdpgglM86sAh6O+hmF
+         pNnEHackePWRXLFLl2Tor2Mh2n6DIGRddAg4jgsssqtm0pJH4rifyaqQZMcYz30octAz
+         OWBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717684062; x=1718288862;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DXB1vdhxU7ozzaIOv3LXxHYx4cJj0wQEg5HvR8ydDjc=;
+        b=SJG/KN+wFYBOoBKgvOCuEXrpZqadJsEDagiokZGxRuHeGQcCsgTEdnYSV2ADemReV8
+         +35dFTh6U4Y3pcnVY+bXT8UFQ8n5jpXwQ69eTz5+HbLVeLU4me81hySfpTNjmhFw/o+G
+         QLNWY1Xvd8UCwZ0EFwuWrbFJWGBoM/F3v7OaNg+0TrpFyKIUnngXAnIh4Cjtd70mmi48
+         e6a+e5fXnLkrWeNUwJKcTNdwrV0nmGqJreNCdYDijPREG9zoWK20DTVLucbRfAlrcUkn
+         n0qCX54VINAxChaK9EHJbJywNHAE5W5m8WlKWjmCBVrXX8+fPvo2nZsdDH21x5Xd6x+0
+         u4YA==
+X-Gm-Message-State: AOJu0YwU0DtITdXdcqEyTkQT+iKqGeQPi3nymME3PGpqOMZQR3ARW6vd
+	VXMaueCCSJcTxgmKkbv8zl4J71UV+AFCLZS7ZsB/ieVPa+2YmlIx+4JfcEpNvq+3v54FjnE2fGy
+	eqtNbtPCJr/E8ZBp3702nqjNcp+mZTnj9Z87kDGzu2ot5geyd4yoXjQ==
+X-Google-Smtp-Source: AGHT+IGu9Nb7LzeYBiQRctkm+Mte+Uml7Mcg4Wm54UUxwsCVucNqjC5EhuyxtMfysFzkWUictLWSdMHJTlM05oWiqTU=
+X-Received: by 2002:a50:d5c8:0:b0:574:ebf4:f78c with SMTP id
+ 4fb4d7f45d1cf-57aaaf0eb41mr1306728a12.7.1717684062055; Thu, 06 Jun 2024
+ 07:27:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:16J9dvDYI5uSFOXVE4MXAg1MnZr1oD2XTVcFUvwWEa+PZm3THm3
- rCp+au5Cw7le6AUy+b+8KMbeTDQyqiw2CwR2kjfl/8Frmqt4Ac/hL1zXDdPACjaM07SUis/
- pjDInN6dQCg3t5oLl0V++73ULjgxUpdC12KIvlZP97EIj9i+jmvIm2cNpVA6QTwnv8Y+pPx
- 3enyhLEadkfg8nIJLlbkQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:DZAOMHkbQW0=;8XkMPQW+0R7Jfi9Zb5syIQ/w8jh
- HL7AK/6nUUaGT6XgmwWV16D20Jf74vtRGnL8ThBJYDyxxWkIyFg7eqV5yqAifEpmaT+OfsXFW
- xOP7CzcuvJGqA4SMNMTCnDGYqpHbyDgx+wgPwEIXJNeRrNtBGz+XvHyomtMydQkaWRp6sij0l
- qVFE0QMedkJUbeLqVLuAHbGnxzvamnMax+dIKSITu31dHUVFOHKuQjYGivAEGTkKE/DnKGBI6
- FcvUIKQuvSfNg+3wEx1+qdvyt+b7owPg7a+9ZDrwWfZAaiHdCZ72Vq55Yy1h3URXXLoh3Bvo6
- bvSJz7TJPpCNjJTl2GMDp2+Nb8diUMEHfwos+kaGRy0n1RnMu1cl/Utuk7dwkhbQ4zi5T+EKm
- 2j0DbcHXEPMmLQRdm2k9I8d5NsoJwL34T7H35VNwn2LoZTp9hQIf7bzzAz+xeVAiwNDTBWrmC
- LJ2zmuwdBg52izExpOqn3C+yJ5aRw6pX5+Mj6BVz9VjdXS3TFIo4a9J3fUutNrNcAN3i0kwAd
- X17bcW2K+xLSNThPFNrqB47+I8AjDLMHdLs7LPzPTuSjTCLWlYzSWSD3IC2ajqkFDBstmk6a1
- qlPnABF7is/UmJzUI67XNgu9RucSfJTzk63LPMbTl4B2QMAEMBLCfRsgteubzhfe+iyFzUBp4
- 8rXjEyG/89ygHdkPij1SgcFyOLTtGCPZUfvE9QUzGrcT89kiRuenuWU3A/X8lmGTveSMgFUYn
- FJzJwiJu6L9hql1bx14lf57m0NrMiU7t0DvZWLpT/W/wdE52xFMVW0=
+References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 6 Jun 2024 19:57:12 +0530
+Message-ID: <CA+G9fYu+5dfJMBsZFECzkWc1cxzqWNNHpaKfOcZhZ4frUJNCOQ@mail.gmail.com>
+Subject: Re: [PATCH 6.9 000/374] 6.9.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Thomas Gleixner <tglx@linutronix.de>
+On Thu, 6 Jun 2024 at 19:38, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.9.4 release.
+> There are 374 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 08 Jun 2024 13:15:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.4-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The new AMD/HYGON topology parser evaluates the SMT information in CPUID l=
-eaf
-0x8000001e unconditionally while the original code restricted it to CPUs w=
-ith
-family 0x17 and greater.
+The Powerpc build failures noticed on stable-rc 6.9, 6.6 and 6.1.
 
-This breaks family 0x15 CPUs which advertise that leaf and have a non-zero
-value in the SMT section. The machine boots, but the scheduler complains l=
-oudly
-about the mismatch of the core IDs:
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-  WARNING: CPU: 1 PID: 0 at kernel/sched/core.c:6482 sched_cpu_starting+0x=
-183/0x250
-  WARNING: CPU: 0 PID: 1 at kernel/sched/topology.c:2408 build_sched_domai=
-ns+0x76b/0x12b0
+arch/powerpc/include/asm/inst.h: In function '__copy_inst_from_kernel_nofault':
+arch/powerpc/include/asm/uaccess.h:177:19: error: expected string
+literal before 'DS_FORM_CONSTRAINT'
+  177 |                 : DS_FORM_CONSTRAINT (*addr)                    \
+      |                   ^~~~~~~~~~~~~~~~~~
 
-Add the condition back to cure it.
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.9.y/build/v6.9.2-803-gfcbdac56b0ae/testrun/24217279/suite/build/test/gcc-13-maple_defconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.9.y/build/v6.9.2-803-gfcbdac56b0ae/testrun/24217279/suite/build/test/gcc-13-maple_defconfig/history/
 
-  [ bp: Make it actually build because grandpa is not concerned with
-    trivial stuff. :-P ]
-
-Fixes: f7fb3b2dd92c ("x86/cpu: Provide an AMD/HYGON specific topology pars=
-er")
-Closes: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/=
-issues/56
-Reported-by: Tim Teichmann <teichmanntim@outlook.de>
-Reported-by: Christian Heusel <christian@heusel.eu>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Tim Teichmann <teichmanntim@outlook.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6=
-g2jduf6c@7b5pvomauugk
-(cherry picked from commit 34bf6bae3286a58762711cfbce2cf74ecd42e1b5)
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-=2D--
- arch/x86/kernel/cpu/topology_amd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topo=
-logy_amd.c
-index ce2d507c3b07..5ee6373d4d92 100644
-=2D-- a/arch/x86/kernel/cpu/topology_amd.c
-+++ b/arch/x86/kernel/cpu/topology_amd.c
-@@ -84,9 +84,9 @@ static bool parse_8000_001e(struct topo_scan *tscan, boo=
-l has_0xb)
-
- 	/*
- 	 * If leaf 0xb is available, then the domain shifts are set
--	 * already and nothing to do here.
-+	 * already and nothing to do here. Only valid for family >=3D 0x17.
- 	 */
--	if (!has_0xb) {
-+	if (!has_0xb && tscan->c->x86 >=3D 0x17) {
- 		/*
- 		 * Leaf 0x80000008 set the CORE domain shift already.
- 		 * Update the SMT domain, but do not propagate it.
-=2D-
-2.45.2
-
+--
+Linaro LKFT
+https://lkft.linaro.org
 
