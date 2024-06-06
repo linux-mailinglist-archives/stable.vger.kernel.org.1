@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-49657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F778FEE51
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24358FEC81
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27AE8B2330E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CAE1B27F84
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A148197526;
-	Thu,  6 Jun 2024 14:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91A31B1423;
+	Thu,  6 Jun 2024 14:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pc2usVz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HG76EVs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438AD1991B9;
-	Thu,  6 Jun 2024 14:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EBA19B3CA;
+	Thu,  6 Jun 2024 14:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683644; cv=none; b=V6MqQXWbMnvAklzHCJUtKALtV+EnvXo1tSXdk4y28luefEdP0MNhv4gpSkw6fV0dys9ad8TlmsavfNo92FPSLSqzKfhqek7BVyNhoY8ZHA7uC5W2E/uMwnUG2c1tN7xpzPmAB4kYLRmkRAWv3Ppg9GRXvIloiyo5h4ze339+/5Q=
+	t=1717683374; cv=none; b=gG2iVWNTVIbQo2Zsp/lT845QGgngPPXDk1RtNXBGsegdmKrzrqDW5HJ+veI+inZvr8XyPAykRYBTZ1Lm8LnjOsonD+nPSLxTidxgb52H5dC7pYR96r5MsyGQVm1EDiOls/M8M/9oF0/oNZ/2Du52ur3JQXHW6GQFkmGFirogFsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683644; c=relaxed/simple;
-	bh=e1vhhJ3dfXRYdVGZmglaHcepQRJQkqHXSCkpoYphF7M=;
+	s=arc-20240116; t=1717683374; c=relaxed/simple;
+	bh=YB2nD5Wk6r5WmnPS6hhJv/GlNdvlg7r+WoixRbraSI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MIRsAFMb+A5U2JrZOOeZY8x7dQtyzwX6L7K86rQSFF+5H0AnXSOmIXlQTojZHAXjjNKkEk21KEn/Scfkbbc5bvYVwY5U/VtyMxhnfFGXIqpovwfyMYG6iYvrLzMxG4Ram2eUx1HtbxFU25e1UzyNGgCq19Joi4hoBH7NUw91GQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pc2usVz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2151DC2BD10;
-	Thu,  6 Jun 2024 14:20:44 +0000 (UTC)
+	 MIME-Version; b=MiqLQppB0AWqviFYH80M2QMPQ0hCdXREZS6Lh2Z099Ry38zUhiUpE+L0u+qMUEHRtS6DFkIaCGXNbxbjYfyigxAn/XynefC/MNOdbgx8tqU645wcrDWDZ0f92fa+1EAoQT9q1FnK2us2h8fhthXnFDlT9U6PhNb+cSK+WKhX2BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HG76EVs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56420C32781;
+	Thu,  6 Jun 2024 14:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683644;
-	bh=e1vhhJ3dfXRYdVGZmglaHcepQRJQkqHXSCkpoYphF7M=;
+	s=korg; t=1717683374;
+	bh=YB2nD5Wk6r5WmnPS6hhJv/GlNdvlg7r+WoixRbraSI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pc2usVz8594iXjNu1Z01jERUB6gjdoLjclbH3WsYpdrTtwrsDmaoqPRCyamQVTI+d
-	 0BypR/MMx5FOutLmaAKoW7/IuoPvf2USX1HYdsibRSNqoAs+xK1ZxcqAeSS51P7HYf
-	 yx6J/79roGTBjGmUIh2/K/xhkoPG1FggPf08XvqI=
+	b=HG76EVs5OtnTjsWFhs2yfUK1zHwJ0CtDOoaRY4I8dqRAi3cb1+Z9yHZHwMb2aO8kP
+	 I8ncA5kqoQ7cxvYb5r7x2Qjt7ytFSxw88ufJBieMo5oCZbTKSWxT/Xr0FyyLkAZc6/
+	 ggUOf7LuTGBuCqaS4Ss76P6BlTvcsAmpk0LwxnGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	David Hildenbrand <david@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Fei Li <fei1.li@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 515/744] f2fs: compress: fix error path of inc_valid_block_count()
+Subject: [PATCH 6.1 258/473] virt: acrn: stop using follow_pfn
 Date: Thu,  6 Jun 2024 16:03:07 +0200
-Message-ID: <20240606131748.961704941@linuxfoundation.org>
+Message-ID: <20240606131708.492203451@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +68,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 043c832371cd9023fbd725138ddc6c7f288dc469 ]
+[ Upstream commit 1b265da7ea1e1ae997fa119c2846bb389eb39c6b ]
 
-If inc_valid_block_count() can not allocate all requested blocks,
-it needs to release block count in .total_valid_block_count and
-resevation blocks in inode.
+Patch series "remove follow_pfn".
 
-Fixes: 54607494875e ("f2fs: compress: fix to avoid inconsistence bewteen i_blocks and dnode")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+This series open codes follow_pfn in the only remaining caller, although
+the code there remains questionable.  It then also moves follow_phys into
+the only user and simplifies it a bit.
+
+This patch (of 3):
+
+Switch from follow_pfn to follow_pte so that we can get rid of follow_pfn.
+Note that this doesn't fix any of the pre-existing raciness and lack of
+permission checking in the code.
+
+Link: https://lkml.kernel.org/r/20240324234542.2038726-1-hch@lst.de
+Link: https://lkml.kernel.org/r/20240324234542.2038726-2-hch@lst.de
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Fei Li <fei1.li@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 3d6586008f7b ("drivers/virt/acrn: fix PFNMAP PTE checks in acrn_vm_ram_map()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/virt/acrn/mm.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index c90f6f9855c8e..f1fbfa7fb279e 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2296,7 +2296,7 @@ static inline void f2fs_i_blocks_write(struct inode *, block_t, bool, bool);
- static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
- 				 struct inode *inode, blkcnt_t *count, bool partial)
- {
--	blkcnt_t diff = 0, release = 0;
-+	long long diff = 0, release = 0;
- 	block_t avail_user_block_count;
- 	int ret;
- 
-@@ -2316,26 +2316,27 @@ static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
- 	percpu_counter_add(&sbi->alloc_valid_block_count, (*count));
- 
- 	spin_lock(&sbi->stat_lock);
--	sbi->total_valid_block_count += (block_t)(*count);
--	avail_user_block_count = get_available_block_count(sbi, inode, true);
- 
--	if (unlikely(sbi->total_valid_block_count > avail_user_block_count)) {
-+	avail_user_block_count = get_available_block_count(sbi, inode, true);
-+	diff = (long long)sbi->total_valid_block_count + *count -
-+						avail_user_block_count;
-+	if (unlikely(diff > 0)) {
- 		if (!partial) {
- 			spin_unlock(&sbi->stat_lock);
-+			release = *count;
- 			goto enospc;
- 		}
--
--		diff = sbi->total_valid_block_count - avail_user_block_count;
- 		if (diff > *count)
- 			diff = *count;
- 		*count -= diff;
- 		release = diff;
--		sbi->total_valid_block_count -= diff;
- 		if (!*count) {
- 			spin_unlock(&sbi->stat_lock);
- 			goto enospc;
- 		}
- 	}
-+	sbi->total_valid_block_count += (block_t)(*count);
+diff --git a/drivers/virt/acrn/mm.c b/drivers/virt/acrn/mm.c
+index b4ad8d452e9a1..ffc1d1136f765 100644
+--- a/drivers/virt/acrn/mm.c
++++ b/drivers/virt/acrn/mm.c
+@@ -171,18 +171,24 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
+ 	mmap_read_lock(current->mm);
+ 	vma = vma_lookup(current->mm, memmap->vma_base);
+ 	if (vma && ((vma->vm_flags & VM_PFNMAP) != 0)) {
++		spinlock_t *ptl;
++		pte_t *ptep;
 +
- 	spin_unlock(&sbi->stat_lock);
+ 		if ((memmap->vma_base + memmap->len) > vma->vm_end) {
+ 			mmap_read_unlock(current->mm);
+ 			return -EINVAL;
+ 		}
  
- 	if (unlikely(release)) {
+-		ret = follow_pfn(vma, memmap->vma_base, &pfn);
+-		mmap_read_unlock(current->mm);
++		ret = follow_pte(vma->vm_mm, memmap->vma_base, &ptep, &ptl);
+ 		if (ret < 0) {
++			mmap_read_unlock(current->mm);
+ 			dev_dbg(acrn_dev.this_device,
+ 				"Failed to lookup PFN at VMA:%pK.\n", (void *)memmap->vma_base);
+ 			return ret;
+ 		}
++		pfn = pte_pfn(ptep_get(ptep));
++		pte_unmap_unlock(ptep, ptl);
++		mmap_read_unlock(current->mm);
+ 
+ 		return acrn_mm_region_add(vm, memmap->user_vm_pa,
+ 			 PFN_PHYS(pfn), memmap->len,
 -- 
 2.43.0
 
