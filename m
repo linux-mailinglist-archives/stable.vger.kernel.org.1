@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-48705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C901B8FEA22
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522088FEA26
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D56B280F9A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:18:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D89991F226F1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E6F19E7DB;
-	Thu,  6 Jun 2024 14:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A413319E7E3;
+	Thu,  6 Jun 2024 14:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNbaUz1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMRLtgrD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918331990A6;
-	Thu,  6 Jun 2024 14:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AF119E7E1;
+	Thu,  6 Jun 2024 14:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683106; cv=none; b=WQE1V7SH4dA25D/3a4nuPfKfbUlLkEOh7PANDXlK18g/f+2YJJQ78TYRizFIizeTXJlAh1fYZp1Dk3QekMUgj6qsuqUXIGiaKn9o53aujMOJjxxbi5T1OfzZDduip+9DX5f/7HlVlpixcFPu74FgrmW3To5tG+bpaNriyB6gicg=
+	t=1717683108; cv=none; b=pSHZd3D4JJ5f1vYpNNSDy3Rk/XnQtf1jFo7yXPAhhXMRlDZRQZipCn8shFmSgwuzau3uOdP2GQ/KTms9RDIpihUX0SJePhTediVX7KZLiuHeE40isAFCGS+4HWCci1XOTj9hgitbg62xmCQGbcAz2KhybZv/gI1ZOxvZepOnfmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683106; c=relaxed/simple;
-	bh=CQMuVvQNSfFV4/I6q5bUU/SeOVEj37TG+3QSy6fgkGI=;
+	s=arc-20240116; t=1717683108; c=relaxed/simple;
+	bh=eJkbrqBJUM/MaejNX+P7lCKdaAG+8p+Sk+KHsBvgSug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J32kGO8M4fxGxeWumy/KvxVeQtYsVsRVDALydUbO9e/aaEXMeXhho6o9uQCTVk7UKqEsQpkwNL3gkpjqzP3jcCUoLA59RBRCHhvbfGBfQJvn7xc5eA3woOs10UTnRoXTMnwMEHyS5481hnp1M+zNIlfEpB+eSB2gQfzC0i0HkFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNbaUz1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4DAC32781;
-	Thu,  6 Jun 2024 14:11:46 +0000 (UTC)
+	 MIME-Version; b=POLR46524EHST4HypAWU0hYxcG7ZmhEW+bXSjDfTXgJgQn85U4TA7V5vIEzOIUBdBFxnUfOMjzstwU/uwzutTsEiLTVAIq8ZkVgtOHTJ/haoD+b3P/dBc9050h+lXBQ6enUS1XIgvl9/u11LZ6UNjena2gFG3p++008DQBWipdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMRLtgrD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44505C32781;
+	Thu,  6 Jun 2024 14:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683106;
-	bh=CQMuVvQNSfFV4/I6q5bUU/SeOVEj37TG+3QSy6fgkGI=;
+	s=korg; t=1717683108;
+	bh=eJkbrqBJUM/MaejNX+P7lCKdaAG+8p+Sk+KHsBvgSug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNbaUz1O0CCCZyazFk8z18Z4Q0lOu4A4M9yNjzJrYeLTEsQmlPoeWXnaGxf1PZv/C
-	 Mu1YMR6OjrEDpA9DYmLx5iDkwN7yUFtrNdOLrsJH7H3bHhHx2Hpu3rTpKsD112nN5h
-	 1qVARyQq3Mxfn+YIYZBxRw5/vVpzaIDU2o/VR1DA=
+	b=uMRLtgrD6I8SfszjMswpL/QFrlFDrfcvowzVE1hz1YW/2+qf4Xc147p9/CLpesxBp
+	 5hBz6dIj8R1qAqayyuMk5wReeDDRIX3is+PE9wUM4mjmCVdUanOvFNCSw7uDu6p5Qz
+	 alqgatgGy70H7e6cxtpgwxnri8x6HPGjy4J1Jo5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mhiramat@kernel.org,
-	mark.rutland@arm.com,
-	mathieu.desnoyers@efficios.com,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Zheng Yejian <zhengyejian1@huawei.com>
-Subject: [PATCH 6.6 003/744] ftrace: Fix possible use-after-free issue in ftrace_location()
-Date: Thu,  6 Jun 2024 15:54:35 +0200
-Message-ID: <20240606131732.561602534@linuxfoundation.org>
+	j51569436@gmail.com,
+	Daniel Starke <daniel.starke@siemens.com>
+Subject: [PATCH 6.6 004/744] tty: n_gsm: fix possible out-of-bounds in gsm0_receive()
+Date: Thu,  6 Jun 2024 15:54:36 +0200
+Message-ID: <20240606131732.591765605@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,171 +65,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Daniel Starke <daniel.starke@siemens.com>
 
-commit e60b613df8b6253def41215402f72986fee3fc8d upstream.
+commit 47388e807f85948eefc403a8a5fdc5b406a65d5a upstream.
 
-KASAN reports a bug:
+Assuming the following:
+- side A configures the n_gsm in basic option mode
+- side B sends the header of a basic option mode frame with data length 1
+- side A switches to advanced option mode
+- side B sends 2 data bytes which exceeds gsm->len
+  Reason: gsm->len is not used in advanced option mode.
+- side A switches to basic option mode
+- side B keeps sending until gsm0_receive() writes past gsm->buf
+  Reason: Neither gsm->state nor gsm->len have been reset after
+  reconfiguration.
 
-  BUG: KASAN: use-after-free in ftrace_location+0x90/0x120
-  Read of size 8 at addr ffff888141d40010 by task insmod/424
-  CPU: 8 PID: 424 Comm: insmod Tainted: G        W          6.9.0-rc2+
-  [...]
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x68/0xa0
-   print_report+0xcf/0x610
-   kasan_report+0xb5/0xe0
-   ftrace_location+0x90/0x120
-   register_kprobe+0x14b/0xa40
-   kprobe_init+0x2d/0xff0 [kprobe_example]
-   do_one_initcall+0x8f/0x2d0
-   do_init_module+0x13a/0x3c0
-   load_module+0x3082/0x33d0
-   init_module_from_file+0xd2/0x130
-   __x64_sys_finit_module+0x306/0x440
-   do_syscall_64+0x68/0x140
-   entry_SYSCALL_64_after_hwframe+0x71/0x79
+Fix this by changing gsm->count to gsm->len comparison from equal to less
+than. Also add upper limit checks against the constant MAX_MRU in
+gsm0_receive() and gsm1_receive() to harden against memory corruption of
+gsm->len and gsm->mru.
 
-The root cause is that, in lookup_rec(), ftrace record of some address
-is being searched in ftrace pages of some module, but those ftrace pages
-at the same time is being freed in ftrace_release_mod() as the
-corresponding module is being deleted:
+All other checks remain as we still need to limit the data according to the
+user configuration and actual payload size.
 
-           CPU1                       |      CPU2
-  register_kprobes() {                | delete_module() {
-    check_kprobe_address_safe() {     |
-      arch_check_ftrace_location() {  |
-        ftrace_location() {           |
-          lookup_rec() // USE!        |   ftrace_release_mod() // Free!
-
-To fix this issue:
-  1. Hold rcu lock as accessing ftrace pages in ftrace_location_range();
-  2. Use ftrace_location_range() instead of lookup_rec() in
-     ftrace_location();
-  3. Call synchronize_rcu() before freeing any ftrace pages both in
-     ftrace_process_locs()/ftrace_release_mod()/ftrace_free_mem().
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240509192859.1273558-1-zhengyejian1@huawei.com
-
+Reported-by: j51569436@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218708
+Tested-by: j51569436@gmail.com
+Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
 Cc: stable@vger.kernel.org
-Cc: <mhiramat@kernel.org>
-Cc: <mark.rutland@arm.com>
-Cc: <mathieu.desnoyers@efficios.com>
-Fixes: ae6aa16fdc16 ("kprobes: introduce ftrace based optimization")
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
+Link: https://lore.kernel.org/r/20240424054842.7741-1-daniel.starke@siemens.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |   39 +++++++++++++++++++++++----------------
- 1 file changed, 23 insertions(+), 16 deletions(-)
+ drivers/tty/n_gsm.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -1595,12 +1595,15 @@ static struct dyn_ftrace *lookup_rec(uns
- unsigned long ftrace_location_range(unsigned long start, unsigned long end)
- {
- 	struct dyn_ftrace *rec;
-+	unsigned long ip = 0;
- 
-+	rcu_read_lock();
- 	rec = lookup_rec(start, end);
- 	if (rec)
--		return rec->ip;
-+		ip = rec->ip;
-+	rcu_read_unlock();
- 
--	return 0;
-+	return ip;
- }
- 
- /**
-@@ -1613,25 +1616,22 @@ unsigned long ftrace_location_range(unsi
-  */
- unsigned long ftrace_location(unsigned long ip)
- {
--	struct dyn_ftrace *rec;
-+	unsigned long loc;
- 	unsigned long offset;
- 	unsigned long size;
- 
--	rec = lookup_rec(ip, ip);
--	if (!rec) {
-+	loc = ftrace_location_range(ip, ip);
-+	if (!loc) {
- 		if (!kallsyms_lookup_size_offset(ip, &size, &offset))
- 			goto out;
- 
- 		/* map sym+0 to __fentry__ */
- 		if (!offset)
--			rec = lookup_rec(ip, ip + size - 1);
-+			loc = ftrace_location_range(ip, ip + size - 1);
- 	}
- 
--	if (rec)
--		return rec->ip;
--
- out:
--	return 0;
-+	return loc;
- }
- 
- /**
-@@ -6593,6 +6593,8 @@ static int ftrace_process_locs(struct mo
- 	/* We should have used all pages unless we skipped some */
- 	if (pg_unuse) {
- 		WARN_ON(!skipped);
-+		/* Need to synchronize with ftrace_location_range() */
-+		synchronize_rcu();
- 		ftrace_free_pages(pg_unuse);
- 	}
- 	return ret;
-@@ -6806,6 +6808,9 @@ void ftrace_release_mod(struct module *m
-  out_unlock:
- 	mutex_unlock(&ftrace_lock);
- 
-+	/* Need to synchronize with ftrace_location_range() */
-+	if (tmp_page)
-+		synchronize_rcu();
- 	for (pg = tmp_page; pg; pg = tmp_page) {
- 
- 		/* Needs to be called outside of ftrace_lock */
-@@ -7139,6 +7144,7 @@ void ftrace_free_mem(struct module *mod,
- 	unsigned long start = (unsigned long)(start_ptr);
- 	unsigned long end = (unsigned long)(end_ptr);
- 	struct ftrace_page **last_pg = &ftrace_pages_start;
-+	struct ftrace_page *tmp_page = NULL;
- 	struct ftrace_page *pg;
- 	struct dyn_ftrace *rec;
- 	struct dyn_ftrace key;
-@@ -7180,12 +7186,8 @@ void ftrace_free_mem(struct module *mod,
- 		ftrace_update_tot_cnt--;
- 		if (!pg->index) {
- 			*last_pg = pg->next;
--			if (pg->records) {
--				free_pages((unsigned long)pg->records, pg->order);
--				ftrace_number_of_pages -= 1 << pg->order;
--			}
--			ftrace_number_of_groups--;
--			kfree(pg);
-+			pg->next = tmp_page;
-+			tmp_page = pg;
- 			pg = container_of(last_pg, struct ftrace_page, next);
- 			if (!(*last_pg))
- 				ftrace_pages = pg;
-@@ -7202,6 +7204,11 @@ void ftrace_free_mem(struct module *mod,
- 		clear_func_from_hashes(func);
- 		kfree(func);
- 	}
-+	/* Need to synchronize with ftrace_location_range() */
-+	if (tmp_page) {
-+		synchronize_rcu();
-+		ftrace_free_pages(tmp_page);
-+	}
- }
- 
- void __init ftrace_free_init_mem(void)
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -2912,7 +2912,10 @@ static void gsm0_receive(struct gsm_mux
+ 		break;
+ 	case GSM_DATA:		/* Data */
+ 		gsm->buf[gsm->count++] = c;
+-		if (gsm->count == gsm->len) {
++		if (gsm->count >= MAX_MRU) {
++			gsm->bad_size++;
++			gsm->state = GSM_SEARCH;
++		} else if (gsm->count >= gsm->len) {
+ 			/* Calculate final FCS for UI frames over all data */
+ 			if ((gsm->control & ~PF) != UIH) {
+ 				gsm->fcs = gsm_fcs_add_block(gsm->fcs, gsm->buf,
+@@ -3025,7 +3028,7 @@ static void gsm1_receive(struct gsm_mux
+ 		gsm->state = GSM_DATA;
+ 		break;
+ 	case GSM_DATA:		/* Data */
+-		if (gsm->count > gsm->mru) {	/* Allow one for the FCS */
++		if (gsm->count > gsm->mru || gsm->count > MAX_MRU) {	/* Allow one for the FCS */
+ 			gsm->state = GSM_OVERRUN;
+ 			gsm->bad_size++;
+ 		} else
 
 
 
