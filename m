@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981838FEAB8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFCB8FECA0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CCB1B23A3B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FF301C257DA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F29196C9F;
-	Thu,  6 Jun 2024 14:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D461B14FA;
+	Thu,  6 Jun 2024 14:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqNegmHy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWILyeSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299CC1A0DD5;
-	Thu,  6 Jun 2024 14:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8542D198A35;
+	Thu,  6 Jun 2024 14:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683168; cv=none; b=qng8jU7PLTqPJ1bNHIkthene5iT4yMKwiH7OwdkMCMS7KeNSkobmAnxpsu3O2ftrXVAEbjj00ZZKfGO6fHG9zOxUCDbsbGfyAVvZ6M25wGxUoDPh+/TJUHvT0LN/YuWx6klIYW/CLe/PE9wmQ+94VYY9YAW/OJ8CIyVWWIQ6AEw=
+	t=1717683389; cv=none; b=Gx7GqKKgrmChnYu4hnPRFaCOuSGew6FU6Ig9E7CIupYhD0k6MiBuxgyi3fW6ybmhFkYbAKditDbkOblqF4yDoBL6uwlQSDV9FGWEANfmLKnwU8nwS9+ieD6TbjXz53Mf0/KJK9VuEb6ZO/RqS8O+TcHNoZ+Afxm6l82EUiUlD3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683168; c=relaxed/simple;
-	bh=9eyLTadEgD+6lTTUUNA1iztUhQ47kJmBRhgARzKJI6w=;
+	s=arc-20240116; t=1717683389; c=relaxed/simple;
+	bh=SrXmUC9Yx8JOFOVg2iFqhQmr1J4dSvr0QXVGy1vU1WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GA1cxVm5VMlXuF2+AKBEbqILouGfSURoFzgNSS2Jk3EkybahcOWiiDbEsCsO9MhSRP8dyRs4druN0crC2zDb5FffSTm9xIrhJGIvl/GcKqvWfSw3V2/ZrpFcrxC3we7a1DuS3qGACFf5TGGBW/cL+JQC6Rl3WHSz/F4uyFbTdHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqNegmHy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B20C2BD10;
-	Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
+	 MIME-Version; b=Ia8lM5Y5xX2gdZmIR64Uspbq+s37tPo2vQI42Ac1Wq9/w1721H35ifm+fRCq2Bag0GqtfM5v9RHxMngWfLefczxToKv4dTlwkbMAZYmzSN+/Ag4J0ItkUB77SiK4AxTPp5BdA9gydql8JhHBuXLNSI50atfj66b074i134Z/9Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWILyeSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624CEC2BD10;
+	Thu,  6 Jun 2024 14:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683168;
-	bh=9eyLTadEgD+6lTTUUNA1iztUhQ47kJmBRhgARzKJI6w=;
+	s=korg; t=1717683389;
+	bh=SrXmUC9Yx8JOFOVg2iFqhQmr1J4dSvr0QXVGy1vU1WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MqNegmHy1R6aXllkvUGSiC1EtpEuiSYSqgFeqGt/E4cjvNklY82EFAiaUem19jBwD
-	 xHC/NjJihVgGnI+X+R1MhlkSrVJKfUAJ6YggBXP9HusWp+I9/wcyq4JXhBmQO2NTqR
-	 xP/s2mPtE60kZ42owYI3AIuAlxfzyXmjJ5sN1EjU=
+	b=SWILyeSwCFGu7BVSh3AMmoayyddXhKdVHVkcP4Rf3iZocQ+7IYqd64RACG1l+4vAY
+	 JJalRxjQP74HEUo+u34W1/QOiQQUPwcGn/FuWPdupt1JZLuTSxcBGH06vM6ytTsCrM
+	 P53NRp61dxYcR9tspMhtBpZHkld7K8iuVrUGRuDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/473] regulator: vqmmc-ipq4019: fix module autoloading
-Date: Thu,  6 Jun 2024 15:59:32 +0200
-Message-ID: <20240606131701.310566105@linuxfoundation.org>
+Subject: [PATCH 6.6 301/744] ASoC: Intel: avs: Fix potential integer overflow
+Date: Thu,  6 Jun 2024 15:59:33 +0200
+Message-ID: <20240606131742.036107452@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 68adb581a39ae63a0ed082c47f01fbbe515efa0e ]
+[ Upstream commit c7e832cabe635df47c2bf6df7801e97bf3045b1e ]
 
-Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
-based on the alias from of_device_id table.
+While stream_tag for CLDMA on SKL-based platforms is always 1, function
+hda_cldma_setup() uses AZX_SD_CTL_STRM() macro which does:
+	stream_tag << 20
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://msgid.link/r/20240410172615.255424-2-krzk@kernel.org
+what combined with stream_tag type of 'unsigned int' generates a
+potential overflow issue. Update the field type to fix that.
+
+Fixes: 45864e49a05a ("ASoC: Intel: avs: Implement CLDMA transfer")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://msgid.link/r/20240405090929.1184068-8-cezary.rojewski@intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/vqmmc-ipq4019-regulator.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/intel/avs/cldma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/vqmmc-ipq4019-regulator.c b/drivers/regulator/vqmmc-ipq4019-regulator.c
-index c4213f096fe57..4f470b2d66c97 100644
---- a/drivers/regulator/vqmmc-ipq4019-regulator.c
-+++ b/drivers/regulator/vqmmc-ipq4019-regulator.c
-@@ -84,6 +84,7 @@ static const struct of_device_id regulator_ipq4019_of_match[] = {
- 	{ .compatible = "qcom,vqmmc-ipq4019-regulator", },
- 	{},
- };
-+MODULE_DEVICE_TABLE(of, regulator_ipq4019_of_match);
+diff --git a/sound/soc/intel/avs/cldma.c b/sound/soc/intel/avs/cldma.c
+index d7a9390b5e483..585579840b646 100644
+--- a/sound/soc/intel/avs/cldma.c
++++ b/sound/soc/intel/avs/cldma.c
+@@ -35,7 +35,7 @@ struct hda_cldma {
  
- static struct platform_driver ipq4019_regulator_driver = {
- 	.probe = ipq4019_regulator_probe,
+ 	unsigned int buffer_size;
+ 	unsigned int num_periods;
+-	unsigned int stream_tag;
++	unsigned char stream_tag;
+ 	void __iomem *sd_addr;
+ 
+ 	struct snd_dma_buffer dmab_data;
 -- 
 2.43.0
 
