@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCD18FEF0C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C108FEDE0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A82288C0A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DA80B29B6C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0631C95E6;
-	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33D319E7F5;
+	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+D78xul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGJB5LpM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6091C95E4;
-	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7B21BE253;
+	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683731; cv=none; b=K9VrK58i30Jq23rNQYdHdd94VthQ8y7f01bOnvzvqEIiXjIS2yvdEJzV/ZsuWI5dbcDdNT9YCEc14UFWeQjNFprcffgiykyFoKhp5gG744S8+9CLjRZmNpUNtvu1uSQFhdNRbJcaOkoi4miDzSK8krWBjXYTmWMoTQQKFMciD5U=
+	t=1717683534; cv=none; b=m9mwSf3axSJYl+2ZGDYGWjYrzA8Z3jjGV/sjkHq6rGh8cDIw314kpsKP2uPosZFMQmxFFwC+d6D6pyyQzLPumrRI4ULEpLczhLON2KW3QTIwKAHWrvZiBEYaHRPLIxxBQZWj7jsS8GBIOfmQaGPugAiJJWAiodO+EdexZEtCQ0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683731; c=relaxed/simple;
-	bh=6UeF1PHHEKjEY/1drgwQ2Z85pDyv8y5eCRLtwJvFMTQ=;
+	s=arc-20240116; t=1717683534; c=relaxed/simple;
+	bh=135WcnQcoUrY/hyuz8QJLQYDPXy5F8fEpI0OMIG0K28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DM14rqnHKPU8cSKxm55BZjCBJxx693fGOtjaIeODSSAbGUQNFGDYeg0PMWJ1RmffBgjDLrLsR+xJ3PejX7DDGUVEyg7jy1zHIxMPobUo4FXBh1Ipcmp/+LITWtI0qQLD+UkRCQBHbfpLcbstCwVEBrspc1zJR3QzoET+2t3GYvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+D78xul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D8FC32781;
-	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
+	 MIME-Version; b=GQ4mayvHOD/FK56HJ6dNUnmJzrQm++LwoCzIZNxiiRW7N6ITuSBtXcRqTvcDB54PFFl2iT3HtVVp9UC3KK9K8msQMCwJ5Slf+cP7dGNsmSzrBCHzGt0sXMrZ8+OgnrmfcCrquATujz8XbW8MlZeC1cMnwPVBGKCOuwxFIk0Cn3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGJB5LpM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC9EC2BD10;
+	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683731;
-	bh=6UeF1PHHEKjEY/1drgwQ2Z85pDyv8y5eCRLtwJvFMTQ=;
+	s=korg; t=1717683534;
+	bh=135WcnQcoUrY/hyuz8QJLQYDPXy5F8fEpI0OMIG0K28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+D78xulAt6Sxh/XeVjbw1SsLgElO/TdrQsEljFu5T4O3d6DJww/6nI/amtJh466a
-	 oDSzAfUKGj0AmrIbIBfA/4XDH+ZVcUCrEMKJ7EoZMl1vRebd0/j8gTpOQqPzRjCXPC
-	 WkXYlveGSRYYeiHtRUoTq6J01TufxjEuOC/CHZL0=
+	b=gGJB5LpMaTo7nY7USLBeOy8lfJ4XMtHFI44ApzzTGgDnnuUXmcLUbb8q3ivBvocHz
+	 ZhlmaVdbk7pL/unLIJJBIlMgcDm+VRQQSrDZoe1TVTn+wntcrRwkVRoJ2Jd7Y5QuI5
+	 jSf5CXJIDcemKNKwXZYeMOaLOYvLoT4PyMehMWV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthieu Baerts <matthieu.baerts@tessares.net>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 682/744] nvmet: fix ns enable/disable possible hang
+Subject: [PATCH 6.1 425/473] inet: factor out locked section of inet_accept() in a new helper
 Date: Thu,  6 Jun 2024 16:05:54 +0200
-Message-ID: <20240606131754.362954757@linuxfoundation.org>
+Message-ID: <20240606131713.812006802@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit f97914e35fd98b2b18fb8a092e0a0799f73afdfe ]
+[ Upstream commit 711bdd5141d81ab21dbe0a533024d594210d5ba4 ]
 
-When disabling an nvmet namespace, there is a period where the
-subsys->lock is released, as the ns disable waits for backend IO to
-complete, and the ns percpu ref to be properly killed. The original
-intent was to avoid taking the subsystem lock for a prolong period as
-other processes may need to acquire it (for example new incoming
-connections).
+No functional changes intended. The new helper will be used
+by the MPTCP protocol in the next patch to avoid duplicating
+a few LoC.
 
-However, it opens up a window where another process may come in and
-enable the ns, (re)intiailizing the ns percpu_ref, causing the disable
-sequence to hang.
-
-Solve this by taking the global nvmet_config_sem over the entire configfs
-enable/disable sequence.
-
-Fixes: a07b4970f464 ("nvmet: add a generic NVMe target")
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 26afda78cda3 ("net: relax socket state check at accept time.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/configfs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/net/inet_common.h |  2 ++
+ net/ipv4/af_inet.c        | 32 +++++++++++++++++---------------
+ 2 files changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
-index f999e18e4561d..384cd2b540d0c 100644
---- a/drivers/nvme/target/configfs.c
-+++ b/drivers/nvme/target/configfs.c
-@@ -538,10 +538,18 @@ static ssize_t nvmet_ns_enable_store(struct config_item *item,
- 	if (kstrtobool(page, &enable))
- 		return -EINVAL;
- 
-+	/*
-+	 * take a global nvmet_config_sem because the disable routine has a
-+	 * window where it releases the subsys-lock, giving a chance to
-+	 * a parallel enable to concurrently execute causing the disable to
-+	 * have a misaccounting of the ns percpu_ref.
-+	 */
-+	down_write(&nvmet_config_sem);
- 	if (enable)
- 		ret = nvmet_ns_enable(ns);
- 	else
- 		nvmet_ns_disable(ns);
-+	up_write(&nvmet_config_sem);
- 
- 	return ret ? ret : count;
+diff --git a/include/net/inet_common.h b/include/net/inet_common.h
+index 4673bbfd2811f..a75333342c4ec 100644
+--- a/include/net/inet_common.h
++++ b/include/net/inet_common.h
+@@ -31,6 +31,8 @@ int inet_dgram_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		       int addr_len, int flags);
+ int inet_accept(struct socket *sock, struct socket *newsock, int flags,
+ 		bool kern);
++void __inet_accept(struct socket *sock, struct socket *newsock,
++		   struct sock *newsk);
+ int inet_send_prepare(struct sock *sk);
+ int inet_sendmsg(struct socket *sock, struct msghdr *msg, size_t size);
+ void inet_splice_eof(struct socket *sock);
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 9408dc3bb42d3..56d4ec955b851 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -744,6 +744,20 @@ int inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
  }
+ EXPORT_SYMBOL(inet_stream_connect);
+ 
++void __inet_accept(struct socket *sock, struct socket *newsock, struct sock *newsk)
++{
++	sock_rps_record_flow(newsk);
++	WARN_ON(!((1 << newsk->sk_state) &
++		  (TCPF_ESTABLISHED | TCPF_SYN_RECV |
++		  TCPF_CLOSE_WAIT | TCPF_CLOSE)));
++
++	if (test_bit(SOCK_SUPPORT_ZC, &sock->flags))
++		set_bit(SOCK_SUPPORT_ZC, &newsock->flags);
++	sock_graft(newsk, newsock);
++
++	newsock->state = SS_CONNECTED;
++}
++
+ /*
+  *	Accept a pending connection. The TCP layer now gives BSD semantics.
+  */
+@@ -757,24 +771,12 @@ int inet_accept(struct socket *sock, struct socket *newsock, int flags,
+ 	/* IPV6_ADDRFORM can change sk->sk_prot under us. */
+ 	sk2 = READ_ONCE(sk1->sk_prot)->accept(sk1, flags, &err, kern);
+ 	if (!sk2)
+-		goto do_err;
++		return err;
+ 
+ 	lock_sock(sk2);
+-
+-	sock_rps_record_flow(sk2);
+-	WARN_ON(!((1 << sk2->sk_state) &
+-		  (TCPF_ESTABLISHED | TCPF_SYN_RECV |
+-		  TCPF_CLOSE_WAIT | TCPF_CLOSE)));
+-
+-	if (test_bit(SOCK_SUPPORT_ZC, &sock->flags))
+-		set_bit(SOCK_SUPPORT_ZC, &newsock->flags);
+-	sock_graft(sk2, newsock);
+-
+-	newsock->state = SS_CONNECTED;
+-	err = 0;
++	__inet_accept(sock, newsock, sk2);
+ 	release_sock(sk2);
+-do_err:
+-	return err;
++	return 0;
+ }
+ EXPORT_SYMBOL(inet_accept);
+ 
 -- 
 2.43.0
 
