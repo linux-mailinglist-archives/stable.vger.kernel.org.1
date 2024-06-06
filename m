@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-48642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726748FE9E3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D798FEEEB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08F5E289E77
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C9DEB27EEA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4985219CD15;
-	Thu,  6 Jun 2024 14:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6197D199235;
+	Thu,  6 Jun 2024 14:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtp2K064"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6pf4oYH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0816F198E6D;
-	Thu,  6 Jun 2024 14:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218F41A1879;
+	Thu,  6 Jun 2024 14:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683076; cv=none; b=n8CkuLNNQlTTXWypndvM1favXQVJO5kXDuWBr52oLM90OeIgPSg6vQdriXygh4xqt+1IRNKx0ya2waqEVpWx3/4yzxy0N8MkjUjp3gqIlbnIg/5OcR/Sijy3oNILCOjmUuX+FchGsVrLSdiPinYqkQjazYs68EAcwcu4BweeiSQ=
+	t=1717683716; cv=none; b=BI2nKhh0+nG478+V1kTWYC34kKwQe078+cuh+EbqoOgBnfyuG7vDLrNQfMSQQnLLa7/Y6y/jLgZ8nAVx4ructWvZKXNcCb86Gc21zbsNgVfU661qa9uCsWBL8JMdArNPkfV+58rwFkrVlCyzwIC5Lq670H5d8GLulbgvz/YSAU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683076; c=relaxed/simple;
-	bh=4y3xkhq0RBzy2frkm7kloxkOs3Q3J05VwsXzVmQzYk8=;
+	s=arc-20240116; t=1717683716; c=relaxed/simple;
+	bh=18Q8GoxtAXksMGjpvA04eV3XWqLBsU7K8P2etbPZwGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LbpI7p/f7yXJKN6HYymx+dl/yBDnAb+GovLw9HV+8X+kuBN9Vq57qpGopExK0mAKB2miWy1O40ODgWJakDMResqqtH8Lj0EDDOdHqngG3F9bf1LZNMFGTBS1K1SvwgQhr6AzVddxdptdDoSCHpMdenVRgp7yKl0sQoI5t3FiRhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtp2K064; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EBDC32786;
-	Thu,  6 Jun 2024 14:11:15 +0000 (UTC)
+	 MIME-Version; b=aW3xIRIHqrIZf4sLkwE+MOZ3pfMN6Wp1DSpp94DxjeRK8A5800krv2XHo7k1w9V/wa8878JHXj5Dme+T5tri9xrG4FPhyHesvxRUvT8CAAyRUAgOuvNxpWvXhobg9FwQzYTX+5Ri8XPxVOMuo5kaw1hoD5iK0p+sjz3Lt5vNiO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6pf4oYH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BA3C2BD10;
+	Thu,  6 Jun 2024 14:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683075;
-	bh=4y3xkhq0RBzy2frkm7kloxkOs3Q3J05VwsXzVmQzYk8=;
+	s=korg; t=1717683716;
+	bh=18Q8GoxtAXksMGjpvA04eV3XWqLBsU7K8P2etbPZwGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gtp2K064e+1PzyvEOTyKiJOb1n1Qha13TBhOI9Mv1klK6QrPSxwgwzZNsXxmuNEAG
-	 +r0fhHe5ZDWKHyVGXkQ1O/dXXF8tfa1dC5zsCLBCNdp7mKvEJ+YCkraSjWKLt2i+v0
-	 q1ESRarIklwT08OvI3Ff7VlnSiBE8E8sJMq6x43Y=
+	b=j6pf4oYH3vQrX8ZPtL9Ugv3uDMPg8c98OSySL29NhpU3vUedQc467NAC40Eab9bu8
+	 YXDH2NfoimkV6woRe3gVF36s/JGz67TIcmuXG7zDCgNhLk+JZ9/oNkp2E1G+ekJoad
+	 OjpzFhqfNTYsl9/1irO5cjB0AFF8rMEC44+k3ylg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Gnattu OC <gnattuoc@me.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Jian Ye <jian.ye@intel.com>,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Jaime Caamano <jcaamano@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 342/374] drm/i915/gt: Fix CCS ids calculation for CCS mode setting
-Date: Thu,  6 Jun 2024 16:05:21 +0200
-Message-ID: <20240606131703.313949798@linuxfoundation.org>
+Subject: [PATCH 6.6 650/744] openvswitch: Set the skbuff pkt_type for proper pmtud support.
+Date: Thu,  6 Jun 2024 16:05:22 +0200
+Message-ID: <20240606131753.316840422@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,100 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Aaron Conole <aconole@redhat.com>
 
-[ Upstream commit ee01b6a386eaf9984b58a2476e8f531149679da9 ]
+[ Upstream commit 30a92c9e3d6b073932762bef2ac66f4ee784c657 ]
 
-The whole point of the previous fixes has been to change the CCS
-hardware configuration to generate only one stream available to
-the compute users. We did this by changing the info.engine_mask
-that is set during device probe, reset during the detection of
-the fused engines, and finally reset again when choosing the CCS
-mode.
+Open vSwitch is originally intended to switch at layer 2, only dealing with
+Ethernet frames.  With the introduction of l3 tunnels support, it crossed
+into the realm of needing to care a bit about some routing details when
+making forwarding decisions.  If an oversized packet would need to be
+fragmented during this forwarding decision, there is a chance for pmtu
+to get involved and generate a routing exception.  This is gated by the
+skbuff->pkt_type field.
 
-We can't use the engine_mask variable anymore, as with the
-current configuration, it imposes only one CCS no matter what the
-hardware configuration is.
+When a flow is already loaded into the openvswitch module this field is
+set up and transitioned properly as a packet moves from one port to
+another.  In the case that a packet execute is invoked after a flow is
+newly installed this field is not properly initialized.  This causes the
+pmtud mechanism to omit sending the required exception messages across
+the tunnel boundary and a second attempt needs to be made to make sure
+that the routing exception is properly setup.  To fix this, we set the
+outgoing packet's pkt_type to PACKET_OUTGOING, since it can only get
+to the openvswitch module via a port device or packet command.
 
-Before changing the engine_mask for the third time, save it and
-use it for calculating the CCS mode.
+Even for bridge ports as users, the pkt_type needs to be reset when
+doing the transmit as the packet is truly outgoing and routing needs
+to get involved post packet transformations, in the case of
+VXLAN/GENEVE/udp-tunnel packets.  In general, the pkt_type on output
+gets ignored, since we go straight to the driver, but in the case of
+tunnel ports they go through IP routing layer.
 
-After the previous changes, the user reported a performance drop
-to around 1/4. We have tested that the compute operations, with
-the current patch, have improved by the same factor.
+This issue is periodically encountered in complex setups, such as large
+openshift deployments, where multiple sets of tunnel traversal occurs.
+A way to recreate this is with the ovn-heater project that can setup
+a networking environment which mimics such large deployments.  We need
+larger environments for this because we need to ensure that flow
+misses occur.  In these environment, without this patch, we can see:
 
-Fixes: 6db31251bb26 ("drm/i915/gt: Enable only one CCS for compute workload")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Cc: Gnattu OC <gnattuoc@me.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Tested-by: Jian Ye <jian.ye@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Tested-by: Gnattu OC <gnattuoc@me.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240517090616.242529-1-andi.shyti@linux.intel.com
-(cherry picked from commit a09d2327a9ba8e3f5be238bc1b7ca2809255b464)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+  ./ovn_cluster.sh start
+  podman exec ovn-chassis-1 ip r a 170.168.0.5/32 dev eth1 mtu 1200
+  podman exec ovn-chassis-1 ip netns exec sw01p1 ip r flush cache
+  podman exec ovn-chassis-1 ip netns exec sw01p1 \
+         ping 21.0.0.3 -M do -s 1300 -c2
+  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
+  From 21.0.0.3 icmp_seq=2 Frag needed and DF set (mtu = 1142)
+
+  --- 21.0.0.3 ping statistics ---
+  ...
+
+Using tcpdump, we can also see the expected ICMP FRAG_NEEDED message is not
+sent into the server.
+
+With this patch, setting the pkt_type, we see the following:
+
+  podman exec ovn-chassis-1 ip netns exec sw01p1 \
+         ping 21.0.0.3 -M do -s 1300 -c2
+  PING 21.0.0.3 (21.0.0.3) 1300(1328) bytes of data.
+  From 21.0.0.3 icmp_seq=1 Frag needed and DF set (mtu = 1222)
+  ping: local error: message too long, mtu=1222
+
+  --- 21.0.0.3 ping statistics ---
+  ...
+
+In this case, the first ping request receives the FRAG_NEEDED message and
+a local routing exception is created.
+
+Tested-by: Jaime Caamano <jcaamano@redhat.com>
+Reported-at: https://issues.redhat.com/browse/FDP-164
+Fixes: 58264848a5a7 ("openvswitch: Add vxlan tunneling support.")
+Signed-off-by: Aaron Conole <aconole@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Link: https://lore.kernel.org/r/20240516200941.16152-1-aconole@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_cs.c   | 6 ++++++
- drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c | 2 +-
- drivers/gpu/drm/i915/gt/intel_gt_types.h    | 8 ++++++++
- 3 files changed, 15 insertions(+), 1 deletion(-)
+ net/openvswitch/actions.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_cs.c b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-index 7a6dc371c384e..bc6209df0f680 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-@@ -919,6 +919,12 @@ static intel_engine_mask_t init_engine_mask(struct intel_gt *gt)
- 	if (IS_DG2(gt->i915)) {
- 		u8 first_ccs = __ffs(CCS_MASK(gt));
+diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+index fd66014d8a76a..4f5cbcaa38386 100644
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -929,6 +929,12 @@ static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
+ 				pskb_trim(skb, ovs_mac_header_len(key));
+ 		}
  
-+		/*
-+		 * Store the number of active cslices before
-+		 * changing the CCS engine configuration
++		/* Need to set the pkt_type to involve the routing layer.  The
++		 * packet movement through the OVS datapath doesn't generally
++		 * use routing, but this is needed for tunnel cases.
 +		 */
-+		gt->ccs.cslices = CCS_MASK(gt);
++		skb->pkt_type = PACKET_OUTGOING;
 +
- 		/* Mask off all the CCS engine */
- 		info->engine_mask &= ~GENMASK(CCS3, CCS0);
- 		/* Put back in the first CCS engine */
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
-index 99b71bb7da0a6..3c62a44e9106c 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
-@@ -19,7 +19,7 @@ unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt)
- 
- 	/* Build the value for the fixed CCS load balancing */
- 	for (cslice = 0; cslice < I915_MAX_CCS; cslice++) {
--		if (CCS_MASK(gt) & BIT(cslice))
-+		if (gt->ccs.cslices & BIT(cslice))
- 			/*
- 			 * If available, assign the cslice
- 			 * to the first available engine...
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_types.h b/drivers/gpu/drm/i915/gt/intel_gt_types.h
-index def7dd0eb6f19..cfdd2ad5e9549 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_types.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_types.h
-@@ -207,6 +207,14 @@ struct intel_gt {
- 					    [MAX_ENGINE_INSTANCE + 1];
- 	enum intel_submission_method submission_method;
- 
-+	struct {
-+		/*
-+		 * Mask of the non fused CCS slices
-+		 * to be used for the load balancing
-+		 */
-+		intel_engine_mask_t cslices;
-+	} ccs;
-+
- 	/*
- 	 * Default address space (either GGTT or ppGTT depending on arch).
- 	 *
+ 		if (likely(!mru ||
+ 		           (skb->len <= mru + vport->dev->hard_header_len))) {
+ 			ovs_vport_send(vport, skb, ovs_key_mac_proto(key));
 -- 
 2.43.0
 
