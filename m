@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F028C8FEE73
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D1F8FECC0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83F751F2388E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 014A0B28763
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18BB51C372B;
-	Thu,  6 Jun 2024 14:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557FF1B29A4;
+	Thu,  6 Jun 2024 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQgG8087"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccOm3uMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2761991CD;
-	Thu,  6 Jun 2024 14:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1483119B3F3;
+	Thu,  6 Jun 2024 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683661; cv=none; b=hU0BHfQB3IneDE5O6TQrRrDI71n+za8mcddJrmiuuU8B8q0h1rdXuh5QkrOa5owhhjtelJFYb0ATftV0X1vNNWaz8hdR1S9LmHe7RNzx+iNNEYxuQcdcFRPEF8H0if4r4Jc4C+R+6hY5ehgpvjxYnCPQzFrFdRu3lUEyOrAncyw=
+	t=1717683404; cv=none; b=JOV/2g8N0umR2sA4A+18XNmSKWMnP/O8P9X8Qtr//UTRKjQzwakTwPHKu5EuNl8b94WQkXJ9lGozvMa6t6sub4+kKvmwzNlJ4p1uBEeRQOYoVzavPV4saV0MabRYV2m/4FbZUguRO7wYkLS/Uoc5rqaVPwxiGUpY7ImhS25P7kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683661; c=relaxed/simple;
-	bh=ioeqVuBCoDDOcewBIoHEdWQ9afa5nwgjKxGLueZmL68=;
+	s=arc-20240116; t=1717683404; c=relaxed/simple;
+	bh=/4WNkdZ/hj5m5IscuvA3plg7wZaz/QbInuD0+ALi4rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLJ2CQriktnPIMgPHJ4u+ShccqDJd/9wMK1pVJwk8zA0nHPJNXvAakZHM9B7LUYT/Y4bGRizwXn7CjjZRG8QmpTVWk/jvmHYHXazKnttrbQUV63556+Ip687i8iX0AQbL7LugVkq+GguBymVxwFOV6sjN66CRdHTZufIjjgdMiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQgG8087; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC81C32786;
-	Thu,  6 Jun 2024 14:21:01 +0000 (UTC)
+	 MIME-Version; b=qGAzE11xjBXLaHFN/MyJz4qRtMbgVDvFSS0nbgY+OR7cC/+2iv7fXtvdv6i4A8VxWzZR3aVBGbwLKh0WKwMKOJuAXB6cK7Mzw5jPl6u98AAG//R+N3fCBsRMGmaP6qoFDGqhEQlZHTY8wHty5dn+DrbHnb4/AInD2SI/dw5ZJyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccOm3uMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEA7C2BD10;
+	Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683661;
-	bh=ioeqVuBCoDDOcewBIoHEdWQ9afa5nwgjKxGLueZmL68=;
+	s=korg; t=1717683403;
+	bh=/4WNkdZ/hj5m5IscuvA3plg7wZaz/QbInuD0+ALi4rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQgG8087AQAjf0WbT+Xxvc1Gie3urne/0EFwIWOsIKKkALue2bPdz0nU48g6Zt9IE
-	 nRl9vpQ5XtZHSjZysYNv2rnZ1H5L5MwP+KeD5ikvWSfeQzYxHw9NppCldbpMUgvV3O
-	 CmZh/S8/PBTBqno0vawbzKa+WM+ewdLNb5zVWXoo=
+	b=ccOm3uMtjDPHLi3TxqRxw6ex3V5rt8h5Oww/DY5aKujlN4k8hX6rlvGfbO5JhbhZl
+	 KWa1RJ6gqOm77xuIXRDl2vhdetgnJsCoYxiyfDBSaKC6GEO+BzOp1QQZret/vAEz0C
+	 /0fDzxQ1Ahyg6S8NO0JMFwtLNZus6WKm4wFM01+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devyn Liu <liudingyuan@huawei.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Rander Wang <rander.wang@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 543/744] gpiolib: acpi: Fix failed in acpi_gpiochip_find() by adding parent node match
-Date: Thu,  6 Jun 2024 16:03:35 +0200
-Message-ID: <20240606131749.871039839@linuxfoundation.org>
+Subject: [PATCH 6.1 287/473] soundwire: cadence: fix invalid PDI offset
+Date: Thu,  6 Jun 2024 16:03:36 +0200
+Message-ID: <20240606131709.381871920@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devyn Liu <liudingyuan@huawei.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit adbc49a5a8c6fcf7be154c2e30213bbf472940da ]
+[ Upstream commit 8ee1b439b1540ae543149b15a2a61b9dff937d91 ]
 
-Previous patch modified the standard used by acpi_gpiochip_find()
-to match device nodes. Using the device node set in gc->gpiodev->d-
-ev instead of gc->parent.
+For some reason, we add an offset to the PDI, presumably to skip the
+PDI0 and PDI1 which are reserved for BPT.
 
-However, there is a situation in gpio-dwapb where the GPIO device
-driver will set gc->fwnode for each port corresponding to a child
-node under a GPIO device, so gc->gpiodev->dev will be assigned the
-value of each child node in gpiochip_add_data().
+This code is however completely wrong and leads to an out-of-bounds
+access. We were just lucky so far since we used only a couple of PDIs
+and remained within the PDI array bounds.
 
-gpio-dwapb.c:
-128,31 static int dwapb_gpio_add_port(struct dwapb_gpio *gpio,
-			       struct dwapb_port_property *pp,
-			       unsigned int offs);
-port->gc.fwnode = pp->fwnode;
+A Fixes: tag is not provided since there are no known platforms where
+the out-of-bounds would be accessed, and the initial code had problems
+as well.
 
-693,39 static int dwapb_gpio_probe;
-err = dwapb_gpio_add_port(gpio, &pdata->properties[i], i);
+A follow-up patch completely removes this useless offset.
 
-When other drivers request GPIO pin resources through the GPIO device
-node provided by ACPI (corresponding to the parent node), the change
-of the matching object to gc->gpiodev->dev in acpi_gpiochip_find()
-only allows finding the value of each port (child node), resulting
-in a failed request.
-
-Reapply the condition of using gc->parent for match in acpi_gpio-
-chip_find() in the code can compatible with the problem of gpio-dwapb,
-and will not affect the two cases mentioned in the patch:
-1. There is no setting for gc->fwnode.
-2. The case that depends on using gc->fwnode for match.
-
-Fixes: 5062e4c14b75 ("gpiolib: acpi: use the fwnode in acpi_gpiochip_find()")
-Fixes: 067dbc1ea5ce ("gpiolib: acpi: Don't use GPIO chip fwnode in acpi_gpiochip_find()")
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Tested-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Rander Wang <rander.wang@intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20240326090122.1051806-2-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/soundwire/cadence_master.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 4ab33d55aec47..b366b4ca4c40e 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -128,7 +128,24 @@ static bool acpi_gpio_deferred_req_irqs_done;
+diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
+index 7286c9b3be691..5bd874e58dd6e 100644
+--- a/drivers/soundwire/cadence_master.c
++++ b/drivers/soundwire/cadence_master.c
+@@ -1847,7 +1847,7 @@ struct sdw_cdns_pdi *sdw_cdns_alloc_pdi(struct sdw_cdns *cdns,
  
- static int acpi_gpiochip_find(struct gpio_chip *gc, void *data)
- {
--	return device_match_acpi_handle(&gc->gpiodev->dev, data);
-+	/* First check the actual GPIO device */
-+	if (device_match_acpi_handle(&gc->gpiodev->dev, data))
-+		return true;
-+
-+	/*
-+	 * When the ACPI device is artificially split to the banks of GPIOs,
-+	 * where each of them is represented by a separate GPIO device,
-+	 * the firmware node of the physical device may not be shared among
-+	 * the banks as they may require different values for the same property,
-+	 * e.g., number of GPIOs in a certain bank. In such case the ACPI handle
-+	 * of a GPIO device is NULL and can not be used. Hence we have to check
-+	 * the parent device to be sure that there is no match before bailing
-+	 * out.
-+	 */
-+	if (gc->parent)
-+		return device_match_acpi_handle(gc->parent, data);
-+
-+	return false;
- }
+ 	/* check if we found a PDI, else find in bi-directional */
+ 	if (!pdi)
+-		pdi = cdns_find_pdi(cdns, 2, stream->num_bd, stream->bd,
++		pdi = cdns_find_pdi(cdns, 0, stream->num_bd, stream->bd,
+ 				    dai_id);
  
- /**
+ 	if (pdi) {
 -- 
 2.43.0
 
