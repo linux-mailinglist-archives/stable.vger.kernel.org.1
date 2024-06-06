@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAD68FEC0F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 277708FE913
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E5801C2248B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E7941C25473
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC3819AA75;
-	Thu,  6 Jun 2024 14:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1CA1991D1;
+	Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Voopdu/F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJo7mENd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FE4198845;
-	Thu,  6 Jun 2024 14:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2854F196C9F;
+	Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683325; cv=none; b=ZT7dX4NGeDYVc/8bTNGJ1lzb26Z/2mMk1SVXlWSoq1xO+ucR0JfQnCiKMn9YGbXsD4N9P6+mt1EJde991WMkc0ystvBPTylnvUzzjejmgRX+RfEhit1+U66qeVU5lXgMxI2p+W7ScSbCz8HuVwhjbJo9FfCYMJdpWgGyxQs/ykU=
+	t=1717682976; cv=none; b=ndKEtWqgHqa3VT6sZmSGcj4n3D5H6UIIxJarTiP9ukS0xJIVRsTbuNLn45ee0vr4Fq2KTRsMmthjtSAdoQVbEYGLilWwmmCmJOFu0j28JxlmHCxk3EaOd3tZ7KcIBDG/mL+SQFf+Sy7YIx4D0bPrZ2GUtqygBKb9TZciz57TpNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683325; c=relaxed/simple;
-	bh=VMeoGio6RWE+CgXjYMHHBDPxUHlrq+oYJTCpzt9tDeU=;
+	s=arc-20240116; t=1717682976; c=relaxed/simple;
+	bh=sw28r/rB/YIOgw0NLCO8Du+ORUpv9vQ/tB0KC7VwiFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLNe4PjCRABrTkjgW0hJOGGMGguBeKoK3Fk3W3OGzYih3ZJGmAN4yIhgB5i4J1ZidtMtOMiowKNbQe70lYDDfewl8ewDtN334mkvdnJThn9dFAwnb8Yxdme7JMea4n8WxVfNcd9vGw53UaQBYV5mOWnNkxPVn9IARZ+W7G6ewwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Voopdu/F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CB0C32781;
-	Thu,  6 Jun 2024 14:15:25 +0000 (UTC)
+	 MIME-Version; b=M06kOSakzmye6iWXGMVC/Ry86NQSlaZbh6R+bkeUoxJGAqtQh0e9/UMJy7yDYAqAVLBkEmbzCeiDNt2Ux8oRyga7if43VQejC92j531EVP3PgmmtuUDCzXPRFRemSDdJvQhB8PH10H79icqLc/l1K+x35wMXhDhGsDKO0aHFb2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJo7mENd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087BDC2BD10;
+	Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683325;
-	bh=VMeoGio6RWE+CgXjYMHHBDPxUHlrq+oYJTCpzt9tDeU=;
+	s=korg; t=1717682976;
+	bh=sw28r/rB/YIOgw0NLCO8Du+ORUpv9vQ/tB0KC7VwiFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Voopdu/Fv3RWNWDvgIJFGCGV+NM5elfqDeYPyEEWKi3IFfRFQWECzw2Ht1xD7XNxo
-	 ffc2TTarC/9vnVlM2XwO5/WK1FlSnhct2YiogKaipkVNqB36yP7TWTSslXyRx1Xvp2
-	 xBGUtC0aqSlaKbHz/oHE+elEA+yUaWDK4FeY2pYk=
+	b=rJo7mENdoXWROhvPS7LNz24p7OeY2PB5EG4zrny+tXLBK+uTfZZjgKhc8awuFVNlb
+	 Z+waLtT8Ncop2FUI46PQ3rsKGCijXmcUfI+lkZ1aBWeOrYB2UjRSVN7Mo8g1tNdwlM
+	 +S1UrEgp+qXtscFjvISyqmEyPDbVwgV3OWvOxu34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Green <greenjustin@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Charlemagne Lasse <charlemagnelasse@gmail.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/473] drm/mediatek: Add 0 size check to mtk_drm_gem_obj
+Subject: [PATCH 6.9 154/374] x86/percpu: Use __force to cast from __percpu address space
 Date: Thu,  6 Jun 2024 16:02:13 +0200
-Message-ID: <20240606131706.677889594@linuxfoundation.org>
+Message-ID: <20240606131657.074546439@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Green <greenjustin@chromium.org>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 1e4350095e8ab2577ee05f8c3b044e661b5af9a0 ]
+[ Upstream commit a55c1fdad5f61b4bfe42319694b23671a758cb28 ]
 
-Add a check to mtk_drm_gem_init if we attempt to allocate a GEM object
-of 0 bytes. Currently, no such check exists and the kernel will panic if
-a userspace application attempts to allocate a 0x0 GBM buffer.
+Fix Sparse warning when casting from __percpu address space by using
+__force in the cast. x86 named address spaces are not considered to
+be subspaces of the generic (flat) address space, so explicit casts
+are required to convert pointers between these address spaces and the
+generic address space (the application should cast to uintptr_t and
+apply the segment base offset). The cast to uintptr_t removes
+__percpu address space tag and Sparse reports:
 
-Tested by attempting to allocate a 0x0 GBM buffer on an MT8188 and
-verifying that we now return EINVAL.
+  warning: cast removes address space '__percpu' of expression
 
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Justin Green <greenjustin@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240307180051.4104425-1-greenjustin@chromium.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Use __force to inform Sparse that the cast is intentional.
+
+Fixes: 9a462b9eafa6 ("x86/percpu: Use compiler segment prefix qualifier")
+Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240402175058.52649-1-ubizjak@gmail.com
+
+Closes: https://lore.kernel.org/lkml/CAFGhKbzev7W4aHwhFPWwMZQEHenVgZUj7=aunFieVqZg3mt14A@mail.gmail.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/include/asm/percpu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-index fb4f0e336b60e..21e584038581d 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-@@ -33,6 +33,9 @@ static struct mtk_drm_gem_obj *mtk_drm_gem_init(struct drm_device *dev,
- 
- 	size = round_up(size, PAGE_SIZE);
- 
-+	if (size == 0)
-+		return ERR_PTR(-EINVAL);
-+
- 	mtk_gem_obj = kzalloc(sizeof(*mtk_gem_obj), GFP_KERNEL);
- 	if (!mtk_gem_obj)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index dbfde44d88a31..ce5111cec36e2 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -77,7 +77,7 @@
+ #define arch_raw_cpu_ptr(_ptr)					\
+ ({								\
+ 	unsigned long tcp_ptr__ = __raw_my_cpu_offset;		\
+-	tcp_ptr__ += (unsigned long)(_ptr);			\
++	tcp_ptr__ += (__force unsigned long)(_ptr);		\
+ 	(typeof(*(_ptr)) __kernel __force *)tcp_ptr__;		\
+ })
+ #else
 -- 
 2.43.0
 
