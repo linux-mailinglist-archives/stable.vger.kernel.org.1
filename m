@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-48628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3A78FE9D1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2EB98FED73
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 752841F23EF4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 564B92814BD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C9319B5AA;
-	Thu,  6 Jun 2024 14:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A7D19DF4F;
+	Thu,  6 Jun 2024 14:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdTB/RG0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G67bvwVp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45F8198A3E;
-	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C78198E90;
+	Thu,  6 Jun 2024 14:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683069; cv=none; b=IaKCkXsu1O/lxg5Lx0OunPFfDqEECaghLDwiOebsawNnKA92RT4RsVbe1wOc1X50I7RknxjBEjUCyzAumXVQLYiHWhSlgCouyNYDjSW/6EWTm1iwQfZScv0mdL5MPhzYnMcpdtxLt01imtQKN7MMg8eIt5n9ps2DdsdcCZfBtoI=
+	t=1717683490; cv=none; b=Ejo3TggjBbUSJVyTNWB7hv1F1bNYv52HU6gX74WFn5E5FtaukAUaydvPeNd1+PZxjRunjBFHTXolHnej8Jzcw336r0GRKCFQgRsRE9Io/hjVtWJd+HTHxv47zg5LpKJo7Yz+nAzZwRdLW9vjMIR45yspyWu0Gd13zcbWVLvvv1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683069; c=relaxed/simple;
-	bh=u5V+qhNRmjFd9yppbwZG23NcgZxm+D6knPhN3XGGqtw=;
+	s=arc-20240116; t=1717683490; c=relaxed/simple;
+	bh=Uj5de8CxEHdwzdNRbLCbxJmTJtpmSS0QPV++Cb/BPlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgOxq7zE33Ye0HpmFpSQkY9XmR7dzFNlfmNeSa1PpxQwcxyN24EGjqgyh/L7njCsk9CgXITB5P8AmMbtIjzXfr8+3rhkbeaSrLPzfAcEKGV3cW7daBrVe3OQWxncOlmFgh+Gf4zyzngY7xLsqALlutuN13hSh5unepoFN+oWDZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdTB/RG0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A428FC4AF0C;
-	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
+	 MIME-Version; b=Zd5XUcQjE946zxvAxkewXniPQghhR+UYrt2QX4zhS8x5iWnR3Dj4L0zeCJ+tnFDyHse5QJxvxjreju72w+2H2QY4rqw2Wkx5g/sm3nI6ZFhPiKvOBaynvLguduKhvSJ4f+ag2Wo1RKJFX/RqcBQY8L0lPTNf+bP2YBjnMq+B33E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G67bvwVp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB57C2BD10;
+	Thu,  6 Jun 2024 14:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683069;
-	bh=u5V+qhNRmjFd9yppbwZG23NcgZxm+D6knPhN3XGGqtw=;
+	s=korg; t=1717683489;
+	bh=Uj5de8CxEHdwzdNRbLCbxJmTJtpmSS0QPV++Cb/BPlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdTB/RG0cBcoE5nFKPBU2cn/6jFyAjeMhc1J8guSro00KXGOlMwXEwB0X/I0IeRb2
-	 2eYukr4yg0JE890MrRnD4KLItCUAUys5+gEnnMnUqFAcHwZxGSx1GTJUoFZloFVFtz
-	 iSq9S+8lWkmquw3Px724ztSB/tCZWEjimpBlDxSs=
+	b=G67bvwVpFY1TCHt6BWTm/ap+kesI46tIBhtDsw41W7E88/twq4JndlsH+8gVHM8S+
+	 pX3mAY04KqLJf/PjLUYeMuMNmakDxT1DGanzU38r9qswAfazSYptoL/MoiuqdPESWG
+	 XUNCJCwmF2cRnpO0XwB5IcogZl0o1rb1qc3+k7+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Azeem Shaikh <azeemshaikh38@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 330/374] ALSA: seq: Fix missing bank setup between MIDI1/MIDI2 UMP conversion
+Subject: [PATCH 6.1 380/473] scsi: qla2xxx: Replace all non-returning strlcpy() with strscpy()
 Date: Thu,  6 Jun 2024 16:05:09 +0200
-Message-ID: <20240606131702.915312492@linuxfoundation.org>
+Message-ID: <20240606131712.420142554@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Azeem Shaikh <azeemshaikh38@gmail.com>
 
-[ Upstream commit 8a42886cae307663f3f999846926bd6e64392000 ]
+[ Upstream commit 37f1663c91934f664fb850306708094a324c227c ]
 
-When a UMP packet is converted between MIDI1 and MIDI2 protocols, the
-bank selection may be lost.  The conversion from MIDI1 to MIDI2 needs
-the encoding of the bank into UMP_MSG_STATUS_PROGRAM bits, while the
-conversion from MIDI2 to MIDI1 needs the extraction from that
-instead.
+strlcpy() reads the entire source buffer first.  This read may exceed the
+destination size limit.  This is both inefficient and can lead to linear
+read overflows if a source string is not NUL-terminated [1].  In an effort
+to remove strlcpy() completely [2], replace strlcpy() here with strscpy().
+No return values were used, so direct replacement is safe.
 
-This patch implements the missing bank selection mechanism in those
-conversions.
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
 
-Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
-Link: https://lore.kernel.org/r/20240527151852.29036-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+Link: https://lore.kernel.org/r/20230516025404.2843867-1-azeemshaikh38@gmail.com
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: c3408c4ae041 ("scsi: qla2xxx: Avoid possible run-time warning with long model_num")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_convert.c | 38 ++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ drivers/scsi/qla2xxx/qla_init.c |  8 ++++----
+ drivers/scsi/qla2xxx/qla_mr.c   | 20 ++++++++++----------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index ee6ac649df836..c21be87f5da9e 100644
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -368,6 +368,7 @@ static int cvt_ump_midi1_to_midi2(struct snd_seq_client *dest,
- 	struct snd_seq_ump_event ev_cvt;
- 	const union snd_ump_midi1_msg *midi1 = (const union snd_ump_midi1_msg *)event->ump;
- 	union snd_ump_midi2_msg *midi2 = (union snd_ump_midi2_msg *)ev_cvt.ump;
-+	struct snd_seq_ump_midi2_bank *cc;
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index c64e44964d840..6dce3f166564c 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -5144,7 +5144,7 @@ qla2x00_set_model_info(scsi_qla_host_t *vha, uint8_t *model, size_t len,
+ 		if (use_tbl &&
+ 		    ha->pdev->subsystem_vendor == PCI_VENDOR_ID_QLOGIC &&
+ 		    index < QLA_MODEL_NAMES)
+-			strlcpy(ha->model_desc,
++			strscpy(ha->model_desc,
+ 			    qla2x00_model_name[index * 2 + 1],
+ 			    sizeof(ha->model_desc));
+ 	} else {
+@@ -5152,14 +5152,14 @@ qla2x00_set_model_info(scsi_qla_host_t *vha, uint8_t *model, size_t len,
+ 		if (use_tbl &&
+ 		    ha->pdev->subsystem_vendor == PCI_VENDOR_ID_QLOGIC &&
+ 		    index < QLA_MODEL_NAMES) {
+-			strlcpy(ha->model_number,
++			strscpy(ha->model_number,
+ 				qla2x00_model_name[index * 2],
+ 				sizeof(ha->model_number));
+-			strlcpy(ha->model_desc,
++			strscpy(ha->model_desc,
+ 			    qla2x00_model_name[index * 2 + 1],
+ 			    sizeof(ha->model_desc));
+ 		} else {
+-			strlcpy(ha->model_number, def,
++			strscpy(ha->model_number, def,
+ 				sizeof(ha->model_number));
+ 		}
+ 	}
+diff --git a/drivers/scsi/qla2xxx/qla_mr.c b/drivers/scsi/qla2xxx/qla_mr.c
+index f726eb8449c5e..083f94e43fba0 100644
+--- a/drivers/scsi/qla2xxx/qla_mr.c
++++ b/drivers/scsi/qla2xxx/qla_mr.c
+@@ -691,7 +691,7 @@ qlafx00_pci_info_str(struct scsi_qla_host *vha, char *str, size_t str_len)
+ 	struct qla_hw_data *ha = vha->hw;
  
- 	ev_cvt = *event;
- 	memset(&ev_cvt.ump, 0, sizeof(ev_cvt.ump));
-@@ -387,11 +388,29 @@ static int cvt_ump_midi1_to_midi2(struct snd_seq_client *dest,
- 		midi2->paf.data = upscale_7_to_32bit(midi1->paf.data);
- 		break;
- 	case UMP_MSG_STATUS_CC:
-+		cc = &dest_port->midi2_bank[midi1->note.channel];
-+		switch (midi1->cc.index) {
-+		case UMP_CC_BANK_SELECT:
-+			cc->bank_set = 1;
-+			cc->cc_bank_msb = midi1->cc.data;
-+			return 0; // skip
-+		case UMP_CC_BANK_SELECT_LSB:
-+			cc->bank_set = 1;
-+			cc->cc_bank_lsb = midi1->cc.data;
-+			return 0; // skip
-+		}
- 		midi2->cc.index = midi1->cc.index;
- 		midi2->cc.data = upscale_7_to_32bit(midi1->cc.data);
- 		break;
- 	case UMP_MSG_STATUS_PROGRAM:
- 		midi2->pg.program = midi1->pg.program;
-+		cc = &dest_port->midi2_bank[midi1->note.channel];
-+		if (cc->bank_set) {
-+			midi2->pg.bank_valid = 1;
-+			midi2->pg.bank_msb = cc->cc_bank_msb;
-+			midi2->pg.bank_lsb = cc->cc_bank_lsb;
-+			cc->bank_set = 0;
-+		}
- 		break;
- 	case UMP_MSG_STATUS_CHANNEL_PRESSURE:
- 		midi2->caf.data = upscale_7_to_32bit(midi1->caf.data);
-@@ -419,6 +438,7 @@ static int cvt_ump_midi2_to_midi1(struct snd_seq_client *dest,
- 	struct snd_seq_ump_event ev_cvt;
- 	union snd_ump_midi1_msg *midi1 = (union snd_ump_midi1_msg *)ev_cvt.ump;
- 	const union snd_ump_midi2_msg *midi2 = (const union snd_ump_midi2_msg *)event->ump;
-+	int err;
- 	u16 v;
+ 	if (pci_is_pcie(ha->pdev))
+-		strlcpy(str, "PCIe iSA", str_len);
++		strscpy(str, "PCIe iSA", str_len);
+ 	return str;
+ }
  
- 	ev_cvt = *event;
-@@ -443,6 +463,24 @@ static int cvt_ump_midi2_to_midi1(struct snd_seq_client *dest,
- 		midi1->cc.data = downscale_32_to_7bit(midi2->cc.data);
- 		break;
- 	case UMP_MSG_STATUS_PROGRAM:
-+		if (midi2->pg.bank_valid) {
-+			midi1->cc.status = UMP_MSG_STATUS_CC;
-+			midi1->cc.index = UMP_CC_BANK_SELECT;
-+			midi1->cc.data = midi2->pg.bank_msb;
-+			err = __snd_seq_deliver_single_event(dest, dest_port,
-+							     (struct snd_seq_event *)&ev_cvt,
-+							     atomic, hop);
-+			if (err < 0)
-+				return err;
-+			midi1->cc.index = UMP_CC_BANK_SELECT_LSB;
-+			midi1->cc.data = midi2->pg.bank_lsb;
-+			err = __snd_seq_deliver_single_event(dest, dest_port,
-+							     (struct snd_seq_event *)&ev_cvt,
-+							     atomic, hop);
-+			if (err < 0)
-+				return err;
-+			midi1->note.status = midi2->note.status;
-+		}
- 		midi1->pg.program = midi2->pg.program;
- 		break;
- 	case UMP_MSG_STATUS_CHANNEL_PRESSURE:
+@@ -1850,21 +1850,21 @@ qlafx00_fx_disc(scsi_qla_host_t *vha, fc_port_t *fcport, uint16_t fx_type)
+ 			phost_info = &preg_hsi->hsi;
+ 			memset(preg_hsi, 0, sizeof(struct register_host_info));
+ 			phost_info->os_type = OS_TYPE_LINUX;
+-			strlcpy(phost_info->sysname, p_sysid->sysname,
++			strscpy(phost_info->sysname, p_sysid->sysname,
+ 				sizeof(phost_info->sysname));
+-			strlcpy(phost_info->nodename, p_sysid->nodename,
++			strscpy(phost_info->nodename, p_sysid->nodename,
+ 				sizeof(phost_info->nodename));
+ 			if (!strcmp(phost_info->nodename, "(none)"))
+ 				ha->mr.host_info_resend = true;
+-			strlcpy(phost_info->release, p_sysid->release,
++			strscpy(phost_info->release, p_sysid->release,
+ 				sizeof(phost_info->release));
+-			strlcpy(phost_info->version, p_sysid->version,
++			strscpy(phost_info->version, p_sysid->version,
+ 				sizeof(phost_info->version));
+-			strlcpy(phost_info->machine, p_sysid->machine,
++			strscpy(phost_info->machine, p_sysid->machine,
+ 				sizeof(phost_info->machine));
+-			strlcpy(phost_info->domainname, p_sysid->domainname,
++			strscpy(phost_info->domainname, p_sysid->domainname,
+ 				sizeof(phost_info->domainname));
+-			strlcpy(phost_info->hostdriver, QLA2XXX_VERSION,
++			strscpy(phost_info->hostdriver, QLA2XXX_VERSION,
+ 				sizeof(phost_info->hostdriver));
+ 			preg_hsi->utc = (uint64_t)ktime_get_real_seconds();
+ 			ql_dbg(ql_dbg_init, vha, 0x0149,
+@@ -1909,9 +1909,9 @@ qlafx00_fx_disc(scsi_qla_host_t *vha, fc_port_t *fcport, uint16_t fx_type)
+ 	if (fx_type == FXDISC_GET_CONFIG_INFO) {
+ 		struct config_info_data *pinfo =
+ 		    (struct config_info_data *) fdisc->u.fxiocb.rsp_addr;
+-		strlcpy(vha->hw->model_number, pinfo->model_num,
++		strscpy(vha->hw->model_number, pinfo->model_num,
+ 			ARRAY_SIZE(vha->hw->model_number));
+-		strlcpy(vha->hw->model_desc, pinfo->model_description,
++		strscpy(vha->hw->model_desc, pinfo->model_description,
+ 			ARRAY_SIZE(vha->hw->model_desc));
+ 		memcpy(&vha->hw->mr.symbolic_name, pinfo->symbolic_name,
+ 		    sizeof(vha->hw->mr.symbolic_name));
 -- 
 2.43.0
 
