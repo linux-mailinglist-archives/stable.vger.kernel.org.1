@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-49368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1608FECFA
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCFB8FECFB
 	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5F05B25516
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06B0E2835BA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA48F1B3F25;
-	Thu,  6 Jun 2024 14:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12841B3F0E;
+	Thu,  6 Jun 2024 14:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8m5coxq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRJUeyBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C5719CCFE;
-	Thu,  6 Jun 2024 14:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6109619B5AC;
+	Thu,  6 Jun 2024 14:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683431; cv=none; b=Et5IrpqdL6Mado9eOWjzJ2IiHCWZhmlczy2BrTNGMdjYk1Bx7idZqZRA+j7psoaza76sYWSBFL8DFYvWvIAUA3Xhi9vj4h+SYJWTLiMRf7apzoLO0Avf0xOjWtdbGFmpz5dEtb9J2bpMl7GDt/yK2Y6w6XLNS0xw5kGRRFM9npw=
+	t=1717683432; cv=none; b=dU9vDoO09fm8e1kkL5uh/SYmcEFr5DVsIGiaLVokNrZcVgVSxEiYedakGbtsaBTp8riyCW2lAX/xJygedx15R+13MfLmRYVD8xW8z6zPpk2ylwjm7pBwQ9dXj9SXl61qhZyHRHeSkOtJr7tumzOCcUcTIh+XY39gf7PYw+I0vws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683431; c=relaxed/simple;
-	bh=KhzGfH/HJ1CxVQbw9C2xIQsr1DCBlYZjfIyASrvzFYw=;
+	s=arc-20240116; t=1717683432; c=relaxed/simple;
+	bh=1yV3Ev/nUyKCxHLd86PeJrcsulAylbtkd/psgjoMx2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRaqbzglZ6qnQe3royMDTiRQucaGCo7FsEwNcGvHsD+8AwCJfMpaY37mF6JqhEBkshHun9oqh86kPDFEZsU8hTYw1mPThu6j/snxxO1XzzsVHG0NmM7o7KIr/TKbpUEtZvLqiYAqwm81hRT+RPyaHhfS4XhH/k531ln+8Hj5VE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8m5coxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F61C2BD10;
-	Thu,  6 Jun 2024 14:17:11 +0000 (UTC)
+	 MIME-Version; b=ttwhjsMu5au1Ig8rsGgkqlSAnBD869JUbiuFl75frSQnlMqtvUryFGBCuiUsKOqUIoC6XmyE+MpmAdDlRv52gHwfXJfy4W7kJgPZibpX/lCarY6SLEDrJv2H+0x8BqR9NBOmFr9lm801w1SoUHHQjWT+RG30y+3ldIMZLUQHaz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRJUeyBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36932C32781;
+	Thu,  6 Jun 2024 14:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683431;
-	bh=KhzGfH/HJ1CxVQbw9C2xIQsr1DCBlYZjfIyASrvzFYw=;
+	s=korg; t=1717683432;
+	bh=1yV3Ev/nUyKCxHLd86PeJrcsulAylbtkd/psgjoMx2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8m5coxqTzXHMqf8iCZCkB9rPVNgKgOZEsKKlKsABsISv3SdOtrz8FU3mH9E0o/jv
-	 7ocOjvEFwBgkSjRuqMlrJix0pmAu2QFQ0sL1TAqFRdnufb+y3WB/XAgvj+WPPF66LD
-	 Wwj3ArZzadVXZiE3B+b7gEdYeud0q/o5e96rwhoA=
+	b=fRJUeyBx07+LVyzPtfhcjHtpo7h1MwO20mL0polnqsTzEz3NqvukJe0OuckMIgQtZ
+	 Zos2lovP4Q8QxN58HQhudaHrzykcQi+anykq2C0pkHFb/Umnh5DmpQIaQciXup/Ujr
+	 jkOYEzdnLhaPkDlGRrX3Y/Rv4NLfV0EGOKC/SxYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Yi Zhang <yi.zhang@redhat.com>
-Subject: [PATCH 6.6 376/744] RDMA/cma: Fix kmemleak in rdma_core observed during blktests nvme/rdma use siw
-Date: Thu,  6 Jun 2024 16:00:48 +0200
-Message-ID: <20240606131744.535810965@linuxfoundation.org>
+	Beau Belgrave <beaub@linux.microsoft.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 377/744] tracing/user_events: Allow events to persist for perfmon_capable users
+Date: Thu,  6 Jun 2024 16:00:49 +0200
+Message-ID: <20240606131744.566771087@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,74 +66,141 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Beau Belgrave <beaub@linux.microsoft.com>
 
-[ Upstream commit 9c0731832d3b7420cbadba6a7f334363bc8dfb15 ]
+[ Upstream commit 5dbd04eddb2c0841d1b3930e0a9944a2343c9cac ]
 
-When running blktests nvme/rdma, the following kmemleak issue will appear.
+There are several scenarios that have come up where having a user_event
+persist even if the process that registered it exits. The main one is
+having a daemon create events on bootup that shouldn't get deleted if
+the daemon has to exit or reload. Another is within OpenTelemetry
+exporters, they wish to potentially check if a user_event exists on the
+system to determine if exporting the data out should occur. The
+user_event in this case must exist even in the absence of the owning
+process running (such as the above daemon case).
 
-kmemleak: Kernel memory leak detector initialized (mempool available:36041)
-kmemleak: Automatic memory scanning thread started
-kmemleak: 2 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-kmemleak: 8 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-kmemleak: 17 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-kmemleak: 4 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+Expose the previously internal flag USER_EVENT_REG_PERSIST to user
+processes. Upon register or delete of events with this flag, ensure the
+user is perfmon_capable to prevent random user processes with access to
+tracefs from creating events that persist after exit.
 
-unreferenced object 0xffff88855da53400 (size 192):
-  comm "rdma", pid 10630, jiffies 4296575922
-  hex dump (first 32 bytes):
-    37 00 00 00 00 00 00 00 c0 ff ff ff 1f 00 00 00  7...............
-    10 34 a5 5d 85 88 ff ff 10 34 a5 5d 85 88 ff ff  .4.].....4.]....
-  backtrace (crc 47f66721):
-    [<ffffffff911251bd>] kmalloc_trace+0x30d/0x3b0
-    [<ffffffffc2640ff7>] alloc_gid_entry+0x47/0x380 [ib_core]
-    [<ffffffffc2642206>] add_modify_gid+0x166/0x930 [ib_core]
-    [<ffffffffc2643468>] ib_cache_update.part.0+0x6d8/0x910 [ib_core]
-    [<ffffffffc2644e1a>] ib_cache_setup_one+0x24a/0x350 [ib_core]
-    [<ffffffffc263949e>] ib_register_device+0x9e/0x3a0 [ib_core]
-    [<ffffffffc2a3d389>] 0xffffffffc2a3d389
-    [<ffffffffc2688cd8>] nldev_newlink+0x2b8/0x520 [ib_core]
-    [<ffffffffc2645fe3>] rdma_nl_rcv_msg+0x2c3/0x520 [ib_core]
-    [<ffffffffc264648c>]
-rdma_nl_rcv_skb.constprop.0.isra.0+0x23c/0x3a0 [ib_core]
-    [<ffffffff9270e7b5>] netlink_unicast+0x445/0x710
-    [<ffffffff9270f1f1>] netlink_sendmsg+0x761/0xc40
-    [<ffffffff9249db29>] __sys_sendto+0x3a9/0x420
-    [<ffffffff9249dc8c>] __x64_sys_sendto+0xdc/0x1b0
-    [<ffffffff92db0ad3>] do_syscall_64+0x93/0x180
-    [<ffffffff92e00126>] entry_SYSCALL_64_after_hwframe+0x71/0x79
+Link: https://lkml.kernel.org/r/20230912180704.1284-2-beaub@linux.microsoft.com
 
-The root cause: rdma_put_gid_attr is not called when sgid_attr is set
-to ERR_PTR(-ENODEV).
-
-Reported-and-tested-by: Yi Zhang <yi.zhang@redhat.com>
-Closes: https://lore.kernel.org/all/19bf5745-1b3b-4b8a-81c2-20d945943aaf@linux.dev/T/
-Fixes: f8ef1be816bf ("RDMA/cma: Avoid GID lookups on iWARP devices")
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240510211247.31345-1-yanjun.zhu@linux.dev
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Beau Belgrave <beaub@linux.microsoft.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: bd125a084091 ("tracing/user_events: Fix non-spaced field matching")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cma.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/uapi/linux/user_events.h | 11 +++++++++-
+ kernel/trace/trace_events_user.c | 36 +++++++++++++++++++-------------
+ 2 files changed, 32 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
-index 1e2cd7c8716e8..64ace0b968f07 100644
---- a/drivers/infiniband/core/cma.c
-+++ b/drivers/infiniband/core/cma.c
-@@ -715,8 +715,10 @@ cma_validate_port(struct ib_device *device, u32 port,
- 		rcu_read_lock();
- 		ndev = rcu_dereference(sgid_attr->ndev);
- 		if (!net_eq(dev_net(ndev), dev_addr->net) ||
--		    ndev->ifindex != bound_if_index)
-+		    ndev->ifindex != bound_if_index) {
-+			rdma_put_gid_attr(sgid_attr);
- 			sgid_attr = ERR_PTR(-ENODEV);
-+		}
- 		rcu_read_unlock();
- 		goto out;
- 	}
+diff --git a/include/uapi/linux/user_events.h b/include/uapi/linux/user_events.h
+index 2984aae4a2b4f..f74f3aedd49ce 100644
+--- a/include/uapi/linux/user_events.h
++++ b/include/uapi/linux/user_events.h
+@@ -17,6 +17,15 @@
+ /* Create dynamic location entry within a 32-bit value */
+ #define DYN_LOC(offset, size) ((size) << 16 | (offset))
+ 
++/* List of supported registration flags */
++enum user_reg_flag {
++	/* Event will not delete upon last reference closing */
++	USER_EVENT_REG_PERSIST		= 1U << 0,
++
++	/* This value or above is currently non-ABI */
++	USER_EVENT_REG_MAX		= 1U << 1,
++};
++
+ /*
+  * Describes an event registration and stores the results of the registration.
+  * This structure is passed to the DIAG_IOCSREG ioctl, callers at a minimum
+@@ -33,7 +42,7 @@ struct user_reg {
+ 	/* Input: Enable size in bytes at address */
+ 	__u8	enable_size;
+ 
+-	/* Input: Flags for future use, set to 0 */
++	/* Input: Flags to use, if any */
+ 	__u16	flags;
+ 
+ 	/* Input: Address to update when enabled */
+diff --git a/kernel/trace/trace_events_user.c b/kernel/trace/trace_events_user.c
+index b87f41187c6a9..9365ce4074263 100644
+--- a/kernel/trace/trace_events_user.c
++++ b/kernel/trace/trace_events_user.c
+@@ -49,18 +49,6 @@
+ #define EVENT_STATUS_PERF BIT(1)
+ #define EVENT_STATUS_OTHER BIT(7)
+ 
+-/*
+- * User register flags are not allowed yet, keep them here until we are
+- * ready to expose them out to the user ABI.
+- */
+-enum user_reg_flag {
+-	/* Event will not delete upon last reference closing */
+-	USER_EVENT_REG_PERSIST		= 1U << 0,
+-
+-	/* This value or above is currently non-ABI */
+-	USER_EVENT_REG_MAX		= 1U << 1,
+-};
+-
+ /*
+  * Stores the system name, tables, and locks for a group of events. This
+  * allows isolation for events by various means.
+@@ -220,6 +208,17 @@ static u32 user_event_key(char *name)
+ 	return jhash(name, strlen(name), 0);
+ }
+ 
++static bool user_event_capable(u16 reg_flags)
++{
++	/* Persistent events require CAP_PERFMON / CAP_SYS_ADMIN */
++	if (reg_flags & USER_EVENT_REG_PERSIST) {
++		if (!perfmon_capable())
++			return false;
++	}
++
++	return true;
++}
++
+ static struct user_event *user_event_get(struct user_event *user)
+ {
+ 	refcount_inc(&user->refcnt);
+@@ -1811,6 +1810,9 @@ static int user_event_free(struct dyn_event *ev)
+ 	if (!user_event_last_ref(user))
+ 		return -EBUSY;
+ 
++	if (!user_event_capable(user->reg_flags))
++		return -EPERM;
++
+ 	return destroy_user_event(user);
+ }
+ 
+@@ -1926,10 +1928,13 @@ static int user_event_parse(struct user_event_group *group, char *name,
+ 	int argc = 0;
+ 	char **argv;
+ 
+-	/* User register flags are not ready yet */
+-	if (reg_flags != 0 || flags != NULL)
++	/* Currently don't support any text based flags */
++	if (flags != NULL)
+ 		return -EINVAL;
+ 
++	if (!user_event_capable(reg_flags))
++		return -EPERM;
++
+ 	/* Prevent dyn_event from racing */
+ 	mutex_lock(&event_mutex);
+ 	user = find_user_event(group, name, &key);
+@@ -2062,6 +2067,9 @@ static int delete_user_event(struct user_event_group *group, char *name)
+ 	if (!user_event_last_ref(user))
+ 		return -EBUSY;
+ 
++	if (!user_event_capable(user->reg_flags))
++		return -EPERM;
++
+ 	return destroy_user_event(user);
+ }
+ 
 -- 
 2.43.0
 
