@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1D38FEAF2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E5C8FE87B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF0ACB24C33
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 369D71F22D42
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73D71A2563;
-	Thu,  6 Jun 2024 14:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731DB196D82;
+	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/cZojS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUjr5H0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6671B1A2557;
-	Thu,  6 Jun 2024 14:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC74196C9B;
+	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683192; cv=none; b=QMzewphVt0eJUZeodWdnKDmlHDAUvm8shdE6Dp3nLd7Wm6S00G6AFLtdRPLQhlc1AcWv/ur5njYzsCoYRukNxs45Je753echC6+5+EFOkegizpyfVdE1QmjOwziaVfgW/grVgjJhhwnaKkSLu8CcZiomOaY9NqCs9j8RtYSjcBk=
+	t=1717682899; cv=none; b=nkr6wGlOpgaIGD2c0rUcdUWkybNQTPVhbfmOpj+eluu6MSlsj21Tppfkyu8saak+3UJ46iLk1a0lNubW5eaLV4uVhdzzkVaEuNH5/tJ61c4Ck5JyK7a7MbJ99G+uYwKOR2CO21ck3PmWyqbOVJk8OU4HTcJw3226ygYjSt3CwJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683192; c=relaxed/simple;
-	bh=sA2ms4ofFO/VR+sAUm9bqtmxCc26j3ZnkykdEuMyy9o=;
+	s=arc-20240116; t=1717682899; c=relaxed/simple;
+	bh=/qlWaS/edFAAiAonkzcf52ycEaqJ10W3lVmVeLaCx+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBs4GchrmmOb0qUPNOMS8r9oJ+iCNQG5L6i6o+GzrZyUGQQbl7Rf/Kw7Z/iwxbv0k2HGbFu/HvLavtKRHZ9ay2Mh8BmWgP7dA6JMlJNhDM9ehs2585HIdb0XEJD+o0DZFMLXQvHx6pjpXqgQcEDEIvuvnQ0RHs/QHIWiKTN+9vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/cZojS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48294C2BD10;
-	Thu,  6 Jun 2024 14:13:12 +0000 (UTC)
+	 MIME-Version; b=Bxed4wUkzyyw5FGaf1n/ycL9e5HK6fBu8+Gn4IcUFT6iOkYLQ5ZUgWB4JFN6V6nEjDNsRDda7n4HPYHT79v1+ARlIiSFAsoZnPeEbM7P+93iolNVCoCUNc0AU4b5w6I85RMAxx0+d1zeTTi1KlTUV7lnUiLiuSG1MHkuWj15mCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUjr5H0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E29CC32781;
+	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683192;
-	bh=sA2ms4ofFO/VR+sAUm9bqtmxCc26j3ZnkykdEuMyy9o=;
+	s=korg; t=1717682899;
+	bh=/qlWaS/edFAAiAonkzcf52ycEaqJ10W3lVmVeLaCx+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/cZojS7c7qroYxAtMxrlmVzQZZSPKVrx/mJS9FF1e8M+PDVa5PaTYKfWpFAOHyB0
-	 xwi5gRWWcAr/ZNpz/Nob0J2YhkBD2SLGm+i9nO4yLk0wqWM+LNJlsQiCmX+lgBEIlw
-	 SOoiGuEZnwKROaZPS+Zoz+0rlC/0Ux2zZOo73Q9c=
+	b=dUjr5H0Wcs+Llt5qloRqGVWyReKwXwobcRP1wLnqcglbOsnuHq2Ur+lElqO7UhZ5u
+	 v8ju3jlUcPRQ+k/9qPIFMVTN+geq1oQok3sy+NX9s7HiLJajRnfJMsXKyiy2d6tAf5
+	 YAIlI/5U6MG/a11DRKzU69wkn6ZEyICCuOvHU/8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/473] openpromfs: finish conversion to the new mount API
-Date: Thu,  6 Jun 2024 15:59:55 +0200
-Message-ID: <20240606131702.063865362@linuxfoundation.org>
+Subject: [PATCH 6.9 017/374] usb: typec: ucsi: simplify partners PD caps registration
+Date: Thu,  6 Jun 2024 15:59:56 +0200
+Message-ID: <20240606131652.349035981@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 8f27829974b025d4df2e78894105d75e3bf349f0 ]
+[ Upstream commit 41e1cd1401fcd1f1ae9e47574af2d9fc44a870b3 ]
 
-The original mount API conversion inexplicably left out the change
-from ->remount_fs to ->reconfigure; do that now.
+In a way similar to the previous commit, move
+typec_partner_set_usb_power_delivery() to be called after reading the PD
+caps. This also removes calls to
+usb_power_delivery_unregister_capabilities() from the error path. Keep
+all capabilities registered until they are cleared by
+ucsi_unregister_partner_pdos().
 
-Fixes: 7ab2fa7693c3 ("vfs: Convert openpromfs to use the new mount API")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/90b968aa-c979-420f-ba37-5acc3391b28f@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: b04e1747fbcc ("usb: typec: ucsi: Register USB Power Delivery Capabilities")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240329-qcom-ucsi-fixes-v2-5-0f5d37ed04db@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/openpromfs/inode.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/fs/openpromfs/inode.c b/fs/openpromfs/inode.c
-index f0b7f4d51a175..0a2b0b4a8361e 100644
---- a/fs/openpromfs/inode.c
-+++ b/fs/openpromfs/inode.c
-@@ -355,10 +355,10 @@ static struct inode *openprom_iget(struct super_block *sb, ino_t ino)
- 	return inode;
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 7a427c8e92e29..7801501837b69 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -824,12 +824,6 @@ static int ucsi_register_partner_pdos(struct ucsi_connector *con)
+ 			return PTR_ERR(cap);
+ 
+ 		con->partner_source_caps = cap;
+-
+-		ret = typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
+-		if (ret) {
+-			usb_power_delivery_unregister_capabilities(con->partner_source_caps);
+-			return ret;
+-		}
+ 	}
+ 
+ 	ret = ucsi_get_pdos(con, TYPEC_SINK, 1, caps.pdo);
+@@ -844,15 +838,9 @@ static int ucsi_register_partner_pdos(struct ucsi_connector *con)
+ 			return PTR_ERR(cap);
+ 
+ 		con->partner_sink_caps = cap;
+-
+-		ret = typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
+-		if (ret) {
+-			usb_power_delivery_unregister_capabilities(con->partner_sink_caps);
+-			return ret;
+-		}
+ 	}
+ 
+-	return 0;
++	return typec_partner_set_usb_power_delivery(con->partner, con->partner_pd);
  }
  
--static int openprom_remount(struct super_block *sb, int *flags, char *data)
-+static int openpromfs_reconfigure(struct fs_context *fc)
- {
--	sync_filesystem(sb);
--	*flags |= SB_NOATIME;
-+	sync_filesystem(fc->root->d_sb);
-+	fc->sb_flags |= SB_NOATIME;
- 	return 0;
- }
- 
-@@ -366,7 +366,6 @@ static const struct super_operations openprom_sops = {
- 	.alloc_inode	= openprom_alloc_inode,
- 	.free_inode	= openprom_free_inode,
- 	.statfs		= simple_statfs,
--	.remount_fs	= openprom_remount,
- };
- 
- static int openprom_fill_super(struct super_block *s, struct fs_context *fc)
-@@ -416,6 +415,7 @@ static int openpromfs_get_tree(struct fs_context *fc)
- 
- static const struct fs_context_operations openpromfs_context_ops = {
- 	.get_tree	= openpromfs_get_tree,
-+	.reconfigure	= openpromfs_reconfigure,
- };
- 
- static int openpromfs_init_fs_context(struct fs_context *fc)
+ static void ucsi_unregister_partner_pdos(struct ucsi_connector *con)
 -- 
 2.43.0
 
