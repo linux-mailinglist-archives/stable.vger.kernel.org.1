@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-48502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4888FE944
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030998FEC73
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDE51C2340F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FDADB2595F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA9D19939D;
-	Thu,  6 Jun 2024 14:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6251B0139;
+	Thu,  6 Jun 2024 14:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TT5bCN+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqJvIKpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3C9196D99;
-	Thu,  6 Jun 2024 14:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C0819B3C5;
+	Thu,  6 Jun 2024 14:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683000; cv=none; b=aXtkEOmYeb9YoAVT+2DVeMYMzyjpAhuw/hiXMU6pSF3q2fQKL5WY0CNcevs1MHfucjycVhOBCH7Wdp6mgOZTovuW0PiEdLPRohS2trL5L21E+5eFDJwYSh3i1DYgYaigtb5H+k7EKs9Bvm2fCro8RrjQJgE/ncjHz5m49weXW6g=
+	t=1717683368; cv=none; b=sbiXqbiqW27MCxK2c4nSgQTHhap+c51l7vFR19fm1mgWONCJCFq3v8jP/aavORlvagb3nPBew4QCiXnJhS+HxbD3poaweNzo1PHKRaLd1Cx6xzY+4PD32RWZPs/z3BsxbAuxZD7XSs+o7vEe5mKzpYLJDQIBiKK4w+3bcVXjzlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683000; c=relaxed/simple;
-	bh=dmmft5+PkQnwDF49AOcum6P7xXG7dfMqDBqsymoY8Sc=;
+	s=arc-20240116; t=1717683368; c=relaxed/simple;
+	bh=sLPPUQWRUr7MpKu92iJv3KBn5yFBvhSai/LDzn2GekQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WF/qH0rLbqW2Y+N5Vv1cUcw4hcq5zVABZqJ9cjFqk9aeuLEXiLSa5dROaEkHd2ZuWGjPkgh2mTrT9zO1sHXhEzG/UFTdZSup9f47JCxWCwC0CQ0kYwrXeMXfG7UgflxaOzdDDfsX0JaG5N0XQNK/LinhIy6tkFizUWh8RW/PgwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TT5bCN+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EF5C32786;
-	Thu,  6 Jun 2024 14:10:00 +0000 (UTC)
+	 MIME-Version; b=m8b/tZv7XkT/PLn3AovmoH36wSjee3NO4Zx2uo4Ua8Da/Yy8FbwI2D613pcwko9nHUAAGD6K2kqhP5qFRRl05g1wCfRBdqxpaYYUtNSI08pO7zhSiQbvwaUghbG6sNEIEubP3K/aQSlDSTxXU2hn7ouubUTYdxSEVT0mYQQbeDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqJvIKpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A5AC32782;
+	Thu,  6 Jun 2024 14:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683000;
-	bh=dmmft5+PkQnwDF49AOcum6P7xXG7dfMqDBqsymoY8Sc=;
+	s=korg; t=1717683368;
+	bh=sLPPUQWRUr7MpKu92iJv3KBn5yFBvhSai/LDzn2GekQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TT5bCN+ouyDcFKbjn6xEfnC0r/I8BYtKbnx3SV8vLDROFlmW6bGPkO20hTR34wJzp
-	 PR7QKuFCX6nByC8YG9Q+T8Ami+oS/IUEowXiWByN0rsxVYLV5wC1eyQPdbvGsxN2A+
-	 AZMi7omiKWhIWhWaYuI2pUmaIbt/IAOTXqVTMaRY=
+	b=oqJvIKpOlfjaq5FG1lBnxsAyS/KR+Gy+8yWbQulJ2SsfrMWpykNoDY77QR35g/DIr
+	 dUlM9Wlpl0I0DyHsCmfgFWk0+v+twuxQN3G9noax8aHpi++qbuuRKNb69St3Bwi2lU
+	 s4W4PRm1VTGL9cFnUsG1OnOZBLu9QpDObh/hVTW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 202/374] Revert "drm/bridge: ti-sn65dsi83: Fix enable error path"
+Subject: [PATCH 6.1 252/473] clk: qcom: dispcc-sm8450: fix DisplayPort clocks
 Date: Thu,  6 Jun 2024 16:03:01 +0200
-Message-ID: <20240606131658.600532419@linuxfoundation.org>
+Message-ID: <20240606131708.308717757@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit ad81feb5b6f1f5461641706376dcf7a9914ed2e7 ]
+[ Upstream commit e801038a02ce1e8c652a0b668dd233a4ee48aeb7 ]
 
-This reverts commit 8a91b29f1f50ce7742cdbe5cf11d17f128511f3f.
+On SM8450 DisplayPort link clocks use frequency tables inherited from
+the vendor kernel, it is not applicable in the upstream kernel. Drop
+frequency tables and use clk_byte2_ops for those clocks.
 
-The regulator_disable() added by the original commit solves one kind of
-regulator imbalance but adds another one as it allows the regulator to be
-disabled one more time than it is enabled in the following scenario:
+This fixes frequency selection in the OPP core (which otherwise attempts
+to use invalid 810 KHz as DP link rate), also fixing the following
+message:
+msm-dp-display ae90000.displayport-controller: _opp_config_clk_single: failed to set clock rate: -22
 
- 1. Start video pipeline -> sn65dsi83_atomic_pre_enable -> regulator_enable
- 2. PLL lock fails -> regulator_disable
- 3. Stop video pipeline -> sn65dsi83_atomic_disable -> regulator_disable
-
-The reason is clear from the code flow, which looks like this (after
-removing unrelated code):
-
-  static void sn65dsi83_atomic_pre_enable()
-  {
-      regulator_enable(ctx->vcc);
-
-      if (PLL failed locking) {
-          regulator_disable(ctx->vcc);  <---- added by patch being reverted
-          return;
-      }
-  }
-
-  static void sn65dsi83_atomic_disable()
-  {
-      regulator_disable(ctx->vcc);
-  }
-
-The use case for introducing the additional regulator_disable() was
-removing the module for debugging (see link below for the discussion). If
-the module is removed after a .atomic_pre_enable, i.e. with an active
-pipeline from the DRM point of view, .atomic_disable is not called and thus
-the regulator would not be disabled.
-
-According to the discussion however there is no actual use case for
-removing the module with an active pipeline, except for
-debugging/development.
-
-On the other hand, the occurrence of a PLL lock failure is possible due to
-any physical reason (e.g. a temporary hardware failure for electrical
-reasons) so handling it gracefully should be supported. As there is no way
-for .atomic[_pre]_enable to report an error to the core, the only clean way
-to support it is calling regulator_disabled() only in .atomic_disable,
-unconditionally, as it was before.
-
-Link: https://lore.kernel.org/all/15244220.uLZWGnKmhe@steina-w/
-Fixes: 8a91b29f1f50 ("drm/bridge: ti-sn65dsi83: Fix enable error path")
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240426122259.46808-1-luca.ceresoli@bootlin.com
-(cherry picked from commit 2940ee03b23281071620dda1d790cd644dabd394)
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240424-dispcc-dp-clocks-v2-1-b44038f3fa96@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/clk/qcom/dispcc-sm8450.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-index 4814b7b6d1fd1..57a7ed13f9965 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -478,7 +478,6 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
- 		dev_err(ctx->dev, "failed to lock PLL, ret=%i\n", ret);
- 		/* On failure, disable PLL again and exit. */
- 		regmap_write(ctx->regmap, REG_RC_PLL_EN, 0x00);
--		regulator_disable(ctx->vcc);
- 		return;
- 	}
+diff --git a/drivers/clk/qcom/dispcc-sm8450.c b/drivers/clk/qcom/dispcc-sm8450.c
+index 64626f620a01b..e7dd45a2058c1 100644
+--- a/drivers/clk/qcom/dispcc-sm8450.c
++++ b/drivers/clk/qcom/dispcc-sm8450.c
+@@ -309,26 +309,17 @@ static struct clk_rcg2 disp_cc_mdss_dptx0_aux_clk_src = {
+ 	},
+ };
+ 
+-static const struct freq_tbl ftbl_disp_cc_mdss_dptx0_link_clk_src[] = {
+-	F(162000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	F(270000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	F(540000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	F(810000, P_DP0_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	{ }
+-};
+-
+ static struct clk_rcg2 disp_cc_mdss_dptx0_link_clk_src = {
+ 	.cmd_rcgr = 0x819c,
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = disp_cc_parent_map_3,
+-	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data) {
+ 		.name = "disp_cc_mdss_dptx0_link_clk_src",
+ 		.parent_data = disp_cc_parent_data_3,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_byte2_ops,
+ 	},
+ };
+ 
+@@ -382,13 +373,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_link_clk_src = {
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = disp_cc_parent_map_3,
+-	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data) {
+ 		.name = "disp_cc_mdss_dptx1_link_clk_src",
+ 		.parent_data = disp_cc_parent_data_3,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_byte2_ops,
+ 	},
+ };
+ 
+@@ -442,13 +432,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx2_link_clk_src = {
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = disp_cc_parent_map_3,
+-	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data) {
+ 		.name = "disp_cc_mdss_dptx2_link_clk_src",
+ 		.parent_data = disp_cc_parent_data_3,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_byte2_ops,
+ 	},
+ };
+ 
+@@ -502,13 +491,12 @@ static struct clk_rcg2 disp_cc_mdss_dptx3_link_clk_src = {
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = disp_cc_parent_map_3,
+-	.freq_tbl = ftbl_disp_cc_mdss_dptx0_link_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data) {
+ 		.name = "disp_cc_mdss_dptx3_link_clk_src",
+ 		.parent_data = disp_cc_parent_data_3,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_3),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_byte2_ops,
+ 	},
+ };
  
 -- 
 2.43.0
