@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-49830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADBE38FEF09
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DCD18FEF0C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AAA31F2197E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A82288C0A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74DD1C95E0;
-	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0631C95E6;
+	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FJfFYGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+D78xul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783E91A189B;
-	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6091C95E4;
+	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683730; cv=none; b=hwsMitI/aQK8nIZSaAOQ4wmBS4TCHjF/VQpGtB++LeiUMXUUZsFqM3IepPlKAe2MTAu2wNsm/pAllHMbx+LBP6pcosLU5eMnwf7AQ1PwKq6v1ismGdh7j0lZR6I8ZykPZ836EjZS1DkJA2QEyL1RiXRV6G5jcRfBxhU1wPBFwEk=
+	t=1717683731; cv=none; b=K9VrK58i30Jq23rNQYdHdd94VthQ8y7f01bOnvzvqEIiXjIS2yvdEJzV/ZsuWI5dbcDdNT9YCEc14UFWeQjNFprcffgiykyFoKhp5gG744S8+9CLjRZmNpUNtvu1uSQFhdNRbJcaOkoi4miDzSK8krWBjXYTmWMoTQQKFMciD5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683730; c=relaxed/simple;
-	bh=Qfyv//P5+UoordB5HvfMWbpMYQewG88hcCUX1x2Ljac=;
+	s=arc-20240116; t=1717683731; c=relaxed/simple;
+	bh=6UeF1PHHEKjEY/1drgwQ2Z85pDyv8y5eCRLtwJvFMTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDAzu+hjfA8z2oIbhXscclIL6xXsvIoV3M3iOoZ6R1EJydzC9/IEez/uwafbH0KnJZz5RZ8jVkyN+cEh67AtY4RIZIUaFkwZo3CmzwYHo5tOoV6s1k3SZdr5u5fXVxuLlRvrGowt6KCywRxh4OpJc6PLmgCLqOv1BxH+aSYfKwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FJfFYGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E8BC2BD10;
-	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
+	 MIME-Version; b=DM14rqnHKPU8cSKxm55BZjCBJxx693fGOtjaIeODSSAbGUQNFGDYeg0PMWJ1RmffBgjDLrLsR+xJ3PejX7DDGUVEyg7jy1zHIxMPobUo4FXBh1Ipcmp/+LITWtI0qQLD+UkRCQBHbfpLcbstCwVEBrspc1zJR3QzoET+2t3GYvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+D78xul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D8FC32781;
+	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683730;
-	bh=Qfyv//P5+UoordB5HvfMWbpMYQewG88hcCUX1x2Ljac=;
+	s=korg; t=1717683731;
+	bh=6UeF1PHHEKjEY/1drgwQ2Z85pDyv8y5eCRLtwJvFMTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0FJfFYGxw8d3rF7dh7qR3BnDAqjOIgs8wJbf+G4JP0lH4OLokFpU4+Spr+xaM+uEx
-	 wULT1ygbxwVt7dKZ1cOe6bPdOKV44lS3nQmA8uRbMdAd/5CACKyxmdhgCI607v1VXg
-	 D9x6hMluzUigKe78AYoursvASh5iINvLuPUqlrzg=
+	b=d+D78xulAt6Sxh/XeVjbw1SsLgElO/TdrQsEljFu5T4O3d6DJww/6nI/amtJh466a
+	 oDSzAfUKGj0AmrIbIBfA/4XDH+ZVcUCrEMKJ7EoZMl1vRebd0/j8gTpOQqPzRjCXPC
+	 WkXYlveGSRYYeiHtRUoTq6J01TufxjEuOC/CHZL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
 	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
 	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 681/744] nvme-multipath: fix io accounting on failover
-Date: Thu,  6 Jun 2024 16:05:53 +0200
-Message-ID: <20240606131754.330638525@linuxfoundation.org>
+Subject: [PATCH 6.6 682/744] nvmet: fix ns enable/disable possible hang
+Date: Thu,  6 Jun 2024 16:05:54 +0200
+Message-ID: <20240606131754.362954757@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,64 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit a2e4c5f5f68dbd206f132bc709b98dea64afc3b8 ]
+[ Upstream commit f97914e35fd98b2b18fb8a092e0a0799f73afdfe ]
 
-There are io stats accounting that needs to be handled, so don't call
-blk_mq_end_request() directly. Use the existing nvme_end_req() helper
-that already handles everything.
+When disabling an nvmet namespace, there is a period where the
+subsys->lock is released, as the ns disable waits for backend IO to
+complete, and the ns percpu ref to be properly killed. The original
+intent was to avoid taking the subsystem lock for a prolong period as
+other processes may need to acquire it (for example new incoming
+connections).
 
-Fixes: d4d957b53d91ee ("nvme-multipath: support io stats on the mpath device")
+However, it opens up a window where another process may come in and
+enable the ns, (re)intiailizing the ns percpu_ref, causing the disable
+sequence to hang.
+
+Solve this by taking the global nvmet_config_sem over the entire configfs
+enable/disable sequence.
+
+Fixes: a07b4970f464 ("nvmet: add a generic NVMe target")
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c      | 2 +-
- drivers/nvme/host/multipath.c | 3 ++-
- drivers/nvme/host/nvme.h      | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/nvme/target/configfs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 35eaa5c6c0c15..94a0916f9cb78 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -377,7 +377,7 @@ static inline void nvme_end_req_zoned(struct request *req)
- 			le64_to_cpu(nvme_req(req)->result.u64));
+diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
+index f999e18e4561d..384cd2b540d0c 100644
+--- a/drivers/nvme/target/configfs.c
++++ b/drivers/nvme/target/configfs.c
+@@ -538,10 +538,18 @@ static ssize_t nvmet_ns_enable_store(struct config_item *item,
+ 	if (kstrtobool(page, &enable))
+ 		return -EINVAL;
+ 
++	/*
++	 * take a global nvmet_config_sem because the disable routine has a
++	 * window where it releases the subsys-lock, giving a chance to
++	 * a parallel enable to concurrently execute causing the disable to
++	 * have a misaccounting of the ns percpu_ref.
++	 */
++	down_write(&nvmet_config_sem);
+ 	if (enable)
+ 		ret = nvmet_ns_enable(ns);
+ 	else
+ 		nvmet_ns_disable(ns);
++	up_write(&nvmet_config_sem);
+ 
+ 	return ret ? ret : count;
  }
- 
--static inline void nvme_end_req(struct request *req)
-+void nvme_end_req(struct request *req)
- {
- 	blk_status_t status = nvme_error_status(nvme_req(req)->status);
- 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index b39553b8378b5..3ac0cc22207dc 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -118,7 +118,8 @@ void nvme_failover_req(struct request *req)
- 	blk_steal_bios(&ns->head->requeue_list, req);
- 	spin_unlock_irqrestore(&ns->head->requeue_lock, flags);
- 
--	blk_mq_end_request(req, 0);
-+	nvme_req(req)->status = 0;
-+	nvme_end_req(req);
- 	kblockd_schedule_work(&ns->head->requeue_work);
- }
- 
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 2c510c4e21c66..fd67240795e3a 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -761,6 +761,7 @@ static inline bool nvme_state_terminal(struct nvme_ctrl *ctrl)
- 	}
- }
- 
-+void nvme_end_req(struct request *req);
- void nvme_complete_rq(struct request *req);
- void nvme_complete_batch_req(struct request *req);
- 
 -- 
 2.43.0
 
