@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-48635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4658FE9DB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4E28FEEE0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75DCC2899A5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6610B288093
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F3519CCF2;
-	Thu,  6 Jun 2024 14:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AFC1C89EB;
+	Thu,  6 Jun 2024 14:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErzdX9fT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CB1rb3A1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A083B198E6A;
-	Thu,  6 Jun 2024 14:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDBF199230;
+	Thu,  6 Jun 2024 14:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683072; cv=none; b=ITYuv0dheZZt7gaT7UmZB4cZTxcTaMdQG4wmjzes9Z0WMQEjEbtpXTF+5Zw6uPw5kMDRoCWgTqCKb9nCQLCTr5rxKciaSQi4WhEOVcIr0a3nos45TJuKW/+5bxQrcDFBiEwNBTCtzAU0Av7NM87yzF6kFTIaWupO8ay0RSkztiM=
+	t=1717683711; cv=none; b=kpqN4fF/Ri5afquhltokvGJFyv7sAxGkrqKkpMWqQtHNYLY0JeWbrKz7dqynN5kuyOxuAjnTlOUvaFeFdNiab4thdCwjEPEdcfFjTg9QEG6spUghB8ai8szLHETaqW2en1ZUoE+0rO3kbtjzSkH9lIGeXDfnCj/s8cHKmMIFwyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683072; c=relaxed/simple;
-	bh=2BFtFDfKugUKKKFE23FURCNheAhoCG0TNB8+gyJSsis=;
+	s=arc-20240116; t=1717683711; c=relaxed/simple;
+	bh=O8rrvzhObgyzBgulAHXHz96nM2/Xh4BXey2OZjoWZmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hmt2MLHKdrBEHKW3L2+l7N1g3NoFsNyb3T3sm0STZqAHzCzF0K2rHG394ayQnQId8Rp7hcLioM0PxocAu8hCs/stNh05H3g42piwbFbLCUhOZwkUVPDUXXbDLg0YEji+ZOhRFtKzdYJrx8ZtelbXJfR/AyfpV8No/45akgeOtsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErzdX9fT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815FDC2BD10;
-	Thu,  6 Jun 2024 14:11:12 +0000 (UTC)
+	 MIME-Version; b=fRNP0fJCt/p+YTBrsQtcH4BkFGA6dAFgdH+UgXEIlx5zcL85G+BosWpO1GAFr2HEB7GyB+Ep69Az9+I5F+7tjmUuahJsFPbGc/+ImHcrB5rMXzRtv6ayE6zebj3XkWp7gPoklDZxWwtLG4ioBshHzkqXLRVttS9xMuoZ18jRCeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CB1rb3A1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E83C2BD10;
+	Thu,  6 Jun 2024 14:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683072;
-	bh=2BFtFDfKugUKKKFE23FURCNheAhoCG0TNB8+gyJSsis=;
+	s=korg; t=1717683711;
+	bh=O8rrvzhObgyzBgulAHXHz96nM2/Xh4BXey2OZjoWZmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ErzdX9fTg+OyoP90GiSfBnFzXkZEhptpm6cTxynVicOINqjickYPHN/quzahFNAOz
-	 OBWvdDY54nkFZrb9Lg8YKcfgIU+pcP1UjrLTTdslNy5R9qxictHh8qQqV40+A+9Sxg
-	 O1N+wmGt7qJieQ2PlorCeYdnlC9QoqRXoje2EVrQ=
+	b=CB1rb3A12xXd5UfuxO+L1ygc2MN3wLSKhPvuxQ1ym0IwbWmpmi/vGp33y32emFDhl
+	 euuw/tB2usUtUg0/Y4G6u5hUW3Q7+WdPgcMEP1CoBbIZH+vrCQjbhwYq9vRMY85FX0
+	 ojpEh4o91gYVfDuLGEse02/EkTAJUA8J8GAfXXZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sagi Grimberg <sagi.grimberg@vastdata.com>,
+	Dan Aloni <dan.aloni@vastdata.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 335/374] netfilter: nft_payload: skbuff vlan metadata mangle support
+Subject: [PATCH 6.6 642/744] rpcrdma: fix handling for RDMA_CM_EVENT_DEVICE_REMOVAL
 Date: Thu,  6 Jun 2024 16:05:14 +0200
-Message-ID: <20240606131703.072072054@linuxfoundation.org>
+Message-ID: <20240606131753.061995081@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,149 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Dan Aloni <dan.aloni@vastdata.com>
 
-[ Upstream commit 33c563ebf8d3deed7d8addd20d77398ac737ef9a ]
+[ Upstream commit 4836da219781ec510c4c0303df901aa643507a7a ]
 
-Userspace assumes vlan header is present at a given offset, but vlan
-offload allows to store this in metadata fields of the skbuff. Hence
-mangling vlan results in a garbled packet. Handle this transparently by
-adding a parser to the kernel.
+Under the scenario of IB device bonding, when bringing down one of the
+ports, or all ports, we saw xprtrdma entering a non-recoverable state
+where it is not even possible to complete the disconnect and shut it
+down the mount, requiring a reboot. Following debug, we saw that
+transport connect never ended after receiving the
+RDMA_CM_EVENT_DEVICE_REMOVAL callback.
 
-If vlan metadata is present and payload offset is over 12 bytes (source
-and destination mac address fields), then subtract vlan header present
-in vlan metadata, otherwise mangle vlan metadata based on offset and
-length, extracting data from the source register.
+The DEVICE_REMOVAL callback is irrespective of whether the CM_ID is
+connected, and ESTABLISHED may not have happened. So need to work with
+each of these states accordingly.
 
-This is similar to:
-
-  8cfd23e67401 ("netfilter: nft_payload: work around vlan header stripping")
-
-to deal with vlan payload mangling.
-
-Fixes: 7ec3f7b47b8d ("netfilter: nft_payload: add packet mangling support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 2acc5cae2923 ('xprtrdma: Prevent dereferencing r_xprt->rx_ep after it is freed')
+Cc: Sagi Grimberg <sagi.grimberg@vastdata.com>
+Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_payload.c | 72 +++++++++++++++++++++++++++++++++----
- 1 file changed, 65 insertions(+), 7 deletions(-)
+ net/sunrpc/xprtrdma/verbs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index a3cb5dbcb362c..0c43d748e23ae 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -145,12 +145,12 @@ int nft_payload_inner_offset(const struct nft_pktinfo *pkt)
- 	return pkt->inneroff;
- }
- 
--static bool nft_payload_need_vlan_copy(const struct nft_payload *priv)
-+static bool nft_payload_need_vlan_adjust(u32 offset, u32 len)
- {
--	unsigned int len = priv->offset + priv->len;
-+	unsigned int boundary = offset + len;
- 
- 	/* data past ether src/dst requested, copy needed */
--	if (len > offsetof(struct ethhdr, h_proto))
-+	if (boundary > offsetof(struct ethhdr, h_proto))
- 		return true;
- 
- 	return false;
-@@ -174,7 +174,7 @@ void nft_payload_eval(const struct nft_expr *expr,
- 			goto err;
- 
- 		if (skb_vlan_tag_present(skb) &&
--		    nft_payload_need_vlan_copy(priv)) {
-+		    nft_payload_need_vlan_adjust(priv->offset, priv->len)) {
- 			if (!nft_payload_copy_vlan(dest, skb,
- 						   priv->offset, priv->len))
- 				goto err;
-@@ -801,21 +801,79 @@ struct nft_payload_set {
- 	u8			csum_flags;
- };
- 
-+/* This is not struct vlan_hdr. */
-+struct nft_payload_vlan_hdr {
-+	__be16			h_vlan_proto;
-+	__be16			h_vlan_TCI;
-+};
-+
-+static bool
-+nft_payload_set_vlan(const u32 *src, struct sk_buff *skb, u8 offset, u8 len,
-+		     int *vlan_hlen)
-+{
-+	struct nft_payload_vlan_hdr *vlanh;
-+	__be16 vlan_proto;
-+	u16 vlan_tci;
-+
-+	if (offset >= offsetof(struct vlan_ethhdr, h_vlan_encapsulated_proto)) {
-+		*vlan_hlen = VLAN_HLEN;
-+		return true;
-+	}
-+
-+	switch (offset) {
-+	case offsetof(struct vlan_ethhdr, h_vlan_proto):
-+		if (len == 2) {
-+			vlan_proto = nft_reg_load_be16(src);
-+			skb->vlan_proto = vlan_proto;
-+		} else if (len == 4) {
-+			vlanh = (struct nft_payload_vlan_hdr *)src;
-+			__vlan_hwaccel_put_tag(skb, vlanh->h_vlan_proto,
-+					       ntohs(vlanh->h_vlan_TCI));
-+		} else {
-+			return false;
+diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
+index 28c0771c4e8c3..4f71627ba39ce 100644
+--- a/net/sunrpc/xprtrdma/verbs.c
++++ b/net/sunrpc/xprtrdma/verbs.c
+@@ -244,7 +244,11 @@ rpcrdma_cm_event_handler(struct rdma_cm_id *id, struct rdma_cm_event *event)
+ 	case RDMA_CM_EVENT_DEVICE_REMOVAL:
+ 		pr_info("rpcrdma: removing device %s for %pISpc\n",
+ 			ep->re_id->device->name, sap);
+-		fallthrough;
++		switch (xchg(&ep->re_connect_status, -ENODEV)) {
++		case 0: goto wake_connect_worker;
++		case 1: goto disconnected;
 +		}
-+		break;
-+	case offsetof(struct vlan_ethhdr, h_vlan_TCI):
-+		if (len != 2)
-+			return false;
-+
-+		vlan_tci = ntohs(nft_reg_load_be16(src));
-+		skb->vlan_tci = vlan_tci;
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static void nft_payload_set_eval(const struct nft_expr *expr,
- 				 struct nft_regs *regs,
- 				 const struct nft_pktinfo *pkt)
- {
- 	const struct nft_payload_set *priv = nft_expr_priv(expr);
--	struct sk_buff *skb = pkt->skb;
- 	const u32 *src = &regs->data[priv->sreg];
--	int offset, csum_offset;
-+	int offset, csum_offset, vlan_hlen = 0;
-+	struct sk_buff *skb = pkt->skb;
- 	__wsum fsum, tsum;
- 
- 	switch (priv->base) {
- 	case NFT_PAYLOAD_LL_HEADER:
- 		if (!skb_mac_header_was_set(skb))
- 			goto err;
--		offset = skb_mac_header(skb) - skb->data;
-+
-+		if (skb_vlan_tag_present(skb) &&
-+		    nft_payload_need_vlan_adjust(priv->offset, priv->len)) {
-+			if (!nft_payload_set_vlan(src, skb,
-+						  priv->offset, priv->len,
-+						  &vlan_hlen))
-+				goto err;
-+
-+			if (!vlan_hlen)
-+				return;
-+		}
-+
-+		offset = skb_mac_header(skb) - skb->data - vlan_hlen;
- 		break;
- 	case NFT_PAYLOAD_NETWORK_HEADER:
- 		offset = skb_network_offset(skb);
++		return 0;
+ 	case RDMA_CM_EVENT_ADDR_CHANGE:
+ 		ep->re_connect_status = -ENODEV;
+ 		goto disconnected;
 -- 
 2.43.0
 
