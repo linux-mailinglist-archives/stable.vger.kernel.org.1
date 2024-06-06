@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7198FE9E7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACAE08FEF21
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 124E31C257A7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD5631C22CDC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369C019D065;
-	Thu,  6 Jun 2024 14:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADABE1C9EB3;
+	Thu,  6 Jun 2024 14:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZUwD2Z8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KJN0C8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E748119CD1F;
-	Thu,  6 Jun 2024 14:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFA11A2555;
+	Thu,  6 Jun 2024 14:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683078; cv=none; b=mIhtE48GCXq4KHpSklHNmLXn1chyUSxXUiNlbino8vzSoEFHwIfEspwZeWmCI76gVPWp0qiU8PUTTTtcivp+JA+3h9Bc1J1VJzhqpI8oXpS3K2eHwdAevQVPrMVWx8VcyASj29/d429upFMPkFdJ3+Z32tz13pjCChyJGpoea1c=
+	t=1717683742; cv=none; b=fpYHwYHkAoPrH/IO/hNwGEVW1CG14HpAAn+EObIJvX+cTW5T3HFETYd6+J/AiCs2tPDsBfYoRkf3Ma3jqqDcQERpkjiLZuANUW1/77YIct6HOxFoBXznQo9Gr8T8QPKRotuS0xG45ylfCn3rYLYl2jIdxRJEnEXLB8BejpfxIZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683078; c=relaxed/simple;
-	bh=JuULKSaMVKvRL7boeLYje8iQ4XWhUITij80ZT83B9is=;
+	s=arc-20240116; t=1717683742; c=relaxed/simple;
+	bh=WyintSlbMKC4KUz+kkCXfiqrBhaasU5Ll0/AvhRtMgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mel+tIKPZ0ENmw0wIfwJLLeV9oPUqV8ptxXZtrwFJYspNutfdjGohGQLeqdz/L0JfcLqPaqmvn4zllYNzuP2o3MegLepO+F6UdJBVc63BEKkHHdd3yZZWqZFzzFYCV4RBgK5aiMubPxrtr1WZsB8wCREh6VH1UDeJ7eko7BD0oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZUwD2Z8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84D7C32786;
-	Thu,  6 Jun 2024 14:11:17 +0000 (UTC)
+	 MIME-Version; b=JyD349HGdF368ojs1ByQ9KPAckJJ5iAqALYEZ9ochf55Wiyu7JwcEcx/nT7WGnizTcd5gLx8XPcuyN5/7AhElv69mZnxF0x7xGwOeS5djeg6VBskFvq3k5M1WChp+CZPM2HrsK60AGuHkNiXu6gEdGvk2jUOZVmrjIgd5FWxdN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KJN0C8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A68C32781;
+	Thu,  6 Jun 2024 14:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683077;
-	bh=JuULKSaMVKvRL7boeLYje8iQ4XWhUITij80ZT83B9is=;
+	s=korg; t=1717683742;
+	bh=WyintSlbMKC4KUz+kkCXfiqrBhaasU5Ll0/AvhRtMgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZUwD2Z84yuTxos0EIm6Gvm0NfKnxAD2hR3UbwrJdXMNaaonku3GLrIRcxP7yZAyQ
-	 7dZY3n4/03V8NJIv7UHHV9cDYHjTnEOv3MFJU98BHoaHcaWp+TadGxXoYf8mfO2fvH
-	 CRIwTPepIJ3B3oODrVAEgXxasgmog3bsd/MYm9ec=
+	b=1KJN0C8MNcl3gytqdKfqisuXQi+p0FzVZfqBKCCfSz2UOnIEjkE3EBagcC/DCktu/
+	 6QdzUCeyvw6SycZw2OSwOl5MCA+KIr45nKEpv5aGHOKZrCDcZVjdvWQVrDyU63wk7L
+	 T8GdVz9dCzwSwLJF22pLOCvxHYvZRugqMcXAyKrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yang Li <yang.lee@linux.alibaba.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 345/374] drm/amdgpu: Adjust logic in amdgpu_device_partner_bandwidth()
+Subject: [PATCH 6.6 652/744] rv: Update rv_en(dis)able_monitor doc to match kernel-doc
 Date: Thu,  6 Jun 2024 16:05:24 +0200
-Message-ID: <20240606131703.419123480@linuxfoundation.org>
+Message-ID: <20240606131753.382180831@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Yang Li <yang.lee@linux.alibaba.com>
 
-[ Upstream commit ba46b3bda296c4f82b061ac40b90f49d2a00a380 ]
+[ Upstream commit 1e8b7b3dbb3103d577a586ca72bc329f7b67120b ]
 
-Use current speed/width on devices which don't support
-dynamic PCIe switching.
+The patch updates the function documentation comment for
+rv_en(dis)able_monitor to adhere to the kernel-doc specification.
 
-Fixes: 466a7d115326 ("drm/amd: Use the first non-dGPU PCI device for BW limits")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3289
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/linux-trace-kernel/20240520054239.61784-1-yang.lee@linux.alibaba.com
+
+Fixes: 102227b970a15 ("rv: Add Runtime Verification (RV) interface")
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ kernel/trace/rv/rv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 7753a2e64d411..941d6e379b8a6 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5809,13 +5809,18 @@ static void amdgpu_device_partner_bandwidth(struct amdgpu_device *adev,
- 	*speed = PCI_SPEED_UNKNOWN;
- 	*width = PCIE_LNK_WIDTH_UNKNOWN;
+diff --git a/kernel/trace/rv/rv.c b/kernel/trace/rv/rv.c
+index 2f68e93fff0bc..df0745a42a3f3 100644
+--- a/kernel/trace/rv/rv.c
++++ b/kernel/trace/rv/rv.c
+@@ -245,6 +245,7 @@ static int __rv_disable_monitor(struct rv_monitor_def *mdef, bool sync)
  
--	while ((parent = pci_upstream_bridge(parent))) {
--		/* skip upstream/downstream switches internal to dGPU*/
--		if (parent->vendor == PCI_VENDOR_ID_ATI)
--			continue;
--		*speed = pcie_get_speed_cap(parent);
--		*width = pcie_get_width_cap(parent);
--		break;
-+	if (amdgpu_device_pcie_dynamic_switching_supported(adev)) {
-+		while ((parent = pci_upstream_bridge(parent))) {
-+			/* skip upstream/downstream switches internal to dGPU*/
-+			if (parent->vendor == PCI_VENDOR_ID_ATI)
-+				continue;
-+			*speed = pcie_get_speed_cap(parent);
-+			*width = pcie_get_width_cap(parent);
-+			break;
-+		}
-+	} else {
-+		/* use the current speeds rather than max if switching is not supported */
-+		pcie_bandwidth_available(adev->pdev, NULL, speed, width);
- 	}
- }
+ /**
+  * rv_disable_monitor - disable a given runtime monitor
++ * @mdef: Pointer to the monitor definition structure.
+  *
+  * Returns 0 on success.
+  */
+@@ -256,6 +257,7 @@ int rv_disable_monitor(struct rv_monitor_def *mdef)
  
+ /**
+  * rv_enable_monitor - enable a given runtime monitor
++ * @mdef: Pointer to the monitor definition structure.
+  *
+  * Returns 0 on success, error otherwise.
+  */
 -- 
 2.43.0
 
