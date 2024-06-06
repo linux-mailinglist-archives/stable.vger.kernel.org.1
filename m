@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-49061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD0B8FEBB3
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6B08FEBB4
 	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0435DB25C58
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB4571C251B3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3706B196DAA;
-	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B10C1ABCB7;
+	Thu,  6 Jun 2024 14:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRMljDn8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tRXogX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A09197A8F;
-	Thu,  6 Jun 2024 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB3C197A8F;
+	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683283; cv=none; b=SjnRheZY3oYK60CxI3x2Ey3i1AtyhOqbn6aLuf279W2zHBnFBHknj6z+4Thg6xHeMvf4Zsx4onsZfDaOD2jgNNf5nqd5+Thefa1SQOjFH0jp/3teyAruE1OA1MdO9Q+Y+pAzmy6GqsJ6bW7km6SwoV4RSFSGkrraKODqdeK3xhM=
+	t=1717683284; cv=none; b=lel5bMUdqhV+5OWr7C5J8g5xLGUOKrc0fnnln1q5MFhZOz8XPlvC/dO6+cuhWgf1hO9EQ72tL8u0Yg718CF8+wVZfVDZHnAuvBZI8S1BYqMbA10IFwMBadHB5AaRQv4BgbbIFCT9w6aDvtfqGKZGXT/TT35c/v1j3ZnIIFNbbm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683283; c=relaxed/simple;
-	bh=3echm78q7bfVRMy9llIJWbU7Pz+7jgvXhclvfgIoThg=;
+	s=arc-20240116; t=1717683284; c=relaxed/simple;
+	bh=ZA/tkY6vVjQ70nU5ngZQs5iMYMsMOApoMcFs7yfhn1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UuhOOQC8ZtMab5xJRk3Is3nVzNKqO+fP8vVQchqUx0hRJWutZSKVUfwQG2Pok2/IGjrNGzQeOdflZP4VcHUeIGOVYbU8C0muy2HYiLEBAO21cowUImLXvoj3dVluKeW4754bQBwPjIUmU3xzd11C73z8Dj8jCmfpoNKo/XdBEXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRMljDn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C465AC2BD10;
-	Thu,  6 Jun 2024 14:14:42 +0000 (UTC)
+	 MIME-Version; b=YWRW8Y+xCKxxGFj7hZ5BrewU9S5ThGngQe83dk99QIeB/lCJaagOa1qMcRxQLAeq0n7KAVBWKCXc6HqVkZ7X5fFJHlZzu9mofT1WyQzt/EZDP2Z1oqr3P/tXI9wqRfkvAvomgCUQ/BjyL0GtFT3saygETIzhDBLy710aI5cqUic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tRXogX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9414C2BD10;
+	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683282;
-	bh=3echm78q7bfVRMy9llIJWbU7Pz+7jgvXhclvfgIoThg=;
+	s=korg; t=1717683283;
+	bh=ZA/tkY6vVjQ70nU5ngZQs5iMYMsMOApoMcFs7yfhn1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XRMljDn8cHoVAQSjMAUhTXWXeCI3wDsODKhFYDNFj2W08FIpxGcO1osDVzWjBXMae
-	 CNIvdEv7N0/xlb/3a+NztS0zo44MMDv3yVGp5INwXrJcsjXMUxXqQEmNjBJd2TcsbZ
-	 F0Dd+bIMibabFj6zPHhSYbIhxy+3JzdGQHFUOb0g=
+	b=0tRXogX3TEHlx3mxsylLSSLNpcwsT9WpBIHLYMt0Z2N/v5DXArEpq0EoLEu7QumYQ
+	 QK2O7JOBeubvOLAHcRIPfajUsLznahH/NmrHVuBs3TasjS9P5VcLgFDsPARQMCZJaF
+	 XavbNt+6CbVwnadmS0Tomz/LgudBn7w65OmvBjgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/744] selftests/bpf: Fix pointer arithmetic in test_xdp_do_redirect
-Date: Thu,  6 Jun 2024 15:58:16 +0200
-Message-ID: <20240606131739.580618084@linuxfoundation.org>
+Subject: [PATCH 6.6 225/744] HID: intel-ish-hid: ipc: Add check for pci_alloc_irq_vectors
+Date: Thu,  6 Jun 2024 15:58:17 +0200
+Message-ID: <20240606131739.614417963@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -61,64 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit e549b39a0ab8880d7ae6c6495b00fc1cb8f36174 ]
+[ Upstream commit 6baa4524027fd64d7ca524e1717c88c91a354b93 ]
 
-Cast operation has a higher precedence than addition. The code here
-wants to zero the 2nd half of the 64-bit metadata, but due to a pointer
-arithmetic mistake, it writes the zero at offset 16 instead.
+Add a check for the return value of pci_alloc_irq_vectors() and return
+error if it fails.
 
-Just adding parentheses around "data + 4" would fix this, but I think
-this will be slightly better readable with array syntax.
-
-I was unable to test this with tools/testing/selftests/bpf/vmtest.sh,
-because my glibc is newer than glibc in the provided VM image.
-So I just checked the difference in the compiled code.
-objdump -S tools/testing/selftests/bpf/xdp_do_redirect.test.o:
-  -	*((__u32 *)data) = 0x42; /* metadata test value */
-  +	((__u32 *)data)[0] = 0x42; /* metadata test value */
-        be7:	48 8d 85 30 fc ff ff 	lea    -0x3d0(%rbp),%rax
-        bee:	c7 00 42 00 00 00    	movl   $0x42,(%rax)
-  -	*((__u32 *)data + 4) = 0;
-  +	((__u32 *)data)[1] = 0;
-        bf4:	48 8d 85 30 fc ff ff 	lea    -0x3d0(%rbp),%rax
-  -     bfb:	48 83 c0 10          	add    $0x10,%rax
-  +     bfb:	48 83 c0 04          	add    $0x4,%rax
-        bff:	c7 00 00 00 00 00    	movl   $0x0,(%rax)
-
-Fixes: 5640b6d89434 ("selftests/bpf: fix "metadata marker" getting overwritten by the netstack")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://lore.kernel.org/bpf/20240506145023.214248-1-mschmidt@redhat.com
+[jkosina@suse.com: reworded changelog based on Srinivas' suggestion]
+Fixes: 74fbc7d371d9 ("HID: intel-ish-hid: add MSI interrupt support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c b/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c
-index 498d3bdaa4b0b..bad0ea167be70 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c
-@@ -107,8 +107,8 @@ void test_xdp_do_redirect(void)
- 			    .attach_point = BPF_TC_INGRESS);
+diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+index 710fda5f19e1c..916d427163ca2 100644
+--- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
++++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+@@ -216,6 +216,11 @@ static int ish_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
- 	memcpy(&data[sizeof(__u64)], &pkt_udp, sizeof(pkt_udp));
--	*((__u32 *)data) = 0x42; /* metadata test value */
--	*((__u32 *)data + 4) = 0;
-+	((__u32 *)data)[0] = 0x42; /* metadata test value */
-+	((__u32 *)data)[1] = 0;
+ 	/* request and enable interrupt */
+ 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0) {
++		dev_err(dev, "ISH: Failed to allocate IRQ vectors\n");
++		return ret;
++	}
++
+ 	if (!pdev->msi_enabled && !pdev->msix_enabled)
+ 		irq_flag = IRQF_SHARED;
  
- 	skel = test_xdp_do_redirect__open();
- 	if (!ASSERT_OK_PTR(skel, "skel"))
 -- 
 2.43.0
 
