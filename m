@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-49129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F191B8FEBFA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F148FEBFB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91BDF281642
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 595571C23294
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E9419AA6F;
-	Thu,  6 Jun 2024 14:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD3419AA6E;
+	Thu,  6 Jun 2024 14:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSMiBqit"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8lWlebL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1844719AA6D;
-	Thu,  6 Jun 2024 14:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4871AC25F;
+	Thu,  6 Jun 2024 14:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683316; cv=none; b=LrULbjAKXmIJEK7+HbMsSGgbd4N/zcmhkK6MPDj6leVxaZDPtgZrMkNI4x5NQTQfRMn+Axi9so1Pow31wuALH/XU6S6RqgwLbSI3PeDqaGYHUlxlr5N+uEOAIbYbZzzMj1PXA5L4/ImuDgloGKm1d5N8iVx5jf7xRvy/91mCBLU=
+	t=1717683317; cv=none; b=GU5VhI/AkDHARkwJxwRcimGO0hU2v91tY4aXo3L8X8/P82M6wA4HQVpgWIOGxhJhJc6JeBQV5hDtTGwywSnlW1WO9sGaZ0HmEQ2sc+JmFa/EY/oQVCkkl1mkKpxue9sRvMo4TWBY2+KqnPc7TOjHbnAfgPOMiOzSlfsrXUNGhMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683316; c=relaxed/simple;
-	bh=k7aMMyWPYSVHWe1iBbPYoJtYLKnz26QcWancLRwbDmA=;
+	s=arc-20240116; t=1717683317; c=relaxed/simple;
+	bh=BP9b7CGACDeHDt+9ZsbdlkLCDkueZF8RCkIkOQno5dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5LiXzCJM0fbd8zFX53rbfgZ9w7SUWvNEadjw7dY/yZtUGrfQl7CzYfXnyNgOt3XMGT/22NivUh7w2p9VLAbA4cGiPf4vMViA0dsdLx8jyxxnbX9reZwspwgknfIzIGR3Upk7GxupEHeK7CqMhmVOrLlIOfzKMLOoOenYnaFe4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSMiBqit; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8370C2BD10;
-	Thu,  6 Jun 2024 14:15:15 +0000 (UTC)
+	 MIME-Version; b=Xa+rinz0mawzZ+rtmtGVr08KY9i1m+we7HcRdPDqt/YJg4HiU4RONjdxPpMrnD1yAGPLjwVl3MsAT3wPXjsY3aNqZtdVUw0UYBUwYu6IBrMVueTOyFTYOfXW30C4maHRzBmi29msz9jWA2QFycVJfnMB7LN6FvPQZh7ZqzTZTaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8lWlebL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CB9C32781;
+	Thu,  6 Jun 2024 14:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1717683316;
-	bh=k7aMMyWPYSVHWe1iBbPYoJtYLKnz26QcWancLRwbDmA=;
+	bh=BP9b7CGACDeHDt+9ZsbdlkLCDkueZF8RCkIkOQno5dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSMiBqitor+a00bQB2PdkHS1Oa0rrSSaSoR+zuPKA0sRp+yZYrF2PkyCpHFRfYL08
-	 YjATGN4JTC0RzCaeSj/gT6r8OLnuVPJT8wMcn8jQX4NuB5Pzv0OqlAZe00R+iRM/fI
-	 GJSUvyxE/TARxU+KX9SGzOUbfWfzK6rAFU72DOEg=
+	b=P8lWlebLeFmkAw2N1L+EAYgiAQWhSXwALkXz6eYjAo8LUPwSUuj4hcL6rTMdYZnn/
+	 dkl6W4QTCi+zqK0CkCL/7ftdDz9jnhQQuQNLPZpRN5YqkRN6hZaro0NWah+Xjeghx9
+	 1MW1f69kjcx1M57iwGHaATPse2gZ+Mjyg0xUzcos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Duoming Zhou <duoming@zju.edu.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 256/744] ax25: Fix reference count leak issues of ax25_dev
-Date: Thu,  6 Jun 2024 15:58:48 +0200
-Message-ID: <20240606131740.617877081@linuxfoundation.org>
+Subject: [PATCH 6.6 257/744] ax25: Fix reference count leak issue of net_device
+Date: Thu,  6 Jun 2024 15:58:49 +0200
+Message-ID: <20240606131740.648114066@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,70 +69,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit b505e0319852b08a3a716b64620168eab21f4ced ]
+[ Upstream commit 36e56b1b002bb26440403053f19f9e1a8bc075b2 ]
 
-The ax25_addr_ax25dev() and ax25_dev_device_down() exist a reference
-count leak issue of the object "ax25_dev".
+There is a reference count leak issue of the object "net_device" in
+ax25_dev_device_down(). When the ax25 device is shutting down, the
+ax25_dev_device_down() drops the reference count of net_device one
+or zero times depending on if we goto unlock_put or not, which will
+cause memory leak.
 
-Memory leak issue in ax25_addr_ax25dev():
-
-The reference count of the object "ax25_dev" can be increased multiple
-times in ax25_addr_ax25dev(). This will cause a memory leak.
-
-Memory leak issues in ax25_dev_device_down():
-
-The reference count of ax25_dev is set to 1 in ax25_dev_device_up() and
-then increase the reference count when ax25_dev is added to ax25_dev_list.
-As a result, the reference count of ax25_dev is 2. But when the device is
-shutting down. The ax25_dev_device_down() drops the reference count once
-or twice depending on if we goto unlock_put or not, which will cause
-memory leak.
-
-As for the issue of ax25_addr_ax25dev(), it is impossible for one pointer
-to be on a list twice. So add a break in ax25_addr_ax25dev(). As for the
-issue of ax25_dev_device_down(), increase the reference count of ax25_dev
-once in ax25_dev_device_up() and decrease the reference count of ax25_dev
-after it is removed from the ax25_dev_list.
+In order to solve the above issue, decrease the reference count of
+net_device after dev->ax25_ptr is set to null.
 
 Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
 Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
 Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/361bbf2a4b091e120006279ec3b382d73c4a0c17.1715247018.git.duoming@zju.edu.cn
+Link: https://lore.kernel.org/r/7ce3b23a40d9084657ba1125432f0ecc380cbc80.1715247018.git.duoming@zju.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ax25/ax25_dev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ax25/ax25_dev.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
 diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
-index f16ee5c09d07a..52ccc37d5687a 100644
+index 52ccc37d5687a..c9d55b99a7a57 100644
 --- a/net/ax25/ax25_dev.c
 +++ b/net/ax25/ax25_dev.c
-@@ -39,6 +39,7 @@ ax25_dev *ax25_addr_ax25dev(ax25_address *addr)
- 		if (ax25cmp(addr, (const ax25_address *)ax25_dev->dev->dev_addr) == 0) {
- 			res = ax25_dev;
- 			ax25_dev_hold(ax25_dev);
+@@ -118,15 +118,10 @@ void ax25_dev_device_down(struct net_device *dev)
+ 	list_for_each_entry(s, &ax25_dev_list, list) {
+ 		if (s == ax25_dev) {
+ 			list_del(&s->list);
+-			goto unlock_put;
 +			break;
  		}
- 	spin_unlock_bh(&ax25_dev_lock);
+ 	}
+-	dev->ax25_ptr = NULL;
+-	spin_unlock_bh(&ax25_dev_lock);
+-	ax25_dev_put(ax25_dev);
+-	return;
  
-@@ -88,7 +89,6 @@ void ax25_dev_device_up(struct net_device *dev)
- 	list_add(&ax25_dev->list, &ax25_dev_list);
- 	dev->ax25_ptr     = ax25_dev;
- 	spin_unlock_bh(&ax25_dev_lock);
--	ax25_dev_hold(ax25_dev);
- 
- 	ax25_register_dev_sysctl(ax25_dev);
- }
-@@ -129,7 +129,6 @@ void ax25_dev_device_down(struct net_device *dev)
- unlock_put:
+-unlock_put:
  	dev->ax25_ptr = NULL;
  	spin_unlock_bh(&ax25_dev_lock);
--	ax25_dev_put(ax25_dev);
  	netdev_put(dev, &ax25_dev->dev_tracker);
- 	ax25_dev_put(ax25_dev);
- }
 -- 
 2.43.0
 
