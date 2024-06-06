@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-49717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73548FEE8B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CC28FEC9D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E08011C257E1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B08EA1F29030
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8720A1C539C;
-	Thu,  6 Jun 2024 14:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D791198A32;
+	Thu,  6 Jun 2024 14:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kx3vnuVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4Qvuaq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460DB1C5399;
-	Thu,  6 Jun 2024 14:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFE819B3ED;
+	Thu,  6 Jun 2024 14:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683674; cv=none; b=Tu0fSFrJeGsoDO90Z9ZL9mC/f/Sy56Q0qFEgR2gZMOt7/E37zrFWF8GiL6ZQvlS1r4ql7TbRs+/5gFlI3k+tda5kr1KKLjMa5ESedCXLf5SHX9bIQSYvgLRQZYaTBdhJd8HVnH2OKfMYQZiGHUHrQ8PrcJGp39Pj3jPK7Ql6lnQ=
+	t=1717683388; cv=none; b=Q18/hJv/J/oUlMPY2iaUYp2O5CM142luXQ77cL8G9T/VEGylvTOIHCVy+9+NBzjW1JFLH+zv2Couw9KyQfYDpKLiNfuKBJC7DxZ/ywIO7BJ0FxacM0+lFfN+N3aJLAilfJouNcHxzcFPi1cCmtumupHY2t11U21Kb3Uzsw3L2Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683674; c=relaxed/simple;
-	bh=FphWuKzQpHoGkIxX/yYWv2ikPHGlVAwzSu6vkUDWBvo=;
+	s=arc-20240116; t=1717683388; c=relaxed/simple;
+	bh=c5sEd9lUvwoQ7KI2c71K2Ag4XlMEnvDSMtC+50fj6Nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jocODWjjoR9kp4w4lC1P5XZJYRFwvvHPSNDVpJBlAVp5ad3wtVxxe+pkKvju6V9JwjoboD7PHCvQsWGiBbBjq6PixslbKNyjN9fIobjLo//+YDWEfEXkRA7Ga6mloyXHRjDLUa+J9SLQ0t8Ky63yxRph8L+sR20+E/+ApqpCZ2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kx3vnuVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EFEC2BD10;
-	Thu,  6 Jun 2024 14:21:14 +0000 (UTC)
+	 MIME-Version; b=E6AEl88D96K8HcjUju+u80QuswnCAXKk3bh/CW07dH75YuTH5CcCioTCFfDlZCQPLHHHIswXo6pJVsLG1reu9ABifTrB7qeRrfPRYGa/yZ3CS/3p/ee3L5txE/GE68ZMNQKV/TBBomVAauf9LpVuXqvTWyFz/QwksvuOpv6Pelc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4Qvuaq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86F2C2BD10;
+	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683674;
-	bh=FphWuKzQpHoGkIxX/yYWv2ikPHGlVAwzSu6vkUDWBvo=;
+	s=korg; t=1717683387;
+	bh=c5sEd9lUvwoQ7KI2c71K2Ag4XlMEnvDSMtC+50fj6Nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kx3vnuVuOiJLrh7eaP9pmMvRC4/FT81tiFU9Y2THF1J26IC8mMlReRX2WRWO5Jjpc
-	 p2Jrz7/JIxPhmlsoDQVqeilUBYPqjCBY2Fx877NfvUhFmlODqf1Tyypb8xjgX7Opmm
-	 LUWLAmiqIuWvASMslwmlE6YpySwLz7aQSwTy83As=
+	b=G4Qvuaq/S4xqEqeC7q2ninsvb5Sxl/SgHq0ufH1y5rtcifSJXc0WdCBwVdNGm5xP0
+	 axNtkRvkJ3bOnlmn3FC029mOSw68hsT03KFRtvwVLUhp9ACJiWuTCcZJHwjcO8MsHD
+	 kkLEKYjpg2kF+pIiOVk/5ntyaC8ivC4GGuoGgK7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Leo Yan <leo.yan@linaro.org>,
-	Mike Leach <mike.leach@linaro.org>,
-	Jing Zhang <renyu.zj@linux.alibaba.com>,
-	Haixin Yu <yuhaixin.yhx@linux.alibaba.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Namhyung Kim <namhyung@kernel.org>,
+	syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 526/744] perf pmu: Move pmu__find_core_pmu() to pmus.c
-Date: Thu,  6 Jun 2024 16:03:18 +0200
-Message-ID: <20240606131749.309213383@linuxfoundation.org>
+Subject: [PATCH 6.1 270/473] net: bridge: xmit: make sure we have at least eth header len bytes
+Date: Thu,  6 Jun 2024 16:03:19 +0200
+Message-ID: <20240606131708.859507294@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,200 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 3d0f5f456a5786573ba6a3358178c8db580e4b85 ]
+[ Upstream commit 8bd67ebb50c0145fd2ca8681ab65eb7e8cde1afc ]
 
-pmu__find_core_pmu() more logically belongs in pmus.c because it
-iterates over all PMUs, so move it to pmus.c
+syzbot triggered an uninit value[1] error in bridge device's xmit path
+by sending a short (less than ETH_HLEN bytes) skb. To fix it check if
+we can actually pull that amount instead of assuming.
 
-At the same time rename it to perf_pmus__find_core_pmu() to match the
-naming convention in this file.
+Tested with dropwatch:
+ drop at: br_dev_xmit+0xb93/0x12d0 [bridge] (0xffffffffc06739b3)
+ origin: software
+ timestamp: Mon May 13 11:31:53 2024 778214037 nsec
+ protocol: 0x88a8
+ length: 2
+ original length: 2
+ drop reason: PKT_TOO_SMALL
 
-list_prepare_entry() can't be used in perf_pmus__scan_core() anymore now
-that it's called from the same compilation unit. This is with -O2
-(specifically -O1 -ftree-vrp -finline-functions
--finline-small-functions) which allow the bounds of the array
-access to be determined at compile time. list_prepare_entry() subtracts
-the offset of the 'list' member in struct perf_pmu from &core_pmus,
-which isn't a struct perf_pmu. The compiler sees that pmu results in
-&core_pmus - 8 and refuses to compile. At runtime this works because
-list_for_each_entry_continue() always adds the offset back again before
-dereferencing ->next, but it's technically undefined behavior. With
--fsanitize=undefined an additional warning is generated.
+[1]
+BUG: KMSAN: uninit-value in br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
+ br_dev_xmit+0x61d/0x1cb0 net/bridge/br_device.c:65
+ __netdev_start_xmit include/linux/netdevice.h:4903 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4917 [inline]
+ xmit_one net/core/dev.c:3531 [inline]
+ dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3547
+ __dev_queue_xmit+0x34db/0x5350 net/core/dev.c:4341
+ dev_queue_xmit include/linux/netdevice.h:3091 [inline]
+ __bpf_tx_skb net/core/filter.c:2136 [inline]
+ __bpf_redirect_common net/core/filter.c:2180 [inline]
+ __bpf_redirect+0x14a6/0x1620 net/core/filter.c:2187
+ ____bpf_clone_redirect net/core/filter.c:2460 [inline]
+ bpf_clone_redirect+0x328/0x470 net/core/filter.c:2432
+ ___bpf_prog_run+0x13fe/0xe0f0 kernel/bpf/core.c:1997
+ __bpf_prog_run512+0xb5/0xe0 kernel/bpf/core.c:2238
+ bpf_dispatcher_nop_func include/linux/bpf.h:1234 [inline]
+ __bpf_prog_run include/linux/filter.h:657 [inline]
+ bpf_prog_run include/linux/filter.h:664 [inline]
+ bpf_test_run+0x499/0xc30 net/bpf/test_run.c:425
+ bpf_prog_test_run_skb+0x14ea/0x1f20 net/bpf/test_run.c:1058
+ bpf_prog_test_run+0x6b7/0xad0 kernel/bpf/syscall.c:4269
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5678
+ __do_sys_bpf kernel/bpf/syscall.c:5767 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5765 [inline]
+ __x64_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5765
+ x64_sys_call+0x96b/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:322
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Using list_first_entry_or_null() to get the first entry here avoids
-doing &core_pmus - 8 but has the same result and fixes both the compile
-warning and the undefined behavior warning. There are other uses of
-list_prepare_entry() in pmus.c, but the compiler doesn't seem to be
-able to see that they can also be called with &core_pmus, so I won't
-change any at this time.
-
-Signed-off-by: James Clark <james.clark@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Jing Zhang <renyu.zj@linux.alibaba.com>
-Cc: Haixin Yu <yuhaixin.yhx@linux.alibaba.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: https://lore.kernel.org/r/20230913153355.138331-2-james.clark@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Stable-dep-of: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+a63a1f6a062033cf0f40@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a63a1f6a062033cf0f40
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/arch/arm64/util/pmu.c |  6 +++---
- tools/perf/tests/expr.c          |  2 +-
- tools/perf/util/expr.c           |  2 +-
- tools/perf/util/pmu.c            | 17 -----------------
- tools/perf/util/pmu.h            |  2 +-
- tools/perf/util/pmus.c           | 20 +++++++++++++++++++-
- 6 files changed, 25 insertions(+), 24 deletions(-)
+ net/bridge/br_device.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/arch/arm64/util/pmu.c b/tools/perf/arch/arm64/util/pmu.c
-index 615084eb88d8c..3d9330feebd28 100644
---- a/tools/perf/arch/arm64/util/pmu.c
-+++ b/tools/perf/arch/arm64/util/pmu.c
-@@ -10,7 +10,7 @@
- 
- const struct pmu_metrics_table *pmu_metrics_table__find(void)
+diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
+index b82906fc999a3..036ae99d09841 100644
+--- a/net/bridge/br_device.c
++++ b/net/bridge/br_device.c
+@@ -27,6 +27,7 @@ EXPORT_SYMBOL_GPL(nf_br_ops);
+ /* net device transmit always called with BH disabled */
+ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
  {
--	struct perf_pmu *pmu = pmu__find_core_pmu();
-+	struct perf_pmu *pmu = perf_pmus__find_core_pmu();
++	enum skb_drop_reason reason = pskb_may_pull_reason(skb, ETH_HLEN);
+ 	struct net_bridge_mcast_port *pmctx_null = NULL;
+ 	struct net_bridge *br = netdev_priv(dev);
+ 	struct net_bridge_mcast *brmctx = &br->multicast_ctx;
+@@ -38,6 +39,11 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	const unsigned char *dest;
+ 	u16 vid = 0;
  
- 	if (pmu)
- 		return perf_pmu__find_metrics_table(pmu);
-@@ -20,7 +20,7 @@ const struct pmu_metrics_table *pmu_metrics_table__find(void)
- 
- const struct pmu_events_table *pmu_events_table__find(void)
- {
--	struct perf_pmu *pmu = pmu__find_core_pmu();
-+	struct perf_pmu *pmu = perf_pmus__find_core_pmu();
- 
- 	if (pmu)
- 		return perf_pmu__find_events_table(pmu);
-@@ -32,7 +32,7 @@ double perf_pmu__cpu_slots_per_cycle(void)
- {
- 	char path[PATH_MAX];
- 	unsigned long long slots = 0;
--	struct perf_pmu *pmu = pmu__find_core_pmu();
-+	struct perf_pmu *pmu = perf_pmus__find_core_pmu();
- 
- 	if (pmu) {
- 		perf_pmu__pathname_scnprintf(path, sizeof(path),
-diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
-index b177d09078038..cea4a506197db 100644
---- a/tools/perf/tests/expr.c
-+++ b/tools/perf/tests/expr.c
-@@ -76,7 +76,7 @@ static int test__expr(struct test_suite *t __maybe_unused, int subtest __maybe_u
- 	struct expr_parse_ctx *ctx;
- 	bool is_intel = false;
- 	char strcmp_cpuid_buf[256];
--	struct perf_pmu *pmu = pmu__find_core_pmu();
-+	struct perf_pmu *pmu = perf_pmus__find_core_pmu();
- 	char *cpuid = perf_pmu__getcpuid(pmu);
- 	char *escaped_cpuid1, *escaped_cpuid2;
- 
-diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
-index 80cf2478f98fc..b8875aac8f870 100644
---- a/tools/perf/util/expr.c
-+++ b/tools/perf/util/expr.c
-@@ -527,7 +527,7 @@ double expr__strcmp_cpuid_str(const struct expr_parse_ctx *ctx __maybe_unused,
- 		       bool compute_ids __maybe_unused, const char *test_id)
- {
- 	double ret;
--	struct perf_pmu *pmu = pmu__find_core_pmu();
-+	struct perf_pmu *pmu = perf_pmus__find_core_pmu();
- 	char *cpuid = perf_pmu__getcpuid(pmu);
- 
- 	if (!cpuid)
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 86bfdf5db2135..72b7a1d3225f6 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -2058,20 +2058,3 @@ void perf_pmu__delete(struct perf_pmu *pmu)
- 	zfree(&pmu->id);
- 	free(pmu);
- }
--
--struct perf_pmu *pmu__find_core_pmu(void)
--{
--	struct perf_pmu *pmu = NULL;
--
--	while ((pmu = perf_pmus__scan_core(pmu))) {
--		/*
--		 * The cpumap should cover all CPUs. Otherwise, some CPUs may
--		 * not support some events or have different event IDs.
--		 */
--		if (RC_CHK_ACCESS(pmu->cpus)->nr != cpu__max_cpu().cpu)
--			return NULL;
--
--		return pmu;
--	}
--	return NULL;
--}
-diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
-index 6a4e170c61d6b..45079f26abf60 100644
---- a/tools/perf/util/pmu.h
-+++ b/tools/perf/util/pmu.h
-@@ -264,6 +264,6 @@ int perf_pmu__pathname_fd(int dirfd, const char *pmu_name, const char *filename,
- struct perf_pmu *perf_pmu__lookup(struct list_head *pmus, int dirfd, const char *lookup_name);
- struct perf_pmu *perf_pmu__create_placeholder_core_pmu(struct list_head *core_pmus);
- void perf_pmu__delete(struct perf_pmu *pmu);
--struct perf_pmu *pmu__find_core_pmu(void);
-+struct perf_pmu *perf_pmus__find_core_pmu(void);
- 
- #endif /* __PMU_H */
-diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
-index 6631367c756fd..cec869cbe163a 100644
---- a/tools/perf/util/pmus.c
-+++ b/tools/perf/util/pmus.c
-@@ -10,6 +10,7 @@
- #include <pthread.h>
- #include <string.h>
- #include <unistd.h>
-+#include "cpumap.h"
- #include "debug.h"
- #include "evsel.h"
- #include "pmus.h"
-@@ -268,7 +269,7 @@ struct perf_pmu *perf_pmus__scan_core(struct perf_pmu *pmu)
- {
- 	if (!pmu) {
- 		pmu_read_sysfs(/*core_only=*/true);
--		pmu = list_prepare_entry(pmu, &core_pmus, list);
-+		return list_first_entry_or_null(&core_pmus, typeof(*pmu), list);
- 	}
- 	list_for_each_entry_continue(pmu, &core_pmus, list)
- 		return pmu;
-@@ -592,3 +593,20 @@ struct perf_pmu *evsel__find_pmu(const struct evsel *evsel)
- 	}
- 	return pmu;
- }
-+
-+struct perf_pmu *perf_pmus__find_core_pmu(void)
-+{
-+	struct perf_pmu *pmu = NULL;
-+
-+	while ((pmu = perf_pmus__scan_core(pmu))) {
-+		/*
-+		 * The cpumap should cover all CPUs. Otherwise, some CPUs may
-+		 * not support some events or have different event IDs.
-+		 */
-+		if (RC_CHK_ACCESS(pmu->cpus)->nr != cpu__max_cpu().cpu)
-+			return NULL;
-+
-+		return pmu;
++	if (unlikely(reason != SKB_NOT_DROPPED_YET)) {
++		kfree_skb_reason(skb, reason);
++		return NETDEV_TX_OK;
 +	}
-+	return NULL;
-+}
++
+ 	memset(skb->cb, 0, sizeof(struct br_input_skb_cb));
+ 
+ 	rcu_read_lock();
 -- 
 2.43.0
 
