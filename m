@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-48908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2228FEB0F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBEB38FEB10
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B8F71C2491F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B6891F2610E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1C21A2C2B;
-	Thu,  6 Jun 2024 14:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845AD199242;
+	Thu,  6 Jun 2024 14:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVy+1GGk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vux5pDhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487C8199382;
-	Thu,  6 Jun 2024 14:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420D919924F;
+	Thu,  6 Jun 2024 14:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683206; cv=none; b=k7szqd4ZURuHvn7tgp9Qe8hLNAQPJLEwV7VlXa8V1zKFEZ0yJCLMbQINFaxQEQjm1GS7c7fXRmteB1EZhjktyylqj2Bd9Bs15H8ZVTVA1SGVxAksFAKbiS0hOrmkvbriP2bA9QqGJytcToyKPk0zk/DKDOe/ewTyXZy1Lhkvsgw=
+	t=1717683207; cv=none; b=tVcmGBmXmLjgFW5gn77lYFH/sV/JD6ZecQeJdVyNEnWTUezQfUHbjQbXSqwV345P+dbZgEMGcNmW3lnGF6W97IVzbd3tQXdxzHGzY1SArALXPPgUOdqIC+JXclDu04ag+i/TwtfYzj7ZWdR6N8D6CnhnjGi4ZX9ttH5JpH+HKpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683206; c=relaxed/simple;
-	bh=91NUApFMJubCpxPZ5al8kl2zIexS+bICSSSMuZFcZCs=;
+	s=arc-20240116; t=1717683207; c=relaxed/simple;
+	bh=9KpcVrUwiHIH7DntxvIWUtNp8ZFVivfG1ZyU0wRhAGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTdiAEKHR6VfIUzx+vdqUjxQ0nqLjQZY6SsuxupCxx74hzk+Z+tDglTT8KACWXTiRItLkP+Qs197wuHChNfwDAWR6H+JAMWFIih/i49xw8g8Iry3u1dmKEbuP+nEatTwxCFwhdNSmFMssRkdvile8JgcA59UXxdnSkdgYGyi5RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVy+1GGk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2809CC2BD10;
-	Thu,  6 Jun 2024 14:13:26 +0000 (UTC)
+	 MIME-Version; b=i7dV2YiT5Kx8V61k5tXo8DA5/ymhBUOlKxMV5+nr5KqGxUzL+vMS2X5/SQOwtvRg/z30+6KXzzsIJquF80Q3syqEuKggmj0AvRG/uwIG0wDnbpVMxTh2IKPAuMGenyzzeQdVLh4px2Z+O7zQtlpzfNwbKJdIuQ63XJU3bDFQSdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vux5pDhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B6CC2BD10;
+	Thu,  6 Jun 2024 14:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683206;
-	bh=91NUApFMJubCpxPZ5al8kl2zIexS+bICSSSMuZFcZCs=;
+	s=korg; t=1717683207;
+	bh=9KpcVrUwiHIH7DntxvIWUtNp8ZFVivfG1ZyU0wRhAGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EVy+1GGk7tp5GDbYvLtfv8WYQVXix/YDpHy3GKKuU2H5DKF22JgNeKxpw2TDFnRHa
-	 wWByAMjgFjhxjabkdtDsXh1nLSLBCwFQgNGiYdUDweZfhmXCPXmVkeMcUVKkgkjZ2V
-	 yIysPSHF/Rn313SC5eTkCmwYL56UhF/3uKeKUbfM=
+	b=vux5pDhpQ7QixwHrzr4kCxTeffkWWIz/l7hpsuVRJ6RvsnWKIK7kMmIdZszyq4YeF
+	 o3f4F4S16t0u/dO5XbWg3CkfwtTA6OuynHAiXjvZQjVktqXDYNIyZq+b2iT2i+XO3g
+	 Oj1gFy9LLfVqIuim+nSnHHudfIsOLdLcQdg+xytQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+148110ee7cf72f39f33e@syzkaller.appspotmail.com,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/744] bpf: prevent r10 register from being marked as precise
-Date: Thu,  6 Jun 2024 15:57:01 +0200
-Message-ID: <20240606131737.198376710@linuxfoundation.org>
+Subject: [PATCH 6.6 150/744] scsi: ufs: qcom: Perform read back after writing reset bit
+Date: Thu,  6 Jun 2024 15:57:02 +0200
+Message-ID: <20240606131737.231559372@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,56 +68,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 1f2a74b41ea8b902687eb97c4e7e3f558801865b ]
+[ Upstream commit c4d28e06b0c94636f6e35d003fa9ebac0a94e1ae ]
 
-r10 is a special register that is not under BPF program's control and is
-always effectively precise. The rest of precision logic assumes that
-only r0-r9 SCALAR registers are marked as precise, so prevent r10 from
-being marked precise.
+Currently, the reset bit for the UFS provided reset controller (used by its
+phy) is written to, and then a mb() happens to try and ensure that hit the
+device. Immediately afterwards a usleep_range() occurs.
 
-This can happen due to signed cast instruction allowing to do something
-like `r0 = (s8)r10;`, which later, if r0 needs to be precise, would lead
-to an attempt to mark r10 as precise.
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-Prevent this with an extra check during instruction backtracking.
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
 
-Fixes: 8100928c8814 ("bpf: Support new sign-extension mov insns")
-Reported-by: syzbot+148110ee7cf72f39f33e@syzkaller.appspotmail.com
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20240404214536.3551295-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Let's do that to ensure the bit hits the device. By doing so and
+guaranteeing the ordering against the immediately following usleep_range(),
+the mb() can safely be removed.
+
+Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-1-181252004586@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ufs/host/ufs-qcom.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 818bac019d0d3..105fa54a492ab 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3679,7 +3679,8 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
- 				 * sreg needs precision before this insn
- 				 */
- 				bt_clear_reg(bt, dreg);
--				bt_set_reg(bt, sreg);
-+				if (sreg != BPF_REG_FP)
-+					bt_set_reg(bt, sreg);
- 			} else {
- 				/* dreg = K
- 				 * dreg needs precision after this insn.
-@@ -3695,7 +3696,8 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
- 				 * both dreg and sreg need precision
- 				 * before this insn
- 				 */
--				bt_set_reg(bt, sreg);
-+				if (sreg != BPF_REG_FP)
-+					bt_set_reg(bt, sreg);
- 			} /* else dreg += K
- 			   * dreg still needs precision before this insn
- 			   */
+diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
+index d6f8e74bd5381..532667d8e6f0e 100644
+--- a/drivers/ufs/host/ufs-qcom.h
++++ b/drivers/ufs/host/ufs-qcom.h
+@@ -149,10 +149,10 @@ static inline void ufs_qcom_assert_reset(struct ufs_hba *hba)
+ 		    REG_UFS_CFG1);
+ 
+ 	/*
+-	 * Make sure assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
+ }
+ 
+ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+@@ -161,10 +161,10 @@ static inline void ufs_qcom_deassert_reset(struct ufs_hba *hba)
+ 		    REG_UFS_CFG1);
+ 
+ 	/*
+-	 * Make sure de-assertion of ufs phy reset is written to
+-	 * register before returning
++	 * Dummy read to ensure the write takes effect before doing any sort
++	 * of delay
+ 	 */
+-	mb();
++	ufshcd_readl(hba, REG_UFS_CFG1);
+ }
+ 
+ /* Host controller hardware version: major.minor.step */
 -- 
 2.43.0
 
