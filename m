@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE848FE983
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDFE58FED27
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 784141C23CA0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 030061C22378
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7121198841;
-	Thu,  6 Jun 2024 14:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947D61B5801;
+	Thu,  6 Jun 2024 14:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMSbO5PG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+VYAMzO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8670419AA6A;
-	Thu,  6 Jun 2024 14:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D8B1B4C5D;
+	Thu,  6 Jun 2024 14:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683033; cv=none; b=QCUTrKjyap6HUIXCjgRzzFXIAaLg5mgZf49lhwMfKQxNl4zB+U9w5TcUMyG4d4cSfOCQ0M2p2OCmJ/3fbgRMfwyRYjzu9iT5KlpbNlWJtRvcOOHUFAhXNhWvVtAGw4cb4S/9AFBALbnlXQcXBX9fe1z/3SJUR6WaHebhe1uKv/A=
+	t=1717683453; cv=none; b=HsuZNyCJ1iMCyqdVuaMNa/E/mvZus7xm/jHflUtd8EwJTo3iFtKxESV9S2Rtf0m9BEJ17tmtx+lqj2/8GWJUq2sxoHU3bMqP6Gh6Aw7zkYGg6mCXiWMHwn13A2kOCkXQQXKHOF5Tmd4sNcxYQc2V3q40cj/PY5rVKHmberi3Aeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683033; c=relaxed/simple;
-	bh=aAgTHiMz/T5ZpU+Fuo+oUZjUnLqLOZ/5yaVw2GeUlz0=;
+	s=arc-20240116; t=1717683453; c=relaxed/simple;
+	bh=26D5pLrACl/MiE0gTGWdLn5FytF4P0hRsVvElwaQc/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pU+PTZWvo2TUL3lDvPWImu0DbgcUbW03GiyYzbilu1l4bXuBD5p+RwbHKh+BKrWw2/E8ORtSKzF5Y2CzoqOOF6FSfty4xE5UVnh+Tshv7Kv+dNZRttzasLFWstqvLyilCuRSOH5hhLoOIEvTG+BbXu+ilvkg3l0/HR4ZVZeQDaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMSbO5PG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667BBC4AF0D;
-	Thu,  6 Jun 2024 14:10:33 +0000 (UTC)
+	 MIME-Version; b=Yz+schyz60dEEk92pwQhtdoLIq+A7dcFt4MgW95s+UwbYW/C6LBUx3hLId3bPSDol9+VV9wPZ8oWU8F7hKabRlvqk9fB6KvqNNQNSqmpi10h/zeo20eFjQzUvAh/0WQ11vsjvrdVTCwU78Vmuok57Wutfi0Y3TknyQQuQrIP3oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+VYAMzO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A98C32781;
+	Thu,  6 Jun 2024 14:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683033;
-	bh=aAgTHiMz/T5ZpU+Fuo+oUZjUnLqLOZ/5yaVw2GeUlz0=;
+	s=korg; t=1717683453;
+	bh=26D5pLrACl/MiE0gTGWdLn5FytF4P0hRsVvElwaQc/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMSbO5PG4BiAO951H0sjTv2RcckwkDzRc/wDzACWwgMIgc7mJZsjy6XeiXrK+2Wbx
-	 7zldI6gyxA0Fex+PCPEnvcJwdBZzTK1L5S21MqFLqs/ZrdOC5465ZjNsaBV022Z0CL
-	 Br/KiZiVjeypgyTdkFTgDlh6kOCKoQ08CJmzB37c=
+	b=h+VYAMzOFRK7ehSvOCgiFUs9zUQ3PaT5jCvDua/sGtTL1tC5CH3s5rckj8cQtifmR
+	 5Up3qarkoybh6bAujEKGPQNXGgDq6mwEQ0HOlIksE1fSvOq/Vpri5uNf4NZFxYibbA
+	 sHnsPmD6FkuFBPkxs83NiOKURVRwbZRFHmPIdN8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 258/374] net: lan966x: Remove ptp traps in case the ptp is not enabled.
+Subject: [PATCH 6.1 308/473] f2fs: compress: fix to relocate check condition in f2fs_ioc_{,de}compress_file()
 Date: Thu,  6 Jun 2024 16:03:57 +0200
-Message-ID: <20240606131700.511469645@linuxfoundation.org>
+Message-ID: <20240606131710.123618911@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit eda40be3a5ff3fdce513d2bcfeaca8cc16cf962a ]
+[ Upstream commit bd9ae4ae9e585061acfd4a169f2321706f900246 ]
 
-Lan966x is adding ptp traps to redirect the ptp frames to the CPU such
-that the HW will not forward these frames anywhere. The issue is that in
-case ptp is not enabled and the timestamping source is et to
-HWTSTAMP_SOURCE_NETDEV then these traps would not be removed on the
-error path.
-Fix this by removing the traps in this case as they are not needed.
+Compress flag should be checked after inode lock held to avoid
+racing w/ f2fs_setflags_common() , fix it.
 
-Fixes: 54e1ed69c40a ("net: lan966x: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()")
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://lore.kernel.org/r/20240517135808.3025435-1-horatiu.vultur@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 5fdb322ff2c2 ("f2fs: add F2FS_IOC_DECOMPRESS_FILE and F2FS_IOC_COMPRESS_FILE")
+Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/CAHJ8P3LdZXLc2rqeYjvymgYHr2+YLuJ0sLG9DdsJZmwO7deuhw@mail.gmail.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/f2fs/file.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index 61d88207eed42..6695ed661ef83 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -474,14 +474,14 @@ static int lan966x_port_hwtstamp_set(struct net_device *dev,
- 	    cfg->source != HWTSTAMP_SOURCE_PHYLIB)
- 		return -EOPNOTSUPP;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index b321f0da1bd70..46b6f06a4a76a 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -4064,9 +4064,6 @@ static int f2fs_ioc_decompress_file(struct file *filp, unsigned long arg)
+ 	if (!(filp->f_mode & FMODE_WRITE))
+ 		return -EBADF;
  
-+	if (cfg->source == HWTSTAMP_SOURCE_NETDEV && !port->lan966x->ptp)
-+		return -EOPNOTSUPP;
-+
- 	err = lan966x_ptp_setup_traps(port, cfg);
- 	if (err)
- 		return err;
- 
- 	if (cfg->source == HWTSTAMP_SOURCE_NETDEV) {
--		if (!port->lan966x->ptp)
--			return -EOPNOTSUPP;
+-	if (!f2fs_compressed_file(inode))
+-		return -EINVAL;
 -
- 		err = lan966x_ptp_hwtstamp_set(port, cfg, extack);
- 		if (err) {
- 			lan966x_ptp_del_traps(port);
+ 	f2fs_balance_fs(sbi, true);
+ 
+ 	file_start_write(filp);
+@@ -4077,7 +4074,8 @@ static int f2fs_ioc_decompress_file(struct file *filp, unsigned long arg)
+ 		goto out;
+ 	}
+ 
+-	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++	if (!f2fs_compressed_file(inode) ||
++		is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+@@ -4136,9 +4134,6 @@ static int f2fs_ioc_compress_file(struct file *filp, unsigned long arg)
+ 	if (!(filp->f_mode & FMODE_WRITE))
+ 		return -EBADF;
+ 
+-	if (!f2fs_compressed_file(inode))
+-		return -EINVAL;
+-
+ 	f2fs_balance_fs(sbi, true);
+ 
+ 	file_start_write(filp);
+@@ -4149,7 +4144,8 @@ static int f2fs_ioc_compress_file(struct file *filp, unsigned long arg)
+ 		goto out;
+ 	}
+ 
+-	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++	if (!f2fs_compressed_file(inode) ||
++		is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
