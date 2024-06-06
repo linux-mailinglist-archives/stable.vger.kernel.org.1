@@ -1,100 +1,106 @@
-Return-Path: <stable+bounces-48272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943288FDF0F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 08:45:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFA78FDF3E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 09:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1618FB257DF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 06:45:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D2821C2382E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 07:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B9A73472;
-	Thu,  6 Jun 2024 06:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5902778C95;
+	Thu,  6 Jun 2024 07:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mja/a6U2"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="ipXs7rL4"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C2E3A8F0
-	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 06:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFBC1759F;
+	Thu,  6 Jun 2024 07:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717656327; cv=none; b=d0ucknfsKeVr/IXdZpEStdysJyEMsbr4o70I4AmEHwGuVLzsOloK5u2Q+/RbtXJkxsPZqwhg6naRSdLVDpUv3njNBwTkoCFCHktRamiTDQknDKAbdz7zqOhS/vfisqqhPYoGmaTzNCfBbhIBFhcK3u6NgzN0bPh5y17cwJStVho=
+	t=1717657282; cv=none; b=Qg/sO9GLz7U3aGCfspphrrL8FzGpJhg/ENzX/vH0sQ9RJZ98O6K0tAzUl2x0XedXOcqTkpCw20IuFv+KR9JwmxtRAoXVaFofw/cRGUMewxuxvQ70dRXdjLxSF7OfUaegkVZINyqJgLvqS7JZUY/9PHTpAoIBlU9SrD/eKg6eip4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717656327; c=relaxed/simple;
-	bh=3q4wzSJm4vMmM9zMczMTuQYF13hwlu2zwEVuOIjRjiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=SQf3f1K4oPWc9VYmSwC9zVUntBmaiZGbNkUG+FTMKPP6O8Iv0unLI1/5/ZLSAnkF3wYDWnJf/oRxC0lAFz1RNqPtxfEeV6q3Xsmk34BtCBmYCfQptP1x/y9A2ukaqO3T+ybPnDdv/lO6otbX+wmxMjKV4z3CY/xfuQHxoD3Lbdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mja/a6U2; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717656326; x=1749192326;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=3q4wzSJm4vMmM9zMczMTuQYF13hwlu2zwEVuOIjRjiY=;
-  b=Mja/a6U2gWAfVlKtj8O1/d+ulnv/uWyWSkJ89wyBo7YqZoMj1lfgndFV
-   0rVBVV+wG4DwXIOv5v5dNbVAh/3VK0kjMJlnSHUo31BTQug8rGp4b/o1J
-   +1aCR8d7VSVmvKMJi857dHaBRokHYTtuA1zGJk8MIbdNQ4C8yf5K3qhQ0
-   5IQy6xWV4rOOyuwSTA7nG44R34FfgYIrPZiFE4MvCVmupgLrXRrpJZLoH
-   7BI3pjN5bXITRG+wtq7ZFSUVxWHJTNM2X0U+GiEVnBf91Hj/WU611y3Ke
-   FhgWZzGaMzwuw8NCp+69GRxFPPXfHzZCbeaJT8ttp0P+JlTa3yJuHS7NZ
-   Q==;
-X-CSE-ConnectionGUID: c9wKaadORnyV3niI8mYdfg==
-X-CSE-MsgGUID: 5MP9XwbrR9eyyP6Mvpd/Tg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="14437767"
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="14437767"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 23:45:26 -0700
-X-CSE-ConnectionGUID: Ttl83260S7Oo3PRphhIn1g==
-X-CSE-MsgGUID: Fwle9UYpS+2QFHluCC1p8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="42804582"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 05 Jun 2024 23:45:24 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sF6s4-0002lc-1c;
-	Thu, 06 Jun 2024 06:45:21 +0000
-Date: Thu, 6 Jun 2024 14:44:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/2] docs: stable-kernel-rules: provide example of
- specifying target series
-Message-ID: <ZmFa1jSIiGmykc8t@242c30a86391>
+	s=arc-20240116; t=1717657282; c=relaxed/simple;
+	bh=8Hy+HCwbH5J4IOPU5GWj17/lZaRma3rg/Kxm8Kd/tBw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e38OiDEmaw6PRMDx35mmMn898XKuPLrkrZmAmiTbD/2YW36bbs8+Pl+MmMTZO/XzKvvoWPWQXwq/ZqaS5/nNu5BNUR6BPKvTCmfOYfXQ3fLr4D98mJ/Bq/Ir4ida4j04eOQMFn7rKb2TAuj+1KSId39Myh7I7Q8k9O9V7d4UJmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=ipXs7rL4; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=tQej+T9pnqq3P5SIWfflEa+IdT6ZnzjAMSpJZ+7Tq5A=; b=ipXs7r
+	L4HMp2TA3YX1inqNshlY524Wop3grBqEwkCt5gFtINEimxTFVgD5zmu9hTLjjObCPcmfA0nruo/VZ
+	rWTd+pJ8i4ZDNFJLEllm6z0s/VHjmXQoUhty5hVEnl6/P5S/2vedlrOQmDzGP99eTeR9WJ82qN08r
+	fL3ZzyVHTd1goTYyQI7ZpR+6vyv+bohRuCXIFYuxXUGbMmpJrsduyvoVeP7fBuZJ6Bq7vqutMUysk
+	mnf0zifPN2Vpnrmdo2XKgL7yi3jBi7dGTVJMjJph//i27uVhl9tEz7933aHQkQ4oe8vGhHAzMTGla
+	wXuQfyEyyF8IEmlCFw/V0fvn1m5g==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sean@geanix.com>)
+	id 1sF77a-0007WA-RG; Thu, 06 Jun 2024 09:01:11 +0200
+Received: from [185.17.218.86] (helo=Seans-MBP.geanix.com)
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sean@geanix.com>)
+	id 1sF77X-000N8S-0t;
+	Thu, 06 Jun 2024 09:01:10 +0200
+Date: Thu, 6 Jun 2024 09:01:10 +0200
+From: Sean Nyekjaer <sean@geanix.com>
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: fxls8962af: select IIO_BUFFER & IIO_KFIFO_BUF
+Message-ID: <sdlebaxls5al3hzbhzeqnt6j3iijgobkxtljzpkn6how6cgywq@ipane3aqqdzv>
+References: <20240605203810.2908980-2-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240606064311.18678-1-shung-hsi.yu@suse.com>
+In-Reply-To: <20240605203810.2908980-2-alexander.sverdlin@siemens.com>
+X-Authenticated-Sender: sean@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27297/Wed Jun  5 10:30:56 2024)
 
-Hi,
-
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/2] docs: stable-kernel-rules: provide example of specifying target series
-Link: https://lore.kernel.org/stable/20240606064311.18678-1-shung-hsi.yu%40suse.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+On Wed, Jun 05, 2024 at 10:38:06PM UTC, A. Sverdlin wrote:
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+> 
+> Provide missing symbols to the module:
+> ERROR: modpost: iio_push_to_buffers [drivers/iio/accel/fxls8962af-core.ko] undefined!
+> ERROR: modpost: devm_iio_kfifo_buffer_setup_ext [drivers/iio/accel/fxls8962af-core.ko] undefined!
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+>  drivers/iio/accel/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index c2da5066e9a7b..80b57d3ee3a72 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -330,6 +330,8 @@ config DMARD10
+>  config FXLS8962AF
+>  	tristate
+>  	depends on I2C || !I2C # cannot be built-in for modular I2C
+> +	select IIO_BUFFER
+> +	select IIO_KFIFO_BUF
+>  
+>  config FXLS8962AF_I2C
+>  	tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver"
+> -- 
+> 2.45.2
+> 
 
