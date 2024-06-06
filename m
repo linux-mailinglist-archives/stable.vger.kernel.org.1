@@ -1,73 +1,57 @@
-Return-Path: <stable+bounces-48483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 949C08FE931
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 577BE8FEDA0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87DBA1C26075
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B35CFB22F69
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C729199253;
-	Thu,  6 Jun 2024 14:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079CF1BC096;
+	Thu,  6 Jun 2024 14:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYGGwGIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgbNQ7s0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC76197550;
-	Thu,  6 Jun 2024 14:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D84198E9A;
+	Thu,  6 Jun 2024 14:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682990; cv=none; b=NuDqb0QNWgMV6+UUAZWdgdW0n6KET9hf1EKarnrIjlcuQUSjfAz3J0hViEXV73WjVw6VLqiZznsXGxAarA1tzAAjt2dXlP7tlIt6X5wGU2j3BJtrVd9FfoiuJvN6jLf3hgRedwQJDzb5NWl7FZQXRJIgiPoXqOiBKizh5L53dt8=
+	t=1717683507; cv=none; b=ImXCN5jYTq9DG7XM5+wOLui0P907ydOfzlbwx31mE/MAdhOn9+G8/+AoEPGQ/RgT04C/tq72wNlmnShtkdhwMqD4MdH9NbgQMqJKUzK6zPMud7SHjVX3x9rmyQ1RQ4lHpvvI11M6zstbOA8MxjKHwWfFP5Fzs+5+I9r9Z9sGLxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682990; c=relaxed/simple;
-	bh=VTB6bOM3mPXfr7iZWF239gduhP719CXdACQL0CMiamw=;
+	s=arc-20240116; t=1717683507; c=relaxed/simple;
+	bh=lPMmsLXrCMD87bDX71WoTE8HaFHuB/Hf3O9wVcx/bo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIq5adMfb8p2ajAJigi+SMTJEg9HoZ0v13HUAFWa9vDIGqu1Y2+iyfaJv36quDTgkfrZ9uaO05fEaiJFE7Dxt3xb6XKXzZ29Zo3p6QedYFPtnj3OjaXrxXR3hdI0Ule/73LS7hpWIZeiEjQQ0SQ0IcTqrb+auLOc4IHIjUU+75E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYGGwGIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5750C32782;
-	Thu,  6 Jun 2024 14:09:50 +0000 (UTC)
+	 MIME-Version; b=HQTQeX+LwNqxlNRPr8nqLQUL3OOWNvHp25eH3EvXnOrQVQ0GczdOrjupGjJCRHri5BodAedgQLlRSJ2ExuVm4scSoKzjr7kcQ8bg/do3XpV32Wobb2v5uoNe8si5TpsSVmO/v4v5Ao1j+lClIbgIOok9TOq71vdbTaeEFR00JzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgbNQ7s0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FB3C32781;
+	Thu,  6 Jun 2024 14:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682990;
-	bh=VTB6bOM3mPXfr7iZWF239gduhP719CXdACQL0CMiamw=;
+	s=korg; t=1717683507;
+	bh=lPMmsLXrCMD87bDX71WoTE8HaFHuB/Hf3O9wVcx/bo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYGGwGIXZ/iDbVXlGiRXEIeOgeKyaCS3ZxRwHT3EzkXJL0dXCZf2FWwdnoJndpgqi
-	 sSGKFhdzOM5JCcZreU81AMzoTc4uEExDW0SDN0bi8OKxQfFRPqMTfchDnucPT/dSP/
-	 QAF1Us+gV4p5pBDdNe6u3tI3Zao3X9V3d+r+regQ=
+	b=JgbNQ7s0/WCqh5SgwbFhfBtGviobY3VUiNyMz4OAxHH20hMUtrX+QmdFlI3IBJzvf
+	 JvZz5X9I6k/8a5MZuFWXQoNWrayglJd62TzU2AalQF07ipRKE3fAd9QOp9yWwd+8cd
+	 Pk8guH6iY2NQ9/PhvCc8tR159Sb75rm/EbZFKKz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Su <tao1.su@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Bongsu Jeon <bongsu.jeon@samsung.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Edward Liaw <edliaw@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Mark Brown <broonie@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Takashi Iwai <tiwai@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 141/374] Revert "selftests/harness: remove use of LINE_MAX"
-Date: Thu,  6 Jun 2024 16:02:00 +0200
-Message-ID: <20240606131656.629491491@linuxfoundation.org>
+Subject: [PATCH 6.6 449/744] iio: buffer-dmaengine: export buffer alloc and free functions
+Date: Thu,  6 Jun 2024 16:02:01 +0200
+Message-ID: <20240606131746.901505212@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,128 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Su <tao1.su@linux.intel.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 6bb955fce08cbc8495a72755130d2d220994faee ]
+[ Upstream commit 9c446288d7b31402adb454535cb2c3cbdb55bb88 ]
 
-Patch series "Selftests: Fix compilation warnings due to missing
-_GNU_SOURCE definition", v2.
+Export iio_dmaengine_buffer_free() and iio_dmaengine_buffer_alloc().
+This is in preparation of introducing IIO backends support. This will
+allow us to allocate a buffer and control it's lifetime from a device
+different from the one holding the DMA firmware properties. Effectively,
+in this case the struct device holding the firmware information about
+the DMA channels is not the same as iio_dev->dev.parent (typical case).
 
-Since kselftest_harness.h introduces asprintf()[1], many selftests have
-compilation warnings or errors due to missing _GNU_SOURCE definitions.
+While at it, namespace the buffer-dmaengine exports and update the
+current user of these buffers.
 
-The issue stems from a lack of a LINE_MAX definition in Android (see
-commit 38c957f07038), which is the reason why asprintf() was introduced.
-We tried adding _GNU_SOURCE definitions to more selftests to fix, but
-asprintf() may continue to cause problems, and since it is quite late in
-the 6.9 cycle, we would like to revert 809216233555 first to provide
-testing for forks[2].
-
-[1] https://lore.kernel.org/all/20240411231954.62156-1-edliaw@google.com
-[2] https://lore.kernel.org/linux-kselftest/ZjuA3aY_iHkjP7bQ@google.com
-
-This patch (of 2):
-
-This reverts commit 8092162335554c8ef5e7f50eff68aa9cfbdbf865.
-
-asprintf() is declared in stdio.h when defining _GNU_SOURCE, but stdio.h
-is so common that many files don't define _GNU_SOURCE before including
-stdio.h, and defining _GNU_SOURCE after including stdio.h will no longer
-take effect, which causes warnings or even errors during compilation in
-many selftests.
-
-Revert 'commit 809216233555 ("selftests/harness: remove use of LINE_MAX")'
-as that came in quite late in the 6.9 cycle.
-
-Link: https://lkml.kernel.org/r/20240509053113.43462-1-tao1.su@linux.intel.com
-Link: https://lore.kernel.org/linux-kselftest/ZjuA3aY_iHkjP7bQ@google.com/
-Link: https://lkml.kernel.org/r/20240509053113.43462-2-tao1.su@linux.intel.com
-Fixes: 809216233555 ("selftests/harness: remove use of LINE_MAX")
-Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Bongsu Jeon <bongsu.jeon@samsung.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Edward Liaw <edliaw@google.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Ivan Orlov <ivan.orlov0322@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Takashi Iwai <tiwai@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240210-iio-backend-v11-4-f5242a5fb42a@analog.com
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: cf1c833f89e7 ("iio: adc: adi-axi-adc: only error out in major version mismatch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kselftest_harness.h | 12 ++++--------
- tools/testing/selftests/mm/mdwe_test.c      |  1 -
- 2 files changed, 4 insertions(+), 9 deletions(-)
+ drivers/iio/adc/adi-axi-adc.c                      | 1 +
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c | 8 +++++---
+ include/linux/iio/buffer-dmaengine.h               | 3 +++
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
-index 3c8f2965c2850..e8d79e0210831 100644
---- a/tools/testing/selftests/kselftest_harness.h
-+++ b/tools/testing/selftests/kselftest_harness.h
-@@ -56,6 +56,7 @@
- #include <asm/types.h>
- #include <ctype.h>
- #include <errno.h>
-+#include <limits.h>
- #include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
-@@ -1216,7 +1217,7 @@ void __run_test(struct __fixture_metadata *f,
- 		struct __test_metadata *t)
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index c247ff1541d28..0f21d1d98b9fa 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -447,3 +447,4 @@ module_platform_driver(adi_axi_adc_driver);
+ MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
+ MODULE_DESCRIPTION("Analog Devices Generic AXI ADC IP core driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(IIO_DMAENGINE_BUFFER);
+diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+index 5f85ba38e6f6e..0d53c0a07b0d6 100644
+--- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
++++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+@@ -159,7 +159,7 @@ static const struct iio_dev_attr *iio_dmaengine_buffer_attrs[] = {
+  * Once done using the buffer iio_dmaengine_buffer_free() should be used to
+  * release it.
+  */
+-static struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
++struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
+ 	const char *channel)
  {
- 	struct __test_xfail *xfail;
--	char *test_name;
-+	char test_name[LINE_MAX];
- 	const char *diagnostic;
- 
- 	/* reset test struct */
-@@ -1227,12 +1228,8 @@ void __run_test(struct __fixture_metadata *f,
- 	memset(t->env, 0, sizeof(t->env));
- 	memset(t->results->reason, 0, sizeof(t->results->reason));
- 
--	if (asprintf(&test_name, "%s%s%s.%s", f->name,
--		variant->name[0] ? "." : "", variant->name, t->name) == -1) {
--		ksft_print_msg("ERROR ALLOCATING MEMORY\n");
--		t->exit_code = KSFT_FAIL;
--		_exit(t->exit_code);
--	}
-+	snprintf(test_name, sizeof(test_name), "%s%s%s.%s",
-+		 f->name, variant->name[0] ? "." : "", variant->name, t->name);
- 
- 	ksft_print_msg(" RUN           %s ...\n", test_name);
- 
-@@ -1270,7 +1267,6 @@ void __run_test(struct __fixture_metadata *f,
- 
- 	ksft_test_result_code(t->exit_code, test_name,
- 			      diagnostic ? "%s" : NULL, diagnostic);
--	free(test_name);
+ 	struct dmaengine_buffer *dmaengine_buffer;
+@@ -210,6 +210,7 @@ static struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
+ 	kfree(dmaengine_buffer);
+ 	return ERR_PTR(ret);
  }
++EXPORT_SYMBOL_NS_GPL(iio_dmaengine_buffer_alloc, IIO_DMAENGINE_BUFFER);
  
- static int test_harness_run(int argc, char **argv)
-diff --git a/tools/testing/selftests/mm/mdwe_test.c b/tools/testing/selftests/mm/mdwe_test.c
-index 1e01d3ddc11c5..200bedcdc32e9 100644
---- a/tools/testing/selftests/mm/mdwe_test.c
-+++ b/tools/testing/selftests/mm/mdwe_test.c
-@@ -7,7 +7,6 @@
- #include <linux/mman.h>
- #include <linux/prctl.h>
+ /**
+  * iio_dmaengine_buffer_free() - Free dmaengine buffer
+@@ -217,7 +218,7 @@ static struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
+  *
+  * Frees a buffer previously allocated with iio_dmaengine_buffer_alloc().
+  */
+-static void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
++void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
+ {
+ 	struct dmaengine_buffer *dmaengine_buffer =
+ 		iio_buffer_to_dmaengine_buffer(buffer);
+@@ -227,6 +228,7 @@ static void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
  
--#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <sys/auxv.h>
+ 	iio_buffer_put(buffer);
+ }
++EXPORT_SYMBOL_NS_GPL(iio_dmaengine_buffer_free, IIO_DMAENGINE_BUFFER);
+ 
+ static void __devm_iio_dmaengine_buffer_free(void *buffer)
+ {
+@@ -288,7 +290,7 @@ int devm_iio_dmaengine_buffer_setup(struct device *dev,
+ 
+ 	return iio_device_attach_buffer(indio_dev, buffer);
+ }
+-EXPORT_SYMBOL_GPL(devm_iio_dmaengine_buffer_setup);
++EXPORT_SYMBOL_NS_GPL(devm_iio_dmaengine_buffer_setup, IIO_DMAENGINE_BUFFER);
+ 
+ MODULE_AUTHOR("Lars-Peter Clausen <lars@metafoo.de>");
+ MODULE_DESCRIPTION("DMA buffer for the IIO framework");
+diff --git a/include/linux/iio/buffer-dmaengine.h b/include/linux/iio/buffer-dmaengine.h
+index 5c355be898149..cbb8ba957fade 100644
+--- a/include/linux/iio/buffer-dmaengine.h
++++ b/include/linux/iio/buffer-dmaengine.h
+@@ -10,6 +10,9 @@
+ struct iio_dev;
+ struct device;
+ 
++struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
++					      const char *channel);
++void iio_dmaengine_buffer_free(struct iio_buffer *buffer);
+ int devm_iio_dmaengine_buffer_setup(struct device *dev,
+ 				    struct iio_dev *indio_dev,
+ 				    const char *channel);
 -- 
 2.43.0
 
