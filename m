@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1C68FEDCC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA4F8FE9FB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BF96282156
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 802AF28666B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608FF1BD50E;
-	Thu,  6 Jun 2024 14:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E30019D08A;
+	Thu,  6 Jun 2024 14:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PirJgZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17QUd9GU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206ED1990AA;
-	Thu,  6 Jun 2024 14:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC4D1974EC;
+	Thu,  6 Jun 2024 14:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683527; cv=none; b=MqzLbo68lmn3aJgnJRxMWXFJUFOeXAmZ/ht2xxm2laOFaKvX4AMS78H+yMBqx5+DT1DVHNUMmU8KBgFnZLUnKzYXViK6/kp4SWFWuo6/AQMQF6G38qEeE7GkDV7Sa2Xw6h2DuOQ9SuAbOO7EIkCieUiOzTaEYaPCfkA1/LlqsjQ=
+	t=1717683088; cv=none; b=dympGYgg3wjDTuRRNfKEF6xCsrKoDNNQddX253NjEd8IrPQjnEs2pPAfgp1NSeS5hHM94m7/YFDfCVrhHyMTFOUqZU84dd7JWaEAJeruyr7agJjhJAQbE2hAhbkcGAlI1zFmu445X13sK798/utAZRxtvFLctgsV003Cwvx9Uv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683527; c=relaxed/simple;
-	bh=eEHZI8LNX/n5h14abkaGr9v2swPU0SFFpLqt+6iUpYc=;
+	s=arc-20240116; t=1717683088; c=relaxed/simple;
+	bh=r/zHN4gnLjcCEtVys50Z/Q4ttAVEkcoPKAgGWRONi2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivGns9L+M+h40En68YX65ccatLQYzm0H9VC81Z9GxaS6GwTX/z+evKBLMMRXikqX25XJk56nXWwjHngjBWln+VvsqTQzGxN47KuC5EqKZEjfEyHeYfFpiksXmuTNvS4eF233o+QELw1bLtUJFn2wgWMW+gWaGvxm7BjIERKNAj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PirJgZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B5FC2BD10;
-	Thu,  6 Jun 2024 14:18:46 +0000 (UTC)
+	 MIME-Version; b=Vn/EFhjfB2iFVwdLtUL5qwBt8vjaNvNphIImqMlECVvULw8MRPnd7fmhY+HXPQxlR4lomJWMY3Dcb2g5bMOvPc1FhLKxTAqbR8QOWs1qT60ldEWov4TVMk04e8GXblUpqAjSo8komS1G4fft5Ql701uOljZcWrbQ2IBGtkkSa+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17QUd9GU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2C5C32782;
+	Thu,  6 Jun 2024 14:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683527;
-	bh=eEHZI8LNX/n5h14abkaGr9v2swPU0SFFpLqt+6iUpYc=;
+	s=korg; t=1717683087;
+	bh=r/zHN4gnLjcCEtVys50Z/Q4ttAVEkcoPKAgGWRONi2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2PirJgZGOqJEy8LXXt5Ji8BlOufh3S8HIhATvb1EeAjRtn5FfapGHMqdRGWi5h2DF
-	 BXLtep6wQ1iNa257pESl1E79Z/tXH4nOh4Ge02PfcJ5g6Xpdr0H+o/q4mssUIjvYZA
-	 74ned3pFprtVZzukywa3ZJOUS2effgP93DjEp6qY=
+	b=17QUd9GU+hLFuwfz4aEHv7wKAUT3kPUKZYQ59o2hj0f3ImQLHPp2uiRB24hOoQbK9
+	 v86d4+vS7wfPSZPoG9SVncuanJJXlsXZckZzhbwmqPd55lgRM3LC/oy12zjluiQIA9
+	 JLwQ5Hk2K/3+snZ57VleGRztyp4ga8qv4j+KUHao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 418/473] virtio: delete vq in vp_find_vqs_msix() when request_irq() fails
+	Carsten Tolkmit <ctolkmit@ennit.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.9 368/374] x86/topology: Handle bogus ACPI tables correctly
 Date: Thu,  6 Jun 2024 16:05:47 +0200
-Message-ID: <20240606131713.598762820@linuxfoundation.org>
+Message-ID: <20240606131704.204411235@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +61,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 89875151fccdd024d571aa884ea97a0128b968b6 ]
+commit 9d22c96316ac59ed38e80920c698fed38717b91b upstream.
 
-When request_irq() fails, error path calls vp_del_vqs(). There, as vq is
-present in the list, free_irq() is called for the same vector. That
-causes following splat:
+The ACPI specification clearly states how the processors should be
+enumerated in the MADT:
 
-[    0.414355] Trying to free already-free IRQ 27
-[    0.414403] WARNING: CPU: 1 PID: 1 at kernel/irq/manage.c:1899 free_irq+0x1a1/0x2d0
-[    0.414510] Modules linked in:
-[    0.414540] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.0-rc4+ #27
-[    0.414540] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
-[    0.414540] RIP: 0010:free_irq+0x1a1/0x2d0
-[    0.414540] Code: 1e 00 48 83 c4 08 48 89 e8 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 90 8b 74 24 04 48 c7 c7 98 80 6c b1 e8 00 c9 f7 ff 90 <0f> 0b 90 90 48 89 ee 4c 89 ef e8 e0 20 b8 00 49 8b 47 40 48 8b 40
-[    0.414540] RSP: 0000:ffffb71480013ae0 EFLAGS: 00010086
-[    0.414540] RAX: 0000000000000000 RBX: ffffa099c2722000 RCX: 0000000000000000
-[    0.414540] RDX: 0000000000000000 RSI: ffffb71480013998 RDI: 0000000000000001
-[    0.414540] RBP: 0000000000000246 R08: 00000000ffffdfff R09: 0000000000000001
-[    0.414540] R10: 00000000ffffdfff R11: ffffffffb18729c0 R12: ffffa099c1c91760
-[    0.414540] R13: ffffa099c1c916a4 R14: ffffa099c1d2f200 R15: ffffa099c1c91600
-[    0.414540] FS:  0000000000000000(0000) GS:ffffa099fec40000(0000) knlGS:0000000000000000
-[    0.414540] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    0.414540] CR2: 0000000000000000 CR3: 0000000008e3e001 CR4: 0000000000370ef0
-[    0.414540] Call Trace:
-[    0.414540]  <TASK>
-[    0.414540]  ? __warn+0x80/0x120
-[    0.414540]  ? free_irq+0x1a1/0x2d0
-[    0.414540]  ? report_bug+0x164/0x190
-[    0.414540]  ? handle_bug+0x3b/0x70
-[    0.414540]  ? exc_invalid_op+0x17/0x70
-[    0.414540]  ? asm_exc_invalid_op+0x1a/0x20
-[    0.414540]  ? free_irq+0x1a1/0x2d0
-[    0.414540]  vp_del_vqs+0xc1/0x220
-[    0.414540]  vp_find_vqs_msix+0x305/0x470
-[    0.414540]  vp_find_vqs+0x3e/0x1a0
-[    0.414540]  vp_modern_find_vqs+0x1b/0x70
-[    0.414540]  init_vqs+0x387/0x600
-[    0.414540]  virtnet_probe+0x50a/0xc80
-[    0.414540]  virtio_dev_probe+0x1e0/0x2b0
-[    0.414540]  really_probe+0xc0/0x2c0
-[    0.414540]  ? __pfx___driver_attach+0x10/0x10
-[    0.414540]  __driver_probe_device+0x73/0x120
-[    0.414540]  driver_probe_device+0x1f/0xe0
-[    0.414540]  __driver_attach+0x88/0x180
-[    0.414540]  bus_for_each_dev+0x85/0xd0
-[    0.414540]  bus_add_driver+0xec/0x1f0
-[    0.414540]  driver_register+0x59/0x100
-[    0.414540]  ? __pfx_virtio_net_driver_init+0x10/0x10
-[    0.414540]  virtio_net_driver_init+0x90/0xb0
-[    0.414540]  do_one_initcall+0x58/0x230
-[    0.414540]  kernel_init_freeable+0x1a3/0x2d0
-[    0.414540]  ? __pfx_kernel_init+0x10/0x10
-[    0.414540]  kernel_init+0x1a/0x1c0
-[    0.414540]  ret_from_fork+0x31/0x50
-[    0.414540]  ? __pfx_kernel_init+0x10/0x10
-[    0.414540]  ret_from_fork_asm+0x1a/0x30
-[    0.414540]  </TASK>
+ "To ensure that the boot processor is supported post initialization,
+  two guidelines should be followed. The first is that OSPM should
+  initialize processors in the order that they appear in the MADT. The
+  second is that platform firmware should list the boot processor as the
+  first processor entry in the MADT.
+  ...
+  Failure of OSPM implementations and platform firmware to abide by
+  these guidelines can result in both unpredictable and non optimal
+  platform operation."
 
-Fix this by calling deleting the current vq when request_irq() fails.
+The kernel relies on that ordering to detect the real BSP on crash kernels
+which is important to avoid sending a INIT IPI to it as that would cause a
+full machine reset.
 
-Fixes: 0b0f9dc52ed0 ("Revert "virtio_pci: use shared interrupts for virtqueues"")
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Message-Id: <20240426150845.3999481-1-jiri@resnulli.us>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On a Dell XPS 16 9640 the BIOS ignores this rule and enumerates the CPUs in
+the wrong order. As a consequence the kernel falsely detects a crash kernel
+and disables the corresponding CPU.
+
+Prevent this by checking the IA32_APICBASE MSR for the BSP bit on the boot
+CPU. If that bit is set, then the MADT based BSP detection can be safely
+ignored. If the kernel detects a mismatch between the BSP bit and the first
+enumerated MADT entry then emit a firmware bug message.
+
+This obviously also has to be taken into account when the boot APIC ID and
+the first enumerated APIC ID match. If the boot CPU does not have the BSP
+bit set in the APICBASE MSR then there is no way for the boot CPU to
+determine which of the CPUs is the real BSP. Sending an INIT to the real
+BSP would reset the machine so the only sane way to deal with that is to
+limit the number of CPUs to one and emit a corresponding warning message.
+
+Fixes: 5c5682b9f87a ("x86/cpu: Detect real BSP on crash kernels")
+Reported-by: Carsten Tolkmit <ctolkmit@ennit.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Carsten Tolkmit <ctolkmit@ennit.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/87le48jycb.ffs@tglx
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218837
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/virtio/virtio_pci_common.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/topology.c | 55 +++++++++++++++++++++++++++++++---
+ 1 file changed, 51 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/virtio/virtio_pci_common.c b/drivers/virtio/virtio_pci_common.c
-index a6c86f916dbdf..6bfb67d4866c3 100644
---- a/drivers/virtio/virtio_pci_common.c
-+++ b/drivers/virtio/virtio_pci_common.c
-@@ -345,8 +345,10 @@ static int vp_find_vqs_msix(struct virtio_device *vdev, unsigned int nvqs,
- 				  vring_interrupt, 0,
- 				  vp_dev->msix_names[msix_vec],
- 				  vqs[i]);
--		if (err)
-+		if (err) {
-+			vp_del_vq(vqs[i]);
- 			goto error_find;
-+		}
- 	}
- 	return 0;
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index d17c9b71eb4a..621a151ccf7d 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -128,6 +128,9 @@ static void topo_set_cpuids(unsigned int cpu, u32 apic_id, u32 acpi_id)
  
+ static __init bool check_for_real_bsp(u32 apic_id)
+ {
++	bool is_bsp = false, has_apic_base = boot_cpu_data.x86 >= 6;
++	u64 msr;
++
+ 	/*
+ 	 * There is no real good way to detect whether this a kdump()
+ 	 * kernel, but except on the Voyager SMP monstrosity which is not
+@@ -144,17 +147,61 @@ static __init bool check_for_real_bsp(u32 apic_id)
+ 	if (topo_info.real_bsp_apic_id != BAD_APICID)
+ 		return false;
+ 
+-	if (apic_id == topo_info.boot_cpu_apic_id) {
+-		topo_info.real_bsp_apic_id = apic_id;
+-		return false;
++	/*
++	 * Check whether the enumeration order is broken by evaluating the
++	 * BSP bit in the APICBASE MSR. If the CPU does not have the
++	 * APICBASE MSR then the BSP detection is not possible and the
++	 * kernel must rely on the firmware enumeration order.
++	 */
++	if (has_apic_base) {
++		rdmsrl(MSR_IA32_APICBASE, msr);
++		is_bsp = !!(msr & MSR_IA32_APICBASE_BSP);
+ 	}
+ 
+-	pr_warn("Boot CPU APIC ID not the first enumerated APIC ID: %x > %x\n",
++	if (apic_id == topo_info.boot_cpu_apic_id) {
++		/*
++		 * If the boot CPU has the APIC BSP bit set then the
++		 * firmware enumeration is agreeing. If the CPU does not
++		 * have the APICBASE MSR then the only choice is to trust
++		 * the enumeration order.
++		 */
++		if (is_bsp || !has_apic_base) {
++			topo_info.real_bsp_apic_id = apic_id;
++			return false;
++		}
++		/*
++		 * If the boot APIC is enumerated first, but the APICBASE
++		 * MSR does not have the BSP bit set, then there is no way
++		 * to discover the real BSP here. Assume a crash kernel and
++		 * limit the number of CPUs to 1 as an INIT to the real BSP
++		 * would reset the machine.
++		 */
++		pr_warn("Enumerated BSP APIC %x is not marked in APICBASE MSR\n", apic_id);
++		pr_warn("Assuming crash kernel. Limiting to one CPU to prevent machine INIT\n");
++		set_nr_cpu_ids(1);
++		goto fwbug;
++	}
++
++	pr_warn("Boot CPU APIC ID not the first enumerated APIC ID: %x != %x\n",
+ 		topo_info.boot_cpu_apic_id, apic_id);
++
++	if (is_bsp) {
++		/*
++		 * The boot CPU has the APIC BSP bit set. Use it and complain
++		 * about the broken firmware enumeration.
++		 */
++		topo_info.real_bsp_apic_id = topo_info.boot_cpu_apic_id;
++		goto fwbug;
++	}
++
+ 	pr_warn("Crash kernel detected. Disabling real BSP to prevent machine INIT\n");
+ 
+ 	topo_info.real_bsp_apic_id = apic_id;
+ 	return true;
++
++fwbug:
++	pr_warn(FW_BUG "APIC enumeration order not specification compliant\n");
++	return false;
+ }
+ 
+ static unsigned int topo_unit_count(u32 lvlid, enum x86_topology_domains at_level,
 -- 
-2.43.0
+2.45.2
 
 
 
