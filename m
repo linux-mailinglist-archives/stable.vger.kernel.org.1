@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-49076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55768FEBC0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C908FEBC3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85F641F29499
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24B651F294AD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E4919A2B8;
-	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143EA197A94;
+	Thu,  6 Jun 2024 14:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjTkX5p8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aF147a52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48ED196D93;
-	Thu,  6 Jun 2024 14:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73C91ABCC4;
+	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683290; cv=none; b=NvCB2jA+aBcFJMSotUchWRhWhSxN4MJUhmscE58HOrF5IZQiemG2QI8PyBMFTqP50W/H+Hjp+IR3m7UJS0gkF8Jvt2k9k22bgW/fdYzqbgK5gV7pPvJ6cPtKevbi27s2iy6TK7X1wYehXQLq4i4zgIj0ZN/fhJDPL8Cg9B3UUU8=
+	t=1717683291; cv=none; b=uZk6AoedqMHOXG7+0sKOhsZkkDdBm0Njqma6EyPgQ5cOyPaN8qJhTYTVfkvX5oEybx8GDxmkMR4fZ3bMXv9YPJA6kxdii9WJtw5wLIK1PThAiomGWT4MbNCa3lNVskVHVa83ykL+JoyiClZjoTIQ4lg5bP+SYlGjvEcj2jaw9xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683290; c=relaxed/simple;
-	bh=E306Ea8HqQcJNsmFnjEXz5YvzL28kvFAREMmHt7dVEM=;
+	s=arc-20240116; t=1717683291; c=relaxed/simple;
+	bh=YCKaeT/mAcDJcKsyoopr6FOy7ixT3JyqRUcxK5UkwLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+JyHCag+SSn5MftsKEE4vBXTMQIbZiP8Oi+lyM4zp6idysQr0kR2LVfmo2FaQqoe7T6VpVY+POQukN5l5FimaCsHMpJVUJRq/V8/NHDweO1aug7bPkylFs9D+bt83xLHOietFUP9zHyFYi1AJjG+LVg8M8zQxe0XvulMJkopqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjTkX5p8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D52CC2BD10;
-	Thu,  6 Jun 2024 14:14:50 +0000 (UTC)
+	 MIME-Version; b=cy41j6rF97Ew40/f8FWL2+ytrqMYeW2F2dSad+XEtRB8Cqa97IEQqqBSiMNGjQHP4AYubTWPHPs9nu83BI687E5mMWwqUzvucuEglsgTYzW9GYHhKgfP057qZVn7aOPcZvl5FLdYQMUg2dqeJ3o8mLyahuxSUYGCKo0f23Im0GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aF147a52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57605C2BD10;
+	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683290;
-	bh=E306Ea8HqQcJNsmFnjEXz5YvzL28kvFAREMmHt7dVEM=;
+	s=korg; t=1717683291;
+	bh=YCKaeT/mAcDJcKsyoopr6FOy7ixT3JyqRUcxK5UkwLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjTkX5p8EtnEMCPbSGmtJX/NBwOO4v5IlabqFSH9WF9CjWMEJppftIemkef1QFyxF
-	 meKdUV1IUcRaF6pDsE5SxGxHoafNF9zqjQpUEJ9tXu2Y3thYRySqr62JiYUf+oHVdz
-	 w1zyOCzThoAuuXdswvKg9AnGIgoPevll/5SKbBHQ=
+	b=aF147a52nxvBlxvKCSGw+LWLGvLYyMqH5LUmzZWBVus6Fa29YHGKczNB9fl9phcmr
+	 q+EIzWkwAs8webMUz1e6WuQ/IpOrOoUua1O29WPBuwtcNda2CCvO/yk+v/4emYn8ye
+	 4byWEpRdu3x+Cr89LHgbToBJ4ENPBNR6NlOyBAIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/744] wifi: mwl8k: initialize cmd->addr[] properly
-Date: Thu,  6 Jun 2024 15:58:23 +0200
-Message-ID: <20240606131739.800045149@linuxfoundation.org>
+Subject: [PATCH 6.6 232/744] HID: amd_sfh: Handle "no sensors" in PM operations
+Date: Thu,  6 Jun 2024 15:58:24 +0200
+Message-ID: <20240606131739.830805147@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,36 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 1d60eabb82694e58543e2b6366dae3e7465892a5 ]
+[ Upstream commit 077e3e3bc84a51891e732507bbbd9acf6e0e4c8b ]
 
-This loop is supposed to copy the mac address to cmd->addr but the
-i++ increment is missing so it copies everything to cmd->addr[0] and
-only the last address is recorded.
+Resume or suspend each sensor device based on the num_hid_devices.
+Therefore, add a check to handle the special case where no sensors are
+present.
 
-Fixes: 22bedad3ce11 ("net: convert multicast list to list_head")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/b788be9a-15f5-4cca-a3fe-79df4c8ce7b2@moroto.mountain
+Fixes: 93ce5e0231d7 ("HID: amd_sfh: Implement SFH1.1 functionality")
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwl8k.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
-index 13bcb123d1223..c0ecd769ada76 100644
---- a/drivers/net/wireless/marvell/mwl8k.c
-+++ b/drivers/net/wireless/marvell/mwl8k.c
-@@ -2718,7 +2718,7 @@ __mwl8k_cmd_mac_multicast_adr(struct ieee80211_hw *hw, int allmulti,
- 		cmd->action |= cpu_to_le16(MWL8K_ENABLE_RX_MULTICAST);
- 		cmd->numaddr = cpu_to_le16(mc_count);
- 		netdev_hw_addr_list_for_each(ha, mc_list) {
--			memcpy(cmd->addr[i], ha->addr, ETH_ALEN);
-+			memcpy(cmd->addr[i++], ha->addr, ETH_ALEN);
- 		}
- 	}
+diff --git a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+index e9c6413af24a0..862ca8d072326 100644
+--- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
++++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
+@@ -210,6 +210,11 @@ static void amd_sfh_resume(struct amd_mp2_dev *mp2)
+ 	struct amd_mp2_sensor_info info;
+ 	int i, status;
  
++	if (!cl_data->is_any_sensor_enabled) {
++		amd_sfh_clear_intr(mp2);
++		return;
++	}
++
+ 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+ 		if (cl_data->sensor_sts[i] == SENSOR_DISABLED) {
+ 			info.sensor_idx = cl_data->sensor_idx[i];
+@@ -235,6 +240,11 @@ static void amd_sfh_suspend(struct amd_mp2_dev *mp2)
+ 	struct amdtp_cl_data *cl_data = mp2->cl_data;
+ 	int i, status;
+ 
++	if (!cl_data->is_any_sensor_enabled) {
++		amd_sfh_clear_intr(mp2);
++		return;
++	}
++
+ 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+ 		if (cl_data->sensor_idx[i] != HPD_IDX &&
+ 		    cl_data->sensor_sts[i] == SENSOR_ENABLED) {
 -- 
 2.43.0
 
