@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D4D8FEC9B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CEA8FE93A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76D6E1C24538
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BC501C20809
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C90198A28;
-	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE3A197A64;
+	Thu,  6 Jun 2024 14:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImIjUj/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KeUnsmVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073C419B3ED;
-	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF8519645C;
+	Thu,  6 Jun 2024 14:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683387; cv=none; b=ahNlgY+wzN/UtnnncU3FuUK4CK9qTf6WmW42siXE/p+82QoR1Jem1ChZ/KK70lAeb5wrSmkrYbi3Mkgm7Sobrz+m/T+e7DpZcGqYUsYr4K3bS2LNmNKPSI+EkJNE1XmmYa6v6SFFlTbJn6BR38LSbDq9tYSDww+gKjlufGEPM5U=
+	t=1717682995; cv=none; b=bDCCZP1QBbUYhW47yCGxcA/bctLOlf6N64L0hjL6nlBu6Uom9UdcyucY12aNYHwwnce0vXZCE/+bOf22DdtaZSQI7yH4TTb1GUdoKgSYWLzGTFExBZpnExJZgb5nZeAF5WIDeyCtRu8Rh72tpfIU8dpf939I6USOUH406s6tP1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683387; c=relaxed/simple;
-	bh=PrhGLQsmoZaPZH+yE8WwbwWoGKSrD5AZ8ouTObKp/TQ=;
+	s=arc-20240116; t=1717682995; c=relaxed/simple;
+	bh=QTiv5+PT0/U/1rPY2whp3Jv1pNSDmkHWSADbR1P8NPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzqjMatmEcvkK6g7B21aIQzsGjXfiG8vyBqRZc632dX4Wowb7DdLH4GMVb86S4G5bbSprBvQwGbB1up7pQe/eLRpYcQ9njFWMTwV/DpmJVw1DDWDVQPwbAlHhw8+ma66ArHet7o3rE0j9BoBkNi74Ed+5DJ+UUJjbbB/nes2ygY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImIjUj/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFA7C2BD10;
-	Thu,  6 Jun 2024 14:16:26 +0000 (UTC)
+	 MIME-Version; b=dzYKxrZZ7E419C8rj+EOVfyHgxbiedQd0jm2GkbCQRmpyjqPRR3N+IQlgRv0NKNVPCG6C46I+CuDfwZYjjUdVkCfTuCmMmFXUt+KOPESRjdgGI0K95/2mzK+ipnEpjXJkiyfSerPznGsmv1NGzKyGO54JgGT2MDyF4jLfHrFpew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KeUnsmVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9DEC2BD10;
+	Thu,  6 Jun 2024 14:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683386;
-	bh=PrhGLQsmoZaPZH+yE8WwbwWoGKSrD5AZ8ouTObKp/TQ=;
+	s=korg; t=1717682995;
+	bh=QTiv5+PT0/U/1rPY2whp3Jv1pNSDmkHWSADbR1P8NPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImIjUj/MJtLMlRlqqxi0/wXt6ELK66xHozoAghm9XlIBWKe6oQs0QEa8shF+lHec+
-	 34flKznU78XRdsaiSjE8x2ofYM7dy5fL+CfAS+UU3TjnaZ4pvy9DIm5WEUfjHtnPZk
-	 oB69wLtqUG5j0GG57upsIbNQEFkwFM1aBwp1TNyM=
+	b=KeUnsmVqx3kk8uX3lkGaX7kiozNCjhQWGg3uE38h9w0Hdo7UR6RQ90yVDThNy9Fbk
+	 1FW4QJTmN3Fl8wikG/GmOHBSmhOmg30c31DKd+rXLB/WrBnxR38vkLzwouWWKuZ940
+	 hRhfd8q/LI6fpWuw5+8UvciK07IFVGeXyv3ydoYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 243/473] clk: mediatek: mt8365-mm: fix DPI0 parent
+Subject: [PATCH 6.9 193/374] um: Fix the -Wmissing-prototypes warning for get_thread_reg
 Date: Thu,  6 Jun 2024 16:02:52 +0200
-Message-ID: <20240606131707.870411734@linuxfoundation.org>
+Message-ID: <20240606131658.322018598@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Mergnat <amergnat@baylibre.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 4c0c087772d7e29bc2489ddb068d5167140bfc38 ]
+[ Upstream commit 3144013e48f4f6e5127223c4ebc488016815dedb ]
 
-To have a working display through DPI, a workaround has been
-implemented downstream to add "mm_dpi0_dpi0" and "dpi0_sel" to
-the DPI node. Shortly, that add an extra clock.
+The get_thread_reg function is defined in the user code, and is
+called by the kernel code. It should be declared in a shared header.
 
-It seems consistent to have the "dpi0_sel" as parent.
-Additionnaly, "vpll_dpix" isn't used/managed.
-
-Then, set the "mm_dpi0_dpi0" parent clock to "dpi0_sel".
-
-The new clock tree is:
-
-clk26m
-  lvdspll
-    lvdspll_X (2, 4, 8, 16)
-      dpi0_sel
-        mm_dpi0_dpi0
-
-Fixes: d46adccb7966 ("clk: mediatek: add driver for MT8365 SoC")
-Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
-Link: https://lore.kernel.org/r/20231023-display-support-v3-12-53388f3ed34b@baylibre.com
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: dbba7f704aa0 ("um: stop polluting the namespace with registers.h contents")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt8365-mm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/um/include/asm/processor-generic.h | 1 -
+ arch/x86/um/shared/sysdep/archsetjmp.h  | 7 +++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt8365-mm.c b/drivers/clk/mediatek/clk-mt8365-mm.c
-index 22c75a03a6452..bc0b1162ed431 100644
---- a/drivers/clk/mediatek/clk-mt8365-mm.c
-+++ b/drivers/clk/mediatek/clk-mt8365-mm.c
-@@ -53,7 +53,7 @@ static const struct mtk_gate mm_clks[] = {
- 	GATE_MM0(CLK_MM_MM_DSI0, "mm_dsi0", "mm_sel", 17),
- 	GATE_MM0(CLK_MM_MM_DISP_RDMA1, "mm_disp_rdma1", "mm_sel", 18),
- 	GATE_MM0(CLK_MM_MM_MDP_RDMA1, "mm_mdp_rdma1", "mm_sel", 19),
--	GATE_MM0(CLK_MM_DPI0_DPI0, "mm_dpi0_dpi0", "vpll_dpix", 20),
-+	GATE_MM0(CLK_MM_DPI0_DPI0, "mm_dpi0_dpi0", "dpi0_sel", 20),
- 	GATE_MM0(CLK_MM_MM_FAKE, "mm_fake", "mm_sel", 21),
- 	GATE_MM0(CLK_MM_MM_SMI_COMMON, "mm_smi_common", "mm_sel", 22),
- 	GATE_MM0(CLK_MM_MM_SMI_LARB0, "mm_smi_larb0", "mm_sel", 23),
+diff --git a/arch/um/include/asm/processor-generic.h b/arch/um/include/asm/processor-generic.h
+index 6c3779541845b..5a7c05275aa74 100644
+--- a/arch/um/include/asm/processor-generic.h
++++ b/arch/um/include/asm/processor-generic.h
+@@ -94,7 +94,6 @@ extern struct cpuinfo_um boot_cpu_data;
+ #define current_cpu_data boot_cpu_data
+ #define cache_line_size()	(boot_cpu_data.cache_alignment)
+ 
+-extern unsigned long get_thread_reg(int reg, jmp_buf *buf);
+ #define KSTK_REG(tsk, reg) get_thread_reg(reg, &tsk->thread.switch_buf)
+ extern unsigned long __get_wchan(struct task_struct *p);
+ 
+diff --git a/arch/x86/um/shared/sysdep/archsetjmp.h b/arch/x86/um/shared/sysdep/archsetjmp.h
+index 166cedbab9266..8c81d1a604a94 100644
+--- a/arch/x86/um/shared/sysdep/archsetjmp.h
++++ b/arch/x86/um/shared/sysdep/archsetjmp.h
+@@ -1,6 +1,13 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __X86_UM_SYSDEP_ARCHSETJMP_H
++#define __X86_UM_SYSDEP_ARCHSETJMP_H
++
+ #ifdef __i386__
+ #include "archsetjmp_32.h"
+ #else
+ #include "archsetjmp_64.h"
+ #endif
++
++unsigned long get_thread_reg(int reg, jmp_buf *buf);
++
++#endif /* __X86_UM_SYSDEP_ARCHSETJMP_H */
 -- 
 2.43.0
 
