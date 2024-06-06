@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-49077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1738B8FEBC2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159D38FE8ED
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97D2828562B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 979E8B219A9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99189196D93;
-	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AF51990AD;
+	Thu,  6 Jun 2024 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5cqjfg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Npo05qT1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E8219A2B5;
-	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4341019750D;
+	Thu,  6 Jun 2024 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683291; cv=none; b=SFdoNjvuEoInEoB1DwTZsVSM9eaARVXj+3rLBu7aLHLw0sBoCOeTYraMz0ixntJ85al2yKRuDiATSmdnv2/Snk+W+IuiRasQDwNnaNLJetChn/vtUcBMahkrdvMuRFFMypsnYRD7cW51M6gc7NlCfSCpymy+rGugRhFzjQETs8U=
+	t=1717682953; cv=none; b=dRKSV/p2DycbcRwH6HTn3tl4PcRgemFQ/iiHNXueShL5SPkbzfA/eHbIG/HEktWVG/1OeEQx0ULLL3BlMTqQ9KZ+poYvVzRCD+ActytqrHOGJPm1327CLKhFi6SnbhA5YeWQxlP17mFpKue02LBaXVpzUrWdeVJwZbunOX7q6U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683291; c=relaxed/simple;
-	bh=1DakesfRyGUdL0lVHfJ2WvzE+vRXGJVPSNAgZCkqI7U=;
+	s=arc-20240116; t=1717682953; c=relaxed/simple;
+	bh=jaSLzcnKWXMWfogY6WKoE2+30ihdCfNcMPgTwKA/8RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S84XbyjU6pjUjgz+zS2XXYflEaY7YO4GnKDcGJkrahuAF8gtuZnBedJDTtklTeuXokMMW6iVCa/6zIy1Ford3D7ZnvuBtaUZ6IeHItes3ZO9FFwj+5xCoJ9PWFwIBqPhULwPMXV03RjQ53Qwp4h2Px4CCLUHcyIkp/Qi9GnGKPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5cqjfg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEE7C32781;
-	Thu,  6 Jun 2024 14:14:50 +0000 (UTC)
+	 MIME-Version; b=fSfXfdfw9Idf2a3jR3R+UK394CUwcROEHNRd9WgUg4w9FYErOff/uKkNRY1sUfRa0SO2G+o6BmX7Hpom0kyR0kJFkCgpudQLI1oEeTk+JZpcA5eXs7Q+5Qge/TouwnCKwIgE4ywHjNHYtCwzecLAmhC09BhjJWU2PHf/4BweRgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Npo05qT1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197EDC2BD10;
+	Thu,  6 Jun 2024 14:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683290;
-	bh=1DakesfRyGUdL0lVHfJ2WvzE+vRXGJVPSNAgZCkqI7U=;
+	s=korg; t=1717682953;
+	bh=jaSLzcnKWXMWfogY6WKoE2+30ihdCfNcMPgTwKA/8RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5cqjfg8G0mVdZ995dxCJMwdIoClai2jujHUQvR2pY4VcvOr1tmJSWi9zj9QKsDIX
-	 +mW675BoMrHWaIJ2YwJvTrQgmiNFtdhCTuRvNQ/QJB+L+EqJ7svjfytp3j71ZDb9BY
-	 OMBUDEP0zp6Auf09+RBSRmBcsBUvPh1qEEjSkOiE=
+	b=Npo05qT1hM8i92Q6wEw81rRHPLLGJMl22oU4EcBIVuAnlqtQyBV6uVFsFrE7nPDrr
+	 8grq80UyxG4+Dc/zfb3LdRsW0Xj5JEvuwieuZulN8poCruqQxYpi2yE0H56w37yaUR
+	 rxqeK32RiVUJtZiK9d0DOpURKtmE5mZrdKc0lIQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 6.1 167/473] m68k: mac: Fix reboot hang on Mac IIci
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Flavio Suligoi <f.suligoi@asem.it>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 117/374] backlight: mp3309c: Fix signedness bug in mp3309c_parse_fwnode()
 Date: Thu,  6 Jun 2024 16:01:36 +0200
-Message-ID: <20240606131705.463756737@linuxfoundation.org>
+Message-ID: <20240606131655.849180887@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 265a3b322df9a973ff1fc63da70af456ab6ae1d6 ]
+[ Upstream commit e962f13b1e86272a5dcdaede2dfb649152e981e9 ]
 
-Calling mac_reset() on a Mac IIci does reset the system, but what
-follows is a POST failure that requires a manual reset to resolve.
-Avoid that by using the 68030 asm implementation instead of the C
-implementation.
+The "num_levels" variable is used to store error codes from
+device_property_count_u32() so it needs to be signed.  This doesn't
+cause an issue at runtime because devm_kcalloc() won't allocate negative
+sizes.  However, it's still worth fixing.
 
-Apparently the SE/30 has a similar problem as it has used the asm
-implementation since before git. This patch extends that solution to
-other systems with a similar ROM.
-
-After this patch, the only systems still using the C implementation are
-68040 systems where adb_type is either MAC_ADB_IOP or MAC_ADB_II. This
-implies a 1 MiB Quadra ROM.
-
-This now includes the Quadra 900/950, which previously fell through to
-the "should never get here" catch-all.
-
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/480ebd1249d229c6dc1f3f1c6d599b8505483fd8.1714797072.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: b54c828bdba9 ("backlight: mp3309c: Make use of device properties")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Tested-by: Flavio Suligoi <f.suligoi@asem.it>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/74347f67-360d-4513-8939-595e3c4764fa@moroto.mountain
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/mac/misc.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/video/backlight/mp3309c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
-index 4fab347917586..060394b00037d 100644
---- a/arch/m68k/mac/misc.c
-+++ b/arch/m68k/mac/misc.c
-@@ -451,30 +451,18 @@ void mac_poweroff(void)
- 
- void mac_reset(void)
+diff --git a/drivers/video/backlight/mp3309c.c b/drivers/video/backlight/mp3309c.c
+index c80a1481e742b..4e98e60417d23 100644
+--- a/drivers/video/backlight/mp3309c.c
++++ b/drivers/video/backlight/mp3309c.c
+@@ -205,8 +205,9 @@ static int mp3309c_parse_fwnode(struct mp3309c_chip *chip,
+ 				struct mp3309c_platform_data *pdata)
  {
--	if (macintosh_config->adb_type == MAC_ADB_II &&
--	    macintosh_config->ident != MAC_MODEL_SE30) {
--		/* need ROMBASE in booter */
--		/* indeed, plus need to MAP THE ROM !! */
--
--		if (mac_bi_data.rombase == 0)
--			mac_bi_data.rombase = 0x40800000;
--
--		/* works on some */
--		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
--
--		local_irq_disable();
--		rom_reset();
- #ifdef CONFIG_ADB_CUDA
--	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
--	           macintosh_config->adb_type == MAC_ADB_CUDA) {
-+	if (macintosh_config->adb_type == MAC_ADB_EGRET ||
-+	    macintosh_config->adb_type == MAC_ADB_CUDA) {
- 		cuda_restart();
-+	} else
- #endif
- #ifdef CONFIG_ADB_PMU
--	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
-+	if (macintosh_config->adb_type == MAC_ADB_PB2) {
- 		pmu_restart();
-+	} else
- #endif
--	} else if (CPU_IS_030) {
--
-+	if (CPU_IS_030) {
- 		/* 030-specific reset routine.  The idea is general, but the
- 		 * specific registers to reset are '030-specific.  Until I
- 		 * have a non-030 machine, I can't test anything else.
-@@ -522,6 +510,18 @@ void mac_reset(void)
- 		    "jmp %/a0@\n\t" /* jump to the reset vector */
- 		    ".chip 68k"
- 		    : : "r" (offset), "a" (rombase) : "a0");
-+	} else {
-+		/* need ROMBASE in booter */
-+		/* indeed, plus need to MAP THE ROM !! */
-+
-+		if (mac_bi_data.rombase == 0)
-+			mac_bi_data.rombase = 0x40800000;
-+
-+		/* works on some */
-+		rom_reset = (void *)(mac_bi_data.rombase + 0xa);
-+
-+		local_irq_disable();
-+		rom_reset();
- 	}
+ 	int ret, i;
+-	unsigned int num_levels, tmp_value;
++	unsigned int tmp_value;
+ 	struct device *dev = chip->dev;
++	int num_levels;
  
- 	/* should never get here */
+ 	if (!dev_fwnode(dev))
+ 		return dev_err_probe(dev, -ENODEV, "failed to get firmware node\n");
 -- 
 2.43.0
 
