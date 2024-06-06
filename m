@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-48510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B868FE94C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6A68FEE53
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24AB41C23B15
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2AF81C222E3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C081993B0;
-	Thu,  6 Jun 2024 14:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EDD19FA70;
+	Thu,  6 Jun 2024 14:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEHjFgYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcP807S1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BBB196D9B;
-	Thu,  6 Jun 2024 14:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351471991B4;
+	Thu,  6 Jun 2024 14:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683004; cv=none; b=dPhJC9g3Hv3Gs8duqF2md16E9ZGAZbTQVQcOtQ/iYqNslPLuK/EZ1hjmH6/7BR3jomEoeeu+nondFn8nU4zs8MgxUXEUtVX9ayHicRZq+Ae94Fc0UHfEMb420FG3wA4PgaXrfgeg2FOvaMQcRITjQ7SJIZ3a6o3mz1T4eI+67lU=
+	t=1717683646; cv=none; b=G8/YPpKWuNwTnU80vBx3As3uhb1K2XQ0u/KdbVq1LFUM4/8wnksdg/Ai2vQmQYyxpchcb8AJiZaZD6o0tLc3TlIXyeRn3PIunDgc3jjquEUEJlXn3csvSJPTn6O77UHwgGVzEsHZCPDVLPEFadNJ0XsFAK6cwrgPWMqqbNd58xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683004; c=relaxed/simple;
-	bh=9h2EKLQHRb1ewo7Wic+ei0/GWimCVKDxLG+OR/UK4Ao=;
+	s=arc-20240116; t=1717683646; c=relaxed/simple;
+	bh=0GUcknW4HHgTXQv46lGlRx4LW3pxeBa27d4K7BxFRJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dq3csXfej6rSr3oM56w+BqgI4x8nC0TXRnIYCE16QxOXXJCmMINokZv6z6I0JxGKNC/fclqKjuHdt74IwGWKRdfFAkScKcBBU3et5inBxLl4TU8iQrubKYxCgaobqOwmrUazx8r9ZMKVYm1ov17wtgOqbQqlcOG5jf0c2nB84OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEHjFgYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E21CC2BD10;
-	Thu,  6 Jun 2024 14:10:04 +0000 (UTC)
+	 MIME-Version; b=dCUyYSopbQAS1UxjKT8xcwaI4IjPB4TT35Qt20L2bXWKU1JIF67WmJSdwdsuvY9M+z0zZckabdbz2rpNTGmIHMI0BFHEo3Z0XfFjzFZ+QL6l0MxjB3hL8E9ySj2d6s0E3ZV1Cn+h8LPN06jJIIzDPC4VNP9f6Gxm32pxXjA4v+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcP807S1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134A0C2BD10;
+	Thu,  6 Jun 2024 14:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683004;
-	bh=9h2EKLQHRb1ewo7Wic+ei0/GWimCVKDxLG+OR/UK4Ao=;
+	s=korg; t=1717683646;
+	bh=0GUcknW4HHgTXQv46lGlRx4LW3pxeBa27d4K7BxFRJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yEHjFgYBblZYdpp6ZHjXJec0A3IqNhH+LfuFfuSvtYCHi//MLRn08xUJUOL/Y5ogm
-	 ew9UEjTKshoJWGldTEmpjY+B+lIj51r7n5kCRLdO0WoHYX1ZKptJ7l0nu10NZR8yDe
-	 Hle0OVjMF4BoEPY+40XxxgAaGlmAxSMvDt/zdOhU=
+	b=vcP807S1lCp7VovgCHB/T4QtRxTlQ5Ombwv4XJHA2GwNtqzNbjyDwji852PUt73Jk
+	 bb+QL8maOtHGjSdHWbwT4bRWo6/fAa9PIZgTWcb+zidz/opxUvflk/5TYE2qfUch2M
+	 bNaB6cIIGOyjKt6JI3Bdr9ps/p6UwOUD35JpUoec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Yoann Congal <yoann.congal@smile.fr>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 210/374] printk: Fix LOG_CPU_MAX_BUF_SHIFT when BASE_SMALL is enabled
+Subject: [PATCH 6.6 517/744] f2fs: fix to release node block count in error path of f2fs_new_node_page()
 Date: Thu,  6 Jun 2024 16:03:09 +0200
-Message-ID: <20240606131658.851694784@linuxfoundation.org>
+Message-ID: <20240606131749.022257880@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoann Congal <yoann.congal@smile.fr>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 320bf43190514be5c00e11f47ec2160dd3993844 ]
+[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
 
-LOG_CPU_MAX_BUF_SHIFT default value depends on BASE_SMALL:
-  config LOG_CPU_MAX_BUF_SHIFT
-  	default 12 if !BASE_SMALL
-  	default 0 if BASE_SMALL
-But, BASE_SMALL is a config of type int and "!BASE_SMALL" is always
-evaluated to true whatever is the value of BASE_SMALL.
+It missed to call dec_valid_node_count() to release node block count
+in error path, fix it.
 
-This patch fixes this by using the correct conditional operator for int
-type : BASE_SMALL != 0.
-
-Note: This changes CONFIG_LOG_CPU_MAX_BUF_SHIFT=12 to
-CONFIG_LOG_CPU_MAX_BUF_SHIFT=0 for BASE_SMALL defconfigs, but that will
-not be a big impact due to this code in kernel/printk/printk.c:
-  /* by default this will only continue through for large > 64 CPUs */
-  if (cpu_extra <= __LOG_BUF_LEN / 2)
-          return;
-Systems using CONFIG_BASE_SMALL and having 64+ CPUs should be quite
-rare.
-
-John Ogness <john.ogness@linutronix.de> (printk reviewer) wrote:
-> For printk this will mean that BASE_SMALL systems were probably
-> previously allocating/using the dynamic ringbuffer and now they will
-> just continue to use the static ringbuffer. Which is fine and saves
-> memory (as it should).
-
-Petr Mladek <pmladek@suse.com> (printk maintainer) wrote:
-> More precisely, it allocated the buffer dynamically when the sum
-> of per-CPU-extra space exceeded half of the default static ring
-> buffer. This happened for systems with more than 64 CPUs with
-> the default config values.
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/all/CAMuHMdWm6u1wX7efZQf=2XUAHascps76YQac6rdnQGhc8nop_Q@mail.gmail.com/
-Reported-by: Vegard Nossum <vegard.nossum@oracle.com>
-Closes: https://lore.kernel.org/all/f6856be8-54b7-0fa0-1d17-39632bf29ada@oracle.com/
-Fixes: 4e244c10eab3 ("kconfig: remove unneeded symbol_empty variable")
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
-Link: https://lore.kernel.org/r/20240505080343.1471198-2-yoann.congal@smile.fr
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/node.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 664bedb9a71fb..459f44ef7cc94 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -743,8 +743,8 @@ config LOG_CPU_MAX_BUF_SHIFT
- 	int "CPU kernel log buffer size contribution (13 => 8 KB, 17 => 128KB)"
- 	depends on SMP
- 	range 0 21
--	default 12 if !BASE_SMALL
--	default 0 if BASE_SMALL
-+	default 0 if BASE_SMALL != 0
-+	default 12
- 	depends on PRINTK
- 	help
- 	  This option allows to increase the default ring buffer size
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index ab113fd3a3432..c765bda3beaac 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1319,6 +1319,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	}
+ 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
+ 		err = -EFSCORRUPTED;
++		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
+ 		goto fail;
+@@ -1345,7 +1346,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 	if (ofs == 0)
+ 		inc_valid_inode_count(sbi);
+ 	return page;
+-
+ fail:
+ 	clear_node_page_dirty(page);
+ 	f2fs_put_page(page, 1);
 -- 
 2.43.0
 
