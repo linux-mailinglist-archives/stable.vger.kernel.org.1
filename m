@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-49417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140FB8FED2B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DE58FE8DD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C19DF285510
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787921F22FCB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DC71B5802;
-	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3625D196C89;
+	Thu,  6 Jun 2024 14:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbL2bc55"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kw/jXtgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7077B198E7D;
-	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0DA198E88;
+	Thu,  6 Jun 2024 14:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683455; cv=none; b=rN4jFylU18xUZYhQwsjQv8KzwYO8LA7M4vbhZHL/BxnZEwGG6Uh0U6F/psJGS8ALBCPzbUoEK8hjl/KtQK9foyQZXIYgKcwP4RMLVE27l2RZnbRxOnxcVDuVC2c5q5aEA6kVZ11+LzhAjVW49qr7CT75DDDhukusB7IXLSiD7BE=
+	t=1717682944; cv=none; b=dx33IxXl+dbiw4xF1Rd53Z5HeJPtk9FAagYgwgaKGuT+BuOiTcUQx7Z02vSbF5gtTopa5jDxXrXwZqi8I7sVLLZav9i83oCiD2FxDtmh5eZw7CzNfLsEuIzHr1xffQFn8LI8ccPcRp90fKIVd47+7+qZDPRxYpsMQCEZx4IT72I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683455; c=relaxed/simple;
-	bh=GNeMjnqzZWB1SBKR7F3aXU8P9N+su5XT428mWbOLTbk=;
+	s=arc-20240116; t=1717682944; c=relaxed/simple;
+	bh=P2Bkh6YZyG6vwc+CRgX9z80hMUx4zGDmVIPwRMnA/vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcqd/LKAYBgkVUJY5kYDdJp0gs2O9isAhoAyCvuiO3So24uH0PAOVR6nNc/q8/t3gBV71zfqMVcly70Z+Y3ts0Q/jFBoLogWhu3+HB+jf174uOY9QAcdh/qFIWU7i61aRaWqHO92DFFvNQGvXjXcR8/hERj6ynB6Ts+IWkQosMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbL2bc55; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E87C2BD10;
-	Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
+	 MIME-Version; b=l1/Usay8WB4seQbNS1vj1jtdloTM/XIyWsCtP3dOICQUeai/GkA8qV7lsK7YrVN4m/jkVdARAc3FJXu9UfhysXeHxfBRCXW7TL8k4tp3+JyHycH1l67Ke/4ru3+VTzCPi6tvm5gg3cQYMfgVuKdxO/qNHHKjGms7P3+570VGt8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kw/jXtgO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F92C2BD10;
+	Thu,  6 Jun 2024 14:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683455;
-	bh=GNeMjnqzZWB1SBKR7F3aXU8P9N+su5XT428mWbOLTbk=;
+	s=korg; t=1717682943;
+	bh=P2Bkh6YZyG6vwc+CRgX9z80hMUx4zGDmVIPwRMnA/vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbL2bc559vlxrgQ9ZVOsvfyMGYIsKBLmK28gJiwLHLKLkwFR2mShdwRo7hq5IxuxO
-	 sjlmtNRKovXmaBXWgmehsUr5GPqyXbdRYN34lfhad8OuKmGDAjb9BUckalgs2E+uC2
-	 kRu3VEQVgMTtnhGfJ9lkqTJGLjG68/ZPPqSBxLAE=
+	b=kw/jXtgOCNZLRHeN+hG1tXaL5S34FvDkCbz4w8gdOH1G0Ldgs7CBGntsehjBaI3Cg
+	 ni2Hf8RiynNqnHymEram0w8OQKznLFc/VS1GoK0nUDxmDRfMYTN8q8X47wIaZdu4He
+	 +F7VgTF59Cf5ckRGkzJhUUDMsprykBtu3vzU4xM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jin Yao <yao.jin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 400/744] perf annotate: Get rid of duplicate --group option item
-Date: Thu,  6 Jun 2024 16:01:12 +0200
-Message-ID: <20240606131745.288595321@linuxfoundation.org>
+Subject: [PATCH 6.9 094/374] extcon: max8997: select IRQ_DOMAIN instead of depending on it
+Date: Thu,  6 Jun 2024 16:01:13 +0200
+Message-ID: <20240606131655.052347775@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,50 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 374af9f1f06b5e991c810d2e4983d6f58df32136 ]
+[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
 
-The options array in cmd_annotate() has duplicate --group options.  It
-only needs one and let's get rid of the other.
+IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
+it directly thru "make *config", so drivers should select it instead
+of depending on it if they need it.
+Relying on it being set for a dependency is risky.
 
-  $ perf annotate -h 2>&1 | grep group
-        --group           Show event group information together
-        --group           Show event group information together
+Consistently using "select" or "depends on" can also help reduce
+Kconfig circular dependency issues.
 
-Fixes: 7ebaf4890f63eb90 ("perf annotate: Support '--group' option")
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240322224313.423181-1-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Therefore, change EXTCON_MAX8997's use of "depends on" for
+IRQ_DOMAIN to "select".
+
+Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
+Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-annotate.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/extcon/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
-index aeeb801f1ed7b..16757ea9b1a7a 100644
---- a/tools/perf/builtin-annotate.c
-+++ b/tools/perf/builtin-annotate.c
-@@ -589,8 +589,6 @@ int cmd_annotate(int argc, const char **argv)
- 		    "Enable symbol demangling"),
- 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
- 		    "Enable kernel symbol demangling"),
--	OPT_BOOLEAN(0, "group", &symbol_conf.event_group,
--		    "Show event group information together"),
- 	OPT_BOOLEAN(0, "show-total-period", &symbol_conf.show_total_period,
- 		    "Show a column with the sum of periods"),
- 	OPT_BOOLEAN('n', "show-nr-samples", &symbol_conf.show_nr_samples,
+diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
+index 5f869eacd19ab..3da94b3822923 100644
+--- a/drivers/extcon/Kconfig
++++ b/drivers/extcon/Kconfig
+@@ -116,7 +116,8 @@ config EXTCON_MAX77843
+ 
+ config EXTCON_MAX8997
+ 	tristate "Maxim MAX8997 EXTCON Support"
+-	depends on MFD_MAX8997 && IRQ_DOMAIN
++	depends on MFD_MAX8997
++	select IRQ_DOMAIN
+ 	help
+ 	  If you say yes here you get support for the MUIC device of
+ 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
 -- 
 2.43.0
 
