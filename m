@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-49120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A5E8FEBF2
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 598168FEBF3
 	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91FA1B21A7B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F17762815B9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06701AC249;
-	Thu,  6 Jun 2024 14:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1961AC253;
+	Thu,  6 Jun 2024 14:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SslPVnNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGY9QIIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF113197A9B;
-	Thu,  6 Jun 2024 14:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08F4197A9B;
+	Thu,  6 Jun 2024 14:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683311; cv=none; b=fuotSnlYUkXH0el7nj8KCMLKIkDGcxGSleggbT/nUvf4LJsbRxB0p0OgvNHxa6vhFutNQu8eGvsaVd1+PQ6DBz6aZIFLvsLjMTgyJ22s7b4fH8/W+tDb1z+91OWD3svy2vrecZvpOf8jiXEXBjYCqzD0WwRUvvAnECxq2wN/SHk=
+	t=1717683312; cv=none; b=XoONCLIEAUgwsxgznaOiyUEV9oYuzaBaoB7jLfG1Am8fMhUrZ1UuXB50bjTa+V4hH7020TzvB7317ENtpc/BV7ITUYSv3T0EQ7FmxBBbnm5572pGzRvhUzAvoPO2ODBW2Uue+Oe9BTK9vKShsfCuc2j2TMX7ZLqRDQ3JxqYsWdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683311; c=relaxed/simple;
-	bh=HaYdDD+9G9RzuhxMQDqghvvqw9rsfzwf7xJYNvc7+nM=;
+	s=arc-20240116; t=1717683312; c=relaxed/simple;
+	bh=Fcrfj04fdDfBBop19GGHik+CYd41Qng49mlqs4tMT9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzxTJcAQjGiyyXWxWZ+3DZrSu2GGQGDhybvXplFIqUk+4HqtATgA8xA8zySYa/TTOaDXUwLyUw4m0czimdElNlHwldRfP2tvUabx191eHRL35TbWRhfH93S/2ed7a5R4TTGZjncVLVoJzxAqXkQvGfzGygKlcLd+GonrpnQkjg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SslPVnNL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE6EC2BD10;
-	Thu,  6 Jun 2024 14:15:11 +0000 (UTC)
+	 MIME-Version; b=nokm4N83n5AIL78nx4I9DJnJTO7wHSUtvYV+UDEKj73ZolE79TjdC7Mq5554yX2kYv1K8u/pDoQBSBgXU1dm2ReIoFzAykPAR8MFJZMtCncnp9bCwQQQNtf8SrezP12uibtwqNV1VgDWIQZ8QCxPnn67ll64SDSIgRIJfVYCJEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGY9QIIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90591C2BD10;
+	Thu,  6 Jun 2024 14:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683311;
-	bh=HaYdDD+9G9RzuhxMQDqghvvqw9rsfzwf7xJYNvc7+nM=;
+	s=korg; t=1717683312;
+	bh=Fcrfj04fdDfBBop19GGHik+CYd41Qng49mlqs4tMT9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SslPVnNLutWY+6SJ7X0IapQlWObw/Z4/l6Z51reNgEYovFDM/HMFG67W9V/Og6Rg/
-	 ocmyRYH6P1e3JJX1TP3d2HS4pCbncWfMgGIQxb6GjrlX3jODCkbb2P3jZMYGYfnapG
-	 Aw1f5brBmw9/46UzxjtyQD20dVpY/d9gMkhiKoVw=
+	b=sGY9QIIpsPjrWf+MfksHOTxCNF1tGEi5Zydc5wpyiKEdO11FTq7G6L4CQzI8khF5f
+	 7aiZEPhqgRFzCiepzr37en9z9kFNffttHIfd+DOmyCR951dinArXvtkzocR7Ohuc0d
+	 a1d+Bo3IDVVRG9JUB0nB6OrUG/LeY0LgAh2F8IIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akiva Goldberger <agoldberger@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Puranjay Mohan <puranjay12@gmail.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 252/744] net/mlx5: Discard command completions in internal error
-Date: Thu,  6 Jun 2024 15:58:44 +0200
-Message-ID: <20240606131740.483201967@linuxfoundation.org>
+Subject: [PATCH 6.6 253/744] s390/bpf: Emit a barrier for BPF_FETCH instructions
+Date: Thu,  6 Jun 2024 15:58:45 +0200
+Message-ID: <20240606131740.516534782@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,73 +68,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Akiva Goldberger <agoldberger@nvidia.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit db9b31aa9bc56ff0d15b78f7e827d61c4a096e40 ]
+[ Upstream commit 68378982f0b21de02ac3c6a11e2420badefcb4bc ]
 
-Fix use after free when FW completion arrives while device is in
-internal error state. Avoid calling completion handler in this case,
-since the device will flush the command interface and trigger all
-completions manually.
+BPF_ATOMIC_OP() macro documentation states that "BPF_ADD | BPF_FETCH"
+should be the same as atomic_fetch_add(), which is currently not the
+case on s390x: the serialization instruction "bcr 14,0" is missing.
+This applies to "and", "or" and "xor" variants too.
 
-Kernel log:
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-...
-RIP: 0010:refcount_warn_saturate+0xd8/0xe0
-...
-Call Trace:
-<IRQ>
-? __warn+0x79/0x120
-? refcount_warn_saturate+0xd8/0xe0
-? report_bug+0x17c/0x190
-? handle_bug+0x3c/0x60
-? exc_invalid_op+0x14/0x70
-? asm_exc_invalid_op+0x16/0x20
-? refcount_warn_saturate+0xd8/0xe0
-cmd_ent_put+0x13b/0x160 [mlx5_core]
-mlx5_cmd_comp_handler+0x5f9/0x670 [mlx5_core]
-cmd_comp_notifier+0x1f/0x30 [mlx5_core]
-notifier_call_chain+0x35/0xb0
-atomic_notifier_call_chain+0x16/0x20
-mlx5_eq_async_int+0xf6/0x290 [mlx5_core]
-notifier_call_chain+0x35/0xb0
-atomic_notifier_call_chain+0x16/0x20
-irq_int_handler+0x19/0x30 [mlx5_core]
-__handle_irq_event_percpu+0x4b/0x160
-handle_irq_event+0x2e/0x80
-handle_edge_irq+0x98/0x230
-__common_interrupt+0x3b/0xa0
-common_interrupt+0x7b/0xa0
-</IRQ>
-<TASK>
-asm_common_interrupt+0x22/0x40
+s390x is allowed to reorder stores with subsequent fetches from
+different addresses, so code relying on BPF_FETCH acting as a barrier,
+for example:
 
-Fixes: 51d138c2610a ("net/mlx5: Fix health error state handling")
-Signed-off-by: Akiva Goldberger <agoldberger@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240509112951.590184-6-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  stw [%r0], 1
+  afadd [%r1], %r2
+  ldxw %r3, [%r4]
+
+may be broken. Fix it by emitting "bcr 14,0".
+
+Note that a separate serialization instruction is not needed for
+BPF_XCHG and BPF_CMPXCHG, because COMPARE AND SWAP performs
+serialization itself.
+
+Fixes: ba3b86b9cef0 ("s390/bpf: Implement new atomic ops")
+Reported-by: Puranjay Mohan <puranjay12@gmail.com>
+Closes: https://lore.kernel.org/bpf/mb61p34qvq3wf.fsf@kernel.org/
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
+Link: https://lore.kernel.org/r/20240507000557.12048-1-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/s390/net/bpf_jit_comp.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index 3072f1c6c0ff7..48dc4ae87af09 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1632,6 +1632,9 @@ static int cmd_comp_notifier(struct notifier_block *nb,
- 	dev = container_of(cmd, struct mlx5_core_dev, cmd);
- 	eqe = data;
- 
-+	if (dev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
-+		return NOTIFY_DONE;
-+
- 	mlx5_cmd_comp_handler(dev, be32_to_cpu(eqe->data.cmd.vector), false);
- 
- 	return NOTIFY_OK;
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index 8af02176f68bf..62ee557d4b499 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -1311,8 +1311,12 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 	EMIT6_DISP_LH(0xeb000000, is32 ? (op32) : (op64),		\
+ 		      (insn->imm & BPF_FETCH) ? src_reg : REG_W0,	\
+ 		      src_reg, dst_reg, off);				\
+-	if (is32 && (insn->imm & BPF_FETCH))				\
+-		EMIT_ZERO(src_reg);					\
++	if (insn->imm & BPF_FETCH) {					\
++		/* bcr 14,0 - see atomic_fetch_{add,and,or,xor}() */	\
++		_EMIT2(0x07e0);						\
++		if (is32)                                               \
++			EMIT_ZERO(src_reg);				\
++	}								\
+ } while (0)
+ 		case BPF_ADD:
+ 		case BPF_ADD | BPF_FETCH:
 -- 
 2.43.0
 
