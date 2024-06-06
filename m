@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-49792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4E28FEEE0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823488FED83
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6610B288093
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F0551C2353C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AFC1C89EB;
-	Thu,  6 Jun 2024 14:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CED81BBBDA;
+	Thu,  6 Jun 2024 14:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CB1rb3A1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2NJKWz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDBF199230;
-	Thu,  6 Jun 2024 14:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0A41BB6AF;
+	Thu,  6 Jun 2024 14:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683711; cv=none; b=kpqN4fF/Ri5afquhltokvGJFyv7sAxGkrqKkpMWqQtHNYLY0JeWbrKz7dqynN5kuyOxuAjnTlOUvaFeFdNiab4thdCwjEPEdcfFjTg9QEG6spUghB8ai8szLHETaqW2en1ZUoE+0rO3kbtjzSkH9lIGeXDfnCj/s8cHKmMIFwyk=
+	t=1717683495; cv=none; b=Atg1BO0bLhHdVvsYsFvRsdb2fEtCzUQ4zBzA57aCGNTEZ2u0tk07an9HY0Yc2Erg/IPl/iZvBESzD7R9m1iQdjIdo2uJV0oM24plTh1XbbIzgBmNY7AM/wPds2Ya5FMb7IPmFamwlveBC/PKIT0N66aMilw7NT72Xmhknrq4LM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683711; c=relaxed/simple;
-	bh=O8rrvzhObgyzBgulAHXHz96nM2/Xh4BXey2OZjoWZmA=;
+	s=arc-20240116; t=1717683495; c=relaxed/simple;
+	bh=FePEf7JIe25GawnGZVvpldCHODjw5P41rilk38w8KPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRNP0fJCt/p+YTBrsQtcH4BkFGA6dAFgdH+UgXEIlx5zcL85G+BosWpO1GAFr2HEB7GyB+Ep69Az9+I5F+7tjmUuahJsFPbGc/+ImHcrB5rMXzRtv6ayE6zebj3XkWp7gPoklDZxWwtLG4ioBshHzkqXLRVttS9xMuoZ18jRCeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CB1rb3A1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E83C2BD10;
-	Thu,  6 Jun 2024 14:21:51 +0000 (UTC)
+	 MIME-Version; b=iITK1ff10hSEDQxwKzUVCIeaFYQmOzwJT80vbj1Ze9m4gz2ve7PTxyAPes9s8uJCf+N2D63Z9TYjetX6sEkam2VlOAUuDBYYTVWJQDg1v+pTWzooQdqJqoot8vhgI3B3VlykkpBHw4hSPDb77cdfmS5y/gjWBswr9/xi/1wTBIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2NJKWz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C03C2BD10;
+	Thu,  6 Jun 2024 14:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683711;
-	bh=O8rrvzhObgyzBgulAHXHz96nM2/Xh4BXey2OZjoWZmA=;
+	s=korg; t=1717683495;
+	bh=FePEf7JIe25GawnGZVvpldCHODjw5P41rilk38w8KPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CB1rb3A12xXd5UfuxO+L1ygc2MN3wLSKhPvuxQ1ym0IwbWmpmi/vGp33y32emFDhl
-	 euuw/tB2usUtUg0/Y4G6u5hUW3Q7+WdPgcMEP1CoBbIZH+vrCQjbhwYq9vRMY85FX0
-	 ojpEh4o91gYVfDuLGEse02/EkTAJUA8J8GAfXXZY=
+	b=A2NJKWz3JFGoJzAPMXckH7k4qUbTf9APDoNycYgfCuhmHprJ+1SDDHEGtpo2quY8G
+	 Q7HSzFVvcZ8R08ozxpzXnewSjt0GwULRcB4Mbh25vjj9T4+cSxgkyvF8oJ+H9O9/KI
+	 X3mSZJC3ts9Jz0ewptE+AmnGrp3K/yJlVMTqUcfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi.grimberg@vastdata.com>,
-	Dan Aloni <dan.aloni@vastdata.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 642/744] rpcrdma: fix handling for RDMA_CM_EVENT_DEVICE_REMOVAL
+Subject: [PATCH 6.1 385/473] um: Fix the -Wmissing-prototypes warning for get_thread_reg
 Date: Thu,  6 Jun 2024 16:05:14 +0200
-Message-ID: <20240606131753.061995081@linuxfoundation.org>
+Message-ID: <20240606131712.583559698@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Aloni <dan.aloni@vastdata.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 4836da219781ec510c4c0303df901aa643507a7a ]
+[ Upstream commit 3144013e48f4f6e5127223c4ebc488016815dedb ]
 
-Under the scenario of IB device bonding, when bringing down one of the
-ports, or all ports, we saw xprtrdma entering a non-recoverable state
-where it is not even possible to complete the disconnect and shut it
-down the mount, requiring a reboot. Following debug, we saw that
-transport connect never ended after receiving the
-RDMA_CM_EVENT_DEVICE_REMOVAL callback.
+The get_thread_reg function is defined in the user code, and is
+called by the kernel code. It should be declared in a shared header.
 
-The DEVICE_REMOVAL callback is irrespective of whether the CM_ID is
-connected, and ESTABLISHED may not have happened. So need to work with
-each of these states accordingly.
-
-Fixes: 2acc5cae2923 ('xprtrdma: Prevent dereferencing r_xprt->rx_ep after it is freed')
-Cc: Sagi Grimberg <sagi.grimberg@vastdata.com>
-Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: dbba7f704aa0 ("um: stop polluting the namespace with registers.h contents")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/verbs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/um/include/asm/processor-generic.h | 1 -
+ arch/x86/um/shared/sysdep/archsetjmp.h  | 7 +++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
-index 28c0771c4e8c3..4f71627ba39ce 100644
---- a/net/sunrpc/xprtrdma/verbs.c
-+++ b/net/sunrpc/xprtrdma/verbs.c
-@@ -244,7 +244,11 @@ rpcrdma_cm_event_handler(struct rdma_cm_id *id, struct rdma_cm_event *event)
- 	case RDMA_CM_EVENT_DEVICE_REMOVAL:
- 		pr_info("rpcrdma: removing device %s for %pISpc\n",
- 			ep->re_id->device->name, sap);
--		fallthrough;
-+		switch (xchg(&ep->re_connect_status, -ENODEV)) {
-+		case 0: goto wake_connect_worker;
-+		case 1: goto disconnected;
-+		}
-+		return 0;
- 	case RDMA_CM_EVENT_ADDR_CHANGE:
- 		ep->re_connect_status = -ENODEV;
- 		goto disconnected;
+diff --git a/arch/um/include/asm/processor-generic.h b/arch/um/include/asm/processor-generic.h
+index bb5f06480da95..9adfcef579c1c 100644
+--- a/arch/um/include/asm/processor-generic.h
++++ b/arch/um/include/asm/processor-generic.h
+@@ -95,7 +95,6 @@ extern struct cpuinfo_um boot_cpu_data;
+ #define current_cpu_data boot_cpu_data
+ #define cache_line_size()	(boot_cpu_data.cache_alignment)
+ 
+-extern unsigned long get_thread_reg(int reg, jmp_buf *buf);
+ #define KSTK_REG(tsk, reg) get_thread_reg(reg, &tsk->thread.switch_buf)
+ extern unsigned long __get_wchan(struct task_struct *p);
+ 
+diff --git a/arch/x86/um/shared/sysdep/archsetjmp.h b/arch/x86/um/shared/sysdep/archsetjmp.h
+index 166cedbab9266..8c81d1a604a94 100644
+--- a/arch/x86/um/shared/sysdep/archsetjmp.h
++++ b/arch/x86/um/shared/sysdep/archsetjmp.h
+@@ -1,6 +1,13 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __X86_UM_SYSDEP_ARCHSETJMP_H
++#define __X86_UM_SYSDEP_ARCHSETJMP_H
++
+ #ifdef __i386__
+ #include "archsetjmp_32.h"
+ #else
+ #include "archsetjmp_64.h"
+ #endif
++
++unsigned long get_thread_reg(int reg, jmp_buf *buf);
++
++#endif /* __X86_UM_SYSDEP_ARCHSETJMP_H */
 -- 
 2.43.0
 
