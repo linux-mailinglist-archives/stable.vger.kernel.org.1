@@ -1,59 +1,78 @@
-Return-Path: <stable+bounces-49071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF308FEBBC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C0D8FE909
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5A4E1F2921F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FA07283786
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697B619938F;
-	Thu,  6 Jun 2024 14:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C271991BA;
+	Thu,  6 Jun 2024 14:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxS9wax+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdHnYG1L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2770E196DA6;
-	Thu,  6 Jun 2024 14:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A2E19644F;
+	Thu,  6 Jun 2024 14:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683288; cv=none; b=rD23EZ6VO0AQG4liF8cB/uesfM1avS2ei3tDR8ARJW6B9IqpWJMNOOYuxaoE0nqFQR0YqMlPJry8PHg0kd99oxAtPNfv6PxS5VDo2aWOr9qekFjfmmkzBl8QCSDKC0LiWGWLUJH2rcDeA4rCVe9mYuyD73mfyn9SdAFx60jD9i0=
+	t=1717682971; cv=none; b=kz4ha+eE/PSjTj1+y/hFrktHshSTcZs1C0x7VTD2HmD78/Hilhm0o8uYSU2NGWA2ktQFZ/DhI2z2ORU2IQOUqoeckvmaKAXTns2yGT5hFMz0CHLnTPOsnLh5Axvo0Cy+8PEIvSYa9KYj/9ofJVlqyFB+Z1mZ9kE6BVHOQ+PMb2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683288; c=relaxed/simple;
-	bh=XuqGG3jZoC2q+VwpCmyASdcR8Poq5oGqUISe23/OGHI=;
+	s=arc-20240116; t=1717682971; c=relaxed/simple;
+	bh=wYvIbb2BLPGr+h26wN83ld/DtcpE1Tdd9F7DyqC7ELo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bw7oDFMK2YsucR9Eqw+2KgYMumKEKaqkWbsnY46y5PnP4RAK28FIvRqG1NBpu1HP6i8LoOeR0iiCi52fUleE/Taq7x/QYtiHOUc1OYzlS0b+j2jF1FKS9jDMqclsMSyavDQPdNTTx9PnyedEUcquorYXiQ+Iu5xVel7zIGzmJgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxS9wax+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF766C2BD10;
-	Thu,  6 Jun 2024 14:14:47 +0000 (UTC)
+	 MIME-Version; b=ezXp56M1+qMf+ITFWWY/wL7SeGTILo4AceOzdBuQkWBeTHIhdJKtE71ldiZKzvRQjl1C9JM6pkJhM6XSufo2GXdQV7C/AD6Bxf9tiR/XwK4+s+eVZCNQBJiFEw59TXeA4Cxc66GhmONGOnd6uV7hEygv8hohADvIDQPLP3lv8+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdHnYG1L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BB1C2BD10;
+	Thu,  6 Jun 2024 14:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683288;
-	bh=XuqGG3jZoC2q+VwpCmyASdcR8Poq5oGqUISe23/OGHI=;
+	s=korg; t=1717682971;
+	bh=wYvIbb2BLPGr+h26wN83ld/DtcpE1Tdd9F7DyqC7ELo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxS9wax+wQUgree4T2B7Gy8pJ1zDKlWeSE0fXbsM/IDtugAjqdPU8ZX4zSXAv6/fq
-	 DUy/gro7n5Nzna3mtYfio2g0QWdy9e44mKWyWesTY3lLPc8gSk09YVHap36Hu5AORL
-	 CcewVBbgWx4Hh3PCosTeNBvQ7LwncSvgi40J3YoQ=
+	b=IdHnYG1LRwGoE02XwI9zCbI+0I+X2AEDOfo1zr5ZLsH5YpGhkbaWWeQ1YwWj6Wbf7
+	 3mzgbGLDcqq0iEFP6hn6ADMOxPLC5qtZVXkPX5+GiQ0egBoAc8Ls3eWxzY9UzaDpeb
+	 tQavzahn3GT5wMBQ0VMmz0xLlSLmt7U7wHSLqa7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	Hao Chen <chenhao418@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Will Deacon <will@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ben Gainey <ben.gainey@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Li Dong <lidong@vivo.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Paran Lee <p4ranlee@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sun Haiyong <sunhaiyong@loongson.cn>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Yanteng Si <siyanteng@loongson.cn>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/473] drivers/perf: hisi: hns3: Fix out-of-bound access when valid event group
-Date: Thu,  6 Jun 2024 16:01:11 +0200
-Message-ID: <20240606131704.635559997@linuxfoundation.org>
+Subject: [PATCH 6.9 093/374] perf annotate: Fix memory leak in annotated_source
+Date: Thu,  6 Jun 2024 16:01:12 +0200
+Message-ID: <20240606131655.008469034@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +84,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 81bdd60a3d1d3b05e6cc6674845afb1694dd3a0e ]
+[ Upstream commit a3f7768bcf48281df14d98715f076c5656571527 ]
 
-The perf tool allows users to create event groups through following
-cmd [1], but the driver does not check whether the array index is out
-of bounds when writing data to the event_group array. If the number of
-events in an event_group is greater than HNS3_PMU_MAX_HW_EVENTS, the
-memory write overflow of event_group array occurs.
+Freeing hash map doesn't free the entries added to the hashmap, add
+the missing free().
 
-Add array index check to fix the possible array out of bounds violation,
-and return directly when write new events are written to array bounds.
-
-There are 9 different events in an event_group.
-[1] perf stat -e '{pmu/event1/, ... ,pmu/event9/}
-
-Fixes: 66637ab137b4 ("drivers/perf: hisi: add driver for HNS3 PMU")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Signed-off-by: Hao Chen <chenhao418@huawei.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://lore.kernel.org/r/20240425124627.13764-3-hejunhao3@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: d3e7cad6f36d9e80 ("perf annotate: Add a hashmap for symbol histogram")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ben Gainey <ben.gainey@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Li Dong <lidong@vivo.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Cc: Paran Lee <p4ranlee@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Sun Haiyong <sunhaiyong@loongson.cn>
+Cc: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: Yanteng Si <siyanteng@loongson.cn>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240507183545.1236093-3-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hns3_pmu.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tools/perf/util/annotate.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/perf/hisilicon/hns3_pmu.c b/drivers/perf/hisilicon/hns3_pmu.c
-index 16869bf5bf4cc..cbdd53b0a0342 100644
---- a/drivers/perf/hisilicon/hns3_pmu.c
-+++ b/drivers/perf/hisilicon/hns3_pmu.c
-@@ -1085,15 +1085,27 @@ static bool hns3_pmu_validate_event_group(struct perf_event *event)
- 			return false;
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index 2ebe2fe92a10b..617b98da377e5 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -887,9 +887,15 @@ static struct annotated_source *annotated_source__new(void)
  
- 		for (num = 0; num < counters; num++) {
-+			/*
-+			 * If we find a related event, then it's a valid group
-+			 * since we don't need to allocate a new counter for it.
-+			 */
- 			if (hns3_pmu_cmp_event(event_group[num], sibling))
- 				break;
- 		}
- 
-+		/*
-+		 * Otherwise it's a new event but if there's no available counter,
-+		 * fail the check since we cannot schedule all the events in
-+		 * the group simultaneously.
-+		 */
-+		if (num == HNS3_PMU_MAX_HW_EVENTS)
-+			return false;
+ static __maybe_unused void annotated_source__delete(struct annotated_source *src)
+ {
++	struct hashmap_entry *cur;
++	size_t bkt;
 +
- 		if (num == counters)
- 			event_group[counters++] = sibling;
- 	}
+ 	if (src == NULL)
+ 		return;
  
--	return counters <= HNS3_PMU_MAX_HW_EVENTS;
-+	return true;
- }
- 
- static u32 hns3_pmu_get_filter_condition(struct perf_event *event)
++	hashmap__for_each_entry(src->samples, cur, bkt)
++		zfree(&cur->pvalue);
++
+ 	hashmap__free(src->samples);
+ 	zfree(&src->histograms);
+ 	free(src);
 -- 
 2.43.0
 
