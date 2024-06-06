@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712E38FE984
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58858FEEA7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15E632881D4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EBAB1F24F3E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5212E19AA72;
-	Thu,  6 Jun 2024 14:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91B41C616F;
+	Thu,  6 Jun 2024 14:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLAY823T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6mVdI8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1058219AA6A;
-	Thu,  6 Jun 2024 14:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982841991D7;
+	Thu,  6 Jun 2024 14:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683034; cv=none; b=UEz4taTMtf1wBCsCisLv7cZDWqDY4NbnlBDpCvUI9MwYYj2JOrSoQ9sbjPoq9zq0rB6K4VeJ1avoAOJL6hn2V/yLPed4feOBlhrpHMuD+YEes0H6zXhhQpyO6xCvpiMw7CcF6OBIySswX8xHjBLFnJZ9y6j5l3bQxN9FwK7d3V4=
+	t=1717683686; cv=none; b=QnK2MjULKjHNt4X2D//XoBTgTpP3jHw+OlQ0Zcm5r637v7QbDZAxAkZkTtDrnjSMcaRmCC64/89yXbcN+2C2Eb36rDP0FYKN1tQMs8osg1MwmCt0HZbDc1Q3jRJsRRyxk3piiP7T8jEqgvfLhimnjeIfg7s4fG+RPZeHM5rz5NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683034; c=relaxed/simple;
-	bh=qgeRVi+V7l4NlsFrxVBSoPPzVG5+huE9rvfZPwT0hiw=;
+	s=arc-20240116; t=1717683686; c=relaxed/simple;
+	bh=vs6p+MyNKxAw0qWIafKPul10lUGyu/WS5yT0kuFPWgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQXMOgL9tg9jN0HZPuMu0vSfjUC6KAnYs3Zu4JitcbEdKr7PBnYbWwpGw5MQujZ+fdzZmZxyUmBQVodMrTdi8jd2oHIj5vVQB6bsX6mmTSBetE3mMiefm/AY9OE/mxlQE0wTYzt6Za3MmDjrbKYUR6KWwx0VzxeGtZ1JxLcLiGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLAY823T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F27C4AF10;
-	Thu,  6 Jun 2024 14:10:33 +0000 (UTC)
+	 MIME-Version; b=E4pDUP3ku0seEJdSth3d1nO1STqYKkKRkw7JIYGs+4INzpB3RLszrIY4Lm9vXna8FYY38Ty3QWNUa33zoEMKFCKzZK+VIj2YT8sBLF0ZsQ4QWzLxo32HAj9yHRKh/4zaLP2f7kxPx5Saln2J3I5f3KjcHsuwljI6JNrfOQmaWSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6mVdI8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77851C2BD10;
+	Thu,  6 Jun 2024 14:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683033;
-	bh=qgeRVi+V7l4NlsFrxVBSoPPzVG5+huE9rvfZPwT0hiw=;
+	s=korg; t=1717683686;
+	bh=vs6p+MyNKxAw0qWIafKPul10lUGyu/WS5yT0kuFPWgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLAY823TlYm6421AVFtsX7o+m1SQPoRNNR8wPKpxTvdDAL0ZtvIDrZGScrHWatC+P
-	 7MrR3MXAt65K9EGubPnF7m/PIms9ohd1Z1ikdrX0kwnmCprVsxaaOit0X3j21lMjR8
-	 hb/DSIGvcBoIx0QFhPnCs4DjDmf6UUkfC1VZ96ec=
+	b=O6mVdI8KAaeGljP+nA9FHmg3fbsMkODOwYYRlVwu07Vw9cPg6Ib5WNCKm/rMvflSF
+	 zrhmmfX+JtLWeeZa/qOVZxc2GKU8Ebpx9ruftw3ceR6EaBQd9IN4qFH8Sz3aSEwta9
+	 jZmxO9BockliQt5FpSfalRtQggKlTVMoXJgEyDUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Stevens <stevensd@chromium.org>,
-	David Hildenbrand <david@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Fenglin Wu <quic_fenglinw@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 259/374] virtio_balloon: Give the balloon its own wakeup source
+Subject: [PATCH 6.6 566/744] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
 Date: Thu,  6 Jun 2024 16:03:58 +0200
-Message-ID: <20240606131700.554448225@linuxfoundation.org>
+Message-ID: <20240606131750.608028631@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Stevens <stevensd@chromium.org>
+From: Fenglin Wu <quic_fenglinw@quicinc.com>
 
-[ Upstream commit 810d831bbbf3cbd86e5aa91c8485b4d35186144d ]
+[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
 
-Wakeup sources don't support nesting multiple events, so sharing a
-single object between multiple drivers can result in one driver
-overriding the wakeup event processing period specified by another
-driver. Have the virtio balloon driver use the wakeup source of the
-device it is bound to rather than the wakeup source of the parent
-device, to avoid conflicts with the transport layer.
+The output voltage is inclusive hence the max level calculation is
+off-by-one-step. Correct it.
 
-Note that although the virtio balloon's virtio_device itself isn't what
-actually wakes up the device, it is responsible for processing wakeup
-events. In the same way that EPOLLWAKEUP uses a dedicated wakeup_source
-to prevent suspend when userspace is processing wakeup events, a
-dedicated wakeup_source is necessary when processing wakeup events in a
-higher layer in the kernel.
+iWhile we are at it also add a define for the step size instead of
+using the magic value.
 
-Fixes: b12fbc3f787e ("virtio_balloon: stay awake while adjusting balloon")
-Signed-off-by: David Stevens <stevensd@chromium.org>
-Acked-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20240321012445.1593685-2-stevensd@google.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
+Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_balloon.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index 1f5b3dd31fcfc..89bc8da80519f 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -450,7 +450,7 @@ static void start_update_balloon_size(struct virtio_balloon *vb)
- 	vb->adjustment_signal_pending = true;
- 	if (!vb->adjustment_in_progress) {
- 		vb->adjustment_in_progress = true;
--		pm_stay_awake(vb->vdev->dev.parent);
-+		pm_stay_awake(&vb->vdev->dev);
+diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
+index 5c288fe7accf1..79f478d3a9b37 100644
+--- a/drivers/input/misc/pm8xxx-vibrator.c
++++ b/drivers/input/misc/pm8xxx-vibrator.c
+@@ -13,7 +13,8 @@
+ 
+ #define VIB_MAX_LEVEL_mV	(3100)
+ #define VIB_MIN_LEVEL_mV	(1200)
+-#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
++#define VIB_PER_STEP_mV		(100)
++#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
+ 
+ #define MAX_FF_SPEED		0xff
+ 
+@@ -117,10 +118,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
+ 		vib->active = true;
+ 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
+ 						VIB_MIN_LEVEL_mV;
+-		vib->level /= 100;
++		vib->level /= VIB_PER_STEP_mV;
+ 	} else {
+ 		vib->active = false;
+-		vib->level = VIB_MIN_LEVEL_mV / 100;
++		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
  	}
- 	spin_unlock_irqrestore(&vb->adjustment_lock, flags);
  
-@@ -462,7 +462,7 @@ static void end_update_balloon_size(struct virtio_balloon *vb)
- 	spin_lock_irq(&vb->adjustment_lock);
- 	if (!vb->adjustment_signal_pending && vb->adjustment_in_progress) {
- 		vb->adjustment_in_progress = false;
--		pm_relax(vb->vdev->dev.parent);
-+		pm_relax(&vb->vdev->dev);
- 	}
- 	spin_unlock_irq(&vb->adjustment_lock);
- }
-@@ -1029,6 +1029,15 @@ static int virtballoon_probe(struct virtio_device *vdev)
- 
- 	spin_lock_init(&vb->adjustment_lock);
- 
-+	/*
-+	 * The virtio balloon itself can't wake up the device, but it is
-+	 * responsible for processing wakeup events passed up from the transport
-+	 * layer. Wakeup sources don't support nesting/chaining calls, so we use
-+	 * our own wakeup source to ensure wakeup events are properly handled
-+	 * without trampling on the transport layer's wakeup source.
-+	 */
-+	device_set_wakeup_capable(&vb->vdev->dev, true);
-+
- 	virtio_device_ready(vdev);
- 
- 	if (towards_target(vb))
+ 	pm8xxx_vib_set(vib, vib->active);
 -- 
 2.43.0
 
