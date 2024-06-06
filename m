@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-49780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3527A8FEED2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C923D8FE9CC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB13284EC7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DD3D1F2706C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09591C7D88;
-	Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1573519B5A2;
+	Thu,  6 Jun 2024 14:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okrXdOM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jteg06Ms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A063C1C7D84;
-	Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96D719B59D;
+	Thu,  6 Jun 2024 14:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683705; cv=none; b=oIT1XDYx1c7OPR4olzboMDtiOZM8eKm6t32F0Hy8rrqVuo0wW2COFP3yWdKGPnJ7QM6mAbHWrz5KIAQtmhlRufNICj/F7geoxkzZ0wXySbTmitEdcsOwofTaH/VXzaFi4R7HJfRJdzjPL7DKIkH1ma38QjxHuj1uWdS9enge+qk=
+	t=1717683066; cv=none; b=lzrY5OdoewUhr9kU4jvAOAT4YMY1K+aD+r50yhioumjsAjWFRBsTFz75qGlbGVR+8jxFzT9wpJ6LECmLwJCUcY/+MPeq3ZUNIKITWrx9HhJM/5zvJXf7XnGY+ViguYdyHv8DaTG6zk6igOG0g78tPUfXqNSDT99Zh/Q12UT5/dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683705; c=relaxed/simple;
-	bh=zUw36MjbRnt2rX48gJhOf2sBFJv0vMpthjyUopGeuJQ=;
+	s=arc-20240116; t=1717683066; c=relaxed/simple;
+	bh=Nclb+sSaf0Dt0vhxIvQnFO/vXeRXt3m2LkDtoTr4V0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEWFEu9vyBQfxItABjOEpiDo8dy6dAjeBNm6cM3bBjvfjmyeSUPj+qRxxxRVkEQ2QabDWFdRePmg6MNO3L2CTSmDs8PNjgvMfIVoE4z87i/ImGno+oj1ytlu/2BUEyAh8l4v2i6ra/2wMS72mVh72c2RmXl/ctRwyTb8EgscLDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okrXdOM+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8033AC32781;
-	Thu,  6 Jun 2024 14:21:45 +0000 (UTC)
+	 MIME-Version; b=po7Y1/pc1SgFH1OpSERTUE96a6iI/fB1IWoAny3FqytPWAgiqJEf9ospAR/n5EQ1rXnu2hvWl+sOodVH2kzTNKKYe/FTDeiyX2RzsVFExvaTM12e0++XzDgYeykHQuyZgFqezGKpAlKj8mpmW57c8GC1MmR+6dh+y7iyiuK/Ua4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jteg06Ms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF31C32786;
+	Thu,  6 Jun 2024 14:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683705;
-	bh=zUw36MjbRnt2rX48gJhOf2sBFJv0vMpthjyUopGeuJQ=;
+	s=korg; t=1717683066;
+	bh=Nclb+sSaf0Dt0vhxIvQnFO/vXeRXt3m2LkDtoTr4V0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okrXdOM+UIppv6WKSOLv8/88wm5t9v3fqJdZdOOu50KxSayTpiuRejceNTgjdaKR0
-	 6APiM7Zl/l/JX4141CODqVnEKBVSOR0+O1y5endztu2WW3LPPBIjIxSqxoCzIB9RHT
-	 CGQFm6WEeBOv/NNZ7/GqPHAYE+jzQcNAgKhTtN+4=
+	b=jteg06MsHy2fyjJ6CFWHV7yPESnO76KEZ10iIaC6MiZZdA3lTFzXNaLl/PIUM4zl7
+	 HroPOGqObO9/Wa3tsNUKIctOUojg5nW8oYxU3cLKkwNxLCqqDMGFImRXOWrR7F4oQh
+	 hs6wx/dFmrD0xMKbdHNLqs0V/TYmac2AEydFI0H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Greg Thelen <gthelen@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Tuan Phan <tuanphan@os.amperecomputing.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 631/744] perf/arm-dmc620: Fix lockdep assert in ->event_init()
+Subject: [PATCH 6.9 324/374] selftests: mptcp: add ms units for tc-netem delay
 Date: Thu,  6 Jun 2024 16:05:03 +0200
-Message-ID: <20240606131752.717274566@linuxfoundation.org>
+Message-ID: <20240606131702.721740457@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,63 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit a4c5a457c6107dfe9dc65a104af1634811396bac ]
+[ Upstream commit 9109853a388b7b2b934f56f4ddb250d72e486555 ]
 
-for_each_sibling_event() checks leader's ctx but it doesn't have the ctx
-yet if it's the leader.  Like in perf_event_validate_size(), we should
-skip checking siblings in that case.
+'delay 1' in tc-netem is confusing, not sure if it's a delay of 1 second or
+1 millisecond. This patch explicitly adds millisecond units to make these
+commands clearer.
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Fixes: f3c0eba28704 ("perf: Add a few assertions")
-Reported-by: Greg Thelen <gthelen@google.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Tuan Phan <tuanphan@os.amperecomputing.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20240514180050.182454-1-namhyung@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 38af56e6668b ("selftests: mptcp: join: mark 'fail' tests as flaky")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_dmc620_pmu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh   | 6 +++---
+ tools/testing/selftests/net/mptcp/simult_flows.sh | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/perf/arm_dmc620_pmu.c b/drivers/perf/arm_dmc620_pmu.c
-index 30cea68595747..b6a677224d682 100644
---- a/drivers/perf/arm_dmc620_pmu.c
-+++ b/drivers/perf/arm_dmc620_pmu.c
-@@ -542,12 +542,16 @@ static int dmc620_pmu_event_init(struct perf_event *event)
- 	if (event->cpu < 0)
- 		return -EINVAL;
- 
-+	hwc->idx = -1;
-+
-+	if (event->group_leader == event)
-+		return 0;
-+
- 	/*
- 	 * We can't atomically disable all HW counters so only one event allowed,
- 	 * although software events are acceptable.
- 	 */
--	if (event->group_leader != event &&
--			!is_software_event(event->group_leader))
-+	if (!is_software_event(event->group_leader))
- 		return -EINVAL;
- 
- 	for_each_sibling_event(sibling, event->group_leader) {
-@@ -556,7 +560,6 @@ static int dmc620_pmu_event_init(struct perf_event *event)
- 			return -EINVAL;
- 	}
- 
--	hwc->idx = -1;
- 	return 0;
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 908ef799b13a0..8d16f37cd67f8 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -125,8 +125,8 @@ init_shapers()
+ {
+ 	local i
+ 	for i in $(seq 1 4); do
+-		tc -n $ns1 qdisc add dev ns1eth$i root netem rate 20mbit delay 1
+-		tc -n $ns2 qdisc add dev ns2eth$i root netem rate 20mbit delay 1
++		tc -n $ns1 qdisc add dev ns1eth$i root netem rate 20mbit delay 1ms
++		tc -n $ns2 qdisc add dev ns2eth$i root netem rate 20mbit delay 1ms
+ 	done
  }
  
+@@ -3218,7 +3218,7 @@ fail_tests()
+ 
+ 	# multiple subflows
+ 	if reset_with_fail "MP_FAIL MP_RST" 2; then
+-		tc -n $ns2 qdisc add dev ns2eth1 root netem rate 1mbit delay 5
++		tc -n $ns2 qdisc add dev ns2eth1 root netem rate 1mbit delay 5ms
+ 		pm_nl_set_limits $ns1 0 1
+ 		pm_nl_set_limits $ns2 0 1
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 dev ns2eth2 flags subflow
+diff --git a/tools/testing/selftests/net/mptcp/simult_flows.sh b/tools/testing/selftests/net/mptcp/simult_flows.sh
+index dfdb7031c187a..7322e1e4e5db6 100755
+--- a/tools/testing/selftests/net/mptcp/simult_flows.sh
++++ b/tools/testing/selftests/net/mptcp/simult_flows.sh
+@@ -216,8 +216,8 @@ run_test()
+ 	shift 4
+ 	local msg=$*
+ 
+-	[ $delay1 -gt 0 ] && delay1="delay $delay1" || delay1=""
+-	[ $delay2 -gt 0 ] && delay2="delay $delay2" || delay2=""
++	[ $delay1 -gt 0 ] && delay1="delay ${delay1}ms" || delay1=""
++	[ $delay2 -gt 0 ] && delay2="delay ${delay2}ms" || delay2=""
+ 
+ 	for dev in ns1eth1 ns1eth2; do
+ 		tc -n $ns1 qdisc del dev $dev root >/dev/null 2>&1
 -- 
 2.43.0
 
