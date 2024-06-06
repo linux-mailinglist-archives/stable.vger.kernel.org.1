@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-49153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B7C8FEC16
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51BC8FE8F9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A6672824A4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 647BE283E5D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267A61AC43B;
-	Thu,  6 Jun 2024 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0527719751D;
+	Thu,  6 Jun 2024 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hb2QqNkA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWr2Jo4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92FC19AA7F;
-	Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87A7196D80;
+	Thu,  6 Jun 2024 14:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683327; cv=none; b=f07fKMfgu5ICXCOIkOHs43FgWE6o402e2b2gX+dQa/MlrCc4bSQREpACH1xW1RSbmYQw6mgHVv9OJF+4Xn/sQfUC2n2wTitQWOzyU0V5CuUkhQK1vU8PS4U0qipIL51G7zCeWiw3Z0d6pN5sPGVy0XbSp49vHVHTfZDbN9W8+IA=
+	t=1717682961; cv=none; b=GYFn8OzbeCnj3+RKQU1vxwy2VncN54Z/gHydDFTHFWWyQFEzlRRbwjuXaIH6/yom6G+u3vlNKQejzmeWJTVKb1CJE6YnvoHOtOn3+TflqSBSaeZWDA3ZRBgMD9s+ODh5zRKnTuGgR2o0/z2yHRgCXfrhHTaaZKpMFpMpUqocVpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683327; c=relaxed/simple;
-	bh=YVYjwotcqwOpho/CBIsGaH7Ce2d181dhwH79IagmA4w=;
+	s=arc-20240116; t=1717682961; c=relaxed/simple;
+	bh=sA26Otu2TVMrixUHQvk8mhyZ+C5xQJwvegGwQH54b98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LvaaD531kAgRv49UniLeyNbtKH+vmRTSSiN5nG16ckE/OE5C/iomYmRSlk34zDhxmxivESwA+ynTpwMPP3zeCU7ZiGUCCgpplFt974posd8eGbf5+f95ljSrHFLP75+wFBY/jmp/JHqOIHqseJ6uRuj9GknxOshAlPUmhQT0XWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hb2QqNkA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8875C32782;
-	Thu,  6 Jun 2024 14:15:27 +0000 (UTC)
+	 MIME-Version; b=X7mDSk1h880Nw9ZD88k/JT8j2r8Zi/Y1hxDjy7CwYUQoGB12g4klP7EaCpbPUbJ7PZ9LtFPw6e1/VcZyEF/0aJsYreqntq3gYUyl85xarXKMtpfgDqJv418CCTL0qwh+anvDPQBoHcemp7F4eL47L/dI6tlBLbaIoLe3P8MjgSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWr2Jo4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552CAC32781;
+	Thu,  6 Jun 2024 14:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683327;
-	bh=YVYjwotcqwOpho/CBIsGaH7Ce2d181dhwH79IagmA4w=;
+	s=korg; t=1717682961;
+	bh=sA26Otu2TVMrixUHQvk8mhyZ+C5xQJwvegGwQH54b98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hb2QqNkAV/lFxE4eWYTknBPTThsuzuyYGDVgjZON1Gh0KebCxgLL8SY4LFAD/Hq8F
-	 KsxqFf+MH54jAa3JMW2HvR9b33nlIzqTopSP0Wcr5P8jp/tWZiV4AbAEc6aMiSXPl6
-	 IttnO1cUv02AnITbmQVF1F0Y1Pe/MSKNiYVjkIXk=
+	b=vWr2Jo4Vf8Di7x5+5bJpsQDSzfCWSRVMYTL593jqw7GW0l8m5JPdQiq0P53ZxfiPp
+	 Tb7ejdJAMsGqMoSNcW7J6njPUXepC0I01uAlbQp8Z8YEdJKfJMANFzAP1ALLnkQpiQ
+	 btbpGysgEWSNVLw5N8sBfmAs23PCppeNvaCGg140=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akiva Goldberger <agoldberger@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/473] net/mlx5: Add a timeout to acquire the command queue semaphore
+Subject: [PATCH 6.9 128/374] s390/vdso: Create .build-id links for unstripped vdso files
 Date: Thu,  6 Jun 2024 16:01:47 +0200
-Message-ID: <20240606131705.811503024@linuxfoundation.org>
+Message-ID: <20240606131656.188821213@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,158 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akiva Goldberger <agoldberger@nvidia.com>
+From: Jens Remus <jremus@linux.ibm.com>
 
-[ Upstream commit 485d65e1357123a697c591a5aeb773994b247ad7 ]
+[ Upstream commit fc2f5f10f9bc5e58d38e9fda7dae107ac04a799f ]
 
-Prevent forced completion handling on an entry that has not yet been
-assigned an index, causing an out of bounds access on idx = -22.
-Instead of waiting indefinitely for the sem, blocking flow now waits for
-index to be allocated or a sem acquisition timeout before beginning the
-timer for FW completion.
+Citing Andy Lutomirski from commit dda1e95cee38 ("x86/vdso: Create
+.build-id links for unstripped vdso files"):
 
-Kernel log example:
-mlx5_core 0000:06:00.0: wait_func_handle_exec_timeout:1128:(pid 185911): cmd[-22]: CREATE_UCTX(0xa04) No done completion
+"With this change, doing 'make vdso_install' and telling gdb:
 
-Fixes: 8e715cd613a1 ("net/mlx5: Set command entry semaphore up once got index free")
-Signed-off-by: Akiva Goldberger <agoldberger@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240509112951.590184-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+set debug-file-directory /lib/modules/KVER/vdso
+
+will enable vdso debugging with symbols.  This is useful for
+testing, but kernel RPM builds will probably want to manually delete
+these symlinks or otherwise do something sensible when they strip
+the vdso/*.so files."
+
+Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 41 +++++++++++++++----
- include/linux/mlx5/driver.h                   |  1 +
- 2 files changed, 33 insertions(+), 9 deletions(-)
+ scripts/Makefile.vdsoinst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index ac6a0785b10d8..946923b9404fc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -964,19 +964,32 @@ static void cmd_work_handler(struct work_struct *work)
- 	bool poll_cmd = ent->polling;
- 	struct mlx5_cmd_layout *lay;
- 	struct mlx5_core_dev *dev;
--	unsigned long cb_timeout;
--	struct semaphore *sem;
-+	unsigned long timeout;
- 	unsigned long flags;
- 	int alloc_ret;
- 	int cmd_mode;
+diff --git a/scripts/Makefile.vdsoinst b/scripts/Makefile.vdsoinst
+index c477d17b0aa5b..a81ca735003e4 100644
+--- a/scripts/Makefile.vdsoinst
++++ b/scripts/Makefile.vdsoinst
+@@ -21,7 +21,7 @@ $$(dest): $$(src) FORCE
+ 	$$(call cmd,install)
  
-+	complete(&ent->handling);
-+
- 	dev = container_of(cmd, struct mlx5_core_dev, cmd);
--	cb_timeout = msecs_to_jiffies(mlx5_tout_ms(dev, CMD));
-+	timeout = msecs_to_jiffies(mlx5_tout_ms(dev, CMD));
+ # Some architectures create .build-id symlinks
+-ifneq ($(filter arm sparc x86, $(SRCARCH)),)
++ifneq ($(filter arm s390 sparc x86, $(SRCARCH)),)
+ link := $(install-dir)/.build-id/$$(shell $(READELF) -n $$(src) | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p').debug
  
--	complete(&ent->handling);
--	sem = ent->page_queue ? &cmd->vars.pages_sem : &cmd->vars.sem;
--	down(sem);
- 	if (!ent->page_queue) {
-+		if (down_timeout(&cmd->vars.sem, timeout)) {
-+			mlx5_core_warn(dev, "%s(0x%x) timed out while waiting for a slot.\n",
-+				       mlx5_command_str(ent->op), ent->op);
-+			if (ent->callback) {
-+				ent->callback(-EBUSY, ent->context);
-+				mlx5_free_cmd_msg(dev, ent->out);
-+				free_msg(dev, ent->in);
-+				cmd_ent_put(ent);
-+			} else {
-+				ent->ret = -EBUSY;
-+				complete(&ent->done);
-+			}
-+			complete(&ent->slotted);
-+			return;
-+		}
- 		alloc_ret = cmd_alloc_index(cmd, ent);
- 		if (alloc_ret < 0) {
- 			mlx5_core_err_rl(dev, "failed to allocate command entry\n");
-@@ -989,10 +1002,11 @@ static void cmd_work_handler(struct work_struct *work)
- 				ent->ret = -EAGAIN;
- 				complete(&ent->done);
- 			}
--			up(sem);
-+			up(&cmd->vars.sem);
- 			return;
- 		}
- 	} else {
-+		down(&cmd->vars.pages_sem);
- 		ent->idx = cmd->vars.max_reg_cmds;
- 		spin_lock_irqsave(&cmd->alloc_lock, flags);
- 		clear_bit(ent->idx, &cmd->vars.bitmask);
-@@ -1000,6 +1014,8 @@ static void cmd_work_handler(struct work_struct *work)
- 		spin_unlock_irqrestore(&cmd->alloc_lock, flags);
- 	}
- 
-+	complete(&ent->slotted);
-+
- 	lay = get_inst(cmd, ent->idx);
- 	ent->lay = lay;
- 	memset(lay, 0, sizeof(*lay));
-@@ -1018,7 +1034,7 @@ static void cmd_work_handler(struct work_struct *work)
- 	ent->ts1 = ktime_get_ns();
- 	cmd_mode = cmd->mode;
- 
--	if (ent->callback && schedule_delayed_work(&ent->cb_timeout_work, cb_timeout))
-+	if (ent->callback && schedule_delayed_work(&ent->cb_timeout_work, timeout))
- 		cmd_ent_get(ent);
- 	set_bit(MLX5_CMD_ENT_STATE_PENDING_COMP, &ent->state);
- 
-@@ -1138,6 +1154,9 @@ static int wait_func(struct mlx5_core_dev *dev, struct mlx5_cmd_work_ent *ent)
- 		ent->ret = -ECANCELED;
- 		goto out_err;
- 	}
-+
-+	wait_for_completion(&ent->slotted);
-+
- 	if (cmd->mode == CMD_MODE_POLLING || ent->polling)
- 		wait_for_completion(&ent->done);
- 	else if (!wait_for_completion_timeout(&ent->done, timeout))
-@@ -1152,6 +1171,9 @@ static int wait_func(struct mlx5_core_dev *dev, struct mlx5_cmd_work_ent *ent)
- 	} else if (err == -ECANCELED) {
- 		mlx5_core_warn(dev, "%s(0x%x) canceled on out of queue timeout.\n",
- 			       mlx5_command_str(ent->op), ent->op);
-+	} else if (err == -EBUSY) {
-+		mlx5_core_warn(dev, "%s(0x%x) timeout while waiting for command semaphore.\n",
-+			       mlx5_command_str(ent->op), ent->op);
- 	}
- 	mlx5_core_dbg(dev, "err %d, delivery status %s(%d)\n",
- 		      err, deliv_status_to_str(ent->status), ent->status);
-@@ -1203,6 +1225,7 @@ static int mlx5_cmd_invoke(struct mlx5_core_dev *dev, struct mlx5_cmd_msg *in,
- 	ent->polling = force_polling;
- 
- 	init_completion(&ent->handling);
-+	init_completion(&ent->slotted);
- 	if (!callback)
- 		init_completion(&ent->done);
- 
-@@ -1220,7 +1243,7 @@ static int mlx5_cmd_invoke(struct mlx5_core_dev *dev, struct mlx5_cmd_msg *in,
- 		return 0; /* mlx5_cmd_comp_handler() will put(ent) */
- 
- 	err = wait_func(dev, ent);
--	if (err == -ETIMEDOUT || err == -ECANCELED)
-+	if (err == -ETIMEDOUT || err == -ECANCELED || err == -EBUSY)
- 		goto out_free;
- 
- 	ds = ent->ts2 - ent->ts1;
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 93ec34a94b724..1cae12185cf04 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -850,6 +850,7 @@ struct mlx5_cmd_work_ent {
- 	void		       *context;
- 	int			idx;
- 	struct completion	handling;
-+	struct completion	slotted;
- 	struct completion	done;
- 	struct mlx5_cmd        *cmd;
- 	struct work_struct	work;
+ __default: $$(link)
 -- 
 2.43.0
 
