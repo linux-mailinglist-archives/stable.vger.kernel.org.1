@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-49268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CDB8FEC94
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13DA8FE87D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AAB8B28273
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35AEFB24780
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708DA1B14E1;
-	Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E32B196D8D;
+	Thu,  6 Jun 2024 14:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJvqZauq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQAlIlbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3079419B3D5;
-	Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC98196D86;
+	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683383; cv=none; b=b6lOviIqYRqUlLvTdrItxNS1xM9OlNfapotN+zEPhgOFI0m5WseRds2FjpLVZfHxed8E/xOnbN8s2z2P18PJ4eLrMMNgEsvSjW0WlX9B/1aQfQKW48xK3O4lORA4en5/8NC7xxYguEJ6fgGMEba4S9JQEfEvDoburNYvm1fcyXU=
+	t=1717682900; cv=none; b=TyYa8+4EUT2hDfiIR2M8J/fg30NskV1Lbpgwvv13SjwyRgSvR4Zx6zwNzhhWe1erGSmU6C8vBzykbCzL0mJy1z00HeUrjS4UCg3+1zLhNZa16jjJNuCbNE1ohMS1Xc+T0oazMOJP1Kfpt6ghVAu1mYALN2SSUmWN+w3Hd3GXSkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683383; c=relaxed/simple;
-	bh=sPpqdieAXWvXBcvQ0mWRTO8X5qNw1/67pRfNJuRJFgE=;
+	s=arc-20240116; t=1717682900; c=relaxed/simple;
+	bh=Z8cK9KMcjFg40NQ1Xo+JA38MsCPA/9YoBUX/m+1vjb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KyeUatocEYZ3J5vyE7HDgp+JcBbUm4UwXI5oGR2liIsWogB7C7qVGBa/p5ugU0J8QnJN23lznotccLK5GkK39O4vF05Rk9rnWZpLCz5QNnB8/TLGw+bZIufPiVabSQE7RKvA/59rZ/fNm8Ve7rp32GxvX2Xv7LoE31O7psqkQKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJvqZauq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA2EC2BD10;
-	Thu,  6 Jun 2024 14:16:23 +0000 (UTC)
+	 MIME-Version; b=LB8akN4yx+ypgld1LzvbnVvpx4O+RPNB7ml0x3N4HYSdhvKN+6/XQTii5YqNbMBEjrR4aslZsYa29xA/RxNY17+qMVm21pPLvdmZjtw8GhUkhA3JRmUR5O4wxCwfCAheQp9Y+vTifr7kFvUWaIGqq4duomIU7XLxg2Qb+Nk1gwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQAlIlbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A92DC4AF07;
+	Thu,  6 Jun 2024 14:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683383;
-	bh=sPpqdieAXWvXBcvQ0mWRTO8X5qNw1/67pRfNJuRJFgE=;
+	s=korg; t=1717682899;
+	bh=Z8cK9KMcjFg40NQ1Xo+JA38MsCPA/9YoBUX/m+1vjb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJvqZauqLXQWiEIjgZEk6p3g3vmfWBc8rn08miXA3X6lZbnXuAzbGr+dbqYpY4CmP
-	 e4rAgjqsbuwUyuhbkiYTkcKioXHm1qCAcC4vb6PiledJVu4woK9scH4k8P1B9gJAl0
-	 aAWiJieWixO0/yIADd0oqRsHbUCa73o/uJc6karg=
+	b=sQAlIlbY+QpKpuro8FA5AU5n6h+kAhQcdcNVE+vj462vdgjqk6ix0asbNHV+AsTpp
+	 PGyh8N22AWdMX8axm/toyqlCH40e2KTr9L1ctmqNHWodRcSeDq26Ej86h2ouT5GQ5P
+	 KlJV+OUFfhYtamCzKkg6H+BjXg+nt4LUk5CSTnbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 324/744] drm/bridge: tc358775: Dont log an error when DSI host cant be found
-Date: Thu,  6 Jun 2024 15:59:56 +0200
-Message-ID: <20240606131742.830031100@linuxfoundation.org>
+Subject: [PATCH 6.9 018/374] perf report: Fix PAI counter names for s390 virtual machines
+Date: Thu,  6 Jun 2024 15:59:57 +0200
+Message-ID: <20240606131652.385659822@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +66,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 272377aa0e3dddeec3f568c8bb9d12c7a79d8ef5 ]
+[ Upstream commit b74bc5a633a7d72f89141d481d835e73bda3c3ae ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+s390 introduced the Processor Activity Instrumentation (PAI) counter
+facility on LPAR and virtual machines z/VM for models 3931 and 3932.
 
-Fixes: b26975593b17 ("display/drm/bridge: TC358775 DSI/LVDS driver")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-6-619a28148e5c@collabora.com
+These counters are stored as raw data in the perf.data file and are
+displayed with:
+
+ # perf report -i /tmp//perfout-635468 -D | grep Counter
+	Counter:007 <unknown> Value:0x00000000000186a0
+	Counter:032 <unknown> Value:0x0000000000000001
+	Counter:032 <unknown> Value:0x0000000000000001
+	Counter:032 <unknown> Value:0x0000000000000001
+ #
+
+However on z/VM virtual machines, the counter names are not retrieved
+from the PMU and are shown as '<unknown>'.  This is caused by the CPU
+string saved in the mapfile.csv for this machine:
+
+   ^IBM.393[12].*3\.7.[[:xdigit:]]+$,3,cf_z16,core
+
+This string contains the CPU Measurement facility first and second
+version number and authorization level (3\.7.[[:xdigit:]]+).  These
+numbers do not apply to the PAI counter facility.  In fact they can be
+omitted.
+
+Shorten the CPU identification string for this machine to manufacturer
+and model. This is sufficient for all PMU devices.
+
+Output after:
+
+ # perf report -i /tmp//perfout-635468 -D | grep Counter
+	Counter:007 km_aes_128 Value:0x00000000000186a0
+	Counter:032 kma_gcm_aes_256 Value:0x0000000000000001
+	Counter:032 kma_gcm_aes_256 Value:0x0000000000000001
+	Counter:032 kma_gcm_aes_256 Value:0x0000000000000001
+ #
+
+Fixes: b539deafbadb2fc6 ("perf report: Add s390 raw data interpretation for PAI counters")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240404064806.1362876-1-tmricht@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358775.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tools/perf/pmu-events/arch/s390/mapfile.csv | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/tc358775.c
-index 90a89d70d8328..fea4f00a20f83 100644
---- a/drivers/gpu/drm/bridge/tc358775.c
-+++ b/drivers/gpu/drm/bridge/tc358775.c
-@@ -610,10 +610,8 @@ static int tc_attach_host(struct tc_data *tc)
- 						};
- 
- 	host = of_find_mipi_dsi_host_by_node(tc->host_node);
--	if (!host) {
--		dev_err(dev, "failed to find dsi host\n");
--		return -EPROBE_DEFER;
--	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
- 
- 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
- 	if (IS_ERR(dsi)) {
+diff --git a/tools/perf/pmu-events/arch/s390/mapfile.csv b/tools/perf/pmu-events/arch/s390/mapfile.csv
+index a918e1af77a57..b22648d127517 100644
+--- a/tools/perf/pmu-events/arch/s390/mapfile.csv
++++ b/tools/perf/pmu-events/arch/s390/mapfile.csv
+@@ -5,4 +5,4 @@ Family-model,Version,Filename,EventType
+ ^IBM.296[45].*[13]\.[1-5].[[:xdigit:]]+$,1,cf_z13,core
+ ^IBM.390[67].*[13]\.[1-5].[[:xdigit:]]+$,3,cf_z14,core
+ ^IBM.856[12].*3\.6.[[:xdigit:]]+$,3,cf_z15,core
+-^IBM.393[12].*3\.7.[[:xdigit:]]+$,3,cf_z16,core
++^IBM.393[12].*$,3,cf_z16,core
 -- 
 2.43.0
 
