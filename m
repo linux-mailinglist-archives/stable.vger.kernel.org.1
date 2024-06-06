@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52B38FEDE9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D0F8FE926
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7421C2431A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2627B1C25922
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0659319EEA5;
-	Thu,  6 Jun 2024 14:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB4A19922B;
+	Thu,  6 Jun 2024 14:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcy1oqUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKyktE8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F1C1990B7;
-	Thu,  6 Jun 2024 14:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA0819754D;
+	Thu,  6 Jun 2024 14:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683538; cv=none; b=IPT4UVwS0aF5ieEZoVx9P529lGx64bybElebL+mx1TyjDFknfGh1eLhbtFjLH5eARKF7x28OID/r2WNl7H00jRaAQy9R9CB9pp7v4I1jmhb1U3V0LrgskoLyu3r3s533UZ/cjTVu37ldQ/TIDAYbXTjMO0qLZro1TwRTRBtDLLE=
+	t=1717682985; cv=none; b=ADKODHcozysZ2TiPkYHXjn/xY59QDl9QAmxrrA8KWKJu/5SoP15h+hORpx943ixC/WQDhTX6cK7WZ8VpYjzQY/HvcuDM++tItLLTDY2HtVHB2V+6bACkajrQy1ztNhyMBJWCrXntp4cH8AVVz0sshCee8E49/2fvl9MC/Oc1K4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683538; c=relaxed/simple;
-	bh=qCCpJ2AOCwL9L20BCFr0qr02C5XET9qRiEoxW3wx8iE=;
+	s=arc-20240116; t=1717682985; c=relaxed/simple;
+	bh=AHDTXa7FmOCs9kOuyysHEoWHPUI60v0dRgnURjjfkdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWgW8Vp4G9qMvyYesEzFbSGSZsBv0AXIw3aoIpR97DStqw2DVdwl04ean51V75lgV755NBgmzG2ndPyP9h2nB0Qt92vjSfSLtO11FG49cPeVIOnigl8nKyrDzubJvBj+5qTzdRymQBtPGMt0H+6zoYAZly2qmER2NLejV2RhVuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcy1oqUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96071C2BD10;
-	Thu,  6 Jun 2024 14:18:58 +0000 (UTC)
+	 MIME-Version; b=g4HqMX65I34P9cJMxnYpP18zUU2bYe5QSwWF7J/XV/62NUFHLsmO06MEEvePHq651DMnamMHj3e6eRJREfDdw5glUWLMpnyI/2v/7PIjJUXG93q4UbsUxwwN2lpRI4M4FZdoD5I8p3acrxj8WyHAEsutVZABB/nUN1DnVtdnXhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKyktE8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6245FC32781;
+	Thu,  6 Jun 2024 14:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683538;
-	bh=qCCpJ2AOCwL9L20BCFr0qr02C5XET9qRiEoxW3wx8iE=;
+	s=korg; t=1717682985;
+	bh=AHDTXa7FmOCs9kOuyysHEoWHPUI60v0dRgnURjjfkdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcy1oqUU8FW3W1BcGko827mO8yx9+mbdrqFOCEUXTFsOTVbAGDBq3T01ZIGufIHIC
-	 HS1xcGXXEQpLzs/rG/0ypjGJWBkYYPSIpUlzhmP0A8wtLiPRDn8Feh+QhCuUQWaEG5
-	 RlAyhSIZjONr7z9G9ulF0At0d0U4nRq1wt3fZFPU=
+	b=eKyktE8dJ5bBZLSFkLuXyo25cmEnuLaovv5gZNVBQVbl4h+BDRRQt1jXj6zr+4GVy
+	 F3b0890JwLr5gB4DnA02i4dB1dyXHJceyMWbQqtySmNbvs0SXVE3/4mT6M5Mz6M/3L
+	 eBquIsT7yVeXxnqi1912G0xCwNEOOlSigvFF467I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 478/744] xfs: upgrade the extent counters in xfs_reflink_end_cow_extent later
+Subject: [PATCH 6.9 171/374] fs/ntfs3: Use 64 bit variable to avoid 32 bit overflow
 Date: Thu,  6 Jun 2024 16:02:30 +0200
-Message-ID: <20240606131747.793582150@linuxfoundation.org>
+Message-ID: <20240606131657.626863283@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 99fb6b7ad1f2fb83d8df2c1382be63a1f50b1ae0 ]
+[ Upstream commit e931f6b630ffb22d66caab202a52aa8cbb10c649 ]
 
-Defer the extent counter size upgrade until we know we're going to
-modify the extent mapping.  This also defers dirtying the transaction
-and will allow us safely back out later in the function in later
-changes.
+For example, in the expression:
+	vbo = 2 * vbo + skip
 
-Fixes: 4f86bb4b66c9 ("xfs: Conditionally upgrade existing inodes to use large extent counters")
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Fixes: b46acd6a6a627 ("fs/ntfs3: Add NTFS journal")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_reflink.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/ntfs3/fslog.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
-index e5b62dc284664..2322d45ac5e78 100644
---- a/fs/xfs/xfs_reflink.c
-+++ b/fs/xfs/xfs_reflink.c
-@@ -750,14 +750,6 @@ xfs_reflink_end_cow_extent(
- 	xfs_ilock(ip, XFS_ILOCK_EXCL);
- 	xfs_trans_ijoin(tp, ip, 0);
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index 855519713bf79..4085fe30bf481 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -1184,7 +1184,8 @@ static int read_log_page(struct ntfs_log *log, u32 vbo,
+ static int log_read_rst(struct ntfs_log *log, bool first,
+ 			struct restart_info *info)
+ {
+-	u32 skip, vbo;
++	u32 skip;
++	u64 vbo;
+ 	struct RESTART_HDR *r_page = NULL;
  
--	error = xfs_iext_count_may_overflow(ip, XFS_DATA_FORK,
--			XFS_IEXT_REFLINK_END_COW_CNT);
--	if (error == -EFBIG)
--		error = xfs_iext_count_upgrade(tp, ip,
--				XFS_IEXT_REFLINK_END_COW_CNT);
--	if (error)
--		goto out_cancel;
--
- 	/*
- 	 * In case of racing, overlapping AIO writes no COW extents might be
- 	 * left by the time I/O completes for the loser of the race.  In that
-@@ -786,6 +778,14 @@ xfs_reflink_end_cow_extent(
- 	del = got;
- 	xfs_trim_extent(&del, *offset_fsb, end_fsb - *offset_fsb);
- 
-+	error = xfs_iext_count_may_overflow(ip, XFS_DATA_FORK,
-+			XFS_IEXT_REFLINK_END_COW_CNT);
-+	if (error == -EFBIG)
-+		error = xfs_iext_count_upgrade(tp, ip,
-+				XFS_IEXT_REFLINK_END_COW_CNT);
-+	if (error)
-+		goto out_cancel;
-+
- 	/* Grab the corresponding mapping in the data fork. */
- 	nmaps = 1;
- 	error = xfs_bmapi_read(ip, del.br_startoff, del.br_blockcount, &data,
+ 	/* Determine which restart area we are looking for. */
 -- 
 2.43.0
 
