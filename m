@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF758FE919
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D20E8FEC4A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C09E1F220FA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB0A828260E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65481991DD;
-	Thu,  6 Jun 2024 14:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1956198853;
+	Thu,  6 Jun 2024 14:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHjHTdtM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQWAu0eU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D4519753E;
-	Thu,  6 Jun 2024 14:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C85196DB4;
+	Thu,  6 Jun 2024 14:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682979; cv=none; b=TlmHIP7KQG2ncAr3RAWGDPU3a7DRhsGZsX9ItwqMYTwrkgON/TsBl43lSCMiu1WiTZ0luMYXxMFGhcKXfEoPZbCk9fHCa7vQfrEstZz016yX08qiofYTnsswhalxYZEXIhc7ad2huBjHM8qTUGEyXp+ecjpCsRPkNfAM5xnTHSA=
+	t=1717683350; cv=none; b=M71cMJ0bXs9E28HAdVDE2b0Z/sou9gjajPRTb11NslZg9WIQmLMnf8VjQ2hBdscrAMsZsgxWj0JAandTAxuRm1Qr18kzlyp8c2LsgoC/oRxx7DZVqqB1fYA3hiJYSy2kCuclHhcn6bnVYVc+1xZK7pRXHVNVVRdfkB6fSLANwz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682979; c=relaxed/simple;
-	bh=UFPRmLlERDgYnTq3bUF63aMFC1canFkgKvqf0997Qus=;
+	s=arc-20240116; t=1717683350; c=relaxed/simple;
+	bh=y9hZyr8XY1Soxqk1yVgf0UQKapC0qYt23stIcbG26sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVFDa6eNrN+nBhD2xW6RvdLEiKTBQaDNPTPIivB8HkK2+CsG5qLK6sE2OYgMXEMWKhsrVWx5RB08levNz3w4bPG+ihILY4688mgmlFNa4Pd/UzYUqPmk+SqyiKDmTtM5GyORyllxCRn/lmsQvXCaDZMf0Q4sXVejDAwwm0zIXyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHjHTdtM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BECC2BD10;
-	Thu,  6 Jun 2024 14:09:39 +0000 (UTC)
+	 MIME-Version; b=aCouLsnCFfctqeRIlTYW5imq7heH+2plG4M7oiGzJUDQRaw+SYACdRNqxYYjaMx+9IJo13BgNDGrkRLVsXwZETKF7QePZ1KCRzo1UAqccVmFn39gNXwGz9a5isUhzpjTD3vM+4puIWzsvgRfP3ijInD3tMBM8MWjIdKGSi0lwUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQWAu0eU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59543C2BD10;
+	Thu,  6 Jun 2024 14:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682979;
-	bh=UFPRmLlERDgYnTq3bUF63aMFC1canFkgKvqf0997Qus=;
+	s=korg; t=1717683350;
+	bh=y9hZyr8XY1Soxqk1yVgf0UQKapC0qYt23stIcbG26sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHjHTdtM6ILpXphGC+dNRbO6ojl/wFnC11W9HvSMSq9kZ4f3Kn3ITgtdxaxEuclDu
-	 4OvW2Xtw38/Fvz1pXSQ23kH2hkESi0Om/24eS42cMu4uOTjO2JO4vusnPBR5oPvshB
-	 /BggLCeR6YLhO98AEXMvUtCuCzpGQJ08XgR9gAVo=
+	b=EQWAu0eUT40MC5p8IeAhwOCl2I8j2kBSifUejnGXROvCTesgsvS4VpHTO4KhnSqyy
+	 U2aiKqTOFiZFMpsTDTd/uRf6TBENBWC3EKKJ43Fk8v9cJp7Sy+NSr6v2LecA7aFGh2
+	 z8RAUW72pLBmVedxO5NxhC7AQpUNro8T9c0Ajwws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Fabio Estevam <festevam@denx.de>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 159/374] media: ov2680: Clear the ret variable on success
+Subject: [PATCH 6.1 209/473] media: ngene: Add dvb_ca_en50221_init return value check
 Date: Thu,  6 Jun 2024 16:02:18 +0200
-Message-ID: <20240606131657.233538624@linuxfoundation.org>
+Message-ID: <20240606131706.830634344@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Aleksandr Burakov <a.burakov@rosalinux.ru>
 
-[ Upstream commit 49a9bad83b4ab5dac1d7aba2615c77978bcf3984 ]
+[ Upstream commit 9bb1fd7eddcab2d28cfc11eb20f1029154dac718 ]
 
-Since commit 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint
-property verification") even when the correct 'link-frequencies'
-property is passed in the devicetree, the driver fails to probe:
+The return value of dvb_ca_en50221_init() is not checked here that may
+cause undefined behavior in case of nonzero value return.
 
-ov2680 1-0036: probe with driver ov2680 failed with error -22
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-The reason is that the variable 'ret' may contain the -EINVAL value
-from a previous assignment:
-
-ret = fwnode_property_read_u32(dev_fwnode(dev), "clock-frequency",
-			       &rate);
-
-Fix the problem by clearing 'ret' on the successful path.
-
-Tested on imx7s-warp board with the following devicetree:
-
-port {
-	ov2680_to_mipi: endpoint {
-		remote-endpoint = <&mipi_from_sensor>;
-		clock-lanes = <0>;
-		data-lanes = <1>;
-		link-frequencies = /bits/ 64 <330000000>;
-	};
-};
-
-Cc: stable@vger.kernel.org
-Fixes: 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint property verification")
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fixes: 25aee3debe04 ("[media] Rename media/dvb as media/pci")
+Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: 24034af644fc ("media: ov2680: Do not fail if data-lanes property is absent")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/pci/ngene/ngene-core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 39d321e2b7f98..3e3b7c2b492cf 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -1135,6 +1135,7 @@ static int ov2680_parse_dt(struct ov2680_dev *sensor)
- 		goto out_free_bus_cfg;
+diff --git a/drivers/media/pci/ngene/ngene-core.c b/drivers/media/pci/ngene/ngene-core.c
+index 7481f553f9595..24ec576dc3bff 100644
+--- a/drivers/media/pci/ngene/ngene-core.c
++++ b/drivers/media/pci/ngene/ngene-core.c
+@@ -1488,7 +1488,9 @@ static int init_channel(struct ngene_channel *chan)
  	}
  
-+	ret = 0;
- out_free_bus_cfg:
- 	v4l2_fwnode_endpoint_free(&bus_cfg);
- 	return ret;
+ 	if (dev->ci.en && (io & NGENE_IO_TSOUT)) {
+-		dvb_ca_en50221_init(adapter, dev->ci.en, 0, 1);
++		ret = dvb_ca_en50221_init(adapter, dev->ci.en, 0, 1);
++		if (ret != 0)
++			goto err;
+ 		set_transfer(chan, 1);
+ 		chan->dev->channel[2].DataFormatFlags = DF_SWAP32;
+ 		set_transfer(&chan->dev->channel[2], 1);
 -- 
 2.43.0
 
