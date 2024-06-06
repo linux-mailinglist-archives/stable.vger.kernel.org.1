@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820548FE920
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9538FEC1F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 740921C20F90
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E08F71F298CD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2789719922C;
-	Thu,  6 Jun 2024 14:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E901AD9C1;
+	Thu,  6 Jun 2024 14:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5UgrYeq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPKf9PKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4D1196D98;
-	Thu,  6 Jun 2024 14:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652A1198824;
+	Thu,  6 Jun 2024 14:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682982; cv=none; b=f4T24FxSuaKkMc0q69fToBnETIMEhR5nUUKajmGchSAfyyfMZVRnK6HfLwtIKutSRtsvjlF/uEB/5pHvCEPxqlHo0iGV2MIFj/zGkpRFVAV+kzTO5yW0L7pNCfzaUh141EuWTaZZaWFE2bR2I/2BZBy26HGjbR0pnI0Je6wXo2w=
+	t=1717683332; cv=none; b=C6pWj4MuZujP6yPvtIzo0K2sS0hFKMPHE33X3JtxaFTTi6rQfV3p7nfMo1T1qbGiiOIlHGyUKTCRc9DFn93c+D/lTfyK13PYKEyg5I9Q5J0j7H+BwgpCxsrmiV+WrZgTyVBxmZxD37PXQd79SJ1JbIT/GaAmpKKtZvdB85D+zsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682982; c=relaxed/simple;
-	bh=J/HZdDQDn+auFS4QRi6HvqcOtYzkh5jCOLAaIDW2BzA=;
+	s=arc-20240116; t=1717683332; c=relaxed/simple;
+	bh=uyY8jOx0m36cBOmHl39OhUXNykoOSSbzIcDOyfzXmgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fahJZSQvoLvhqASjaiNE0FbqvrEOrdwvLKaO6lptqPNxYlivc6GPhjFtTIMtI/yMB7REZCkjLEI9OcCvRforDtmTJqG47jtcmjXPnvc2yroZzJJiW+IOIaBm5JkL9hbsqj0T9Bu7jvqYK32uWVZL0ZVNMFgbtNzxpTjngIyfSyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5UgrYeq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4D6C2BD10;
-	Thu,  6 Jun 2024 14:09:41 +0000 (UTC)
+	 MIME-Version; b=gMlg8wNp1kH3z2Kz4lLEfxY7eygniEiUqQlZ78PwklC5nvuuQ+PMQchSyOeBwjJxysRUA260ADU7i7TPAt9HqUhV4iJqKUa3FmRfsKQkeiAyNkU/wmDt8T0SMTbg2QaEQMbRpgaqU/NM6h39UKpRMRdA22ZD7vk6NOArWq9M87M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPKf9PKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43487C2BD10;
+	Thu,  6 Jun 2024 14:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682981;
-	bh=J/HZdDQDn+auFS4QRi6HvqcOtYzkh5jCOLAaIDW2BzA=;
+	s=korg; t=1717683332;
+	bh=uyY8jOx0m36cBOmHl39OhUXNykoOSSbzIcDOyfzXmgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5UgrYeqp/cf7rLhixbQw6+JCE5aE9hd15gQbRdf3wtZE+RvU3LjjoFQkeYPKnGYj
-	 Bv7pajUJA60dNODIT6y/q2gLheGFyaxW9lLhgr+lQdLc4NT6RZIKR0Tr5AI5qD+BVP
-	 tsFawuQUtC66A+M2qUu2myD6D2XetpDDB6WSsMpk=
+	b=OPKf9PKrsKG7LHSGe5HPXVRlvlIjwYh84HvRrn3dNyEBkzX7/jXpGa6ZBcJYx/zmk
+	 RGp43YY4OR7JHsTcZhNKncJMdS1bQ7tkAcVz6cWpiDJHpNBTu2EbaZlngVmo9l7Fb/
+	 wdmST2NKkx+V+pYMrwAkZX4/gl91tYk8f5H2o+QQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 164/374] drm/msm/dpu: Allow configuring multiple active DSC blocks
+Subject: [PATCH 6.1 214/473] drm/msm/dp: allow voltage swing / pre emphasis of 3
 Date: Thu,  6 Jun 2024 16:02:23 +0200
-Message-ID: <20240606131657.403562294@linuxfoundation.org>
+Message-ID: <20240606131706.990181110@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +60,142 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit ca97fa419dfe62a384fdea8b33553c4d6afe034e ]
+[ Upstream commit 22578178e5dd6d3aa4490879df8b6c2977d980be ]
 
-Just like the active interface and writeback block in ctl_intf_cfg_v1(),
-and later the rest of the blocks in followup active-CTL fixes or
-reworks, multiple calls to this function should enable additional DSC
-blocks instead of overwriting the blocks that are enabled.
+Both dp_link_adjust_levels() and dp_ctrl_update_vx_px() limit swing and
+pre-emphasis to 2, while the real maximum value for the sum of the
+voltage swing and pre-emphasis is 3. Fix the DP code to remove this
+limitation.
 
-This pattern is observed in an active-CTL scenario since DPU 5.0.0 where
-for example bonded-DSI uses a single CTL to drive multiple INTFs, and
-each encoder calls this function individually with the INTF (hence the
-pre-existing update instead of overwrite of this bitmask) and DSC blocks
-it wishes to be enabled, and expects them to be OR'd into the bitmask.
-
-The reverse already exists in reset_intf_cfg_v1() where only specified
-DSC blocks are removed out of the CTL_DSC_ACTIVE bitmask (same for all
-other blocks and ACTIVE bitmasks), leaving the rest enabled.
-
-Fixes: 77f6da90487c ("drm/msm/disp/dpu1: Add DSC support in hw_ctl")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/589902/
-Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-4-78ae3ee9a697@somainline.org
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Tested-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/577006/
+Link: https://lore.kernel.org/r/20240203-dp-swing-3-v1-1-6545e1706196@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_ctrl.c |  6 +++---
+ drivers/gpu/drm/msm/dp/dp_link.c | 22 +++++++++++-----------
+ drivers/gpu/drm/msm/dp/dp_link.h | 14 +-------------
+ 3 files changed, 15 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
-index a06f69d0b257d..2e50049f2f850 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
-@@ -545,6 +545,7 @@ static void dpu_hw_ctl_intf_cfg_v1(struct dpu_hw_ctl *ctx,
+diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+index b20701893e5b3..2c501261f2323 100644
+--- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
++++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+@@ -1014,14 +1014,14 @@ static int dp_ctrl_update_vx_px(struct dp_ctrl_private *ctrl)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (voltage_swing_level >= DP_TRAIN_VOLTAGE_SWING_MAX) {
++	if (voltage_swing_level >= DP_TRAIN_LEVEL_MAX) {
+ 		drm_dbg_dp(ctrl->drm_dev,
+ 				"max. voltage swing level reached %d\n",
+ 				voltage_swing_level);
+ 		max_level_reached |= DP_TRAIN_MAX_SWING_REACHED;
+ 	}
+ 
+-	if (pre_emphasis_level >= DP_TRAIN_PRE_EMPHASIS_MAX) {
++	if (pre_emphasis_level >= DP_TRAIN_LEVEL_MAX) {
+ 		drm_dbg_dp(ctrl->drm_dev,
+ 				"max. pre-emphasis level reached %d\n",
+ 				pre_emphasis_level);
+@@ -1112,7 +1112,7 @@ static int dp_ctrl_link_train_1(struct dp_ctrl_private *ctrl,
+ 		}
+ 
+ 		if (ctrl->link->phy_params.v_level >=
+-			DP_TRAIN_VOLTAGE_SWING_MAX) {
++			DP_TRAIN_LEVEL_MAX) {
+ 			DRM_ERROR_RATELIMITED("max v_level reached\n");
+ 			return -EAGAIN;
+ 		}
+diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
+index ceb382fa56d5b..e4f9decec970f 100644
+--- a/drivers/gpu/drm/msm/dp/dp_link.c
++++ b/drivers/gpu/drm/msm/dp/dp_link.c
+@@ -1102,6 +1102,7 @@ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
+ int dp_link_adjust_levels(struct dp_link *dp_link, u8 *link_status)
  {
- 	struct dpu_hw_blk_reg_map *c = &ctx->hw;
- 	u32 intf_active = 0;
-+	u32 dsc_active = 0;
- 	u32 wb_active = 0;
- 	u32 mode_sel = 0;
+ 	int i;
++	u8 max_p_level;
+ 	int v_max = 0, p_max = 0;
+ 	struct dp_link_private *link;
  
-@@ -560,6 +561,7 @@ static void dpu_hw_ctl_intf_cfg_v1(struct dpu_hw_ctl *ctx,
+@@ -1133,30 +1134,29 @@ int dp_link_adjust_levels(struct dp_link *dp_link, u8 *link_status)
+ 	 * Adjust the voltage swing and pre-emphasis level combination to within
+ 	 * the allowable range.
+ 	 */
+-	if (dp_link->phy_params.v_level > DP_TRAIN_VOLTAGE_SWING_MAX) {
++	if (dp_link->phy_params.v_level > DP_TRAIN_LEVEL_MAX) {
+ 		drm_dbg_dp(link->drm_dev,
+ 			"Requested vSwingLevel=%d, change to %d\n",
+ 			dp_link->phy_params.v_level,
+-			DP_TRAIN_VOLTAGE_SWING_MAX);
+-		dp_link->phy_params.v_level = DP_TRAIN_VOLTAGE_SWING_MAX;
++			DP_TRAIN_LEVEL_MAX);
++		dp_link->phy_params.v_level = DP_TRAIN_LEVEL_MAX;
+ 	}
  
- 	intf_active = DPU_REG_READ(c, CTL_INTF_ACTIVE);
- 	wb_active = DPU_REG_READ(c, CTL_WB_ACTIVE);
-+	dsc_active = DPU_REG_READ(c, CTL_DSC_ACTIVE);
+-	if (dp_link->phy_params.p_level > DP_TRAIN_PRE_EMPHASIS_MAX) {
++	if (dp_link->phy_params.p_level > DP_TRAIN_LEVEL_MAX) {
+ 		drm_dbg_dp(link->drm_dev,
+ 			"Requested preEmphasisLevel=%d, change to %d\n",
+ 			dp_link->phy_params.p_level,
+-			DP_TRAIN_PRE_EMPHASIS_MAX);
+-		dp_link->phy_params.p_level = DP_TRAIN_PRE_EMPHASIS_MAX;
++			DP_TRAIN_LEVEL_MAX);
++		dp_link->phy_params.p_level = DP_TRAIN_LEVEL_MAX;
+ 	}
  
- 	if (cfg->intf)
- 		intf_active |= BIT(cfg->intf - INTF_0);
-@@ -567,17 +569,18 @@ static void dpu_hw_ctl_intf_cfg_v1(struct dpu_hw_ctl *ctx,
- 	if (cfg->wb)
- 		wb_active |= BIT(cfg->wb - WB_0);
+-	if ((dp_link->phy_params.p_level > DP_TRAIN_PRE_EMPHASIS_LVL_1)
+-		&& (dp_link->phy_params.v_level ==
+-			DP_TRAIN_VOLTAGE_SWING_LVL_2)) {
++	max_p_level = DP_TRAIN_LEVEL_MAX - dp_link->phy_params.v_level;
++	if (dp_link->phy_params.p_level > max_p_level) {
+ 		drm_dbg_dp(link->drm_dev,
+ 			"Requested preEmphasisLevel=%d, change to %d\n",
+ 			dp_link->phy_params.p_level,
+-			DP_TRAIN_PRE_EMPHASIS_LVL_1);
+-		dp_link->phy_params.p_level = DP_TRAIN_PRE_EMPHASIS_LVL_1;
++			max_p_level);
++		dp_link->phy_params.p_level = max_p_level;
+ 	}
  
-+	if (cfg->dsc)
-+		dsc_active |= cfg->dsc;
-+
- 	DPU_REG_WRITE(c, CTL_TOP, mode_sel);
- 	DPU_REG_WRITE(c, CTL_INTF_ACTIVE, intf_active);
- 	DPU_REG_WRITE(c, CTL_WB_ACTIVE, wb_active);
-+	DPU_REG_WRITE(c, CTL_DSC_ACTIVE, dsc_active);
+ 	drm_dbg_dp(link->drm_dev, "adjusted: v_level=%d, p_level=%d\n",
+diff --git a/drivers/gpu/drm/msm/dp/dp_link.h b/drivers/gpu/drm/msm/dp/dp_link.h
+index 9dd4dd9265304..79c3a02b8dacd 100644
+--- a/drivers/gpu/drm/msm/dp/dp_link.h
++++ b/drivers/gpu/drm/msm/dp/dp_link.h
+@@ -19,19 +19,7 @@ struct dp_link_info {
+ 	unsigned long capabilities;
+ };
  
- 	if (cfg->merge_3d)
- 		DPU_REG_WRITE(c, CTL_MERGE_3D_ACTIVE,
- 			      BIT(cfg->merge_3d - MERGE_3D_0));
- 
--	if (cfg->dsc)
--		DPU_REG_WRITE(c, CTL_DSC_ACTIVE, cfg->dsc);
+-enum dp_link_voltage_level {
+-	DP_TRAIN_VOLTAGE_SWING_LVL_0	= 0,
+-	DP_TRAIN_VOLTAGE_SWING_LVL_1	= 1,
+-	DP_TRAIN_VOLTAGE_SWING_LVL_2	= 2,
+-	DP_TRAIN_VOLTAGE_SWING_MAX	= DP_TRAIN_VOLTAGE_SWING_LVL_2,
+-};
 -
- 	if (cfg->cdm)
- 		DPU_REG_WRITE(c, CTL_CDM_ACTIVE, cfg->cdm);
- }
+-enum dp_link_preemaphasis_level {
+-	DP_TRAIN_PRE_EMPHASIS_LVL_0	= 0,
+-	DP_TRAIN_PRE_EMPHASIS_LVL_1	= 1,
+-	DP_TRAIN_PRE_EMPHASIS_LVL_2	= 2,
+-	DP_TRAIN_PRE_EMPHASIS_MAX	= DP_TRAIN_PRE_EMPHASIS_LVL_2,
+-};
++#define DP_TRAIN_LEVEL_MAX	3
+ 
+ struct dp_link_test_video {
+ 	u32 test_video_pattern;
 -- 
 2.43.0
 
