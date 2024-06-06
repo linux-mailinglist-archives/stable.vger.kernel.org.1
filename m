@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7C88FED6F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA238FEED7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E22F7B21854
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 877F21C25923
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413951BB683;
-	Thu,  6 Jun 2024 14:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762181C7D97;
+	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyZBdTLI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB2QqmGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004E5198E92;
-	Thu,  6 Jun 2024 14:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362941C7D76;
+	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683488; cv=none; b=usSOPboCGxzvWvOMmoXcIwKyW1ooLWA2lyF5OA/eLqrhX8il+50uYbNQ/IBuEamWYy0WRph2TZ6otRwVZvbBt2hW4pdHBm4o2CItQ8VGzJp79bVCkgqJxkBkmeJ8TsIBLnJllSJg8z4WLFOjuTGGK0Ulk90UOP6Up6Ff5uC7e4U=
+	t=1717683708; cv=none; b=rGtX8MGB134Hyf8xSqk+3ZyIbU0wFkE3NC+IvMiZGRMlPtnzpABqNKZPVqs1RnYEke8Gdl832IHPS2AHxXorWwXjKXtkePbuj5q+jYMjphzRDjWRDmzO+gOSJwSLKkoRK4OulqkMO/pjbi7QOOEdPzpDazy6idBfWLG2/+O+Ymk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683488; c=relaxed/simple;
-	bh=6FSpXIf7oGmTC/yUlWsO2GrGxc15vaPb5FSQdNW1XN4=;
+	s=arc-20240116; t=1717683708; c=relaxed/simple;
+	bh=WPnsqHKzpuMjHZ/GreK6L8KoLHJncOK0vIKFbbddWiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JD/eRf04qkA47j9CK6MCPiJe+ttp8+eiIyz4EkQcCYwhHQxQzYQkwLmTyjo5px2P9KIHV/Y+c6raM6xLoVVXhbg6Tvc0SuaGIeuCON7HWbtQ+rsOBCM3wR0QVFuNTcP5NiTCvxaBnp5CsaGKO3GkK0KRBz8ZWuHe5weR3i/BKjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyZBdTLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3350C2BD10;
-	Thu,  6 Jun 2024 14:18:07 +0000 (UTC)
+	 MIME-Version; b=NkrRjOMk9GT/LCG7wK6yTRxV/+JSJ2SbtDERYEXsWlv5WZPOdSoLb5e8q5yU8BRoNJi87tzhCeXpOGgfrRegdeRkOQtsbEiC4A0l+6xTnbOLH27nDRrKRMzq8Xxc5p3yHW4W8bO9cUdQIOHC/SPBrW4sjknBc9PbbfowGSBXinY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB2QqmGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A97AC2BD10;
+	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683487;
-	bh=6FSpXIf7oGmTC/yUlWsO2GrGxc15vaPb5FSQdNW1XN4=;
+	s=korg; t=1717683708;
+	bh=WPnsqHKzpuMjHZ/GreK6L8KoLHJncOK0vIKFbbddWiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QyZBdTLIvLmocx1lcZ8vktuNHQBSN+WNt7WDkpHUtD9BY35nPbPIBe0T2GDsYRUMJ
-	 D6fzm/kbnE8DtZWM70hK3eFJihVjpG4m+kKUDWPbRlwGFSLxvAMgCVLMoXUPf1Aamr
-	 j4X95VFkdEBBzE2LqttFMS8djukAu8lFzqWObe8o=
+	b=lB2QqmGjKlieUsrtsXyBMsHsqILemRs8Brr1sFTQb9yNpBkpbhKljHdRf8h/BR+Bj
+	 WvLnMs6baXXS4mvb1Fq6ap8UrGlFijbFyn9rYHESqreSv9qKzGQ1kZSpiMjhcSk0uh
+	 3XJZDSPzvGPF6wN/19Z1HXMJM4JnX9cAFVq4lfds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 378/473] drm/bridge: tc358775: fix support for jeida-18 and jeida-24
-Date: Thu,  6 Jun 2024 16:05:07 +0200
-Message-ID: <20240606131712.366622925@linuxfoundation.org>
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 636/744] nfc: nci: Fix uninit-value in nci_rx_work
+Date: Thu,  6 Jun 2024 16:05:08 +0200
+Message-ID: <20240606131752.880603680@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-[ Upstream commit 30ea09a182cb37c4921b9d477ed18107befe6d78 ]
+[ Upstream commit e4a87abf588536d1cdfb128595e6e680af5cf3ed ]
 
-The bridge always uses 24bpp internally. Therefore, for jeida-18
-mapping we need to discard the lowest two bits for each channel and thus
-starting with LV_[RGB]2. jeida-24 has the same mapping but uses four
-lanes instead of three, with the forth pair transmitting the lowest two
-bits of each channel. Thus, the mapping between jeida-18 and jeida-24
-is actually the same, except that one channel is turned off (by
-selecting the RGB666 format in VPCTRL).
+syzbot reported the following uninit-value access issue [1]
 
-While at it, remove the bogus comment about the hardware default because
-the default is overwritten in any case.
+nci_rx_work() parses received packet from ndev->rx_q. It should be
+validated header size, payload size and total packet size before
+processing the packet. If an invalid packet is detected, it should be
+silently discarded.
 
-Tested with a jeida-18 display (Evervision VGG644804).
-
-Fixes: b26975593b17 ("display/drm/bridge: TC358775 DSI/LVDS driver")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240225062008.33191-5-tony@atomide.com
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Reported-and-tested-by: syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d7b4dc6cd50410152534 [1]
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358775.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ net/nfc/nci/core.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/tc358775.c
-index b1c8ce5d20186..40d6da7743325 100644
---- a/drivers/gpu/drm/bridge/tc358775.c
-+++ b/drivers/gpu/drm/bridge/tc358775.c
-@@ -455,10 +455,6 @@ static void tc_bridge_enable(struct drm_bridge *bridge)
- 	dev_dbg(tc->dev, "bus_formats %04x bpc %d\n",
- 		connector->display_info.bus_formats[0],
- 		tc->bpc);
--	/*
--	 * Default hardware register settings of tc358775 configured
--	 * with MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA jeida-24 format
--	 */
- 	if (connector->display_info.bus_formats[0] ==
- 		MEDIA_BUS_FMT_RGB888_1X7X4_SPWG) {
- 		/* VESA-24 */
-@@ -469,14 +465,15 @@ static void tc_bridge_enable(struct drm_bridge *bridge)
- 		d2l_write(tc->i2c, LV_MX1619, LV_MX(LVI_B6, LVI_B7, LVI_B1, LVI_B2));
- 		d2l_write(tc->i2c, LV_MX2023, LV_MX(LVI_B3, LVI_B4, LVI_B5, LVI_L0));
- 		d2l_write(tc->i2c, LV_MX2427, LV_MX(LVI_HS, LVI_VS, LVI_DE, LVI_R6));
--	} else { /*  MEDIA_BUS_FMT_RGB666_1X7X3_SPWG - JEIDA-18 */
--		d2l_write(tc->i2c, LV_MX0003, LV_MX(LVI_R0, LVI_R1, LVI_R2, LVI_R3));
--		d2l_write(tc->i2c, LV_MX0407, LV_MX(LVI_R4, LVI_L0, LVI_R5, LVI_G0));
--		d2l_write(tc->i2c, LV_MX0811, LV_MX(LVI_G1, LVI_G2, LVI_L0, LVI_L0));
--		d2l_write(tc->i2c, LV_MX1215, LV_MX(LVI_G3, LVI_G4, LVI_G5, LVI_B0));
--		d2l_write(tc->i2c, LV_MX1619, LV_MX(LVI_L0, LVI_L0, LVI_B1, LVI_B2));
--		d2l_write(tc->i2c, LV_MX2023, LV_MX(LVI_B3, LVI_B4, LVI_B5, LVI_L0));
--		d2l_write(tc->i2c, LV_MX2427, LV_MX(LVI_HS, LVI_VS, LVI_DE, LVI_L0));
-+	} else {
-+		/* JEIDA-18 and JEIDA-24 */
-+		d2l_write(tc->i2c, LV_MX0003, LV_MX(LVI_R2, LVI_R3, LVI_R4, LVI_R5));
-+		d2l_write(tc->i2c, LV_MX0407, LV_MX(LVI_R6, LVI_R1, LVI_R7, LVI_G2));
-+		d2l_write(tc->i2c, LV_MX0811, LV_MX(LVI_G3, LVI_G4, LVI_G0, LVI_G1));
-+		d2l_write(tc->i2c, LV_MX1215, LV_MX(LVI_G5, LVI_G6, LVI_G7, LVI_B2));
-+		d2l_write(tc->i2c, LV_MX1619, LV_MX(LVI_B0, LVI_B1, LVI_B3, LVI_B4));
-+		d2l_write(tc->i2c, LV_MX2023, LV_MX(LVI_B5, LVI_B6, LVI_B7, LVI_L0));
-+		d2l_write(tc->i2c, LV_MX2427, LV_MX(LVI_HS, LVI_VS, LVI_DE, LVI_R0));
- 	}
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 5d708af0fcfd3..f350c5fb992ec 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1463,6 +1463,19 @@ int nci_core_ntf_packet(struct nci_dev *ndev, __u16 opcode,
+ 				 ndev->ops->n_core_ops);
+ }
  
- 	d2l_write(tc->i2c, VFUEN, VFUEN_EN);
++static bool nci_valid_size(struct sk_buff *skb)
++{
++	BUILD_BUG_ON(NCI_CTRL_HDR_SIZE != NCI_DATA_HDR_SIZE);
++	unsigned int hdr_size = NCI_CTRL_HDR_SIZE;
++
++	if (skb->len < hdr_size ||
++	    !nci_plen(skb->data) ||
++	    skb->len < hdr_size + nci_plen(skb->data)) {
++		return false;
++	}
++	return true;
++}
++
+ /* ---- NCI TX Data worker thread ---- */
+ 
+ static void nci_tx_work(struct work_struct *work)
+@@ -1516,7 +1529,7 @@ static void nci_rx_work(struct work_struct *work)
+ 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
+ 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
+ 
+-		if (!nci_plen(skb->data)) {
++		if (!nci_valid_size(skb)) {
+ 			kfree_skb(skb);
+ 			kcov_remote_stop();
+ 			break;
 -- 
 2.43.0
 
