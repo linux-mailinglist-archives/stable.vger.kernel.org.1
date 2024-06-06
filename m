@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FF68FECF2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1308FEB60
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BEFF287024
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C41FB2581D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454F61B3F00;
-	Thu,  6 Jun 2024 14:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CD8197A81;
+	Thu,  6 Jun 2024 14:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJUuJP7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPMUm4VQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0300C1B375C;
-	Thu,  6 Jun 2024 14:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A2A196D8C;
+	Thu,  6 Jun 2024 14:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683428; cv=none; b=PlvA29G4nxlztZLcKAO2IUrrUcJQPcI6dGT/qTURT/ZIWILfJyLqBbxCW5zMY7RMUgRyVY3elQGBd/qr8X3b61KFPFUL7fNuQe8gzLc1Jvm4Gki97etodWCu1UnBeo7xp/7R/sUPY7XxhYMS5wb8l5fpqfD2OQW/HIKZNSVQojI=
+	t=1717683243; cv=none; b=BjWj4qHmJMVQGmOsPtl5EdYf4FZFP7VeBstVM9ixKlzf0/eJ8DRoOxfipbZy+O81fnhzZfGLXsf97ul8lXbEzNsXVRETVxeeu8L3jiz0xcQwS/L1Xi1TZPpKlXcDq/ftI8vVqmjPCXAKK97q9d/7upDvhbQDvFLi+J7VbMwWp0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683428; c=relaxed/simple;
-	bh=aUmafDC9Y41UliYDz+EfTJZXIJlT49AoHC51PxKgrQ4=;
+	s=arc-20240116; t=1717683243; c=relaxed/simple;
+	bh=bM/hYyGw+K0uJvJSEWIYGjV302OgxXuAQQgSpqvyq8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPxy598mK5BbyMsE+S1JIyrV9cNYYEuVygThyzOYyDPBiSRGfRyjANBIefEwa8jTSvkpf6NvqlfsnuY/w+MNH4bDhxnHn31ztNVZRH3PohO6EQM8dIIwbz4VyILo/wgbV9oL6kVln/TByWlUsq0Q/t/aIaHU/XFXCJqefq8r0HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJUuJP7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8357C32781;
-	Thu,  6 Jun 2024 14:17:07 +0000 (UTC)
+	 MIME-Version; b=celhDbbaYVmYjnJM9T35oZF3MW2bRO8403i0QYYPUt4pxMw6GXmZ27POVbMQYijplzJtdpA9oShkzHM03BNWCHiLhiR1B2ckkNWZloE2uFtuDMj1K1oPOMRvP/TrJZPrdGGN1M7JBBgYBD2Ws3yr27Wr7i/hTP2UdoLWDiTlP/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPMUm4VQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700C9C2BD10;
+	Thu,  6 Jun 2024 14:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683427;
-	bh=aUmafDC9Y41UliYDz+EfTJZXIJlT49AoHC51PxKgrQ4=;
+	s=korg; t=1717683243;
+	bh=bM/hYyGw+K0uJvJSEWIYGjV302OgxXuAQQgSpqvyq8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJUuJP7tyk5vu5xVUJAsXeyo3z8NyYy+LggWSbogdisgsZr0C1CkQJPVt6Mv3GImj
-	 JLGdm/Ub8KyVW3nCsBAeBQFozKe5+Kje4JbU08z7sVIQx4lG1cP6WT3XZiT59dA3mS
-	 1tNCqQN9itkMsKppuBQZEdh1GBjyCtBZ1NHa5fxM=
+	b=hPMUm4VQmLvLhNf9Z80bCc2gfS8LQvh18eMGxrjeARR07hMLOxLv6HeMsyeynWkk5
+	 gfYW7t7Vdr/UVv8wCUW4tYYhD1XsxYsxZZB6D9YYI4GPX01gWySqiHE672z2VgRZ0L
+	 J62tFr7Cd3N3EZUzgQwkkWaCMp3UJu09Q1W7fkWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Aprelkov <aaprelkov@usergate.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 364/744] sunrpc: removed redundant procp check
+Subject: [PATCH 6.1 107/473] scsi: ufs: qcom: Perform read back after writing unipro mode
 Date: Thu,  6 Jun 2024 16:00:36 +0200
-Message-ID: <20240606131744.153954064@linuxfoundation.org>
+Message-ID: <20240606131703.454490996@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Aprelkov <aaprelkov@usergate.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit a576f36971ab4097b6aa76433532aa1fb5ee2d3b ]
+[ Upstream commit 823150ecf04f958213cf3bf162187cd1a91c885c ]
 
-since vs_proc pointer is dereferenced before getting it's address there's
-no need to check for NULL.
+Currently, the QUNIPRO_SEL bit is written to and then an mb() is used to
+ensure that completes before continuing.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+mb() ensures that the write completes, but completion doesn't mean that it
+isn't stored in a buffer somewhere. The recommendation for ensuring this
+bit has taken effect on the device is to perform a read back to force it to
+make it all the way to the device. This is documented in device-io.rst and
+a talk by Will Deacon on this can be seen over here:
 
-Fixes: 8e5b67731d08 ("SUNRPC: Add a callback to initialise server requests")
-Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+    https://youtu.be/i6DayghhA8Q?si=MiyxB5cKJXSaoc01&t=1678
+
+But, there's really no reason to even ensure completion before
+continuing. The only requirement here is that this write is ordered to this
+endpoint (which readl()/writel() guarantees already). For that reason the
+mb() can be dropped altogether without anything forcing completion.
+
+Fixes: f06fcc7155dc ("scsi: ufs-qcom: add QUniPro hardware support and power optimizations")
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-4-181252004586@redhat.com
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/ufs/host/ufs-qcom.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index 812fda9d45dd6..691499d1d2315 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1265,8 +1265,6 @@ svc_generic_init_request(struct svc_rqst *rqstp,
- 	if (rqstp->rq_proc >= versp->vs_nproc)
- 		goto err_bad_proc;
- 	rqstp->rq_procinfo = procp = &versp->vs_proc[rqstp->rq_proc];
--	if (!procp)
--		goto err_bad_proc;
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index ce18c43937a22..edbd3d7cf83aa 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -229,9 +229,6 @@ static void ufs_qcom_select_unipro_mode(struct ufs_qcom_host *host)
  
- 	/* Initialize storage for argp and resp */
- 	memset(rqstp->rq_argp, 0, procp->pc_argzero);
+ 	if (host->hw_ver.major == 0x05)
+ 		ufshcd_rmwl(host->hba, QUNIPRO_G4_SEL, 0, REG_UFS_CFG0);
+-
+-	/* make sure above configuration is applied before we return */
+-	mb();
+ }
+ 
+ /*
 -- 
 2.43.0
 
