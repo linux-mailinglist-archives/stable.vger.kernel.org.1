@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFAA8FEC68
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A686C8FEAC7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B079EB23E99
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3374CB23D84
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4631B0133;
-	Thu,  6 Jun 2024 14:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24AD1A0DEF;
+	Thu,  6 Jun 2024 14:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYR6UIQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gURXKMpq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6CA19884D;
-	Thu,  6 Jun 2024 14:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626121A0DE0;
+	Thu,  6 Jun 2024 14:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683363; cv=none; b=IAJ30xJlqLjlZRIWMAOuWeznx2cRnSDpWwzaUKCAs1twNypnLNy122BIqNlLnSlkwlpih66bIE7g+Kn0ZBIu8mNkW0Mj1mIb+Ujeiv+L/Noigtg2zHJu4q/3pMVfpxnuMfBXr4pmh0pH0kwY09UsqXeeT/382jfHZezRRILDzJs=
+	t=1717683174; cv=none; b=oeMQCCPp3GUAz8glKsfo7TqMqLzqCH0Bc8pznG1KoPcTPAAVZMeiICtR2733ItprUiJW+ijbq3LTnMycxufLpcu3BdyDzrvwZv/fZwCCWFnP7SFFKb3ZSpj8WIVch3/WsTbOSBOHDu46qoXpU+lP/CghnXuFVhfEJlSAAMYuN6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683363; c=relaxed/simple;
-	bh=E6WwGDbzzCTVStALOIo0Y2oOBOu4tqnCDm70Jxmr7uY=;
+	s=arc-20240116; t=1717683174; c=relaxed/simple;
+	bh=obJ5RmzmoIAZ4yJCgr+zIbSbmOxG/u2qXaV1kamDP90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a/HbLT6Xw7icc9hpmdof4lH2ukGS9/nh5C5QARmAI5HXmeWNo3vvP8792IbqksG2Zpfw18lbjZlf+FEH+hr1V3p5t4CUGNOmxYEFhzdg78dbfpLadyx+9OdUHjBNlQWocy0WIOxVfc9e468DhB3rJRJgrSeEaQswVVP0BOd4E1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYR6UIQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5839AC32781;
-	Thu,  6 Jun 2024 14:16:03 +0000 (UTC)
+	 MIME-Version; b=kExvbBkvAZxXIh3vR00I0/11qe9+dZrA3axHDmtwQcbcy+U2hc75h64VMQj7bh+aU7Z4iq1+PzNk4oqTtsbklAFmE0mVWJPbkKJq8fccVlutVj8on/G+93GLPPsYBiBLocFTQ+945/edO0GytNd6gMCXDz4tCiH8uxT/DvA9To4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gURXKMpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420E9C2BD10;
+	Thu,  6 Jun 2024 14:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683363;
-	bh=E6WwGDbzzCTVStALOIo0Y2oOBOu4tqnCDm70Jxmr7uY=;
+	s=korg; t=1717683174;
+	bh=obJ5RmzmoIAZ4yJCgr+zIbSbmOxG/u2qXaV1kamDP90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYR6UIQiSDKjpgthxc6xUHDirciU8eMPkhHFCgjLr9hgevB4Ndu8pDq9jIMtV1NW4
-	 Tx6gzrvdCEuccXh3pGUk8bTHr5VIhPXmDLx00A+SPoCZ4Xl8DZSx36YhcSyPTXiuuB
-	 RGWd3UYXkyiMwUJQFwb/VEgdfDDiv3CsvghJlePA=
+	b=gURXKMpqRFjJt2CeRSnaj9mHIpMxlH++GZs1kkA09p5A5R9H0Ajj7r9IPGrv81w5W
+	 mEhvekkFyVCUBBK4gnuD8n10F/HdV5tRfRWmp1ELOeV/y/YzkFIzgqWRBBlZ8Nokf1
+	 VHLvkEacxOQroB3UqIbi+OF07XLKAAm+9pkKebj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 305/744] media: radio-shark2: Avoid led_names truncations
-Date: Thu,  6 Jun 2024 15:59:37 +0200
-Message-ID: <20240606131742.163968444@linuxfoundation.org>
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 049/473] KVM: x86: Dont advertise guest.MAXPHYADDR as host.MAXPHYADDR in CPUID
+Date: Thu,  6 Jun 2024 15:59:38 +0200
+Message-ID: <20240606131701.500812165@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Gerd Hoffmann <kraxel@redhat.com>
 
-[ Upstream commit 1820e16a3019b6258e6009d34432946a6ddd0a90 ]
+commit 6f5c9600621b4efb5c61b482d767432eb1ad3a9c upstream.
 
-Increase the size of led_names so it can fit any valid v4l2 device name.
+Drop KVM's propagation of GuestPhysBits (CPUID leaf 80000008, EAX[23:16])
+to HostPhysBits (same leaf, EAX[7:0]) when advertising the address widths
+to userspace via KVM_GET_SUPPORTED_CPUID.
 
-Fixes:
-drivers/media/radio/radio-shark2.c:197:17: warning: ‘%s’ directive output may be truncated writing up to 35 bytes into a region of size 32 [-Wformat-truncation=]
+Per AMD, GuestPhysBits is intended for software use, and physical CPUs do
+not set that field.  I.e. GuestPhysBits will be non-zero if and only if
+KVM is running as a nested hypervisor, and in that case, GuestPhysBits is
+NOT guaranteed to capture the CPU's effective MAXPHYADDR when running with
+TDP enabled.
 
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+E.g. KVM will soon use GuestPhysBits to communicate the CPU's maximum
+*addressable* guest physical address, which would result in KVM under-
+reporting PhysBits when running as an L1 on a CPU with MAXPHYADDR=52,
+but without 5-level paging.
+
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20240313125844.912415-2-kraxel@redhat.com
+[sean: rewrite changelog with --verbose, Cc stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/radio/radio-shark2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/cpuid.c |   21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/media/radio/radio-shark2.c b/drivers/media/radio/radio-shark2.c
-index f1c5c0a6a335c..e3e6aa87fe081 100644
---- a/drivers/media/radio/radio-shark2.c
-+++ b/drivers/media/radio/radio-shark2.c
-@@ -62,7 +62,7 @@ struct shark_device {
- #ifdef SHARK_USE_LEDS
- 	struct work_struct led_work;
- 	struct led_classdev leds[NO_LEDS];
--	char led_names[NO_LEDS][32];
-+	char led_names[NO_LEDS][64];
- 	atomic_t brightness[NO_LEDS];
- 	unsigned long brightness_new;
- #endif
--- 
-2.43.0
-
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1157,9 +1157,8 @@ static inline int __do_cpuid_func(struct
+ 		entry->eax = entry->ebx = entry->ecx = 0;
+ 		break;
+ 	case 0x80000008: {
+-		unsigned g_phys_as = (entry->eax >> 16) & 0xff;
+-		unsigned virt_as = max((entry->eax >> 8) & 0xff, 48U);
+-		unsigned phys_as = entry->eax & 0xff;
++		unsigned int virt_as = max((entry->eax >> 8) & 0xff, 48U);
++		unsigned int phys_as;
+ 
+ 		/*
+ 		 * If TDP (NPT) is disabled use the adjusted host MAXPHYADDR as
+@@ -1167,16 +1166,16 @@ static inline int __do_cpuid_func(struct
+ 		 * reductions in MAXPHYADDR for memory encryption affect shadow
+ 		 * paging, too.
+ 		 *
+-		 * If TDP is enabled but an explicit guest MAXPHYADDR is not
+-		 * provided, use the raw bare metal MAXPHYADDR as reductions to
+-		 * the HPAs do not affect GPAs.
++		 * If TDP is enabled, use the raw bare metal MAXPHYADDR as
++		 * reductions to the HPAs do not affect GPAs.
+ 		 */
+-		if (!tdp_enabled)
+-			g_phys_as = boot_cpu_data.x86_phys_bits;
+-		else if (!g_phys_as)
+-			g_phys_as = phys_as;
++		if (!tdp_enabled) {
++			phys_as = boot_cpu_data.x86_phys_bits;
++		} else {
++			phys_as = entry->eax & 0xff;
++		}
+ 
+-		entry->eax = g_phys_as | (virt_as << 8);
++		entry->eax = phys_as | (virt_as << 8);
+ 		entry->ecx &= ~(GENMASK(31, 16) | GENMASK(11, 8));
+ 		entry->edx = 0;
+ 		cpuid_entry_override(entry, CPUID_8000_0008_EBX);
 
 
 
