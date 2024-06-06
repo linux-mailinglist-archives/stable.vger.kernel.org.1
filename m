@@ -1,249 +1,213 @@
-Return-Path: <stable+bounces-48262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8068FDD05
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 04:58:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1ABD8FDD0A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 04:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E637284605
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:58:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A491C21C9F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FBC1CAA9;
-	Thu,  6 Jun 2024 02:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B856D1DDC9;
+	Thu,  6 Jun 2024 02:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VP0+MAOk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AVLH2zpI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A27182BD
-	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 02:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717642691; cv=fail; b=c2MxVHkegK0Sh0ISJdqr99PAlziEROuHZ30Z/IwxnGo/8BzQxu/VAhFYzLH5+s0zSIh2QAAEJtHLfbqVS3VyPUvT1M8nI2nhdLcVRBLx3+HGBxbyJzhTY2VXi/f+7yPsG92152nodHvi2EYyRYl8RmbsjCVyLC5c8cmRi/qE9X4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717642691; c=relaxed/simple;
-	bh=VFVCl/dPVGO1SLLVqQzA/h1ik7Oq/gp0fcrYF4bR4EI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RF47x0xg2G2CwvyWkZQTMBw1qJtpiqT4YaABj2Xbnoo/sl5YdLdOd1634+MeTPkfa81fxVLK4JYmS8vXnVqsOoORaGqlkf8ZHbdCbKfQBNDztSEMsqyG20k16dziRxRd14/XAyozYGrJFnaln9L7ifWL4vIt8hLiz9hG9ybmjow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VP0+MAOk; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717642689; x=1749178689;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=VFVCl/dPVGO1SLLVqQzA/h1ik7Oq/gp0fcrYF4bR4EI=;
-  b=VP0+MAOk0vfNYw8cSFhNgg7eU1MnX6yRnuVlg2GKTOA2BP6Rhjd/5QUA
-   +zM2G9mERRaPb3GpNNfIGXYpbvWa8WvJ7/VtQeS7QmKE/unpQCOfgC8n8
-   BnxYHHmnOs4pLIQM/fzZogIB2FNSXhXU4G2WUeFHP76u52DBXFAuSSGTf
-   OomXHUHNPjpeEml6mHpkI3MZuH7PVDlAGJpGTB1sxnN5BHrB1/fBkUX3v
-   pbMUQGMBTnkAjllEwJxeRJnA1xrqPikFmN+4MkYs01TN0FAkfsJHOVBLv
-   0khrqUoju77kO7p/uAgS2wMrnTJIMsuwSNuv/yK0tjRujIG3QA4LgKHbX
-   w==;
-X-CSE-ConnectionGUID: BfKE9tL0RpCT8eIwaIMS7w==
-X-CSE-MsgGUID: fhZApH9QRReUdOf9tEijeA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="18134881"
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="18134881"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 19:58:08 -0700
-X-CSE-ConnectionGUID: c5eRWjbhTRSm45plWf3r+w==
-X-CSE-MsgGUID: sK43K+lrTG6M4szqGzeMWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="37784786"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Jun 2024 19:58:07 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 5 Jun 2024 19:58:07 -0700
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 5 Jun 2024 19:58:06 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 5 Jun 2024 19:58:06 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 5 Jun 2024 19:58:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=J/mbtNx525FCz75QBWjl5yb6NkhxxtTY4ArrNyZdv+hyr/ybfLpCFn9W49r+g9KVEQClrPjTRnO7/5Ua2Af7bJZtt3BaMFrzXggMcYy6FRQO6jrWyTtrKTJv9SZaa0pUC3TGxqY8/gPuZ3ZqxV94O/xyqbGgdeZgoOPiF9w4Ixe9cywTEiTDv97ybhCK3ir2Wk9ACsf2NzvtIMHSN56S1G+n009A0Iua1GScHj/opxcVBrB6Qr/uuTjny5T+C3S6/H2FEFA76UEtmwt6TzFbB7hEFA9s8BDM+KUl8yyJ+cx/yUWxa1o1wXhgreC8tu/hVAVSMROPbaVb+Kv0zF39LA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t2IZModzkQU1Z9nxOnTpMWxc2P23mFOwY2YWbof09vs=;
- b=lVY+pJjbHqJjvN3jCqFBu0WNKEruycNIwnsKnu160ZplZZxogbt5R/DNZojjz3HQAonGkqizcKIUWbgCngJ3lN9W3feRxWVly8jBHt2Rrs3EXQ6sNns3aqXYwSq6KP2ALUgRfvznBT1bbcqmMaHHbuAtMp5RGYs9V9c6zq9y9IGRd6vZ+DGMKMtYPD8yuohtO0KQDswNoQfOiAME6T/fkZxJlRGrvUGg0scfsqCFPQAl7OCDu9vZ190KsrYQTyfHygLVcpvf67L119j07PPLBDhFkEQeYOQmjueE5DwYglCeGxpvEF2NUexCMQ/hjlhfHnSnkrpK2sh2yyqBAPeKPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL3PR11MB6508.namprd11.prod.outlook.com (2603:10b6:208:38f::5)
- by CH3PR11MB7939.namprd11.prod.outlook.com (2603:10b6:610:131::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.25; Thu, 6 Jun
- 2024 02:58:04 +0000
-Received: from BL3PR11MB6508.namprd11.prod.outlook.com
- ([fe80::1a0f:84e3:d6cd:e51]) by BL3PR11MB6508.namprd11.prod.outlook.com
- ([fe80::1a0f:84e3:d6cd:e51%3]) with mapi id 15.20.7633.018; Thu, 6 Jun 2024
- 02:58:03 +0000
-Date: Thu, 6 Jun 2024 02:57:11 +0000
-From: Matthew Brost <matthew.brost@intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-CC: intel-gfx <intel-gfx@lists.freedesktop.org>, dri-devel
-	<dri-devel@lists.freedesktop.org>, John Harrison <John.C.Harrison@intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/i915/gt/uc: Evaluate GuC priority within locks
-Message-ID: <ZmElh72N2x6c/TDj@DUT025-TGLU.fm.intel.com>
-References: <20240606001702.59005-1-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240606001702.59005-1-andi.shyti@linux.intel.com>
-X-ClientProxiedBy: BY5PR17CA0049.namprd17.prod.outlook.com
- (2603:10b6:a03:167::26) To BL3PR11MB6508.namprd11.prod.outlook.com
- (2603:10b6:208:38f::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB341C69A;
+	Thu,  6 Jun 2024 02:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717642784; cv=none; b=ECc2CplLSx/XTzWrVrbUndTDAFELe50J8+7x7nbTlGFUfBCJdfQ9NQ2I6d7p1X6e4fE3dbdsdJJCzIzNbg5G9+RhJ6btYQdUelCs6hvR7Tvi/ABNw9uC9G1qOqY/va3iJAbgzS1LRkJOw71OaMPTBx98qWJLaO1QUSkMf31XoG4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717642784; c=relaxed/simple;
+	bh=dmH5V+cKL2wu81gjyiWlJg3dRjq8qDUh4x3UsIopgjk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Tj19bQuuPBdfgP7RNpJ7CkarElVnTrzwH5SIcWikSsEuLTbWSK/Z5JN0/v0qJYRHhPkMBkaymYYDSiSW2qUedqY/bvw/zuWV5riraYH88bJC9c6M89R4DL8jpfacRhiEfnqP/J3oj7h1Y3DJbOaxv3xgKpVpdhxzC75qkf4QWTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AVLH2zpI; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-702442afa7dso422559b3a.2;
+        Wed, 05 Jun 2024 19:59:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717642782; x=1718247582; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vz1XSlT9oUSSTzN4cS11/Lx6KgX+Uz7+KxDJeBD1O6M=;
+        b=AVLH2zpIadRd/dzV19usykX5tg2f5NHHkHhBOoAFFP90RFzIC8sHuoakaHy7rVLeht
+         4xUintGCzcEwIHfCtiwgSfjE+p8zaYSVozuit7DuiLi8GwkVQSBY53hQP0IAybxcpW+Z
+         gHwZQmbrFhQmDtANeMvld0l92pO2XFj9nJGmP2ROWVMrTSyN7Gk2LG+DxwlX3Fiskg3+
+         H6tTK8XII8bx0tsOC/cazru/wpZ3qKaoeDo9vtNndjPS+q8CHsQ/184q9MqXiuV+UowR
+         G0JphjwzuK6kQ/Yc7U9eMfNF2X7a1pafk4Ns9P/VQgtwrr9Ja/9KTEwHvwN5Uf5UjZ2L
+         R76g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717642782; x=1718247582;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vz1XSlT9oUSSTzN4cS11/Lx6KgX+Uz7+KxDJeBD1O6M=;
+        b=ihaTeR6wynKM4PnK7V7lfPDFbxx7anZ4MHq/mSVHVeR+F4sJX/jRBFl6dh3uz5dMRz
+         /OEKwVK9R/GfrWWXH9No1sk8GyRrE05hZ8wXvBO+3aqmYMW4NMVufU/BMDQBnz56vWXF
+         VzZmpOeaxquGaazsrji2Bq13y42es5v3GDfxRjMedbLq1zXrA4D8R+LqHmXYiEmSzOIK
+         FkcG432D/+Yh+L9O/Hqq/q3l9zMpZvvMBoYKDmw8PhHnInR+2UXIugD9O00eGDbr6RhK
+         ZcTOfpRrjAuouXY9XmfaeQTv2Wu9ULSx7q29JowvxTmQSd+DoiZ9l7VbJ802b5iqKgk2
+         1xGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXa7fOK/lTZprZydf2QmJ0sKABsNL9Kv3pHpFW3SYgK1VZ+aD/VK1Jbg+AKuv9j2WcP07d1z1I9/6ydpIfr7sxwS/gNRbuwnsx9TQjWy82yTWk7T4yjEI3oBdB/NqFc0npmXqHcFoO3AIy3rDmjUWugZaQEIRgv4VW5a4WutWZjmobJjoXDdKY5peoIxkbG7Um2Umzo
+X-Gm-Message-State: AOJu0YzAMKufRSh7bR1YBFnrPz842bTFnvAEA7uYiNsGtvKnGX7TqMi9
+	bcueNRocwTErMvVp7qY+ejl1rC4DKF0hnO2UnGcHcsEaiRvq5CHhveyKrA==
+X-Google-Smtp-Source: AGHT+IEqs9EFID6KLRdH9JJgQcWIVOz6IZJBIwvKeto3Qx5Yrb/TMfE+Sb8RlX8Xf8sRjAx27+M+Ig==
+X-Received: by 2002:a05:6a00:a27:b0:6ea:afdb:6d03 with SMTP id d2e1a72fcca58-703e59824efmr4635464b3a.19.1717642782042;
+        Wed, 05 Jun 2024 19:59:42 -0700 (PDT)
+Received: from localhost (110-175-65-7.tpgi.com.au. [110.175.65.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-703fd39a806sm205312b3a.80.2024.06.05.19.59.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Jun 2024 19:59:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR11MB6508:EE_|CH3PR11MB7939:EE_
-X-MS-Office365-Filtering-Correlation-Id: a12d1b7c-ee67-4bc9-a96b-08dc85d47ba3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?DZoKwWYaIWOGKPPT0knTRo/jRHGLUOcmbN/kRSYA770i9LvHFBQcAqc56tg/?=
- =?us-ascii?Q?04lLFULzN/qrhMgqMrB7GiVuRg72C+dxJ+GTrJ48F/uKkF+ykVW8Wl7WIoLG?=
- =?us-ascii?Q?xsmvDlBHp0F+jMAZaGso9Yf5T7csBfb+qkzJZuud2JVjhZF2278f0MZ+4nA1?=
- =?us-ascii?Q?42Dgo+CtPo82qXK8FJXMRjgok/hpHEPgmhjDmxzbYLM+nNU8k6ElSqWkyjX8?=
- =?us-ascii?Q?+QT69+vp85/9DMQY5ljvQfmoOOb1p9nlkqM/930hS0fkg8YUes+ZVGt2rl4C?=
- =?us-ascii?Q?dNd595D32pPhhwsf1mDs5u/zhs3FMqAxN8TEhpzi29Buvk/HI+f69RsgZHHN?=
- =?us-ascii?Q?NoMY0dw1qg8nNp/AmGh9i94EJOnmGa9mRqKzI8K6uy88rdVGlp+oOtmwWcO5?=
- =?us-ascii?Q?JLAlodxMZ7zSPz90XHcofL1u4728HKyOa53Q1LgiA6RRn3xsyU/QHypFX1aG?=
- =?us-ascii?Q?e8UmnDWDywhdum2dzIl9kkVW4oC+T0+2JispeR9NN1XyyOSU+ZtqNB1eH4fg?=
- =?us-ascii?Q?UbMjPpyN4Tms6vboy5TUmH5+SpEOLjI+y7WQ3fGyCy3OH79RjDmH+A2mqWCH?=
- =?us-ascii?Q?hcBqqXraaerra5GiygL8XB6Du2U46J3i+37lBX2ibRsnNJV4fvUD2cl1Viiz?=
- =?us-ascii?Q?JWrF6rsBcCH5d04Zb20JTxFi15exGrFirs4GZqufDPxcY+yzZJnh/XXCY3UE?=
- =?us-ascii?Q?v1lED0+A5mpnzq8Hg0lr+HgV8xx8c8EO8w/c9W4CwZ3p4w8t6WvKrDkr4pW0?=
- =?us-ascii?Q?vGz4v1sd/d6IKY/XOwp6AhrhfKisX+5C1ZzhfshjMCjUDbojT81qwt/fUQzl?=
- =?us-ascii?Q?YnGADnnsGL+XQYKIndy/guErFuhS39FLUNms0gfGRFQjzUdudoId9sfY9dQx?=
- =?us-ascii?Q?WTIBY3nX/2e5G1Uxdfrr8SKtAA75mPDJNjvlNb0MYXT9Mh8rQYsIl4jADsMg?=
- =?us-ascii?Q?Wa9zSmRKxsxqyFis6R8/H41qBuh1wtQDkiwEny0KvB2FwKoSKPTk3JhQUW16?=
- =?us-ascii?Q?oEqMa7uHjdI7qn3/M0caBkX4amErcg6Z+sbmTtN8vvcL0vrAuErMI5OPGCWv?=
- =?us-ascii?Q?IoBNCMVJyZjQrurCgieURyRAySnj1RiaMMyCeWrSZogcFGspjvTHcNr0qLPK?=
- =?us-ascii?Q?M73OAyNzQb+2rokbswoZBlMoSSd05uVPosIyN3mjag49ePxWde5oO8XBRQUO?=
- =?us-ascii?Q?kumlhi/55dHNz0D6AkxKA6zb3fb7ublvVHQ+WnNy07VZjf7+YwQZR2ieplKw?=
- =?us-ascii?Q?xHLwjKgUr/rp59RTIovzVGCmU/YiitgNfQ4uDxd25A=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR11MB6508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ZjsF+sAkrAPdO0RY9UKwUfY8oGSjlHDQ42j+zh21MpMT3AJlThe3ooGlU8bO?=
- =?us-ascii?Q?qQ8aJWbwNZsBf3OwTls3VaG9MFYbv2/eEteidl+bbihOfNpYkv83HMpuKKPw?=
- =?us-ascii?Q?yfylsq0+T+DRXIUnOfBJvayO3vEbHnCAfdZENa/rN6DEPQE+4c3RSSfgKojr?=
- =?us-ascii?Q?VKy4xjbdJhDGSa2frUBOF2fhfLFPkxTAXYmm5nNVKTIgW81cS1ZgyhNhpPBf?=
- =?us-ascii?Q?6bp/hKVARDYWSLVUgU3CoDzKfNsVam6+uRSVdRf7wm11eHjKtBaMQozXvPUH?=
- =?us-ascii?Q?wk/bsMpSjA9RUjc1caOe0ni4tQIXXAyEpdTshcil4ia3NbHkyoV6vTiYRGLD?=
- =?us-ascii?Q?6Y0eApnJR81bV8E3VTwzXtLP3/iXyrn8X0T9GBYD/3f7x4KaiptR7zmJ9LVY?=
- =?us-ascii?Q?gFtgUL16Oujn+8jukAPxcdh/ScLrrPqsz15uGGqaCS8AlKPQchHckiMoUBpe?=
- =?us-ascii?Q?OTQ248EwoiPlEmhCv5jM5Dt7t3DTqe990Q/2PS9eZGKuVId+4/XYZTR4q2On?=
- =?us-ascii?Q?jfnsMMRqULOtO12NorOh2q19HbH7WjbBpCZg5JiVCzO79aJNU9E2nGFd8ZR4?=
- =?us-ascii?Q?ZoNwMHyhoke6XTsWmaWY+xuY9QzwJLlbGRQRYRg44NC12LlXTWGIYbG/l3ew?=
- =?us-ascii?Q?JzEUB8bGVzhvfGhJhas+T6UDMusSZWQCxyT6K9rrS2R0Oz+1GjxGGeIX3GIx?=
- =?us-ascii?Q?PYcTzp1nCFe7N+OPEiCcEg6UnfH5ouiq6UiXZdhksMFjTJeGn03DWMORhJ40?=
- =?us-ascii?Q?YFoSQMn7rWaGcgU6uV5bOw1je/tYwEvfAyDtDqVFlFISrNzsRFX8tXVraB2b?=
- =?us-ascii?Q?GtbpnJUJpj52jiRM5m8cndsnvqR9r/fmO+53uIP3PLxdtvfqtJrlR2VeplaK?=
- =?us-ascii?Q?K5MdHYB+waQUXcRjy8fkQbeL9fhgt2Jk6t5CA4mTBnrF9sskWf494xPeP3Ww?=
- =?us-ascii?Q?sWKxgOwNlsfbXdlriViGlzSKjF8zGq7Iv+eCC8iRXgRIjEPRcheR4xEi8rkk?=
- =?us-ascii?Q?+UQFM8SoSF9bofV7OS7O9TTTnmvExTQgXAnSnu1xHc2ikjWSSIXdDRzpakyf?=
- =?us-ascii?Q?F6I1d+qQaaVy0VfJqfO1hBhUl4loEmPJiqL7C+Qw4PZaqFEw3DozTo/chyTu?=
- =?us-ascii?Q?OaGaI7ajD6qgUKPOlvQ0LvCJeCmolB2D8n0lYHojjgq67Xjup9kx4OHjJbSI?=
- =?us-ascii?Q?qC9fXPZNf/mX9qUYJjKgH6z0BXSP80e1XdVvmbR4Il/HtwwVL+UGzxeDbwb0?=
- =?us-ascii?Q?Zk/ziMDZHottXyzj5GIMK1Fl8Q5w7ZINBa/Yq05LO4leJFzuIvp6E8XdkJOp?=
- =?us-ascii?Q?iWB4+25PIToNSdO2Mt0/WYoWCpXTtjtBFcvMsrRGKcwVLAqL1NMX0gP8atyR?=
- =?us-ascii?Q?IdJQSWKRwloqL42awyrrIEwU1oqOHBXyFvgfYCKQqnu131pI9zuhflUuzXLW?=
- =?us-ascii?Q?4/Fup9mYOV/f5PHSm8uQ4SwMhhZYf/AI/o8054RIdPWxCiX3i7Fmt036HK+l?=
- =?us-ascii?Q?mOgBuHol815Rru3JPc0LHYqQK1lff8U3CpWjFd6VroAV7lQBatP2fy6HWBX/?=
- =?us-ascii?Q?aO+ensycnolkHMxnJx9YaMPXJksS1vDoh16jwI6eJNogSIJzAHdO3pqiEZRI?=
- =?us-ascii?Q?JA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a12d1b7c-ee67-4bc9-a96b-08dc85d47ba3
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6508.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2024 02:58:03.4601
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lEa7FwGD6B5dWMnm1FzB1yXnDGCv8lMwz4BHVpnCMuLb8HwQZZQEW2gDcKwmC8a2Nm3LV7bK1UCm7SRpj8ns8w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7939
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 06 Jun 2024 12:59:34 +1000
+Message-Id: <D1SLJP7L3EAY.2RKINBPUUGM5A@gmail.com>
+Cc: <linuxppc-dev@lists.ozlabs.org>, <linux-doc@vger.kernel.org>,
+ <kvm@vger.kernel.org>, <stable@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] arch/powerpc/kvm: Add DPDES support in helper
+ library for Guest state buffer
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Gautam Menghani" <gautam@linux.ibm.com>, <mpe@ellerman.id.au>,
+ <christophe.leroy@csgroup.eu>, <aneesh.kumar@kernel.org>,
+ <naveen.n.rao@linux.ibm.com>, <corbet@lwn.net>
+X-Mailer: aerc 0.17.0
+References: <20240605113913.83715-1-gautam@linux.ibm.com>
+ <20240605113913.83715-2-gautam@linux.ibm.com>
+In-Reply-To: <20240605113913.83715-2-gautam@linux.ibm.com>
 
-On Thu, Jun 06, 2024 at 02:17:02AM +0200, Andi Shyti wrote:
-> The ce->guc_state.lock was made to protect guc_prio, which
-> indicates the GuC priority level.
-> 
-> But at the begnning of the function we perform some sanity check
-> of guc_prio outside its protected section. Move them within the
-> locked region.
-> 
-> Use this occasion to expand the if statement to make it clearer.
-> 
-> Fixes: ee242ca704d3 ("drm/i915/guc: Implement GuC priority management")
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
+On Wed Jun 5, 2024 at 9:39 PM AEST, Gautam Menghani wrote:
+> Add support for using DPDES in the library for using guest state
+> buffers. DPDES support is needed for enabling usage of doorbells in a=20
+> L2 KVM on PAPR guest.
+>
 
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-> Cc: <stable@vger.kernel.org> # v5.15+
+> Fixes: 6ccbbc33f06a ("KVM: PPC: Add helper library for Guest State Buffer=
+s")
+> Cc: stable@vger.kernel.org # v6.7
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
 > ---
->  drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-> index 0eaa1064242c..1181043bc5e9 100644
-> --- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-> +++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-> @@ -4267,13 +4267,18 @@ static void guc_bump_inflight_request_prio(struct i915_request *rq,
->  	u8 new_guc_prio = map_i915_prio_to_guc_prio(prio);
->  
->  	/* Short circuit function */
-> -	if (prio < I915_PRIORITY_NORMAL ||
-> -	    rq->guc_prio == GUC_PRIO_FINI ||
-> -	    (rq->guc_prio != GUC_PRIO_INIT &&
-> -	     !new_guc_prio_higher(rq->guc_prio, new_guc_prio)))
-> +	if (prio < I915_PRIORITY_NORMAL)
->  		return;
->  
->  	spin_lock(&ce->guc_state.lock);
-> +
-> +	if (rq->guc_prio == GUC_PRIO_FINI)
-> +		goto exit;
-> +
-> +	if (rq->guc_prio != GUC_PRIO_INIT &&
-> +	    !new_guc_prio_higher(rq->guc_prio, new_guc_prio))
-> +		goto exit;
-> +
->  	if (rq->guc_prio != GUC_PRIO_FINI) {
->  		if (rq->guc_prio != GUC_PRIO_INIT)
->  			sub_context_inflight_prio(ce, rq->guc_prio);
-> @@ -4281,6 +4286,8 @@ static void guc_bump_inflight_request_prio(struct i915_request *rq,
->  		add_context_inflight_prio(ce, rq->guc_prio);
->  		update_context_prio(ce);
+>  Documentation/arch/powerpc/kvm-nested.rst     | 4 +++-
+>  arch/powerpc/include/asm/guest-state-buffer.h | 3 ++-
+>  arch/powerpc/include/asm/kvm_book3s.h         | 1 +
+>  arch/powerpc/kvm/book3s_hv_nestedv2.c         | 7 +++++++
+>  arch/powerpc/kvm/test-guest-state-buffer.c    | 2 +-
+>  5 files changed, 14 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/arch/powerpc/kvm-nested.rst b/Documentation/ar=
+ch/powerpc/kvm-nested.rst
+> index 630602a8aa00..5defd13cc6c1 100644
+> --- a/Documentation/arch/powerpc/kvm-nested.rst
+> +++ b/Documentation/arch/powerpc/kvm-nested.rst
+> @@ -546,7 +546,9 @@ table information.
+>  +--------+-------+----+--------+----------------------------------+
+>  | 0x1052 | 0x08  | RW |   T    | CTRL                             |
+>  +--------+-------+----+--------+----------------------------------+
+> -| 0x1053-|       |    |        | Reserved                         |
+> +| 0x1053 | 0x08  | RW |   T    | DPDES                            |
+> ++--------+-------+----+--------+----------------------------------+
+> +| 0x1054-|       |    |        | Reserved                         |
+>  | 0x1FFF |       |    |        |                                  |
+>  +--------+-------+----+--------+----------------------------------+
+>  | 0x2000 | 0x04  | RW |   T    | CR                               |
+> diff --git a/arch/powerpc/include/asm/guest-state-buffer.h b/arch/powerpc=
+/include/asm/guest-state-buffer.h
+> index 808149f31576..d107abe1468f 100644
+> --- a/arch/powerpc/include/asm/guest-state-buffer.h
+> +++ b/arch/powerpc/include/asm/guest-state-buffer.h
+> @@ -81,6 +81,7 @@
+>  #define KVMPPC_GSID_HASHKEYR			0x1050
+>  #define KVMPPC_GSID_HASHPKEYR			0x1051
+>  #define KVMPPC_GSID_CTRL			0x1052
+> +#define KVMPPC_GSID_DPDES			0x1053
+> =20
+>  #define KVMPPC_GSID_CR				0x2000
+>  #define KVMPPC_GSID_PIDR			0x2001
+> @@ -110,7 +111,7 @@
+>  #define KVMPPC_GSE_META_COUNT (KVMPPC_GSE_META_END - KVMPPC_GSE_META_STA=
+RT + 1)
+> =20
+>  #define KVMPPC_GSE_DW_REGS_START KVMPPC_GSID_GPR(0)
+> -#define KVMPPC_GSE_DW_REGS_END KVMPPC_GSID_CTRL
+> +#define KVMPPC_GSE_DW_REGS_END KVMPPC_GSID_DPDES
+>  #define KVMPPC_GSE_DW_REGS_COUNT \
+>  	(KVMPPC_GSE_DW_REGS_END - KVMPPC_GSE_DW_REGS_START + 1)
+> =20
+> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include=
+/asm/kvm_book3s.h
+> index 3e1e2a698c9e..10618622d7ef 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s.h
+> @@ -594,6 +594,7 @@ static inline u##size kvmppc_get_##reg(struct kvm_vcp=
+u *vcpu)		\
+> =20
+> =20
+>  KVMPPC_BOOK3S_VCORE_ACCESSOR(vtb, 64, KVMPPC_GSID_VTB)
+> +KVMPPC_BOOK3S_VCORE_ACCESSOR(dpdes, 64, KVMPPC_GSID_DPDES)
+>  KVMPPC_BOOK3S_VCORE_ACCESSOR_GET(arch_compat, 32, KVMPPC_GSID_LOGICAL_PV=
+R)
+>  KVMPPC_BOOK3S_VCORE_ACCESSOR_GET(lpcr, 64, KVMPPC_GSID_LPCR)
+>  KVMPPC_BOOK3S_VCORE_ACCESSOR_SET(tb_offset, 64, KVMPPC_GSID_TB_OFFSET)
+> diff --git a/arch/powerpc/kvm/book3s_hv_nestedv2.c b/arch/powerpc/kvm/boo=
+k3s_hv_nestedv2.c
+> index 8e6f5355f08b..36863fff2a99 100644
+> --- a/arch/powerpc/kvm/book3s_hv_nestedv2.c
+> +++ b/arch/powerpc/kvm/book3s_hv_nestedv2.c
+> @@ -311,6 +311,10 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_g=
+s_buff *gsb,
+>  			rc =3D kvmppc_gse_put_u64(gsb, iden,
+>  						vcpu->arch.vcore->vtb);
+>  			break;
+> +		case KVMPPC_GSID_DPDES:
+> +			rc =3D kvmppc_gse_put_u64(gsb, iden,
+> +						vcpu->arch.vcore->dpdes);
+> +			break;
+>  		case KVMPPC_GSID_LPCR:
+>  			rc =3D kvmppc_gse_put_u64(gsb, iden,
+>  						vcpu->arch.vcore->lpcr);
+> @@ -543,6 +547,9 @@ static int gs_msg_ops_vcpu_refresh_info(struct kvmppc=
+_gs_msg *gsm,
+>  		case KVMPPC_GSID_VTB:
+>  			vcpu->arch.vcore->vtb =3D kvmppc_gse_get_u64(gse);
+>  			break;
+> +		case KVMPPC_GSID_DPDES:
+> +			vcpu->arch.vcore->dpdes =3D kvmppc_gse_get_u64(gse);
+> +			break;
+>  		case KVMPPC_GSID_LPCR:
+>  			vcpu->arch.vcore->lpcr =3D kvmppc_gse_get_u64(gse);
+>  			break;
+> diff --git a/arch/powerpc/kvm/test-guest-state-buffer.c b/arch/powerpc/kv=
+m/test-guest-state-buffer.c
+> index 4720b8dc8837..2571ccc618c9 100644
+> --- a/arch/powerpc/kvm/test-guest-state-buffer.c
+> +++ b/arch/powerpc/kvm/test-guest-state-buffer.c
+> @@ -151,7 +151,7 @@ static void test_gs_bitmap(struct kunit *test)
+>  		i++;
 >  	}
-> +
-> +exit:
->  	spin_unlock(&ce->guc_state.lock);
->  }
->  
-> -- 
-> 2.45.1
-> 
+> =20
+> -	for (u16 iden =3D KVMPPC_GSID_GPR(0); iden <=3D KVMPPC_GSID_CTRL; iden+=
++) {
+> +	for (u16 iden =3D KVMPPC_GSID_GPR(0); iden <=3D KVMPPC_GSE_DW_REGS_END;=
+ iden++) {
+>  		kvmppc_gsbm_set(&gsbm, iden);
+>  		kvmppc_gsbm_set(&gsbm1, iden);
+>  		KUNIT_EXPECT_TRUE(test, kvmppc_gsbm_test(&gsbm, iden));
+
 
