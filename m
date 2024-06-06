@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-49791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13AA8FEEDE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8703E8FED81
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 302AEB23AFF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F04D1C242E2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585641C89E1;
-	Thu,  6 Jun 2024 14:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12F5198E8F;
+	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRE1oXZJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYicXtHr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E93199230;
-	Thu,  6 Jun 2024 14:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605B81BBBD0;
+	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683711; cv=none; b=ZC+xm9gSYXN+HxqPkNxwCOfORZLnvUnToplN+ZBoK4gRoSGy3E2nbTzifo08Kd7oDpNNRoqwT342QePWZwsBlcpo9SKqr8iSFeA+o//S2pfkScu6C3htPKjQLWY8P4oaGg9bYqDtAtm2NPuFPmqXKOvs7KhLRaJgdhWjkpFMzHE=
+	t=1717683494; cv=none; b=XfEs34hLUJThiJZ4cUJjcTUD7fbzPEwyOMZhpVD34S+h+1lJeo84D2JcC4HlydcY6TI7VC9Wi/3zibE7rfVbYy/YXB4tOIhUcfphgCInh6GwVJ/72KgoCFSwDuSzDPybWDyI0EqtkRRr0oXtbhuad2z97iOocF2YWG+o87N5fTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683711; c=relaxed/simple;
-	bh=jUDrbXe5o9YdqsNQjN7Rp0Ysaqz6sUIWX3WS1+YQd9g=;
+	s=arc-20240116; t=1717683494; c=relaxed/simple;
+	bh=OPfFgP6+/ItiK0rBhKHmLob0nvGk0lu8GfnXbmWKqzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GTs8stmjWzeyYhEznnixZhuE8g/J3XkacMwmLy+ZgE7TdWRLWG4MHbY8XETcXOKUYuwztlWJOHxrgoJPsGp3JoFD0TJoeJK2XYrnYvuJr5a+t0r8FAUuTqtIzdGNV+rxD/97z+nR1aYcvx18Ru1RjxzOOEy5bPXOvEt6C+6kBrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRE1oXZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD39C32781;
-	Thu,  6 Jun 2024 14:21:50 +0000 (UTC)
+	 MIME-Version; b=Ziwg2DJiMgbON7k93GGSzvxAG5fh71mud9AJ7radcrk1tRfXqbN2GfeL49ANT8911fhbSHwmHaZXMbmoYgBFEPHbTYUdf38MY8ly3jyjIFVrDzMHhZUU1OneVZMnJjCG4pSd+sT96JuJsZ3e/EWysnr+0bN0A7UBdQ+SuvPElJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYicXtHr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1381EC32781;
+	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683711;
-	bh=jUDrbXe5o9YdqsNQjN7Rp0Ysaqz6sUIWX3WS1+YQd9g=;
+	s=korg; t=1717683494;
+	bh=OPfFgP6+/ItiK0rBhKHmLob0nvGk0lu8GfnXbmWKqzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tRE1oXZJsFDhpEGtaQwtG9bA2i8mSsF+qahzh8xQM0wPYfcwAEN891H2qGIjZevHk
-	 EDBU//mQAcK00NNEWojdKKN5YMPcHa5LqvVph5pHXS5ITsrQmPsMTW81d0SLd7Z1mK
-	 YGdKgzaPyqgUhWOCH3bt3sfj1CWGtti9isPVLsTA=
+	b=wYicXtHr8YXqF2nvdaoI5WBuFDK1QlZpSADwR2YSIpRU5Dlz0a4Bvhb9xtFW/8PVP
+	 Mp6Ez3BpN+0sVcbEdtkMBaJq+wcSIP9ABpEnoNH5OpKQyWPDG4sb7AizxhLLrNUs7+
+	 oFnNugLovTmcVAUJs6n6ozdimLn6/epUEcXkP1Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Dan Aloni <dan.aloni@vastdata.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 641/744] sunrpc: fix NFSACL RPC retry on soft mount
+Subject: [PATCH 6.1 384/473] um: Fix the -Wmissing-prototypes warning for __switch_mm
 Date: Thu,  6 Jun 2024 16:05:13 +0200
-Message-ID: <20240606131753.033286055@linuxfoundation.org>
+Message-ID: <20240606131712.550956625@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Aloni <dan.aloni@vastdata.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 0dc9f430027b8bd9073fdafdfcdeb1a073ab5594 ]
+[ Upstream commit 2cbade17b18c0f0fd9963f26c9fc9b057eb1cb3a ]
 
-It used to be quite awhile ago since 1b63a75180c6 ('SUNRPC: Refactor
-rpc_clone_client()'), in 2012, that `cl_timeout` was copied in so that
-all mount parameters propagate to NFSACL clients. However since that
-change, if mount options as follows are given:
+The __switch_mm function is defined in the user code, and is called
+by the kernel code. It should be declared in a shared header.
 
-    soft,timeo=50,retrans=16,vers=3
-
-The resultant NFSACL client receives:
-
-    cl_softrtry: 1
-    cl_timeout: to_initval=60000, to_maxval=60000, to_increment=0, to_retries=2, to_exponential=0
-
-These values lead to NFSACL operations not being retried under the
-condition of transient network outages with soft mount. Instead, getacl
-call fails after 60 seconds with EIO.
-
-The simple fix is to pass the existing client's `cl_timeout` as the new
-client timeout.
-
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Cc: Benjamin Coddington <bcodding@redhat.com>
-Link: https://lore.kernel.org/all/20231105154857.ryakhmgaptq3hb6b@gmail.com/T/
-Fixes: 1b63a75180c6 ('SUNRPC: Refactor rpc_clone_client()')
-Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 4dc706c2f292 ("um: take um_mmu.h to asm/mmu.h, clean asm/mmu_context.h a bit")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/clnt.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/um/include/asm/mmu.h           | 2 --
+ arch/um/include/shared/skas/mm_id.h | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index f4d32cf2cd16a..d3c917c0c8d59 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -1056,6 +1056,7 @@ struct rpc_clnt *rpc_bind_new_program(struct rpc_clnt *old,
- 		.authflavor	= old->cl_auth->au_flavor,
- 		.cred		= old->cl_cred,
- 		.stats		= old->cl_stats,
-+		.timeout	= old->cl_timeout,
- 	};
- 	struct rpc_clnt *clnt;
- 	int err;
+diff --git a/arch/um/include/asm/mmu.h b/arch/um/include/asm/mmu.h
+index 5b072aba5b658..a7cb380c0b5c0 100644
+--- a/arch/um/include/asm/mmu.h
++++ b/arch/um/include/asm/mmu.h
+@@ -15,8 +15,6 @@ typedef struct mm_context {
+ 	struct page *stub_pages[2];
+ } mm_context_t;
+ 
+-extern void __switch_mm(struct mm_id * mm_idp);
+-
+ /* Avoid tangled inclusion with asm/ldt.h */
+ extern long init_new_ldt(struct mm_context *to_mm, struct mm_context *from_mm);
+ extern void free_ldt(struct mm_context *mm);
+diff --git a/arch/um/include/shared/skas/mm_id.h b/arch/um/include/shared/skas/mm_id.h
+index e82e203f5f419..92dbf727e3842 100644
+--- a/arch/um/include/shared/skas/mm_id.h
++++ b/arch/um/include/shared/skas/mm_id.h
+@@ -15,4 +15,6 @@ struct mm_id {
+ 	int kill;
+ };
+ 
++void __switch_mm(struct mm_id *mm_idp);
++
+ #endif
 -- 
 2.43.0
 
