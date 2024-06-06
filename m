@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B558FED82
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 090518FE8FA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 355311C240B3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A3F91C2458B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96F01BBBD0;
-	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A945E1990BE;
+	Thu,  6 Jun 2024 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqNNkj1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YG4PMCD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EA61BB6AF;
-	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683D019751E;
+	Thu,  6 Jun 2024 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683494; cv=none; b=bgyAutrDis8HMDJgPDSd93rVaCkU9Qh3xLIRz/4x4ZIH5b9l4arYh20b8x6JwRucayhNEymbN9WPdIuvWz2gqeE/5MuUF624anSpfRVZwCI4OMqpjtaB4GcF6A5PSIkB6/hDV51bU82EvzKyPmdLhy19izPXPmVhAJpbkcYX/vY=
+	t=1717682962; cv=none; b=fEv5o/sO3LgP079MYPnpX0CIVNC3ejldhvZ6S4D76OOgfiSt7ftYyBWrj0PB9yMNn+dPdwEhwZVWKtXpbATcvhXI6L3WgD2JqzSJwU825BD0ohsg9K2WpsF16D7mHsV1BR1zRmG8hGWg+sJI21LedCjY5mK19q0kKWWg+tuijGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683494; c=relaxed/simple;
-	bh=VSiHb8hGKXD1T4Az9TGQY4YlBBptCxDl8CWIY5Zf0rg=;
+	s=arc-20240116; t=1717682962; c=relaxed/simple;
+	bh=7O2248+SllAvOd8iZ0pJj8OJOZDjzxnbgJBy9860FtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkgdf1jXVlpzhO6ilKINTA4bv4bdD3qOvptyWhQuXhgOvOohMVAEyJUHGpp0i8stWulOjqKMpLZQnC9ARwii3IZ50vGQzvS4XB0wML9ELRLMvH+mBtLUCFjP3diyGVQeVn8yQaqTnMvGKozFM8izERk7N6mHNxqa9VzmumggkdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqNNkj1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8628EC2BD10;
-	Thu,  6 Jun 2024 14:18:14 +0000 (UTC)
+	 MIME-Version; b=gqHvUZGTeQn7zjc92w0nWkvdd75HjCsbrgvVMic815HXXQxGkvzdmIU5l3XLueig1DXcyKpGQ3PSwIjk9d5IGiWNoe3dqS/KrW7g29028GiDgIurk9nZFR4PfICM9WD6wrnRKnuttDiSG70vyWmN1rUi0WaDQZfCTXwm/bvNclE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YG4PMCD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DB7C32786;
+	Thu,  6 Jun 2024 14:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683494;
-	bh=VSiHb8hGKXD1T4Az9TGQY4YlBBptCxDl8CWIY5Zf0rg=;
+	s=korg; t=1717682962;
+	bh=7O2248+SllAvOd8iZ0pJj8OJOZDjzxnbgJBy9860FtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqNNkj1F6XKk6QurzSPKXsrQIMDSyH5w402yLh4vmURwLPSyEBqdpaP44PNuLoCB9
-	 ZWZKeN3DG2H2qVvNvoj66STuaH0efTwWQgjHm4ViNXdFlWKiLwKRfysbOsY3yTfb4/
-	 PTcAFyNYwbt+egM1AgVZjVqaf8mHXj7gXcnoWNeA=
+	b=YG4PMCD4amjM9UpBmA4dq0XL+NUFCX1OUdUVvnJWRhBdcOG9v8Kc9XEoVXewVJh9I
+	 lWAnUM46gwX9eeZuWtRvVsKldReezcDuucidnIoCRZQ30weX9JnjWPiv1tC3WQmgN1
+	 2y9WI5dzWOok1j5ue/VorGRt6bhggzy8Zph2+/EA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannah Peuckmann <hannah.peuckmann@canonical.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 437/744] riscv: dts: starfive: visionfive 2: Remove non-existing TDM hardware
+Subject: [PATCH 6.9 130/374] s390/ftrace: Use unwinder instead of __builtin_return_address()
 Date: Thu,  6 Jun 2024 16:01:49 +0200
-Message-ID: <20240606131746.495613556@linuxfoundation.org>
+Message-ID: <20240606131656.254449843@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannah Peuckmann <hannah.peuckmann@canonical.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit dcde4e97b122ac318aaa71e8bcd2857dc28a0d12 ]
+[ Upstream commit cae74ba8c295bc41bda749ef27a8f2b3ee957a41 ]
 
-This partially reverts
-commit e7c304c0346d ("riscv: dts: starfive: jh7110: add the node and pins configuration for tdm")
+Using __builtin_return_address(n) might return undefined values
+when used with values of n outside of the stack. This was noticed
+when __builtin_return_address() was called in ftrace on top level
+functions like the interrupt handlers.
 
-This added device tree nodes for TDM hardware that is not actually on the
-VisionFive 2 board, but connected on the 40pin header. Many different extension
-boards could be added on those pins, so this should be handled by overlays
-instead.
-This also conflicts with the I2S node which also attempts to grab GPIO 44:
+As this behaviour cannot be fixed, use the s390 stack unwinder and
+remove the ftrace compilation flags for unwind_bc.c and stacktrace.c
+to prevent the unwinding function polluting function traces.
 
-  starfive-jh7110-sys-pinctrl 13040000.pinctrl: pin GPIO44 already requested by 10090000.tdm; cannot claim for 120c0000.i2s
+Another advantage is that this also works with clang.
 
-Fixes: e7c304c0346d ("riscv: dts: starfive: jh7110: add the node and pins configuration for tdm")
-Signed-off-by: Hannah Peuckmann <hannah.peuckmann@canonical.com>
-Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Tested-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: ebd912ff9919 ("s390/stacktrace: Merge perf_callchain_user() and arch_stack_walk_user()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../jh7110-starfive-visionfive-2.dtsi         | 40 -------------------
- 1 file changed, 40 deletions(-)
+ arch/s390/include/asm/ftrace.h |  8 ++------
+ arch/s390/kernel/Makefile      |  2 ++
+ arch/s390/kernel/stacktrace.c  | 19 +++++++++++++++++++
+ 3 files changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-index 2c02358abd711..c9b212c0eaa8f 100644
---- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-@@ -440,40 +440,6 @@ GPOEN_ENABLE,
- 		};
- 	};
+diff --git a/arch/s390/include/asm/ftrace.h b/arch/s390/include/asm/ftrace.h
+index 621f23d5ae30a..77e479d44f1e3 100644
+--- a/arch/s390/include/asm/ftrace.h
++++ b/arch/s390/include/asm/ftrace.h
+@@ -8,12 +8,8 @@
  
--	tdm_pins: tdm-0 {
--		tx-pins {
--			pinmux = <GPIOMUX(44, GPOUT_SYS_TDM_TXD,
--					      GPOEN_ENABLE,
--					      GPI_NONE)>;
--			bias-pull-up;
--			drive-strength = <2>;
--			input-disable;
--			input-schmitt-disable;
--			slew-rate = <0>;
--		};
--
--		rx-pins {
--			pinmux = <GPIOMUX(61, GPOUT_HIGH,
--					      GPOEN_DISABLE,
--					      GPI_SYS_TDM_RXD)>;
--			input-enable;
--		};
--
--		sync-pins {
--			pinmux = <GPIOMUX(63, GPOUT_HIGH,
--					      GPOEN_DISABLE,
--					      GPI_SYS_TDM_SYNC)>;
--			input-enable;
--		};
--
--		pcmclk-pins {
--			pinmux = <GPIOMUX(38, GPOUT_HIGH,
--					      GPOEN_DISABLE,
--					      GPI_SYS_TDM_CLK)>;
--			input-enable;
--		};
--	};
--
- 	uart0_pins: uart0-0 {
- 		tx-pins {
- 			pinmux = <GPIOMUX(5, GPOUT_SYS_UART0_TX,
-@@ -499,12 +465,6 @@ GPOEN_DISABLE,
- 	};
- };
+ #ifndef __ASSEMBLY__
  
--&tdm {
--	pinctrl-names = "default";
--	pinctrl-0 = <&tdm_pins>;
--	status = "okay";
--};
--
- &uart0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0_pins>;
+-#ifdef CONFIG_CC_IS_CLANG
+-/* https://llvm.org/pr41424 */
+-#define ftrace_return_address(n) 0UL
+-#else
+-#define ftrace_return_address(n) __builtin_return_address(n)
+-#endif
++unsigned long return_address(unsigned int n);
++#define ftrace_return_address(n) return_address(n)
+ 
+ void ftrace_caller(void);
+ 
+diff --git a/arch/s390/kernel/Makefile b/arch/s390/kernel/Makefile
+index fa029d0dc28ff..db2d9ba5a86d2 100644
+--- a/arch/s390/kernel/Makefile
++++ b/arch/s390/kernel/Makefile
+@@ -11,6 +11,8 @@ CFLAGS_REMOVE_ftrace.o		= $(CC_FLAGS_FTRACE)
+ # Do not trace early setup code
+ CFLAGS_REMOVE_early.o		= $(CC_FLAGS_FTRACE)
+ CFLAGS_REMOVE_rethook.o		= $(CC_FLAGS_FTRACE)
++CFLAGS_REMOVE_stacktrace.o	= $(CC_FLAGS_FTRACE)
++CFLAGS_REMOVE_unwind_bc.o	= $(CC_FLAGS_FTRACE)
+ 
+ endif
+ 
+diff --git a/arch/s390/kernel/stacktrace.c b/arch/s390/kernel/stacktrace.c
+index 94f440e383031..7c294da45bf52 100644
+--- a/arch/s390/kernel/stacktrace.c
++++ b/arch/s390/kernel/stacktrace.c
+@@ -101,3 +101,22 @@ void arch_stack_walk_user(stack_trace_consume_fn consume_entry, void *cookie,
+ 	}
+ 	pagefault_enable();
+ }
++
++unsigned long return_address(unsigned int n)
++{
++	struct unwind_state state;
++	unsigned long addr;
++
++	/* Increment to skip current stack entry */
++	n++;
++
++	unwind_for_each_frame(&state, NULL, NULL, 0) {
++		addr = unwind_get_return_address(&state);
++		if (!addr)
++			break;
++		if (!n--)
++			return addr;
++	}
++	return 0;
++}
++EXPORT_SYMBOL_GPL(return_address);
 -- 
 2.43.0
 
