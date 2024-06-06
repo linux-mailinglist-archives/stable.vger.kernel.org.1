@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12408FEB44
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327F18FE8D9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 761F5B25D63
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84486B25118
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDD91A38EF;
-	Thu,  6 Jun 2024 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C501974E7;
+	Thu,  6 Jun 2024 14:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVrhu7PE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxgMXTtL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5421993A9;
-	Thu,  6 Jun 2024 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07A4196C7D;
+	Thu,  6 Jun 2024 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683230; cv=none; b=TrB4k5aRfhtx/1lecJ8q3hUwhZeel96K5WYV1XCfPN9jeM3SqJcU0uRDXOUwRoXucRQt3zzgyPji5PvfKP93BoG4Ps7ufJKGbQPOTuY9W5WNRg1a5vC++oGtddO8dugVRNON/ENQXAV06kV7Z9sLN7vkvqL02Ui+4OsVLilTByM=
+	t=1717682940; cv=none; b=svW6Hd/JftOlm5y8oa7oImvtkIFWG5DRKBF8sLwWHPXJyfUXgJvIpzzg5prj0jJJzkX6DtCjffDYK6gwZr1YqNxY9vEXF95HCLlzsU+q1g6cvqr9HWeyI7371iIxQIFmC89ZfePpsCZ7U1D65oSoTvBbckUutINx+5IVx6rodSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683230; c=relaxed/simple;
-	bh=Kc6bRUsVcgx/2A/Mvuq6KtW9aElTSebRWheINd+cPSc=;
+	s=arc-20240116; t=1717682940; c=relaxed/simple;
+	bh=lRKfhnIFhlvTBSQsObfPuONEnhnWjZP+hNfp8B6QUa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njsQuYoPls6EwNjXx6AlOGOi8BR9rqm0LRXCPwqSxyM9B5DE+RnaUlrwEe4pI/T+wSqzZwf/OA/Or6N0Q3MI+spsgEDIA63tgIbhW+iOQsm4d0fiVDxiya/vPE78MLnJGtOfzYSuFh7g6slbTQXMySgfYuVsB1HHQ1QY+7b/Qeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVrhu7PE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3B7C32781;
-	Thu,  6 Jun 2024 14:13:50 +0000 (UTC)
+	 MIME-Version; b=fvKwlq+6e9RvAq/pwT+eSWur5s5uF+XwWnwJIQV9W/AQpV2tfRTFC4sqrsW6puFK8pyN8hnEyIfbjxHANiJUpVBIXo+n9hD05cnX3K3BUWOzwa19v8D27OaR/Ii6IbOQMHmqpZFj6SXOcFG05eDrS02+ifnDjS+8zmfHnyoFvX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxgMXTtL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B662C2BD10;
+	Thu,  6 Jun 2024 14:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683230;
-	bh=Kc6bRUsVcgx/2A/Mvuq6KtW9aElTSebRWheINd+cPSc=;
+	s=korg; t=1717682940;
+	bh=lRKfhnIFhlvTBSQsObfPuONEnhnWjZP+hNfp8B6QUa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVrhu7PECIatwQCGqF+/klCY0r36bKijjBqIYjQ0nEXESaP+4cMGl8IZ15pPlt6bI
-	 0i9TDY8jz5lbcm07h+MsdC/LwDQxRWPv5W16L/VysroHpJdhPC0oVHAuNZP+HAyhjD
-	 fSTO3LxM64EHdRF8miP7uNXFjL/QOof6X19BwQuw=
+	b=qxgMXTtLxZh0ZuyDQHGWxYYkaLRoU5b5M//Da4zAWSbsmjXXhS0hDiiSQtWcliAsd
+	 09xWITC+IhJhtJU/SdML3WunxiGzCYI9wUT5nXtEInBY0x7ddn0XCI1aGOEXq+uJQV
+	 VRxjUvbsnwHIePgv+qlb1GVt7J3td0IccZngE96E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yabin Cui <yabinc@google.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/473] scsi: ufs: ufs-qcom: Clear qunipro_g4_sel for HW version major 5
+Subject: [PATCH 6.9 056/374] coresight: etm4x: Do not save/restore Data trace control registers
 Date: Thu,  6 Jun 2024 16:00:35 +0200
-Message-ID: <20240606131703.420499758@linuxfoundation.org>
+Message-ID: <20240606131653.713922521@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ Upstream commit 9c02aa24bf404a39ec509d9f50539056b9b128f7 ]
+[ Upstream commit 5eb3a0c2c52368cb9902e9a6ea04888e093c487d ]
 
-On SM8550, depending on the Qunipro, we can run with G5 or G4.  For now,
-when the major version is 5 or above, we go with G5.  Therefore, we need to
-specifically tell UFS HC that.
+ETM4x doesn't support Data trace on A class CPUs. As such do not access the
+Data trace control registers during CPU idle. This could cause problems for
+ETE. While at it, remove all references to the Data trace control registers.
 
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 823150ecf04f ("scsi: ufs: qcom: Perform read back after writing unipro mode")
+Fixes: f188b5e76aae ("coresight: etm4x: Save/restore state across CPU low power states")
+Reported-by: Yabin Cui <yabinc@google.com>
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Tested-by: Yabin Cui <yabinc@google.com>
+Link: https://lore.kernel.org/r/20240412142702.2882478-3-suzuki.poulose@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 8 ++++++--
- drivers/ufs/host/ufs-qcom.h | 6 +++++-
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ .../coresight/coresight-etm4x-core.c          |  6 ----
+ drivers/hwtracing/coresight/coresight-etm4x.h | 28 -------------------
+ 2 files changed, 34 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index a5d981d3dd6be..ce18c43937a22 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -226,6 +226,10 @@ static void ufs_qcom_select_unipro_mode(struct ufs_qcom_host *host)
- 	ufshcd_rmwl(host->hba, QUNIPRO_SEL,
- 		   ufs_qcom_cap_qunipro(host) ? QUNIPRO_SEL : 0,
- 		   REG_UFS_CFG1);
-+
-+	if (host->hw_ver.major == 0x05)
-+		ufshcd_rmwl(host->hba, QUNIPRO_G4_SEL, 0, REG_UFS_CFG0);
-+
- 	/* make sure above configuration is applied before we return */
- 	mb();
- }
-@@ -498,9 +502,9 @@ static int ufs_qcom_cfg_timers(struct ufs_hba *hba, u32 gear,
- 		mb();
- 	}
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index b9c6c544d7597..a9765d45a0ee8 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -1739,9 +1739,6 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 	state->trcvissctlr = etm4x_read32(csa, TRCVISSCTLR);
+ 	if (drvdata->nr_pe_cmp)
+ 		state->trcvipcssctlr = etm4x_read32(csa, TRCVIPCSSCTLR);
+-	state->trcvdctlr = etm4x_read32(csa, TRCVDCTLR);
+-	state->trcvdsacctlr = etm4x_read32(csa, TRCVDSACCTLR);
+-	state->trcvdarcctlr = etm4x_read32(csa, TRCVDARCCTLR);
  
--	if (update_link_startup_timer) {
-+	if (update_link_startup_timer && host->hw_ver.major != 0x5) {
- 		ufshcd_writel(hba, ((core_clk_rate / MSEC_PER_SEC) * 100),
--			      REG_UFS_PA_LINK_STARTUP_TIMER);
-+			      REG_UFS_CFG0);
- 		/*
- 		 * make sure that this configuration is applied before
- 		 * we return
-diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
-index 112e53efafe2b..24367cee0b3ff 100644
---- a/drivers/ufs/host/ufs-qcom.h
-+++ b/drivers/ufs/host/ufs-qcom.h
-@@ -38,7 +38,8 @@ enum {
- 	REG_UFS_PA_ERR_CODE                 = 0xCC,
- 	/* On older UFS revisions, this register is called "RETRY_TIMER_REG" */
- 	REG_UFS_PARAM0                      = 0xD0,
--	REG_UFS_PA_LINK_STARTUP_TIMER       = 0xD8,
-+	/* On older UFS revisions, this register is called "REG_UFS_PA_LINK_STARTUP_TIMER" */
-+	REG_UFS_CFG0                        = 0xD8,
- 	REG_UFS_CFG1                        = 0xDC,
- 	REG_UFS_CFG2                        = 0xE0,
- 	REG_UFS_HW_VERSION                  = 0xE4,
-@@ -76,6 +77,9 @@ enum {
- #define UFS_CNTLR_2_x_x_VEN_REGS_OFFSET(x)	(0x000 + x)
- #define UFS_CNTLR_3_x_x_VEN_REGS_OFFSET(x)	(0x400 + x)
+ 	for (i = 0; i < drvdata->nrseqstate - 1; i++)
+ 		state->trcseqevr[i] = etm4x_read32(csa, TRCSEQEVRn(i));
+@@ -1872,9 +1869,6 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
+ 	etm4x_relaxed_write32(csa, state->trcvissctlr, TRCVISSCTLR);
+ 	if (drvdata->nr_pe_cmp)
+ 		etm4x_relaxed_write32(csa, state->trcvipcssctlr, TRCVIPCSSCTLR);
+-	etm4x_relaxed_write32(csa, state->trcvdctlr, TRCVDCTLR);
+-	etm4x_relaxed_write32(csa, state->trcvdsacctlr, TRCVDSACCTLR);
+-	etm4x_relaxed_write32(csa, state->trcvdarcctlr, TRCVDARCCTLR);
  
-+/* bit definitions for REG_UFS_CFG0 register */
-+#define QUNIPRO_G4_SEL		BIT(5)
-+
- /* bit definitions for REG_UFS_CFG1 register */
- #define QUNIPRO_SEL		0x1
- #define UTP_DBG_RAMS_EN		0x20000
+ 	for (i = 0; i < drvdata->nrseqstate - 1; i++)
+ 		etm4x_relaxed_write32(csa, state->trcseqevr[i], TRCSEQEVRn(i));
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
+index 9ea678bc2e8e5..9e430f72bbd6f 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -43,9 +43,6 @@
+ #define TRCVIIECTLR			0x084
+ #define TRCVISSCTLR			0x088
+ #define TRCVIPCSSCTLR			0x08C
+-#define TRCVDCTLR			0x0A0
+-#define TRCVDSACCTLR			0x0A4
+-#define TRCVDARCCTLR			0x0A8
+ /* Derived resources registers */
+ #define TRCSEQEVRn(n)			(0x100 + (n * 4)) /* n = 0-2 */
+ #define TRCSEQRSTEVR			0x118
+@@ -90,9 +87,6 @@
+ /* Address Comparator registers n = 0-15 */
+ #define TRCACVRn(n)			(0x400 + (n * 8))
+ #define TRCACATRn(n)			(0x480 + (n * 8))
+-/* Data Value Comparator Value registers, n = 0-7 */
+-#define TRCDVCVRn(n)			(0x500 + (n * 16))
+-#define TRCDVCMRn(n)			(0x580 + (n * 16))
+ /* ContextID/Virtual ContextID comparators, n = 0-7 */
+ #define TRCCIDCVRn(n)			(0x600 + (n * 8))
+ #define TRCVMIDCVRn(n)			(0x640 + (n * 8))
+@@ -272,9 +266,6 @@
+ /* List of registers accessible via System instructions */
+ #define ETM4x_ONLY_SYSREG_LIST(op, val)		\
+ 	CASE_##op((val), TRCPROCSELR)		\
+-	CASE_##op((val), TRCVDCTLR)		\
+-	CASE_##op((val), TRCVDSACCTLR)		\
+-	CASE_##op((val), TRCVDARCCTLR)		\
+ 	CASE_##op((val), TRCOSLAR)
+ 
+ #define ETM_COMMON_SYSREG_LIST(op, val)		\
+@@ -422,22 +413,6 @@
+ 	CASE_##op((val), TRCACATRn(13))		\
+ 	CASE_##op((val), TRCACATRn(14))		\
+ 	CASE_##op((val), TRCACATRn(15))		\
+-	CASE_##op((val), TRCDVCVRn(0))		\
+-	CASE_##op((val), TRCDVCVRn(1))		\
+-	CASE_##op((val), TRCDVCVRn(2))		\
+-	CASE_##op((val), TRCDVCVRn(3))		\
+-	CASE_##op((val), TRCDVCVRn(4))		\
+-	CASE_##op((val), TRCDVCVRn(5))		\
+-	CASE_##op((val), TRCDVCVRn(6))		\
+-	CASE_##op((val), TRCDVCVRn(7))		\
+-	CASE_##op((val), TRCDVCMRn(0))		\
+-	CASE_##op((val), TRCDVCMRn(1))		\
+-	CASE_##op((val), TRCDVCMRn(2))		\
+-	CASE_##op((val), TRCDVCMRn(3))		\
+-	CASE_##op((val), TRCDVCMRn(4))		\
+-	CASE_##op((val), TRCDVCMRn(5))		\
+-	CASE_##op((val), TRCDVCMRn(6))		\
+-	CASE_##op((val), TRCDVCMRn(7))		\
+ 	CASE_##op((val), TRCCIDCVRn(0))		\
+ 	CASE_##op((val), TRCCIDCVRn(1))		\
+ 	CASE_##op((val), TRCCIDCVRn(2))		\
+@@ -907,9 +882,6 @@ struct etmv4_save_state {
+ 	u32	trcviiectlr;
+ 	u32	trcvissctlr;
+ 	u32	trcvipcssctlr;
+-	u32	trcvdctlr;
+-	u32	trcvdsacctlr;
+-	u32	trcvdarcctlr;
+ 
+ 	u32	trcseqevr[ETM_MAX_SEQ_STATES];
+ 	u32	trcseqrstevr;
 -- 
 2.43.0
 
