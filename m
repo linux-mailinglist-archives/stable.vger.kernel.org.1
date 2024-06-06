@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-48568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F6D8FE98C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677648FEE93
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5976828529D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3027B21642
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3294D19AD47;
-	Thu,  6 Jun 2024 14:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8215C1991D4;
+	Thu,  6 Jun 2024 14:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U48Eds4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/kT9lPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E575F19AD42;
-	Thu,  6 Jun 2024 14:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420DE1991D3;
+	Thu,  6 Jun 2024 14:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683038; cv=none; b=XS6DM0MItx9Y4Rh3ms1sba75beJsRuUX+J/l2JFHm/N04lUfXwPVy+ozpk04j6CX+c6gmmC3544k0e8I7fNgOAqHDPlWa2Vl4rxf+dTew1zeOchm+TdPAgGQfEpNSOZEZFgHMrThmv6jPRqwNNtqTS+TllOpj9TVtesqMAw6Y7I=
+	t=1717683676; cv=none; b=CeOvRyvc6EWSRFLzroL4y2NPSu5NesgXLcePkKsNw5E9Tat1BRMpmjd9XRqyvkCpcwl7rlo7ajEWOxPbeiwWJpW5RO0WQnMSGkJ9uTmDcexUE9uLe1bRxlG84uGsR9I1uPbsWe26WDeBUQQxXwNxcUC1xUc7dkkKgQ4hDQX8UeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683038; c=relaxed/simple;
-	bh=iOJc6w3dShWCfh3AdGchQ8rMmVQ2BV3JYyDKMVfjq9Y=;
+	s=arc-20240116; t=1717683676; c=relaxed/simple;
+	bh=5xuk3AF+v/sDmwUTLcVIEVs6zOSFSlt0w3Wx37ktrFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=crEDcmiWsJoy36XT1Y++eoeT+TiSveJAycX5o8ihQN+088azKqV6gZvT04G8zZEl7A+BLaT6uQ+743sfwRucuiaP+aQhpbP5Nw1fXNoHF7iKuu0WNNhZuo26U66iuuMlQfjetHa2QSKSHvdorCYVGjhZLqHQ9hwSXuGjlMnrBQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U48Eds4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD057C4AF66;
-	Thu,  6 Jun 2024 14:10:37 +0000 (UTC)
+	 MIME-Version; b=DGEsAMRNorDUhS3lBfevFre9ohDL2u6BSJMbr5iHAX4Jr/gdF0D3wg7ZwDaFFFU1SE5pv7oi0HKWTwtjjAELU2H70P2NLMKIEbcXtOxfQnHmzw2eOkmaUFukcAdXLgpBMVGIg+mLUl9BI/oROB5cqpANw03vVgloGWO8CAjmrg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/kT9lPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2226AC2BD10;
+	Thu,  6 Jun 2024 14:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683037;
-	bh=iOJc6w3dShWCfh3AdGchQ8rMmVQ2BV3JYyDKMVfjq9Y=;
+	s=korg; t=1717683676;
+	bh=5xuk3AF+v/sDmwUTLcVIEVs6zOSFSlt0w3Wx37ktrFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U48Eds4Q4uX7PNOHVitK/JT/iiDcnQI01wA+XeQUX22tLyBwZeYqa0TndaSfiEjT2
-	 uO7Nvop1bl+LRaxf4fNJlp2hRGCt5p3A4D/QD5DhP68hw7MgdDdyYrhrTUbo+qOFnh
-	 DjX00gdmqkZsK9fnZna9Z648MB0JkctAxHsb9vE4=
+	b=w/kT9lPNs6jKq+hBwQxvOYpkk27lbrTqPV7mQm1TgGDSQO5atdsYePxBL5CDPoJ6Y
+	 OAOoNekF7jlbjHjNtIt3bD0dAUuDY/k/5aIIdLdPuAItw2Z2HUsF+E6lki/H6g/PfR
+	 aoVFtLENT9+9uweSqESacPIg/CC5pT6qzaUIPH7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jeff Daly <jeffd@silicom-usa.com>,
-	kernel.org-fo5k2w@ycharbi.fr,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 266/374] Revert "ixgbe: Manual AN-37 for troublesome link partners for X550 SFI"
+Subject: [PATCH 6.6 573/744] drm/msm/dpu: Always flush the slave INTF on the CTL
 Date: Thu,  6 Jun 2024 16:04:05 +0200
-Message-ID: <20240606131700.810949117@linuxfoundation.org>
+Message-ID: <20240606131750.839379262@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,149 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit b35b1c0b4e166a427395deaf61e3140495dfcb89 ]
+[ Upstream commit 2b938c3ab0a69ec6ea587bbf6fc2aec3db4a8736 ]
 
-This reverts commit 565736048bd5f9888990569993c6b6bfdf6dcb6d.
+As we can clearly see in a downstream kernel [1], flushing the slave INTF
+is skipped /only if/ the PPSPLIT topology is active.
 
-According to the commit, it implements a manual AN-37 for some
-"troublesome" Juniper MX5 switches. This appears to be a workaround for a
-particular switch.
+However, when DPU was originally submitted to mainline PPSPLIT was no
+longer part of it (seems to have been ripped out before submission), but
+this clause was incorrectly ported from the original SDE driver.  Given
+that there is no support for PPSPLIT (currently), flushing the slave
+INTF should /never/ be skipped (as the `if (ppsplit && !master) goto
+skip;` clause downstream never becomes true).
 
-It has been reported that this causes a severe breakage for other switches,
-including a Cisco 3560CX-12PD-S.
+[1]: https://git.codelinaro.org/clo/la/platform/vendor/opensource/display-drivers/-/blob/display-kernel.lnx.5.4.r1-rel/msm/sde/sde_encoder_phys_cmd.c?ref_type=heads#L1131-1139
 
-The code appears to be a workaround for a specific switch which fails to
-link in SFI mode. It expects to see AN-37 auto negotiation in order to
-link. The Cisco switch is not expecting AN-37 auto negotiation. When the
-device starts the manual AN-37, the Cisco switch decides that the port is
-confused and stops attempting to link with it. This persists until a power
-cycle. A simple driver unload and reload does not resolve the issue, even
-if loading with a version of the driver which lacks this workaround.
-
-The authors of the workaround commit have not responded with
-clarifications, and the result of the workaround is complete failure to
-connect with other switches.
-
-This appears to be a case where the driver can either "correctly" link with
-the Juniper MX5 switch, at the cost of bricking the link with the Cisco
-switch, or it can behave properly for the Cisco switch, but fail to link
-with the Junipir MX5 switch. I do not know enough about the standards
-involved to clearly determine whether either switch is at fault or behaving
-incorrectly. Nor do I know whether there exists some alternative fix which
-corrects behavior with both switches.
-
-Revert the workaround for the Juniper switch.
-
-Fixes: 565736048bd5 ("ixgbe: Manual AN-37 for troublesome link partners for X550 SFI")
-Link: https://lore.kernel.org/netdev/cbe874db-9ac9-42b8-afa0-88ea910e1e99@intel.com/T/
-Link: https://forum.proxmox.com/threads/intel-x553-sfp-ixgbe-no-go-on-pve8.135129/#post-612291
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Jeff Daly <jeffd@silicom-usa.com>
-Cc: kernel.org-fo5k2w@ycharbi.fr
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240520-net-2024-05-20-revert-silicom-switch-workaround-v1-1-50f80f261c94@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/589901/
+Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-3-78ae3ee9a697@somainline.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |  3 -
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 56 +------------------
- 2 files changed, 3 insertions(+), 56 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-index ed440dd0c4f9f..84fb6b8de2a12 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-@@ -3676,9 +3676,7 @@ struct ixgbe_info {
- #define IXGBE_KRM_LINK_S1(P)		((P) ? 0x8200 : 0x4200)
- #define IXGBE_KRM_LINK_CTRL_1(P)	((P) ? 0x820C : 0x420C)
- #define IXGBE_KRM_AN_CNTL_1(P)		((P) ? 0x822C : 0x422C)
--#define IXGBE_KRM_AN_CNTL_4(P)		((P) ? 0x8238 : 0x4238)
- #define IXGBE_KRM_AN_CNTL_8(P)		((P) ? 0x8248 : 0x4248)
--#define IXGBE_KRM_PCS_KX_AN(P)		((P) ? 0x9918 : 0x5918)
- #define IXGBE_KRM_SGMII_CTRL(P)		((P) ? 0x82A0 : 0x42A0)
- #define IXGBE_KRM_LP_BASE_PAGE_HIGH(P)	((P) ? 0x836C : 0x436C)
- #define IXGBE_KRM_DSP_TXFFE_STATE_4(P)	((P) ? 0x8634 : 0x4634)
-@@ -3688,7 +3686,6 @@ struct ixgbe_info {
- #define IXGBE_KRM_PMD_FLX_MASK_ST20(P)	((P) ? 0x9054 : 0x5054)
- #define IXGBE_KRM_TX_COEFF_CTRL_1(P)	((P) ? 0x9520 : 0x5520)
- #define IXGBE_KRM_RX_ANA_CTL(P)		((P) ? 0x9A00 : 0x5A00)
--#define IXGBE_KRM_FLX_TMRS_CTRL_ST31(P)	((P) ? 0x9180 : 0x5180)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+index df88358e7037b..0f7c5deb5e52d 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+@@ -449,9 +449,6 @@ static void dpu_encoder_phys_cmd_enable_helper(
  
- #define IXGBE_KRM_PMD_FLX_MASK_ST20_SFI_10G_DA		~(0x3 << 20)
- #define IXGBE_KRM_PMD_FLX_MASK_ST20_SFI_10G_SR		BIT(20)
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-index 2decb0710b6e3..a5f6449344450 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-@@ -1722,59 +1722,9 @@ static int ixgbe_setup_sfi_x550a(struct ixgbe_hw *hw, ixgbe_link_speed *speed)
- 		return -EINVAL;
- 	}
+ 	_dpu_encoder_phys_cmd_pingpong_config(phys_enc);
  
--	(void)mac->ops.write_iosf_sb_reg(hw,
--			IXGBE_KRM_PMD_FLX_MASK_ST20(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, reg_val);
+-	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
+-		return;
 -
--	/* change mode enforcement rules to hybrid */
--	(void)mac->ops.read_iosf_sb_reg(hw,
--			IXGBE_KRM_FLX_TMRS_CTRL_ST31(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, &reg_val);
--	reg_val |= 0x0400;
--
--	(void)mac->ops.write_iosf_sb_reg(hw,
--			IXGBE_KRM_FLX_TMRS_CTRL_ST31(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, reg_val);
--
--	/* manually control the config */
--	(void)mac->ops.read_iosf_sb_reg(hw,
--			IXGBE_KRM_LINK_CTRL_1(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, &reg_val);
--	reg_val |= 0x20002240;
--
--	(void)mac->ops.write_iosf_sb_reg(hw,
--			IXGBE_KRM_LINK_CTRL_1(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, reg_val);
--
--	/* move the AN base page values */
--	(void)mac->ops.read_iosf_sb_reg(hw,
--			IXGBE_KRM_PCS_KX_AN(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, &reg_val);
--	reg_val |= 0x1;
--
--	(void)mac->ops.write_iosf_sb_reg(hw,
--			IXGBE_KRM_PCS_KX_AN(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, reg_val);
--
--	/* set the AN37 over CB mode */
--	(void)mac->ops.read_iosf_sb_reg(hw,
--			IXGBE_KRM_AN_CNTL_4(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, &reg_val);
--	reg_val |= 0x20000000;
--
--	(void)mac->ops.write_iosf_sb_reg(hw,
--			IXGBE_KRM_AN_CNTL_4(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, reg_val);
--
--	/* restart AN manually */
--	(void)mac->ops.read_iosf_sb_reg(hw,
--			IXGBE_KRM_LINK_CTRL_1(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, &reg_val);
--	reg_val |= IXGBE_KRM_LINK_CTRL_1_TETH_AN_RESTART;
--
--	(void)mac->ops.write_iosf_sb_reg(hw,
--			IXGBE_KRM_LINK_CTRL_1(hw->bus.lan_id),
--			IXGBE_SB_IOSF_TARGET_KR_PHY, reg_val);
-+	status = mac->ops.write_iosf_sb_reg(hw,
-+				IXGBE_KRM_PMD_FLX_MASK_ST20(hw->bus.lan_id),
-+				IXGBE_SB_IOSF_TARGET_KR_PHY, reg_val);
- 
- 	/* Toggle port SW reset by AN reset. */
- 	status = ixgbe_restart_an_internal_phy_x550em(hw);
+ 	ctl = phys_enc->hw_ctl;
+ 	ctl->ops.update_pending_flush_intf(ctl, phys_enc->hw_intf->idx);
+ }
 -- 
 2.43.0
 
