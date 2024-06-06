@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-49336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F5F8FECD7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D348FE8B5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D05028221E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C5301F233E2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9A11B3720;
-	Thu,  6 Jun 2024 14:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF0E196DA6;
+	Thu,  6 Jun 2024 14:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVg01Agc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNn98ErR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B55819FA9F;
-	Thu,  6 Jun 2024 14:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B65A196D9C;
+	Thu,  6 Jun 2024 14:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683416; cv=none; b=n0mRUJaz/S6kh1KZeOrMjB3ZoYow+M3LWGMPW3P00pv7em+FeAi5hDlmSr1Y3UbUa6CNu+8xCRuCxWaw7pLHDm3lNA5uKgJZwS/KsgpG7KJ3mo9ojjNo9fTm86HY4rZDIV/P/dWZEo4r+by6zWLvskgvAPpbqPJ3hslblXh8sck=
+	t=1717682926; cv=none; b=QYv0JliPVPXs8wJQc6zU/PJn7y2vg2wyd7kUl+h8Agjt1oQwKP82xsxf6OmzNHGqyeC6S6z5077BI5SrVbqY6t4pYKrO0pDEBco9/WS9b59Ja541c+oAjkcOFcWljGce9C+u4JXY8tdLLO2czU7miiiLtdtMpWMLc/bsmqyeoaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683416; c=relaxed/simple;
-	bh=8veSNe0CVLTdt9rThlzWDljWShHURCkaq3vpUonjbn8=;
+	s=arc-20240116; t=1717682926; c=relaxed/simple;
+	bh=6yXUm04UsXrtUOpXE6L8L/CPLeHdZRzpb5rcdwGYBro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0xaUSRvHtLLPdezrVH3t5O0/fpSikuwcOJ7h+zSW2YMe1c+6WBGCZofP+nnv9JaY/EXypl8X9qfdwYy9WHimB8IbqwPM+V78XsavfjyGrIKSg5Pf1zLhpB6I0RNzPBa1Ewdsfjq/nIhZ5ohi6N94ur0Qw5L7nN9YzmQG1HW3e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVg01Agc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EE7C2BD10;
-	Thu,  6 Jun 2024 14:16:55 +0000 (UTC)
+	 MIME-Version; b=MD3BD7d+3SBvZMm5h7M7+ZoxlClPm9EfGnRQBpBYBgy7NCBfyZXh3WbXFnZgwQdmI5pMFnncd8n6is92G+3IQFU2Cg3dtedoRW/F4dTW/3krRJrPKzb5C/cPj9yIimK/JfB4G33E/yY1issC0VP3kfqf+HZse93q/uem/j88S7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNn98ErR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C2BC32782;
+	Thu,  6 Jun 2024 14:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683416;
-	bh=8veSNe0CVLTdt9rThlzWDljWShHURCkaq3vpUonjbn8=;
+	s=korg; t=1717682926;
+	bh=6yXUm04UsXrtUOpXE6L8L/CPLeHdZRzpb5rcdwGYBro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVg01Agcr7kuFudSDE6VBkB3SpR69xqV5V7K8wrO2Vl0mQmm8G3ypp797sLVe9PtF
-	 vAszSZ69VOYl0ML/xy6mMPY/RGG6Tq53YkIZSauV4S9nHfJ34Tq3lVTomtIyKoB3ZC
-	 up+l2K5OWDVGBF17k+MO1DmCNJ/BP3zLFo6LjjAo=
+	b=wNn98ErReFiOYcxP+ezno2sYutUuTwof4wjrfqmk0zO044MOoAV13+ivGkiiRn6wG
+	 24QW1OIe7uKQYA8kZSRpfycbxXhdfuO4ZlmG64I4Jy7Nu3DH9SUZf1Hc8EGKif2t9D
+	 VVhPPStFGbIV475ligN4lfoHrWh/mRBzJ2fetrII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	James Clark <james.clark@arm.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Suzuki Poulouse <suzuki.poulose@arm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 359/744] x86/insn: Fix PUSH instruction in x86 instruction decoder opcode map
+Subject: [PATCH 6.9 052/374] perf test shell arm_coresight: Increase buffer size for Coresight basic tests
 Date: Thu,  6 Jun 2024 16:00:31 +0200
-Message-ID: <20240606131743.993327934@linuxfoundation.org>
+Message-ID: <20240606131653.574956459@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +73,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit 59162e0c11d7257cde15f907d19fefe26da66692 ]
+[ Upstream commit 10b6ee3b597b1b1b4dc390aaf9d589664af31df9 ]
 
-The x86 instruction decoder is used not only for decoding kernel
-instructions. It is also used by perf uprobes (user space probes) and by
-perf tools Intel Processor Trace decoding. Consequently, it needs to
-support instructions executed by user space also.
+These tests record in a mode that includes kernel trace but look for
+samples of a userspace process. This makes them sensitive to any kernel
+compilation options that increase the amount of time spent in the
+kernel. If the trace buffer is completely filled before userspace is
+reached then the test will fail. Double the buffer size to fix this.
 
-Opcode 0x68 PUSH instruction is currently defined as 64-bit operand size
-only i.e. (d64). That was based on Intel SDM Opcode Map. However that is
-contradicted by the Instruction Set Reference section for PUSH in the
-same manual.
+The other tests in the same file aren't sensitive to this for various
+reasons, for example the iterate devices test filters by userspace trace
+only. But in order to keep coverage of all the modes, increase the
+buffer size rather than filtering by userspace for the basic tests.
 
-Remove 64-bit operand size only annotation from opcode 0x68 PUSH
-instruction.
-
-Example:
-
-  $ cat pushw.s
-  .global  _start
-  .text
-  _start:
-          pushw   $0x1234
-          mov     $0x1,%eax   # system call number (sys_exit)
-          int     $0x80
-  $ as -o pushw.o pushw.s
-  $ ld -s -o pushw pushw.o
-  $ objdump -d pushw | tail -4
-  0000000000401000 <.text>:
-    401000:       66 68 34 12             pushw  $0x1234
-    401004:       b8 01 00 00 00          mov    $0x1,%eax
-    401009:       cd 80                   int    $0x80
-  $ perf record -e intel_pt//u ./pushw
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 0.014 MB perf.data ]
-
- Before:
-
-  $ perf script --insn-trace=disasm
-  Warning:
-  1 instruction trace errors
-           pushw   10349 [000] 10586.869237014:            401000 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           pushw $0x1234
-           pushw   10349 [000] 10586.869237014:            401006 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %al, (%rax)
-           pushw   10349 [000] 10586.869237014:            401008 [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb %cl, %ch
-           pushw   10349 [000] 10586.869237014:            40100a [unknown] (/home/ahunter/git/misc/rtit-tests/pushw)           addb $0x2e, (%rax)
-   instruction trace error type 1 time 10586.869237224 cpu 0 pid 10349 tid 10349 ip 0x40100d code 6: Trace doesn't match instruction
-
- After:
-
-  $ perf script --insn-trace=disasm
-             pushw   10349 [000] 10586.869237014:            401000 [unknown] (./pushw)           pushw $0x1234
-             pushw   10349 [000] 10586.869237014:            401004 [unknown] (./pushw)           movl $1, %eax
-
-Fixes: eb13296cfaf6 ("x86: Instruction decoder API")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240502105853.5338-3-adrian.hunter@intel.com
+Fixes: d1efa4a0a696e487 ("perf cs-etm: Add separate decode paths for timeless and per-thread modes")
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: James Clark <james.clark@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20240326113749.257250-1-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/x86-opcode-map.txt       | 2 +-
- tools/arch/x86/lib/x86-opcode-map.txt | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/tests/shell/test_arm_coresight.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index 5168ee0360b24..940913550ed83 100644
---- a/arch/x86/lib/x86-opcode-map.txt
-+++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -148,7 +148,7 @@ AVXcode:
- 65: SEG=GS (Prefix)
- 66: Operand-Size (Prefix)
- 67: Address-Size (Prefix)
--68: PUSH Iz (d64)
-+68: PUSH Iz
- 69: IMUL Gv,Ev,Iz
- 6a: PUSH Ib (d64)
- 6b: IMUL Gv,Ev,Ib
-diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index 5168ee0360b24..940913550ed83 100644
---- a/tools/arch/x86/lib/x86-opcode-map.txt
-+++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -148,7 +148,7 @@ AVXcode:
- 65: SEG=GS (Prefix)
- 66: Operand-Size (Prefix)
- 67: Address-Size (Prefix)
--68: PUSH Iz (d64)
-+68: PUSH Iz
- 69: IMUL Gv,Ev,Iz
- 6a: PUSH Ib (d64)
- 6b: IMUL Gv,Ev,Ib
+diff --git a/tools/perf/tests/shell/test_arm_coresight.sh b/tools/perf/tests/shell/test_arm_coresight.sh
+index 65dd852071250..3302ea0b96723 100755
+--- a/tools/perf/tests/shell/test_arm_coresight.sh
++++ b/tools/perf/tests/shell/test_arm_coresight.sh
+@@ -188,7 +188,7 @@ arm_cs_etm_snapshot_test() {
+ 
+ arm_cs_etm_basic_test() {
+ 	echo "Recording trace with '$*'"
+-	perf record -o ${perfdata} "$@" -- ls > /dev/null 2>&1
++	perf record -o ${perfdata} "$@" -m,8M -- ls > /dev/null 2>&1
+ 
+ 	perf_script_branch_samples ls &&
+ 	perf_report_branch_samples ls &&
 -- 
 2.43.0
 
