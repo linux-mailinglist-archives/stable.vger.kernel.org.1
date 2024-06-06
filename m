@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-49054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD178FEBAB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848E28FEBAD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E35461C23AD2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 733211C23AD2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E1C1ABCA6;
-	Thu,  6 Jun 2024 14:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9341F1ABCA7;
+	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLVUL8hq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nj3Hzd7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4614B197A8F;
-	Thu,  6 Jun 2024 14:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521F5197A8F;
+	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683279; cv=none; b=WYvcRXsFELfdShw5COWFkyBllDTY0tjUF04MzUUfP3TsKhQfTC0bK96m79KaEzMVaOIjcPTQIUWJqKVdwoJsE7YIAi53L7cqB6St1IoEvcP6i0W5+SmbAQP6Y/UTEgNtwrpjr3u2VvTMYbgwTRDV/ZCadRqKIXAqE8QooAoGvjM=
+	t=1717683280; cv=none; b=PPqOGUXyZmzDbhakwb2ZN4YTy7xo1nLP0mUQbpIS23DUQeWfT8NgGqlVk3pRzbe7igsqOF9twvfdHu9W4aWZp6J6/ggkV+322+hnVCydrwtDa21Q5GmDiatSpQyUebPixByWJ8SvZ1ty6JygwoApPytpKwEX/3juGNp5rkMlfnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683279; c=relaxed/simple;
-	bh=/Vmpp4NsZgYAiriYCj4X+9R47M5ikhOW4KLcFH9KMo0=;
+	s=arc-20240116; t=1717683280; c=relaxed/simple;
+	bh=6xwQcj3nwCcFNSIIc6UAQE2vyS7x1LmjUqQa4savqUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fQoGe6Iq6ctT11XnkZ9Z49ic0Mr4vexoiGbahvtvel6G84XynrfUw/xtxjuYrt6VPRJfawUqfGVh9h/t94rh5o1ZUhpbQnjRhRXOpRLT/DsSUqHEeRuM/3TP3T+A3KfHs24rqMkDIPtq3ewahjR44o31r19hWbuV6xgoPiFIbUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLVUL8hq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209E0C32781;
-	Thu,  6 Jun 2024 14:14:39 +0000 (UTC)
+	 MIME-Version; b=LnTsRG3Ky/v7qTTqpmR5ZZbGkV3Faz2wDyJdf1QliKiuzHbWPVfAoImDtk11qEsRuSDuW2DMLXnFT/el86tBfnHGdicXnNDcaQYtmWq2DRphGgHvWXCHxvOwJpRgCfUBH6CdM+3RyOTHO6IQ640ep/J1LPZ+KJYoXnmtCwE8l2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nj3Hzd7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DABC2BD10;
+	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683279;
-	bh=/Vmpp4NsZgYAiriYCj4X+9R47M5ikhOW4KLcFH9KMo0=;
+	s=korg; t=1717683280;
+	bh=6xwQcj3nwCcFNSIIc6UAQE2vyS7x1LmjUqQa4savqUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLVUL8hqo7Cecr4yR97NztvFZ0QMwAr6FCmuM3HptMUy70C2P0YkeQuhuW4eOT/hb
-	 xHqjFK0C7y9k6VJIRY1wMS499uY7ZWbgQJyawkG4D4RVhZxlOz4pJtTB3VsiPxuaU4
-	 KHTllwYb5Im4nwDFKVDrWm3C6lFT4c0FaW8v9lRI=
+	b=Nj3Hzd7WtxDIdrBgXaoyD0VhIIFeJfYCjWolPps6JggMCtiqFbtW8vBhX93qS7pvw
+	 gnSEheV5m01yNymL1P30X19kukJIBZsk3oWfotSJhtm0V3iHIukcHREaaPhWWsEu42
+	 KgrxmqBJ9uGiL2+dEvg3ML41uavycefH6DU/OXeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Valentin Obst <kernel@valentinobst.de>,
 	John Hubbard <jhubbard@nvidia.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/744] selftests/resctrl: fix clang build failure: use LOCAL_HDRS
-Date: Thu,  6 Jun 2024 15:58:13 +0200
-Message-ID: <20240606131739.480727414@linuxfoundation.org>
+Subject: [PATCH 6.6 222/744] selftests: default to host arch for LLVM builds
+Date: Thu,  6 Jun 2024 15:58:14 +0200
+Message-ID: <20240606131739.514794674@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -62,62 +62,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Valentin Obst <kernel@valentinobst.de>
 
-[ Upstream commit d8171aa4ca72f1a67bf3c14c59441d63c1d2585f ]
+[ Upstream commit d4e6fbd245c48b272cc591d1c5e7c07aedd7f071 ]
 
-First of all, in order to build with clang at all, one must first apply
-Valentin Obst's build fix for LLVM [1]. Once that is done, then when
-building with clang, via:
+Align the behavior for gcc and clang builds by interpreting unset
+`ARCH` and `CROSS_COMPILE` variables in `LLVM` builds as a sign that the
+user wants to build for the host architecture.
 
-    make LLVM=1 -C tools/testing/selftests
+This patch preserves the properties that setting the `ARCH` variable to an
+unknown value will trigger an error that complains about insufficient
+information, and that a set `CROSS_COMPILE` variable will override the
+target triple that is determined based on presence/absence of `ARCH`.
 
-...the following error occurs:
+When compiling with clang, i.e., `LLVM` is set, an unset `ARCH` variable in
+combination with an unset `CROSS_COMPILE` variable, i.e., compiling for
+the host architecture, leads to compilation failures since `lib.mk` can
+not determine the clang target triple. In this case, the following error
+message is displayed for each subsystem that does not set `ARCH` in its
+own Makefile before including `lib.mk` (lines wrapped at 75 chrs):
 
-   clang: error: cannot specify -o when generating multiple output files
+  make[1]: Entering directory '/mnt/build/linux/tools/testing/selftests/
+   sysctl'
+  ../lib.mk:33: *** Specify CROSS_COMPILE or add '--target=' option to
+   lib.mk.  Stop.
+  make[1]: Leaving directory '/mnt/build/linux/tools/testing/selftests/
+   sysctl'
 
-This is because clang, unlike gcc, won't accept invocations of this
-form:
+In the same scenario a gcc build would default to the host architecture,
+i.e., it would use plain `gcc`.
 
-    clang file1.c header2.h
-
-Fix this by using selftests/lib.mk facilities for tracking local header
-file dependencies: add them to LOCAL_HDRS, leaving only the .c files to
-be passed to the compiler.
-
-[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
-
-Fixes: 8e289f454289 ("selftests/resctrl: Add resctrl.h into build deps")
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Fixes: 795285ef2425 ("selftests: Fix clang cross compilation")
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Valentin Obst <kernel@valentinobst.de>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/lib.mk | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
-index 2deac2031de9e..021863f86053a 100644
---- a/tools/testing/selftests/resctrl/Makefile
-+++ b/tools/testing/selftests/resctrl/Makefile
-@@ -5,6 +5,8 @@ CFLAGS += $(KHDR_INCLUDES)
+diff --git a/tools/testing/selftests/lib.mk b/tools/testing/selftests/lib.mk
+index aa646e0661f36..a8f0442a36bca 100644
+--- a/tools/testing/selftests/lib.mk
++++ b/tools/testing/selftests/lib.mk
+@@ -7,6 +7,8 @@ else ifneq ($(filter -%,$(LLVM)),)
+ LLVM_SUFFIX := $(LLVM)
+ endif
  
- TEST_GEN_PROGS := resctrl_tests
- 
-+LOCAL_HDRS += $(wildcard *.h)
++CLANG := $(LLVM_PREFIX)clang$(LLVM_SUFFIX)
 +
- include ../lib.mk
+ CLANG_TARGET_FLAGS_arm          := arm-linux-gnueabi
+ CLANG_TARGET_FLAGS_arm64        := aarch64-linux-gnu
+ CLANG_TARGET_FLAGS_hexagon      := hexagon-linux-musl
+@@ -18,7 +20,13 @@ CLANG_TARGET_FLAGS_riscv        := riscv64-linux-gnu
+ CLANG_TARGET_FLAGS_s390         := s390x-linux-gnu
+ CLANG_TARGET_FLAGS_x86          := x86_64-linux-gnu
+ CLANG_TARGET_FLAGS_x86_64       := x86_64-linux-gnu
+-CLANG_TARGET_FLAGS              := $(CLANG_TARGET_FLAGS_$(ARCH))
++
++# Default to host architecture if ARCH is not explicitly given.
++ifeq ($(ARCH),)
++CLANG_TARGET_FLAGS := $(shell $(CLANG) -print-target-triple)
++else
++CLANG_TARGET_FLAGS := $(CLANG_TARGET_FLAGS_$(ARCH))
++endif
  
--$(OUTPUT)/resctrl_tests: $(wildcard *.[ch])
-+$(OUTPUT)/resctrl_tests: $(wildcard *.c)
+ ifeq ($(CROSS_COMPILE),)
+ ifeq ($(CLANG_TARGET_FLAGS),)
+@@ -30,7 +38,7 @@ else
+ CLANG_FLAGS     += --target=$(notdir $(CROSS_COMPILE:%-=%))
+ endif # CROSS_COMPILE
+ 
+-CC := $(LLVM_PREFIX)clang$(LLVM_SUFFIX) $(CLANG_FLAGS) -fintegrated-as
++CC := $(CLANG) $(CLANG_FLAGS) -fintegrated-as
+ else
+ CC := $(CROSS_COMPILE)gcc
+ endif # LLVM
 -- 
 2.43.0
 
