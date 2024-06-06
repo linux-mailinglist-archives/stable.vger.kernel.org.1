@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-49899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 380578FEF4F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855AB8FEF24
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F3021C21D89
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7EC6B23CBF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97891A01B1;
-	Thu,  6 Jun 2024 14:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CD01C9EB9;
+	Thu,  6 Jun 2024 14:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wd/ERUm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUo3Z8mI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EBF1CBE8A;
-	Thu,  6 Jun 2024 14:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E711A2555;
+	Thu,  6 Jun 2024 14:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683766; cv=none; b=YRDjSt6etczzNIH++8Hs0LV0uP/WjP6vjxG5eWs/c1W+Np9HKoZA8fRP9/0OJnQUp905ADQRd8ZU/vBctP0s/aAkYl3hbD6K1SRqTymMJOkIVteOPwu1rWLzto7pNG4cUj+p0oxlT9gZaxW4jPhP1R8GfBBE7CQKWhKiD5Z9JUA=
+	t=1717683743; cv=none; b=ukMUSfrtC7CG2NGoXInQNJ+ioeLnCwmXq0RrZF4n+RcLRItKr04dJyB+9Zo4wDHwyB/Nr7qPuR6rWzMI/c6+qtSzY0gCXBcY4eZ3eFpJz5UIALJ+Fr0BJ1h/0TRgeHP3bODYAccLbATTPMEs82BTxgt9elh5q1P7YVGJEcTkil4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683766; c=relaxed/simple;
-	bh=NGK+BqprE4pSM0QERSSILtLSb2/SF+imAwXBFCBVS9I=;
+	s=arc-20240116; t=1717683743; c=relaxed/simple;
+	bh=62A/bK/xFjg4DoZ5by2xXlprivm27oRxMvv6D1C7pg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VxNUSkHBLYzxLpK9wNkU2VBce7yMABho/kANzhnZ66Gcm2rLMQ49+nG4SLwEarKs69vuMofB2o+GzSN29HjlqSfl84GHj+SvoW/1y2g0YqOppOCIs/Mn4vE8MPDmK14PGy2hR3IGdplG6DokrZibkf4EeDt65Er9kNAuh56Dyqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wd/ERUm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CC4C2BD10;
-	Thu,  6 Jun 2024 14:22:46 +0000 (UTC)
+	 MIME-Version; b=VjJ2aSFu1yO7HL9lGb8e4rfK1MtitvHmyC19ahopGXaRmGUQ6JlkGTX2zXo7VXczKKrsHNBAg91j5syVUMvbgznUwBnaEgce/pprIDp/A7KgmfL9+A1FAWmnfRgpFhFNUrg28ZR03ZALQ4NkcmjTDMXjyqDZQ2Nwk6cFvg/NoZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUo3Z8mI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019BEC2BD10;
+	Thu,  6 Jun 2024 14:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683766;
-	bh=NGK+BqprE4pSM0QERSSILtLSb2/SF+imAwXBFCBVS9I=;
+	s=korg; t=1717683743;
+	bh=62A/bK/xFjg4DoZ5by2xXlprivm27oRxMvv6D1C7pg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wd/ERUm0Zl6/4GGhks9ycDlIIfPKGlqg1l8dQ9Nr2Pu+MDjnW01EAIvswRjbFDBpP
-	 2wfYntHZsR+tEhJwDYzK5LY4hDcyPVqIfN0ot4Ej83+I9OA9WJ8u1zZ0WOGdlP7JfP
-	 JJgQo2s3g3k2MN6yowd1fTsGcknyrFYmrjFPLEu8=
+	b=vUo3Z8mI/8bLUpPgZ6Qb2Fw0J0bjdEyAR2yrvaoRjiiVe8Rv8BvwqqJP+Pcsb6gt+
+	 Qiw09otGsjh8FqCZEdFOJ+xITXnY/XdNVG6bugTaj1IIFI7gUrARUxUWew2TJzdtD9
+	 YrP21STWAwZJi+bNnxPhZuq1rsD2nB2La8OCHCKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 697/744] af_unix: Annotate data-race around unix_sk(sk)->addr.
-Date: Thu,  6 Jun 2024 16:06:09 +0200
-Message-ID: <20240606131754.841475359@linuxfoundation.org>
+Subject: [PATCH 6.6 698/744] af_unix: Read sk->sk_hash under bindlock during bind().
+Date: Thu,  6 Jun 2024 16:06:10 +0200
+Message-ID: <20240606131754.872245647@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,115 +69,128 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 97e1db06c7bb948da10ba85acad8030b56886593 ]
+[ Upstream commit 51d1b25a720982324871338b1a36b197ec9bd6f0 ]
 
-Once unix_sk(sk)->addr is assigned under net->unx.table.locks and
-unix_sk(sk)->bindlock, *(unix_sk(sk)->addr) and unix_sk(sk)->path are
-fully set up, and unix_sk(sk)->addr is never changed.
+syzkaller reported data-race of sk->sk_hash in unix_autobind() [0],
+and the same ones exist in unix_bind_bsd() and unix_bind_abstract().
 
-unix_getname() and unix_copy_addr() access the two fields locklessly,
-and commit ae3b564179bf ("missing barriers in some of unix_sock ->addr
-and ->path accesses") added smp_store_release() and smp_load_acquire()
-pairs.
+The three bind() functions prefetch sk->sk_hash locklessly and
+use it later after validating that unix_sk(sk)->addr is NULL under
+unix_sk(sk)->bindlock.
 
-In other functions, we still read unix_sk(sk)->addr locklessly to check
-if the socket is bound, and KCSAN complains about it.  [0]
+The prefetched sk->sk_hash is the hash value of unbound socket set
+in unix_create1() and does not change until bind() completes.
 
-Given these functions have no dependency for *(unix_sk(sk)->addr) and
-unix_sk(sk)->path, READ_ONCE() is enough to annotate the data-race.
+There could be a chance that sk->sk_hash changes after the lockless
+read.  However, in such a case, non-NULL unix_sk(sk)->addr is visible
+under unix_sk(sk)->bindlock, and bind() returns -EINVAL without using
+the prefetched value.
 
-Note that it is safe to access unix_sk(sk)->addr locklessly if the socket
-is found in the hash table.  For example, the lockless read of otheru->addr
-in unix_stream_connect() is safe.
-
-Note also that newu->addr there is of the child socket that is still not
-accessible from userspace, and smp_store_release() publishes the address
-in case the socket is accept()ed and unix_getname() / unix_copy_addr()
-is called.
+The KCSAN splat is false-positive, but let's silence it by reading
+sk->sk_hash under unix_sk(sk)->bindlock.
 
 [0]:
-BUG: KCSAN: data-race in unix_bind / unix_listen
+BUG: KCSAN: data-race in unix_autobind / unix_autobind
 
-write (marked) to 0xffff88805f8d1840 of 8 bytes by task 13723 on cpu 0:
- __unix_set_addr_hash net/unix/af_unix.c:329 [inline]
- unix_bind_bsd net/unix/af_unix.c:1241 [inline]
- unix_bind+0x881/0x1000 net/unix/af_unix.c:1319
- __sys_bind+0x194/0x1e0 net/socket.c:1847
- __do_sys_bind net/socket.c:1858 [inline]
- __se_sys_bind net/socket.c:1856 [inline]
- __x64_sys_bind+0x40/0x50 net/socket.c:1856
+write to 0xffff888034a9fb88 of 4 bytes by task 4468 on cpu 0:
+ __unix_set_addr_hash net/unix/af_unix.c:331 [inline]
+ unix_autobind+0x47a/0x7d0 net/unix/af_unix.c:1185
+ unix_dgram_connect+0x7e3/0x890 net/unix/af_unix.c:1373
+ __sys_connect_file+0xd7/0xe0 net/socket.c:2048
+ __sys_connect+0x114/0x140 net/socket.c:2065
+ __do_sys_connect net/socket.c:2075 [inline]
+ __se_sys_connect net/socket.c:2072 [inline]
+ __x64_sys_connect+0x40/0x50 net/socket.c:2072
  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
  do_syscall_64+0x4f/0x110 arch/x86/entry/common.c:83
  entry_SYSCALL_64_after_hwframe+0x46/0x4e
 
-read to 0xffff88805f8d1840 of 8 bytes by task 13724 on cpu 1:
- unix_listen+0x72/0x180 net/unix/af_unix.c:734
- __sys_listen+0xdc/0x160 net/socket.c:1881
- __do_sys_listen net/socket.c:1890 [inline]
- __se_sys_listen net/socket.c:1888 [inline]
- __x64_sys_listen+0x2e/0x40 net/socket.c:1888
+read to 0xffff888034a9fb88 of 4 bytes by task 4465 on cpu 1:
+ unix_autobind+0x28/0x7d0 net/unix/af_unix.c:1134
+ unix_dgram_connect+0x7e3/0x890 net/unix/af_unix.c:1373
+ __sys_connect_file+0xd7/0xe0 net/socket.c:2048
+ __sys_connect+0x114/0x140 net/socket.c:2065
+ __do_sys_connect net/socket.c:2075 [inline]
+ __se_sys_connect net/socket.c:2072 [inline]
+ __x64_sys_connect+0x40/0x50 net/socket.c:2072
  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
  do_syscall_64+0x4f/0x110 arch/x86/entry/common.c:83
  entry_SYSCALL_64_after_hwframe+0x46/0x4e
 
-value changed: 0x0000000000000000 -> 0xffff88807b5b1b40
+value changed: 0x000000e4 -> 0x000001e3
 
 Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 13724 Comm: syz-executor.4 Not tainted 6.8.0-12822-gcd51db110a7e #12
+CPU: 1 PID: 4465 Comm: syz-executor.0 Not tainted 6.8.0-12822-gcd51db110a7e #12
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: afd20b9290e1 ("af_unix: Replace the big lock with small locks.")
 Reported-by: syzkaller <syzkaller@googlegroups.com>
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240522154002.77857-1-kuniyu@amazon.com
+Link: https://lore.kernel.org/r/20240522154218.78088-1-kuniyu@amazon.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/unix/af_unix.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index a4c41906faec1..df6bddca08f89 100644
+index df6bddca08f89..d01314dc86ecb 100644
 --- a/net/unix/af_unix.c
 +++ b/net/unix/af_unix.c
-@@ -732,7 +732,7 @@ static int unix_listen(struct socket *sock, int backlog)
- 	if (sock->type != SOCK_STREAM && sock->type != SOCK_SEQPACKET)
- 		goto out;	/* Only stream/seqpacket sockets accept */
- 	err = -EINVAL;
--	if (!u->addr)
-+	if (!READ_ONCE(u->addr))
- 		goto out;	/* No listens on an unbound socket */
- 	unix_state_lock(sk);
- 	if (sk->sk_state != TCP_CLOSE && sk->sk_state != TCP_LISTEN)
-@@ -1379,7 +1379,7 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
+@@ -1145,8 +1145,8 @@ static struct sock *unix_find_other(struct net *net,
  
- 		if ((test_bit(SOCK_PASSCRED, &sock->flags) ||
- 		     test_bit(SOCK_PASSPIDFD, &sock->flags)) &&
--		    !unix_sk(sk)->addr) {
-+		    !READ_ONCE(unix_sk(sk)->addr)) {
- 			err = unix_autobind(sk);
- 			if (err)
- 				goto out;
-@@ -1487,7 +1487,8 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 		goto out;
+ static int unix_autobind(struct sock *sk)
+ {
+-	unsigned int new_hash, old_hash = sk->sk_hash;
+ 	struct unix_sock *u = unix_sk(sk);
++	unsigned int new_hash, old_hash;
+ 	struct net *net = sock_net(sk);
+ 	struct unix_address *addr;
+ 	u32 lastnum, ordernum;
+@@ -1169,6 +1169,7 @@ static int unix_autobind(struct sock *sk)
+ 	addr->name->sun_family = AF_UNIX;
+ 	refcount_set(&addr->refcnt, 1);
  
- 	if ((test_bit(SOCK_PASSCRED, &sock->flags) ||
--	     test_bit(SOCK_PASSPIDFD, &sock->flags)) && !u->addr) {
-+	     test_bit(SOCK_PASSPIDFD, &sock->flags)) &&
-+	    !READ_ONCE(u->addr)) {
- 		err = unix_autobind(sk);
- 		if (err)
- 			goto out;
-@@ -1927,7 +1928,8 @@ static int unix_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
++	old_hash = sk->sk_hash;
+ 	ordernum = get_random_u32();
+ 	lastnum = ordernum & 0xFFFFF;
+ retry:
+@@ -1209,8 +1210,8 @@ static int unix_bind_bsd(struct sock *sk, struct sockaddr_un *sunaddr,
+ {
+ 	umode_t mode = S_IFSOCK |
+ 	       (SOCK_INODE(sk->sk_socket)->i_mode & ~current_umask());
+-	unsigned int new_hash, old_hash = sk->sk_hash;
+ 	struct unix_sock *u = unix_sk(sk);
++	unsigned int new_hash, old_hash;
+ 	struct net *net = sock_net(sk);
+ 	struct mnt_idmap *idmap;
+ 	struct unix_address *addr;
+@@ -1248,6 +1249,7 @@ static int unix_bind_bsd(struct sock *sk, struct sockaddr_un *sunaddr,
+ 	if (u->addr)
+ 		goto out_unlock;
+ 
++	old_hash = sk->sk_hash;
+ 	new_hash = unix_bsd_hash(d_backing_inode(dentry));
+ 	unix_table_double_lock(net, old_hash, new_hash);
+ 	u->path.mnt = mntget(parent.mnt);
+@@ -1275,8 +1277,8 @@ static int unix_bind_bsd(struct sock *sk, struct sockaddr_un *sunaddr,
+ static int unix_bind_abstract(struct sock *sk, struct sockaddr_un *sunaddr,
+ 			      int addr_len)
+ {
+-	unsigned int new_hash, old_hash = sk->sk_hash;
+ 	struct unix_sock *u = unix_sk(sk);
++	unsigned int new_hash, old_hash;
+ 	struct net *net = sock_net(sk);
+ 	struct unix_address *addr;
+ 	int err;
+@@ -1294,6 +1296,7 @@ static int unix_bind_abstract(struct sock *sk, struct sockaddr_un *sunaddr,
+ 		goto out_mutex;
  	}
  
- 	if ((test_bit(SOCK_PASSCRED, &sock->flags) ||
--	     test_bit(SOCK_PASSPIDFD, &sock->flags)) && !u->addr) {
-+	     test_bit(SOCK_PASSPIDFD, &sock->flags)) &&
-+	    !READ_ONCE(u->addr)) {
- 		err = unix_autobind(sk);
- 		if (err)
- 			goto out;
++	old_hash = sk->sk_hash;
+ 	new_hash = unix_abstract_hash(addr->name, addr->len, sk->sk_type);
+ 	unix_table_double_lock(net, old_hash, new_hash);
+ 
 -- 
 2.43.0
 
