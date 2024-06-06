@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E1F8FECCB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E508FEB2B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1A641C25287
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F9F28A738
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFC61B29C9;
-	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C6E197A6A;
+	Thu,  6 Jun 2024 14:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN0DTlgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2uCIyU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC1D1B29C8;
-	Thu,  6 Jun 2024 14:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E75199396;
+	Thu,  6 Jun 2024 14:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683409; cv=none; b=PYg9682S10g8DNpfKm6STVLQLyhl2Wgtaf2EG4lrY0nFHsvYunx8WA+9pX8azndft/FMpTae713lep6fsRanW4u8KSWwcDFPGSPVQCitYnuU0u+BnI/lAhrzyW2jGe2TsbBwF4UDM9oxtR4cJ34wzPEvQz+5qMMVtQrOsuJq9BI=
+	t=1717683219; cv=none; b=SBg1v+aaxZxrWGX2OXn0IF2zhPoDa74kXf3EXmBEVp1HQbzCztNYtqsTaf3semqjvOAjnz3zyuDwnbfow9NHxsep8Z6Jb5JI06rQja+2IjIwEZODD11pjSJVJqvAcmWGrKnELWNf47PR9gn8yYB3yHXTZMrAJKaRDdDO11yNu14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683409; c=relaxed/simple;
-	bh=RBFgsTkCHG5pmLjZNRlFzSgUhnU2cJYyPsurb5lBnRU=;
+	s=arc-20240116; t=1717683219; c=relaxed/simple;
+	bh=Ww3CIt8ehR9OHqu49/6SVH2cHBfjfXYfUPvaTuGH0oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDWqVmmIbWyMqidnFN8UbETf4zPkZ6zVofNc1tUSSkcyCegPmLKjlkdXzaxyns+uA+SQElTlHwVV4Vc9/Hr8WjKHFmLZnIiiB5YBEL131pFgoPT4RNA5Phd9hoYYBgkLk8OBOm1TB2w772oS8ndqf1KzDcXrQ14cYhPBkxx1qYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN0DTlgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC09C2BD10;
-	Thu,  6 Jun 2024 14:16:49 +0000 (UTC)
+	 MIME-Version; b=DpOrTgxR9+jnUtCMX5RI/1zQxmSP+UrZjQct/vI025TLgkmSOU9zC5y85vn4pdgGUtGOZAK0N5Sy2iXJnxMhOckEwTZoPjEzZ5/LABDVnhjT9IlCEkwkwXDjRmopVuBBsgfDJYibxKCH34W71siQw61WhosvZqm/EmEoWDX79ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2uCIyU+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F23DC2BD10;
+	Thu,  6 Jun 2024 14:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683409;
-	bh=RBFgsTkCHG5pmLjZNRlFzSgUhnU2cJYyPsurb5lBnRU=;
+	s=korg; t=1717683219;
+	bh=Ww3CIt8ehR9OHqu49/6SVH2cHBfjfXYfUPvaTuGH0oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vN0DTlgbzuTfVUjcfu6HhBDBxMTCpfoyCOw7PrdY3TUlONPdIf16BX5blNGLDUfGt
-	 +IbO21R+oB5nF57BUbU+9bPtrilm62CgCP5HLzq+22taT7xVRN+nQ9BoCkdYpbrqLN
-	 L+soWp/a/Z348wZOcPzSkxZNNB01RQqs0kpkZfx4=
+	b=c2uCIyU+hCqWh7BkbkES3ALwQPaj2REAe/VGYwfKR7sxEY9WfAhBLFRTLYwXSVcYG
+	 U2Ma85az9jlSMNf6d/IU0Kdw11WdtJuNcgihmWEqzvCMyZt+8KxhmRpD1tn1Vkzc8H
+	 I9HfUqoFgjnDx5oI896eKuH3/sPCrPYTHOmzb4Q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 353/744] clk: renesas: r9a07g043: Add clock and reset entry for PLIC
+Subject: [PATCH 6.1 096/473] ACPI: Fix Generic Initiator Affinity _OSC bit
 Date: Thu,  6 Jun 2024 16:00:25 +0200
-Message-ID: <20240606131743.798178130@linuxfoundation.org>
+Message-ID: <20240606131703.075066957@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 44019387fce230beda35b83da3a2c9fc5787704e ]
+[ Upstream commit d0d4f1474e36b195eaad477373127ae621334c01 ]
 
-Add the missing clock and reset entry for PLIC. Also add
-R9A07G043_NCEPLIC_ACLK to the critical clocks list.
+The ACPI spec says bit 17 should be used to indicate support
+for Generic Initiator Affinity Structure in SRAT, but we currently
+set bit 13 ("Interrupt ResourceSource support").
 
-Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240403200952.633084-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fix this by actually setting bit 17 when evaluating _OSC.
+
+Fixes: 01aabca2fd54 ("ACPI: Let ACPI know we support Generic Initiator Affinity Structures")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a07g043-cpg.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/acpi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
-index 1a7a6d60aca44..6c6bc79b2e9ce 100644
---- a/drivers/clk/renesas/r9a07g043-cpg.c
-+++ b/drivers/clk/renesas/r9a07g043-cpg.c
-@@ -250,6 +250,10 @@ static struct rzg2l_mod_clk r9a07g043_mod_clks[] = {
- 				0x5a8, 1),
- 	DEF_MOD("tsu_pclk",	R9A07G043_TSU_PCLK, R9A07G043_CLK_TSU,
- 				0x5ac, 0),
-+#ifdef CONFIG_RISCV
-+	DEF_MOD("nceplic_aclk",	R9A07G043_NCEPLIC_ACLK, R9A07G043_CLK_P1,
-+				0x608, 0),
-+#endif
- };
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 3015235d65e31..e4e7b2cfe72af 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -582,8 +582,8 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
+ #define OSC_SB_PCLPI_SUPPORT			0x00000080
+ #define OSC_SB_OSLPI_SUPPORT			0x00000100
+ #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
+-#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
+ #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
++#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00020000
+ #define OSC_SB_NATIVE_USB4_SUPPORT		0x00040000
+ #define OSC_SB_PRM_SUPPORT			0x00200000
  
- static struct rzg2l_reset r9a07g043_resets[] = {
-@@ -303,6 +307,10 @@ static struct rzg2l_reset r9a07g043_resets[] = {
- 	DEF_RST(R9A07G043_ADC_PRESETN, 0x8a8, 0),
- 	DEF_RST(R9A07G043_ADC_ADRST_N, 0x8a8, 1),
- 	DEF_RST(R9A07G043_TSU_PRESETN, 0x8ac, 0),
-+#ifdef CONFIG_RISCV
-+	DEF_RST(R9A07G043_NCEPLIC_ARESETN, 0x908, 0),
-+#endif
-+
- };
- 
- static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
-@@ -312,6 +320,7 @@ static const unsigned int r9a07g043_crit_mod_clks[] __initconst = {
- #endif
- #ifdef CONFIG_RISCV
- 	MOD_CLK_BASE + R9A07G043_IAX45_CLK,
-+	MOD_CLK_BASE + R9A07G043_NCEPLIC_ACLK,
- #endif
- 	MOD_CLK_BASE + R9A07G043_DMAC_ACLK,
- };
 -- 
 2.43.0
 
