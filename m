@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-48335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4A28FE890
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF1C18FEB11
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231A31C242A1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C01201C26242
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1186E1974EF;
-	Thu,  6 Jun 2024 14:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB001A2C33;
+	Thu,  6 Jun 2024 14:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwvQ30g/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itfynmR+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38B2196DBF;
-	Thu,  6 Jun 2024 14:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA1119924F;
+	Thu,  6 Jun 2024 14:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682908; cv=none; b=qF0SrPZt7utE6FWAP8nUdv8KotfloZBR4MLvRjECPsMwLHfaK7j8DqgMZUxhWu73TTj1P3eGMDTV9hH2J1VtZk5Nhjp9KcUF8xbEODHdFJS82ZYuLwHkaKHwG3AqSAPRrbDYCNeQAGTVFgErWkd++Cl7K3IPu1zdc4car9eHrAg=
+	t=1717683207; cv=none; b=XaCujQ55qDvKzgiDsbOyoMIEXjaTIcQp48gCDAbKIIPXSKRboR11BxUyWx35wAB5Yn8jLRwkH6g1P5Yy+W9ScCCXpjlE5ixaIgNnZW9P+kg3J/g5+ZIGLKfn1Pcu4BNcY1Y2v0gOxhiN964g5fxu06GyVNN7TgCMURaBHt9bNcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682908; c=relaxed/simple;
-	bh=2AUWF9UElftPgnWR46nl5qC4XQNQ1BtYgVu7l6T4DVE=;
+	s=arc-20240116; t=1717683207; c=relaxed/simple;
+	bh=ptJgIJiTSdwXcVvVQcRArzc04QZXFsrqnQdH5spL9NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPIfdYHlxXjYJrdV+lQURgNIsM+sOBYnymoaDHhxowKFWjRuplHZqYThgDR64X9RaW2nNL2S/kPAfcD9vs6Ghvh8P3ZVzNslGPO0QntMWiMovU9SPCRbT6AuPD8FUpi3wpmKTId1VwjCGUW89+nQwHySq71KuAerlcLUnd1ih4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwvQ30g/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9CDC4AF07;
-	Thu,  6 Jun 2024 14:08:28 +0000 (UTC)
+	 MIME-Version; b=TChvTHezKFCBmyxUUjnz3qvldan8qcsFQBxckuviGQTDEze8IbnD3q9Ls1a6lNAcbeB+EBDbINIU42ssOZ/YsUMnJP42rmrJGiXUjtGBVSsWB7wNFs4ZCHo3jtFT44Adj5s3fpZSp9wXpYPkJEdUIhINwW7uLolar16PRnOns28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itfynmR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5DEC2BD10;
+	Thu,  6 Jun 2024 14:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682908;
-	bh=2AUWF9UElftPgnWR46nl5qC4XQNQ1BtYgVu7l6T4DVE=;
+	s=korg; t=1717683207;
+	bh=ptJgIJiTSdwXcVvVQcRArzc04QZXFsrqnQdH5spL9NQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwvQ30g/+K+FhImbIAtYR+IUtgqk8Qg5b7qGRQUJ3OzvIpdMHY0Olfz/9NNAiVzl2
-	 MPDpK+3LKiWaY8626QE1pVucC6BAmLEAL7NgzRfOMuJdY2Id7rfRBPpRnwJiyiVdbq
-	 RdgIY4LDSGUVHxHpVz3hFZVj+JjsX+fC/vfEx5dA=
+	b=itfynmR+pDdHqnvgkQkr/VEAXMYK9jBPDsLp2tNSOEf3eJqh+7XTmaCm3PkpclsnL
+	 qWd9FVSlbpqgYm4koJTo+JQL7W4srcSbsViNFK5C6FUHtK4AbAMnUUaUnhhq2gHaiW
+	 YhnnsKZUtbSnmN+ReooIcTsXAKHFnepN3arqqtiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Spoorthy S <spoorts2@in.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 035/374] perf tests: Apply attributes to all events in object code reading test
+Subject: [PATCH 6.1 085/473] null_blk: Fix missing mutex_destroy() at module removal
 Date: Thu,  6 Jun 2024 16:00:14 +0200
-Message-ID: <20240606131653.004764935@linuxfoundation.org>
+Message-ID: <20240606131702.715595282@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,71 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit 2dade41a533f337447b945239b87ff31a8857890 ]
+[ Upstream commit 07d1b99825f40f9c0d93e6b99d79a08d0717bac1 ]
 
-PERF_PMU_CAP_EXTENDED_HW_TYPE results in multiple events being opened on
-heterogeneous systems. Currently this test only sets its required
-attributes on the first event. Not disabling enable_on_exec on the other
-events causes the test to fail because the forked objdump processes are
-sampled. No tracking event is opened so Perf only knows about its own
-mappings causing the objdump samples to give the following error:
+When a mutex lock is not used any more, the function mutex_destroy
+should be called to mark the mutex lock uninitialized.
 
-  $ perf test -vvv "object code reading"
-
-  Reading object code for memory address: 0xffff9aaa55ec
-  thread__find_map failed
-  ---- end(-1) ----
-  24: Object code reading              : FAILED!
-
-Fixes: 251aa040244a3b17 ("perf parse-events: Wildcard most "numeric" events")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Spoorthy S <spoorts2@in.ibm.com>
-Link: https://lore.kernel.org/r/20240410103458.813656-3-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240425171635.4227-1-yanjun.zhu@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/code-reading.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/block/null_blk/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-reading.c
-index 7a3a7bbbec714..29d2f3ee4e10f 100644
---- a/tools/perf/tests/code-reading.c
-+++ b/tools/perf/tests/code-reading.c
-@@ -637,11 +637,11 @@ static int do_test_code_reading(bool try_kcore)
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 959952e8ede38..b7a26a12dc656 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -2298,6 +2298,8 @@ static void __exit null_exit(void)
  
- 		evlist__config(evlist, &opts, NULL);
+ 	if (g_queue_mode == NULL_Q_MQ && shared_tags)
+ 		blk_mq_free_tag_set(&tag_set);
++
++	mutex_destroy(&lock);
+ }
  
--		evsel = evlist__first(evlist);
--
--		evsel->core.attr.comm = 1;
--		evsel->core.attr.disabled = 1;
--		evsel->core.attr.enable_on_exec = 0;
-+		evlist__for_each_entry(evlist, evsel) {
-+			evsel->core.attr.comm = 1;
-+			evsel->core.attr.disabled = 1;
-+			evsel->core.attr.enable_on_exec = 0;
-+		}
- 
- 		ret = evlist__open(evlist);
- 		if (ret < 0) {
+ module_init(null_init);
 -- 
 2.43.0
 
