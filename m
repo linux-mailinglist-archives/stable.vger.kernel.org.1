@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C923D8FE9CC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8A48FED94
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DD3D1F2706C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F5AE282BAB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1573519B5A2;
-	Thu,  6 Jun 2024 14:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4831BC07D;
+	Thu,  6 Jun 2024 14:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jteg06Ms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZUM8To4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96D719B59D;
-	Thu,  6 Jun 2024 14:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF66A1BC063;
+	Thu,  6 Jun 2024 14:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683066; cv=none; b=lzrY5OdoewUhr9kU4jvAOAT4YMY1K+aD+r50yhioumjsAjWFRBsTFz75qGlbGVR+8jxFzT9wpJ6LECmLwJCUcY/+MPeq3ZUNIKITWrx9HhJM/5zvJXf7XnGY+ViguYdyHv8DaTG6zk6igOG0g78tPUfXqNSDT99Zh/Q12UT5/dk=
+	t=1717683502; cv=none; b=m8gn5WiIlAI8NFdNbzETGqLL8N/2Ju9P9Y35xqKioZHWDl9/2dUUx03YIy+BG/fxj5uOYSQNNAKHJ21DJFdboDjCWc6b4X5OBok8O1sEzAszEeLDbhpLJUqslOkW3suDeknGl9vGEw87+hskSoxRkRVTHlWvwVWr3xCkOa4b1DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683066; c=relaxed/simple;
-	bh=Nclb+sSaf0Dt0vhxIvQnFO/vXeRXt3m2LkDtoTr4V0Y=;
+	s=arc-20240116; t=1717683502; c=relaxed/simple;
+	bh=dxKykkCqzGoQ87HvM1dIKDTygYFPHr0U059n7FSFv9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=po7Y1/pc1SgFH1OpSERTUE96a6iI/fB1IWoAny3FqytPWAgiqJEf9ospAR/n5EQ1rXnu2hvWl+sOodVH2kzTNKKYe/FTDeiyX2RzsVFExvaTM12e0++XzDgYeykHQuyZgFqezGKpAlKj8mpmW57c8GC1MmR+6dh+y7iyiuK/Ua4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jteg06Ms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF31C32786;
-	Thu,  6 Jun 2024 14:11:06 +0000 (UTC)
+	 MIME-Version; b=C/uwSaQIoBeZoMmwAP7vC2M2QXld4IWpnKMkz3l/XoONWAi8Hk9ilIcKa4w2X+RKhMnZTWsRUGktDVTapZLrHsF4Bp7L0v8Zn+NueDYMHW1Nh/FcgKcEaSQ4eFwYBsXEoNkFOA2x1S6q4eiVQ1z++5JKnwThr3d5TbXbM5OB9yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZUM8To4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95912C32782;
+	Thu,  6 Jun 2024 14:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683066;
-	bh=Nclb+sSaf0Dt0vhxIvQnFO/vXeRXt3m2LkDtoTr4V0Y=;
+	s=korg; t=1717683502;
+	bh=dxKykkCqzGoQ87HvM1dIKDTygYFPHr0U059n7FSFv9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jteg06MsHy2fyjJ6CFWHV7yPESnO76KEZ10iIaC6MiZZdA3lTFzXNaLl/PIUM4zl7
-	 HroPOGqObO9/Wa3tsNUKIctOUojg5nW8oYxU3cLKkwNxLCqqDMGFImRXOWrR7F4oQh
-	 hs6wx/dFmrD0xMKbdHNLqs0V/TYmac2AEydFI0H8=
+	b=gZUM8To48MeSJofdFu9KHDxtCdK2QC4O+UhTU91CiqW4Iri1ZRl+mZX+WpkKD9O8X
+	 4OXNqogfMS9S5K6wpP195pZe09WeSsKHGNwXQIQAN7mqZAwFL7zWVjCa9kBANZfZsg
+	 qAJGOOJ9Tb1t6j5RFQ68G3sR1BPtfh/D7sprvXqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 324/374] selftests: mptcp: add ms units for tc-netem delay
+Subject: [PATCH 6.1 374/473] um: Add winch to winch_handlers before registering winch IRQ
 Date: Thu,  6 Jun 2024 16:05:03 +0200
-Message-ID: <20240606131702.721740457@linuxfoundation.org>
+Message-ID: <20240606131712.250905021@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 9109853a388b7b2b934f56f4ddb250d72e486555 ]
+[ Upstream commit a0fbbd36c156b9f7b2276871d499c9943dfe5101 ]
 
-'delay 1' in tc-netem is confusing, not sure if it's a delay of 1 second or
-1 millisecond. This patch explicitly adds millisecond units to make these
-commands clearer.
+Registering a winch IRQ is racy, an interrupt may occur before the winch is
+added to the winch_handlers list.
 
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 38af56e6668b ("selftests: mptcp: join: mark 'fail' tests as flaky")
+If that happens, register_winch_irq() adds to that list a winch that is
+scheduled to be (or has already been) freed, causing a panic later in
+winch_cleanup().
+
+Avoid the race by adding the winch to the winch_handlers list before
+registering the IRQ, and rolling back if um_request_irq() fails.
+
+Fixes: 42a359e31a0e ("uml: SIGIO support cleanup")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh   | 6 +++---
- tools/testing/selftests/net/mptcp/simult_flows.sh | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/um/drivers/line.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 908ef799b13a0..8d16f37cd67f8 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -125,8 +125,8 @@ init_shapers()
- {
- 	local i
- 	for i in $(seq 1 4); do
--		tc -n $ns1 qdisc add dev ns1eth$i root netem rate 20mbit delay 1
--		tc -n $ns2 qdisc add dev ns2eth$i root netem rate 20mbit delay 1
-+		tc -n $ns1 qdisc add dev ns1eth$i root netem rate 20mbit delay 1ms
-+		tc -n $ns2 qdisc add dev ns2eth$i root netem rate 20mbit delay 1ms
- 	done
- }
+diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
+index 02b0befd67632..95ad6b190d1d1 100644
+--- a/arch/um/drivers/line.c
++++ b/arch/um/drivers/line.c
+@@ -673,24 +673,26 @@ void register_winch_irq(int fd, int tty_fd, int pid, struct tty_port *port,
+ 		goto cleanup;
+ 	}
  
-@@ -3218,7 +3218,7 @@ fail_tests()
+-	*winch = ((struct winch) { .list  	= LIST_HEAD_INIT(winch->list),
+-				   .fd  	= fd,
++	*winch = ((struct winch) { .fd  	= fd,
+ 				   .tty_fd 	= tty_fd,
+ 				   .pid  	= pid,
+ 				   .port 	= port,
+ 				   .stack	= stack });
  
- 	# multiple subflows
- 	if reset_with_fail "MP_FAIL MP_RST" 2; then
--		tc -n $ns2 qdisc add dev ns2eth1 root netem rate 1mbit delay 5
-+		tc -n $ns2 qdisc add dev ns2eth1 root netem rate 1mbit delay 5ms
- 		pm_nl_set_limits $ns1 0 1
- 		pm_nl_set_limits $ns2 0 1
- 		pm_nl_add_endpoint $ns2 10.0.2.2 dev ns2eth2 flags subflow
-diff --git a/tools/testing/selftests/net/mptcp/simult_flows.sh b/tools/testing/selftests/net/mptcp/simult_flows.sh
-index dfdb7031c187a..7322e1e4e5db6 100755
---- a/tools/testing/selftests/net/mptcp/simult_flows.sh
-+++ b/tools/testing/selftests/net/mptcp/simult_flows.sh
-@@ -216,8 +216,8 @@ run_test()
- 	shift 4
- 	local msg=$*
++	spin_lock(&winch_handler_lock);
++	list_add(&winch->list, &winch_handlers);
++	spin_unlock(&winch_handler_lock);
++
+ 	if (um_request_irq(WINCH_IRQ, fd, IRQ_READ, winch_interrupt,
+ 			   IRQF_SHARED, "winch", winch) < 0) {
+ 		printk(KERN_ERR "register_winch_irq - failed to register "
+ 		       "IRQ\n");
++		spin_lock(&winch_handler_lock);
++		list_del(&winch->list);
++		spin_unlock(&winch_handler_lock);
+ 		goto out_free;
+ 	}
  
--	[ $delay1 -gt 0 ] && delay1="delay $delay1" || delay1=""
--	[ $delay2 -gt 0 ] && delay2="delay $delay2" || delay2=""
-+	[ $delay1 -gt 0 ] && delay1="delay ${delay1}ms" || delay1=""
-+	[ $delay2 -gt 0 ] && delay2="delay ${delay2}ms" || delay2=""
+-	spin_lock(&winch_handler_lock);
+-	list_add(&winch->list, &winch_handlers);
+-	spin_unlock(&winch_handler_lock);
+-
+ 	return;
  
- 	for dev in ns1eth1 ns1eth2; do
- 		tc -n $ns1 qdisc del dev $dev root >/dev/null 2>&1
+  out_free:
 -- 
 2.43.0
 
