@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-49474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA288FED65
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B918FEECC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B3E9B2596E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC6281F258A7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D5C1BA890;
-	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFBE1C7D7E;
+	Thu,  6 Jun 2024 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2BdBJYR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iL3fF42j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844791BA874;
-	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7DC1C7D6E;
+	Thu,  6 Jun 2024 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683483; cv=none; b=ntvxt/2xv7BrLPEyhVnUNhjkO+n5noGSowAV4rsG5SngdRyApwhmOkojQT9zoTYk5tJLB81ined4hrpRdOGr48GqCtlE0L6S5FOIHmUMuZksVdD+gW3vp17RekMKc7BtHX9flOfkQl68neghNCN0kxTBxy0qXNAPxSfQ8oDDIb0=
+	t=1717683702; cv=none; b=dqkL1W+2agNJqGOyQTIlNAuU2d2gEZ6ztRLsejX5xRl3BcSEJQ+qMSUfqYO/vrvDNrkwdBeyetPtLbXBEavT1yx/EXkq5iJjrXk063Ojbw/NZgEb4oo4BMemBcaeSgrqSNwRIWogWwSbYCQVZl/oUxdIxc84ZQYXHm3IFc7A6iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683483; c=relaxed/simple;
-	bh=SHKkdLz7bOqiN5cur+l/k2JOaQLbR8gi0M9Lx/xvqMA=;
+	s=arc-20240116; t=1717683702; c=relaxed/simple;
+	bh=a0ZgA15c9VkQ+JhXorJC/Emgzj+SsDtZ4K9XwM9r+rQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1eHx+EPI354CODqo40MV65Oy/gOgspBgTtw3EZrcmCDTcjbaJsTumQkvRolH3dyeMTIv/AzPlHLSHUEkW027CgIixG+RjroUkFXpn7ZEwuD5skXpte7cRRd6k4+F65aHvv9pQUTqw6oJa0APFnnP/VKeSqm2ObeWdrjrru0fOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2BdBJYR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6352BC32781;
-	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
+	 MIME-Version; b=AYrYwidWNDdc8gbjSKEiRX1YvpMk900DFXJg3+qEqRWmdgrxKCYZgOpgt1P7HhmCLBmm4EhOg8+joyoWloqpCZIihylUPkvAFIJeMaZQE385rwgLgk9IaJpfUlprt2DDTRGFlObBDOaYi2HxDmXNHL86jeMOe2eYKINFtnQGGNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iL3fF42j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC0BC2BD10;
+	Thu,  6 Jun 2024 14:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683483;
-	bh=SHKkdLz7bOqiN5cur+l/k2JOaQLbR8gi0M9Lx/xvqMA=;
+	s=korg; t=1717683702;
+	bh=a0ZgA15c9VkQ+JhXorJC/Emgzj+SsDtZ4K9XwM9r+rQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2BdBJYReSqlu2KaU8ZvclHcegZ8Dx0yefFa0r+iMu1psxi2nxhGUaUAetP20kJ0E
-	 TlFkZ2HfopEWe0Uz68OqCJE1NylBaw9oqXyUAJQIZCevv4KFU1djZml1x4KZBrV8bX
-	 jtEWgJOxxD70V9rd/j3W24hnZ8aOTax9xm07Y+mM=
+	b=iL3fF42jGDphFszBynt9LXThXs4f86BeNx0u8TvlJMb8kShbvTYIKGlkQwKT9HDLM
+	 hMaKiFwoQTmb/KjYAyvFg/SAzPQTnfI3j944J42cve1yZ7KPeqpGidzNM4J5rSRWIf
+	 sMp4uv30yNbdCeA4glKBtBtLRneTdpdbhZtwnYt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tejun Heo <tj@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Jay Shin <jaeshin@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 369/473] drm/msm/dpu: Always flush the slave INTF on the CTL
+Subject: [PATCH 6.6 626/744] blk-cgroup: fix list corruption from resetting io stat
 Date: Thu,  6 Jun 2024 16:04:58 +0200
-Message-ID: <20240606131712.096850693@linuxfoundation.org>
+Message-ID: <20240606131752.569619476@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +65,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 2b938c3ab0a69ec6ea587bbf6fc2aec3db4a8736 ]
+[ Upstream commit 6da6680632792709cecf2b006f2fe3ca7857e791 ]
 
-As we can clearly see in a downstream kernel [1], flushing the slave INTF
-is skipped /only if/ the PPSPLIT topology is active.
+Since commit 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()"),
+each iostat instance is added to blkcg percpu list, so blkcg_reset_stats()
+can't reset the stat instance by memset(), otherwise the llist may be
+corrupted.
 
-However, when DPU was originally submitted to mainline PPSPLIT was no
-longer part of it (seems to have been ripped out before submission), but
-this clause was incorrectly ported from the original SDE driver.  Given
-that there is no support for PPSPLIT (currently), flushing the slave
-INTF should /never/ be skipped (as the `if (ppsplit && !master) goto
-skip;` clause downstream never becomes true).
+Fix the issue by only resetting the counter part.
 
-[1]: https://git.codelinaro.org/clo/la/platform/vendor/opensource/display-drivers/-/blob/display-kernel.lnx.5.4.r1-rel/msm/sde/sde_encoder_phys_cmd.c?ref_type=heads#L1131-1139
-
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/589901/
-Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-3-78ae3ee9a697@somainline.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Jay Shin <jaeshin@redhat.com>
+Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/r/20240515013157.443672-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 ---
- 1 file changed, 3 deletions(-)
+ block/blk-cgroup.c | 58 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 35 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-index ae28b2b93e697..ce58d97818bcd 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-@@ -439,9 +439,6 @@ static void dpu_encoder_phys_cmd_enable_helper(
- 
- 	_dpu_encoder_phys_cmd_pingpong_config(phys_enc);
- 
--	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
--		return;
--
- 	ctl = phys_enc->hw_ctl;
- 	ctl->ops.update_pending_flush_intf(ctl, phys_enc->intf_idx);
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 4c49a70b46bd1..9359b57545d22 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -619,12 +619,45 @@ static void blkg_destroy_all(struct gendisk *disk)
+ 	spin_unlock_irq(&q->queue_lock);
  }
+ 
++static void blkg_iostat_set(struct blkg_iostat *dst, struct blkg_iostat *src)
++{
++	int i;
++
++	for (i = 0; i < BLKG_IOSTAT_NR; i++) {
++		dst->bytes[i] = src->bytes[i];
++		dst->ios[i] = src->ios[i];
++	}
++}
++
++static void __blkg_clear_stat(struct blkg_iostat_set *bis)
++{
++	struct blkg_iostat cur = {0};
++	unsigned long flags;
++
++	flags = u64_stats_update_begin_irqsave(&bis->sync);
++	blkg_iostat_set(&bis->cur, &cur);
++	blkg_iostat_set(&bis->last, &cur);
++	u64_stats_update_end_irqrestore(&bis->sync, flags);
++}
++
++static void blkg_clear_stat(struct blkcg_gq *blkg)
++{
++	int cpu;
++
++	for_each_possible_cpu(cpu) {
++		struct blkg_iostat_set *s = per_cpu_ptr(blkg->iostat_cpu, cpu);
++
++		__blkg_clear_stat(s);
++	}
++	__blkg_clear_stat(&blkg->iostat);
++}
++
+ static int blkcg_reset_stats(struct cgroup_subsys_state *css,
+ 			     struct cftype *cftype, u64 val)
+ {
+ 	struct blkcg *blkcg = css_to_blkcg(css);
+ 	struct blkcg_gq *blkg;
+-	int i, cpu;
++	int i;
+ 
+ 	mutex_lock(&blkcg_pol_mutex);
+ 	spin_lock_irq(&blkcg->lock);
+@@ -635,18 +668,7 @@ static int blkcg_reset_stats(struct cgroup_subsys_state *css,
+ 	 * anyway.  If you get hit by a race, retry.
+ 	 */
+ 	hlist_for_each_entry(blkg, &blkcg->blkg_list, blkcg_node) {
+-		for_each_possible_cpu(cpu) {
+-			struct blkg_iostat_set *bis =
+-				per_cpu_ptr(blkg->iostat_cpu, cpu);
+-			memset(bis, 0, sizeof(*bis));
+-
+-			/* Re-initialize the cleared blkg_iostat_set */
+-			u64_stats_init(&bis->sync);
+-			bis->blkg = blkg;
+-		}
+-		memset(&blkg->iostat, 0, sizeof(blkg->iostat));
+-		u64_stats_init(&blkg->iostat.sync);
+-
++		blkg_clear_stat(blkg);
+ 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 			struct blkcg_policy *pol = blkcg_policy[i];
+ 
+@@ -949,16 +971,6 @@ void blkg_conf_exit(struct blkg_conf_ctx *ctx)
+ }
+ EXPORT_SYMBOL_GPL(blkg_conf_exit);
+ 
+-static void blkg_iostat_set(struct blkg_iostat *dst, struct blkg_iostat *src)
+-{
+-	int i;
+-
+-	for (i = 0; i < BLKG_IOSTAT_NR; i++) {
+-		dst->bytes[i] = src->bytes[i];
+-		dst->ios[i] = src->ios[i];
+-	}
+-}
+-
+ static void blkg_iostat_add(struct blkg_iostat *dst, struct blkg_iostat *src)
+ {
+ 	int i;
 -- 
 2.43.0
 
