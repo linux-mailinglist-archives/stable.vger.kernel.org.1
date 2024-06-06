@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-48610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B756A8FE9BC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B158FED07
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52629B243B6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 779D11C244CE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BC819B3DC;
-	Thu,  6 Jun 2024 14:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EE01B3F37;
+	Thu,  6 Jun 2024 14:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzY1El9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtNA0cqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB28198A28;
-	Thu,  6 Jun 2024 14:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D391B3F39;
+	Thu,  6 Jun 2024 14:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683060; cv=none; b=Z/XU8i4VSZsZ70TVoy5r4TT75UR39E+ciXwjV2AZynbuZEYbM1A8Gxh6aK65Y4qjxXqZfq2x7LYX3NzoxvDmCXkzjFRcZ0MNRmVNh+9BHjOs4mSV0ocMTbp8N8RdLM1jRay5sYWwq3Hx2C8jaqz9un/lIflfvW3qNrcYYyj+8Hs=
+	t=1717683438; cv=none; b=KcxmBvAqcXMfuWOeumTfmpKDpABlF73Ewc+unvNd3XgcnKzYTFy/SgOMGlPmR/amX0dZLO0zcn9oAK06w74DEfFyel/ueKNl4UZQy263XD1u0ozAf0yelW8TX6RkyTwhEQRsgkGFKTM02nda6B2Z/GgShmVoDyxVUO8DY6uk3Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683060; c=relaxed/simple;
-	bh=1HzS0F++32WkuxtGHnJ4eSbKnChQ5TfnGNikQGwEdrU=;
+	s=arc-20240116; t=1717683438; c=relaxed/simple;
+	bh=qdbwYrKoUHSwhfvwAjsh12Z0e7bgUJ56+AubklIs4nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMrSCnEai1JURblJh2M8AxbBsbNBAXe/pG7X3IHQ6UBklfKlurYNo0u6cC0tMcnT4JYX3HfMFAN/H/0EnxYhAKSkFZlEPL/rhJvd+AmUGoP4/FC4Uf4aLq2cQoYiliJUl4tq75c1ivs8p5puDc1EO7xuc4kyiVdk3hGdCHgbEO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzY1El9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5F6C4AF07;
-	Thu,  6 Jun 2024 14:11:00 +0000 (UTC)
+	 MIME-Version; b=tC1mWoRcXLeU+RDEKEFPr1rJpoeYPP5M4+lGui4ekDC9ECRt2KzdwRxZyrwfdsABzpE6wIopcZ40SdMFusYbqQzfKTNGC22C/BuHf/cKwOUsaJuU3WLjkK/DLxGTYdY/w6GzzT8Wqcj87O0At0UUsyVqCopYHJwxYBlMtsBdZfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtNA0cqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91A3C4AF08;
+	Thu,  6 Jun 2024 14:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683060;
-	bh=1HzS0F++32WkuxtGHnJ4eSbKnChQ5TfnGNikQGwEdrU=;
+	s=korg; t=1717683438;
+	bh=qdbwYrKoUHSwhfvwAjsh12Z0e7bgUJ56+AubklIs4nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzY1El9b/+sJtCjwy69CmdNozIqpwCmWpNCRcDMQnGDpjTOcsiVr4OPEQEkjyFaU5
-	 z/IJb+6miLMv2zF8O066NiEGb5fey4R+8dcscZPiySoX3X74nXgL7QuxR4b5vF3Kba
-	 POXw1paFapgL2wooKWeWxA/Ct5LL+8/HI+ePeI+E=
+	b=xtNA0cqS+bBvHOSCsY9MvcpB4EW+oCygEiFouruNmM9YoTTX5ZnS43Ui8eLAcKicG
+	 H53bEmhhkH971BMnBilM613DLHNb4VpwG+zGoYNFiI0NXnKOgE/CNypR3yzUqICYIr
+	 RV1v5eo7/5G0+yDrc0aShOPVNB0raNnCVR1ieX9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 273/374] ice: Interpret .set_channels() input differently
+Subject: [PATCH 6.1 323/473] perf intel-pt: Fix unassigned instruction op (discovered by MemorySanitizer)
 Date: Thu,  6 Jun 2024 16:04:12 +0200
-Message-ID: <20240606131701.044142884@linuxfoundation.org>
+Message-ID: <20240606131710.608622204@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,91 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 05d6f442f31f901d27dbc64fd504a8ec7d5013de ]
+[ Upstream commit e101a05f79fd4ee3e89d2f3fb716493c33a33708 ]
 
-A bug occurs because a safety check guarding AF_XDP-related queues in
-ethnl_set_channels(), does not trigger. This happens, because kernel and
-ice driver interpret the ethtool command differently.
+MemorySanitizer discovered instances where the instruction op value was
+not assigned.:
 
-How the bug occurs:
-1. ethtool -l <IFNAME> -> combined: 40
-2. Attach AF_XDP to queue 30
-3. ethtool -L <IFNAME> rx 15 tx 15
-   combined number is not specified, so command becomes {rx_count = 15,
-   tx_count = 15, combined_count = 40}.
-4. ethnl_set_channels checks, if there are any AF_XDP of queues from the
-   new (combined_count + rx_count) to the old one, so from 55 to 40, check
-   does not trigger.
-5. ice interprets `rx 15 tx 15` as 15 combined channels and deletes the
-   queue that AF_XDP is attached to.
+  WARNING: MemorySanitizer: use-of-uninitialized-value
+    #0 0x5581c00a76b3 in intel_pt_sample_flags tools/perf/util/intel-pt.c:1527:17
+  Uninitialized value was stored to memory at
+    #0 0x5581c005ddf8 in intel_pt_walk_insn tools/perf/util/intel-pt-decoder/intel-pt-decoder.c:1256:25
 
-Interpret the command in a way that is more consistent with ethtool
-manual [0] (--show-channels and --set-channels).
+The op value is used to set branch flags for branch instructions
+encountered when walking the code, so fix by setting op to
+INTEL_PT_OP_OTHER in other cases.
 
-Considering that in the ice driver only the difference between RX and TX
-queues forms dedicated channels, change the correct way to set number of
-channels to:
-
-ethtool -L <IFNAME> combined 10 /* For symmetric queues */
-ethtool -L <IFNAME> combined 8 tx 2 rx 0 /* For asymmetric queues */
-
-[0] https://man7.org/linux/man-pages/man8/ethtool.8.html
-
-Fixes: 87324e747fde ("ice: Implement ethtool ops for channels")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4c761d805bb2d2ea ("perf intel-pt: Fix intel_pt_fup_event() assumptions about setting state type")
+Reported-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Closes: https://lore.kernel.org/linux-perf-users/20240320162619.1272015-1-irogers@google.com/
+Link: https://lore.kernel.org/r/20240326083223.10883-1-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ tools/perf/util/intel-pt-decoder/intel-pt-decoder.c | 2 ++
+ tools/perf/util/intel-pt.c                          | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 78b833b3e1d7e..62c8205fcebae 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3593,7 +3593,6 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
- 	struct ice_pf *pf = vsi->back;
- 	int new_rx = 0, new_tx = 0;
- 	bool locked = false;
--	u32 curr_combined;
- 	int ret = 0;
+diff --git a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
+index 7145c5890de02..178baa1e69493 100644
+--- a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
++++ b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
+@@ -1319,6 +1319,8 @@ static bool intel_pt_fup_event(struct intel_pt_decoder *decoder, bool no_tip)
+ 	bool ret = false;
  
- 	/* do not support changing channels in Safe Mode */
-@@ -3615,22 +3614,8 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
- 		return -EOPNOTSUPP;
- 	}
+ 	decoder->state.type &= ~INTEL_PT_BRANCH;
++	decoder->state.insn_op = INTEL_PT_OP_OTHER;
++	decoder->state.insn_len = 0;
  
--	curr_combined = ice_get_combined_cnt(vsi);
--
--	/* these checks are for cases where user didn't specify a particular
--	 * value on cmd line but we get non-zero value anyway via
--	 * get_channels(); look at ethtool.c in ethtool repository (the user
--	 * space part), particularly, do_schannels() routine
--	 */
--	if (ch->rx_count == vsi->num_rxq - curr_combined)
--		ch->rx_count = 0;
--	if (ch->tx_count == vsi->num_txq - curr_combined)
--		ch->tx_count = 0;
--	if (ch->combined_count == curr_combined)
--		ch->combined_count = 0;
--
--	if (!(ch->combined_count || (ch->rx_count && ch->tx_count))) {
--		netdev_err(dev, "Please specify at least 1 Rx and 1 Tx channel\n");
-+	if (ch->rx_count && ch->tx_count) {
-+		netdev_err(dev, "Dedicated RX or TX channels cannot be used simultaneously\n");
- 		return -EINVAL;
- 	}
+ 	if (decoder->set_fup_cfe_ip || decoder->set_fup_cfe) {
+ 		bool ip = decoder->set_fup_cfe_ip;
+diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
+index 6fb64c58b408b..bd09af447eb0d 100644
+--- a/tools/perf/util/intel-pt.c
++++ b/tools/perf/util/intel-pt.c
+@@ -755,6 +755,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
+ 	bool nr;
+ 
+ 	intel_pt_insn->length = 0;
++	intel_pt_insn->op = INTEL_PT_OP_OTHER;
+ 
+ 	if (to_ip && *ip == to_ip)
+ 		goto out_no_cache;
+@@ -876,6 +877,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
+ 
+ 			if (to_ip && *ip == to_ip) {
+ 				intel_pt_insn->length = 0;
++				intel_pt_insn->op = INTEL_PT_OP_OTHER;
+ 				goto out_no_cache;
+ 			}
  
 -- 
 2.43.0
