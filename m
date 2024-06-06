@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A5E8FE9BF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 839ED8FEEC5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8871C25CD9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 173B2287D58
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A3E198A28;
-	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F24C1C7D60;
+	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3gRkvgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwwDAG/S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40941198A31;
-	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF3A1A0DFD;
+	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683062; cv=none; b=CjetR1SPGvrGDf9oyD+Y1472/A2eyTl8k4Dmhd8avx4cdoxwysYICF72kjqzDzj09JCSC+ilB5VNkdtUebvAbkkAI9LRaDRzj5benVTFD8M5SB1+UIlYo2F+B3DudqpLb/Afgqcz5VLn98lUlWOZ/utnECJAXNByhQARiL4U1F4=
+	t=1717683699; cv=none; b=GDSUSXull3WlRTABoj/38lUWrNUUPLNAJSf9WLOWMYZMyfo3tkkMxeoylSVX2udvyv/rqKgj5SFgGkVSvDcCpTEk6JizXjRlOKUL+HY7ql3Y5Czc4/tiazPp3HNsM/WY34NSj7xoOxE28WNQkCf6PEHeTJteOhh8YEskjwLpmNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683062; c=relaxed/simple;
-	bh=KMLEbonCSLnKphYAz4JNRtjeRwf0BGrUJ8xrZ05rXfM=;
+	s=arc-20240116; t=1717683699; c=relaxed/simple;
+	bh=pi/mIJHCRrJCF8A8UWi1xdSP6LqG1rPpqlX2Ef4zAg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvUf/M4aotYtSx16Y+X0RNaMrAPiPbemQkkrcCfkgvFlohDSGj/Yx0y85OCcJl1JIc5oFHACg8GmCaHGVzMM9805EOTPAcmqUEVbdrxOZa7xJD44YoHLGtnguJIv0kxAGuYxoAoEvqSKxBF1dV+rqzaTz5VQHCTq+koYhWaorpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3gRkvgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDBDC2BD10;
-	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
+	 MIME-Version; b=o7OJZKlxUi16LbIw+ZK+YIFFUqk6UscSRLkED/quFHyn5+tdBVTCAjI6vCDPkE1uvsmOj4PyVPOjXflLVz9Jki8o1wIR2BMpGs09/oU3o/AIGVTG2PULHtWigmBnufpmrhJcJe+6xXVgsYvrDGy4DWhZgtJZmf8bZSe8TY88NwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwwDAG/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04576C2BD10;
+	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683062;
-	bh=KMLEbonCSLnKphYAz4JNRtjeRwf0BGrUJ8xrZ05rXfM=;
+	s=korg; t=1717683699;
+	bh=pi/mIJHCRrJCF8A8UWi1xdSP6LqG1rPpqlX2Ef4zAg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o3gRkvgS7wcQv0fVZblWxbVQuaKm2E2TVF0VSHoKDS1/l1eI5FpeuGCyyFgD8GALL
-	 4bvCizPY9SRgSgP344EIBpFuWXk/DmsXozm/W+lu7eQSzR90Yb+jFgcdsF7hgkW0wU
-	 76NTJY5J1XQOjgK7W0vtRHZ+f7l+iokpvAybDamE=
+	b=pwwDAG/S+74zE9eWimS2hYPV8o0U/V7fXBAsnwZXNUXw+mOZ9mFAi2gIYsNCmQvyh
+	 AZj0TxLWOTU4jH4w4RnJ4xaiVSIvT2BHgMllCagHTnjfF0+XesFKE+5Pjo/tXhLgeP
+	 POcAcD4YBMDAHAK9zAOAg6e+GfsuNPQqO/oOt4x4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 312/374] Octeontx2-pf: Free send queue buffers incase of leaf to inner
+Subject: [PATCH 6.6 619/744] ASoC: cs35l56: Fix to ensure ASP1 registers match cache
 Date: Thu,  6 Jun 2024 16:04:51 +0200
-Message-ID: <20240606131702.294169020@linuxfoundation.org>
+Message-ID: <20240606131752.353066760@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 1684842147677a1279bcff95f8adb6de9a656e30 ]
+[ Upstream commit 72a77d7631c6e392677c0134343cf5edcd3a4572 ]
 
-There are two type of classes. "Leaf classes" that are  the
-bottom of the class hierarchy. "Inner classes" that are neither
-the root class nor leaf classes. QoS rules can only specify leaf
-classes as targets for traffic.
+Add a dummy SUPPLY widget connected to the ASP that forces the
+chip registers to match the regmap cache when the ASP is
+powered-up.
 
-			 Root
-		        /  \
-		       /    \
-                      1      2
-                             /\
-                            /  \
-                           4    5
-               classes 1,4 and 5 are leaf classes.
-               class 2 is a inner class.
+On a SoundWire system the ASP is free for use as a chip-to-chip
+interconnect. This can be either for the firmware on multiple
+CS35L56 to share reference audio; or as a bridge to another
+device. If it is a firmware interconnect it is owned by the
+firmware and the Linux driver should avoid writing the registers.
+However. If it is a bridge then Linux may take over and handle
+it as a normal codec-to-codec link.
 
-When a leaf class made as inner, or vice versa, resources associated
-with send queue (send queue buffers and transmit schedulers) are not
-getting freed.
+CS35L56 is designed for SDCA and a generic SDCA driver would
+know nothing about these chip-specific registers. So if the
+ASP is being used on a SoundWire system the firmware sets up the
+ASP registers. This means that we can't assume the default
+state of the ASP registers. But we don't know the initial state
+that the firmware set them to until after the firmware has been
+downloaded and booted, which can take several seconds when
+downloading multiple amps.
 
-Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Link: https://lore.kernel.org/r/20240523073626.4114-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To avoid blocking probe() for several seconds waiting for the
+firmware, the silicon defaults are assumed. This allows the machine
+driver to setup the ASP configuration during probe() without being
+blocked. If the ASP is hooked up and used, the SUPPLY widget
+ensures that the chip registers match what was configured in the
+regmap cache.
+
+If the machine driver does not hook up the ASP, it is assumed that
+it won't call any functions to configure the ASP DAI. Therefore
+the regmap cache will be clean for these registers so a
+regcache_sync() will not overwrite the chip registers. If the
+DAI is not hooked up, the dummy SUPPLY widget will not be
+invoked so it will never force-overwrite the chip registers.
+
+Backport note:
+This won't apply cleanly to kernels older than v6.6.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
+Link: https://msgid.link/r/20240129162737.497-8-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: d344873c4cbd ("ALSA: hda: cs35l56: Fix lifetime of cs_dsp instance")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/sound/cs35l56.h           |  1 +
+ sound/soc/codecs/cs35l56-shared.c | 41 +++++++++++++++++++++++++++++++
+ sound/soc/codecs/cs35l56.c        | 21 ++++++++++++++++
+ 3 files changed, 63 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 1723e9912ae07..6cddb4da85b71 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -1407,7 +1407,10 @@ static int otx2_qos_leaf_to_inner(struct otx2_nic *pfvf, u16 classid,
- 	otx2_qos_read_txschq_cfg(pfvf, node, old_cfg);
+diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
+index 3950322bf3cbb..4e5f35dc042a1 100644
+--- a/include/sound/cs35l56.h
++++ b/include/sound/cs35l56.h
+@@ -273,6 +273,7 @@ extern const char * const cs35l56_tx_input_texts[CS35L56_NUM_INPUT_SRC];
+ extern const unsigned int cs35l56_tx_input_values[CS35L56_NUM_INPUT_SRC];
  
- 	/* delete the txschq nodes allocated for this node */
-+	otx2_qos_disable_sq(pfvf, qid);
-+	otx2_qos_free_hw_node_schq(pfvf, node);
- 	otx2_qos_free_sw_node_schq(pfvf, node);
-+	pfvf->qos.qid_to_sqmap[qid] = OTX2_QOS_INVALID_SQ;
+ int cs35l56_set_patch(struct cs35l56_base *cs35l56_base);
++int cs35l56_force_sync_asp1_registers_from_cache(struct cs35l56_base *cs35l56_base);
+ int cs35l56_mbox_send(struct cs35l56_base *cs35l56_base, unsigned int command);
+ int cs35l56_firmware_shutdown(struct cs35l56_base *cs35l56_base);
+ int cs35l56_wait_for_firmware_boot(struct cs35l56_base *cs35l56_base);
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index afd12d853ce4c..12291242362b4 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -194,6 +194,47 @@ static bool cs35l56_volatile_reg(struct device *dev, unsigned int reg)
+ 	}
+ }
  
- 	/* mark this node as htb inner node */
- 	WRITE_ONCE(node->qid, OTX2_QOS_QID_INNER);
-@@ -1554,6 +1557,7 @@ static int otx2_qos_leaf_del_last(struct otx2_nic *pfvf, u16 classid, bool force
- 		dwrr_del_node = true;
++/*
++ * The firmware boot sequence can overwrite the ASP1 config registers so that
++ * they don't match regmap's view of their values. Rewrite the values from the
++ * regmap cache into the hardware registers.
++ */
++int cs35l56_force_sync_asp1_registers_from_cache(struct cs35l56_base *cs35l56_base)
++{
++	struct reg_sequence asp1_regs[] = {
++		{ .reg = CS35L56_ASP1_ENABLES1 },
++		{ .reg = CS35L56_ASP1_CONTROL1 },
++		{ .reg = CS35L56_ASP1_CONTROL2 },
++		{ .reg = CS35L56_ASP1_CONTROL3 },
++		{ .reg = CS35L56_ASP1_FRAME_CONTROL1 },
++		{ .reg = CS35L56_ASP1_FRAME_CONTROL5 },
++		{ .reg = CS35L56_ASP1_DATA_CONTROL1 },
++		{ .reg = CS35L56_ASP1_DATA_CONTROL5 },
++	};
++	int i, ret;
++
++	/* Read values from regmap cache into a write sequence */
++	for (i = 0; i < ARRAY_SIZE(asp1_regs); ++i) {
++		ret = regmap_read(cs35l56_base->regmap, asp1_regs[i].reg, &asp1_regs[i].def);
++		if (ret)
++			goto err;
++	}
++
++	/* Write the values cache-bypassed so that they will be written to silicon */
++	ret = regmap_multi_reg_write_bypassed(cs35l56_base->regmap, asp1_regs,
++					      ARRAY_SIZE(asp1_regs));
++	if (ret)
++		goto err;
++
++	return 0;
++
++err:
++	dev_err(cs35l56_base->dev, "Failed to sync ASP1 registers: %d\n", ret);
++
++	return ret;
++}
++EXPORT_SYMBOL_NS_GPL(cs35l56_force_sync_asp1_registers_from_cache, SND_SOC_CS35L56_SHARED);
++
+ int cs35l56_mbox_send(struct cs35l56_base *cs35l56_base, unsigned int command)
+ {
+ 	unsigned int val;
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index 530f6e06b41d5..c855ef3ec665e 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -277,6 +277,21 @@ static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_sdw1tx4_enum,
+ static const struct snd_kcontrol_new sdw1_tx4_mux =
+ 	SOC_DAPM_ENUM("SDW1TX4 SRC", cs35l56_sdw1tx4_enum);
  
- 	/* destroy the leaf node */
-+	otx2_qos_disable_sq(pfvf, qid);
- 	otx2_qos_destroy_node(pfvf, node);
- 	pfvf->qos.qid_to_sqmap[qid] = OTX2_QOS_INVALID_SQ;
++static int cs35l56_asp1_cfg_event(struct snd_soc_dapm_widget *w,
++				  struct snd_kcontrol *kcontrol, int event)
++{
++	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
++	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
++
++	switch (event) {
++	case SND_SOC_DAPM_PRE_PMU:
++		/* Override register values set by firmware boot */
++		return cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
++	default:
++		return 0;
++	}
++}
++
+ static int cs35l56_play_event(struct snd_soc_dapm_widget *w,
+ 			      struct snd_kcontrol *kcontrol, int event)
+ {
+@@ -313,6 +328,9 @@ static const struct snd_soc_dapm_widget cs35l56_dapm_widgets[] = {
+ 	SND_SOC_DAPM_REGULATOR_SUPPLY("VDD_B", 0, 0),
+ 	SND_SOC_DAPM_REGULATOR_SUPPLY("VDD_AMP", 0, 0),
+ 
++	SND_SOC_DAPM_SUPPLY("ASP1 CFG", SND_SOC_NOPM, 0, 0, cs35l56_asp1_cfg_event,
++			    SND_SOC_DAPM_PRE_PMU),
++
+ 	SND_SOC_DAPM_SUPPLY("PLAY", SND_SOC_NOPM, 0, 0, cs35l56_play_event,
+ 			    SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
+ 
+@@ -380,6 +398,9 @@ static const struct snd_soc_dapm_route cs35l56_audio_map[] = {
+ 	{ "AMP", NULL, "VDD_B" },
+ 	{ "AMP", NULL, "VDD_AMP" },
+ 
++	{ "ASP1 Playback", NULL, "ASP1 CFG" },
++	{ "ASP1 Capture", NULL, "ASP1 CFG" },
++
+ 	{ "ASP1 Playback", NULL, "PLAY" },
+ 	{ "SDW1 Playback", NULL, "PLAY" },
  
 -- 
 2.43.0
