@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-48309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9798FE874
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB738FEACA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1301C242E8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCEDB1F238AF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB568196C6D;
-	Thu,  6 Jun 2024 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E401A0DF4;
+	Thu,  6 Jun 2024 14:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0PU9fXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wJDmYhn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95423196434;
-	Thu,  6 Jun 2024 14:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564ED1A0DF2;
+	Thu,  6 Jun 2024 14:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682895; cv=none; b=sVSkv3SlVEVM/fD+DIZR92u2u/3SPnb8UdvkNctmBGObKYJBdUQRCzSrx4AAy8HMUvCSp9EjV8xYADOxurxlDLMbRj1n8Y0rjsooEplyfkJ19xEa7gO3jMQBHC+jo+npnELaH7X9BZy7+6Myg3YKcdYwXeZklweVrGNa9wDylFw=
+	t=1717683176; cv=none; b=KcGhEny69ABXFDO6qZfCQjEOlbtcuZlL92dABZzm5xiEA9OzzHw6NUyydMtlWDNhpq8RRHZnvsSYbZI26AA+AsaPZ/Qs3Rr58w6EAry003Zq+fsTKj1bus9huz8+9S/RDWoSxEH7UWuXEZzL7EMe4epwYSS3ptGhI/xnCm2BzW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682895; c=relaxed/simple;
-	bh=TKtALNJaeG6nxDaoUPUGfC9DjQU7DK2fXPccjAtnu6E=;
+	s=arc-20240116; t=1717683176; c=relaxed/simple;
+	bh=6g6zosU4+dIMUvNsB3MVF+X3bBxrFUYe1CxBgc/Mb3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eF/TwKouzVWvi1TVd0Qs7BmAMqRsoKwDZ+91iuWKgWHRGA/T4Wh60DDS+b0f1qjq9Hylo+DaANMkSKmFWnEq1r8Pf0MoZHxIyeUiOwSZnLKKG1LyYgkH0aZ31xb3sA52IyAPwUO7pFD68WnMpsR5zC2yrRy6ZiepZX+dVUnZu10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0PU9fXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C015C2BD10;
-	Thu,  6 Jun 2024 14:08:14 +0000 (UTC)
+	 MIME-Version; b=V6nK0gI0b1xXJE3DmomNK1Kawoo8PxwphJREoUfJAJNdsSDGJeeZ5chrAHTstmnN0oIL4BT7yYBE7bSDHZ8LfgohHciYXHz6duIkj4P6nfiEm0CwdSHqG2r2eC93TeXkzcbVq5f/IBo7jL6cAx5gwU01wO7h3bAb8x+8iSdccwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wJDmYhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35587C32781;
+	Thu,  6 Jun 2024 14:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682894;
-	bh=TKtALNJaeG6nxDaoUPUGfC9DjQU7DK2fXPccjAtnu6E=;
+	s=korg; t=1717683176;
+	bh=6g6zosU4+dIMUvNsB3MVF+X3bBxrFUYe1CxBgc/Mb3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0PU9fXEeAqhl0AjsZ5OgP32vw02lq7ifm3UtzOEN8hkc4usoPKtuxxm428Nk6Ug7
-	 KKHRu3vDooYoxyAfE5JUdJJ18doay7MnCcQTRW7fQSvbB1e0Kz5JpStMx+t7mJV1h8
-	 hKyVWZbYIGZl1g2tvJ6lgZBrqWCh4tGIDaGsagnc=
+	b=1wJDmYhntXfEuLObqMJ2KHmQKctOHgCtg/OkE1vo9JvY4ShVF8UU3FNNt7irp+1U6
+	 jKDtK23UDdutzKKTLOW9lYOH6q3ne6xijoErgA0J6WkSLOkxaN9RMajWggl+uPiRUT
+	 J23lrpmbPEUNBGOMZlMKZ/jQZsBIsuMy8AbrHBgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Tycho Andersen <tycho@tycho.pizza>,
-	Ethan Adams <j.ethan.adams@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Peter Colberg <peter.colberg@intel.com>,
+	Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 001/374] perf build: Fix out of tree build related to installation of sysreg-defs
+Subject: [PATCH 6.1 051/473] fpga: dfl-pci: add PCI subdevice ID for Intel D5005 card
 Date: Thu,  6 Jun 2024 15:59:40 +0200
-Message-ID: <20240606131651.740217173@linuxfoundation.org>
+Message-ID: <20240606131701.563165339@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,69 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Adams <j.ethan.adams@gmail.com>
+From: Peter Colberg <peter.colberg@intel.com>
 
-[ Upstream commit efae55bb78cf8722c7df01cd974197dfd13ece39 ]
+[ Upstream commit bb1dbeceb1c20cfd81271e1bd69892ebd1ee38e0 ]
 
-It seems that a previous modification to sysreg-defs, which corrected
-emitting the header to the specified output directory, exposed missing
-subdir, prefix variables.
+Add PCI subdevice ID for the Intel D5005 Stratix 10 FPGA card as
+used with the Open FPGA Stack (OFS) FPGA Interface Manager (FIM).
 
-This breaks out of tree builds of perf as the file is now built into the
-output directory, but still tries to descend into output directory as a
-subdir.
+Unlike the Intel D5005 PAC FIM which exposed a separate PCI device ID,
+the OFS FIM reuses the same device ID for all DFL-based FPGA cards
+and differentiates on the subdevice ID. The subdevice ID values were
+chosen as the numeric part of the FPGA card names in hexadecimal.
 
-Fixes: a29ee6aea7030786 ("perf build: Ensure sysreg-defs Makefile respects output dir")
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Reviewed-by: Tycho Andersen <tycho@tycho.pizza>
-Signed-off-by: Ethan Adams <j.ethan.adams@gmail.com>
-Tested-by: Tycho Andersen <tycho@tycho.pizza>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240314222012.47193-1-j.ethan.adams@gmail.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Peter Colberg <peter.colberg@intel.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
+Acked-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20240422230257.1959-1-peter.colberg@intel.com
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Makefile.perf | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/fpga/dfl-pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 04d89d2ed209b..d769aa447fb75 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -458,18 +458,19 @@ SHELL = $(SHELL_PATH)
- 
- arm64_gen_sysreg_dir := $(srctree)/tools/arch/arm64/tools
- ifneq ($(OUTPUT),)
--  arm64_gen_sysreg_outdir := $(OUTPUT)
-+  arm64_gen_sysreg_outdir := $(abspath $(OUTPUT))
- else
-   arm64_gen_sysreg_outdir := $(CURDIR)
- endif
- 
- arm64-sysreg-defs: FORCE
--	$(Q)$(MAKE) -C $(arm64_gen_sysreg_dir) O=$(arm64_gen_sysreg_outdir)
-+	$(Q)$(MAKE) -C $(arm64_gen_sysreg_dir) O=$(arm64_gen_sysreg_outdir) \
-+		prefix= subdir=
- 
- arm64-sysreg-defs-clean:
- 	$(call QUIET_CLEAN,arm64-sysreg-defs)
- 	$(Q)$(MAKE) -C $(arm64_gen_sysreg_dir) O=$(arm64_gen_sysreg_outdir) \
--		clean > /dev/null
-+		prefix= subdir= clean > /dev/null
- 
- beauty_linux_dir := $(srctree)/tools/perf/trace/beauty/include/linux/
- linux_uapi_dir := $(srctree)/tools/include/uapi/linux
+diff --git a/drivers/fpga/dfl-pci.c b/drivers/fpga/dfl-pci.c
+index 0914e7328b1a5..4220ef00a555e 100644
+--- a/drivers/fpga/dfl-pci.c
++++ b/drivers/fpga/dfl-pci.c
+@@ -79,6 +79,7 @@ static void cci_pci_free_irq(struct pci_dev *pcidev)
+ #define PCIE_DEVICE_ID_SILICOM_PAC_N5011	0x1001
+ #define PCIE_DEVICE_ID_INTEL_DFL		0xbcce
+ /* PCI Subdevice ID for PCIE_DEVICE_ID_INTEL_DFL */
++#define PCIE_SUBDEVICE_ID_INTEL_D5005		0x138d
+ #define PCIE_SUBDEVICE_ID_INTEL_N6000		0x1770
+ #define PCIE_SUBDEVICE_ID_INTEL_N6001		0x1771
+ #define PCIE_SUBDEVICE_ID_INTEL_C6100		0x17d4
+@@ -102,6 +103,8 @@ static struct pci_device_id cci_pcie_id_tbl[] = {
+ 	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_PAC_D5005_VF),},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_SILICOM_DENMARK, PCIE_DEVICE_ID_SILICOM_PAC_N5010),},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_SILICOM_DENMARK, PCIE_DEVICE_ID_SILICOM_PAC_N5011),},
++	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL,
++			PCI_VENDOR_ID_INTEL, PCIE_SUBDEVICE_ID_INTEL_D5005),},
+ 	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL,
+ 			PCI_VENDOR_ID_INTEL, PCIE_SUBDEVICE_ID_INTEL_N6000),},
+ 	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL_VF,
 -- 
 2.43.0
 
