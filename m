@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A099E8FE96F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE178FEE79
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3F911C23BB8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15D591F24681
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40A2197A93;
-	Thu,  6 Jun 2024 14:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0926A1991CD;
+	Thu,  6 Jun 2024 14:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4uqRQZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m26L3ty7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3493196DA8;
-	Thu,  6 Jun 2024 14:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC258197532;
+	Thu,  6 Jun 2024 14:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683020; cv=none; b=BV3pIotjq8LmBwW5CdG7pUm1E8mWELMv2bUFRBXzMhiF4aYc0+1/aEtipdC+17dEMcuX7GzA9CkVsbI+oU3KSm3bEL9mghuPAKyBg90hJ1fV0Uh9GZjxDVU1JUcjV7OhoAxp0kQVdeR8N8WiO0xaaX0QEihd8aYjlxXGJ64sgi4=
+	t=1717683664; cv=none; b=Lxmzl1LmqXsyCPEYI0RBCQJGy+vMDnuivnWId7wewWceu1QvM8VqxBYJ+TqkBQealKNfSI+nVbLNWgKCokeB24jAbubld/GJ4C/1+wsfI2Z7DAflZx0vUra1W3kGLKj5D9pZMWSL3Rw9dTPcnpRtKVhwdvUt80IgPknkrwROJQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683020; c=relaxed/simple;
-	bh=3SR9vtNG3VjnIJqLs3IZ+6xuEJ+MgFXsLOx9Mf3j2go=;
+	s=arc-20240116; t=1717683664; c=relaxed/simple;
+	bh=x2enZijaakRXMW4DAELw+z8iVw9ahfWMGJaSsc+QH0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eX/AX6lkBK1rlhq0QmCgmEbBPz6JAUaWYLhd4K5j0oO0mbgNmNEJzIZjLHWdwH2W+L8csrwcUpFLfohefLJrqDydo2H3157S/6LiBJN9lz0p1pysEE63S2WV7biVKHCQG6nXotPukOYXOHaqTKR0Td8CTCQlqzjWW5nH5FuMQkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4uqRQZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816B7C32781;
-	Thu,  6 Jun 2024 14:10:20 +0000 (UTC)
+	 MIME-Version; b=s03U4LD42zwn34edlNdwt5VVZ3vbyRIdEQU6Tq82aLj+y1juC68QKD/V22t2TRsdh/oZPVi3Mzv03wNtoRPptrCOxca7n1bkMzVJhyA3vMRN+N5JW36tkslwwG8knkGeUTwfXjvEhhHigRlLAeT6CZnUCiVgr1CjN/mbfGIiphA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m26L3ty7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98804C2BD10;
+	Thu,  6 Jun 2024 14:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683020;
-	bh=3SR9vtNG3VjnIJqLs3IZ+6xuEJ+MgFXsLOx9Mf3j2go=;
+	s=korg; t=1717683664;
+	bh=x2enZijaakRXMW4DAELw+z8iVw9ahfWMGJaSsc+QH0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B4uqRQZctxljIjw1NZQ+tUGNOitOSpf3pGRGYMffv/T5igjBJpt4Y5tRzqXvHbyFq
-	 guvWIkgf86sDJWPwbVzTS9lWaSoJhsp3QctoRrUlgc8MDX5t3IcVczM0SZRFLuKDtN
-	 gP030/4aPBJCnTwKOoLbBBNf+HJf1yjNskxU4gOQ=
+	b=m26L3ty70sUQX3hUdeBeZAuieJZDrWC0QE7emLE1cEKY1gr13i26jFwgBEvN3lYKI
+	 PDP9PK88Kpnx96/4ZfQel65gsd01tTf2UUv0V4Jbotgy7ALfa29vaeUvugQe7rRupV
+	 rfzDUI487e9MLA3jULGd55VDUS2Dw2rUh1NIxAT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Dan Aloni <dan.aloni@vastdata.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 241/374] sunrpc: fix NFSACL RPC retry on soft mount
+Subject: [PATCH 6.6 548/744] iio: accel: mxc4005: Reset chip on probe() and resume()
 Date: Thu,  6 Jun 2024 16:03:40 +0200
-Message-ID: <20240606131659.893211997@linuxfoundation.org>
+Message-ID: <20240606131750.028017965@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Aloni <dan.aloni@vastdata.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 0dc9f430027b8bd9073fdafdfcdeb1a073ab5594 ]
+[ Upstream commit 6b8cffdc4a31e4a72f75ecd1bc13fbf0dafee390 ]
 
-It used to be quite awhile ago since 1b63a75180c6 ('SUNRPC: Refactor
-rpc_clone_client()'), in 2012, that `cl_timeout` was copied in so that
-all mount parameters propagate to NFSACL clients. However since that
-change, if mount options as follows are given:
+On some designs the chip is not properly reset when powered up at boot or
+after a suspend/resume cycle.
 
-    soft,timeo=50,retrans=16,vers=3
+Use the sw-reset feature to ensure that the chip is in a clean state
+after probe() / resume() and in the case of resume() restore the settings
+(scale, trigger-enabled).
 
-The resultant NFSACL client receives:
-
-    cl_softrtry: 1
-    cl_timeout: to_initval=60000, to_maxval=60000, to_increment=0, to_retries=2, to_exponential=0
-
-These values lead to NFSACL operations not being retried under the
-condition of transient network outages with soft mount. Instead, getacl
-call fails after 60 seconds with EIO.
-
-The simple fix is to pass the existing client's `cl_timeout` as the new
-client timeout.
-
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Cc: Benjamin Coddington <bcodding@redhat.com>
-Link: https://lore.kernel.org/all/20231105154857.ryakhmgaptq3hb6b@gmail.com/T/
-Fixes: 1b63a75180c6 ('SUNRPC: Refactor rpc_clone_client()')
-Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218578
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240326113700.56725-3-hdegoede@redhat.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/clnt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/accel/mxc4005.c | 68 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 28f3749f6dc6c..59b2fbd88e5eb 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -1071,6 +1071,7 @@ struct rpc_clnt *rpc_bind_new_program(struct rpc_clnt *old,
- 		.authflavor	= old->cl_auth->au_flavor,
- 		.cred		= old->cl_cred,
- 		.stats		= old->cl_stats,
-+		.timeout	= old->cl_timeout,
- 	};
- 	struct rpc_clnt *clnt;
- 	int err;
+diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
+index 88f0bf2cc1d3f..49e30b87732f5 100644
+--- a/drivers/iio/accel/mxc4005.c
++++ b/drivers/iio/accel/mxc4005.c
+@@ -5,6 +5,7 @@
+  * Copyright (c) 2014, Intel Corporation.
+  */
+ 
++#include <linux/delay.h>
+ #include <linux/module.h>
+ #include <linux/i2c.h>
+ #include <linux/iio/iio.h>
+@@ -36,6 +37,7 @@
+ 
+ #define MXC4005_REG_INT_CLR1		0x01
+ #define MXC4005_REG_INT_CLR1_BIT_DRDYC	0x01
++#define MXC4005_REG_INT_CLR1_SW_RST	0x10
+ 
+ #define MXC4005_REG_CONTROL		0x0D
+ #define MXC4005_REG_CONTROL_MASK_FSR	GENMASK(6, 5)
+@@ -43,6 +45,9 @@
+ 
+ #define MXC4005_REG_DEVICE_ID		0x0E
+ 
++/* Datasheet does not specify a reset time, this is a conservative guess */
++#define MXC4005_RESET_TIME_US		2000
++
+ enum mxc4005_axis {
+ 	AXIS_X,
+ 	AXIS_Y,
+@@ -66,6 +71,8 @@ struct mxc4005_data {
+ 		s64 timestamp __aligned(8);
+ 	} scan;
+ 	bool trigger_enabled;
++	unsigned int control;
++	unsigned int int_mask1;
+ };
+ 
+ /*
+@@ -349,6 +356,7 @@ static int mxc4005_set_trigger_state(struct iio_trigger *trig,
+ 		return ret;
+ 	}
+ 
++	data->int_mask1 = val;
+ 	data->trigger_enabled = state;
+ 	mutex_unlock(&data->mutex);
+ 
+@@ -384,6 +392,13 @@ static int mxc4005_chip_init(struct mxc4005_data *data)
+ 
+ 	dev_dbg(data->dev, "MXC4005 chip id %02x\n", reg);
+ 
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
++			   MXC4005_REG_INT_CLR1_SW_RST);
++	if (ret < 0)
++		return dev_err_probe(data->dev, ret, "resetting chip\n");
++
++	fsleep(MXC4005_RESET_TIME_US);
++
+ 	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
+ 	if (ret < 0)
+ 		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
+@@ -479,6 +494,58 @@ static int mxc4005_probe(struct i2c_client *client)
+ 	return devm_iio_device_register(&client->dev, indio_dev);
+ }
+ 
++static int mxc4005_suspend(struct device *dev)
++{
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct mxc4005_data *data = iio_priv(indio_dev);
++	int ret;
++
++	/* Save control to restore it on resume */
++	ret = regmap_read(data->regmap, MXC4005_REG_CONTROL, &data->control);
++	if (ret < 0)
++		dev_err(data->dev, "failed to read reg_control\n");
++
++	return ret;
++}
++
++static int mxc4005_resume(struct device *dev)
++{
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct mxc4005_data *data = iio_priv(indio_dev);
++	int ret;
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
++			   MXC4005_REG_INT_CLR1_SW_RST);
++	if (ret) {
++		dev_err(data->dev, "failed to reset chip: %d\n", ret);
++		return ret;
++	}
++
++	fsleep(MXC4005_RESET_TIME_US);
++
++	ret = regmap_write(data->regmap, MXC4005_REG_CONTROL, data->control);
++	if (ret) {
++		dev_err(data->dev, "failed to restore control register\n");
++		return ret;
++	}
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
++	if (ret) {
++		dev_err(data->dev, "failed to restore interrupt 0 mask\n");
++		return ret;
++	}
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, data->int_mask1);
++	if (ret) {
++		dev_err(data->dev, "failed to restore interrupt 1 mask\n");
++		return ret;
++	}
++
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(mxc4005_pm_ops, mxc4005_suspend, mxc4005_resume);
++
+ static const struct acpi_device_id mxc4005_acpi_match[] = {
+ 	{"MXC4005",	0},
+ 	{"MXC6655",	0},
+@@ -505,6 +572,7 @@ static struct i2c_driver mxc4005_driver = {
+ 		.name = MXC4005_DRV_NAME,
+ 		.acpi_match_table = ACPI_PTR(mxc4005_acpi_match),
+ 		.of_match_table = mxc4005_of_match,
++		.pm = pm_sleep_ptr(&mxc4005_pm_ops),
+ 	},
+ 	.probe		= mxc4005_probe,
+ 	.id_table	= mxc4005_id,
 -- 
 2.43.0
 
