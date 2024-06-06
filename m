@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C758FEE9A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAD78FE9C2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444D01C25451
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 747AB1F23CBE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152C21A0DE1;
-	Thu,  6 Jun 2024 14:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E8319B3F7;
+	Thu,  6 Jun 2024 14:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAgoZhb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lxujwdsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87921C53B1;
-	Thu,  6 Jun 2024 14:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA56219B3EF;
+	Thu,  6 Jun 2024 14:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683680; cv=none; b=lV7N/lJ3GoYwwr9jKFan6RieHnHiyftfyvfc2h1UmRmpehEHPnYJimDtDHfpkXXXpUnhwU8723GVqMD0+Hzu8VlqCqztGCfjbom/T5PfIuiya/6o42ZB8Kx53gN2/qB1dy+ApUnEpNA6whRFsU8u+AhwJ4tH9TGt97F6GBsvAzE=
+	t=1717683063; cv=none; b=d2RBUpoKyYUKKkuc5sKepHwiybopg8njurWJB1hITSNcjT4HKI3BOxIl+Hw4mU6uFp+OWQhvWWsfK7Y1bkOhBqNGfJBFEvv60GyCUUbHDvdmF7HzeMqNnL96CrI+tJkGFFYIiKjElXdg/e94oqhymC3l3VqH7/7SlxHzY9vS7o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683680; c=relaxed/simple;
-	bh=eZHOaSL3ORWLkCthzVd9IEfm4X76w8imqJkAfSQdSTo=;
+	s=arc-20240116; t=1717683063; c=relaxed/simple;
+	bh=xwwFPVXUsAAgEfwIJ3bNNeBTBjaS9NK0Q7LPVu7dkFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkJHjyv6A1nsAhdOsLcSfwEoav6f18P3VKrvFarWgCOsc3yViwh2zc2Bigh6iMl8qTxd5o3vMXb4QbLTe6OC3LLeiTCimJ+IgKVGvB/YuGP0ejZBV+BupRHuhYcZ6iQbNtld68W5+78y94fZN+ruNLwf2pjQp0D6lJg5LnXNE8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAgoZhb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F0BC2BD10;
-	Thu,  6 Jun 2024 14:21:20 +0000 (UTC)
+	 MIME-Version; b=H4/tzGtZxY2+MpwlDVEsQ70Au87t7ZnE3+DE5/22ybF1DAlXTCDnVXJ7hrQF3LSiUr5T1iwwDtoM7sjfyI8diMnDuAhp8jOW0WoKJLpX2MZQNwKbQXJrEg3Jb5rayuSnBisXbY14z5pl8FFeM2sMt0TDB/9KNRmOi7XYC9DhriE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lxujwdsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E48C4AF1B;
+	Thu,  6 Jun 2024 14:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683680;
-	bh=eZHOaSL3ORWLkCthzVd9IEfm4X76w8imqJkAfSQdSTo=;
+	s=korg; t=1717683063;
+	bh=xwwFPVXUsAAgEfwIJ3bNNeBTBjaS9NK0Q7LPVu7dkFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAgoZhb8cFPu59Ahnlq/ylpE9mwR7F+9c3N9xFfICuyOvrmkMCd3awd1LVj0ZCstV
-	 Kz7sKGl5Dg8OXXB6gohtb+ivILc/qkY4we61M8A1wXHE/ACwMr4yOTLWSKQyUgf4QO
-	 5OSgIxmGmI9vUOzvu4IhDKSfyHMaj1KzSd0FuNN0=
+	b=LxujwdsleuoX8EPg9Zg4qcqxVzSp5LH0UNxh4qI2ZuxDDxYDIJ2BKdR6cmqz2AZug
+	 6MWpfA2Q/SA6Wr1xryRMdzYi2X+zw4wvHavwjsjctfbyW7R06+Eu3cGCdHin/6cfPK
+	 BZ3Fuox+ymalqbsH88+g4hxOQdVoMgUMywMNT8GI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 582/744] drm/msm/dpu: remove irq_idx argument from IRQ callbacks
+	Yu Kuai <yukuai3@huawei.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	Yi Zhang <yi.zhang@redhat.com>
+Subject: [PATCH 6.9 275/374] null_blk: fix null-ptr-dereference while configuring power and submit_queues
 Date: Thu,  6 Jun 2024 16:04:14 +0200
-Message-ID: <20240606131751.124200834@linuxfoundation.org>
+Message-ID: <20240606131701.115425110@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,213 +64,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit e75e45c25b66ae9a78fa2476df0bf99ad80f33f9 ]
+[ Upstream commit a2db328b0839312c169eb42746ec46fc1ab53ed2 ]
 
-There is no point in passing the IRQ index to IRQ callbacks, no function
-uses that. Drop it at last.
+Writing 'power' and 'submit_queues' concurrently will trigger kernel
+panic:
 
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/550925/
-Link: https://lore.kernel.org/r/20230802100426.4184892-3-dmitry.baryshkov@linaro.org
-Stable-dep-of: 530f272053a5 ("drm/msm/dpu: Add callback function pointer check before its call")
+Test script:
+
+modprobe null_blk nr_devices=0
+mkdir -p /sys/kernel/config/nullb/nullb0
+while true; do echo 1 > submit_queues; echo 4 > submit_queues; done &
+while true; do echo 1 > power; echo 0 > power; done
+
+Test result:
+
+BUG: kernel NULL pointer dereference, address: 0000000000000148
+Oops: 0000 [#1] PREEMPT SMP
+RIP: 0010:__lock_acquire+0x41d/0x28f0
+Call Trace:
+ <TASK>
+ lock_acquire+0x121/0x450
+ down_write+0x5f/0x1d0
+ simple_recursive_removal+0x12f/0x5c0
+ blk_mq_debugfs_unregister_hctxs+0x7c/0x100
+ blk_mq_update_nr_hw_queues+0x4a3/0x720
+ nullb_update_nr_hw_queues+0x71/0xf0 [null_blk]
+ nullb_device_submit_queues_store+0x79/0xf0 [null_blk]
+ configfs_write_iter+0x119/0x1e0
+ vfs_write+0x326/0x730
+ ksys_write+0x74/0x150
+
+This is because del_gendisk() can concurrent with
+blk_mq_update_nr_hw_queues():
+
+nullb_device_power_store	nullb_apply_submit_queues
+ null_del_dev
+ del_gendisk
+				 nullb_update_nr_hw_queues
+				  if (!dev->nullb)
+				  // still set while gendisk is deleted
+				   return 0
+				  blk_mq_update_nr_hw_queues
+ dev->nullb = NULL
+
+Fix this problem by resuing the global mutex to protect
+nullb_device_power_store() and nullb_update_nr_hw_queues() from configfs.
+
+Fixes: 45919fbfe1c4 ("null_blk: Enable modifying 'submit_queues' after an instance has been configured")
+Reported-and-tested-by: Yi Zhang <yi.zhang@redhat.com>
+Closes: https://lore.kernel.org/all/CAHj4cs9LgsHLnjg8z06LQ3Pr5cax-+Ps+xT7AP7TPnEjStuwZA@mail.gmail.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240523153934.1937851-1-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_core_irq.h     |  2 +-
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c      |  4 ++--
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys.h |  2 +-
- .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c |  8 ++++----
- .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c |  4 ++--
- .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c  | 16 +++++-----------
- .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c    |  4 ++--
- .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.h    |  2 +-
- 8 files changed, 18 insertions(+), 24 deletions(-)
+ drivers/block/null_blk/main.c | 40 +++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_irq.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_irq.h
-index b5b6e7031fb9e..ba06312cbb163 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_irq.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_irq.h
-@@ -53,7 +53,7 @@ u32 dpu_core_irq_read(
- int dpu_core_irq_register_callback(
- 		struct dpu_kms *dpu_kms,
- 		int irq_idx,
--		void (*irq_cb)(void *arg, int irq_idx),
-+		void (*irq_cb)(void *arg),
- 		void *irq_arg);
- 
- /**
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 20e118546432d..3961b514a9a18 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -358,7 +358,7 @@ static int dpu_encoder_helper_wait_event_timeout(int32_t drm_id,
- 
- int dpu_encoder_helper_wait_for_irq(struct dpu_encoder_phys *phys_enc,
- 		int irq,
--		void (*func)(void *arg, int irq_idx),
-+		void (*func)(void *arg),
- 		struct dpu_encoder_wait_info *wait_info)
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 14ffda1ffe6c3..3b3fd093b0044 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -404,13 +404,25 @@ static int nullb_update_nr_hw_queues(struct nullb_device *dev,
+ static int nullb_apply_submit_queues(struct nullb_device *dev,
+ 				     unsigned int submit_queues)
  {
- 	u32 irq_status;
-@@ -405,7 +405,7 @@ int dpu_encoder_helper_wait_for_irq(struct dpu_encoder_phys *phys_enc,
- 				      phys_enc->hw_pp->idx - PINGPONG_0,
- 				      atomic_read(wait_info->atomic_cnt));
- 			local_irq_save(flags);
--			func(phys_enc, irq);
-+			func(phys_enc);
- 			local_irq_restore(flags);
- 			ret = 0;
- 		} else {
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys.h
-index d48558ede488d..f91661a698882 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys.h
-@@ -365,7 +365,7 @@ void dpu_encoder_helper_report_irq_timeout(struct dpu_encoder_phys *phys_enc,
-  */
- int dpu_encoder_helper_wait_for_irq(struct dpu_encoder_phys *phys_enc,
- 		int irq,
--		void (*func)(void *arg, int irq_idx),
-+		void (*func)(void *arg),
- 		struct dpu_encoder_wait_info *wait_info);
- 
- /**
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-index 0f7c5deb5e52d..718421306247f 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-@@ -76,7 +76,7 @@ static void _dpu_encoder_phys_cmd_update_intf_cfg(
- 		phys_enc->hw_intf->ops.program_intf_cmd_cfg(phys_enc->hw_intf, &cmd_mode_cfg);
+-	return nullb_update_nr_hw_queues(dev, submit_queues, dev->poll_queues);
++	int ret;
++
++	mutex_lock(&lock);
++	ret = nullb_update_nr_hw_queues(dev, submit_queues, dev->poll_queues);
++	mutex_unlock(&lock);
++
++	return ret;
  }
  
--static void dpu_encoder_phys_cmd_pp_tx_done_irq(void *arg, int irq_idx)
-+static void dpu_encoder_phys_cmd_pp_tx_done_irq(void *arg)
+ static int nullb_apply_poll_queues(struct nullb_device *dev,
+ 				   unsigned int poll_queues)
  {
- 	struct dpu_encoder_phys *phys_enc = arg;
- 	unsigned long lock_flags;
-@@ -103,7 +103,7 @@ static void dpu_encoder_phys_cmd_pp_tx_done_irq(void *arg, int irq_idx)
- 	DPU_ATRACE_END("pp_done_irq");
+-	return nullb_update_nr_hw_queues(dev, dev->submit_queues, poll_queues);
++	int ret;
++
++	mutex_lock(&lock);
++	ret = nullb_update_nr_hw_queues(dev, dev->submit_queues, poll_queues);
++	mutex_unlock(&lock);
++
++	return ret;
  }
  
--static void dpu_encoder_phys_cmd_te_rd_ptr_irq(void *arg, int irq_idx)
-+static void dpu_encoder_phys_cmd_te_rd_ptr_irq(void *arg)
- {
- 	struct dpu_encoder_phys *phys_enc = arg;
- 	struct dpu_encoder_phys_cmd *cmd_enc;
-@@ -126,7 +126,7 @@ static void dpu_encoder_phys_cmd_te_rd_ptr_irq(void *arg, int irq_idx)
- 	DPU_ATRACE_END("rd_ptr_irq");
+ NULLB_DEVICE_ATTR(size, ulong, NULL);
+@@ -457,28 +469,31 @@ static ssize_t nullb_device_power_store(struct config_item *item,
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = count;
++	mutex_lock(&lock);
+ 	if (!dev->power && newp) {
+ 		if (test_and_set_bit(NULLB_DEV_FL_UP, &dev->flags))
+-			return count;
++			goto out;
++
+ 		ret = null_add_dev(dev);
+ 		if (ret) {
+ 			clear_bit(NULLB_DEV_FL_UP, &dev->flags);
+-			return ret;
++			goto out;
+ 		}
+ 
+ 		set_bit(NULLB_DEV_FL_CONFIGURED, &dev->flags);
+ 		dev->power = newp;
+ 	} else if (dev->power && !newp) {
+ 		if (test_and_clear_bit(NULLB_DEV_FL_UP, &dev->flags)) {
+-			mutex_lock(&lock);
+ 			dev->power = newp;
+ 			null_del_dev(dev->nullb);
+-			mutex_unlock(&lock);
+ 		}
+ 		clear_bit(NULLB_DEV_FL_CONFIGURED, &dev->flags);
+ 	}
+ 
+-	return count;
++out:
++	mutex_unlock(&lock);
++	return ret;
  }
  
--static void dpu_encoder_phys_cmd_ctl_start_irq(void *arg, int irq_idx)
-+static void dpu_encoder_phys_cmd_ctl_start_irq(void *arg)
- {
- 	struct dpu_encoder_phys *phys_enc = arg;
+ CONFIGFS_ATTR(nullb_device_, power);
+@@ -1918,15 +1933,12 @@ static int null_add_dev(struct nullb_device *dev)
+ 	nullb->q->queuedata = nullb;
+ 	blk_queue_flag_set(QUEUE_FLAG_NONROT, nullb->q);
  
-@@ -139,7 +139,7 @@ static void dpu_encoder_phys_cmd_ctl_start_irq(void *arg, int irq_idx)
- 	DPU_ATRACE_END("ctl_start_irq");
- }
+-	mutex_lock(&lock);
+ 	rv = ida_alloc(&nullb_indexes, GFP_KERNEL);
+-	if (rv < 0) {
+-		mutex_unlock(&lock);
++	if (rv < 0)
+ 		goto out_cleanup_disk;
+-	}
++
+ 	nullb->index = rv;
+ 	dev->index = rv;
+-	mutex_unlock(&lock);
  
--static void dpu_encoder_phys_cmd_underrun_irq(void *arg, int irq_idx)
-+static void dpu_encoder_phys_cmd_underrun_irq(void *arg)
- {
- 	struct dpu_encoder_phys *phys_enc = arg;
+ 	if (config_item_name(&dev->group.cg_item)) {
+ 		/* Use configfs dir name as the device name */
+@@ -1955,9 +1967,7 @@ static int null_add_dev(struct nullb_device *dev)
+ 	if (rv)
+ 		goto out_ida_free;
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-index 2141b81397824..aec3ca4aa0fb7 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -300,7 +300,7 @@ static void dpu_encoder_phys_vid_setup_timing_engine(
- 	programmable_fetch_config(phys_enc, &timing_params);
- }
+-	mutex_lock(&lock);
+ 	list_add_tail(&nullb->list, &nullb_list);
+-	mutex_unlock(&lock);
  
--static void dpu_encoder_phys_vid_vblank_irq(void *arg, int irq_idx)
-+static void dpu_encoder_phys_vid_vblank_irq(void *arg)
- {
- 	struct dpu_encoder_phys *phys_enc = arg;
- 	struct dpu_hw_ctl *hw_ctl;
-@@ -337,7 +337,7 @@ static void dpu_encoder_phys_vid_vblank_irq(void *arg, int irq_idx)
- 	DPU_ATRACE_END("vblank_irq");
- }
+ 	pr_info("disk %s created\n", nullb->disk_name);
  
--static void dpu_encoder_phys_vid_underrun_irq(void *arg, int irq_idx)
-+static void dpu_encoder_phys_vid_underrun_irq(void *arg)
- {
- 	struct dpu_encoder_phys *phys_enc = arg;
+@@ -2006,7 +2016,9 @@ static int null_create_dev(void)
+ 	if (!dev)
+ 		return -ENOMEM;
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-index 78037a697633b..870a1f5060e30 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-@@ -345,7 +345,11 @@ static void dpu_encoder_phys_wb_setup(
- 
- }
- 
--static void _dpu_encoder_phys_wb_frame_done_helper(void *arg)
-+/**
-+ * dpu_encoder_phys_wb_done_irq - writeback interrupt handler
-+ * @arg:	Pointer to writeback encoder
-+ */
-+static void dpu_encoder_phys_wb_done_irq(void *arg)
- {
- 	struct dpu_encoder_phys *phys_enc = arg;
- 	struct dpu_encoder_phys_wb *wb_enc = to_dpu_encoder_phys_wb(phys_enc);
-@@ -371,16 +375,6 @@ static void _dpu_encoder_phys_wb_frame_done_helper(void *arg)
- 	wake_up_all(&phys_enc->pending_kickoff_wq);
- }
- 
--/**
-- * dpu_encoder_phys_wb_done_irq - writeback interrupt handler
-- * @arg:	Pointer to writeback encoder
-- * @irq_idx:	interrupt index
-- */
--static void dpu_encoder_phys_wb_done_irq(void *arg, int irq_idx)
--{
--	_dpu_encoder_phys_wb_frame_done_helper(arg);
--}
--
- /**
-  * dpu_encoder_phys_wb_irq_ctrl - irq control of WB
-  * @phys:	Pointer to physical encoder
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-index e3c50439f80a1..01a9ccfcd54bf 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-@@ -217,7 +217,7 @@ static void dpu_core_irq_callback_handler(struct dpu_kms *dpu_kms, int irq_idx)
- 	/*
- 	 * Perform registered function callback
- 	 */
--	dpu_kms->hw_intr->irq_tbl[irq_idx].cb(dpu_kms->hw_intr->irq_tbl[irq_idx].arg, irq_idx);
-+	dpu_kms->hw_intr->irq_tbl[irq_idx].cb(dpu_kms->hw_intr->irq_tbl[irq_idx].arg);
- }
- 
- irqreturn_t dpu_core_irq(struct msm_kms *kms)
-@@ -507,7 +507,7 @@ void dpu_hw_intr_destroy(struct dpu_hw_intr *intr)
- }
- 
- int dpu_core_irq_register_callback(struct dpu_kms *dpu_kms, int irq_idx,
--		void (*irq_cb)(void *arg, int irq_idx),
-+		void (*irq_cb)(void *arg),
- 		void *irq_arg)
- {
- 	unsigned long irq_flags;
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.h
-index dab761e548636..e2b00dd326193 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.h
-@@ -58,7 +58,7 @@ struct dpu_hw_intr {
- 	const struct dpu_intr_reg *intr_set;
- 
- 	struct {
--		void (*cb)(void *arg, int irq_idx);
-+		void (*cb)(void *arg);
- 		void *arg;
- 		atomic_t count;
- 	} irq_tbl[];
++	mutex_lock(&lock);
+ 	ret = null_add_dev(dev);
++	mutex_unlock(&lock);
+ 	if (ret) {
+ 		null_free_dev(dev);
+ 		return ret;
 -- 
 2.43.0
 
