@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-48874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33B98FEAE8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 088448FEC8C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEAD81C219D8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 888CB2859F0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6451A2541;
-	Thu,  6 Jun 2024 14:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224801B1431;
+	Thu,  6 Jun 2024 14:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ja7W6C7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KneBD/nn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A18F1A189E;
-	Thu,  6 Jun 2024 14:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37E3196DAB;
+	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683189; cv=none; b=pT0425tAW9VyRbMxmxZgxllVr9E7XpkLNrLyqmsS5pHgm8V1zmNHULUJnWCr5cw+zq0TceNgP0ytlI0En5oNy9LhX5TSzbcvdlaTRObSKHySP2d5iI1+PKS24evOf34DWGHHpCZpvvhh//TaEzNV0rMOAyEnfc0onp6x0b9AxKs=
+	t=1717683379; cv=none; b=W/OZk7HMClYIHhGSeDmeWcoe7UoC8Dwy2U/lrKM9CT9FraHdak9hFTpfFo9F3dPcxGvhOHqG1qBMe+dsVWJANhADf24wYAJ5b6kDU5MKEd+ywJrNa5IOztLAc8SmXPOmzMbPiYG5afkwH1PLMKhAYHx6R3s62UVVyNDklQb1/DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683189; c=relaxed/simple;
-	bh=/2GOWm3Toa2T2PU/VT9jsUxpBNRUadn7vMMV6RZ/8RE=;
+	s=arc-20240116; t=1717683379; c=relaxed/simple;
+	bh=qjJXVShm7U9x1e3fMdisAtaMAWSjoAsvKGk4vIRmeCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGTxzPZRPkrmDE15uuKgFMlE80d3ZnGrienpZgKa0uhVYIH+a/WJ3gTgjKw8czUxPoREeafYs6gUm0TwWyqLeVJuwKQFTN26xXKlirhf4au2bQB8l+MDH/MugE5IONBG5AIMfAwRixpKgN818Cahe9Kd399y4aGZGANJM2NdI0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ja7W6C7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFF7C2BD10;
-	Thu,  6 Jun 2024 14:13:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TKGdyX9DUxmaJIHm/sa3swe2WftUaypc3FzwYmzcNEuHZrdpr/IgSX6+7eDDXnav/8I74qsIjTOlfbY9s45u+iGgniwQlb0y7BczGevroHxGQAx5kKot05ongqxjug6GucnFNbW1MWS4ayUZef3E0nq406JiKzFncTS9gG3zfHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KneBD/nn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2722C32781;
+	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683189;
-	bh=/2GOWm3Toa2T2PU/VT9jsUxpBNRUadn7vMMV6RZ/8RE=;
+	s=korg; t=1717683379;
+	bh=qjJXVShm7U9x1e3fMdisAtaMAWSjoAsvKGk4vIRmeCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ja7W6C7HArPrP/T/l2laQb+TvmsaCkiuc90Wb+g6QVJJyXuw6RJ1m5p17twZE1SE9
-	 Z5VAhs581skx5gKq/sOl7JsNxlHCAU3lmgd1uffOqela887f/ph7EtevBgrVYJKamr
-	 1EFQKdIXrlu0PQ+LmEbggZK55Mr8Pj+Q8FU14YOk=
+	b=KneBD/nn+uOXow6bfMUb/noYF2qQr2KlqjwwsBExOCoHS+vQnC7KVAYEqdA2L9biO
+	 O41KFdJ0pDXfktEx3GeBQ9qBVRw1NPyQRb+ztVA99PgodNm+MpNecJR7HxaNkVCVtE
+	 DcMy2aKQPjKQ9rNzbkDD4GrNLUyNPyn8vaqygwKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jirong Feng <jirong.feng@easystack.cn>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/473] nvmet: fix nvme status code when namespace is disabled
-Date: Thu,  6 Jun 2024 15:59:52 +0200
-Message-ID: <20240606131701.976032412@linuxfoundation.org>
+Subject: [PATCH 6.6 321/744] drm/bridge: lt8912b: Dont log an error when DSI host cant be found
+Date: Thu,  6 Jun 2024 15:59:53 +0200
+Message-ID: <20240606131742.735046007@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 505363957fad35f7aed9a2b0d8dad73451a80fb5 ]
+[ Upstream commit b3b4695ff47c4964d4ccb930890c9ffd8e455e20 ]
 
-If the user disabled a nvmet namespace, it is removed from the subsystem
-namespaces list. When nvmet processes a command directed to an nsid that
-was disabled, it cannot differentiate between a nsid that is disabled
-vs. a non-existent namespace, and resorts to return NVME_SC_INVALID_NS
-with the dnr bit set.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-This translates to a non-retryable status for the host, which translates
-to a user error. We should expect disabled namespaces to not cause an
-I/O error in a multipath environment.
-
-Address this by searching a configfs item for the namespace nvmet failed
-to find, and if we found one, conclude that the namespace is disabled
-(perhaps temporarily). Return NVME_SC_INTERNAL_PATH_ERROR in this case
-and keep DNR bit cleared.
-
-Reported-by: Jirong Feng <jirong.feng@easystack.cn>
-Tested-by: Jirong Feng <jirong.feng@easystack.cn>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-3-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/configfs.c | 13 +++++++++++++
- drivers/nvme/target/core.c     |  5 ++++-
- drivers/nvme/target/nvmet.h    |  1 +
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
-index 73ae16059a1cb..b1f5fa45bb4ac 100644
---- a/drivers/nvme/target/configfs.c
-+++ b/drivers/nvme/target/configfs.c
-@@ -615,6 +615,19 @@ static struct configfs_attribute *nvmet_ns_attrs[] = {
- 	NULL,
- };
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index e5839c89a355a..0efcbc73f2a43 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -483,10 +483,8 @@ static int lt8912_attach_dsi(struct lt8912 *lt)
+ 						 };
  
-+bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid)
-+{
-+	struct config_item *ns_item;
-+	char name[4] = {};
-+
-+	if (sprintf(name, "%u", nsid) <= 0)
-+		return false;
-+	mutex_lock(&subsys->namespaces_group.cg_subsys->su_mutex);
-+	ns_item = config_group_find_item(&subsys->namespaces_group, name);
-+	mutex_unlock(&subsys->namespaces_group.cg_subsys->su_mutex);
-+	return ns_item != NULL;
-+}
-+
- static void nvmet_ns_release(struct config_item *item)
- {
- 	struct nvmet_ns *ns = to_nvmet_ns(item);
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 3235baf7cc6b1..7b74926c50f9b 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -423,10 +423,13 @@ void nvmet_stop_keep_alive_timer(struct nvmet_ctrl *ctrl)
- u16 nvmet_req_find_ns(struct nvmet_req *req)
- {
- 	u32 nsid = le32_to_cpu(req->cmd->common.nsid);
-+	struct nvmet_subsys *subsys = nvmet_req_subsys(req);
+ 	host = of_find_mipi_dsi_host_by_node(lt->host_node);
+-	if (!host) {
+-		dev_err(dev, "failed to find dsi host\n");
+-		return -EPROBE_DEFER;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
  
--	req->ns = xa_load(&nvmet_req_subsys(req)->namespaces, nsid);
-+	req->ns = xa_load(&subsys->namespaces, nsid);
- 	if (unlikely(!req->ns)) {
- 		req->error_loc = offsetof(struct nvme_common_command, nsid);
-+		if (nvmet_subsys_nsid_exists(subsys, nsid))
-+			return NVME_SC_INTERNAL_PATH_ERROR;
- 		return NVME_SC_INVALID_NS | NVME_SC_DNR;
- 	}
- 
-diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
-index 273cca49a040f..6aee0ce60a4ba 100644
---- a/drivers/nvme/target/nvmet.h
-+++ b/drivers/nvme/target/nvmet.h
-@@ -527,6 +527,7 @@ void nvmet_subsys_disc_changed(struct nvmet_subsys *subsys,
- 		struct nvmet_host *host);
- void nvmet_add_async_event(struct nvmet_ctrl *ctrl, u8 event_type,
- 		u8 event_info, u8 log_page);
-+bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid);
- 
- #define NVMET_QUEUE_SIZE	1024
- #define NVMET_NR_QUEUES		128
+ 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
