@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-49546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159838FEDBC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59FB38FEDBE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8D092850B6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE9CC1F21CEA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0515E1BD4E4;
-	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0232419E7DC;
+	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9WPiU7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHuq3B8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D5C1BD038;
-	Thu,  6 Jun 2024 14:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF62A1BD4ED;
+	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683519; cv=none; b=hQ3ZBZNKti+hvYcLkf3GfQYLHRh3L2FHYjLM1S/CfgmN5BPxeLMpQNdRhZV7KdQk6x8498ny0wwoVCvJTFEOBptfdawMt98L3UB6mD7kQn+D6t3eghLiYYsKKbO4o3PQkFfF7R/1334gA24sjiBT56jouVIh/i6YG76QcfiYZSM=
+	t=1717683520; cv=none; b=da6ob8o7yYoxoKmDaIw/7lvyNOWR6FGzeH94yzgxGCXYOcdKzve4NH2v0l3772NAYnduhJVuYu5TOf7Q4jaMvnioXPA/Y3trXWJ08QEpe2oEtYpRxpLv/p4PumFcG0d/umGAjs3093jqjsp2aK5p5VIHiuJ4kQMrreDS0+iLFPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683519; c=relaxed/simple;
-	bh=qfpTYrCU1kzusS4JPOI/j0gOovaDlQVDQ72wLstATeo=;
+	s=arc-20240116; t=1717683520; c=relaxed/simple;
+	bh=Xevk4ezTq1Zy0L0FxkJbZvALOsmcJXonRHMcSaZrteE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G99Rg/Pr1mavxmyFjUbDVchBc1rIuLo3wOXBYys2knC/pTrNEu8Eb8iYI3T9qBmwTCYcmcKhekgHTORAcRDZtze2/aeomJ9+OsEbrKrAL5kp9eRF9Ci5zyuNAD2ng3UbfAbz1+kAt1qhP3/I51DyG+Q+fvUX40wwr6oCjuAQwlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9WPiU7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9567FC4AF09;
-	Thu,  6 Jun 2024 14:18:39 +0000 (UTC)
+	 MIME-Version; b=BovaV8EQ7TOIQl/npkUN5Ft3FtMjOQsXyll9+PFC+S1OJQGPgo0aiR0itxq0scuIkkyoaMO4z0YhrJfrHTtOZfmcv+57FzIS9JeIIwJWSutcxq916O8ok5G2XM77+JOFDu4jAgIahgnnXN8QvAWDTNClPnkLsCsWw9lDHEFNnJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHuq3B8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCFFC2BD10;
+	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683519;
-	bh=qfpTYrCU1kzusS4JPOI/j0gOovaDlQVDQ72wLstATeo=;
+	s=korg; t=1717683520;
+	bh=Xevk4ezTq1Zy0L0FxkJbZvALOsmcJXonRHMcSaZrteE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q9WPiU7rQnTg3wHiMlU5uvJixUP9RoL+JXb+rxNCtWe4kxG4Xg/GhjgzZidmnA84X
-	 By/EWFAlc2Q17uAbL8utAiOIEQJudvDTOdgfBgCDznWjd10zV1Kmf+b/rXjfCrS//l
-	 Aaf3z8Cs2ZAqad2k+NYfzYFva6QTH0JDDyd/1rfA=
+	b=IHuq3B8MIEYAhpabKYeWsdfq36gC64VkjziQLwUvAdg1z8Fc5ZCl5081JcZsShFjm
+	 ul7V5ZRSokGxaF7qdGpU+VfYgNxxxy5vF7nrK6lAvd4WT7bGx/55bMsHu5okWgs907
+	 Map88OxDpwxDgjCna+dIOUjeo8Hi+voZ3R3oUYGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Billy Jheng Bing-Jhong <billy@starlabs.sg>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 411/473] af_unix: Update unix_sk(sk)->oob_skb under sk_receive_queue lock.
-Date: Thu,  6 Jun 2024 16:05:40 +0200
-Message-ID: <20240606131713.381900011@linuxfoundation.org>
+Subject: [PATCH 6.1 412/473] ipv6: sr: fix memleak in seg6_hmac_init_algo
+Date: Thu,  6 Jun 2024 16:05:41 +0200
+Message-ID: <20240606131713.411468313@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -67,153 +68,123 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 9841991a446c87f90f66f4b9fee6fe934c1336a2 ]
+[ Upstream commit efb9f4f19f8e37fde43dfecebc80292d179f56c6 ]
 
-Billy Jheng Bing-Jhong reported a race between __unix_gc() and
-queue_oob().
+seg6_hmac_init_algo returns without cleaning up the previous allocations
+if one fails, so it's going to leak all that memory and the crypto tfms.
 
-__unix_gc() tries to garbage-collect close()d inflight sockets,
-and then if the socket has MSG_OOB in unix_sk(sk)->oob_skb, GC
-will drop the reference and set NULL to it locklessly.
+Update seg6_hmac_exit to only free the memory when allocated, so we can
+reuse the code directly.
 
-However, the peer socket still can send MSG_OOB message and
-queue_oob() can update unix_sk(sk)->oob_skb concurrently, leading
-NULL pointer dereference. [0]
-
-To fix the issue, let's update unix_sk(sk)->oob_skb under the
-sk_receive_queue's lock and take it everywhere we touch oob_skb.
-
-Note that we defer kfree_skb() in manage_oob() to silence lockdep
-false-positive (See [1]).
-
-[0]:
-BUG: kernel NULL pointer dereference, address: 0000000000000008
- PF: supervisor write access in kernel mode
- PF: error_code(0x0002) - not-present page
-PGD 8000000009f5e067 P4D 8000000009f5e067 PUD 9f5d067 PMD 0
-Oops: 0002 [#1] PREEMPT SMP PTI
-CPU: 3 PID: 50 Comm: kworker/3:1 Not tainted 6.9.0-rc5-00191-gd091e579b864 #110
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-Workqueue: events delayed_fput
-RIP: 0010:skb_dequeue (./include/linux/skbuff.h:2386 ./include/linux/skbuff.h:2402 net/core/skbuff.c:3847)
-Code: 39 e3 74 3e 8b 43 10 48 89 ef 83 e8 01 89 43 10 49 8b 44 24 08 49 c7 44 24 08 00 00 00 00 49 8b 14 24 49 c7 04 24 00 00 00 00 <48> 89 42 08 48 89 10 e8 e7 c5 42 00 4c 89 e0 5b 5d 41 5c c3 cc cc
-RSP: 0018:ffffc900001bfd48 EFLAGS: 00000002
-RAX: 0000000000000000 RBX: ffff8880088f5ae8 RCX: 00000000361289f9
-RDX: 0000000000000000 RSI: 0000000000000206 RDI: ffff8880088f5b00
-RBP: ffff8880088f5b00 R08: 0000000000080000 R09: 0000000000000001
-R10: 0000000000000003 R11: 0000000000000001 R12: ffff8880056b6a00
-R13: ffff8880088f5280 R14: 0000000000000001 R15: ffff8880088f5a80
-FS:  0000000000000000(0000) GS:ffff88807dd80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000008 CR3: 0000000006314000 CR4: 00000000007506f0
-PKRU: 55555554
-Call Trace:
- <TASK>
- unix_release_sock (net/unix/af_unix.c:654)
- unix_release (net/unix/af_unix.c:1050)
- __sock_release (net/socket.c:660)
- sock_close (net/socket.c:1423)
- __fput (fs/file_table.c:423)
- delayed_fput (fs/file_table.c:444 (discriminator 3))
- process_one_work (kernel/workqueue.c:3259)
- worker_thread (kernel/workqueue.c:3329 kernel/workqueue.c:3416)
- kthread (kernel/kthread.c:388)
- ret_from_fork (arch/x86/kernel/process.c:153)
- ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
- </TASK>
-Modules linked in:
-CR2: 0000000000000008
-
-Link: https://lore.kernel.org/netdev/a00d3993-c461-43f2-be6d-07259c98509a@rbox.co/ [1]
-Fixes: 1279f9d9dec2 ("af_unix: Call kfree_skb() for dead unix_(sk)->oob_skb in GC.")
-Reported-by: Billy Jheng Bing-Jhong <billy@starlabs.sg>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240516134835.8332-1-kuniyu@amazon.com
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+Reported-by: Sabrina Dubroca <sd@queasysnail.net>
+Closes: https://lore.kernel.org/netdev/Zj3bh-gE7eT6V6aH@hog/
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20240517005435.2600277-1-liuhangbin@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ net/ipv6/seg6_hmac.c | 42 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 97d22bdfdc73b..c3f66703410e1 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2137,13 +2137,15 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
- 	maybe_add_creds(skb, sock, other);
- 	skb_get(skb);
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index d43c50a7310d6..3c3800223e0e0 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -354,6 +354,7 @@ static int seg6_hmac_init_algo(void)
+ 	struct crypto_shash *tfm;
+ 	struct shash_desc *shash;
+ 	int i, alg_count, cpu;
++	int ret = -ENOMEM;
  
-+	scm_stat_add(other, skb);
-+
-+	spin_lock(&other->sk_receive_queue.lock);
- 	if (ousk->oob_skb)
- 		consume_skb(ousk->oob_skb);
--
- 	WRITE_ONCE(ousk->oob_skb, skb);
-+	__skb_queue_tail(&other->sk_receive_queue, skb);
-+	spin_unlock(&other->sk_receive_queue.lock);
+ 	alg_count = ARRAY_SIZE(hmac_algos);
  
--	scm_stat_add(other, skb);
--	skb_queue_tail(&other->sk_receive_queue, skb);
- 	sk_send_sigurg(other);
- 	unix_state_unlock(other);
- 	other->sk_data_ready(other);
-@@ -2626,8 +2628,10 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
+@@ -364,12 +365,14 @@ static int seg6_hmac_init_algo(void)
+ 		algo = &hmac_algos[i];
+ 		algo->tfms = alloc_percpu(struct crypto_shash *);
+ 		if (!algo->tfms)
+-			return -ENOMEM;
++			goto error_out;
  
- 	mutex_lock(&u->iolock);
- 	unix_state_lock(sk);
-+	spin_lock(&sk->sk_receive_queue.lock);
- 
- 	if (sock_flag(sk, SOCK_URGINLINE) || !u->oob_skb) {
-+		spin_unlock(&sk->sk_receive_queue.lock);
- 		unix_state_unlock(sk);
- 		mutex_unlock(&u->iolock);
- 		return -EINVAL;
-@@ -2639,6 +2643,8 @@ static int unix_stream_recv_urg(struct unix_stream_read_state *state)
- 		WRITE_ONCE(u->oob_skb, NULL);
- 	else
- 		skb_get(oob_skb);
-+
-+	spin_unlock(&sk->sk_receive_queue.lock);
- 	unix_state_unlock(sk);
- 
- 	chunk = state->recv_actor(oob_skb, 0, chunk, state);
-@@ -2667,6 +2673,10 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 		consume_skb(skb);
- 		skb = NULL;
- 	} else {
-+		struct sk_buff *unlinked_skb = NULL;
-+
-+		spin_lock(&sk->sk_receive_queue.lock);
-+
- 		if (skb == u->oob_skb) {
- 			if (copied) {
- 				skb = NULL;
-@@ -2678,13 +2688,19 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 			} else if (flags & MSG_PEEK) {
- 				skb = NULL;
- 			} else {
--				skb_unlink(skb, &sk->sk_receive_queue);
-+				__skb_unlink(skb, &sk->sk_receive_queue);
- 				WRITE_ONCE(u->oob_skb, NULL);
--				if (!WARN_ON_ONCE(skb_unref(skb)))
--					kfree_skb(skb);
-+				unlinked_skb = skb;
- 				skb = skb_peek(&sk->sk_receive_queue);
- 			}
+ 		for_each_possible_cpu(cpu) {
+ 			tfm = crypto_alloc_shash(algo->name, 0, 0);
+-			if (IS_ERR(tfm))
+-				return PTR_ERR(tfm);
++			if (IS_ERR(tfm)) {
++				ret = PTR_ERR(tfm);
++				goto error_out;
++			}
+ 			p_tfm = per_cpu_ptr(algo->tfms, cpu);
+ 			*p_tfm = tfm;
  		}
-+
-+		spin_unlock(&sk->sk_receive_queue.lock);
-+
-+		if (unlinked_skb) {
-+			WARN_ON_ONCE(skb_unref(unlinked_skb));
-+			kfree_skb(unlinked_skb);
-+		}
+@@ -381,18 +384,22 @@ static int seg6_hmac_init_algo(void)
+ 
+ 		algo->shashs = alloc_percpu(struct shash_desc *);
+ 		if (!algo->shashs)
+-			return -ENOMEM;
++			goto error_out;
+ 
+ 		for_each_possible_cpu(cpu) {
+ 			shash = kzalloc_node(shsize, GFP_KERNEL,
+ 					     cpu_to_node(cpu));
+ 			if (!shash)
+-				return -ENOMEM;
++				goto error_out;
+ 			*per_cpu_ptr(algo->shashs, cpu) = shash;
+ 		}
  	}
- 	return skb;
+ 
+ 	return 0;
++
++error_out:
++	seg6_hmac_exit();
++	return ret;
  }
+ 
+ int __init seg6_hmac_init(void)
+@@ -410,22 +417,29 @@ int __net_init seg6_hmac_net_init(struct net *net)
+ void seg6_hmac_exit(void)
+ {
+ 	struct seg6_hmac_algo *algo = NULL;
++	struct crypto_shash *tfm;
++	struct shash_desc *shash;
+ 	int i, alg_count, cpu;
+ 
+ 	alg_count = ARRAY_SIZE(hmac_algos);
+ 	for (i = 0; i < alg_count; i++) {
+ 		algo = &hmac_algos[i];
+-		for_each_possible_cpu(cpu) {
+-			struct crypto_shash *tfm;
+-			struct shash_desc *shash;
+ 
+-			shash = *per_cpu_ptr(algo->shashs, cpu);
+-			kfree(shash);
+-			tfm = *per_cpu_ptr(algo->tfms, cpu);
+-			crypto_free_shash(tfm);
++		if (algo->shashs) {
++			for_each_possible_cpu(cpu) {
++				shash = *per_cpu_ptr(algo->shashs, cpu);
++				kfree(shash);
++			}
++			free_percpu(algo->shashs);
++		}
++
++		if (algo->tfms) {
++			for_each_possible_cpu(cpu) {
++				tfm = *per_cpu_ptr(algo->tfms, cpu);
++				crypto_free_shash(tfm);
++			}
++			free_percpu(algo->tfms);
+ 		}
+-		free_percpu(algo->tfms);
+-		free_percpu(algo->shashs);
+ 	}
+ }
+ EXPORT_SYMBOL(seg6_hmac_exit);
 -- 
 2.43.0
 
