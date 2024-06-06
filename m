@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-49029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A41B8FEB91
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8090E8FE8E8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00C03B215A3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FF3D1C25559
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F8C1AB8E0;
-	Thu,  6 Jun 2024 14:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F531990A2;
+	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIABuE/4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MANauAkj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956E1196DA0;
-	Thu,  6 Jun 2024 14:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE74F196C8D;
+	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683265; cv=none; b=bcpoN26A/Ri9b+vVPUTauSHuTgfOeGXi7zXqd3UtDyCdkYTUgUJmPhGDUceNOkwDXca0Sfoltdx3xxWXB6L1tJjWWa4nvqXrTeK40sjr1lHyxAEmKfiGwr9MR1FA0hj2vhsjWhdPKmUTXRhKZp3SSDMWC9gA/GqcgKLEBOhU9ZM=
+	t=1717682949; cv=none; b=m05itrxL/kKZwSRtmmyPLviyW+xCeeArFqU5bvHVwSfVWvh156cs/qm5apApPHJVRrif9xdPj/HuVxj60nGN7s3QNB6wyVFaKZjbQI7TYwZepzWl0TUYFZbay63kqzoVnQmCPEiU1PJ8rCKeOjf0ryss1BPI7Sole6VipwgrAxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683265; c=relaxed/simple;
-	bh=7M98OYLkhfudewC17PI9j41aSSkhMnvpxn1EnUz8xCc=;
+	s=arc-20240116; t=1717682949; c=relaxed/simple;
+	bh=VId0kwqDIYkXhFNxKId0L3tA3FyknH8JXNe1wNgOPUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udZyf4fKzevso/L89ArSTbG6B6OIj3R2QRmG7V/UHt+vhH8FfuSN+HzoOHwg6uTlWMfW9oQJvIFLzg0ApVP4XaZ3Uri+G0FYZbgXu916Zi06JvZ3FNDSaXDrRhuhkolrtUXkf0VGTo4/qZd3FD1mlEo1yQuoV98MwcIFgfxIzYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIABuE/4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73096C32782;
-	Thu,  6 Jun 2024 14:14:25 +0000 (UTC)
+	 MIME-Version; b=hvX6WquCRg5PaL/jh5ay70CK6SGGLNYgvJQQPd/pGHYERHBAja0duG2SE+SPTmQoqeeOdAFDQFWEEJ1z5flNrAhMjfs720lWR0QdIkMgIZJaYuPcy1Hhq/u+6x9ZfixImAFvIviI2iLeuryN9G2XEUyjjg9Yv98HfgFsaZS3h7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MANauAkj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB52C2BD10;
+	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683265;
-	bh=7M98OYLkhfudewC17PI9j41aSSkhMnvpxn1EnUz8xCc=;
+	s=korg; t=1717682949;
+	bh=VId0kwqDIYkXhFNxKId0L3tA3FyknH8JXNe1wNgOPUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pIABuE/4qsvRPB9yJzGf2lwyByRb85sfmY3+qVZxfMc+ZXf6CxGnBXxf+ENwPrN+L
-	 aLyZZs4ORrgH1f3iEZo8UVKKcr/5L/tsoZDesj5no6o07yIS+1jsDPILAXjxVIPqbx
-	 OVJIlm+V1QX59psgQvXr1U7gK8pRPjeIefxNdHvE=
+	b=MANauAkj2A3bg1rl2qGk9kkchFvHoJu3axlg5u/arrUvAOXgB1KpTw/5sIA4MNLK9
+	 dIxa4m8GP3+C7T8k5nNfEFp7kRgLVCDBPILBZvYuLLgy/P3fFEUEkdRzJEGXCRFK7T
+	 /LGiRGS0bL/rr+URmX57MKzM9SI8bRmLt/Eqb004=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	David Collins <quic_collinsd@quicinc.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/473] macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"
+Subject: [PATCH 6.9 095/374] spmi: pmic-arb: Replace three IS_ERR() calls by null pointer checks in spmi_pmic_arb_probe()
 Date: Thu,  6 Jun 2024 16:01:14 +0200
-Message-ID: <20240606131704.741583097@linuxfoundation.org>
+Message-ID: <20240606131655.083232675@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit d301a71c76ee4c384b4e03cdc320a55f5cf1df05 ]
+[ Upstream commit c86f90e30a347ef0a28d0df3975c46389d0cc7fc ]
 
-The via-macii ADB driver calls request_irq() after disabling hard
-interrupts. But disabling interrupts isn't necessary here because the
-VIA shift register interrupt was masked during VIA1 initialization.
+The devm_ioremap() function does not return error pointers.
+It returns NULL on error.
+This issue was detected once more also by using the Coccinelle software.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/419fcc09d0e563b425c419053d02236b044d86b0.1710298421.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Update three checks (and corresponding error codes) for failed
+function calls accordingly.
+
+Fixes: ffdfbafdc4f4 ("spmi: Use devm_spmi_controller_alloc()")
+Fixes: 231601cd22bd ("spmi: pmic-arb: Add support for PMIC v7")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Link: https://lore.kernel.org/r/82a0768e-95b0-4091-bdd1-14c3e893726b@web.de
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: David Collins <quic_collinsd@quicinc.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240507210809.3479953-6-sboyd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/via-macii.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/spmi/spmi-pmic-arb.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
-index db9270da5b8e9..b6ddf1d47cb4e 100644
---- a/drivers/macintosh/via-macii.c
-+++ b/drivers/macintosh/via-macii.c
-@@ -140,24 +140,19 @@ static int macii_probe(void)
- /* Initialize the driver */
- static int macii_init(void)
- {
--	unsigned long flags;
- 	int err;
+diff --git a/drivers/spmi/spmi-pmic-arb.c b/drivers/spmi/spmi-pmic-arb.c
+index 9ed1180fe31f1..937c15324513f 100644
+--- a/drivers/spmi/spmi-pmic-arb.c
++++ b/drivers/spmi/spmi-pmic-arb.c
+@@ -1462,8 +1462,8 @@ static int spmi_pmic_arb_probe(struct platform_device *pdev)
+ 	 */
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "core");
+ 	core = devm_ioremap(&ctrl->dev, res->start, resource_size(res));
+-	if (IS_ERR(core))
+-		return PTR_ERR(core);
++	if (!core)
++		return -ENOMEM;
  
--	local_irq_save(flags);
--
- 	err = macii_init_via();
- 	if (err)
--		goto out;
-+		return err;
+ 	pmic_arb->core_size = resource_size(res);
  
- 	err = request_irq(IRQ_MAC_ADB, macii_interrupt, 0, "ADB",
- 			  macii_interrupt);
- 	if (err)
--		goto out;
-+		return err;
+@@ -1495,15 +1495,15 @@ static int spmi_pmic_arb_probe(struct platform_device *pdev)
+ 						   "obsrvr");
+ 		pmic_arb->rd_base = devm_ioremap(&ctrl->dev, res->start,
+ 						 resource_size(res));
+-		if (IS_ERR(pmic_arb->rd_base))
+-			return PTR_ERR(pmic_arb->rd_base);
++		if (!pmic_arb->rd_base)
++			return -ENOMEM;
  
- 	macii_state = idle;
--out:
--	local_irq_restore(flags);
--	return err;
-+	return 0;
- }
+ 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+ 						   "chnls");
+ 		pmic_arb->wr_base = devm_ioremap(&ctrl->dev, res->start,
+ 						 resource_size(res));
+-		if (IS_ERR(pmic_arb->wr_base))
+-			return PTR_ERR(pmic_arb->wr_base);
++		if (!pmic_arb->wr_base)
++			return -ENOMEM;
+ 	}
  
- /* initialize the hardware */
+ 	pmic_arb->max_periphs = PMIC_ARB_MAX_PERIPHS;
 -- 
 2.43.0
 
