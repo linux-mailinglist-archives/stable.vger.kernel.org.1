@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-48387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9048FE8CF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 922798FEB87
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C219B22B38
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E806B21482
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E72B198A3D;
-	Thu,  6 Jun 2024 14:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29FE1AB52D;
+	Thu,  6 Jun 2024 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1CTbGBx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHIH+hci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED56C196C7B;
-	Thu,  6 Jun 2024 14:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19FB199EBD;
+	Thu,  6 Jun 2024 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682936; cv=none; b=mbHh0slIUQUwxIRm12TcAQhjW+w2pucKfunkeZHhQgr048cct5jrybFVLb0uxnHNLuah4uZHvsSpu+9KJd1YqcZubmajjqM7w4/gZqXBRDPLDD+591ddzwSBuxg/lzq3oL53P4d//PvJQ3ArJ8DLkoaMrRb/MrxVpKT1Y/FpSU4=
+	t=1717683261; cv=none; b=hVhFZLFUYgxDuWhcq4rr4Md4U718DjeNlLSQtKl75ZwSRRPx1uLRBU65kY7lYso2DPj38qC2lM+g2/G3CIGTug4vEouhXzTJ6zVlIYh+IYP0TNYckHnacz1E5sY+X2qwrghgyruvcmAEU/fVOHz9gvYJXfYh8z9H+EZLqqr2RVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682936; c=relaxed/simple;
-	bh=AP3y9V+8LIc5t05JYybUzYyIAmU0Buse3t2gqyBhuFA=;
+	s=arc-20240116; t=1717683261; c=relaxed/simple;
+	bh=yaeSxjjoN6CVE3uFIEG2/n7wIpSVPX56J8+e9cxEjRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTeanTOI5hsEE9vwdNYQzigp1ix4O4DpUxMpg6auPg34U5HNwQu7IqP+zKz+JjtcSUIzrqrpk362LKR3yBKtmU86l9/C2tfuJIEmycjnWI5dMtcvS3dNPtcGKAXG/vhWQNF3skvrLb+uwRs+dOvj831ixyeUw5B8cTmvA1QjBn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1CTbGBx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ADFC2BD10;
-	Thu,  6 Jun 2024 14:08:55 +0000 (UTC)
+	 MIME-Version; b=A4CxJ0Pa0FiHvB/b/h16gEl8W4vIbaKeVZ6ZIN8tRerjSQjjqUjyBUdsCGj6GwdY5XpeNo8H4VBvJZz4jl/NGr5K7nFAm9OvkVnH/CzjJNOdBepkpozTmO4XgA7bVaL/U0XFCQdbFCNy3xRxAxt6PHL/SUCZwq3a9zneNBOPyag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHIH+hci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9A4C32781;
+	Thu,  6 Jun 2024 14:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682935;
-	bh=AP3y9V+8LIc5t05JYybUzYyIAmU0Buse3t2gqyBhuFA=;
+	s=korg; t=1717683261;
+	bh=yaeSxjjoN6CVE3uFIEG2/n7wIpSVPX56J8+e9cxEjRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1CTbGBxfs4osDRQJLcl/iOdTy2QQTqS2+kY2xI2iEsV8qnCKKJH0AYw2Nf3h6yyJ
-	 59GprPITLkUTBS4/KmaljjdC9mQewdV9H0QkJ9DYTD6AVTpAT+tDnCp8SURY2XvL6r
-	 VN+UywCsW34Usa47s96sM7MUwUg5HWgtN95LzvAA=
+	b=mHIH+hcisOO63TLeSsotDkA6xar302AhtZfVvC5P0t6Qp1Hs/GcckE/d6pz3MtuyO
+	 ubYOUBjbX9UMs9KmMrfhilxYQm6+VYZk84T0PxgCFd1bRQWvAZLBPIt9M+alGsC1sP
+	 qec4BABPl5nEfk2AhrkMxARpV04g2bMqJ5ryvRLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wulff <chris.wulff@biamp.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 086/374] usb: gadget: u_audio: Clear uac pointer when freed.
-Date: Thu,  6 Jun 2024 16:01:05 +0200
-Message-ID: <20240606131654.764313481@linuxfoundation.org>
+Subject: [PATCH 6.1 137/473] tcp: avoid premature drops in tcp_add_backlog()
+Date: Thu,  6 Jun 2024 16:01:06 +0200
+Message-ID: <20240606131704.458524233@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wulff <Chris.Wulff@biamp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a2cf936ebef291ef7395172b9e2f624779fb6dc0 ]
+[ Upstream commit ec00ed472bdb7d0af840da68c8c11bff9f4d9caa ]
 
-This prevents use of a stale pointer if functions are called after
-g_cleanup that shouldn't be. This doesn't fix any races, but converts
-a possibly silent kernel memory corruption into an obvious NULL pointer
-dereference report.
+While testing TCP performance with latest trees,
+I saw suspect SOCKET_BACKLOG drops.
 
-Fixes: eb9fecb9e69b ("usb: gadget: f_uac2: split out audio core")
-Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
-Link: https://lore.kernel.org/stable/CO1PR17MB54194226DA08BFC9EBD8C163E1172%40CO1PR17MB5419.namprd17.prod.outlook.com
-Link: https://lore.kernel.org/r/CO1PR17MB54194226DA08BFC9EBD8C163E1172@CO1PR17MB5419.namprd17.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+tcp_add_backlog() computes its limit with :
+
+    limit = (u32)READ_ONCE(sk->sk_rcvbuf) +
+            (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
+    limit += 64 * 1024;
+
+This does not take into account that sk->sk_backlog.len
+is reset only at the very end of __release_sock().
+
+Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
+sk_rcvbuf in normal conditions.
+
+We should double sk->sk_rcvbuf contribution in the formula
+to absorb bubbles in the backlog, which happen more often
+for very fast flows.
+
+This change maintains decent protection against abuses.
+
+Fixes: c377411f2494 ("net: sk_add_backlog() take rmem_alloc into account")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240423125620.3309458-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_audio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp_ipv4.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/function/u_audio.c
-index c8e8154c59f50..ec1dceb087293 100644
---- a/drivers/usb/gadget/function/u_audio.c
-+++ b/drivers/usb/gadget/function/u_audio.c
-@@ -1419,6 +1419,8 @@ void g_audio_cleanup(struct g_audio *g_audio)
- 		return;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 5dcb969cb5e9c..befa848fb820c 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1771,7 +1771,7 @@ int tcp_v4_early_demux(struct sk_buff *skb)
+ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
+ 		     enum skb_drop_reason *reason)
+ {
+-	u32 limit, tail_gso_size, tail_gso_segs;
++	u32 tail_gso_size, tail_gso_segs;
+ 	struct skb_shared_info *shinfo;
+ 	const struct tcphdr *th;
+ 	struct tcphdr *thtail;
+@@ -1780,6 +1780,7 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
+ 	bool fragstolen;
+ 	u32 gso_segs;
+ 	u32 gso_size;
++	u64 limit;
+ 	int delta;
  
- 	uac = g_audio->uac;
-+	g_audio->uac = NULL;
+ 	/* In case all data was pulled from skb frags (in __pskb_pull_tail()),
+@@ -1877,7 +1878,13 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
+ 	__skb_push(skb, hdrlen);
+ 
+ no_coalesce:
+-	limit = (u32)READ_ONCE(sk->sk_rcvbuf) + (u32)(READ_ONCE(sk->sk_sndbuf) >> 1);
++	/* sk->sk_backlog.len is reset only at the end of __release_sock().
++	 * Both sk->sk_backlog.len and sk->sk_rmem_alloc could reach
++	 * sk_rcvbuf in normal conditions.
++	 */
++	limit = ((u64)READ_ONCE(sk->sk_rcvbuf)) << 1;
 +
- 	card = uac->card;
- 	if (card)
- 		snd_card_free_when_closed(card);
++	limit += ((u32)READ_ONCE(sk->sk_sndbuf)) >> 1;
+ 
+ 	/* Only socket owner can try to collapse/prune rx queues
+ 	 * to reduce memory overhead, so add a little headroom here.
+@@ -1885,6 +1892,8 @@ bool tcp_add_backlog(struct sock *sk, struct sk_buff *skb,
+ 	 */
+ 	limit += 64 * 1024;
+ 
++	limit = min_t(u64, limit, UINT_MAX);
++
+ 	if (unlikely(sk_add_backlog(sk, skb, limit))) {
+ 		bh_unlock_sock(sk);
+ 		*reason = SKB_DROP_REASON_SOCKET_BACKLOG;
 -- 
 2.43.0
 
