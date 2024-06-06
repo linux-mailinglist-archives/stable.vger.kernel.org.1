@@ -1,150 +1,186 @@
-Return-Path: <stable+bounces-48307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F348FE81C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:45:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 836E28FE81A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:44:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AF981C25F58
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 13:45:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE6E2B24566
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 13:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD6A19643D;
-	Thu,  6 Jun 2024 13:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EADF1850B6;
+	Thu,  6 Jun 2024 13:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="NMDHs2n4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eFAnytJw"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD58195B10
-	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 13:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C5419642D;
+	Thu,  6 Jun 2024 13:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717681493; cv=none; b=Lq+dFWKcuQSZvvFhYvxzBVCX+tF0tQ/4Qzyd/3iLgkrl6ux2CsBJpFHr5fUM2ggAjCSElNZmVdUPcfj4bGT9bNKkj8nIO6dYcv5dScPFTgz4w97Lifhmf7Ig+fF5K648M7Hg+oq/WaNajfb8Swn1OXHydu3ed6/Zek5UYgMCCmk=
+	t=1717681482; cv=none; b=QexpgPx3vB0iOHA4oZZfv7dwZn+aFLbqv7+XJP6WSCkvSn0vI2PMlX6UGlQn7zfIn0ZV3lirzTbU6sAVazp7zj8A61yMjyYcS+TvY+5ZMnmPO0yMSPuB9opJchTGztrt6dxKw3jOr5pYwgZJB6zHCy3ss2xy8XyKMxIG/0/z+zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717681493; c=relaxed/simple;
-	bh=W70RagmsDGgtPDu/aaHWY/Mb0j+9B+i6xVMyeXyvsjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isM0uq4Rwbi7sZ/o/3HMg72nz/b2DczwuF41O1WOLm/UJVLzi/6LFqcrj5soR08Y4EYtFs3U90tRtN7uzY4Dc+0XnGEnA7rCkGXuIgCLIY3OBnRRfBjVtPMD0BbwHZPX996Kiabi5PfENuzFY1KDL1j00q0cr2nM6W5zr6F52cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=NMDHs2n4; arc=none smtp.client-ip=212.227.126.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1717681468; x=1718286268; i=christian@heusel.eu;
-	bh=4TqXY4gy1E4TcZhTqo5vaPWzo6u3lyaqch1eF7C89Zg=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=NMDHs2n4KEPCmKEE65Ot4Rsy0pqHg4nE8vZbpAWH9lNMnX9wVs4HRcQy05FcUmjF
-	 yNlcd4261A7kzFC8SjZwEe+ciAKYVaSLUtNVf1ylWJycytHbI9wcSevG1X0wUXn3D
-	 z4JvR71MczIz6A0nE5sOAiSi5B2HJHdi78m8Od0dhmBKNiaPSYt3YkxkioKczcxXh
-	 XsVu19dZKjQZNKVoACHVs7ALmXK61WnVvuUBkNcZzE88dTFqbAvUCuidM0XGSsVvF
-	 zw+2Pn2sFPxsleaqV0cs89AFqGaSBhM6zdx6xxCk7TGkwZJVIMVg6WIyJdrPBSkDI
-	 tHn5fyQbk7D4TLGlEw==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from meterpeter.chris.vpn.heusel.eu ([141.70.80.5]) by
- mrelayeu.kundenserver.de (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MUGyh-1rp7yZ1xlT-00KvfM; Thu, 06 Jun 2024 15:44:28 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Tim Teichmann <teichmanntim@outlook.de>,
-	Christian Heusel <christian@heusel.eu>,
-	Borislav Petkov <bp@alien8.de>
-Subject: [PATCH] x86/topology/amd: Evaluate SMT in CPUID leaf 0x8000001e only on family 0x17 and greater
-Date: Thu,  6 Jun 2024 15:44:07 +0200
-Message-ID: <20240606134407.4333-1-christian@heusel.eu>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024060624-platinum-ladies-9214@gregkh>
-References: <2024060624-platinum-ladies-9214@gregkh>
+	s=arc-20240116; t=1717681482; c=relaxed/simple;
+	bh=lq7yE7QHdLhqmzRBDqpM7MNtwj4dP5zB26YYW2zA/rQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M7uU4wXHwRt2xFBMX5vmux1tjpj3fVh0vfTQFdDeC3bk5GRvvEbq7KHj882IOGFgjx7xZ4o7fEjrrL5ol3/huEf25lCEWmdkOMs5zbl3956+lPJc/hNua2u6/HfFdSymyoMMy5hOIYyPyYiQJLGPoO9GzpRUYpxhEf/y0VbkJxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eFAnytJw; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717681480; x=1749217480;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lq7yE7QHdLhqmzRBDqpM7MNtwj4dP5zB26YYW2zA/rQ=;
+  b=eFAnytJwViFYBS6xqugBZZ4NW7ce1E3xJSkT2nAEH/Pv58fSQspngDAy
+   ek1DnWXbCGv8T9xtciJD2uQUlNuA6WFtZ03u03Br18BX0GXAvP/eJETT/
+   Spa4soie6t57+Pg0F5LslA5WQ9gPkiyKtig2+FHfTi8XqQvFyW6IXJ0N0
+   U31MlIAHxW9m86mqdyEJXNDG+EH0mPcrMOGjY8/mDxiu14ebla5y0L6v/
+   jeHwXlXan/ZQo9AUWbxY4WoWgMRJ7aZpueAvKu7+3PEC38KtyrgAld/zD
+   NC9B4/10iRxszpB7JIAI490nUEl1zDS7wWYu071624ErYt9z+5Z6IdvXc
+   A==;
+X-CSE-ConnectionGUID: coc32HTHQqKI2I1e4Zq/ww==
+X-CSE-MsgGUID: UHgnPOujRTWlHPQ8+OPt2Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25004528"
+X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
+   d="scan'208";a="25004528"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 06:44:39 -0700
+X-CSE-ConnectionGUID: GLottgdCSheTmgjT8VIBnA==
+X-CSE-MsgGUID: AtEl53KdR3WXtdiwM29u/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
+   d="scan'208";a="37977429"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 06:44:39 -0700
+Received: from [10.212.72.92] (kliang2-mobl1.ccr.corp.intel.com [10.212.72.92])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by linux.intel.com (Postfix) with ESMTPS id AEF5F20B5703;
+	Thu,  6 Jun 2024 06:44:37 -0700 (PDT)
+Message-ID: <31ec235a-70f6-435b-b99b-5d59f4989ba6@linux.intel.com>
+Date: Thu, 6 Jun 2024 09:44:36 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tfdTK9TbXL/4Jd+V/6yGK2PVc5p0Q65g5KGq1KzWIbwEpbehHee
- MiNEVNCadI/AqFXvs+cIPx89hMfgwGSiP/VFeWZ+vkeR8NjdkCkUdmvzFGtCXe0axw0ybjz
- rlOk3U7c12DPI2AX7V2+ivE463MvoL6saKWIAACko9GPvZr/KMmGAmpiZqQ5TX8UcCSNKE4
- xUodZeWhUv6c/nWQTpr+Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:zLxrzGtCbgg=;WB+U1y9GgeKmuT0FeL3k6PieDX7
- PImbvr1KZBTfrB8BlWLB+xYyax7oUiv6hJhhMsbrYrjY4YifPtZAY09tlSh4dUIUR/053ufJ4
- P/L97xFr23TBiKi0eefAxRST40dyvDXieOx7z4Ro/V1+cB856OoqEEoD6u0tlgAKVTaL9h7JC
- 3xr5bGUmzeKzEJNFIA5GYTLdZAIME4gQnyCppBn8gsbdak4US7F61njJ82sf1KCI4ELjgC0pV
- SHyAjs+43+6i1Z/6xnIK/+exLQeGBrE57/cd219UZwfdSzcoksj9mDo0MGGjXfSYCL6CjRS3u
- 32n5SPUPuBivrmfFVo+A9deswRCMetHI0k9fn0IMv7s1tGgZh7Iu3UktsS/rMha6rAPPP76+u
- r4eVvxM0MlGKvztNLBWuGZPKVECQMTPeJO3xTNSjitBBfTf8R6pWMvBfNEhPSQyDfaqmXPggL
- 1Ylwd15bONZ2Inpt51W7Am0gPIGLID2etXAFX776VpeGyxTtPSegA6YCTSA749WLCvdqql92C
- Uc3ZjHkNmXJLotqe1rIZWUZb+mjzRcVoXtDKzitnpa/cMFQP1lGgIVmq/aLQPkxbthPaw/4At
- kEApZTH0cxvxqqUyIjwPmPKrCZd0Wc+Sc0A7hI+qlm2cYV4QE42T5noMmdS5U6ZNfhjFKFa7l
- 7BEv+/9QCI/CY1mTLhwZwSKpsdSYGsZJaV+m3M4WMht28w5D51BXVRhiFc8G5SkXWaE85BfIu
- Z8QKzG+3UxZ/ES0abaQ1HjImKvyxKaiRYlzpu3sthDfamtR4p1gEzI=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf stat: Fix the hard-coded metrics calculation on the
+ hybrid
+To: Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>
+Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+ linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Khalil, Amiri" <amiri.khalil@intel.com>, stable@vger.kernel.org
+References: <20240605160848.4116061-1-kan.liang@linux.intel.com>
+ <CAP-5=fV+-ytA2st17Ar-jQ5xYqrWtxnF2TcADKrC5WoPyKz4wQ@mail.gmail.com>
+ <CAM9d7cjuHYDMvcq10ZD=3LSmia4WcvAzsme89B-odHYBAZzWYg@mail.gmail.com>
+Content-Language: en-US
+From: "Liang, Kan" <kan.liang@linux.intel.com>
+In-Reply-To: <CAM9d7cjuHYDMvcq10ZD=3LSmia4WcvAzsme89B-odHYBAZzWYg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Thomas Gleixner <tglx@linutronix.de>
 
-The new AMD/HYGON topology parser evaluates the SMT information in CPUID l=
-eaf
-0x8000001e unconditionally while the original code restricted it to CPUs w=
-ith
-family 0x17 and greater.
 
-This breaks family 0x15 CPUs which advertise that leaf and have a non-zero
-value in the SMT section. The machine boots, but the scheduler complains l=
-oudly
-about the mismatch of the core IDs:
+On 2024-06-06 3:34 a.m., Namhyung Kim wrote:
+> On Wed, Jun 5, 2024 at 10:21 AM Ian Rogers <irogers@google.com> wrote:
+>>
+>> On Wed, Jun 5, 2024 at 9:10 AM <kan.liang@linux.intel.com> wrote:
+>>>
+>>> From: Kan Liang <kan.liang@linux.intel.com>
+>>>
+>>> The hard-coded metrics is wrongly calculated on the hybrid machine.
+>>>
+>>> $ perf stat -e cycles,instructions -a sleep 1
+>>>
+>>>  Performance counter stats for 'system wide':
+>>>
+>>>         18,205,487      cpu_atom/cycles/
+>>>          9,733,603      cpu_core/cycles/
+>>>          9,423,111      cpu_atom/instructions/     #  0.52  insn per cycle
+>>>          4,268,965      cpu_core/instructions/     #  0.23  insn per cycle
+>>>
+>>> The insn per cycle for cpu_core should be 4,268,965 / 9,733,603 = 0.44.
+>>>
+>>> When finding the metric events, the find_stat() doesn't take the PMU
+>>> type into account. The cpu_atom/cycles/ is wrongly used to calculate
+>>> the IPC of the cpu_core.
+>>>
+>>> Fixes: 0a57b910807a ("perf stat: Use counts rather than saved_value")
+>>> Reported-by: "Khalil, Amiri" <amiri.khalil@intel.com>
+>>> Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+>>
+>> Reviewed-by: Ian Rogers <irogers@google.com>
+>>
+>> Thanks,
+>> Ian
+>>
+>>> Cc: stable@vger.kernel.org
+>>> ---
+>>>  tools/perf/util/stat-shadow.c | 4 ++++
+>>>  1 file changed, 4 insertions(+)
+>>>
+>>> diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+>>> index 3466aa952442..4d0edc061f1a 100644
+>>> --- a/tools/perf/util/stat-shadow.c
+>>> +++ b/tools/perf/util/stat-shadow.c
+>>> @@ -176,6 +176,10 @@ static double find_stat(const struct evsel *evsel, int aggr_idx, enum stat_type
+>>>                 if (type != evsel__stat_type(cur))
+>>>                         continue;
+>>>
+>>> +               /* Ignore if not the PMU we're looking for. */
+>>> +               if (evsel->pmu != cur->pmu)
+>>> +                       continue;
+> 
+> Hmm.. Don't some metrics need events from different PMU?
+> Like cycles per sec or branch instructions per sec..
+>
 
-  WARNING: CPU: 1 PID: 0 at kernel/sched/core.c:6482 sched_cpu_starting+0x=
-183/0x250
-  WARNING: CPU: 0 PID: 1 at kernel/sched/topology.c:2408 build_sched_domai=
-ns+0x76b/0x12b0
+Right.
 
-Add the condition back to cure it.
+In the hard-coded metrics, the events from a different PMU are
+SW_CPU_CLOCK and SW_TASK_CLOCK. They both have the stat type,
+STAT_NSECS. Perf should ignore the PMU checking for the type as below.
+I will send a V2 to fix it.
 
-  [ bp: Make it actually build because grandpa is not concerned with
-    trivial stuff. :-P ]
+diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+index 3466aa952442..d01335f18808 100644
+--- a/tools/perf/util/stat-shadow.c
++++ b/tools/perf/util/stat-shadow.c
+@@ -176,6 +176,9 @@ static double find_stat(const struct evsel *evsel,
+int aggr_idx, enum stat_type
+		if (type != evsel__stat_type(cur))
+			continue;
 
-Fixes: f7fb3b2dd92c ("x86/cpu: Provide an AMD/HYGON specific topology pars=
-er")
-Closes: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/=
-issues/56
-Reported-by: Tim Teichmann <teichmanntim@outlook.de>
-Reported-by: Christian Heusel <christian@heusel.eu>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Tim Teichmann <teichmanntim@outlook.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/7skhx6mwe4hxiul64v6azhlxnokheorksqsdbp7qw6=
-g2jduf6c@7b5pvomauugk
-(cherry picked from commit 34bf6bae3286a58762711cfbce2cf74ecd42e1b5)
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-=2D--
- arch/x86/kernel/cpu/topology_amd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
++		if ((type != STAT_NSECS) && (evsel->pmu != cur->pmu))
++			continue;
++
+		aggr = &cur->stats->aggr[aggr_idx];
+		if (type == STAT_NSECS)
+			return aggr->counts.val;
 
-diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topo=
-logy_amd.c
-index ce2d507c3b07..5ee6373d4d92 100644
-=2D-- a/arch/x86/kernel/cpu/topology_amd.c
-+++ b/arch/x86/kernel/cpu/topology_amd.c
-@@ -84,9 +84,9 @@ static bool parse_8000_001e(struct topo_scan *tscan, boo=
-l has_0xb)
 
- 	/*
- 	 * If leaf 0xb is available, then the domain shifts are set
--	 * already and nothing to do here.
-+	 * already and nothing to do here. Only valid for family >=3D 0x17.
- 	 */
--	if (!has_0xb) {
-+	if (!has_0xb && tscan->c->x86 >=3D 0x17) {
- 		/*
- 		 * Leaf 0x80000008 set the CORE domain shift already.
- 		 * Update the SMT domain, but do not propagate it.
-=2D-
-2.45.2
+Thanks,
+Kan
 
+> Thanks,
+> Namhyung
+> 
+> 
+>>> +
+>>>                 aggr = &cur->stats->aggr[aggr_idx];
+>>>                 if (type == STAT_NSECS)
+>>>                         return aggr->counts.val;
+>>> --
+>>> 2.35.1
+>>>
+> 
 
