@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-48968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C6F08FEB4F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205F38FE8AD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 811B51C23D71
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B36731F24309
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48341A3BA7;
-	Thu,  6 Jun 2024 14:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C450197A83;
+	Thu,  6 Jun 2024 14:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBR87o3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awYMBZ3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C8F1993AE;
-	Thu,  6 Jun 2024 14:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF334197A82;
+	Thu,  6 Jun 2024 14:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683235; cv=none; b=eqph8bpg056pDepOtHg/4hr2Vd4i7PISVna5NZ8t52urLoIXc1hdTYtSOFG1pB2qlRnBNADoPeP8jJolR/CORnJLCDb2XtvrUTvDPttv2RErpV3SPOtw6uQ4X7tJ9HGRJlPUQTYvw8sg1Q+AifeU/i+FD9Vhepthoedul/++pRw=
+	t=1717682922; cv=none; b=L0cP/XgkNeWuxC04BUlQbrybmMhsXtVaPXDs4W5dxSijOocQ7AmZP8ZrMdEbKodA1FX4wSSibiOCbrj006XuV+9dOnqFsDy9NR4ZzKF0lQ1Yn40qoc8DpeuKPxfdjJlKuSGF4OxKbXG6Cu1adD1MEPsfZaJvpJXPT8GW4PjDidw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683235; c=relaxed/simple;
-	bh=s1raG3BH/Pu5PRvp8spqtN/YJIULFZH5MRlNwdwWejQ=;
+	s=arc-20240116; t=1717682922; c=relaxed/simple;
+	bh=TolCHHkDrSuc79rRsUo0SvmU6OzL0JBBKmoz/SjdvzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8PcZa7sDjHvKXILzls267Lr7Mx7Lar2RfaihUeNPjAn8+aOlvffUD6xyEzhYaRJhX4ewOmDbuIPdLtwAzGRjH5Wqc2nS0vXKnjXSXheCCZTrrE62ODdmoXz9dtMBJbBfgibMYmKrvSLczl+wUeYzQCzQgp0MnQ8lge1NvPr0Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBR87o3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85005C2BD10;
-	Thu,  6 Jun 2024 14:13:55 +0000 (UTC)
+	 MIME-Version; b=ZNxCp/b0tJYLSNyK2OTI09GBuL6uTpVIEuAGr3tDmOBqMMxbEF25aT3Sv6m7z+K6FZ7yJnwo5ryLoyYJy5o3qGOjozeLF6DW8zye6C/WyM0Krs4CEUSbtrJXbnSPiufc/JqkHsKGj2rnfLasU7Zhx9vDcf3hxXpH7w2jMrTpMKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awYMBZ3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C966C2BD10;
+	Thu,  6 Jun 2024 14:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683235;
-	bh=s1raG3BH/Pu5PRvp8spqtN/YJIULFZH5MRlNwdwWejQ=;
+	s=korg; t=1717682922;
+	bh=TolCHHkDrSuc79rRsUo0SvmU6OzL0JBBKmoz/SjdvzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hBR87o3yUcNcAIa5ohE1b3UGy8WjJSahursv4ngrVWTomx+KJ3DHX5qQ/Gdi/JAqB
-	 kAdLbyX5qbekx5ppLFO50s7eA8LNk/2jY5/qz9II+59s6CvS7RHykPcdy4mhe0TrWV
-	 5fjYPDQHX8M4R+eft64PhmAhuOLzBzZkqVguuui0=
+	b=awYMBZ3oGETnfPh889mxOJ+t0BebB0eCZhjsxTm+EmLGPzpA7f0MdToPcGmFQEi9A
+	 8/DbO/ESJH0DcbkRJxZdym6g3C7k/yNtuUINdYAN+ckuP4FPsjBcNUQ/M0krJCNjFY
+	 TCOjHufnO+2ovmAXn9wcWGbd2f3PSaCkQxmk5qJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/473] irqchip/alpine-msi: Fix off-by-one in allocation error path
+Subject: [PATCH 6.9 063/374] microblaze: Remove gcc flag for non existing early_printk.c file
 Date: Thu,  6 Jun 2024 16:00:42 +0200
-Message-ID: <20240606131703.671441339@linuxfoundation.org>
+Message-ID: <20240606131653.963835867@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenghui Yu <yuzenghui@huawei.com>
+From: Michal Simek <michal.simek@amd.com>
 
-[ Upstream commit ff3669a71afa06208de58d6bea1cc49d5e3fcbd1 ]
+[ Upstream commit edc66cf0c4164aa3daf6cc55e970bb94383a6a57 ]
 
-When alpine_msix_gic_domain_alloc() fails, there is an off-by-one in the
-number of interrupts to be freed.
+early_printk support for removed long time ago but compilation flag for
+ftrace still points to already removed file that's why remove that line
+too.
 
-Fix it by passing the number of successfully allocated interrupts, instead
-of the relative index of the last allocated one.
-
-Fixes: 3841245e8498 ("irqchip/alpine-msi: Fix freeing of interrupts on allocation error path")
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240327142305.1048-1-yuzenghui@huawei.com
+Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/5493467419cd2510a32854e2807bcd263de981a0.1712823702.git.michal.simek@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-alpine-msi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/microblaze/kernel/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-alpine-msi.c b/drivers/irqchip/irq-alpine-msi.c
-index fc1ef7de37973..c9ffd69dfc756 100644
---- a/drivers/irqchip/irq-alpine-msi.c
-+++ b/drivers/irqchip/irq-alpine-msi.c
-@@ -165,7 +165,7 @@ static int alpine_msix_middle_domain_alloc(struct irq_domain *domain,
- 	return 0;
- 
- err_sgi:
--	irq_domain_free_irqs_parent(domain, virq, i - 1);
-+	irq_domain_free_irqs_parent(domain, virq, i);
- 	alpine_msix_free_sgi(priv, sgi, nr_irqs);
- 	return err;
- }
+diff --git a/arch/microblaze/kernel/Makefile b/arch/microblaze/kernel/Makefile
+index 4393bee64eaf8..85c4d29ef43e9 100644
+--- a/arch/microblaze/kernel/Makefile
++++ b/arch/microblaze/kernel/Makefile
+@@ -7,7 +7,6 @@ ifdef CONFIG_FUNCTION_TRACER
+ # Do not trace early boot code and low level code
+ CFLAGS_REMOVE_timer.o = -pg
+ CFLAGS_REMOVE_intc.o = -pg
+-CFLAGS_REMOVE_early_printk.o = -pg
+ CFLAGS_REMOVE_ftrace.o = -pg
+ CFLAGS_REMOVE_process.o = -pg
+ endif
 -- 
 2.43.0
 
