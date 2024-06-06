@@ -1,66 +1,89 @@
-Return-Path: <stable+bounces-48441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5088FE907
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C248FED3D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0D9E1F2113E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EEB51C20EB7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627FB1991B4;
-	Thu,  6 Jun 2024 14:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD5C1B581A;
+	Thu,  6 Jun 2024 14:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHkL18g9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rE1bLWJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F53419644F;
-	Thu,  6 Jun 2024 14:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0738A198E79;
+	Thu,  6 Jun 2024 14:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682970; cv=none; b=bkLFMeHEaZqPNZR93S2USEf/aEdWUYi5a1l/86TFuCKFkB2aUvWj7hnMakitGiioAi57qR0jfHcuCA9sRSpjW+F6D2uFckhqmt8n5rAaOzYopw/zqeLAHRirm6sl9rNh1tJeo3mAXmK0n2pw4sMeYviFDajdRPKkJOIiylWvHb4=
+	t=1717683464; cv=none; b=GxhGrJMos94s3ryg3eJG75J0+88croAn6Zhaw3O3T2GU/gvYDMwnE1IYvL1+M3bu6Do+BaCnXhLl8avmyFUGKJ/YeDQK5upuWl6+lwbQMutPka/PuV5iQghzZqqACW3HJIyqrdEs3rUJIB4W9bCLD78oyloTCh0zEVF+/P/KG7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682970; c=relaxed/simple;
-	bh=F62nWxBsaAZVANirRTzIFD44ouBX10/lsfEftKdI4qs=;
+	s=arc-20240116; t=1717683464; c=relaxed/simple;
+	bh=CBlLdC8XXOYzAIVr2OONu7iWu43XjnIScSJ7SW03OjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j08IrJpsCz5h95H4ctsbi0P5GxcJ5JC1P48+R0+cvTMFsFbjVFgfSKJTHrPuz+Mmo7Svq+3Ugo9t1CoX/v0BF57oTjmrkFB7TzmANVLcuHw3X4hyrFHIPjZ25CLjSYOMSrFpuiitPF43b5sBvMh16KVbis9aA7swgHFEpKVgpEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHkL18g9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB9DC2BD10;
-	Thu,  6 Jun 2024 14:09:29 +0000 (UTC)
+	 MIME-Version; b=A77qVGmngAUwLnMsmqBep1+7xyYfsctHglr94UxdDQc7JTz7NjweFtcX3f46EosgFSvTLgbOiIx3JiEC/L+hct3kpI/X+1m5J6kPZM/CEQozOfC+Q6BnUttApuFaiIIlYJMlZj35lUGvjsLqkLIqCMaB8k0q56xuJfrwMt6l4lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rE1bLWJY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59E2C2BD10;
+	Thu,  6 Jun 2024 14:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682970;
-	bh=F62nWxBsaAZVANirRTzIFD44ouBX10/lsfEftKdI4qs=;
+	s=korg; t=1717683463;
+	bh=CBlLdC8XXOYzAIVr2OONu7iWu43XjnIScSJ7SW03OjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHkL18g931VeRldxLLXuEWvp+at7lKwN8AoyIKm4ttMom1hz4yx22RT6lgGdUV//2
-	 /RPJVLo8FvK42mrIvT61mhzKh+ArqsCnPj8o5r/+g4WYmE6G7ZXOz8w+eMI8xvcCxn
-	 tzZD+sd+igRIxiPQwcye6QDL5loP2EIT7uCkuuIM=
+	b=rE1bLWJY+b1uOwQlKgNNYpnNDRm4T7nF0du2WcvC6JyLSa1Dsr/rRzqwnU2felXh5
+	 DmbQJJSERjzg0TJlQXsz7eR9vacD8ym/eajX0oyJG9GfPrNjC35OcIzJ34jt916LJ9
+	 n2i0GbmL6PotEXCCTLLRkNJLiaNhK+uaW60YzSSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
+	Changbin Du <changbin.du@huawei.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Dmitrii Dolgov <9erthalion6@gmail.com>,
+	German Gomez <german.gomez@arm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	James Clark <james.clark@arm.com>,
 	Jiri Olsa <jolsa@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kajol Jain <kjain@linux.ibm.com>,
 	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
+	Leo Yan <leo.yan@linaro.org>,
+	Li Dong <lidong@vivo.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
 	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Ming Wang <wangming01@loongson.cn>,
 	Namhyung Kim <namhyung@kernel.org>,
+	Nick Terrell <terrelln@fb.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Vincent Whitchurch <vincent.whitchurch@axis.com>,
+	Wenyu Liu <liuwenyu7@huawei.com>,
+	Yang Jihong <yangjihong1@huawei.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 101/374] perf thread: Fixes to thread__new() related to initializing comm
+Subject: [PATCH 6.6 408/744] perf machine thread: Remove exited threads by default
 Date: Thu,  6 Jun 2024 16:01:20 +0200
-Message-ID: <20240606131655.302693983@linuxfoundation.org>
+Message-ID: <20240606131745.552633248@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,82 +95,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 3536c2575e88a890cf696b4ccd3da36bc937853b ]
+[ Upstream commit 9ffa6c7512ca7aaeb30e596e2c247cb1fae7123a ]
 
-Freeing the thread on failure won't work with reference count checking,
-use thread__delete().
+'struct thread' values hold onto references to mmaps, DSOs, etc. When a
+thread exits it is necessary to clean all of this memory up by removing
+the thread from the machine's threads. Some tools require this doesn't
+happen, such as auxtrace events, 'perf report' if offcpu events exist or
+if a task list is being generated, so add a 'struct symbol_conf' member
+to make the behavior optional. When an exited thread is left in the
+machine's threads, mark it as exited.
 
-Don't allocate the comm_str, use a stack allocation instead.
+This change relates to commit 40826c45eb0b8856 ("perf thread: Remove
+notion of dead threads") . Dead threads were removed as they had a
+reference count of 0 and were difficult to reason about with the
+reference count checker. Here a thread is removed from threads when it
+exits, unless via symbol_conf the exited thread isn't remove and is
+marked as exited. Reference counting behaves as it normally does.
 
-Fixes: f6005cafebab72f8 ("perf thread: Add reference count checking")
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Changbin Du <changbin.du@huawei.com>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: Dmitrii Dolgov <9erthalion6@gmail.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: James Clark <james.clark@arm.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Kajol Jain <kjain@linux.ibm.com>
 Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Li Dong <lidong@vivo.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Ming Wang <wangming01@loongson.cn>
 Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nick Terrell <terrelln@fb.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240508035301.1554434-5-irogers@google.com
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Sandipan Das <sandipan.das@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Cc: Wenyu Liu <liuwenyu7@huawei.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Link: https://lore.kernel.org/r/20231102175735.2272696-6-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: aaf494cf483a ("perf annotate: Fix annotation_calc_lines() to pass correct address to get_srcline()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/thread.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ tools/perf/builtin-report.c   |  7 +++++++
+ tools/perf/util/machine.c     | 10 +++++++---
+ tools/perf/util/session.c     |  5 +++++
+ tools/perf/util/symbol_conf.h |  3 ++-
+ tools/perf/util/thread.h      | 14 ++++++++++++++
+ 5 files changed, 35 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/thread.c b/tools/perf/util/thread.c
-index 1aa8962dcf52c..515726489e36a 100644
---- a/tools/perf/util/thread.c
-+++ b/tools/perf/util/thread.c
-@@ -39,12 +39,13 @@ int thread__init_maps(struct thread *thread, struct machine *machine)
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index dcedfe00f04db..749246817aed3 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -1411,6 +1411,13 @@ int cmd_report(int argc, const char **argv)
+ 	if (ret < 0)
+ 		goto exit;
  
- struct thread *thread__new(pid_t pid, pid_t tid)
- {
--	char *comm_str;
--	struct comm *comm;
- 	RC_STRUCT(thread) *_thread = zalloc(sizeof(*_thread));
- 	struct thread *thread;
- 
- 	if (ADD_RC_CHK(thread, _thread) != NULL) {
-+		struct comm *comm;
-+		char comm_str[32];
++	/*
++	 * tasks_mode require access to exited threads to list those that are in
++	 * the data file. Off-cpu events are synthesized after other events and
++	 * reference exited threads.
++	 */
++	symbol_conf.keep_exited_threads = true;
 +
- 		thread__set_pid(thread, pid);
- 		thread__set_tid(thread, tid);
- 		thread__set_ppid(thread, -1);
-@@ -56,13 +57,8 @@ struct thread *thread__new(pid_t pid, pid_t tid)
- 		init_rwsem(thread__namespaces_lock(thread));
- 		init_rwsem(thread__comm_lock(thread));
+ 	annotation_options__init(&report.annotation_opts);
  
--		comm_str = malloc(32);
--		if (!comm_str)
--			goto err_thread;
+ 	ret = perf_config(report__config, &report);
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index e6a8d758f6fe4..7c6874804660e 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -2158,9 +2158,13 @@ int machine__process_exit_event(struct machine *machine, union perf_event *event
+ 	if (dump_trace)
+ 		perf_event__fprintf_task(event, stdout);
+ 
+-	if (thread != NULL)
+-		thread__put(thread);
 -
--		snprintf(comm_str, 32, ":%d", tid);
-+		snprintf(comm_str, sizeof(comm_str), ":%d", tid);
- 		comm = comm__new(comm_str, 0, false);
--		free(comm_str);
- 		if (!comm)
- 			goto err_thread;
- 
-@@ -76,7 +72,7 @@ struct thread *thread__new(pid_t pid, pid_t tid)
- 	return thread;
- 
- err_thread:
--	free(thread);
-+	thread__delete(thread);
- 	return NULL;
++	if (thread != NULL) {
++		if (symbol_conf.keep_exited_threads)
++			thread__set_exited(thread, /*exited=*/true);
++		else
++			machine__remove_thread(machine, thread);
++	}
++	thread__put(thread);
+ 	return 0;
  }
  
+diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
+index 1e9aa8ed15b64..c6afba7ab1a51 100644
+--- a/tools/perf/util/session.c
++++ b/tools/perf/util/session.c
+@@ -115,6 +115,11 @@ static int perf_session__open(struct perf_session *session, int repipe_fd)
+ 		return -1;
+ 	}
+ 
++	if (perf_header__has_feat(&session->header, HEADER_AUXTRACE)) {
++		/* Auxiliary events may reference exited threads, hold onto dead ones. */
++		symbol_conf.keep_exited_threads = true;
++	}
++
+ 	if (perf_data__is_pipe(data))
+ 		return 0;
+ 
+diff --git a/tools/perf/util/symbol_conf.h b/tools/perf/util/symbol_conf.h
+index 2b2fb9e224b00..6040286e07a65 100644
+--- a/tools/perf/util/symbol_conf.h
++++ b/tools/perf/util/symbol_conf.h
+@@ -43,7 +43,8 @@ struct symbol_conf {
+ 			disable_add2line_warn,
+ 			buildid_mmap2,
+ 			guest_code,
+-			lazy_load_kernel_maps;
++			lazy_load_kernel_maps,
++			keep_exited_threads;
+ 	const char	*vmlinux_name,
+ 			*kallsyms_name,
+ 			*source_prefix,
+diff --git a/tools/perf/util/thread.h b/tools/perf/util/thread.h
+index e79225a0ea46b..0df775b5c1105 100644
+--- a/tools/perf/util/thread.h
++++ b/tools/perf/util/thread.h
+@@ -36,13 +36,22 @@ struct thread_rb_node {
+ };
+ 
+ DECLARE_RC_STRUCT(thread) {
++	/** @maps: mmaps associated with this thread. */
+ 	struct maps		*maps;
+ 	pid_t			pid_; /* Not all tools update this */
++	/** @tid: thread ID number unique to a machine. */
+ 	pid_t			tid;
++	/** @ppid: parent process of the process this thread belongs to. */
+ 	pid_t			ppid;
+ 	int			cpu;
+ 	int			guest_cpu; /* For QEMU thread */
+ 	refcount_t		refcnt;
++	/**
++	 * @exited: Has the thread had an exit event. Such threads are usually
++	 * removed from the machine's threads but some events/tools require
++	 * access to dead threads.
++	 */
++	bool			exited;
+ 	bool			comm_set;
+ 	int			comm_len;
+ 	struct list_head	namespaces_list;
+@@ -189,6 +198,11 @@ static inline refcount_t *thread__refcnt(struct thread *thread)
+ 	return &RC_CHK_ACCESS(thread)->refcnt;
+ }
+ 
++static inline void thread__set_exited(struct thread *thread, bool exited)
++{
++	RC_CHK_ACCESS(thread)->exited = exited;
++}
++
+ static inline bool thread__comm_set(const struct thread *thread)
+ {
+ 	return RC_CHK_ACCESS(thread)->comm_set;
 -- 
 2.43.0
 
