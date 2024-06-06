@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF848FEF08
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACD58FE9FE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36108B23CBF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E27721C25978
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E121C95DA;
-	Thu,  6 Jun 2024 14:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489ED19D08D;
+	Thu,  6 Jun 2024 14:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZVW/ELM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tB1ltzLR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010AC1A1894;
-	Thu,  6 Jun 2024 14:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08720198E86;
+	Thu,  6 Jun 2024 14:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683729; cv=none; b=oHKzJ3SDPWkkF/ohe2zu2uOLb9c4H3s/DfQRvZyLRTNVCTczNDmziuDoMsSqJNljrC6rhyAWuLrSmr2SzBzsdxWzcvSW59Bx8ybfK8oISZjY7aVSHAPRuOdhjvSYm8NRqzzvsAzVh7cv/6Bd6hQrp0AJHtSQvIkACURateE9PGg=
+	t=1717683090; cv=none; b=MPO+tJmac4AHRGzMxbAC+wfhJvJF/dcEsUgkf2NIdECW7QjHcfrhBrOQ0OftkS/GRXZSt2/LP41Py0FOuWC5hWt5Tvuhn9pARf64cV44tsvOL1G4UKlZYQ3mxlDWo30xE/F+qM/7Oah2VYrOkChDLxFkgd/WGQTairr7gXH+Hac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683729; c=relaxed/simple;
-	bh=rp9lS/VYpuYZNcX8IE3vNYIzOZpdtVZR1V4EEpTrlfc=;
+	s=arc-20240116; t=1717683090; c=relaxed/simple;
+	bh=JP4A3XGzdwSl5euItIEXx1tSbZr3olcO74LFVD/JUIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaeBbYtNIp2JJ2+IE6qQQRiMbtByRZ50v3olpE1kPcrG5Oa2zD7PLLy2MzD4Bb4iJ3Xsq08CkWhLpJzx2OmaQ3AkkfEWYG8UUO1LODRxtPjGWD21YNEARonUT4MxDoR1DxC5jOBsmZtwA+pukzsnslkmnnDfCi5K7hRbwU2lMOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZVW/ELM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5523C2BD10;
-	Thu,  6 Jun 2024 14:22:08 +0000 (UTC)
+	 MIME-Version; b=Fh8O0VdqDMJ9LedcAv8QtYm86xZZmDCJYzt7tnMlvUdZN217jLkFJLyU9bJLcE0+EFWZByKyVc3274XTeskTPjU72uNSEoYx8sbMp5iZHHX3Q4Poz6aBeIW3qru98NdS9zwpcI9thXAhYD6h5dZCC5NdkQEN+zF0HpnFbH/brRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tB1ltzLR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB29EC32782;
+	Thu,  6 Jun 2024 14:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683728;
-	bh=rp9lS/VYpuYZNcX8IE3vNYIzOZpdtVZR1V4EEpTrlfc=;
+	s=korg; t=1717683089;
+	bh=JP4A3XGzdwSl5euItIEXx1tSbZr3olcO74LFVD/JUIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZVW/ELMgjYzdENuqZtDDND/FpI9/pCB25kXE1YElLgC9KgmYSXlAngAmjXjxfHSn
-	 6KYn0ARTYKPibFrn3u2I6mHs7OxoEpuX48q3p4zSC5yliPM+GHmzbQNbF73nMT+nWL
-	 3jJBDCUjGbYdiJdx7nOixsW7/HYAcH6+SSTjC0h4=
+	b=tB1ltzLRXOmVml1QwD3BCQTS+gImBX76RAR+YEnuzewez7MVrn8tiA0Ks6n9FYhg0
+	 CZFWs3v2DnKQ6GJBYRCB0TgQjXrNP8/6oX0y0zLQ7zGEKi6mkRsRS+WoHmeX/JAWzA
+	 q/kPjBDL0xZ2h6HyYa2+rlY0zHwCUP3e2MHJC3Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 678/744] dma-mapping: benchmark: fix node id validation
-Date: Thu,  6 Jun 2024 16:05:50 +0200
-Message-ID: <20240606131754.244118035@linuxfoundation.org>
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.9 372/374] genirq/cpuhotplug, x86/vector: Prevent vector leak during CPU offline
+Date: Thu,  6 Jun 2024 16:05:51 +0200
+Message-ID: <20240606131704.350617558@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-[ Upstream commit 1ff05e723f7ca30644b8ec3fb093f16312e408ad ]
+commit a6c11c0a5235fb144a65e0cb2ffd360ddc1f6c32 upstream.
 
-While validating node ids in map_benchmark_ioctl(), node_possible() may
-be provided with invalid argument outside of [0,MAX_NUMNODES-1] range
-leading to:
+The absence of IRQD_MOVE_PCNTXT prevents immediate effectiveness of
+interrupt affinity reconfiguration via procfs. Instead, the change is
+deferred until the next instance of the interrupt being triggered on the
+original CPU.
 
-BUG: KASAN: wild-memory-access in map_benchmark_ioctl (kernel/dma/map_benchmark.c:214)
-Read of size 8 at addr 1fffffff8ccb6398 by task dma_map_benchma/971
-CPU: 7 PID: 971 Comm: dma_map_benchma Not tainted 6.9.0-rc6 #37
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-Call Trace:
- <TASK>
-dump_stack_lvl (lib/dump_stack.c:117)
-kasan_report (mm/kasan/report.c:603)
-kasan_check_range (mm/kasan/generic.c:189)
-variable_test_bit (arch/x86/include/asm/bitops.h:227) [inline]
-arch_test_bit (arch/x86/include/asm/bitops.h:239) [inline]
-_test_bit at (include/asm-generic/bitops/instrumented-non-atomic.h:142) [inline]
-node_state (include/linux/nodemask.h:423) [inline]
-map_benchmark_ioctl (kernel/dma/map_benchmark.c:214)
-full_proxy_unlocked_ioctl (fs/debugfs/file.c:333)
-__x64_sys_ioctl (fs/ioctl.c:890)
-do_syscall_64 (arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+When the interrupt next triggers on the original CPU, the new affinity is
+enforced within __irq_move_irq(). A vector is allocated from the new CPU,
+but the old vector on the original CPU remains and is not immediately
+reclaimed. Instead, apicd->move_in_progress is flagged, and the reclaiming
+process is delayed until the next trigger of the interrupt on the new CPU.
 
-Compare node ids with sane bounds first. NUMA_NO_NODE is considered a
-special valid case meaning that benchmarking kthreads won't be bound to a
-cpuset of a given node.
+Upon the subsequent triggering of the interrupt on the new CPU,
+irq_complete_move() adds a task to the old CPU's vector_cleanup list if it
+remains online. Subsequently, the timer on the old CPU iterates over its
+vector_cleanup list, reclaiming old vectors.
 
-Found by Linux Verification Center (linuxtesting.org).
+However, a rare scenario arises if the old CPU is outgoing before the
+interrupt triggers again on the new CPU.
 
-Fixes: 65789daa8087 ("dma-mapping: add benchmark support for streaming DMA APIs")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In that case irq_force_complete_move() is not invoked on the outgoing CPU
+to reclaim the old apicd->prev_vector because the interrupt isn't currently
+affine to the outgoing CPU, and irq_needs_fixup() returns false. Even
+though __vector_schedule_cleanup() is later called on the new CPU, it
+doesn't reclaim apicd->prev_vector; instead, it simply resets both
+apicd->move_in_progress and apicd->prev_vector to 0.
+
+As a result, the vector remains unreclaimed in vector_matrix, leading to a
+CPU vector leak.
+
+To address this issue, move the invocation of irq_force_complete_move()
+before the irq_needs_fixup() call to reclaim apicd->prev_vector, if the
+interrupt is currently or used to be affine to the outgoing CPU.
+
+Additionally, reclaim the vector in __vector_schedule_cleanup() as well,
+following a warning message, although theoretically it should never see
+apicd->move_in_progress with apicd->prev_cpu pointing to an offline CPU.
+
+Fixes: f0383c24b485 ("genirq/cpuhotplug: Add support for cleaning up move in progress")
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240522220218.162423-1-dongli.zhang@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/map_benchmark.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/apic/vector.c |    9 ++++++---
+ kernel/irq/cpuhotplug.c       |   16 ++++++++--------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index 2478957cf9f83..59fb3f849b351 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -212,7 +212,8 @@ static long map_benchmark_ioctl(struct file *file, unsigned int cmd,
+--- a/arch/x86/kernel/apic/vector.c
++++ b/arch/x86/kernel/apic/vector.c
+@@ -1036,7 +1036,8 @@ static void __vector_schedule_cleanup(st
+ 			add_timer_on(&cl->timer, cpu);
  		}
+ 	} else {
+-		apicd->prev_vector = 0;
++		pr_warn("IRQ %u schedule cleanup for offline CPU %u\n", apicd->irq, cpu);
++		free_moved_vector(apicd);
+ 	}
+ 	raw_spin_unlock(&vector_lock);
+ }
+@@ -1073,6 +1074,7 @@ void irq_complete_move(struct irq_cfg *c
+  */
+ void irq_force_complete_move(struct irq_desc *desc)
+ {
++	unsigned int cpu = smp_processor_id();
+ 	struct apic_chip_data *apicd;
+ 	struct irq_data *irqd;
+ 	unsigned int vector;
+@@ -1097,10 +1099,11 @@ void irq_force_complete_move(struct irq_
+ 		goto unlock;
  
- 		if (map->bparam.node != NUMA_NO_NODE &&
--		    !node_possible(map->bparam.node)) {
-+		    (map->bparam.node < 0 || map->bparam.node >= MAX_NUMNODES ||
-+		     !node_possible(map->bparam.node))) {
- 			pr_err("invalid numa node\n");
- 			return -EINVAL;
- 		}
--- 
-2.43.0
-
+ 	/*
+-	 * If prev_vector is empty, no action required.
++	 * If prev_vector is empty or the descriptor is neither currently
++	 * nor previously on the outgoing CPU no action required.
+ 	 */
+ 	vector = apicd->prev_vector;
+-	if (!vector)
++	if (!vector || (apicd->cpu != cpu && apicd->prev_cpu != cpu))
+ 		goto unlock;
+ 
+ 	/*
+--- a/kernel/irq/cpuhotplug.c
++++ b/kernel/irq/cpuhotplug.c
+@@ -70,6 +70,14 @@ static bool migrate_one_irq(struct irq_d
+ 	}
+ 
+ 	/*
++	 * Complete an eventually pending irq move cleanup. If this
++	 * interrupt was moved in hard irq context, then the vectors need
++	 * to be cleaned up. It can't wait until this interrupt actually
++	 * happens and this CPU was involved.
++	 */
++	irq_force_complete_move(desc);
++
++	/*
+ 	 * No move required, if:
+ 	 * - Interrupt is per cpu
+ 	 * - Interrupt is not started
+@@ -88,14 +96,6 @@ static bool migrate_one_irq(struct irq_d
+ 	}
+ 
+ 	/*
+-	 * Complete an eventually pending irq move cleanup. If this
+-	 * interrupt was moved in hard irq context, then the vectors need
+-	 * to be cleaned up. It can't wait until this interrupt actually
+-	 * happens and this CPU was involved.
+-	 */
+-	irq_force_complete_move(desc);
+-
+-	/*
+ 	 * If there is a setaffinity pending, then try to reuse the pending
+ 	 * mask, so the last change of the affinity does not get lost. If
+ 	 * there is no move pending or the pending mask does not contain
 
 
 
