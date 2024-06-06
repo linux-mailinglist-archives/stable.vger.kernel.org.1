@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-48972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3658FEB53
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC3D8FEB55
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C620C1C236FA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D53C28826C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E211E1993B1;
-	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7541A3BBE;
+	Thu,  6 Jun 2024 14:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxp+GhTH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ0ldA8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B82197A75;
-	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1EA1993BF;
+	Thu,  6 Jun 2024 14:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683237; cv=none; b=s2Jgch0n24v/bUJteIxudIYtdPtWM9WotXfy7NX2Cfs7EmvOQ/ChK/aH1yQYRSBNzyT2O1x6X18SEUMY11lnNN7Qqrrvjkye22F3xKGnxxciICqinICaqb2y3JTv6xrVUvwSxnQQW90A/S7jmBYhmdGd25g0OZT8tcC34RxB26Y=
+	t=1717683239; cv=none; b=m7ESoNEzHetk38hJbopGq2zIZHBTSho4lq3Z3E3hoDpn+ndbDo6oJcbDNoM62dBLu+uWORo7tsIx8A766qjZO0R0gx85qp7pOw02KziMT+xALaPWmW7EaKMLfdREA9h1Bn+Dkvb8Nex/HUELqnIw0ft4EQiqoKBhK5V9GK2lZ/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683237; c=relaxed/simple;
-	bh=PG9VtGQ0o+hg/x1npRmmPwH/awCQ2ek5wARnTSB8m3g=;
+	s=arc-20240116; t=1717683239; c=relaxed/simple;
+	bh=8aEueV8MFeCv3ELdSEIynKnZG8FHhVUmBAPx7EPGXy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFp18OzGDM5zuhVNVU6DFOjaDN+Z9zwMtn4TZe1Kj/O/Q/XIG3G5iDVhjNkc70M5PO0oLsKMK7mZnEJq9bHg8B9fXroechKYLcFI8w4m0I6CtBDUnigKDkKkK5rn/jn3Yix8QD2apgooQSddK62xlNv0otHoY1GK+lLvtIEcZwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxp+GhTH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D09EC2BD10;
-	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
+	 MIME-Version; b=CZGB0PaqoT/B2p/FHm0qhWQdoxpDc5uS90YDmB3XlETdhYBHzC+EijhtvzlSgVRAtUQWh8eOa8lzWmfSl1PmzB0kuNzD+M9L4zfF+EeWsjwNXkGaOESKOavT92qb26RfAa0Fm1lymIq3HHJTt9yfT7lzij2MYWq6UUwaNlHmqWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ0ldA8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2331C2BD10;
+	Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683237;
-	bh=PG9VtGQ0o+hg/x1npRmmPwH/awCQ2ek5wARnTSB8m3g=;
+	s=korg; t=1717683239;
+	bh=8aEueV8MFeCv3ELdSEIynKnZG8FHhVUmBAPx7EPGXy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxp+GhTHmMUTLyAfdytkScBcyDeBZuNP/YsqGls0IJqVkuJWdZ76lG55sKUChzcue
-	 CBSwfzcZnIKnNfKI6lvOrerAy7ncxilHvjttRp36qs0USFmYj8UIQLKZ0mL/pha+Kr
-	 plIm6gHR5RpSvWOGOqlFJNTHlqXLBBO3P6xVAoIM=
+	b=lJ0ldA8D7wRWtu06KeEbZoku/a8rOEtJbSvq8FeZoUgBsLUagtvubqDdORRRIC3Pq
+	 RVEKQ5CngrtbJG4P0ct/Da8SfjTLtDRCEM9sA0fBK+OIFjmoXN/oHS723J4X0hWAcd
+	 BEdBdxqBDg8ASDkjnj5gFgHnpngf4nsU13jZ8f+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/473] ACPI: disable -Wstringop-truncation
-Date: Thu,  6 Jun 2024 16:00:44 +0200
-Message-ID: <20240606131703.741701523@linuxfoundation.org>
+Subject: [PATCH 6.1 116/473] gfs2: Dont forget to complete delayed withdraw
+Date: Thu,  6 Jun 2024 16:00:45 +0200
+Message-ID: <20240606131703.781704370@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -66,46 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit a3403d304708f60565582d60af4316289d0316a0 ]
+[ Upstream commit b01189333ee91c1ae6cd96dfd1e3a3c2e69202f0 ]
 
-gcc -Wstringop-truncation warns about copying a string that results in a
-missing nul termination:
+Commit fffe9bee14b0 ("gfs2: Delay withdraw from atomic context")
+switched from gfs2_withdraw() to gfs2_withdraw_delayed() in
+gfs2_ail_error(), but failed to then check if a delayed withdraw had
+occurred.  Fix that by adding the missing check in __gfs2_ail_flush(),
+where the spin locks are already dropped and a withdraw is possible.
 
-drivers/acpi/acpica/tbfind.c: In function 'acpi_tb_find_table':
-drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified bound 6 equals destination size [-Werror=stringop-truncation]
-   60 |         strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/acpi/acpica/tbfind.c:61:9: error: 'strncpy' specified bound 8 equals destination size [-Werror=stringop-truncation]
-   61 |         strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The code works as intended, and the warning could be addressed by using
-a memcpy(), but turning the warning off for this file works equally well
-and may be easier to merge.
-
-Fixes: 47c08729bf1c ("ACPICA: Fix for LoadTable operator, input strings")
-Link: https://lore.kernel.org/lkml/CAJZ5v0hoUfv54KW7y4223Mn9E7D4xvR7whRFNLTBqCZMUxT50Q@mail.gmail.com/#t
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: fffe9bee14b0 ("gfs2: Delay withdraw from atomic context")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ fs/gfs2/glops.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
-index f919811156b1f..b6cf9c9bd6396 100644
---- a/drivers/acpi/acpica/Makefile
-+++ b/drivers/acpi/acpica/Makefile
-@@ -5,6 +5,7 @@
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 7762483f5f20f..91a542b9d81e8 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -82,6 +82,9 @@ static void __gfs2_ail_flush(struct gfs2_glock *gl, bool fsync,
+ 	GLOCK_BUG_ON(gl, !fsync && atomic_read(&gl->gl_ail_count));
+ 	spin_unlock(&sdp->sd_ail_lock);
+ 	gfs2_log_unlock(sdp);
++
++	if (gfs2_withdrawing(sdp))
++		gfs2_withdraw(sdp);
+ }
  
- ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
- ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
-+CFLAGS_tbfind.o 		+= $(call cc-disable-warning, stringop-truncation)
  
- # use acpi.o to put all files here into acpi.o modparam namespace
- obj-y	+= acpi.o
 -- 
 2.43.0
 
