@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-48940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D8B8FEB31
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2878FE8A0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9B61C20D5A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 662112819EE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B5119939E;
-	Thu,  6 Jun 2024 14:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5C219753E;
+	Thu,  6 Jun 2024 14:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T56GraBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVBhg3Zk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CF41A2FCF;
-	Thu,  6 Jun 2024 14:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D0D197534;
+	Thu,  6 Jun 2024 14:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683222; cv=none; b=m3Sesu6PiJ5/AgeGqRmoOGhA3R7Z+4rNggqR/mAbwjhwGy+YQWJm79MrUiYs1X/Wcketgp+JP8V4LomLkXtGsCS1tKPGJC4nZZSpPRMiMn1KR4RUUVuQSsHOHse1OKslT2Z0qEPTG2CeuIk0YvCfME8G1QjcRE88JvWgAvIkTic=
+	t=1717682917; cv=none; b=qnQFLd7+cDq34KkDtR+dTAH6jkJRlyV+vs3HCFnNJM1dehvh1VAnxlyFmK+ReJqTJJykDyipsjm6q+Z4CiCckawJfUyPKYiyvPqxQV00y3SnU0sa5N3HYxveYnm4ogUSuc9rm2kZVrn0iDNsmVhvg78Z5JDXro8zyUZB/vQ3kd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683222; c=relaxed/simple;
-	bh=RXJ2N2+h5rID4jMJkq9hMrK+vguUza1dlm108jJa2Uw=;
+	s=arc-20240116; t=1717682917; c=relaxed/simple;
+	bh=gwBxuAl9XIkvDtF0BsEAr+TUf8kHo5riTQFuFZ/JSvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kqk8aKlwXFr4bFXk83peRRtOjBMaXOdJOgMvniejPGV98BOsMwJ4rutqzUpCatGqLhbrMnar8rBx2iRY8TTJTyq1onx7gUZH3951j2o+1hLDgAvJJrwqCdpA0/dPMPfmUB+Yp9h+Sak4Tgc0Et/I7urfoWxkoNvJ9mOoQTduWk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T56GraBK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1499C2BD10;
-	Thu,  6 Jun 2024 14:13:41 +0000 (UTC)
+	 MIME-Version; b=f9IlFuVE5BveXPXtofvLHVQwkVKLDPMIxYT+2PQfxjc9lT+ZZgryIwzFEYxnr66SAvbnO6yiYHoqGct8eybLysOSFiksRLBGcf4c9OqWirnPfOgF0bJBtwmBngUsV/vrV8CJUY+07HKxQyWAa31r/MAZohb85vlFADuTXYahH8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVBhg3Zk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CFEC2BD10;
+	Thu,  6 Jun 2024 14:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683222;
-	bh=RXJ2N2+h5rID4jMJkq9hMrK+vguUza1dlm108jJa2Uw=;
+	s=korg; t=1717682917;
+	bh=gwBxuAl9XIkvDtF0BsEAr+TUf8kHo5riTQFuFZ/JSvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T56GraBKM8BRaqJ+Ipzy4BgxljVEpML/pxNM3+89Vxf+6BLkzy9l5G8ZRKl2LrubQ
-	 55HPVSiHNo+16bjeZWjPoQNdTwyU7oG5T1XjNlKDVIkxRD8AanIuqgDghkj6Cg31he
-	 q6PfhuFF7dEdWhlbpWC+xPSjCVWItjHgF3hXAYvE=
+	b=tVBhg3ZktcEeOYyMg3lI/0HzlGFkPkEiEwiJaR49lvwWi1lydP6lp+f29/xAYerdC
+	 nLkUPnyrRdnu9+qima359zv/47qlkjLJnoP8ZAPUEn+1kgpmzgrb5wMCIIbX8cmJl7
+	 10JAjY465d1iKnZ7pZNZjBRd/VcChePEjAtqH2JY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adham Faris <afaris@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Leo Yan <leo.yan@linaro.org>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	coresight@lists.linaro.org,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/473] net/mlx5e: Fail with messages when params are not valid for XSK
-Date: Thu,  6 Jun 2024 16:00:27 +0200
-Message-ID: <20240606131703.134652301@linuxfoundation.org>
+Subject: [PATCH 6.9 049/374] coresight: etm4x: Fix unbalanced pm_runtime_enable()
+Date: Thu,  6 Jun 2024 16:00:28 +0200
+Message-ID: <20240606131653.457872907@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +74,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adham Faris <afaris@nvidia.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit 130b12079f3732babe2772314ab129bca0d8492f ]
+[ Upstream commit caa41c47dab7e1054f587e592ab21296e3a6781c ]
 
-Current XSK prerequisites validation implementation
-(setup.c/mlx5e_validate_xsk_param()) fails silently when xsk
-prerequisites are not fulfilled.
-Add error messages to the kernel log to help the user understand what
-went wrong when params are not valid for XSK.
+There is an unbalanced pm_runtime_enable() in etm4_probe_platform_dev()
+when etm4_probe() fails. This problem can be observed via the coresight
+etm4 module's (load -> unload -> load) sequence when etm4_probe() fails
+in etm4_probe_platform_dev().
 
-Signed-off-by: Adham Faris <afaris@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: a5535e533694 ("mlx5: stop warning for 64KB pages")
+[   63.379943] coresight-etm4x 7040000.etm: Unbalanced pm_runtime_enable!
+[   63.393630] coresight-etm4x 7140000.etm: Unbalanced pm_runtime_enable!
+[   63.407455] coresight-etm4x 7240000.etm: Unbalanced pm_runtime_enable!
+[   63.420983] coresight-etm4x 7340000.etm: Unbalanced pm_runtime_enable!
+[   63.420999] coresight-etm4x 7440000.etm: Unbalanced pm_runtime_enable!
+[   63.441209] coresight-etm4x 7540000.etm: Unbalanced pm_runtime_enable!
+[   63.454689] coresight-etm4x 7640000.etm: Unbalanced pm_runtime_enable!
+[   63.474982] coresight-etm4x 7740000.etm: Unbalanced pm_runtime_enable!
+
+This fixes the above problem - with an explicit pm_runtime_disable() call
+when etm4_probe() fails during etm4_probe_platform_dev().
+
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Hanjun Guo <guohanjun@huawei.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: James Clark <james.clark@arm.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: coresight@lists.linaro.org
+Fixes: 5214b563588e ("coresight: etm4x: Add support for sysreg only devices")
+Reviewed-by: James Clark <james.clark@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20240314055843.2625883-2-anshuman.khandual@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/en/params.c   |  9 +++++++--
- .../mellanox/mlx5/core/en/xsk/setup.c         | 19 +++++++++++++++++--
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-index d3de1b7a80bf5..be7302aa6f864 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-@@ -581,11 +581,16 @@ int mlx5e_mpwrq_validate_xsk(struct mlx5_core_dev *mdev, struct mlx5e_params *pa
- 	bool unaligned = xsk ? xsk->unaligned : false;
- 	u16 max_mtu_pkts;
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index c2ca4a02dfce1..06a9b94b8c13e 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -2213,6 +2213,9 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
+ 	ret = etm4_probe(&pdev->dev);
  
--	if (!mlx5e_check_fragmented_striding_rq_cap(mdev, page_shift, umr_mode))
-+	if (!mlx5e_check_fragmented_striding_rq_cap(mdev, page_shift, umr_mode)) {
-+		mlx5_core_err(mdev, "Striding RQ for XSK can't be activated with page_shift %u and umr_mode %d\n",
-+			      page_shift, umr_mode);
- 		return -EOPNOTSUPP;
-+	}
- 
--	if (!mlx5e_rx_mpwqe_is_linear_skb(mdev, params, xsk))
-+	if (!mlx5e_rx_mpwqe_is_linear_skb(mdev, params, xsk)) {
-+		mlx5_core_err(mdev, "Striding RQ linear mode for XSK can't be activated with current params\n");
- 		return -EINVAL;
-+	}
- 
- 	/* Current RQ length is too big for the given frame size, the
- 	 * needed number of WQEs exceeds the maximum.
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-index ff03c43833bbf..81a567e172646 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-@@ -7,6 +7,18 @@
- #include "en/health.h"
- #include <net/xdp_sock_drv.h>
- 
-+static int mlx5e_legacy_rq_validate_xsk(struct mlx5_core_dev *mdev,
-+					struct mlx5e_params *params,
-+					struct mlx5e_xsk_param *xsk)
-+{
-+	if (!mlx5e_rx_is_linear_skb(mdev, params, xsk)) {
-+		mlx5_core_err(mdev, "Legacy RQ linear mode for XSK can't be activated with current params\n");
-+		return -EINVAL;
-+	}
+ 	pm_runtime_put(&pdev->dev);
++	if (ret)
++		pm_runtime_disable(&pdev->dev);
 +
-+	return 0;
-+}
-+
- /* The limitation of 2048 can be altered, but shouldn't go beyond the minimal
-  * stride size of striding RQ.
-  */
-@@ -17,8 +29,11 @@ bool mlx5e_validate_xsk_param(struct mlx5e_params *params,
- 			      struct mlx5_core_dev *mdev)
- {
- 	/* AF_XDP doesn't support frames larger than PAGE_SIZE. */
--	if (xsk->chunk_size > PAGE_SIZE || xsk->chunk_size < MLX5E_MIN_XSK_CHUNK_SIZE)
-+	if (xsk->chunk_size > PAGE_SIZE || xsk->chunk_size < MLX5E_MIN_XSK_CHUNK_SIZE) {
-+		mlx5_core_err(mdev, "XSK chunk size %u out of bounds [%u, %lu]\n", xsk->chunk_size,
-+			      MLX5E_MIN_XSK_CHUNK_SIZE, PAGE_SIZE);
- 		return false;
-+	}
- 
- 	/* frag_sz is different for regular and XSK RQs, so ensure that linear
- 	 * SKB mode is possible.
-@@ -27,7 +42,7 @@ bool mlx5e_validate_xsk_param(struct mlx5e_params *params,
- 	case MLX5_WQ_TYPE_LINKED_LIST_STRIDING_RQ:
- 		return !mlx5e_mpwrq_validate_xsk(mdev, params, xsk);
- 	default: /* MLX5_WQ_TYPE_CYCLIC */
--		return mlx5e_rx_is_linear_skb(mdev, params, xsk);
-+		return !mlx5e_legacy_rq_validate_xsk(mdev, params, xsk);
- 	}
+ 	return ret;
  }
  
 -- 
