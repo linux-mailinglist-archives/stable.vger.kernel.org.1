@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8708FEB24
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFEB8FE885
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3589728A5FD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D72641C23C02
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858CE197A65;
-	Thu,  6 Jun 2024 14:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AD2196DB3;
+	Thu,  6 Jun 2024 14:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7WGyD6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16lQc7u7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D3F1A2FB4;
-	Thu,  6 Jun 2024 14:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41136196DAB;
+	Thu,  6 Jun 2024 14:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683216; cv=none; b=CKoZ8aQZBxFkHpJY8wLIbkUkFwGq96P7NYoEkvU78tX+cLVvXK8b0dHr2rRz5gJAfg6VKUjUoY2yAiFIDczEhSDLX/0oC7hQlDOnVaxaJf/q08ejQEhdBfz6Do9mvCJJ73mYKgonLo7tALKOi05xCYsJ/DcOZMok0Qkb8JD8WcE=
+	t=1717682903; cv=none; b=LCqFGQyt2+aKLpSIulJSwqwKjxP0UxcJmvufvStpahmMjQxm05+dONdnw9m/2821EDZUHij6TXH5X/yC/q40UcktZvPhjumWXDWWGVmADyyuTflW2g+pcu76ODwezar31H7mRB9AlG/Ir8OTYat+xiz6FgxYBgNSCRR2JufZ0ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683216; c=relaxed/simple;
-	bh=asZf9czqelEdoEaYpwP09dxhgbDVQyhUclXVq+e2zHE=;
+	s=arc-20240116; t=1717682903; c=relaxed/simple;
+	bh=R2UZRWyh9Ya3GvNZbUi2wBq+ptnFbH3xHezqDUSM2is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIkiE65AsCmMiBubc+sVvG2m1P+rzUwIuAG+ftD0vDbEoJlY8hX/1AkqJQQ/sJV8RLsqYX5HAj3zh0LnI73H4J+51JGaESs8aTcq9ZEnmxI0HlnhCCqljqPwa2rfKM2YAMrWqzbnUt3Dw16CuaG01340MZSxC6pZ00CBnMZtaxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7WGyD6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E3BC2BD10;
-	Thu,  6 Jun 2024 14:13:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qX8EtBg4zeMfz8019r+004xDXgoVVNyvBJU3GLpAlpgDpEiIFLToDGNPVAh1GUhKhn2E9YtW0l/Luqzhw/AABLLWr3fZ9oU7uvb1gaT1Vy4rE76UMJRlFVAl6mJDR1OucPU09Cjow2n2xo7ztJ8nUvfH4LX3Sncjfm/3LVSiVZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16lQc7u7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEEDC32781;
+	Thu,  6 Jun 2024 14:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683216;
-	bh=asZf9czqelEdoEaYpwP09dxhgbDVQyhUclXVq+e2zHE=;
+	s=korg; t=1717682903;
+	bh=R2UZRWyh9Ya3GvNZbUi2wBq+ptnFbH3xHezqDUSM2is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7WGyD6wZ/BgKkFWSlqk5Ylsj7CtZVRVztPZCA32Gb1QqeqLNAAz8AX5cEex3Jfvl
-	 15z7yjifPatpzTac6IsOtUSJkuZARR6SV2WuAys5uJPyFNjhR7l+Xm3DAwgM3sThtO
-	 jpEmbILhQZND9igHesJ/ZBTI+vRkqVmGiKeUIY9w=
+	b=16lQc7u7qSjT6Tr9SYs/7eVZ5GzXo7seTA3/hY3QiNZKaEBKQWon8XN7s1HqQNrZC
+	 mwkHs74u0d1bc/VISjjS71ReDkCMZBzEM0TywuT8Z9mcRXqs0OWI0BRljUhtXkG6cZ
+	 bXt02l6jvUKb9wUQZ5Oh+eyabv/WMP4/l2gMHSQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/473] crypto: x86/sha256-avx2 - add missing vzeroupper
+Subject: [PATCH 6.9 025/374] serial: max3100: Update uart_driver_registered on driver removal
 Date: Thu,  6 Jun 2024 16:00:04 +0200
-Message-ID: <20240606131702.397090380@linuxfoundation.org>
+Message-ID: <20240606131652.657969048@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 57ce8a4e162599cf9adafef1f29763160a8e5564 ]
+[ Upstream commit 712a1fcb38dc7cac6da63ee79a88708fbf9c45ec ]
 
-Since sha256_transform_rorx() uses ymm registers, execute vzeroupper
-before returning from it.  This is necessary to avoid reducing the
-performance of SSE code.
+The removal of the last MAX3100 device triggers the removal of
+the driver. However, code doesn't update the respective global
+variable and after insmod — rmmod — insmod cycle the kernel
+oopses:
 
-Fixes: d34a460092d8 ("crypto: sha256 - Optimized sha256 x86_64 routine using AVX2's RORX instructions")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  max3100 spi-PRP0001:01: max3100_probe: adding port 0
+  BUG: kernel NULL pointer dereference, address: 0000000000000408
+  ...
+  RIP: 0010:serial_core_register_port+0xa0/0x840
+  ...
+   max3100_probe+0x1b6/0x280 [max3100]
+   spi_probe+0x8d/0xb0
+
+Update the actual state so next time UART driver will be registered
+again.
+
+Hugo also noticed, that the error path in the probe also affected
+by having the variable set, and not cleared. Instead of clearing it
+move the assignment after the successfull uart_register_driver() call.
+
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/sha256-avx2-asm.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/max3100.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/crypto/sha256-avx2-asm.S b/arch/x86/crypto/sha256-avx2-asm.S
-index 2d2be531a11ed..eaa093f973cc3 100644
---- a/arch/x86/crypto/sha256-avx2-asm.S
-+++ b/arch/x86/crypto/sha256-avx2-asm.S
-@@ -711,6 +711,7 @@ done_hash:
- 	popq	%r13
- 	popq	%r12
- 	popq	%rbx
-+	vzeroupper
- 	RET
- SYM_FUNC_END(sha256_transform_rorx)
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index 45022f2909f0a..b3e63b6a402e1 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -749,13 +749,14 @@ static int max3100_probe(struct spi_device *spi)
+ 	mutex_lock(&max3100s_lock);
  
+ 	if (!uart_driver_registered) {
+-		uart_driver_registered = 1;
+ 		retval = uart_register_driver(&max3100_uart_driver);
+ 		if (retval) {
+ 			printk(KERN_ERR "Couldn't register max3100 uart driver\n");
+ 			mutex_unlock(&max3100s_lock);
+ 			return retval;
+ 		}
++
++		uart_driver_registered = 1;
+ 	}
+ 
+ 	for (i = 0; i < MAX_MAX3100; i++)
+@@ -841,6 +842,7 @@ static void max3100_remove(struct spi_device *spi)
+ 		}
+ 	pr_debug("removing max3100 driver\n");
+ 	uart_unregister_driver(&max3100_uart_driver);
++	uart_driver_registered = 0;
+ 
+ 	mutex_unlock(&max3100s_lock);
+ }
 -- 
 2.43.0
 
