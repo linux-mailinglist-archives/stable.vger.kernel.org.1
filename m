@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-48358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1898FE8AA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACDF8FEB38
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E877284D3B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C341C25836
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F5E197A77;
-	Thu,  6 Jun 2024 14:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBDA1A38DB;
+	Thu,  6 Jun 2024 14:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBfFREdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwMJOu1+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E06196D8C;
-	Thu,  6 Jun 2024 14:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DFB1A2FDD;
+	Thu,  6 Jun 2024 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682920; cv=none; b=set8mCAqvsZXOd/C9j4S3KjpJjSqN9ScpuRqYkQ//pjNSmE/gh1BSnDzyX8kJFSTvsRoHLospi9CYiKcG1lF8F4ugWiC0BUdZyat+WKSvzqZEXpN4i3j/QYvXCf7wvVGr0APzzPHc7aXrC1UL05rdSlEdmxke0u/qItkoT1305Y=
+	t=1717683225; cv=none; b=Z72ZQoWN705lvHF9ZOHeNr9CuRHSFrgPkEZFr3MynAk/JXzmG52jn3v4vVQeEho/MoSFh+MsXRLxGxxNQaF0cXqYkqi6ylSpOsEYTbwBIk8g3S9x+HBT6Gdz33VOQF2AgoNkHBGhBTVqp0ipMi7RY189OaYLMzZZZTacEPd5dPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682920; c=relaxed/simple;
-	bh=HKzUL7aHnbZ13mO6lNmw8nteaKbGJrnxXBMJNAJ+eKk=;
+	s=arc-20240116; t=1717683225; c=relaxed/simple;
+	bh=7hgKuPNrpIE96+aRwqpfA7Knq2EsGPPNmwQgmy+OXI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c0SrJ9PpI+hXKfWkpHgbQK1LwwWaKVlO2cyMETs9+C888ivhzC/s3EY0mB9ED0Eex+Am0gv033qKVFhU8kSRLkzHJ5TngsXQkZp2uYkBU/luFkw7m0pRXezKapZBICkvear+zyn+AW0shxlanb3N2mWtDuLd6y5APLUnzXlBls0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBfFREdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FA3C32781;
-	Thu,  6 Jun 2024 14:08:40 +0000 (UTC)
+	 MIME-Version; b=o+Ywi2Xpak/WbqOQncCFIvtXB6v5ohYbpw6cdBOr9mzCvWj/rRSIJjNsYv68JvqKH0kLLnhIg0U93QA5sAwZ8HyvHl4R1sedwlLt4aWcWDm44SW1djiGUw0oSUbiZMumf/QgmcwL/AGEYTPHPQW2Ezki9ueY8TG07Df/Ms5pVAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwMJOu1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76CDC4AF09;
+	Thu,  6 Jun 2024 14:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682920;
-	bh=HKzUL7aHnbZ13mO6lNmw8nteaKbGJrnxXBMJNAJ+eKk=;
+	s=korg; t=1717683224;
+	bh=7hgKuPNrpIE96+aRwqpfA7Knq2EsGPPNmwQgmy+OXI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XBfFREdvAgJ9T6f3fhcpRltEXCjIqhwuPGh6TlO8eFYJJCZhlnKMJaml0sIvkTbWn
-	 jtLgucpTIPZ1eDHzUxxfsemWsk4gwS3MnBZA59d43jBKPSTBBy2UMXNGWHHQv45iCN
-	 1pSaaJam3f1Te0gHBeCLBppRaFcn5y0Tl0zifUYA=
+	b=kwMJOu1+PUzBqLpYFHiIc5ZndGj7vkUVjkZcIDwraFmEd4/yaDk5SyMzZPvbedzUG
+	 wXDGWdyXIDzvPpjGDqNSU2MwJp8AXRb0Rf2nM5B8lF2613hm9Gdqu1TPZUFdlWNtcb
+	 3EXZ+GIlaAjxk/0Hj2fa3WJvZyYr1fBx6JPTuf54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Song Liu <song@kernel.org>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Kees Cook <keescook@chromium.org>,
+	Christian Lamparter <chunkeey@gmail.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 051/374] perf docs: Document bpf event modifier
+Subject: [PATCH 6.1 101/473] wifi: carl9170: re-fix fortified-memset warning
 Date: Thu,  6 Jun 2024 16:00:30 +0200
-Message-ID: <20240606131653.537196703@linuxfoundation.org>
+Message-ID: <20240606131703.240746359@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,50 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit eb4d27cf9aef3e6c9bcaf8fa1a1cadc2433d847b ]
+[ Upstream commit 066afafc10c9476ee36c47c9062527a17e763901 ]
 
-Document that 'b' is used as a modifier to make an event use a BPF
-counter.
+The carl9170_tx_release() function sometimes triggers a fortified-memset
+warning in my randconfig builds:
 
-Fixes: 01bd8efcec444468 ("perf stat: Introduce ':b' modifier")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Song Liu <song@kernel.org>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240416170014.985191-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+In file included from include/linux/string.h:254,
+                 from drivers/net/wireless/ath/carl9170/tx.c:40:
+In function 'fortify_memset_chk',
+    inlined from 'carl9170_tx_release' at drivers/net/wireless/ath/carl9170/tx.c:283:2,
+    inlined from 'kref_put' at include/linux/kref.h:65:3,
+    inlined from 'carl9170_tx_put_skb' at drivers/net/wireless/ath/carl9170/tx.c:342:9:
+include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  493 |                         __write_overflow_field(p_size_field, size);
+
+Kees previously tried to avoid this by using memset_after(), but it seems
+this does not fully address the problem. I noticed that the memset_after()
+here is done on a different part of the union (status) than the original
+cast was from (rate_driver_data), which may confuse the compiler.
+
+Unfortunately, the memset_after() trick does not work on driver_rates[]
+because that is part of an anonymous struct, and I could not get
+struct_group() to do this either. Using two separate memset() calls
+on the two members does address the warning though.
+
+Fixes: fb5f6a0e8063b ("mac80211: Use memset_after() to clear tx status")
+Link: https://lore.kernel.org/lkml/20230623152443.2296825-1-arnd@kernel.org/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240328135509.3755090-2-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Documentation/perf-list.txt | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/carl9170/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/Documentation/perf-list.txt b/tools/perf/Documentation/perf-list.txt
-index 3b12595193c9f..6bf2468f59d31 100644
---- a/tools/perf/Documentation/perf-list.txt
-+++ b/tools/perf/Documentation/perf-list.txt
-@@ -71,6 +71,7 @@ counted. The following modifiers exist:
-  D - pin the event to the PMU
-  W - group is weak and will fallback to non-group if not schedulable,
-  e - group or event are exclusive and do not share the PMU
-+ b - use BPF aggregration (see perf stat --bpf-counters)
+diff --git a/drivers/net/wireless/ath/carl9170/tx.c b/drivers/net/wireless/ath/carl9170/tx.c
+index 6bb9aa2bfe654..88ef6e023f826 100644
+--- a/drivers/net/wireless/ath/carl9170/tx.c
++++ b/drivers/net/wireless/ath/carl9170/tx.c
+@@ -280,7 +280,8 @@ static void carl9170_tx_release(struct kref *ref)
+ 	 * carl9170_tx_fill_rateinfo() has filled the rate information
+ 	 * before we get to this point.
+ 	 */
+-	memset_after(&txinfo->status, 0, rates);
++	memset(&txinfo->pad, 0, sizeof(txinfo->pad));
++	memset(&txinfo->rate_driver_data, 0, sizeof(txinfo->rate_driver_data));
  
- The 'p' modifier can be used for specifying how precise the instruction
- address should be. The 'p' modifier can be specified multiple times:
+ 	if (atomic_read(&ar->tx_total_queued))
+ 		ar->tx_schedule = true;
 -- 
 2.43.0
 
