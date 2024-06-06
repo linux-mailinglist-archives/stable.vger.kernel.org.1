@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98EB8FE94A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F778FEE51
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63E5E283F56
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27AE8B2330E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7071993AA;
-	Thu,  6 Jun 2024 14:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A148197526;
+	Thu,  6 Jun 2024 14:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUEqhSUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pc2usVz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C296196D99;
-	Thu,  6 Jun 2024 14:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438AD1991B9;
+	Thu,  6 Jun 2024 14:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683003; cv=none; b=XysRN8H2bFYb034OXId/dQlW5vL98Xs/Kowy6gjoypACBrBwiTcoYh/bZnyASZFi6WfDRaIU+lOhLD3B3jjPmFySfS/oI2/U6rDrNvptX3OivCfDO5jRU4wQ2QQWV+LqNKpYNrdaHqVkcwBsWwpDfwp3GyZq6eVJcw9rVADTXpQ=
+	t=1717683644; cv=none; b=V6MqQXWbMnvAklzHCJUtKALtV+EnvXo1tSXdk4y28luefEdP0MNhv4gpSkw6fV0dys9ad8TlmsavfNo92FPSLSqzKfhqek7BVyNhoY8ZHA7uC5W2E/uMwnUG2c1tN7xpzPmAB4kYLRmkRAWv3Ppg9GRXvIloiyo5h4ze339+/5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683003; c=relaxed/simple;
-	bh=cfvZ2qI/d9h+AE7oVrl2COXYp1hsRCz5Ej1JXoM5rMA=;
+	s=arc-20240116; t=1717683644; c=relaxed/simple;
+	bh=e1vhhJ3dfXRYdVGZmglaHcepQRJQkqHXSCkpoYphF7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDMB8U2aq3aTv+aCGKtV07ZbUe5ryymt3PY8j+RQUnX9dcJ6k7hfqf+luxMboyTi6ed/0KW9whbIuIsB49HHWV6Pmc9QvA/8EihdQWlcfPNGdTA2rLzoG7QTh7ji3/zLpLNTxB3LlQ98oltyI5a9/npgESmXuO5PlYhRRN98sFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUEqhSUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A62C2BD10;
-	Thu,  6 Jun 2024 14:10:03 +0000 (UTC)
+	 MIME-Version; b=MIRsAFMb+A5U2JrZOOeZY8x7dQtyzwX6L7K86rQSFF+5H0AnXSOmIXlQTojZHAXjjNKkEk21KEn/Scfkbbc5bvYVwY5U/VtyMxhnfFGXIqpovwfyMYG6iYvrLzMxG4Ram2eUx1HtbxFU25e1UzyNGgCq19Joi4hoBH7NUw91GQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pc2usVz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2151DC2BD10;
+	Thu,  6 Jun 2024 14:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683003;
-	bh=cfvZ2qI/d9h+AE7oVrl2COXYp1hsRCz5Ej1JXoM5rMA=;
+	s=korg; t=1717683644;
+	bh=e1vhhJ3dfXRYdVGZmglaHcepQRJQkqHXSCkpoYphF7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUEqhSUGdOlkBICC/f5Im6z0IeOnFwM9JxSxc/AZ+grzmJQ+ruHTRMnFbbK+dPaU0
-	 kbqdwCtvOyd04P5DhLNtViESWPXXhBFwxl7u+/U98h7Y3xueRVv1INvAm/PkZ3KYcE
-	 LQTHv7s7QKHcySPCaK8x74u7lQ5bAQBMVTNT0OSc=
+	b=Pc2usVz8594iXjNu1Z01jERUB6gjdoLjclbH3WsYpdrTtwrsDmaoqPRCyamQVTI+d
+	 0BypR/MMx5FOutLmaAKoW7/IuoPvf2USX1HYdsibRSNqoAs+xK1ZxcqAeSS51P7HYf
+	 yx6J/79roGTBjGmUIh2/K/xhkoPG1FggPf08XvqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 208/374] ASoC: tas2781: Fix a warning reported by robot kernel test
+Subject: [PATCH 6.6 515/744] f2fs: compress: fix error path of inc_valid_block_count()
 Date: Thu,  6 Jun 2024 16:03:07 +0200
-Message-ID: <20240606131658.790702461@linuxfoundation.org>
+Message-ID: <20240606131748.961704941@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 1ae14f3520b1a0ad144610a3f592c81a3e81cd1b ]
+[ Upstream commit 043c832371cd9023fbd725138ddc6c7f288dc469 ]
 
-Fix a warning reported by robot kernel test that 'fw_entry' in function
-'tas2781_load_calibration' is used uninitialized with compiler
-sh4-linux-gcc (GCC) 13.2.0, an update of copyright and a correction of the
-comments.
+If inc_valid_block_count() can not allocate all requested blocks,
+it needs to release block count in .total_valid_block_count and
+resevation blocks in inode.
 
-Fixes: ef3bcde75d06 ("ASoc: tas2781: Add tas2781 driver")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://lore.kernel.org/r/20240505122346.1326-1-shenghao-ding@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 54607494875e ("f2fs: compress: fix to avoid inconsistence bewteen i_blocks and dnode")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2781-fmwlib.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/f2fs/f2fs.h | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
-index 45760fe195237..a6be81adcb839 100644
---- a/sound/soc/codecs/tas2781-fmwlib.c
-+++ b/sound/soc/codecs/tas2781-fmwlib.c
-@@ -1,8 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- //
--// tasdevice-fmw.c -- TASDEVICE firmware support
-+// tas2781-fmwlib.c -- TASDEVICE firmware support
- //
--// Copyright 2023 Texas Instruments, Inc.
-+// Copyright 2023 - 2024 Texas Instruments, Inc.
- //
- // Author: Shenghao Ding <shenghao-ding@ti.com>
- 
-@@ -1878,7 +1878,7 @@ int tas2781_load_calibration(void *context, char *file_name,
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index c90f6f9855c8e..f1fbfa7fb279e 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -2296,7 +2296,7 @@ static inline void f2fs_i_blocks_write(struct inode *, block_t, bool, bool);
+ static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
+ 				 struct inode *inode, blkcnt_t *count, bool partial)
  {
- 	struct tasdevice_priv *tas_priv = (struct tasdevice_priv *)context;
- 	struct tasdevice *tasdev = &(tas_priv->tasdevice[i]);
--	const struct firmware *fw_entry;
-+	const struct firmware *fw_entry = NULL;
- 	struct tasdevice_fw *tas_fmw;
- 	struct firmware fmw;
- 	int offset = 0;
+-	blkcnt_t diff = 0, release = 0;
++	long long diff = 0, release = 0;
+ 	block_t avail_user_block_count;
+ 	int ret;
+ 
+@@ -2316,26 +2316,27 @@ static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
+ 	percpu_counter_add(&sbi->alloc_valid_block_count, (*count));
+ 
+ 	spin_lock(&sbi->stat_lock);
+-	sbi->total_valid_block_count += (block_t)(*count);
+-	avail_user_block_count = get_available_block_count(sbi, inode, true);
+ 
+-	if (unlikely(sbi->total_valid_block_count > avail_user_block_count)) {
++	avail_user_block_count = get_available_block_count(sbi, inode, true);
++	diff = (long long)sbi->total_valid_block_count + *count -
++						avail_user_block_count;
++	if (unlikely(diff > 0)) {
+ 		if (!partial) {
+ 			spin_unlock(&sbi->stat_lock);
++			release = *count;
+ 			goto enospc;
+ 		}
+-
+-		diff = sbi->total_valid_block_count - avail_user_block_count;
+ 		if (diff > *count)
+ 			diff = *count;
+ 		*count -= diff;
+ 		release = diff;
+-		sbi->total_valid_block_count -= diff;
+ 		if (!*count) {
+ 			spin_unlock(&sbi->stat_lock);
+ 			goto enospc;
+ 		}
+ 	}
++	sbi->total_valid_block_count += (block_t)(*count);
++
+ 	spin_unlock(&sbi->stat_lock);
+ 
+ 	if (unlikely(release)) {
 -- 
 2.43.0
 
