@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-48276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057A88FE0B0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 10:14:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908638FE0D3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 10:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06701C24922
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 08:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18C46282E4D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 08:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D52913C3F6;
-	Thu,  6 Jun 2024 08:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC90C13C9BE;
+	Thu,  6 Jun 2024 08:21:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876C813A898;
-	Thu,  6 Jun 2024 08:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B75513BC26;
+	Thu,  6 Jun 2024 08:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717661681; cv=none; b=SUmasPxUS+x6XoBoLX8fzPBYj54Yh0DbWXYpp/aMWWke52DrjYWdD9Lit93+0CyvylN3+JY113nGh7GX/p8wsEZg7BtVxMZm7WodHdyE25BS1Whsa5ecjIu0er71pUq02yMjRoL/I0bnV272Hcooep9x7hEhMkMJkBt52b3yQxE=
+	t=1717662107; cv=none; b=Vjde6uGAsa6dOWilSzkboJa6JZR3rhVGqBiHvItSsqWCQ9vXtpltjS3HBn8J5BwZlSkcfojaunLliO9+Cpulrfw2oOKDklUFPXIyozhmMmKEE1v+Cti2rDucDmzVpeFbcDoY/dVLZT09YbjJJax1pvO/h8aPGbo+LPkjxhhdtl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717661681; c=relaxed/simple;
-	bh=/+/BknMHLrihbmijqoFbVLzfZtNPqhWBdI3sHAuudyA=;
+	s=arc-20240116; t=1717662107; c=relaxed/simple;
+	bh=v0iwZbIiqRDl7dY9HEkqOQz6g7R3q2UqGGBh5LNYc78=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IFSvK7rEVSSc0bQOJ9G/ajvOKSwKoyBGvYhwDcyJvzOo1X8Oo8QTonHAwpnhlRdCrRuZ7Ic/4175lbqwkRhfju1L7a94P1arDnrSCm9OPEGzM2ihrkljhfrIaglBd519l2j8o9N+XZKT5dM/0WWnub6s9aYLh9QLhDR83vnvlc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.172
+	 In-Reply-To:Content-Type; b=b3nLpl7ZknKDwhqGhnCZeWk6XvwXodKyJ8ExA6f06lYGIX2WHI25eztvFnIDmuHIya5e3Q2Jt+XJjQZmcf8v+7PMCcr/JLLcSy8r+LUc2U/hQmgz2A6nod8MzhMvuy8aAG9DEe3RU/CIxcaXcNzUhh8rZ+uIhVfTntIODOvwoMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 X-IronPort-AV: E=Sophos;i="6.08,218,1712588400"; 
-   d="asc'?scan'208";a="210885326"
+   d="asc'?scan'208";a="206928268"
 Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 06 Jun 2024 17:14:37 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 06 Jun 2024 17:21:43 +0900
 Received: from [10.226.93.107] (unknown [10.226.93.107])
-	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 72C8C41FD116;
-	Thu,  6 Jun 2024 17:14:34 +0900 (JST)
-Message-ID: <13e77ad1-7ff0-453b-b8f9-7962d15b49a1@bp.renesas.com>
-Date: Thu, 6 Jun 2024 09:14:32 +0100
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 38969420065F;
+	Thu,  6 Jun 2024 17:21:40 +0900 (JST)
+Message-ID: <0f7d5012-99a3-485a-b500-1d79d69a64f9@bp.renesas.com>
+Date: Thu, 6 Jun 2024 09:21:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -43,25 +43,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] docs: stable-kernel-rules: provide example of
- specifying target series
+Subject: Re: [PATCH 2/2] docs: stable-kernel-rules: remind reader about DCO
+Content-Language: en-GB
 To: Shung-Hsi Yu <shung-hsi.yu@suse.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
  stable@vger.kernel.org, workflows@vger.kernel.org
 References: <20240606064311.18678-1-shung-hsi.yu@suse.com>
-Content-Language: en-GB
+ <20240606064311.18678-2-shung-hsi.yu@suse.com>
 From: Paul Barker <paul.barker.ct@bp.renesas.com>
 Organization: Renesas Electronics Corporation
-In-Reply-To: <20240606064311.18678-1-shung-hsi.yu@suse.com>
+In-Reply-To: <20240606064311.18678-2-shung-hsi.yu@suse.com>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------xI3MkB3bqz4WF3eJ5X8zp2y7"
+ boundary="------------H2osBe6uDS5iMbGIAkIluqDf"
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------xI3MkB3bqz4WF3eJ5X8zp2y7
-Content-Type: multipart/mixed; boundary="------------cuym2VioR9YeBxcmeIilliEz";
+--------------H2osBe6uDS5iMbGIAkIluqDf
+Content-Type: multipart/mixed; boundary="------------jx2MlaW4pW7XcUU0aJVXRSmE";
  protected-headers="v1"
 From: Paul Barker <paul.barker.ct@bp.renesas.com>
 To: Shung-Hsi Yu <shung-hsi.yu@suse.com>, linux-doc@vger.kernel.org,
@@ -69,79 +69,47 @@ To: Shung-Hsi Yu <shung-hsi.yu@suse.com>, linux-doc@vger.kernel.org,
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Sasha Levin <sashal@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
  stable@vger.kernel.org, workflows@vger.kernel.org
-Message-ID: <13e77ad1-7ff0-453b-b8f9-7962d15b49a1@bp.renesas.com>
-Subject: Re: [PATCH 1/2] docs: stable-kernel-rules: provide example of
- specifying target series
+Message-ID: <0f7d5012-99a3-485a-b500-1d79d69a64f9@bp.renesas.com>
+Subject: Re: [PATCH 2/2] docs: stable-kernel-rules: remind reader about DCO
 References: <20240606064311.18678-1-shung-hsi.yu@suse.com>
-In-Reply-To: <20240606064311.18678-1-shung-hsi.yu@suse.com>
+ <20240606064311.18678-2-shung-hsi.yu@suse.com>
+In-Reply-To: <20240606064311.18678-2-shung-hsi.yu@suse.com>
 
---------------cuym2VioR9YeBxcmeIilliEz
-Content-Type: multipart/mixed; boundary="------------cwYi1y9yKe2mdo4v6vJz18ui"
+--------------jx2MlaW4pW7XcUU0aJVXRSmE
+Content-Type: multipart/mixed; boundary="------------qQTaesiPkzvpsYiryEyobieU"
 
---------------cwYi1y9yKe2mdo4v6vJz18ui
+--------------qQTaesiPkzvpsYiryEyobieU
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 On 06/06/2024 07:43, Shung-Hsi Yu wrote:
-> Provide a concrete example of how to specify what stable series should
-> be targeted for change inclusion. Looking around on the stable mailing
-> list this seems like a common practice already, so let's mention that i=
-n
-> the documentation as well (but worded so it is not interpreted as the
-> only way to do so).
+> When sending patch authored by someone else to stable, it is quite easy=
+ for
+> the sender to forget adding the Developer's Certification of Origin (DC=
+O,
+> i.e. Signed-off-by). Mention DCO explicilty so senders are less likely =
+to
+
+s/explicilty/explicitly/
+
+> forget to do so and cause another round-trip.
 >=20
-> Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-> ---
->  Documentation/process/stable-kernel-rules.rst | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+> Add a label in submitting-patches.rst so we can directly link to the DC=
+O
+> section.
 >=20
-> diff --git a/Documentation/process/stable-kernel-rules.rst b/Documentat=
-ion/process/stable-kernel-rules.rst
-> index edf90bbe30f4..daa542988095 100644
-> --- a/Documentation/process/stable-kernel-rules.rst
-> +++ b/Documentation/process/stable-kernel-rules.rst
-> @@ -57,10 +57,13 @@ options for cases where a mainlined patch needs adj=
-ustments to apply in older
->  series (for example due to API changes).
-> =20
->  When using option 2 or 3 you can ask for your change to be included in=
- specific
-> -stable series. When doing so, ensure the fix or an equivalent is appli=
-cable,
-> -submitted, or already present in all newer stable trees still supporte=
-d. This is
-> -meant to prevent regressions that users might later encounter on updat=
-ing, if
-> -e.g. a fix merged for 5.19-rc1 would be backported to 5.10.y, but not =
-to 5.15.y.
-> +stable series, one way to do so is by specifying the target series in =
-the
-> +subject prefix (e.g. '[PATCH stable 5.15 5.10]' asks that the patch to=
- be
+> Link: https://lore.kernel.org/stable/2024051500-underage-unfixed-5d28@g=
+regkh/
 
-"that the patch is included in..." would be slightly better.
+Is "Link:" right here? I'd prefer to see something like "For example see
+=2E.." added to the first paragraph so it's explicit that this is a link
+to an example of this issue.
 
-> +included in both 5.10.y and 5.15.y). When doing so, ensure the fix or =
-an
-> +equivalent is applicable, submitted, or already present in all newer s=
-table
-> +trees still supported. This is meant to prevent regressions that users=
- might
-> +later encounter on updating, if e.g. a fix merged for 5.19-rc1 would b=
-e
-> +backported to 5.10.y, but not to 5.15.y.
-> =20
->  .. _option_1:
-> =20
-
-This is a helpful clarification and I like seeing an example. With the
-trivial change above:
-
-Reviewed-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Thanks,
 
 --=20
 Paul Barker
---------------cwYi1y9yKe2mdo4v6vJz18ui
+--------------qQTaesiPkzvpsYiryEyobieU
 Content-Type: application/pgp-keys; name="OpenPGP_0x27F4B3459F002257.asc"
 Content-Disposition: attachment; filename="OpenPGP_0x27F4B3459F002257.asc"
 Content-Description: OpenPGP public key
@@ -205,22 +173,22 @@ ZyZGVsEsOuGCLkekUMF/5dwOhEDXrY42VR/ZxdDTY99dznQkwTt4o7FOmkY=3D
 =3DsIIN
 -----END PGP PUBLIC KEY BLOCK-----
 
---------------cwYi1y9yKe2mdo4v6vJz18ui--
+--------------qQTaesiPkzvpsYiryEyobieU--
 
---------------cuym2VioR9YeBxcmeIilliEz--
+--------------jx2MlaW4pW7XcUU0aJVXRSmE--
 
---------------xI3MkB3bqz4WF3eJ5X8zp2y7
+--------------H2osBe6uDS5iMbGIAkIluqDf
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-wnsEABYIACMWIQSiu8gv1Xr0fIw/aoLbaV4Vf/JGvQUCZmFv6QUDAAAAAAAKCRDbaV4Vf/JGvWU6
-AQDSsAO3bvQOfdU4uSNy9JHsga8OyLIF2Rs7Fda7u/NyOAEAq6KIJw4g73ZA4mkNsnOM7kUpXq1+
-KcKZU1/hFlLX2wM=
-=jN5l
+wnsEABYIACMWIQSiu8gv1Xr0fIw/aoLbaV4Vf/JGvQUCZmFxkwUDAAAAAAAKCRDbaV4Vf/JGvYhk
+AP9YU9OAwSzVUlhMHlP7qyw1icBlmu5Dj2e0lJVVNKmcQAD9FZCCLxMQGpAa4b4wX2sryNbgjAcd
+4kFor/Rr1f+VhA4=
+=Ti8Z
 -----END PGP SIGNATURE-----
 
---------------xI3MkB3bqz4WF3eJ5X8zp2y7--
+--------------H2osBe6uDS5iMbGIAkIluqDf--
 
