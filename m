@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-49458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417C08FED54
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A5E8FE9BF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6928B1C21059
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8871C25CD9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28D31BA872;
-	Thu,  6 Jun 2024 14:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A3E198A28;
+	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNUeYdvx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3gRkvgS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2ACF1974FB;
-	Thu,  6 Jun 2024 14:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40941198A31;
+	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683475; cv=none; b=hNS4xB4J9PZhCpQm9auC096DWTEMtcmXErKPL1K1BdLfc4Y6bYimZTUFhfv4AeCUGKYq8NTHiBkEYayBgxcXvf7lFe6KFGkCJ3QJZfGnZMpcqz9rQfd/G04Xoa+5OpvlbWlBWaNlJ9uGrbI6xOvCTA4Z5YrHjD3wKmoMtNpY/2E=
+	t=1717683062; cv=none; b=CjetR1SPGvrGDf9oyD+Y1472/A2eyTl8k4Dmhd8avx4cdoxwysYICF72kjqzDzj09JCSC+ilB5VNkdtUebvAbkkAI9LRaDRzj5benVTFD8M5SB1+UIlYo2F+B3DudqpLb/Afgqcz5VLn98lUlWOZ/utnECJAXNByhQARiL4U1F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683475; c=relaxed/simple;
-	bh=YSclHuZHGyXFaK3UwywMkfV+TOhHPU3VGKmGNjT3h6k=;
+	s=arc-20240116; t=1717683062; c=relaxed/simple;
+	bh=KMLEbonCSLnKphYAz4JNRtjeRwf0BGrUJ8xrZ05rXfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kckn6ct3O8x+dgJfa6jPbTgKQewDZ6ZV1ML99zUvWRsyPD8yYtK3OLRTlY/1pWXtnbAEDyHlMPiUGjing4HJc4sys8zJQGeCHUPfFPb0vGtk7Sb85C1n/UEI6zp5PwV6ggvEOEIm7YY9For5i94kIqsFCZNfnQtwN9DhRdwF3h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNUeYdvx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DFEC32781;
-	Thu,  6 Jun 2024 14:17:55 +0000 (UTC)
+	 MIME-Version; b=CvUf/M4aotYtSx16Y+X0RNaMrAPiPbemQkkrcCfkgvFlohDSGj/Yx0y85OCcJl1JIc5oFHACg8GmCaHGVzMM9805EOTPAcmqUEVbdrxOZa7xJD44YoHLGtnguJIv0kxAGuYxoAoEvqSKxBF1dV+rqzaTz5VQHCTq+koYhWaorpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3gRkvgS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDBDC2BD10;
+	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683475;
-	bh=YSclHuZHGyXFaK3UwywMkfV+TOhHPU3VGKmGNjT3h6k=;
+	s=korg; t=1717683062;
+	bh=KMLEbonCSLnKphYAz4JNRtjeRwf0BGrUJ8xrZ05rXfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yNUeYdvxHFg3XKR0pblwXz1hLsWtxrFqeY5y0Cwcl45I2q+TE6fO44pXJl3nLJI9A
-	 3JviG8syBkZtUx1/DVUAnah+7I1yRjfrnLGL6q1XXPsrESu8yG9a/Z+oJJZDd2Md0h
-	 uKjpMR2AVIY16VFR1V0uQHS/qsLxg91qJ+od9lxs=
+	b=o3gRkvgS7wcQv0fVZblWxbVQuaKm2E2TVF0VSHoKDS1/l1eI5FpeuGCyyFgD8GALL
+	 4bvCizPY9SRgSgP344EIBpFuWXk/DmsXozm/W+lu7eQSzR90Yb+jFgcdsF7hgkW0wU
+	 76NTJY5J1XQOjgK7W0vtRHZ+f7l+iokpvAybDamE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 362/473] mmc: sdhci_am654: Write ITAPDLY for DDR52 timing
+Subject: [PATCH 6.9 312/374] Octeontx2-pf: Free send queue buffers incase of leaf to inner
 Date: Thu,  6 Jun 2024 16:04:51 +0200
-Message-ID: <20240606131711.881621236@linuxfoundation.org>
+Message-ID: <20240606131702.294169020@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit d465234493bb6ad1b9c10a0c9ef9881b8d85081a ]
+[ Upstream commit 1684842147677a1279bcff95f8adb6de9a656e30 ]
 
-For DDR52 timing, DLL is enabled but tuning is not carried
-out, therefore the ITAPDLY value in PHY CTRL 4 register is
-not correct. Fix this by writing ITAPDLY after enabling DLL.
+There are two type of classes. "Leaf classes" that are  the
+bottom of the class hierarchy. "Inner classes" that are neither
+the root class nor leaf classes. QoS rules can only specify leaf
+classes as targets for traffic.
 
-Fixes: a161c45f2979 ("mmc: sdhci_am654: Enable DLL only for some speed modes")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-3-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+			 Root
+		        /  \
+		       /    \
+                      1      2
+                             /\
+                            /  \
+                           4    5
+               classes 1,4 and 5 are leaf classes.
+               class 2 is a inner class.
+
+When a leaf class made as inner, or vice versa, resources associated
+with send queue (send queue buffers and transmit schedulers) are not
+getting freed.
+
+Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Link: https://lore.kernel.org/r/20240523073626.4114-1-hkelam@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index 1db03164af2b1..fb410a8a40799 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -304,6 +304,7 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
- 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
- 		sdhci_am654_setup_dll(host, clock);
- 		sdhci_am654->dll_enable = true;
-+		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing]);
- 	} else {
- 		sdhci_am654_setup_delay_chain(sdhci_am654, timing);
- 		sdhci_am654->dll_enable = false;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+index 1723e9912ae07..6cddb4da85b71 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+@@ -1407,7 +1407,10 @@ static int otx2_qos_leaf_to_inner(struct otx2_nic *pfvf, u16 classid,
+ 	otx2_qos_read_txschq_cfg(pfvf, node, old_cfg);
+ 
+ 	/* delete the txschq nodes allocated for this node */
++	otx2_qos_disable_sq(pfvf, qid);
++	otx2_qos_free_hw_node_schq(pfvf, node);
+ 	otx2_qos_free_sw_node_schq(pfvf, node);
++	pfvf->qos.qid_to_sqmap[qid] = OTX2_QOS_INVALID_SQ;
+ 
+ 	/* mark this node as htb inner node */
+ 	WRITE_ONCE(node->qid, OTX2_QOS_QID_INNER);
+@@ -1554,6 +1557,7 @@ static int otx2_qos_leaf_del_last(struct otx2_nic *pfvf, u16 classid, bool force
+ 		dwrr_del_node = true;
+ 
+ 	/* destroy the leaf node */
++	otx2_qos_disable_sq(pfvf, qid);
+ 	otx2_qos_destroy_node(pfvf, node);
+ 	pfvf->qos.qid_to_sqmap[qid] = OTX2_QOS_INVALID_SQ;
+ 
 -- 
 2.43.0
 
