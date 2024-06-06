@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4428FEC0A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4688FEE03
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 967C6B22AA2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF50F283A74
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A3E1AC433;
-	Thu,  6 Jun 2024 14:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7564C197517;
+	Thu,  6 Jun 2024 14:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vosDGJ3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbsGhfhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86DD1AC431;
-	Thu,  6 Jun 2024 14:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344491BF8E3;
+	Thu,  6 Jun 2024 14:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683322; cv=none; b=R4QraONO9y6EqJQVb2v6/7r0jDGT0c3U/GXcj92M51iVqtD+8YJQcdyhcncMfpOwqGq+8FXb9w1D/FgIpi/b/RynYXi+chnfCXXr7YO6uRSbVJboq6cAtGghKE+NwiTR+cuqKzSNjUYli8/Ey3661j3/puscLPwlqm1pypbkhzQ=
+	t=1717683550; cv=none; b=cpktj8uxnrbGhkX2fV1+mLgF+NDRvNcK462V/O1krQ3itlf1LTwgMjcu+IWulqH0VYt0pbhNriX7NisHRRMLZALey2HzHd/PyuH402Wb27yunpVCx1/ZBlb+JmZvLdeTmk6eiKn5mdNS/G/xwtzyijoCl0c3kvSYG/1OsfrtkFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683322; c=relaxed/simple;
-	bh=6sPcI5ZeZ7RPhKNYw8/IcFJCNBuZlJcFKY7BQ0bNFNQ=;
+	s=arc-20240116; t=1717683550; c=relaxed/simple;
+	bh=Dnxocy+DvWZeXRssaU3Egn7hwaMGhBPbV50F4fAl624=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+joufY5jB4S1bhlY8pMZrQ3Lqx3rwjUrjEC0fL8j/KYoNPIwy3AdcSllMORlCz0s1TU+JR3EPWlKS5kUT3RbLs0YhTH3rsvFXyvlmdzyFKl757KP1i1BUMzmOZtH6F0wwA5a6vWUj+gPPqreXAzUuSVdGiM4cQPsVzNjyvoKXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vosDGJ3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7AF2C4AF07;
-	Thu,  6 Jun 2024 14:15:22 +0000 (UTC)
+	 MIME-Version; b=hqXrnVxeGY4FlvW69l0pxkDmG1Vzx2zm4WO06Wc4I9Myu9IPkK3WjPTG2EAaJAsVbzAailalBJ+6vDmBapc/nVhJtV2NZidEixGYraNiIBFgGJk2auEfjCxFwK/xOlKsZdfH/5D4C7+SvU52vr9wbitKU0E/AuMiQ9PMP/voP84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbsGhfhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1673EC2BD10;
+	Thu,  6 Jun 2024 14:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683322;
-	bh=6sPcI5ZeZ7RPhKNYw8/IcFJCNBuZlJcFKY7BQ0bNFNQ=;
+	s=korg; t=1717683550;
+	bh=Dnxocy+DvWZeXRssaU3Egn7hwaMGhBPbV50F4fAl624=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vosDGJ3M1dGftANJfPrGdjKraFF+sHLmPjnkXV5XLbIAxN1fbvvuW/qVo7HFG5dY7
-	 CmTsv6qZ3JrfyNefa+OaA9uU+2vCuKlVcGclTuYWcx9Ei7dzLg4smMbihAJMmpjzvx
-	 T/N+coszS4PTq7QIiIRUzVFKo1EmUcfDHEnSwP5s=
+	b=TbsGhfhzCXxWF1Wm1qzW6bQ9Y2EQz5Dnptomw/QFXtcfA+voBxlSQ6vt3SNlvSnvw
+	 sfJLtqI736VNh3ntgHiDzge5gr5FtawS8MOiLruirsG0Dz3XeCn1hk9LcCY15J22a/
+	 1mTQkNw/2bhd6wKJp0G6YYyk0amVFb7NNZxYMzFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Mark Brown <broonie@kernel.org>,
+	Ye Bin <yebin10@huawei.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 202/473] ASoC: kirkwood: Fix potential NULL dereference
+Subject: [PATCH 6.6 459/744] vfio/pci: fix potential memory leak in vfio_intx_enable()
 Date: Thu,  6 Jun 2024 16:02:11 +0200
-Message-ID: <20240606131706.616617197@linuxfoundation.org>
+Message-ID: <20240606131747.192629347@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit ea60ab95723f5738e7737b56dda95e6feefa5b50 ]
+[ Upstream commit 82b951e6fbd31d85ae7f4feb5f00ddd4c5d256e2 ]
 
-In kirkwood_dma_hw_params() mv_mbus_dram_info() returns NULL if
-CONFIG_PLAT_ORION macro is not defined.
-Fix this bug by adding NULL check.
+If vfio_irq_ctx_alloc() failed will lead to 'name' memory leak.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: bb6a40fc5a83 ("ASoC: kirkwood: Fix reference to PCM buffer address")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://msgid.link/r/20240328173337.21406-1-amishin@t-argos.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 18c198c96a81 ("vfio/pci: Create persistent INTx handler")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Link: https://lore.kernel.org/r/20240415015029.3699844-1-yebin10@huawei.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/kirkwood/kirkwood-dma.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vfio/pci/vfio_pci_intrs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/kirkwood/kirkwood-dma.c b/sound/soc/kirkwood/kirkwood-dma.c
-index 640cebd2983e2..16d2c9acc33a6 100644
---- a/sound/soc/kirkwood/kirkwood-dma.c
-+++ b/sound/soc/kirkwood/kirkwood-dma.c
-@@ -182,6 +182,9 @@ static int kirkwood_dma_hw_params(struct snd_soc_component *component,
- 	const struct mbus_dram_target_info *dram = mv_mbus_dram_info();
- 	unsigned long addr = substream->runtime->dma_addr;
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index 99bbd647e5d81..620134041b488 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -277,8 +277,10 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+ 		return -ENOMEM;
  
-+	if (!dram)
-+		return 0;
-+
- 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
- 		kirkwood_dma_conf_mbus_windows(priv->io,
- 			KIRKWOOD_PLAYBACK_WIN, addr, dram);
+ 	ctx = vfio_irq_ctx_alloc(vdev, 0);
+-	if (!ctx)
++	if (!ctx) {
++		kfree(name);
+ 		return -ENOMEM;
++	}
+ 
+ 	ctx->name = name;
+ 	ctx->trigger = trigger;
 -- 
 2.43.0
 
