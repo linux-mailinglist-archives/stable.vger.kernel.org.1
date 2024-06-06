@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-49870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5372F8FEF32
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 845238FEE4F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09424287D25
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 017EF282C90
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197441CB311;
-	Thu,  6 Jun 2024 14:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C981C2305;
+	Thu,  6 Jun 2024 14:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKtnXIDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3nDP89M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1A41A2568;
-	Thu,  6 Jun 2024 14:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62D71C225E;
+	Thu,  6 Jun 2024 14:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683751; cv=none; b=lo77xJcq5hUmUSe+VF+OCGT8ob3P4csLoIii2wHxgrJx1Ex8ibNSuMzMkAWiPyqfAyABALO+OHUYp2FHM3/52RoBOH+Psaw+IQid1r/t7xT3jXnkzrEoSDfjWa/CeJ5QhIKGP8Dq/bwL6DpwtRdAqQDg9+aIAuBdNwS63L8nzLc=
+	t=1717683644; cv=none; b=UcKbIQ2FlKjmQmKJwZafcCwkFHVekRxs9c0fGmo03DMNMGduIlW4VlTQR2yfeG72c9aAep+LDWDoWjpKCg1ygNgmOYOGrlazuL47p1vxrNJGhci8AlvlWhi0aLSGqSbqdOnGEIqcw1P8wthpJNWqfcNk7rAupPfreplSXZwFAis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683751; c=relaxed/simple;
-	bh=kEM3g9YaH1K3RuLYnS100mnkw00myweGDrW4diqBIGc=;
+	s=arc-20240116; t=1717683644; c=relaxed/simple;
+	bh=VZK45EHt4b6yyV36AEGh+Qh7NoRhbmdKFy6WNuOEz0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gSNHANgUQmgycZSJaaYRq2PpnAesjOEUCEMRXa/iOCJLaE9IVOZY2xWZS3kSewxj8OydmRYbQo05N60R9hKSkBLaaXcCVhCaWT3mPnniHTsHPbRxrWHSoD36Bb0Ip1ncEM1T0PJiOuUnMmOxeMAK2qYDNUYaXGZ/NjSDvQtX5lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKtnXIDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08B2C2BD10;
-	Thu,  6 Jun 2024 14:22:31 +0000 (UTC)
+	 MIME-Version; b=fg1G11zJph60hsVwz8+p29evip2cXTpBkNoV/QPnWmq09eX5vPFm5xy7eU54EdScxCgpbBpZthb8dpAemCeJ1FhXQ9ixHUK7Rpu9HndJ1GTo1W7GklPcM7pE8fPQ3v3U/tk1ejoVTkmq7A9W8h3KdK4uldfJHW1piwnbQul+OUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3nDP89M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EDDC4AF09;
+	Thu,  6 Jun 2024 14:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683751;
-	bh=kEM3g9YaH1K3RuLYnS100mnkw00myweGDrW4diqBIGc=;
+	s=korg; t=1717683644;
+	bh=VZK45EHt4b6yyV36AEGh+Qh7NoRhbmdKFy6WNuOEz0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKtnXIDnyTF95gPqWZGumP4ENwD4VTOqOc0nepcx8DJ3tx0fERHr3ZLSLSIHrVHMh
-	 MN+Sn6BTd7/XVAMu58KBRsLTpYQgKrnM6EZV7G7NT9tXEUUpH13yA5sQIuxxkvKQg8
-	 x8M5TMUK4/BbydfKJ9VUIG9P7n2UlNBBM+jO4fDw=
+	b=B3nDP89Md804WhlkcYmrrlhlYNfrdN/58E22x23zH3S6A7HzrspHOrbgMV2Sn5L/Q
+	 ZF4tBq8/YxTiwAEY+A18AptZgilaRkZ9b1zcJlTj8wJjXA/bFGhidg75SJVtenbfUP
+	 PP6Y7WruiWxQQhX4NHmdI/F+TMvrvrvIN2UxWmSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Tristram Ha <tristram.ha@microchip.com>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>,
+	Jerry Ray <jerry.ray@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 721/744] spi: stm32: Dont warn about spurious interrupts
+Subject: [PATCH 6.1 464/473] net: dsa: microchip: fix RGMII error in KSZ DSA driver
 Date: Thu,  6 Jun 2024 16:06:33 +0200
-Message-ID: <20240606131755.588960180@linuxfoundation.org>
+Message-ID: <20240606131715.025676759@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Tristram Ha <tristram.ha@microchip.com>
 
-[ Upstream commit 95d7c452a26564ef0c427f2806761b857106d8c4 ]
+[ Upstream commit 278d65ccdadb5f0fa0ceaf7b9cc97b305cd72822 ]
 
-The dev_warn to notify about a spurious interrupt was introduced with
-the reasoning that these are unexpected. However spurious interrupts
-tend to trigger continously and the error message on the serial console
-prevents that the core's detection of spurious interrupts kicks in
-(which disables the irq) and just floods the console.
+The driver should return RMII interface when XMII is running in RMII mode.
 
-Fixes: c64e7efe46b7 ("spi: stm32: make spurious and overrun interrupts visible")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://msgid.link/r/20240521105241.62400-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0ab7f6bf1675 ("net: dsa: microchip: ksz9477: use common xmii function")
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Acked-by: Arun Ramadoss <arun.ramadoss@microchip.com>
+Acked-by: Jerry Ray <jerry.ray@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/1716932066-3342-1-git-send-email-Tristram.Ha@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 2 +-
+ drivers/net/dsa/microchip/ksz_common.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index ef665f470c5b5..40680b5fffc9a 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -898,7 +898,7 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
- 		mask |= STM32H7_SPI_SR_TXP | STM32H7_SPI_SR_RXP;
- 
- 	if (!(sr & mask)) {
--		dev_warn(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
-+		dev_vdbg(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
- 			 sr, ier);
- 		spin_unlock_irqrestore(&spi->lock, flags);
- 		return IRQ_NONE;
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index dc9eea3c8ab16..f9f43897f86c1 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2540,7 +2540,7 @@ phy_interface_t ksz_get_xmii(struct ksz_device *dev, int port, bool gbit)
+ 		else
+ 			interface = PHY_INTERFACE_MODE_MII;
+ 	} else if (val == bitval[P_RMII_SEL]) {
+-		interface = PHY_INTERFACE_MODE_RGMII;
++		interface = PHY_INTERFACE_MODE_RMII;
+ 	} else {
+ 		interface = PHY_INTERFACE_MODE_RGMII;
+ 		if (data8 & P_RGMII_ID_EG_ENABLE)
 -- 
 2.43.0
 
