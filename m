@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-48960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B49DF8FEB47
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D19B8FEB03
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56ADD1F27F63
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E1121F254EC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157551A38F6;
-	Thu,  6 Jun 2024 14:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DD31A2C18;
+	Thu,  6 Jun 2024 14:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXlqw2NZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZK3INU6j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E9E1993A8;
-	Thu,  6 Jun 2024 14:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DF819924D;
+	Thu,  6 Jun 2024 14:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683231; cv=none; b=qXoxQGaAmoTfDyc3aaPFduTSAXIMhLJ/HLUgTcjX8MdgX4AgirYlfSx4A4NqKAMOJtVsqdB6BInDtU0N61HKsCvQnby9+S13l/clQtGETf405HWdXY4gelIV7SElEiKr/hLZcu8mPFhIoaJSAIhVONw5l4RB8yfF3A0f/eKF5Tk=
+	t=1717683201; cv=none; b=Kr7oHCg0Ej8VMLQMuYEdVq2OzjzfofaXH4JmHXhqIN9CscnTdaW1GsAZR6rCWZYzE2iuFiQVhFbdfHjYoBYRVKp6wae73CMOxYJNoCTe69RdskbtpQbwxB5IIQMYXuwzf2C4vRPhZWNBFWzo96Hna+1chKXU5qkjyq4Q+1Wf2+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683231; c=relaxed/simple;
-	bh=AhuTzB4mUg1Vx5/r27cyOwdVdsSayRhj4denapFZNlA=;
+	s=arc-20240116; t=1717683201; c=relaxed/simple;
+	bh=zH85zuDH5LNpPEaPZJ+HsIya76zeBWHRH1aThRwp0lA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5mzGlq+bhFGRIf1f5l6MNuCn3//kPj/wmhsebBB+PoHcgCusxCa77l88ZfpwLf7BfstI+ZksVn+wTmpjjHvAVzXtzdd1qaF6nh7M+TZuulJ6yXkQYbS6hHnnV9jqbkWJKvs5/NXY7ELmK2frwf6bZoQsBSXGJuscXa9cO+3hc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXlqw2NZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62FEC32781;
-	Thu,  6 Jun 2024 14:13:51 +0000 (UTC)
+	 MIME-Version; b=WzBWIr/KTY5ibrinMPee6BpyLwrdWEaJID/ofBWcp116gMeY2nRCQb+vN8VJjTLBrXABezXZkdDX4yirt8ftxNkGKu9uskqWPL3Sv+M/j/cGgIX+bSOz87024iFb2EDZTYlGsSQM1Te6IVAwU/iTf6pa27DhBulEdykZYE9EFAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZK3INU6j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CA1C32781;
+	Thu,  6 Jun 2024 14:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683231;
-	bh=AhuTzB4mUg1Vx5/r27cyOwdVdsSayRhj4denapFZNlA=;
+	s=korg; t=1717683200;
+	bh=zH85zuDH5LNpPEaPZJ+HsIya76zeBWHRH1aThRwp0lA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dXlqw2NZ1sYr612JiT2Njh1ciS6EDXSmxWJ9oQMXX+oBo27MPUZ+AyPWlwI0y+ksZ
-	 fAnNLnD4AjWqH47Q1zrAZfTuLAiueq4rLiwUj2aGrH8kXhCp0ea6Gp3rjF7AzNno0x
-	 Tsz0RzrehqNQgzCP9CuZpkaOYjjwIfvedSNDT0/U=
+	b=ZK3INU6jMz3G6RbGaA+q38epBOGX89FmAbnpuIaoLwLxcUBNjS/G22mpX8g+D1RVV
+	 SXtDkheNJVACFIneAjsLdO8ghl2TTwOTd3B40nAT8J71iHiTebykq6gtpzWMphZvqR
+	 1EC6veG8cvpvRRWrjcEz1gdLXIGDkLp8csAZDiD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Maxim Mikityanskiy <maxtram95@gmail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/744] mlx5: stop warning for 64KB pages
-Date: Thu,  6 Jun 2024 15:56:55 +0200
-Message-ID: <20240606131737.007835657@linuxfoundation.org>
+Subject: [PATCH 6.6 144/744] bitops: add missing prototype check
+Date: Thu,  6 Jun 2024 15:56:56 +0200
+Message-ID: <20240606131737.036579301@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,55 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit a5535e5336943b33689f558199366102387b7bbf ]
+[ Upstream commit 72cc1980a0ef3ccad0d539e7dace63d0d7d432a4 ]
 
-When building with 64KB pages, clang points out that xsk->chunk_size
-can never be PAGE_SIZE:
+Commit 8238b4579866 ("wait_on_bit: add an acquire memory barrier") added
+a new bitop, test_bit_acquire(), with proper wrapping in order to try to
+optimize it at compile-time, but missed the list of bitops used for
+checking their prototypes a bit below.
+The functions added have consistent prototypes, so that no more changes
+are required and no functional changes take place.
 
-drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c:19:22: error: result of comparison of constant 65536 with expression of type 'u16' (aka 'unsigned short') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-        if (xsk->chunk_size > PAGE_SIZE ||
-            ~~~~~~~~~~~~~~~ ^ ~~~~~~~~~
-
-In older versions of this code, using PAGE_SIZE was the only
-possibility, so this would have never worked on 64KB page kernels,
-but the patch apparently did not address this case completely.
-
-As Maxim Mikityanskiy suggested, 64KB chunks are really not all that
-useful, so just shut up the warning by adding a cast.
-
-Fixes: 282c0c798f8e ("net/mlx5e: Allow XSK frames smaller than a page")
-Link: https://lore.kernel.org/netdev/20211013150232.2942146-1-arnd@kernel.org/
-Link: https://lore.kernel.org/lkml/a7b27541-0ebb-4f2d-bd06-270a4d404613@app.fastmail.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Maxim Mikityanskiy <maxtram95@gmail.com>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240328143051.1069575-9-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8238b4579866 ("wait_on_bit: add an acquire memory barrier")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/bitops.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-index 36826b5824847..78739fe138ca4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xsk/setup.c
-@@ -28,8 +28,10 @@ bool mlx5e_validate_xsk_param(struct mlx5e_params *params,
- 			      struct mlx5e_xsk_param *xsk,
- 			      struct mlx5_core_dev *mdev)
- {
--	/* AF_XDP doesn't support frames larger than PAGE_SIZE. */
--	if (xsk->chunk_size > PAGE_SIZE || xsk->chunk_size < MLX5E_MIN_XSK_CHUNK_SIZE) {
-+	/* AF_XDP doesn't support frames larger than PAGE_SIZE,
-+	 * and xsk->chunk_size is limited to 65535 bytes.
-+	 */
-+	if ((size_t)xsk->chunk_size > PAGE_SIZE || xsk->chunk_size < MLX5E_MIN_XSK_CHUNK_SIZE) {
- 		mlx5_core_err(mdev, "XSK chunk size %u out of bounds [%u, %lu]\n", xsk->chunk_size,
- 			      MLX5E_MIN_XSK_CHUNK_SIZE, PAGE_SIZE);
- 		return false;
+diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+index 2ba557e067fe6..f7f5a783da2aa 100644
+--- a/include/linux/bitops.h
++++ b/include/linux/bitops.h
+@@ -80,6 +80,7 @@ __check_bitop_pr(__test_and_set_bit);
+ __check_bitop_pr(__test_and_clear_bit);
+ __check_bitop_pr(__test_and_change_bit);
+ __check_bitop_pr(test_bit);
++__check_bitop_pr(test_bit_acquire);
+ 
+ #undef __check_bitop_pr
+ 
 -- 
 2.43.0
 
