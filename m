@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-49425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A71B8FED33
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030FB8FED36
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFD951F20F0E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9A9C1F22C5C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A099C1B5811;
-	Thu,  6 Jun 2024 14:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C051B581D;
+	Thu,  6 Jun 2024 14:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VasY/2zt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uy3dVnPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6015A1974EB;
-	Thu,  6 Jun 2024 14:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D764D1974EB;
+	Thu,  6 Jun 2024 14:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683459; cv=none; b=QkppPoC052vbA6faD1GIgVh6jejTCbC/mwghLhaQTiVAqmQgtbUnTj7T3BF0iCzDW7LQKebAd0rmrqJ7WyVzXdDp/ad6sWJ21jaVZJtE6meAO2GxS7PoyhuJoQrnYdDzCuDfw/NF8u3oL16ZOBGDXJBdnlB4/6/1lrB0AymDoKk=
+	t=1717683460; cv=none; b=o8GhKGRDXi8Tx22OJvNMDlb2sbO28yhJ8rd/hHK7UKk6fBX856ZTHbOzqeSdBaHDwE0N7rBQpBmFr+TPW1bUKeJwEc2xziaHtabjNy4irH4BT2i23RxBbXV3mTdueI/I8b9RZpBlAMWGfgZ3bM1i1GvvgvYMsA+y7oFkwt+Dj6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683459; c=relaxed/simple;
-	bh=WZEBgiQu/AbnG9LTFkVPZ6GdjftRWB6ArE7SdixOeQo=;
+	s=arc-20240116; t=1717683460; c=relaxed/simple;
+	bh=4NrrewIIrkvxLD98vGZWp8Zpwo/8PBKcdyDLlOGKqbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMPr7u7U6Cyvce1A28lUzXCddoB9O0aoLowdYOLYZD8bGDL1gG04G+YNgPMTPUrxa4ltcTpD4D0VXh5LshzkDg8hEJkIkRU9DvvZ6JY0VmuNFDDLTMKSBw27MSShVbwqsxe3UJRvEzkxHlhZhnp8CJOM2THEJcF25DJr4GAy0XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VasY/2zt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7E7C4AF0A;
-	Thu,  6 Jun 2024 14:17:39 +0000 (UTC)
+	 MIME-Version; b=llhfePcXDPMrS3tamU4sozr18sKW1R7Pd5mEAu0KlRiXnyIjXmy42zlqfcH/KVeoS6huA5mo3TXHYTurYx6Ttqk8GphfzsAZYqFobITWstiYF/2O5YbMDlHiHO9CuD4GJ+6LzlCYKVgfhnWd2Qt35TbsCP22ADPa4zH8F6BtSM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy3dVnPe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B567DC2BD10;
+	Thu,  6 Jun 2024 14:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683459;
-	bh=WZEBgiQu/AbnG9LTFkVPZ6GdjftRWB6ArE7SdixOeQo=;
+	s=korg; t=1717683460;
+	bh=4NrrewIIrkvxLD98vGZWp8Zpwo/8PBKcdyDLlOGKqbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VasY/2ztzwxJJDgILqrvoGv33ku8pyqacTExfgIeY+G39eLSX2tBgQXmjBw6Cb7qt
-	 fLJ3m5WRvi6QU3tLbjy3IO9chdyPSvF41qU6Kbtgl2/a0pz0+0/80d3HRr1WxHR5Ww
-	 szlKVnOUCziSMWHO8xGCMXmC71eQdwdvNONWlui4=
+	b=Uy3dVnPe2qeqXn+WqFY6VG0O3A3SEY9/aorU52+g4jafL/410Z1dBo5KHXR79b//N
+	 CnIFoiqKruVyWN6OcAdSYeOtHK21xaiViWfgr2UTGt0WRP3rE3tnpSkkkNoBTUBCHa
+	 fgbBvHKkQ6onPSjW/pLmGRypygV/4ddcZ70vJhu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 404/744] soundwire: cadence: fix invalid PDI offset
-Date: Thu,  6 Jun 2024 16:01:16 +0200
-Message-ID: <20240606131745.415197105@linuxfoundation.org>
+Subject: [PATCH 6.6 405/744] dmaengine: idma64: Add check for dma_set_max_seg_size
+Date: Thu,  6 Jun 2024 16:01:17 +0200
+Message-ID: <20240606131745.451642420@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,46 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 8ee1b439b1540ae543149b15a2a61b9dff937d91 ]
+[ Upstream commit 2b1c1cf08a0addb6df42f16b37133dc7a351de29 ]
 
-For some reason, we add an offset to the PDI, presumably to skip the
-PDI0 and PDI1 which are reserved for BPT.
+As the possible failure of the dma_set_max_seg_size(), it should be
+better to check the return value of the dma_set_max_seg_size().
 
-This code is however completely wrong and leads to an out-of-bounds
-access. We were just lucky so far since we used only a couple of PDIs
-and remained within the PDI array bounds.
-
-A Fixes: tag is not provided since there are no known platforms where
-the out-of-bounds would be accessed, and the initial code had problems
-as well.
-
-A follow-up patch completely removes this useless offset.
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20240326090122.1051806-2-yung-chuan.liao@linux.intel.com
+Fixes: e3fdb1894cfa ("dmaengine: idma64: set maximum allowed segment size for DMA")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240403024932.3342606-1-nichen@iscas.ac.cn
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/idma64.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
-index 0efc1c3bee5f5..3e7cf04aaf2a6 100644
---- a/drivers/soundwire/cadence_master.c
-+++ b/drivers/soundwire/cadence_master.c
-@@ -1880,7 +1880,7 @@ struct sdw_cdns_pdi *sdw_cdns_alloc_pdi(struct sdw_cdns *cdns,
+diff --git a/drivers/dma/idma64.c b/drivers/dma/idma64.c
+index f86939fa33b95..6fa797fd85017 100644
+--- a/drivers/dma/idma64.c
++++ b/drivers/dma/idma64.c
+@@ -598,7 +598,9 @@ static int idma64_probe(struct idma64_chip *chip)
  
- 	/* check if we found a PDI, else find in bi-directional */
- 	if (!pdi)
--		pdi = cdns_find_pdi(cdns, 2, stream->num_bd, stream->bd,
-+		pdi = cdns_find_pdi(cdns, 0, stream->num_bd, stream->bd,
- 				    dai_id);
+ 	idma64->dma.dev = chip->sysdev;
  
- 	if (pdi) {
+-	dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
++	ret = dma_set_max_seg_size(idma64->dma.dev, IDMA64C_CTLH_BLOCK_TS_MASK);
++	if (ret)
++		return ret;
+ 
+ 	ret = dma_async_device_register(&idma64->dma);
+ 	if (ret)
 -- 
 2.43.0
 
