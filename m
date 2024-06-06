@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-48678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96AD48FEA06
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B7B8FEDC2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C2551F258F6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E271282147
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F49119DF41;
-	Thu,  6 Jun 2024 14:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26881BD4FF;
+	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGt+TTT2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMEOnS9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08231974F7;
-	Thu,  6 Jun 2024 14:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9C31ABE36;
+	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683093; cv=none; b=Jk8xdD6GQxGhhQSC15M4m3ckg001eMP039YLyIrR0HkIrkp3/4otq7UZzeS9X89VPVOsdtdRF/MQycujofX6aNJHnGyOSbLSOOmGqIXb9WSZFivSZliENpVmVwgI4WCUDS9YxKxmEm/8JAximCVJ6Shm8M3IriyOdsJi1+LzZZk=
+	t=1717683522; cv=none; b=hr7pH+IF4Ne6L/CwK3pnYokHh3D47qLDw7WX3aanze+EewQtmUKGgbhm5AcFjLX0zZU8y4V2xL9+dFyp+6KpZcHMuY5Fat0A67rQzOi/oxSEKaOAEI/JhOz/cL32GZLq42lwRxRWNfMQwuYmG6XMst3T3yqQQAVg7C1gsLhu1B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683093; c=relaxed/simple;
-	bh=DgtSQiS6Ma+mbh63/4j2ilMhsAtUP1be1MIsi8ZvF1M=;
+	s=arc-20240116; t=1717683522; c=relaxed/simple;
+	bh=ZchhFG9OkxeqZR98q8rBfd1WidsacEqKSYguyhjKqRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjbl/vE+RuKfnxiAVK9nQkN/n6yLgAdpcYEyJ9NljuSrfYsriBMSQQKD//+RKGVTm8nM2ZBbplB15sUpu9Yt9z7XwbO3HRhITf2aNZms1Tpu3WR3vDFEBfQ0QZK1rfLIUwuFqPvqtwsvupTjsfbqo1XihqW4RSmSI1l0OOp/I3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGt+TTT2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459C8C4AF0C;
-	Thu,  6 Jun 2024 14:11:33 +0000 (UTC)
+	 MIME-Version; b=i6tEEwkzTiefJAVctfBSSMj9TWbMbmlPrnZm1THv3a8zxM8RXbfihl3Q/fKmiS9dC6TwXwonFfD8bFKOePAlDxSGWCbBLbtdFx+2nM1OGrgfasKvSkJ4Js9K+zUb0e6YT8csxYjyThmovh0DmkHbu4dE38idgRL1GI+2nk94HEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMEOnS9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79015C2BD10;
+	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683093;
-	bh=DgtSQiS6Ma+mbh63/4j2ilMhsAtUP1be1MIsi8ZvF1M=;
+	s=korg; t=1717683522;
+	bh=ZchhFG9OkxeqZR98q8rBfd1WidsacEqKSYguyhjKqRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hGt+TTT2AfZYQnyEpDp9FSMbjAHIrE+GKbzaJh1sDXUS14itl2LdkCuoas3CeMy5j
-	 S75XX/TE2hg7IXT2DHDe+rrcRDvBAWN00t1KC/0aoQW6wtH8nrXbW/ZR7OJnH4mSkw
-	 3lX1GVGGIEhhA5R3ysV/uc2RBRCvN+Q1Bw81l+vM=
+	b=bMEOnS9/xZYjAuMnBovuH6wMUqaRKgK+iLcEguxSl8idSVSp3kItpqE9lF3zWbuo/
+	 +x7yLvbmP/kEt0Z1WFHd062nE+pZfTw2OSx9qiEnFifQ4WeG14jUJwOWUwEZ22n7JT
+	 SOTy9NG7O8cYJ8F8eaAfu7gx06rdzl0g0QgRVVnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 364/374] ALSA: seq: ump: Fix swapped song position pointer data
+Subject: [PATCH 6.1 414/473] pNFS/filelayout: fixup pNfs allocation modes
 Date: Thu,  6 Jun 2024 16:05:43 +0200
-Message-ID: <20240606131704.073624028@linuxfoundation.org>
+Message-ID: <20240606131713.477415524@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit 310fa3ec2859f1c094e6e9b5d2e1ca51738c409a ]
+[ Upstream commit 3ebcb24646f8c5bfad2866892d3f3cff05514452 ]
 
-At converting between the legacy event and UMP, the parameters for
-MIDI Song Position Pointer are incorrectly stored.  It should have
-been LSB -> MSB order while it stored in MSB -> LSB order.
-This patch corrects the ordering.
+Change left over allocation flags.
 
-Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
-Link: https://lore.kernel.org/r/20240531075110.3250-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: a245832aaa99 ("pNFS/files: Ensure pNFS allocation modes are consistent with nfsiod")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_convert.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfs/filelayout/filelayout.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index 903a644b80e25..9bfba69b2a709 100644
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -157,7 +157,7 @@ static void ump_system_to_one_param_ev(const union snd_ump_midi1_msg *val,
- static void ump_system_to_songpos_ev(const union snd_ump_midi1_msg *val,
- 				     struct snd_seq_event *ev)
- {
--	ev->data.control.value = (val->system.parm1 << 7) | val->system.parm2;
-+	ev->data.control.value = (val->system.parm2 << 7) | val->system.parm1;
- }
- 
- /* Encoders for 0xf0 - 0xff */
-@@ -752,8 +752,8 @@ static int system_2p_ev_to_ump_midi1(const struct snd_seq_event *event,
- 				     unsigned char status)
- {
- 	data->system.status = status;
--	data->system.parm1 = (event->data.control.value >> 7) & 0x7f;
--	data->system.parm2 = event->data.control.value & 0x7f;
-+	data->system.parm1 = event->data.control.value & 0x7f;
-+	data->system.parm2 = (event->data.control.value >> 7) & 0x7f;
- 	return 1;
- }
- 
+diff --git a/fs/nfs/filelayout/filelayout.c b/fs/nfs/filelayout/filelayout.c
+index 4974cd18ca468..b363e1bdacdac 100644
+--- a/fs/nfs/filelayout/filelayout.c
++++ b/fs/nfs/filelayout/filelayout.c
+@@ -881,7 +881,7 @@ filelayout_pg_init_read(struct nfs_pageio_descriptor *pgio,
+ 						      NFS4_MAX_UINT64,
+ 						      IOMODE_READ,
+ 						      false,
+-						      GFP_KERNEL);
++						      nfs_io_gfp_mask());
+ 		if (IS_ERR(pgio->pg_lseg)) {
+ 			pgio->pg_error = PTR_ERR(pgio->pg_lseg);
+ 			pgio->pg_lseg = NULL;
+@@ -905,7 +905,7 @@ filelayout_pg_init_write(struct nfs_pageio_descriptor *pgio,
+ 						      NFS4_MAX_UINT64,
+ 						      IOMODE_RW,
+ 						      false,
+-						      GFP_NOFS);
++						      nfs_io_gfp_mask());
+ 		if (IS_ERR(pgio->pg_lseg)) {
+ 			pgio->pg_error = PTR_ERR(pgio->pg_lseg);
+ 			pgio->pg_lseg = NULL;
 -- 
 2.43.0
 
