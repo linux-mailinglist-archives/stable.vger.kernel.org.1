@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6460C8FED57
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624748FE8E7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAC7B285A76
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654961C253B9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4E71BA875;
-	Thu,  6 Jun 2024 14:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715B8198E9F;
+	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7IGR3I8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiZmll+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA84196C89;
-	Thu,  6 Jun 2024 14:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310D7196C8D;
+	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683476; cv=none; b=YsXNoCDtUH8W5x4/igrfCc000XOgI4/2Sq8q10ehxB6HL+FsaIS/tIBPHBpWvCP7V2D+B49UxooNJ101rBlWc9KYS703NBjxBfkxojYE9mgI1qX2DVmxJfXU7caoiJgNWz9IofgBR3R5ocQ928HxERp5RtRxYU+5UpWG8GUtlYY=
+	t=1717682949; cv=none; b=q/xXvAKLH8Ouv5nLSGA56Td2M2odN2vsAvFFq+9cmcrLqyQgKs2IbZrmeRF2S4lzIEnrJoV2DMAlz52ufvLLFdnc0hIgoeKWyi1t+fOwSdg9hGpRE7j8/6DvZcb0QemmCM3DBSwac1JFQlCe/hF8iUbevjB46k7okDPBvIrrefQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683476; c=relaxed/simple;
-	bh=ShYC3OW5hF4FEjbXX55ElSyp3BYBTz9An0PMHK+ortE=;
+	s=arc-20240116; t=1717682949; c=relaxed/simple;
+	bh=o5wY0glUR+JcnhR1vgw5c9pPHJ/yuwAUmu+BRnZQ0C4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dM183uGH2kZ2UN/RknxeGHKSZFVD5iK0YCVWpH2rJdsDTcFPdVSO3oVeKxk2M6OVNULEwG9E0EJzqS8cUy7oQSU1oZ4m3glhlBENlK/S5fLTO6FuSSvTh3VNGCTvgl4eomvZu7ItUJDBrmA9msgZG8biu1AuxiPLXNdQl66M8tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7IGR3I8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F49C32782;
-	Thu,  6 Jun 2024 14:17:56 +0000 (UTC)
+	 MIME-Version; b=C+azjePqY0OyMhz7LlxrgoXQUh0sb+RPlUIPPNMFVXftkgu+C/w1o5mVKWxGZ6eZqEvqIi0blJJeNbEtTVqdVjSXz/YGIcIa9zAYJovmjhDAGj+OjLzfj8HWgXk7pMEiXekswzGGScK7cC4dUajle1KeaQjw0a8c7TtY5Z6dFfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiZmll+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E02CC32781;
+	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683476;
-	bh=ShYC3OW5hF4FEjbXX55ElSyp3BYBTz9An0PMHK+ortE=;
+	s=korg; t=1717682949;
+	bh=o5wY0glUR+JcnhR1vgw5c9pPHJ/yuwAUmu+BRnZQ0C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7IGR3I8ES0QlUW4ZXVO/Z+pVAXN4OO50zO9DjScrwoQoH8pEeSYaDkWaJFHkdyVj
-	 W3heIERz25hn41mGjN99I7E3+K5JFo8MdFKhvC/SJ+AV64B8z5528E/xkvy9ZGaG9b
-	 FmwIrr+C7cml+QDipaLxBOixykLBpeX+m0+AaApo=
+	b=AiZmll+tW1xZ0dJWjBjqsEM4YpQ4jJrN8l6BfjOxQJjkS6bC6BkuhZT+/7NJqCGg/
+	 MUJ3p8XZzoqsSUZwT2lAAjupwqku/kHa6hER9BQdM1fD5/OHj18As2ufYI5hhzmQfk
+	 BvireUWBNKxOIAWqQngI3ZsuiO2u1fkNlSozhcSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 419/744] PCI: tegra194: Fix probe path for Endpoint mode
+Subject: [PATCH 6.9 112/374] fuse: set FR_PENDING atomically in fuse_resend()
 Date: Thu,  6 Jun 2024 16:01:31 +0200
-Message-ID: <20240606131745.913664000@linuxfoundation.org>
+Message-ID: <20240606131655.682560180@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 19326006a21da26532d982254677c892dae8f29b ]
+[ Upstream commit 42815f8ac54c5113bf450ec4b7ccc5b62af0f6a7 ]
 
-Tegra194 PCIe probe path is taking failure path in success case for
-Endpoint mode. Return success from the switch case instead of going
-into the failure path.
+When fuse_resend() moves the requests from processing lists to pending
+list, it uses __set_bit() to set FR_PENDING bit in req->flags.
 
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Link: https://lore.kernel.org/linux-pci/20240408093053.3948634-1-vidyas@nvidia.com
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Using __set_bit() is not safe, because other functions may update
+req->flags concurrently (e.g., request_wait_answer() may call
+set_bit(FR_INTERRUPTED, &flags)).
+
+Fix it by using set_bit() instead.
+
+Fixes: 760eac73f9f6 ("fuse: Introduce a new notification type for resend pending requests")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/fuse/dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 248cd9347e8fd..416d6b45d1fe8 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -2272,11 +2272,14 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
- 		ret = tegra_pcie_config_ep(pcie, pdev);
- 		if (ret < 0)
- 			goto fail;
-+		else
-+			return 0;
- 		break;
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 3ec8bb5e68ff5..8eb2ce7c0b012 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1813,7 +1813,7 @@ static void fuse_resend(struct fuse_conn *fc)
+ 	spin_unlock(&fc->lock);
  
- 	default:
- 		dev_err(dev, "Invalid PCIe device type %d\n",
- 			pcie->of_data->mode);
-+		ret = -EINVAL;
+ 	list_for_each_entry_safe(req, next, &to_queue, list) {
+-		__set_bit(FR_PENDING, &req->flags);
++		set_bit(FR_PENDING, &req->flags);
+ 		/* mark the request as resend request */
+ 		req->in.h.unique |= FUSE_UNIQUE_RESEND;
  	}
- 
- fail:
 -- 
 2.43.0
 
