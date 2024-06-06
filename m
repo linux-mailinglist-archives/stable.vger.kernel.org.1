@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-48630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85298FE9D3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B717D8FED70
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E438288F77
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FCAD281476
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DEB19B5B5;
-	Thu,  6 Jun 2024 14:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948251BB687;
+	Thu,  6 Jun 2024 14:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6e6YCVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pg5PUa58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80959195FDF;
-	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EED198E92;
+	Thu,  6 Jun 2024 14:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683070; cv=none; b=UYrg58DpBk92YRzc2CgQxnPH7Ur+GeQ83kC4+GiXLFlzO5dPJcdKxrHjtCySWLiyT8gzXnu78u7SCuUHwuYw1doj8rFXwxoH3wXLs1P2CEK6gHYAsd0sf1iVCtma8c3v4U+dcMkojgXr+mD4f6Z+AScaKaN4ZdlWfSo/m0YIowc=
+	t=1717683489; cv=none; b=Ms6YFiXQ0PbbRGNB4Mqj9e+FgsCQCwKbyd6+22g6NPhMT+gPU+6Ohlrvi9fylzBcJu6XtHY0bDCTYEDD50RXe573lwucAD9wBO0ZrucZKcLaD9HfM0AihYyiZKqds3N5WqOExRv9qrkjnhsqIpGVH4U6UfMATRxDrsxN+Ouj99Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683070; c=relaxed/simple;
-	bh=pOCwHl2jSmTW160loekKTXYQLnQH+lA8b6phRRT7QV0=;
+	s=arc-20240116; t=1717683489; c=relaxed/simple;
+	bh=5SzXgdKC6PVYI3sr+EPA5oc3GNSKP9kki0ylHQjHzQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SP8pYG3Oz8qdhi8HeQY8n6WZJqha+9/HOpMUa2UR5Kn7ZNau8FR9dbDdufss960WGmao2AjtaS8iQNYtUFmOQmAIWxIWb3GFq6j5aYHiQIdyexu+JCnedOefKLKZDvo+6he5x9tVG58s8XILNMRL6tkyA0Axgkkicnm/W7ZjkYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6e6YCVo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32252C4AF11;
-	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
+	 MIME-Version; b=Y2KEnCBYlFP53UzMCNF4034wdZUxHjjs9TAabXMggVAIzQpheu0VNB/2t01WSWy3qIeePUJTI44Flv330ulYroMgZ1L1htIuBNtq6FxR7wPgBiWgX1Vtd7Qfo9wiVvhuVzP3vOILgHkUPytI4Dz4X7VvSZO5IhLxRc/N+cWnrn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pg5PUa58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE506C2BD10;
+	Thu,  6 Jun 2024 14:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683069;
-	bh=pOCwHl2jSmTW160loekKTXYQLnQH+lA8b6phRRT7QV0=;
+	s=korg; t=1717683488;
+	bh=5SzXgdKC6PVYI3sr+EPA5oc3GNSKP9kki0ylHQjHzQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6e6YCVo9kuMM6EHUEnJO2SgpgZGPKfveu8dTSwiK9U6gSrS+CDZvURR/Q7S18S93
-	 Xf2UdmZweyrnd2luweR7EyS0Ulre6Lja+7HhEW5XupiwzZB5CzxQ6oksrk2YNxyJev
-	 Q50bPnJ8RQ7isWmMGJ0EmW2Gq7mihEgkUmiQFVAU=
+	b=pg5PUa58ICVTEY7LNb2X3/oz8lYVTTZUk7+WLQBGXC3l/DrM75WBxUhIMutHtADoJ
+	 wduuvqz91X6cREBAjjNy/H8HcIeAqMfPG91bJROBni6gusXuj3tAOneX6SPxTn8PXA
+	 +reksOCgtPwb9R0qflSeW0N2crh5yLb5UlBLvGlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Brian Welty <brian.welty@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 329/374] drm/xe: Only use reserved BCS instances for usm migrate exec queue
+Subject: [PATCH 6.1 379/473] media: stk1160: fix bounds checking in stk1160_copy_video()
 Date: Thu,  6 Jun 2024 16:05:08 +0200
-Message-ID: <20240606131702.881023303@linuxfoundation.org>
+Message-ID: <20240606131712.392236991@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c8ea2c31f5ea437199b239d76ad5db27343edb0c ]
+[ Upstream commit faa4364bef2ec0060de381ff028d1d836600a381 ]
 
-The GuC context scheduling queue is 2 entires deep, thus it is possible
-for a migration job to be stuck behind a fault if migration exec queue
-shares engines with user jobs. This can deadlock as the migrate exec
-queue is required to service page faults. Avoid deadlock by only using
-reserved BCS instances for usm migrate exec queue.
+The subtract in this condition is reversed.  The ->length is the length
+of the buffer.  The ->bytesused is how many bytes we have copied thus
+far.  When the condition is reversed that means the result of the
+subtraction is always negative but since it's unsigned then the result
+is a very high positive value.  That means the overflow check is never
+true.
 
-Fixes: a043fbab7af5 ("drm/xe/pvc: Use fast copy engines as migrate engine on PVC")
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415190453.696553-2-matthew.brost@intel.com
-Reviewed-by: Brian Welty <brian.welty@intel.com>
-(cherry picked from commit 04f4a70a183a688a60fe3882d6e4236ea02cfc67)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Additionally, the ->bytesused doesn't actually work for this purpose
+because we're not writing to "buf->mem + buf->bytesused".  Instead, the
+math to calculate the destination where we are writing is a bit
+involved.  You calculate the number of full lines already written,
+multiply by two, skip a line if necessary so that we start on an odd
+numbered line, and add the offset into the line.
+
+To fix this buffer overflow, just take the actual destination where we
+are writing, if the offset is already out of bounds print an error and
+return.  Otherwise, write up to buf->length bytes.
+
+Fixes: 9cb2173e6ea8 ("[media] media: Add stk1160 new driver (easycap replacement)")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_migrate.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/media/usb/stk1160/stk1160-video.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
-index 2ba4fb9511f63..aca519f5b85d9 100644
---- a/drivers/gpu/drm/xe/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/xe_migrate.c
-@@ -33,7 +33,6 @@
- #include "xe_sync.h"
- #include "xe_trace.h"
- #include "xe_vm.h"
--#include "xe_wa.h"
- 
- /**
-  * struct xe_migrate - migrate context.
-@@ -299,10 +298,6 @@ static int xe_migrate_prepare_vm(struct xe_tile *tile, struct xe_migrate *m,
- }
- 
- /*
-- * Due to workaround 16017236439, odd instance hardware copy engines are
-- * faster than even instance ones.
-- * This function returns the mask involving all fast copy engines and the
-- * reserved copy engine to be used as logical mask for migrate engine.
-  * Including the reserved copy engine is required to avoid deadlocks due to
-  * migrate jobs servicing the faults gets stuck behind the job that faulted.
-  */
-@@ -316,8 +311,7 @@ static u32 xe_migrate_usm_logical_mask(struct xe_gt *gt)
- 		if (hwe->class != XE_ENGINE_CLASS_COPY)
- 			continue;
- 
--		if (!XE_WA(gt, 16017236439) ||
--		    xe_gt_is_usm_hwe(gt, hwe) || hwe->instance & 1)
-+		if (xe_gt_is_usm_hwe(gt, hwe))
- 			logical_mask |= BIT(hwe->logical_instance);
+diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
+index 366f0e4a5dc0d..e79c45db60ab5 100644
+--- a/drivers/media/usb/stk1160/stk1160-video.c
++++ b/drivers/media/usb/stk1160/stk1160-video.c
+@@ -99,7 +99,7 @@ void stk1160_buffer_done(struct stk1160 *dev)
+ static inline
+ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ {
+-	int linesdone, lineoff, lencopy;
++	int linesdone, lineoff, lencopy, offset;
+ 	int bytesperline = dev->width * 2;
+ 	struct stk1160_buffer *buf = dev->isoc_ctl.buf;
+ 	u8 *dst = buf->mem;
+@@ -139,8 +139,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 	 * Check if we have enough space left in the buffer.
+ 	 * In that case, we force loop exit after copy.
+ 	 */
+-	if (lencopy > buf->bytesused - buf->length) {
+-		lencopy = buf->bytesused - buf->length;
++	offset = dst - (u8 *)buf->mem;
++	if (offset > buf->length) {
++		dev_warn_ratelimited(dev->dev, "out of bounds offset\n");
++		return;
++	}
++	if (lencopy > buf->length - offset) {
++		lencopy = buf->length - offset;
+ 		remain = lencopy;
  	}
  
-@@ -368,6 +362,10 @@ struct xe_migrate *xe_migrate_init(struct xe_tile *tile)
- 		if (!hwe || !logical_mask)
- 			return ERR_PTR(-EINVAL);
+@@ -182,8 +187,13 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 		 * Check if we have enough space left in the buffer.
+ 		 * In that case, we force loop exit after copy.
+ 		 */
+-		if (lencopy > buf->bytesused - buf->length) {
+-			lencopy = buf->bytesused - buf->length;
++		offset = dst - (u8 *)buf->mem;
++		if (offset > buf->length) {
++			dev_warn_ratelimited(dev->dev, "offset out of bounds\n");
++			return;
++		}
++		if (lencopy > buf->length - offset) {
++			lencopy = buf->length - offset;
+ 			remain = lencopy;
+ 		}
  
-+		/*
-+		 * XXX: Currently only reserving 1 (likely slow) BCS instance on
-+		 * PVC, may want to revisit if performance is needed.
-+		 */
- 		m->q = xe_exec_queue_create(xe, vm, logical_mask, 1, hwe,
- 					    EXEC_QUEUE_FLAG_KERNEL |
- 					    EXEC_QUEUE_FLAG_PERMANENT |
 -- 
 2.43.0
 
