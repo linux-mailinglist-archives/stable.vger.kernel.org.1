@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A108FECF1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3658FEB53
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAEF5B24E82
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C620C1C236FA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551271B3754;
-	Thu,  6 Jun 2024 14:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E211E1993B1;
+	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="narlHO8N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxp+GhTH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A02198E6A;
-	Thu,  6 Jun 2024 14:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B82197A75;
+	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683427; cv=none; b=If841CdidKD9ayt2wSkKgJbLps7JbVvFjZqnm/vpQJtAbhUJdYXGOZ4tGmQEZ6HRDnBc20YmGoNWhomxYleq4xhrJbN92jtOPnAO4MqFJoVW9oP5k621N3NpxbuxwYrYTladMQWpv1TVCWTuLV0MdSsS/gMuGy9GROuk0/eO9pA=
+	t=1717683237; cv=none; b=s2Jgch0n24v/bUJteIxudIYtdPtWM9WotXfy7NX2Cfs7EmvOQ/ChK/aH1yQYRSBNzyT2O1x6X18SEUMY11lnNN7Qqrrvjkye22F3xKGnxxciICqinICaqb2y3JTv6xrVUvwSxnQQW90A/S7jmBYhmdGd25g0OZT8tcC34RxB26Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683427; c=relaxed/simple;
-	bh=MvPwgqxzGmXfQ4lZc3W3irYbddou3ZQ3hrGPHK0bIKY=;
+	s=arc-20240116; t=1717683237; c=relaxed/simple;
+	bh=PG9VtGQ0o+hg/x1npRmmPwH/awCQ2ek5wARnTSB8m3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqNvUrlqQCVHks7w8+8HdwkpcIHk7XhXs1/YeoULpbH/heoWjvFLQ//MCBnNnQGVWXzqQ/FTIiEaS26EEUohh5K4dwx8bqyyK/8TL7WNVnq1O/HYcznpNvLo39L9SgWMWJhTs+OJodCPARLvwUG3DuO9YnUxUviLAvnC5EisdWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=narlHO8N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D0FC2BD10;
-	Thu,  6 Jun 2024 14:17:06 +0000 (UTC)
+	 MIME-Version; b=CFp18OzGDM5zuhVNVU6DFOjaDN+Z9zwMtn4TZe1Kj/O/Q/XIG3G5iDVhjNkc70M5PO0oLsKMK7mZnEJq9bHg8B9fXroechKYLcFI8w4m0I6CtBDUnigKDkKkK5rn/jn3Yix8QD2apgooQSddK62xlNv0otHoY1GK+lLvtIEcZwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxp+GhTH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D09EC2BD10;
+	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683427;
-	bh=MvPwgqxzGmXfQ4lZc3W3irYbddou3ZQ3hrGPHK0bIKY=;
+	s=korg; t=1717683237;
+	bh=PG9VtGQ0o+hg/x1npRmmPwH/awCQ2ek5wARnTSB8m3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=narlHO8N4huyyp3/72pvT/CU1lyC2w6dxYynaIj25Qg/TVMeD3rxYyiKewlYfmMgY
-	 NUbIkNZ2IcNHo/psGoje7zaBTCf++OevS/MZ+FKj4fWtQ1vIczKEWV5AV2GggYPdmc
-	 ZzjvlJQOk8CFaMBNNPL2fwf+CkSByuMacl3asSx0=
+	b=dxp+GhTHmMUTLyAfdytkScBcyDeBZuNP/YsqGls0IJqVkuJWdZ76lG55sKUChzcue
+	 CBSwfzcZnIKnNfKI6lvOrerAy7ncxilHvjttRp36qs0USFmYj8UIQLKZ0mL/pha+Kr
+	 plIm6gHR5RpSvWOGOqlFJNTHlqXLBBO3P6xVAoIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 372/744] bnxt_re: avoid shift undefined behavior in bnxt_qplib_alloc_init_hwq
+Subject: [PATCH 6.1 115/473] ACPI: disable -Wstringop-truncation
 Date: Thu,  6 Jun 2024 16:00:44 +0200
-Message-ID: <20240606131744.420072134@linuxfoundation.org>
+Message-ID: <20240606131703.741701523@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 78cfd17142ef70599d6409cbd709d94b3da58659 ]
+[ Upstream commit a3403d304708f60565582d60af4316289d0316a0 ]
 
-Undefined behavior is triggered when bnxt_qplib_alloc_init_hwq is called
-with hwq_attr->aux_depth != 0 and hwq_attr->aux_stride == 0.
-In that case, "roundup_pow_of_two(hwq_attr->aux_stride)" gets called.
-roundup_pow_of_two is documented as undefined for 0.
+gcc -Wstringop-truncation warns about copying a string that results in a
+missing nul termination:
 
-Fix it in the one caller that had this combination.
+drivers/acpi/acpica/tbfind.c: In function 'acpi_tb_find_table':
+drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified bound 6 equals destination size [-Werror=stringop-truncation]
+   60 |         strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/acpi/acpica/tbfind.c:61:9: error: 'strncpy' specified bound 8 equals destination size [-Werror=stringop-truncation]
+   61 |         strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The undefined behavior was detected by UBSAN:
-  UBSAN: shift-out-of-bounds in ./include/linux/log2.h:57:13
-  shift exponent 64 is too large for 64-bit type 'long unsigned int'
-  CPU: 24 PID: 1075 Comm: (udev-worker) Not tainted 6.9.0-rc6+ #4
-  Hardware name: Abacus electric, s.r.o. - servis@abacus.cz Super Server/H12SSW-iN, BIOS 2.7 10/25/2023
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   ubsan_epilogue+0x5/0x30
-   __ubsan_handle_shift_out_of_bounds.cold+0x61/0xec
-   __roundup_pow_of_two+0x25/0x35 [bnxt_re]
-   bnxt_qplib_alloc_init_hwq+0xa1/0x470 [bnxt_re]
-   bnxt_qplib_create_qp+0x19e/0x840 [bnxt_re]
-   bnxt_re_create_qp+0x9b1/0xcd0 [bnxt_re]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __kmalloc+0x1b6/0x4f0
-   ? create_qp.part.0+0x128/0x1c0 [ib_core]
-   ? __pfx_bnxt_re_create_qp+0x10/0x10 [bnxt_re]
-   create_qp.part.0+0x128/0x1c0 [ib_core]
-   ib_create_qp_kernel+0x50/0xd0 [ib_core]
-   create_mad_qp+0x8e/0xe0 [ib_core]
-   ? __pfx_qp_event_handler+0x10/0x10 [ib_core]
-   ib_mad_init_device+0x2be/0x680 [ib_core]
-   add_client_context+0x10d/0x1a0 [ib_core]
-   enable_device_and_get+0xe0/0x1d0 [ib_core]
-   ib_register_device+0x53c/0x630 [ib_core]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   bnxt_re_probe+0xbd8/0xe50 [bnxt_re]
-   ? __pfx_bnxt_re_probe+0x10/0x10 [bnxt_re]
-   auxiliary_bus_probe+0x49/0x80
-   ? driver_sysfs_add+0x57/0xc0
-   really_probe+0xde/0x340
-   ? pm_runtime_barrier+0x54/0x90
-   ? __pfx___driver_attach+0x10/0x10
-   __driver_probe_device+0x78/0x110
-   driver_probe_device+0x1f/0xa0
-   __driver_attach+0xba/0x1c0
-   bus_for_each_dev+0x8f/0xe0
-   bus_add_driver+0x146/0x220
-   driver_register+0x72/0xd0
-   __auxiliary_driver_register+0x6e/0xd0
-   ? __pfx_bnxt_re_mod_init+0x10/0x10 [bnxt_re]
-   bnxt_re_mod_init+0x3e/0xff0 [bnxt_re]
-   ? __pfx_bnxt_re_mod_init+0x10/0x10 [bnxt_re]
-   do_one_initcall+0x5b/0x310
-   do_init_module+0x90/0x250
-   init_module_from_file+0x86/0xc0
-   idempotent_init_module+0x121/0x2b0
-   __x64_sys_finit_module+0x5e/0xb0
-   do_syscall_64+0x82/0x160
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? syscall_exit_to_user_mode_prepare+0x149/0x170
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? syscall_exit_to_user_mode+0x75/0x230
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? do_syscall_64+0x8e/0x160
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __count_memcg_events+0x69/0x100
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? count_memcg_events.constprop.0+0x1a/0x30
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? handle_mm_fault+0x1f0/0x300
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? do_user_addr_fault+0x34e/0x640
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f4e5132821d
-  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e3 db 0c 00 f7 d8 64 89 01 48
-  RSP: 002b:00007ffca9c906a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-  RAX: ffffffffffffffda RBX: 0000563ec8a8f130 RCX: 00007f4e5132821d
-  RDX: 0000000000000000 RSI: 00007f4e518fa07d RDI: 000000000000003b
-  RBP: 00007ffca9c90760 R08: 00007f4e513f6b20 R09: 00007ffca9c906f0
-  R10: 0000563ec8a8faa0 R11: 0000000000000246 R12: 00007f4e518fa07d
-  R13: 0000000000020000 R14: 0000563ec8409e90 R15: 0000563ec8a8fa60
-   </TASK>
-  ---[ end trace ]---
+The code works as intended, and the warning could be addressed by using
+a memcpy(), but turning the warning off for this file works equally well
+and may be easier to merge.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Link: https://lore.kernel.org/r/20240507103929.30003-1-mschmidt@redhat.com
-Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 47c08729bf1c ("ACPICA: Fix for LoadTable operator, input strings")
+Link: https://lore.kernel.org/lkml/CAJZ5v0hoUfv54KW7y4223Mn9E7D4xvR7whRFNLTBqCZMUxT50Q@mail.gmail.com/#t
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/acpica/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index b99451b3c10fc..3b28878f62062 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1010,7 +1010,8 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
- 	hwq_attr.stride = sizeof(struct sq_sge);
- 	hwq_attr.depth = bnxt_qplib_get_depth(sq);
- 	hwq_attr.aux_stride = psn_sz;
--	hwq_attr.aux_depth = bnxt_qplib_set_sq_size(sq, qp->wqe_mode);
-+	hwq_attr.aux_depth = psn_sz ? bnxt_qplib_set_sq_size(sq, qp->wqe_mode)
-+				    : 0;
- 	/* Update msn tbl size */
- 	if (BNXT_RE_HW_RETX(qp->dev_cap_flags) && psn_sz) {
- 		hwq_attr.aux_depth = roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
+diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
+index f919811156b1f..b6cf9c9bd6396 100644
+--- a/drivers/acpi/acpica/Makefile
++++ b/drivers/acpi/acpica/Makefile
+@@ -5,6 +5,7 @@
+ 
+ ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
+ ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
++CFLAGS_tbfind.o 		+= $(call cc-disable-warning, stringop-truncation)
+ 
+ # use acpi.o to put all files here into acpi.o modparam namespace
+ obj-y	+= acpi.o
 -- 
 2.43.0
 
