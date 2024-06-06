@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-49699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B668FEE7A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E297D8FE970
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E78A28596E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C88128813C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8099E1C373C;
-	Thu,  6 Jun 2024 14:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A40197A91;
+	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRv0tDuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0KzzzFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40860197532;
-	Thu,  6 Jun 2024 14:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39491196DA8;
+	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683665; cv=none; b=QloAstRoztWYeM0V7/+sOqmuIDkxU01IG0K/sp3nEBvnNf+mjBJcrhKIt4/rF3wEDJuNZM1tRk/+E7RgEefTogZ5mthef71eX/ETY/AeLeQibUp0zE0MOnnSmEyTx2Oycyla4IUWLTpo59bPyxd6Nw5+Uh+k8ZkRYvbQ9g4Sdh0=
+	t=1717683021; cv=none; b=XTzZ6oN7ZarDfizGfhVR1Dji6Hk1BU7+1VpF00UgShiZdQBIG2hjwnXW/TmycCp8yMVfpsHDKWU23ag3X3USz2GuaJ+ODz63DUaIK5Oy4d9yOqoEySeHxfn463d52vsXpGMgbbM3+pS17M9p6AI4vdHc2LE57Gpb6oZPPSh7Hj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683665; c=relaxed/simple;
-	bh=32fAoZTjxEXywCSoNz32/6hOVmJk/Jv0yx4TAeXBmAc=;
+	s=arc-20240116; t=1717683021; c=relaxed/simple;
+	bh=5AwBnkkR9j2/aX5Rt5fu+Atsut4cCSipkkmY2THQMGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=swZiiuiXIRjVFu6tlblgWUwIojCpmXL8GWvjkBOZwtHM5WRf/RbPgTAhdhA4XVYxiIjcFU6RUe7mMiTyqvcrLH9uWWLFTnBa0IoenTb4Q8kk92KUxr1Heny7Y6v33LJ/7IH6749igZE/k/5gGeFB7JWoFustqJwuAR0S+VIKT+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRv0tDuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC4FC32782;
-	Thu,  6 Jun 2024 14:21:05 +0000 (UTC)
+	 MIME-Version; b=nuR1T3nGzeCLR6/psr7D3szC4k4PANrl5Yfrpfoga6UanHfWoZNH+gr+/5p74q/1Z6za1VAqEfchNvT1ArCOJ//XD1YE/gOqEf6RDhY/pHUWrO26+0LkrXLGVgWcZB1b//hgPDbFBC326LFQC5jNpNIGK7tnUCWgQLAGPM7Vapo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0KzzzFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156C7C32781;
+	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683665;
-	bh=32fAoZTjxEXywCSoNz32/6hOVmJk/Jv0yx4TAeXBmAc=;
+	s=korg; t=1717683021;
+	bh=5AwBnkkR9j2/aX5Rt5fu+Atsut4cCSipkkmY2THQMGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRv0tDuugt76Z2qZGq6sOKuiT0OC+v4w5U9qesKIDoBoap2/+ip6XtvJIXyFs0KIW
-	 o0Ras36T5DcDl+D6KeCmc0ZRXtXPFn5h96jbpzWJyKN3LQGnKVzOfu3nmCkEFbIoou
-	 erGR/WfrTd+j9wA7lFj91WuUmvOeIsLeiLPDRnkM=
+	b=u0KzzzFQm8TUZZPRV6WAlA5mJjQHmDA945nH+nh/FdxBw+MgN8LutTelTGMZNf439
+	 PO7y80hQixeymAcQEe0hg0KM6qJhF2BDwA5RMx8SzsKwhE7pZzXo0ik8Yh1ighxNfD
+	 SupEu2O9FkSODLljMvvgjSsdgWX+C+qcoD/Rao14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Sagi Grimberg <sagi.grimberg@vastdata.com>,
+	Dan Aloni <dan.aloni@vastdata.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 549/744] misc/pvpanic: deduplicate common code
+Subject: [PATCH 6.9 242/374] rpcrdma: fix handling for RDMA_CM_EVENT_DEVICE_REMOVAL
 Date: Thu,  6 Jun 2024 16:03:41 +0200
-Message-ID: <20240606131750.064729697@linuxfoundation.org>
+Message-ID: <20240606131659.926784211@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,330 +63,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Dan Aloni <dan.aloni@vastdata.com>
 
-[ Upstream commit c1426d392aebc51da4944d950d89e483e43f6f14 ]
+[ Upstream commit 4836da219781ec510c4c0303df901aa643507a7a ]
 
-pvpanic-mmio.c and pvpanic-pci.c share a lot of code.
-Refactor it into pvpanic.c where it doesn't have to be kept in sync
-manually and where the core logic can be understood more easily.
+Under the scenario of IB device bonding, when bringing down one of the
+ports, or all ports, we saw xprtrdma entering a non-recoverable state
+where it is not even possible to complete the disconnect and shut it
+down the mount, requiring a reboot. Following debug, we saw that
+transport connect never ended after receiving the
+RDMA_CM_EVENT_DEVICE_REMOVAL callback.
 
-No functional change.
+The DEVICE_REMOVAL callback is irrespective of whether the CM_ID is
+connected, and ESTABLISHED may not have happened. So need to work with
+each of these states accordingly.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20231011-pvpanic-cleanup-v2-1-4b21d56f779f@weissschuh.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: ee59be35d7a8 ("misc/pvpanic-pci: register attributes via pci_driver")
+Fixes: 2acc5cae2923 ('xprtrdma: Prevent dereferencing r_xprt->rx_ep after it is freed')
+Cc: Sagi Grimberg <sagi.grimberg@vastdata.com>
+Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/pvpanic/pvpanic-mmio.c | 58 +---------------------
- drivers/misc/pvpanic/pvpanic-pci.c  | 58 +---------------------
- drivers/misc/pvpanic/pvpanic.c      | 76 ++++++++++++++++++++++++++++-
- drivers/misc/pvpanic/pvpanic.h      | 10 +---
- 4 files changed, 80 insertions(+), 122 deletions(-)
+ net/sunrpc/xprtrdma/verbs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/pvpanic/pvpanic-mmio.c b/drivers/misc/pvpanic/pvpanic-mmio.c
-index eb97167c03fb4..9715798acce3d 100644
---- a/drivers/misc/pvpanic/pvpanic-mmio.c
-+++ b/drivers/misc/pvpanic/pvpanic-mmio.c
-@@ -24,52 +24,9 @@ MODULE_AUTHOR("Hu Tao <hutao@cn.fujitsu.com>");
- MODULE_DESCRIPTION("pvpanic-mmio device driver");
- MODULE_LICENSE("GPL");
- 
--static ssize_t capability_show(struct device *dev, struct device_attribute *attr, char *buf)
--{
--	struct pvpanic_instance *pi = dev_get_drvdata(dev);
--
--	return sysfs_emit(buf, "%x\n", pi->capability);
--}
--static DEVICE_ATTR_RO(capability);
--
--static ssize_t events_show(struct device *dev, struct device_attribute *attr, char *buf)
--{
--	struct pvpanic_instance *pi = dev_get_drvdata(dev);
--
--	return sysfs_emit(buf, "%x\n", pi->events);
--}
--
--static ssize_t events_store(struct device *dev, struct device_attribute *attr,
--			    const char *buf, size_t count)
--{
--	struct pvpanic_instance *pi = dev_get_drvdata(dev);
--	unsigned int tmp;
--	int err;
--
--	err = kstrtouint(buf, 16, &tmp);
--	if (err)
--		return err;
--
--	if ((tmp & pi->capability) != tmp)
--		return -EINVAL;
--
--	pi->events = tmp;
--
--	return count;
--}
--static DEVICE_ATTR_RW(events);
--
--static struct attribute *pvpanic_mmio_dev_attrs[] = {
--	&dev_attr_capability.attr,
--	&dev_attr_events.attr,
--	NULL
--};
--ATTRIBUTE_GROUPS(pvpanic_mmio_dev);
--
- static int pvpanic_mmio_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	struct pvpanic_instance *pi;
- 	struct resource *res;
- 	void __iomem *base;
- 
-@@ -92,18 +49,7 @@ static int pvpanic_mmio_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
--	pi = devm_kmalloc(dev, sizeof(*pi), GFP_KERNEL);
--	if (!pi)
--		return -ENOMEM;
--
--	pi->base = base;
--	pi->capability = PVPANIC_PANICKED | PVPANIC_CRASH_LOADED;
--
--	/* initialize capability by RDPT */
--	pi->capability &= ioread8(base);
--	pi->events = pi->capability;
--
--	return devm_pvpanic_probe(dev, pi);
-+	return devm_pvpanic_probe(dev, base);
- }
- 
- static const struct of_device_id pvpanic_mmio_match[] = {
-@@ -123,7 +69,7 @@ static struct platform_driver pvpanic_mmio_driver = {
- 		.name = "pvpanic-mmio",
- 		.of_match_table = pvpanic_mmio_match,
- 		.acpi_match_table = pvpanic_device_ids,
--		.dev_groups = pvpanic_mmio_dev_groups,
-+		.dev_groups = pvpanic_dev_groups,
- 	},
- 	.probe = pvpanic_mmio_probe,
- };
-diff --git a/drivers/misc/pvpanic/pvpanic-pci.c b/drivers/misc/pvpanic/pvpanic-pci.c
-index 07eddb5ea30fa..689af4c28c2a9 100644
---- a/drivers/misc/pvpanic/pvpanic-pci.c
-+++ b/drivers/misc/pvpanic/pvpanic-pci.c
-@@ -22,51 +22,8 @@ MODULE_AUTHOR("Mihai Carabas <mihai.carabas@oracle.com>");
- MODULE_DESCRIPTION("pvpanic device driver");
- MODULE_LICENSE("GPL");
- 
--static ssize_t capability_show(struct device *dev, struct device_attribute *attr, char *buf)
--{
--	struct pvpanic_instance *pi = dev_get_drvdata(dev);
--
--	return sysfs_emit(buf, "%x\n", pi->capability);
--}
--static DEVICE_ATTR_RO(capability);
--
--static ssize_t events_show(struct device *dev, struct device_attribute *attr, char *buf)
--{
--	struct pvpanic_instance *pi = dev_get_drvdata(dev);
--
--	return sysfs_emit(buf, "%x\n", pi->events);
--}
--
--static ssize_t events_store(struct device *dev, struct device_attribute *attr,
--			    const char *buf, size_t count)
--{
--	struct pvpanic_instance *pi = dev_get_drvdata(dev);
--	unsigned int tmp;
--	int err;
--
--	err = kstrtouint(buf, 16, &tmp);
--	if (err)
--		return err;
--
--	if ((tmp & pi->capability) != tmp)
--		return -EINVAL;
--
--	pi->events = tmp;
--
--	return count;
--}
--static DEVICE_ATTR_RW(events);
--
--static struct attribute *pvpanic_pci_dev_attrs[] = {
--	&dev_attr_capability.attr,
--	&dev_attr_events.attr,
--	NULL
--};
--ATTRIBUTE_GROUPS(pvpanic_pci_dev);
--
- static int pvpanic_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- {
--	struct pvpanic_instance *pi;
- 	void __iomem *base;
- 	int ret;
- 
-@@ -78,18 +35,7 @@ static int pvpanic_pci_probe(struct pci_dev *pdev, const struct pci_device_id *e
- 	if (!base)
- 		return -ENOMEM;
- 
--	pi = devm_kmalloc(&pdev->dev, sizeof(*pi), GFP_KERNEL);
--	if (!pi)
--		return -ENOMEM;
--
--	pi->base = base;
--	pi->capability = PVPANIC_PANICKED | PVPANIC_CRASH_LOADED;
--
--	/* initlize capability by RDPT */
--	pi->capability &= ioread8(base);
--	pi->events = pi->capability;
--
--	return devm_pvpanic_probe(&pdev->dev, pi);
-+	return devm_pvpanic_probe(&pdev->dev, base);
- }
- 
- static const struct pci_device_id pvpanic_pci_id_tbl[]  = {
-@@ -103,7 +49,7 @@ static struct pci_driver pvpanic_pci_driver = {
- 	.id_table =     pvpanic_pci_id_tbl,
- 	.probe =        pvpanic_pci_probe,
- 	.driver = {
--		.dev_groups = pvpanic_pci_dev_groups,
-+		.dev_groups = pvpanic_dev_groups,
- 	},
- };
- module_pci_driver(pvpanic_pci_driver);
-diff --git a/drivers/misc/pvpanic/pvpanic.c b/drivers/misc/pvpanic/pvpanic.c
-index 049a120063489..305b367e0ce34 100644
---- a/drivers/misc/pvpanic/pvpanic.c
-+++ b/drivers/misc/pvpanic/pvpanic.c
-@@ -7,6 +7,7 @@
-  *  Copyright (C) 2021 Oracle.
-  */
- 
-+#include <linux/device.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
- #include <linux/kexec.h>
-@@ -26,6 +27,13 @@ MODULE_AUTHOR("Mihai Carabas <mihai.carabas@oracle.com>");
- MODULE_DESCRIPTION("pvpanic device driver");
- MODULE_LICENSE("GPL");
- 
-+struct pvpanic_instance {
-+	void __iomem *base;
-+	unsigned int capability;
-+	unsigned int events;
-+	struct list_head list;
-+};
-+
- static struct list_head pvpanic_list;
- static spinlock_t pvpanic_lock;
- 
-@@ -81,11 +89,75 @@ static void pvpanic_remove(void *param)
- 	spin_unlock(&pvpanic_lock);
- }
- 
--int devm_pvpanic_probe(struct device *dev, struct pvpanic_instance *pi)
-+static ssize_t capability_show(struct device *dev, struct device_attribute *attr, char *buf)
-+{
-+	struct pvpanic_instance *pi = dev_get_drvdata(dev);
-+
-+	return sysfs_emit(buf, "%x\n", pi->capability);
-+}
-+static DEVICE_ATTR_RO(capability);
-+
-+static ssize_t events_show(struct device *dev, struct device_attribute *attr, char *buf)
-+{
-+	struct pvpanic_instance *pi = dev_get_drvdata(dev);
-+
-+	return sysfs_emit(buf, "%x\n", pi->events);
-+}
-+
-+static ssize_t events_store(struct device *dev, struct device_attribute *attr,
-+			    const char *buf, size_t count)
-+{
-+	struct pvpanic_instance *pi = dev_get_drvdata(dev);
-+	unsigned int tmp;
-+	int err;
-+
-+	err = kstrtouint(buf, 16, &tmp);
-+	if (err)
-+		return err;
-+
-+	if ((tmp & pi->capability) != tmp)
-+		return -EINVAL;
-+
-+	pi->events = tmp;
-+
-+	return count;
-+}
-+static DEVICE_ATTR_RW(events);
-+
-+static struct attribute *pvpanic_dev_attrs[] = {
-+	&dev_attr_capability.attr,
-+	&dev_attr_events.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group pvpanic_dev_group = {
-+	.attrs = pvpanic_dev_attrs,
-+};
-+
-+const struct attribute_group *pvpanic_dev_groups[] = {
-+	&pvpanic_dev_group,
-+	NULL
-+};
-+EXPORT_SYMBOL_GPL(pvpanic_dev_groups);
-+
-+int devm_pvpanic_probe(struct device *dev, void __iomem *base)
- {
--	if (!pi || !pi->base)
-+	struct pvpanic_instance *pi;
-+
-+	if (!base)
- 		return -EINVAL;
- 
-+	pi = devm_kmalloc(dev, sizeof(*pi), GFP_KERNEL);
-+	if (!pi)
-+		return -ENOMEM;
-+
-+	pi->base = base;
-+	pi->capability = PVPANIC_PANICKED | PVPANIC_CRASH_LOADED;
-+
-+	/* initlize capability by RDPT */
-+	pi->capability &= ioread8(base);
-+	pi->events = pi->capability;
-+
- 	spin_lock(&pvpanic_lock);
- 	list_add(&pi->list, &pvpanic_list);
- 	spin_unlock(&pvpanic_lock);
-diff --git a/drivers/misc/pvpanic/pvpanic.h b/drivers/misc/pvpanic/pvpanic.h
-index 4935459517548..46ffb10438adf 100644
---- a/drivers/misc/pvpanic/pvpanic.h
-+++ b/drivers/misc/pvpanic/pvpanic.h
-@@ -8,13 +8,7 @@
- #ifndef PVPANIC_H_
- #define PVPANIC_H_
- 
--struct pvpanic_instance {
--	void __iomem *base;
--	unsigned int capability;
--	unsigned int events;
--	struct list_head list;
--};
--
--int devm_pvpanic_probe(struct device *dev, struct pvpanic_instance *pi);
-+int devm_pvpanic_probe(struct device *dev, void __iomem *base);
-+extern const struct attribute_group *pvpanic_dev_groups[];
- 
- #endif /* PVPANIC_H_ */
+diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
+index 4f8d7efa469f0..432557a553e7e 100644
+--- a/net/sunrpc/xprtrdma/verbs.c
++++ b/net/sunrpc/xprtrdma/verbs.c
+@@ -244,7 +244,11 @@ rpcrdma_cm_event_handler(struct rdma_cm_id *id, struct rdma_cm_event *event)
+ 	case RDMA_CM_EVENT_DEVICE_REMOVAL:
+ 		pr_info("rpcrdma: removing device %s for %pISpc\n",
+ 			ep->re_id->device->name, sap);
+-		fallthrough;
++		switch (xchg(&ep->re_connect_status, -ENODEV)) {
++		case 0: goto wake_connect_worker;
++		case 1: goto disconnected;
++		}
++		return 0;
+ 	case RDMA_CM_EVENT_ADDR_CHANGE:
+ 		ep->re_connect_status = -ENODEV;
+ 		goto disconnected;
 -- 
 2.43.0
 
