@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-48395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741648FE8D7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756678FECDF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 138D6284269
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CBCF1F26CBF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E72198E79;
-	Thu,  6 Jun 2024 14:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9718B1B372E;
+	Thu,  6 Jun 2024 14:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+J+BD+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3s8UG7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F83196C7D;
-	Thu,  6 Jun 2024 14:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AC21B3721;
+	Thu,  6 Jun 2024 14:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682940; cv=none; b=MyP/9nQg97aOQWV3JnbVe3+sAy6Sq/pNaRH+n2D+PMQhqznz1q7d3wfgXqtthCsPJtdotMJcCWmh4VDv9n4W/gTUUAvMuj5keNYBz/gofdsIoYBr2OwGAfIax+IfHDX0K5ZVH4VzrLyp3RxAoL1fuNel9FHYXEFKc4gpsjN4iaw=
+	t=1717683419; cv=none; b=GWbLXhawZjMoiw3MJdnMi5/rMjqHoB8nlY9W8BZppwoqOHRktchgq/ov9KmcXN7RORoG4UQxIxVhlXFaVHiFAJEYK9DnlXGsSVKW/5ocwwXcTAV7hvhvM1+o+TR1Z+9ilAOURCK5vf7erl5iAksbZEC3wnLf8Wh50x+t1MNuIys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682940; c=relaxed/simple;
-	bh=maW7uI93kl6Q4dySsm7fY6Kny7bsA/eLC01EX3BgEYo=;
+	s=arc-20240116; t=1717683419; c=relaxed/simple;
+	bh=h1shgupzshWHTWbk6NGVPq6Dk1F89Wi2+d9v0BOIMOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/RdgIwU9y4SpZhiZ0/98Dn4s6y9R9W7CGspsdS7LWgvF+CUa4jIq4NbmViUD6UCx77/mfU98pe5Qjk4gOl88wLG0hR7Mr+7qU0D+xUJ9luRW9jqIcU+Bqae9OcQk4qbAev+lUukYbGiLgjDUOlZJoU/rYZUMyUyZDOyzjf3U9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+J+BD+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005B7C2BD10;
-	Thu,  6 Jun 2024 14:08:59 +0000 (UTC)
+	 MIME-Version; b=bnSwezamd/zcU40FG5xmi6SO0n81h+gnktemiDxjMJAZGjNIwh7e/tvhI8K9I/IQ9Pi3388ucAoqy5uc001C8GKU77ThKOwkZhKmOmtDkA9nmnzlLqooDp+hoGP8SCCGaf+PmSZbd+/knte8LtN25syINfrWhhdoyjZ39IBLy2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3s8UG7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F4FC32781;
+	Thu,  6 Jun 2024 14:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682940;
-	bh=maW7uI93kl6Q4dySsm7fY6Kny7bsA/eLC01EX3BgEYo=;
+	s=korg; t=1717683419;
+	bh=h1shgupzshWHTWbk6NGVPq6Dk1F89Wi2+d9v0BOIMOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+J+BD+9auG1Kt+oXKa1gteqimbsMl/Ya47NEFIymGGAzNy1UCXXY/4BmCG+w8vvU
-	 BJfcEXX2eqWLMLxWrgRzBaYc32F8hmMyu8s8YVH7zZDXcHZ+UUV50Dg72QiroNzLyd
-	 XwshXecnyUuu3Ae8ghSqHU7joXn89/tcr/IkSyAw=
+	b=Y3s8UG7HDaJ6vCMNOH1rVH+gR25t273WUcu47nPrFbTamjz4V5ggh0WH5NtnRVxSs
+	 U8htKux/dn/To8+VdBhF5FHFJo5XC7MuXfb5jqLgSxVE6G6zoXa3cOxQgbXPklWhse
+	 ImL9xTF5eNJ1Hz/mabWTsPm+rkN1nF6GTHCG2uBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yabin Cui <yabinc@google.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	David Hildenbrand <david@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Fei Li <fei1.li@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 055/374] coresight: etm4x: Do not hardcode IOMEM access for register restore
+Subject: [PATCH 6.6 362/744] virt: acrn: stop using follow_pfn
 Date: Thu,  6 Jun 2024 16:00:34 +0200
-Message-ID: <20240606131653.677925267@linuxfoundation.org>
+Message-ID: <20240606131744.092898730@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +68,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 1e7ba33fa591de1cf60afffcabb45600b3607025 ]
+[ Upstream commit 1b265da7ea1e1ae997fa119c2846bb389eb39c6b ]
 
-When we restore the register state for ETM4x, while coming back
-from CPU idle, we hardcode IOMEM access. This is wrong and could
-blow up for an ETM with system instructions access (and for ETE).
+Patch series "remove follow_pfn".
 
-Fixes: f5bd523690d2 ("coresight: etm4x: Convert all register accesses")
-Reported-by: Yabin Cui <yabinc@google.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Tested-by: Yabin Cui <yabinc@google.com>
-Link: https://lore.kernel.org/r/20240412142702.2882478-2-suzuki.poulose@arm.com
+This series open codes follow_pfn in the only remaining caller, although
+the code there remains questionable.  It then also moves follow_phys into
+the only user and simplifies it a bit.
+
+This patch (of 3):
+
+Switch from follow_pfn to follow_pte so that we can get rid of follow_pfn.
+Note that this doesn't fix any of the pre-existing raciness and lack of
+permission checking in the code.
+
+Link: https://lkml.kernel.org/r/20240324234542.2038726-1-hch@lst.de
+Link: https://lkml.kernel.org/r/20240324234542.2038726-2-hch@lst.de
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Fei Li <fei1.li@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 3d6586008f7b ("drivers/virt/acrn: fix PFNMAP PTE checks in acrn_vm_ram_map()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/virt/acrn/mm.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 06a9b94b8c13e..b9c6c544d7597 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1843,8 +1843,10 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- {
- 	int i;
- 	struct etmv4_save_state *state = drvdata->save_state;
--	struct csdev_access tmp_csa = CSDEV_ACCESS_IOMEM(drvdata->base);
--	struct csdev_access *csa = &tmp_csa;
-+	struct csdev_access *csa = &drvdata->csdev->access;
+diff --git a/drivers/virt/acrn/mm.c b/drivers/virt/acrn/mm.c
+index b4ad8d452e9a1..ffc1d1136f765 100644
+--- a/drivers/virt/acrn/mm.c
++++ b/drivers/virt/acrn/mm.c
+@@ -171,18 +171,24 @@ int acrn_vm_ram_map(struct acrn_vm *vm, struct acrn_vm_memmap *memmap)
+ 	mmap_read_lock(current->mm);
+ 	vma = vma_lookup(current->mm, memmap->vma_base);
+ 	if (vma && ((vma->vm_flags & VM_PFNMAP) != 0)) {
++		spinlock_t *ptl;
++		pte_t *ptep;
 +
-+	if (WARN_ON(!drvdata->csdev))
-+		return;
+ 		if ((memmap->vma_base + memmap->len) > vma->vm_end) {
+ 			mmap_read_unlock(current->mm);
+ 			return -EINVAL;
+ 		}
  
- 	etm4_cs_unlock(drvdata, csa);
- 	etm4x_relaxed_write32(csa, state->trcclaimset, TRCCLAIMSET);
+-		ret = follow_pfn(vma, memmap->vma_base, &pfn);
+-		mmap_read_unlock(current->mm);
++		ret = follow_pte(vma->vm_mm, memmap->vma_base, &ptep, &ptl);
+ 		if (ret < 0) {
++			mmap_read_unlock(current->mm);
+ 			dev_dbg(acrn_dev.this_device,
+ 				"Failed to lookup PFN at VMA:%pK.\n", (void *)memmap->vma_base);
+ 			return ret;
+ 		}
++		pfn = pte_pfn(ptep_get(ptep));
++		pte_unmap_unlock(ptep, ptl);
++		mmap_read_unlock(current->mm);
+ 
+ 		return acrn_mm_region_add(vm, memmap->user_vm_pa,
+ 			 PFN_PHYS(pfn), memmap->len,
 -- 
 2.43.0
 
