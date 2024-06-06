@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920008FEDF5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 637578FEC3E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8FADB25F4B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA68CB22B73
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842BE1BE85F;
-	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487FE1AED40;
+	Thu,  6 Jun 2024 14:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jK3oeQC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKXlf2wK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427561990B7;
-	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EAE19AD75;
+	Thu,  6 Jun 2024 14:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683544; cv=none; b=L6WXT9/tosMGFkooBe76fD4mna3FCQqKVxezyCaE+3/TaIFZ2LWJk0sTT/oRLeKJdJL+fWzUExr5lG/rF+ZPMpdSbjughoaLYon4MGNSsK33ZlfYbhx6VJkcANUZvegXWpWWqrGePc9hbq7QRCEFOViAaM0lzUYbCKxs4QpbEXA=
+	t=1717683345; cv=none; b=envIt1lIIMYzuNbCO8UDyabjL0b8W8zhHVM84s//cHsKLjVN1Ap7a52eV3sGNWxSjbq1HxgBOG8xBXaWpsls3KBmV/6qA30mtTWqFGgerFnUVesXddJwDDZ3zpcCXgtUBWUw7WdehM2IORPuj8NSXhLnv8xFY8gL/Ix2x3oUSM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683544; c=relaxed/simple;
-	bh=bBuEORCMlh3aqiWcvz3kb6EKkg2moOoT+BX0uTLtF7Y=;
+	s=arc-20240116; t=1717683345; c=relaxed/simple;
+	bh=Z7Hl2JpSpPgqymYbKeRtPbuIayS85YwijNWPO9FPhhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AHJMG+HjNOQx9meutjuN0fKMpzEFHmafr6Mb+hP70WYilaXI1BPzyO9+UUIOMg+RJ12MstDsuG7oOCq94PxMd6BG2SZTFye/qgLCscHzpb41AW8eYBdaFsSnpwAnfZ9jjwK5IbkQ//0Cc2wuhJDyrJXCZgQZ7dP7RL4AY+nVoE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jK3oeQC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFA3C2BD10;
-	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ukB6c9tJDpYNpc3CIChNf6X3WxzB0A53QELXHXOcF2mBE5CXcDnjCTXoFVmva47j1HkSYw0pIdzRqO62/31Ua4avouVrmn9eaYeJJE9jJP/h31uDKaVNXwoClF3SwGsEJDB54TjA47Hk2Tdxnc2j0ZRgwVsr86np6P6KtJDwnkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKXlf2wK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52DBC2BD10;
+	Thu,  6 Jun 2024 14:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683544;
-	bh=bBuEORCMlh3aqiWcvz3kb6EKkg2moOoT+BX0uTLtF7Y=;
+	s=korg; t=1717683344;
+	bh=Z7Hl2JpSpPgqymYbKeRtPbuIayS85YwijNWPO9FPhhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jK3oeQC+Yux5qQzcGg6K6qTUPlBz0d3xj0MAK4j9iqp3glrfOBqKSPXEeOJrUghu3
-	 bWdWc4FgbtYd+Ne2Z5jBXMziaiOdV4mkzw2zyFU/XVtRKHHJeD6c7Jb2M10sEFeZIL
-	 W5pc2Ym6Pv1DKifhvkuEhxYrgwZpzN7lAw2Raj9E=
+	b=MKXlf2wKjP9VKsY+YO28A6VJZ4Oef/XVrLPpOqKBhlFWUTC5edbivuemRXobggAWU
+	 l/7OR+dNjAJcOOHUoRTxivkM9sL/i46wns11lnCdevV4F23igHLYAcfZKpL0TiM+X3
+	 zPeulU9ZhXs/JJwX96PyHrelg4dVsd9ugkWbnI6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 483/744] watchdog: sa1100: Fix PTR_ERR_OR_ZERO() vs NULL check in sa1100dog_probe()
+Subject: [PATCH 6.1 226/473] drm/bridge: lt8912b: Dont log an error when DSI host cant be found
 Date: Thu,  6 Jun 2024 16:02:35 +0200
-Message-ID: <20240606131747.954571385@linuxfoundation.org>
+Message-ID: <20240606131707.348575351@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 413bf4e857fd79617524d5dcd35f463e9aa2dd41 ]
+[ Upstream commit b3b4695ff47c4964d4ccb930890c9ffd8e455e20 ]
 
-devm_ioremap() doesn't return error pointers, it returns NULL on error.
-Update the check accordingly.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-Fixes: e86bd43bcfc5 ("watchdog: sa1100: use platform device registration")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240426075808.1582678-1-nichen@iscas.ac.cn
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-3-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/sa1100_wdt.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/watchdog/sa1100_wdt.c b/drivers/watchdog/sa1100_wdt.c
-index 5d2df008b92a5..34a917221e316 100644
---- a/drivers/watchdog/sa1100_wdt.c
-+++ b/drivers/watchdog/sa1100_wdt.c
-@@ -191,9 +191,8 @@ static int sa1100dog_probe(struct platform_device *pdev)
- 	if (!res)
- 		return -ENXIO;
- 	reg_base = devm_ioremap(&pdev->dev, res->start, resource_size(res));
--	ret = PTR_ERR_OR_ZERO(reg_base);
--	if (ret)
--		return ret;
-+	if (!reg_base)
-+		return -ENOMEM;
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index ac76c23635892..55a7fa4670a7a 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -485,10 +485,8 @@ static int lt8912_attach_dsi(struct lt8912 *lt)
+ 						 };
  
- 	clk = clk_get(NULL, "OSTIMER0");
- 	if (IS_ERR(clk)) {
+ 	host = of_find_mipi_dsi_host_by_node(lt->host_node);
+-	if (!host) {
+-		dev_err(dev, "failed to find dsi host\n");
+-		return -EPROBE_DEFER;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
+ 
+ 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
 -- 
 2.43.0
 
