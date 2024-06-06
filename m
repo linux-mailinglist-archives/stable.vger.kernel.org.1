@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6A68FEE53
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E1C8FEC86
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2AF81C222E3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 832502850D8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EDD19FA70;
-	Thu,  6 Jun 2024 14:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DAA1198A29;
+	Thu,  6 Jun 2024 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcP807S1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jA7On+2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351471991B4;
-	Thu,  6 Jun 2024 14:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC8C198A2A;
+	Thu,  6 Jun 2024 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683646; cv=none; b=G8/YPpKWuNwTnU80vBx3As3uhb1K2XQ0u/KdbVq1LFUM4/8wnksdg/Ai2vQmQYyxpchcb8AJiZaZD6o0tLc3TlIXyeRn3PIunDgc3jjquEUEJlXn3csvSJPTn6O77UHwgGVzEsHZCPDVLPEFadNJ0XsFAK6cwrgPWMqqbNd58xU=
+	t=1717683377; cv=none; b=tnxBs7Rv5FpQFCb9Kuu0a7A0sCKCiqz1oyWkBfQsX5OrONjZGhd6jyJhGM27nyAwKy3t/MxJn3CQaZG4Z05B7yk9Gq6nXerBPrEqStPuKhUxTnWti8SDdUQAbWfRW3DUv9vzS9YmZ4Jeuv4KB9c556BR7eXZ9VuLnrJ8Zw0M6tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683646; c=relaxed/simple;
-	bh=0GUcknW4HHgTXQv46lGlRx4LW3pxeBa27d4K7BxFRJw=;
+	s=arc-20240116; t=1717683377; c=relaxed/simple;
+	bh=5w0EU1Bd9+ANALUjRhTvHi5hYK0PcK1zAhTigzuqR5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCUyYSopbQAS1UxjKT8xcwaI4IjPB4TT35Qt20L2bXWKU1JIF67WmJSdwdsuvY9M+z0zZckabdbz2rpNTGmIHMI0BFHEo3Z0XfFjzFZ+QL6l0MxjB3hL8E9ySj2d6s0E3ZV1Cn+h8LPN06jJIIzDPC4VNP9f6Gxm32pxXjA4v+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcP807S1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134A0C2BD10;
-	Thu,  6 Jun 2024 14:20:46 +0000 (UTC)
+	 MIME-Version; b=fXYX0fWiVd7LNFTAEISTT7c6afnpCC/gwV408FAduKpOHO+Y0FFwtIMfBdbkwrk1JXFEdqin/yDyvm3lz0mJtqork3wAUQItFikfT8NYnaArT820gM2mLq9rWXDSp2ktmhw9A0SFumOOQb72ypa/RGKysh1g6A9eA9fszHM+AsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jA7On+2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAC1C2BD10;
+	Thu,  6 Jun 2024 14:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683646;
-	bh=0GUcknW4HHgTXQv46lGlRx4LW3pxeBa27d4K7BxFRJw=;
+	s=korg; t=1717683377;
+	bh=5w0EU1Bd9+ANALUjRhTvHi5hYK0PcK1zAhTigzuqR5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vcP807S1lCp7VovgCHB/T4QtRxTlQ5Ombwv4XJHA2GwNtqzNbjyDwji852PUt73Jk
-	 bb+QL8maOtHGjSdHWbwT4bRWo6/fAa9PIZgTWcb+zidz/opxUvflk/5TYE2qfUch2M
-	 bNaB6cIIGOyjKt6JI3Bdr9ps/p6UwOUD35JpUoec=
+	b=jA7On+2IDk8ETB62JthvuuPS0Oy4y4L4/mY0ssgAPEkkhJYvmLfcPWz04/OQgfhzk
+	 ZDiM2efiV/Z0CRH6rS6TmmTPYtEhAqAL7lwAG8hXoDIayo6yaq6SPwkNOmur/e2kkA
+	 GpxuPeDjz3UxRMDCy7O0ZAuVdoikK15/ymTB5dgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Aleksandr Aprelkov <aaprelkov@usergate.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 517/744] f2fs: fix to release node block count in error path of f2fs_new_node_page()
+Subject: [PATCH 6.1 260/473] sunrpc: removed redundant procp check
 Date: Thu,  6 Jun 2024 16:03:09 +0200
-Message-ID: <20240606131749.022257880@linuxfoundation.org>
+Message-ID: <20240606131708.557215839@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Aleksandr Aprelkov <aaprelkov@usergate.com>
 
-[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
+[ Upstream commit a576f36971ab4097b6aa76433532aa1fb5ee2d3b ]
 
-It missed to call dec_valid_node_count() to release node block count
-in error path, fix it.
+since vs_proc pointer is dereferenced before getting it's address there's
+no need to check for NULL.
 
-Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 8e5b67731d08 ("SUNRPC: Add a callback to initialise server requests")
+Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/svc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index ab113fd3a3432..c765bda3beaac 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1319,6 +1319,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
- 	}
- 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
- 		err = -EFSCORRUPTED;
-+		dec_valid_node_count(sbi, dn->inode, !ofs);
- 		set_sbi_flag(sbi, SBI_NEED_FSCK);
- 		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
- 		goto fail;
-@@ -1345,7 +1346,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
- 	if (ofs == 0)
- 		inc_valid_inode_count(sbi);
- 	return page;
--
- fail:
- 	clear_node_page_dirty(page);
- 	f2fs_put_page(page, 1);
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index 9b0b21cccca9a..666d738bcf07e 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1205,8 +1205,6 @@ svc_generic_init_request(struct svc_rqst *rqstp,
+ 	if (rqstp->rq_proc >= versp->vs_nproc)
+ 		goto err_bad_proc;
+ 	rqstp->rq_procinfo = procp = &versp->vs_proc[rqstp->rq_proc];
+-	if (!procp)
+-		goto err_bad_proc;
+ 
+ 	/* Initialize storage for argp and resp */
+ 	memset(rqstp->rq_argp, 0, procp->pc_argzero);
 -- 
 2.43.0
 
