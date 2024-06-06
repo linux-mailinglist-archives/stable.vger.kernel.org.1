@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-49831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6558FEF0A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A56E8FE9EA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C3F71C20506
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 309101C2598A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806171A189B;
-	Thu,  6 Jun 2024 14:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DC4198E77;
+	Thu,  6 Jun 2024 14:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVlTR+Na"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fscM1S3c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE1F1A1872;
-	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A99198E72;
+	Thu,  6 Jun 2024 14:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683731; cv=none; b=nz8n8LgGTieq2gRPAkW/q6LJF+TahrAfBLyRymmAlXQ/R/smxBCBkwnBoKn1weYynvRonTXY65IEgGt7jBTsFteFQVKWXdt6SdZcJACSWHK3TETdLUmwCKWS5mF7bYR4Yci9H6QchCpkgV98LO1RxoydG75wGexIEA32Aun0NHQ=
+	t=1717683079; cv=none; b=aRNwYMjRASpGSJoj6qBlyNrLSrGVsgnDFUmweD5xWr1ewot6vAOJZqILW4HFuErBiMYm7XmlM0VNE45cLbnlVGUJhQfLPkFIRkqiY/j+0aBwnVMVQc8HAlNtCyp6ifMgMyFUHjo7dhf4iyUoTDiCU3VGQqBOoDRQq282oA0p/Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683731; c=relaxed/simple;
-	bh=R1ZXGJ9yUYnQIl12EJ+SyH/wf9r3QN7dq47UPo+c5QI=;
+	s=arc-20240116; t=1717683079; c=relaxed/simple;
+	bh=VFGS64iq1L22OT9oqtOUVvg7DOove+t4Zg46AG9XlMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVStWhCG/kqp9SyeCeQtU4WZ238pRIDHj9gXICgB8cTqzEUW1Weg3KSH7PNJ0eH28HMkf58vuCsh5I1pNZLCKBOG9emn09Pvqzac++HW+q6RQmU0nzKBBJEavOIJmChG8+ntQWlR9eLyBMEGSYTUMc80xCBC/dp2vn+Z80H6u2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVlTR+Na; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88DAC2BD10;
-	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
+	 MIME-Version; b=HPnt4znFmyQnYaMvD3+Z6EBulYOYSbB4O04IXnfjPqCS1zaPOlOKoNv+pkD9Uxq+aYvYqwLozozDq9KBHfIkmnRWOEbx3lVlqdYG8D2empjKDPX0KVC3viz8u/ga56xFrVoNwO0n4WAGvZxlEAeE4jVgovlJQSYTsoID+xmaRCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fscM1S3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C3AC4AF15;
+	Thu,  6 Jun 2024 14:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683730;
-	bh=R1ZXGJ9yUYnQIl12EJ+SyH/wf9r3QN7dq47UPo+c5QI=;
+	s=korg; t=1717683079;
+	bh=VFGS64iq1L22OT9oqtOUVvg7DOove+t4Zg46AG9XlMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVlTR+NaYGsdJqBtDssYvuxlSnIRqO4SvGUTARsinu1C9Vy9P9NYP72D1D6V9wT0K
-	 V2+JeZQ+egrM1o1MgiPiXdy8o0Lm4JCnxuZ1TVge5yfcBG7Z1PhjRPG/nkD/WPwB8E
-	 xCfj0oSUcke0X/mZMTpTXU1nlqfs+P1262S79skQ=
+	b=fscM1S3cSRwiIecW0OnFV4LCA/Uq60yLwIAvthAFRYJPgwz/Cbk3DLxlmHhzMG1JA
+	 58MqbJ5X9mmxkemSf/t/rtrmrn/8KGTjfGGqwV++a+k4OY7x1SKqzDbIVq0qMBJIeg
+	 9i0EputTzSvgAqj6x5IZwoadfVw3HrK2ECG3/Mug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Clement Lecigne <clecigne@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Tom Herbert <tom@herbertland.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 655/744] riscv: cpufeature: Fix thead vector hwcap removal
+Subject: [PATCH 6.9 348/374] net: fix __dst_negative_advice() race
 Date: Thu,  6 Jun 2024 16:05:27 +0200
-Message-ID: <20240606131753.469082610@linuxfoundation.org>
+Message-ID: <20240606131703.521475712@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,138 +65,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlie Jenkins <charlie@rivosinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e482eab4d1eb31031eff2b6afb71776483101979 ]
+[ Upstream commit 92f1655aa2b2294d0b49925f3b875a634bd3b59e ]
 
-The riscv_cpuinfo struct that contains mvendorid and marchid is not
-populated until all harts are booted which happens after the DT parsing.
-Use the mvendorid/marchid from the boot hart to determine if the DT
-contains an invalid V.
+__dst_negative_advice() does not enforce proper RCU rules when
+sk->dst_cache must be cleared, leading to possible UAF.
 
-Fixes: d82f32202e0d ("RISC-V: Ignore V from the riscv,isa DT property on older T-Head CPUs")
-Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20240502-cpufeature_fixes-v4-1-b3d1a088722d@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+RCU rules are that we must first clear sk->sk_dst_cache,
+then call dst_release(old_dst).
+
+Note that sk_dst_reset(sk) is implementing this protocol correctly,
+while __dst_negative_advice() uses the wrong order.
+
+Given that ip6_negative_advice() has special logic
+against RTF_CACHE, this means each of the three ->negative_advice()
+existing methods must perform the sk_dst_reset() themselves.
+
+Note the check against NULL dst is centralized in
+__dst_negative_advice(), there is no need to duplicate
+it in various callbacks.
+
+Many thanks to Clement Lecigne for tracking this issue.
+
+This old bug became visible after the blamed commit, using UDP sockets.
+
+Fixes: a87cb3e48ee8 ("net: Facility to report route quality of connected sockets")
+Reported-by: Clement Lecigne <clecigne@google.com>
+Diagnosed-by: Clement Lecigne <clecigne@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Tom Herbert <tom@herbertland.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240528114353.1794151-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/sbi.h   |  2 ++
- arch/riscv/kernel/cpu.c        | 40 ++++++++++++++++++++++++++++++----
- arch/riscv/kernel/cpufeature.c |  8 +++++--
- 3 files changed, 44 insertions(+), 6 deletions(-)
+ include/net/dst_ops.h  |  2 +-
+ include/net/sock.h     | 13 +++----------
+ net/ipv4/route.c       | 22 ++++++++--------------
+ net/ipv6/route.c       | 29 +++++++++++++++--------------
+ net/xfrm/xfrm_policy.c | 11 +++--------
+ 5 files changed, 30 insertions(+), 47 deletions(-)
 
-diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
-index b79d0228144f4..3ed853b8a8c85 100644
---- a/arch/riscv/include/asm/sbi.h
-+++ b/arch/riscv/include/asm/sbi.h
-@@ -327,6 +327,8 @@ static inline int sbi_remote_fence_i(const struct cpumask *cpu_mask) { return -1
- static inline void sbi_init(void) {}
- #endif /* CONFIG_RISCV_SBI */
+diff --git a/include/net/dst_ops.h b/include/net/dst_ops.h
+index 6d1c8541183db..3a9001a042a5c 100644
+--- a/include/net/dst_ops.h
++++ b/include/net/dst_ops.h
+@@ -24,7 +24,7 @@ struct dst_ops {
+ 	void			(*destroy)(struct dst_entry *);
+ 	void			(*ifdown)(struct dst_entry *,
+ 					  struct net_device *dev);
+-	struct dst_entry *	(*negative_advice)(struct dst_entry *);
++	void			(*negative_advice)(struct sock *sk, struct dst_entry *);
+ 	void			(*link_failure)(struct sk_buff *);
+ 	void			(*update_pmtu)(struct dst_entry *dst, struct sock *sk,
+ 					       struct sk_buff *skb, u32 mtu,
+diff --git a/include/net/sock.h b/include/net/sock.h
+index b4b553df7870c..944f71a8ab223 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2134,17 +2134,10 @@ sk_dst_get(const struct sock *sk)
  
-+unsigned long riscv_get_mvendorid(void);
-+unsigned long riscv_get_marchid(void);
- unsigned long riscv_cached_mvendorid(unsigned int cpu_id);
- unsigned long riscv_cached_marchid(unsigned int cpu_id);
- unsigned long riscv_cached_mimpid(unsigned int cpu_id);
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index 157ace8b262c2..88732abecd023 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -139,6 +139,34 @@ int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid)
- 	return -1;
+ static inline void __dst_negative_advice(struct sock *sk)
+ {
+-	struct dst_entry *ndst, *dst = __sk_dst_get(sk);
++	struct dst_entry *dst = __sk_dst_get(sk);
+ 
+-	if (dst && dst->ops->negative_advice) {
+-		ndst = dst->ops->negative_advice(dst);
+-
+-		if (ndst != dst) {
+-			rcu_assign_pointer(sk->sk_dst_cache, ndst);
+-			sk_tx_queue_clear(sk);
+-			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+-		}
+-	}
++	if (dst && dst->ops->negative_advice)
++		dst->ops->negative_advice(sk, dst);
  }
  
-+unsigned long __init riscv_get_marchid(void)
-+{
-+	struct riscv_cpuinfo *ci = this_cpu_ptr(&riscv_cpuinfo);
-+
-+#if IS_ENABLED(CONFIG_RISCV_SBI)
-+	ci->marchid = sbi_spec_is_0_1() ? 0 : sbi_get_marchid();
-+#elif IS_ENABLED(CONFIG_RISCV_M_MODE)
-+	ci->marchid = csr_read(CSR_MARCHID);
-+#else
-+	ci->marchid = 0;
-+#endif
-+	return ci->marchid;
-+}
-+
-+unsigned long __init riscv_get_mvendorid(void)
-+{
-+	struct riscv_cpuinfo *ci = this_cpu_ptr(&riscv_cpuinfo);
-+
-+#if IS_ENABLED(CONFIG_RISCV_SBI)
-+	ci->mvendorid = sbi_spec_is_0_1() ? 0 : sbi_get_mvendorid();
-+#elif IS_ENABLED(CONFIG_RISCV_M_MODE)
-+	ci->mvendorid = csr_read(CSR_MVENDORID);
-+#else
-+	ci->mvendorid = 0;
-+#endif
-+	return ci->mvendorid;
-+}
-+
- DEFINE_PER_CPU(struct riscv_cpuinfo, riscv_cpuinfo);
+ static inline void dst_negative_advice(struct sock *sk)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 12738051ebea7..3fcf084fbda5d 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -132,7 +132,8 @@ struct dst_entry	*ipv4_dst_check(struct dst_entry *dst, u32 cookie);
+ static unsigned int	 ipv4_default_advmss(const struct dst_entry *dst);
+ INDIRECT_CALLABLE_SCOPE
+ unsigned int		ipv4_mtu(const struct dst_entry *dst);
+-static struct dst_entry *ipv4_negative_advice(struct dst_entry *dst);
++static void		ipv4_negative_advice(struct sock *sk,
++					     struct dst_entry *dst);
+ static void		 ipv4_link_failure(struct sk_buff *skb);
+ static void		 ip_rt_update_pmtu(struct dst_entry *dst, struct sock *sk,
+ 					   struct sk_buff *skb, u32 mtu,
+@@ -837,22 +838,15 @@ static void ip_do_redirect(struct dst_entry *dst, struct sock *sk, struct sk_buf
+ 	__ip_do_redirect(rt, skb, &fl4, true);
+ }
  
- unsigned long riscv_cached_mvendorid(unsigned int cpu_id)
-@@ -170,12 +198,16 @@ static int riscv_cpuinfo_starting(unsigned int cpu)
- 	struct riscv_cpuinfo *ci = this_cpu_ptr(&riscv_cpuinfo);
+-static struct dst_entry *ipv4_negative_advice(struct dst_entry *dst)
++static void ipv4_negative_advice(struct sock *sk,
++				 struct dst_entry *dst)
+ {
+ 	struct rtable *rt = dst_rtable(dst);
+-	struct dst_entry *ret = dst;
  
- #if IS_ENABLED(CONFIG_RISCV_SBI)
--	ci->mvendorid = sbi_spec_is_0_1() ? 0 : sbi_get_mvendorid();
--	ci->marchid = sbi_spec_is_0_1() ? 0 : sbi_get_marchid();
-+	if (!ci->mvendorid)
-+		ci->mvendorid = sbi_spec_is_0_1() ? 0 : sbi_get_mvendorid();
-+	if (!ci->marchid)
-+		ci->marchid = sbi_spec_is_0_1() ? 0 : sbi_get_marchid();
- 	ci->mimpid = sbi_spec_is_0_1() ? 0 : sbi_get_mimpid();
- #elif IS_ENABLED(CONFIG_RISCV_M_MODE)
--	ci->mvendorid = csr_read(CSR_MVENDORID);
--	ci->marchid = csr_read(CSR_MARCHID);
-+	if (!ci->mvendorid)
-+		ci->mvendorid = csr_read(CSR_MVENDORID);
-+	if (!ci->marchid)
-+		ci->marchid = csr_read(CSR_MARCHID);
- 	ci->mimpid = csr_read(CSR_MIMPID);
- #else
- 	ci->mvendorid = 0;
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index 6754a922a844f..a6b6bbf3f8598 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -351,6 +351,8 @@ static void __init riscv_fill_hwcap_from_isa_string(unsigned long *isa2hwcap)
- 	struct acpi_table_header *rhct;
- 	acpi_status status;
- 	unsigned int cpu;
-+	u64 boot_vendorid;
-+	u64 boot_archid;
+-	if (rt) {
+-		if (dst->obsolete > 0) {
+-			ip_rt_put(rt);
+-			ret = NULL;
+-		} else if ((rt->rt_flags & RTCF_REDIRECTED) ||
+-			   rt->dst.expires) {
+-			ip_rt_put(rt);
+-			ret = NULL;
+-		}
+-	}
+-	return ret;
++	if ((dst->obsolete > 0) ||
++	    (rt->rt_flags & RTCF_REDIRECTED) ||
++	    rt->dst.expires)
++		sk_dst_reset(sk);
+ }
  
- 	if (!acpi_disabled) {
- 		status = acpi_get_table(ACPI_SIG_RHCT, 0, &rhct);
-@@ -358,6 +360,9 @@ static void __init riscv_fill_hwcap_from_isa_string(unsigned long *isa2hwcap)
- 			return;
- 	}
+ /*
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 3e0b2cb20fd20..8d5257c3f0842 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -87,7 +87,8 @@ struct dst_entry	*ip6_dst_check(struct dst_entry *dst, u32 cookie);
+ static unsigned int	 ip6_default_advmss(const struct dst_entry *dst);
+ INDIRECT_CALLABLE_SCOPE
+ unsigned int		ip6_mtu(const struct dst_entry *dst);
+-static struct dst_entry *ip6_negative_advice(struct dst_entry *);
++static void		ip6_negative_advice(struct sock *sk,
++					    struct dst_entry *dst);
+ static void		ip6_dst_destroy(struct dst_entry *);
+ static void		ip6_dst_ifdown(struct dst_entry *,
+ 				       struct net_device *dev);
+@@ -2770,24 +2771,24 @@ INDIRECT_CALLABLE_SCOPE struct dst_entry *ip6_dst_check(struct dst_entry *dst,
+ }
+ EXPORT_INDIRECT_CALLABLE(ip6_dst_check);
  
-+	boot_vendorid = riscv_get_mvendorid();
-+	boot_archid = riscv_get_marchid();
+-static struct dst_entry *ip6_negative_advice(struct dst_entry *dst)
++static void ip6_negative_advice(struct sock *sk,
++				struct dst_entry *dst)
+ {
+ 	struct rt6_info *rt = dst_rt6_info(dst);
+ 
+-	if (rt) {
+-		if (rt->rt6i_flags & RTF_CACHE) {
+-			rcu_read_lock();
+-			if (rt6_check_expired(rt)) {
+-				rt6_remove_exception_rt(rt);
+-				dst = NULL;
+-			}
+-			rcu_read_unlock();
+-		} else {
+-			dst_release(dst);
+-			dst = NULL;
++	if (rt->rt6i_flags & RTF_CACHE) {
++		rcu_read_lock();
++		if (rt6_check_expired(rt)) {
++			/* counteract the dst_release() in sk_dst_reset() */
++			dst_hold(dst);
++			sk_dst_reset(sk);
 +
- 	for_each_possible_cpu(cpu) {
- 		struct riscv_isainfo *isainfo = &hart_isa[cpu];
- 		unsigned long this_hwcap = 0;
-@@ -405,8 +410,7 @@ static void __init riscv_fill_hwcap_from_isa_string(unsigned long *isa2hwcap)
- 		 * CPU cores with the ratified spec will contain non-zero
- 		 * marchid.
- 		 */
--		if (acpi_disabled && riscv_cached_mvendorid(cpu) == THEAD_VENDOR_ID &&
--		    riscv_cached_marchid(cpu) == 0x0) {
-+		if (acpi_disabled && boot_vendorid == THEAD_VENDOR_ID && boot_archid == 0x0) {
- 			this_hwcap &= ~isa2hwcap[RISCV_ISA_EXT_v];
- 			clear_bit(RISCV_ISA_EXT_v, isainfo->isa);
++			rt6_remove_exception_rt(rt);
  		}
++		rcu_read_unlock();
++		return;
+ 	}
+-	return dst;
++	sk_dst_reset(sk);
+ }
+ 
+ static void ip6_link_failure(struct sk_buff *skb)
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 1702eea537e7e..d154597728d51 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3904,15 +3904,10 @@ static void xfrm_link_failure(struct sk_buff *skb)
+ 	/* Impossible. Such dst must be popped before reaches point of failure. */
+ }
+ 
+-static struct dst_entry *xfrm_negative_advice(struct dst_entry *dst)
++static void xfrm_negative_advice(struct sock *sk, struct dst_entry *dst)
+ {
+-	if (dst) {
+-		if (dst->obsolete) {
+-			dst_release(dst);
+-			dst = NULL;
+-		}
+-	}
+-	return dst;
++	if (dst->obsolete)
++		sk_dst_reset(sk);
+ }
+ 
+ static void xfrm_init_pmtu(struct xfrm_dst **bundle, int nr)
 -- 
 2.43.0
 
