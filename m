@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CE38FEF1D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E49208FE9ED
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 966951F23175
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 594A51F270EB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18EE1A2552;
-	Thu,  6 Jun 2024 14:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACBB19D071;
+	Thu,  6 Jun 2024 14:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmls72Nl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvOss5YJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D701A2548;
-	Thu,  6 Jun 2024 14:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9B519D066;
+	Thu,  6 Jun 2024 14:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683740; cv=none; b=pcOtGYkizb1/som+xa9WpxABiA4JOUmXcMM9rMF25Y0URVofJAUUPiBPTHEvKXuCnuOvrTjCG1s1PlCEQGq4XXNJ+0c+yKDQbpquUDQBLFpaQcRQnCVt7r52awoSl+1ne92zxq/OBD9oRD7GZ1iKhoQ8a/5vT5lxvcI2OIz/D5c=
+	t=1717683082; cv=none; b=BKa7xITu4ZoBCCUz+myWomMm7qcAB+rmO2FfBUQI/7ueGsI4U1/OJ6+7xsvsSWjCnVpRqpWSDHzNAOroYSONbm3RT32bdxcRuT2/F+nd/rHw75fpKbQbgpBGNnoi+fb2iDEfTWjRYRlxZ1jPJSsYYLBIDzbl6leNqVIh3cKbMS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683740; c=relaxed/simple;
-	bh=fr0ntyx8rtgYZ0c4qdoPIaNXaN0IueIKcO7mi8zrwTI=;
+	s=arc-20240116; t=1717683082; c=relaxed/simple;
+	bh=rasDIihceQ1kK9qUgoW3Sa6w9fNsxDFNx/4DkCNHwd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obfOspmVnKoyfrqq1z7P03sCO1eC6UsXEPQX0OkCImlNV29xu9B/tskEyGknHVsdOjY96MGWV4stno0o09wdGi5Xt0l/aHGe1IYSsMxeGTMmzEmfr04CZjA2d1/agJbgj4sk7dpRDOa5n6xeC5+cPFVkG09YqMS0YkkpjV7zG8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmls72Nl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4244AC2BD10;
-	Thu,  6 Jun 2024 14:22:20 +0000 (UTC)
+	 MIME-Version; b=UBE3j4gTrf8iOOtpaveZ9hs2kQqzPdgINmZMW2///2P/YMLe/YTP4WJBgjyNMZxmR7JGgA2PQHuYKF4JoxswsmMmjZcR9Y46nl57m0B5SNh8haeXRTL9ObFz+CTXPxZtGootehKu6KAQP/94juXdFmEqf7wezZrl7mj2eecW47s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvOss5YJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89C0C4AF09;
+	Thu,  6 Jun 2024 14:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683740;
-	bh=fr0ntyx8rtgYZ0c4qdoPIaNXaN0IueIKcO7mi8zrwTI=;
+	s=korg; t=1717683081;
+	bh=rasDIihceQ1kK9qUgoW3Sa6w9fNsxDFNx/4DkCNHwd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmls72Nlzp5u4w8x0veMTHyXuo4LmQMAod+RTp9xmmJSstGErPK5D3w5OdvCDuVWF
-	 xFprDoGkgFohyWmN4zAa9kQuhEudoh4IotvXcUW2PKyuklkHt26qfk1tv64HnymBaQ
-	 RQLA3DhsdsZ4iu1PxkNxO0mhd+05seeGX7iNocIo=
+	b=vvOss5YJp9MrNVNbwbAeDDpeYYovQlRPhkRkzUbx+94DtXvbmwRJ7nPt8xM4/q4ak
+	 PcArTk8lwSbipXP8w5qLGCStoWElDQZiRyTwzuBFhRoYRQffKEm8DDugc5o1xHXlJ9
+	 FCfkPskOnBKccQ/W1Dee5tSTdvsXDJREhRcl2Q9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Shay Agroskin <shayagr@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 659/744] i3c: master: svc: change ENXIO to EAGAIN when IBI occurs during start frame
-Date: Thu,  6 Jun 2024 16:05:31 +0200
-Message-ID: <20240606131753.592151273@linuxfoundation.org>
+Subject: [PATCH 6.9 353/374] net: ena: Fix redundant device NUMA node override
+Date: Thu,  6 Jun 2024 16:05:32 +0200
+Message-ID: <20240606131703.696850363@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Shay Agroskin <shayagr@amazon.com>
 
-[ Upstream commit 7f3d633b460be5553a65a247def5426d16805e72 ]
+[ Upstream commit 2dc8b1e7177d4f49f492ce648440caf2de0c3616 ]
 
-svc_i3c_master_xfer() returns error ENXIO if an In-Band Interrupt (IBI)
-occurs when the host starts the frame.
+The driver overrides the NUMA node id of the device regardless of
+whether it knows its correct value (often setting it to -1 even though
+the node id is advertised in 'struct device'). This can lead to
+suboptimal configurations.
 
-Change error code to EAGAIN to inform the client driver that this
-situation has occurred and to try again sometime later.
+This patch fixes this behavior and makes the shared memory allocation
+functions use the NUMA node id advertised by the underlying device.
 
-Fixes: 5e5e3c92e748 ("i3c: master: svc: fix wrong data return when IBI happen during start frame")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20240506164009.21375-2-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
+Signed-off-by: Shay Agroskin <shayagr@amazon.com>
+Link: https://lore.kernel.org/r/20240528170912.1204417-1-shayagr@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amazon/ena/ena_com.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 3966924d10668..e18bf9ca85197 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1065,7 +1065,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 	 * and yield the above events handler.
- 	 */
- 	if (SVC_I3C_MSTATUS_IBIWON(reg)) {
--		ret = -ENXIO;
-+		ret = -EAGAIN;
- 		*actual_len = 0;
- 		goto emit_stop;
- 	}
+diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
+index 2d8a66ea82fab..713a595370bff 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_com.c
++++ b/drivers/net/ethernet/amazon/ena/ena_com.c
+@@ -312,7 +312,6 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
+ 			      struct ena_com_io_sq *io_sq)
+ {
+ 	size_t size;
+-	int dev_node = 0;
+ 
+ 	memset(&io_sq->desc_addr, 0x0, sizeof(io_sq->desc_addr));
+ 
+@@ -325,12 +324,9 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
+ 	size = io_sq->desc_entry_size * io_sq->q_depth;
+ 
+ 	if (io_sq->mem_queue_type == ENA_ADMIN_PLACEMENT_POLICY_HOST) {
+-		dev_node = dev_to_node(ena_dev->dmadev);
+-		set_dev_node(ena_dev->dmadev, ctx->numa_node);
+ 		io_sq->desc_addr.virt_addr =
+ 			dma_alloc_coherent(ena_dev->dmadev, size, &io_sq->desc_addr.phys_addr,
+ 					   GFP_KERNEL);
+-		set_dev_node(ena_dev->dmadev, dev_node);
+ 		if (!io_sq->desc_addr.virt_addr) {
+ 			io_sq->desc_addr.virt_addr =
+ 				dma_alloc_coherent(ena_dev->dmadev, size,
+@@ -354,10 +350,7 @@ static int ena_com_init_io_sq(struct ena_com_dev *ena_dev,
+ 		size = (size_t)io_sq->bounce_buf_ctrl.buffer_size *
+ 			io_sq->bounce_buf_ctrl.buffers_num;
+ 
+-		dev_node = dev_to_node(ena_dev->dmadev);
+-		set_dev_node(ena_dev->dmadev, ctx->numa_node);
+ 		io_sq->bounce_buf_ctrl.base_buffer = devm_kzalloc(ena_dev->dmadev, size, GFP_KERNEL);
+-		set_dev_node(ena_dev->dmadev, dev_node);
+ 		if (!io_sq->bounce_buf_ctrl.base_buffer)
+ 			io_sq->bounce_buf_ctrl.base_buffer =
+ 				devm_kzalloc(ena_dev->dmadev, size, GFP_KERNEL);
+@@ -397,7 +390,6 @@ static int ena_com_init_io_cq(struct ena_com_dev *ena_dev,
+ 			      struct ena_com_io_cq *io_cq)
+ {
+ 	size_t size;
+-	int prev_node = 0;
+ 
+ 	memset(&io_cq->cdesc_addr, 0x0, sizeof(io_cq->cdesc_addr));
+ 
+@@ -409,11 +401,8 @@ static int ena_com_init_io_cq(struct ena_com_dev *ena_dev,
+ 
+ 	size = io_cq->cdesc_entry_size_in_bytes * io_cq->q_depth;
+ 
+-	prev_node = dev_to_node(ena_dev->dmadev);
+-	set_dev_node(ena_dev->dmadev, ctx->numa_node);
+ 	io_cq->cdesc_addr.virt_addr =
+ 		dma_alloc_coherent(ena_dev->dmadev, size, &io_cq->cdesc_addr.phys_addr, GFP_KERNEL);
+-	set_dev_node(ena_dev->dmadev, prev_node);
+ 	if (!io_cq->cdesc_addr.virt_addr) {
+ 		io_cq->cdesc_addr.virt_addr =
+ 			dma_alloc_coherent(ena_dev->dmadev, size, &io_cq->cdesc_addr.phys_addr,
 -- 
 2.43.0
 
