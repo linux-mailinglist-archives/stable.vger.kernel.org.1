@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-48396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327F18FE8D9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2963C8FE8DB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84486B25118
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8C61F23614
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C501974E7;
-	Thu,  6 Jun 2024 14:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00F1198E85;
+	Thu,  6 Jun 2024 14:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxgMXTtL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4myUCQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07A4196C7D;
-	Thu,  6 Jun 2024 14:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1E01974F2;
+	Thu,  6 Jun 2024 14:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682940; cv=none; b=svW6Hd/JftOlm5y8oa7oImvtkIFWG5DRKBF8sLwWHPXJyfUXgJvIpzzg5prj0jJJzkX6DtCjffDYK6gwZr1YqNxY9vEXF95HCLlzsU+q1g6cvqr9HWeyI7371iIxQIFmC89ZfePpsCZ7U1D65oSoTvBbckUutINx+5IVx6rodSM=
+	t=1717682942; cv=none; b=PWLfCX0qqFEe08M65VyOVInyB6e7t9v5tyG+qbrgJlSPB1hzbLNKWz7X5bba+XJbcxcHQ+WChu4XCKJqNP9vxb6UQGglOxm8hEr5FjSRIA5TnMx0Zk0cehGUlnb7JyZXOtDs+fc0BsdErNlqVptyU7Ce2YrR1tHOGy2qqpf+GyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682940; c=relaxed/simple;
-	bh=lRKfhnIFhlvTBSQsObfPuONEnhnWjZP+hNfp8B6QUa8=;
+	s=arc-20240116; t=1717682942; c=relaxed/simple;
+	bh=5nBs3Fi9tPcfYMfeVyMWt6PgXbxTNS6044Su8vgQEjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvKwlq+6e9RvAq/pwT+eSWur5s5uF+XwWnwJIQV9W/AQpV2tfRTFC4sqrsW6puFK8pyN8hnEyIfbjxHANiJUpVBIXo+n9hD05cnX3K3BUWOzwa19v8D27OaR/Ii6IbOQMHmqpZFj6SXOcFG05eDrS02+ifnDjS+8zmfHnyoFvX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxgMXTtL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B662C2BD10;
-	Thu,  6 Jun 2024 14:09:00 +0000 (UTC)
+	 MIME-Version; b=loJoF+ZceE+XUfvMVXnO0haKhYbvPIN2sqxNkZYGvFZDS5Mifhr6foVjJbKRK7HWg7qku9cOxVCaQ45xqHSsB8ENTLoB6H4htxOSeGnZiLm+eCzvOnHYMXmXukW1Ya7w3fgShC6gxvEBFLQNIucYXnJUfRU8hjfIFJzOiDpCkYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4myUCQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18226C2BD10;
+	Thu,  6 Jun 2024 14:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682940;
-	bh=lRKfhnIFhlvTBSQsObfPuONEnhnWjZP+hNfp8B6QUa8=;
+	s=korg; t=1717682941;
+	bh=5nBs3Fi9tPcfYMfeVyMWt6PgXbxTNS6044Su8vgQEjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qxgMXTtLxZh0ZuyDQHGWxYYkaLRoU5b5M//Da4zAWSbsmjXXhS0hDiiSQtWcliAsd
-	 09xWITC+IhJhtJU/SdML3WunxiGzCYI9wUT5nXtEInBY0x7ddn0XCI1aGOEXq+uJQV
-	 VRxjUvbsnwHIePgv+qlb1GVt7J3td0IccZngE96E=
+	b=l4myUCQOfyZJXeEEMnhtP2expbDBU8V5mKUAy5SRcUkbmip74CGa+8yUzEjlZPQb4
+	 dXyBtlAvJaRo8rfV4TKRzwrYNIhf+sNpxpOJ6Af7uNPXhe4wyembm1InxI6QsnxCzq
+	 PCD6loaAh+ZrRDcF70YYV8/M+JyFCssJwUKDEZtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mike Leach <mike.leach@linaro.org>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 056/374] coresight: etm4x: Do not save/restore Data trace control registers
-Date: Thu,  6 Jun 2024 16:00:35 +0200
-Message-ID: <20240606131653.713922521@linuxfoundation.org>
+Subject: [PATCH 6.9 057/374] coresight: etm4x: Safe access for TRCQCLTR
+Date: Thu,  6 Jun 2024 16:00:36 +0200
+Message-ID: <20240606131653.755529438@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
 References: <20240606131651.683718371@linuxfoundation.org>
@@ -69,115 +69,86 @@ Content-Transfer-Encoding: 8bit
 
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ Upstream commit 5eb3a0c2c52368cb9902e9a6ea04888e093c487d ]
+[ Upstream commit 46bf8d7cd8530eca607379033b9bc4ac5590a0cd ]
 
-ETM4x doesn't support Data trace on A class CPUs. As such do not access the
-Data trace control registers during CPU idle. This could cause problems for
-ETE. While at it, remove all references to the Data trace control registers.
+ETM4x implements TRCQCLTR only when the Q elements are supported
+and the Q element filtering is supported (TRCIDR0.QFILT). Access
+to the register otherwise could be fatal. Fix this by tracking the
+availability, like the others.
 
 Fixes: f188b5e76aae ("coresight: etm4x: Save/restore state across CPU low power states")
 Reported-by: Yabin Cui <yabinc@google.com>
 Reviewed-by: Mike Leach <mike.leach@linaro.org>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 Tested-by: Yabin Cui <yabinc@google.com>
-Link: https://lore.kernel.org/r/20240412142702.2882478-3-suzuki.poulose@arm.com
+Link: https://lore.kernel.org/r/20240412142702.2882478-4-suzuki.poulose@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm4x-core.c          |  6 ----
- drivers/hwtracing/coresight/coresight-etm4x.h | 28 -------------------
- 2 files changed, 34 deletions(-)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 8 ++++++--
+ drivers/hwtracing/coresight/coresight-etm4x.h      | 3 +++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index b9c6c544d7597..a9765d45a0ee8 100644
+index a9765d45a0ee8..8643b77e50f41 100644
 --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
 +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1739,9 +1739,6 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 	state->trcvissctlr = etm4x_read32(csa, TRCVISSCTLR);
- 	if (drvdata->nr_pe_cmp)
- 		state->trcvipcssctlr = etm4x_read32(csa, TRCVIPCSSCTLR);
--	state->trcvdctlr = etm4x_read32(csa, TRCVDCTLR);
--	state->trcvdsacctlr = etm4x_read32(csa, TRCVDSACCTLR);
--	state->trcvdarcctlr = etm4x_read32(csa, TRCVDARCCTLR);
+@@ -1240,6 +1240,8 @@ static void etm4_init_arch_data(void *info)
+ 	drvdata->nr_event = FIELD_GET(TRCIDR0_NUMEVENT_MASK, etmidr0);
+ 	/* QSUPP, bits[16:15] Q element support field */
+ 	drvdata->q_support = FIELD_GET(TRCIDR0_QSUPP_MASK, etmidr0);
++	if (drvdata->q_support)
++		drvdata->q_filt = !!(etmidr0 & TRCIDR0_QFILT);
+ 	/* TSSIZE, bits[28:24] Global timestamp size field */
+ 	drvdata->ts_size = FIELD_GET(TRCIDR0_TSSIZE_MASK, etmidr0);
  
- 	for (i = 0; i < drvdata->nrseqstate - 1; i++)
- 		state->trcseqevr[i] = etm4x_read32(csa, TRCSEQEVRn(i));
-@@ -1872,9 +1869,6 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 	etm4x_relaxed_write32(csa, state->trcvissctlr, TRCVISSCTLR);
- 	if (drvdata->nr_pe_cmp)
- 		etm4x_relaxed_write32(csa, state->trcvipcssctlr, TRCVIPCSSCTLR);
--	etm4x_relaxed_write32(csa, state->trcvdctlr, TRCVDCTLR);
--	etm4x_relaxed_write32(csa, state->trcvdsacctlr, TRCVDSACCTLR);
--	etm4x_relaxed_write32(csa, state->trcvdarcctlr, TRCVDARCCTLR);
+@@ -1732,7 +1734,8 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 	state->trcccctlr = etm4x_read32(csa, TRCCCCTLR);
+ 	state->trcbbctlr = etm4x_read32(csa, TRCBBCTLR);
+ 	state->trctraceidr = etm4x_read32(csa, TRCTRACEIDR);
+-	state->trcqctlr = etm4x_read32(csa, TRCQCTLR);
++	if (drvdata->q_filt)
++		state->trcqctlr = etm4x_read32(csa, TRCQCTLR);
  
- 	for (i = 0; i < drvdata->nrseqstate - 1; i++)
- 		etm4x_relaxed_write32(csa, state->trcseqevr[i], TRCSEQEVRn(i));
+ 	state->trcvictlr = etm4x_read32(csa, TRCVICTLR);
+ 	state->trcviiectlr = etm4x_read32(csa, TRCVIIECTLR);
+@@ -1862,7 +1865,8 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
+ 	etm4x_relaxed_write32(csa, state->trcccctlr, TRCCCCTLR);
+ 	etm4x_relaxed_write32(csa, state->trcbbctlr, TRCBBCTLR);
+ 	etm4x_relaxed_write32(csa, state->trctraceidr, TRCTRACEIDR);
+-	etm4x_relaxed_write32(csa, state->trcqctlr, TRCQCTLR);
++	if (drvdata->q_filt)
++		etm4x_relaxed_write32(csa, state->trcqctlr, TRCQCTLR);
+ 
+ 	etm4x_relaxed_write32(csa, state->trcvictlr, TRCVICTLR);
+ 	etm4x_relaxed_write32(csa, state->trcviiectlr, TRCVIIECTLR);
 diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
-index 9ea678bc2e8e5..9e430f72bbd6f 100644
+index 9e430f72bbd6f..9e9165f62e81f 100644
 --- a/drivers/hwtracing/coresight/coresight-etm4x.h
 +++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -43,9 +43,6 @@
- #define TRCVIIECTLR			0x084
- #define TRCVISSCTLR			0x088
- #define TRCVIPCSSCTLR			0x08C
--#define TRCVDCTLR			0x0A0
--#define TRCVDSACCTLR			0x0A4
--#define TRCVDARCCTLR			0x0A8
- /* Derived resources registers */
- #define TRCSEQEVRn(n)			(0x100 + (n * 4)) /* n = 0-2 */
- #define TRCSEQRSTEVR			0x118
-@@ -90,9 +87,6 @@
- /* Address Comparator registers n = 0-15 */
- #define TRCACVRn(n)			(0x400 + (n * 8))
- #define TRCACATRn(n)			(0x480 + (n * 8))
--/* Data Value Comparator Value registers, n = 0-7 */
--#define TRCDVCVRn(n)			(0x500 + (n * 16))
--#define TRCDVCMRn(n)			(0x580 + (n * 16))
- /* ContextID/Virtual ContextID comparators, n = 0-7 */
- #define TRCCIDCVRn(n)			(0x600 + (n * 8))
- #define TRCVMIDCVRn(n)			(0x640 + (n * 8))
-@@ -272,9 +266,6 @@
- /* List of registers accessible via System instructions */
- #define ETM4x_ONLY_SYSREG_LIST(op, val)		\
- 	CASE_##op((val), TRCPROCSELR)		\
--	CASE_##op((val), TRCVDCTLR)		\
--	CASE_##op((val), TRCVDSACCTLR)		\
--	CASE_##op((val), TRCVDARCCTLR)		\
- 	CASE_##op((val), TRCOSLAR)
+@@ -135,6 +135,7 @@
+ #define TRCIDR0_TRCCCI				BIT(7)
+ #define TRCIDR0_RETSTACK			BIT(9)
+ #define TRCIDR0_NUMEVENT_MASK			GENMASK(11, 10)
++#define TRCIDR0_QFILT				BIT(14)
+ #define TRCIDR0_QSUPP_MASK			GENMASK(16, 15)
+ #define TRCIDR0_TSSIZE_MASK			GENMASK(28, 24)
  
- #define ETM_COMMON_SYSREG_LIST(op, val)		\
-@@ -422,22 +413,6 @@
- 	CASE_##op((val), TRCACATRn(13))		\
- 	CASE_##op((val), TRCACATRn(14))		\
- 	CASE_##op((val), TRCACATRn(15))		\
--	CASE_##op((val), TRCDVCVRn(0))		\
--	CASE_##op((val), TRCDVCVRn(1))		\
--	CASE_##op((val), TRCDVCVRn(2))		\
--	CASE_##op((val), TRCDVCVRn(3))		\
--	CASE_##op((val), TRCDVCVRn(4))		\
--	CASE_##op((val), TRCDVCVRn(5))		\
--	CASE_##op((val), TRCDVCVRn(6))		\
--	CASE_##op((val), TRCDVCVRn(7))		\
--	CASE_##op((val), TRCDVCMRn(0))		\
--	CASE_##op((val), TRCDVCMRn(1))		\
--	CASE_##op((val), TRCDVCMRn(2))		\
--	CASE_##op((val), TRCDVCMRn(3))		\
--	CASE_##op((val), TRCDVCMRn(4))		\
--	CASE_##op((val), TRCDVCMRn(5))		\
--	CASE_##op((val), TRCDVCMRn(6))		\
--	CASE_##op((val), TRCDVCMRn(7))		\
- 	CASE_##op((val), TRCCIDCVRn(0))		\
- 	CASE_##op((val), TRCCIDCVRn(1))		\
- 	CASE_##op((val), TRCCIDCVRn(2))		\
-@@ -907,9 +882,6 @@ struct etmv4_save_state {
- 	u32	trcviiectlr;
- 	u32	trcvissctlr;
- 	u32	trcvipcssctlr;
--	u32	trcvdctlr;
--	u32	trcvdsacctlr;
--	u32	trcvdarcctlr;
- 
- 	u32	trcseqevr[ETM_MAX_SEQ_STATES];
- 	u32	trcseqrstevr;
+@@ -954,6 +955,7 @@ struct etmv4_save_state {
+  * @os_unlock:  True if access to management registers is allowed.
+  * @instrp0:	Tracing of load and store instructions
+  *		as P0 elements is supported.
++ * @q_filt:	Q element filtering support, if Q elements are supported.
+  * @trcbb:	Indicates if the trace unit supports branch broadcast tracing.
+  * @trccond:	If the trace unit supports conditional
+  *		instruction tracing.
+@@ -1016,6 +1018,7 @@ struct etmv4_drvdata {
+ 	bool				boot_enable;
+ 	bool				os_unlock;
+ 	bool				instrp0;
++	bool				q_filt;
+ 	bool				trcbb;
+ 	bool				trccond;
+ 	bool				retstack;
 -- 
 2.43.0
 
