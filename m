@@ -1,122 +1,94 @@
-Return-Path: <stable+bounces-48265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6339E8FDD15
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 05:00:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E77A8FDD54
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 05:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67AEF1C21A93
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 03:00:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E26D028660A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 03:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDA91DA4C;
-	Thu,  6 Jun 2024 03:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFCF43ACB;
+	Thu,  6 Jun 2024 03:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M5HwNvyt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNs3EqLF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1426F17C68;
-	Thu,  6 Jun 2024 03:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526673EA72;
+	Thu,  6 Jun 2024 03:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717642829; cv=none; b=oXpHVCX4iqeTYjO10N1C9hS9beX+6LIVjR+gf+Ye/bmDAII0Gn7IXjFUngPCsmmzx/Yd2sjs75nMyRNQe7zVsduYS2kR0K/6WSMBBoM3JYdkvGuvOQiQNkHFOXYYOBSzOlccO2oiTxF65lAaDMIhOGakbH3W3OVQaIJ6z+DO8Fk=
+	t=1717644044; cv=none; b=cz1UopJW4QvW4FdphAaQXUtp4YKil0y12gtK8Me7EVWk6i93ghJUi+xVc1ZFdCEXGvdOUZXy55rjfMVYrxVSUtXc6BORoZ347MwxK28nxejVrOMEu+x+KTiDGH76c6KkAIuOuF6WuGa9Uq1UcCIQii7XdIS5ijJqnE7mFPAaRj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717642829; c=relaxed/simple;
-	bh=13zMeLIVd4+RgfMY41lwQyVfbYR6qBJ+QUYp/aU0PQw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=vFx9X6LUFfSMB82lViujo8Y1iB/HjjiPmNSKs5VTOoUkP1H9JpZNhYEWiy7ITR3KeDzY8iU03p3V0iyV691JaF7/7h4L59nM2rzyZa1Tlr8HzBMz6tVEYg9L9EyaIguHCgkxA5KjrWDLKKnux7q2EdzvH3HhJHrDobYWaInsNOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M5HwNvyt; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7025b253f64so402203b3a.3;
-        Wed, 05 Jun 2024 20:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717642827; x=1718247627; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ULW+2oU3rQhVwjAM90zTIQPs8hm5yJ6yXFIdCR2GhYU=;
-        b=M5HwNvyt7VD54858rOxQIclK/dGPsFFj1VBVbxG95auAnTXXRrHq5Gq/xSavBPSc18
-         D5XPyeGyovknLN6rq7/GlQm1cIo1LdfGBwWVoWUNqvTO+iOP51RVOaS9ro5kXmsBQOKI
-         Ka+jD7kqj1LxZNZUm3Uc+5R9zYNPkH4nirrSmSwq+iFSL/0LPIM/iYhuacMAcO7LLGwi
-         jwwNWZMOiMc4s04sRdoSdSojXpkd/SwcRbiAE6B3PJU6Bewv5kQoFSVjlybfpOB2XMPP
-         kGK8kqvaUqgt8Y6//QyERV9Rpu81CgsuSbe99kmrBsATIAMJu5uD4VPI9QuY6nDeRFN8
-         xUOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717642827; x=1718247627;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ULW+2oU3rQhVwjAM90zTIQPs8hm5yJ6yXFIdCR2GhYU=;
-        b=mRWWXmMhVGfb/dzLXQCZgN/1Rr8W36VdNQcuBgyWKEF+807YH0K+ygNtR+ExABIfKo
-         iQqPNG5bj+1S1BX7LOiPu3YfqKplBkC6yv9qVpZMPi9flBxBH1v8tNioDo61VukLXrMG
-         Of7pfZN2iRb99iKCIFr8b5wlylAf3HsoSwEKpShnhOVOzSibS91xphK7+EgM8F0BaAS/
-         RWAV3pDO9TrXP0xDimTVEIXpI0woasvNqiLbr1grpwMZJsjH6Z6L0IbMRdhjFVB1Hjs/
-         vHqzG3+VVm7llszOjNaHQ7ikt+PBPnxNg2iOLSa97MV1Z0kW+3HgLd6DzPCPoCulgBkg
-         7pMA==
-X-Forwarded-Encrypted: i=1; AJvYcCXybnEbmcwKAza2i1ohyW4ppzC53Ff753kM2YYZyAqOb3Lghxq1Uk4v+ZZALNw/V2azAR5v5+wdVbT1lCWuHoy25hdBIQnRaZF8zCzh1noihG5D67KFRzI1hBH5WQ8u21CYLB1eqJ8fE/3hr3bgjT8hPuveKo039Jx0ps9UShHfrHEyuB3tLu4FLTKbUvsa5n1zyIS3
-X-Gm-Message-State: AOJu0Yy33ydwazUpm8WGRLFZxVv+TCfaa0KppPoWkhg7BE5dnA5NWHri
-	+ckPVfXXu7WaIbSUgQrs5nBNUlvG4F6igE2f3BRvsUGoGP2/cQnl
-X-Google-Smtp-Source: AGHT+IFwZO9iXZrSZ7eiieLv2g0azsGpXlp5ks3oSLXWkKXxnEw8h9uCN3zGrnxcvFbRPe9VPVGm/Q==
-X-Received: by 2002:a05:6a20:6a26:b0:1b0:1a02:4131 with SMTP id adf61e73a8af0-1b2b6e59824mr5312544637.2.1717642827073;
-        Wed, 05 Jun 2024 20:00:27 -0700 (PDT)
-Received: from localhost (110-175-65-7.tpgi.com.au. [110.175.65.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd7cd7f6sm2642725ad.122.2024.06.05.20.00.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Jun 2024 20:00:26 -0700 (PDT)
+	s=arc-20240116; t=1717644044; c=relaxed/simple;
+	bh=rsPLGW7dQKOe00pkD19iAIenIK0y6o5CB+SwsCh7KXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=spVcIDh0jfm2URpCqUefHddh6dLACXFCwzYxoOdpI7I8CwFXgx88Wxu0iBGEUXOJSTPqV8LFq3M6Lsgkmk0Xpt3K19SA2srcPsnGUwJwGtKSXKGP9yKMhRq5NdC5q41rx2a1XPLDH9ZVrDYiX8RweuoBE89cukNSczKLgzENs5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNs3EqLF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C65C4AF09;
+	Thu,  6 Jun 2024 03:20:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717644043;
+	bh=rsPLGW7dQKOe00pkD19iAIenIK0y6o5CB+SwsCh7KXE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qNs3EqLFLkgpjTRbB7LZgr+9I/wnQS/yIGaz7tw98tyfPQoIXRUCUSbiChzuhalyL
+	 ChK80GOEQW9386hHnm3CRcNYbUcPHs+SLeHP6b/wVA44IOrZAjrS/rnQYV83h9Tf7r
+	 +S+DfEo0I8IARVVtWG97lcQgzOKlzGDi8XXnd0w0fvX+J9ZMuEPFIC5N+JgOh9GHYg
+	 xwStSTRLugs2FUTpzqK1lK1liCASxKNKAM8IJrs+y0Uxt4lis75R1d7Xss44HDDtm4
+	 BURB1FCRcIQCCeEO0Rv3LpaSJKv8mG0pUFtB3U5NCLIJW8X7cXbZwvg2xxAMvbkRoq
+	 I2J2e7wLpuFRg==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Caleb Connolly <caleb.connolly@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] arm64: dts: qcom: switch RB1 and RB2 platforms to i2c2-gpio
+Date: Wed,  5 Jun 2024 22:20:30 -0500
+Message-ID: <171764403327.730206.16478168003566814778.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240605-rb12-i2c2g-pio-v2-0-946f5d6b6948@linaro.org>
+References: <20240605-rb12-i2c2g-pio-v2-0-946f5d6b6948@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 06 Jun 2024 13:00:19 +1000
-Message-Id: <D1SLK9T4ODZO.11N6J5D94530R@gmail.com>
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Gautam Menghani" <gautam@linux.ibm.com>, <mpe@ellerman.id.au>,
- <christophe.leroy@csgroup.eu>, <aneesh.kumar@kernel.org>,
- <naveen.n.rao@linux.ibm.com>, <corbet@lwn.net>
-Cc: <linuxppc-dev@lists.ozlabs.org>, <linux-doc@vger.kernel.org>,
- <kvm@vger.kernel.org>, <stable@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 0/2] Fix doorbell emulation for v2 API on PPC
-X-Mailer: aerc 0.17.0
-References: <20240605113913.83715-1-gautam@linux.ibm.com>
-In-Reply-To: <20240605113913.83715-1-gautam@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed Jun 5, 2024 at 9:39 PM AEST, Gautam Menghani wrote:
-> Doorbell emulation for KVM on PAPR guests is broken as support for DPDES
-> was not added in initial patch series [1].
-> Add DPDES support and doorbell handling support for V2 API.=20
 
-Looks good, thanks. So fix for v1 doorbells is coming?
+On Wed, 05 Jun 2024 11:55:55 +0300, Dmitry Baryshkov wrote:
+> On the Qualcomm RB1 and RB2 platforms the I2C bus connected to the
+> LT9611UXC bridge under some circumstances can go into a state when all
+> transfers timeout. This causes both issues with fetching of EDID and
+> with updating of the bridge's firmware.
+> 
+> While we are debugging the issue, switch corresponding I2C bus to use
+> i2c-gpio driver. While using i2c-gpio no communication issues are
+> observed.
+> 
+> [...]
 
-Thanks,
-Nick
+Applied, thanks!
 
->
-> [1] lore.kernel.org/linuxppc-dev/20230914030600.16993-1-jniethe5@gmail.co=
-m
->
-> Changes in v2:
-> 1. Split DPDES support into its own patch
->
-> Gautam Menghani (2):
->   arch/powerpc/kvm: Add DPDES support in helper library for Guest state
->     buffer
->   arch/powerpc/kvm: Fix doorbell emulation for v2 API
->
->  Documentation/arch/powerpc/kvm-nested.rst     | 4 +++-
->  arch/powerpc/include/asm/guest-state-buffer.h | 3 ++-
->  arch/powerpc/include/asm/kvm_book3s.h         | 1 +
->  arch/powerpc/kvm/book3s_hv.c                  | 5 +++++
->  arch/powerpc/kvm/book3s_hv_nestedv2.c         | 7 +++++++
->  arch/powerpc/kvm/test-guest-state-buffer.c    | 2 +-
->  6 files changed, 19 insertions(+), 3 deletions(-)
+[1/2] arm64: dts: qcom: qrb2210-rb1: switch I2C2 to i2c-gpio
+      commit: b7b545ccc08873e107aa24c461b1fdb123dd3761
+[2/2] arm64: dts: qcom: qrb4210-rb2: switch I2C2 to i2c-gpio
+      commit: f77e7bd40c3c2d79685e9cc80de874b69a976f55
 
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
 
