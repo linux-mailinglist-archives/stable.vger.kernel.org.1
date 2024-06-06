@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-48927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CCB8FEB22
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C706D8FEB26
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51B3F1F26F0F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69ACD28A667
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B2E199385;
-	Thu,  6 Jun 2024 14:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848E21A2FB9;
+	Thu,  6 Jun 2024 14:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQHEG3AS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns4RrMWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC41E199381;
-	Thu,  6 Jun 2024 14:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44192197A68;
+	Thu,  6 Jun 2024 14:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683215; cv=none; b=q50Ub6oTRca84WxamRSCuo4Z0BGc5+t0FmVbsscw3lNuOKSfclnM3FriThU6GFgJtDrRaf5iA9UKmVJM8WpMd1I8xf17pqnOeHVX2EoACmnTIQnfP9Rjlj87DrTDU7xaDc7tDTIr6kzngV4ub+NfCDO9d0/EYCGx8BF1qHOwsdU=
+	t=1717683217; cv=none; b=Xpy0XQ/fTR9Gi8t/2UJ/XAZesdIrc8Hom195Vczgd0wjqp96YZA3snMu5TAxSHB04/ucKdBqZyXRF+Ad1kiQrUxCIHXwulf+CTv5QltQh+oitFljnRiq8FiQoQ08Y+5+uKPDiHYF02+2uV98Af0EI7MHlhsRUexSshUfu7nkt34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683215; c=relaxed/simple;
-	bh=vftM7ZTC1Ml7VjIuB+PER6S09CIX/FaF6WI5cgSyV8k=;
+	s=arc-20240116; t=1717683217; c=relaxed/simple;
+	bh=I+1eRgONyWmhFjkv/++x8J4Me5vRr+pVZ2leFgDUo90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocpqC4b4osFwsiMF9KWKkA9nnK6aUpH9Nat4l2+LlCCHsqAxkOS0D9L69LofhhDR5CQdDvrBaKplF646/ApamkHH+0OGtK3er+CuN5ZBHDsoDWjgUX+K15r3QJKhBzyHVDH+ZWPUHOJQrBuBfXONlaZW7D5SDdeYfrpY07ISpdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQHEG3AS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CCAC2BD10;
-	Thu,  6 Jun 2024 14:13:35 +0000 (UTC)
+	 MIME-Version; b=qmznZo8+ddEZRxsywkWSF8dP+aitnjumCCKCmZgYvfH89rCTNlfJDXAvEs2aGhRfZcb4YeRX5LdLZG9k9Evmdi91wf08APEFtgzSCX/yVLA5ubkMQJMOv7op+hMqcjPkb3Wtfir5ZmIddeXniqfWyxmsXzm+4Bvj4MZbIFmYDMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns4RrMWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215E4C2BD10;
+	Thu,  6 Jun 2024 14:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683215;
-	bh=vftM7ZTC1Ml7VjIuB+PER6S09CIX/FaF6WI5cgSyV8k=;
+	s=korg; t=1717683217;
+	bh=I+1eRgONyWmhFjkv/++x8J4Me5vRr+pVZ2leFgDUo90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQHEG3ASjmc8PHYWCpbMwLHZpdEewNho54luSCAykP5HqWq5nndbjb2mTnEY/oicS
-	 nbIcWe3G+XfA7ZlOYfZjtddKIqEOz/DxmVkuPbU+fU1iEqK91eiV9b8+8+u3f+CCPv
-	 tK3zLq7meclQEJfNedm5BDBYbGo8wI+zzAYjzHwE=
+	b=ns4RrMWR5tycv90Pmm+l2qOJLRiCZwSPVBpPHcTzkZUfr2DBJSbW2lBzOvHT1gDop
+	 3+5WCQJU0ddJMn2wSVO5UjuTh2gyL5DunzcSSWhZoVnbuftLh3sB7kl7vFpjPlyLbb
+	 Q3HrpX9CSAHIwAauzoA81geFh7BIeD01ipLn8BCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/744] ACPI: LPSS: Advertise number of chip selects via property
-Date: Thu,  6 Jun 2024 15:57:10 +0200
-Message-ID: <20240606131737.498385251@linuxfoundation.org>
+Subject: [PATCH 6.6 159/744] locking/atomic/x86: Correct the definition of __arch_try_cmpxchg128()
+Date: Thu,  6 Jun 2024 15:57:11 +0200
+Message-ID: <20240606131737.525713799@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,33 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 07b73ee599428b41d0240f2f7b31b524eba07dd0 ]
+[ Upstream commit 929ad065ba2967be238dfdc0895b79fda62c7f16 ]
 
-Advertise number of chip selects via property for Intel Braswell.
+Correct the definition of __arch_try_cmpxchg128(), introduced by:
 
-Fixes: 620c803f42de ("ACPI: LPSS: Provide an SSP type to the driver")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+  b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
+
+Fixes: b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20240408091547.90111-2-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_lpss.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/cmpxchg_64.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index a052e0ab19e4c..98a2ab3b68442 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -333,6 +333,7 @@ static const struct lpss_device_desc bsw_i2c_dev_desc = {
- 
- static const struct property_entry bsw_spi_properties[] = {
- 	PROPERTY_ENTRY_U32("intel,spi-pxa2xx-type", LPSS_BSW_SSP),
-+	PROPERTY_ENTRY_U32("num-cs", 2),
- 	{ }
- };
- 
+diff --git a/arch/x86/include/asm/cmpxchg_64.h b/arch/x86/include/asm/cmpxchg_64.h
+index 44b08b53ab32f..c1d6cd58f8094 100644
+--- a/arch/x86/include/asm/cmpxchg_64.h
++++ b/arch/x86/include/asm/cmpxchg_64.h
+@@ -62,7 +62,7 @@ static __always_inline u128 arch_cmpxchg128_local(volatile u128 *ptr, u128 old,
+ 	asm volatile(_lock "cmpxchg16b %[ptr]"				\
+ 		     CC_SET(e)						\
+ 		     : CC_OUT(e) (ret),					\
+-		       [ptr] "+m" (*ptr),				\
++		       [ptr] "+m" (*(_ptr)),				\
+ 		       "+a" (o.low), "+d" (o.high)			\
+ 		     : "b" (n.low), "c" (n.high)			\
+ 		     : "memory");					\
 -- 
 2.43.0
 
