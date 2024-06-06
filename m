@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-48948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468CB8FEB3A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A243E8FE8C5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1FB1C245A2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F7991C21BD2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A701A38E2;
-	Thu,  6 Jun 2024 14:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AA1198842;
+	Thu,  6 Jun 2024 14:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmTDcQXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ad8OBHmJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1141A2FDD;
-	Thu,  6 Jun 2024 14:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3892B197A9F;
+	Thu,  6 Jun 2024 14:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683226; cv=none; b=EswLgdOFJdPh8IcQHlFEEq9FuP17cGz7p3a1XUUJGAHxUCjU3Y3IXGUZCXdloAfwQ8kOP9rbqlJrr2slIxkladJ0kNr1DD2ybdSKLsMGbkEixKKuvuGj/zwed4G+WbLgN0bVrSMNG1WYldb7SHVpaVH7FBj+VX8VIe/RxPBR3k8=
+	t=1717682932; cv=none; b=U/zflDbtDhCma0JCr3ZzFhaYSo0ThGMjVKT1U18Qx/Rq4/JIOl1fnbCMC12nxOBPp0dg/7CtseDQadRoch4xcHTSPoRtZ0bhiP1fMZougTLzlkuR23bGg/WRMtjINjG8n6xTlvjru5XcJQfNauH9sexuphlbMeYRQZPHmhRAZ9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683226; c=relaxed/simple;
-	bh=cQvc9C2dRiidzSUpwsJNOXL0Qv6A05TnjUdOJZVEc0c=;
+	s=arc-20240116; t=1717682932; c=relaxed/simple;
+	bh=B7rtpqc6BnLeXFmhtbCjEsNx2s5/YxBFxGMSGy0cBjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YoJS18gCtGILbgYe3RwTt8Qc1WAgZYYe688/Uk2hR+m+1CzJEKKsk0WbQBs/VJK9MRCUjq2AJN55PgRt17Z9iA41SlKw5Pescikl6UyTkyaEn7ieu0ujzvBww2DRmfMjvflcC8cjfaoqOmLTgmC84eMXLEFarlo1Ke7aRzS801c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmTDcQXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8C6C2BD10;
-	Thu,  6 Jun 2024 14:13:45 +0000 (UTC)
+	 MIME-Version; b=l5APsBNa1dol8/2cAMgsf9U+Tnnasf9Z8NGYM6D+uRG3yY0Yf2yCKS+bgeKHtd5x4PiZiCr62ow9qE947saF4LBS17ENf0Hj3sKl/PLT1hYDNOvny0wMs0jxpRkcVecdcAnxwyM51/ZM2uURT255KE/dlZyOBZ6iote3vgSSwTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ad8OBHmJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156AFC2BD10;
+	Thu,  6 Jun 2024 14:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683225;
-	bh=cQvc9C2dRiidzSUpwsJNOXL0Qv6A05TnjUdOJZVEc0c=;
+	s=korg; t=1717682932;
+	bh=B7rtpqc6BnLeXFmhtbCjEsNx2s5/YxBFxGMSGy0cBjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmTDcQXExInNgxXJPdTC7d9Rpk2AcyFhD1zFN81JxZcT+YsdmW9kxZkgKIsWTX+Y/
-	 UvcNn1sdCeX0yHlHr9Un1IFoT7QO3QeynKWC94umePo9z2luHP4yaCReP232j/2iWS
-	 21yruXaf4ecnaWi5yljbQ1WkujXNLMpzzTL5QYIM=
+	b=Ad8OBHmJvIac2dFpsSDdSOFooygoWEG/LngFM5Djy5+jeVuT8IN4tuxAKxP8hmgjv
+	 1jSziZh5xZyLOlIu4UuXGaS2fz5r3k1Kpj2+GhSjRZZLBkUdWcgTEX9wFhnU4azYpO
+	 p7/kgnZ9FsQ4fdsiTmj3Fck5y1fiYuiAD0mvPGrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/473] bpf: Pack struct bpf_fib_lookup
-Date: Thu,  6 Jun 2024 16:00:31 +0200
-Message-ID: <20240606131703.275665221@linuxfoundation.org>
+Subject: [PATCH 6.9 053/374] iio: pressure: dps310: support negative temperature values
+Date: Thu,  6 Jun 2024 16:00:32 +0200
+Message-ID: <20240606131653.612430326@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
 
-[ Upstream commit f91717007217d975aa975ddabd91ae1a107b9bff ]
+[ Upstream commit 9dd6b32e76ff714308964cd9ec91466a343dcb8b ]
 
-The struct bpf_fib_lookup is supposed to be of size 64. A recent commit
-59b418c7063d ("bpf: Add a check for struct bpf_fib_lookup size") added
-a static assertion to check this property so that future changes to the
-structure will not accidentally break this assumption.
+The current implementation interprets negative values returned from
+`dps310_calculate_temp` as error codes.
+This has a side effect that when negative temperature values are
+calculated, they are interpreted as error.
 
-As it immediately turned out, on some 32-bit arm systems, when AEABI=n,
-the total size of the structure was equal to 68, see [1]. This happened
-because the bpf_fib_lookup structure contains a union of two 16-bit
-fields:
+Fix this by using the return value only for error handling and passing a
+pointer for the value.
 
-    union {
-            __u16 tot_len;
-            __u16 mtu_result;
-    };
-
-which was supposed to compile to a 16-bit-aligned 16-bit field. On the
-aforementioned setups it was instead both aligned and padded to 32-bits.
-
-Declare this inner union as __attribute__((packed, aligned(2))) such
-that it always is of size 2 and is aligned to 16 bits.
-
-  [1] https://lore.kernel.org/all/CA+G9fYtsoP51f-oP_Sp5MOq-Ffv8La2RztNpwvE6+R1VtFiLrw@mail.gmail.com/#t
-
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: e1850ea9bd9e ("bpf: bpf_fib_lookup return MTU value as output when looked up")
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240403123303.1452184-1-aspsk@isovalent.com
+Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
+Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+Link: https://lore.kernel.org/r/20240415105030.1161770-2-thomas.haemmerle@leica-geosystems.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       | 2 +-
- tools/include/uapi/linux/bpf.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/pressure/dps310.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index d5d2183730b9f..a17688011440e 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -6730,7 +6730,7 @@ struct bpf_fib_lookup {
+diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
+index 1ff091b2f764d..d0a516d56da47 100644
+--- a/drivers/iio/pressure/dps310.c
++++ b/drivers/iio/pressure/dps310.c
+@@ -730,7 +730,7 @@ static int dps310_read_pressure(struct dps310_data *data, int *val, int *val2,
+ 	}
+ }
  
- 		/* output: MTU value */
- 		__u16	mtu_result;
--	};
-+	} __attribute__((packed, aligned(2)));
- 	/* input: L3 device index for lookup
- 	 * output: device index from FIB lookup
- 	 */
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index d5d2183730b9f..a17688011440e 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -6730,7 +6730,7 @@ struct bpf_fib_lookup {
+-static int dps310_calculate_temp(struct dps310_data *data)
++static int dps310_calculate_temp(struct dps310_data *data, int *val)
+ {
+ 	s64 c0;
+ 	s64 t;
+@@ -746,7 +746,9 @@ static int dps310_calculate_temp(struct dps310_data *data)
+ 	t = c0 + ((s64)data->temp_raw * (s64)data->c1);
  
- 		/* output: MTU value */
- 		__u16	mtu_result;
--	};
-+	} __attribute__((packed, aligned(2)));
- 	/* input: L3 device index for lookup
- 	 * output: device index from FIB lookup
- 	 */
+ 	/* Convert to milliCelsius and scale the temperature */
+-	return (int)div_s64(t * 1000LL, kt);
++	*val = (int)div_s64(t * 1000LL, kt);
++
++	return 0;
+ }
+ 
+ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+@@ -768,11 +770,10 @@ static int dps310_read_temp(struct dps310_data *data, int *val, int *val2,
+ 		if (rc)
+ 			return rc;
+ 
+-		rc = dps310_calculate_temp(data);
+-		if (rc < 0)
++		rc = dps310_calculate_temp(data, val);
++		if (rc)
+ 			return rc;
+ 
+-		*val = rc;
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
 -- 
 2.43.0
 
