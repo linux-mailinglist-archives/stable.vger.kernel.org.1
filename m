@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E508FEB2B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F50C8FE89E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F9F28A738
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D05D1C243E0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C6E197A6A;
-	Thu,  6 Jun 2024 14:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B39196C9C;
+	Thu,  6 Jun 2024 14:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2uCIyU+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTOJGvyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E75199396;
-	Thu,  6 Jun 2024 14:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26040197534;
+	Thu,  6 Jun 2024 14:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683219; cv=none; b=SBg1v+aaxZxrWGX2OXn0IF2zhPoDa74kXf3EXmBEVp1HQbzCztNYtqsTaf3semqjvOAjnz3zyuDwnbfow9NHxsep8Z6Jb5JI06rQja+2IjIwEZODD11pjSJVJqvAcmWGrKnELWNf47PR9gn8yYB3yHXTZMrAJKaRDdDO11yNu14=
+	t=1717682916; cv=none; b=Ax8xxAEhhSovebTRBWt254Nm3miFxbEH1DTQk415slsCY9iQxRTKoOPKDLR//WfakrMOteumhu9T6pgODarrQnI/XBsMIQRNeCtdBsQX9WJzfd8dFA1C7UTeYDmjZQ1PasLQnzUV6Qo7cwmT4cXRNTdRWevh9iKhr1sedBXlnvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683219; c=relaxed/simple;
-	bh=Ww3CIt8ehR9OHqu49/6SVH2cHBfjfXYfUPvaTuGH0oI=;
+	s=arc-20240116; t=1717682916; c=relaxed/simple;
+	bh=UA0SEu7fPWyNaCI23tbovxWhPzOZfHXpzXsMqV5f+Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpOrTgxR9+jnUtCMX5RI/1zQxmSP+UrZjQct/vI025TLgkmSOU9zC5y85vn4pdgGUtGOZAK0N5Sy2iXJnxMhOckEwTZoPjEzZ5/LABDVnhjT9IlCEkwkwXDjRmopVuBBsgfDJYibxKCH34W71siQw61WhosvZqm/EmEoWDX79ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2uCIyU+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F23DC2BD10;
-	Thu,  6 Jun 2024 14:13:39 +0000 (UTC)
+	 MIME-Version; b=fkXuHEV7RjcvXlh98CSdrNw+o2qsmB+3FmJxCJu95/D20EH1bEXHij8UeY/I8w8wa4LjCmu+F7fXDtviUX5b2A+VLN6DvPqA8vFW7G6pxU9Vgf9I1s1soeBsk3vsRpAWcGHhO2XBT/PF+tI5qYeW/VxqTxA4xJUJq7CjnY2T38Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTOJGvyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058CEC2BD10;
+	Thu,  6 Jun 2024 14:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683219;
-	bh=Ww3CIt8ehR9OHqu49/6SVH2cHBfjfXYfUPvaTuGH0oI=;
+	s=korg; t=1717682916;
+	bh=UA0SEu7fPWyNaCI23tbovxWhPzOZfHXpzXsMqV5f+Y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2uCIyU+hCqWh7BkbkES3ALwQPaj2REAe/VGYwfKR7sxEY9WfAhBLFRTLYwXSVcYG
-	 U2Ma85az9jlSMNf6d/IU0Kdw11WdtJuNcgihmWEqzvCMyZt+8KxhmRpD1tn1Vkzc8H
-	 I9HfUqoFgjnDx5oI896eKuH3/sPCrPYTHOmzb4Q0=
+	b=KTOJGvyge3frNUYq6Nny4UR2RY0MWq93S/n4MZ36lQzFIwyZ4iQHPZwE03CUqDRB4
+	 eidGkJC+DfophylX0sJvnKVAbzfJc9Zr3hjhSgwWh/UBAeUcB270zwXyoNncotBmSF
+	 3RZIQTWvUASJkdSr+mT9fqIoIbr60xj6tfLMaeOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hannah Peuckmann <hannah.peuckmann@canonical.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/473] ACPI: Fix Generic Initiator Affinity _OSC bit
-Date: Thu,  6 Jun 2024 16:00:25 +0200
-Message-ID: <20240606131703.075066957@linuxfoundation.org>
+Subject: [PATCH 6.9 047/374] riscv: dts: starfive: visionfive 2: Remove non-existing I2S hardware
+Date: Thu,  6 Jun 2024 16:00:26 +0200
+Message-ID: <20240606131653.386047193@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Hannah Peuckmann <hannah.peuckmann@canonical.com>
 
-[ Upstream commit d0d4f1474e36b195eaad477373127ae621334c01 ]
+[ Upstream commit e0503d47e93dead8c0475ea1eb624e03fada21d3 ]
 
-The ACPI spec says bit 17 should be used to indicate support
-for Generic Initiator Affinity Structure in SRAT, but we currently
-set bit 13 ("Interrupt ResourceSource support").
+This partially reverts
+commit 92cfc35838b2 ("riscv: dts: starfive: Add the nodes and pins of I2Srx/I2Stx0/I2Stx1")
 
-Fix this by actually setting bit 17 when evaluating _OSC.
+This added device tree nodes for I2S hardware that is not actually on the
+VisionFive 2 board, but connected on the 40pin header. Many different extension
+boards could be added on those pins, so this should be handled by overlays
+instead.
+This also conflicts with the TDM node which also attempts to grab GPIO 44:
 
-Fixes: 01aabca2fd54 ("ACPI: Let ACPI know we support Generic Initiator Affinity Structures")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+  starfive-jh7110-sys-pinctrl 13040000.pinctrl: pin GPIO44 already requested by 10090000.tdm; cannot claim for 120c0000.i2s
+
+Fixes: 92cfc35838b2 ("riscv: dts: starfive: Add the nodes and pins of I2Srx/I2Stx0/I2Stx1")
+Signed-off-by: Hannah Peuckmann <hannah.peuckmann@canonical.com>
+Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Tested-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/acpi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../jh7110-starfive-visionfive-2.dtsi         | 58 -------------------
+ 1 file changed, 58 deletions(-)
 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 3015235d65e31..e4e7b2cfe72af 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -582,8 +582,8 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
- #define OSC_SB_PCLPI_SUPPORT			0x00000080
- #define OSC_SB_OSLPI_SUPPORT			0x00000100
- #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
--#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
- #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
-+#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00020000
- #define OSC_SB_NATIVE_USB4_SUPPORT		0x00040000
- #define OSC_SB_PRM_SUPPORT			0x00200000
+diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+index d89eef6e26335..2b3e952513e44 100644
+--- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
++++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
+@@ -279,24 +279,6 @@ &i2c6 {
+ 	status = "okay";
+ };
  
+-&i2srx {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&i2srx_pins>;
+-	status = "okay";
+-};
+-
+-&i2stx0 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&mclk_ext_pins>;
+-	status = "okay";
+-};
+-
+-&i2stx1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&i2stx1_pins>;
+-	status = "okay";
+-};
+-
+ &mmc0 {
+ 	max-frequency = <100000000>;
+ 	assigned-clocks = <&syscrg JH7110_SYSCLK_SDIO0_SDCARD>;
+@@ -447,46 +429,6 @@ GPOEN_SYS_I2C6_DATA,
+ 		};
+ 	};
+ 
+-	i2srx_pins: i2srx-0 {
+-		clk-sd-pins {
+-			pinmux = <GPIOMUX(38, GPOUT_LOW,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_I2SRX_BCLK)>,
+-				 <GPIOMUX(63, GPOUT_LOW,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_I2SRX_LRCK)>,
+-				 <GPIOMUX(38, GPOUT_LOW,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_I2STX1_BCLK)>,
+-				 <GPIOMUX(63, GPOUT_LOW,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_I2STX1_LRCK)>,
+-				 <GPIOMUX(61, GPOUT_LOW,
+-					      GPOEN_DISABLE,
+-					      GPI_SYS_I2SRX_SDIN0)>;
+-			input-enable;
+-		};
+-	};
+-
+-	i2stx1_pins: i2stx1-0 {
+-		sd-pins {
+-			pinmux = <GPIOMUX(44, GPOUT_SYS_I2STX1_SDO0,
+-					      GPOEN_ENABLE,
+-					      GPI_NONE)>;
+-			bias-disable;
+-			input-disable;
+-		};
+-	};
+-
+-	mclk_ext_pins: mclk-ext-0 {
+-		mclk-ext-pins {
+-			pinmux = <GPIOMUX(4, GPOUT_LOW,
+-					     GPOEN_DISABLE,
+-					     GPI_SYS_MCLK_EXT)>;
+-			input-enable;
+-		};
+-	};
+-
+ 	mmc0_pins: mmc0-0 {
+ 		 rst-pins {
+ 			pinmux = <GPIOMUX(62, GPOUT_SYS_SDIO0_RST,
 -- 
 2.43.0
 
