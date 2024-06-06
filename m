@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-48671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACD58FE9FE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5248FEDD9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E27721C25978
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6728C281ADC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489ED19D08D;
-	Thu,  6 Jun 2024 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFCD19E7F0;
+	Thu,  6 Jun 2024 14:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tB1ltzLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAfzoA+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08720198E86;
-	Thu,  6 Jun 2024 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEED51BE23E;
+	Thu,  6 Jun 2024 14:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683090; cv=none; b=MPO+tJmac4AHRGzMxbAC+wfhJvJF/dcEsUgkf2NIdECW7QjHcfrhBrOQ0OftkS/GRXZSt2/LP41Py0FOuWC5hWt5Tvuhn9pARf64cV44tsvOL1G4UKlZYQ3mxlDWo30xE/F+qM/7Oah2VYrOkChDLxFkgd/WGQTairr7gXH+Hac=
+	t=1717683531; cv=none; b=CCSgcz3Zx+yzYnG5ifW+TmT23E4ZlwagHYdZ9rjdso9aeb9PyfyjKojaiLdFNPRPKyrwqCEXwhWrf8W00ibje/++93t5eQP3gWlLO2Lslh9Z59oaTzG5REahkWS15s6+7GXXiPcRgdmMVNDwY68uq12yUXb7MaI85kZADMhtixw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683090; c=relaxed/simple;
-	bh=JP4A3XGzdwSl5euItIEXx1tSbZr3olcO74LFVD/JUIM=;
+	s=arc-20240116; t=1717683531; c=relaxed/simple;
+	bh=wdC8BuKKrK6sbpCyP5tnbMbz7MsObdl6+6j+ZkCrFUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fh8O0VdqDMJ9LedcAv8QtYm86xZZmDCJYzt7tnMlvUdZN217jLkFJLyU9bJLcE0+EFWZByKyVc3274XTeskTPjU72uNSEoYx8sbMp5iZHHX3Q4Poz6aBeIW3qru98NdS9zwpcI9thXAhYD6h5dZCC5NdkQEN+zF0HpnFbH/brRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tB1ltzLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB29EC32782;
-	Thu,  6 Jun 2024 14:11:29 +0000 (UTC)
+	 MIME-Version; b=g/oFJ6SYYx78drI75A0vzGmEz/BIC+a1i39FMbwDxDY9MH/SdqylMggMTJJeyA+3t04qMlJoEUKGDJZGJN9T4uTOx7giWzEvIOSDamTR8QwE3Fhhj7L4yz+Pm10t6BwMkRRrnzorXCz2VgoNY8uWWaCN5l2NftmChW3x9v9468Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAfzoA+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED02C2BD10;
+	Thu,  6 Jun 2024 14:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683089;
-	bh=JP4A3XGzdwSl5euItIEXx1tSbZr3olcO74LFVD/JUIM=;
+	s=korg; t=1717683531;
+	bh=wdC8BuKKrK6sbpCyP5tnbMbz7MsObdl6+6j+ZkCrFUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tB1ltzLRXOmVml1QwD3BCQTS+gImBX76RAR+YEnuzewez7MVrn8tiA0Ks6n9FYhg0
-	 CZFWs3v2DnKQ6GJBYRCB0TgQjXrNP8/6oX0y0zLQ7zGEKi6mkRsRS+WoHmeX/JAWzA
-	 q/kPjBDL0xZ2h6HyYa2+rlY0zHwCUP3e2MHJC3Wg=
+	b=HAfzoA+BWaUFe0NAEDrJRBU8wzAPRRU4juETKSOL3syR4AdmH873l0oEp5+tZT1xr
+	 2d3N4+RUgXiebl/V9VcunqWVcZmN8W2B6G4yXejW1jqo1rdp6Y51Bhh8D7YQcN4rFG
+	 g6BUZWmnBslBB9ZFqaZ5AzI+JByxzrwzK8m0fqj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.9 372/374] genirq/cpuhotplug, x86/vector: Prevent vector leak during CPU offline
+	Wei Fang <wei.fang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 422/473] net: fec: avoid lock evasion when reading pps_enable
 Date: Thu,  6 Jun 2024 16:05:51 +0200
-Message-ID: <20240606131704.350617558@linuxfoundation.org>
+Message-ID: <20240606131713.721010928@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit a6c11c0a5235fb144a65e0cb2ffd360ddc1f6c32 upstream.
+[ Upstream commit 3b1c92f8e5371700fada307cc8fd2c51fa7bc8c1 ]
 
-The absence of IRQD_MOVE_PCNTXT prevents immediate effectiveness of
-interrupt affinity reconfiguration via procfs. Instead, the change is
-deferred until the next instance of the interrupt being triggered on the
-original CPU.
+The assignment of pps_enable is protected by tmreg_lock, but the read
+operation of pps_enable is not. So the Coverity tool reports a lock
+evasion warning which may cause data race to occur when running in a
+multithread environment. Although this issue is almost impossible to
+occur, we'd better fix it, at least it seems more logically reasonable,
+and it also prevents Coverity from continuing to issue warnings.
 
-When the interrupt next triggers on the original CPU, the new affinity is
-enforced within __irq_move_irq(). A vector is allocated from the new CPU,
-but the old vector on the original CPU remains and is not immediately
-reclaimed. Instead, apicd->move_in_progress is flagged, and the reclaiming
-process is delayed until the next trigger of the interrupt on the new CPU.
-
-Upon the subsequent triggering of the interrupt on the new CPU,
-irq_complete_move() adds a task to the old CPU's vector_cleanup list if it
-remains online. Subsequently, the timer on the old CPU iterates over its
-vector_cleanup list, reclaiming old vectors.
-
-However, a rare scenario arises if the old CPU is outgoing before the
-interrupt triggers again on the new CPU.
-
-In that case irq_force_complete_move() is not invoked on the outgoing CPU
-to reclaim the old apicd->prev_vector because the interrupt isn't currently
-affine to the outgoing CPU, and irq_needs_fixup() returns false. Even
-though __vector_schedule_cleanup() is later called on the new CPU, it
-doesn't reclaim apicd->prev_vector; instead, it simply resets both
-apicd->move_in_progress and apicd->prev_vector to 0.
-
-As a result, the vector remains unreclaimed in vector_matrix, leading to a
-CPU vector leak.
-
-To address this issue, move the invocation of irq_force_complete_move()
-before the irq_needs_fixup() call to reclaim apicd->prev_vector, if the
-interrupt is currently or used to be affine to the outgoing CPU.
-
-Additionally, reclaim the vector in __vector_schedule_cleanup() as well,
-following a warning message, although theoretically it should never see
-apicd->move_in_progress with apicd->prev_cpu pointing to an offline CPU.
-
-Fixes: f0383c24b485 ("genirq/cpuhotplug: Add support for cleaning up move in progress")
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240522220218.162423-1-dongli.zhang@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 278d24047891 ("net: fec: ptp: Enable PPS output based on ptp clock")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Link: https://lore.kernel.org/r/20240521023800.17102-1-wei.fang@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/vector.c |    9 ++++++---
- kernel/irq/cpuhotplug.c       |   16 ++++++++--------
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/freescale/fec_ptp.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -1036,7 +1036,8 @@ static void __vector_schedule_cleanup(st
- 			add_timer_on(&cl->timer, cpu);
- 		}
- 	} else {
--		apicd->prev_vector = 0;
-+		pr_warn("IRQ %u schedule cleanup for offline CPU %u\n", apicd->irq, cpu);
-+		free_moved_vector(apicd);
- 	}
- 	raw_spin_unlock(&vector_lock);
- }
-@@ -1073,6 +1074,7 @@ void irq_complete_move(struct irq_cfg *c
-  */
- void irq_force_complete_move(struct irq_desc *desc)
- {
-+	unsigned int cpu = smp_processor_id();
- 	struct apic_chip_data *apicd;
- 	struct irq_data *irqd;
- 	unsigned int vector;
-@@ -1097,10 +1099,11 @@ void irq_force_complete_move(struct irq_
- 		goto unlock;
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index cffd9ad499dda..e0393dc159fc7 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -102,14 +102,13 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
+ 	struct timespec64 ts;
+ 	u64 ns;
  
- 	/*
--	 * If prev_vector is empty, no action required.
-+	 * If prev_vector is empty or the descriptor is neither currently
-+	 * nor previously on the outgoing CPU no action required.
- 	 */
- 	vector = apicd->prev_vector;
--	if (!vector)
-+	if (!vector || (apicd->cpu != cpu && apicd->prev_cpu != cpu))
- 		goto unlock;
- 
- 	/*
---- a/kernel/irq/cpuhotplug.c
-+++ b/kernel/irq/cpuhotplug.c
-@@ -70,6 +70,14 @@ static bool migrate_one_irq(struct irq_d
- 	}
- 
- 	/*
-+	 * Complete an eventually pending irq move cleanup. If this
-+	 * interrupt was moved in hard irq context, then the vectors need
-+	 * to be cleaned up. It can't wait until this interrupt actually
-+	 * happens and this CPU was involved.
-+	 */
-+	irq_force_complete_move(desc);
-+
-+	/*
- 	 * No move required, if:
- 	 * - Interrupt is per cpu
- 	 * - Interrupt is not started
-@@ -88,14 +96,6 @@ static bool migrate_one_irq(struct irq_d
- 	}
- 
- 	/*
--	 * Complete an eventually pending irq move cleanup. If this
--	 * interrupt was moved in hard irq context, then the vectors need
--	 * to be cleaned up. It can't wait until this interrupt actually
--	 * happens and this CPU was involved.
--	 */
--	irq_force_complete_move(desc);
+-	if (fep->pps_enable == enable)
+-		return 0;
 -
--	/*
- 	 * If there is a setaffinity pending, then try to reuse the pending
- 	 * mask, so the last change of the affinity does not get lost. If
- 	 * there is no move pending or the pending mask does not contain
+-	fep->pps_channel = DEFAULT_PPS_CHANNEL;
+-	fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
+-
+ 	spin_lock_irqsave(&fep->tmreg_lock, flags);
+ 
++	if (fep->pps_enable == enable) {
++		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
++		return 0;
++	}
++
+ 	if (enable) {
+ 		/* clear capture or output compare interrupt status if have.
+ 		 */
+@@ -440,6 +439,9 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
+ 	int ret = 0;
+ 
+ 	if (rq->type == PTP_CLK_REQ_PPS) {
++		fep->pps_channel = DEFAULT_PPS_CHANNEL;
++		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
++
+ 		ret = fec_ptp_enable_pps(fep, on);
+ 
+ 		return ret;
+-- 
+2.43.0
+
 
 
 
