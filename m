@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-48429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51BC8FE8F9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF52F8FEBD3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 647BE283E5D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFB88B26D6F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0527719751D;
-	Thu,  6 Jun 2024 14:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251AA19AA54;
+	Thu,  6 Jun 2024 14:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWr2Jo4V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkweFthS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87A7196D80;
-	Thu,  6 Jun 2024 14:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41AE1ABE2B;
+	Thu,  6 Jun 2024 14:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682961; cv=none; b=GYFn8OzbeCnj3+RKQU1vxwy2VncN54Z/gHydDFTHFWWyQFEzlRRbwjuXaIH6/yom6G+u3vlNKQejzmeWJTVKb1CJE6YnvoHOtOn3+TflqSBSaeZWDA3ZRBgMD9s+ODh5zRKnTuGgR2o0/z2yHRgCXfrhHTaaZKpMFpMpUqocVpA=
+	t=1717683298; cv=none; b=IWH77OUWHyM206q4biFDMlSdHfKcqDHanGSqgr7RhyxeXdDd4L7bHhB3/1nlw7r72B6iW0h5vCyq4HqeyTHCBCHUnRu8bMCWv9zi7Tkt4uwuwBLvvDXr3OKrKIYk4qRFjREj4YKOk1hoPMzKAfYvbDv6qKPxhj+tYchyVm2FQHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682961; c=relaxed/simple;
-	bh=sA26Otu2TVMrixUHQvk8mhyZ+C5xQJwvegGwQH54b98=;
+	s=arc-20240116; t=1717683298; c=relaxed/simple;
+	bh=/h92jvqZiOX9G8mjRyMVGSuZxyPbVZ2jRLbAeNb38sM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7mDSk1h880Nw9ZD88k/JT8j2r8Zi/Y1hxDjy7CwYUQoGB12g4klP7EaCpbPUbJ7PZ9LtFPw6e1/VcZyEF/0aJsYreqntq3gYUyl85xarXKMtpfgDqJv418CCTL0qwh+anvDPQBoHcemp7F4eL47L/dI6tlBLbaIoLe3P8MjgSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWr2Jo4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552CAC32781;
-	Thu,  6 Jun 2024 14:09:21 +0000 (UTC)
+	 MIME-Version; b=q/Jb9NCYVUWIUYcRVRJIazuPZNy9NTfoBSKxBoPkA/d5i8X5P3L2Xi+Cb0XR6QiZPRzNufVpgtmXYZw7K9YYs2AtzpkyKKLu+uQjVan43+ad/8YzWn68z8Atxux1BC2VG/SJXBHNUbvMYIs2SUzA6GAJNmEViAlJ47pF8hf7mVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkweFthS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F35C2BD10;
+	Thu,  6 Jun 2024 14:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682961;
-	bh=sA26Otu2TVMrixUHQvk8mhyZ+C5xQJwvegGwQH54b98=;
+	s=korg; t=1717683298;
+	bh=/h92jvqZiOX9G8mjRyMVGSuZxyPbVZ2jRLbAeNb38sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWr2Jo4Vf8Di7x5+5bJpsQDSzfCWSRVMYTL593jqw7GW0l8m5JPdQiq0P53ZxfiPp
-	 Tb7ejdJAMsGqMoSNcW7J6njPUXepC0I01uAlbQp8Z8YEdJKfJMANFzAP1ALLnkQpiQ
-	 btbpGysgEWSNVLw5N8sBfmAs23PCppeNvaCGg140=
+	b=bkweFthSaRuYggFpqP6FNWbUx3/lJWOAZGosMl7K3yTq6bIcXqXMZjDw28yAyycHI
+	 PZUuJfOMhGrdLHMp/Xvnu7rf2xqvq6++taXZDV2A239dzzPhVI6Br72eSezTpUkBJp
+	 OkCorPjuS4sq/TR6W78LseMl4y8s2IQfRla1qxos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Akiva Goldberger <agoldberger@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 128/374] s390/vdso: Create .build-id links for unstripped vdso files
-Date: Thu,  6 Jun 2024 16:01:47 +0200
-Message-ID: <20240606131656.188821213@linuxfoundation.org>
+Subject: [PATCH 6.1 179/473] net/mlx5: Discard command completions in internal error
+Date: Thu,  6 Jun 2024 16:01:48 +0200
+Message-ID: <20240606131705.845295978@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Remus <jremus@linux.ibm.com>
+From: Akiva Goldberger <agoldberger@nvidia.com>
 
-[ Upstream commit fc2f5f10f9bc5e58d38e9fda7dae107ac04a799f ]
+[ Upstream commit db9b31aa9bc56ff0d15b78f7e827d61c4a096e40 ]
 
-Citing Andy Lutomirski from commit dda1e95cee38 ("x86/vdso: Create
-.build-id links for unstripped vdso files"):
+Fix use after free when FW completion arrives while device is in
+internal error state. Avoid calling completion handler in this case,
+since the device will flush the command interface and trigger all
+completions manually.
 
-"With this change, doing 'make vdso_install' and telling gdb:
+Kernel log:
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+...
+RIP: 0010:refcount_warn_saturate+0xd8/0xe0
+...
+Call Trace:
+<IRQ>
+? __warn+0x79/0x120
+? refcount_warn_saturate+0xd8/0xe0
+? report_bug+0x17c/0x190
+? handle_bug+0x3c/0x60
+? exc_invalid_op+0x14/0x70
+? asm_exc_invalid_op+0x16/0x20
+? refcount_warn_saturate+0xd8/0xe0
+cmd_ent_put+0x13b/0x160 [mlx5_core]
+mlx5_cmd_comp_handler+0x5f9/0x670 [mlx5_core]
+cmd_comp_notifier+0x1f/0x30 [mlx5_core]
+notifier_call_chain+0x35/0xb0
+atomic_notifier_call_chain+0x16/0x20
+mlx5_eq_async_int+0xf6/0x290 [mlx5_core]
+notifier_call_chain+0x35/0xb0
+atomic_notifier_call_chain+0x16/0x20
+irq_int_handler+0x19/0x30 [mlx5_core]
+__handle_irq_event_percpu+0x4b/0x160
+handle_irq_event+0x2e/0x80
+handle_edge_irq+0x98/0x230
+__common_interrupt+0x3b/0xa0
+common_interrupt+0x7b/0xa0
+</IRQ>
+<TASK>
+asm_common_interrupt+0x22/0x40
 
-set debug-file-directory /lib/modules/KVER/vdso
-
-will enable vdso debugging with symbols.  This is useful for
-testing, but kernel RPM builds will probably want to manually delete
-these symlinks or otherwise do something sensible when they strip
-the vdso/*.so files."
-
-Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 51d138c2610a ("net/mlx5: Fix health error state handling")
+Signed-off-by: Akiva Goldberger <agoldberger@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240509112951.590184-6-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.vdsoinst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/scripts/Makefile.vdsoinst b/scripts/Makefile.vdsoinst
-index c477d17b0aa5b..a81ca735003e4 100644
---- a/scripts/Makefile.vdsoinst
-+++ b/scripts/Makefile.vdsoinst
-@@ -21,7 +21,7 @@ $$(dest): $$(src) FORCE
- 	$$(call cmd,install)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 946923b9404fc..465d2adbf3c00 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -1632,6 +1632,9 @@ static int cmd_comp_notifier(struct notifier_block *nb,
+ 	dev = container_of(cmd, struct mlx5_core_dev, cmd);
+ 	eqe = data;
  
- # Some architectures create .build-id symlinks
--ifneq ($(filter arm sparc x86, $(SRCARCH)),)
-+ifneq ($(filter arm s390 sparc x86, $(SRCARCH)),)
- link := $(install-dir)/.build-id/$$(shell $(READELF) -n $$(src) | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p').debug
++	if (dev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
++		return NOTIFY_DONE;
++
+ 	mlx5_cmd_comp_handler(dev, be32_to_cpu(eqe->data.cmd.vector), false);
  
- __default: $$(link)
+ 	return NOTIFY_OK;
 -- 
 2.43.0
 
