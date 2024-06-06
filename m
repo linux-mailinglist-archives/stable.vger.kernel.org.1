@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-48888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E2A8FEAF9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0508FEAFB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21BA51F25A12
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4339D1F20EED
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994931A2C09;
-	Thu,  6 Jun 2024 14:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF55B1A2C0C;
+	Thu,  6 Jun 2024 14:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0r7SXPvW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8vo/BqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DDA197544;
-	Thu,  6 Jun 2024 14:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCF1197544;
+	Thu,  6 Jun 2024 14:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683196; cv=none; b=Xs2I9YNmJO4tYvPrmm+hbP8SytxMajGq23zTFvodBN2nKIq0Ff2EQ2GZ6R5FlnRQnCJOnUWt5osa5x0sNRoLQi9hGG82JgoYoGOlraYrv+ymIho4y+WQ7epx35xPFUtUPEZJSmeSVyjLXDhBWxA3k2Xf76wN1eMFpbmtTDVVskw=
+	t=1717683197; cv=none; b=M4M1Ov/PubMds1LLM71AOqyoMVPQaRdbOTRBZHeLn/PKv6/S4SNI2K7WpzVjuouTGAdhq5eR7XiNJLzyloroaOdtt+XK26Tqg0IRw58pzTrmnd/6mWlTeRlgfaKvzE+7xBylALVh9rgjzA2aDHRfXlTGkyDrqZjBXIckF7k8YY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683196; c=relaxed/simple;
-	bh=esc0kIzb7tuAvHUKJj/TKsDrm6LvOlON1V81LYzuikc=;
+	s=arc-20240116; t=1717683197; c=relaxed/simple;
+	bh=OJV40AF0yb5RKZi1spPTzw89GAWrfJU/Wj703RvLd1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHgm6lxi9tOQMWGPUjQKG2L9Q5nSwBv+zOhqUhl/PzVm/MqQ9zaKO7ddYOLUo5gVl/p/0+t9rmTJzQyvQHAc4641otfkoJdelPEINr4tOfxFwkqsgr0BVRevfOJmQpWwSDQDF7dj0wInGJH5pxKY2HXymoNuZQJCIMDqNRZAmjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0r7SXPvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FB4C4AF0A;
-	Thu,  6 Jun 2024 14:13:16 +0000 (UTC)
+	 MIME-Version; b=GwYieBasybhSJQxmYPciZ4wyn1EBYtAXKs4qTWhl/rzTtffftfeYj6BUSiw64IcHIyofh3QbPugojVzI7UYhIbLYKMk3nVk3pI8X45t6GMF5++Gw8l63H7weSCGD/Li5PvE2cncfNeUZLchMZmckXNf5bNluY9o+1pSQ9+jqGI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8vo/BqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E19C32781;
+	Thu,  6 Jun 2024 14:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683196;
-	bh=esc0kIzb7tuAvHUKJj/TKsDrm6LvOlON1V81LYzuikc=;
+	s=korg; t=1717683197;
+	bh=OJV40AF0yb5RKZi1spPTzw89GAWrfJU/Wj703RvLd1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0r7SXPvW+zVYvFydKPTCdPBjb/QHEGzqciAAixYr5icavp1aGU+UAHwy2QZ0yfjqL
-	 SbN9scXw5q6S9bc/XCS4Yunp2jY4RsSDYtfyWQc8JKEGNmuQLV1eDHWvxS6WNTq75t
-	 HAzTdvg34mf5kQ+rzP9ROZUG4jE5IUgi0QjNq+q4=
+	b=P8vo/BqCb6zSDPokqdK3m1nONic9dprP9AWW2MpqpDKOrxNELtweOchewjA9ftFwA
+	 z10EA4QZszD1lf9LhdXhkwaakJFwHatVgjyuvl/l9ipHiUuMAmHjxaP6IGv8U78MYH
+	 W0WDWdgI6wb889ah/v/H/ciVqN4tm6hMUK8hbAN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/744] ACPI: Fix Generic Initiator Affinity _OSC bit
-Date: Thu,  6 Jun 2024 15:56:51 +0200
-Message-ID: <20240606131736.872352191@linuxfoundation.org>
+Subject: [PATCH 6.6 140/744] enetc: avoid truncating error message
+Date: Thu,  6 Jun 2024 15:56:52 +0200
+Message-ID: <20240606131736.903338446@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,38 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit d0d4f1474e36b195eaad477373127ae621334c01 ]
+[ Upstream commit 9046d581ed586f3c715357638ca12c0e84402002 ]
 
-The ACPI spec says bit 17 should be used to indicate support
-for Generic Initiator Affinity Structure in SRAT, but we currently
-set bit 13 ("Interrupt ResourceSource support").
+As clang points out, the error message in enetc_setup_xdp_prog()
+still does not fit in the buffer and will be truncated:
 
-Fix this by actually setting bit 17 when evaluating _OSC.
+drivers/net/ethernet/freescale/enetc/enetc.c:2771:3: error: 'snprintf' will always be truncated; specified size is 80, but format string expands to at least 87 [-Werror,-Wformat-truncation]
 
-Fixes: 01aabca2fd54 ("ACPI: Let ACPI know we support Generic Initiator Affinity Structures")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Replace it with an even shorter message that should fit.
+
+Fixes: f968c56417f0 ("net: enetc: shorten enetc_setup_xdp_prog() error message to fit NETLINK_MAX_FMTMSG_LEN")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240326223825.4084412-3-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/acpi.h | 2 +-
+ drivers/net/ethernet/freescale/enetc/enetc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index afd94c9b8b8af..1b76d2f83eac6 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -571,8 +571,8 @@ acpi_status acpi_run_osc(acpi_handle handle, struct acpi_osc_context *context);
- #define OSC_SB_PCLPI_SUPPORT			0x00000080
- #define OSC_SB_OSLPI_SUPPORT			0x00000100
- #define OSC_SB_CPC_DIVERSE_HIGH_SUPPORT		0x00001000
--#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00002000
- #define OSC_SB_CPC_FLEXIBLE_ADR_SPACE		0x00004000
-+#define OSC_SB_GENERIC_INITIATOR_SUPPORT	0x00020000
- #define OSC_SB_NATIVE_USB4_SUPPORT		0x00040000
- #define OSC_SB_PRM_SUPPORT			0x00200000
- #define OSC_SB_FFH_OPR_SUPPORT			0x00400000
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index b92e3aa7cd041..0f5a4ec505ddb 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -2769,7 +2769,7 @@ static int enetc_setup_xdp_prog(struct net_device *ndev, struct bpf_prog *prog,
+ 	if (priv->min_num_stack_tx_queues + num_xdp_tx_queues >
+ 	    priv->num_tx_rings) {
+ 		NL_SET_ERR_MSG_FMT_MOD(extack,
+-				       "Reserving %d XDP TXQs does not leave a minimum of %d for stack (total %d)",
++				       "Reserving %d XDP TXQs leaves under %d for stack (total %d)",
+ 				       num_xdp_tx_queues,
+ 				       priv->min_num_stack_tx_queues,
+ 				       priv->num_tx_rings);
 -- 
 2.43.0
 
