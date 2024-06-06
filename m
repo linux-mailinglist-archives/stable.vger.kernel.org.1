@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE16E8FEBBA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5934F8FED5B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B9011F2925F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6757281C29
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43191ABCBE;
-	Thu,  6 Jun 2024 14:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6881BA880;
+	Thu,  6 Jun 2024 14:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWznkeuR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKChoL1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9385A1ABCBC;
-	Thu,  6 Jun 2024 14:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0701BA874;
+	Thu,  6 Jun 2024 14:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683287; cv=none; b=UxtpJ9bsdQT7scHwLC6RXPQ5TlLJmmHVZ/SSjnsdoNDtKqPlNfmOD7HGxPeW39aEmgCP6zqFUgXl9wcHu+mj/TWDnHpAYF24mQP62iP+Jaxmjb0ygttQHqdH6mzS5AX2x0FmWRz+ARrAX8zxAbkre+q+9NzlhvqM3IYxQZ4/hcY=
+	t=1717683478; cv=none; b=TtHM+an+FBBkD6yLFtT+wVrxFs3VT2wY/R66Own1mveDAYZO+If1biOKLI15b/zp/BpVk1kxepUrtNkgF/0bfIwJv/mPQCIjXd2Hudsl5b1c9HEEP3jc0ajIg/D9oV4XyV63goZ9p5xlZBcyomD2y7y/IhnrWlcleTsxxxPBHYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683287; c=relaxed/simple;
-	bh=unrDyLCX+0aJ9eDAA3owN2JFn9qgKlg0aJYDX63Q1L8=;
+	s=arc-20240116; t=1717683478; c=relaxed/simple;
+	bh=y5QpPNJp+P9ftLCnVSVdRXBATFt/D8Wq4+FK6iurgNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MULoqL+RWiprp3POVIZ7+m4ZH1sE4xD5+Sir+UL9NTuvgsWirj7ATZ3L0J/AjZvS83mIsr3ruahYBA+3vSz1o2hSVPjkIP+hCCkYcgRlsLmFC+Q84ASnSIJBDTPiZzID3NdBUShnYhubNCjm0CFBhjBBapI/zEAEivN7/v6Y1NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWznkeuR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734A5C2BD10;
-	Thu,  6 Jun 2024 14:14:47 +0000 (UTC)
+	 MIME-Version; b=lzRX/R63/KZ1jH+PWV5/GMGmkndaK/k3NhM7Eazco9DeQZIPZRgC9yXsmLAeRX+tqcy9EkxlMzN5f4vNhyIeDxwvmO9oxOpvAvIlxKKILhJ4fZ5lW423vWbtfiB+fLESjmufYzmqlLLd3xS48Nqok8iMiwOQAZ9YE/M2OGGOkXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKChoL1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619EDC2BD10;
+	Thu,  6 Jun 2024 14:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683287;
-	bh=unrDyLCX+0aJ9eDAA3owN2JFn9qgKlg0aJYDX63Q1L8=;
+	s=korg; t=1717683478;
+	bh=y5QpPNJp+P9ftLCnVSVdRXBATFt/D8Wq4+FK6iurgNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWznkeuResC/PyU6ESfjcmhwtStbI29WqJpuN9HGjUVkHFFcg9t5cXELUxwPlO7zO
-	 ablRYXRLFH8F05INRgeSeHeBR4Dlo301H3hc5/mb2/kukPXYbXYpDDA+aHrqklaatp
-	 4aBXUgaZPZAhv3M6N3a2I4q/xbmVZ75eiKi7fQ1M=
+	b=RKChoL1JFnjOPYV1kPxVTvWciYnoW1gO34uXHE9lKfm7ExGhZJgUlFknvbCgv89N2
+	 655QRH2T+ZP43VybmkNrHiprGsSKsj6gWmrp+zeA0qdjOi/1ObRPLYdvY6Gn3dl2Ih
+	 PCS0hxlEmXgFL5lzpvXTC8plPE+KbE8id5/6fnpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 164/473] usb: aqc111: stop lying about skb->truesize
+Subject: [PATCH 6.6 421/744] module: dont ignore sysfs_create_link() failures
 Date: Thu,  6 Jun 2024 16:01:33 +0200
-Message-ID: <20240606131705.373445740@linuxfoundation.org>
+Message-ID: <20240606131745.978705388@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 9aad6e45c4e7d16b2bb7c3794154b828fb4384b4 ]
+[ Upstream commit 85d2b0aa170351380be39fe4ff7973df1427fe76 ]
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+The sysfs_create_link() return code is marked as __must_check, but the
+module_add_driver() function tries hard to not care, by assigning the
+return code to a variable. When building with 'make W=1', gcc still
+warns because this variable is only assigned but not used:
 
-I replace one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
-stop lying about skb->truesize")
+drivers/base/module.c: In function 'module_add_driver':
+drivers/base/module.c:36:6: warning: variable 'no_warn' set but not used [-Wunused-but-set-variable]
 
-Fixes: 361459cd9642 ("net: usb: aqc111: Implement RX data path")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240506135546.3641185-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Rework the code to properly unwind and return the error code to the
+caller. My reading of the original code was that it tries to
+not fail when the links already exist, so keep ignoring -EEXIST
+errors.
+
+Fixes: e17e0f51aeea ("Driver core: show drivers in /sys/module/")
+See-also: 4a7fb6363f2d ("add __must_check to device management code")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Link: https://lore.kernel.org/r/20240408080616.3911573-1-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/base/base.h   |  9 ++++++---
+ drivers/base/bus.c    |  9 ++++++++-
+ drivers/base/module.c | 42 +++++++++++++++++++++++++++++++-----------
+ 3 files changed, 45 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 7b8afa589a53c..284375f662f1e 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1141,17 +1141,15 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			continue;
- 		}
+diff --git a/drivers/base/base.h b/drivers/base/base.h
+index eb4c0ace92420..a8e3d8165232f 100644
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -192,11 +192,14 @@ extern struct kset *devices_kset;
+ void devices_kset_move_last(struct device *dev);
  
--		/* Clone SKB */
--		new_skb = skb_clone(skb, GFP_ATOMIC);
-+		new_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
+ #if defined(CONFIG_MODULES) && defined(CONFIG_SYSFS)
+-void module_add_driver(struct module *mod, struct device_driver *drv);
++int module_add_driver(struct module *mod, struct device_driver *drv);
+ void module_remove_driver(struct device_driver *drv);
+ #else
+-static inline void module_add_driver(struct module *mod,
+-				     struct device_driver *drv) { }
++static inline int module_add_driver(struct module *mod,
++				    struct device_driver *drv)
++{
++	return 0;
++}
+ static inline void module_remove_driver(struct device_driver *drv) { }
+ #endif
  
- 		if (!new_skb)
- 			goto err;
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index 84a21084d67d1..d7c4330786cae 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -674,7 +674,12 @@ int bus_add_driver(struct device_driver *drv)
+ 		if (error)
+ 			goto out_del_list;
+ 	}
+-	module_add_driver(drv->owner, drv);
++	error = module_add_driver(drv->owner, drv);
++	if (error) {
++		printk(KERN_ERR "%s: failed to create module links for %s\n",
++			__func__, drv->name);
++		goto out_detach;
++	}
  
--		new_skb->len = pkt_len;
-+		skb_put(new_skb, pkt_len);
-+		memcpy(new_skb->data, skb->data, pkt_len);
- 		skb_pull(new_skb, AQ_RX_HW_PAD);
--		skb_set_tail_pointer(new_skb, new_skb->len);
+ 	error = driver_create_file(drv, &driver_attr_uevent);
+ 	if (error) {
+@@ -699,6 +704,8 @@ int bus_add_driver(struct device_driver *drv)
  
--		new_skb->truesize = SKB_TRUESIZE(new_skb->len);
- 		if (aqc111_data->rx_checksum)
- 			aqc111_rx_checksum(new_skb, pkt_desc);
+ 	return 0;
  
++out_detach:
++	driver_detach(drv);
+ out_del_list:
+ 	klist_del(&priv->knode_bus);
+ out_unregister:
+diff --git a/drivers/base/module.c b/drivers/base/module.c
+index 46ad4d636731d..a1b55da07127d 100644
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -30,14 +30,14 @@ static void module_create_drivers_dir(struct module_kobject *mk)
+ 	mutex_unlock(&drivers_dir_mutex);
+ }
+ 
+-void module_add_driver(struct module *mod, struct device_driver *drv)
++int module_add_driver(struct module *mod, struct device_driver *drv)
+ {
+ 	char *driver_name;
+-	int no_warn;
+ 	struct module_kobject *mk = NULL;
++	int ret;
+ 
+ 	if (!drv)
+-		return;
++		return 0;
+ 
+ 	if (mod)
+ 		mk = &mod->mkobj;
+@@ -56,17 +56,37 @@ void module_add_driver(struct module *mod, struct device_driver *drv)
+ 	}
+ 
+ 	if (!mk)
+-		return;
++		return 0;
++
++	ret = sysfs_create_link(&drv->p->kobj, &mk->kobj, "module");
++	if (ret)
++		return ret;
+ 
+-	/* Don't check return codes; these calls are idempotent */
+-	no_warn = sysfs_create_link(&drv->p->kobj, &mk->kobj, "module");
+ 	driver_name = make_driver_name(drv);
+-	if (driver_name) {
+-		module_create_drivers_dir(mk);
+-		no_warn = sysfs_create_link(mk->drivers_dir, &drv->p->kobj,
+-					    driver_name);
+-		kfree(driver_name);
++	if (!driver_name) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	module_create_drivers_dir(mk);
++	if (!mk->drivers_dir) {
++		ret = -EINVAL;
++		goto out;
+ 	}
++
++	ret = sysfs_create_link(mk->drivers_dir, &drv->p->kobj, driver_name);
++	if (ret)
++		goto out;
++
++	kfree(driver_name);
++
++	return 0;
++out:
++	sysfs_remove_link(&drv->p->kobj, "module");
++	sysfs_remove_link(mk->drivers_dir, driver_name);
++	kfree(driver_name);
++
++	return ret;
+ }
+ 
+ void module_remove_driver(struct device_driver *drv)
 -- 
 2.43.0
 
