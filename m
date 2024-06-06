@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A686C8FEAC7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E56348FEC6C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3374CB23D84
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FFF6B233CA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24AD1A0DEF;
-	Thu,  6 Jun 2024 14:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B331B0131;
+	Thu,  6 Jun 2024 14:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gURXKMpq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXT0NB6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626121A0DE0;
-	Thu,  6 Jun 2024 14:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BA519884D;
+	Thu,  6 Jun 2024 14:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683174; cv=none; b=oeMQCCPp3GUAz8glKsfo7TqMqLzqCH0Bc8pznG1KoPcTPAAVZMeiICtR2733ItprUiJW+ijbq3LTnMycxufLpcu3BdyDzrvwZv/fZwCCWFnP7SFFKb3ZSpj8WIVch3/WsTbOSBOHDu46qoXpU+lP/CghnXuFVhfEJlSAAMYuN6o=
+	t=1717683364; cv=none; b=WL2fOtpckhgTB0l/NH8kDTbhZtun0zzUIBQ4YAP6mF4vnwdcveYa2lrW44XkD9jlb7Lkb/HpKsX1YlamVK6mquuBn+8lT+MBlMUp/8ib9sXMvx7WIw4UwAVjtfIIEkjiJljFWwXtEbbRss+eivfkVWsAS9kGu2BPz/81yzp7lqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683174; c=relaxed/simple;
-	bh=obJ5RmzmoIAZ4yJCgr+zIbSbmOxG/u2qXaV1kamDP90=;
+	s=arc-20240116; t=1717683364; c=relaxed/simple;
+	bh=hXvUTBEBUSCV86+MWcIijESYZ4zs6wiMX02ddJkk6q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kExvbBkvAZxXIh3vR00I0/11qe9+dZrA3axHDmtwQcbcy+U2hc75h64VMQj7bh+aU7Z4iq1+PzNk4oqTtsbklAFmE0mVWJPbkKJq8fccVlutVj8on/G+93GLPPsYBiBLocFTQ+945/edO0GytNd6gMCXDz4tCiH8uxT/DvA9To4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gURXKMpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420E9C2BD10;
-	Thu,  6 Jun 2024 14:12:54 +0000 (UTC)
+	 MIME-Version; b=bFemkrWFt/U9qtGeut6YncQ35LOovp5UPFk4Ei+G4yRNJQyS/RQljY7ZEwCqy/qnznZjjFqwYn8HfpBXlbcE0q2x9hGLl6UtAeQsL+AMWYWrct/paoLPAjz/YFtPkNtU/x93VjNuZRfy6qu/+cyNog3pEdki/k+9A2Xdo8Nrtiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXT0NB6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6EAC32782;
+	Thu,  6 Jun 2024 14:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683174;
-	bh=obJ5RmzmoIAZ4yJCgr+zIbSbmOxG/u2qXaV1kamDP90=;
+	s=korg; t=1717683364;
+	bh=hXvUTBEBUSCV86+MWcIijESYZ4zs6wiMX02ddJkk6q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gURXKMpqRFjJt2CeRSnaj9mHIpMxlH++GZs1kkA09p5A5R9H0Ajj7r9IPGrv81w5W
-	 mEhvekkFyVCUBBK4gnuD8n10F/HdV5tRfRWmp1ELOeV/y/YzkFIzgqWRBBlZ8Nokf1
-	 VHLvkEacxOQroB3UqIbi+OF07XLKAAm+9pkKebj0=
+	b=UXT0NB6bElujYiOs4cJ7vU0tjUDZR3m64halxJR+PJQfnXcUMOyTOZ7FEqj8iDMcn
+	 xs1IaJXmk4rD9xWYC/B13OwI3/HGsyvrqP2bkzSSIWwv9pglQNUVhdlmv+kXhryO+f
+	 K3RZT+xHkw8GEksc6Bq5xR43ZC9wxcEs4ww5LUqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 049/473] KVM: x86: Dont advertise guest.MAXPHYADDR as host.MAXPHYADDR in CPUID
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Robert Foss <rfoss@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 306/744] drm: bridge: cdns-mhdp8546: Fix possible null pointer dereference
 Date: Thu,  6 Jun 2024 15:59:38 +0200
-Message-ID: <20240606131701.500812165@linuxfoundation.org>
+Message-ID: <20240606131742.199403315@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Hoffmann <kraxel@redhat.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit 6f5c9600621b4efb5c61b482d767432eb1ad3a9c upstream.
+[ Upstream commit 935a92a1c400285545198ca2800a4c6c519c650a ]
 
-Drop KVM's propagation of GuestPhysBits (CPUID leaf 80000008, EAX[23:16])
-to HostPhysBits (same leaf, EAX[7:0]) when advertising the address widths
-to userspace via KVM_GET_SUPPORTED_CPUID.
+In cdns_mhdp_atomic_enable(), the return value of drm_mode_duplicate() is
+assigned to mhdp_state->current_mode, and there is a dereference of it in
+drm_mode_set_name(), which will lead to a NULL pointer dereference on
+failure of drm_mode_duplicate().
 
-Per AMD, GuestPhysBits is intended for software use, and physical CPUs do
-not set that field.  I.e. GuestPhysBits will be non-zero if and only if
-KVM is running as a nested hypervisor, and in that case, GuestPhysBits is
-NOT guaranteed to capture the CPU's effective MAXPHYADDR when running with
-TDP enabled.
+Fix this bug add a check of mhdp_state->current_mode.
 
-E.g. KVM will soon use GuestPhysBits to communicate the CPU's maximum
-*addressable* guest physical address, which would result in KVM under-
-reporting PhysBits when running as an L1 on a CPU with MAXPHYADDR=52,
-but without 5-level paging.
-
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20240313125844.912415-2-kraxel@redhat.com
-[sean: rewrite changelog with --verbose, Cc stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fb43aa0acdfd ("drm: bridge: Add support for Cadence MHDP8546 DPI/DP bridge")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240408125810.21899-1-amishin@t-argos.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/cpuid.c |   21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1157,9 +1157,8 @@ static inline int __do_cpuid_func(struct
- 		entry->eax = entry->ebx = entry->ecx = 0;
- 		break;
- 	case 0x80000008: {
--		unsigned g_phys_as = (entry->eax >> 16) & 0xff;
--		unsigned virt_as = max((entry->eax >> 8) & 0xff, 48U);
--		unsigned phys_as = entry->eax & 0xff;
-+		unsigned int virt_as = max((entry->eax >> 8) & 0xff, 48U);
-+		unsigned int phys_as;
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index 6af565ac307ae..858f5b6508491 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -2057,6 +2057,9 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
+ 	mhdp_state = to_cdns_mhdp_bridge_state(new_state);
  
- 		/*
- 		 * If TDP (NPT) is disabled use the adjusted host MAXPHYADDR as
-@@ -1167,16 +1166,16 @@ static inline int __do_cpuid_func(struct
- 		 * reductions in MAXPHYADDR for memory encryption affect shadow
- 		 * paging, too.
- 		 *
--		 * If TDP is enabled but an explicit guest MAXPHYADDR is not
--		 * provided, use the raw bare metal MAXPHYADDR as reductions to
--		 * the HPAs do not affect GPAs.
-+		 * If TDP is enabled, use the raw bare metal MAXPHYADDR as
-+		 * reductions to the HPAs do not affect GPAs.
- 		 */
--		if (!tdp_enabled)
--			g_phys_as = boot_cpu_data.x86_phys_bits;
--		else if (!g_phys_as)
--			g_phys_as = phys_as;
-+		if (!tdp_enabled) {
-+			phys_as = boot_cpu_data.x86_phys_bits;
-+		} else {
-+			phys_as = entry->eax & 0xff;
-+		}
+ 	mhdp_state->current_mode = drm_mode_duplicate(bridge->dev, mode);
++	if (!mhdp_state->current_mode)
++		return;
++
+ 	drm_mode_set_name(mhdp_state->current_mode);
  
--		entry->eax = g_phys_as | (virt_as << 8);
-+		entry->eax = phys_as | (virt_as << 8);
- 		entry->ecx &= ~(GENMASK(31, 16) | GENMASK(11, 8));
- 		entry->edx = 0;
- 		cpuid_entry_override(entry, CPUID_8000_0008_EBX);
+ 	dev_dbg(mhdp->dev, "%s: Enabling mode %s\n", __func__, mode->name);
+-- 
+2.43.0
+
 
 
 
