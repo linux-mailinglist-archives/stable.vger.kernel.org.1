@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-48563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0748FE987
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D90638FECED
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71A971F247F2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FA031F2725C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C588C19AA78;
-	Thu,  6 Jun 2024 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C7419CCFA;
+	Thu,  6 Jun 2024 14:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxDkYDYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqgRGMNt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8494C19883C;
-	Thu,  6 Jun 2024 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B93198E6A;
+	Thu,  6 Jun 2024 14:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683035; cv=none; b=Iz/dBU2PSAE1iDdoiLEBJcCgc9doIxj+S/MckDjeQvsG7zugvhV+PdpVxcbl8y7HewNyvTqmRUgtwC3FWCTu7bnQL1+k2ALbV3rqihD1HWdEr8FJgyFaYV07XF+zAZXGd8+wZDG4eMu7BDBddKq1D4crOMyBMddIDWW1RQiq/Aw=
+	t=1717683426; cv=none; b=YhstKj3kLPUWMFbx3PwVNiCB4/jJrNpFk7RzS0C+1BdJBX0OPTXRPQ2ybH/XHzW/WhJwdbtC490Fb8sYLjKJXKM7aIDyZpiKUN7RNKZtsSRhb4aFRyJWV1Q5nDPRNwXl+WkQzZ70U+/byifC7F4IRoPjdjmTloL6jCuIjfWNlpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683035; c=relaxed/simple;
-	bh=6LfRo7IEzzdjSsvzsC/EaMo18Q2/CUWOjzvahgJW82k=;
+	s=arc-20240116; t=1717683426; c=relaxed/simple;
+	bh=k+l3mWykUKeQdX9XpR+pgJsC4VA8nVNfCXd2UQizCuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5NmDxn4cUFL9fWz+JV1WHfsj0L8ZV2YMehCbOA/1MnCzbNsXpoXllOqTpJQ0sKJ4QhvVMzYHs3po6n4QdneYq+qjIW618aQOQx4YVdDHrZPP929cTzYWgeYC5MDe5RwCYUWkRTMRGPQjkmHmo3UZ1muYOkHsdNG9yvHh/Q5nyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxDkYDYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634B0C4AF48;
-	Thu,  6 Jun 2024 14:10:35 +0000 (UTC)
+	 MIME-Version; b=edjavY1JLHBP+D/haptd0LJVke0Tt1IQGS6U1ICwB/0sVkUxUlh/CpbAXcYPfPNgWySzbzQAsSR1fc351tZpjB1e98dTWcu4L1HTxe+VYeWZ7TXA+1DgV3bCfdfjM9xri3l8uLfSrVMN7yAG7pd8c+BH0HUpwrCza9rU3WGgLd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqgRGMNt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E044C2BD10;
+	Thu,  6 Jun 2024 14:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683035;
-	bh=6LfRo7IEzzdjSsvzsC/EaMo18Q2/CUWOjzvahgJW82k=;
+	s=korg; t=1717683426;
+	bh=k+l3mWykUKeQdX9XpR+pgJsC4VA8nVNfCXd2UQizCuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxDkYDYzE87bVty8Qb5fHhSoeao2XYerVQ1F1LqK7aIkHvWyBCbhTh3IC+uuhtyHV
-	 i/LDij5IY/weEmLbDFdkiluzEXO1l18RulSAfzDtuWSS0nz1g1sfKzfLarQKQU+zL/
-	 1unRkxh2GIzXouAlOvYwz/RPwJosiYccOQyimN9M=
+	b=RqgRGMNtSAjojDlObqYsQD6RIH9WgAI8BqlgUOQ/LdXxUt5m5W8pXE7WbMnXkxPA9
+	 3tYSFMECTUXhwG2bD7R5hY43Upd5wAxo/VunRuRvl7FimU+S6RmGAETBuHrkghojAt
+	 wQSwAVPdgbARWr2WlkqGCvgrRzQ57+qtadYsZ0WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 262/374] riscv: cpufeature: Fix extension subset checking
+Subject: [PATCH 6.1 312/473] iio: adc: stm32: Fixing err code to not indicate success
 Date: Thu,  6 Jun 2024 16:04:01 +0200
-Message-ID: <20240606131700.668931934@linuxfoundation.org>
+Message-ID: <20240606131710.259680081@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlie Jenkins <charlie@rivosinc.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit e67e98ee8952c7d5ce986d1dc6f8221ab8674afa ]
+[ Upstream commit 3735ca0b072656c3aa2cedc617a5e639b583a472 ]
 
-This loop is supposed to check if ext->subset_ext_ids[j] is valid, rather
-than if ext->subset_ext_ids[i] is valid, before setting the extension
-id ext->subset_ext_ids[j] in isainfo->isa.
+This path would result in returning 0 / success on an error path.
 
-Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Fixes: 0d8295ed975b ("riscv: add ISA extension parsing for scalar crypto")
-Link: https://lore.kernel.org/r/20240502-cpufeature_fixes-v4-2-b3d1a088722d@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+Fixes: 95bc818404b2 ("iio: adc: stm32-adc: add support of generic channels binding")
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20240330185305.1319844-4-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpufeature.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/stm32-adc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index 13d4fc0d1817e..5ef48cb20ee11 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -603,7 +603,7 @@ static int __init riscv_fill_hwcap_from_ext_list(unsigned long *isa2hwcap)
- 
- 			if (ext->subset_ext_size) {
- 				for (int j = 0; j < ext->subset_ext_size; j++) {
--					if (riscv_isa_extension_check(ext->subset_ext_ids[i]))
-+					if (riscv_isa_extension_check(ext->subset_ext_ids[j]))
- 						set_bit(ext->subset_ext_ids[j], isainfo->isa);
- 				}
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index a5d5b7b3823bc..6fede34091cc2 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -2079,6 +2079,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+ 			if (vin[0] != val || vin[1] >= adc_info->max_channels) {
+ 				dev_err(&indio_dev->dev, "Invalid channel in%d-in%d\n",
+ 					vin[0], vin[1]);
++				ret = -EINVAL;
+ 				goto err;
  			}
+ 		} else if (ret != -EINVAL) {
 -- 
 2.43.0
 
