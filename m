@@ -1,58 +1,70 @@
-Return-Path: <stable+bounces-49329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542038FECD1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A468FEE64
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B44F1F26795
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E967F1C24F9D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25CE1B29CD;
-	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA091C3714;
+	Thu,  6 Jun 2024 14:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kh0v4IS/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUJBJ8to"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07CC198E65;
-	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF98F1A0B02;
+	Thu,  6 Jun 2024 14:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683412; cv=none; b=XfU3M6r7mX6OQYY6gE+QEmFWtRrJl59ddLI7Cp26pYQiTLlZoB6HKVvbSkQlxczb480HsPz6bUuD7RKwGocQAbXrcbCT2NGFBvq94VZtRhBCx518LOnJH7UoS4bFXC583ZqcVgnqh8TXiQLRgNqhzbP6dQ42cuioTwV/6EgWhcE=
+	t=1717683654; cv=none; b=q1w34M4OqWUKTwHOwzo/dbkM93HiF9Izl6ixxMfslF1eU3Clu8EHgx1pqYPbdy4nN/KB7BZcQkNcMOjWrs1HRIyaCMLA3FKRLD2atXpM4rF+WKWUvnKiIP/cwFD2gbsd+ZiQ34vT+69VmH9AiWji8R28emsoNJdH38vXHJbsLq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683412; c=relaxed/simple;
-	bh=O3Ix9t3vmVSX4d8r+uxEeWGD61u4vZwPwIeKHyGy5p0=;
+	s=arc-20240116; t=1717683654; c=relaxed/simple;
+	bh=eJ3JSaOIIDlOScp8xO6CTzMva2JAkoV8vFcaR81Ob0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dq9wVMbYtSdh8He4iPtVbu6IEk8xImQfrelD0G9MPIbmbRuM4Fl0Ul03c7MOwhVJTgpMheT4ee0H4woOsoNGTP2c/994meo8fYFM4Vdo8J/ORhlbjEyoAHJV8c8J1jCjGgA58vDhQY+/yIq9zb27SmVZTrNKjQP1Ldhn1e8IqQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kh0v4IS/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E91EC2BD10;
-	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
+	 MIME-Version; b=Ltmf8OQ9d+Zlnw+KB5f/L76lZZS+EwB38rZ8b7iFuajEnGimv5hpagYJ7pPavy811TWtyZi1kzxyX5tZc4EZ8OPvOk/LfVkIgG4q3XSsZjlzAF7qxLJSWnloZHEOS61ySHA/CmQEXhZMAYj870arW02oyX8WtmwI/Vio+3pFsRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUJBJ8to; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3412C32781;
+	Thu,  6 Jun 2024 14:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683412;
-	bh=O3Ix9t3vmVSX4d8r+uxEeWGD61u4vZwPwIeKHyGy5p0=;
+	s=korg; t=1717683654;
+	bh=eJ3JSaOIIDlOScp8xO6CTzMva2JAkoV8vFcaR81Ob0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kh0v4IS/pEYp6HLNhEt9RsZpGnBizDl4II2+bIuSGB8/iUDwdfljmET+yhj6QvvVv
-	 TaMVtvoYBwyixPwgJsHkdBTQHyjAtbek4uH0mSa790tD8hPytMNInIeJ6D+IeSSaLg
-	 1+vYrtuBbxOv1Ktu14VaswKMLVwPoqd7xBHEewgA=
+	b=XUJBJ8toQ6jquINUI03wyore92V4kyq9J3CUMiJXJ8B6Rxpq+5fxxveuialne+JYd
+	 DO7WbiF3GZ2LY3naMvN9ntEwFRKYa+bKowH0Wv5drqFj16yAxQsia7Y3FSN4pxryf+
+	 nAa7tFYtsK0OMncQ1eWu4MIsdrvyS7nh3aqM9ACU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Chris Lew <quic_clew@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jing Zhang <renyu.zj@linux.alibaba.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 273/473] net: qrtr: ns: Fix module refcnt
+Subject: [PATCH 6.6 530/744] perf pmu: Assume sysfs events are always the same case
 Date: Thu,  6 Jun 2024 16:03:22 +0200
-Message-ID: <20240606131708.948029859@linuxfoundation.org>
+Message-ID: <20240606131749.438035435@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +76,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Lew <quic_clew@quicinc.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit fd76e5ccc48f9f54eb44909dd7c0b924005f1582 ]
+[ Upstream commit 7b6dd7a923281a7ccb980a0f768d6926721eb3cc ]
 
-The qrtr protocol core logic and the qrtr nameservice are combined into
-a single module. Neither the core logic or nameservice provide much
-functionality by themselves; combining the two into a single module also
-prevents any possible issues that may stem from client modules loading
-inbetween qrtr and the ns.
+Perf event names aren't case sensitive. For sysfs events the entire
+directory of events is read then iterated comparing names in a case
+insensitive way, most often to see if an event is present.
 
-Creating a socket takes two references to the module that owns the
-socket protocol. Since the ns needs to create the control socket, this
-creates a scenario where there are always two references to the qrtr
-module. This prevents the execution of 'rmmod' for qrtr.
+Consider:
 
-To resolve this, forcefully put the module refcount for the socket
-opened by the nameservice.
+  $ perf stat -e inst_retired.any true
 
-Fixes: a365023a76f2 ("net: qrtr: combine nameservice into main module")
-Reported-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The event inst_retired.any may be present in any PMU, so every PMU's
+sysfs events are loaded and then searched with strcasecmp to see if
+any match. This event is only present on the cpu PMU as a JSON event
+so a lot of events were loaded from sysfs unnecessarily just to prove
+an event didn't exist there.
+
+This change avoids loading all the events by assuming sysfs event
+names are always either lower or uppercase. It uses file exists and
+only loads the events when the desired event is present.
+
+For the example above, the number of openat calls measured by 'perf
+trace' on a tigerlake laptop goes from 325 down to 255. The reduction
+will be larger for machines with many PMUs, particularly replicated
+uncore PMUs.
+
+Ensure pmu_aliases_parse() is called before all uses of the aliases
+list, but remove some "pmu->sysfs_aliases_loaded" tests as they are now
+part of the function.
+
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jing Zhang <renyu.zj@linux.alibaba.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240502213507.2339733-7-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/qrtr/ns.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ tools/perf/util/pmu.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index 4a13b9f7abb44..3c513e7ca2d5c 100644
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -807,6 +807,24 @@ int qrtr_ns_init(void)
- 	if (ret < 0)
- 		goto err_wq;
- 
-+	/* As the qrtr ns socket owner and creator is the same module, we have
-+	 * to decrease the qrtr module reference count to guarantee that it
-+	 * remains zero after the ns socket is created, otherwise, executing
-+	 * "rmmod" command is unable to make the qrtr module deleted after the
-+	 *  qrtr module is inserted successfully.
-+	 *
-+	 * However, the reference count is increased twice in
-+	 * sock_create_kern(): one is to increase the reference count of owner
-+	 * of qrtr socket's proto_ops struct; another is to increment the
-+	 * reference count of owner of qrtr proto struct. Therefore, we must
-+	 * decrement the module reference count twice to ensure that it keeps
-+	 * zero after server's listening socket is created. Of course, we
-+	 * must bump the module reference count twice as well before the socket
-+	 * is closed.
-+	 */
-+	module_put(qrtr_ns.sock->ops->owner);
-+	module_put(qrtr_ns.sock->sk->sk_prot_creator->owner);
-+
- 	return 0;
- 
- err_wq:
-@@ -821,6 +839,15 @@ void qrtr_ns_remove(void)
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index 0b1c380fce901..f767f43fd3c79 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -425,9 +425,30 @@ static struct perf_pmu_alias *perf_pmu__find_alias(struct perf_pmu *pmu,
  {
- 	cancel_work_sync(&qrtr_ns.work);
- 	destroy_workqueue(qrtr_ns.workqueue);
+ 	struct perf_pmu_alias *alias;
+ 
+-	if (load && !pmu->sysfs_aliases_loaded)
+-		pmu_aliases_parse(pmu);
++	if (load && !pmu->sysfs_aliases_loaded) {
++		bool has_sysfs_event;
++		char event_file_name[FILENAME_MAX + 8];
+ 
++		/*
++		 * Test if alias/event 'name' exists in the PMU's sysfs/events
++		 * directory. If not skip parsing the sysfs aliases. Sysfs event
++		 * name must be all lower or all upper case.
++		 */
++		scnprintf(event_file_name, sizeof(event_file_name), "events/%s", name);
++		for (size_t i = 7, n = 7 + strlen(name); i < n; i++)
++			event_file_name[i] = tolower(event_file_name[i]);
 +
-+	/* sock_release() expects the two references that were put during
-+	 * qrtr_ns_init(). This function is only called during module remove,
-+	 * so try_stop_module() has already set the refcnt to 0. Use
-+	 * __module_get() instead of try_module_get() to successfully take two
-+	 * references.
-+	 */
-+	__module_get(qrtr_ns.sock->ops->owner);
-+	__module_get(qrtr_ns.sock->sk->sk_prot_creator->owner);
- 	sock_release(qrtr_ns.sock);
- }
- EXPORT_SYMBOL_GPL(qrtr_ns_remove);
++		has_sysfs_event = perf_pmu__file_exists(pmu, event_file_name);
++		if (!has_sysfs_event) {
++			for (size_t i = 7, n = 7 + strlen(name); i < n; i++)
++				event_file_name[i] = toupper(event_file_name[i]);
++
++			has_sysfs_event = perf_pmu__file_exists(pmu, event_file_name);
++		}
++		if (has_sysfs_event)
++			pmu_aliases_parse(pmu);
++
++	}
+ 	list_for_each_entry(alias, &pmu->aliases, list) {
+ 		if (!strcasecmp(alias->name, name))
+ 			return alias;
+@@ -1627,9 +1648,7 @@ size_t perf_pmu__num_events(struct perf_pmu *pmu)
+ {
+ 	size_t nr;
+ 
+-	if (!pmu->sysfs_aliases_loaded)
+-		pmu_aliases_parse(pmu);
+-
++	pmu_aliases_parse(pmu);
+ 	nr = pmu->sysfs_aliases;
+ 
+ 	if (pmu->cpu_aliases_added)
+@@ -1688,6 +1707,7 @@ int perf_pmu__for_each_event(struct perf_pmu *pmu, bool skip_duplicate_pmus,
+ 	struct strbuf sb;
+ 
+ 	strbuf_init(&sb, /*hint=*/ 0);
++	pmu_aliases_parse(pmu);
+ 	pmu_add_cpu_aliases(pmu);
+ 	list_for_each_entry(event, &pmu->aliases, list) {
+ 		size_t buf_used;
+@@ -2089,6 +2109,7 @@ const char *perf_pmu__name_from_config(struct perf_pmu *pmu, u64 config)
+ 	if (!pmu)
+ 		return NULL;
+ 
++	pmu_aliases_parse(pmu);
+ 	pmu_add_cpu_aliases(pmu);
+ 	list_for_each_entry(event, &pmu->aliases, list) {
+ 		struct perf_event_attr attr = {.config = 0,};
 -- 
 2.43.0
 
