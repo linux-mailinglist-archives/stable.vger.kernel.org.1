@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845618FED99
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 288948FE92B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CDAC1C211C7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D316D283994
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150BF1BC088;
-	Thu,  6 Jun 2024 14:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFD4199241;
+	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjaBGo/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Z37eZB8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E1519DF79;
-	Thu,  6 Jun 2024 14:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BED319753A;
+	Thu,  6 Jun 2024 14:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683505; cv=none; b=NjwvOBIsWydDqzFaip+HDPjtzEVLllwrW2OoN3f4csnLC4u7npKcbqlKJTQN0HKHsm0Qb/dEZ/Qiy7/ePGBWORP0pB8k7ddAgv3XG3NUhpfj7dBak5KhQurNDp+X9nM7uv9VcJxfntkq9F382BxisW2zVa5pEp2+Wq6ZN9+Ep+Q=
+	t=1717682988; cv=none; b=S3QP48ZEEB+Ej61svmcsF3kVVL6y6Bx9xYd3Nv/O36NRb2Dp/+92q7OFacMwOEjNO8BcZVykixGfu7IXl/Osz9oy86SSNPhShqe4r8AteY7OML2K7UdiB3GCxNSHKvWPT6n76MXG0FsFafs0j9NBWf2H1KXU3cr98GEesfCPSdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683505; c=relaxed/simple;
-	bh=3UPBFIEizRxLmMFpGEHjZaAPfybVrxt1Gg6UwlzLj5o=;
+	s=arc-20240116; t=1717682988; c=relaxed/simple;
+	bh=AGPdF9t7Pl4k1yFdXu9zzWCYFsgc8VsVhiMWzNamwV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hI//XgJJAENhKxaM3V9gVkB+F64oFz8l7ZN/95ljpFzAxlcoIW7e0sIhjv62LGRBZq2kz2YYM9J3DUrHrYqLjpHP96mMDdvEz+Xx+6ikHjpR6Fau7lWfHI5bABL6VibWuiAY+Oc3M/YqTLrhg5Eo0MgPs10mzoRklM45cPiLG7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjaBGo/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDE4C2BD10;
-	Thu,  6 Jun 2024 14:18:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ncp4FDw9fZVOqtHkoSp/oMQxKL2AaRhJrSr9X5PwOL+yLtL9Qz645aW4wgGpa4mLsHCq9hC4YGp9SPpIlFtBOTd7zg5ig4wC/5hWUxEsgsrqOWY6GB/QVGWJ/3xaJMp2T5BGNXl8qXvmtoGRcx01houWu51EgfTqZi1q2j5afSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Z37eZB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3463C2BD10;
+	Thu,  6 Jun 2024 14:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683505;
-	bh=3UPBFIEizRxLmMFpGEHjZaAPfybVrxt1Gg6UwlzLj5o=;
+	s=korg; t=1717682987;
+	bh=AGPdF9t7Pl4k1yFdXu9zzWCYFsgc8VsVhiMWzNamwV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VjaBGo/Bp21BlnVBIgJBTDiM83snImyvmj8SuX5qxIgo7X8KqSBNSGmjMk95L2S4y
-	 Tw+1Rcqm7Tb1qh+At62G+cH4HLZtHX9WWYZYxTkajtimM5n1lebOwt9CkefLD1uEZ7
-	 72C/dy2kBE0axcSlvBfd0qqhgqIuednaREuDvROQ=
+	b=2Z37eZB81NYT7bZf6U6uCDLkKk9YDYFtbkwI3AzKY/5ANcIGFnd2P+3osLcBt+iRR
+	 hYVz/7Eo0D5gBhhG7+SjEFr708CvOO7FYy7G/ksJ60uRPsbx7O8hXDCsN93Nc8pGVr
+	 fgHOx8efJkKwwhtz2hFZUo0nrv789cz/1VoZthuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 447/744] iio: adc: ad9467: use chip_info variables instead of array
+Subject: [PATCH 6.9 140/374] dt-bindings: PCI: rockchip,rk3399-pcie: Add missing maxItems to ep-gpios
 Date: Thu,  6 Jun 2024 16:01:59 +0200
-Message-ID: <20240606131746.838398811@linuxfoundation.org>
+Message-ID: <20240606131656.599880848@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 6dd3fa9fcc66cb71834dc2e0a222324af0d8b95d ]
+[ Upstream commit 52d06636a4ae4db24ebfe23fae7a525f7e983604 ]
 
-Instead of having an array and keeping IDs for each entry of the array,
-just have a chip_info struct per device.
+Properties with GPIOs should define number of actual GPIOs, so add
+missing maxItems to ep-gpios.  Otherwise multiple GPIOs could be
+provided which is not a true hardware description.
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-6-a4a33bc4d70e@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: cf1c833f89e7 ("iio: adc: adi-axi-adc: only error out in major version mismatch")
+Fixes: aa222f9311e1 ("dt-bindings: PCI: Convert Rockchip RK3399 PCIe to DT schema")
+Link: https://lore.kernel.org/linux-pci/20240401100058.15749-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad9467.c | 89 +++++++++++++++++++---------------------
- 1 file changed, 43 insertions(+), 46 deletions(-)
+ Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index b16d28c1adcb0..c5ed62cc86465 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -101,12 +101,6 @@
- #define AD9467_DEF_OUTPUT_MODE		0x08
- #define AD9467_REG_VREF_MASK		0x0F
+diff --git a/Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml b/Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml
+index 531008f0b6ac3..002b728cbc718 100644
+--- a/Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml
++++ b/Documentation/devicetree/bindings/pci/rockchip,rk3399-pcie.yaml
+@@ -37,6 +37,7 @@ properties:
+     description: This property is needed if using 24MHz OSC for RC's PHY.
  
--enum {
--	ID_AD9265,
--	ID_AD9434,
--	ID_AD9467,
--};
--
- struct ad9467_chip_info {
- 	struct adi_axi_adc_chip_info	axi_adc_info;
- 	unsigned int			default_output_mode;
-@@ -234,43 +228,46 @@ static const struct iio_chan_spec ad9467_channels[] = {
- 	AD9467_CHAN(0, 0, 16, 'S'),
- };
+   ep-gpios:
++    maxItems: 1
+     description: pre-reset GPIO
  
--static const struct ad9467_chip_info ad9467_chip_tbl[] = {
--	[ID_AD9265] = {
--		.axi_adc_info = {
--			.id = CHIPID_AD9265,
--			.max_rate = 125000000UL,
--			.scale_table = ad9265_scale_table,
--			.num_scales = ARRAY_SIZE(ad9265_scale_table),
--			.channels = ad9467_channels,
--			.num_channels = ARRAY_SIZE(ad9467_channels),
--		},
--		.default_output_mode = AD9265_DEF_OUTPUT_MODE,
--		.vref_mask = AD9265_REG_VREF_MASK,
-+static const struct ad9467_chip_info ad9467_chip_tbl = {
-+	.axi_adc_info = {
-+		.name = "ad9467",
-+		.id = CHIPID_AD9467,
-+		.max_rate = 250000000UL,
-+		.scale_table = ad9467_scale_table,
-+		.num_scales = ARRAY_SIZE(ad9467_scale_table),
-+		.channels = ad9467_channels,
-+		.num_channels = ARRAY_SIZE(ad9467_channels),
- 	},
--	[ID_AD9434] = {
--		.axi_adc_info = {
--			.id = CHIPID_AD9434,
--			.max_rate = 500000000UL,
--			.scale_table = ad9434_scale_table,
--			.num_scales = ARRAY_SIZE(ad9434_scale_table),
--			.channels = ad9434_channels,
--			.num_channels = ARRAY_SIZE(ad9434_channels),
--		},
--		.default_output_mode = AD9434_DEF_OUTPUT_MODE,
--		.vref_mask = AD9434_REG_VREF_MASK,
-+	.default_output_mode = AD9467_DEF_OUTPUT_MODE,
-+	.vref_mask = AD9467_REG_VREF_MASK,
-+};
-+
-+static const struct ad9467_chip_info ad9434_chip_tbl = {
-+	.axi_adc_info = {
-+		.name = "ad9434",
-+		.id = CHIPID_AD9434,
-+		.max_rate = 500000000UL,
-+		.scale_table = ad9434_scale_table,
-+		.num_scales = ARRAY_SIZE(ad9434_scale_table),
-+		.channels = ad9434_channels,
-+		.num_channels = ARRAY_SIZE(ad9434_channels),
- 	},
--	[ID_AD9467] = {
--		.axi_adc_info = {
--			.id = CHIPID_AD9467,
--			.max_rate = 250000000UL,
--			.scale_table = ad9467_scale_table,
--			.num_scales = ARRAY_SIZE(ad9467_scale_table),
--			.channels = ad9467_channels,
--			.num_channels = ARRAY_SIZE(ad9467_channels),
--		},
--		.default_output_mode = AD9467_DEF_OUTPUT_MODE,
--		.vref_mask = AD9467_REG_VREF_MASK,
-+	.default_output_mode = AD9434_DEF_OUTPUT_MODE,
-+	.vref_mask = AD9434_REG_VREF_MASK,
-+};
-+
-+static const struct ad9467_chip_info ad9265_chip_tbl = {
-+	.axi_adc_info = {
-+		.name = "ad9265",
-+		.id = CHIPID_AD9265,
-+		.max_rate = 125000000UL,
-+		.scale_table = ad9265_scale_table,
-+		.num_scales = ARRAY_SIZE(ad9265_scale_table),
-+		.channels = ad9467_channels,
-+		.num_channels = ARRAY_SIZE(ad9467_channels),
- 	},
-+	.default_output_mode = AD9265_DEF_OUTPUT_MODE,
-+	.vref_mask = AD9265_REG_VREF_MASK,
- };
- 
- static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
-@@ -504,17 +501,17 @@ static int ad9467_probe(struct spi_device *spi)
- }
- 
- static const struct of_device_id ad9467_of_match[] = {
--	{ .compatible = "adi,ad9265", .data = &ad9467_chip_tbl[ID_AD9265], },
--	{ .compatible = "adi,ad9434", .data = &ad9467_chip_tbl[ID_AD9434], },
--	{ .compatible = "adi,ad9467", .data = &ad9467_chip_tbl[ID_AD9467], },
-+	{ .compatible = "adi,ad9265", .data = &ad9265_chip_tbl, },
-+	{ .compatible = "adi,ad9434", .data = &ad9434_chip_tbl, },
-+	{ .compatible = "adi,ad9467", .data = &ad9467_chip_tbl, },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ad9467_of_match);
- 
- static const struct spi_device_id ad9467_ids[] = {
--	{ "ad9265", (kernel_ulong_t)&ad9467_chip_tbl[ID_AD9265] },
--	{ "ad9434", (kernel_ulong_t)&ad9467_chip_tbl[ID_AD9434] },
--	{ "ad9467", (kernel_ulong_t)&ad9467_chip_tbl[ID_AD9467] },
-+	{ "ad9265", (kernel_ulong_t)&ad9265_chip_tbl },
-+	{ "ad9434", (kernel_ulong_t)&ad9434_chip_tbl },
-+	{ "ad9467", (kernel_ulong_t)&ad9467_chip_tbl },
- 	{}
- };
- MODULE_DEVICE_TABLE(spi, ad9467_ids);
+   vpcie12v-supply:
 -- 
 2.43.0
 
