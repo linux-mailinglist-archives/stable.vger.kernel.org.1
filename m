@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F172E8FEC4E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA328FEE15
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F192B232A3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36E21C244CE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70671B0101;
-	Thu,  6 Jun 2024 14:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4071BF910;
+	Thu,  6 Jun 2024 14:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADAdMY5Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gzl4wAi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869DB196DB4;
-	Thu,  6 Jun 2024 14:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A6D19EEC6;
+	Thu,  6 Jun 2024 14:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683351; cv=none; b=myIN4BVuS5WnUETYoJS06IoKWxBqOi2GwelpIopYcwga59V1Eu3ac4ocu385i+sAoNOzb6BATP7rIPWNLQZb5leTDmh3MHpdVq3W1sBpLwmkaXxB6Lo68dbWx3wSxAILpDzm+w+ZIGrt7gyUwApB1TdQT6I2CN6CTmgEWANJ6Tc=
+	t=1717683557; cv=none; b=XR21FbBjcCeTP3AQkN1zjpR4UJzQNkcz7HmvzYrU+m8kQVQUiVo+avjSwtdqpZqajFMjP+nrzClyPFpCLO88oMboXdHsvE8ABGKZxrvEGlxh2DnTUR+hs8ZxSyqvleY4yMgXuOCklKbjvDlHUyh7HFqGZ0e6iiK7Hz5WZ7hVol8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683351; c=relaxed/simple;
-	bh=iYyp6186zeuXX7ehyz5k1I47iRPi3cueqWrLyI/tVmA=;
+	s=arc-20240116; t=1717683557; c=relaxed/simple;
+	bh=BGoTOA299Jjgum1dJlZI/XY8SlImY/QblUXHARRunuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYM9u1S8fuP3TeLQZLpIOOZK3OBfDcibulyF5RNSwasREOxhGbqezkSTxMS1V3H0ZHJZSi9df+FYq94bOs1iC++OwmPjcHnDZLuKRTDGIqa3zfXrcHEJxHwVEWLdQqdcYuvQam6+jUaXXlsINrTKrnvoA4yEJyugHP73BMD7UEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADAdMY5Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59932C2BD10;
-	Thu,  6 Jun 2024 14:15:51 +0000 (UTC)
+	 MIME-Version; b=sKG9NlhOAZAhYtW15v2xtJVjNFwNIXo1TTALVUtu/RM+NVrEjZzsE3yoqkPDr1bp7oqOb5hO9UsW0WI+09pXQ2NPKjhogIJutqpL6C67KGVrf6J+azT4tPKYXrP8JXQg8D7waKz3qRiUtarps+OS1oFWngOZMjkEE2xAY2DeZfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gzl4wAi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACACC32782;
+	Thu,  6 Jun 2024 14:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683351;
-	bh=iYyp6186zeuXX7ehyz5k1I47iRPi3cueqWrLyI/tVmA=;
+	s=korg; t=1717683557;
+	bh=BGoTOA299Jjgum1dJlZI/XY8SlImY/QblUXHARRunuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADAdMY5Ym6NbEwOsxz4ANvZFMJPpgJiy14ORTbNwJTav0qZuIlZYlDgkh5wouTSkk
-	 PFCKlZKge+ltM/zUgadLRbiFCfh5t3xEvDURDagbQrvJ8RGlifv8W3ZRBjF12Vopi2
-	 JDCG2CCxbj7cLM0v1BGVY84j5lStjEgURCG83WNo=
+	b=0gzl4wAitXkm0EPZK7dsDYpGxx/iaWZyQN1VQVxPTae6GcNP+NVPJf9wg40cAy0vp
+	 VQLRJToC2mcq7EPGzyLAZ/uWBEfXGBE6HodQ5Mm5exE1t6p0Yn7+KrO1dIJIgffr+2
+	 v0yrHYsB0NNWExg6OGZ4MTXhsiZL6uuojY+NqplU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 232/473] drm/panel: simple: Add missing Innolux G121X1-L03 format, flags, connector
-Date: Thu,  6 Jun 2024 16:02:41 +0200
-Message-ID: <20240606131707.517675656@linuxfoundation.org>
+Subject: [PATCH 6.6 490/744] ppdev: Remove usage of the deprecated ida_simple_xx() API
+Date: Thu,  6 Jun 2024 16:02:42 +0200
+Message-ID: <20240606131748.159390643@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 11ac72d033b9f577e8ba0c7a41d1c312bb232593 ]
+[ Upstream commit d8407f71ebeaeb6f50bd89791837873e44609708 ]
 
-The .bpc = 6 implies .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG ,
-add the missing bus_format. Add missing connector type and bus_flags
-as well.
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-Documentation [1] 1.4 GENERAL SPECIFICATI0NS indicates this panel is
-capable of both RGB 18bit/24bit panel, the current configuration uses
-18bit mode, .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG , .bpc = 6.
+This is less verbose.
 
-Support for the 24bit mode would require another entry in panel-simple
-with .bus_format = MEDIA_BUS_FMT_RGB666_1X7X4_SPWG and .bpc = 8, which
-is out of scope of this fix.
-
-[1] https://www.distec.de/fileadmin/pdf/produkte/TFT-Displays/Innolux/G121X1-L03_Datasheet.pdf
-
-Fixes: f8fa17ba812b ("drm/panel: simple: Add support for Innolux G121X1-L03")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240328102746.17868-2-marex@denx.de
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/ba9da12fdd5cdb2c28180b7160af5042447d803f.1702962092.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: fbf740aeb86a ("ppdev: Add an error check in register_device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/char/ppdev.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index b714ee1bcbaa3..acb7f5c206d13 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -2286,6 +2286,9 @@ static const struct panel_desc innolux_g121x1_l03 = {
- 		.unprepare = 200,
- 		.disable = 400,
- 	},
-+	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
+index 4c188e9e477cd..ee951b265213f 100644
+--- a/drivers/char/ppdev.c
++++ b/drivers/char/ppdev.c
+@@ -299,7 +299,7 @@ static int register_device(int minor, struct pp_struct *pp)
+ 		goto err;
+ 	}
  
- static const struct drm_display_mode innolux_n156bge_l21_mode = {
+-	index = ida_simple_get(&ida_index, 0, 0, GFP_KERNEL);
++	index = ida_alloc(&ida_index, GFP_KERNEL);
+ 	memset(&ppdev_cb, 0, sizeof(ppdev_cb));
+ 	ppdev_cb.irq_func = pp_irq;
+ 	ppdev_cb.flags = (pp->flags & PP_EXCL) ? PARPORT_FLAG_EXCL : 0;
+@@ -310,7 +310,7 @@ static int register_device(int minor, struct pp_struct *pp)
+ 	if (!pdev) {
+ 		pr_warn("%s: failed to register device!\n", name);
+ 		rc = -ENXIO;
+-		ida_simple_remove(&ida_index, index);
++		ida_free(&ida_index, index);
+ 		goto err;
+ 	}
+ 
+@@ -750,7 +750,7 @@ static int pp_release(struct inode *inode, struct file *file)
+ 
+ 	if (pp->pdev) {
+ 		parport_unregister_device(pp->pdev);
+-		ida_simple_remove(&ida_index, pp->index);
++		ida_free(&ida_index, pp->index);
+ 		pp->pdev = NULL;
+ 		pr_debug(CHRDEV "%x: unregistered pardevice\n", minor);
+ 	}
 -- 
 2.43.0
 
