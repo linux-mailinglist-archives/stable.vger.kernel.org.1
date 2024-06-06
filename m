@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-49585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149BC8FEDEA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 455E48FEDED
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25B241C23DAE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C46BBB25B82
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7D819EEA7;
-	Thu,  6 Jun 2024 14:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7810F196C99;
+	Thu,  6 Jun 2024 14:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+P1vRUZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuAQOIDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6E91990B7;
-	Thu,  6 Jun 2024 14:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374E21BE851;
+	Thu,  6 Jun 2024 14:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683539; cv=none; b=LUpJAGzFjuqFn3RK/0Z2FGCR5s7x0KAu1L+24a2bviOFSN9ynSi82x5/OdZGObTsBEJWfHT4jRDL0GIfNf/mXy6PHrRbnkvwO25QiBn4YC1pjBQEb5y+XAsdHYDsX09I9Z8PI02V7Q39KsOFucJwou/gxOQQOkB//pvmv0QPECw=
+	t=1717683540; cv=none; b=DoqDrEOEsqD1Jkk+LF/0I+xVznpTam9gfuPGcjYqRlE92VmvYrRjsNEcnmRbo2CmyYor+M3hfgEgttuK+fsDbGNwz3ZkJzV3XkgQz9oQgfspbJv7PJo8dJvxQgrUtu1OD8U8VIfjlfJp3wdSf0xWsHiXzlxKKJQnDRsDEfDWi4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683539; c=relaxed/simple;
-	bh=oIAuDhbDbFPSEGS3qQnMKV1Nne1t0oHn6+ubOXDxe38=;
+	s=arc-20240116; t=1717683540; c=relaxed/simple;
+	bh=ds6SyrObH7l0wH3WOrF71qv/UtM+j+TAziYL3wQmrbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMdabsfcdqqtsYq/FMshhRrdQaX4Wtoz28E62b16H3sKNy2Wq/XjC+Unfx9mIFpapCGlANg5GZ+WRaBgoySBIvrNhegtEzkJEWCmi3+bb8IqSz/mG6lYLJGHiepknbq480zgz19OZ6RrdEFqHA+9wYxo2BFDydDxR5lzuek/ehs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+P1vRUZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6BDC2BD10;
-	Thu,  6 Jun 2024 14:18:59 +0000 (UTC)
+	 MIME-Version; b=JHU+AWaoXiZS86hDIndnZgZQu75AngNSobJBnNKUXF1TSdCIul7MBiUQPDxHe1M7JGMxBZjOQBFoxYwDkJRy//FZhzs6FyyiIsidnfnh6oHT15cZt8gHzRRnb5wL76ZFiCXperihNA1tjSAshDs1iObNa1IBSGSZSdTkBiSTeZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuAQOIDD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1592CC32786;
+	Thu,  6 Jun 2024 14:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683539;
-	bh=oIAuDhbDbFPSEGS3qQnMKV1Nne1t0oHn6+ubOXDxe38=;
+	s=korg; t=1717683540;
+	bh=ds6SyrObH7l0wH3WOrF71qv/UtM+j+TAziYL3wQmrbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+P1vRUZ/HHHZFUuUUAGm/sdeLviaZBcqkKQoqv03OrgMDwcoyYlphPSEEOSEQzcP
-	 rSCUq7fVd5ObrFLPLwViUio+kl29+E0DEJnpOwjRgEYavtHTeJ5VX0vAZBb6LlQSk7
-	 tORhm4/0FBkXmFukPgnixKddQ+pSloxbKIYuHtKs=
+	b=JuAQOIDDvqnJe6lMoCSrE3EnTX/DB4B0dqAKWR3B0QxG84Jgzc9qi+Q5CbPDSRbAe
+	 q0WmWawmZH0pFZznMfskCMNJ3Wgue4Mddgzt0bMJC8qI1Ol0uzkqk/o2rHkZCwYqWZ
+	 rmy8QyDDXKoqkbXqW30DIU77HCMXHkSR6O0JKPKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Wang <xin.wang2@amd.com>,
-	Michal Orzel <michal.orzel@amd.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 429/473] drivers/xen: Improve the late XenStore init protocol
-Date: Thu,  6 Jun 2024 16:05:58 +0200
-Message-ID: <20240606131713.934094962@linuxfoundation.org>
+Subject: [PATCH 6.1 430/473] ice: Interpret .set_channels() input differently
+Date: Thu,  6 Jun 2024 16:05:59 +0200
+Message-ID: <20240606131713.963198274@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -68,121 +71,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Henry Wang <xin.wang2@amd.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-[ Upstream commit a3607581cd49c17128a486a526a36a97bafcb2bb ]
+[ Upstream commit 05d6f442f31f901d27dbc64fd504a8ec7d5013de ]
 
-Currently, the late XenStore init protocol is only triggered properly
-for the case that HVM_PARAM_STORE_PFN is ~0ULL (invalid). For the
-case that XenStore interface is allocated but not ready (the connection
-status is not XENSTORE_CONNECTED), Linux should also wait until the
-XenStore is set up properly.
+A bug occurs because a safety check guarding AF_XDP-related queues in
+ethnl_set_channels(), does not trigger. This happens, because kernel and
+ice driver interpret the ethtool command differently.
 
-Introduce a macro to describe the XenStore interface is ready, use
-it in xenbus_probe_initcall() to select the code path of doing the
-late XenStore init protocol or not. Since now we have more than one
-condition for XenStore late init, rework the check in xenbus_probe()
-for the free_irq().
+How the bug occurs:
+1. ethtool -l <IFNAME> -> combined: 40
+2. Attach AF_XDP to queue 30
+3. ethtool -L <IFNAME> rx 15 tx 15
+   combined number is not specified, so command becomes {rx_count = 15,
+   tx_count = 15, combined_count = 40}.
+4. ethnl_set_channels checks, if there are any AF_XDP of queues from the
+   new (combined_count + rx_count) to the old one, so from 55 to 40, check
+   does not trigger.
+5. ice interprets `rx 15 tx 15` as 15 combined channels and deletes the
+   queue that AF_XDP is attached to.
 
-Take the opportunity to enhance the check of the allocated XenStore
-interface can be properly mapped, and return error early if the
-memremap() fails.
+Interpret the command in a way that is more consistent with ethtool
+manual [0] (--show-channels and --set-channels).
 
-Fixes: 5b3353949e89 ("xen: add support for initializing xenstore later as HVM domain")
-Signed-off-by: Henry Wang <xin.wang2@amd.com>
-Signed-off-by: Michal Orzel <michal.orzel@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Link: https://lore.kernel.org/r/20240517011516.1451087-1-xin.wang2@amd.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Considering that in the ice driver only the difference between RX and TX
+queues forms dedicated channels, change the correct way to set number of
+channels to:
+
+ethtool -L <IFNAME> combined 10 /* For symmetric queues */
+ethtool -L <IFNAME> combined 8 tx 2 rx 0 /* For asymmetric queues */
+
+[0] https://man7.org/linux/man-pages/man8/ethtool.8.html
+
+Fixes: 87324e747fde ("ice: Implement ethtool ops for channels")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/xenbus/xenbus_probe.c | 36 ++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
-index 3205e5d724c8c..1a9ded0cddcb0 100644
---- a/drivers/xen/xenbus/xenbus_probe.c
-+++ b/drivers/xen/xenbus/xenbus_probe.c
-@@ -65,13 +65,17 @@
- #include "xenbus.h"
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 02eb78df2378e..a163e7717a534 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3473,7 +3473,6 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
+ 	struct ice_pf *pf = vsi->back;
+ 	int new_rx = 0, new_tx = 0;
+ 	bool locked = false;
+-	u32 curr_combined;
+ 	int ret = 0;
  
+ 	/* do not support changing channels in Safe Mode */
+@@ -3495,22 +3494,8 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
+ 		return -EOPNOTSUPP;
+ 	}
  
--static int xs_init_irq;
-+static int xs_init_irq = -1;
- int xen_store_evtchn;
- EXPORT_SYMBOL_GPL(xen_store_evtchn);
+-	curr_combined = ice_get_combined_cnt(vsi);
+-
+-	/* these checks are for cases where user didn't specify a particular
+-	 * value on cmd line but we get non-zero value anyway via
+-	 * get_channels(); look at ethtool.c in ethtool repository (the user
+-	 * space part), particularly, do_schannels() routine
+-	 */
+-	if (ch->rx_count == vsi->num_rxq - curr_combined)
+-		ch->rx_count = 0;
+-	if (ch->tx_count == vsi->num_txq - curr_combined)
+-		ch->tx_count = 0;
+-	if (ch->combined_count == curr_combined)
+-		ch->combined_count = 0;
+-
+-	if (!(ch->combined_count || (ch->rx_count && ch->tx_count))) {
+-		netdev_err(dev, "Please specify at least 1 Rx and 1 Tx channel\n");
++	if (ch->rx_count && ch->tx_count) {
++		netdev_err(dev, "Dedicated RX or TX channels cannot be used simultaneously\n");
+ 		return -EINVAL;
+ 	}
  
- struct xenstore_domain_interface *xen_store_interface;
- EXPORT_SYMBOL_GPL(xen_store_interface);
- 
-+#define XS_INTERFACE_READY \
-+	((xen_store_interface != NULL) && \
-+	 (xen_store_interface->connection == XENSTORE_CONNECTED))
-+
- enum xenstore_init xen_store_domain_type;
- EXPORT_SYMBOL_GPL(xen_store_domain_type);
- 
-@@ -751,19 +755,19 @@ static void xenbus_probe(void)
- {
- 	xenstored_ready = 1;
- 
--	if (!xen_store_interface) {
-+	if (!xen_store_interface)
- 		xen_store_interface = memremap(xen_store_gfn << XEN_PAGE_SHIFT,
- 					       XEN_PAGE_SIZE, MEMREMAP_WB);
--		/*
--		 * Now it is safe to free the IRQ used for xenstore late
--		 * initialization. No need to unbind: it is about to be
--		 * bound again from xb_init_comms. Note that calling
--		 * unbind_from_irqhandler now would result in xen_evtchn_close()
--		 * being called and the event channel not being enabled again
--		 * afterwards, resulting in missed event notifications.
--		 */
-+	/*
-+	 * Now it is safe to free the IRQ used for xenstore late
-+	 * initialization. No need to unbind: it is about to be
-+	 * bound again from xb_init_comms. Note that calling
-+	 * unbind_from_irqhandler now would result in xen_evtchn_close()
-+	 * being called and the event channel not being enabled again
-+	 * afterwards, resulting in missed event notifications.
-+	 */
-+	if (xs_init_irq >= 0)
- 		free_irq(xs_init_irq, &xb_waitq);
--	}
- 
- 	/*
- 	 * In the HVM case, xenbus_init() deferred its call to
-@@ -822,7 +826,7 @@ static int __init xenbus_probe_initcall(void)
- 	if (xen_store_domain_type == XS_PV ||
- 	    (xen_store_domain_type == XS_HVM &&
- 	     !xs_hvm_defer_init_for_callback() &&
--	     xen_store_interface != NULL))
-+	     XS_INTERFACE_READY))
- 		xenbus_probe();
- 
- 	/*
-@@ -831,7 +835,7 @@ static int __init xenbus_probe_initcall(void)
- 	 * started, then probe.  It will be triggered when communication
- 	 * starts happening, by waiting on xb_waitq.
- 	 */
--	if (xen_store_domain_type == XS_LOCAL || xen_store_interface == NULL) {
-+	if (xen_store_domain_type == XS_LOCAL || !XS_INTERFACE_READY) {
- 		struct task_struct *probe_task;
- 
- 		probe_task = kthread_run(xenbus_probe_thread, NULL,
-@@ -1014,6 +1018,12 @@ static int __init xenbus_init(void)
- 			xen_store_interface =
- 				memremap(xen_store_gfn << XEN_PAGE_SHIFT,
- 					 XEN_PAGE_SIZE, MEMREMAP_WB);
-+			if (!xen_store_interface) {
-+				pr_err("%s: cannot map HVM_PARAM_STORE_PFN=%llx\n",
-+				       __func__, v);
-+				err = -EINVAL;
-+				goto out_error;
-+			}
- 			if (xen_store_interface->connection != XENSTORE_CONNECTED)
- 				wait = true;
- 		}
 -- 
 2.43.0
 
