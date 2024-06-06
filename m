@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-48865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B2D8FEADD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75D38FE891
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB16C1F25263
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBB191C224ED
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC7A1A1871;
-	Thu,  6 Jun 2024 14:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9702E19750D;
+	Thu,  6 Jun 2024 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CY4e3EiV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMNnFUe0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7591A186B;
-	Thu,  6 Jun 2024 14:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5674A196C75;
+	Thu,  6 Jun 2024 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683185; cv=none; b=MFjv3MqflVr0PHZqGNTHrX4rqXpQ/1B5L4hxYcDZfkssPKZOYoWl7/b7zZXVkczD8sYnSobBbmswnWV+7eHiFMMqFp5flcJcX/0cltOpAECcYfKyrXavhCBIGFvPr4XsROQ4mVBNJ1vMLdW8PUh9wuT53CrJPaD/u2e4E9xWE7s=
+	t=1717682909; cv=none; b=KX89ihzkWwybfkou6RP78DRivrWv70pHRAeGxTMXSDEd4kKQpTOQOe9rAZuLl1zLJnmqd2T0QTeEAYIOZBUYxyOLkpTFYD0zc5VEJMnmdmgam3//FaZRbaQt3/54iBK21mi/qZxli0rOpnubVdP6eOFGb/sYSByqqjFN7v0KRQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683185; c=relaxed/simple;
-	bh=CC9Jg3Eb6DaXnUHIqV/PEo2OsVNf+RBr4HGr/NtdvxE=;
+	s=arc-20240116; t=1717682909; c=relaxed/simple;
+	bh=Fs5/e+NfsJWSVHWR8HOVg43MGTvPpqONI/mOZphfJzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INa61R72VX9EtapS/xXS2VVhYmA1KPl7huYUIvMndKWq9/87UWp5q9JtejrJiRsth45zzM+1YKz058URqvuV3MRnnLA2HNASp0BNd3kvQz+Rs+TVPBam5Go+Pw28Fh24y0dj37SMFwIZ8TgSjTliXWa+EkBH1TGW0plpXE2N3nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CY4e3EiV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC58DC2BD10;
-	Thu,  6 Jun 2024 14:13:04 +0000 (UTC)
+	 MIME-Version; b=FIWbdHMdUDFcZAobibHME/xq2KKu7YUxbDbEOk3XqW7tT5wcey7Ps0h9S9Oem+AOoxxU59Sg2hKap3ye31hzXmG9pxh/5uyIeMY4ltBPYdCpYwoq14JHf91fJePZ/Rz5XLrMqtYVFdAvF4GiSsAcazUmsN+vk+3esh9fVFbRZqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMNnFUe0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275EFC2BD10;
+	Thu,  6 Jun 2024 14:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683185;
-	bh=CC9Jg3Eb6DaXnUHIqV/PEo2OsVNf+RBr4HGr/NtdvxE=;
+	s=korg; t=1717682909;
+	bh=Fs5/e+NfsJWSVHWR8HOVg43MGTvPpqONI/mOZphfJzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CY4e3EiVVYfAVkf0678R0/c0BDYrhffYpXpjKccemA/6TtDmJuzMbpMfW74PmeHb0
-	 HNuogmLNzBak7afs09oManaamnv5DFaxaZk+iv42PlP2OwFAzd6kBhAdIysoKS2034
-	 KHTtcT9ru9b6ba8hKuUg/4lj7IFZ/uTctRWQ0F6k=
+	b=EMNnFUe03i3rZxJ7jWF/v/NkqpGj9gst4RZCQiQRpKC9XyqFAnAeDggJ4U+yvnxwb
+	 zJ73tDqnWRJa2AcuPOe0tz957o+iV5HXQamdSgBixgDpY2nRRC/e+Y9RqzwQ1NrGGq
+	 KHnd6YoCuwmUsFNUHleGp6RFTbtBp4zjgAJg3Uu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/473] nvme: find numa distance only if controller has valid numa id
+Subject: [PATCH 6.9 009/374] f2fs: fix to wait on page writeback in __clone_blkaddrs()
 Date: Thu,  6 Jun 2024 15:59:48 +0200
-Message-ID: <20240606131701.837213455@linuxfoundation.org>
+Message-ID: <20240606131652.043424685@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 863fe60ed27f2c85172654a63c5b827e72c8b2e6 ]
+[ Upstream commit d3876e34e7e789e2cbdd782360fef2a777391082 ]
 
-On system where native nvme multipath is configured and iopolicy
-is set to numa but the nvme controller numa node id is undefined
-or -1 (NUMA_NO_NODE) then avoid calculating node distance for
-finding optimal io path. In such case we may access numa distance
-table with invalid index and that may potentially refer to incorrect
-memory. So this patch ensures that if the nvme controller numa node
-id is -1 then instead of calculating node distance for finding optimal
-io path, we set the numa node distance of such controller to default 10
-(LOCAL_DISTANCE).
+In below race condition, dst page may become writeback status
+in __clone_blkaddrs(), it needs to wait writeback before update,
+fix it.
 
-Link: https://lore.kernel.org/all/20240413090614.678353-1-nilay@linux.ibm.com/
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Thread A				GC Thread
+- f2fs_move_file_range
+  - filemap_write_and_wait_range(dst)
+					- gc_data_segment
+					 - f2fs_down_write(dst)
+					 - move_data_page
+					  - set_page_writeback(dst_page)
+					  - f2fs_submit_page_write
+					 - f2fs_up_write(dst)
+  - f2fs_down_write(dst)
+  - __exchange_data_block
+   - __clone_blkaddrs
+    - f2fs_get_new_data_page
+    - memcpy_page
+
+Fixes: 0a2aa8fbb969 ("f2fs: refactor __exchange_data_block for speed up")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index f96d330d39641..6cf0ce7aff678 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -213,7 +213,8 @@ static struct nvme_ns *__nvme_find_path(struct nvme_ns_head *head, int node)
- 		if (nvme_path_is_disabled(ns))
- 			continue;
- 
--		if (READ_ONCE(head->subsys->iopolicy) == NVME_IOPOLICY_NUMA)
-+		if (ns->ctrl->numa_node != NUMA_NO_NODE &&
-+		    READ_ONCE(head->subsys->iopolicy) == NVME_IOPOLICY_NUMA)
- 			distance = node_distance(node, ns->ctrl->numa_node);
- 		else
- 			distance = LOCAL_DISTANCE;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 1761ad125f97a..06e3a69b45dc7 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1325,6 +1325,9 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
+ 				f2fs_put_page(psrc, 1);
+ 				return PTR_ERR(pdst);
+ 			}
++
++			f2fs_wait_on_page_writeback(pdst, DATA, true, true);
++
+ 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
+ 			set_page_dirty(pdst);
+ 			set_page_private_gcing(pdst);
 -- 
 2.43.0
 
