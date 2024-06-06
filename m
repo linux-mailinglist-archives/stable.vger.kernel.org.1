@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4728FE922
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86F98FEC26
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 310A81F267AE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEC561C221BF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B899D197549;
-	Thu,  6 Jun 2024 14:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E2D1AD9C0;
+	Thu,  6 Jun 2024 14:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5S6sF8f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbdfAgyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B61196D8E;
-	Thu,  6 Jun 2024 14:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CEB19AD62;
+	Thu,  6 Jun 2024 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682983; cv=none; b=s2TDPVkkUCeat5O/sjgljhOjq9eFpoGyIdQ/57y+oZGQcItIe+e7mN5iaK9kiAPJVf5elFAz7kliot8jAjq+r+HzhoVyxulXUyXi8PIfVCVx5mr/0jeRz0SwOQanvn+dYfJnf5utv6QPW/VnqMB0N0Yiv8VCdhNrnwKMHSa6Frg=
+	t=1717683335; cv=none; b=PPUW8MCwowpB5DegvtWSFDNQgOr3ncyl+O1KyAmgoqyEIEndbwyoIoWklni82hmGaBfAe67cMHgjxB6OLFjnsrRy1ue42LqgPGiGaJpNwsbxY2p9vP1dnDeNhjOGUWPpPo2V9mHZYvIKiGj0z/yN1F/RpLTpzoFA4xFqD29nvec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682983; c=relaxed/simple;
-	bh=ydC1U5xxYIm+/x6Q7hySbkyy0u0vHgQHeMVBK898w+k=;
+	s=arc-20240116; t=1717683335; c=relaxed/simple;
+	bh=v7asjrtK06xf2SanxW5oQdTvlD2hL8E9lwLXcUxRoFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmZfLifZLqIRR+HoycsEDCt1GJTeI7oP6GmhOKd9HNUa8qn90VTM+nD4FYTo5lFWG4tvUvnL6DZANF8qfqMNq2FIDtFMfEd0TntRmZHIQPjh7PnWXKfkd1pPaBKND0qKEd36GUoYKYlTLcjHRTNgvQe3piiapIonehcsanXm4I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5S6sF8f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BFAC2BD10;
-	Thu,  6 Jun 2024 14:09:43 +0000 (UTC)
+	 MIME-Version; b=LB+dlfH5BzBYB7YLtZi6anAA/iYTdfpEJaQIRVoKKPGoECzpRe1YeWkgZ1l5DaAwHm/5Bx50O5W0ccby5BX5I7CMfoenjY1T//nSgxIJoTrCAr0WO3fLY98mJMCmASDTYR8QYxWKPn3Qg3XUoI62+OmqjglPrQooxOSSspDxxa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbdfAgyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C91C2BD10;
+	Thu,  6 Jun 2024 14:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682983;
-	bh=ydC1U5xxYIm+/x6Q7hySbkyy0u0vHgQHeMVBK898w+k=;
+	s=korg; t=1717683335;
+	bh=v7asjrtK06xf2SanxW5oQdTvlD2hL8E9lwLXcUxRoFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5S6sF8f5Y1XNQrv8YRQc4oEMZ2FozuayJqCuzCz1XNtQF3iU7Ljk0aGihufDVsL/
-	 xTqnuVlj70mWQj1j4U2a288Y0QUfRWeJAotVA12IQSqX2x/sZvGzImY3u5a3Uv0RyW
-	 ip6QNeJkvcBjBlqOq0g9bJeGzJPjgTQAEPbaoazU=
+	b=FbdfAgyFyYLDzs3Lq2WnIBd0Gk6h+QuvOEar2zDZKly2/t4+LJRq70t+yDA6CBXKo
+	 F8W7FblLbTuV91PQJp+oY7F3J1QIFy8B0W8lYaXtM4+2qB1KalJj+MjryTBkun7i+r
+	 v7D8VJou5cg/symcPOUYkKZWeSA/VX92I/lqo/DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 167/374] um: Fix return value in ubd_init()
+Subject: [PATCH 6.1 217/473] media: ipu3-cio2: Request IRQ earlier
 Date: Thu,  6 Jun 2024 16:02:26 +0200
-Message-ID: <20240606131657.498040095@linuxfoundation.org>
+Message-ID: <20240606131707.079157682@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 31a5990ed253a66712d7ddc29c92d297a991fdf2 ]
+[ Upstream commit a069f79bfa6ec1ea0744981ea8425c8a25322579 ]
 
-When kmalloc_array() fails to allocate memory, the ubd_init()
-should return -ENOMEM instead of -1. So, fix it.
+Call devm_request_irq() before registering the async notifier, as otherwise
+it would be possible to use the device before the interrupts could be
+delivered to the driver.
 
-Fixes: f88f0bdfc32f ("um: UBD Improvements")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Fixes: c2a6a07afe4a ("media: intel-ipu3: cio2: add new MIPI-CSI2 driver")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_kern.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/pci/intel/ipu3/ipu3-cio2-main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
-index 63fc062add708..ef805eaa9e013 100644
---- a/arch/um/drivers/ubd_kern.c
-+++ b/arch/um/drivers/ubd_kern.c
-@@ -1092,7 +1092,7 @@ static int __init ubd_init(void)
+diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c b/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
+index 1bbe58b24d99d..2ae7130880533 100644
+--- a/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
++++ b/drivers/media/pci/intel/ipu3/ipu3-cio2-main.c
+@@ -1798,11 +1798,6 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
  
- 	if (irq_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
- 	}
- 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
- 				      sizeof(struct io_thread_req *),
-@@ -1103,7 +1103,7 @@ static int __init ubd_init(void)
+ 	v4l2_async_nf_init(&cio2->notifier);
  
- 	if (io_req_buffer == NULL) {
- 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
--		return -1;
-+		return -ENOMEM;
+-	/* Register notifier for subdevices we care */
+-	r = cio2_parse_firmware(cio2);
+-	if (r)
+-		goto fail_clean_notifier;
+-
+ 	r = devm_request_irq(dev, pci_dev->irq, cio2_irq, IRQF_SHARED,
+ 			     CIO2_NAME, cio2);
+ 	if (r) {
+@@ -1810,6 +1805,11 @@ static int cio2_pci_probe(struct pci_dev *pci_dev,
+ 		goto fail_clean_notifier;
  	}
- 	platform_driver_register(&ubd_driver);
- 	mutex_lock(&ubd_lock);
+ 
++	/* Register notifier for subdevices we care */
++	r = cio2_parse_firmware(cio2);
++	if (r)
++		goto fail_clean_notifier;
++
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_allow(dev);
+ 
 -- 
 2.43.0
 
