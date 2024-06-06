@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335C58FEC45
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A618FEAA8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31D461C2566C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E2381F23CA3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7DC1AED42;
-	Thu,  6 Jun 2024 14:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B651E19643E;
+	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkWX8Igd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGeay8A8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAAF1AED58;
-	Thu,  6 Jun 2024 14:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75062197538;
+	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683348; cv=none; b=G+47EI25DuwinxT8k9++bfn9Qul8W3AkMSyZYmd5ZQDCT1h8aH3PyzDNmUyiOQ0INgbciWjQl0CMzoAf3w0B+hy/KnXUhhZRpG7ekrIyFLeXcswtIyh2H6/xDOP23JcixeRvmpi13L5iks1OyGhlFRqO+0n/OTw0jTMUIS3pwuc=
+	t=1717683161; cv=none; b=a1z6C1AVGqJCMwvsbn5SELGxMd4iWuM/w+15mI2E8pTd0qmTuWTq8sC/s0WNJZvSuFZNATKgZRdBwM0NIazIRWI+P6PkuEKXWxgkmy2eVq1t3/2nuDe83scwe3oWTxvyCgVsTuhra+AWL2scyVLSpGyTmu4ILkqJWYkPLkTuSJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683348; c=relaxed/simple;
-	bh=l6P+aJet+9sBzVicPL/EJ3I2TW0umeNRkeVP2A8cZis=;
+	s=arc-20240116; t=1717683161; c=relaxed/simple;
+	bh=AYvZIzyQ++ggfuHP8WVHSGwXjeuNxmdTHzVUpL+g1t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlzxrPkVluwiXbZEPU6oa0xdS2xkZqZXfurkoEVVpoKXrTZ6tAJoKrdel+Kq+7wWhhZwsQT596BMTU4lQIbXoj+GGvrLvZG6fZ4KZbBDXIUFYrL1rlNHYY+i4T20r7cdsJ0GFrOliNpaSd+E8wpkH+C9B9l6oHbFFV1DyD+kYe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkWX8Igd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D04FC2BD10;
-	Thu,  6 Jun 2024 14:15:48 +0000 (UTC)
+	 MIME-Version; b=V6E8r1jPmuacehAaxeim4vaDz8mb0rZlzQLW1BKkwvzOy44VaBpln6U2lsBdQa8Au4mtFq7frE4Ddx4ofCmski7BEWhJZs3DmqqdMBWPb9ByP1qq3R+pc/pDCSouAWxANq+Fc4csb0lgXnz7xKw2/Mqj7PBs0vG3fEWt/M37w0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGeay8A8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA50C32782;
+	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683348;
-	bh=l6P+aJet+9sBzVicPL/EJ3I2TW0umeNRkeVP2A8cZis=;
+	s=korg; t=1717683161;
+	bh=AYvZIzyQ++ggfuHP8WVHSGwXjeuNxmdTHzVUpL+g1t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkWX8IgdErPTuoISRiFapIqMv7V/p1IJskOmQht7YKMZCKnTUBDtnbQkIFgjkiBtK
-	 PNDe9gW4T8+D4C295A6A41tgTTvgl8W1fRvDM6/qZgWw3arDyi6UtdFxZ1RU4CoBPb
-	 4UYFNcdkKLCKXultJpqy0VvUMc0FMIO+Zf5wNWAs=
+	b=aGeay8A8wkbonZ5Fx+gVmiLWcqycnJrnUGt46khc6uK2zmDoVWDcO3CxbAiJNLEDu
+	 BLXIiMommF79dNFeZZRHr+e8SqPAnzVSXvWGmMAwEYjDrG5MP4ZzLPb5J99WEGxgFJ
+	 04givJ3P0iyYEPySldVX6MqYMpm8QRY0Gc/deoEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Joshua Ashton <joshua@froggi.es>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 289/744] powerpc/fsl-soc: hide unused const variable
+Subject: [PATCH 6.1 032/473] drm/amd/display: Set color_mgmt_changed to true on unsuspend
 Date: Thu,  6 Jun 2024 15:59:21 +0200
-Message-ID: <20240606131741.676243114@linuxfoundation.org>
+Message-ID: <20240606131700.950195296@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Joshua Ashton <joshua@froggi.es>
 
-[ Upstream commit 01acaf3aa75e1641442cc23d8fe0a7bb4226efb1 ]
+[ Upstream commit 2eb9dd497a698dc384c0dd3e0311d541eb2e13dd ]
 
-vmpic_msi_feature is only used conditionally, which triggers a rare
--Werror=unused-const-variable= warning with gcc:
+Otherwise we can end up with a frame on unsuspend where color management
+is not applied when userspace has not committed themselves.
 
-arch/powerpc/sysdev/fsl_msi.c:567:37: error: 'vmpic_msi_feature' defined but not used [-Werror=unused-const-variable=]
-  567 | static const struct fsl_msi_feature vmpic_msi_feature =
+Fixes re-applying color management on Steam Deck/Gamescope on S3 resume.
 
-Hide this one in the same #ifdef as the reference so we can turn on
-the warning by default.
-
-Fixes: 305bcf26128e ("powerpc/fsl-soc: use CONFIG_EPAPR_PARAVIRT for hcalls")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240403080702.3509288-2-arnd@kernel.org
+Signed-off-by: Joshua Ashton <joshua@froggi.es>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/fsl_msi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
-index 57978a44d55b6..ce9895633c4e0 100644
---- a/arch/powerpc/sysdev/fsl_msi.c
-+++ b/arch/powerpc/sysdev/fsl_msi.c
-@@ -568,10 +568,12 @@ static const struct fsl_msi_feature ipic_msi_feature = {
- 	.msiir_offset = 0x38,
- };
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index ff460c9802eb2..31bae620aeffc 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2964,6 +2964,7 @@ static int dm_resume(void *handle)
+ 			dc_stream_release(dm_new_crtc_state->stream);
+ 			dm_new_crtc_state->stream = NULL;
+ 		}
++		dm_new_crtc_state->base.color_mgmt_changed = true;
+ 	}
  
-+#ifdef CONFIG_EPAPR_PARAVIRT
- static const struct fsl_msi_feature vmpic_msi_feature = {
- 	.fsl_pic_ip = FSL_PIC_IP_VMPIC,
- 	.msiir_offset = 0,
- };
-+#endif
- 
- static const struct of_device_id fsl_of_msi_ids[] = {
- 	{
+ 	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
 -- 
 2.43.0
 
