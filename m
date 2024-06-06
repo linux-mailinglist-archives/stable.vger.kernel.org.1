@@ -1,79 +1,55 @@
-Return-Path: <stable+bounces-49716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED2B8FEE8A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21ADD8FEC9A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF7CC1C251C0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D0ABB282BA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F13F1991D0;
-	Thu,  6 Jun 2024 14:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2B01B14E7;
+	Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwU/goFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fW0OCL2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08C2196D90;
-	Thu,  6 Jun 2024 14:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDC01B14EC;
+	Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683673; cv=none; b=pWj8tNjgc4vVhqZNIV9As83HxN5DmS7uA5s5HP/D93LUEr3AiYV2bejE9TSX7FdcAWC8IE9LK312pRAgqeH51lTNCIO8/kF7fFLA0k7p18x+X+i47tUo+2H05Eykxkb2kp/SmRuajMnCSiYcofYGgOCgpUhU09ZPvnZb9FswAwk=
+	t=1717683385; cv=none; b=SBshBA3Hq2N0fGV0xj34WyeDyrIQWOKAbdbZ0oYOnU8O0HkpP+BkCuFQRjTqGcK4VlYyTJWSYD0qMMtOFIn2YBmjulRYnUoVWYWsgJyA8YAwDVlMuFBokMmQtCZgrlCGB/Ea4cmeN/AK0gr6GYH30oN3uHQybpQ02w2RzTNZuZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683673; c=relaxed/simple;
-	bh=24eBEpGK7A/K3/307S74FLVW35OlGz7ECXTQR3etoV0=;
+	s=arc-20240116; t=1717683385; c=relaxed/simple;
+	bh=3jOv82Q1QHh7fhO55O8llTNjmqlP7BDboAY9OwbCzYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVcqI0nifHs6xrTGZRqeKzw2oTq4jYH1C+HzG2dc4hqjEQVEORrZlaQF/KAsARATI/B51e4I9yMZ/FnIVsWIMCawyP8xCd7A2EIX5nOFav3nvD2HCjT8nCZjyO4j8xakgdt7GpZJwZ3UTaFy/D5xz8vkV+esuxWqUAg9YrTW+G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwU/goFl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE44C2BD10;
-	Thu,  6 Jun 2024 14:21:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oKQH3lKrcb9xta9/4+c419ulIFAxQ1HU0DtsNYVGrBHusdXEfZH8jn0MJ5lenAIpgj9RD4u8o7PwHhIcrIXqSaKjKwQXAiKiyzfFv4N3SGd3ekl8Az2P0WJ0mGzpM1fGK1vEqxCJ7C9SQr4L0CIaNDj/+N6Fv+1A2R3m7ZoSdbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fW0OCL2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCC2C2BD10;
+	Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683673;
-	bh=24eBEpGK7A/K3/307S74FLVW35OlGz7ECXTQR3etoV0=;
+	s=korg; t=1717683385;
+	bh=3jOv82Q1QHh7fhO55O8llTNjmqlP7BDboAY9OwbCzYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jwU/goFluCJ9TwbmP+q4o4YNe9Biz5Yy5sVwukOicy4G+icvfVzZ0jJWlI6v5Sfde
-	 yyO8MVkaTxlmCYCOist2scC45FhuAuCfKAH6E6gytQptYJztFV9QXUoL81YnSbrWaP
-	 592CaS+4mmSkExsyx7aA5Lr8n5J6bJR89ZMWvJ0U=
+	b=fW0OCL2Dv5dJSHkUfvMrbiPNUh3gCLajkqRZkuPYJTd2XxfNuWG62OmBYo7E35n/5
+	 YH0cvQUjqqoRwvh260FxmZtl4SjL3ZqRIx2M0hzhxZyzMoKOyfkBGtRLLHYM01Q/bU
+	 2L0cW23S0Y7rXx2+eSVGKMcIBLL0J3Egwt3sYNKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Chen Zhongjin <chenzhongjin@huawei.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Haixin Yu <yuhaixin.yhx@linux.alibaba.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jing Zhang <renyu.zj@linux.alibaba.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Yang Jihong <yangjihong1@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 525/744] perf test: Add a test for strcmp_cpuid_str() expression
+Subject: [PATCH 6.1 268/473] RDMA/IPoIB: Fix format truncation compilation errors
 Date: Thu,  6 Jun 2024 16:03:17 +0200
-Message-ID: <20240606131749.280299711@linuxfoundation.org>
+Message-ID: <20240606131708.801376667@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,116 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit a1ebf7718ee31501d2d2ee3af1716e0084c81926 ]
+[ Upstream commit 49ca2b2ef3d003402584c68ae7b3055ba72e750a ]
 
-Test that the new expression builtin returns a match when the current
-escaped CPU ID is given, and that it doesn't match when "0x0" is given.
+Truncate the device name to store IPoIB VLAN name.
 
-The CPU ID in test__expr() has to be changed to perf_pmu__getcpuid()
-which returns the CPU ID string, rather than the raw CPU ID that
-get_cpuid() returns because that can't be used with strcmp_cpuid_str().
-It doesn't affect the is_intel test because both versions contain
-"Intel".
+[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 allmodconfig
+[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 W=1 drivers/infiniband/ulp/ipoib/
+drivers/infiniband/ulp/ipoib/ipoib_vlan.c: In function ‘ipoib_vlan_add’:
+drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:52: error: ‘%04x’
+directive output may be truncated writing 4 bytes into a region of size
+between 0 and 15 [-Werror=format-truncation=]
+  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
+      |                                                    ^~~~
+drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:48: note: directive
+argument in the range [0, 65535]
+  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
+      |                                                ^~~~~~~~~
+drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:9: note: ‘snprintf’ output
+between 6 and 21 bytes into a destination of size 16
+  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  188 |                  ppriv->dev->name, pkey);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/ulp/ipoib/ipoib_vlan.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Chen Zhongjin <chenzhongjin@huawei.com>
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Cc: Haixin Yu <yuhaixin.yhx@linux.alibaba.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jing Zhang <renyu.zj@linux.alibaba.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: https://lore.kernel.org/r/20230904095104.1162928-5-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
+Fixes: 9baa0b036410 ("IB/ipoib: Add rtnl_link_ops support")
+Link: https://lore.kernel.org/r/e9d3e1fef69df4c9beaf402cc3ac342bad680791.1715240029.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/expr.c | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ drivers/infiniband/ulp/ipoib/ipoib_vlan.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
-index 81229fa4f1e96..b177d09078038 100644
---- a/tools/perf/tests/expr.c
-+++ b/tools/perf/tests/expr.c
-@@ -9,6 +9,7 @@
- #include <math.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <string2.h>
- #include <linux/zalloc.h>
+diff --git a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
+index 4bd161e86f8dd..562df2b3ef187 100644
+--- a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
++++ b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
+@@ -184,8 +184,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
  
- static int test_ids_union(void)
-@@ -74,10 +75,13 @@ static int test__expr(struct test_suite *t __maybe_unused, int subtest __maybe_u
- 	int ret;
- 	struct expr_parse_ctx *ctx;
- 	bool is_intel = false;
--	char buf[128];
-+	char strcmp_cpuid_buf[256];
-+	struct perf_pmu *pmu = pmu__find_core_pmu();
-+	char *cpuid = perf_pmu__getcpuid(pmu);
-+	char *escaped_cpuid1, *escaped_cpuid2;
+ 	ppriv = ipoib_priv(pdev);
  
--	if (!get_cpuid(buf, sizeof(buf)))
--		is_intel = strstr(buf, "Intel") != NULL;
-+	TEST_ASSERT_VAL("get_cpuid", cpuid);
-+	is_intel = strstr(cpuid, "Intel") != NULL;
- 
- 	TEST_ASSERT_EQUAL("ids_union", test_ids_union(), 0);
- 
-@@ -257,9 +261,28 @@ static int test__expr(struct test_suite *t __maybe_unused, int subtest __maybe_u
- 	TEST_ASSERT_VAL("source count", hashmap__size(ctx->ids) == 1);
- 	TEST_ASSERT_VAL("source count", hashmap__find(ctx->ids, "EVENT1", &val_ptr));
- 
-+
-+	/* Test no cpuid match */
-+	ret = test(ctx, "strcmp_cpuid_str(0x0)", 0);
-+
-+	/*
-+	 * Test cpuid match with current cpuid. Special chars have to be
-+	 * escaped.
+-	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
+-		 ppriv->dev->name, pkey);
++	/* If you increase IFNAMSIZ, update snprintf below
++	 * to allow longer names.
 +	 */
-+	escaped_cpuid1 = strreplace_chars('-', cpuid, "\\-");
-+	free(cpuid);
-+	escaped_cpuid2 = strreplace_chars(',', escaped_cpuid1, "\\,");
-+	free(escaped_cpuid1);
-+	escaped_cpuid1 = strreplace_chars('=', escaped_cpuid2, "\\=");
-+	free(escaped_cpuid2);
-+	scnprintf(strcmp_cpuid_buf, sizeof(strcmp_cpuid_buf),
-+		  "strcmp_cpuid_str(%s)", escaped_cpuid1);
-+	free(escaped_cpuid1);
-+	ret |= test(ctx, strcmp_cpuid_buf, 1);
-+
- 	/* has_event returns 1 when an event exists. */
- 	expr__add_id_val(ctx, strdup("cycles"), 2);
--	ret = test(ctx, "has_event(cycles)", 1);
-+	ret |= test(ctx, "has_event(cycles)", 1);
++	BUILD_BUG_ON(IFNAMSIZ != 16);
++	snprintf(intf_name, sizeof(intf_name), "%.10s.%04x", ppriv->dev->name,
++		 pkey);
  
- 	expr__ctx_free(ctx);
- 
+ 	ndev = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
+ 	if (IS_ERR(ndev)) {
 -- 
 2.43.0
 
