@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-49122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598168FEBF3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 127AB8FEBF5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F17762815B9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76EC1F2994A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1961AC253;
-	Thu,  6 Jun 2024 14:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0631E1ABE5B;
+	Thu,  6 Jun 2024 14:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGY9QIIp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hx1/f9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08F4197A9B;
-	Thu,  6 Jun 2024 14:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B892A19883B;
+	Thu,  6 Jun 2024 14:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683312; cv=none; b=XoONCLIEAUgwsxgznaOiyUEV9oYuzaBaoB7jLfG1Am8fMhUrZ1UuXB50bjTa+V4hH7020TzvB7317ENtpc/BV7ITUYSv3T0EQ7FmxBBbnm5572pGzRvhUzAvoPO2ODBW2Uue+Oe9BTK9vKShsfCuc2j2TMX7ZLqRDQ3JxqYsWdA=
+	t=1717683313; cv=none; b=c6v263KBt6FQUe+98sgvmNx95MiALFViOocbfTTI/SyfmDiJd6kyEK/h+6ZOhRJsoSAvo1eM6AHzhGRcZVRlqKeheAnbxUIyCvvwLR2F43HEXZGNwjgQjuaHDEXLe4oCzuVeWfvjsa8Sbk94jTselxEedGVyx5hdTPmwDd4mTuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683312; c=relaxed/simple;
-	bh=Fcrfj04fdDfBBop19GGHik+CYd41Qng49mlqs4tMT9Y=;
+	s=arc-20240116; t=1717683313; c=relaxed/simple;
+	bh=WWR9XduRrxt6TrAf9GjoywQNrM4qgy/T4/fkRKozIws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nokm4N83n5AIL78nx4I9DJnJTO7wHSUtvYV+UDEKj73ZolE79TjdC7Mq5554yX2kYv1K8u/pDoQBSBgXU1dm2ReIoFzAykPAR8MFJZMtCncnp9bCwQQQNtf8SrezP12uibtwqNV1VgDWIQZ8QCxPnn67ll64SDSIgRIJfVYCJEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGY9QIIp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90591C2BD10;
-	Thu,  6 Jun 2024 14:15:12 +0000 (UTC)
+	 MIME-Version; b=NcwJEBvC8LvCBdVTLeEWHX0XGffKpZDYzS4ajX1pjXchFjG29ozlIIHeI4dtRu32pICYrgg0PS8HgiB5bfqfaj8QbAHp2Bv62xaLzMtDm8vlu9nXQ2rOJbbSI+hP2Ht7xPYTREBrJ9QJ6xSl6ll95ZvAtKYxm8ODAX7dBhmX/5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hx1/f9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954C5C2BD10;
+	Thu,  6 Jun 2024 14:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683312;
-	bh=Fcrfj04fdDfBBop19GGHik+CYd41Qng49mlqs4tMT9Y=;
+	s=korg; t=1717683313;
+	bh=WWR9XduRrxt6TrAf9GjoywQNrM4qgy/T4/fkRKozIws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGY9QIIpsPjrWf+MfksHOTxCNF1tGEi5Zydc5wpyiKEdO11FTq7G6L4CQzI8khF5f
-	 7aiZEPhqgRFzCiepzr37en9z9kFNffttHIfd+DOmyCR951dinArXvtkzocR7Ohuc0d
-	 a1d+Bo3IDVVRG9JUB0nB6OrUG/LeY0LgAh2F8IIs=
+	b=0hx1/f9boyLRUCnaXaAFCL2o57cy0a1HqZqW/XkenyZNDsX2Sz3B1Vho1JL9DQ6a/
+	 uhHE+hlXUcZ/a1jSlf/vCbix3/F7m1pNf8Yl2OkGqHhnlaF0CpWTVHNO30DflpoGaP
+	 GdRc42NgRKHk8bUpxlrrTttMcYCGkgth7XGhOTnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay12@gmail.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
 	Puranjay Mohan <puranjay@kernel.org>,
+	Pu Lehui <pulehui@huawei.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/744] s390/bpf: Emit a barrier for BPF_FETCH instructions
-Date: Thu,  6 Jun 2024 15:58:45 +0200
-Message-ID: <20240606131740.516534782@linuxfoundation.org>
+Subject: [PATCH 6.6 254/744] riscv, bpf: make some atomic operations fully ordered
+Date: Thu,  6 Jun 2024 15:58:46 +0200
+Message-ID: <20240606131740.547670962@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,60 +67,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit 68378982f0b21de02ac3c6a11e2420badefcb4bc ]
+[ Upstream commit 20a759df3bba35bf5c3ddec0c02ad69b603b584c ]
 
-BPF_ATOMIC_OP() macro documentation states that "BPF_ADD | BPF_FETCH"
-should be the same as atomic_fetch_add(), which is currently not the
-case on s390x: the serialization instruction "bcr 14,0" is missing.
-This applies to "and", "or" and "xor" variants too.
+The BPF atomic operations with the BPF_FETCH modifier along with
+BPF_XCHG and BPF_CMPXCHG are fully ordered but the RISC-V JIT implements
+all atomic operations except BPF_CMPXCHG with relaxed ordering.
 
-s390x is allowed to reorder stores with subsequent fetches from
-different addresses, so code relying on BPF_FETCH acting as a barrier,
-for example:
+Section 8.1 of the "The RISC-V Instruction Set Manual Volume I:
+Unprivileged ISA" [1], titled, "Specifying Ordering of Atomic
+Instructions" says:
 
-  stw [%r0], 1
-  afadd [%r1], %r2
-  ldxw %r3, [%r4]
+| To provide more efficient support for release consistency [5], each
+| atomic instruction has two bits, aq and rl, used to specify additional
+| memory ordering constraints as viewed by other RISC-V harts.
 
-may be broken. Fix it by emitting "bcr 14,0".
+and
 
-Note that a separate serialization instruction is not needed for
-BPF_XCHG and BPF_CMPXCHG, because COMPARE AND SWAP performs
-serialization itself.
+| If only the aq bit is set, the atomic memory operation is treated as
+| an acquire access.
+| If only the rl bit is set, the atomic memory operation is treated as a
+| release access.
+|
+| If both the aq and rl bits are set, the atomic memory operation is
+| sequentially consistent.
 
-Fixes: ba3b86b9cef0 ("s390/bpf: Implement new atomic ops")
-Reported-by: Puranjay Mohan <puranjay12@gmail.com>
-Closes: https://lore.kernel.org/bpf/mb61p34qvq3wf.fsf@kernel.org/
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20240507000557.12048-1-iii@linux.ibm.com
+Fix this by setting both aq and rl bits as 1 for operations with
+BPF_FETCH and BPF_XCHG.
+
+[1] https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
+
+Fixes: dd642ccb45ec ("riscv, bpf: Implement more atomic operations for RV64")
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Reviewed-by: Pu Lehui <pulehui@huawei.com>
+Link: https://lore.kernel.org/r/20240505201633.123115-1-puranjay@kernel.org
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/net/bpf_jit_comp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/riscv/net/bpf_jit_comp64.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 8af02176f68bf..62ee557d4b499 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -1311,8 +1311,12 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 	EMIT6_DISP_LH(0xeb000000, is32 ? (op32) : (op64),		\
- 		      (insn->imm & BPF_FETCH) ? src_reg : REG_W0,	\
- 		      src_reg, dst_reg, off);				\
--	if (is32 && (insn->imm & BPF_FETCH))				\
--		EMIT_ZERO(src_reg);					\
-+	if (insn->imm & BPF_FETCH) {					\
-+		/* bcr 14,0 - see atomic_fetch_{add,and,or,xor}() */	\
-+		_EMIT2(0x07e0);						\
-+		if (is32)                                               \
-+			EMIT_ZERO(src_reg);				\
-+	}								\
- } while (0)
- 		case BPF_ADD:
- 		case BPF_ADD | BPF_FETCH:
+diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
+index b3990874e4818..2f041b5cea970 100644
+--- a/arch/riscv/net/bpf_jit_comp64.c
++++ b/arch/riscv/net/bpf_jit_comp64.c
+@@ -516,33 +516,33 @@ static void emit_atomic(u8 rd, u8 rs, s16 off, s32 imm, bool is64,
+ 		break;
+ 	/* src_reg = atomic_fetch_<op>(dst_reg + off16, src_reg) */
+ 	case BPF_ADD | BPF_FETCH:
+-		emit(is64 ? rv_amoadd_d(rs, rs, rd, 0, 0) :
+-		     rv_amoadd_w(rs, rs, rd, 0, 0), ctx);
++		emit(is64 ? rv_amoadd_d(rs, rs, rd, 1, 1) :
++		     rv_amoadd_w(rs, rs, rd, 1, 1), ctx);
+ 		if (!is64)
+ 			emit_zext_32(rs, ctx);
+ 		break;
+ 	case BPF_AND | BPF_FETCH:
+-		emit(is64 ? rv_amoand_d(rs, rs, rd, 0, 0) :
+-		     rv_amoand_w(rs, rs, rd, 0, 0), ctx);
++		emit(is64 ? rv_amoand_d(rs, rs, rd, 1, 1) :
++		     rv_amoand_w(rs, rs, rd, 1, 1), ctx);
+ 		if (!is64)
+ 			emit_zext_32(rs, ctx);
+ 		break;
+ 	case BPF_OR | BPF_FETCH:
+-		emit(is64 ? rv_amoor_d(rs, rs, rd, 0, 0) :
+-		     rv_amoor_w(rs, rs, rd, 0, 0), ctx);
++		emit(is64 ? rv_amoor_d(rs, rs, rd, 1, 1) :
++		     rv_amoor_w(rs, rs, rd, 1, 1), ctx);
+ 		if (!is64)
+ 			emit_zext_32(rs, ctx);
+ 		break;
+ 	case BPF_XOR | BPF_FETCH:
+-		emit(is64 ? rv_amoxor_d(rs, rs, rd, 0, 0) :
+-		     rv_amoxor_w(rs, rs, rd, 0, 0), ctx);
++		emit(is64 ? rv_amoxor_d(rs, rs, rd, 1, 1) :
++		     rv_amoxor_w(rs, rs, rd, 1, 1), ctx);
+ 		if (!is64)
+ 			emit_zext_32(rs, ctx);
+ 		break;
+ 	/* src_reg = atomic_xchg(dst_reg + off16, src_reg); */
+ 	case BPF_XCHG:
+-		emit(is64 ? rv_amoswap_d(rs, rs, rd, 0, 0) :
+-		     rv_amoswap_w(rs, rs, rd, 0, 0), ctx);
++		emit(is64 ? rv_amoswap_d(rs, rs, rd, 1, 1) :
++		     rv_amoswap_w(rs, rs, rd, 1, 1), ctx);
+ 		if (!is64)
+ 			emit_zext_32(rs, ctx);
+ 		break;
 -- 
 2.43.0
 
