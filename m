@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362E18FEBAE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 144C88FE8E3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C24C5B24236
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E55DC1C2454C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220D21ABCAC;
-	Thu,  6 Jun 2024 14:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2B3198E96;
+	Thu,  6 Jun 2024 14:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qq+UoY54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0t48EqYn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EC5197A8F;
-	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF001974FC;
+	Thu,  6 Jun 2024 14:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683280; cv=none; b=Ubu99anEAdBY1q90IBpuG7QX0zVmcwRMuH6JsGUqFlLO8D4c4dmTwS6V6vG3hPDenfpKH52HgE9TdlCGHnSrw2iP++8MGV2gtw/hhyo85fygonBiI4CzqIFE7J9Or49oeLeG+ylECtD+qmHDCeLelYxhAOaHaqJSXMzgfM28/AM=
+	t=1717682947; cv=none; b=BFudlkdT4+OOCenailzC9CRCxTS74XRG23qLLwmYax/YX2asplGvN6i6lz76CKBfjAJ9bBL9+sz/ECP6N0Ks05OQxZ/ENv8knWd1x+pmWaoyxOWPXtIfLGDKyLgtGURc1If4jG+nHhc1dYUAqN7PkPG0VfKQ8h7GiivwRIu0r8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683280; c=relaxed/simple;
-	bh=RbU86L38+KXl/SyJKxctEjov7HGLQwPraiuC5UGMt0g=;
+	s=arc-20240116; t=1717682947; c=relaxed/simple;
+	bh=4XqMno6kw2aAbAKIvEWr6WhZv1e1nK2ojH50OTRvI5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRj5xe9Qa0/S/MJkShJtX2BvUmXVcTHzf1B8diNIkB4iAzlXHT+/V/pgrcpaOkwP43TF3RA5zmD1LxRXeEGDM2o1CETngWzJmb60vXByla+WKc5yHEarDiIqQqR1hS9Ysne/nTqKvB03js4sHxTvqk+McGjeQCR61SjY50UrRC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qq+UoY54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DADC2BD10;
-	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
+	 MIME-Version; b=oSVf7jfCZPZMhDhEkZBpJ++lXFElQ5i4yScm2v1hMPO1Lk1Mv3UJOBZlIr7iGa/cBHaGbEpxw1DjN3T8sCRDp3wcNnUoqFJGSLDqgfpm/6zmBV/891E6XYD/KlFgxlsSAK7kr4UZXNXZFpp96KxPMCxIu7ugteprHB8hUiPFdwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0t48EqYn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8747C32781;
+	Thu,  6 Jun 2024 14:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683280;
-	bh=RbU86L38+KXl/SyJKxctEjov7HGLQwPraiuC5UGMt0g=;
+	s=korg; t=1717682946;
+	bh=4XqMno6kw2aAbAKIvEWr6WhZv1e1nK2ojH50OTRvI5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qq+UoY54+77x3APZrI2sjP2Zo7udlQDYxGjD+i4XiD9jXiD3AGimRDMXSgUyoTPBk
-	 LzrFroqjDGtlSfWeC3Y85SZSc2hIbchIuBgHWn6FJiC2eI6NU6iNcy+EcT4vlC1T10
-	 ZQV0H70uTjKW8zk876tDzvlEyGAPm03yMGGBmVU8=
+	b=0t48EqYn/hNMBUqZ6aoVSiJ9ZH0NtjthghvBlUmReSRil8cpp5RiKVChP41+ZF7t2
+	 RfjPes8x6QxUzDTAcRzBEINPuWlxRSeuUmMi/3BWfOsTjCJlsInlwgwXiS0eqaGjHq
+	 yIlpk7n5RQtm66GraCsLQhxfQ41GpIzWlmj73XaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/473] scsi: qedf: Ensure the copied buf is NUL terminated
+Subject: [PATCH 6.9 108/374] f2fs: compress: fix error path of inc_valid_block_count()
 Date: Thu,  6 Jun 2024 16:01:27 +0200
-Message-ID: <20240606131705.183595012@linuxfoundation.org>
+Message-ID: <20240606131655.538452494@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit d0184a375ee797eb657d74861ba0935b6e405c62 ]
+[ Upstream commit 043c832371cd9023fbd725138ddc6c7f288dc469 ]
 
-Currently, we allocate a count-sized kernel buffer and copy count from
-userspace to that buffer. Later, we use kstrtouint on this buffer but we
-don't ensure that the string is terminated inside the buffer, this can
-lead to OOB read when using kstrtouint. Fix this issue by using
-memdup_user_nul instead of memdup_user.
+If inc_valid_block_count() can not allocate all requested blocks,
+it needs to release block count in .total_valid_block_count and
+resevation blocks in inode.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-4-f1f1b53a10f4@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 54607494875e ("f2fs: compress: fix to avoid inconsistence bewteen i_blocks and dnode")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/f2fs.h | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 451fd236bfd05..96174353e3898 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -170,7 +170,7 @@ qedf_dbg_debug_cmd_write(struct file *filp, const char __user *buffer,
- 	if (!count || *ppos)
- 		return 0;
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index fced2b7652f40..07b3675ea1694 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -2309,7 +2309,7 @@ static inline void f2fs_i_blocks_write(struct inode *, block_t, bool, bool);
+ static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
+ 				 struct inode *inode, blkcnt_t *count, bool partial)
+ {
+-	blkcnt_t diff = 0, release = 0;
++	long long diff = 0, release = 0;
+ 	block_t avail_user_block_count;
+ 	int ret;
  
--	kern_buf = memdup_user(buffer, count);
-+	kern_buf = memdup_user_nul(buffer, count);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+@@ -2329,26 +2329,27 @@ static inline int inc_valid_block_count(struct f2fs_sb_info *sbi,
+ 	percpu_counter_add(&sbi->alloc_valid_block_count, (*count));
  
+ 	spin_lock(&sbi->stat_lock);
+-	sbi->total_valid_block_count += (block_t)(*count);
+-	avail_user_block_count = get_available_block_count(sbi, inode, true);
+ 
+-	if (unlikely(sbi->total_valid_block_count > avail_user_block_count)) {
++	avail_user_block_count = get_available_block_count(sbi, inode, true);
++	diff = (long long)sbi->total_valid_block_count + *count -
++						avail_user_block_count;
++	if (unlikely(diff > 0)) {
+ 		if (!partial) {
+ 			spin_unlock(&sbi->stat_lock);
++			release = *count;
+ 			goto enospc;
+ 		}
+-
+-		diff = sbi->total_valid_block_count - avail_user_block_count;
+ 		if (diff > *count)
+ 			diff = *count;
+ 		*count -= diff;
+ 		release = diff;
+-		sbi->total_valid_block_count -= diff;
+ 		if (!*count) {
+ 			spin_unlock(&sbi->stat_lock);
+ 			goto enospc;
+ 		}
+ 	}
++	sbi->total_valid_block_count += (block_t)(*count);
++
+ 	spin_unlock(&sbi->stat_lock);
+ 
+ 	if (unlikely(release)) {
 -- 
 2.43.0
 
