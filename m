@@ -1,53 +1,64 @@
-Return-Path: <stable+bounces-49429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6358FED38
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACDEA8FED3A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2973282086
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C1D21F20F41
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F51A19D066;
-	Thu,  6 Jun 2024 14:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A448919D083;
+	Thu,  6 Jun 2024 14:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHVUxb8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZE9YKkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6151974EB;
-	Thu,  6 Jun 2024 14:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DAD19D081;
+	Thu,  6 Jun 2024 14:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683461; cv=none; b=KRE6J+WlU/6lx+GKLqnP4Ll8c8CWpvq29R/KVKJaWkaIuJYyB65lzyTarsRZ8xglD+gLBVIY8RtR0WMtpaPApHpf2CIdWBs0MaJK83M3Sqjt2e0xb1DdoW5yD2F6IqhForSR4eySyU+JpCAEpq4llbkWx0/xsE4gpavxersL/vs=
+	t=1717683462; cv=none; b=G5MhKvQ+MWqJZ1nzGxIcyLCKudy3w0XfvJnCyZLVEfWlQjeeSy27pz2VzgMlFbjPoLID2YO6V6Uu/6iOOuqDPEDrwzdsUwt2/fr1IEs1Sn4Gd+Yhs11Lbom7QlrAG8HXov1ReVIcL+AfHjc9FatLdy/Ua5Wo1PB9UkW6YiF4n24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683461; c=relaxed/simple;
-	bh=m6MCqIrbAq4fzaPw6BCU+f34OxEUTxYvlEMURG9Vtto=;
+	s=arc-20240116; t=1717683462; c=relaxed/simple;
+	bh=cU1C5PH83tVtCD7vTP4siPmB3FK4NdDH/anoP+ZfBe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OI5yqmpaqu/A0Xw+Dm4EBKvy9R4QdfG4Dp8pg+k54JAuUpXJajwvYvsFEOKZPmzMA7odC3TAoDyz1e/1aoNZV2dw44mSMRDtMCCYaZl4mo6PHuPpvMgPnMXu51PkSb3N9eXU9q/Fw8hS0dRFu/xejxeih8X6bx8BRL6dZKFH8gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHVUxb8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6AAC32781;
-	Thu,  6 Jun 2024 14:17:41 +0000 (UTC)
+	 MIME-Version; b=b4+utjNDymCQfwxOPJOwdo9BkVaSYOzZuhsNe0Z4fNOaBSkofaMbWZrVpIDDy5mJvgMR00aSx1WELnD6dDfqNfceMlBft9ZZHcoiUv0gxeG1wSKx1Ym6+8fFlJyUMcP5w73qL5RQVB5plk95n3kNm+hAOfYSX6BPNeu63xIDmAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZE9YKkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40789C2BD10;
+	Thu,  6 Jun 2024 14:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683461;
-	bh=m6MCqIrbAq4fzaPw6BCU+f34OxEUTxYvlEMURG9Vtto=;
+	s=korg; t=1717683462;
+	bh=cU1C5PH83tVtCD7vTP4siPmB3FK4NdDH/anoP+ZfBe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHVUxb8XuasdRLlKa1A1Rm5dercWyPXoSz30DYMNnwzUE1psswRlFq2YexyKOxkpb
-	 qeTS8v8ZzoNuCwY/Us21N7gfXTk/m+7EdT9Q8fkuLmzEXdQ1g1YW67HPCYuhBotF8y
-	 Dy3+SoXuSqhpAxkStEWpNEh1q7jSfxnGqnrNQk60=
+	b=DZE9YKkdFIJ3yqGtHLtJzCiwstcINxQQErsw+fWfsXkUA0afJ3wk9R515TaQoCpWd
+	 an5tH9Olu8mAYv1A2Kx/zNbqIJpICK7ZVD5fkDuOanattRZN6jKAa6LTgxkOikWW9t
+	 ga9FRZ60hKQguXZsaoylGQeMqiXlvHH4Wojvv4s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kaige Ye <ye@kaige.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 348/473] f2fs: fix to add missing iput() in gc_data_segment()
-Date: Thu,  6 Jun 2024 16:04:37 +0200
-Message-ID: <20240606131711.414859301@linuxfoundation.org>
+Subject: [PATCH 6.1 349/473] perf stat: Dont display metric header for non-leader uncore events
+Date: Thu,  6 Jun 2024 16:04:38 +0200
+Message-ID: <20240606131711.448835419@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -66,44 +77,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit a798ff17cd2dabe47d5d4ed3d509631793c36e19 ]
+[ Upstream commit 193a9e30207f54777ff42d0d8be8389edc522277 ]
 
-During gc_data_segment(), if inode state is abnormal, it missed to call
-iput(), fix it.
+On an Intel tigerlake laptop a metric like:
 
-Fixes: b73e52824c89 ("f2fs: reposition unlock_new_inode to prevent accessing invalid inode")
-Fixes: 9056d6489f5a ("f2fs: fix to do sanity check on inode type during garbage collection")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+    {
+        "BriefDescription": "Test",
+        "MetricExpr": "imc_free_running@data_read@ + imc_free_running@data_write@",
+        "MetricGroup": "Test",
+        "MetricName": "Test",
+        "ScaleUnit": "6.103515625e-5MiB"
+    },
+
+Will have 4 events:
+
+  uncore_imc_free_running_0/data_read/
+  uncore_imc_free_running_0/data_write/
+  uncore_imc_free_running_1/data_read/
+  uncore_imc_free_running_1/data_write/
+
+If aggregration is disabled with metric-only 2 column headers are
+needed:
+
+  $ perf stat -M test --metric-only -A -a sleep 1
+
+   Performance counter stats for 'system wide':
+
+                    MiB  Test            MiB  Test
+  CPU0                 1821.0               1820.5
+
+But when not, the counts aggregated in the metric leader and only 1
+column should be shown:
+
+  $ perf stat -M test --metric-only -a sleep 1
+   Performance counter stats for 'system wide':
+
+              MiB  Test
+                5909.4
+
+         1.001258915 seconds time elapsed
+
+Achieve this by skipping events that aren't metric leaders when
+printing column headers and aggregation isn't disabled.
+
+The bug is long standing, the fixes tag is set to a refactor as that
+is as far back as is reasonable to backport.
+
+Fixes: 088519f318be3a41 ("perf stat: Move the display functions to stat-display.c")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kaige Ye <ye@kaige.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240510051309.2452468-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/perf/util/stat-display.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index d4662ccb94c8f..5a661a0e76632 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1566,10 +1566,15 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- 			int err;
+diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+index ef9a3df459657..9053db0dc00a1 100644
+--- a/tools/perf/util/stat-display.c
++++ b/tools/perf/util/stat-display.c
+@@ -1162,6 +1162,9 @@ static void print_metric_headers(struct perf_stat_config *config,
  
- 			inode = f2fs_iget(sb, dni.ino);
--			if (IS_ERR(inode) || is_bad_inode(inode) ||
--					special_file(inode->i_mode))
-+			if (IS_ERR(inode))
- 				continue;
- 
-+			if (is_bad_inode(inode) ||
-+					special_file(inode->i_mode)) {
-+				iput(inode);
-+				continue;
-+			}
+ 	/* Print metrics headers only */
+ 	evlist__for_each_entry(evlist, counter) {
++		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
++			continue;
 +
- 			err = f2fs_gc_pinned_control(inode, gc_type, segno);
- 			if (err == -EAGAIN) {
- 				iput(inode);
+ 		os.evsel = counter;
+ 
+ 		if (!first && config->json_output)
 -- 
 2.43.0
 
