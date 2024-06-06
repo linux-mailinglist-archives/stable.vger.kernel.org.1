@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-49896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570998FEF4C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6D88FEE14
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0593F286F95
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EE302858B5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BF81CBE90;
-	Thu,  6 Jun 2024 14:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73BA1BF90A;
+	Thu,  6 Jun 2024 14:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOmmGVhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waPihUHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89471A2579;
-	Thu,  6 Jun 2024 14:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62F319EEC6;
+	Thu,  6 Jun 2024 14:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683764; cv=none; b=eYozYCvQffm9lXhpYhcxo67gU2buTnxMJDDiaYFV0AXAq8EEdkuB1UC8sXDiYuqzYEVjgfJXxd2AeEvfG+Yzuxvb0A6T79qLb1hw6AuCrcf81BxGl45ji1JUUX4Zy2SA2+R6/b6Kb/Zw0cuE9Tb1B4xyxMwse4FB95dHvHUWeFY=
+	t=1717683556; cv=none; b=hSQVB1LuON5NRC+rH/8XJWFRjy7IL2L6Zc3UISKDKmgQtBA+ZbVNdHQpCXdVvcbjADCzevl3T8+bpyadiO+pif8gKHFy/+V6gppb6GjXUbVmDuHaLNy36H1q8jlZ1urdEOAyOFt56CYIsDzH19rmwyMrmPzjbDcbImdtQC7IzKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683764; c=relaxed/simple;
-	bh=jZI463VtpLL9ottAqbeWd5iZkeJiEvFtrr6/l1wUBFw=;
+	s=arc-20240116; t=1717683556; c=relaxed/simple;
+	bh=e4baXh57UCybRsIfx1zKI3hmVcPWL6PGxf/odJ6s6No=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJD4NrDMTe2PncL57rkeIrim3pSY4S6Cp2tBm9sfN5K4e7HHpFNCokGVvffgX+ms/vU2s5eHOvqil5J33oMn5fbCJ4dVbtHkQV6I5O3Lvi+ejnZPDBj+YasZb1iUEYmTFBqfWtMCA5K1c/MRIA6SjEKTpp55SmJjGykBAhcBcK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOmmGVhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B991FC2BD10;
-	Thu,  6 Jun 2024 14:22:44 +0000 (UTC)
+	 MIME-Version; b=cw6XmcJqP0QJJUgQYubuDpDfil57EkTG7uERURhW8Ac+eBMnqwvasN+Ze0KilaUHdFaLfiAX9I03egjiT91aYEkh/s1avLzaWGMRDmKJTn/SahDDX7qGIZY+v8xTRMTDfcIQilnVWomaCSEuvv5t5mnz1FvvOWfFNHb6dQGTcOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waPihUHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85110C32781;
+	Thu,  6 Jun 2024 14:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683764;
-	bh=jZI463VtpLL9ottAqbeWd5iZkeJiEvFtrr6/l1wUBFw=;
+	s=korg; t=1717683556;
+	bh=e4baXh57UCybRsIfx1zKI3hmVcPWL6PGxf/odJ6s6No=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QOmmGVhLSzT9DOGyQz+GPiH+5QTGrT43zccySr8bhPIpXWSEVXnHZY5Xg5/N5F5vg
-	 zv4mwDZcZFCl4JGMAcxcJN+e1v8UV5QTI/XjuB6M7ZYA+XIQg7Up+1eOohb2rq2OoX
-	 HhqvkwtkxnLu3Co6qjmKniAMc/Q1UZvUFDfPp4bI=
+	b=waPihUHjl8W6joxjXYmJByEg2H/sWIuC3oVAbTXIeIQ5pv7YN7cYha67dF6fcfCBa
+	 N6TtPvEOvCOrpZYYkz6BpWegeSsRcriAsScTZRi72WwMpXYpLFo3Y/CdAmAggZtE6b
+	 lC/hv0Y4jAawxnQ9gZ4KmrzzImB3LHhG0UdDzc/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Suman Ghosh <sumang@marvell.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 704/744] net: micrel: Fix lan8841_config_intr after getting out of sleep mode
+Subject: [PATCH 6.1 447/473] ALSA: hda/realtek: Amend G634 quirk to enable rear speakers
 Date: Thu,  6 Jun 2024 16:06:16 +0200
-Message-ID: <20240606131755.055726419@linuxfoundation.org>
+Message-ID: <20240606131714.496228667@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 4fb679040d9f758eeb3b4d01bbde6405bf20e64e ]
+[ Upstream commit b759a5f097cd42c666f1ebca8da50ff507435fbe ]
 
-When the interrupt is enabled, the function lan8841_config_intr tries to
-clear any pending interrupts by reading the interrupt status, then
-checks the return value for errors and then continue to enable the
-interrupt. It has been seen that once the system gets out of sleep mode,
-the interrupt status has the value 0x400 meaning that the PHY detected
-that the link was in low power. That is correct value but the problem is
-that the check is wrong.  We try to check for errors but we return an
-error also in this case which is not an error. Therefore fix this by
-returning only when there is an error.
+Amends the last quirk for the G634 with 0x1caf subsys to enable the rear
+speakers via pincfg.
 
-Fixes: a8f1a19d27ef ("net: micrel: Add support for lan8841 PHY")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/r/20240524085350.359812-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lore.kernel.org/r/20230704044619.19343-4-luke@ljones.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 2be46155d792 ("ALSA: hda/realtek: Adjust G814JZR to use SPI init for amp")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index e4c06336bd254..fc31fcfb0cdb4 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -3450,7 +3450,7 @@ static int lan8841_config_intr(struct phy_device *phydev)
- 
- 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
- 		err = phy_read(phydev, LAN8814_INTS);
--		if (err)
-+		if (err < 0)
- 			return err;
- 
- 		/* Enable / disable interrupts. It is OK to enable PTP interrupt
-@@ -3466,6 +3466,14 @@ static int lan8841_config_intr(struct phy_device *phydev)
- 			return err;
- 
- 		err = phy_read(phydev, LAN8814_INTS);
-+		if (err < 0)
-+			return err;
-+
-+		/* Getting a positive value doesn't mean that is an error, it
-+		 * just indicates what was the status. Therefore make sure to
-+		 * clear the value and say that there is no error.
-+		 */
-+		err = 0;
- 	}
- 
- 	return err;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 4d7c23b20cce0..c08bf42c602dd 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7207,6 +7207,7 @@ enum {
+ 	ALC285_FIXUP_SPEAKER2_TO_DAC1,
+ 	ALC285_FIXUP_ASUS_SPEAKER2_TO_DAC1,
+ 	ALC285_FIXUP_ASUS_HEADSET_MIC,
++	ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS,
+ 	ALC285_FIXUP_ASUS_I2C_SPEAKER2_TO_DAC1,
+ 	ALC285_FIXUP_ASUS_I2C_HEADSET_MIC,
+ 	ALC280_FIXUP_HP_HEADSET_MIC,
+@@ -8214,6 +8215,15 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC285_FIXUP_ASUS_SPEAKER2_TO_DAC1
+ 	},
++	[ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x14, 0x90170120 },
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC285_FIXUP_ASUS_HEADSET_MIC
++	},
+ 	[ALC285_FIXUP_ASUS_I2C_SPEAKER2_TO_DAC1] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_speaker2_to_dac1,
+@@ -9860,7 +9870,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1c23, "Asus X55U", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
+-	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1d1f, "ASUS ROG Strix G17 2023 (G713PV)", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
 -- 
 2.43.0
 
