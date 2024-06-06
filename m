@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-48542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BE48FE971
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB6B8FEE7B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750862835E4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AF122859F5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8F7197A97;
-	Thu,  6 Jun 2024 14:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050B9197538;
+	Thu,  6 Jun 2024 14:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knwbhKJ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MketUEbN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF68196DA8;
-	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7586196D90;
+	Thu,  6 Jun 2024 14:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683022; cv=none; b=imzivfKk+fTKOOuFeOr6z2q0v7z3FpHkMuMezVHRrBh5hhzej/a/35b+nCxSQnzYedi+uuwu7x4DjY6H32ClB9lRF6EV3n8jzNozSNmScUkbw4xQ5dgXWqtPYTuYxEk5OE4csNKDHEG4B/mJl9UdxzDqxq1u3SuCpCTv8JUq4b0=
+	t=1717683665; cv=none; b=VDdLFbvij//fa3oqtgZ9pHBIGSPIeYeor0SL0g7sSk+gjJkcogN7saLos4M/7Q00W8jXZ/15WQn34p/lDatgc9ZnFEvtc4eMxOlI952FPrp0EGIl1pw3L0cCljkfr1CWf4JiB4ys6mrmB++liqQcFGbP/NewY9+t2RnTuIn9VYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683022; c=relaxed/simple;
-	bh=kYd6Hle+YGzyPUVWdr1Lp2YJEebm2FNuNw093jScmiU=;
+	s=arc-20240116; t=1717683665; c=relaxed/simple;
+	bh=C1hBd1yHkS1eVoybmemrVFWpBMu3XaN9/YbG5CWG8II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWXLXeuMbwGTUknxMFaR8LaY4HWA7yD1FhaMZmvO08xjN1XNelBqDjekTTBWTiP2OIRNnEITy4t16kR6SmhFVc34cQXulKOVKeCidq4ujA8a3NbvWFTvnPippQZL+RI0+rT7lbQfpEXW+kNIP4SaRmrwjDMPdHSwu6PuyvpgM4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knwbhKJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C250BC2BD10;
-	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Sm8dEhtFLafSKhfNL3UttaKlcsyqzWvUdLXGRnDJ/UmxrO5ZnbxM4ncAsEH8IcrJ3jfikZHxQoAoPkw9adJRM0bQYga+4Jwn9tdxe06bgwTfOLzFHoiwj3vasJd1ZT1v4p2hWbpG4FRq8pjIMxzYNLocilYGgq/aTAxElWfW9q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MketUEbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9842DC2BD10;
+	Thu,  6 Jun 2024 14:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683021;
-	bh=kYd6Hle+YGzyPUVWdr1Lp2YJEebm2FNuNw093jScmiU=;
+	s=korg; t=1717683665;
+	bh=C1hBd1yHkS1eVoybmemrVFWpBMu3XaN9/YbG5CWG8II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knwbhKJ1dOC/jtjklu+cA9hsSHWyTtDc7V0Hu9ifr+eINhN+ps2jX3zegNaJaqG9y
-	 Gfzp3Cdz0aLSP3Lcd90vH1NpaLMstUlWEMKNeKpav3s80LeBDhazs/FNjH1UvNgwDm
-	 1GRyp9GxgELUJR/hftvKg5Hk0RlMNCNoVGr2ewUM=
+	b=MketUEbNkWJMmVtZGuWJJdyEcDzYykX7t95BSXDqMo1RdR37/Ig0LOmDQ9SXjYJxr
+	 MUROFlal+Z+4XiV0HRF4PiEWEXiNX1icr+q81veljbZx+dGfmSQnw1XTZPC6qXDYGI
+	 YVOuFWRunFMt+wXCc/47J/ddKMAukg8bT1L4agik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 243/374] regulator: pickable ranges: dont always cache vsel
+Subject: [PATCH 6.6 550/744] misc/pvpanic-pci: register attributes via pci_driver
 Date: Thu,  6 Jun 2024 16:03:42 +0200
-Message-ID: <20240606131659.958527754@linuxfoundation.org>
+Message-ID: <20240606131750.096708902@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,118 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit f4f4276f985a5aac7b310a4ed040b47e275e7591 ]
+[ Upstream commit ee59be35d7a8be7fcaa2d61fb89734ab5c25e4ee ]
 
-Some PMICs treat the vsel_reg same as apply-bit. Eg, when voltage range
-is changed, the new voltage setting is not taking effect until the vsel
-register is written.
+In __pci_register_driver(), the pci core overwrites the dev_groups field of
+the embedded struct device_driver with the dev_groups from the outer
+struct pci_driver unconditionally.
 
-Add a flag 'range_applied_by_vsel' to the regulator desc to indicate this
-behaviour and to force the vsel value to be written to hardware if range
-was changed, even if the old selector was same as the new one.
+Set dev_groups in the pci_driver to make sure it is used.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://msgid.link/r/ZktCpcGZdgHWuN_L@fedora
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 1ace99d7c7c4 ("regulator: tps6287x: Force writing VSEL bit")
+This was broken since the introduction of pvpanic-pci.
+
+Fixes: db3a4f0abefd ("misc/pvpanic: add PCI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Fixes: ded13b9cfd59 ("PCI: Add support for dev_groups to struct pci_driver")
+Link: https://lore.kernel.org/r/20240411-pvpanic-pci-dev-groups-v1-1-db8cb69f1b09@weissschuh.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/helpers.c      | 43 ++++++++++++++++++++++----------
- include/linux/regulator/driver.h |  3 +++
- 2 files changed, 33 insertions(+), 13 deletions(-)
+ drivers/misc/pvpanic/pvpanic-pci.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/regulator/helpers.c b/drivers/regulator/helpers.c
-index d492683365532..6e1ace660b8cf 100644
---- a/drivers/regulator/helpers.c
-+++ b/drivers/regulator/helpers.c
-@@ -161,6 +161,32 @@ int regulator_get_voltage_sel_pickable_regmap(struct regulator_dev *rdev)
- }
- EXPORT_SYMBOL_GPL(regulator_get_voltage_sel_pickable_regmap);
- 
-+static int write_separate_vsel_and_range(struct regulator_dev *rdev,
-+					 unsigned int sel, unsigned int range)
-+{
-+	bool range_updated;
-+	int ret;
-+
-+	ret = regmap_update_bits_base(rdev->regmap, rdev->desc->vsel_range_reg,
-+				      rdev->desc->vsel_range_mask,
-+				      range, &range_updated, false, false);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Some PMICs treat the vsel_reg same as apply-bit. Force it to be
-+	 * written if the range changed, even if the old selector was same as
-+	 * the new one
-+	 */
-+	if (rdev->desc->range_applied_by_vsel && range_updated)
-+		return regmap_write_bits(rdev->regmap,
-+					rdev->desc->vsel_reg,
-+					rdev->desc->vsel_mask, sel);
-+
-+	return regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
-+				  rdev->desc->vsel_mask, sel);
-+}
-+
- /**
-  * regulator_set_voltage_sel_pickable_regmap - pickable range set_voltage_sel
-  *
-@@ -199,21 +225,12 @@ int regulator_set_voltage_sel_pickable_regmap(struct regulator_dev *rdev,
- 	range = rdev->desc->linear_range_selectors_bitfield[i];
- 	range <<= ffs(rdev->desc->vsel_range_mask) - 1;
- 
--	if (rdev->desc->vsel_reg == rdev->desc->vsel_range_reg) {
--		ret = regmap_update_bits(rdev->regmap,
--					 rdev->desc->vsel_reg,
-+	if (rdev->desc->vsel_reg == rdev->desc->vsel_range_reg)
-+		ret = regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
- 					 rdev->desc->vsel_range_mask |
- 					 rdev->desc->vsel_mask, sel | range);
--	} else {
--		ret = regmap_update_bits(rdev->regmap,
--					 rdev->desc->vsel_range_reg,
--					 rdev->desc->vsel_range_mask, range);
--		if (ret)
--			return ret;
--
--		ret = regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
--				  rdev->desc->vsel_mask, sel);
--	}
-+	else
-+		ret = write_separate_vsel_and_range(rdev, sel, range);
- 
- 	if (ret)
- 		return ret;
-diff --git a/include/linux/regulator/driver.h b/include/linux/regulator/driver.h
-index 22a07c0900a41..f230a472ccd35 100644
---- a/include/linux/regulator/driver.h
-+++ b/include/linux/regulator/driver.h
-@@ -299,6 +299,8 @@ enum regulator_type {
-  * @vsel_range_reg: Register for range selector when using pickable ranges
-  *		    and ``regulator_map_*_voltage_*_pickable`` functions.
-  * @vsel_range_mask: Mask for register bitfield used for range selector
-+ * @range_applied_by_vsel: A flag to indicate that changes to vsel_range_reg
-+ *			   are only effective after vsel_reg is written
-  * @vsel_reg: Register for selector when using ``regulator_map_*_voltage_*``
-  * @vsel_mask: Mask for register bitfield used for selector
-  * @vsel_step: Specify the resolution of selector stepping when setting
-@@ -389,6 +391,7 @@ struct regulator_desc {
- 
- 	unsigned int vsel_range_reg;
- 	unsigned int vsel_range_mask;
-+	bool range_applied_by_vsel;
- 	unsigned int vsel_reg;
- 	unsigned int vsel_mask;
- 	unsigned int vsel_step;
+diff --git a/drivers/misc/pvpanic/pvpanic-pci.c b/drivers/misc/pvpanic/pvpanic-pci.c
+index 689af4c28c2a9..2494725dfacfa 100644
+--- a/drivers/misc/pvpanic/pvpanic-pci.c
++++ b/drivers/misc/pvpanic/pvpanic-pci.c
+@@ -48,8 +48,6 @@ static struct pci_driver pvpanic_pci_driver = {
+ 	.name =         "pvpanic-pci",
+ 	.id_table =     pvpanic_pci_id_tbl,
+ 	.probe =        pvpanic_pci_probe,
+-	.driver = {
+-		.dev_groups = pvpanic_dev_groups,
+-	},
++	.dev_groups =   pvpanic_dev_groups,
+ };
+ module_pci_driver(pvpanic_pci_driver);
 -- 
 2.43.0
 
