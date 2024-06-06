@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-49087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D208FEBCD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D788FEC01
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12441B25D1C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 229861C20CE9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BB819AA49;
-	Thu,  6 Jun 2024 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B379F198825;
+	Thu,  6 Jun 2024 14:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXRr4Hgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acgV3/Li"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E75197A91;
-	Thu,  6 Jun 2024 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736B719AA75;
+	Thu,  6 Jun 2024 14:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683296; cv=none; b=mN7G2cypvlU2YlFv0PVs0I1hreBOyEea3Tn6HyzRSk4LCo9M30ECjJaoZ1Nv4m/LHaUVZwiJK99peJppV5AgKtNwGOZ/NTOKkMBAEFOzPFzk/nbKfyNNgvTqUGDBqpRCH8yxyyWh44ynbaCimvxuLQHtKq/gFLxVX2lkeyZY2es=
+	t=1717683319; cv=none; b=mqe1HnPcK2wLrrxBALWZ9zeOMQA8n2kbYcQpQpNuSwIQvFu2ps0mDQU35rmBPNv8UioGAaTljDRS5SDKtAubOWGpCy8gdnScruISdWmCRBVAZpAFOz7lF5SYTAhYlmqbgMzGapNmlOzfAa4jJCsjni8p3BLN0afOurYErQwPelI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683296; c=relaxed/simple;
-	bh=Jda6frCktPjEszAw8LuEwN8CAmPWNAM0eceXuQsdKZ0=;
+	s=arc-20240116; t=1717683319; c=relaxed/simple;
+	bh=irxqmSiqAcLTtXw8BYUM+d/EEZLdUAT1LkCo9O2q5+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+YBLO5F1IyQwsYqeZLBErxnunu2iu0qOfT7/EbnJQprh+pL3hqdkBUN34OxZHqpnBqn/ii9+lcThJ04okE1LtGmMBD7j9jj6Sm/sIxXHSHSbNHGCSmIHmEZ/SPOsJYZCP/TykJCRZF+qvdcJi4VBXnoMVOaAhHVG/gZQZ3P9as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXRr4Hgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF23DC2BD10;
-	Thu,  6 Jun 2024 14:14:55 +0000 (UTC)
+	 MIME-Version; b=bJMdEUeOU/5C5XC9dg6BAsWz2r7vowXtPmelOhOLJqSvKzz+Lm7IE2HWsHCsdFkqVoPaSUUEBnjcIf45UIMZnzfOu4c2pNSvwfIywwiEEZH57rYEynwqPXtrzOOE2WG+SbzQU2dXv/UbzLCHABua8FhsgKliU6d0vD9jVY30yTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acgV3/Li; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD83C2BD10;
+	Thu,  6 Jun 2024 14:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683295;
-	bh=Jda6frCktPjEszAw8LuEwN8CAmPWNAM0eceXuQsdKZ0=;
+	s=korg; t=1717683319;
+	bh=irxqmSiqAcLTtXw8BYUM+d/EEZLdUAT1LkCo9O2q5+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXRr4HgiYqSBpEd0p+BUPLfDP7At4Eq09WggipnxeYXAI+xyx+Kvd+cOObv7HutSU
-	 W/9LZgHt51cCx1TeI3+Xs8HwVVwX6/C3Jm9BcvIqPZyesCBkpKykqh8M0O19h0u8WU
-	 ecLNhAoOzdC11O1EN1JdS6ew4U749TnRiyPWWGOI=
+	b=acgV3/Lib2lgIYHeWckCEN/ZrLiGjLIIdI0yg+bGM8gdGZtkIxwHI7fnI0fx2ExEi
+	 x2GbG5n1AWw4LpbBF1s894vlHYnrgkzZuakyXpZ4z1LXXNFdt2on+uqVTYmRcKSetM
+	 p1wQMYQePHShrE96a5qNPFR9+acAEvl1D2a8h4Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Stan Johnson <userm57@yahoo.com>
-Subject: [PATCH 6.6 236/744] m68k: mac: Fix reboot hang on Mac IIci
-Date: Thu,  6 Jun 2024 15:58:28 +0200
-Message-ID: <20240606131739.969635280@linuxfoundation.org>
+	Gao Xingwang <gaoxingwang1@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 237/744] net: ipv6: fix wrong start position when receive hop-by-hop fragment
+Date: Thu,  6 Jun 2024 15:58:29 +0200
+Message-ID: <20240606131740.002630273@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,97 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: gaoxingwang <gaoxingwang1@huawei.com>
 
-[ Upstream commit 265a3b322df9a973ff1fc63da70af456ab6ae1d6 ]
+[ Upstream commit 1cd354fe1e4864eeaff62f66ee513080ec946f20 ]
 
-Calling mac_reset() on a Mac IIci does reset the system, but what
-follows is a POST failure that requires a manual reset to resolve.
-Avoid that by using the 68030 asm implementation instead of the C
-implementation.
+In IPv6, ipv6_rcv_core will parse the hop-by-hop type extension header and increase skb->transport_header by one extension header length.
+But if there are more other extension headers like fragment header at this time, the skb->transport_header points to the second extension header,
+not the transport layer header or the first extension header.
 
-Apparently the SE/30 has a similar problem as it has used the asm
-implementation since before git. This patch extends that solution to
-other systems with a similar ROM.
+This will result in the start and nexthdrp variable not pointing to the same position in ipv6frag_thdr_trunced,
+and ipv6_skip_exthdr returning incorrect offset and frag_off.Sometimes,the length of the last sharded packet is smaller than the calculated incorrect offset, resulting in packet loss.
+We can use network header to offset and calculate the correct position to solve this problem.
 
-After this patch, the only systems still using the C implementation are
-68040 systems where adb_type is either MAC_ADB_IOP or MAC_ADB_II. This
-implies a 1 MiB Quadra ROM.
-
-This now includes the Quadra 900/950, which previously fell through to
-the "should never get here" catch-all.
-
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/480ebd1249d229c6dc1f3f1c6d599b8505483fd8.1714797072.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 9d9e937b1c8b (ipv6/netfilter: Discard first fragment not including all headers)
+Signed-off-by: Gao Xingwang <gaoxingwang1@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/mac/misc.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ net/ipv6/reassembly.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
-index c7cb29f0ff016..29e06f46ab511 100644
---- a/arch/m68k/mac/misc.c
-+++ b/arch/m68k/mac/misc.c
-@@ -451,30 +451,18 @@ void mac_poweroff(void)
- 
- void mac_reset(void)
- {
--	if (macintosh_config->adb_type == MAC_ADB_II &&
--	    macintosh_config->ident != MAC_MODEL_SE30) {
--		/* need ROMBASE in booter */
--		/* indeed, plus need to MAP THE ROM !! */
--
--		if (mac_bi_data.rombase == 0)
--			mac_bi_data.rombase = 0x40800000;
--
--		/* works on some */
--		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
--
--		local_irq_disable();
--		rom_reset();
- #ifdef CONFIG_ADB_CUDA
--	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
--	           macintosh_config->adb_type == MAC_ADB_CUDA) {
-+	if (macintosh_config->adb_type == MAC_ADB_EGRET ||
-+	    macintosh_config->adb_type == MAC_ADB_CUDA) {
- 		cuda_restart();
-+	} else
- #endif
- #ifdef CONFIG_ADB_PMU
--	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
-+	if (macintosh_config->adb_type == MAC_ADB_PB2) {
- 		pmu_restart();
-+	} else
- #endif
--	} else if (CPU_IS_030) {
--
-+	if (CPU_IS_030) {
- 		/* 030-specific reset routine.  The idea is general, but the
- 		 * specific registers to reset are '030-specific.  Until I
- 		 * have a non-030 machine, I can't test anything else.
-@@ -522,6 +510,18 @@ void mac_reset(void)
- 		    "jmp %/a0@\n\t" /* jump to the reset vector */
- 		    ".chip 68k"
- 		    : : "r" (offset), "a" (rombase) : "a0");
-+	} else {
-+		/* need ROMBASE in booter */
-+		/* indeed, plus need to MAP THE ROM !! */
-+
-+		if (mac_bi_data.rombase == 0)
-+			mac_bi_data.rombase = 0x40800000;
-+
-+		/* works on some */
-+		rom_reset = (void *)(mac_bi_data.rombase + 0xa);
-+
-+		local_irq_disable();
-+		rom_reset();
- 	}
- 
- 	/* should never get here */
+diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
+index 5ebc47da1000c..2af98edef87ee 100644
+--- a/net/ipv6/reassembly.c
++++ b/net/ipv6/reassembly.c
+@@ -369,7 +369,7 @@ static int ipv6_frag_rcv(struct sk_buff *skb)
+ 	 * the source of the fragment, with the Pointer field set to zero.
+ 	 */
+ 	nexthdr = hdr->nexthdr;
+-	if (ipv6frag_thdr_truncated(skb, skb_transport_offset(skb), &nexthdr)) {
++	if (ipv6frag_thdr_truncated(skb, skb_network_offset(skb) + sizeof(struct ipv6hdr), &nexthdr)) {
+ 		__IP6_INC_STATS(net, __in6_dev_get_safely(skb->dev),
+ 				IPSTATS_MIB_INHDRERRORS);
+ 		icmpv6_param_prob(skb, ICMPV6_HDR_INCOMP, 0);
 -- 
 2.43.0
 
