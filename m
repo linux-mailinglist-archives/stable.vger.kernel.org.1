@@ -1,68 +1,57 @@
-Return-Path: <stable+bounces-48337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD648FE892
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F41B98FECB4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9276D1F2366D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C1A61F22C5C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FAD197511;
-	Thu,  6 Jun 2024 14:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D607198A37;
+	Thu,  6 Jun 2024 14:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1rhIqQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfLbCzFj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA57E19750E;
-	Thu,  6 Jun 2024 14:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDC419B591;
+	Thu,  6 Jun 2024 14:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682909; cv=none; b=YOXLzQEyRU4mzvQ2inttGJDMII84EibQ6zBCT64HZEUPaN+6YEAQ3Q5634ivwmxsiQAKGaI7k68saZzy+c5U0K+rOzbmCh5yEaIk1BdlN7cu65hIPDntxihTFhMhjKm1GhmIglV+s8PUI3KFgi4g+9CHJtlInPg8GRp3VO6+SUA=
+	t=1717683399; cv=none; b=rqUXvP9Ikqiznizg5zNptnAb2NSA364co4wX3djdzZ4QPyLieDMNPqzfl1FbK8S0oFSc5mB8tJuD0zjjKWyCVYOHTN7ZENMFaPb9C+39zHe09EIa8O5AMIULzqgCF89uoMaaYVA8F/b6YFYnW+TrxW0DJ7JzfHxvwuJwkhFNVJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682909; c=relaxed/simple;
-	bh=bprqkH+xezxvMOPl4f3T+z7VmAMNA1suEkFAsKoFzoY=;
+	s=arc-20240116; t=1717683399; c=relaxed/simple;
+	bh=bQyCn3cHwWpiruJRJr2j20SAQkiYIV7ebpeh0C0yt2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c49rXzJu7eSPP3CUIFlGt2/xBOm4uhcL3veVRFf9N3HQUj9S9vpDECLT0U/hANEMcQ81h+lLNoToolfL+A9ggMeQhghbFcNYas6Cn3Nm9uWhxvCldFB60h74ia9eg+mwR8FCpSSmjJ89EqswSbwEKZPo+8GIs4KZsE2ICqbMVZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1rhIqQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A2BC2BD10;
-	Thu,  6 Jun 2024 14:08:29 +0000 (UTC)
+	 MIME-Version; b=k5Z3ogXjYJonF5YirJwyL4TYmIK7KXdKEhAiOprjemOoXxLXkoZNK6gHUOY5wjaEw2aWYd2j9Sb6RoQOTeCn6NonIxn+kPuj5uL1UIPwLsmkGoQo8ljMUrt5GEmVkxyN6qxrVcfJLdeTlNJRiQiJOANQOREbgc5NSQNmyWVmmeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfLbCzFj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3D3C2BD10;
+	Thu,  6 Jun 2024 14:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682909;
-	bh=bprqkH+xezxvMOPl4f3T+z7VmAMNA1suEkFAsKoFzoY=;
+	s=korg; t=1717683399;
+	bh=bQyCn3cHwWpiruJRJr2j20SAQkiYIV7ebpeh0C0yt2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1rhIqQmBu2wAGaScWfvIk3WiaM109HQoKbDgVILTyGyMCEIB0lVdePqUE8Xkzif2
-	 aTxg8D6TYoEYq7QlDISO4+7MNlp0aicHd6oJeO3nmlQ7UOYbbygnRYrth5N2PpwQZQ
-	 8BoLANbCEE2bICUGjM/MjaQpPcgUUMoSCxCO8CvE=
+	b=CfLbCzFjYd1Pib7T3Xl7SQ13i4m3G8zxOK2ltokC7jjyyNoV66oqGwWFT/wmnwMqq
+	 yVFOvYyG4PIuwGn2J+kfYtPfW5nk0Uz8PAybbXvraGfcea6K2DQcV2Buqgd+9XBATs
+	 r1EjxVm0nMf5NfseLwLlWYYqJF0XO0FihvenK7BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Spoorthy S <spoorts2@in.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 036/374] perf map: Remove kernel map before updating start and end addresses
+Subject: [PATCH 6.6 343/744] RDMA/hns: Use complete parentheses in macros
 Date: Thu,  6 Jun 2024 16:00:15 +0200
-Message-ID: <20240606131653.034344309@linuxfoundation.org>
+Message-ID: <20240606131743.476564925@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,66 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit df12e21d4e15e48a5e7d12e58f1a00742c4177d0 ]
+[ Upstream commit 4125269bb9b22e1d8cdf4412c81be8074dbc61ca ]
 
-In a debug build there is validation that mmap lists are sorted when
-taking a lock. In machine__update_kernel_mmap() the start and end
-addresses are updated resulting in an unsorted list before the map is
-removed from the list. When the map is removed, the lock is taken which
-triggers the validation and the failure:
+Use complete parentheses to ensure that macro expansion does
+not produce unexpected results.
 
-  $ perf test "object code reading"
-  --- start ---
-  perf: util/maps.c:88: check_invariants: Assertion `map__start(prev) <= map__start(map)' failed.
-  Aborted
-
-Fix it by updating the addresses after removal, but before insertion.
-The bug depends on the ordering and type of debug info on the system and
-doesn't reproduce everywhere.
-
-Fixes: 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Spoorthy S <spoorts2@in.ibm.com>
-Link: https://lore.kernel.org/r/20240410103458.813656-4-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: a25d13cbe816 ("RDMA/hns: Add the interfaces to support multi hop addressing for the contexts in hip08")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-10-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/machine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 527517db31821..07c22f765fab4 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -1549,8 +1549,8 @@ static int machine__update_kernel_mmap(struct machine *machine,
- 	updated = map__get(orig);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.h b/drivers/infiniband/hw/hns/hns_roce_hem.h
+index 7d23d3c51da46..fea6d7d508b60 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.h
+@@ -61,16 +61,16 @@ enum {
+ 	 (sizeof(struct scatterlist) + sizeof(void *)))
  
- 	machine->vmlinux_map = updated;
--	machine__set_kernel_mmap(machine, start, end);
- 	maps__remove(machine__kernel_maps(machine), orig);
-+	machine__set_kernel_mmap(machine, start, end);
- 	err = maps__insert(machine__kernel_maps(machine), updated);
- 	map__put(orig);
+ #define check_whether_bt_num_3(type, hop_num) \
+-	(type < HEM_TYPE_MTT && hop_num == 2)
++	((type) < HEM_TYPE_MTT && (hop_num) == 2)
  
+ #define check_whether_bt_num_2(type, hop_num) \
+-	((type < HEM_TYPE_MTT && hop_num == 1) || \
+-	(type >= HEM_TYPE_MTT && hop_num == 2))
++	(((type) < HEM_TYPE_MTT && (hop_num) == 1) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == 2))
+ 
+ #define check_whether_bt_num_1(type, hop_num) \
+-	((type < HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0) || \
+-	(type >= HEM_TYPE_MTT && hop_num == 1) || \
+-	(type >= HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0))
++	(((type) < HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == 1) || \
++	((type) >= HEM_TYPE_MTT && (hop_num) == HNS_ROCE_HOP_NUM_0))
+ 
+ struct hns_roce_hem_chunk {
+ 	struct list_head	 list;
 -- 
 2.43.0
 
