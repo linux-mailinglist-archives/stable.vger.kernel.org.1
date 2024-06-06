@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8908FEDDF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02938FE910
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A71791C23BC1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EEFE2835F3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBB119750F;
-	Thu,  6 Jun 2024 14:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3258197538;
+	Thu,  6 Jun 2024 14:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvEU7y7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcchwRsz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2BC19E7F2;
-	Thu,  6 Jun 2024 14:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15CD196C9C;
+	Thu,  6 Jun 2024 14:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683535; cv=none; b=aY/lrwd4yY1Ki6gkaCZ6aLkAiXWnielfgs2ZV5NrO67UjrLrn6whYmNTkDUpkCrOZjUgzf4/OEdAKnebkGc6bFuTrqXM9/xmhXaQXJtoAkodgq6b2dHryyKnS9m0ueG2AqYu8d0XU0WI7U0dAS9uTtq4Brjv5D4dpBJ5t1pxmt8=
+	t=1717682974; cv=none; b=Kv9bwSxJOzeWuYQeHys7Uk65IbKI6Mc2Z436OOM+rgsxxLTsPTKVZ3uyWwM02OTiDdc522fvEBIgvv1H9iWhRF0F+L8K1c/lM7GChM67d0/P/6cCsSV6MgbHWp3iBqkQ27GgpVHBP1eeflmVPYhbZD3zKwWOnvvJQmVdUn9ti6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683535; c=relaxed/simple;
-	bh=75zcS0SYcTg/2l4bTR0xMoRsNaoATkh7sIX6aJyXXq4=;
+	s=arc-20240116; t=1717682974; c=relaxed/simple;
+	bh=y4s/UobXaVwMB5TjdH8M+cRj4BMQH9bZlVs2rIjvsns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0NV3a04wf4bFL1rS2Pn/hnyYZJv8Zzpm7c6PKIkpd1jifDCyCKu1wtj+XPFM459NKFFAiEiLRfwu0d9uYVlw7I/Gr7WswrHcsalqOgmkQei1Rr576jLWJbU8EgzI5CJg/w3xALvydAWCC2Qsoun0ab6QKmJdP00AHja0IzO7bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvEU7y7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169A2C2BD10;
-	Thu,  6 Jun 2024 14:18:55 +0000 (UTC)
+	 MIME-Version; b=a9gpPHvcfq8lHxCdaTx7M2UbUDewyk9yXKXKLzjUjqD2OarVtygbnWUnObxzx4zsS5g9te0N19P2Tyk+o7HrZgDhDqPOvYKf56eDnQxddoXzBJEbpq8rdFXvqgi0PDfNMIUOBMvcGk2H1RMaqVXOOkOGBE5vhv6i2qtiqbkiLCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcchwRsz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6ECC2BD10;
+	Thu,  6 Jun 2024 14:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683535;
-	bh=75zcS0SYcTg/2l4bTR0xMoRsNaoATkh7sIX6aJyXXq4=;
+	s=korg; t=1717682974;
+	bh=y4s/UobXaVwMB5TjdH8M+cRj4BMQH9bZlVs2rIjvsns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvEU7y7FM8Hi5kgx+bIX4w7JStKwSle4Bgssvaink8hrhLI8l+5iitsTUW6FsGbGv
-	 iCH+JiIkcm+ArXgmM/tGhMj2L3pEt82LAUID10gm0VCgzQKe0nhnJScbynx951JPvW
-	 2rx/m9KFHaCayn7Be+OEllj86QahbfNo0n9DbMzw=
+	b=LcchwRszP2pvrpFjTqli8nY9uagcS8+E2aqm7RzR9oQ4OiCWTaBHYN4E7lMrSLVic
+	 /CK8wIjKkykCvZqnZENd3Wm9c+ynp0uhbBb+Gh66AHAh5sd8l1x1XVnl12jEonYxXM
+	 IaWA8iP0h4Q/cKgL8RjZbDTMcQG0Tq5gCked2OCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yabin Cui <yabinc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
+	Judith Mendez <jm@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 457/744] coresight: etm4x: Fix access to resource selector registers
-Date: Thu,  6 Jun 2024 16:02:09 +0200
-Message-ID: <20240606131747.127714212@linuxfoundation.org>
+Subject: [PATCH 6.9 151/374] mmc: sdhci_am654: Add ITAPDLYSEL in sdhci_j721e_4bit_set_clock
+Date: Thu,  6 Jun 2024 16:02:10 +0200
+Message-ID: <20240606131656.982982633@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit d6fc00d0f640d6010b51054aa8b0fd191177dbc9 ]
+[ Upstream commit 9dff65bb5e09903c27d9cff947dff4d22b6ea6a1 ]
 
-Resource selector pair 0 is always implemented and reserved. We must not
-touch it, even during save/restore for CPU Idle. Rest of the driver is
-well behaved. Fix the offending ones.
+Add ITAPDLYSEL to sdhci_j721e_4bit_set_clock function.
+This allows to set the correct ITAPDLY for timings that
+do not carry out tuning.
 
-Reported-by: Yabin Cui <yabinc@google.com>
-Fixes: f188b5e76aae ("coresight: etm4x: Save/restore state across CPU low power states")
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Tested-by: Yabin Cui <yabinc@google.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Link: https://lore.kernel.org/r/20240412142702.2882478-5-suzuki.poulose@arm.com
+Fixes: 1accbced1c32 ("mmc: sdhci_am654: Add Support for 4 bit IP on J721E")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240320223837.959900-7-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci_am654.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index a409872c25717..840e4cccf8c4b 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1720,7 +1720,8 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		state->trccntvr[i] = etm4x_read32(csa, TRCCNTVRn(i));
- 	}
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index 888bfda0ebc0e..884d1b53180d7 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -320,6 +320,7 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
+ 	unsigned char timing = host->mmc->ios.timing;
+ 	u32 otap_del_sel;
+ 	u32 itap_del_ena;
++	u32 itap_del_sel;
+ 	u32 mask, val;
  
--	for (i = 0; i < drvdata->nr_resource * 2; i++)
-+	/* Resource selector pair 0 is reserved */
-+	for (i = 2; i < drvdata->nr_resource * 2; i++)
- 		state->trcrsctlr[i] = etm4x_read32(csa, TRCRSCTLRn(i));
+ 	/* Setup DLL Output TAP delay */
+@@ -329,13 +330,18 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
+ 	val = (0x1 << OTAPDLYENA_SHIFT) |
+ 	      (otap_del_sel << OTAPDLYSEL_SHIFT);
  
- 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
-@@ -1851,7 +1852,8 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, state->trccntvr[i], TRCCNTVRn(i));
- 	}
++	/* Setup Input TAP delay */
+ 	itap_del_ena = sdhci_am654->itap_del_ena[timing];
++	itap_del_sel = sdhci_am654->itap_del_sel[timing];
  
--	for (i = 0; i < drvdata->nr_resource * 2; i++)
-+	/* Resource selector pair 0 is reserved */
-+	for (i = 2; i < drvdata->nr_resource * 2; i++)
- 		etm4x_relaxed_write32(csa, state->trcrsctlr[i], TRCRSCTLRn(i));
+-	mask |= ITAPDLYENA_MASK;
+-	val |= (itap_del_ena << ITAPDLYENA_SHIFT);
++	mask |= ITAPDLYENA_MASK | ITAPDLYSEL_MASK;
++	val |= (itap_del_ena << ITAPDLYENA_SHIFT) |
++	       (itap_del_sel << ITAPDLYSEL_SHIFT);
  
- 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
++	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK,
++			   1 << ITAPCHGWIN_SHIFT);
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, mask, val);
+-
++	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK, 0);
+ 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, CLKBUFSEL_MASK,
+ 			   sdhci_am654->clkbuf_sel);
+ 
 -- 
 2.43.0
 
