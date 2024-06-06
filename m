@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-49556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591F98FEDC6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7856A8FEDC9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D24F1C23A69
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2853B282147
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E506F1BD4FC;
-	Thu,  6 Jun 2024 14:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491141BD509;
+	Thu,  6 Jun 2024 14:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTTdIUFr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBv/WktU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FA01974E3;
-	Thu,  6 Jun 2024 14:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DD31974E3;
+	Thu,  6 Jun 2024 14:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683524; cv=none; b=dkOFYHCKXaMXCxoJnEXlc7qRpdlQaPeZIYP2CI27iKwYpCETWecNGlltnC9iy5tBFlgzLK73r4tY4wLIc5aaejeomG6XR8rRBjeN3DZM4AQxkPR4QnarHKeP927iN9eivpOABcRlUv8c7D3xhPDimGmYWTm2/o9/4VqddjJhXsA=
+	t=1717683526; cv=none; b=NkRr/o8sTLvbd/WlL40h5ZH3XVdHXJhe+scxMkOye2b3eW4fe3IXt1l2afqS/aqPPaOtjArAvM7t6R4s3DTtHPz/IG/N6nNMQtUuaqeb5HKwp8wq84qroV067geOSPSZzrPUTXm0JUmcoqScoHFDNhnNLGb60BSvQmCAm/PS0j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683524; c=relaxed/simple;
-	bh=vQQHGPS7vGPlaXlCPuBEr6Glazd2ctBGsf0KkUOQa5A=;
+	s=arc-20240116; t=1717683526; c=relaxed/simple;
+	bh=yanarUrW8rJ1U589Z0lTaeQIKBHw8EzJR7ZE0PDrpKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=El2JunuKT87/6qJH34gEYEVpQCXocZwf+qsvaeCu6QMz6yy0jEfVPtnOQ6OMTck/XNfNcR6n9crpwqcfW+ewIPVzHXTYKoR6yc2qrxsZZ90DInytlbRz2B0ovCXFsUErr9w3nMuFTJ6JL8zHHoxMOhxHtxaIKvByp5HrkhfjAbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTTdIUFr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83558C2BD10;
-	Thu,  6 Jun 2024 14:18:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D4fADq/xRAnoE+7hWvt6x9CmDIii0YnjNHzEiRy2Y/JIFs/+11Jf0pz97JWJ48qht3cdNGxLe63u/HyAXISGAMIA2V0ygqNEvMadL0jEz+7OoH9SNJODKQFZDuvkd3eia5oCe4SzsoZNfr/7unankuU4RHIgUWL/NxVmXU7Jwwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBv/WktU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86272C2BD10;
+	Thu,  6 Jun 2024 14:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683524;
-	bh=vQQHGPS7vGPlaXlCPuBEr6Glazd2ctBGsf0KkUOQa5A=;
+	s=korg; t=1717683525;
+	bh=yanarUrW8rJ1U589Z0lTaeQIKBHw8EzJR7ZE0PDrpKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTTdIUFr4iyPZsZJdCm2cGpgpx8oNRCs0+Vt0XTm2C8iSC4MrxtVKNyB4udA5/8iq
-	 K3/67ifzhF3lbWvFGmEkXRFEwRjQ1pjX9hsGFLGZIxR2m97aLHXBc3eNwTyG4zdqbI
-	 9Rff0zXbxbRCYCG90x+f0+YH9EAw+YntiZ+hQLLs=
+	b=eBv/WktU8sr3/OArFHa7ewA4xNbzGxvLecWkCoJNP6KYYS4CL1mhNz0ABhVkLJFYg
+	 /TLgry4Gc06ngzUyjVOykoEOnGU9Hr84lFcGLfL/YiRK53stBeHCyhC3TqawQmgvId
+	 dMtmz/ENEUj4gJgupvC3ErUfoGMFIBzDcFccnbSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 465/744] microblaze: Remove early printk call from cpuinfo-static.c
-Date: Thu,  6 Jun 2024 16:02:17 +0200
-Message-ID: <20240606131747.383021753@linuxfoundation.org>
+Subject: [PATCH 6.6 466/744] PCI: Wait for Link Training==0 before starting Link retrain
+Date: Thu,  6 Jun 2024 16:02:18 +0200
+Message-ID: <20240606131747.413974869@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -59,41 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 58d647506c92ccd3cfa0c453c68ddd14f40bf06f ]
+[ Upstream commit 73cb3a35f94db723c0211ad099bce55b2155e3f0 ]
 
-Early printk has been removed already that's why also remove calling it.
-Similar change has been done in cpuinfo-pvr-full.c by commit cfbd8d1979af
-("microblaze: Remove early printk setup").
+Two changes were made in link retraining logic independent of each other.
 
-Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/2f10db506be8188fa07b6ec331caca01af1b10f8.1712824039.git.michal.simek@amd.com
+The commit e7e39756363a ("PCI/ASPM: Avoid link retraining race") added a
+check to pcie_retrain_link() to ensure no Link Training is currently active
+to address the Implementation Note in PCIe r6.1 sec 7.5.3.7. At that time
+pcie_wait_for_retrain() only checked for the Link Training (LT) bit being
+cleared.
+
+The commit 680e9c47a229 ("PCI: Add support for polling DLLLA to
+pcie_retrain_link()") generalized pcie_wait_for_retrain() into
+pcie_wait_for_link_status() which can wait either for LT or the Data Link
+Layer Link Active (DLLLA) bit with 'use_lt' argument and supporting waiting
+for either cleared or set using 'active' argument.
+
+In the merge commit 1abb47390350 ("Merge branch 'pci/enumeration'"), those
+two divergent branches converged. The merge changed LT bit checking added
+in the commit e7e39756363a ("PCI/ASPM: Avoid link retraining race") to now
+wait for completion of any ongoing Link Training using DLLLA bit being set
+if 'use_lt' is false.
+
+When 'use_lt' is false, the pseudo-code steps of what occurs in
+pcie_retrain_link():
+
+	1. Wait for DLLLA==1
+	2. Trigger link to retrain
+	3. Wait for DLLLA==1
+
+Step 3 waits for the link to come up from the retraining triggered by Step
+2. As Step 1 is supposed to wait for any ongoing retraining to end, using
+DLLLA also for it does not make sense because link training being active is
+still indicated using LT bit, not with DLLLA.
+
+Correct the pcie_wait_for_link_status() parameters in Step 1 to only wait
+for LT==0 to ensure there is no ongoing Link Training.
+
+This only impacts the Target Speed quirk, which is the only case where
+waiting for DLLLA bit is used. It currently works in the problematic case
+by means of link training getting initiated by hardware repeatedly and
+respecting the new link parameters set by the caller, which then make
+training succeed and bring the link up, setting DLLLA and causing
+pcie_wait_for_link_status() to return success. We are not supposed to rely
+on luck and need to make sure that LT transitioned through the inactive
+state though before we initiate link training by hand via RL (Retrain Link)
+bit.
+
+Fixes: 1abb47390350 ("Merge branch 'pci/enumeration'")
+Link: https://lore.kernel.org/r/20240423130820.43824-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/microblaze/kernel/cpu/cpuinfo-static.c | 2 +-
+ drivers/pci/pci.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/microblaze/kernel/cpu/cpuinfo-static.c b/arch/microblaze/kernel/cpu/cpuinfo-static.c
-index 85dbda4a08a81..03da36dc6d9c9 100644
---- a/arch/microblaze/kernel/cpu/cpuinfo-static.c
-+++ b/arch/microblaze/kernel/cpu/cpuinfo-static.c
-@@ -18,7 +18,7 @@ static const char family_string[] = CONFIG_XILINX_MICROBLAZE0_FAMILY;
- static const char cpu_ver_string[] = CONFIG_XILINX_MICROBLAZE0_HW_VER;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index dddd30deea32b..6ea01007031a4 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4986,7 +4986,7 @@ int pcie_retrain_link(struct pci_dev *pdev, bool use_lt)
+ 	 * avoid LTSSM race as recommended in Implementation Note at the
+ 	 * end of PCIe r6.0.1 sec 7.5.3.7.
+ 	 */
+-	rc = pcie_wait_for_link_status(pdev, use_lt, !use_lt);
++	rc = pcie_wait_for_link_status(pdev, true, false);
+ 	if (rc)
+ 		return rc;
  
- #define err_printk(x) \
--	early_printk("ERROR: Microblaze " x "-different for kernel and DTS\n");
-+	pr_err("ERROR: Microblaze " x "-different for kernel and DTS\n");
- 
- void __init set_cpuinfo_static(struct cpuinfo *ci, struct device_node *cpu)
- {
 -- 
 2.43.0
 
