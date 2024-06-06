@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CF68FE98B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA3558FEEC1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93D281F24722
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F12AB20BBD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FFC19884B;
-	Thu,  6 Jun 2024 14:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6BE1C6199;
+	Thu,  6 Jun 2024 14:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zy7YN8Zf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCuo7Mpx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6576D19AD42;
-	Thu,  6 Jun 2024 14:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE9C1A0DF8;
+	Thu,  6 Jun 2024 14:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683037; cv=none; b=FXiiEtH02khLuEDd6cx1TBk0agyCN6ZA2voRkFKCYLBcvB2OcEbjMe0DQOJcTwfED8X6dKaTGAAPluDJnHcp3BS3C8q5dSNKgV2LUqHwPQP37OpyEZ+4aQCKQrbfM3Uumfk/onfIjQ686NFAoZirEqCOo9hqTszZjImwPP/2sQk=
+	t=1717683697; cv=none; b=DA2Na5rrdxT2MqVxG9Yq2nyHDvN352C89f1HEKCnRADz1fA+m2Zk//Ik4iFo/EuKqvWGw7Ug7acq8LjaWp/rYYxXC03Mu2oEBpUovOeRA1Dn0HQsmTwRfm1Yg2sMLpWcFcujE2O5cRuL0Iz09P41og6xKvtutAA6FzKkRlUvB3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683037; c=relaxed/simple;
-	bh=c6738XYR76zAoKb8JQp5nF4GH3YBVba9Avr7v02bFVA=;
+	s=arc-20240116; t=1717683697; c=relaxed/simple;
+	bh=j605snKw3ExaqAjAYUKKZhGffduUYlUd6tW53Fex8Bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAwdeNHuJ7WGQEebvjT1k2CuFf7rfHsdBfDNuEfBXmVZBij1K/Z5fGpJi6KConbxMfzsB28oN7NyUAJwA6ky+zZ0PNxLJFKrJWcclZA1cezoCufFW/ZRb6r9BlVKpw3azJkxVYbRny4gExw7gklgtAMH9SQZTy9XMqi9qHUn8hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zy7YN8Zf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439A8C4AF62;
-	Thu,  6 Jun 2024 14:10:37 +0000 (UTC)
+	 MIME-Version; b=PRTVGjfa7sosuQS5hjZL5Df6rS6InErwq5DfWg2rGuI8cGNUu1FEBkmYNHEEe6yKMof4c5x6w13HBY22CsC0KSSWEZhmcfYjaDpzRXUR3Q98dgYFdvzFips6GOWB4bC0Ig/dl7ZV2duB0rsN308hFQbPls8QcSGIPq9Dw7H/iFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCuo7Mpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E7FC2BD10;
+	Thu,  6 Jun 2024 14:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683037;
-	bh=c6738XYR76zAoKb8JQp5nF4GH3YBVba9Avr7v02bFVA=;
+	s=korg; t=1717683696;
+	bh=j605snKw3ExaqAjAYUKKZhGffduUYlUd6tW53Fex8Bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zy7YN8ZfV6nEjBZX/Z2REaR8BPvxewvubJebGhLb5YEfG6Au+w1QfXaGZNM9QlltD
-	 ibk9KfrOCjeFsUH2OdM9ssZzsxYLQ9mej7V3bS8ZvHO7M5qPfgsm8WpocxEmsxPe9e
-	 Vqc5qAlndm/D1Ot2US59PXZXeU1VSpaVojfmTuO0=
+	b=HCuo7MpxvfJ8StpwuX3bGAcle4V8xU31T8cuG7s5ic1EqBIJdVtUNvD4Au/H0t/Tt
+	 eLH/GEYdVGro9zglzizln/vavrtLRZDeUF7HUqjLDGF+fl61fE0a5Ovm6YCO0jE2Ox
+	 f3hevevwsHCRtnneXftiXGTZUdezUE+39sc9YEqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 265/374] riscv: selftests: Add hwprobe binaries to .gitignore
+Subject: [PATCH 6.6 572/744] drm/msm/dsi: Print dual-DSI-adjusted pclk instead of original mode pclk
 Date: Thu,  6 Jun 2024 16:04:04 +0200
-Message-ID: <20240606131700.776777584@linuxfoundation.org>
+Message-ID: <20240606131750.801910181@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlie Jenkins <charlie@rivosinc.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit f8ea6ab92748e69216b44b07ea7213cb02070dba ]
+[ Upstream commit f12e0e12524a34bf145f7b80122e653ffe3d130a ]
 
-The cbo and which-cpu hwprobe selftests leave their artifacts in the
-kernel tree and end up being tracked by git. Add the binaries to the
-hwprobe selftest .gitignore so this no longer happens.
+When dual-DSI (bonded DSI) was added in commit ed9976a09b48
+("drm/msm/dsi: adjust dsi timing for dual dsi mode") some DBG() prints
+were not updated, leading to print the original mode->clock rather
+than the adjusted (typically the mode clock divided by two, though more
+recently also adjusted for DSC compression) msm_host->pixel_clk_rate
+which is passed to clk_set_rate() just below.  Fix that by printing the
+actual pixel_clk_rate that is being set.
 
-Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-Fixes: a29e2a48afe3 ("RISC-V: selftests: Add CBO tests")
-Fixes: ef7d6abb2cf5 ("RISC-V: selftests: Add which-cpus hwprobe test")
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240425-gitignore_hwprobe_artifacts-v1-1-dfc5a20da469@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: ed9976a09b48 ("drm/msm/dsi: adjust dsi timing for dual dsi mode")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/589896/
+Link: https://lore.kernel.org/r/20240417-drm-msm-initial-dualpipe-dsc-fixes-v1-1-78ae3ee9a697@somainline.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/riscv/hwprobe/.gitignore | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/riscv/hwprobe/.gitignore b/tools/testing/selftests/riscv/hwprobe/.gitignore
-index 8113dc3bdd03a..6e384e80ea1a8 100644
---- a/tools/testing/selftests/riscv/hwprobe/.gitignore
-+++ b/tools/testing/selftests/riscv/hwprobe/.gitignore
-@@ -1 +1,3 @@
- hwprobe
-+cbo
-+which-cpus
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 470866896b9b8..ab393bdaba6cd 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -366,8 +366,8 @@ int dsi_link_clk_set_rate_6g(struct msm_dsi_host *msm_host)
+ {
+ 	int ret;
+ 
+-	DBG("Set clk rates: pclk=%d, byteclk=%lu",
+-		msm_host->mode->clock, msm_host->byte_clk_rate);
++	DBG("Set clk rates: pclk=%lu, byteclk=%lu",
++	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate);
+ 
+ 	ret = dev_pm_opp_set_rate(&msm_host->pdev->dev,
+ 				  msm_host->byte_clk_rate);
+@@ -440,9 +440,9 @@ int dsi_link_clk_set_rate_v2(struct msm_dsi_host *msm_host)
+ {
+ 	int ret;
+ 
+-	DBG("Set clk rates: pclk=%d, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
+-		msm_host->mode->clock, msm_host->byte_clk_rate,
+-		msm_host->esc_clk_rate, msm_host->src_clk_rate);
++	DBG("Set clk rates: pclk=%lu, byteclk=%lu, esc_clk=%lu, dsi_src_clk=%lu",
++	    msm_host->pixel_clk_rate, msm_host->byte_clk_rate,
++	    msm_host->esc_clk_rate, msm_host->src_clk_rate);
+ 
+ 	ret = clk_set_rate(msm_host->byte_clk, msm_host->byte_clk_rate);
+ 	if (ret) {
 -- 
 2.43.0
 
