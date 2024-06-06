@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-49677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4928FEE63
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712148FE95E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA54A1C252AF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D7CF1F23C09
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EC01C3716;
-	Thu,  6 Jun 2024 14:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AE6196DA4;
+	Thu,  6 Jun 2024 14:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="je13v5l+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="and1n/fK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D101991C5;
-	Thu,  6 Jun 2024 14:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8862E19A282;
+	Thu,  6 Jun 2024 14:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683654; cv=none; b=FtB7D6kZSe1VtPkYgA/NXctY6J0fQBYNMrvKMZdBPRAb6ONYDAnmqAuKqsvTbdeBmKIC64nAmQNLDjfciLoGAf/GBZy4dimerMstSj5ObQz017+NSnIRbGx13aiXkCjBKRxsIat1jUC9JVj5Ri8j41/nzFh7nHWrJvdxG0yz7vg=
+	t=1717683011; cv=none; b=rWVCSh6sFm+J9JJ8gt55al3SjJMkrICdDPAfKuD7gKsXzcgnIZ7zCSoERv3k1qxhlLaqsfYHfBoIqkv1TxNCum63gMJRzxExIpQ7JBl7ovO9TWl8x8Xhu6oiwIiwfqP+kseXKSj6FTMxW0y5tUsbbyj5kYf7BHbfGvL33Ba7z0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683654; c=relaxed/simple;
-	bh=iIg3t8NJlygiRIDOI0viVZJXMFe5URo+w6wE1uPTy20=;
+	s=arc-20240116; t=1717683011; c=relaxed/simple;
+	bh=4/SYIpBnSRw7Fmpz+0VYPBFAQ2hSGwAX0lYmiTbM2vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D515DHxtqVpJN3NQIxcQFc54IhUNnAgdjGme6UiV72mhsl217D/VFeXumIScf/8ZfT2cAkGhuhicQ703cnZuAii6LDWRvhB8+Gz8VOLbzKnq3T34yt3Xb5GeZDr7h9HyJ/Qw5Q6I4T2weQa8WdAMVk+Rp+A3QVnA9SMxSOrFBsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=je13v5l+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3472EC32781;
-	Thu,  6 Jun 2024 14:20:54 +0000 (UTC)
+	 MIME-Version; b=fW9CmBWxBx3xhVXS4ROy8TabDwAstQMlT53i7c9PmdX/D3meQvT0+49/RndZg8ebAlhGst/P/vg5Y7qbUEWGmFoJ6WD3y+8NHN4sFrWMTFZnt4HMWGXSk3kY8+2hIbAn1SGUNnXS/Rl38fGiZkdetLgg21i52GkHVjH6LjF5zWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=and1n/fK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66573C4AF0C;
+	Thu,  6 Jun 2024 14:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683654;
-	bh=iIg3t8NJlygiRIDOI0viVZJXMFe5URo+w6wE1uPTy20=;
+	s=korg; t=1717683011;
+	bh=4/SYIpBnSRw7Fmpz+0VYPBFAQ2hSGwAX0lYmiTbM2vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=je13v5l+xWycbOuq+gK4ZhfyJtssJvv3XDV4nTKDP25mMDskrvfCkqiRD5Rki5DIk
-	 DmRBlXnACJ/ZL5IpzqCwJS1q5y0i9k7cSZTRftWJ2qrnhL8G0BmllBB0AEMPXvtj3C
-	 2JXKmywLcTERB1DmBiSs3RJAZ2q54KQiXKV7sdi4=
+	b=and1n/fKEIlkFyxhTrCuUPl+c27DlbFQQj0N6DSyaC/KGUe62t9GjTBuQPz6Pxpy2
+	 XKxAAqhuhRwFRTKm6wqZn8zFhvmw3dALHXz9VEZVg8eY43VU0qGSX1Zvjo6ivCURpm
+	 JWhFvFL30SFS7otXDSdvE+kZvYAoUu2WbWqkC17o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Yang Jihong <yangjihong1@huawei.com>,
+	Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>,
+	Faith Ekstrand <faith.ekstrand@collabora.com>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 529/744] perf tools: Add/use PMU reverse lookup from config to name
+Subject: [PATCH 6.9 222/374] drm/nouveau: use tile_mode and pte_kind for VM_BIND bo allocations
 Date: Thu,  6 Jun 2024 16:03:21 +0200
-Message-ID: <20240606131749.402763126@linuxfoundation.org>
+Message-ID: <20240606131659.235706921@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,151 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
 
-[ Upstream commit 67ee8e71daabb8632931b7559e5c8a4b69a427f8 ]
+[ Upstream commit 959314c438caf1b62d787f02d54a193efda38880 ]
 
-Add perf_pmu__name_from_config that does a reverse lookup from a
-config number to an alias name. The lookup is expensive as the config
-is computed for every alias by filling in a perf_event_attr, but this
-is only done when verbose output is enabled. The lookup also only
-considers config, and not config1, config2 or config3.
+Allow PTE kind and tile mode on BO create with VM_BIND, and add a
+GETPARAM to indicate this change. This is needed to support modifiers in
+NVK and ensure correctness when dealing with the nouveau GL driver.
 
-An example of the output:
+The userspace modifiers implementation this is for can be found here:
+https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/24795
 
-  $ perf stat -vv -e data_read true
-  ...
-  perf_event_attr:
-    type                             24 (uncore_imc_free_running_0)
-    size                             136
-    config                           0x20ff (data_read)
-    sample_type                      IDENTIFIER
-    read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING
-    disabled                         1
-    inherit                          1
-    exclude_guest                    1
-  ...
-
-Committer notes:
-
-Fix the python binding build by adding dummies for not strictly
-needed perf_pmu__name_from_config() and perf_pmus__find_by_type().
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Tested-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Link: https://lore.kernel.org/r/20240308001915.4060155-7-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
+Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
+Signed-off-by: Mohamed Ahmed <mohamedahmedegypt2001@gmail.com>
+Reviewed-by: Faith Ekstrand <faith.ekstrand@collabora.com>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240509204352.7597-1-mohamedahmedegypt2001@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/perf_event_attr_fprintf.c | 10 ++++++++--
- tools/perf/util/pmu.c                     | 18 ++++++++++++++++++
- tools/perf/util/pmu.h                     |  1 +
- tools/perf/util/python.c                  | 10 ++++++++++
- 4 files changed, 37 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_abi16.c |  3 ++
+ drivers/gpu/drm/nouveau/nouveau_bo.c    | 44 +++++++++++--------------
+ include/uapi/drm/nouveau_drm.h          |  7 ++++
+ 3 files changed, 29 insertions(+), 25 deletions(-)
 
-diff --git a/tools/perf/util/perf_event_attr_fprintf.c b/tools/perf/util/perf_event_attr_fprintf.c
-index f3c6db5f4182c..1c1582688f037 100644
---- a/tools/perf/util/perf_event_attr_fprintf.c
-+++ b/tools/perf/util/perf_event_attr_fprintf.c
-@@ -221,8 +221,14 @@ static void __p_config_tracepoint_id(char *buf, size_t size, u64 value)
- }
- #endif
+diff --git a/drivers/gpu/drm/nouveau/nouveau_abi16.c b/drivers/gpu/drm/nouveau/nouveau_abi16.c
+index 80f74ee0fc786..47e53e17b4e58 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_abi16.c
++++ b/drivers/gpu/drm/nouveau/nouveau_abi16.c
+@@ -272,6 +272,9 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
+ 		getparam->value = (u64)ttm_resource_manager_usage(vram_mgr);
+ 		break;
+ 	}
++	case NOUVEAU_GETPARAM_HAS_VMA_TILEMODE:
++		getparam->value = 1;
++		break;
+ 	default:
+ 		NV_PRINTK(dbg, cli, "unknown parameter %lld\n", getparam->param);
+ 		return -EINVAL;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_bo.c b/drivers/gpu/drm/nouveau/nouveau_bo.c
+index db8cbf6151129..186add400ea5f 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_bo.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+@@ -241,28 +241,28 @@ nouveau_bo_alloc(struct nouveau_cli *cli, u64 *size, int *align, u32 domain,
+ 	}
  
--static void __p_config_id(char *buf, size_t size, u32 type, u64 value)
-+static void __p_config_id(struct perf_pmu *pmu, char *buf, size_t size, u32 type, u64 value)
- {
-+	const char *name = perf_pmu__name_from_config(pmu, value);
+ 	nvbo->contig = !(tile_flags & NOUVEAU_GEM_TILE_NONCONTIG);
+-	if (!nouveau_cli_uvmm(cli) || internal) {
+-		/* for BO noVM allocs, don't assign kinds */
+-		if (cli->device.info.family >= NV_DEVICE_INFO_V0_FERMI) {
+-			nvbo->kind = (tile_flags & 0x0000ff00) >> 8;
+-			if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
+-				kfree(nvbo);
+-				return ERR_PTR(-EINVAL);
+-			}
+ 
+-			nvbo->comp = mmu->kind[nvbo->kind] != nvbo->kind;
+-		} else if (cli->device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
+-			nvbo->kind = (tile_flags & 0x00007f00) >> 8;
+-			nvbo->comp = (tile_flags & 0x00030000) >> 16;
+-			if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
+-				kfree(nvbo);
+-				return ERR_PTR(-EINVAL);
+-			}
+-		} else {
+-			nvbo->zeta = (tile_flags & 0x00000007);
++	if (cli->device.info.family >= NV_DEVICE_INFO_V0_FERMI) {
++		nvbo->kind = (tile_flags & 0x0000ff00) >> 8;
++		if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
++			kfree(nvbo);
++			return ERR_PTR(-EINVAL);
++		}
 +
-+	if (name) {
-+		print_id_hex(name);
-+		return;
++		nvbo->comp = mmu->kind[nvbo->kind] != nvbo->kind;
++	} else if (cli->device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
++		nvbo->kind = (tile_flags & 0x00007f00) >> 8;
++		nvbo->comp = (tile_flags & 0x00030000) >> 16;
++		if (!nvif_mmu_kind_valid(mmu, nvbo->kind)) {
++			kfree(nvbo);
++			return ERR_PTR(-EINVAL);
+ 		}
+-		nvbo->mode = tile_mode;
++	} else {
++		nvbo->zeta = (tile_flags & 0x00000007);
 +	}
- 	switch (type) {
- 	case PERF_TYPE_HARDWARE:
- 		return __p_config_hw_id(buf, size, value);
-@@ -251,7 +257,7 @@ static void __p_config_id(char *buf, size_t size, u32 type, u64 value)
- #define p_branch_sample_type(val) __p_branch_sample_type(buf, BUF_SIZE, val)
- #define p_read_format(val)	__p_read_format(buf, BUF_SIZE, val)
- #define p_type_id(val)		__p_type_id(pmu, buf, BUF_SIZE, val)
--#define p_config_id(val)	__p_config_id(buf, BUF_SIZE, attr->type, val)
-+#define p_config_id(val)	__p_config_id(pmu, buf, BUF_SIZE, attr->type, val)
++	nvbo->mode = tile_mode;
  
- #define PRINT_ATTRn(_n, _f, _p, _a)			\
- do {							\
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 64b605a6060e2..0b1c380fce901 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -2081,3 +2081,21 @@ void perf_pmu__delete(struct perf_pmu *pmu)
- 	zfree(&pmu->id);
- 	free(pmu);
- }
-+
-+const char *perf_pmu__name_from_config(struct perf_pmu *pmu, u64 config)
-+{
-+	struct perf_pmu_alias *event;
-+
-+	if (!pmu)
-+		return NULL;
-+
-+	pmu_add_cpu_aliases(pmu);
-+	list_for_each_entry(event, &pmu->aliases, list) {
-+		struct perf_event_attr attr = {.config = 0,};
-+		int ret = perf_pmu__config(pmu, &attr, &event->terms, NULL);
-+
-+		if (ret == 0 && config == attr.config)
-+			return event->name;
-+	}
-+	return NULL;
-+}
-diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
-index c4b4fabe16edc..ed6693f991867 100644
---- a/tools/perf/util/pmu.h
-+++ b/tools/perf/util/pmu.h
-@@ -266,5 +266,6 @@ struct perf_pmu *perf_pmu__lookup(struct list_head *pmus, int dirfd, const char
- struct perf_pmu *perf_pmu__create_placeholder_core_pmu(struct list_head *core_pmus);
- void perf_pmu__delete(struct perf_pmu *pmu);
- struct perf_pmu *perf_pmus__find_core_pmu(void);
-+const char *perf_pmu__name_from_config(struct perf_pmu *pmu, u64 config);
++	if (!nouveau_cli_uvmm(cli) || internal) {
+ 		/* Determine the desirable target GPU page size for the buffer. */
+ 		for (i = 0; i < vmm->page_nr; i++) {
+ 			/* Because we cannot currently allow VMM maps to fail
+@@ -304,12 +304,6 @@ nouveau_bo_alloc(struct nouveau_cli *cli, u64 *size, int *align, u32 domain,
+ 		}
+ 		nvbo->page = vmm->page[pi].shift;
+ 	} else {
+-		/* reject other tile flags when in VM mode. */
+-		if (tile_mode)
+-			return ERR_PTR(-EINVAL);
+-		if (tile_flags & ~NOUVEAU_GEM_TILE_NONCONTIG)
+-			return ERR_PTR(-EINVAL);
+-
+ 		/* Determine the desirable target GPU page size for the buffer. */
+ 		for (i = 0; i < vmm->page_nr; i++) {
+ 			/* Because we cannot currently allow VMM maps to fail
+diff --git a/include/uapi/drm/nouveau_drm.h b/include/uapi/drm/nouveau_drm.h
+index cd84227f1b42f..5402f77ee8594 100644
+--- a/include/uapi/drm/nouveau_drm.h
++++ b/include/uapi/drm/nouveau_drm.h
+@@ -68,6 +68,13 @@ extern "C" {
+  */
+ #define NOUVEAU_GETPARAM_VRAM_USED 19
  
- #endif /* __PMU_H */
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index c29f5f0bb552c..b01b0e5510563 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -103,6 +103,16 @@ int perf_pmu__scan_file(struct perf_pmu *pmu, const char *name, const char *fmt,
- 	return EOF;
- }
- 
-+const char *perf_pmu__name_from_config(struct perf_pmu *pmu __maybe_unused, u64 config __maybe_unused)
-+{
-+	return NULL;
-+}
++/*
++ * NOUVEAU_GETPARAM_HAS_VMA_TILEMODE
++ *
++ * Query whether tile mode and PTE kind are accepted with VM allocs or not.
++ */
++#define NOUVEAU_GETPARAM_HAS_VMA_TILEMODE 20
 +
-+struct perf_pmu *perf_pmus__find_by_type(unsigned int type __maybe_unused)
-+{
-+	return NULL;
-+}
-+
- int perf_pmus__num_core_pmus(void)
- {
- 	return 1;
+ struct drm_nouveau_getparam {
+ 	__u64 param;
+ 	__u64 value;
 -- 
 2.43.0
 
