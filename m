@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-49719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D708FEE8F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4678FEE61
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDE931C24E33
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5930E2832C4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FF61C53A0;
-	Thu,  6 Jun 2024 14:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953161C3711;
+	Thu,  6 Jun 2024 14:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EtrPu0SJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6NZeN0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469871A0DCA;
-	Thu,  6 Jun 2024 14:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FCC1991C5;
+	Thu,  6 Jun 2024 14:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683675; cv=none; b=uyqluc/ZbXOv059I7rOyJWsYpolPRETtx8yQp7vuT9lRtEa5aYSKw8ogx6ctYhW8iLAMoG5rJMKhd6kZ4BTsoOrTrnESzD2U4krqEnqOqJUxl7S1s5/XmCHnVe6Z57ZP3ojWFZKtU2jt9Y2y7XtYun2kJyVtX7lWeEINzpEuYS4=
+	t=1717683653; cv=none; b=gO3otPRUH9/xlUt95PGUmfP2UfOgSv7X0xbinGNHDOx4AM2WD1xK523Le6LCIvcoFu9juT4+7MWKwWe9WtV3mqyQ5UZEXx2EAQ22p5deFt6uaqoPYlBQ0IaPWC/z74vYztA9bd4QCLD9gOGcsE1kctC84cB4la+ycfyDaLEBZlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683675; c=relaxed/simple;
-	bh=IbFDONNFybVvJzrBoG5alogljCvhQv1PT5ZGCQAwOCk=;
+	s=arc-20240116; t=1717683653; c=relaxed/simple;
+	bh=WZsxwi++ZO4bOFsSYxXjqiL0JZtOTKPpdHtPOHODqpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smgjMf+0ps25QsnKb4Lw51vjOOO6GVPEWYPxHySHlKZy+WDYk/otbWSw9mPOJ0QTuXfcXJnHtNpjO2G+xM4rv8x+gGQhPkIjkFK21ykg/aXMNAzINeLqMIbTTkYfnVGQWlvz0Q9Ao9RvYrHULGWNBtHa1oxh030unTTDT3hYhag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtrPu0SJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2632DC2BD10;
-	Thu,  6 Jun 2024 14:21:15 +0000 (UTC)
+	 MIME-Version; b=e98pFvGiaWX6IT3N9oc2r7W7JznhVoyjpErr+i+KweeWPpdyeC51V6ulTBUzmtMcv173ahKNDhkSFG5haDu3yAr1tPPPUpgTUV27C4sNDZsBx4VEfVUid926trQf2tEEMho5NJnQvLRkeq72OcGxrKzW2G+ipiYeGxu7uIlLLo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6NZeN0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D17C2BD10;
+	Thu,  6 Jun 2024 14:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683675;
-	bh=IbFDONNFybVvJzrBoG5alogljCvhQv1PT5ZGCQAwOCk=;
+	s=korg; t=1717683653;
+	bh=WZsxwi++ZO4bOFsSYxXjqiL0JZtOTKPpdHtPOHODqpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EtrPu0SJ4/vVPlQyp8wEw+ndPggI6V3K+RbQa5/dqfBCqscH0Kl2+Iv1mj+R4WJft
-	 anpgSPbFGUCGHs3jw7M+SgAFYvhIcn/e49Q9HIRqEwnvPcQttoHXL6Uz1r9PrgAzRS
-	 3RNEsTf8Fnt3aSYJKVQ5uKZsO8PmoSi++tT40xWc=
+	b=j6NZeN0wRwSz0U17ajzamsEZXqihuUK9hdMWJLugZacU+0hLO6qR/mJ1WwGgnf5Kw
+	 /Bn3qDasX/SqPNZhSShRiS4pezayznDMt42lrjgSPPxZmsxcBcNAd3dcRyOK9KnJ78
+	 f9QvcpvXfoLbrMZJaI8d8dmT3t8s2AqJOuOJK/oM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Chris Ruehl <chris.ruehl@gtsys.com.hk>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 470/473] powerpc/uaccess: Use YZ asm constraint for ld
-Date: Thu,  6 Jun 2024 16:06:39 +0200
-Message-ID: <20240606131715.215950563@linuxfoundation.org>
+Subject: [PATCH 6.1 471/473] hwmon: (shtc1) Fix property misspelling
+Date: Thu,  6 Jun 2024 16:06:40 +0200
+Message-ID: <20240606131715.251779906@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -65,62 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 50934945d54238d2d6d8db4b7c1d4c90d2696c57 ]
+[ Upstream commit 52a2c70c3ec555e670a34dd1ab958986451d2dd2 ]
 
-The 'ld' instruction requires a 4-byte aligned displacement because it
-is a DS-form instruction. But the "m" asm constraint doesn't enforce
-that.
+The property name is "sensirion,low-precision", not
+"sensicon,low-precision".
 
-Add a special case of __get_user_asm2_goto() so that the "YZ" constraint
-can be used for "ld".
-
-The "Z" constraint is documented in the GCC manual PowerPC machine
-constraints, and specifies a "memory operand accessed with indexed or
-indirect addressing". "Y" is not documented in the manual but specifies
-a "memory operand for a DS-form instruction". Using both allows the
-compiler to generate a DS-form "ld" or X-form "ldx" as appropriate.
-
-The change has to be conditional on CONFIG_PPC_KERNEL_PREFIXED because
-the "Y" constraint does not guarantee 4-byte alignment when prefixed
-instructions are enabled.
-
-No build errors have been reported due to this, but the possibility is
-there depending on compiler code generation decisions.
-
-Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240529123029.146953-2-mpe@ellerman.id.au
+Cc: Chris Ruehl <chris.ruehl@gtsys.com.hk>
+Fixes: be7373b60df5 ("hwmon: shtc1: add support for device tree bindings")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/uaccess.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/hwmon/shtc1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 45d4c9cf3f3a2..60eead5d720a3 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -141,8 +141,19 @@ do {								\
- 		: label)
+diff --git a/drivers/hwmon/shtc1.c b/drivers/hwmon/shtc1.c
+index 18546ebc8e9f7..0365643029aee 100644
+--- a/drivers/hwmon/shtc1.c
++++ b/drivers/hwmon/shtc1.c
+@@ -238,7 +238,7 @@ static int shtc1_probe(struct i2c_client *client)
  
- #ifdef __powerpc64__
-+#ifdef CONFIG_PPC_KERNEL_PREFIXED
- #define __get_user_asm2_goto(x, addr, label)			\
- 	__get_user_asm_goto(x, addr, label, "ld")
-+#else
-+#define __get_user_asm2_goto(x, addr, label)			\
-+	asm_goto_output(					\
-+		"1:	ld%U1%X1 %0, %1	# get_user\n"		\
-+		EX_TABLE(1b, %l2)				\
-+		: "=r" (x)					\
-+		: DS_FORM_CONSTRAINT (*addr)			\
-+		:						\
-+		: label)
-+#endif // CONFIG_PPC_KERNEL_PREFIXED
- #else /* __powerpc64__ */
- #define __get_user_asm2_goto(x, addr, label)			\
- 	asm_goto_output(					\
+ 	if (np) {
+ 		data->setup.blocking_io = of_property_read_bool(np, "sensirion,blocking-io");
+-		data->setup.high_precision = !of_property_read_bool(np, "sensicon,low-precision");
++		data->setup.high_precision = !of_property_read_bool(np, "sensirion,low-precision");
+ 	} else {
+ 		if (client->dev.platform_data)
+ 			data->setup = *(struct shtc1_platform_data *)dev->platform_data;
 -- 
 2.43.0
 
