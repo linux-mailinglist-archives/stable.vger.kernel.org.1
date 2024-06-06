@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-48514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC958FE950
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327038FEE5C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B58BB1C23878
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 394171C250B6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2E31993BE;
-	Thu,  6 Jun 2024 14:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE281C370B;
+	Thu,  6 Jun 2024 14:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TB9Oq8/5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6eY4Ovi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCA8197A7F;
-	Thu,  6 Jun 2024 14:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B011A197521;
+	Thu,  6 Jun 2024 14:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683006; cv=none; b=Gqzypv4da0y/DZYOzfXDMzHZeBZMX9VfP94exxdePHjxHe4WJ+MFy/IXZ/E458K4F+iRE4L1Gn/R+4AT0m4x1Q0hTEN+d4TKpsplrc31AZaWfgfSv4HFDA6z2NwcKvDzvVeNlHV6gwbdUc67RdssJjo7ldyKrDY98oYaJ1RAeN8=
+	t=1717683650; cv=none; b=qTHfrejZ4fOrELQJjDeOi+GphpQQuPTmg5jBQXoc2ENoRUwCnwxsjse5tbw3JoQPtci7fXVHSmZvLoNiug893+qbHCW9U8eAwyN7hGKOocjZCzPpIpltf/M5JAQ8xOs5mcmLXQkYfmiNPZhI2WyTVyAwiM7DspgyxVX1V3ObbTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683006; c=relaxed/simple;
-	bh=zc8Co/DP+RL2v5RUsTt31JDi4LxByYSvfWVKqqZEuhM=;
+	s=arc-20240116; t=1717683650; c=relaxed/simple;
+	bh=jITht7BmQF9Cog5XtMVT7J0I5cBICVwIp7+dB+RsVF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOEjnO/5+Al4KwIXrRLOL+He/NcInER+hop0lrMW80p4tInOgxYVP3ZgYULiHKoas8lubJkg1C7Kr4letJpDDwjSCccSsZgZVAnQRd4Xhp/s75GS9mhfVsQc6cmoQxtqnNoY9oGGaNB2CDxPh1Bl2gCELn9IeheTQ0JLu8Djzso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TB9Oq8/5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F471C4AF09;
-	Thu,  6 Jun 2024 14:10:06 +0000 (UTC)
+	 MIME-Version; b=pLn6yQosSABC4y2M7urrnY5MwgZNluv7Mh6eDQH+eKIR2kTFsD/PRJi0puiAkxgZmQgOvy8WvNuCaVKVcWu6zN9NALcuYO7muDHnThfhAkaOiY7YuvLQzirqspr/TGgMHUtBntwE4fQapyhsUVHESenBtANkwl50IrmqguQrde4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6eY4Ovi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFD7C2BD10;
+	Thu,  6 Jun 2024 14:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683006;
-	bh=zc8Co/DP+RL2v5RUsTt31JDi4LxByYSvfWVKqqZEuhM=;
+	s=korg; t=1717683650;
+	bh=jITht7BmQF9Cog5XtMVT7J0I5cBICVwIp7+dB+RsVF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TB9Oq8/5TZD3yZoexQB0qlj9qHtsl08oILerh1jwrguvwW+zDMGynMpBy7zSOMfM8
-	 2S2FTYeIekiLmSKQ+wmQAGJoRx3YngsPpmbmnzubDkwlcdBsp4LNfdukX5cgjaYiYY
-	 lZPo/EwHg38cYhaJHiYzNWIGOPVUEEMLZU553l80=
+	b=W6eY4OviHKskomn31ZDbVTiGg4LkGyn3erD8GMXkTgU7lnJ+RGnvdl9uOgURGlhET
+	 bn4+ka3oxgXeg59P6qtrbhPHFt0orMv+vJS93288tZjMY12yZ3SC8u9GRStPifirlr
+	 SiNJHLmfPqsWAofMTJcOnecT3Ao6WS9sSHnHE2gY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 213/374] KVM: PPC: Book3S HV nestedv2: Fix an error handling path in gs_msg_ops_kvmhv_nestedv2_config_fill_info()
-Date: Thu,  6 Jun 2024 16:03:12 +0200
-Message-ID: <20240606131658.943979110@linuxfoundation.org>
+Subject: [PATCH 6.6 521/744] perf daemon: Fix file leak in daemon_session__control
+Date: Thu,  6 Jun 2024 16:03:13 +0200
+Message-ID: <20240606131749.151476773@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +70,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit b52e8cd3f835869370f8540f1bc804a47a47f02b ]
+[ Upstream commit 09541603462c399c7408d50295db99b4b8042eaa ]
 
-The return value of kvmppc_gse_put_buff_info() is not assigned to 'rc' and
-'rc' is uninitialized at this point.
-So the error handling can not work.
+The open() function returns -1 on error.
 
-Assign the expected value to 'rc' to fix the issue.
+The 'control' and 'ack' file descriptors are both initialized with
+open() and further validated with 'if' statement.
 
-Fixes: 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/a7ed4cc12e0a0bbd97fac44fe6c222d1c393ec95.1706441651.git.christophe.jaillet@wanadoo.fr
+'if (!control)' would evaluate to 'true' if returned value on error were
+'0' but it is actually '-1'.
+
+Fixes: edcaa47958c7438b ("perf daemon: Add 'ping' command")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240510003424.2016914-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv_nestedv2.c | 4 ++--
+ tools/perf/builtin-daemon.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_nestedv2.c b/arch/powerpc/kvm/book3s_hv_nestedv2.c
-index 8e6f5355f08b5..1091f7a83b255 100644
---- a/arch/powerpc/kvm/book3s_hv_nestedv2.c
-+++ b/arch/powerpc/kvm/book3s_hv_nestedv2.c
-@@ -71,8 +71,8 @@ gs_msg_ops_kvmhv_nestedv2_config_fill_info(struct kvmppc_gs_buff *gsb,
- 	}
+diff --git a/tools/perf/builtin-daemon.c b/tools/perf/builtin-daemon.c
+index 83954af36753a..de76bbc50bfbc 100644
+--- a/tools/perf/builtin-daemon.c
++++ b/tools/perf/builtin-daemon.c
+@@ -523,7 +523,7 @@ static int daemon_session__control(struct daemon_session *session,
+ 		  session->base, SESSION_CONTROL);
  
- 	if (kvmppc_gsm_includes(gsm, KVMPPC_GSID_RUN_OUTPUT)) {
--		kvmppc_gse_put_buff_info(gsb, KVMPPC_GSID_RUN_OUTPUT,
--					 cfg->vcpu_run_output_cfg);
-+		rc = kvmppc_gse_put_buff_info(gsb, KVMPPC_GSID_RUN_OUTPUT,
-+					      cfg->vcpu_run_output_cfg);
- 		if (rc < 0)
- 			return rc;
- 	}
+ 	control = open(control_path, O_WRONLY|O_NONBLOCK);
+-	if (!control)
++	if (control < 0)
+ 		return -1;
+ 
+ 	if (do_ack) {
+@@ -532,7 +532,7 @@ static int daemon_session__control(struct daemon_session *session,
+ 			  session->base, SESSION_ACK);
+ 
+ 		ack = open(ack_path, O_RDONLY, O_NONBLOCK);
+-		if (!ack) {
++		if (ack < 0) {
+ 			close(control);
+ 			return -1;
+ 		}
 -- 
 2.43.0
 
