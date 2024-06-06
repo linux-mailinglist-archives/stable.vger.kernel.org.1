@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-48578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810CC8FE997
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F168FED17
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32A4B28816B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00DCDB21AD1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C4C19AD63;
-	Thu,  6 Jun 2024 14:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6067219CD1A;
+	Thu,  6 Jun 2024 14:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXabhfJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgMJ1+go"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AD119885F;
-	Thu,  6 Jun 2024 14:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EFD198E70;
+	Thu,  6 Jun 2024 14:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683042; cv=none; b=OAn0ojc7h2jTRUH7L+9+ZpYyuKRoWq+u+uyXf6A05m9w9cYHVPLBzB/+UHDrA9PaW6ZT6bVxDNOt5KvWg1sm+MWyBr84ddxtdsCI5Ytxh9s0rF67B28Md0qy9kGKEDaoMsdAQ7va05ZNPmQKwYXCNKlncHlpX/1OQwwANglvvd8=
+	t=1717683445; cv=none; b=DEsdt0y4izOuR7YyXatcasSaSJciWmxfr/4MbO+PDZU1AYT51jZHfiiFlLaHkMV5VyvOANmmk4iO8MFRjdhd9Kxa92Ow3yy7ntI5Z3lWATtJsZ0JaRElM8Drbzo6GTtB7F9XEW7o5vV4v+8W9Ly59I4MSCmjTH+6U+zmwjpISSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683042; c=relaxed/simple;
-	bh=1bl/YBnM4NrsMyWpLOZWjdYDE2E+LJUEceW+1HjrIXw=;
+	s=arc-20240116; t=1717683445; c=relaxed/simple;
+	bh=pKicMqkAzpn3vhlKaSHAVJZHNzVfp3jJjkQydmAgJS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLbO75GnzZXFxshSrDPCk0qqs2a5TvjgmBmA0IwmeBzC6C1+Nj0ePDd7mXLEnmMfcG3a7N/sVIQzcBFDTfrDYxk6jhFKXmlfoLcflBP9kefg5OHOlGshWRCVpLHpUu9pWw64eobM8nPKJiH0PZ4o6sh/RJaKYiDnpm2GRWB9LqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXabhfJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5243C32781;
-	Thu,  6 Jun 2024 14:10:42 +0000 (UTC)
+	 MIME-Version; b=SBtglv+nq66GwrARxPnyfkrxHYZIb43EkZ/wxOyr2AK8i3KDe8rdjDbozORQNKx+bywSCS/0Qjivp6Lb5YYUrblE2KtLJ9kE9JYzgO9wl2ym3+COomqWMxX3hq7gvOfdL2qXKlLxpc62EjTPZo6p/3KQm/4U5IUhnquRDxnomFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgMJ1+go; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FC5C32786;
+	Thu,  6 Jun 2024 14:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683042;
-	bh=1bl/YBnM4NrsMyWpLOZWjdYDE2E+LJUEceW+1HjrIXw=;
+	s=korg; t=1717683445;
+	bh=pKicMqkAzpn3vhlKaSHAVJZHNzVfp3jJjkQydmAgJS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXabhfJVZBuP7C7MKhPVfXkTD2DVjipNrqMMPnpWvI6SiVJEFl5hDer6GofSJAgDM
-	 PMjPTcm+NkpSG7GAuACAoe+g+vzMFW7sAWigOGglHpXE5818O4Re9CZL0jrNn+ku73
-	 5m569DVchCKHII2vhIw6X7mQerKVzC5Al0xb+DvI=
+	b=GgMJ1+goLCwccwBgUMKiEJsVDFfsufdzvjUKSEXHfRghnr6AqqTHBjZgp0VBnkCDa
+	 Mgf/eznsO2+ShIk8sTTkeYNp3GpVDvHQwKqno38Kng1JXlX17pyulYfLDxKSm+AHnj
+	 xYAvUgJRb1rgJOXG8BnlRxBGU8NtWs+L7Su7FSBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>,
+	Chris Wulff <chris.wulff@biamp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 279/374] cifs: Fix missing set of remote_i_size
+Subject: [PATCH 6.1 329/473] usb: gadget: u_audio: Fix race condition use of controls after free during gadget unbind.
 Date: Thu,  6 Jun 2024 16:04:18 +0200
-Message-ID: <20240606131701.244247051@linuxfoundation.org>
+Message-ID: <20240606131710.814144949@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Chris Wulff <Chris.Wulff@biamp.com>
 
-[ Upstream commit 93a43155127fec0f8cc942d63b76668c2f8f69fa ]
+[ Upstream commit 1b739388aa3f8dfb63a9fca777e6dfa6912d0464 ]
 
-Occasionally, the generic/001 xfstest will fail indicating corruption in
-one of the copy chains when run on cifs against a server that supports
-FSCTL_DUPLICATE_EXTENTS_TO_FILE (eg. Samba with a share on btrfs).  The
-problem is that the remote_i_size value isn't updated by cifs_setsize()
-when called by smb2_duplicate_extents(), but i_size *is*.
+Hang on to the control IDs instead of pointers since those are correctly
+handled with locks.
 
-This may cause cifs_remap_file_range() to then skip the bit after calling
-->duplicate_extents() that sets sizes.
-
-Fix this by calling netfs_resize_file() in smb2_duplicate_extents() before
-calling cifs_setsize() to set i_size.
-
-This means we don't then need to call netfs_resize_file() upon return from
-->duplicate_extents(), but we also fix the test to compare against the pre-dup
-inode size.
-
-[Note that this goes back before the addition of remote_i_size with the
-netfs_inode struct.  It should probably have been setting cifsi->server_eof
-previously.]
-
-Fixes: cfc63fc8126a ("smb3: fix cached file size problems in duplicate extents (reflink)")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 8fe9a03f4331 ("usb: gadget: u_audio: Rate ctl notifies about current srate (0=stopped)")
+Fixes: c565ad07ef35 ("usb: gadget: u_audio: Support multiple sampling rates")
+Fixes: 02de698ca812 ("usb: gadget: u_audio: add bi-directional volume and mute support")
+Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
+Link: https://lore.kernel.org/stable/CO1PR17MB5419C2BF44D400E4E620C1ADE1172%40CO1PR17MB5419.namprd17.prod.outlook.com
+Link: https://lore.kernel.org/r/CO1PR17MB5419C2BF44D400E4E620C1ADE1172@CO1PR17MB5419.namprd17.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c  | 6 +++---
- fs/smb/client/smb2ops.c | 1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/u_audio.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index c8449f43856c5..4fb21affe4e11 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -1277,7 +1277,7 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
- 	struct cifsFileInfo *smb_file_src = src_file->private_data;
- 	struct cifsFileInfo *smb_file_target = dst_file->private_data;
- 	struct cifs_tcon *target_tcon, *src_tcon;
--	unsigned long long destend, fstart, fend, new_size;
-+	unsigned long long destend, fstart, fend, old_size, new_size;
- 	unsigned int xid;
- 	int rc;
+diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/function/u_audio.c
+index 4a42574b4a7fe..c8e8154c59f50 100644
+--- a/drivers/usb/gadget/function/u_audio.c
++++ b/drivers/usb/gadget/function/u_audio.c
+@@ -57,13 +57,13 @@ struct uac_rtd_params {
  
-@@ -1344,6 +1344,7 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
- 		goto unlock;
- 	if (fend > target_cifsi->netfs.zero_point)
- 		target_cifsi->netfs.zero_point = fend + 1;
-+	old_size = target_cifsi->netfs.remote_i_size;
+   /* Volume/Mute controls and their state */
+   int fu_id; /* Feature Unit ID */
+-  struct snd_kcontrol *snd_kctl_volume;
+-  struct snd_kcontrol *snd_kctl_mute;
++  struct snd_ctl_elem_id snd_kctl_volume_id;
++  struct snd_ctl_elem_id snd_kctl_mute_id;
+   s16 volume_min, volume_max, volume_res;
+   s16 volume;
+   int mute;
  
- 	/* Discard all the folios that overlap the destination region. */
- 	cifs_dbg(FYI, "about to discard pages %llx-%llx\n", fstart, fend);
-@@ -1356,9 +1357,8 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
- 	if (target_tcon->ses->server->ops->duplicate_extents) {
- 		rc = target_tcon->ses->server->ops->duplicate_extents(xid,
- 			smb_file_src, smb_file_target, off, len, destoff);
--		if (rc == 0 && new_size > i_size_read(target_inode)) {
-+		if (rc == 0 && new_size > old_size) {
- 			truncate_setsize(target_inode, new_size);
--			netfs_resize_file(&target_cifsi->netfs, new_size, true);
- 			fscache_resize_cookie(cifs_inode_cookie(target_inode),
- 					      new_size);
- 		}
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 28f0b7d19d534..6fea0aed43461 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -2028,6 +2028,7 @@ smb2_duplicate_extents(const unsigned int xid,
- 		 * size will be queried on next revalidate, but it is important
- 		 * to make sure that file's cached size is updated immediately
- 		 */
-+		netfs_resize_file(netfs_inode(inode), dest_off + len, true);
- 		cifs_setsize(inode, dest_off + len);
+-	struct snd_kcontrol *snd_kctl_rate; /* read-only current rate */
++	struct snd_ctl_elem_id snd_kctl_rate_id; /* read-only current rate */
+ 	int srate; /* selected samplerate */
+ 	int active; /* playback/capture running */
+ 
+@@ -494,14 +494,13 @@ static inline void free_ep_fback(struct uac_rtd_params *prm, struct usb_ep *ep)
+ static void set_active(struct uac_rtd_params *prm, bool active)
+ {
+ 	// notifying through the Rate ctrl
+-	struct snd_kcontrol *kctl = prm->snd_kctl_rate;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&prm->lock, flags);
+ 	if (prm->active != active) {
+ 		prm->active = active;
+ 		snd_ctl_notify(prm->uac->card, SNDRV_CTL_EVENT_MASK_VALUE,
+-				&kctl->id);
++				&prm->snd_kctl_rate_id);
  	}
- 	rc = SMB2_ioctl(xid, tcon, trgtfile->fid.persistent_fid,
+ 	spin_unlock_irqrestore(&prm->lock, flags);
+ }
+@@ -807,7 +806,7 @@ int u_audio_set_volume(struct g_audio *audio_dev, int playback, s16 val)
+ 
+ 	if (change)
+ 		snd_ctl_notify(uac->card, SNDRV_CTL_EVENT_MASK_VALUE,
+-				&prm->snd_kctl_volume->id);
++				&prm->snd_kctl_volume_id);
+ 
+ 	return 0;
+ }
+@@ -856,7 +855,7 @@ int u_audio_set_mute(struct g_audio *audio_dev, int playback, int val)
+ 
+ 	if (change)
+ 		snd_ctl_notify(uac->card, SNDRV_CTL_EVENT_MASK_VALUE,
+-			       &prm->snd_kctl_mute->id);
++			       &prm->snd_kctl_mute_id);
+ 
+ 	return 0;
+ }
+@@ -1331,7 +1330,7 @@ int g_audio_setup(struct g_audio *g_audio, const char *pcm_name,
+ 			err = snd_ctl_add(card, kctl);
+ 			if (err < 0)
+ 				goto snd_fail;
+-			prm->snd_kctl_mute = kctl;
++			prm->snd_kctl_mute_id = kctl->id;
+ 			prm->mute = 0;
+ 		}
+ 
+@@ -1359,7 +1358,7 @@ int g_audio_setup(struct g_audio *g_audio, const char *pcm_name,
+ 			err = snd_ctl_add(card, kctl);
+ 			if (err < 0)
+ 				goto snd_fail;
+-			prm->snd_kctl_volume = kctl;
++			prm->snd_kctl_volume_id = kctl->id;
+ 			prm->volume = fu->volume_max;
+ 			prm->volume_max = fu->volume_max;
+ 			prm->volume_min = fu->volume_min;
+@@ -1383,7 +1382,7 @@ int g_audio_setup(struct g_audio *g_audio, const char *pcm_name,
+ 		err = snd_ctl_add(card, kctl);
+ 		if (err < 0)
+ 			goto snd_fail;
+-		prm->snd_kctl_rate = kctl;
++		prm->snd_kctl_rate_id = kctl->id;
+ 	}
+ 
+ 	strscpy(card->driver, card_name, sizeof(card->driver));
 -- 
 2.43.0
 
