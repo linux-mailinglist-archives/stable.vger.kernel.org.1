@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-48482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623478FE92F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B0B8FEC48
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62B241C25F04
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 701671C2324D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F94197556;
-	Thu,  6 Jun 2024 14:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506A01AED58;
+	Thu,  6 Jun 2024 14:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXa5zeX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKlY70NY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65578197550;
-	Thu,  6 Jun 2024 14:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2F11AED59;
+	Thu,  6 Jun 2024 14:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682990; cv=none; b=bBaiEE9iEXrDgHq+Rrr716tRayTl8HH2WhpdywGas0xF1jDotygeLFASU3oXOJ/EnhRejluoTeRtYDzDhpgUbpjPsE1n1fmaXIirntaPSYg2aJ7bg/rmemiZpnl/EGLyFUlu4QYpFkVA1oN+LSOei/d07AfCcH/mGfgQa16VzDY=
+	t=1717683349; cv=none; b=bOx3ZyfYJqdHVgXHy0nk+B6+xxPD9CCxEpKhESGJMGCrMkV+Hr2sE2Bp/r7N5WtVdbQZ/vNOBKt0Q0uVB5gkVYQZVEwwzt4UEI2wO13QjwQthcOiLpfu+U9Xj8REv9bF1WT+L5iVZ1b8hnGKIxputoLwXkXwVuUgNbd+9hdGGK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682990; c=relaxed/simple;
-	bh=pkJ1Y0hpqLJDw+27ESkFXrhr9FtvbifcpP/U2zUjiwA=;
+	s=arc-20240116; t=1717683349; c=relaxed/simple;
+	bh=RNdudmMnY8fynujVygAgkp1M/SBZb2/GyB5yNMUPo6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvMiXU+1ewMVzR+/c6Iik/DtNA1ITqxaa29jtXYLasaafquWmc/ZUQ5N9cCvw8YbqWj/MU5OungzV+FWOeXQHk2Ff14mZQOf5c+AyjbNGhOcnl9a5vW8LRYyZJ++2GkOyh+eKXnpT6pxKBxPaPpc1MdPZ48r36GMrFr0hJsjlCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXa5zeX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4760CC32782;
-	Thu,  6 Jun 2024 14:09:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AsOjyfn96yCDcmL4N6dDpSaAkNEBpKkjTKvklkBEnN2JBIasO5+53RAlI3FS09XcZXhAra1bmh1+xHu18O/AcOuX8VqH6V2nZ1iv/gIzI54aIKQWFTe47AAh9RScfepD+8nZiZMYILS9aA7O+oRHSZyKbQGpohGXyMHNJfu7KGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKlY70NY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6321C2BD10;
+	Thu,  6 Jun 2024 14:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682990;
-	bh=pkJ1Y0hpqLJDw+27ESkFXrhr9FtvbifcpP/U2zUjiwA=;
+	s=korg; t=1717683349;
+	bh=RNdudmMnY8fynujVygAgkp1M/SBZb2/GyB5yNMUPo6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EXa5zeX/KH+QwFe5GlZ5JCz1meyov9gI4iZ/iUTtGHqa2p2Em/ryXmRFiKaptXoDS
-	 VJmkjLiwV5wZC0RY3l/wfmGiFh7lMbppMUU5Un4EpziKmZGnoOfVZ5CM4D7AxdEZK/
-	 bxi56JIUnGVFjz+evg65sLMYf9t7XSKiloETcOms=
+	b=tKlY70NYlFStv648zLfeQ+siruAT18wSIQSYzaunTiylB+C4JB0DJ11/Bh//YtW+J
+	 mDhE6BDAnmbU5ajjFU5BAgqKkjLTL+NeEYf1k0HVIg0GnUUZJ3RBPSNl8GMdR24nFR
+	 O7icGzJdnaOgEM6sID65po90rvhDQll7UUnX+unc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 180/374] string: Prepare to merge strcat KUnit tests into string_kunit.c
+Subject: [PATCH 6.1 230/473] drm/bridge: dpc3433: Dont log an error when DSI host cant be found
 Date: Thu,  6 Jun 2024 16:02:39 +0200
-Message-ID: <20240606131657.902043811@linuxfoundation.org>
+Message-ID: <20240606131707.461343334@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +62,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 6e4ef1429f3be236e145c6115b539acdbd2e299c ]
+[ Upstream commit 24f4f575214de776539d346b99b8717bffa8ebba ]
 
-The test naming convention differs between string_kunit.c and
-strcat_kunit.c. Move "test" to the beginning of the function name.
+Given that failing to find a DSI host causes the driver to defer probe,
+make use of dev_err_probe() to log the reason. This makes the defer
+probe reason available and avoids alerting userspace about something
+that is not necessarily an error.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Tested-by: Ivan Orlov <ivan.orlov0322@gmail.com>
-Link: https://lore.kernel.org/r/20240419140155.3028912-3-keescook@chromium.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Stable-dep-of: 5bb288c4abc2 ("scsi: mptfusion: Avoid possible run-time warning with long manufacturer strings")
+Also move the "failed to attach" error message so that it's only printed
+when the devm_mipi_dsi_attach() call fails.
+
+Fixes: 6352cd451ddb ("drm: bridge: Add TI DLPC3433 DSI to DMD bridge")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-7-619a28148e5c@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/strcat_kunit.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/bridge/ti-dlpc3433.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/lib/strcat_kunit.c b/lib/strcat_kunit.c
-index e21be95514afa..ca09f7f0e6a26 100644
---- a/lib/strcat_kunit.c
-+++ b/lib/strcat_kunit.c
-@@ -10,7 +10,7 @@
+diff --git a/drivers/gpu/drm/bridge/ti-dlpc3433.c b/drivers/gpu/drm/bridge/ti-dlpc3433.c
+index 186a9e2ff24dc..d1684e66d9e3d 100644
+--- a/drivers/gpu/drm/bridge/ti-dlpc3433.c
++++ b/drivers/gpu/drm/bridge/ti-dlpc3433.c
+@@ -319,12 +319,11 @@ static int dlpc_host_attach(struct dlpc *dlpc)
+ 		.channel = 0,
+ 		.node = NULL,
+ 	};
++	int ret;
  
- static volatile int unconst;
+ 	host = of_find_mipi_dsi_host_by_node(dlpc->host_node);
+-	if (!host) {
+-		DRM_DEV_ERROR(dev, "failed to find dsi host\n");
+-		return -EPROBE_DEFER;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -EPROBE_DEFER, "failed to find dsi host\n");
  
--static void strcat_test(struct kunit *test)
-+static void test_strcat(struct kunit *test)
- {
- 	char dest[8];
+ 	dlpc->dsi = mipi_dsi_device_register_full(host, &info);
+ 	if (IS_ERR(dlpc->dsi)) {
+@@ -336,7 +335,11 @@ static int dlpc_host_attach(struct dlpc *dlpc)
+ 	dlpc->dsi->format = MIPI_DSI_FMT_RGB565;
+ 	dlpc->dsi->lanes = dlpc->dsi_lanes;
  
-@@ -29,7 +29,7 @@ static void strcat_test(struct kunit *test)
- 	KUNIT_EXPECT_STREQ(test, dest, "fourAB");
+-	return devm_mipi_dsi_attach(dev, dlpc->dsi);
++	ret = devm_mipi_dsi_attach(dev, dlpc->dsi);
++	if (ret)
++		DRM_DEV_ERROR(dev, "failed to attach dsi host\n");
++
++	return ret;
  }
  
--static void strncat_test(struct kunit *test)
-+static void test_strncat(struct kunit *test)
- {
- 	char dest[8];
+ static int dlpc3433_probe(struct i2c_client *client)
+@@ -367,10 +370,8 @@ static int dlpc3433_probe(struct i2c_client *client)
+ 	drm_bridge_add(&dlpc->bridge);
  
-@@ -56,7 +56,7 @@ static void strncat_test(struct kunit *test)
- 	KUNIT_EXPECT_STREQ(test, dest, "fourAB");
- }
+ 	ret = dlpc_host_attach(dlpc);
+-	if (ret) {
+-		DRM_DEV_ERROR(dev, "failed to attach dsi host\n");
++	if (ret)
+ 		goto err_remove_bridge;
+-	}
  
--static void strlcat_test(struct kunit *test)
-+static void test_strlcat(struct kunit *test)
- {
- 	char dest[8] = "";
- 	int len = sizeof(dest) + unconst;
-@@ -88,9 +88,9 @@ static void strlcat_test(struct kunit *test)
- }
- 
- static struct kunit_case strcat_test_cases[] = {
--	KUNIT_CASE(strcat_test),
--	KUNIT_CASE(strncat_test),
--	KUNIT_CASE(strlcat_test),
-+	KUNIT_CASE(test_strcat),
-+	KUNIT_CASE(test_strncat),
-+	KUNIT_CASE(test_strlcat),
- 	{}
- };
+ 	return 0;
  
 -- 
 2.43.0
