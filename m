@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8E38FEEA2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86BD08FE99A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AC53286444
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1084F1F236F7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0B51C6165;
-	Thu,  6 Jun 2024 14:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAC319AD6B;
+	Thu,  6 Jun 2024 14:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJ4Cm5fk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sR2ZM/mP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB591C6163;
-	Thu,  6 Jun 2024 14:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9C0198A04;
+	Thu,  6 Jun 2024 14:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683684; cv=none; b=r/QAtTJ4ISmJCaK/WByTmJFoN839R0RalWo+PkyCg39UjaX5/t5S97qvmatNYGq4pgnkSJ5Udo8vDPev6h6EQLUm9iVEbBUr6Zy7owEECQ8HU+fM592keh7V4xUyHpG82GftEnuDeV0kX/zzVVMAVIP3fulNcnWw+wObNmCBIu4=
+	t=1717683044; cv=none; b=ZoTowsPhczQN2Tb1CL2f33ujtO7W0RaANWJV0OFYKQ/xXVynDW8jj0tIID/8E2Hz/KUq/M6FZfqwe+kEkX+9YRKmOsyD9LUzJH4PSrIY7kJzr/0ZMjOvgRFW1CojSX7wNSvzPbDMlRsKiKbRoetfRoy7rhJx+3jf9A6wvOPj38E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683684; c=relaxed/simple;
-	bh=ubLD9nEvSvv1wAozF1WRu5dKpfjiysZUdxN78aO7DBs=;
+	s=arc-20240116; t=1717683044; c=relaxed/simple;
+	bh=BI8HFZkADz7U27H3YZFf3Hz8HTOjqE8U0e+Beoj8ZEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PWI6Pph2WaYGaU/+SUZdCiI8UL47WMPVLFldGfj3O3NX0CT6ZxYyRB2EHycTags1X1Sw8mwErKPCSbdAqCR3nKRbrGuvGhYJFc9twccjSIxki/jhWDfazIK3kHbUjMwVNiTL6wDaYvec2285RPhsWwX42fqDJyBVyD/88C0yCmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJ4Cm5fk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8EBC2BD10;
-	Thu,  6 Jun 2024 14:21:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EK7mwkzC0EtJQtd4Q0wvrCHyCNW+6wiL6A01V4/Mqi0GfilLEzqEVHRqx0Q3RhV1ATYZyqJEFPlqYz+ZJ2KTc53kg/q6T1cLvsqFIfRKv4fgb3f2jO7f8RkWg7nPShlCX5w/qv9K570Xvk5xxEbMDQUFN56rRvMvG+EyOKUfl9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sR2ZM/mP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBB5C4AF09;
+	Thu,  6 Jun 2024 14:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683684;
-	bh=ubLD9nEvSvv1wAozF1WRu5dKpfjiysZUdxN78aO7DBs=;
+	s=korg; t=1717683044;
+	bh=BI8HFZkADz7U27H3YZFf3Hz8HTOjqE8U0e+Beoj8ZEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJ4Cm5fkYDMvJWxSx+2xOdBrG+diRCepmRf3IbEVbzgRlMTf/MCmaSbcG6Lk4Mp8g
-	 AUNksXWYsqcejpjXULeBdNgvvI4tZLVsK35kQcXS1esXFYmoeLdt6i9VFfA20HR5iE
-	 RkdK2HIO776Yz2ZirIAFjJjgZT4drslmrLQvqf00=
+	b=sR2ZM/mPciYRdnkfV5E2MQtlxijPGcnFnoIryLlJsC5RN96t5OFJBHGeXI9BraPO2
+	 ZkN1i4krrbDjNinOo5lhAmBO36TJC9altDyMpg6kzLB7lNzm5IVpur0yQ1bNSnkYUu
+	 v6/mm09Zswyjg5uhmungqQdZM71FG1qJNVe/sDlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 588/744] drm/bridge: tc358775: fix support for jeida-18 and jeida-24
-Date: Thu,  6 Jun 2024 16:04:20 +0200
-Message-ID: <20240606131751.328250852@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Subject: [PATCH 6.9 282/374] tcp: reduce accepted window in NEW_SYN_RECV state
+Date: Thu,  6 Jun 2024 16:04:21 +0200
+Message-ID: <20240606131701.347189572@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 30ea09a182cb37c4921b9d477ed18107befe6d78 ]
+commit f4dca95fc0f6350918f2e6727e35b41f7f86fcce upstream.
 
-The bridge always uses 24bpp internally. Therefore, for jeida-18
-mapping we need to discard the lowest two bits for each channel and thus
-starting with LV_[RGB]2. jeida-24 has the same mapping but uses four
-lanes instead of three, with the forth pair transmitting the lowest two
-bits of each channel. Thus, the mapping between jeida-18 and jeida-24
-is actually the same, except that one channel is turned off (by
-selecting the RGB666 format in VPCTRL).
+Jason commit made checks against ACK sequence less strict
+and can be exploited by attackers to establish spoofed flows
+with less probes.
 
-While at it, remove the bogus comment about the hardware default because
-the default is overwritten in any case.
+Innocent users might use tcp_rmem[1] == 1,000,000,000,
+or something more reasonable.
 
-Tested with a jeida-18 display (Evervision VGG644804).
+An attacker can use a regular TCP connection to learn the server
+initial tp->rcv_wnd, and use it to optimize the attack.
 
-Fixes: b26975593b17 ("display/drm/bridge: TC358775 DSI/LVDS driver")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240225062008.33191-5-tony@atomide.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If we make sure that only the announced window (smaller than 65535)
+is used for ACK validation, we force an attacker to use
+65537 packets to complete the 3WHS (assuming server ISN is unknown)
+
+Fixes: 378979e94e95 ("tcp: remove 64 KByte limit for initial tp->rcv_wnd value")
+Link: https://datatracker.ietf.org/meeting/119/materials/slides-119-tcpm-ghost-acks-00
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Link: https://lore.kernel.org/r/20240523130528.60376-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Holger Hoffstätte <holger@applied-asynchrony.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/tc358775.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ include/net/request_sock.h |   12 ++++++++++++
+ net/ipv4/tcp_ipv4.c        |    7 +------
+ net/ipv4/tcp_minisocks.c   |    7 +++++--
+ net/ipv6/tcp_ipv6.c        |    7 +------
+ 4 files changed, 19 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358775.c b/drivers/gpu/drm/bridge/tc358775.c
-index fea4f00a20f83..c737670631929 100644
---- a/drivers/gpu/drm/bridge/tc358775.c
-+++ b/drivers/gpu/drm/bridge/tc358775.c
-@@ -454,10 +454,6 @@ static void tc_bridge_enable(struct drm_bridge *bridge)
- 	dev_dbg(tc->dev, "bus_formats %04x bpc %d\n",
- 		connector->display_info.bus_formats[0],
- 		tc->bpc);
--	/*
--	 * Default hardware register settings of tc358775 configured
--	 * with MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA jeida-24 format
--	 */
- 	if (connector->display_info.bus_formats[0] ==
- 		MEDIA_BUS_FMT_RGB888_1X7X4_SPWG) {
- 		/* VESA-24 */
-@@ -468,14 +464,15 @@ static void tc_bridge_enable(struct drm_bridge *bridge)
- 		d2l_write(tc->i2c, LV_MX1619, LV_MX(LVI_B6, LVI_B7, LVI_B1, LVI_B2));
- 		d2l_write(tc->i2c, LV_MX2023, LV_MX(LVI_B3, LVI_B4, LVI_B5, LVI_L0));
- 		d2l_write(tc->i2c, LV_MX2427, LV_MX(LVI_HS, LVI_VS, LVI_DE, LVI_R6));
--	} else { /*  MEDIA_BUS_FMT_RGB666_1X7X3_SPWG - JEIDA-18 */
--		d2l_write(tc->i2c, LV_MX0003, LV_MX(LVI_R0, LVI_R1, LVI_R2, LVI_R3));
--		d2l_write(tc->i2c, LV_MX0407, LV_MX(LVI_R4, LVI_L0, LVI_R5, LVI_G0));
--		d2l_write(tc->i2c, LV_MX0811, LV_MX(LVI_G1, LVI_G2, LVI_L0, LVI_L0));
--		d2l_write(tc->i2c, LV_MX1215, LV_MX(LVI_G3, LVI_G4, LVI_G5, LVI_B0));
--		d2l_write(tc->i2c, LV_MX1619, LV_MX(LVI_L0, LVI_L0, LVI_B1, LVI_B2));
--		d2l_write(tc->i2c, LV_MX2023, LV_MX(LVI_B3, LVI_B4, LVI_B5, LVI_L0));
--		d2l_write(tc->i2c, LV_MX2427, LV_MX(LVI_HS, LVI_VS, LVI_DE, LVI_L0));
-+	} else {
-+		/* JEIDA-18 and JEIDA-24 */
-+		d2l_write(tc->i2c, LV_MX0003, LV_MX(LVI_R2, LVI_R3, LVI_R4, LVI_R5));
-+		d2l_write(tc->i2c, LV_MX0407, LV_MX(LVI_R6, LVI_R1, LVI_R7, LVI_G2));
-+		d2l_write(tc->i2c, LV_MX0811, LV_MX(LVI_G3, LVI_G4, LVI_G0, LVI_G1));
-+		d2l_write(tc->i2c, LV_MX1215, LV_MX(LVI_G5, LVI_G6, LVI_G7, LVI_B2));
-+		d2l_write(tc->i2c, LV_MX1619, LV_MX(LVI_B0, LVI_B1, LVI_B3, LVI_B4));
-+		d2l_write(tc->i2c, LV_MX2023, LV_MX(LVI_B5, LVI_B6, LVI_B7, LVI_L0));
-+		d2l_write(tc->i2c, LV_MX2427, LV_MX(LVI_HS, LVI_VS, LVI_DE, LVI_R0));
+--- a/include/net/request_sock.h
++++ b/include/net/request_sock.h
+@@ -282,4 +282,16 @@ static inline int reqsk_queue_len_young(
+ 	return atomic_read(&queue->young);
+ }
+ 
++/* RFC 7323 2.3 Using the Window Scale Option
++ *  The window field (SEG.WND) of every outgoing segment, with the
++ *  exception of <SYN> segments, MUST be right-shifted by
++ *  Rcv.Wind.Shift bits.
++ *
++ * This means the SEG.WND carried in SYNACK can not exceed 65535.
++ * We use this property to harden TCP stack while in NEW_SYN_RECV state.
++ */
++static inline u32 tcp_synack_window(const struct request_sock *req)
++{
++	return min(req->rsk_rcv_wnd, 65535U);
++}
+ #endif /* _REQUEST_SOCK_H */
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1143,14 +1143,9 @@ static void tcp_v4_reqsk_send_ack(const
+ #endif
  	}
  
- 	d2l_write(tc->i2c, VFUEN, VFUEN_EN);
--- 
-2.43.0
-
+-	/* RFC 7323 2.3
+-	 * The window field (SEG.WND) of every outgoing segment, with the
+-	 * exception of <SYN> segments, MUST be right-shifted by
+-	 * Rcv.Wind.Shift bits:
+-	 */
+ 	tcp_v4_send_ack(sk, skb, seq,
+ 			tcp_rsk(req)->rcv_nxt,
+-			req->rsk_rcv_wnd >> inet_rsk(req)->rcv_wscale,
++			tcp_synack_window(req) >> inet_rsk(req)->rcv_wscale,
+ 			tcp_rsk_tsval(tcp_rsk(req)),
+ 			READ_ONCE(req->ts_recent),
+ 			0, &key,
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -783,8 +783,11 @@ struct sock *tcp_check_req(struct sock *
+ 
+ 	/* RFC793: "first check sequence number". */
+ 
+-	if (paws_reject || !tcp_in_window(TCP_SKB_CB(skb)->seq, TCP_SKB_CB(skb)->end_seq,
+-					  tcp_rsk(req)->rcv_nxt, tcp_rsk(req)->rcv_nxt + req->rsk_rcv_wnd)) {
++	if (paws_reject || !tcp_in_window(TCP_SKB_CB(skb)->seq,
++					  TCP_SKB_CB(skb)->end_seq,
++					  tcp_rsk(req)->rcv_nxt,
++					  tcp_rsk(req)->rcv_nxt +
++					  tcp_synack_window(req))) {
+ 		/* Out of window: send ACK and drop. */
+ 		if (!(flg & TCP_FLAG_RST) &&
+ 		    !tcp_oow_rate_limited(sock_net(sk), skb,
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1268,15 +1268,10 @@ static void tcp_v6_reqsk_send_ack(const
+ 	/* sk->sk_state == TCP_LISTEN -> for regular TCP_SYN_RECV
+ 	 * sk->sk_state == TCP_SYN_RECV -> for Fast Open.
+ 	 */
+-	/* RFC 7323 2.3
+-	 * The window field (SEG.WND) of every outgoing segment, with the
+-	 * exception of <SYN> segments, MUST be right-shifted by
+-	 * Rcv.Wind.Shift bits:
+-	 */
+ 	tcp_v6_send_ack(sk, skb, (sk->sk_state == TCP_LISTEN) ?
+ 			tcp_rsk(req)->snt_isn + 1 : tcp_sk(sk)->snd_nxt,
+ 			tcp_rsk(req)->rcv_nxt,
+-			req->rsk_rcv_wnd >> inet_rsk(req)->rcv_wscale,
++			tcp_synack_window(req) >> inet_rsk(req)->rcv_wscale,
+ 			tcp_rsk_tsval(tcp_rsk(req)),
+ 			READ_ONCE(req->ts_recent), sk->sk_bound_dev_if,
+ 			&key, ipv6_get_dsfield(ipv6_hdr(skb)), 0,
 
 
 
