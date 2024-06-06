@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-48597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA658FE9AD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4618FEEB8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F8FA288D99
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76788B21C30
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539AB19ADB3;
-	Thu,  6 Jun 2024 14:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98331C6185;
+	Thu,  6 Jun 2024 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKsmBbSZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCtXojUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E9E19B3C7;
-	Thu,  6 Jun 2024 14:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B5C1C617F;
+	Thu,  6 Jun 2024 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683054; cv=none; b=A3BTlguLa/uNHhkKNu+UgKaDdZ6bfxGEVcgIHoGfBXP8Iqobmv+VvitrMnAM8ngY5KJirImFeQ8L55WYIcX7YI+Q+2oUuW7wghLVeiGi7qbfuUy1KuL3tb1xZBMjhE/RR8enPIFBjwfC5MxiZF139Gu2c7DsXFOyuRizfZ1O6EM=
+	t=1717683693; cv=none; b=ryLJD40HGndbZkMycGEr6Vqfr9fcBCUkMf25AhzUK1a0sZedlnXApxxYvtav7UwTNtwLOf5ZNLbHR7R9TuwSgPf3qjfeXVOfleukvHTTVcbmiB01koZSpuRQgyXcvL0wqw1M5KHqV1Sy9u10oLuxSxaqPZs0BciupUbltHzhdDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683054; c=relaxed/simple;
-	bh=YLFFq32AxL9oTWGPrAtChmBeDBxB5Ik70MdqWYoAUPI=;
+	s=arc-20240116; t=1717683693; c=relaxed/simple;
+	bh=TSzllp3QPMf/E8/Sh1DU6lyhOYj6UJCkBWYTsKOti6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4IZBzlq/yIvjJuJ4Qk3AIPAteH/KVZxuA+l9LoB1zmGYfnXK3V3IXT9uEdyXdY7GwKNshoQHIv4JgOI81XrQl6QI1pRt0UNhC+iGybREunxIO8m5FpdNOVWynmomfyM6dnmzeXljuCzvS1zB8m2SY0mZMgMBxPzAOqM+Vo4nx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKsmBbSZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8335C2BD10;
-	Thu,  6 Jun 2024 14:10:53 +0000 (UTC)
+	 MIME-Version; b=Ed/snFQYGfvQTXRDGiP7l2GCzHF66+Qe107pWlTFCRl9oGk4U21xugRMBVzlqiPLzegwAuzmGVxmuYvGct/xRaA0pBeP3PYdI+Li0BNnVzL0A4Urwj9QzG7BgAaK+NAAVPn8LW1ETzLIlWzJiUxITgk1WtmtwKPLJUA0y0r/pmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCtXojUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78417C4AF08;
+	Thu,  6 Jun 2024 14:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683054;
-	bh=YLFFq32AxL9oTWGPrAtChmBeDBxB5Ik70MdqWYoAUPI=;
+	s=korg; t=1717683693;
+	bh=TSzllp3QPMf/E8/Sh1DU6lyhOYj6UJCkBWYTsKOti6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKsmBbSZWN4qWuAFND5visWSeiCJ95GqTWEaHzs3lQnFgHZE9H0b9hEfajKDX4OEm
-	 AfMehAv0J/n/KlDR7e/9nvNfKQ5IIaLeg2tZoWaGua1TFF5tT2N9Ddz/B3DP/Nd0uB
-	 5t+eRobJeYke3MW3Yw/h8I6EU6I1M6xR5W0CPHj0=
+	b=uCtXojUh6MhPMIcWdRzIMUBS+d6GgB0phPSzdavRV3dLU8wb7f8OOG9pZ8xG5jT5H
+	 ZYxtWJh/DESI/szKLpkZaA2Hnm8B+Quk1sKszJA0qyfkp4jzaudvYwwddQwBtf5niM
+	 uY+KB1AqBvAZGKfg4uYamTdHsll5HmlHgmTmKdWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 297/374] net/mlx5: Do not query MPIR on embedded CPU function
-Date: Thu,  6 Jun 2024 16:04:36 +0200
-Message-ID: <20240606131701.816562955@linuxfoundation.org>
+Subject: [PATCH 6.6 605/744] cxl/region: Fix cxlr_pmem leaks
+Date: Thu,  6 Jun 2024 16:04:37 +0200
+Message-ID: <20240606131751.893072377@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tariq Toukan <tariqt@nvidia.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit fca3b4791850b7e2181f0b3195b66d53df83151b ]
+[ Upstream commit 1c987cf22d6b65ade46145c03eef13f0e3e81d83 ]
 
-A proper query to MPIR needs to set the correct value in the depth field.
-On embedded CPU this value is not necessarily zero. As there is no real
-use case for multi-PF netdev on the embedded CPU of the smart NIC, block
-this option.
+Before this error path, cxlr_pmem pointed to a kzalloc() memory, free
+it to avoid this memory leaking.
 
-This fixes the following failure:
-ACCESS_REG(0x805) op_mod(0x1) failed, status bad system state(0x4), syndrome (0x685f19), err(-5)
-
-Fixes: 678eb448055a ("net/mlx5: SD, Implement basic query and instantiation")
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: f17b558d6663 ("cxl/pmem: Refactor nvdimm device registration, delete the workqueue")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20240428030748.318985-1-lizhijian@fujitsu.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/cxl/core/region.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-index dd5d186dc6148..f6deb5a3f8202 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-@@ -100,10 +100,6 @@ static bool ft_create_alias_supported(struct mlx5_core_dev *dev)
- 
- static bool mlx5_sd_is_supported(struct mlx5_core_dev *dev, u8 host_buses)
- {
--	/* Feature is currently implemented for PFs only */
--	if (!mlx5_core_is_pf(dev))
--		return false;
--
- 	/* Honor the SW implementation limit */
- 	if (host_buses > MLX5_SD_MAX_GROUP_SZ)
- 		return false;
-@@ -162,6 +158,14 @@ static int sd_init(struct mlx5_core_dev *dev)
- 	bool sdm;
- 	int err;
- 
-+	/* Feature is currently implemented for PFs only */
-+	if (!mlx5_core_is_pf(dev))
-+		return 0;
-+
-+	/* Block on embedded CPU PFs */
-+	if (mlx5_core_is_ecpf(dev))
-+		return 0;
-+
- 	if (!MLX5_CAP_MCAM_REG(dev, mpir))
- 		return 0;
- 
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index e2a82ee4ff0cf..c65ab42546238 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -2549,6 +2549,7 @@ static struct cxl_pmem_region *cxl_pmem_region_alloc(struct cxl_region *cxlr)
+ 		if (i == 0) {
+ 			cxl_nvb = cxl_find_nvdimm_bridge(cxlmd);
+ 			if (!cxl_nvb) {
++				kfree(cxlr_pmem);
+ 				cxlr_pmem = ERR_PTR(-ENODEV);
+ 				goto out;
+ 			}
 -- 
 2.43.0
 
