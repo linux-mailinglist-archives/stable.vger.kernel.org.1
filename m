@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-48785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891BA8FEA86
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332B98FEA9F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 332CF286726
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B9B41C2379E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9A71A01BF;
-	Thu,  6 Jun 2024 14:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBDD1A0AF8;
+	Thu,  6 Jun 2024 14:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdkRUweF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1jvnOnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD7519752E;
-	Thu,  6 Jun 2024 14:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFB41991BE;
+	Thu,  6 Jun 2024 14:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683146; cv=none; b=nDiloobu24C+w7/iEwUE4Y+Vegknhx4HdXXSsPvq6+3Oo+DAPhHouqWwCjDFnS9ObO7L7YxrhJiu9uhMPUvxWwjtsage2DLfUJcyO95huUpQmE59Gn+TfW2ukQAccX0LLIdGdYjD/UwE6BJH4SRcEfNeNbvVnWKaQzHd2HdOnRY=
+	t=1717683157; cv=none; b=Lj6kylc9F+PnSQNU6GwugkQ20zW98ZhIv2pGVBkYX/RcbWBfxHepGhD/lVB+d4IHgnAUm9wdhG3MrL9WznPPhRdRutKXOys6shoDwy32B3Cgc9n1Ta8BXF+gC7k845pCTUr+8VKcgHvROMTBn3i/tm23dvIsCCus+kr19aOwMwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683146; c=relaxed/simple;
-	bh=YhvRRrc+uXgnPyzVzPL4B+w/FS68uDAd5aOEdkaEoBY=;
+	s=arc-20240116; t=1717683157; c=relaxed/simple;
+	bh=+XBJdTj0Q2asgJYrdzwXlwX5hYNG5MIkX0Gu5NXocW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stT7IVsz3boTCwjLSoaluok0UUStntZ7iLA5iFy25+TvvNoq0b0UrVEcodsadcB1iyBbV63hPnyTrcqGwHg9LqtcnWdDhmGXqBUGcMds+Euchk8L1sPqKYrL+pWHNLfjmb8yAxl3VVN1j2IdkElHOUvWM2ZDDUaO8Oe8pk/PZWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdkRUweF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C926C2BD10;
-	Thu,  6 Jun 2024 14:12:26 +0000 (UTC)
+	 MIME-Version; b=deAIt+anuepWu+/Ov63x/uzNAs9upKO6yR+KdRmYhgvHSiAK1vuEsqNJwC0+GmeTiHthZmBPTykXk6mWhjasSAc9VWCCXVbZbw5mYsw8KWqa97QlvQee9J25UeCknZDSEuDcUvvN6RuqXXFaVa2izzx+QPF8Hmdh5wWzhGdnZDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1jvnOnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA2FC2BD10;
+	Thu,  6 Jun 2024 14:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683146;
-	bh=YhvRRrc+uXgnPyzVzPL4B+w/FS68uDAd5aOEdkaEoBY=;
+	s=korg; t=1717683157;
+	bh=+XBJdTj0Q2asgJYrdzwXlwX5hYNG5MIkX0Gu5NXocW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdkRUweFUMt6LA51AfvBlNA0O46Q3SOu6tZfc6sc4LXxw/CRrufgQlcctDqUj0mmA
-	 nWW/GZHlKwveYs99R3fyoL4qPv7E9iLzO8z7i84JB5ET7DD5DCjLSzwl7eDJqk7I4C
-	 foYV1V4IbCnRgLUvHvw6KJp+QXesSwFUdXbJIznE=
+	b=r1jvnOntDO6gjOBgpGvdsJsPYGTPv+Xv2mDxuYuCtSfM5jksmI+rLVH9wLa8+LVe1
+	 jEl9US/r11AuH2ujTBdiSug0Wa0B1HX6r2k2muXxSzPiMJfR6JKJ3t4qpkovgg2bGX
+	 G5yVgrw8qfACrQS7VS+zqZrGHv49Uh8uGFJSML4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	PeiChen Huang <peichen.huang@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/744] drm/amd/display: Allocate zero bw after bw alloc enable
-Date: Thu,  6 Jun 2024 15:55:50 +0200
-Message-ID: <20240606131734.904848619@linuxfoundation.org>
+Subject: [PATCH 6.6 079/744] drm/amd/display: Add VCO speed parameter for DCN31 FPU
+Date: Thu,  6 Jun 2024 15:55:51 +0200
+Message-ID: <20240606131734.936386584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,60 +68,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit 46fe9cb1a9e62f4e6229f48ae303ef8e6c1fdc64 ]
+[ Upstream commit 0e62103bdcbc88281e16add299a946fb3bd02fbe ]
 
-[Why]
-During DP tunnel creation, CM preallocates BW and reduces
-estimated BW of other DPIA. CM release preallocation only
-when allocation is complete. Display mode validation logic
-validates timings based on bw available per host router.
-In multi display setup, this causes bw allocation failure
-when allocation greater than estimated bw.
+Add VCO speed parameters in the bounding box array.
 
-[How]
-Do zero alloc to make the CM to release preallocation and
-update estimated BW correctly for all DPIAs per host router.
-
-Reviewed-by: PeiChen Huang <peichen.huang@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/link/protocols/link_dp_dpia_bw.c    | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
-index 5491b707cec88..5a965c26bf209 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
-@@ -270,7 +270,7 @@ static void set_usb4_req_bw_req(struct dc_link *link, int req_bw)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
+index deb6d162a2d5c..7307b7b8d8ad7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
+@@ -291,6 +291,7 @@ static struct _vcs_dpi_soc_bounding_box_st dcn3_15_soc = {
+ 	.do_urgent_latency_adjustment = false,
+ 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
+ 	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
++	.dispclk_dppclk_vco_speed_mhz = 2400.0,
+ 	.num_chans = 4,
+ 	.dummy_pstate_latency_us = 10.0
+ };
+@@ -438,6 +439,7 @@ static struct _vcs_dpi_soc_bounding_box_st dcn3_16_soc = {
+ 	.do_urgent_latency_adjustment = false,
+ 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
+ 	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
++	.dispclk_dppclk_vco_speed_mhz = 2500.0,
+ };
  
- 	/* Error check whether requested and allocated are equal */
- 	req_bw = requested_bw * (Kbps_TO_Gbps / link->dpia_bw_alloc_config.bw_granularity);
--	if (req_bw == link->dpia_bw_alloc_config.allocated_bw) {
-+	if (req_bw && (req_bw == link->dpia_bw_alloc_config.allocated_bw)) {
- 		DC_LOG_ERROR("%s: Request bw equals to allocated bw for link(%d)\n",
- 			__func__, link->link_index);
- 	}
-@@ -341,6 +341,14 @@ bool link_dp_dpia_set_dptx_usb4_bw_alloc_support(struct dc_link *link)
- 			ret = true;
- 			init_usb4_bw_struct(link);
- 			link->dpia_bw_alloc_config.bw_alloc_enabled = true;
-+
-+			/*
-+			 * During DP tunnel creation, CM preallocates BW and reduces estimated BW of other
-+			 * DPIA. CM release preallocation only when allocation is complete. Do zero alloc
-+			 * to make the CM to release preallocation and update estimated BW correctly for
-+			 * all DPIAs per host router
-+			 */
-+			link_dp_dpia_allocate_usb4_bandwidth_for_stream(link, 0);
- 		}
- 	}
- 
+ void dcn31_zero_pipe_dcc_fraction(display_e2e_pipe_params_st *pipes,
 -- 
 2.43.0
 
