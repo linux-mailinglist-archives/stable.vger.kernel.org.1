@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 512498FEE0D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4A78FECA3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53F151C24932
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 042731C25856
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720991BF904;
-	Thu,  6 Jun 2024 14:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E3319B3FB;
+	Thu,  6 Jun 2024 14:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fya6Z8cy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBKqJqAX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312411BF8FF;
-	Thu,  6 Jun 2024 14:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085BA198A35;
+	Thu,  6 Jun 2024 14:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683554; cv=none; b=lZuJVb1X1RQK94JWAX9M7/iRfGzLgGsMyX9m4Rm+qKFPkqMVQRKXXJ3VeZZUChvNMzKwNY6Lcv19LvK8Ccq6hmnS3op/L415IysX+5MTHMp/qSm/+F5ehKHpMbQyPVzK0Wm0IQBJMDjgb5FJBoATL+m1R66MZDTak8+ImcSRlT0=
+	t=1717683391; cv=none; b=SdWJHnD+ODblD+yyUVrQ0XsjYLra2UCKGWWJ+BkbEpwt0+6JMnq/k09pNOI2f7uGXCoQtIQfSinG913J9g8pNvysK+brpMu36bEmxemZfNwuMH06BmvAwD9JuH9VHDe9GIj2U+fsycGarYVi4Ou5BGg5RTdW4DodTXHsBva/GlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683554; c=relaxed/simple;
-	bh=Naofmm5cfyJ7UBJObjjWEucTmTmkSL03gl3ZXJhpeFI=;
+	s=arc-20240116; t=1717683391; c=relaxed/simple;
+	bh=KkQBXrUIN2HQswnfGPsyVqKfENwNzM0ZxpHq1XNKIpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0RaAPx0PFgMFnQiDi5SfPwtuE8o74B1V+v4iVuQvg/n9P0j43hx/J/e9KPfn458lVDFZiSVRHCRVxFmpOQKeDIhc3XSqTR5K5+wzVxy4gsA531MhSrsK9IWupYYCtmmmhIPQW7zxyU7Vm3BAXs/fd9TesnuQGd2+5VLFpZM+nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fya6Z8cy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F51EC32781;
-	Thu,  6 Jun 2024 14:19:14 +0000 (UTC)
+	 MIME-Version; b=SH2lvUtTAOLjMUwbj4OcPSPrWfzjVQxcA5OrJDilQ7LmYr5z6ReRXBeJBaAQ8bB7qi5cayN9xt5IfK1FZXK7dKSdyC+Z9CPsM5vmWxHIBRlT2V9etD//iQ+hykYlAARQis1mf6RGqGI3iiPIiUVYttSj+GjE1dpSgG4uBHe7mTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBKqJqAX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFB2C2BD10;
+	Thu,  6 Jun 2024 14:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683554;
-	bh=Naofmm5cfyJ7UBJObjjWEucTmTmkSL03gl3ZXJhpeFI=;
+	s=korg; t=1717683390;
+	bh=KkQBXrUIN2HQswnfGPsyVqKfENwNzM0ZxpHq1XNKIpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fya6Z8cyN8gbCf4f4OeZthe98jWhgPtSlv7ioD4TMtzBydaA/Y1V3GN28HKCDU1L3
-	 m78MthBL5WxA/qE5BY3Yl4L+U18yMr4qadMzs40Wc0K804Qqrk9uaxZxaIe1INvnvd
-	 JR+tRnPxRzvFVBxQ7fcNlFMoUPvWb5TZ9EYJkFUY=
+	b=CBKqJqAXh5DR5/iD3emPtgS5XIemiVglrA2aCA1nHIOSkT4heUjjFqkS0ujENkLxT
+	 /LFZTzpR3LnHmkKlleqCIUG8JERECWcHkerIrzlzM6KRN80DWiaV/HQ/eI7aOC3dNw
+	 Rlxk/2SSsxn+CdAMFlNvsbuiqFMH9nf9UW45ybOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 496/744] extcon: max8997: select IRQ_DOMAIN instead of depending on it
+Subject: [PATCH 6.1 239/473] RDMA/hns: Fix UAF for cq async event
 Date: Thu,  6 Jun 2024 16:02:48 +0200
-Message-ID: <20240606131748.349965959@linuxfoundation.org>
+Message-ID: <20240606131707.730363278@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
+[ Upstream commit a942ec2745ca864cd8512142100e4027dc306a42 ]
 
-IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
-it directly thru "make *config", so drivers should select it instead
-of depending on it if they need it.
-Relying on it being set for a dependency is risky.
+The refcount of CQ is not protected by locks. When CQ asynchronous
+events and CQ destruction are concurrent, CQ may have been released,
+which will cause UAF.
 
-Consistently using "select" or "depends on" can also help reduce
-Kconfig circular dependency issues.
+Use the xa_lock() to protect the CQ refcount.
 
-Therefore, change EXTCON_MAX8997's use of "depends on" for
-IRQ_DOMAIN to "select".
-
-Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
-Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_cq.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
-index 8de9023c2a387..cf472e44c5ff9 100644
---- a/drivers/extcon/Kconfig
-+++ b/drivers/extcon/Kconfig
-@@ -116,7 +116,8 @@ config EXTCON_MAX77843
+diff --git a/drivers/infiniband/hw/hns/hns_roce_cq.c b/drivers/infiniband/hw/hns/hns_roce_cq.c
+index 736dc2f993b40..ff177466de9b4 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_cq.c
++++ b/drivers/infiniband/hw/hns/hns_roce_cq.c
+@@ -151,7 +151,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 		return ret;
+ 	}
  
- config EXTCON_MAX8997
- 	tristate "Maxim MAX8997 EXTCON Support"
--	depends on MFD_MAX8997 && IRQ_DOMAIN
-+	depends on MFD_MAX8997
-+	select IRQ_DOMAIN
- 	help
- 	  If you say yes here you get support for the MUIC device of
- 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
+-	ret = xa_err(xa_store(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
++	ret = xa_err(xa_store_irq(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to xa_store CQ, ret = %d.\n", ret);
+ 		goto err_put;
+@@ -164,7 +164,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 	return 0;
+ 
+ err_xa:
+-	xa_erase(&cq_table->array, hr_cq->cqn);
++	xa_erase_irq(&cq_table->array, hr_cq->cqn);
+ err_put:
+ 	hns_roce_table_put(hr_dev, &cq_table->table, hr_cq->cqn);
+ 
+@@ -183,7 +183,7 @@ static void free_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
+ 		dev_err(dev, "DESTROY_CQ failed (%d) for CQN %06lx\n", ret,
+ 			hr_cq->cqn);
+ 
+-	xa_erase(&cq_table->array, hr_cq->cqn);
++	xa_erase_irq(&cq_table->array, hr_cq->cqn);
+ 
+ 	/* Waiting interrupt process procedure carried out */
+ 	synchronize_irq(hr_dev->eq_table.eq[hr_cq->vector].irq);
+@@ -472,13 +472,6 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
+ 	struct ib_event event;
+ 	struct ib_cq *ibcq;
+ 
+-	hr_cq = xa_load(&hr_dev->cq_table.array,
+-			cqn & (hr_dev->caps.num_cqs - 1));
+-	if (!hr_cq) {
+-		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
+-		return;
+-	}
+-
+ 	if (event_type != HNS_ROCE_EVENT_TYPE_CQ_ID_INVALID &&
+ 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_ACCESS_ERROR &&
+ 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_OVERFLOW) {
+@@ -487,7 +480,16 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
+ 		return;
+ 	}
+ 
+-	refcount_inc(&hr_cq->refcount);
++	xa_lock(&hr_dev->cq_table.array);
++	hr_cq = xa_load(&hr_dev->cq_table.array,
++			cqn & (hr_dev->caps.num_cqs - 1));
++	if (hr_cq)
++		refcount_inc(&hr_cq->refcount);
++	xa_unlock(&hr_dev->cq_table.array);
++	if (!hr_cq) {
++		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
++		return;
++	}
+ 
+ 	ibcq = &hr_cq->ib_cq;
+ 	if (ibcq->event_handler) {
 -- 
 2.43.0
 
