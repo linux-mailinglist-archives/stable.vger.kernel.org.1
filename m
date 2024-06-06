@@ -1,68 +1,57 @@
-Return-Path: <stable+bounces-49471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E16E8FED62
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1738B8FEBC2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E328B25721
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97D2828562B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0AE1BA883;
-	Thu,  6 Jun 2024 14:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99189196D93;
+	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrUwnE9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5cqjfg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05FF19D09F;
-	Thu,  6 Jun 2024 14:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E8219A2B5;
+	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683482; cv=none; b=Ebe8e3n3dLQhjuSzyHTVe4ZhiVPWhDw6dqkpA3D2uCWpJA41QT9t1pLG7YuUWHJKIm+H9y8YWfHgX/NyqBfHVkbw/yPLnUYDo8WqD+k3ul9bwl3aBSUxhpYqY8JThSrTidV/EgzGYRTkXDPoxx7XdjkR0YrrVa4xdRi3JuLNvjI=
+	t=1717683291; cv=none; b=SFdoNjvuEoInEoB1DwTZsVSM9eaARVXj+3rLBu7aLHLw0sBoCOeTYraMz0ixntJ85al2yKRuDiATSmdnv2/Snk+W+IuiRasQDwNnaNLJetChn/vtUcBMahkrdvMuRFFMypsnYRD7cW51M6gc7NlCfSCpymy+rGugRhFzjQETs8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683482; c=relaxed/simple;
-	bh=CmFODyk6xXiUPZitWNmnChP1mvuGGtAzcHR+X8NTsfc=;
+	s=arc-20240116; t=1717683291; c=relaxed/simple;
+	bh=1DakesfRyGUdL0lVHfJ2WvzE+vRXGJVPSNAgZCkqI7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUkHa/4+UtrldMD7OWDlPDEFsJygoW/9mmXH9xXZG8u6pE2SsOBQY9uuYVbxyvT6vC8vCNByohjRIMhbJpg4Avg/0x5pbhjWq7NMtdeGdF179k6MIZuw83uopNHP23RkxPdX2C/tGoXfQT6coJRC0vdWkSXMfxz6heNJzsHjwIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrUwnE9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1EBC2BD10;
-	Thu,  6 Jun 2024 14:18:01 +0000 (UTC)
+	 MIME-Version; b=S84XbyjU6pjUjgz+zS2XXYflEaY7YO4GnKDcGJkrahuAF8gtuZnBedJDTtklTeuXokMMW6iVCa/6zIy1Ford3D7ZnvuBtaUZ6IeHItes3ZO9FFwj+5xCoJ9PWFwIBqPhULwPMXV03RjQ53Qwp4h2Px4CCLUHcyIkp/Qi9GnGKPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5cqjfg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEE7C32781;
+	Thu,  6 Jun 2024 14:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683481;
-	bh=CmFODyk6xXiUPZitWNmnChP1mvuGGtAzcHR+X8NTsfc=;
+	s=korg; t=1717683290;
+	bh=1DakesfRyGUdL0lVHfJ2WvzE+vRXGJVPSNAgZCkqI7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrUwnE9HeLo4NVg6MT8OkvqbXsPO19p0pj1h0pfT9AhPLu7PmeylAIgXSxnNFwakd
-	 1jytlNGZsNkXIBL5Bpc9Ej/F2AD86epweuczfyVx8UxcYQFz5v84Nv4qxPGIhCubUq
-	 x4q8Txku1cEcJq0oQcQZe+NehNq0QrZg4HLi04oM=
+	b=w5cqjfg8G0mVdZ995dxCJMwdIoClai2jujHUQvR2pY4VcvOr1tmJSWi9zj9QKsDIX
+	 +mW675BoMrHWaIJ2YwJvTrQgmiNFtdhCTuRvNQ/QJB+L+EqJ7svjfytp3j71ZDb9BY
+	 OMBUDEP0zp6Auf09+RBSRmBcsBUvPh1qEEjSkOiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Spoorthy S <spoorts2@in.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 424/744] perf tests: Make "test data symbol" more robust on Neoverse N1
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 6.1 167/473] m68k: mac: Fix reboot hang on Mac IIci
 Date: Thu,  6 Jun 2024 16:01:36 +0200
-Message-ID: <20240606131746.071326081@linuxfoundation.org>
+Message-ID: <20240606131705.463756737@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,71 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 256ef072b3842273ce703db18b603b051aca95fe ]
+[ Upstream commit 265a3b322df9a973ff1fc63da70af456ab6ae1d6 ]
 
-To prevent anyone from seeing a test failure appear as a regression and
-thinking that it was caused by their code change, insert some noise into
-the loop which makes it immune to sampling bias issues (errata 1694299).
+Calling mac_reset() on a Mac IIci does reset the system, but what
+follows is a POST failure that requires a manual reset to resolve.
+Avoid that by using the 68030 asm implementation instead of the C
+implementation.
 
-The "test data symbol" test can fail with any unrelated change that
-shifts the loop into an unfortunate position in the Perf binary which is
-almost impossible to debug as the root cause of the test failure.
-Ultimately it's caused by the referenced errata.
+Apparently the SE/30 has a similar problem as it has used the asm
+implementation since before git. This patch extends that solution to
+other systems with a similar ROM.
 
-Fixes: 60abedb8aa902b06 ("perf test: Introduce script for data symbol testing")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Spoorthy S <spoorts2@in.ibm.com>
-Link: https://lore.kernel.org/r/20240410103458.813656-2-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+After this patch, the only systems still using the C implementation are
+68040 systems where adb_type is either MAC_ADB_IOP or MAC_ADB_II. This
+implies a 1 MiB Quadra ROM.
+
+This now includes the Quadra 900/950, which previously fell through to
+the "should never get here" catch-all.
+
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/480ebd1249d229c6dc1f3f1c6d599b8505483fd8.1714797072.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/workloads/datasym.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/m68k/mac/misc.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/tools/perf/tests/workloads/datasym.c b/tools/perf/tests/workloads/datasym.c
-index ddd40bc63448a..8e08fc75a973e 100644
---- a/tools/perf/tests/workloads/datasym.c
-+++ b/tools/perf/tests/workloads/datasym.c
-@@ -16,6 +16,22 @@ static int datasym(int argc __maybe_unused, const char **argv __maybe_unused)
+diff --git a/arch/m68k/mac/misc.c b/arch/m68k/mac/misc.c
+index 4fab347917586..060394b00037d 100644
+--- a/arch/m68k/mac/misc.c
++++ b/arch/m68k/mac/misc.c
+@@ -451,30 +451,18 @@ void mac_poweroff(void)
+ 
+ void mac_reset(void)
  {
- 	for (;;) {
- 		buf1.data1++;
-+		if (buf1.data1 == 123) {
-+			/*
-+			 * Add some 'noise' in the loop to work around errata
-+			 * 1694299 on Arm N1.
-+			 *
-+			 * Bias exists in SPE sampling which can cause the load
-+			 * and store instructions to be skipped entirely. This
-+			 * comes and goes randomly depending on the offset the
-+			 * linker places the datasym loop at in the Perf binary.
-+			 * With an extra branch in the middle of the loop that
-+			 * isn't always taken, the instruction stream is no
-+			 * longer a continuous repeating pattern that interacts
-+			 * badly with the bias.
-+			 */
-+			buf1.data1++;
-+		}
- 		buf1.data2 += buf1.data1;
+-	if (macintosh_config->adb_type == MAC_ADB_II &&
+-	    macintosh_config->ident != MAC_MODEL_SE30) {
+-		/* need ROMBASE in booter */
+-		/* indeed, plus need to MAP THE ROM !! */
+-
+-		if (mac_bi_data.rombase == 0)
+-			mac_bi_data.rombase = 0x40800000;
+-
+-		/* works on some */
+-		rom_reset = (void *) (mac_bi_data.rombase + 0xa);
+-
+-		local_irq_disable();
+-		rom_reset();
+ #ifdef CONFIG_ADB_CUDA
+-	} else if (macintosh_config->adb_type == MAC_ADB_EGRET ||
+-	           macintosh_config->adb_type == MAC_ADB_CUDA) {
++	if (macintosh_config->adb_type == MAC_ADB_EGRET ||
++	    macintosh_config->adb_type == MAC_ADB_CUDA) {
+ 		cuda_restart();
++	} else
+ #endif
+ #ifdef CONFIG_ADB_PMU
+-	} else if (macintosh_config->adb_type == MAC_ADB_PB2) {
++	if (macintosh_config->adb_type == MAC_ADB_PB2) {
+ 		pmu_restart();
++	} else
+ #endif
+-	} else if (CPU_IS_030) {
+-
++	if (CPU_IS_030) {
+ 		/* 030-specific reset routine.  The idea is general, but the
+ 		 * specific registers to reset are '030-specific.  Until I
+ 		 * have a non-030 machine, I can't test anything else.
+@@ -522,6 +510,18 @@ void mac_reset(void)
+ 		    "jmp %/a0@\n\t" /* jump to the reset vector */
+ 		    ".chip 68k"
+ 		    : : "r" (offset), "a" (rombase) : "a0");
++	} else {
++		/* need ROMBASE in booter */
++		/* indeed, plus need to MAP THE ROM !! */
++
++		if (mac_bi_data.rombase == 0)
++			mac_bi_data.rombase = 0x40800000;
++
++		/* works on some */
++		rom_reset = (void *)(mac_bi_data.rombase + 0xa);
++
++		local_irq_disable();
++		rom_reset();
  	}
- 	return 0;
+ 
+ 	/* should never get here */
 -- 
 2.43.0
 
