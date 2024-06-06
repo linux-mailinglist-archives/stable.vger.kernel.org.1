@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82F48FEDF7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 819088FEF16
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ADF5281B72
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14248285A32
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112261BE867;
-	Thu,  6 Jun 2024 14:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3020A1C95F4;
+	Thu,  6 Jun 2024 14:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsHFfJKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtSWL1n0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34761990B7;
-	Thu,  6 Jun 2024 14:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E324519922B;
+	Thu,  6 Jun 2024 14:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683545; cv=none; b=WSsSJ6RuxxG7bvDQph5p7qrbVOawQunNdxR0VSkVWEb7WXBPa75QmOdDdEBQUdteBaSky2OjCMOLRQK21k+5evNNDDl8sSC02FhdgtWsDl4V/ykf+Yx457E4UVBKe2dFutpJGaS1krMoIwzsZI9EnGsn56Wcp7iLz+3TA/77yOU=
+	t=1717683737; cv=none; b=nPKTrMe+68fryfHZ68GiD32FC4V6/BQeatnHYx0+5nQqb2OqPhY4xyJpsivKiCR5hvYO1KrpPQWpDCajp/SCridHGIAunXFjfUZmAAXLEMUkOXfFEcGsYnZj3OGLjmXO5yjauDS4StrRwRZCYR1Btz8F0W+HkSO74w+yL9p1h2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683545; c=relaxed/simple;
-	bh=19daNyLOKULDCGwT/a3LiRsvOeZysORq9dBYgt6/IXU=;
+	s=arc-20240116; t=1717683737; c=relaxed/simple;
+	bh=oU+BOc/uAzDxrZ2PqbCXoZUSOKRja5nwqQUSSz6WykI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYvg4DPJ52YIcjqpiS5n8bVnK+hmY4AFooxzG2MG3nuFbWdBwnesvRakO2psPvlrWOvNpH9TJ3aoNIq9VSrdM505t77LjA6LMMt6CvvueaHVwbjoO3uqJNL3tjlay0/9+cK6mkhpu/50KscQNP9RFtvRLy8knXVtTrIDfE8w7B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsHFfJKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17B2C2BD10;
-	Thu,  6 Jun 2024 14:19:05 +0000 (UTC)
+	 MIME-Version; b=TYsnOtv5eWNC1wC1hG5+9gfCNdJK51kRN8ByveoeaS68vVSmM7tl4s7rrL3gp/yfwfAn8T2kXI0dz+wEBljbNamphZ/qHFesscCwPgmcy3s4r9a5vBvvAeEi+B7zEI23AO3XHfpNS8D6stOWaK75PwjbQyVlcHUI6tFXwH4hDxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtSWL1n0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3FCFC2BD10;
+	Thu,  6 Jun 2024 14:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683545;
-	bh=19daNyLOKULDCGwT/a3LiRsvOeZysORq9dBYgt6/IXU=;
+	s=korg; t=1717683736;
+	bh=oU+BOc/uAzDxrZ2PqbCXoZUSOKRja5nwqQUSSz6WykI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VsHFfJKcm1B+3mRahlef1WdknK0ez6KRap5a3dFwDhA1BfcdYsJBz+GZqqixWAbKr
-	 UNaa0Q+1nIQEOHiUeh3yVAieF1kDPS+EKjwep0cHmJRHrRJwyZQmuKtWluT3fLMDfa
-	 os1jG2R+Tm4kYbTYwpt9rEpIKTRys1aiUI2+ie4g=
+	b=mtSWL1n0H4L/HwQQiB/LMlEvpoOWIs2CwrOTNNHVxhVymFJj5siPL8QSHLKe7I7MR
+	 UNshsxUftHs009IhpcTeZ3oRlk0vi/RHyiwPJUk0D7DlG4ghfWXXav3b/NQ5YfYWMx
+	 e4cgtLddDpUl7jBYzvEAiOKyqN3us/fNDYvB9u9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Barry Song <baohua@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 435/473] dma-mapping: benchmark: handle NUMA_NO_NODE correctly
+Subject: [PATCH 6.6 692/744] bpf: Fix potential integer overflow in resolve_btfids
 Date: Thu,  6 Jun 2024 16:06:04 +0200
-Message-ID: <20240606131714.125694288@linuxfoundation.org>
+Message-ID: <20240606131754.678432785@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Friedrich Vock <friedrich.vock@gmx.de>
 
-[ Upstream commit e64746e74f717961250a155e14c156616fcd981f ]
+[ Upstream commit 44382b3ed6b2787710c8ade06c0e97f5970a47c8 ]
 
-cpumask_of_node() can be called for NUMA_NO_NODE inside do_map_benchmark()
-resulting in the following sanitizer report:
+err is a 32-bit integer, but elf_update returns an off_t, which is 64-bit
+at least on 64-bit platforms. If symbols_patch is called on a binary between
+2-4GB in size, the result will be negative when cast to a 32-bit integer,
+which the code assumes means an error occurred. This can wrongly trigger
+build failures when building very large kernel images.
 
-UBSAN: array-index-out-of-bounds in ./arch/x86/include/asm/topology.h:72:28
-index -1 is out of range for type 'cpumask [64][1]'
-CPU: 1 PID: 990 Comm: dma_map_benchma Not tainted 6.9.0-rc6 #29
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-Call Trace:
- <TASK>
-dump_stack_lvl (lib/dump_stack.c:117)
-ubsan_epilogue (lib/ubsan.c:232)
-__ubsan_handle_out_of_bounds (lib/ubsan.c:429)
-cpumask_of_node (arch/x86/include/asm/topology.h:72) [inline]
-do_map_benchmark (kernel/dma/map_benchmark.c:104)
-map_benchmark_ioctl (kernel/dma/map_benchmark.c:246)
-full_proxy_unlocked_ioctl (fs/debugfs/file.c:333)
-__x64_sys_ioctl (fs/ioctl.c:890)
-do_syscall_64 (arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Use cpumask_of_node() in place when binding a kernel thread to a cpuset
-of a particular node.
-
-Note that the provided node id is checked inside map_benchmark_ioctl().
-It's just a NUMA_NO_NODE case which is not handled properly later.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 65789daa8087 ("dma-mapping: add benchmark support for streaming DMA APIs")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: fbbb68de80a4 ("bpf: Add resolve_btfids tool to resolve BTF IDs in ELF object")
+Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240514070931.199694-1-friedrich.vock@gmx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/map_benchmark.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/bpf/resolve_btfids/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index 11ad1c43833d1..af661734e8f90 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -101,7 +101,6 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 	struct task_struct **tsk;
- 	int threads = map->bparam.threads;
- 	int node = map->bparam.node;
--	const cpumask_t *cpu_mask = cpumask_of_node(node);
- 	u64 loops;
- 	int ret = 0;
- 	int i;
-@@ -122,7 +121,7 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 		}
+diff --git a/tools/bpf/resolve_btfids/main.c b/tools/bpf/resolve_btfids/main.c
+index d9520cb826b31..af393c7dee1f1 100644
+--- a/tools/bpf/resolve_btfids/main.c
++++ b/tools/bpf/resolve_btfids/main.c
+@@ -728,7 +728,7 @@ static int sets_patch(struct object *obj)
  
- 		if (node != NUMA_NO_NODE)
--			kthread_bind_mask(tsk[i], cpu_mask);
-+			kthread_bind_mask(tsk[i], cpumask_of_node(node));
- 	}
+ static int symbols_patch(struct object *obj)
+ {
+-	int err;
++	off_t err;
  
- 	/* clear the old value in the previous benchmark */
+ 	if (__symbols_patch(obj, &obj->structs)  ||
+ 	    __symbols_patch(obj, &obj->unions)   ||
 -- 
 2.43.0
 
