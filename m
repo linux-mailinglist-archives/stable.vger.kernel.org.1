@@ -1,57 +1,73 @@
-Return-Path: <stable+bounces-48849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166C78FEACC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB478FE875
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C19831F24D6D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBE071F233B6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947801A0DF2;
-	Thu,  6 Jun 2024 14:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C202196C79;
+	Thu,  6 Jun 2024 14:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIgvZdpA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZxbuXlR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545BA199227;
-	Thu,  6 Jun 2024 14:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8D438D;
+	Thu,  6 Jun 2024 14:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683177; cv=none; b=i1Un/tHC+KwZgLseVqwUa0NgwfVHXExqG1lLI1I6cxQl0qSJ7J9x//ePAPzKvIiNanovyFpYpaWaxbDIV7cuFvgj+hxmPke83AXjzTnFECmCRQzNx+SEw6mNDKTv51JdEPRkaHtb9V9lqGKJeqGJIyZMn9L+wmemYs5XmXAN5AI=
+	t=1717682896; cv=none; b=g2ni8aWhraNuDY2kxodCrYPC4ZRr68fg0kHnGv3f4ty7gUpPqXc8OgOwkuxIVuf46/Gvc66oEJHRlVgoEjnCB4E9CCLJz0xteS0gnx+7QvZJdJ/BKrITrDhqhhT3uKGLHpR23EYNXmKriIWC+Wf3cDzDgjBOu2bM80IGqsxIxvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683177; c=relaxed/simple;
-	bh=XVVuFtGyV6Q4Aqjn8qA+X6KE2YodSKKPR+aL6u69cWY=;
+	s=arc-20240116; t=1717682896; c=relaxed/simple;
+	bh=O0rZAdHAyR6lzw/tIuo7nMZS1luZhA+7VrfuXJXmTCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUBUbjbe166gGRSnRQErCml4vd6tHLI38SaF7vJ3iXbFiHC2xJKsidfuT9diWAoUiFagwVj4+YMHzGwSFkVeWtBvRHoRsKpX5KkUpelGdNKJEZCceUfB6ld9Jk9Hl+CknmCzROp0HJ/g5GqxtOKIVWO7kVBSR5YisJjWBSMbMmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIgvZdpA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CD2C32786;
-	Thu,  6 Jun 2024 14:12:57 +0000 (UTC)
+	 MIME-Version; b=mdevgCCtEQ752Bni0EAjZ7bBwQZoFPmwlL5D5w1jaIMZGPA8eP1ALlYWb2tsuxYn0vpCR2QD69NYvYXQ2OKAt+eWuQAMyxoJQ0GJScBoUuy8rIGxUkcFakGr49y2lVR5RhOGZbh1wtgocbu2nga73EZTATAKF1ZYON2/hp+uxaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZxbuXlR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50F0C4AF07;
+	Thu,  6 Jun 2024 14:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683177;
-	bh=XVVuFtGyV6Q4Aqjn8qA+X6KE2YodSKKPR+aL6u69cWY=;
+	s=korg; t=1717682895;
+	bh=O0rZAdHAyR6lzw/tIuo7nMZS1luZhA+7VrfuXJXmTCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pIgvZdpAVuIW/a1X3epZL8lbhKDag0Gdylm1Mvl0E/NFUKIFsLzf6o79yrtYTg+hz
-	 JzjUqge1HpDkLPnmlcY42SGrwDMEnhD5wsYmswTpEHQhSfe2txaY1ITQheZjDrQdcM
-	 hSotwVmcCctooLhHlEj/DJy2v928vd6eWVyx4Iw4=
+	b=xZxbuXlRh/CDv04arusqLU144/U0dVtrZoMtidt3dStCSyJYFBEWU502BkbG8mBRZ
+	 Dm6lAQdYmxek7RTmEdutgUfBf8UAZJQhW267j2PFsSJm7eX9Yo89AWREmQ0Ew1PJ+Z
+	 3sujhIlKHxD/T6/nCz/UT3JW4bQm/+qsuapcBe/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Zqiang <qiang.zhang1211@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Disha Goel <disgoel@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Song Liu <songliubraving@fb.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/473] softirq: Fix suspicious RCU usage in __do_softirq()
-Date: Thu,  6 Jun 2024 15:59:41 +0200
-Message-ID: <20240606131701.594792232@linuxfoundation.org>
+Subject: [PATCH 6.9 003/374] perf test: Use a single fd for the child process out/err
+Date: Thu,  6 Jun 2024 15:59:42 +0200
+Message-ID: <20240606131651.828185132@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +79,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 1dd1eff161bd55968d3d46bc36def62d71fb4785 ]
+[ Upstream commit e120f7091a25460a19967380725558c36bca7c6c ]
 
-Currently, the condition "__this_cpu_read(ksoftirqd) == current" is used to
-invoke rcu_softirq_qs() in ksoftirqd tasks context for non-RT kernels.
+Switch from dumping err then out, to a single file descriptor for both
+of them. This allows the err and output to be correctly interleaved in
+verbose output.
 
-This works correctly as long as the context is actually task context but
-this condition is wrong when:
-
-     - the current task is ksoftirqd
-     - the task is interrupted in a RCU read side critical section
-     - __do_softirq() is invoked on return from interrupt
-
-Syzkaller triggered the following scenario:
-
-  -> finish_task_switch()
-    -> put_task_struct_rcu_user()
-      -> call_rcu(&task->rcu, delayed_put_task_struct)
-        -> __kasan_record_aux_stack()
-          -> pfn_valid()
-            -> rcu_read_lock_sched()
-              <interrupt>
-                __irq_exit_rcu()
-                -> __do_softirq)()
-                   -> if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
-                     __this_cpu_read(ksoftirqd) == current)
-                     -> rcu_softirq_qs()
-                       -> RCU_LOCKDEP_WARN(lock_is_held(&rcu_sched_lock_map))
-
-The rcu quiescent state is reported in the rcu-read critical section, so
-the lockdep warning is triggered.
-
-Fix this by splitting out the inner working of __do_softirq() into a helper
-function which takes an argument to distinguish between ksoftirqd task
-context and interrupted context and invoke it from the relevant call sites
-with the proper context information and use that for the conditional
-invocation of rcu_softirq_qs().
-
-Reported-by: syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240427102808.29356-1-qiang.zhang1211@gmail.com
-Link: https://lore.kernel.org/lkml/8f281a10-b85a-4586-9586-5bbc12dc784f@paulmck-laptop/T/#mea8aba4abfcb97bbf499d169ce7f30c4cff1b0e3
+Fixes: b482f5f8e0168f1e ("perf tests: Add option to run tests in parallel")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Disha Goel <disgoel@linux.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240301074639.2260708-3-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/softirq.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tools/perf/tests/builtin-test.c | 37 ++++++---------------------------
+ 1 file changed, 6 insertions(+), 31 deletions(-)
 
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index c8a6913c067d9..a47396161843a 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -525,7 +525,7 @@ static inline bool lockdep_softirq_start(void) { return false; }
- static inline void lockdep_softirq_end(bool in_hardirq) { }
- #endif
+diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
+index d13ee7683d9d8..e05b370b1e2b1 100644
+--- a/tools/perf/tests/builtin-test.c
++++ b/tools/perf/tests/builtin-test.c
+@@ -274,11 +274,8 @@ static int finish_test(struct child_test *child_test, int width)
+ 	struct test_suite *t = child_test->test;
+ 	int i = child_test->test_num;
+ 	int subi = child_test->subtest;
+-	int out = child_test->process.out;
+ 	int err = child_test->process.err;
+-	bool out_done = out <= 0;
+ 	bool err_done = err <= 0;
+-	struct strbuf out_output = STRBUF_INIT;
+ 	struct strbuf err_output = STRBUF_INIT;
+ 	int ret;
  
--asmlinkage __visible void __softirq_entry __do_softirq(void)
-+static void handle_softirqs(bool ksirqd)
- {
- 	unsigned long end = jiffies + MAX_SOFTIRQ_TIME;
- 	unsigned long old_flags = current->flags;
-@@ -580,8 +580,7 @@ asmlinkage __visible void __softirq_entry __do_softirq(void)
- 		pending >>= softirq_bit;
+@@ -290,11 +287,9 @@ static int finish_test(struct child_test *child_test, int width)
+ 		pr_info("%3d: %-*s:\n", i + 1, width, test_description(t, -1));
+ 
+ 	/*
+-	 * Busy loop reading from the child's stdout and stderr that are set to
+-	 * be non-blocking until EOF.
++	 * Busy loop reading from the child's stdout/stderr that are set to be
++	 * non-blocking until EOF.
+ 	 */
+-	if (!out_done)
+-		fcntl(out, F_SETFL, O_NONBLOCK);
+ 	if (!err_done)
+ 		fcntl(err, F_SETFL, O_NONBLOCK);
+ 	if (verbose > 1) {
+@@ -303,11 +298,8 @@ static int finish_test(struct child_test *child_test, int width)
+ 		else
+ 			pr_info("%3d: %s:\n", i + 1, test_description(t, -1));
  	}
+-	while (!out_done || !err_done) {
+-		struct pollfd pfds[2] = {
+-			{ .fd = out,
+-			  .events = POLLIN | POLLERR | POLLHUP | POLLNVAL,
+-			},
++	while (!err_done) {
++		struct pollfd pfds[1] = {
+ 			{ .fd = err,
+ 			  .events = POLLIN | POLLERR | POLLHUP | POLLNVAL,
+ 			},
+@@ -317,21 +309,7 @@ static int finish_test(struct child_test *child_test, int width)
  
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
--	    __this_cpu_read(ksoftirqd) == current)
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && ksirqd)
- 		rcu_softirq_qs();
+ 		/* Poll to avoid excessive spinning, timeout set for 1000ms. */
+ 		poll(pfds, ARRAY_SIZE(pfds), /*timeout=*/1000);
+-		if (!out_done && pfds[0].revents) {
+-			errno = 0;
+-			len = read(out, buf, sizeof(buf) - 1);
+-
+-			if (len <= 0) {
+-				out_done = errno != EAGAIN;
+-			} else {
+-				buf[len] = '\0';
+-				if (verbose > 1)
+-					fprintf(stdout, "%s", buf);
+-				else
+-					strbuf_addstr(&out_output, buf);
+-			}
+-		}
+-		if (!err_done && pfds[1].revents) {
++		if (!err_done && pfds[0].revents) {
+ 			errno = 0;
+ 			len = read(err, buf, sizeof(buf) - 1);
  
- 	local_irq_disable();
-@@ -601,6 +600,11 @@ asmlinkage __visible void __softirq_entry __do_softirq(void)
- 	current_restore_flags(old_flags, PF_MEMALLOC);
- }
- 
-+asmlinkage __visible void __softirq_entry __do_softirq(void)
-+{
-+	handle_softirqs(false);
-+}
-+
- /**
-  * irq_enter_rcu - Enter an interrupt context with RCU watching
-  */
-@@ -931,7 +935,7 @@ static void run_ksoftirqd(unsigned int cpu)
- 		 * We can safely run softirq on inline stack, as we are not deep
- 		 * in the task stack here.
- 		 */
--		__do_softirq();
-+		handle_softirqs(true);
- 		ksoftirqd_run_end();
- 		cond_resched();
- 		return;
+@@ -354,14 +332,10 @@ static int finish_test(struct child_test *child_test, int width)
+ 			pr_info("%3d.%1d: %s:\n", i + 1, subi + 1, test_description(t, subi));
+ 		else
+ 			pr_info("%3d: %s:\n", i + 1, test_description(t, -1));
+-		fprintf(stdout, "%s", out_output.buf);
+ 		fprintf(stderr, "%s", err_output.buf);
+ 	}
+-	strbuf_release(&out_output);
+ 	strbuf_release(&err_output);
+ 	print_test_result(t, i, subi, ret, width);
+-	if (out > 0)
+-		close(out);
+ 	if (err > 0)
+ 		close(err);
+ 	return 0;
+@@ -394,6 +368,7 @@ static int start_test(struct test_suite *test, int i, int subi, struct child_tes
+ 		(*child)->process.no_stdout = 1;
+ 		(*child)->process.no_stderr = 1;
+ 	} else {
++		(*child)->process.stdout_to_stderr = 1;
+ 		(*child)->process.out = -1;
+ 		(*child)->process.err = -1;
+ 	}
 -- 
 2.43.0
 
