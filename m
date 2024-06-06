@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E635E8FE92D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920008FEDF5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 546BCB254B3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8FADB25F4B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AC619753A;
-	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842BE1BE85F;
+	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XF/wgTtk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jK3oeQC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636C2199242;
-	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427561990B7;
+	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682988; cv=none; b=tmbom8NIATtMcgPSN7TXk8BWGZI6PYR9pZR12qJdvsyAOSWx5qIRHx78+QA5Pfn5jFyppM0NhvYWLIoqpPgbPW7iVZ65z1mKZtDLl6vtwxsRy3WdPMWBYU+cehUeKGrim5PTHQKtW9f8o8iiVCNjJ1RsgRg/NqdKyf0s1tQCexI=
+	t=1717683544; cv=none; b=L6WXT9/tosMGFkooBe76fD4mna3FCQqKVxezyCaE+3/TaIFZ2LWJk0sTT/oRLeKJdJL+fWzUExr5lG/rF+ZPMpdSbjughoaLYon4MGNSsK33ZlfYbhx6VJkcANUZvegXWpWWqrGePc9hbq7QRCEFOViAaM0lzUYbCKxs4QpbEXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682988; c=relaxed/simple;
-	bh=QXuo7h5724iPyBDbrHQi6RnDbjN5C7igPNHAdb3hvDk=;
+	s=arc-20240116; t=1717683544; c=relaxed/simple;
+	bh=bBuEORCMlh3aqiWcvz3kb6EKkg2moOoT+BX0uTLtF7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUxh1sGucIyeMJ4B5Hkl52yp1zG8VYvOUWoTPvIdmEHHDn5mIcBT/5ak2r5nFjt8k7XGHu1g09Z00of4SAzvSP2s8R/pbaEyS2edEspLNgSR1GPJCi4/h2489jKVHdszGkztjf0KHAJ99hGPXosoj69Z313cc+17bQ7Mbc6dXJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XF/wgTtk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8A6C32781;
-	Thu,  6 Jun 2024 14:09:48 +0000 (UTC)
+	 MIME-Version; b=AHJMG+HjNOQx9meutjuN0fKMpzEFHmafr6Mb+hP70WYilaXI1BPzyO9+UUIOMg+RJ12MstDsuG7oOCq94PxMd6BG2SZTFye/qgLCscHzpb41AW8eYBdaFsSnpwAnfZ9jjwK5IbkQ//0Cc2wuhJDyrJXCZgQZ7dP7RL4AY+nVoE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jK3oeQC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFA3C2BD10;
+	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682988;
-	bh=QXuo7h5724iPyBDbrHQi6RnDbjN5C7igPNHAdb3hvDk=;
+	s=korg; t=1717683544;
+	bh=bBuEORCMlh3aqiWcvz3kb6EKkg2moOoT+BX0uTLtF7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XF/wgTtk++M48nnIs1J3J3TVcyktTzafjPz9H+EEixS7yEtbDKw3g+fCjO32wMb8l
-	 Qkd7+EUvoXfY2aMY//ECWn6yiTx3Xu80jV1TTu7VbrOqhw74QY2tTHiIUUQZnK3qJf
-	 Iv/ilm3O+m5+is03AnSynV/eBUBPJwH4vQGfwDMA=
+	b=jK3oeQC+Yux5qQzcGg6K6qTUPlBz0d3xj0MAK4j9iqp3glrfOBqKSPXEeOJrUghu3
+	 bWdWc4FgbtYd+Ne2Z5jBXMziaiOdV4mkzw2zyFU/XVtRKHHJeD6c7Jb2M10sEFeZIL
+	 W5pc2Ym6Pv1DKifhvkuEhxYrgwZpzN7lAw2Raj9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 176/374] drm: Make drivers depends on DRM_DW_HDMI
+Subject: [PATCH 6.6 483/744] watchdog: sa1100: Fix PTR_ERR_OR_ZERO() vs NULL check in sa1100dog_probe()
 Date: Thu,  6 Jun 2024 16:02:35 +0200
-Message-ID: <20240606131657.782089059@linuxfoundation.org>
+Message-ID: <20240606131747.954571385@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit c0e0f139354c01e0213204e4a96e7076e5a3e396 ]
+[ Upstream commit 413bf4e857fd79617524d5dcd35f463e9aa2dd41 ]
 
-DRM_DW_HDMI has a number of dependencies that might not be enabled.
-However, drivers were used to selecting it while not enforcing the
-DRM_DW_HDMI dependencies.
+devm_ioremap() doesn't return error pointers, it returns NULL on error.
+Update the check accordingly.
 
-This could result in Kconfig warnings (and further build breakages) such
-as:
-
-  Kconfig warnings: (for reference only)
-     WARNING: unmet direct dependencies detected for DRM_DW_HDMI
-     Depends on [n]: HAS_IOMEM [=y] && DRM [=m] && DRM_BRIDGE [=y] && DRM_DISPLAY_HELPER [=n]
-     Selected by [m]:
-     - DRM_SUN8I_DW_HDMI [=m] && HAS_IOMEM [=y] && DRM_SUN4I [=m]
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202403262127.kZkttfNz-lkp@intel.com/
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://lore.kernel.org/r/20240327-kms-kconfig-helpers-v3-7-eafee11b84b3@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Stable-dep-of: cbdbd9ca718e ("drm/bridge: imx: Fix unmet depenency for PHY_FSL_SAMSUNG_HDMI_PHY")
+Fixes: e86bd43bcfc5 ("watchdog: sa1100: use platform device registration")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240426075808.1582678-1-nichen@iscas.ac.cn
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/imx/Kconfig      | 4 ++--
- drivers/gpu/drm/imx/ipuv3/Kconfig       | 5 +++--
- drivers/gpu/drm/ingenic/Kconfig         | 2 +-
- drivers/gpu/drm/meson/Kconfig           | 2 +-
- drivers/gpu/drm/renesas/rcar-du/Kconfig | 2 +-
- drivers/gpu/drm/rockchip/Kconfig        | 2 +-
- drivers/gpu/drm/sun4i/Kconfig           | 2 +-
- 7 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/watchdog/sa1100_wdt.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-index 5965e8027529a..7687ed652df5b 100644
---- a/drivers/gpu/drm/bridge/imx/Kconfig
-+++ b/drivers/gpu/drm/bridge/imx/Kconfig
-@@ -5,9 +5,9 @@ config DRM_IMX_LDB_HELPER
+diff --git a/drivers/watchdog/sa1100_wdt.c b/drivers/watchdog/sa1100_wdt.c
+index 5d2df008b92a5..34a917221e316 100644
+--- a/drivers/watchdog/sa1100_wdt.c
++++ b/drivers/watchdog/sa1100_wdt.c
+@@ -191,9 +191,8 @@ static int sa1100dog_probe(struct platform_device *pdev)
+ 	if (!res)
+ 		return -ENXIO;
+ 	reg_base = devm_ioremap(&pdev->dev, res->start, resource_size(res));
+-	ret = PTR_ERR_OR_ZERO(reg_base);
+-	if (ret)
+-		return ret;
++	if (!reg_base)
++		return -ENOMEM;
  
- config DRM_IMX8MP_DW_HDMI_BRIDGE
- 	tristate "Freescale i.MX8MP HDMI-TX bridge support"
--	depends on OF
- 	depends on COMMON_CLK
--	select DRM_DW_HDMI
-+	depends on DRM_DW_HDMI
-+	depends on OF
- 	select DRM_IMX8MP_HDMI_PVI
- 	select PHY_FSL_SAMSUNG_HDMI_PHY
- 	help
-diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv3/Kconfig
-index bacf0655ebaf3..5d810ac02171d 100644
---- a/drivers/gpu/drm/imx/ipuv3/Kconfig
-+++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
-@@ -35,7 +35,8 @@ config DRM_IMX_LDB
- 
- config DRM_IMX_HDMI
- 	tristate "Freescale i.MX DRM HDMI"
--	select DRM_DW_HDMI
--	depends on DRM_IMX && OF
-+	depends on DRM_DW_HDMI
-+	depends on DRM_IMX
-+	depends on OF
- 	help
- 	  Choose this if you want to use HDMI on i.MX6.
-diff --git a/drivers/gpu/drm/ingenic/Kconfig b/drivers/gpu/drm/ingenic/Kconfig
-index 3db117c5edd91..23effeb2ac721 100644
---- a/drivers/gpu/drm/ingenic/Kconfig
-+++ b/drivers/gpu/drm/ingenic/Kconfig
-@@ -27,8 +27,8 @@ config DRM_INGENIC_IPU
- 
- config DRM_INGENIC_DW_HDMI
- 	tristate "Ingenic specific support for Synopsys DW HDMI"
-+	depends on DRM_DW_HDMI
- 	depends on MACH_JZ4780
--	select DRM_DW_HDMI
- 	help
- 	  Choose this option to enable Synopsys DesignWare HDMI based driver.
- 	  If you want to enable HDMI on Ingenic JZ4780 based SoC, you should
-diff --git a/drivers/gpu/drm/meson/Kconfig b/drivers/gpu/drm/meson/Kconfig
-index 615fdd0ce41b4..5520b9e3f0107 100644
---- a/drivers/gpu/drm/meson/Kconfig
-+++ b/drivers/gpu/drm/meson/Kconfig
-@@ -13,9 +13,9 @@ config DRM_MESON
- 
- config DRM_MESON_DW_HDMI
- 	tristate "HDMI Synopsys Controller support for Amlogic Meson Display"
-+	depends on DRM_DW_HDMI
- 	depends on DRM_MESON
- 	default y if DRM_MESON
--	select DRM_DW_HDMI
- 	imply DRM_DW_HDMI_I2S_AUDIO
- 
- config DRM_MESON_DW_MIPI_DSI
-diff --git a/drivers/gpu/drm/renesas/rcar-du/Kconfig b/drivers/gpu/drm/renesas/rcar-du/Kconfig
-index 53c356aed5d52..2dc739db2ba33 100644
---- a/drivers/gpu/drm/renesas/rcar-du/Kconfig
-+++ b/drivers/gpu/drm/renesas/rcar-du/Kconfig
-@@ -25,8 +25,8 @@ config DRM_RCAR_CMM
- config DRM_RCAR_DW_HDMI
- 	tristate "R-Car Gen3 and RZ/G2 DU HDMI Encoder Support"
- 	depends on DRM && OF
-+	depends on DRM_DW_HDMI
- 	depends on DRM_RCAR_DU || COMPILE_TEST
--	select DRM_DW_HDMI
- 	help
- 	  Enable support for R-Car Gen3 or RZ/G2 internal HDMI encoder.
- 
-diff --git a/drivers/gpu/drm/rockchip/Kconfig b/drivers/gpu/drm/rockchip/Kconfig
-index 1bf3e2829cd07..0d5260e10f272 100644
---- a/drivers/gpu/drm/rockchip/Kconfig
-+++ b/drivers/gpu/drm/rockchip/Kconfig
-@@ -7,7 +7,6 @@ config DRM_ROCKCHIP
- 	select DRM_PANEL
- 	select VIDEOMODE_HELPERS
- 	select DRM_ANALOGIX_DP if ROCKCHIP_ANALOGIX_DP
--	select DRM_DW_HDMI if ROCKCHIP_DW_HDMI
- 	select DRM_DW_MIPI_DSI if ROCKCHIP_DW_MIPI_DSI
- 	select GENERIC_PHY if ROCKCHIP_DW_MIPI_DSI
- 	select GENERIC_PHY_MIPI_DPHY if ROCKCHIP_DW_MIPI_DSI
-@@ -57,6 +56,7 @@ config ROCKCHIP_CDN_DP
- 
- config ROCKCHIP_DW_HDMI
- 	bool "Rockchip specific extensions for Synopsys DW HDMI"
-+	depends on DRM_DW_HDMI
- 	help
- 	  This selects support for Rockchip SoC specific extensions
- 	  for the Synopsys DesignWare HDMI driver. If you want to
-diff --git a/drivers/gpu/drm/sun4i/Kconfig b/drivers/gpu/drm/sun4i/Kconfig
-index 4741d9f6544c2..5b19c7cb7b7eb 100644
---- a/drivers/gpu/drm/sun4i/Kconfig
-+++ b/drivers/gpu/drm/sun4i/Kconfig
-@@ -57,8 +57,8 @@ config DRM_SUN6I_DSI
- config DRM_SUN8I_DW_HDMI
- 	tristate "Support for Allwinner version of DesignWare HDMI"
- 	depends on DRM_SUN4I
-+	depends on DRM_DW_HDMI
- 	default DRM_SUN4I
--	select DRM_DW_HDMI
- 	help
- 	  Choose this option if you have an Allwinner SoC with the
- 	  DesignWare HDMI controller. SoCs that support HDMI and
+ 	clk = clk_get(NULL, "OSTIMER0");
+ 	if (IS_ERR(clk)) {
 -- 
 2.43.0
 
