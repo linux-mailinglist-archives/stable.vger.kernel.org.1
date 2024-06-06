@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-49694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D79A8FEE75
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384468FECC3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAF201F2462A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD8CE2820C1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2744E196C9C;
-	Thu,  6 Jun 2024 14:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D81319B58A;
+	Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uA5oc+Th"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4v8j203"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA29197532;
-	Thu,  6 Jun 2024 14:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D17A198832;
+	Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683662; cv=none; b=Fz9s+Xq3uasMIUwfdx5h7g/AM7cYMYk69XcAPbhXq94DS7bhV1KWBCYFLUsZ1CQFZLU0LshmkjXzdUA4j0raJzPv17gSiF2hmUS0pY8Y/fG9zmBtoPxLiMcXmroRzJ8ibe0g/jPNFkCF9sccy1etIaadzVuNYOvMF999fqF+xsk=
+	t=1717683406; cv=none; b=H+ULukBWFSSpJiCNDx9a+JbaSm9vroRWrGstaoT6ffERimjTzY3kUAx9ORF/LBH1V1tpRKncmS1BPBTUaP38cXYYyNX+TvrQOZMWTPDZOFm2icBcTaYii6klV8PvKN+odP+5zxLxiA+hsqFnt1rYngqjl7GstFtjtTtd+JURkV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683662; c=relaxed/simple;
-	bh=+vRaNM1OeS6ATEYFJIfNOXKj6dIGmX5X2RL0/i+n9oc=;
+	s=arc-20240116; t=1717683406; c=relaxed/simple;
+	bh=M3hPgVdEt/acrO/SAIM2vbR5fgHe16jZC2dWHdSFjeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gusw0JZnAtjfLh/Nc9y8bTPOVitY1zF2zK1+5bepp0ZCc2Cq9V2S73HppJO6qgO52pj8lGG1NcM2GFB9wpsp+BISRSVun+Riw8GEEvLe6TJHH+W4qllR3W3D1KrKy75gXUKbX00o+XEQb2UzItKOm1C/ygCCtSfhOrkWoHNOTs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uA5oc+Th; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B090FC2BD10;
-	Thu,  6 Jun 2024 14:21:02 +0000 (UTC)
+	 MIME-Version; b=jua7NWOD6jvVLZQUwQHIvwdcf4eaQm6biFzJZbHiFx3qLOP4MOUMdUzq3uUxBemQuLkUysQmLNVVKFQpwpkc1OIQ6vjecwkdm4o0+fRYTsIgmiKYxbAiHK8rmn6CRYONxt6GShQoXaCoHH3nPff3fjCyU7cKz89fvtsidJk7WMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4v8j203; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE811C32782;
+	Thu,  6 Jun 2024 14:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683662;
-	bh=+vRaNM1OeS6ATEYFJIfNOXKj6dIGmX5X2RL0/i+n9oc=;
+	s=korg; t=1717683405;
+	bh=M3hPgVdEt/acrO/SAIM2vbR5fgHe16jZC2dWHdSFjeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uA5oc+ThJLmQ4hEnjm5RJey/jcb0Si7dEB6Gvbd/34wVVzuevQonwHNH5w/U3ADDH
-	 E7VyTnc1e6PwqyCrrx+OTZa+2oKZtG5MKsrYY7dJRrVstCmbqIrveBiLha60kta9Ut
-	 Sb6b5lBh2DHvy9IN1VzC4/SUzSOHPuVO7i7NYnTw=
+	b=P4v8j2039vEfzuNMYkGy7jGQz9xj2Vh5Xnz1C4tP7IUQ1oQn//hUv7nRtxNk1BDWT
+	 s4Uw2QXjMlqKJVyQVqI9jjMTrfvfjSUYRLCOnRmXG7gMARRfdTGYs9XCkAcYQX5e9f
+	 HqHPvpndP6XwaCgzluwZw79g5OGFAV/Jp/c7tCn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Chaitanya Dhere <chaitanya.dhere@amd.com>,
-	Martin Leung <martin.leung@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jean Delvare <jdelvare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 545/744] drm/amd/display: Revert Remove pixle rate limit for subvp
-Date: Thu,  6 Jun 2024 16:03:37 +0200
-Message-ID: <20240606131749.929002104@linuxfoundation.org>
+Subject: [PATCH 6.1 289/473] firmware: dmi-id: add a release callback function
+Date: Thu,  6 Jun 2024 16:03:38 +0200
+Message-ID: <20240606131709.441286555@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,50 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjing Liu <wenjing.liu@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit cf8c498694a443e28dc1222f3ab94677114a4724 ]
+[ Upstream commit cf770af5645a41a753c55a053fa1237105b0964a ]
 
-This reverts commit 340383c734f8 ("drm/amd/display: Remove pixle rate
-limit for subvp")
+dmi_class uses kfree() as the .release function, but that now causes
+a warning with clang-16 as it violates control flow integrity (KCFI)
+rules:
 
-[why]
-The original commit causes a regression when subvp is applied
-on ODM required 8k60hz timing. The display shows black screen
-on boot. The issue can be recovered with hotplug. It also causes
-MPO to fail. We will temprarily revert this commit and investigate
-the root cause further.
+drivers/firmware/dmi-id.c:174:17: error: cast from 'void (*)(const void *)' to 'void (*)(struct device *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  174 |         .dev_release = (void(*)(struct device *)) kfree,
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
-Reviewed-by: Martin Leung <martin.leung@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add an explicit function to call kfree() instead.
+
+Fixes: 4f5c791a850e ("DMI-based module autoloading")
+Link: https://lore.kernel.org/lkml/20240213100238.456912-1-arnd@kernel.org/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/dmi-id.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-index 426902578ca46..cf3b400c8619b 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -697,6 +697,7 @@ static bool dcn32_assign_subvp_pipe(struct dc *dc,
- 		 * - Not TMZ surface
- 		 */
- 		if (pipe->plane_state && !pipe->top_pipe && !dcn32_is_center_timing(pipe) &&
-+				!(pipe->stream->timing.pix_clk_100hz / 10000 > DCN3_2_MAX_SUBVP_PIXEL_RATE_MHZ) &&
- 				(!dcn32_is_psr_capable(pipe) || (context->stream_count == 1 && dc->caps.dmub_caps.subvp_psr)) &&
- 				pipe->stream->mall_stream_config.type == SUBVP_NONE &&
- 				(refresh_rate < 120 || dcn32_allow_subvp_high_refresh_rate(dc, context, pipe)) &&
+diff --git a/drivers/firmware/dmi-id.c b/drivers/firmware/dmi-id.c
+index 940ddf916202a..77a8d43e65d3c 100644
+--- a/drivers/firmware/dmi-id.c
++++ b/drivers/firmware/dmi-id.c
+@@ -169,9 +169,14 @@ static int dmi_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+ 	return 0;
+ }
+ 
++static void dmi_dev_release(struct device *dev)
++{
++	kfree(dev);
++}
++
+ static struct class dmi_class = {
+ 	.name = "dmi",
+-	.dev_release = (void(*)(struct device *)) kfree,
++	.dev_release = dmi_dev_release,
+ 	.dev_uevent = dmi_dev_uevent,
+ };
+ 
 -- 
 2.43.0
 
