@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-49297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1898FECB0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3AC8FECB3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6BEE1F22603
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 324DDB28565
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825841B1516;
-	Thu,  6 Jun 2024 14:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF1F19B599;
+	Thu,  6 Jun 2024 14:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MAiNmJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgUsGXM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424E719B593;
-	Thu,  6 Jun 2024 14:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDE319B3F2;
+	Thu,  6 Jun 2024 14:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683397; cv=none; b=JrX46k+FuBLrIMqrZ5T0fsAeQOUdVfzbk/V0uwaLT9Iei8/1frjQ/fVEqkT+Qamtg/J3mtVs7xDYyzkA9W/vZaWEIduHnZGOVO2YPSIPZcyD35DIH4grzdl9NKw+ufVgNt1NUhcIF11hZkoVaOrxWc7v91Ztzn3K3kCJ2veMPYw=
+	t=1717683398; cv=none; b=h4O5z0/wiQ0ZgKfvOnN82aUqz6clP9INa3+POPIhSpNREYCrLQmpisQWKQgxHDekvgs5KfxKygJd09Qy8bezmgMN7vcvo1ROEQgjEmT++yY//+Jm7cYDqy4l0Aux/gzMQsxFNTIOxjII2VKNu7SgPcumtcaIhiu46jdQExoQ8W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683397; c=relaxed/simple;
-	bh=L3TAXphlqKjj9WN9S9JZg0n0CzZHG1RL4xm7PSnYW54=;
+	s=arc-20240116; t=1717683398; c=relaxed/simple;
+	bh=tYlpcMEo+j2ApdmiiWyAVP5HMNAvvAtWz60skTgOLQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eqd8wOVekA8RO8A7vdhwQtu39OEFGBlZlJOSmUoL1xgJ3K3tI9Wu7qX+9vJPa8Uama1FtzqeKrNkyxWjdzDhuDWRvxxMsq/h8aDBZwHb2UzE3DSe71c175V1/fIwOgUpCnunN5WnluQ3gVfG/7DGwc5A8bGXZvWu81DNDswGma0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MAiNmJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2772BC32781;
-	Thu,  6 Jun 2024 14:16:37 +0000 (UTC)
+	 MIME-Version; b=QGCezPvom0KKh57jhDoM0WGzglR0dcmPWwiOLv8ezxXlitSLRE4Op+Bv+rAzWjsKSfMd7J+8yUg3JAT82MBL0Mnexb4ZTqeN6J1ZhZFZ+yJScl70R/+K9XMkzyFIGTbrzwb8K6xSeR5m7iWoguAKY9pvJ0XqWI9Y3bBIAp/mQXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgUsGXM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0C7C2BD10;
+	Thu,  6 Jun 2024 14:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683397;
-	bh=L3TAXphlqKjj9WN9S9JZg0n0CzZHG1RL4xm7PSnYW54=;
+	s=korg; t=1717683398;
+	bh=tYlpcMEo+j2ApdmiiWyAVP5HMNAvvAtWz60skTgOLQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MAiNmJ+tJFJv8B3Loum5nCixFrctu7aP2Scp6P/fKmoQNmr/zLt0MuvIyY+ibp0A
-	 lfCvFdHObuMp6Dq2ed/DRz69MAe9agr4VGPOy3KQ4tp/IIOXIQsO9F7s7bGIYpQy/X
-	 qKvCVxZWvbLfSxu1oMCwBm1TKiWRJkDgnpsRSLJE=
+	b=qgUsGXM0wMiTJHt56/WKUP2SpLcNostQ2udelU93K6osGSBlgsp0BtzOB39DzWZt3
+	 /e0WSfhtwbJU2DGYuJUp432m6DbB0bcLXq+ExHRcydZgzCyhyVb6ELqPsMHR60LZ8C
+	 T1PFEWygk39cDto/IousgX29IZHmnmdzIDRYEOQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Junxian Huang <huangjunxian6@hisilicon.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 341/744] RDMA/hns: Fix UAF for cq async event
-Date: Thu,  6 Jun 2024 16:00:13 +0200
-Message-ID: <20240606131743.408803159@linuxfoundation.org>
+Subject: [PATCH 6.6 342/744] RDMA/hns: Fix GMV table pagesize
+Date: Thu,  6 Jun 2024 16:00:14 +0200
+Message-ID: <20240606131743.440975211@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -69,87 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit a942ec2745ca864cd8512142100e4027dc306a42 ]
+[ Upstream commit ee045493283403969591087bd405fa280103282a ]
 
-The refcount of CQ is not protected by locks. When CQ asynchronous
-events and CQ destruction are concurrent, CQ may have been released,
-which will cause UAF.
+GMV's BA table only supports 4K pages. Currently, PAGESIZE is used to
+calculate gmv_bt_num, which will cause an abnormal number of gmv_bt_num
+in a 64K OS.
 
-Use the xa_lock() to protect the CQ refcount.
-
-Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Fixes: d6d91e46210f ("RDMA/hns: Add support for configuring GMV table")
 Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
 Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-6-huangjunxian6@hisilicon.com
+Link: https://lore.kernel.org/r/20240412091616.370789-8-huangjunxian6@hisilicon.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_cq.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_cq.c b/drivers/infiniband/hw/hns/hns_roce_cq.c
-index 736dc2f993b40..ff177466de9b4 100644
---- a/drivers/infiniband/hw/hns/hns_roce_cq.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_cq.c
-@@ -151,7 +151,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
- 		return ret;
- 	}
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index b4799c83282e2..2f88e7853abff 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -2088,7 +2088,7 @@ static void apply_func_caps(struct hns_roce_dev *hr_dev)
+ 		caps->gid_table_len[0] = caps->gmv_bt_num *
+ 					(HNS_HW_PAGE_SIZE / caps->gmv_entry_sz);
  
--	ret = xa_err(xa_store(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
-+	ret = xa_err(xa_store_irq(&cq_table->array, hr_cq->cqn, hr_cq, GFP_KERNEL));
- 	if (ret) {
- 		ibdev_err(ibdev, "failed to xa_store CQ, ret = %d.\n", ret);
- 		goto err_put;
-@@ -164,7 +164,7 @@ static int alloc_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
- 	return 0;
- 
- err_xa:
--	xa_erase(&cq_table->array, hr_cq->cqn);
-+	xa_erase_irq(&cq_table->array, hr_cq->cqn);
- err_put:
- 	hns_roce_table_put(hr_dev, &cq_table->table, hr_cq->cqn);
- 
-@@ -183,7 +183,7 @@ static void free_cqc(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
- 		dev_err(dev, "DESTROY_CQ failed (%d) for CQN %06lx\n", ret,
- 			hr_cq->cqn);
- 
--	xa_erase(&cq_table->array, hr_cq->cqn);
-+	xa_erase_irq(&cq_table->array, hr_cq->cqn);
- 
- 	/* Waiting interrupt process procedure carried out */
- 	synchronize_irq(hr_dev->eq_table.eq[hr_cq->vector].irq);
-@@ -472,13 +472,6 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
- 	struct ib_event event;
- 	struct ib_cq *ibcq;
- 
--	hr_cq = xa_load(&hr_dev->cq_table.array,
--			cqn & (hr_dev->caps.num_cqs - 1));
--	if (!hr_cq) {
--		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
--		return;
--	}
--
- 	if (event_type != HNS_ROCE_EVENT_TYPE_CQ_ID_INVALID &&
- 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_ACCESS_ERROR &&
- 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_OVERFLOW) {
-@@ -487,7 +480,16 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
- 		return;
- 	}
- 
--	refcount_inc(&hr_cq->refcount);
-+	xa_lock(&hr_dev->cq_table.array);
-+	hr_cq = xa_load(&hr_dev->cq_table.array,
-+			cqn & (hr_dev->caps.num_cqs - 1));
-+	if (hr_cq)
-+		refcount_inc(&hr_cq->refcount);
-+	xa_unlock(&hr_dev->cq_table.array);
-+	if (!hr_cq) {
-+		dev_warn(dev, "async event for bogus CQ 0x%06x\n", cqn);
-+		return;
-+	}
- 
- 	ibcq = &hr_cq->ib_cq;
- 	if (ibcq->event_handler) {
+-		caps->gmv_entry_num = caps->gmv_bt_num * (PAGE_SIZE /
++		caps->gmv_entry_num = caps->gmv_bt_num * (HNS_HW_PAGE_SIZE /
+ 							  caps->gmv_entry_sz);
+ 	} else {
+ 		u32 func_num = max_t(u32, 1, hr_dev->func_num);
 -- 
 2.43.0
 
