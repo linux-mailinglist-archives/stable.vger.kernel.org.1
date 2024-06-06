@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D828FEDDD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4728FE922
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E2691C24261
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 310A81F267AE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAE01BE251;
-	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B899D197549;
+	Thu,  6 Jun 2024 14:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8nZhBZQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5S6sF8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2741BE24A;
-	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B61196D8E;
+	Thu,  6 Jun 2024 14:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683534; cv=none; b=E6oNuVzqjENqlE8eQaXAXTvejstGJvyg7euGd8EQss/E8h24uRgfg1SVFWZ+vpPFVFtQcJiPIuoTLFDNCAFbOYWv5itVP8EmoMJoW/RwHe2vozijMf+dLiyAfxIXKVzfOgHfNzxvpfJ5Pk3JmuVDgLDd3tmFo3d+so8z4krngPQ=
+	t=1717682983; cv=none; b=s2TDPVkkUCeat5O/sjgljhOjq9eFpoGyIdQ/57y+oZGQcItIe+e7mN5iaK9kiAPJVf5elFAz7kliot8jAjq+r+HzhoVyxulXUyXi8PIfVCVx5mr/0jeRz0SwOQanvn+dYfJnf5utv6QPW/VnqMB0N0Yiv8VCdhNrnwKMHSa6Frg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683534; c=relaxed/simple;
-	bh=+wYVCEb/pyLzKWsxF/DAjZ1otoQHJLrHpZ0j2UIVSuc=;
+	s=arc-20240116; t=1717682983; c=relaxed/simple;
+	bh=ydC1U5xxYIm+/x6Q7hySbkyy0u0vHgQHeMVBK898w+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6c/iaJZVdF0oOw1eacTbPLPLjlifdjrArg5Do++cFjD0gxMQS2ciLag0nnDXvgEwa6pPEeOhMHh8AygkjkJBdGgY5aw3mDQLdSUhToGE2JtyelYcMSfDP9WdQfWIP2v6MdPYFxf/pWarHKeUvQnL2Dk3gny1pfSVmXhDsYqCaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8nZhBZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B47DC2BD10;
-	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
+	 MIME-Version; b=CmZfLifZLqIRR+HoycsEDCt1GJTeI7oP6GmhOKd9HNUa8qn90VTM+nD4FYTo5lFWG4tvUvnL6DZANF8qfqMNq2FIDtFMfEd0TntRmZHIQPjh7PnWXKfkd1pPaBKND0qKEd36GUoYKYlTLcjHRTNgvQe3piiapIonehcsanXm4I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5S6sF8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BFAC2BD10;
+	Thu,  6 Jun 2024 14:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683534;
-	bh=+wYVCEb/pyLzKWsxF/DAjZ1otoQHJLrHpZ0j2UIVSuc=;
+	s=korg; t=1717682983;
+	bh=ydC1U5xxYIm+/x6Q7hySbkyy0u0vHgQHeMVBK898w+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8nZhBZQ11C0Wv64hEC7YpjRlugMZjtPcRVAgranasudXEcxv6WbOpnuOef2huNSH
-	 KJX590/JRxJuJKq7495Y8Q7pKeM7USg+6V9kmRq/mUZVNjQnd+uCN0JG28Q9jCMmma
-	 hGCXTHc55okTCUYMVeThFZbsO2w2pEL1lUvMvEGw=
+	b=r5S6sF8f5Y1XNQrv8YRQc4oEMZ2FozuayJqCuzCz1XNtQF3iU7Ljk0aGihufDVsL/
+	 xTqnuVlj70mWQj1j4U2a288Y0QUfRWeJAotVA12IQSqX2x/sZvGzImY3u5a3Uv0RyW
+	 ip6QNeJkvcBjBlqOq0g9bJeGzJPjgTQAEPbaoazU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Duoming Zhou <duoming@zju.edu.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 474/744] PCI: of_property: Return error for int_map allocation failure
+Subject: [PATCH 6.9 167/374] um: Fix return value in ubd_init()
 Date: Thu,  6 Jun 2024 16:02:26 +0200
-Message-ID: <20240606131747.656188674@linuxfoundation.org>
+Message-ID: <20240606131657.498040095@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit e6f7d27df5d208b50cae817a91d128fb434bb12c ]
+[ Upstream commit 31a5990ed253a66712d7ddc29c92d297a991fdf2 ]
 
-Return -ENOMEM from of_pci_prop_intr_map() if kcalloc() fails to prevent a
-NULL pointer dereference in this case.
+When kmalloc_array() fails to allocate memory, the ubd_init()
+should return -ENOMEM instead of -1. So, fix it.
 
-Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-Link: https://lore.kernel.org/r/20240303105729.78624-1-duoming@zju.edu.cn
+Fixes: f88f0bdfc32f ("um: UBD Improvements")
 Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/of_property.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/um/drivers/ubd_kern.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
-index c2c7334152bc0..03539e5053720 100644
---- a/drivers/pci/of_property.c
-+++ b/drivers/pci/of_property.c
-@@ -238,6 +238,8 @@ static int of_pci_prop_intr_map(struct pci_dev *pdev, struct of_changeset *ocs,
- 		return 0;
+diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
+index 63fc062add708..ef805eaa9e013 100644
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -1092,7 +1092,7 @@ static int __init ubd_init(void)
  
- 	int_map = kcalloc(map_sz, sizeof(u32), GFP_KERNEL);
-+	if (!int_map)
+ 	if (irq_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
 +		return -ENOMEM;
- 	mapp = int_map;
+ 	}
+ 	io_req_buffer = kmalloc_array(UBD_REQ_BUFFER_SIZE,
+ 				      sizeof(struct io_thread_req *),
+@@ -1103,7 +1103,7 @@ static int __init ubd_init(void)
  
- 	list_for_each_entry(child, &pdev->subordinate->devices, bus_list) {
+ 	if (io_req_buffer == NULL) {
+ 		printk(KERN_ERR "Failed to initialize ubd buffering\n");
+-		return -1;
++		return -ENOMEM;
+ 	}
+ 	platform_driver_register(&ubd_driver);
+ 	mutex_lock(&ubd_lock);
 -- 
 2.43.0
 
