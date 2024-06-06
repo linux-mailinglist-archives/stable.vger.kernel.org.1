@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839ED8FEEC5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9EF8FE9C0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 173B2287D58
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88DA51C23D9A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F24C1C7D60;
-	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA6119B3E3;
+	Thu,  6 Jun 2024 14:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwwDAG/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDJHhB9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF3A1A0DFD;
-	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D194F198A31;
+	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683699; cv=none; b=GDSUSXull3WlRTABoj/38lUWrNUUPLNAJSf9WLOWMYZMyfo3tkkMxeoylSVX2udvyv/rqKgj5SFgGkVSvDcCpTEk6JizXjRlOKUL+HY7ql3Y5Czc4/tiazPp3HNsM/WY34NSj7xoOxE28WNQkCf6PEHeTJteOhh8YEskjwLpmNk=
+	t=1717683062; cv=none; b=fineOHaKJni3eu8VKMokUnf1VXord6sgLwy2e/m1eKXxIRki7tB/O519WE7uRyGvNB88dXsT+/T2d4wDET31J/TyIauNjq6oN+r9UdY7p7a/h1zxMXzDE3fb3za6kQffhMN+7OH/DOxLfhle78X5z6SZyMquyEqkpX9pvTCslh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683699; c=relaxed/simple;
-	bh=pi/mIJHCRrJCF8A8UWi1xdSP6LqG1rPpqlX2Ef4zAg8=;
+	s=arc-20240116; t=1717683062; c=relaxed/simple;
+	bh=+QFPghnXvEzqHpPqnp8E369ROVPcKtEoIxpo6kkCsi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7OJZKlxUi16LbIw+ZK+YIFFUqk6UscSRLkED/quFHyn5+tdBVTCAjI6vCDPkE1uvsmOj4PyVPOjXflLVz9Jki8o1wIR2BMpGs09/oU3o/AIGVTG2PULHtWigmBnufpmrhJcJe+6xXVgsYvrDGy4DWhZgtJZmf8bZSe8TY88NwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwwDAG/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04576C2BD10;
-	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
+	 MIME-Version; b=N0zcgISbtECKY2qHpkVpQ9BeXice1KVctQemNf8geijL9AsHFFKCYS5+nmTLvdGorxx+HpThthbPa95btwUsXbHOn6p7rGDECABCvb+Fo/5CBqXwEMhENN4DxHrHE6b8J7iYIo3AvOiU5dfj/JgbVTCJh3Gtanf0zmuQWbQjxgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDJHhB9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DC9C4AF0E;
+	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683699;
-	bh=pi/mIJHCRrJCF8A8UWi1xdSP6LqG1rPpqlX2Ef4zAg8=;
+	s=korg; t=1717683062;
+	bh=+QFPghnXvEzqHpPqnp8E369ROVPcKtEoIxpo6kkCsi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwwDAG/S+74zE9eWimS2hYPV8o0U/V7fXBAsnwZXNUXw+mOZ9mFAi2gIYsNCmQvyh
-	 AZj0TxLWOTU4jH4w4RnJ4xaiVSIvT2BHgMllCagHTnjfF0+XesFKE+5Pjo/tXhLgeP
-	 POcAcD4YBMDAHAK9zAOAg6e+GfsuNPQqO/oOt4x4=
+	b=HDJHhB9RUgm6nUgmg99KxPyGPZEvoDoC8fn7xHYyT5yTdEJh3x6xPZVYUhyYOxmLp
+	 aFelX/BDzo2g89zf9XtHXGJ6YUHRx8GRf23XpvEUs0rnlKnhyG/aUYjq5PI3zyZ1/x
+	 dgX2A5CJ3GbNBnx8tGPUObtWFT10PYMRl9y+AZ+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 619/744] ASoC: cs35l56: Fix to ensure ASP1 registers match cache
-Date: Thu,  6 Jun 2024 16:04:51 +0200
-Message-ID: <20240606131752.353066760@linuxfoundation.org>
+Subject: [PATCH 6.9 313/374] net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM
+Date: Thu,  6 Jun 2024 16:04:52 +0200
+Message-ID: <20240606131702.349367429@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,173 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
 
-[ Upstream commit 72a77d7631c6e392677c0134343cf5edcd3a4572 ]
+[ Upstream commit 52a2f0608366a629d43dacd3191039c95fef74ba ]
 
-Add a dummy SUPPLY widget connected to the ASP that forces the
-chip registers to match the regmap cache when the ASP is
-powered-up.
+LED Select (LED_SEL) bit in the LED General Purpose IO Configuration
+register is used to determine the functionality of external LED pins
+(Speed Indicator, Link and Activity Indicator, Full Duplex Link
+Indicator). The default value for this bit is 0 when no EEPROM is
+present. If a EEPROM is present, the default value is the value of the
+LED Select bit in the Configuration Flags of the EEPROM. A USB Reset or
+Lite Reset (LRST) will cause this bit to be restored to the image value
+last loaded from EEPROM, or to be set to 0 if no EEPROM is present.
 
-On a SoundWire system the ASP is free for use as a chip-to-chip
-interconnect. This can be either for the firmware on multiple
-CS35L56 to share reference audio; or as a bridge to another
-device. If it is a firmware interconnect it is owned by the
-firmware and the Linux driver should avoid writing the registers.
-However. If it is a bridge then Linux may take over and handle
-it as a normal codec-to-codec link.
+While configuring the dual purpose GPIO/LED pins to LED outputs in the
+LED General Purpose IO Configuration register, the LED_SEL bit is changed
+as 0 and resulting the configured value from the EEPROM is cleared. The
+issue is fixed by using read-modify-write approach.
 
-CS35L56 is designed for SDCA and a generic SDCA driver would
-know nothing about these chip-specific registers. So if the
-ASP is being used on a SoundWire system the firmware sets up the
-ASP registers. This means that we can't assume the default
-state of the ASP registers. But we don't know the initial state
-that the firmware set them to until after the firmware has been
-downloaded and booted, which can take several seconds when
-downloading multiple amps.
-
-To avoid blocking probe() for several seconds waiting for the
-firmware, the silicon defaults are assumed. This allows the machine
-driver to setup the ASP configuration during probe() without being
-blocked. If the ASP is hooked up and used, the SUPPLY widget
-ensures that the chip registers match what was configured in the
-regmap cache.
-
-If the machine driver does not hook up the ASP, it is assumed that
-it won't call any functions to configure the ASP DAI. Therefore
-the regmap cache will be clean for these registers so a
-regcache_sync() will not overwrite the chip registers. If the
-DAI is not hooked up, the dummy SUPPLY widget will not be
-invoked so it will never force-overwrite the chip registers.
-
-Backport note:
-This won't apply cleanly to kernels older than v6.6.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
-Link: https://msgid.link/r/20240129162737.497-8-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: d344873c4cbd ("ALSA: hda: cs35l56: Fix lifetime of cs_dsp instance")
+Fixes: f293501c61c5 ("smsc95xx: configure LED outputs")
+Signed-off-by: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
+Link: https://lore.kernel.org/r/20240523085314.167650-1-Parthiban.Veerasooran@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/cs35l56.h           |  1 +
- sound/soc/codecs/cs35l56-shared.c | 41 +++++++++++++++++++++++++++++++
- sound/soc/codecs/cs35l56.c        | 21 ++++++++++++++++
- 3 files changed, 63 insertions(+)
+ drivers/net/usb/smsc95xx.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
-index 3950322bf3cbb..4e5f35dc042a1 100644
---- a/include/sound/cs35l56.h
-+++ b/include/sound/cs35l56.h
-@@ -273,6 +273,7 @@ extern const char * const cs35l56_tx_input_texts[CS35L56_NUM_INPUT_SRC];
- extern const unsigned int cs35l56_tx_input_values[CS35L56_NUM_INPUT_SRC];
- 
- int cs35l56_set_patch(struct cs35l56_base *cs35l56_base);
-+int cs35l56_force_sync_asp1_registers_from_cache(struct cs35l56_base *cs35l56_base);
- int cs35l56_mbox_send(struct cs35l56_base *cs35l56_base, unsigned int command);
- int cs35l56_firmware_shutdown(struct cs35l56_base *cs35l56_base);
- int cs35l56_wait_for_firmware_boot(struct cs35l56_base *cs35l56_base);
-diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
-index afd12d853ce4c..12291242362b4 100644
---- a/sound/soc/codecs/cs35l56-shared.c
-+++ b/sound/soc/codecs/cs35l56-shared.c
-@@ -194,6 +194,47 @@ static bool cs35l56_volatile_reg(struct device *dev, unsigned int reg)
- 	}
- }
- 
-+/*
-+ * The firmware boot sequence can overwrite the ASP1 config registers so that
-+ * they don't match regmap's view of their values. Rewrite the values from the
-+ * regmap cache into the hardware registers.
-+ */
-+int cs35l56_force_sync_asp1_registers_from_cache(struct cs35l56_base *cs35l56_base)
-+{
-+	struct reg_sequence asp1_regs[] = {
-+		{ .reg = CS35L56_ASP1_ENABLES1 },
-+		{ .reg = CS35L56_ASP1_CONTROL1 },
-+		{ .reg = CS35L56_ASP1_CONTROL2 },
-+		{ .reg = CS35L56_ASP1_CONTROL3 },
-+		{ .reg = CS35L56_ASP1_FRAME_CONTROL1 },
-+		{ .reg = CS35L56_ASP1_FRAME_CONTROL5 },
-+		{ .reg = CS35L56_ASP1_DATA_CONTROL1 },
-+		{ .reg = CS35L56_ASP1_DATA_CONTROL5 },
-+	};
-+	int i, ret;
-+
-+	/* Read values from regmap cache into a write sequence */
-+	for (i = 0; i < ARRAY_SIZE(asp1_regs); ++i) {
-+		ret = regmap_read(cs35l56_base->regmap, asp1_regs[i].reg, &asp1_regs[i].def);
-+		if (ret)
-+			goto err;
-+	}
-+
-+	/* Write the values cache-bypassed so that they will be written to silicon */
-+	ret = regmap_multi_reg_write_bypassed(cs35l56_base->regmap, asp1_regs,
-+					      ARRAY_SIZE(asp1_regs));
-+	if (ret)
-+		goto err;
-+
-+	return 0;
-+
-+err:
-+	dev_err(cs35l56_base->dev, "Failed to sync ASP1 registers: %d\n", ret);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_NS_GPL(cs35l56_force_sync_asp1_registers_from_cache, SND_SOC_CS35L56_SHARED);
-+
- int cs35l56_mbox_send(struct cs35l56_base *cs35l56_base, unsigned int command)
+diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
+index cbea246664795..8e82184be5e7d 100644
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -879,7 +879,7 @@ static int smsc95xx_start_rx_path(struct usbnet *dev)
+ static int smsc95xx_reset(struct usbnet *dev)
  {
- 	unsigned int val;
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index 530f6e06b41d5..c855ef3ec665e 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -277,6 +277,21 @@ static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_sdw1tx4_enum,
- static const struct snd_kcontrol_new sdw1_tx4_mux =
- 	SOC_DAPM_ENUM("SDW1TX4 SRC", cs35l56_sdw1tx4_enum);
+ 	struct smsc95xx_priv *pdata = dev->driver_priv;
+-	u32 read_buf, write_buf, burst_cap;
++	u32 read_buf, burst_cap;
+ 	int ret = 0, timeout;
  
-+static int cs35l56_asp1_cfg_event(struct snd_soc_dapm_widget *w,
-+				  struct snd_kcontrol *kcontrol, int event)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-+	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
-+
-+	switch (event) {
-+	case SND_SOC_DAPM_PRE_PMU:
-+		/* Override register values set by firmware boot */
-+		return cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
-+	default:
-+		return 0;
-+	}
-+}
-+
- static int cs35l56_play_event(struct snd_soc_dapm_widget *w,
- 			      struct snd_kcontrol *kcontrol, int event)
- {
-@@ -313,6 +328,9 @@ static const struct snd_soc_dapm_widget cs35l56_dapm_widgets[] = {
- 	SND_SOC_DAPM_REGULATOR_SUPPLY("VDD_B", 0, 0),
- 	SND_SOC_DAPM_REGULATOR_SUPPLY("VDD_AMP", 0, 0),
+ 	netif_dbg(dev, ifup, dev->net, "entering smsc95xx_reset\n");
+@@ -1003,10 +1003,13 @@ static int smsc95xx_reset(struct usbnet *dev)
+ 		return ret;
+ 	netif_dbg(dev, ifup, dev->net, "ID_REV = 0x%08x\n", read_buf);
  
-+	SND_SOC_DAPM_SUPPLY("ASP1 CFG", SND_SOC_NOPM, 0, 0, cs35l56_asp1_cfg_event,
-+			    SND_SOC_DAPM_PRE_PMU),
-+
- 	SND_SOC_DAPM_SUPPLY("PLAY", SND_SOC_NOPM, 0, 0, cs35l56_play_event,
- 			    SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_POST_PMD),
- 
-@@ -380,6 +398,9 @@ static const struct snd_soc_dapm_route cs35l56_audio_map[] = {
- 	{ "AMP", NULL, "VDD_B" },
- 	{ "AMP", NULL, "VDD_AMP" },
- 
-+	{ "ASP1 Playback", NULL, "ASP1 CFG" },
-+	{ "ASP1 Capture", NULL, "ASP1 CFG" },
-+
- 	{ "ASP1 Playback", NULL, "PLAY" },
- 	{ "SDW1 Playback", NULL, "PLAY" },
++	ret = smsc95xx_read_reg(dev, LED_GPIO_CFG, &read_buf);
++	if (ret < 0)
++		return ret;
+ 	/* Configure GPIO pins as LED outputs */
+-	write_buf = LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
+-		LED_GPIO_CFG_FDX_LED;
+-	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, write_buf);
++	read_buf |= LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
++		    LED_GPIO_CFG_FDX_LED;
++	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, read_buf);
+ 	if (ret < 0)
+ 		return ret;
  
 -- 
 2.43.0
