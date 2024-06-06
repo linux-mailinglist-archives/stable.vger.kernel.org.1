@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-49324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5A98FECCC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BE48FE971
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF2A9282FAA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750862835E4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D4719B5B1;
-	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8F7197A97;
+	Thu,  6 Jun 2024 14:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFDP1nf/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knwbhKJ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B461B29C8;
-	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF68196DA8;
+	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683410; cv=none; b=TAoiRL8TZRrdIg+Ffviv8oaOsfJyjTQ09Lq5jw4AJCDxdmr+sZRhRIcO/78fv39JqWswJd8VR1HqX7JmpOs+HoAbe7eljokXj/MJCv+tB0Tz6DbKd6SFodFHaKXQD0GxK7H3khVng5FiUO8KdmifGDJoFk8BCQN0T107waldvgk=
+	t=1717683022; cv=none; b=imzivfKk+fTKOOuFeOr6z2q0v7z3FpHkMuMezVHRrBh5hhzej/a/35b+nCxSQnzYedi+uuwu7x4DjY6H32ClB9lRF6EV3n8jzNozSNmScUkbw4xQ5dgXWqtPYTuYxEk5OE4csNKDHEG4B/mJl9UdxzDqxq1u3SuCpCTv8JUq4b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683410; c=relaxed/simple;
-	bh=B2GYHS9eY3iJuovRbU+WY9AbqHlusL3gWMI+jxRXGbk=;
+	s=arc-20240116; t=1717683022; c=relaxed/simple;
+	bh=kYd6Hle+YGzyPUVWdr1Lp2YJEebm2FNuNw093jScmiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWYFA0ixlJWBXp/47IObF3Io3UQiy3R1yqX5upSm1X5X4LS2jzYKm2eiz0zeNt8wJT0it++6KgJGUJu+ncff9Y1ia4LVWnHQDVVPO88HNS/zNOOjqHeSln28LEI7uHQ6HJQxR0W7xynNUVu76gdRMciXw8wqxcEzF+6t46f6RKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFDP1nf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25944C2BD10;
-	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
+	 MIME-Version; b=YWXLXeuMbwGTUknxMFaR8LaY4HWA7yD1FhaMZmvO08xjN1XNelBqDjekTTBWTiP2OIRNnEITy4t16kR6SmhFVc34cQXulKOVKeCidq4ujA8a3NbvWFTvnPippQZL+RI0+rT7lbQfpEXW+kNIP4SaRmrwjDMPdHSwu6PuyvpgM4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knwbhKJ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C250BC2BD10;
+	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683410;
-	bh=B2GYHS9eY3iJuovRbU+WY9AbqHlusL3gWMI+jxRXGbk=;
+	s=korg; t=1717683021;
+	bh=kYd6Hle+YGzyPUVWdr1Lp2YJEebm2FNuNw093jScmiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pFDP1nf/S6+u4cF+ccnxoyuhzMmkv+dZw0PTUwdjZR3CbgLJTIPob5fq7esBt3UD8
-	 3jmCn+oKZAHxgpiN6tgbUpqnvxp8B73KfvZH6h2jrCARbvkNtDoriUynjalHTtq4X2
-	 FOqa/7+bmzCoMAGMIcZRoHPRQjQOsIPstlVHnxrU=
+	b=knwbhKJ1dOC/jtjklu+cA9hsSHWyTtDc7V0Hu9ifr+eINhN+ps2jX3zegNaJaqG9y
+	 Gfzp3Cdz0aLSP3Lcd90vH1NpaLMstUlWEMKNeKpav3s80LeBDhazs/FNjH1UvNgwDm
+	 1GRyp9GxgELUJR/hftvKg5Hk0RlMNCNoVGr2ewUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 293/473] greybus: arche-ctrl: move device table to its right location
+Subject: [PATCH 6.9 243/374] regulator: pickable ranges: dont always cache vsel
 Date: Thu,  6 Jun 2024 16:03:42 +0200
-Message-ID: <20240606131709.564965645@linuxfoundation.org>
+Message-ID: <20240606131659.958527754@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit 6a0b8c0da8d8d418cde6894a104cf74e6098ddfa ]
+[ Upstream commit f4f4276f985a5aac7b310a4ed040b47e275e7591 ]
 
-The arche-ctrl has two platform drivers and three of_device_id tables,
-but one table is only used for the the module loader, while the other
-two seem to be associated with their drivers.
+Some PMICs treat the vsel_reg same as apply-bit. Eg, when voltage range
+is changed, the new voltage setting is not taking effect until the vsel
+register is written.
 
-This leads to a W=1 warning when the driver is built-in:
+Add a flag 'range_applied_by_vsel' to the regulator desc to indicate this
+behaviour and to force the vsel value to be written to hardware if range
+was changed, even if the old selector was same as the new one.
 
-drivers/staging/greybus/arche-platform.c:623:34: error: 'arche_combined_id' defined but not used [-Werror=unused-const-variable=]
-  623 | static const struct of_device_id arche_combined_id[] = {
-
-Drop the extra table and register both tables that are actually
-used as the ones for the module loader instead.
-
-Fixes: 7b62b61c752a ("greybus: arche-ctrl: Don't expose driver internals to arche-platform driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240403080702.3509288-18-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://msgid.link/r/ZktCpcGZdgHWuN_L@fedora
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 1ace99d7c7c4 ("regulator: tps6287x: Force writing VSEL bit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/greybus/arche-apb-ctrl.c | 1 +
- drivers/staging/greybus/arche-platform.c | 9 +--------
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ drivers/regulator/helpers.c      | 43 ++++++++++++++++++++++----------
+ include/linux/regulator/driver.h |  3 +++
+ 2 files changed, 33 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/staging/greybus/arche-apb-ctrl.c b/drivers/staging/greybus/arche-apb-ctrl.c
-index 45afa208d0044..4f9403f3d0cdd 100644
---- a/drivers/staging/greybus/arche-apb-ctrl.c
-+++ b/drivers/staging/greybus/arche-apb-ctrl.c
-@@ -468,6 +468,7 @@ static const struct of_device_id arche_apb_ctrl_of_match[] = {
- 	{ .compatible = "usbffff,2", },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(of, arche_apb_ctrl_of_match);
+diff --git a/drivers/regulator/helpers.c b/drivers/regulator/helpers.c
+index d492683365532..6e1ace660b8cf 100644
+--- a/drivers/regulator/helpers.c
++++ b/drivers/regulator/helpers.c
+@@ -161,6 +161,32 @@ int regulator_get_voltage_sel_pickable_regmap(struct regulator_dev *rdev)
+ }
+ EXPORT_SYMBOL_GPL(regulator_get_voltage_sel_pickable_regmap);
  
- static struct platform_driver arche_apb_ctrl_device_driver = {
- 	.probe		= arche_apb_ctrl_probe,
-diff --git a/drivers/staging/greybus/arche-platform.c b/drivers/staging/greybus/arche-platform.c
-index fcbd5f71eff27..4850bc64d3fd7 100644
---- a/drivers/staging/greybus/arche-platform.c
-+++ b/drivers/staging/greybus/arche-platform.c
-@@ -620,14 +620,7 @@ static const struct of_device_id arche_platform_of_match[] = {
- 	{ .compatible = "google,arche-platform", },
- 	{ },
- };
++static int write_separate_vsel_and_range(struct regulator_dev *rdev,
++					 unsigned int sel, unsigned int range)
++{
++	bool range_updated;
++	int ret;
++
++	ret = regmap_update_bits_base(rdev->regmap, rdev->desc->vsel_range_reg,
++				      rdev->desc->vsel_range_mask,
++				      range, &range_updated, false, false);
++	if (ret)
++		return ret;
++
++	/*
++	 * Some PMICs treat the vsel_reg same as apply-bit. Force it to be
++	 * written if the range changed, even if the old selector was same as
++	 * the new one
++	 */
++	if (rdev->desc->range_applied_by_vsel && range_updated)
++		return regmap_write_bits(rdev->regmap,
++					rdev->desc->vsel_reg,
++					rdev->desc->vsel_mask, sel);
++
++	return regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
++				  rdev->desc->vsel_mask, sel);
++}
++
+ /**
+  * regulator_set_voltage_sel_pickable_regmap - pickable range set_voltage_sel
+  *
+@@ -199,21 +225,12 @@ int regulator_set_voltage_sel_pickable_regmap(struct regulator_dev *rdev,
+ 	range = rdev->desc->linear_range_selectors_bitfield[i];
+ 	range <<= ffs(rdev->desc->vsel_range_mask) - 1;
+ 
+-	if (rdev->desc->vsel_reg == rdev->desc->vsel_range_reg) {
+-		ret = regmap_update_bits(rdev->regmap,
+-					 rdev->desc->vsel_reg,
++	if (rdev->desc->vsel_reg == rdev->desc->vsel_range_reg)
++		ret = regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
+ 					 rdev->desc->vsel_range_mask |
+ 					 rdev->desc->vsel_mask, sel | range);
+-	} else {
+-		ret = regmap_update_bits(rdev->regmap,
+-					 rdev->desc->vsel_range_reg,
+-					 rdev->desc->vsel_range_mask, range);
+-		if (ret)
+-			return ret;
 -
--static const struct of_device_id arche_combined_id[] = {
--	/* Use PID/VID of SVC device */
--	{ .compatible = "google,arche-platform", },
--	{ .compatible = "usbffff,2", },
--	{ },
--};
--MODULE_DEVICE_TABLE(of, arche_combined_id);
-+MODULE_DEVICE_TABLE(of, arche_platform_of_match);
+-		ret = regmap_update_bits(rdev->regmap, rdev->desc->vsel_reg,
+-				  rdev->desc->vsel_mask, sel);
+-	}
++	else
++		ret = write_separate_vsel_and_range(rdev, sel, range);
  
- static struct platform_driver arche_platform_device_driver = {
- 	.probe		= arche_platform_probe,
+ 	if (ret)
+ 		return ret;
+diff --git a/include/linux/regulator/driver.h b/include/linux/regulator/driver.h
+index 22a07c0900a41..f230a472ccd35 100644
+--- a/include/linux/regulator/driver.h
++++ b/include/linux/regulator/driver.h
+@@ -299,6 +299,8 @@ enum regulator_type {
+  * @vsel_range_reg: Register for range selector when using pickable ranges
+  *		    and ``regulator_map_*_voltage_*_pickable`` functions.
+  * @vsel_range_mask: Mask for register bitfield used for range selector
++ * @range_applied_by_vsel: A flag to indicate that changes to vsel_range_reg
++ *			   are only effective after vsel_reg is written
+  * @vsel_reg: Register for selector when using ``regulator_map_*_voltage_*``
+  * @vsel_mask: Mask for register bitfield used for selector
+  * @vsel_step: Specify the resolution of selector stepping when setting
+@@ -389,6 +391,7 @@ struct regulator_desc {
+ 
+ 	unsigned int vsel_range_reg;
+ 	unsigned int vsel_range_mask;
++	bool range_applied_by_vsel;
+ 	unsigned int vsel_reg;
+ 	unsigned int vsel_mask;
+ 	unsigned int vsel_step;
 -- 
 2.43.0
 
