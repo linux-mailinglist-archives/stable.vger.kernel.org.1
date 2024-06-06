@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-49473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B508FED63
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DAD8FEBC4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D463C280DCE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D31AB26A46
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480EE1BA88F;
-	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375B51ABCD1;
+	Thu,  6 Jun 2024 14:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLWL2IUH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwVUucD/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051041BA874;
-	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E841719A2B5;
+	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683483; cv=none; b=TY+IJeRWJVPX/LCEQtXgxCi5DkmD0avFY262MqYoA+MWl3qU53jDu5efUj2GEbhJw2xVV5qZg4vKJSYGwuvQN7HLdCCH716uoO0F36aINPrWLxHKDcmPNqq0yYqeuZGmINxHK5a+Lx4OMkr2IPkrJs8nPbH9Wr7g5voeKS4ThdE=
+	t=1717683292; cv=none; b=darESBQyxt1L7A1hFTCs8gkWWrhMvI2X7MPxTEYkkv+Im00lIGQ8EKjWmpteJRVSOa11WwJEFgJiKlqX185npE6FriT3ThKjflgcL4jo005tzMyhLM8TqWaMjZq+HWKGiBVtvmvWikmpIzJQYQFgA9msKC+yLFN5M9/EvaVvO9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683483; c=relaxed/simple;
-	bh=oCHuV+thutJFrxTDxP18ehnQkZHPJH5d9jU5rAL6ssM=;
+	s=arc-20240116; t=1717683292; c=relaxed/simple;
+	bh=38XNr6FH1qXAaR5g+T7rWapzYnYhnOrt473FR7Hg4ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fka7qS74XoU5e6vLbycBEMEgh6pwLp2U7j2loWAxI2yXr1UJlHsLLtvgNj9ElEn8/BK778dTCirATyLPWJEeckN7yw2Vvx5d6kLaO5aTJU8bcAZAgELtzVhURSUVOAb5UlsO2zcE7OmACwHvAvJFTEs0bX1KvMOl1YlFAXWpP90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLWL2IUH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B9BC2BD10;
-	Thu,  6 Jun 2024 14:18:02 +0000 (UTC)
+	 MIME-Version; b=mO9KaCqOh83VqkfnQgVXVqDMgAeOiSZe+drDI/VcYLTf766ddjwNAKqdfi3EmDNKTlWiKG4c2dCGoZpSnOiPRS2OphfbpSySaxysjdGajli4Qg347XDqWNlRalXUPySHDu7qb9VYOgfekcER+jdvNOZdXma/QklWL5exDNUNQnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwVUucD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8911C32781;
+	Thu,  6 Jun 2024 14:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683482;
-	bh=oCHuV+thutJFrxTDxP18ehnQkZHPJH5d9jU5rAL6ssM=;
+	s=korg; t=1717683291;
+	bh=38XNr6FH1qXAaR5g+T7rWapzYnYhnOrt473FR7Hg4ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLWL2IUHuCjxHag22jAhJyfqY0VZVjmUxwGAxSisckLIYep/FRTG8QvrfzfZZMOxx
-	 UVzgJApipRcn06h9E92Y3KFsvxE+nng/K/3gSYn3HXdy6nRilQff/Xm5htdzhEhW/R
-	 Ov81pqcWNJ3lCXv27s4i4h3kEiHHOLaBee+GmLTo=
+	b=FwVUucD/x+6ttvv3lyg5IWmt2w0k60qFinCzfEPanJkH+ObEzHN4gHMavqlAnRt+x
+	 jxqKmDQ36znuOvUCpeIxi7pbhHBOP48Juho8cPpZb3DTTDroIhZtM051VGkYRuCRiY
+	 lcbJ4ha/JBsucrydPQ6kCCSt0nn7LiEy11L+hAfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Leo Yan <leo.yan@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Spoorthy S <spoorts2@in.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Gao Xingwang <gaoxingwang1@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 425/744] perf tests: Apply attributes to all events in object code reading test
+Subject: [PATCH 6.1 168/473] net: ipv6: fix wrong start position when receive hop-by-hop fragment
 Date: Thu,  6 Jun 2024 16:01:37 +0200
-Message-ID: <20240606131746.103852738@linuxfoundation.org>
+Message-ID: <20240606131705.496338900@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,71 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: gaoxingwang <gaoxingwang1@huawei.com>
 
-[ Upstream commit 2dade41a533f337447b945239b87ff31a8857890 ]
+[ Upstream commit 1cd354fe1e4864eeaff62f66ee513080ec946f20 ]
 
-PERF_PMU_CAP_EXTENDED_HW_TYPE results in multiple events being opened on
-heterogeneous systems. Currently this test only sets its required
-attributes on the first event. Not disabling enable_on_exec on the other
-events causes the test to fail because the forked objdump processes are
-sampled. No tracking event is opened so Perf only knows about its own
-mappings causing the objdump samples to give the following error:
+In IPv6, ipv6_rcv_core will parse the hop-by-hop type extension header and increase skb->transport_header by one extension header length.
+But if there are more other extension headers like fragment header at this time, the skb->transport_header points to the second extension header,
+not the transport layer header or the first extension header.
 
-  $ perf test -vvv "object code reading"
+This will result in the start and nexthdrp variable not pointing to the same position in ipv6frag_thdr_trunced,
+and ipv6_skip_exthdr returning incorrect offset and frag_off.Sometimes,the length of the last sharded packet is smaller than the calculated incorrect offset, resulting in packet loss.
+We can use network header to offset and calculate the correct position to solve this problem.
 
-  Reading object code for memory address: 0xffff9aaa55ec
-  thread__find_map failed
-  ---- end(-1) ----
-  24: Object code reading              : FAILED!
-
-Fixes: 251aa040244a3b17 ("perf parse-events: Wildcard most "numeric" events")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Spoorthy S <spoorts2@in.ibm.com>
-Link: https://lore.kernel.org/r/20240410103458.813656-3-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 9d9e937b1c8b (ipv6/netfilter: Discard first fragment not including all headers)
+Signed-off-by: Gao Xingwang <gaoxingwang1@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/code-reading.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/ipv6/reassembly.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-reading.c
-index ed3815163d1be..ff249555ca57a 100644
---- a/tools/perf/tests/code-reading.c
-+++ b/tools/perf/tests/code-reading.c
-@@ -657,11 +657,11 @@ static int do_test_code_reading(bool try_kcore)
- 
- 		evlist__config(evlist, &opts, NULL);
- 
--		evsel = evlist__first(evlist);
--
--		evsel->core.attr.comm = 1;
--		evsel->core.attr.disabled = 1;
--		evsel->core.attr.enable_on_exec = 0;
-+		evlist__for_each_entry(evlist, evsel) {
-+			evsel->core.attr.comm = 1;
-+			evsel->core.attr.disabled = 1;
-+			evsel->core.attr.enable_on_exec = 0;
-+		}
- 
- 		ret = evlist__open(evlist);
- 		if (ret < 0) {
+diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
+index ff866f2a879e0..32ba4417eb1de 100644
+--- a/net/ipv6/reassembly.c
++++ b/net/ipv6/reassembly.c
+@@ -364,7 +364,7 @@ static int ipv6_frag_rcv(struct sk_buff *skb)
+ 	 * the source of the fragment, with the Pointer field set to zero.
+ 	 */
+ 	nexthdr = hdr->nexthdr;
+-	if (ipv6frag_thdr_truncated(skb, skb_transport_offset(skb), &nexthdr)) {
++	if (ipv6frag_thdr_truncated(skb, skb_network_offset(skb) + sizeof(struct ipv6hdr), &nexthdr)) {
+ 		__IP6_INC_STATS(net, __in6_dev_get_safely(skb->dev),
+ 				IPSTATS_MIB_INHDRERRORS);
+ 		icmpv6_param_prob(skb, ICMPV6_HDR_INCOMP, 0);
 -- 
 2.43.0
 
