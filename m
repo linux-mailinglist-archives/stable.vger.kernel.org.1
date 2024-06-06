@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8B78FE915
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526698FED98
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7094A283218
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 089541F20F5D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851E31991D5;
-	Thu,  6 Jun 2024 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CE61974FD;
+	Thu,  6 Jun 2024 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9r71Og+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c6QQg2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446FC196C9F;
-	Thu,  6 Jun 2024 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0F719DF7D;
+	Thu,  6 Jun 2024 14:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682977; cv=none; b=UtdNrzTjUiFCDK11+DtFFxsd8uAa+ejb/oFpLc4iDOXpxmNy2Lq3bMScm0lOuUb8BlysMLTOOIjdVFKOhXwLfnb+mfBpeuSQNFQ9wKfyRwYB/4QN1KFFRWVpcMjbB2UPTK4ppQFXP8JY9KAMiRRT6U809R6ByXEunQUHv0cT7ec=
+	t=1717683504; cv=none; b=hygeRFMyLOlpEPFWKroWnWIemzGJaY5bANaPcDBzmpp1qnQVaxkKcw3aUTIhAsDEZiwqNsyeBNCeWFqLC5GJKmANG+hdS3j6DVP2yTENbhO9T3Na+/uFLqhB1OYY5PEKpGqIOz5S65BszwnbPnnEVXTrXsjoZIdxvL6wCw/Yg3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682977; c=relaxed/simple;
-	bh=ZekKCP6fxZKaX1JhZeO2DsDGQ0EInZBUD/dUnNNPIa8=;
+	s=arc-20240116; t=1717683504; c=relaxed/simple;
+	bh=F6sNsDb1JwHIJKbLCL3H1fpZsNNQzZJdSTPxKz3hQic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k0r5PirL74ThG03hYLtrSxWlecpRcOc4jZQFfHBc9pAf8z8zEvdrCzYbW0JlTWdaYVyKODMHzYWD/GA/QuxaOcVMvZDPwY4Mp39nRAxmVBda7vKuvDjzlTnS66SYy6C2Z4a6YKMn8Kj9Qcr7iECwyIZz2Og7PFY5C2EJmVNsKgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9r71Og+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AD3C2BD10;
-	Thu,  6 Jun 2024 14:09:37 +0000 (UTC)
+	 MIME-Version; b=bV6ixq2MBcLuH3FCjT2N2Ssw8eI9N2yOwPygWwJoCoCq+P6ekCEpFdEEaj3kZJNIJcypsFAvT7io9cbNvAeZayfvGs8uGhD8gcr62H+VEAUPqgqee5HPfL1KLgIDHuJsGYjpeTINK2fZ+WkAdw8kFHK5EPvCE3LSmSgA5wkH94A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c6QQg2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FBAC2BD10;
+	Thu,  6 Jun 2024 14:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682977;
-	bh=ZekKCP6fxZKaX1JhZeO2DsDGQ0EInZBUD/dUnNNPIa8=;
+	s=korg; t=1717683504;
+	bh=F6sNsDb1JwHIJKbLCL3H1fpZsNNQzZJdSTPxKz3hQic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9r71Og+/7QHWjGhTFJrMNu54QiIaXLMQ7Nj8/RYhlk/DEjeg4zK5g2WTDCFjqsKF
-	 4fSHgKccdHYlmcX5tP24BwNHmNeCeIFdJ9fssPU/yG7vjpqLdrBJARQGd/EaFH4t8g
-	 5hl5B1BfVXoWlgw9wq+/YWFvmu0LnndbvY0kzsq0=
+	b=2c6QQg2SH6YLJEmwcUFY1mHppvQj3ebfoD5AbqXCrWSRbXP2PrI9+VcSkpsoWYYQu
+	 9AkhX8fDgYgqTXXHGZM1avBbzBNn8w72CTRepVRz/Kb3CT0nF8Y36HQ8q82q5I1fmo
+	 n6wDcGj86yktvye494bN2VUDtFVwvcqoEeGD85u0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Hartmayer <mhartmay@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 138/374] s390/ap: Fix bind complete udev event sent after each AP bus scan
-Date: Thu,  6 Jun 2024 16:01:57 +0200
-Message-ID: <20240606131656.524434054@linuxfoundation.org>
+Subject: [PATCH 6.6 446/744] iio: adc: ad9467: use spi_get_device_match_data()
+Date: Thu,  6 Jun 2024 16:01:58 +0200
+Message-ID: <20240606131746.805672006@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 306d6bda8f97432f9cb69b5cbd86afd3a8ca182f ]
+[ Upstream commit b67cc85d45d5d2894d0e2812bba27d7b23befbe6 ]
 
-With the mentioned commit (see the fixes tag) on every AP bus scan an
-uevent "AP bus change bindings complete" is emitted.  Furthermore if an AP
-device switched from one driver to another, for example by manipulating the
-apmask, there was never a "bindings complete" uevent generated.
+Make use of spi_get_device_match_data() to simplify things.
 
-The "bindings complete" event should be sent once when all AP devices have
-been bound to device drivers and again if unbind/bind actions take place
-and finally all AP devices are bound again. Therefore implement this.
-
-Fixes: 778412ab915d ("s390/ap: rearm APQNs bindings complete completion")
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-5-a4a33bc4d70e@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: cf1c833f89e7 ("iio: adc: adi-axi-adc: only error out in major version mismatch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/ap_bus.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad9467.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
-index cce0bafd4c926..f13837907bd5e 100644
---- a/drivers/s390/crypto/ap_bus.c
-+++ b/drivers/s390/crypto/ap_bus.c
-@@ -767,9 +767,9 @@ static void ap_check_bindings_complete(void)
- 		if (bound == apqns) {
- 			if (!completion_done(&ap_apqn_bindings_complete)) {
- 				complete_all(&ap_apqn_bindings_complete);
-+				ap_send_bindings_complete_uevent();
- 				pr_debug("%s all apqn bindings complete\n", __func__);
- 			}
--			ap_send_bindings_complete_uevent();
- 		}
- 	}
- }
-@@ -929,6 +929,12 @@ static int ap_device_probe(struct device *dev)
- 			goto out;
- 	}
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index f668313730cb6..b16d28c1adcb0 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -454,9 +454,7 @@ static int ad9467_probe(struct spi_device *spi)
+ 	unsigned int id;
+ 	int ret;
  
-+	/*
-+	 * Rearm the bindings complete completion to trigger
-+	 * bindings complete when all devices are bound again
-+	 */
-+	reinit_completion(&ap_apqn_bindings_complete);
-+
- 	/* Add queue/card to list of active queues/cards */
- 	spin_lock_bh(&ap_queues_lock);
- 	if (is_queue_dev(dev))
+-	info = of_device_get_match_data(&spi->dev);
+-	if (!info)
+-		info = (void *)spi_get_device_id(spi)->driver_data;
++	info = spi_get_device_match_data(spi);
+ 	if (!info)
+ 		return -ENODEV;
+ 
 -- 
 2.43.0
 
