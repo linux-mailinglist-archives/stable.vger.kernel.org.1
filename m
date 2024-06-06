@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624748FE8E7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C4E8FEBB7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654961C253B9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBA9A1F29312
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715B8198E9F;
-	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5A819A2B1;
+	Thu,  6 Jun 2024 14:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiZmll+t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olKNKQpg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310D7196C8D;
-	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6A41ABCBC;
+	Thu,  6 Jun 2024 14:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682949; cv=none; b=q/xXvAKLH8Ouv5nLSGA56Td2M2odN2vsAvFFq+9cmcrLqyQgKs2IbZrmeRF2S4lzIEnrJoV2DMAlz52ufvLLFdnc0hIgoeKWyi1t+fOwSdg9hGpRE7j8/6DvZcb0QemmCM3DBSwac1JFQlCe/hF8iUbevjB46k7okDPBvIrrefQ=
+	t=1717683285; cv=none; b=DbBCdC7nZobXUhaOAgcynDYTWkLFIkG+7azkw9rBDBjMnh4SR1WjBU69/dglw5B6jC9D60xVINW36z902QO17GNTJbLDfeTlggIJTZHq0t/8BWoDw1xMoHOGpUV7udAOXhToDw53S38blEjg1HFqVZaIi+xwht0JDPlwi1ENSYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682949; c=relaxed/simple;
-	bh=o5wY0glUR+JcnhR1vgw5c9pPHJ/yuwAUmu+BRnZQ0C4=;
+	s=arc-20240116; t=1717683285; c=relaxed/simple;
+	bh=JEPUPxdpC+TdoMAj7kukCCq07jjZAZmRBvwIzswE5pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+azjePqY0OyMhz7LlxrgoXQUh0sb+RPlUIPPNMFVXftkgu+C/w1o5mVKWxGZ6eZqEvqIi0blJJeNbEtTVqdVjSXz/YGIcIa9zAYJovmjhDAGj+OjLzfj8HWgXk7pMEiXekswzGGScK7cC4dUajle1KeaQjw0a8c7TtY5Z6dFfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiZmll+t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E02CC32781;
-	Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
+	 MIME-Version; b=lrEb7g9+2yAvlOVOCvOBoOV2C/DgXWy6pqBMoNC6N66w+5N1KpvWHKaQgsOk+OiIbd2prEspkdsM0baMXcOLPc3x0N1ZfMoS2otztRqSBJLZj8sRlg+vFEoWXpwVvE3FtomEvyP5baNCut6vHkHQKi7xJLI31VRts10QEecI+sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olKNKQpg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CFDC32782;
+	Thu,  6 Jun 2024 14:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682949;
-	bh=o5wY0glUR+JcnhR1vgw5c9pPHJ/yuwAUmu+BRnZQ0C4=;
+	s=korg; t=1717683285;
+	bh=JEPUPxdpC+TdoMAj7kukCCq07jjZAZmRBvwIzswE5pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AiZmll+tW1xZ0dJWjBjqsEM4YpQ4jJrN8l6BfjOxQJjkS6bC6BkuhZT+/7NJqCGg/
-	 MUJ3p8XZzoqsSUZwT2lAAjupwqku/kHa6hER9BQdM1fD5/OHj18As2ufYI5hhzmQfk
-	 BvireUWBNKxOIAWqQngI3ZsuiO2u1fkNlSozhcSM=
+	b=olKNKQpgDccDHVoNA0U17Q2xVI7QhL5ejfrkChMddKA2oNPjOLTzdn67e6h852S6D
+	 Bb2HIkGy9KZqjNLxrEWiSZht2/UIUsdcqjy5Da6XRQ/a1lrbwzvJi7a+MU21y8su6C
+	 IpoYzy91uQg3yqKBUwejqZatYuwlECWEU/FXDHPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 112/374] fuse: set FR_PENDING atomically in fuse_resend()
+Subject: [PATCH 6.1 162/473] wifi: mwl8k: initialize cmd->addr[] properly
 Date: Thu,  6 Jun 2024 16:01:31 +0200
-Message-ID: <20240606131655.682560180@linuxfoundation.org>
+Message-ID: <20240606131705.301190816@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 42815f8ac54c5113bf450ec4b7ccc5b62af0f6a7 ]
+[ Upstream commit 1d60eabb82694e58543e2b6366dae3e7465892a5 ]
 
-When fuse_resend() moves the requests from processing lists to pending
-list, it uses __set_bit() to set FR_PENDING bit in req->flags.
+This loop is supposed to copy the mac address to cmd->addr but the
+i++ increment is missing so it copies everything to cmd->addr[0] and
+only the last address is recorded.
 
-Using __set_bit() is not safe, because other functions may update
-req->flags concurrently (e.g., request_wait_answer() may call
-set_bit(FR_INTERRUPTED, &flags)).
-
-Fix it by using set_bit() instead.
-
-Fixes: 760eac73f9f6 ("fuse: Introduce a new notification type for resend pending requests")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 22bedad3ce11 ("net: convert multicast list to list_head")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/b788be9a-15f5-4cca-a3fe-79df4c8ce7b2@moroto.mountain
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dev.c | 2 +-
+ drivers/net/wireless/marvell/mwl8k.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 3ec8bb5e68ff5..8eb2ce7c0b012 100644
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1813,7 +1813,7 @@ static void fuse_resend(struct fuse_conn *fc)
- 	spin_unlock(&fc->lock);
- 
- 	list_for_each_entry_safe(req, next, &to_queue, list) {
--		__set_bit(FR_PENDING, &req->flags);
-+		set_bit(FR_PENDING, &req->flags);
- 		/* mark the request as resend request */
- 		req->in.h.unique |= FUSE_UNIQUE_RESEND;
+diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+index 4dc7e2e53b81e..61697dad4ea61 100644
+--- a/drivers/net/wireless/marvell/mwl8k.c
++++ b/drivers/net/wireless/marvell/mwl8k.c
+@@ -2718,7 +2718,7 @@ __mwl8k_cmd_mac_multicast_adr(struct ieee80211_hw *hw, int allmulti,
+ 		cmd->action |= cpu_to_le16(MWL8K_ENABLE_RX_MULTICAST);
+ 		cmd->numaddr = cpu_to_le16(mc_count);
+ 		netdev_hw_addr_list_for_each(ha, mc_list) {
+-			memcpy(cmd->addr[i], ha->addr, ETH_ALEN);
++			memcpy(cmd->addr[i++], ha->addr, ETH_ALEN);
+ 		}
  	}
+ 
 -- 
 2.43.0
 
