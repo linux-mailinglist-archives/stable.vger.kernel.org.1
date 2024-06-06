@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61008FE985
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E648FEEB6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E614288025
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 902BEB22984
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9F219AA74;
-	Thu,  6 Jun 2024 14:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D7E1A0DED;
+	Thu,  6 Jun 2024 14:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/x4a0iJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlEc+bsT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D934198845;
-	Thu,  6 Jun 2024 14:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C23199222;
+	Thu,  6 Jun 2024 14:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683034; cv=none; b=ZG2yUxpzZZs0cmKnsnmLPDgGwQDeyTRUXXjA3pA++tetr3Gc9hL5CYh9glc0jtWsk38Tjy2xkrWQiWenvzOVKaAoJ60Pv9PlwiwDaS5AnuY5np3vYvaPwHWZypm7C9jwY6z5XQo8CJOe6+aXogF9UxI1G2zKMDhgucTIUgOFVTw=
+	t=1717683692; cv=none; b=dawdW93x0i2LhDeBFSWoxS+ZyjprPfPaFQxtqgLb8siAE6fQaFpq4WuqR2G0fYet8rRSqCl4artnGveOV4ApYFnJUc8KnW3wd3/RUWlpR9ZGdttb3xbs54xbQ7CsYCuOdQ7ArCAppcU/M9dazLtJp44ec6K0NAeIljFoOPlfslk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683034; c=relaxed/simple;
-	bh=sh4dLZfuk1G9xvlqRFH4UwRfoftDnIgUaR2R4uffrwM=;
+	s=arc-20240116; t=1717683692; c=relaxed/simple;
+	bh=0inX9Cb4f3+bhPBAUPt+IjEZQ6svVW35Zj+1gsHDx2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ii0WzdPimWd+t5OM2cp0kwTMtkVIDuVFesX+prEnft28mpJ5vhJIjoABlswfrBmk1TB8VPCKncP8juPHZsGEA+/RuZnrJ40zS7A8Hz0CFmRkjpvLsu06Lk67S8NKtQO841Dgh+7AiW35LFIVOAdgXaR2EqjyHfw2NUxC2tf9W9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/x4a0iJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8D0C4AF15;
-	Thu,  6 Jun 2024 14:10:34 +0000 (UTC)
+	 MIME-Version; b=rOV0Y994mvD2vm7CsQpaGYowanTUrWopmXJwwsDD+sUhZbZHx20aj/ccVi4ohM+j2C31hsxr4r+QrAwhUmmVk1OHJ7D4JilJHIlGz9IcmTrVDUc2O9m2ZdkPU5wYoD04p8QRxiem1Gm4Cx9b2Sw3ln02WL+Dh9hSekx9TifJmxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlEc+bsT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03700C2BD10;
+	Thu,  6 Jun 2024 14:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683034;
-	bh=sh4dLZfuk1G9xvlqRFH4UwRfoftDnIgUaR2R4uffrwM=;
+	s=korg; t=1717683692;
+	bh=0inX9Cb4f3+bhPBAUPt+IjEZQ6svVW35Zj+1gsHDx2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/x4a0iJjjsgKyXR2CLD5CHY4/f4SAFgB8EnmOnDiFDKsuthuKbUVIF0tDIcTqttX
-	 htKCtF3e6iKzmVqZE8rijiMObZ56tNLpXFcyOhaAhIONf9RTiaWMPTRcvqdjW+CGYF
-	 uaxgNXsc6Lafz8/+tKFRszzeoMl1ZcWDw8X7h1VY=
+	b=AlEc+bsTKdhoDLLAV5iMy4Q/TGZX8yxjSZdWf1BF+ndiQzbrpkznMghgwWHMH3kXQ
+	 dBE0QhXK6QSMmMMjxBhrU5pni9x34FapRBvhbYm9ZtCzOaGR4NDZSJQbBs9ohdfRqT
+	 8+JY7VfPVf7D+3yMWddeBC1K2atrSSYfk1Z9vzZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 260/374] virtio: delete vq in vp_find_vqs_msix() when request_irq() fails
+Subject: [PATCH 6.6 567/744] media: v4l2-subdev: Document and enforce .s_stream() requirements
 Date: Thu,  6 Jun 2024 16:03:59 +0200
-Message-ID: <20240606131700.593230432@linuxfoundation.org>
+Message-ID: <20240606131750.644844388@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit 89875151fccdd024d571aa884ea97a0128b968b6 ]
+[ Upstream commit 009905ec50433259c05f474251000b040098564e ]
 
-When request_irq() fails, error path calls vp_del_vqs(). There, as vq is
-present in the list, free_irq() is called for the same vector. That
-causes following splat:
+The subdev .s_stream() operation must not be called to start an already
+started subdev, or stop an already stopped one. This requirement has
+never been formally documented. Fix it, and catch possible offenders
+with a WARN_ON() in the call_s_stream() wrapper.
 
-[    0.414355] Trying to free already-free IRQ 27
-[    0.414403] WARNING: CPU: 1 PID: 1 at kernel/irq/manage.c:1899 free_irq+0x1a1/0x2d0
-[    0.414510] Modules linked in:
-[    0.414540] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.9.0-rc4+ #27
-[    0.414540] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
-[    0.414540] RIP: 0010:free_irq+0x1a1/0x2d0
-[    0.414540] Code: 1e 00 48 83 c4 08 48 89 e8 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 90 8b 74 24 04 48 c7 c7 98 80 6c b1 e8 00 c9 f7 ff 90 <0f> 0b 90 90 48 89 ee 4c 89 ef e8 e0 20 b8 00 49 8b 47 40 48 8b 40
-[    0.414540] RSP: 0000:ffffb71480013ae0 EFLAGS: 00010086
-[    0.414540] RAX: 0000000000000000 RBX: ffffa099c2722000 RCX: 0000000000000000
-[    0.414540] RDX: 0000000000000000 RSI: ffffb71480013998 RDI: 0000000000000001
-[    0.414540] RBP: 0000000000000246 R08: 00000000ffffdfff R09: 0000000000000001
-[    0.414540] R10: 00000000ffffdfff R11: ffffffffb18729c0 R12: ffffa099c1c91760
-[    0.414540] R13: ffffa099c1c916a4 R14: ffffa099c1d2f200 R15: ffffa099c1c91600
-[    0.414540] FS:  0000000000000000(0000) GS:ffffa099fec40000(0000) knlGS:0000000000000000
-[    0.414540] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    0.414540] CR2: 0000000000000000 CR3: 0000000008e3e001 CR4: 0000000000370ef0
-[    0.414540] Call Trace:
-[    0.414540]  <TASK>
-[    0.414540]  ? __warn+0x80/0x120
-[    0.414540]  ? free_irq+0x1a1/0x2d0
-[    0.414540]  ? report_bug+0x164/0x190
-[    0.414540]  ? handle_bug+0x3b/0x70
-[    0.414540]  ? exc_invalid_op+0x17/0x70
-[    0.414540]  ? asm_exc_invalid_op+0x1a/0x20
-[    0.414540]  ? free_irq+0x1a1/0x2d0
-[    0.414540]  vp_del_vqs+0xc1/0x220
-[    0.414540]  vp_find_vqs_msix+0x305/0x470
-[    0.414540]  vp_find_vqs+0x3e/0x1a0
-[    0.414540]  vp_modern_find_vqs+0x1b/0x70
-[    0.414540]  init_vqs+0x387/0x600
-[    0.414540]  virtnet_probe+0x50a/0xc80
-[    0.414540]  virtio_dev_probe+0x1e0/0x2b0
-[    0.414540]  really_probe+0xc0/0x2c0
-[    0.414540]  ? __pfx___driver_attach+0x10/0x10
-[    0.414540]  __driver_probe_device+0x73/0x120
-[    0.414540]  driver_probe_device+0x1f/0xe0
-[    0.414540]  __driver_attach+0x88/0x180
-[    0.414540]  bus_for_each_dev+0x85/0xd0
-[    0.414540]  bus_add_driver+0xec/0x1f0
-[    0.414540]  driver_register+0x59/0x100
-[    0.414540]  ? __pfx_virtio_net_driver_init+0x10/0x10
-[    0.414540]  virtio_net_driver_init+0x90/0xb0
-[    0.414540]  do_one_initcall+0x58/0x230
-[    0.414540]  kernel_init_freeable+0x1a3/0x2d0
-[    0.414540]  ? __pfx_kernel_init+0x10/0x10
-[    0.414540]  kernel_init+0x1a/0x1c0
-[    0.414540]  ret_from_fork+0x31/0x50
-[    0.414540]  ? __pfx_kernel_init+0x10/0x10
-[    0.414540]  ret_from_fork_asm+0x1a/0x30
-[    0.414540]  </TASK>
-
-Fix this by calling deleting the current vq when request_irq() fails.
-
-Fixes: 0b0f9dc52ed0 ("Revert "virtio_pci: use shared interrupts for virtqueues"")
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Message-Id: <20240426150845.3999481-1-jiri@resnulli.us>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: f2bf6cd8f447 ("media: v4l: Don't turn on privacy LED if streamon fails")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_pci_common.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-subdev.c | 17 ++++++++++++++++-
+ include/media/v4l2-subdev.h           |  4 +++-
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/virtio/virtio_pci_common.c b/drivers/virtio/virtio_pci_common.c
-index b655fccaf7733..584af7816532b 100644
---- a/drivers/virtio/virtio_pci_common.c
-+++ b/drivers/virtio/virtio_pci_common.c
-@@ -348,8 +348,10 @@ static int vp_find_vqs_msix(struct virtio_device *vdev, unsigned int nvqs,
- 				  vring_interrupt, 0,
- 				  vp_dev->msix_names[msix_vec],
- 				  vqs[i]);
--		if (err)
-+		if (err) {
-+			vp_del_vq(vqs[i]);
- 			goto error_find;
-+		}
- 	}
- 	return 0;
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index ee159b4341abc..f481d1ca32abb 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -359,6 +359,18 @@ static int call_s_stream(struct v4l2_subdev *sd, int enable)
+ {
+ 	int ret;
  
++	/*
++	 * The .s_stream() operation must never be called to start or stop an
++	 * already started or stopped subdev. Catch offenders but don't return
++	 * an error yet to avoid regressions.
++	 *
++	 * As .s_stream() is mutually exclusive with the .enable_streams() and
++	 * .disable_streams() operation, we can use the enabled_streams field
++	 * to store the subdev streaming state.
++	 */
++	if (WARN_ON(!!sd->enabled_streams == !!enable))
++		return 0;
++
+ #if IS_REACHABLE(CONFIG_LEDS_CLASS)
+ 	if (!IS_ERR_OR_NULL(sd->privacy_led)) {
+ 		if (enable)
+@@ -372,9 +384,12 @@ static int call_s_stream(struct v4l2_subdev *sd, int enable)
+ 
+ 	if (!enable && ret < 0) {
+ 		dev_warn(sd->dev, "disabling streaming failed (%d)\n", ret);
+-		return 0;
++		ret = 0;
+ 	}
+ 
++	if (!ret)
++		sd->enabled_streams = enable ? BIT(0) : 0;
++
+ 	return ret;
+ }
+ 
+diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
+index d9fca929c10b5..ab2a7ef61d420 100644
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -446,7 +446,9 @@ enum v4l2_subdev_pre_streamon_flags {
+  * @s_stream: start (enabled == 1) or stop (enabled == 0) streaming on the
+  *	sub-device. Failure on stop will remove any resources acquired in
+  *	streaming start, while the error code is still returned by the driver.
+- *	Also see call_s_stream wrapper in v4l2-subdev.c.
++ *	The caller shall track the subdev state, and shall not start or stop an
++ *	already started or stopped subdev. Also see call_s_stream wrapper in
++ *	v4l2-subdev.c.
+  *
+  * @g_pixelaspect: callback to return the pixelaspect ratio.
+  *
 -- 
 2.43.0
 
