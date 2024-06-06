@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-49086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382628FEBCB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A01C38FE8F1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6E3CB26BBC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55BA91F246A8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1E61ABE20;
-	Thu,  6 Jun 2024 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6F7196C75;
+	Thu,  6 Jun 2024 14:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fq8ZpW87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2x51vOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0A9197A91;
-	Thu,  6 Jun 2024 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490DF196C8C;
+	Thu,  6 Jun 2024 14:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683295; cv=none; b=YxpGk7jpBVnZoIyGdhL42I82v5aVXcL1TPbJspeji2l7Yix33hbv3o+i1n8vkV1fAwi0fc0cqgynu0MNqECGf4A847Z1oT1GwZXQ/VB/R8rYOnD/BtnmYVFn64MXt8gqHi2xdsO7DDfez35skudUYSkbA6Lrycr6f0Oc/9i+Lv8=
+	t=1717682955; cv=none; b=UpxLt4d+gXakc03le7s6YUM6/MtlnnQu7wRweUb4OMosFNeRodGqwJYZVvp623ITcGxfxjiyB5dVJoklszi9MPqTS0+EMeRrs5KbS2kL17Ig1wCaQW1/Ux1BWmsbypHw/YgpBHvJqSfx3SFD0LhypeR4ArJPVaz+EAJBrBBxB5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683295; c=relaxed/simple;
-	bh=TmGpOMoZKnFGjwrx9KjWkWhiiE4Z7LndUiVUbbYifp4=;
+	s=arc-20240116; t=1717682955; c=relaxed/simple;
+	bh=qG26IAVIZndYwmsYgXsm2y9jdLl0B2fXEBrh4Su04Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KENrIESYyAsdmeLFUZ1OZ5HHoUSRkfi6pPo0GmoaE1f2N5NhShJUioexZDw625TDUoyzcSxIoWwHzGankOgmoiElGtBO5y9R8JV3omOopJk2MTcw2wHAM5/Wk29Uqu3xeJFymL22rEGR48occjaDbSpW4JctWunUp8aOy9qSwjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fq8ZpW87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4117AC2BD10;
-	Thu,  6 Jun 2024 14:14:55 +0000 (UTC)
+	 MIME-Version; b=bvljPbcstAszKLvFxUPctZADJXZS0xEbNHS+bMbEj9nZdOpdZJoDEEyqsUmPlKFS5roe6L2RY5nR/w7vRwF7w4yaRKfbKVbIbfPM0tXf3ZqjpDMEWebAzZSQCppyIjwIHuaOxLp3iFTEMBAHmZdXBbOUKVaFAOiOm0XMEXRhi3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2x51vOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FFEC2BD10;
+	Thu,  6 Jun 2024 14:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683295;
-	bh=TmGpOMoZKnFGjwrx9KjWkWhiiE4Z7LndUiVUbbYifp4=;
+	s=korg; t=1717682955;
+	bh=qG26IAVIZndYwmsYgXsm2y9jdLl0B2fXEBrh4Su04Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fq8ZpW87XxinVvpGx6YTtohFG1cdrA1geh+H23uYYPS51czjiViSIAjhql60yR27y
-	 x9L2nWQiPpgq0ESyjcu1eH6IU0SeV2e6gbjESK5yUsbd2FF/IUOdICsYq2wKXdlAQV
-	 lGK6IU18YabmbdLlHIRpcR5FhNzOgGMp0dCZrKgU=
+	b=y2x51vOOsHbvDyIB5ulrgSyQOLmL0gv25ju7okrJpBDvHrDxXH3wRbBuCZUbIlNSE
+	 nL9XEbhxWJpPO5HhGPHZZ/cLJaGfR4c5rjx8bj8R6W9vB65MTKp5kSAsBEDzbQQfql
+	 q0Z7fnrW0KXyiAF4J7REAL7r8AGDFztk3M+0AH6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kaige Ye <ye@kaige.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 171/473] net: ethernet: cortina: Locking fixes
+Subject: [PATCH 6.9 121/374] perf stat: Dont display metric header for non-leader uncore events
 Date: Thu,  6 Jun 2024 16:01:40 +0200
-Message-ID: <20240606131705.598276714@linuxfoundation.org>
+Message-ID: <20240606131655.975640705@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +73,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 812552808f7ff71133fc59768cdc253c5b8ca1bf ]
+[ Upstream commit 193a9e30207f54777ff42d0d8be8389edc522277 ]
 
-This fixes a probably long standing problem in the Cortina
-Gemini ethernet driver: there are some paths in the code
-where the IRQ registers are written without taking the proper
-locks.
+On an Intel tigerlake laptop a metric like:
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509-gemini-ethernet-locking-v1-1-afd00a528b95@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    {
+        "BriefDescription": "Test",
+        "MetricExpr": "imc_free_running@data_read@ + imc_free_running@data_write@",
+        "MetricGroup": "Test",
+        "MetricName": "Test",
+        "ScaleUnit": "6.103515625e-5MiB"
+    },
+
+Will have 4 events:
+
+  uncore_imc_free_running_0/data_read/
+  uncore_imc_free_running_0/data_write/
+  uncore_imc_free_running_1/data_read/
+  uncore_imc_free_running_1/data_write/
+
+If aggregration is disabled with metric-only 2 column headers are
+needed:
+
+  $ perf stat -M test --metric-only -A -a sleep 1
+
+   Performance counter stats for 'system wide':
+
+                    MiB  Test            MiB  Test
+  CPU0                 1821.0               1820.5
+
+But when not, the counts aggregated in the metric leader and only 1
+column should be shown:
+
+  $ perf stat -M test --metric-only -a sleep 1
+   Performance counter stats for 'system wide':
+
+              MiB  Test
+                5909.4
+
+         1.001258915 seconds time elapsed
+
+Achieve this by skipping events that aren't metric leaders when
+printing column headers and aggregation isn't disabled.
+
+The bug is long standing, the fixes tag is set to a refactor as that
+is as far back as is reasonable to backport.
+
+Fixes: 088519f318be3a41 ("perf stat: Move the display functions to stat-display.c")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kaige Ye <ye@kaige.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240510051309.2452468-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ tools/perf/util/stat-display.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 7c0b0bc033c9c..19fb8c4caab87 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1108,10 +1108,13 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
- 	struct gemini_ethernet *geth = port->geth;
-+	unsigned long flags;
- 	u32 val, mask;
+diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+index bfc1d705f4371..91d2f7f65df74 100644
+--- a/tools/perf/util/stat-display.c
++++ b/tools/perf/util/stat-display.c
+@@ -1223,6 +1223,9 @@ static void print_metric_headers(struct perf_stat_config *config,
  
- 	netdev_dbg(netdev, "%s device %d\n", __func__, netdev->dev_id);
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
+ 	/* Print metrics headers only */
+ 	evlist__for_each_entry(evlist, counter) {
++		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
++			continue;
 +
- 	mask = GMAC0_IRQ0_TXQ0_INTS << (6 * netdev->dev_id + txq);
+ 		os.evsel = counter;
  
- 	if (en)
-@@ -1120,6 +1123,8 @@ static void gmac_tx_irq_enable(struct net_device *netdev,
- 	val = readl(geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
- 	val = en ? val | mask : val & ~mask;
- 	writel(val, geth->base + GLOBAL_INTERRUPT_ENABLE_0_REG);
-+
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
- }
- 
- static void gmac_tx_irq(struct net_device *netdev, unsigned int txq_num)
-@@ -1426,15 +1431,19 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget)
- 	union gmac_rxdesc_3 word3;
- 	struct page *page = NULL;
- 	unsigned int page_offs;
-+	unsigned long flags;
- 	unsigned short r, w;
- 	union dma_rwptr rw;
- 	dma_addr_t mapping;
- 	int frag_nr = 0;
- 
-+	spin_lock_irqsave(&geth->irq_lock, flags);
- 	rw.bits32 = readl(ptr_reg);
- 	/* Reset interrupt as all packages until here are taken into account */
- 	writel(DEFAULT_Q0_INT_BIT << netdev->dev_id,
- 	       geth->base + GLOBAL_INTERRUPT_STATUS_1_REG);
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
-+
- 	r = rw.bits.rptr;
- 	w = rw.bits.wptr;
- 
-@@ -1737,10 +1746,9 @@ static irqreturn_t gmac_irq(int irq, void *data)
- 		gmac_update_hw_stats(netdev);
- 
- 	if (val & (GMAC0_RX_OVERRUN_INT_BIT << (netdev->dev_id * 8))) {
-+		spin_lock(&geth->irq_lock);
- 		writel(GMAC0_RXDERR_INT_BIT << (netdev->dev_id * 8),
- 		       geth->base + GLOBAL_INTERRUPT_STATUS_4_REG);
--
--		spin_lock(&geth->irq_lock);
- 		u64_stats_update_begin(&port->ir_stats_syncp);
- 		++port->stats.rx_fifo_errors;
- 		u64_stats_update_end(&port->ir_stats_syncp);
+ 		perf_stat__print_shadow_stats(config, counter, 0,
 -- 
 2.43.0
 
