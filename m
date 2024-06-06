@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-49695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50FFE8FEE76
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB748FE96D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE97B1F2498F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99A9B1F24012
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD7F1C3735;
-	Thu,  6 Jun 2024 14:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8D8197A96;
+	Thu,  6 Jun 2024 14:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UziZYrgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NayeHf3R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF231C3733;
-	Thu,  6 Jun 2024 14:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A933197A94;
+	Thu,  6 Jun 2024 14:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683663; cv=none; b=AlnykLNX/pIwz2Nt4rYZNMHUNcfSCAlRN/1gmmkRVrOFtfSaEFPokPpCpr7S2U2eaJ3FTwXerZtzSq6R4Y2fqeuKPY53oefzGod2GMoM93fa3vHSM8c3aNFW4WZxXU456ZHZ2jq4ZIRE2MaUZITolHTTfjj0wL3DMGe3lbl7qf0=
+	t=1717683019; cv=none; b=c5kE4+VTncWrCtt8cGThZiNwmFevM/A3c/lnYfTTxLID9/Ecjux0HBBAxNelpajF9lYAUu+FUbQ0baMW5STcmSr53nlUYS4yxEfsWTnyrv8gOd7A7y4LTXOFAdEBzr2ZD8Ggcr0v3n9M6jJYu+Mnd5qRqjlg16x9Tav4CAE6JDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683663; c=relaxed/simple;
-	bh=39eTZJN+tx7DhLpwo1W46pEssXtrGaC8It8bfJHIZKU=;
+	s=arc-20240116; t=1717683019; c=relaxed/simple;
+	bh=3rdQX3+jIFmRGztkLTHLftuYKTpHvSdPxr0okm0Qet4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XdT2/cB2pZtK0yf7mNshNDNseIMIRG6bjEcMS2DXf4mEPgQm//JTWUpcHTQ6X7hJZ4cFWhzamfUr/FtqYMqH/CjISwjIbVyq+X7fexaT2Hl0ObShVRMjqCbDfol6h+YJauhhElD/FBJJGnIq2yJ1aHZSwhqR+EJehGPRs5ozjUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UziZYrgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE68C2BD10;
-	Thu,  6 Jun 2024 14:21:03 +0000 (UTC)
+	 MIME-Version; b=a7LpOCsUL8DjrwqqSDAOQfMKMhWNqv16NfcKX2DpYFvggf/g2I4muOnXRLiw8eWhwDdjQFKUr2ETnhaX8jw1A+o74rTQHkq1LVQqxfg326eUf29fMel6DFk5YPs5kUoJlbw2w037aWv74j7WtPHNhv0mpOWZ4cumh7JVRMpcUL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NayeHf3R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C80C32781;
+	Thu,  6 Jun 2024 14:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683663;
-	bh=39eTZJN+tx7DhLpwo1W46pEssXtrGaC8It8bfJHIZKU=;
+	s=korg; t=1717683019;
+	bh=3rdQX3+jIFmRGztkLTHLftuYKTpHvSdPxr0okm0Qet4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UziZYrgWWV1gcveKGjIif9YHPyzUCn98DdIbwHYJFwWrcj1M1jLXydO2NOJkmpc/a
-	 +em4ZG9kaa2I2UpbZ6xAVr2QKWNHc3CHLQXCbOHU8nlfxi3ii4ARVuMvNK7YWS348T
-	 /dKR3zqQOdavcVIvTdhkDnxNg48AUKosBJWsTDQ8=
+	b=NayeHf3RC2Akh0m94CKBkdYou8DrpMBWUolZ0r90uhmyEH+uZxNlHpAvWOgR9JF7Q
+	 SY4fAYYqjLL2eu2ScKYiLjeSoP/6iOJnaB0h5JuCy6nwurGsOSdcQMiBmXHuBzVFLt
+	 h2MPN7ANQ8wW0XefdGfnIQxTDUHBokQHf87+Iluo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 546/744] eventfs: Do not differentiate the toplevel events directory
+Subject: [PATCH 6.9 239/374] NFSv4: Fixup smatch warning for ambiguous return
 Date: Thu,  6 Jun 2024 16:03:38 +0200
-Message-ID: <20240606131749.960457866@linuxfoundation.org>
+Message-ID: <20240606131659.832874930@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,152 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit d53891d348ac3eceaf48f4732a1f4f5c0e0a55ce ]
+[ Upstream commit 37ffe06537af3e3ec212e7cbe941046fce0a822f ]
 
-The toplevel events directory is really no different than the events
-directory of instances. Having the two be different caused
-inconsistencies and made it harder to fix the permissions bugs.
+Dan Carpenter reports smatch warning for nfs4_try_migration() when a memory
+allocation failure results in a zero return value.  In this case, a
+transient allocation failure error will likely be retried the next time the
+server responds with NFS4ERR_MOVED.
 
-Make all events directories act the same.
+We can fixup the smatch warning with a small refactor: attempt all three
+allocations before testing and returning on a failure.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.846448710@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: c3ed222745d9 ("NFSv4: Fix free of uninitialized nfs4_label on referral lookup.")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c | 29 ++++++++---------------------
- fs/tracefs/internal.h    |  7 +++----
- 2 files changed, 11 insertions(+), 25 deletions(-)
+ fs/nfs/nfs4state.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 56d1741fe0413..47228de4c17af 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -57,7 +57,6 @@ enum {
- 	EVENTFS_SAVE_MODE	= BIT(16),
- 	EVENTFS_SAVE_UID	= BIT(17),
- 	EVENTFS_SAVE_GID	= BIT(18),
--	EVENTFS_TOPLEVEL	= BIT(19),
- };
- 
- #define EVENTFS_MODE_MASK	(EVENTFS_SAVE_MODE - 1)
-@@ -182,14 +181,10 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
- 	return ret;
- }
- 
--static void update_top_events_attr(struct eventfs_inode *ei, struct super_block *sb)
-+static void update_events_attr(struct eventfs_inode *ei, struct super_block *sb)
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index 662e86ea3a2dd..5b452411e8fdf 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2116,6 +2116,7 @@ static int nfs4_try_migration(struct nfs_server *server, const struct cred *cred
  {
- 	struct inode *root;
+ 	struct nfs_client *clp = server->nfs_client;
+ 	struct nfs4_fs_locations *locations = NULL;
++	struct nfs_fattr *fattr;
+ 	struct inode *inode;
+ 	struct page *page;
+ 	int status, result;
+@@ -2125,19 +2126,16 @@ static int nfs4_try_migration(struct nfs_server *server, const struct cred *cred
+ 			(unsigned long long)server->fsid.minor,
+ 			clp->cl_hostname);
  
--	/* Only update if the "events" was on the top level */
--	if (!ei || !(ei->attr.mode & EVENTFS_TOPLEVEL))
--		return;
--
- 	/* Get the tracefs root inode. */
- 	root = d_inode(sb->s_root);
- 	ei->attr.uid = root->i_uid;
-@@ -202,10 +197,10 @@ static void set_top_events_ownership(struct inode *inode)
- 	struct eventfs_inode *ei = ti->private;
+-	result = 0;
+ 	page = alloc_page(GFP_KERNEL);
+ 	locations = kmalloc(sizeof(struct nfs4_fs_locations), GFP_KERNEL);
+-	if (page == NULL || locations == NULL) {
+-		dprintk("<-- %s: no memory\n", __func__);
+-		goto out;
+-	}
+-	locations->fattr = nfs_alloc_fattr();
+-	if (locations->fattr == NULL) {
++	fattr = nfs_alloc_fattr();
++	if (page == NULL || locations == NULL || fattr == NULL) {
+ 		dprintk("<-- %s: no memory\n", __func__);
++		result = 0;
+ 		goto out;
+ 	}
  
- 	/* The top events directory doesn't get automatically updated */
--	if (!ei || !ei->is_events || !(ei->attr.mode & EVENTFS_TOPLEVEL))
-+	if (!ei || !ei->is_events)
- 		return;
- 
--	update_top_events_attr(ei, inode->i_sb);
-+	update_events_attr(ei, inode->i_sb);
- 
- 	if (!(ei->attr.mode & EVENTFS_SAVE_UID))
- 		inode->i_uid = ei->attr.uid;
-@@ -234,7 +229,7 @@ static int eventfs_permission(struct mnt_idmap *idmap,
- 	return generic_permission(idmap, inode, mask);
- }
- 
--static const struct inode_operations eventfs_root_dir_inode_operations = {
-+static const struct inode_operations eventfs_dir_inode_operations = {
- 	.lookup		= eventfs_root_lookup,
- 	.setattr	= eventfs_set_attr,
- 	.getattr	= eventfs_get_attr,
-@@ -302,7 +297,7 @@ static struct eventfs_inode *eventfs_find_events(struct dentry *dentry)
- 		// Walk upwards until you find the events inode
- 	} while (!ei->is_events);
- 
--	update_top_events_attr(ei, dentry->d_sb);
-+	update_events_attr(ei, dentry->d_sb);
- 
- 	return ei;
- }
-@@ -406,7 +401,7 @@ static struct dentry *lookup_dir_entry(struct dentry *dentry,
- 	update_inode_attr(dentry, inode, &ei->attr,
- 			  S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO);
- 
--	inode->i_op = &eventfs_root_dir_inode_operations;
-+	inode->i_op = &eventfs_dir_inode_operations;
- 	inode->i_fop = &eventfs_file_operations;
- 
- 	/* All directories will have the same inode number */
-@@ -755,14 +750,6 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	uid = d_inode(dentry->d_parent)->i_uid;
- 	gid = d_inode(dentry->d_parent)->i_gid;
- 
--	/*
--	 * If the events directory is of the top instance, then parent
--	 * is NULL. Set the attr.mode to reflect this and its permissions will
--	 * default to the tracefs root dentry.
--	 */
--	if (!parent)
--		ei->attr.mode = EVENTFS_TOPLEVEL;
--
- 	/* This is used as the default ownership of the files and directories */
- 	ei->attr.uid = uid;
- 	ei->attr.gid = gid;
-@@ -771,13 +758,13 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	INIT_LIST_HEAD(&ei->list);
- 
- 	ti = get_tracefs(inode);
--	ti->flags |= TRACEFS_EVENT_INODE | TRACEFS_EVENT_TOP_INODE;
-+	ti->flags |= TRACEFS_EVENT_INODE;
- 	ti->private = ei;
- 
- 	inode->i_mode = S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO;
- 	inode->i_uid = uid;
- 	inode->i_gid = gid;
--	inode->i_op = &eventfs_root_dir_inode_operations;
-+	inode->i_op = &eventfs_dir_inode_operations;
- 	inode->i_fop = &eventfs_file_operations;
- 
- 	dentry->d_fsdata = get_ei(ei);
-diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
-index 824cbe83679cc..b79ab2827b504 100644
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -4,10 +4,9 @@
- 
- enum {
- 	TRACEFS_EVENT_INODE		= BIT(1),
--	TRACEFS_EVENT_TOP_INODE		= BIT(2),
--	TRACEFS_GID_PERM_SET		= BIT(3),
--	TRACEFS_UID_PERM_SET		= BIT(4),
--	TRACEFS_INSTANCE_INODE		= BIT(5),
-+	TRACEFS_GID_PERM_SET		= BIT(2),
-+	TRACEFS_UID_PERM_SET		= BIT(3),
-+	TRACEFS_INSTANCE_INODE		= BIT(4),
- };
- 
- struct tracefs_inode {
++	locations->fattr = fattr;
+ 	inode = d_inode(server->super->s_root);
+ 	result = nfs4_proc_get_locations(server, NFS_FH(inode), locations,
+ 					 page, cred);
 -- 
 2.43.0
 
