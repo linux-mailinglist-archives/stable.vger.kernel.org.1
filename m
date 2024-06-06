@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-48856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BEF8FEAD3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277508FEC77
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE3261C24E97
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1307B1C24047
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1FF19922E;
-	Thu,  6 Jun 2024 14:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CB91B140E;
+	Thu,  6 Jun 2024 14:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/f3zJas"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUWhITVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA6A19922D;
-	Thu,  6 Jun 2024 14:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33DA19B3C6;
+	Thu,  6 Jun 2024 14:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683180; cv=none; b=g04S8EddWbmjmOh2/yHju0cGScJcvlhE6abJi8NPPGqHYstlHlDc2i0i4m30KrK/3yjtyV7Lsgd7f3BLM1bRint0/UTZP5WuroYZWUVMrZQ7f/f4pjYP5vUIjrCHXMScvGbA8rvW3FMJ+qiMVgwV6Sk0PdXzU3XhHqc3u59IuyA=
+	t=1717683370; cv=none; b=L8Ll2cBHPf8k55o1QTq9X3mKDOuasg6ATfzGHv+4HSoY+ggdy8L12+J620+4XG1KRcCQFKOpZ5L7wce7QzE5/I/8q7oOHusSmXPJiWsZ6BkEWpkdnW9g4yLsftvfgtFBQBqQIYSKHy5LtQMyiz7Lnbn4L6QFa7hxIvGigtdgkUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683180; c=relaxed/simple;
-	bh=POmjn2+6EgiD+B3T4YUU8TNSet+RD9WQQ2QXdrg951o=;
+	s=arc-20240116; t=1717683370; c=relaxed/simple;
+	bh=huy62X8ZSEMy8IJbxSKpesklIn4e/aSvlQVhgRI/wng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EW9Pgq7m9KDvvp8Ha58WSJysI6SKrQLO/M2j4qvYVN5qIGHMDFSZjmUYrAbwYgxp0mumvb6RaKSrnI0GI9ea0SKdJGmbW7PZ6oswqNhBc+CrfnrFl63SxDpa9RfHFTsFNWC/75c615sZzTXmjt2mNRzFnA5s4BlOKDeFuc+IV3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/f3zJas; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB8CC4AF0D;
-	Thu,  6 Jun 2024 14:13:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aRWOs2PkUSP53jV6yeI/4SIiN2MhBHwrnD0PzkYZ9fb3vXAF9LZcNPgB19R49cG54gPszvoVWawxebLf4Bj/RfD3053yeuMwsvDMTGBFzziwj4NgRg09M5ipHXoPe98EhTpU3w+p1rwc5xFtRWK7DC4H3RSdjBU0XFTSkrUTyXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUWhITVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82037C2BD10;
+	Thu,  6 Jun 2024 14:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683180;
-	bh=POmjn2+6EgiD+B3T4YUU8TNSet+RD9WQQ2QXdrg951o=;
+	s=korg; t=1717683370;
+	bh=huy62X8ZSEMy8IJbxSKpesklIn4e/aSvlQVhgRI/wng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/f3zJasXQaJM++Ww05MwMQT0DvR5oVFw9vgFDdH1fBe9DRRiUipmmM7a/GPotxnA
-	 J3c4I5wYkxebf9ZAJuFHb8n0uChI1xqm8b+my2sBG1TwpxzQWlQ3bWwxYrcH/vNT/J
-	 +XGGfP/OoZYsCGvn5P5NCEm7R/u3waU2J/VA0Ldw=
+	b=cUWhITVDunZWFmkohUIcEUmgzRyLNSs1fb4vFRIgE25tgtqzJwFtsRoTiDteyrCOl
+	 /f4AmxE0B58+ubEg5TsTJmW/f5L8CrJ/oXv6JfU+zCRjnXmKx1Fnn6MDVZSdJqsSeH
+	 6hvNlhcFgxjcW7Bw8mBUDsFsYcHHtjUrnFR8W7Tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Swapnil Patel <swapnil.patel@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/473] drm/amd/display: Add dtbclk access to dcn315
+Subject: [PATCH 6.6 312/744] media: i2c: et8ek8: Dont strip remove function when driver is builtin
 Date: Thu,  6 Jun 2024 15:59:44 +0200
-Message-ID: <20240606131701.703081851@linuxfoundation.org>
+Message-ID: <20240606131742.416699399@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Swapnil Patel <swapnil.patel@amd.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit a01b64f31d65bdc917d1afb4cec9915beb6931be ]
+[ Upstream commit 545b215736c5c4b354e182d99c578a472ac9bfce ]
 
-[Why & How]
+Using __exit for the remove function results in the remove callback
+being discarded with CONFIG_VIDEO_ET8EK8=y. When such a device gets
+unbound (e.g. using sysfs or hotplug), the driver is just removed
+without the cleanup being performed. This results in resource leaks. Fix
+it by compiling in the remove callback unconditionally.
 
-Currently DCN315 clk manager is missing code to enable/disable dtbclk.
-Because of this, "optimized_required" flag is constantly set
-and this prevents FreeSync from engaging for certain high bandwidth
-display Modes which require DTBCLK.
+This also fixes a W=1 modpost warning:
 
-Reviewed-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Swapnil Patel <swapnil.patel@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+	WARNING: modpost: drivers/media/i2c/et8ek8/et8ek8: section mismatch in reference: et8ek8_i2c_driver+0x10 (section: .data) -> et8ek8_remove (section: .exit.text)
+
+Fixes: c5254e72b8ed ("[media] media: Driver for Toshiba et8ek8 5MP sensor")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c    | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/media/i2c/et8ek8/et8ek8_driver.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-index 28b83133db910..09eb1bc9aa030 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-@@ -131,6 +131,10 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
- 	 */
- 	clk_mgr_base->clks.zstate_support = new_clocks->zstate_support;
- 	if (safe_to_lower) {
-+		if (clk_mgr_base->clks.dtbclk_en && !new_clocks->dtbclk_en) {
-+			dcn315_smu_set_dtbclk(clk_mgr, false);
-+			clk_mgr_base->clks.dtbclk_en = new_clocks->dtbclk_en;
-+		}
- 		/* check that we're not already in lower */
- 		if (clk_mgr_base->clks.pwr_state != DCN_PWR_STATE_LOW_POWER) {
- 			display_count = dcn315_get_active_display_cnt_wa(dc, context);
-@@ -146,6 +150,10 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
- 			}
- 		}
- 	} else {
-+		if (!clk_mgr_base->clks.dtbclk_en && new_clocks->dtbclk_en) {
-+			dcn315_smu_set_dtbclk(clk_mgr, true);
-+			clk_mgr_base->clks.dtbclk_en = new_clocks->dtbclk_en;
-+		}
- 		/* check that we're not already in D0 */
- 		if (clk_mgr_base->clks.pwr_state != DCN_PWR_STATE_MISSION_MODE) {
- 			union display_idle_optimization_u idle_info = { 0 };
+diff --git a/drivers/media/i2c/et8ek8/et8ek8_driver.c b/drivers/media/i2c/et8ek8/et8ek8_driver.c
+index d6fc843f9368e..0d6f0f8506f76 100644
+--- a/drivers/media/i2c/et8ek8/et8ek8_driver.c
++++ b/drivers/media/i2c/et8ek8/et8ek8_driver.c
+@@ -1460,7 +1460,7 @@ static int et8ek8_probe(struct i2c_client *client)
+ 	return ret;
+ }
+ 
+-static void __exit et8ek8_remove(struct i2c_client *client)
++static void et8ek8_remove(struct i2c_client *client)
+ {
+ 	struct v4l2_subdev *subdev = i2c_get_clientdata(client);
+ 	struct et8ek8_sensor *sensor = to_et8ek8_sensor(subdev);
+@@ -1502,7 +1502,7 @@ static struct i2c_driver et8ek8_i2c_driver = {
+ 		.of_match_table	= et8ek8_of_table,
+ 	},
+ 	.probe		= et8ek8_probe,
+-	.remove		= __exit_p(et8ek8_remove),
++	.remove		= et8ek8_remove,
+ 	.id_table	= et8ek8_id_table,
+ };
+ 
 -- 
 2.43.0
 
