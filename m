@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE1D8FEAFC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF82F8FEC9C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 421EFB24F3C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A38F286A6A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391CD1A2C0B;
-	Thu,  6 Jun 2024 14:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F12198A34;
+	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIa67yW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiiRwswV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E471F197544;
-	Thu,  6 Jun 2024 14:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876D119B3ED;
+	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683197; cv=none; b=lGg3n/JPHCFnQQYPnECXHbSUQOpSsw4k9s/1hYbcmqXwHjRYhzVgdxXKjTDtEE/qmDMaF4Va9DFEk/snSt2/jl4ciwn+4GepBUN4Nkena3YuJJbfaUCuJW3xFtdCQm6ZPwZyYYmXCuHj+9n7QQcs2flXK2NOt3DWGaFM4jk0ty4=
+	t=1717683387; cv=none; b=U498P9fTXzuN1lJMa9NtvSA8S7G05UtZgCKxHmX5UqVxiJ3uYJ0Avw6lqhu66LOo9HqUP5MxV7aXgUC76HF1R2LTWkCuHXsuUW8+vJBeXyht9n6n0MYvvI3UVGzI4SoeJe0VLObbbZlDT4yP3FD8rdtIYUgUplRyWcfaUS/CDLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683197; c=relaxed/simple;
-	bh=aPKmwBiQDNaPBy6jJdYGXYe8rDQsjUHid4bC2z7ez30=;
+	s=arc-20240116; t=1717683387; c=relaxed/simple;
+	bh=CJNzR+XlUbBxPrxcwhAgt4vtI7B7vy05RGDR7m+yFrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjvOO7TmPzW8wyG65tQoUf2IumiI+ViPAs5VumD9Ltz3UupFL8cNa9lSUHbuWUQMQZQ1YA3Sjrvg4JS7x6X4icAyJOqQLLCV59RbCOwptnMJjAw485OusZSf4vzxuXXI3whWTbyk2wIlB8OCjjrBWSNpVM0B6sW0L9tl95SsCpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIa67yW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61F4C4AF13;
-	Thu,  6 Jun 2024 14:13:16 +0000 (UTC)
+	 MIME-Version; b=hZjQRrAUWMiILUxSe3BwDJUIt2/DJK3saqNzdHJ0yjO8QLIjc2plydoyhXo1+5RGiUudWELLCNrXpXcqxl3pm1AutnWQVtDSjfl6026PQqxbuqKb1yZGgePOVBWIoVkws0lL9YZwFVZnbiBawPc1QLcXlBdjM/HAU03a8eSZQBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiiRwswV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67464C2BD10;
+	Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683196;
-	bh=aPKmwBiQDNaPBy6jJdYGXYe8rDQsjUHid4bC2z7ez30=;
+	s=korg; t=1717683387;
+	bh=CJNzR+XlUbBxPrxcwhAgt4vtI7B7vy05RGDR7m+yFrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIa67yW69OuaNGH0v+ieOQTPXqlQTpJOejkh0Qe2dyYU5GOD2eB3cXq2EKMFIuZKv
-	 vQf7+Xx/ypCEQEFQ074nedsTO68ldhxu0wkfXF5aw7Ec+hU4VF8uD+yfoPT07/29Id
-	 ZwVj5TClICT5M+lkrr1SQt4PM+L7Q5+UGDW1cCUM=
+	b=HiiRwswVT8hOQtwKcPh0pQTOZa5BwAhyESxhV1UVerIIjsGMYestBJxg4hibMe033
+	 uYedDcL/iERgH5Co3M2pzL6cDYCz9QHdVzo+V2BPacDGlcwWqm45BwXGgQYM3AW/AB
+	 LQ2B2Q/8NMgoiJJe3+oAMfw285PaoDSPLxrpmmQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Kubisiak <brian@kubisiak.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/473] ecryptfs: Fix buffer size for tag 66 packet
-Date: Thu,  6 Jun 2024 15:59:59 +0200
-Message-ID: <20240606131702.198515471@linuxfoundation.org>
+Subject: [PATCH 6.6 328/744] drm/panel: simple: Add missing Innolux G121X1-L03 format, flags, connector
+Date: Thu,  6 Jun 2024 16:00:00 +0200
+Message-ID: <20240606131742.958517386@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Kubisiak <brian@kubisiak.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 85a6a1aff08ec9f5b929d345d066e2830e8818e5 ]
+[ Upstream commit 11ac72d033b9f577e8ba0c7a41d1c312bb232593 ]
 
-The 'TAG 66 Packet Format' description is missing the cipher code and
-checksum fields that are packed into the message packet. As a result,
-the buffer allocated for the packet is 3 bytes too small and
-write_tag_66_packet() will write up to 3 bytes past the end of the
-buffer.
+The .bpc = 6 implies .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG ,
+add the missing bus_format. Add missing connector type and bus_flags
+as well.
 
-Fix this by increasing the size of the allocation so the whole packet
-will always fit in the buffer.
+Documentation [1] 1.4 GENERAL SPECIFICATI0NS indicates this panel is
+capable of both RGB 18bit/24bit panel, the current configuration uses
+18bit mode, .bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG , .bpc = 6.
 
-This fixes the below kasan slab-out-of-bounds bug:
+Support for the 24bit mode would require another entry in panel-simple
+with .bus_format = MEDIA_BUS_FMT_RGB666_1X7X4_SPWG and .bpc = 8, which
+is out of scope of this fix.
 
-  BUG: KASAN: slab-out-of-bounds in ecryptfs_generate_key_packet_set+0x7d6/0xde0
-  Write of size 1 at addr ffff88800afbb2a5 by task touch/181
+[1] https://www.distec.de/fileadmin/pdf/produkte/TFT-Displays/Innolux/G121X1-L03_Datasheet.pdf
 
-  CPU: 0 PID: 181 Comm: touch Not tainted 6.6.13-gnu #1 4c9534092be820851bb687b82d1f92a426598dc6
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2/GNU Guix 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x4c/0x70
-   print_report+0xc5/0x610
-   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
-   ? kasan_complete_mode_report_info+0x44/0x210
-   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
-   kasan_report+0xc2/0x110
-   ? ecryptfs_generate_key_packet_set+0x7d6/0xde0
-   __asan_store1+0x62/0x80
-   ecryptfs_generate_key_packet_set+0x7d6/0xde0
-   ? __pfx_ecryptfs_generate_key_packet_set+0x10/0x10
-   ? __alloc_pages+0x2e2/0x540
-   ? __pfx_ovl_open+0x10/0x10 [overlay 30837f11141636a8e1793533a02e6e2e885dad1d]
-   ? dentry_open+0x8f/0xd0
-   ecryptfs_write_metadata+0x30a/0x550
-   ? __pfx_ecryptfs_write_metadata+0x10/0x10
-   ? ecryptfs_get_lower_file+0x6b/0x190
-   ecryptfs_initialize_file+0x77/0x150
-   ecryptfs_create+0x1c2/0x2f0
-   path_openat+0x17cf/0x1ba0
-   ? __pfx_path_openat+0x10/0x10
-   do_filp_open+0x15e/0x290
-   ? __pfx_do_filp_open+0x10/0x10
-   ? __kasan_check_write+0x18/0x30
-   ? _raw_spin_lock+0x86/0xf0
-   ? __pfx__raw_spin_lock+0x10/0x10
-   ? __kasan_check_write+0x18/0x30
-   ? alloc_fd+0xf4/0x330
-   do_sys_openat2+0x122/0x160
-   ? __pfx_do_sys_openat2+0x10/0x10
-   __x64_sys_openat+0xef/0x170
-   ? __pfx___x64_sys_openat+0x10/0x10
-   do_syscall_64+0x60/0xd0
-   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-  RIP: 0033:0x7f00a703fd67
-  Code: 25 00 00 41 00 3d 00 00 41 00 74 37 64 8b 04 25 18 00 00 00 85 c0 75 5b 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 85 00 00 00 48 83 c4 68 5d 41 5c c3 0f 1f
-  RSP: 002b:00007ffc088e30b0 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-  RAX: ffffffffffffffda RBX: 00007ffc088e3368 RCX: 00007f00a703fd67
-  RDX: 0000000000000941 RSI: 00007ffc088e48d7 RDI: 00000000ffffff9c
-  RBP: 00007ffc088e48d7 R08: 0000000000000001 R09: 0000000000000000
-  R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000941
-  R13: 0000000000000000 R14: 00007ffc088e48d7 R15: 00007f00a7180040
-   </TASK>
-
-  Allocated by task 181:
-   kasan_save_stack+0x2f/0x60
-   kasan_set_track+0x29/0x40
-   kasan_save_alloc_info+0x25/0x40
-   __kasan_kmalloc+0xc5/0xd0
-   __kmalloc+0x66/0x160
-   ecryptfs_generate_key_packet_set+0x6d2/0xde0
-   ecryptfs_write_metadata+0x30a/0x550
-   ecryptfs_initialize_file+0x77/0x150
-   ecryptfs_create+0x1c2/0x2f0
-   path_openat+0x17cf/0x1ba0
-   do_filp_open+0x15e/0x290
-   do_sys_openat2+0x122/0x160
-   __x64_sys_openat+0xef/0x170
-   do_syscall_64+0x60/0xd0
-   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Fixes: dddfa461fc89 ("[PATCH] eCryptfs: Public key; packet management")
-Signed-off-by: Brian Kubisiak <brian@kubisiak.com>
-Link: https://lore.kernel.org/r/5j2q56p6qkhezva6b2yuqfrsurmvrrqtxxzrnp3wqu7xrz22i7@hoecdztoplbl
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: f8fa17ba812b ("drm/panel: simple: Add support for Innolux G121X1-L03")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240328102746.17868-2-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ecryptfs/keystore.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-simple.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ecryptfs/keystore.c b/fs/ecryptfs/keystore.c
-index 3fe41964c0d8d..7f9f68c00ef63 100644
---- a/fs/ecryptfs/keystore.c
-+++ b/fs/ecryptfs/keystore.c
-@@ -300,9 +300,11 @@ write_tag_66_packet(char *signature, u8 cipher_code,
- 	 *         | Key Identifier Size      | 1 or 2 bytes |
- 	 *         | Key Identifier           | arbitrary    |
- 	 *         | File Encryption Key Size | 1 or 2 bytes |
-+	 *         | Cipher Code              | 1 byte       |
- 	 *         | File Encryption Key      | arbitrary    |
-+	 *         | Checksum                 | 2 bytes      |
- 	 */
--	data_len = (5 + ECRYPTFS_SIG_SIZE_HEX + crypt_stat->key_size);
-+	data_len = (8 + ECRYPTFS_SIG_SIZE_HEX + crypt_stat->key_size);
- 	*packet = kmalloc(data_len, GFP_KERNEL);
- 	message = *packet;
- 	if (!message) {
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 51f838befb321..e8d12ec8dbec1 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2407,6 +2407,9 @@ static const struct panel_desc innolux_g121x1_l03 = {
+ 		.unprepare = 200,
+ 		.disable = 400,
+ 	},
++	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
+ 
+ static const struct display_timing innolux_g156hce_l01_timings = {
 -- 
 2.43.0
 
