@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4549C8FE900
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E37318FED8B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D87901F2527F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 902FC280D48
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69681990DB;
-	Thu,  6 Jun 2024 14:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5091BBBF1;
+	Thu,  6 Jun 2024 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vclUTwEI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DF/yg0+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64213196C8E;
-	Thu,  6 Jun 2024 14:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0E119DF6F;
+	Thu,  6 Jun 2024 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682966; cv=none; b=mpw6Ym5pyTxsSceuGOQgwy+PGBacrd1XDXFhYYbHP9DQaAzbIfGaypZQZYo2+SAN0w1VmHYbFk9WWfScQ04+rwASmRKgqi+OagY7B5Q1HaaXuWOWV0PHsyBhA25SrGVWSv9UFwiqMHK6+To9guIlN/5I1HuCn8JRmRJufxLzuGM=
+	t=1717683499; cv=none; b=JGxgm65e9XeAzaE92Unqg18BKRuaTp/MUh0NJI/Q9rkysjwq8DT4oICg7kUSUeFxOHMogMcPZrFleHCHEOz3zSdn7Kq2ErosIL1fdD/BPtspMDqnQg6S4yL+U0hicTHAfIryZ4YS8xsGoz4MVXY+vGKOIHMP6Ih5wDLfmEKPQOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682966; c=relaxed/simple;
-	bh=Do6fTmO3Zh65AixCc4Qf65soUaHeSzyA+6+YDi1OgNU=;
+	s=arc-20240116; t=1717683499; c=relaxed/simple;
+	bh=VNx8S56SOQX4L425n3GOM4eJtVG9uf5Xr0AA9HWXWII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CpDg5cdJWA4+U6WGX2fqZOQtK0mSDf20tB4ytzWA9kQdgF/0G1PqHzghtJFzYpk2f7XTm2vBSO/ftJrd0x8TfF0o4GYI8hnONev5tXmExDTPLrS7k5vb0MGPk4sGzScS/U4RY2/0hSsulpCgT8WdfejIOXeRuXIYlqINuqwP2ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vclUTwEI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B290C32781;
-	Thu,  6 Jun 2024 14:09:26 +0000 (UTC)
+	 MIME-Version; b=TaIpmwF9lZW6dfXNeujP0xeWb7Z8NwnGkA+MCnwrNqQs+vIMseUcL7xanxBVI4XJL3m9x2m2m+gt+9xGWQjMUTCRWc35ZNTT5dqoQaBKW7wg5fAIiic3ca72dXYn2PJk5Vi9XJb26IHGEcv9Rf3VuOfS0ZLxIOKwQ/yB26dgtnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DF/yg0+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186B0C2BD10;
+	Thu,  6 Jun 2024 14:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682966;
-	bh=Do6fTmO3Zh65AixCc4Qf65soUaHeSzyA+6+YDi1OgNU=;
+	s=korg; t=1717683499;
+	bh=VNx8S56SOQX4L425n3GOM4eJtVG9uf5Xr0AA9HWXWII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vclUTwEIU0meQ3pSv3j7RPaVCmJTEBqvjpbAMhauLcnYWBZuoho1P9iRvMFfSfRRh
-	 Nk30Mb0XdqoJyUxDbp9trUAag0JEULq1qFt+SnefpKQRuKaWSYkLHtV5FDBEX0lUmB
-	 12IbXqni4TZfcDdu6fqhNhUnuWxSnokiNUU5IyFw=
+	b=DF/yg0+nkMJRbAJ+pfaUGa9iGD714LEEdC9dNJq1uJL/uGJn3kP/RkH8YsgYSn4bN
+	 70xrJHZ4zZwLTvTBFeanziy/mD3zXd6vSnRZzM88qadns0qc22Vr/Mk+TaWKJio7B6
+	 HbWEC+93avm24kOtEnp4F6dGrysAQHgSKqrQ63UA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 134/374] s390/vdso: Introduce and use struct stack_frame_vdso_wrapper
+Subject: [PATCH 6.6 441/744] remove call_{read,write}_iter() functions
 Date: Thu,  6 Jun 2024 16:01:53 +0200
-Message-ID: <20240606131656.391083568@linuxfoundation.org>
+Message-ID: <20240606131746.635852400@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +63,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit be72ea09c1a5273abf8c6c52ef53e36c701cbf6a ]
+[ Upstream commit 7c98f7cb8fda964fbc60b9307ad35e94735fa35f ]
 
-Introduce and use struct stack_frame_vdso_wrapper within vdso user wrapper
-code.  With this structure it is possible to automatically generate an
-asm-offset define which can be used to save and restore the return address
-of the calling function.
+These have no clear purpose.  This is effectively a revert of commit
+bb7462b6fd64 ("vfs: use helpers for calling f_op->{read,write}_iter()").
 
-Also use STACK_FRAME_USER_OVERHEAD instead of STACK_FRAME_OVERHEAD to
-document that the code works with user space stack frames with the standard
-stack frame layout.
+The patch was created with the help of a coccinelle script.
 
-Fixes: aa44433ac4ee ("s390: add USER_STACKTRACE support")
-Reviewed-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: bb7462b6fd64 ("vfs: use helpers for calling f_op->{read,write}_iter()")
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/stacktrace.h          |  5 +++++
- arch/s390/kernel/asm-offsets.c              |  4 ++++
- arch/s390/kernel/vdso64/vdso_user_wrapper.S | 18 ++++++++----------
- 3 files changed, 17 insertions(+), 10 deletions(-)
+ drivers/block/loop.c              |  4 ++--
+ drivers/target/target_core_file.c |  4 ++--
+ fs/aio.c                          |  4 ++--
+ fs/read_write.c                   | 12 ++++++------
+ fs/splice.c                       |  4 ++--
+ include/linux/fs.h                | 12 ------------
+ io_uring/rw.c                     |  4 ++--
+ 7 files changed, 16 insertions(+), 28 deletions(-)
 
-diff --git a/arch/s390/include/asm/stacktrace.h b/arch/s390/include/asm/stacktrace.h
-index 4aefbe32265d8..85b6738b826af 100644
---- a/arch/s390/include/asm/stacktrace.h
-+++ b/arch/s390/include/asm/stacktrace.h
-@@ -13,6 +13,11 @@ struct stack_frame_user {
- 	unsigned long empty2[4];
- };
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 552f56a84a7eb..afa5d49ccab49 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -447,9 +447,9 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
+ 	cmd->iocb.ki_ioprio = IOPRIO_PRIO_VALUE(IOPRIO_CLASS_NONE, 0);
  
-+struct stack_frame_vdso_wrapper {
-+	struct stack_frame_user sf;
-+	unsigned long return_address;
-+};
-+
- struct perf_callchain_entry_ctx;
+ 	if (rw == ITER_SOURCE)
+-		ret = call_write_iter(file, &cmd->iocb, &iter);
++		ret = file->f_op->write_iter(&cmd->iocb, &iter);
+ 	else
+-		ret = call_read_iter(file, &cmd->iocb, &iter);
++		ret = file->f_op->read_iter(&cmd->iocb, &iter);
  
- void arch_stack_walk_user_common(stack_trace_consume_fn consume_entry, void *cookie,
-diff --git a/arch/s390/kernel/asm-offsets.c b/arch/s390/kernel/asm-offsets.c
-index fa5f6885c74aa..28017c418442b 100644
---- a/arch/s390/kernel/asm-offsets.c
-+++ b/arch/s390/kernel/asm-offsets.c
-@@ -66,6 +66,10 @@ int main(void)
- 	OFFSET(__SF_SIE_CONTROL_PHYS, stack_frame, sie_control_block_phys);
- 	DEFINE(STACK_FRAME_OVERHEAD, sizeof(struct stack_frame));
- 	BLANK();
-+	DEFINE(STACK_FRAME_USER_OVERHEAD, sizeof(struct stack_frame_user));
-+	OFFSET(__SFVDSO_RETURN_ADDRESS, stack_frame_vdso_wrapper, return_address);
-+	DEFINE(STACK_FRAME_VDSO_OVERHEAD, sizeof(struct stack_frame_vdso_wrapper));
-+	BLANK();
- 	/* idle data offsets */
- 	OFFSET(__CLOCK_IDLE_ENTER, s390_idle_data, clock_idle_enter);
- 	OFFSET(__TIMER_IDLE_ENTER, s390_idle_data, timer_idle_enter);
-diff --git a/arch/s390/kernel/vdso64/vdso_user_wrapper.S b/arch/s390/kernel/vdso64/vdso_user_wrapper.S
-index 85247ef5a41b8..deee8ca9cdbf0 100644
---- a/arch/s390/kernel/vdso64/vdso_user_wrapper.S
-+++ b/arch/s390/kernel/vdso64/vdso_user_wrapper.S
-@@ -6,8 +6,6 @@
- #include <asm/dwarf.h>
- #include <asm/ptrace.h>
+ 	lo_rw_aio_do_completion(cmd);
  
--#define WRAPPER_FRAME_SIZE (STACK_FRAME_OVERHEAD+8)
+diff --git a/drivers/target/target_core_file.c b/drivers/target/target_core_file.c
+index 4e4cf6c34a775..e43eff09dc22a 100644
+--- a/drivers/target/target_core_file.c
++++ b/drivers/target/target_core_file.c
+@@ -299,9 +299,9 @@ fd_execute_rw_aio(struct se_cmd *cmd, struct scatterlist *sgl, u32 sgl_nents,
+ 		aio_cmd->iocb.ki_flags |= IOCB_DSYNC;
+ 
+ 	if (is_write)
+-		ret = call_write_iter(file, &aio_cmd->iocb, &iter);
++		ret = file->f_op->write_iter(&aio_cmd->iocb, &iter);
+ 	else
+-		ret = call_read_iter(file, &aio_cmd->iocb, &iter);
++		ret = file->f_op->read_iter(&aio_cmd->iocb, &iter);
+ 
+ 	if (ret != -EIOCBQUEUED)
+ 		cmd_rw_aio_complete(&aio_cmd->iocb, ret);
+diff --git a/fs/aio.c b/fs/aio.c
+index 4a9b5e4719eea..7cbdf6cd6dd37 100644
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -1559,7 +1559,7 @@ static int aio_read(struct kiocb *req, const struct iocb *iocb,
+ 		return ret;
+ 	ret = rw_verify_area(READ, file, &req->ki_pos, iov_iter_count(&iter));
+ 	if (!ret)
+-		aio_rw_done(req, call_read_iter(file, req, &iter));
++		aio_rw_done(req, file->f_op->read_iter(req, &iter));
+ 	kfree(iovec);
+ 	return ret;
+ }
+@@ -1590,7 +1590,7 @@ static int aio_write(struct kiocb *req, const struct iocb *iocb,
+ 		if (S_ISREG(file_inode(file)->i_mode))
+ 			kiocb_start_write(req);
+ 		req->ki_flags |= IOCB_WRITE;
+-		aio_rw_done(req, call_write_iter(file, req, &iter));
++		aio_rw_done(req, file->f_op->write_iter(req, &iter));
+ 	}
+ 	kfree(iovec);
+ 	return ret;
+diff --git a/fs/read_write.c b/fs/read_write.c
+index 9a56949f3b8d1..4a476bdda51d4 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -386,7 +386,7 @@ static ssize_t new_sync_read(struct file *filp, char __user *buf, size_t len, lo
+ 	kiocb.ki_pos = (ppos ? *ppos : 0);
+ 	iov_iter_ubuf(&iter, ITER_DEST, buf, len);
+ 
+-	ret = call_read_iter(filp, &kiocb, &iter);
++	ret = filp->f_op->read_iter(&kiocb, &iter);
+ 	BUG_ON(ret == -EIOCBQUEUED);
+ 	if (ppos)
+ 		*ppos = kiocb.ki_pos;
+@@ -488,7 +488,7 @@ static ssize_t new_sync_write(struct file *filp, const char __user *buf, size_t
+ 	kiocb.ki_pos = (ppos ? *ppos : 0);
+ 	iov_iter_ubuf(&iter, ITER_SOURCE, (void __user *)buf, len);
+ 
+-	ret = call_write_iter(filp, &kiocb, &iter);
++	ret = filp->f_op->write_iter(&kiocb, &iter);
+ 	BUG_ON(ret == -EIOCBQUEUED);
+ 	if (ret > 0 && ppos)
+ 		*ppos = kiocb.ki_pos;
+@@ -730,9 +730,9 @@ static ssize_t do_iter_readv_writev(struct file *filp, struct iov_iter *iter,
+ 	kiocb.ki_pos = (ppos ? *ppos : 0);
+ 
+ 	if (type == READ)
+-		ret = call_read_iter(filp, &kiocb, iter);
++		ret = filp->f_op->read_iter(&kiocb, iter);
+ 	else
+-		ret = call_write_iter(filp, &kiocb, iter);
++		ret = filp->f_op->write_iter(&kiocb, iter);
+ 	BUG_ON(ret == -EIOCBQUEUED);
+ 	if (ppos)
+ 		*ppos = kiocb.ki_pos;
+@@ -821,7 +821,7 @@ ssize_t vfs_iocb_iter_read(struct file *file, struct kiocb *iocb,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = call_read_iter(file, iocb, iter);
++	ret = file->f_op->read_iter(iocb, iter);
+ out:
+ 	if (ret >= 0)
+ 		fsnotify_access(file);
+@@ -890,7 +890,7 @@ ssize_t vfs_iocb_iter_write(struct file *file, struct kiocb *iocb,
+ 		return ret;
+ 
+ 	kiocb_start_write(iocb);
+-	ret = call_write_iter(file, iocb, iter);
++	ret = file->f_op->write_iter(iocb, iter);
+ 	if (ret != -EIOCBQUEUED)
+ 		kiocb_end_write(iocb);
+ 	if (ret > 0)
+diff --git a/fs/splice.c b/fs/splice.c
+index a8f97c5e8cf0e..cc37369e02453 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -361,7 +361,7 @@ ssize_t copy_splice_read(struct file *in, loff_t *ppos,
+ 	iov_iter_bvec(&to, ITER_DEST, bv, npages, len);
+ 	init_sync_kiocb(&kiocb, in);
+ 	kiocb.ki_pos = *ppos;
+-	ret = call_read_iter(in, &kiocb, &to);
++	ret = in->f_op->read_iter(&kiocb, &to);
+ 
+ 	if (ret > 0) {
+ 		keep = DIV_ROUND_UP(ret, PAGE_SIZE);
+@@ -739,7 +739,7 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
+ 		iov_iter_bvec(&from, ITER_SOURCE, array, n, sd.total_len - left);
+ 		init_sync_kiocb(&kiocb, out);
+ 		kiocb.ki_pos = sd.pos;
+-		ret = call_write_iter(out, &kiocb, &from);
++		ret = out->f_op->write_iter(&kiocb, &from);
+ 		sd.pos = kiocb.ki_pos;
+ 		if (ret <= 0)
+ 			break;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index ee5efad0d7801..2b2a49711aa2f 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2005,18 +2005,6 @@ struct inode_operations {
+ 	struct offset_ctx *(*get_offset_ctx)(struct inode *inode);
+ } ____cacheline_aligned;
+ 
+-static inline ssize_t call_read_iter(struct file *file, struct kiocb *kio,
+-				     struct iov_iter *iter)
+-{
+-	return file->f_op->read_iter(kio, iter);
+-}
 -
- /*
-  * Older glibc version called vdso without allocating a stackframe. This wrapper
-  * is just used to allocate a stackframe. See
-@@ -20,16 +18,16 @@
- 	__ALIGN
- __kernel_\func:
- 	CFI_STARTPROC
--	aghi	%r15,-WRAPPER_FRAME_SIZE
--	CFI_DEF_CFA_OFFSET (STACK_FRAME_OVERHEAD + WRAPPER_FRAME_SIZE)
--	CFI_VAL_OFFSET 15, -STACK_FRAME_OVERHEAD
--	stg	%r14,STACK_FRAME_OVERHEAD(%r15)
--	CFI_REL_OFFSET 14, STACK_FRAME_OVERHEAD
-+	aghi	%r15,-STACK_FRAME_VDSO_OVERHEAD
-+	CFI_DEF_CFA_OFFSET (STACK_FRAME_USER_OVERHEAD + STACK_FRAME_VDSO_OVERHEAD)
-+	CFI_VAL_OFFSET 15,-STACK_FRAME_USER_OVERHEAD
-+	stg	%r14,__SFVDSO_RETURN_ADDRESS(%r15)
-+	CFI_REL_OFFSET 14,__SFVDSO_RETURN_ADDRESS
- 	brasl	%r14,__s390_vdso_\func
--	lg	%r14,STACK_FRAME_OVERHEAD(%r15)
-+	lg	%r14,__SFVDSO_RETURN_ADDRESS(%r15)
- 	CFI_RESTORE 14
--	aghi	%r15,WRAPPER_FRAME_SIZE
--	CFI_DEF_CFA_OFFSET STACK_FRAME_OVERHEAD
-+	aghi	%r15,STACK_FRAME_VDSO_OVERHEAD
-+	CFI_DEF_CFA_OFFSET STACK_FRAME_USER_OVERHEAD
- 	CFI_RESTORE 15
- 	br	%r14
- 	CFI_ENDPROC
+-static inline ssize_t call_write_iter(struct file *file, struct kiocb *kio,
+-				      struct iov_iter *iter)
+-{
+-	return file->f_op->write_iter(kio, iter);
+-}
+-
+ static inline int call_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	return file->f_op->mmap(file, vma);
+diff --git a/io_uring/rw.c b/io_uring/rw.c
+index 0a0c1c9db0f90..e7a27edf3ab23 100644
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -653,7 +653,7 @@ static inline int io_iter_do_read(struct io_rw *rw, struct iov_iter *iter)
+ 	struct file *file = rw->kiocb.ki_filp;
+ 
+ 	if (likely(file->f_op->read_iter))
+-		return call_read_iter(file, &rw->kiocb, iter);
++		return file->f_op->read_iter(&rw->kiocb, iter);
+ 	else if (file->f_op->read)
+ 		return loop_rw_iter(READ, rw, iter);
+ 	else
+@@ -918,7 +918,7 @@ int io_write(struct io_kiocb *req, unsigned int issue_flags)
+ 	kiocb->ki_flags |= IOCB_WRITE;
+ 
+ 	if (likely(req->file->f_op->write_iter))
+-		ret2 = call_write_iter(req->file, kiocb, &s->iter);
++		ret2 = req->file->f_op->write_iter(kiocb, &s->iter);
+ 	else if (req->file->f_op->write)
+ 		ret2 = loop_rw_iter(WRITE, rw, &s->iter);
+ 	else
 -- 
 2.43.0
 
