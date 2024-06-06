@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-48814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F168FEAA5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7D68FEC46
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20F9F1F23229
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CF75B23193
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECBE1991CC;
-	Thu,  6 Jun 2024 14:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1CE1AED52;
+	Thu,  6 Jun 2024 14:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbhNIQ9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G786Ri0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC9519643E;
-	Thu,  6 Jun 2024 14:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB09196DB4;
+	Thu,  6 Jun 2024 14:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683160; cv=none; b=Sq2BXIo4HOHAB2s0JUjxI33IuEmOcFVJr4JVv45QWLSxno5326TyqEBIgLAerj5T4ouGAkgewrU2IJ424ZU/8NU8TJvATv2N+tm7+AGP3D6HoEEt0gPW7LjBXXboFf2nogEtpAcg/6hOXHFMK4gIa+keyLd7fVA9SI5DoN5ip/k=
+	t=1717683348; cv=none; b=ZbSJolfQ+fxtQYc05skXeN7rLDOrFkIdun6n7sVZgq9dNDOnbzgRkUvEm5rkwF6CXCUzIeuTM4zixKYlOVjW5GsIDd8NlIvhIaa8Nqb8xIKW7Me8aXDpm1k7WdabA4qAlE+uG6S9FS0tAOMbSWfQvdCkdlEAvhPv7N79y7ojVxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683160; c=relaxed/simple;
-	bh=U8Mw6pSLHl0P7y/594Wnl/9zE+jfIqB0krLaudvPsRc=;
+	s=arc-20240116; t=1717683348; c=relaxed/simple;
+	bh=gKNO321xs9oPsK4JEQdKlPRv9x46YcES/PR49haCKp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2u57kLvXILWn5jb1lzkgGuV0g7DydsFlh+8FkAwnP8/YP50+u+fvicGeLdYrSD1X/Had/q1UJlbYQdRb7xxw3F5nA8jMLbkLH5hc23gCaT1/OseQtsydS+OlTU7HVHohn0vUfo2/U18Qa9FNfCG9cpytdmHws0MIYCvvuQq88k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbhNIQ9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550CCC2BD10;
-	Thu,  6 Jun 2024 14:12:40 +0000 (UTC)
+	 MIME-Version; b=W8gfmwy9SyXTdlKWcz1aOPRxmhri2lPSsM6hZIcNLFcGoh9kcW2oL9AU7ZYit3fk2KDwmFFLHXS6sDgFNT1mlvtqo4hrFbeWZwJCObkl5DYOU+n6ue90uIjs0+rm2ZzccyZZrzSYOHBvTEdrQ/BhNEl4oBazCIf61bGtf95uwuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G786Ri0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5D7C32781;
+	Thu,  6 Jun 2024 14:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683160;
-	bh=U8Mw6pSLHl0P7y/594Wnl/9zE+jfIqB0krLaudvPsRc=;
+	s=korg; t=1717683347;
+	bh=gKNO321xs9oPsK4JEQdKlPRv9x46YcES/PR49haCKp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbhNIQ9QaJXo9YB5tW1On7AQUbPK8uAc8nxOI6PxBqIlOrBnzLpoVkWrI3JxfOgJd
-	 uALL2nmheaFInDjzSlWHw2qPejUGSNFzy3Z8nJ+D2tvoLix0Qzq1eA1mvNHm7CE/Go
-	 zh/mm6U60rXSiaCE6ZnIp1o8Qv89eem3VOsw0GwU=
+	b=G786Ri0WqgNDte+T/2rMbou8IqRAAZo2tzAEEmEtnqvOwEIVTGiGw9+jgv5Qz08Ie
+	 Rb1iK6i1JRZ3LbXjv43FUJ3cWKRfwjHD4JdOClG8DGOFGQgHGkmZ6e+KVDdQT1Ds+3
+	 q8CzEmO+jESPnSPy+l4A4i8E/uxSl6C7ZY9b5oZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Justin Green <greenjustin@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/473] net: usb: qmi_wwan: add Telit FN920C04 compositions
+Subject: [PATCH 6.6 288/744] drm/mediatek: Add 0 size check to mtk_drm_gem_obj
 Date: Thu,  6 Jun 2024 15:59:20 +0200
-Message-ID: <20240606131700.911965559@linuxfoundation.org>
+Message-ID: <20240606131741.642027693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Justin Green <greenjustin@chromium.org>
 
-[ Upstream commit 0b8fe5bd73249dc20be2e88a12041f8920797b59 ]
+[ Upstream commit 1e4350095e8ab2577ee05f8c3b044e661b5af9a0 ]
 
-Add the following Telit FN920C04 compositions:
+Add a check to mtk_drm_gem_init if we attempt to allocate a GEM object
+of 0 bytes. Currently, no such check exists and the kernel will panic if
+a userspace application attempts to allocate a 0x0 GBM buffer.
 
-0x10a0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  5 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Tested by attempting to allocate a 0x0 GBM buffer on an MT8188 and
+verifying that we now return EINVAL.
 
-0x10a4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x10a9: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a9 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=92c4c4d8
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Justin Green <greenjustin@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240307180051.4104425-1-greenjustin@chromium.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 3 +++
+ drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 45a542659a814..d22ba63160b8d 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1367,6 +1367,9 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1060, 2)},	/* Telit LN920 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1070, 2)},	/* Telit FN990 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1080, 2)}, /* Telit FE990 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+index 4f2e3feabc0f8..1bf229615b018 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+@@ -38,6 +38,9 @@ static struct mtk_drm_gem_obj *mtk_drm_gem_init(struct drm_device *dev,
+ 
+ 	size = round_up(size, PAGE_SIZE);
+ 
++	if (size == 0)
++		return ERR_PTR(-EINVAL);
++
+ 	mtk_gem_obj = kzalloc(sizeof(*mtk_gem_obj), GFP_KERNEL);
+ 	if (!mtk_gem_obj)
+ 		return ERR_PTR(-ENOMEM);
 -- 
 2.43.0
 
