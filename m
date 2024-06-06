@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-49141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AB28FEC07
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4428FEC0A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E76A91C23FFE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 967C6B22AA2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433671AC430;
-	Thu,  6 Jun 2024 14:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A3E1AC433;
+	Thu,  6 Jun 2024 14:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziBOt67A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vosDGJ3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03242198845;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86DD1AC431;
 	Thu,  6 Jun 2024 14:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683322; cv=none; b=gnAPnqa24WxaLgOpLrAippZG9pjJRdr/OmBEj96puxykY9B/YJ/yR9N3kt7UYVrJvuxN/2BWieAut6FEe+EEXwja4WeaI6uQ6uBL6DOkfbgRhSDZGyECE1YX9JBP5yT9aOu0N+V067udvBtk8dOafwR/Gc7vjuTaAtLdCkgH4RM=
+	t=1717683322; cv=none; b=R4QraONO9y6EqJQVb2v6/7r0jDGT0c3U/GXcj92M51iVqtD+8YJQcdyhcncMfpOwqGq+8FXb9w1D/FgIpi/b/RynYXi+chnfCXXr7YO6uRSbVJboq6cAtGghKE+NwiTR+cuqKzSNjUYli8/Ey3661j3/puscLPwlqm1pypbkhzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717683322; c=relaxed/simple;
-	bh=neLvdPZmr2irTdb3phRornP8TxeVrwM4MvlhhwFwlAw=;
+	bh=6sPcI5ZeZ7RPhKNYw8/IcFJCNBuZlJcFKY7BQ0bNFNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2WwSMI9CbHog96jjPZHv67swatfCyHgVNV/vIyWBtpXhf3MWLgxPcTFEJRpxFwt+z9AqQBaoKzihHbetvjs8ebh0Kqm+n61kD8XiysEy8n0L06+GAP81syzgOSyc413Hi77Ni8Ny6g4CnAwQnYMo5DL1qZyYcdl83iCyxTshtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziBOt67A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D931FC32781;
-	Thu,  6 Jun 2024 14:15:21 +0000 (UTC)
+	 MIME-Version; b=d+joufY5jB4S1bhlY8pMZrQ3Lqx3rwjUrjEC0fL8j/KYoNPIwy3AdcSllMORlCz0s1TU+JR3EPWlKS5kUT3RbLs0YhTH3rsvFXyvlmdzyFKl757KP1i1BUMzmOZtH6F0wwA5a6vWUj+gPPqreXAzUuSVdGiM4cQPsVzNjyvoKXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vosDGJ3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7AF2C4AF07;
+	Thu,  6 Jun 2024 14:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683321;
-	bh=neLvdPZmr2irTdb3phRornP8TxeVrwM4MvlhhwFwlAw=;
+	s=korg; t=1717683322;
+	bh=6sPcI5ZeZ7RPhKNYw8/IcFJCNBuZlJcFKY7BQ0bNFNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziBOt67A+HxWyno6o5AjflhIxk5AbJcjXiqPK9k4RO5IneYCeYPjvf5nDY8cgHFH+
-	 Hh9y5b8HpqPSJAAIZT3bDucqXcoCu5Pn5ND3NWqxiwNQzJ6Vl8e5w8TQQd4D/Fc5Sy
-	 mOigfGQut3nZIaA+qgwCiFWaLshYlNqBDBuiSin8=
+	b=vosDGJ3M1dGftANJfPrGdjKraFF+sHLmPjnkXV5XLbIAxN1fbvvuW/qVo7HFG5dY7
+	 CmTsv6qZ3JrfyNefa+OaA9uU+2vCuKlVcGclTuYWcx9Ei7dzLg4smMbihAJMmpjzvx
+	 T/N+coszS4PTq7QIiIRUzVFKo1EmUcfDHEnSwP5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Helge Deller <deller@gmx.de>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 201/473] fbdev: shmobile: fix snprintf truncation
-Date: Thu,  6 Jun 2024 16:02:10 +0200
-Message-ID: <20240606131706.583589953@linuxfoundation.org>
+Subject: [PATCH 6.1 202/473] ASoC: kirkwood: Fix potential NULL dereference
+Date: Thu,  6 Jun 2024 16:02:11 +0200
+Message-ID: <20240606131706.616617197@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -67,38 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 26c8cfb9d1e4b252336d23dd5127a8cbed414a32 ]
+[ Upstream commit ea60ab95723f5738e7737b56dda95e6feefa5b50 ]
 
-The name of the overlay does not fit into the fixed-length field:
+In kirkwood_dma_hw_params() mv_mbus_dram_info() returns NULL if
+CONFIG_PLAT_ORION macro is not defined.
+Fix this bug by adding NULL check.
 
-drivers/video/fbdev/sh_mobile_lcdcfb.c:1577:2: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 25
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Make it short enough by changing the string.
-
-Fixes: c5deac3c9b22 ("fbdev: sh_mobile_lcdc: Implement overlays support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: bb6a40fc5a83 ("ASoC: kirkwood: Fix reference to PCM buffer address")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://msgid.link/r/20240328173337.21406-1-amishin@t-argos.ru
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sh_mobile_lcdcfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/kirkwood/kirkwood-dma.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-index 6d00893d41f4c..444c3ca9d4d4d 100644
---- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-+++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-@@ -1576,7 +1576,7 @@ sh_mobile_lcdc_overlay_fb_init(struct sh_mobile_lcdc_overlay *ovl)
- 	 */
- 	info->fix = sh_mobile_lcdc_overlay_fix;
- 	snprintf(info->fix.id, sizeof(info->fix.id),
--		 "SH Mobile LCDC Overlay %u", ovl->index);
-+		 "SHMobile ovl %u", ovl->index);
- 	info->fix.smem_start = ovl->dma_handle;
- 	info->fix.smem_len = ovl->fb_size;
- 	info->fix.line_length = ovl->pitch;
+diff --git a/sound/soc/kirkwood/kirkwood-dma.c b/sound/soc/kirkwood/kirkwood-dma.c
+index 640cebd2983e2..16d2c9acc33a6 100644
+--- a/sound/soc/kirkwood/kirkwood-dma.c
++++ b/sound/soc/kirkwood/kirkwood-dma.c
+@@ -182,6 +182,9 @@ static int kirkwood_dma_hw_params(struct snd_soc_component *component,
+ 	const struct mbus_dram_target_info *dram = mv_mbus_dram_info();
+ 	unsigned long addr = substream->runtime->dma_addr;
+ 
++	if (!dram)
++		return 0;
++
+ 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+ 		kirkwood_dma_conf_mbus_windows(priv->io,
+ 			KIRKWOOD_PLAYBACK_WIN, addr, dram);
 -- 
 2.43.0
 
