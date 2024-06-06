@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2131D8FE9A1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08798FED69
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA50E1F25F55
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEB571C20F86
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886F219AD8B;
-	Thu,  6 Jun 2024 14:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E01D1BA89F;
+	Thu,  6 Jun 2024 14:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKz/4ZiI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiQzm2ud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4751419AD92;
-	Thu,  6 Jun 2024 14:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14CF1BA89C;
+	Thu,  6 Jun 2024 14:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683048; cv=none; b=dgKNCJO8z601yInBUMp2jZF6oU+gBS14gyII0B41k2mghyzMGFSdp0YOkl8NJAefHiNrpxAry1vFma6w30CNCdsBIPrMUPc9MI9EEiGHpnNMscBgOLM3z1tmUGAVN11kkN/0FvU9nMl85Y9wgFjDNBOLRnFIcj4yNZdCm0Fao7E=
+	t=1717683486; cv=none; b=sOWbJg/WXaPoVU5oK+mHrV40srzWd6h7hfmy2IEafoAcu9XI+LWB9fP9mmINP+nmZCuhk45jZjFxbyKAFT5OJs/v8b/dnHnltQL66G1GGgoF9roNalRkxJIZenNDVQ2wF07aC23nzJxcLVrNSFVyCqD2u1xEHERc4JBzgetVDbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683048; c=relaxed/simple;
-	bh=HPqJ9b9+jsE+fDR7D6xFZPCprs2Lb/R+CAelJPYCfcc=;
+	s=arc-20240116; t=1717683486; c=relaxed/simple;
+	bh=nOoadrH0Ai7HfWRTYw5+C7hWubiCzZ33ZXcM0DpOAPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6p1vknLWD6lRoUTpNXvd9nWmzAdHTx5eT8Pd1+g7Te6z6IxtG2i2fC6fhQHy8jCKKJn/RcrL5Rkp3sgyGDW9gwFHNlgyTzjnrxI+r1UQiCinQgAHJNWSYGfgtcOLCQDdSycL+2CVceXmxSbAnXYZLY0GXhE4HzPbNVKyT8OzNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKz/4ZiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF32C32786;
-	Thu,  6 Jun 2024 14:10:48 +0000 (UTC)
+	 MIME-Version; b=UY++0yo1Afz7dM8xovvg0lvdSY/UBkCaIdJzN6Lgof5ayF87PnX72CEpSzdAbPJ5SQ4pD+q9c0Lh3CCXFA5sYorA48retIPIElq07VNsn3raz3VH07k1HX59AE1T6bQ7tW2nlWzP9WXNKzv+D+9NzpvgTfbHaj8CgkCzdslnPMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiQzm2ud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A0CC32782;
+	Thu,  6 Jun 2024 14:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683048;
-	bh=HPqJ9b9+jsE+fDR7D6xFZPCprs2Lb/R+CAelJPYCfcc=;
+	s=korg; t=1717683485;
+	bh=nOoadrH0Ai7HfWRTYw5+C7hWubiCzZ33ZXcM0DpOAPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VKz/4ZiILMWlIAfMBnMQ6vt8J7qcooYar7PZNKTLhqyZOXnR7BSNcZJJ08+GJMYOY
-	 BhOj0e82o+P6aGCOaFfFo7pO9ZzCtvRjVOb6oRkmGpbBI+IABRnnaktXmiHCkZQsf5
-	 0SVzUR/pd32op3vxeBGbsZa2FI7N+PNFvNmmlVbM=
+	b=KiQzm2udoQTyOzIh2c0RL39+xHdal2ZoaXIARfee57gLWrZJZ9BSH3nASRkrK+JLJ
+	 iq/X6pqsj7IxVBiKH3+OT5/NcodLVnvqATxSqXtKCNmTj0B4xCQu2l1JzqZudx9n4X
+	 aZ/UperIlbW+TLC9CfhfQG7M/2EoaeXFyqJJdgB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 286/374] spi: Dont mark message DMA mapped when no transfer in it is
+Subject: [PATCH 6.1 336/473] extcon: max8997: select IRQ_DOMAIN instead of depending on it
 Date: Thu,  6 Jun 2024 16:04:25 +0200
-Message-ID: <20240606131701.471073232@linuxfoundation.org>
+Message-ID: <20240606131711.031115010@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 9f788ba457b45b0ce422943fcec9fa35c4587764 ]
+[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
 
-There is no need to set the DMA mapped flag of the message if it has
-no mapped transfers. Moreover, it may give the code a chance to take
-the wrong paths, i.e. to exercise DMA related APIs on unmapped data.
-Make __spi_map_msg() to bail earlier on the above mentioned cases.
+IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
+it directly thru "make *config", so drivers should select it instead
+of depending on it if they need it.
+Relying on it being set for a dependency is risky.
 
-Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://msgid.link/r/20240522171018.3362521-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Consistently using "select" or "depends on" can also help reduce
+Kconfig circular dependency issues.
+
+Therefore, change EXTCON_MAX8997's use of "depends on" for
+IRQ_DOMAIN to "select".
+
+Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
+Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/extcon/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a2c467d9e92f5..2cea7aeb10f95 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1242,6 +1242,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 	else
- 		rx_dev = ctlr->dev.parent;
+diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
+index 4dd52a6a5b48d..e54e5e64d9abe 100644
+--- a/drivers/extcon/Kconfig
++++ b/drivers/extcon/Kconfig
+@@ -116,7 +116,8 @@ config EXTCON_MAX77843
  
-+	ret = -ENOMSG;
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		/* The sync is done before each transfer. */
- 		unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
-@@ -1271,6 +1272,9 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 			}
- 		}
- 	}
-+	/* No transfer has been mapped, bail out with success */
-+	if (ret)
-+		return 0;
- 
- 	ctlr->cur_rx_dma_dev = rx_dev;
- 	ctlr->cur_tx_dma_dev = tx_dev;
+ config EXTCON_MAX8997
+ 	tristate "Maxim MAX8997 EXTCON Support"
+-	depends on MFD_MAX8997 && IRQ_DOMAIN
++	depends on MFD_MAX8997
++	select IRQ_DOMAIN
+ 	help
+ 	  If you say yes here you get support for the MUIC device of
+ 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
 -- 
 2.43.0
 
