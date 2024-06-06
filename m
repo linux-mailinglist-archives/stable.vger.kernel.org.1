@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC3D8FE88C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0C28FECA9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276AA1C243E0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A017B1C256BD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC9B1974FA;
-	Thu,  6 Jun 2024 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8231B1512;
+	Thu,  6 Jun 2024 14:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSmy2tgG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jV9XtT0a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D193C196C85;
-	Thu,  6 Jun 2024 14:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF51B198A35;
+	Thu,  6 Jun 2024 14:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682906; cv=none; b=CwDQzWvPJ/rkynconkKNYHP+ZHOf6Bmb7zJlRzzZNhJ2qQsBKjW3jJ4GeayVDNj6V2GGkKHCEFs7X3JJ5uG2MNgD8aASIaMrjGQzS0TpDQClrwRVELuhoIB1Mvw2TOdzJ/DYpSPjLQv/KgKKVrT5Hyz5iEqjNvidhVLA8js7m8s=
+	t=1717683395; cv=none; b=NM8WGyzISNHm5/Tu4iMaCq3w+8ZlFfLurXy4cW7xkUPRepH5Ua45Rdo52eK86CQCIEtQm91bKGdhGcOIdAsZsJKW7LyvkOn+CzGHlQfmPgJoy4Z+MQBPSvgDAVj7lytjba+1881o+w4OCrbPkvdY+FfLXhcCTJxvDYNLTvN5HAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682906; c=relaxed/simple;
-	bh=kVQFQqKft6+PWWeUIjK8HwzP8S78pXkHoaRm7wOohEg=;
+	s=arc-20240116; t=1717683395; c=relaxed/simple;
+	bh=Q2jyXgPIMOEz1FUbMCyRH9+C87zZh9kxwvoAivzdlL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdcoMEV29OmJjqGA+xl6NkCYBxtNUul4H28JLZbQ8euqtXWzJh30Zuq5ae0m3AA3KSBWCg+OpzmGQsKoh6AIvvm5fGdDsFNHG1h+gw5RxTjJslQ38ceyY0Bus75m7IUccK/r++uOQLbluJpL7MIlCy8k2vwUlhdVm3VoiXk4CbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSmy2tgG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD51AC2BD10;
-	Thu,  6 Jun 2024 14:08:26 +0000 (UTC)
+	 MIME-Version; b=dx7QYUSjc+ZuAz6YizSwf1M4z2Lo0h+F0WHKlognHv6VGiX82MTyX4fx3Tw/KnJa9a6vLeikBFUOukySTnfz/rTasTDoOTZuhSfUEGD8R0r0uLis6Jq4gp27a5wBv/+EZfZAFQtU6HFPGAqVWnudhEEgKqVAh8jN6XrJc04E3Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jV9XtT0a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD1AC32781;
+	Thu,  6 Jun 2024 14:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682906;
-	bh=kVQFQqKft6+PWWeUIjK8HwzP8S78pXkHoaRm7wOohEg=;
+	s=korg; t=1717683394;
+	bh=Q2jyXgPIMOEz1FUbMCyRH9+C87zZh9kxwvoAivzdlL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSmy2tgGzFUOLbWpTluqijUGgwnOu73rYdTfc+OTuBg3i6LloTnWLpL/mTGIUVdBV
-	 g7fBRe2x7JmE/THc2lZcnguSmZoNApAfzt18t4bY0vegOK5t57mGfaJawseMUmU43K
-	 RRj+nxHf2tTsyjlb7xa8E4aoLvQu292r7UnM3kFM=
+	b=jV9XtT0a9T0QQbVClVuOpUz/VzhH12xTpO9SjxK8OE4nZye2tEDkRCPOs37vNHxU7
+	 eO8OMEmqJIGWeKOsO4IoAjU5/27XJd2f8sEvGwgD71zz4pBWljQQcmwVqqfasRSoK0
+	 sTsiSC2eJU6jtdHCJe4SgqYmBcFbJLXPz7lx0iuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Luis Chamberlain <mcgrof@kernel.org>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 031/374] module: dont ignore sysfs_create_link() failures
-Date: Thu,  6 Jun 2024 16:00:10 +0200
-Message-ID: <20240606131652.868487330@linuxfoundation.org>
+Subject: [PATCH 6.6 339/744] RDMA/hns: Fix return value in hns_roce_map_mr_sg
+Date: Thu,  6 Jun 2024 16:00:11 +0200
+Message-ID: <20240606131743.335553653@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,157 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 85d2b0aa170351380be39fe4ff7973df1427fe76 ]
+[ Upstream commit 203b70fda63425a4eb29f03f9074859afe821a39 ]
 
-The sysfs_create_link() return code is marked as __must_check, but the
-module_add_driver() function tries hard to not care, by assigning the
-return code to a variable. When building with 'make W=1', gcc still
-warns because this variable is only assigned but not used:
+As described in the ib_map_mr_sg function comment, it returns the number
+of sg elements that were mapped to the memory region. However,
+hns_roce_map_mr_sg returns the number of pages required for mapping the
+DMA area. Fix it.
 
-drivers/base/module.c: In function 'module_add_driver':
-drivers/base/module.c:36:6: warning: variable 'no_warn' set but not used [-Wunused-but-set-variable]
-
-Rework the code to properly unwind and return the error code to the
-caller. My reading of the original code was that it tries to
-not fail when the links already exist, so keep ignoring -EEXIST
-errors.
-
-Fixes: e17e0f51aeea ("Driver core: show drivers in /sys/module/")
-See-also: 4a7fb6363f2d ("add __must_check to device management code")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Link: https://lore.kernel.org/r/20240408080616.3911573-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9b2cf76c9f05 ("RDMA/hns: Optimize PBL buffer allocation process")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20240411033851.2884771-1-shaozhengchao@huawei.com
+Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/base.h   |  9 ++++++---
- drivers/base/bus.c    |  9 ++++++++-
- drivers/base/module.c | 42 +++++++++++++++++++++++++++++++-----------
- 3 files changed, 45 insertions(+), 15 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_mr.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/base/base.h b/drivers/base/base.h
-index 0738ccad08b2e..db4f910e8e36e 100644
---- a/drivers/base/base.h
-+++ b/drivers/base/base.h
-@@ -192,11 +192,14 @@ extern struct kset *devices_kset;
- void devices_kset_move_last(struct device *dev);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 14376490ac226..190e62da98e4b 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -421,18 +421,18 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+-	int ret = 0;
++	int ret, sg_num = 0;
  
- #if defined(CONFIG_MODULES) && defined(CONFIG_SYSFS)
--void module_add_driver(struct module *mod, struct device_driver *drv);
-+int module_add_driver(struct module *mod, struct device_driver *drv);
- void module_remove_driver(struct device_driver *drv);
- #else
--static inline void module_add_driver(struct module *mod,
--				     struct device_driver *drv) { }
-+static inline int module_add_driver(struct module *mod,
-+				    struct device_driver *drv)
-+{
-+	return 0;
-+}
- static inline void module_remove_driver(struct device_driver *drv) { }
- #endif
+ 	mr->npages = 0;
+ 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
+ 				 sizeof(dma_addr_t), GFP_KERNEL);
+ 	if (!mr->page_list)
+-		return ret;
++		return sg_num;
  
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index daee55c9b2d9e..ffea0728b8b2f 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -674,7 +674,12 @@ int bus_add_driver(struct device_driver *drv)
- 		if (error)
- 			goto out_del_list;
+-	ret = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
+-	if (ret < 1) {
++	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
++	if (sg_num < 1) {
+ 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
+-			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, ret);
++			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
+ 		goto err_page_list;
  	}
--	module_add_driver(drv->owner, drv);
-+	error = module_add_driver(drv->owner, drv);
-+	if (error) {
-+		printk(KERN_ERR "%s: failed to create module links for %s\n",
-+			__func__, drv->name);
-+		goto out_detach;
-+	}
  
- 	error = driver_create_file(drv, &driver_attr_uevent);
- 	if (error) {
-@@ -699,6 +704,8 @@ int bus_add_driver(struct device_driver *drv)
+@@ -443,17 +443,16 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	ret = hns_roce_mtr_map(hr_dev, mtr, mr->page_list, mr->npages);
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to map sg mtr, ret = %d.\n", ret);
+-		ret = 0;
++		sg_num = 0;
+ 	} else {
+ 		mr->pbl_mtr.hem_cfg.buf_pg_shift = (u32)ilog2(ibmr->page_size);
+-		ret = mr->npages;
+ 	}
  
- 	return 0;
+ err_page_list:
+ 	kvfree(mr->page_list);
+ 	mr->page_list = NULL;
  
-+out_detach:
-+	driver_detach(drv);
- out_del_list:
- 	klist_del(&priv->knode_bus);
- out_unregister:
-diff --git a/drivers/base/module.c b/drivers/base/module.c
-index 46ad4d636731d..a1b55da07127d 100644
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -30,14 +30,14 @@ static void module_create_drivers_dir(struct module_kobject *mk)
- 	mutex_unlock(&drivers_dir_mutex);
+-	return ret;
++	return sg_num;
  }
  
--void module_add_driver(struct module *mod, struct device_driver *drv)
-+int module_add_driver(struct module *mod, struct device_driver *drv)
- {
- 	char *driver_name;
--	int no_warn;
- 	struct module_kobject *mk = NULL;
-+	int ret;
- 
- 	if (!drv)
--		return;
-+		return 0;
- 
- 	if (mod)
- 		mk = &mod->mkobj;
-@@ -56,17 +56,37 @@ void module_add_driver(struct module *mod, struct device_driver *drv)
- 	}
- 
- 	if (!mk)
--		return;
-+		return 0;
-+
-+	ret = sysfs_create_link(&drv->p->kobj, &mk->kobj, "module");
-+	if (ret)
-+		return ret;
- 
--	/* Don't check return codes; these calls are idempotent */
--	no_warn = sysfs_create_link(&drv->p->kobj, &mk->kobj, "module");
- 	driver_name = make_driver_name(drv);
--	if (driver_name) {
--		module_create_drivers_dir(mk);
--		no_warn = sysfs_create_link(mk->drivers_dir, &drv->p->kobj,
--					    driver_name);
--		kfree(driver_name);
-+	if (!driver_name) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	module_create_drivers_dir(mk);
-+	if (!mk->drivers_dir) {
-+		ret = -EINVAL;
-+		goto out;
- 	}
-+
-+	ret = sysfs_create_link(mk->drivers_dir, &drv->p->kobj, driver_name);
-+	if (ret)
-+		goto out;
-+
-+	kfree(driver_name);
-+
-+	return 0;
-+out:
-+	sysfs_remove_link(&drv->p->kobj, "module");
-+	sysfs_remove_link(mk->drivers_dir, driver_name);
-+	kfree(driver_name);
-+
-+	return ret;
- }
- 
- void module_remove_driver(struct device_driver *drv)
+ static void hns_roce_mw_free(struct hns_roce_dev *hr_dev,
 -- 
 2.43.0
 
