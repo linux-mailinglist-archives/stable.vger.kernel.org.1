@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-48376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C780C8FE8C0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 011218FED0A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBE291C23B4A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5C511C236A3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76680197A9E;
-	Thu,  6 Jun 2024 14:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDE91B4C24;
+	Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPfd51yI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZ73LQum"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C08198825;
-	Thu,  6 Jun 2024 14:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6C619CD11;
+	Thu,  6 Jun 2024 14:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682930; cv=none; b=oQj68i/ZucKORFpBKETFtwJ/reNpnAM3LVY2Q6BvKPKYE3KbZVvkqVlVYbCTq143Z2poao5zdufPTAGz5kxrLSMTf3lrcRaRRWhempQFsmRCxhgmSKLuhN/KqEgXTKKLUcyC/nfTsBrabYsPQmxs+9cMJYTFZM9D7uWfNtVkQsA=
+	t=1717683439; cv=none; b=CMlwMz21OYHYRZ2P3firFZ9cQyHXkYDIr/UDpqAPKUk5QlXjxjijWGcYxrmlMBY9N98gWC7gaQZPpzX6Q7HgMY5hz05J4FWwCFGC6Vp6OqCm1PZ93hHNx2/l+FM1HO+tQ3nBswk8wWihef4VoMGEt31Kgg0467nOWvit7/UkOZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682930; c=relaxed/simple;
-	bh=vubF7ZUCqtML9m2Y0q+Ydw7ikwxUBk1vF9Nvyg1C+nQ=;
+	s=arc-20240116; t=1717683439; c=relaxed/simple;
+	bh=fFZQvwJ34C5wo1GlEIIXgpqkckE4MTBaxC8PrSVT3QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V/+Vv6NeFTQ7NuYRKoJvSgW4R9kSOxuh0HoR2QMVLSWu6JtXTDOA2BfgWSHN35nJ+TqubL/grwOlnzMbWi4z3g2mcNMCYCyAkNsfc99EPMCAZNrTCB+BBk82s6j6u0c1md7mP6bBj+0G2ZDxWw5vLgD5sdpmVt1W53ssiGLVl74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPfd51yI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B9FC2BD10;
-	Thu,  6 Jun 2024 14:08:50 +0000 (UTC)
+	 MIME-Version; b=iu/6C2s4dE7JzabVD6GlDk5xDDOfeeM1u7lWa7s734w8RDbYDKUSz4RdBErD0i7HjjnRt5MaeZongDTgje1Syq8JH2n+Bk3ihNjp4L4eElYASHyIcswglOwbRrmgpRAs2IVBmdy7rWYApWw6VBpkH0Vp2J8SJxTbb3sho4zms8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZ73LQum; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB788C32781;
+	Thu,  6 Jun 2024 14:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682930;
-	bh=vubF7ZUCqtML9m2Y0q+Ydw7ikwxUBk1vF9Nvyg1C+nQ=;
+	s=korg; t=1717683439;
+	bh=fFZQvwJ34C5wo1GlEIIXgpqkckE4MTBaxC8PrSVT3QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPfd51yIqC6AOyjMaYZzYEfAPYGmHiD7NfinGBnAHh3AVJVUZcFuUDQZLZcTyCd8R
-	 Rwqh6ME5uokTkzdCW+p8DGqDBEvcxsecdPQg/K1gTBeBy9l8amsrgbKTnJyawzh65L
-	 gC4MlA60JmYAmnSMtLnSWJE0I7lpMSUZI1vHTQ8Q=
+	b=SZ73LQumaKMT122RDwtZF6pJrFl8AiDeFNwfrEt9+QA1Qus69st2Tth2ZDhzvBimu
+	 hKi60XOrQq/FwCX5aUKjbGTgtdeg2sazCDZw+jxs2yuP+hT1BZCJV13HmbFdiyyv3k
+	 fiQuJPwOsedoohcFS2qhsuBiSYBLnahoMTKpGJO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danila Tikhonov <danila@jiaxyga.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	syzbot+fa04eb8a56fd923fc5d8@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 076/374] pinctrl: qcom: pinctrl-sm7150: Fix sdc1 and ufs special pins regs
+Subject: [PATCH 6.6 383/744] net: bridge: mst: fix vlan use-after-free
 Date: Thu,  6 Jun 2024 16:00:55 +0200
-Message-ID: <20240606131654.402179545@linuxfoundation.org>
+Message-ID: <20240606131744.755553019@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danila Tikhonov <danila@jiaxyga.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 5ed79863fae5c06eb33f5cd6b6bdf22dd7089392 ]
+[ Upstream commit 3a7c1661ae1383364cd6092d851f5e5da64d476b ]
 
-SDC1 and UFS_RESET special pins are located in the west memory bank.
+syzbot reported a suspicious rcu usage[1] in bridge's mst code. While
+fixing it I noticed that nothing prevents a vlan to be freed while
+walking the list from the same path (br forward delay timer). Fix the rcu
+usage and also make sure we are not accessing freed memory by making
+br_mst_vlan_set_state use rcu read lock.
 
-SDC1 have address 0x359a000:
-0x3500000 (TLMM BASE) + 0x0 (WEST) + 0x9a000 (SDC1_OFFSET) = 0x359a000
+[1]
+ WARNING: suspicious RCU usage
+ 6.9.0-rc6-syzkaller #0 Not tainted
+ -----------------------------
+ net/bridge/br_private.h:1599 suspicious rcu_dereference_protected() usage!
+ ...
+ stack backtrace:
+ CPU: 1 PID: 8017 Comm: syz-executor.1 Not tainted 6.9.0-rc6-syzkaller #0
+ Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+ Call Trace:
+  <IRQ>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+  lockdep_rcu_suspicious+0x221/0x340 kernel/locking/lockdep.c:6712
+  nbp_vlan_group net/bridge/br_private.h:1599 [inline]
+  br_mst_set_state+0x1ea/0x650 net/bridge/br_mst.c:105
+  br_set_state+0x28a/0x7b0 net/bridge/br_stp.c:47
+  br_forward_delay_timer_expired+0x176/0x440 net/bridge/br_stp_timer.c:88
+  call_timer_fn+0x18e/0x650 kernel/time/timer.c:1793
+  expire_timers kernel/time/timer.c:1844 [inline]
+  __run_timers kernel/time/timer.c:2418 [inline]
+  __run_timer_base+0x66a/0x8e0 kernel/time/timer.c:2429
+  run_timer_base kernel/time/timer.c:2438 [inline]
+  run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2448
+  __do_softirq+0x2c6/0x980 kernel/softirq.c:554
+  invoke_softirq kernel/softirq.c:428 [inline]
+  __irq_exit_rcu+0xf2/0x1c0 kernel/softirq.c:633
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:645
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
+  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
+  </IRQ>
+  <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+ RIP: 0010:lock_acquire+0x264/0x550 kernel/locking/lockdep.c:5758
+ Code: 2b 00 74 08 4c 89 f7 e8 ba d1 84 00 f6 44 24 61 02 0f 85 85 01 00 00 41 f7 c7 00 02 00 00 74 01 fb 48 c7 44 24 40 0e 36 e0 45 <4b> c7 44 25 00 00 00 00 00 43 c7 44 25 09 00 00 00 00 43 c7 44 25
+ RSP: 0018:ffffc90013657100 EFLAGS: 00000206
+ RAX: 0000000000000001 RBX: 1ffff920026cae2c RCX: 0000000000000001
+ RDX: dffffc0000000000 RSI: ffffffff8bcaca00 RDI: ffffffff8c1eaa60
+ RBP: ffffc90013657260 R08: ffffffff92efe507 R09: 1ffffffff25dfca0
+ R10: dffffc0000000000 R11: fffffbfff25dfca1 R12: 1ffff920026cae28
+ R13: dffffc0000000000 R14: ffffc90013657160 R15: 0000000000000246
 
-UFS_RESET have address 0x359f000:
-0x3500000 (TLMM BASE) + 0x0 (WEST) + 0x9f000 (UFS_OFFSET) = 0x359a000
-
-Fixes: b915395c9e04 ("pinctrl: qcom: Add SM7150 pinctrl driver")
-Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
-Message-ID: <20240423203245.188480-1-danila@jiaxyga.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
+Reported-by: syzbot+fa04eb8a56fd923fc5d8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fa04eb8a56fd923fc5d8
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-sm7150.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ net/bridge/br_mst.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-sm7150.c b/drivers/pinctrl/qcom/pinctrl-sm7150.c
-index c25357ca1963e..b9f067de8ef0e 100644
---- a/drivers/pinctrl/qcom/pinctrl-sm7150.c
-+++ b/drivers/pinctrl/qcom/pinctrl-sm7150.c
-@@ -65,7 +65,7 @@ enum {
- 		.intr_detection_width = 2,		\
+diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
+index ee680adcee179..3c66141d34d62 100644
+--- a/net/bridge/br_mst.c
++++ b/net/bridge/br_mst.c
+@@ -78,7 +78,7 @@ static void br_mst_vlan_set_state(struct net_bridge_port *p, struct net_bridge_v
+ {
+ 	struct net_bridge_vlan_group *vg = nbp_vlan_group(p);
+ 
+-	if (v->state == state)
++	if (br_vlan_get_state(v) == state)
+ 		return;
+ 
+ 	br_vlan_set_state(v, state);
+@@ -100,11 +100,12 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 	};
+ 	struct net_bridge_vlan_group *vg;
+ 	struct net_bridge_vlan *v;
+-	int err;
++	int err = 0;
+ 
++	rcu_read_lock();
+ 	vg = nbp_vlan_group(p);
+ 	if (!vg)
+-		return 0;
++		goto out;
+ 
+ 	/* MSTI 0 (CST) state changes are notified via the regular
+ 	 * SWITCHDEV_ATTR_ID_PORT_STP_STATE.
+@@ -112,17 +113,20 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 	if (msti) {
+ 		err = switchdev_port_attr_set(p->dev, &attr, extack);
+ 		if (err && err != -EOPNOTSUPP)
+-			return err;
++			goto out;
  	}
  
--#define SDC_QDSD_PINGROUP(pg_name, ctl, pull, drv)	\
-+#define SDC_QDSD_PINGROUP(pg_name, _tile, ctl, pull, drv) \
- 	{						\
- 		.grp = PINCTRL_PINGROUP(#pg_name, 	\
- 			pg_name##_pins, 		\
-@@ -75,7 +75,7 @@ enum {
- 		.intr_cfg_reg = 0,			\
- 		.intr_status_reg = 0,			\
- 		.intr_target_reg = 0,			\
--		.tile = SOUTH,				\
-+		.tile = _tile,				\
- 		.mux_bit = -1,				\
- 		.pull_bit = pull,			\
- 		.drv_bit = drv,				\
-@@ -101,7 +101,7 @@ enum {
- 		.intr_cfg_reg = 0,			\
- 		.intr_status_reg = 0,			\
- 		.intr_target_reg = 0,			\
--		.tile = SOUTH,				\
-+		.tile = WEST,				\
- 		.mux_bit = -1,				\
- 		.pull_bit = 3,				\
- 		.drv_bit = 0,				\
-@@ -1199,13 +1199,13 @@ static const struct msm_pingroup sm7150_groups[] = {
- 	[117] = PINGROUP(117, NORTH, _, _, _, _, _, _, _, _, _),
- 	[118] = PINGROUP(118, NORTH, _, _, _, _, _, _, _, _, _),
- 	[119] = UFS_RESET(ufs_reset, 0x9f000),
--	[120] = SDC_QDSD_PINGROUP(sdc1_rclk, 0x9a000, 15, 0),
--	[121] = SDC_QDSD_PINGROUP(sdc1_clk, 0x9a000, 13, 6),
--	[122] = SDC_QDSD_PINGROUP(sdc1_cmd, 0x9a000, 11, 3),
--	[123] = SDC_QDSD_PINGROUP(sdc1_data, 0x9a000, 9, 0),
--	[124] = SDC_QDSD_PINGROUP(sdc2_clk, 0x98000, 14, 6),
--	[125] = SDC_QDSD_PINGROUP(sdc2_cmd, 0x98000, 11, 3),
--	[126] = SDC_QDSD_PINGROUP(sdc2_data, 0x98000, 9, 0),
-+	[120] = SDC_QDSD_PINGROUP(sdc1_rclk, WEST, 0x9a000, 15, 0),
-+	[121] = SDC_QDSD_PINGROUP(sdc1_clk, WEST, 0x9a000, 13, 6),
-+	[122] = SDC_QDSD_PINGROUP(sdc1_cmd, WEST, 0x9a000, 11, 3),
-+	[123] = SDC_QDSD_PINGROUP(sdc1_data, WEST, 0x9a000, 9, 0),
-+	[124] = SDC_QDSD_PINGROUP(sdc2_clk, SOUTH, 0x98000, 14, 6),
-+	[125] = SDC_QDSD_PINGROUP(sdc2_cmd, SOUTH, 0x98000, 11, 3),
-+	[126] = SDC_QDSD_PINGROUP(sdc2_data, SOUTH, 0x98000, 9, 0),
- };
+-	list_for_each_entry(v, &vg->vlan_list, vlist) {
++	err = 0;
++	list_for_each_entry_rcu(v, &vg->vlan_list, vlist) {
+ 		if (v->brvlan->msti != msti)
+ 			continue;
  
- static const struct msm_gpio_wakeirq_map sm7150_pdc_map[] = {
+ 		br_mst_vlan_set_state(p, v, state);
+ 	}
+ 
+-	return 0;
++out:
++	rcu_read_unlock();
++	return err;
+ }
+ 
+ static void br_mst_vlan_sync_state(struct net_bridge_vlan *pv, u16 msti)
 -- 
 2.43.0
 
