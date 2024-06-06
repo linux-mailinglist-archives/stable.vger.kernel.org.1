@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-49431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDEA8FED3A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7228FE9B0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C1D21F20F41
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A19241F27049
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A448919D083;
-	Thu,  6 Jun 2024 14:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADB219B3CA;
+	Thu,  6 Jun 2024 14:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZE9YKkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J70di1Bp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DAD19D081;
-	Thu,  6 Jun 2024 14:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADAA198A20;
+	Thu,  6 Jun 2024 14:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683462; cv=none; b=G5MhKvQ+MWqJZ1nzGxIcyLCKudy3w0XfvJnCyZLVEfWlQjeeSy27pz2VzgMlFbjPoLID2YO6V6Uu/6iOOuqDPEDrwzdsUwt2/fr1IEs1Sn4Gd+Yhs11Lbom7QlrAG8HXov1ReVIcL+AfHjc9FatLdy/Ua5Wo1PB9UkW6YiF4n24=
+	t=1717683055; cv=none; b=VgtrX4Uuu2GefG0kjJAuodIvMqUqvoELGA8Tv45rew5HmtTcVgkfD47XodVypK0Lf0KAsoPYUjJ5ObQS66NHvcLiBc6DZWb5fhW5YO01APWo5vjYtg0MJIKLX/G8QYKK0Vvd4LCdrO4vE9WRkd4F3gJ6kt2E/g30Fpb2D9OrdOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683462; c=relaxed/simple;
-	bh=cU1C5PH83tVtCD7vTP4siPmB3FK4NdDH/anoP+ZfBe4=;
+	s=arc-20240116; t=1717683055; c=relaxed/simple;
+	bh=3n9XkyVschkoB2AVqgQUf+XsF/7OVm2727PBCrj1b1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4+utjNDymCQfwxOPJOwdo9BkVaSYOzZuhsNe0Z4fNOaBSkofaMbWZrVpIDDy5mJvgMR00aSx1WELnD6dDfqNfceMlBft9ZZHcoiUv0gxeG1wSKx1Ym6+8fFlJyUMcP5w73qL5RQVB5plk95n3kNm+hAOfYSX6BPNeu63xIDmAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZE9YKkd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40789C2BD10;
-	Thu,  6 Jun 2024 14:17:42 +0000 (UTC)
+	 MIME-Version; b=m7+AsRcBVP5HzmmNqegFNs36FzJSZJ/8v4GM3FHizO6JMvOjEM86KXgMV7MmM8JzgjWthrVbfNvQopOuT7CyMXcLDhnDAlQsh/3jFa7T9J/FwbiNSUqtkHbrZ3/I81MjhBrYueSMTULF7z7GbKQlckVdtnfhOSyVaNwa11e149c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J70di1Bp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA23C4AF15;
+	Thu,  6 Jun 2024 14:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683462;
-	bh=cU1C5PH83tVtCD7vTP4siPmB3FK4NdDH/anoP+ZfBe4=;
+	s=korg; t=1717683055;
+	bh=3n9XkyVschkoB2AVqgQUf+XsF/7OVm2727PBCrj1b1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZE9YKkdFIJ3yqGtHLtJzCiwstcINxQQErsw+fWfsXkUA0afJ3wk9R515TaQoCpWd
-	 an5tH9Olu8mAYv1A2Kx/zNbqIJpICK7ZVD5fkDuOanattRZN6jKAa6LTgxkOikWW9t
-	 ga9FRZ60hKQguXZsaoylGQeMqiXlvHH4Wojvv4s0=
+	b=J70di1BpaRSx52BYU9OSDM/LexechO3Ni2+46Sp1fKlepwSce6H2f+TP7Q4s+5C5q
+	 a0xeWpZk0FXRsIuhN4menr6PTlwzV9QyyilmmvN//IwlE1m6T2jmRMInXOa23WVxZo
+	 Py0fM6LuENHCg+wvZkle+LM6u4QVMISvLGD3ZrCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kaige Ye <ye@kaige.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 349/473] perf stat: Dont display metric header for non-leader uncore events
+Subject: [PATCH 6.9 299/374] net/mlx5: Use mlx5_ipsec_rx_status_destroy to correctly delete status rules
 Date: Thu,  6 Jun 2024 16:04:38 +0200
-Message-ID: <20240606131711.448835419@linuxfoundation.org>
+Message-ID: <20240606131701.880848050@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,92 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 193a9e30207f54777ff42d0d8be8389edc522277 ]
+[ Upstream commit 16d66a4fa81da07bc4ed19f4e53b87263c2f8d38 ]
 
-On an Intel tigerlake laptop a metric like:
+rx_create no longer allocates a modify_hdr instance that needs to be
+cleaned up. The mlx5_modify_header_dealloc call will lead to a NULL pointer
+dereference. A leak in the rules also previously occurred since there are
+now two rules populated related to status.
 
-    {
-        "BriefDescription": "Test",
-        "MetricExpr": "imc_free_running@data_read@ + imc_free_running@data_write@",
-        "MetricGroup": "Test",
-        "MetricName": "Test",
-        "ScaleUnit": "6.103515625e-5MiB"
-    },
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 109907067 P4D 109907067 PUD 116890067 PMD 0
+  Oops: 0000 [#1] SMP
+  CPU: 1 PID: 484 Comm: ip Not tainted 6.9.0-rc2-rrameshbabu+ #254
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+  RIP: 0010:mlx5_modify_header_dealloc+0xd/0x70
+  <snip>
+  Call Trace:
+   <TASK>
+   ? show_regs+0x60/0x70
+   ? __die+0x24/0x70
+   ? page_fault_oops+0x15f/0x430
+   ? free_to_partial_list.constprop.0+0x79/0x150
+   ? do_user_addr_fault+0x2c9/0x5c0
+   ? exc_page_fault+0x63/0x110
+   ? asm_exc_page_fault+0x27/0x30
+   ? mlx5_modify_header_dealloc+0xd/0x70
+   rx_create+0x374/0x590
+   rx_add_rule+0x3ad/0x500
+   ? rx_add_rule+0x3ad/0x500
+   ? mlx5_cmd_exec+0x2c/0x40
+   ? mlx5_create_ipsec_obj+0xd6/0x200
+   mlx5e_accel_ipsec_fs_add_rule+0x31/0xf0
+   mlx5e_xfrm_add_state+0x426/0xc00
+  <snip>
 
-Will have 4 events:
-
-  uncore_imc_free_running_0/data_read/
-  uncore_imc_free_running_0/data_write/
-  uncore_imc_free_running_1/data_read/
-  uncore_imc_free_running_1/data_write/
-
-If aggregration is disabled with metric-only 2 column headers are
-needed:
-
-  $ perf stat -M test --metric-only -A -a sleep 1
-
-   Performance counter stats for 'system wide':
-
-                    MiB  Test            MiB  Test
-  CPU0                 1821.0               1820.5
-
-But when not, the counts aggregated in the metric leader and only 1
-column should be shown:
-
-  $ perf stat -M test --metric-only -a sleep 1
-   Performance counter stats for 'system wide':
-
-              MiB  Test
-                5909.4
-
-         1.001258915 seconds time elapsed
-
-Achieve this by skipping events that aren't metric leaders when
-printing column headers and aggregation isn't disabled.
-
-The bug is long standing, the fixes tag is set to a refactor as that
-is as far back as is reasonable to backport.
-
-Fixes: 088519f318be3a41 ("perf stat: Move the display functions to stat-display.c")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kaige Ye <ye@kaige.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240510051309.2452468-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 94af50c0a9bb ("net/mlx5e: Unify esw and normal IPsec status table creation/destruction")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/stat-display.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index ef9a3df459657..9053db0dc00a1 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -1162,6 +1162,9 @@ static void print_metric_headers(struct perf_stat_config *config,
- 
- 	/* Print metrics headers only */
- 	evlist__for_each_entry(evlist, counter) {
-+		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
-+			continue;
-+
- 		os.evsel = counter;
- 
- 		if (!first && config->json_output)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+index 41a2543a52cda..e51b03d4c717f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+@@ -750,8 +750,7 @@ static int rx_create(struct mlx5_core_dev *mdev, struct mlx5e_ipsec *ipsec,
+ err_fs_ft:
+ 	if (rx->allow_tunnel_mode)
+ 		mlx5_eswitch_unblock_encap(mdev);
+-	mlx5_del_flow_rules(rx->status.rule);
+-	mlx5_modify_header_dealloc(mdev, rx->status.modify_hdr);
++	mlx5_ipsec_rx_status_destroy(ipsec, rx);
+ err_add:
+ 	mlx5_destroy_flow_table(rx->ft.status);
+ err_fs_ft_status:
 -- 
 2.43.0
 
