@@ -1,236 +1,90 @@
-Return-Path: <stable+bounces-48293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22568FE6E2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:56:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06AE08FE6EF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BEC4281EB2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 12:56:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F8671C225A0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 12:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B0E195B15;
-	Thu,  6 Jun 2024 12:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEB9195993;
+	Thu,  6 Jun 2024 12:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="NkFjAdcN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYZtp+rY"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38548194AE0;
-	Thu,  6 Jun 2024 12:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FD8195B24
+	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 12:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717678573; cv=none; b=b0uCKawWHj0VDa2+hLa5DK7k2rFZdGH7PHWYRnONyrs3pJ1Sb16NyLUtjYHe62VtF8OToPM58bL2Myiac37V1Uvk+vy0Obsy3KsXRS8qZxzO9ip1oQWmzXSi5ays7gK3oQQ/ibvTKE0dW16zDMMVTZNglKZop/tkx46vZOXxHqE=
+	t=1717678676; cv=none; b=jyNvzfTZzcoKi3uh0QvLuwX3zCbH1TSYtjBDjmVCfgrcRR2CnjkKT2tsuigO7fLUsv8E1qUZ4M8pc2NWjDS4HwG3Q/m+G6adYsMROAREk2Tt8d7pGV1A/n5NGSxCtFlRen5DeuqqHIEwiH+Jbmpn+a6/xto1OQHdBTv3TLAqS7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717678573; c=relaxed/simple;
-	bh=cEVrspVFLlAdphidp+ueWsk+T+6siYuuBszC9SCLjPA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=roYtEbAtGlSItyuV/G+sJgPIbqyUqLLXGc0h+HJdw+LSgFZWnI8yv7RzBP+I+XWvSIId78WNypSH03E0MUityzo098dmyMDXszz+ejb8xokUH8tBVgcJuXAoKV/Rn6iZywSmhonDOdPczDV28p9OCqRWhxvMeockiVVFgUZyOLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=NkFjAdcN; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=7vKOefyFBAgQHTWauKj2f/7nx/nSq5Db9+JQLNepCxI=;
-	b=NkFjAdcNw7otoFP2mDb40z6wy0AemNkZMbUqNiEAWPVCtw7rlEIHm6PcYvxV45
-	2YbCDdobn7pSYabxQC5utxRche3++3MgHfAdCsy0bYGpGb9YJc4EKnuCfJdghd27
-	0xybfgQNVlwEfYcgCR4y4XjcCwkj+UnG98B+0HpRUYdTE=
-Received: from [192.168.1.25] (unknown [183.195.6.89])
-	by gzga-smtp-mta-g2-4 (Coremail) with SMTP id _____wDXHyCPsWFm_XfQCA--.26956S2;
-	Thu, 06 Jun 2024 20:54:39 +0800 (CST)
-Message-ID: <fc035bd7-c9e3-458f-b419-f4ac50322d02@163.com>
-Date: Thu, 6 Jun 2024 20:54:39 +0800
+	s=arc-20240116; t=1717678676; c=relaxed/simple;
+	bh=8urW+UEzx2r9A/i0p9aGrUEYzALlG+oz6qViD5m/x00=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HB3f5t6LVZHfTYsK1ZKaT28ZJhJJglgTpLFMg228VdL9SS8uHQnFhePWsxiv+UooVPyBpHsttvSpfHt59P/3vYN7yeOFFb5JrxM/JKOgJ6MvjfamM2B9UMoDSasjbKkI8ybYqrCLwsQu8ccF9BRZUB32jjyAUekezocztWrDc4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYZtp+rY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDE1C2BD10;
+	Thu,  6 Jun 2024 12:57:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1717678675;
+	bh=8urW+UEzx2r9A/i0p9aGrUEYzALlG+oz6qViD5m/x00=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eYZtp+rYz9Y0rMVmCYjzFYJyZuF0PfccEL6i6z3gynRzhDMN6xXLHc2+bJInACwGi
+	 iclh7injxEv+4ibvP+vNdQnLuAhhH3Y7wScs+W+WwigACSy3LL2LprzJoq3sy7TPpW
+	 +CRg/JKq1SIwQeNZN1v3xXT5xhuYuztBS8f9GWQM=
+Date: Thu, 6 Jun 2024 14:57:53 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 6.8.y-and-older] ALSA: timer: Set lower bound of start
+ tick time
+Message-ID: <2024060648-truck-prototype-1292@gregkh>
+References: <20240527062431.18709-1-tiwai@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Bluetooth: qca: Fix BT enable failure again for
- QCA6390 after warm reboot
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Zijun Hu <quic_zijuhu@quicinc.com>, luiz.dentz@gmail.com,
- luiz.von.dentz@intel.com, marcel@holtmann.org
-Cc: linux-bluetooth@vger.kernel.org, wt@penguintechs.org,
- regressions@lists.linux.dev, pmenzel@molgen.mpg.de, stable@vger.kernel.org
-References: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
- <7927abbe-3395-4a53-9eed-7b4204d57df5@linaro.org>
- <29333872-4ff2-4f4e-8166-4c847c7605c1@163.com>
- <5df56d58-309a-4ff1-9a41-818a3f114bbb@linaro.org>
- <0618805b-2f7a-473d-b9fb-aea39a1ef659@163.com>
- <3d27add1-782c-4c19-9d84-d0074113c7a2@linaro.org>
-Content-Language: en-US
-From: Lk Sii <lk_sii@163.com>
-In-Reply-To: <3d27add1-782c-4c19-9d84-d0074113c7a2@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wDXHyCPsWFm_XfQCA--.26956S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Jw1rXw4rZr13WF1rWF1fXrb_yoWxuw1kpF
-	WUGF1Dtr4UJr1Fyr1Iyr1xKFyYywnrtF18Wrn8GrWUJa90vF1rJr4Iqr45uF98urWxWF1j
-	va1DX3sF9ryDCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYiiDUUUUU=
-X-CM-SenderInfo: 5onb2xrl6rljoofrz/1tbishL1NWVODiNtPwAAs0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240527062431.18709-1-tiwai@suse.de>
 
-
-
-On 2024/6/5 15:14, Krzysztof Kozlowski wrote:
-> On 05/06/2024 03:49, Lk Sii wrote:
->>
->>
->> On 2024/6/4 23:18, Krzysztof Kozlowski wrote:
->>> On 04/06/2024 16:25, Lk Sii wrote:
->>>>
->>>>
->>>> On 2024/5/22 00:02, Krzysztof Kozlowski wrote:
->>>>> On 16/05/2024 15:31, Zijun Hu wrote:
->>>>>> Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
->>>>>> serdev") will cause below regression issue:
->>>>>>
->>>>>> BT can't be enabled after below steps:
->>>>>> cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failure
->>>>>> if property enable-gpios is not configured within DT|ACPI for QCA6390.
->>>>>>
->>>>>> The commit is to fix a use-after-free issue within qca_serdev_shutdown()
->>>>>> by adding condition to avoid the serdev is flushed or wrote after closed
->>>>>> but also introduces this regression issue regarding above steps since the
->>>>>> VSC is not sent to reset controller during warm reboot.
->>>>>>
->>>>>> Fixed by sending the VSC to reset controller within qca_serdev_shutdown()
->>>>>> once BT was ever enabled, and the use-after-free issue is also fixed by
->>>>>> this change since the serdev is still opened before it is flushed or wrote.
->>>>>>
->>>>>> Verified by the reported machine Dell XPS 13 9310 laptop over below two
->>>>>> kernel commits:
->>>>>
->>>>> I don't understand how does it solve my question. I asked you: on which
->>>>> hardware did you, not the reporter, test?
->>>>> It seems Zijun did NOT perform any tests obviously.
->>>> All these tests were performed by reporter Wren with her machine
->>>> "Dell XPS 13 9310 laptop".
->>>
->>> Wren != Zijun.
->>>
->>>>
->>>> From previous discussion, it seems she have tested this change
->>>> several times with positive results over different trees with her
->>>> machine. i noticed she given you reply for your questions within
->>>> below v1 discussion link as following:
->>>>
->>>> Here are v1 discussion link.
->>>> https://lore.kernel.org/linux-bluetooth/d553edef-c1a4-4d52-a892-715549d31ebe@163.com/T/#m7371df555fd58ba215d0da63055134126a43c460
->>>>
->>>> Here are Krzysztof's questions.
->>>> "I asked already *two times*:
->>>> 1. On which kernel did you test it?
->>>> 2. On which hardware did you test it?"
->>>>
->>>> Here are Wren's reply for Krzysztof's questions
->>>> "I thought I had already chimed in with this information. I am using a
->>>> Dell XPS 13 9310. It's the only hardware I have access to. I can say
->>>> that the fix seems to work as advertised in that it fixes the warm boot
->>>> issue I have been experiencing."
->>>
->>> I asked Zijun, not Wren. I believe all this is tested or done by
->>> Qualcomm on some other kernel, so that's my question.
->>>
->> Zijun is the only guy from Qualcomm who ever joined our discussion,
->> he ever said he belongs to Bluetooth team, so let us suppose the term
->> "Qualcomm" you mentioned above is Zijun.
->>
->> from discussion history. in fact, ALL these tests were performed by
->> reporter Wren instead of Zijun, and there are also NOT Zijun's Tested-by
->> tag, so what you believe above is wrong in my opinion.
+On Mon, May 27, 2024 at 08:23:59AM +0200, Takashi Iwai wrote:
+> commit 4a63bd179fa8d3fcc44a0d9d71d941ddd62f0c4e upstream.
 > 
-> Patch author is supposed to test the code. Are you implying that
-> Qualcomm Bluetooth team cannot test the patch on any of Qualcomm
-> Bluetooth devices?
+> Currently ALSA timer doesn't have the lower limit of the start tick
+> time, and it allows a very small size, e.g. 1 tick with 1ns resolution
+> for hrtimer.  Such a situation may lead to an unexpected RCU stall,
+> where  the callback repeatedly queuing the expire update, as reported
+> by fuzzer.
 > 
-i guess Zijun did not test the patch on himself based on below reasons:
-1) the patch has been tested by reporter with report's machine.
-2) perhaps, Zijun is confident about his patch based on his experience.
-3) perhaps, it is difficult for Zijun to find a suitable machine to
-perform tests, and test machines must have QCA6390 *embedded* and use
-Bluez solution.
-
->>
->> Only Zijun and reporter were involved during those early debugging days,
->> Zijun shared changes for reporter to verify with reporter's machine,
->> then Zijun posted his fixes after debugging and verification were done.
->>
->>> That's important because Wren did not test particular scenarios, like
->>> PREEMPT_RT or RB5 hardware, but Zijun is claiming problems are solved.
->>> Maybe indeed solved, but if takes one month and still not answer which
->>> kernel you are using, then I am sure: this was nowhere tested by Zijun
->>> on the hardware and on the kernel the Qualcomm wants it to be.
->>>
->>>>
->>>>>> commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
->>>>>> implementation for QCA") of bluetooth-next tree.
->>>>>> commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
->>>>>> implementation for QCA") of linus mainline tree.
->>>>>
->>>>> ? Same commit with different hashes? No, it looks like you are working
->>>>> on some downstream tree with cherry picks.
->>>>>
->>>> From Zijun's commit message, for the same commit, it seems
->>>> bluetooth-next tree has different hashes as linus tree.
->>>> not sure if this scenario is normal during some time window.
->>>>> No, test it on mainline and answer finally, after *five* tries, which
->>>>> kernel and which hardware did you use for testing this.
->>>>>
->>>>>
->>>> it seems there are two issues mentioned with Zijun's commit message.
->>>> regression issue A:  BT enable failure after warm reboot.
->>>> issue B:  use-after-free issue, namely, kernel crash.
->>>>
->>>> @Krzysztof
->>>> which issue to test based on your concerns with mainline tree?
->>>
->>> No one tested this on non-laptop platform. Wren did not, which is fine.
->>> Qualcomm should, but since they avoid any talks about it for so long
->>> (plus pushy comments during review, re-spinning v1 suggesting entire
->>> discussion is gone), I do not trust their statements at all.
->>>
->>
->> For issue A:
->> reporter's tests are enough in my opinion.
->> Zijun ever said that "he known the root cause and this fix logic was
->> introduced from the very beginning when he saw reporter's issue
->> description" by below link:
->> https://lore.kernel.org/lkml/1d0878e0-d138-4de2-86b8-326ab9ebde3f@quicinc.com/
->>
->>> So really, did anything test it on any Qualcomm embedded platform?
->>> Anyone tested the actual race visible with PREEMPT_RT?
->>> For issue B, it was originally fixed and verified by you,
->> it is obvious for the root cause and current fix solution after
->> our discussion.
->>
->> luzi also ever tried to ask you if you have a chance to verify issue B
->> with your machine for this change.
+> This patch introduces a sanity check of the timer start tick time, so
+> that the system returns an error when a too small start size is set.
+> As of this patch, the lower limit is hard-coded to 100us, which is
+> small enough but can still work somehow.
 > 
-> I tried, but my setup is incomplete since ~half a year and will remain
-> probably for another short time, depending on ongoing work on power
-> sequencing. Therefore I cannot test whether anything improves or
-> deteriorates regarding this patch.
+> [ backport note: the error handling is changed, as the original commit
+>   is based on the recent cleanup with guard() in commit beb45974dd49
+>   -- tiwai ]
 > 
->>
->>> Why Zijun cannot provide answer on which kernel was it tested? Why the
->>> hardware cannot be mentioned?
->>>
->> i believe zijun never perform any tests for these two issues as
->> explained above.
+> Reported-by: syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/r/000000000000fa00a1061740ab6d@google.com
+> Cc: <stable@vger.kernel.org>
+> Link: https://lore.kernel.org/r/20240514182745.4015-1-tiwai@suse.de
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> ---
 > 
-> yeah, and that was worrying me.
->
-Only RB5 has QCA6390 *embedded* among DTS of mainline kernel, but we
-can't have a RB5 to test.
+> Greg, this is an alternative fix to the original cherry-pick; apply
+> to 6.8.y and older stable kernels.  Thanks!
 
-Don't worry about due to below points:
-1) Reporter have tested it with her machine
-2) issue B and relevant fix is obvious after discussion.
+Now queued up, thanks!
 
-> Best regards,
-> Krzysztof
-
+greg k-h
 
