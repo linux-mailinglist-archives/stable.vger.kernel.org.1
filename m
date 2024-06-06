@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0098FEB5B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E6F8FE8B3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF133B25315
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0012F1F23095
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607781A3BC6;
-	Thu,  6 Jun 2024 14:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6FC197A8C;
+	Thu,  6 Jun 2024 14:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zMIiU0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfODBir1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC5F196D8C;
-	Thu,  6 Jun 2024 14:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDB3196D9C;
+	Thu,  6 Jun 2024 14:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683241; cv=none; b=CHG6e9iMJl08NW3R3+aOcQXnHSYZUuYPZARidhjC52RufCIQqUPs4DdAuPg3lIs90PDVkH0jDwICBLgVEs46d8GvT32w7LG5kwPg7FG7lYznBhF/TGSGBZUV7J5umoAZVNxCmGAtqnIgq0yo0xfoRV8liM7UzZfEOD38rqs6XJ8=
+	t=1717682925; cv=none; b=TbKoTWvTVhC9GfTZZJ4dCrpGELtv2FlYac8sqkdZGTdyjKa7Z/9DafCbnRu+Xk9ChXS3+ARWY54dpjjRfy1Sxy+g86uvBi0diEaBPjpu/DPw1sCRxZEuKgjMAKbmjTN/7kp7D5iEjWV8h0p9Ar1Mh47QbIsQCvdEE3f1g1a6J3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683241; c=relaxed/simple;
-	bh=4JMXDTxMIHGogg4oNFkSoafb4b7Kx9TJM04XPSoz42c=;
+	s=arc-20240116; t=1717682925; c=relaxed/simple;
+	bh=zjBrndA/1If+XyHujUHWoFJhq1ijzP8xktear3SPFnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESlWKsWEfvARoiqTWNZhiGUi3toyB83Axa0sg0piHRJpRaRp4BzC51B5tFk0MvzXko7XSGmv1CrQ/2z+KKoRapa/QAW1iQTFqzUhj+DjGYS/kBadI/9BEPYp3q9bL92YuOQZ1am7kbqOAS8B5O5fNQoOJKlJojWJe57NIp+AX8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zMIiU0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F313DC2BD10;
-	Thu,  6 Jun 2024 14:14:00 +0000 (UTC)
+	 MIME-Version; b=qm9JUhdpdYhRLIjQ7zP3i4+CmLGgzqiD2AANsia+LFcYj5SBEYGMNzA03K7sSbcLstm0sAFzd5PVWNYE6N0bjz34/HfCdQ4UZ7Hywv0z9LOptFlMlH35PU5H8zrPTeUJZYqIu3dxI64CXgwC8fqPEAe1H3ZbceApgbQuWPTfO8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfODBir1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A228C32782;
+	Thu,  6 Jun 2024 14:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683241;
-	bh=4JMXDTxMIHGogg4oNFkSoafb4b7Kx9TJM04XPSoz42c=;
+	s=korg; t=1717682925;
+	bh=zjBrndA/1If+XyHujUHWoFJhq1ijzP8xktear3SPFnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zMIiU0wcf1eLzCtyXm57W4c0/lmiJ2fgEZqjJJrQdGLiDhWuMaXeK0gTZEeCmSxJ
-	 A9rJZqxXLluG7BCt5DroJZUuAKKcv/V8GFAp2+ze7PwrHAsSYvMckcjJXKG3Q81q3s
-	 J0vxcExE/6CBkRx2znPyEStk+MKDFQkXK2uh+1Qg=
+	b=OfODBir11dRrOM5I/SqjdD4rtiy5AVA/9Eb3cO8lBTBnETH0e7a1wB7eDJTrkMy3C
+	 7e/ApRt9SFP8SGK6eL54J/YQohFnOyRQGxRwMGJNhGsBpccF7kEinSE8sjGl+L1DCc
+	 UEgu+r7FrcdARKtz7D+pBxdbkKQP5sULJwOM92IA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/473] x86/boot/64: Clear most of CR4 in startup_64(), except PAE, MCE and LA57
+Subject: [PATCH 6.9 068/374] riscv: Flush the instruction cache during SMP bringup
 Date: Thu,  6 Jun 2024 16:00:47 +0200
-Message-ID: <20240606131703.841457054@linuxfoundation.org>
+Message-ID: <20240606131654.114336319@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit a0025f587c685e5ff842fb0194036f2ca0b6eaf4 ]
+[ Upstream commit 58661a30f1bcc748475ffd9be6d2fc9e4e6be679 ]
 
-The early 64-bit boot code must be entered with a 1:1 mapping of the
-bootable image, but it cannot operate without a 1:1 mapping of all the
-assets in memory that it accesses, and therefore, it creates such
-mappings for all known assets upfront, and additional ones on demand
-when a page fault happens on a memory address.
+Instruction cache flush IPIs are sent only to CPUs in cpu_online_mask,
+so they will not target a CPU until it calls set_cpu_online() earlier in
+smp_callin(). As a result, if instruction memory is modified between the
+CPU coming out of reset and that point, then its instruction cache may
+contain stale data. Therefore, the instruction cache must be flushed
+after the set_cpu_online() synchronization point.
 
-These mappings are created with the global bit G set, as the flags used
-to create page table descriptors are based on __PAGE_KERNEL_LARGE_EXEC
-defined by the core kernel, even though the context where these mappings
-are used is very different.
-
-This means that the TLB maintenance carried out by the decompressor is
-not sufficient if it is entered with CR4.PGE enabled, which has been
-observed to happen with the stage0 bootloader of project Oak. While this
-is a dubious practice if no global mappings are being used to begin
-with, the decompressor is clearly at fault here for creating global
-mappings and not performing the appropriate TLB maintenance.
-
-Since commit:
-
-  f97b67a773cd84b ("x86/decompressor: Only call the trampoline when changing paging levels")
-
-CR4 is no longer modified by the decompressor if no change in the number
-of paging levels is needed. Before that, CR4 would always be set to a
-consistent value with PGE cleared.
-
-So let's reinstate a simplified version of the original logic to put CR4
-into a known state, and preserve the PAE, MCE and LA57 bits, none of
-which can be modified freely at this point (PAE and LA57 cannot be
-changed while running in long mode, and MCE cannot be cleared when
-running under some hypervisors).
-
-This effectively clears PGE and works around the project Oak bug.
-
-Fixes: f97b67a773cd84b ("x86/decompressor: Only call the trampoline when ...")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20240410151354.506098-2-ardb+git@google.com
+Fixes: 08f051eda33b ("RISC-V: Flush I$ when making a dirty page executable")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20240327045035.368512-2-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/riscv/kernel/smpboot.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 0d7aef10b19ad..6bc70385314cb 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -390,6 +390,11 @@ SYM_CODE_START(startup_64)
- 	call	sev_enable
- #endif
+diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
+index d41090fc32035..4b3c50da48ba1 100644
+--- a/arch/riscv/kernel/smpboot.c
++++ b/arch/riscv/kernel/smpboot.c
+@@ -26,7 +26,7 @@
+ #include <linux/sched/task_stack.h>
+ #include <linux/sched/mm.h>
  
-+	/* Preserve only the CR4 bits that must be preserved, and clear the rest */
-+	movq	%cr4, %rax
-+	andl	$(X86_CR4_PAE | X86_CR4_MCE | X86_CR4_LA57), %eax
-+	movq	%rax, %cr4
-+
+-#include <asm/cpufeature.h>
++#include <asm/cacheflush.h>
+ #include <asm/cpu_ops.h>
+ #include <asm/irq.h>
+ #include <asm/mmu_context.h>
+@@ -234,9 +234,10 @@ asmlinkage __visible void smp_callin(void)
+ 	riscv_user_isa_enable();
+ 
  	/*
- 	 * configure_5level_paging() updates the number of paging levels using
- 	 * a trampoline in 32-bit addressable memory if the current number does
+-	 * Remote TLB flushes are ignored while the CPU is offline, so emit
+-	 * a local TLB flush right now just in case.
++	 * Remote cache and TLB flushes are ignored while the CPU is offline,
++	 * so flush them both right now just in case.
+ 	 */
++	local_flush_icache_all();
+ 	local_flush_tlb_all();
+ 	complete(&cpu_running);
+ 	/*
 -- 
 2.43.0
 
