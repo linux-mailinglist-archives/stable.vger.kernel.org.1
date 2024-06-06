@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-49814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA548FEEF7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397DF8FE9FA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B2031C2403E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C90861F27088
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBF91C8FD1;
-	Thu,  6 Jun 2024 14:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB67319D073;
+	Thu,  6 Jun 2024 14:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SekPs4nC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzGBVhTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2261A1885;
-	Thu,  6 Jun 2024 14:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0FB1974EC;
+	Thu,  6 Jun 2024 14:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683722; cv=none; b=Rl5PHSlYCYZKOcMhTXVWCVcP0pu2C702FkyjnDC/LdHNLONnjF03kLHMwtKTPfxIg4GjA2Y8ifOXYyBo3U5gy8s+njR1b1RbuZ7Uba4MlZuTPXdTVLc+NqXTvTx5V1MSZBmA7YenEeK551nsCvYf8bl/gzMGJHwRkEWoogqvIyo=
+	t=1717683087; cv=none; b=FCuz9i6qgSoPYlR7HCsnfb/KVbz5Gh51VU2xPaCZv7KbyCw8xRnCX3d4dSIZp7WRrKIVYEjV6wLrhWlr1lmJPLmnoYAqXTZWQQJtqD2xSU3nG5R8AATDqYF7uZB5CFknbKVY4KjamunRBJZWjj3FHuTsy1x/8qKz/pn7EJZUfzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683722; c=relaxed/simple;
-	bh=SNyMhUBllmjX//CYwBHp78eHQ4yhW5KXyZkk0H9zqss=;
+	s=arc-20240116; t=1717683087; c=relaxed/simple;
+	bh=kt3IOSaS6b32Gxy03Tt840TQeGNNbZ5CY8L/Vfe1uek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uM9P7fXUmV92VQuzOrFK1ZoeSXIHUWozlRBxTiBHg6q20u3gH4WyXXLppu4VP0kueV4WY2OTaD71L4+b0ROT8qZC3h8ok99gGrslEYYcCl0jBhcizibr3P3bA7tpnrZukG+snyulXrU8pLfHBy4wtcCsOG7Bih6HWR8UFUbMkBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SekPs4nC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56725C2BD10;
-	Thu,  6 Jun 2024 14:22:02 +0000 (UTC)
+	 MIME-Version; b=AV+ME4s2KfVlOdzXjyZJo8/XzPQ3N6dIJqv9+fQGTGCO16MZ8Hp2n7lYSa6xFbibp28aV1IXaBJYcHektSu5+3wSXN1ppI0C2DUMxFmoHhxM5iHSutq3ITm/JLAWRAF3AyzYFZBoVg8HAnyn1VMWDAbbgWyWzwch6GhZC/00Mx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzGBVhTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A59DC32781;
+	Thu,  6 Jun 2024 14:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683722;
-	bh=SNyMhUBllmjX//CYwBHp78eHQ4yhW5KXyZkk0H9zqss=;
+	s=korg; t=1717683087;
+	bh=kt3IOSaS6b32Gxy03Tt840TQeGNNbZ5CY8L/Vfe1uek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SekPs4nCSlDLrnao3NqTGCnSVLsHID6ay7fDvN+cpFPVUbEK1y7sV0iEufreSB3jI
-	 poXBUvhPBtOBtzpS/9i/kJpJ+E3+4fn+M5zqlrNNkzc6WhpPsVPAMsGqqQ4DZpeP2S
-	 9IqtHFgAfFVouTRicvZd/Fe7DA8kXJrZza1Q4oG4=
+	b=CzGBVhTMo2cpI/KsQZkveGHvgyPoJJh04P6thQIp1Htlop8gagps0ZNswy3GJqJrh
+	 3PctCdFIXR7X3lr8YnHcuEedrvTzozgixcnZfj+iHaaXJYklywy3kuAyoMG83cuOPK
+	 agWQErFsV2qJszdalkyCVHlWcvoO3J1ETCY00C/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Gerald Loacker <gerald.loacker@wolfvision.net>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 666/744] nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()
+Subject: [PATCH 6.9 359/374] drm/panel: sitronix-st7789v: tweak timing for jt240mhqs_hwt_ek_e3 panel
 Date: Thu,  6 Jun 2024 16:05:38 +0200
-Message-ID: <20240606131753.831535983@linuxfoundation.org>
+Message-ID: <20240606131703.909785758@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Gerald Loacker <gerald.loacker@wolfvision.net>
 
-[ Upstream commit 6671e352497ca4bb07a96c48e03907065ff77d8a ]
+[ Upstream commit 2ba50582634d0bfe3a333ab7575a7f0122a7cde8 ]
 
-When nci_rx_work() receives a zero-length payload packet, it should not
-discard the packet and exit the loop. Instead, it should continue
-processing subsequent packets.
+Use the default timing parameters to get a refresh rate of about 60 Hz for
+a clock of 6 MHz.
 
-Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240521153444.535399-1-ryasuoka@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0fbbe96bfa08 ("drm/panel: sitronix-st7789v: add jasonic jt240mhqs-hwt-ek-e3 support")
+Signed-off-by: Gerald Loacker <gerald.loacker@wolfvision.net>
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://lore.kernel.org/r/20240409-bugfix-jt240mhqs_hwt_ek_e3-timing-v2-2-e4821802443d@wolfvision.net
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240409-bugfix-jt240mhqs_hwt_ek_e3-timing-v2-2-e4821802443d@wolfvision.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-sitronix-st7789v.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index f350c5fb992ec..c4d2932c59032 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1531,8 +1531,7 @@ static void nci_rx_work(struct work_struct *work)
- 
- 		if (!nci_valid_size(skb)) {
- 			kfree_skb(skb);
--			kcov_remote_stop();
--			break;
-+			continue;
- 		}
- 
- 		/* Process frame */
+diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7789v.c b/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
+index 32e5c03480381..c7e3f1280404d 100644
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
+@@ -282,9 +282,9 @@ static const struct drm_display_mode et028013dma_mode = {
+ static const struct drm_display_mode jt240mhqs_hwt_ek_e3_mode = {
+ 	.clock = 6000,
+ 	.hdisplay = 240,
+-	.hsync_start = 240 + 28,
+-	.hsync_end = 240 + 28 + 10,
+-	.htotal = 240 + 28 + 10 + 10,
++	.hsync_start = 240 + 38,
++	.hsync_end = 240 + 38 + 10,
++	.htotal = 240 + 38 + 10 + 10,
+ 	.vdisplay = 280,
+ 	.vsync_start = 280 + 48,
+ 	.vsync_end = 280 + 48 + 4,
 -- 
 2.43.0
 
