@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-49464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5934F8FED5B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F978FE8EC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6757281C29
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20C4DB2194A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6881BA880;
-	Thu,  6 Jun 2024 14:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1843A1990A5;
+	Thu,  6 Jun 2024 14:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKChoL1J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hoqRtlu9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0701BA874;
-	Thu,  6 Jun 2024 14:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4D41974FE;
+	Thu,  6 Jun 2024 14:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683478; cv=none; b=TtHM+an+FBBkD6yLFtT+wVrxFs3VT2wY/R66Own1mveDAYZO+If1biOKLI15b/zp/BpVk1kxepUrtNkgF/0bfIwJv/mPQCIjXd2Hudsl5b1c9HEEP3jc0ajIg/D9oV4XyV63goZ9p5xlZBcyomD2y7y/IhnrWlcleTsxxxPBHYc=
+	t=1717682951; cv=none; b=CDAlpeZkeD3BW0rNyDLpL1d7g4T7j6WzzZIk16EVn51BXpQAJ1jOlGXUaQuCHl7Ssy1ENYIL5XiyRey0lLqdgZ21jv2Xlsa1lrhHtfdY0+MbS2Z+o8P9RR6ecALPlGJ5U4kZDLoWODcVB1B6QcjTpogKD+d0QAP+BlGP/yWxxqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683478; c=relaxed/simple;
-	bh=y5QpPNJp+P9ftLCnVSVdRXBATFt/D8Wq4+FK6iurgNI=;
+	s=arc-20240116; t=1717682951; c=relaxed/simple;
+	bh=sbZL2tFMaXilo7/2mjASPKfh9IeFVJFOQxKaKFsdQeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lzRX/R63/KZ1jH+PWV5/GMGmkndaK/k3NhM7Eazco9DeQZIPZRgC9yXsmLAeRX+tqcy9EkxlMzN5f4vNhyIeDxwvmO9oxOpvAvIlxKKILhJ4fZ5lW423vWbtfiB+fLESjmufYzmqlLLd3xS48Nqok8iMiwOQAZ9YE/M2OGGOkXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKChoL1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619EDC2BD10;
-	Thu,  6 Jun 2024 14:17:58 +0000 (UTC)
+	 MIME-Version; b=TSIiv9u1aVLR5sXnx5/vEeqhJXJkFu5Neh830Ep9ybVa5yvNMw7CHTrjZKJfO5N+EQc6p8ehCfSd+vhl5/bMJsPi7AG2tXtL7tYNO+/oawgTOU6FPIEfeS8Xj5xqFxmJTqjDka3fd3gUtW+otQWrsHo+RvB/WPIx9Q6H16l1Bys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hoqRtlu9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D511C32781;
+	Thu,  6 Jun 2024 14:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683478;
-	bh=y5QpPNJp+P9ftLCnVSVdRXBATFt/D8Wq4+FK6iurgNI=;
+	s=korg; t=1717682951;
+	bh=sbZL2tFMaXilo7/2mjASPKfh9IeFVJFOQxKaKFsdQeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKChoL1JFnjOPYV1kPxVTvWciYnoW1gO34uXHE9lKfm7ExGhZJgUlFknvbCgv89N2
-	 655QRH2T+ZP43VybmkNrHiprGsSKsj6gWmrp+zeA0qdjOi/1ObRPLYdvY6Gn3dl2Ih
-	 PCS0hxlEmXgFL5lzpvXTC8plPE+KbE8id5/6fnpA=
+	b=hoqRtlu9kZ+eT/ITYeie01bFVgdrKSoinz6XKoNq6S1JpKQ6VZcbQ3YT3kCbBRpGJ
+	 cG/f0Y2paf4IXllIosjkl9o1yt+miZOJ2dSAKlfcW+oxlKRNiruWgfWUL3aDZ1oteZ
+	 kXSQndHgvpfqrMM7VFbprwNtUKBNgtlKArdTfOF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Luis Chamberlain <mcgrof@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 421/744] module: dont ignore sysfs_create_link() failures
-Date: Thu,  6 Jun 2024 16:01:33 +0200
-Message-ID: <20240606131745.978705388@linuxfoundation.org>
+Subject: [PATCH 6.9 115/374] libsubcmd: Fix parse-options memory leak
+Date: Thu,  6 Jun 2024 16:01:34 +0200
+Message-ID: <20240606131655.780401113@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,157 +71,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 85d2b0aa170351380be39fe4ff7973df1427fe76 ]
+[ Upstream commit 230a7a71f92212e723fa435d4ca5922de33ec88a ]
 
-The sysfs_create_link() return code is marked as __must_check, but the
-module_add_driver() function tries hard to not care, by assigning the
-return code to a variable. When building with 'make W=1', gcc still
-warns because this variable is only assigned but not used:
+If a usage string is built in parse_options_subcommand, also free it.
 
-drivers/base/module.c: In function 'module_add_driver':
-drivers/base/module.c:36:6: warning: variable 'no_warn' set but not used [-Wunused-but-set-variable]
-
-Rework the code to properly unwind and return the error code to the
-caller. My reading of the original code was that it tries to
-not fail when the links already exist, so keep ignoring -EEXIST
-errors.
-
-Fixes: e17e0f51aeea ("Driver core: show drivers in /sys/module/")
-See-also: 4a7fb6363f2d ("add __must_check to device management code")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Link: https://lore.kernel.org/r/20240408080616.3911573-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 901421a5bdf605d2 ("perf tools: Remove subcmd dependencies on strbuf")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240509052015.1914670-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/base.h   |  9 ++++++---
- drivers/base/bus.c    |  9 ++++++++-
- drivers/base/module.c | 42 +++++++++++++++++++++++++++++++-----------
- 3 files changed, 45 insertions(+), 15 deletions(-)
+ tools/lib/subcmd/parse-options.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/base.h b/drivers/base/base.h
-index eb4c0ace92420..a8e3d8165232f 100644
---- a/drivers/base/base.h
-+++ b/drivers/base/base.h
-@@ -192,11 +192,14 @@ extern struct kset *devices_kset;
- void devices_kset_move_last(struct device *dev);
- 
- #if defined(CONFIG_MODULES) && defined(CONFIG_SYSFS)
--void module_add_driver(struct module *mod, struct device_driver *drv);
-+int module_add_driver(struct module *mod, struct device_driver *drv);
- void module_remove_driver(struct device_driver *drv);
- #else
--static inline void module_add_driver(struct module *mod,
--				     struct device_driver *drv) { }
-+static inline int module_add_driver(struct module *mod,
-+				    struct device_driver *drv)
-+{
-+	return 0;
-+}
- static inline void module_remove_driver(struct device_driver *drv) { }
- #endif
- 
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index 84a21084d67d1..d7c4330786cae 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -674,7 +674,12 @@ int bus_add_driver(struct device_driver *drv)
- 		if (error)
- 			goto out_del_list;
- 	}
--	module_add_driver(drv->owner, drv);
-+	error = module_add_driver(drv->owner, drv);
-+	if (error) {
-+		printk(KERN_ERR "%s: failed to create module links for %s\n",
-+			__func__, drv->name);
-+		goto out_detach;
-+	}
- 
- 	error = driver_create_file(drv, &driver_attr_uevent);
- 	if (error) {
-@@ -699,6 +704,8 @@ int bus_add_driver(struct device_driver *drv)
- 
- 	return 0;
- 
-+out_detach:
-+	driver_detach(drv);
- out_del_list:
- 	klist_del(&priv->knode_bus);
- out_unregister:
-diff --git a/drivers/base/module.c b/drivers/base/module.c
-index 46ad4d636731d..a1b55da07127d 100644
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -30,14 +30,14 @@ static void module_create_drivers_dir(struct module_kobject *mk)
- 	mutex_unlock(&drivers_dir_mutex);
- }
- 
--void module_add_driver(struct module *mod, struct device_driver *drv)
-+int module_add_driver(struct module *mod, struct device_driver *drv)
+diff --git a/tools/lib/subcmd/parse-options.c b/tools/lib/subcmd/parse-options.c
+index 9fa75943f2ed1..d943d78b787ed 100644
+--- a/tools/lib/subcmd/parse-options.c
++++ b/tools/lib/subcmd/parse-options.c
+@@ -633,11 +633,10 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
+ 			const char *const subcommands[], const char *usagestr[], int flags)
  {
- 	char *driver_name;
--	int no_warn;
- 	struct module_kobject *mk = NULL;
-+	int ret;
+ 	struct parse_opt_ctx_t ctx;
++	char *buf = NULL;
  
- 	if (!drv)
--		return;
-+		return 0;
+ 	/* build usage string if it's not provided */
+ 	if (subcommands && !usagestr[0]) {
+-		char *buf = NULL;
+-
+ 		astrcatf(&buf, "%s %s [<options>] {", subcmd_config.exec_name, argv[0]);
  
- 	if (mod)
- 		mk = &mod->mkobj;
-@@ -56,17 +56,37 @@ void module_add_driver(struct module *mod, struct device_driver *drv)
+ 		for (int i = 0; subcommands[i]; i++) {
+@@ -679,7 +678,10 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
+ 			astrcatf(&error_buf, "unknown switch `%c'", *ctx.opt);
+ 		usage_with_options(usagestr, options);
  	}
- 
- 	if (!mk)
--		return;
-+		return 0;
-+
-+	ret = sysfs_create_link(&drv->p->kobj, &mk->kobj, "module");
-+	if (ret)
-+		return ret;
- 
--	/* Don't check return codes; these calls are idempotent */
--	no_warn = sysfs_create_link(&drv->p->kobj, &mk->kobj, "module");
- 	driver_name = make_driver_name(drv);
--	if (driver_name) {
--		module_create_drivers_dir(mk);
--		no_warn = sysfs_create_link(mk->drivers_dir, &drv->p->kobj,
--					    driver_name);
--		kfree(driver_name);
-+	if (!driver_name) {
-+		ret = -ENOMEM;
-+		goto out;
+-
++	if (buf) {
++		usagestr[0] = NULL;
++		free(buf);
 +	}
-+
-+	module_create_drivers_dir(mk);
-+	if (!mk->drivers_dir) {
-+		ret = -EINVAL;
-+		goto out;
- 	}
-+
-+	ret = sysfs_create_link(mk->drivers_dir, &drv->p->kobj, driver_name);
-+	if (ret)
-+		goto out;
-+
-+	kfree(driver_name);
-+
-+	return 0;
-+out:
-+	sysfs_remove_link(&drv->p->kobj, "module");
-+	sysfs_remove_link(mk->drivers_dir, driver_name);
-+	kfree(driver_name);
-+
-+	return ret;
+ 	return parse_options_end(&ctx);
  }
  
- void module_remove_driver(struct device_driver *drv)
 -- 
 2.43.0
 
