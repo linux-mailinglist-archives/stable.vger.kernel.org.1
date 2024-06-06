@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-48918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E8B8FEB1B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 698CF8FE895
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60899B25655
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03602282DC4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1C41A2FA3;
-	Thu,  6 Jun 2024 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0234196C9D;
+	Thu,  6 Jun 2024 14:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdSa1ByP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wvz50Ufk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DC11A2FA1;
-	Thu,  6 Jun 2024 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D564196C8E;
+	Thu,  6 Jun 2024 14:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683211; cv=none; b=cBRS5gztm+L6FbCH+UpQP5cLcO9F2wYVYLU4K9rvZ5d/6KOhTAJlWR0975lsHJqJ6TCb+1exQcT+Kj2+qW8q/5tBbFBRZWBk++vucqkMa1whVM2TPMFF3Z+dubHO75PNmxlmkacnopJ3LEuynhonZnrKPd9vQUT2+p7SzjKzD7g=
+	t=1717682911; cv=none; b=H0nIUliOf0l+cra+Fu12/d7MuAtj3hWHzN5DFIDC4QgpHrkiI6SxO7pSfqNN+aMzzlhd7ox1uSekA996gKgyPjogwdjJifQmksh185knTZwYaSITFABO3TLDf8msSjdydCnssJQer2pfHj68vUW+74/0SggiGZgz0kaDAYecxl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683211; c=relaxed/simple;
-	bh=px5O5FzFgfF6kbFfrBUyKiHHXU5Hy3ge66X7SCtfBOs=;
+	s=arc-20240116; t=1717682911; c=relaxed/simple;
+	bh=riZKrwtWSBYsfcXp+F+AlCHPquwZO6WXpAuPxn2W9/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvadmaCg2dMxX44G7NVpH07Yv6AHJP5IEDLbT3Djj8zoJy/102tTc56iMoGyaEyI5A08FTSKmUjM6crLRNZpj22j1EjZ5FzT9ZQFXdK6nn7tMkZk73Vu62LSxBTKlLiJQsNpRknoVHwY5kyW8HwpTXcA/ZM5jy6m+3LlMjnJfew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdSa1ByP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF86C2BD10;
-	Thu,  6 Jun 2024 14:13:30 +0000 (UTC)
+	 MIME-Version; b=aPL3r2OkCg5J4IKaCRyA6Xi2jznbE6hkfmDhK8C1D9iSXtr/9f9HxGfyOYwAFUNLS9+GjCk8sPReosxsEJ5pLiZNnp1y/DRPP9KdndGOvKopc2RmtgRKZu9vUj0u/eNpPvHG8s7TjSBrahV+1ugWDjx4xq+2h60CpIRz1OSuXfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wvz50Ufk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393D3C2BD10;
+	Thu,  6 Jun 2024 14:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683211;
-	bh=px5O5FzFgfF6kbFfrBUyKiHHXU5Hy3ge66X7SCtfBOs=;
+	s=korg; t=1717682911;
+	bh=riZKrwtWSBYsfcXp+F+AlCHPquwZO6WXpAuPxn2W9/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VdSa1ByPfu3aevvBxJ7hszLQ1zcVEV+kWtyJZ9xttAfXSlHRGpXOnoHCAFK0aij3v
-	 6ExS+oEta4AADglYXa1p4M5Fkc0j0qqQ7TKlP6pWK6a5xyP8IIVzFOh1dMx9yMhUDR
-	 35YRzyYtco+VbO6JyAiAv0fP2TD6gIFtwvkBUrKM=
+	b=Wvz50UfkCFk2yLdmxUsWLWEHdfeWIZIsdn+2F6J8RaL3UGeT+efJtaKmkzOpiapP3
+	 Bkmd9uOQOaHFY3ftjOJ7Ce/JTLDdg9Uk9PlBu+70SOGG9oZeOe8njEakpBdeR+4jJo
+	 qymvdZRfiUKfcpX2h8O+f2mgyssVEja9WVnTmndM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andrei Vagin <avagin@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Kees Kook <keescook@chromium.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/473] block: open code __blk_account_io_done()
-Date: Thu,  6 Jun 2024 16:00:17 +0200
-Message-ID: <20240606131702.815071799@linuxfoundation.org>
+Subject: [PATCH 6.9 039/374] perf bench uprobe: Remove lib64 from libc.so.6 binary path
+Date: Thu,  6 Jun 2024 16:00:18 +0200
+Message-ID: <20240606131653.131857387@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +72,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kulkarni <kch@nvidia.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 06965037ce942500c1ce3aa29ca217093a9c5720 ]
+[ Upstream commit 459fee7b508231cd4622b3bd94aaa85e8e16b888 ]
 
-There is only one caller for __blk_account_io_done(), the function
-is small enough to fit in its caller blk_account_io_done().
+bpf_program__attach_uprobe_opts will search LD_LIBRARY_PATH and so
+specifying `/lib64` is unnecessary and causes failures for libc.so.6
+paths like `/lib/x86_64-linux-gnu/libc.so.6`.
 
-Remove the function and opencode in the its caller
-blk_account_io_done().
-
-Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20230327073427.4403-2-kch@nvidia.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 99dc422335d8 ("block: support to account io_ticks precisely")
+Fixes: 7b47623b8cae8149 ("perf bench uprobe trace_printk: Add entry attaching an BPF program that does a trace_printk")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andrei Vagin <avagin@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Kees Kook <keescook@chromium.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240406040911.1603801-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ tools/perf/bench/uprobe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 33ac49dc775d7..355c4c52065b8 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -971,17 +971,6 @@ bool blk_update_request(struct request *req, blk_status_t error,
- }
- EXPORT_SYMBOL_GPL(blk_update_request);
- 
--static void __blk_account_io_done(struct request *req, u64 now)
--{
--	const int sgrp = op_stat_group(req_op(req));
--
--	part_stat_lock();
--	update_io_ticks(req->part, jiffies, true);
--	part_stat_inc(req->part, ios[sgrp]);
--	part_stat_add(req->part, nsecs[sgrp], now - req->start_time_ns);
--	part_stat_unlock();
--}
--
- static inline void blk_account_io_done(struct request *req, u64 now)
- {
- 	/*
-@@ -990,8 +979,15 @@ static inline void blk_account_io_done(struct request *req, u64 now)
- 	 * containing request is enough.
- 	 */
- 	if (blk_do_io_stat(req) && req->part &&
--	    !(req->rq_flags & RQF_FLUSH_SEQ))
--		__blk_account_io_done(req, now);
-+	    !(req->rq_flags & RQF_FLUSH_SEQ)) {
-+		const int sgrp = op_stat_group(req_op(req));
-+
-+		part_stat_lock();
-+		update_io_ticks(req->part, jiffies, true);
-+		part_stat_inc(req->part, ios[sgrp]);
-+		part_stat_add(req->part, nsecs[sgrp], now - req->start_time_ns);
-+		part_stat_unlock();
-+	}
- }
- 
- static inline void blk_account_io_start(struct request *req)
+diff --git a/tools/perf/bench/uprobe.c b/tools/perf/bench/uprobe.c
+index 5c71fdc419dd7..b722ff88fe7de 100644
+--- a/tools/perf/bench/uprobe.c
++++ b/tools/perf/bench/uprobe.c
+@@ -47,7 +47,7 @@ static const char * const bench_uprobe_usage[] = {
+ #define bench_uprobe__attach_uprobe(prog) \
+ 	skel->links.prog = bpf_program__attach_uprobe_opts(/*prog=*/skel->progs.prog, \
+ 							   /*pid=*/-1, \
+-							   /*binary_path=*/"/lib64/libc.so.6", \
++							   /*binary_path=*/"libc.so.6", \
+ 							   /*func_offset=*/0, \
+ 							   /*opts=*/&uprobe_opts); \
+ 	if (!skel->links.prog) { \
 -- 
 2.43.0
 
