@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-48418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410EC8FE8EF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B508FED63
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C09DCB219B4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D463C280DCE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A582197506;
-	Thu,  6 Jun 2024 14:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480EE1BA88F;
+	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9uLV8JG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLWL2IUH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1BA19750D;
-	Thu,  6 Jun 2024 14:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051041BA874;
+	Thu,  6 Jun 2024 14:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682953; cv=none; b=fYfuvydletTCOEIkyv0vSe5usLHh6HjPhAdJS5/1pEojqcjm6mHXgQqSSb+mGcc6/gen5waQ8NUj/FAOCBFL/56tGeDQbb8pTAjsCfWWHcCdUXiKV+ahOxNBU9yjsE1PmxzVqeCESzGK9kagTolOxSacLus875jZg0g3rtVq9ws=
+	t=1717683483; cv=none; b=TY+IJeRWJVPX/LCEQtXgxCi5DkmD0avFY262MqYoA+MWl3qU53jDu5efUj2GEbhJw2xVV5qZg4vKJSYGwuvQN7HLdCCH716uoO0F36aINPrWLxHKDcmPNqq0yYqeuZGmINxHK5a+Lx4OMkr2IPkrJs8nPbH9Wr7g5voeKS4ThdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682953; c=relaxed/simple;
-	bh=AzpNvo/aLXW2BV65ih4uprZcnwasEmpm5Yz3K/7BSMQ=;
+	s=arc-20240116; t=1717683483; c=relaxed/simple;
+	bh=oCHuV+thutJFrxTDxP18ehnQkZHPJH5d9jU5rAL6ssM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eh0Esaa+n9S9WS1UxPAMJxMMNygsIbVtzCXkEQP1OaZ3Lh4M6kyQkUmnDDlNEEriX/pZYLx8zLiUnb8vemg1DmaQWrVzZtXyfcqJyzeG0ubBI2i7tJpYklF3S7cGHOgxc8ehDbgKDsATvakDZ4020GTrxWBmcd0MqwIeExKvvvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9uLV8JG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B43EC2BD10;
-	Thu,  6 Jun 2024 14:09:13 +0000 (UTC)
+	 MIME-Version; b=Fka7qS74XoU5e6vLbycBEMEgh6pwLp2U7j2loWAxI2yXr1UJlHsLLtvgNj9ElEn8/BK778dTCirATyLPWJEeckN7yw2Vvx5d6kLaO5aTJU8bcAZAgELtzVhURSUVOAb5UlsO2zcE7OmACwHvAvJFTEs0bX1KvMOl1YlFAXWpP90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLWL2IUH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B9BC2BD10;
+	Thu,  6 Jun 2024 14:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682953;
-	bh=AzpNvo/aLXW2BV65ih4uprZcnwasEmpm5Yz3K/7BSMQ=;
+	s=korg; t=1717683482;
+	bh=oCHuV+thutJFrxTDxP18ehnQkZHPJH5d9jU5rAL6ssM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9uLV8JGWiRmR3L2HzAYVAvFhmZ8KexO31KsXQnEgkLQMTdIgyUo0329ZdAozwFPx
-	 XBcBtJS+kEIJlIdO7usOlVStNaSQfoAYB2yiT4jCyp6kWHIx26vKR6hlUvLEC+cUxI
-	 j5BsJ9MiANTxHz2H9fLjBXvyvZHzwGhiFOvkiLXc=
+	b=hLWL2IUHuCjxHag22jAhJyfqY0VZVjmUxwGAxSisckLIYep/FRTG8QvrfzfZZMOxx
+	 UVzgJApipRcn06h9E92Y3KFsvxE+nng/K/3gSYn3HXdy6nRilQff/Xm5htdzhEhW/R
+	 Ov81pqcWNJ3lCXv27s4i4h3kEiHHOLaBee+GmLTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Spoorthy S <spoorts2@in.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 118/374] f2fs: fix to add missing iput() in gc_data_segment()
+Subject: [PATCH 6.6 425/744] perf tests: Apply attributes to all events in object code reading test
 Date: Thu,  6 Jun 2024 16:01:37 +0200
-Message-ID: <20240606131655.878939084@linuxfoundation.org>
+Message-ID: <20240606131746.103852738@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +74,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit a798ff17cd2dabe47d5d4ed3d509631793c36e19 ]
+[ Upstream commit 2dade41a533f337447b945239b87ff31a8857890 ]
 
-During gc_data_segment(), if inode state is abnormal, it missed to call
-iput(), fix it.
+PERF_PMU_CAP_EXTENDED_HW_TYPE results in multiple events being opened on
+heterogeneous systems. Currently this test only sets its required
+attributes on the first event. Not disabling enable_on_exec on the other
+events causes the test to fail because the forked objdump processes are
+sampled. No tracking event is opened so Perf only knows about its own
+mappings causing the objdump samples to give the following error:
 
-Fixes: b73e52824c89 ("f2fs: reposition unlock_new_inode to prevent accessing invalid inode")
-Fixes: 9056d6489f5a ("f2fs: fix to do sanity check on inode type during garbage collection")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+  $ perf test -vvv "object code reading"
+
+  Reading object code for memory address: 0xffff9aaa55ec
+  thread__find_map failed
+  ---- end(-1) ----
+  24: Object code reading              : FAILED!
+
+Fixes: 251aa040244a3b17 ("perf parse-events: Wildcard most "numeric" events")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: James Clark <james.clark@arm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linux.dev>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Spoorthy S <spoorts2@in.ibm.com>
+Link: https://lore.kernel.org/r/20240410103458.813656-3-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/perf/tests/code-reading.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 8852814dab7f6..e86c7f01539a7 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1554,10 +1554,15 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- 			int err;
+diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-reading.c
+index ed3815163d1be..ff249555ca57a 100644
+--- a/tools/perf/tests/code-reading.c
++++ b/tools/perf/tests/code-reading.c
+@@ -657,11 +657,11 @@ static int do_test_code_reading(bool try_kcore)
  
- 			inode = f2fs_iget(sb, dni.ino);
--			if (IS_ERR(inode) || is_bad_inode(inode) ||
--					special_file(inode->i_mode))
-+			if (IS_ERR(inode))
- 				continue;
+ 		evlist__config(evlist, &opts, NULL);
  
-+			if (is_bad_inode(inode) ||
-+					special_file(inode->i_mode)) {
-+				iput(inode);
-+				continue;
-+			}
-+
- 			err = f2fs_gc_pinned_control(inode, gc_type, segno);
- 			if (err == -EAGAIN) {
- 				iput(inode);
+-		evsel = evlist__first(evlist);
+-
+-		evsel->core.attr.comm = 1;
+-		evsel->core.attr.disabled = 1;
+-		evsel->core.attr.enable_on_exec = 0;
++		evlist__for_each_entry(evlist, evsel) {
++			evsel->core.attr.comm = 1;
++			evsel->core.attr.disabled = 1;
++			evsel->core.attr.enable_on_exec = 0;
++		}
+ 
+ 		ret = evlist__open(evlist);
+ 		if (ret < 0) {
 -- 
 2.43.0
 
