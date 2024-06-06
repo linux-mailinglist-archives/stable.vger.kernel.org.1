@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-48590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88258FE9A6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7826A8FEEAE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C20C28869B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 122C31F24D54
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B72198A09;
-	Thu,  6 Jun 2024 14:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBCA19AD92;
+	Thu,  6 Jun 2024 14:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuzKJCtu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ver3UCtb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15CF19AD8E;
-	Thu,  6 Jun 2024 14:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C44A1991DC;
+	Thu,  6 Jun 2024 14:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683050; cv=none; b=WB6Uk6MC0NKvzVtnUk6MS/vCKlQOOk7FK2Cx1NuNRrJNIAI7/yWf/2Oh3sUwnuNl6ukivIeL4XqI96znEHdtZ658UqegSL1bXCAnYmllbzfgLZbBS9F+LkmiClxmurNhNnu8v56+33ENDO5XdfJnZtkrv7zMJ8k1lFLpgPA08hw=
+	t=1717683689; cv=none; b=ejXkuO7kPOiWj7eOZfERuRuSj07ODlN5RusuauyB7iG/NX948FvzWNO3B6ODminZrIc5amFwDFGx8lKjPMGSW9k6TnNBHNCIAQs98EiWtM7ulhrUbZFo8vK/tgAjmBaBIGGwcySc5HqlQYk7hsKIcUnQ0ObHicX6tQ7KQ+nsF+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683050; c=relaxed/simple;
-	bh=kXO5xOqv9ZcFrBlSOqL/HYzG3MP9csIy3z0kG/7LA/Q=;
+	s=arc-20240116; t=1717683689; c=relaxed/simple;
+	bh=bfPFfobAfAA/pjC15vFBV/NqbzeIs7LlE+nk5fmKRB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCDEYkvqixq58Ljz6DCBrNvkpcnvbOVP2qY/UZrexwfHvHdSQvXvgBlYT2KcxsyCd5Mn6MIoUphmANCyIbnv26+Ql//UB2fCq+mUua7LwJQmVtP1oa5dgb5PGGhvAmrMZia3BUOKYTa1Y9Nw1wxSAbXLaekI9apD2jg46V5geoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuzKJCtu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DAB9C4AF0E;
-	Thu,  6 Jun 2024 14:10:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EE1AMotdmEMU/FuyKUwwSgixOkINVVMAnN5NNqkrsToaUq4+682Q1pNZejgMdzvvZIBV8NGUEg468IeRSj80SK4Ri/is7nvLWMQ4d3o84lVDRahsETZrbXSIuAVM3SOOmAO76wTzwWP7qPafU/Ay4YuA160ZQCarq7qFeGKioIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ver3UCtb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADFAC2BD10;
+	Thu,  6 Jun 2024 14:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683050;
-	bh=kXO5xOqv9ZcFrBlSOqL/HYzG3MP9csIy3z0kG/7LA/Q=;
+	s=korg; t=1717683689;
+	bh=bfPFfobAfAA/pjC15vFBV/NqbzeIs7LlE+nk5fmKRB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuzKJCtu0vYVrIRK6NfO6UUkVXL8zaRu8pelLBtUhTO86Y5wXI0Kv4Hx44Vs4ILjX
-	 jvOAbdUVASaK5sMJg8pRcCA7xtSeHwZOum7UphL3BYUgzpyTPLgbvBeOG+H/L+SnMF
-	 UsFwSMqUmzKUHer0rPXfZqr90yxCzExZpDg8noAk=
+	b=ver3UCtbGA/4wrIxA38U2Wb4IXAoYMCkNIx+LmAcIyQfwl94TAoDcVnPwPTTUdk+V
+	 EAOjIoY4+ulk0vGDcl23YezWL4C0/q8Kb1IBDvGuaFNG2Rbh1Kfu2NwdJyutmvFIa+
+	 R/qju0dVBCHBJ0IBlpkxB9j3FI2kV+uAlOqkoClI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Barry Song <baohua@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 290/374] dma-mapping: benchmark: handle NUMA_NO_NODE correctly
+Subject: [PATCH 6.6 597/744] tools/arch/x86/intel_sdsi: Fix meter_certificate decoding
 Date: Thu,  6 Jun 2024 16:04:29 +0200
-Message-ID: <20240606131701.604591735@linuxfoundation.org>
+Message-ID: <20240606131751.619680524@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: David E. Box <david.e.box@linux.intel.com>
 
-[ Upstream commit e64746e74f717961250a155e14c156616fcd981f ]
+[ Upstream commit 09d70ded6c566fd00886be32c26d0b2004ef239c ]
 
-cpumask_of_node() can be called for NUMA_NO_NODE inside do_map_benchmark()
-resulting in the following sanitizer report:
+Fix errors in the calculation of the start position of the counters and in
+the display loop. While here, use a #define for the bundle count and size.
 
-UBSAN: array-index-out-of-bounds in ./arch/x86/include/asm/topology.h:72:28
-index -1 is out of range for type 'cpumask [64][1]'
-CPU: 1 PID: 990 Comm: dma_map_benchma Not tainted 6.9.0-rc6 #29
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-Call Trace:
- <TASK>
-dump_stack_lvl (lib/dump_stack.c:117)
-ubsan_epilogue (lib/ubsan.c:232)
-__ubsan_handle_out_of_bounds (lib/ubsan.c:429)
-cpumask_of_node (arch/x86/include/asm/topology.h:72) [inline]
-do_map_benchmark (kernel/dma/map_benchmark.c:104)
-map_benchmark_ioctl (kernel/dma/map_benchmark.c:246)
-full_proxy_unlocked_ioctl (fs/debugfs/file.c:333)
-__x64_sys_ioctl (fs/ioctl.c:890)
-do_syscall_64 (arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Use cpumask_of_node() in place when binding a kernel thread to a cpuset
-of a particular node.
-
-Note that the provided node id is checked inside map_benchmark_ioctl().
-It's just a NUMA_NO_NODE case which is not handled properly later.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 65789daa8087 ("dma-mapping: add benchmark support for streaming DMA APIs")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Barry Song <baohua@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 7fdc03a7370f ("tools/arch/x86: intel_sdsi: Add support for reading meter certificates")
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240411025856.2782476-8-david.e.box@linux.intel.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/map_benchmark.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/arch/x86/intel_sdsi/intel_sdsi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
-index 59fb3f849b351..f7f3d14fa69a7 100644
---- a/kernel/dma/map_benchmark.c
-+++ b/kernel/dma/map_benchmark.c
-@@ -101,7 +101,6 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 	struct task_struct **tsk;
- 	int threads = map->bparam.threads;
- 	int node = map->bparam.node;
--	const cpumask_t *cpu_mask = cpumask_of_node(node);
- 	u64 loops;
- 	int ret = 0;
- 	int i;
-@@ -124,7 +123,7 @@ static int do_map_benchmark(struct map_benchmark_data *map)
- 		}
+diff --git a/tools/arch/x86/intel_sdsi/intel_sdsi.c b/tools/arch/x86/intel_sdsi/intel_sdsi.c
+index ae29214da1029..ba2a6b6645ae8 100644
+--- a/tools/arch/x86/intel_sdsi/intel_sdsi.c
++++ b/tools/arch/x86/intel_sdsi/intel_sdsi.c
+@@ -394,7 +394,7 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
+ 	printf("MMRC encoding:                %.4s\n", name);
  
- 		if (node != NUMA_NO_NODE)
--			kthread_bind_mask(tsk[i], cpu_mask);
-+			kthread_bind_mask(tsk[i], cpumask_of_node(node));
+ 	printf("MMRC counter:                 %d\n", mc->mmrc_counter);
+-	if (mc->bundle_length % 8) {
++	if (mc->bundle_length % METER_BUNDLE_SIZE) {
+ 		fprintf(stderr, "Invalid bundle length\n");
+ 		return -1;
+ 	}
+@@ -405,15 +405,16 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
+ 		return -1;
  	}
  
- 	/* clear the old value in the previous benchmark */
+-	bec = (void *)(mc) + sizeof(mc);
++	bec = (struct bundle_encoding_counter *)(mc + 1);
+ 
+ 	printf("Number of Feature Counters:   %ld\n", BUNDLE_COUNT(mc->bundle_length));
+-	while (count++ < mc->bundle_length / 8) {
++	while (count < BUNDLE_COUNT(mc->bundle_length)) {
+ 		char feature[5];
+ 
+ 		feature[4] = '\0';
+ 		get_feature(bec[count].encoding, feature);
+ 		printf("    %s:          %d\n", feature, bec[count].counter);
++		++count;
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
