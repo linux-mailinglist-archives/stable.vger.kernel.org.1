@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-48916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36CA78FEB17
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DD38FEB19
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B1A51C254D4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 786D11F26A47
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7901A2C3D;
-	Thu,  6 Jun 2024 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F157E19645C;
+	Thu,  6 Jun 2024 14:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yhbfdj8l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYfL/KmM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEC5199383;
-	Thu,  6 Jun 2024 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE24B199255;
+	Thu,  6 Jun 2024 14:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683210; cv=none; b=mMDhJffbz7b1rEt/QU9zRccYaJbehH2H/ReJUm2dH4tTlZMrN/zS/Us/Qq3AVoL0dXv5XDo3ukud9ghEdCGdUtO5AWhNkfpa2hl1MLgbOwL1frD0Pv5/xzh2kderMjdlrpgVA9kcb7oabJHbcU+26sAlPHZ0xNAR8hLtFXoYzFo=
+	t=1717683211; cv=none; b=YoEUt0He/IZmVo0rPyoGcOhfguY9hq2r1JByM8jbKmUr39QNdS68mUZBvmR+M0NyiAVIPimmgksUY0/4s06jWa9qf6UOBUnHbdExi/m4z7H9cMk8COqFuRGN/DzszjTarSgRelM6JlJq3D4bPFxVl5vgZbCggbGtXsZUxpsZHTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683210; c=relaxed/simple;
-	bh=WLdAhBwbbMkRWXdH7ussoBoEQVd+HlgGp52khDa1D/U=;
+	s=arc-20240116; t=1717683211; c=relaxed/simple;
+	bh=DFR/94AdFRj89DMGGmnrmqrsfyIGLwZCXwO3pu3eRfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwRj3IhBvOf6fhxPOZOqecJJgVSyp9F3dmgmNlwWCYD7KS7QK4q8Uw63rPntKhMcsIK1NSR1hX+99fHVEntJpeKEqcMrN9m2VF+9253oBHQNH2AydUW/I1EFY96Nzz5EwkSPdQZt8wrr3u3x6dApDmTPypL6O84K4DDMHxBQMPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yhbfdj8l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EB7C2BD10;
-	Thu,  6 Jun 2024 14:13:29 +0000 (UTC)
+	 MIME-Version; b=BO3ro7Bj89rVrdlGQnwPQxDF7T1FHGek7tkaXKtOdtx+QAXACKbh91FGJRO5jPTI201MyISSwhNrkb1Sl9QeedvmjLVcUarZCgthfe8XXyIp8imNwnP6RpRWL05ylwIuRvzE49EatwsEfv1bKnn/eMT2EQ/tg2X/7L7Xgg2brpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYfL/KmM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E781C32781;
+	Thu,  6 Jun 2024 14:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683210;
-	bh=WLdAhBwbbMkRWXdH7ussoBoEQVd+HlgGp52khDa1D/U=;
+	s=korg; t=1717683211;
+	bh=DFR/94AdFRj89DMGGmnrmqrsfyIGLwZCXwO3pu3eRfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yhbfdj8lbNLb9I+lOqBkCHdW8ukLxHShU/EdzXJzoHjWiw3pGX5mFqnsYUa+EQJXm
-	 we06NZrkBy3EzQyvnSk6uc1CKTS/gmkbzpguNE0cRLoc+ON4mruoU4Km8kEF9Lmn90
-	 yHfN9j/zEGWXYcr7bcQttLdcpUw9eMJ2FbhkxUJk=
+	b=BYfL/KmM4dhBMjZdyOXXwFHLa5a4ouUVlq/oP7fBhwkgMHPa8Bi1JpTljl8yI5xTN
+	 bkCD3Sw7zzFbQWq2yov9zE7rK0x9OLFVGCRi1W45t+TJCEVILijJoqNGVYF/27ES8q
+	 /OHHt6LyzdJBRAceeV0IJhzO4Dmc6RVOjoc0jGPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Can Guo <quic_cang@quicinc.com>,
 	Andrew Halaney <ahalaney@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/744] scsi: ufs: qcom: Perform read back after writing CGC enable
-Date: Thu,  6 Jun 2024 15:57:05 +0200
-Message-ID: <20240606131737.321046907@linuxfoundation.org>
+Subject: [PATCH 6.6 154/744] scsi: ufs: cdns-pltfrm: Perform read back after writing HCLKDIV
+Date: Thu,  6 Jun 2024 15:57:06 +0200
+Message-ID: <20240606131737.357840734@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -70,10 +70,9 @@ Content-Transfer-Encoding: 8bit
 
 From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit d9488511b3ac7eb48a91bc5eded7027525525e03 ]
+[ Upstream commit b715c55daf598aac8fa339048e4ca8a0916b332e ]
 
-Currently, the CGC enable bit is written and then an mb() is used to ensure
-that completes before continuing.
+Currently, HCLKDIV is written to and then completed with an mb().
 
 mb() ensures that the write completes, but completion doesn't mean that it
 isn't stored in a buffer somewhere. The recommendation for ensuring this
@@ -87,30 +86,30 @@ Let's do that to ensure the bit hits the device. Because the mb()'s purpose
 wasn't to add extra ordering (on top of the ordering guaranteed by
 writel()/readl()), it can safely be removed.
 
+Fixes: d90996dae8e4 ("scsi: ufs: Add UFS platform driver for Cadence UFS")
 Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Fixes: 81c0fc51b7a7 ("ufs-qcom: add support for Qualcomm Technologies Inc platforms")
 Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-5-181252004586@redhat.com
+Link: https://lore.kernel.org/r/20240329-ufs-reset-ensure-effect-before-delay-v5-6-181252004586@redhat.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 2 +-
+ drivers/ufs/host/cdns-pltfrm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 1f2a64d797c79..922ae1d76d909 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -498,7 +498,7 @@ static void ufs_qcom_enable_hw_clk_gating(struct ufs_hba *hba)
- 		REG_UFS_CFG2);
- 
- 	/* Ensure that HW clock gating is enabled before next operations */
+diff --git a/drivers/ufs/host/cdns-pltfrm.c b/drivers/ufs/host/cdns-pltfrm.c
+index 2491e7e870283..56014ef302b49 100644
+--- a/drivers/ufs/host/cdns-pltfrm.c
++++ b/drivers/ufs/host/cdns-pltfrm.c
+@@ -136,7 +136,7 @@ static int cdns_ufs_set_hclkdiv(struct ufs_hba *hba)
+ 	 * Make sure the register was updated,
+ 	 * UniPro layer will not work with an incorrect value.
+ 	 */
 -	mb();
-+	ufshcd_readl(hba, REG_UFS_CFG2);
- }
++	ufshcd_readl(hba, CDNS_UFS_REG_HCLKDIV);
  
- static int ufs_qcom_hce_enable_notify(struct ufs_hba *hba,
+ 	return 0;
+ }
 -- 
 2.43.0
 
