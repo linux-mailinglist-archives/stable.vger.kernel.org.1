@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28E88FEC8B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E36778FEE58
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 448B228563A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0BDB1C24A5F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9899319B3DA;
-	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F054F1991BB;
+	Thu,  6 Jun 2024 14:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZoZU67L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqUooxrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58122196DAB;
-	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DCB1C2324;
+	Thu,  6 Jun 2024 14:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683379; cv=none; b=fw46SSC1umGerz2pflPSbst2N3VGHtDyOFcwoW5Fplwvqp8LN8CYeF1c2/WNIK6Ne689x1DJWucJkqtqnY3J8DVAssUZW43YkCtNSFCO6doTRsXvPSVJJorBRO+SJLooXRoKpQo6iHYOWhGyJ1uPoyxIUzHzG55FodZQK9VSr8c=
+	t=1717683648; cv=none; b=aBZYFB3woK0QiIPhQbds0G8AXujuynPR1KfjSD2m7gv35KaiivYwREC7hxh/xoHW8YPcKVW+ZarG7noPKFmCYz92fE0hdMdgKiks6vCZoaYMEBB2XFUQVs79XznVW0pToozJ684Bw8QP8c8xRGqZw0ccFLCLa7BA6coHtDd7A90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683379; c=relaxed/simple;
-	bh=OtFkjlumPLXyjMu+MsykojxjLdIGZuKe+oAZryC2zI0=;
+	s=arc-20240116; t=1717683648; c=relaxed/simple;
+	bh=5k/yI5jTy9dQR8K2BVKYbvnnpw5a6k/2l3XJ7lTVh5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucR8PROYCe42uv1xBgKI7tc29xT6Zau+vx649Xvz9WDMiMDza4mlUQX6meam8Cs6kiNY4XGNAgMBU0uQaY0zF5iD8ud7PO+UG/TXBpr7mm88txx05AcElVd9nAuOntajujW99TRnm3VQ/DW9bFvR4LJjR5DAYArTN9pfdrS2jZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZoZU67L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D15C2BD10;
-	Thu,  6 Jun 2024 14:16:19 +0000 (UTC)
+	 MIME-Version; b=b1NhS9ACu5+GRsoboTe7zERna7hlabp4hYIUvKqHmv8AXjviFnarmit0v8G/lrIVu+oXL5aon0ygVKUwCbS2GodxiiMtlaNd9S+3uq4t0FcK064WMP6H2kZ3v2SBJEX4dPbCMvMHGwISWt25AajKMypgWE0yPr0YAlDvwSerOY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqUooxrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F828C2BD10;
+	Thu,  6 Jun 2024 14:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683379;
-	bh=OtFkjlumPLXyjMu+MsykojxjLdIGZuKe+oAZryC2zI0=;
+	s=korg; t=1717683648;
+	bh=5k/yI5jTy9dQR8K2BVKYbvnnpw5a6k/2l3XJ7lTVh5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZoZU67LwMz5yE4abju04w9GyKxys8mDEfJn+qfkib4oPpGv8xEmw3ChRN2sBMnW5
-	 1C6rCfD01H5HBJqViLSAsEYN8KG8/XGsRuksBgsqCIuwsYi7Z6/GgWbZklRev8nkNV
-	 YvuHfcemJVfz5GUryFu+r0issIaLiJrtOmjgJGRg=
+	b=EqUooxrAJFYmpMPg6Tmt6dS007A/eH16AbvDUjbU9rcIvqI7rfMauIJ8XQxxycEgI
+	 4mN/cyOqUOMiIWSMKzuMg8Iy/42rgu3yVaNiTImW3IkmhFrCIm8bI9GjaEVQ14NcID
+	 bF/uSUJH5PMtOLoE3hvo8ly9gXGQ3GtZca70IHbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 262/473] ext4: fix unit mismatch in ext4_mb_new_blocks_simple
+Subject: [PATCH 6.6 519/744] serial: sh-sci: protect invalidating RXDMA on shutdown
 Date: Thu,  6 Jun 2024 16:03:11 +0200
-Message-ID: <20240606131708.613133720@linuxfoundation.org>
+Message-ID: <20240606131749.089465451@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 497885f72d930305d8e61b6b616b22b4da1adf90 ]
+[ Upstream commit aae20f6e34cd0cbd67a1d0e5877561c40109a81b ]
 
-The "i" returned from mb_find_next_zero_bit is in cluster unit and we
-need offset "block" corresponding to "i" in block unit. Convert "i" to
-block unit to fix the unit mismatch.
+The to-be-fixed commit removed locking when invalidating the DMA RX
+descriptors on shutdown. It overlooked that there is still a rx_timer
+running which may still access the protected data. So, re-add the
+locking.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230603150327.3596033-3-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 3f4830abd236 ("ext4: fix potential unnitialized variable")
+Reported-by: Dirk Behme <dirk.behme@de.bosch.com>
+Closes: https://lore.kernel.org/r/ee6c9e16-9f29-450e-81da-4a8dceaa8fc7@de.bosch.com
+Fixes: 2c4ee23530ff ("serial: sh-sci: Postpone DMA release when falling back to PIO")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20240506114016.30498-7-wsa+renesas@sang-engineering.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sh-sci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index eaa5db60865a4..a809a80589857 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5874,6 +5874,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index a560b729fa3b7..f793624fd5018 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1272,9 +1272,14 @@ static void sci_dma_rx_chan_invalidate(struct sci_port *s)
+ static void sci_dma_rx_release(struct sci_port *s)
  {
- 	struct buffer_head *bitmap_bh;
- 	struct super_block *sb = ar->inode->i_sb;
-+	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	ext4_group_t group;
- 	ext4_grpblk_t blkoff;
- 	ext4_grpblk_t max = EXT4_CLUSTERS_PER_GROUP(sb);
-@@ -5902,7 +5903,8 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 			if (i >= max)
- 				break;
- 			if (ext4_fc_replay_check_excluded(sb,
--				ext4_group_first_block_no(sb, group) + i)) {
-+				ext4_group_first_block_no(sb, group) +
-+				EXT4_C2B(sbi, i))) {
- 				blkoff = i + 1;
- 			} else
- 				break;
-@@ -5919,7 +5921,7 @@ static ext4_fsblk_t ext4_mb_new_blocks_simple(handle_t *handle,
- 		return 0;
- 	}
+ 	struct dma_chan *chan = s->chan_rx_saved;
++	struct uart_port *port = &s->port;
++	unsigned long flags;
  
--	block = ext4_group_first_block_no(sb, group) + i;
-+	block = ext4_group_first_block_no(sb, group) + EXT4_C2B(sbi, i);
- 	ext4_mb_mark_bb(sb, block, 1, 1);
- 	ar->len = 1;
- 
++	uart_port_lock_irqsave(port, &flags);
+ 	s->chan_rx_saved = NULL;
+ 	sci_dma_rx_chan_invalidate(s);
++	uart_port_unlock_irqrestore(port, flags);
++
+ 	dmaengine_terminate_sync(chan);
+ 	dma_free_coherent(chan->device->dev, s->buf_len_rx * 2, s->rx_buf[0],
+ 			  sg_dma_address(&s->sg_rx[0]));
 -- 
 2.43.0
 
