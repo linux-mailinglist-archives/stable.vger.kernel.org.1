@@ -1,136 +1,116 @@
-Return-Path: <stable+bounces-48251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A2E8FDB50
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:17:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6E98FDB6A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB6401F212DA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 00:17:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B1222856F8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 00:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CF71C2E;
-	Thu,  6 Jun 2024 00:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71109567D;
+	Thu,  6 Jun 2024 00:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PnNJVOxX"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="XXAxGoeQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176511361
-	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 00:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2AF2563;
+	Thu,  6 Jun 2024 00:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717633054; cv=none; b=Ry0bduLpTaFOKbmUboh5772CBacnUFNMh7nB7mLKwvUbqTCgif6tfmUxOPfrKFcoOXiwxvmH1KLY2AzEO7V+L6tkQrzDhYR96XfZBRTBJhYAH7a0WRcmz8oxNN6rrGxvi4W/PYDJBPw0JAbNfrtQpDUEiThvAElZV0zbq5PD98s=
+	t=1717633519; cv=none; b=SKnF/45GtFWDQfGOqLi5NPfOoZnuPmldHAgB0NVlxcB+NVzAm6q33zStcS+6ipedTUIBo1a81SeMP9hCSRzMTFXOQo436BnQ2fnrj+WTsvGN6asGhN9jRpkaHh8DE6bcConQlI+qyi1OWAwN7NFWhsoBf9xXHxYjs6qx8FE32Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717633054; c=relaxed/simple;
-	bh=Xjtfn4sZ7WNbokQyGS4/ipg3CJbH0IuDDvhdnQIPnnU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+yz1U0ctahJMuOHWcghaWyLRMYG1GmlkPdRWoA6mW3Yzro+wYi1PZokJj11WSBRNLrsUcau5hDMGmwFKbrcicU0RJDnmn1g2X/L/pbsFwZZlgTwpIZnJ6ww+bs9F9aBmR5x/70mV392Tj/9RIXZZm1apGYn201wSLHiXE1Wwu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PnNJVOxX; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717633052; x=1749169052;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Xjtfn4sZ7WNbokQyGS4/ipg3CJbH0IuDDvhdnQIPnnU=;
-  b=PnNJVOxXVy+N3+3tBl/uOS6pa2m/AuX3haM1z+UGEfi4SVgiUOUawvww
-   zdHbDdVFT1+4B6rMXU64B/j59okOky+Z5hdxeOP84emaB2OhA+AFwSx4+
-   kV0bNQJehYyZYk0Eulh/Gw0L9eOuVPZngL/ue9e3FUHjxa4T9YyE97NI+
-   hHOKuOC1eRFdWq8go7IX03dy+PmEEDTeGCXb/O9TJENi4diwvujFwFrvg
-   bmIfAUjV2Gsu1S9FpuQ1M9+TgMWhm6oQ95RCNA8EsXaCpvG+ADrFlBazO
-   MBh+FDzyUHAz1Tu0Joln0Y0JydyxSNWE9oDgmeful41hs9PkG0EWVjcsE
-   Q==;
-X-CSE-ConnectionGUID: sy6UHQVOS/64Yy07HV1EKg==
-X-CSE-MsgGUID: Cka+aj+kT76UywZcsN0kgw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="18123145"
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="18123145"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 17:17:31 -0700
-X-CSE-ConnectionGUID: JtXPUDZ5QTmqeHNDPPRxsw==
-X-CSE-MsgGUID: jVBrJdgaRKmE3baR04REgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="42730147"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO intel.com) ([10.245.246.215])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 17:17:29 -0700
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>
-Cc: John Harrison <John.C.Harrison@Intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/i915/gt/uc: Evaluate GuC priority within locks
-Date: Thu,  6 Jun 2024 02:17:02 +0200
-Message-ID: <20240606001702.59005-1-andi.shyti@linux.intel.com>
+	s=arc-20240116; t=1717633519; c=relaxed/simple;
+	bh=3wZVavp6tao9ffC1YphaeS9zPVgycL7M4c8WdP2SgWA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dumPdWXo4Uxi0lHZV6UR74bdgmERBrPsPBMPpQC2HxmPDccMobzUf8CDv+XqBGk2MYh4IDQtlTCBqB0VppQMHCh/BA9QgEQO3AgExq845CzoidcZvZRteUtmdcK1x0YSn7ug0vfZy7ogTCV110C++DSVv6A7GM5QhH9IPFBzxJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=XXAxGoeQ; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455JINiP015747;
+	Thu, 6 Jun 2024 00:24:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc :
+ content-transfer-encoding : content-type : date : from : in-reply-to :
+ message-id : mime-version : references : subject : to; s=corp-2023-11-20;
+ bh=1Ww9Rdq98RgqCia4UdhAvlzFlQ7oc3WmT+CLtqus8As=;
+ b=XXAxGoeQxY1ylnW621TgDu2TX7CRHbPEikIp5gxSzri56vfRkviA+lFrcCmVYmJ5Fh1g
+ ov1BQ7xKbLgZtktlOzKlAhqbx6hnVjt9Fe+PFHIZIoDO0qfJjBh2v9E53rzg2BpPBbH4
+ LUcxtvf2QdhtaAXTsMX9etjK4/fOfzld5hcjrkf9n9KXZQAisrl2FvClCaX+62OqqBTS
+ VkUwpIYZhttx43q6+WByP3EzU8g3NzCaB2QMVZ5xjJGN9+ZbTlhXU+5xofK66MkDl+tV
+ pMMBTr0rEQukzrNEt+Ywjla4O03Ct3+Qd5KyJcR+TRBTn4s/aOoRoY0zY8RvDXeQ0ttS 3Q== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yjbsyaf9w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 06 Jun 2024 00:24:59 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 455Mat8Y015719;
+	Thu, 6 Jun 2024 00:24:58 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3ygrjeg0qq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 06 Jun 2024 00:24:58 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4560OwH0004414;
+	Thu, 6 Jun 2024 00:24:58 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3ygrjeg0py-1;
+	Thu, 06 Jun 2024 00:24:57 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: Sathya Prakash <sathya.prakash@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Chaitra P B <chaitra.basappa@broadcom.com>,
+        Breno Leitao <leitao@debian.org>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, leit@meta.com,
+        stable@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mpt3sas: Avoid test/set_bit() operating in non-allocated memory
+Date: Wed,  5 Jun 2024 20:24:19 -0400
+Message-ID: <171763343411.4164272.12258794227278624618.b4-ty@oracle.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240605085530.499432-1-leitao@debian.org>
+References: <20240605085530.499432-1-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-05_02,2024-06-05_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=586 phishscore=0
+ adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2406060001
+X-Proofpoint-GUID: HNWNmYom_xalhO768Wrbf1PkPwmQ6GyN
+X-Proofpoint-ORIG-GUID: HNWNmYom_xalhO768Wrbf1PkPwmQ6GyN
 
-The ce->guc_state.lock was made to protect guc_prio, which
-indicates the GuC priority level.
+On Wed, 05 Jun 2024 01:55:29 -0700, Breno Leitao wrote:
 
-But at the begnning of the function we perform some sanity check
-of guc_prio outside its protected section. Move them within the
-locked region.
+> There is a potential out-of-bounds access when using test_bit() on a
+> single word. The test_bit() and set_bit() functions operate on long
+> values, and when testing or setting a single word, they can exceed the
+> word boundary. KASAN detects this issue and produces a dump:
+> 
+> 	 BUG: KASAN: slab-out-of-bounds in _scsih_add_device.constprop.0 (./arch/x86/include/asm/bitops.h:60 ./include/asm-generic/bitops/instrumented-atomic.h:29 drivers/scsi/mpt3sas/mpt3sas_scsih.c:7331) mpt3sas
+> 
+> [...]
 
-Use this occasion to expand the if statement to make it clearer.
+Applied to 6.10/scsi-fixes, thanks!
 
-Fixes: ee242ca704d3 ("drm/i915/guc: Implement GuC priority management")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v5.15+
----
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+[1/1] mpt3sas: Avoid test/set_bit() operating in non-allocated memory
+      https://git.kernel.org/mkp/scsi/c/4254dfeda82f
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index 0eaa1064242c..1181043bc5e9 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -4267,13 +4267,18 @@ static void guc_bump_inflight_request_prio(struct i915_request *rq,
- 	u8 new_guc_prio = map_i915_prio_to_guc_prio(prio);
- 
- 	/* Short circuit function */
--	if (prio < I915_PRIORITY_NORMAL ||
--	    rq->guc_prio == GUC_PRIO_FINI ||
--	    (rq->guc_prio != GUC_PRIO_INIT &&
--	     !new_guc_prio_higher(rq->guc_prio, new_guc_prio)))
-+	if (prio < I915_PRIORITY_NORMAL)
- 		return;
- 
- 	spin_lock(&ce->guc_state.lock);
-+
-+	if (rq->guc_prio == GUC_PRIO_FINI)
-+		goto exit;
-+
-+	if (rq->guc_prio != GUC_PRIO_INIT &&
-+	    !new_guc_prio_higher(rq->guc_prio, new_guc_prio))
-+		goto exit;
-+
- 	if (rq->guc_prio != GUC_PRIO_FINI) {
- 		if (rq->guc_prio != GUC_PRIO_INIT)
- 			sub_context_inflight_prio(ce, rq->guc_prio);
-@@ -4281,6 +4286,8 @@ static void guc_bump_inflight_request_prio(struct i915_request *rq,
- 		add_context_inflight_prio(ce, rq->guc_prio);
- 		update_context_prio(ce);
- 	}
-+
-+exit:
- 	spin_unlock(&ce->guc_state.lock);
- }
- 
 -- 
-2.45.1
-
+Martin K. Petersen	Oracle Linux Engineering
 
