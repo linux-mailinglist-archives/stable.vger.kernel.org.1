@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4DFC8FE972
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E99828FEE7F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8CCD1C2105E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8593FB21D0B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAD6197A98;
-	Thu,  6 Jun 2024 14:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116E91991D1;
+	Thu,  6 Jun 2024 14:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8HmPW8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VoLC7/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDBB196DA2;
-	Thu,  6 Jun 2024 14:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30CB196D90;
+	Thu,  6 Jun 2024 14:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683023; cv=none; b=XQyUkPiEtwzTTARhQV/lv2zf+Nwa7aZdtfe82jZ2ZX6jY+CB4Fz/WQzLK2LZZePW4ujRnPyzVMgk5sRMeKr/miQYs9aPFL/1jaUcWBba6d8W1JiT4f8nuh+fq6uI6eDeh1VY81ZrvY28g+d9vcDOYbtKznla5e7gfOQPHEdnw5k=
+	t=1717683666; cv=none; b=pdFb5MUOITjfb2F3G/gY/71JMfHW8MajNOPA/B/NTPvgp9Xe/s3LZMPS2qdwtKHSavD4mJE4+KEUxawbr0lg+PeagcGgg6z0GPCEbjXTI70CGjCzTP3+MpbKALyt3z0adYIiziHHizBejeJPMi7LMMJUgDRdR+9TirsHzHpImpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683023; c=relaxed/simple;
-	bh=w86GACuHByk3Q34jgY+XnXeNSZmINPklASYgFalcb+0=;
+	s=arc-20240116; t=1717683666; c=relaxed/simple;
+	bh=aFCJsvBx7h44O8o0DTiLm9No6mJxIOWKZSgygFpRHAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IgGi2RHml8WzbuzM2Uf2/Y1RSGqV8cU5D1aLT+iTik00ut5Ly557Elnk/TYvxgaH4AnmQ1+5V2DFPJsZ8BPvWYSYYXoUV4xDHkSbjWtaqd4Pawhshrem0jcHHIHg/4i/8qJR+C+E1UQIrYXn7SWG6bSAzyGuD612cbmOc29EEx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8HmPW8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B852EC2BD10;
-	Thu,  6 Jun 2024 14:10:22 +0000 (UTC)
+	 MIME-Version; b=CEkbkc04OkyWgmspFaV7QIjYxZeSx6K3d/zuP6eL+EY1gRFAPPDapj5OiGpFw1pFFPTttb0jywL5BSb2sbNbBBcTRs4tRNorVGumFkL+u0HQHAR+XQ8iXyl37lqcmtdKC17mxrAgzH2RaT2LpBPawOlDVE8oWvUGDgveFzjeWGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VoLC7/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C79C2BD10;
+	Thu,  6 Jun 2024 14:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683022;
-	bh=w86GACuHByk3Q34jgY+XnXeNSZmINPklASYgFalcb+0=;
+	s=korg; t=1717683666;
+	bh=aFCJsvBx7h44O8o0DTiLm9No6mJxIOWKZSgygFpRHAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8HmPW8D51/1st6IAhdipLxZObt9e9hb9WcfWbp/0xbJr4my8e4z7X/MCf/5BHFSl
-	 /RrjhDWeNJelhPIjqklcOhqib9O2o8uS+vZBOSWiNkbw0H3IO5tus+yZapOK71Z/Vz
-	 tR5Im9efrYP0tA0yARIZzB/byBYOqDwxpTSYXQxk=
+	b=0VoLC7/7fo4ZPK49fuZV6Y87SHPwCPHCYaPhobmkz/m13S7sgwAlklOaX/b76tCEt
+	 lUa24pqQcQFwPjtZgee50YaKvxmH/ETEepOgKN+QxFNkc+ZqodtWypKtgKgUsOv3ja
+	 KUfQFWDM/WUG26JkuSYl/eUyDaqNO7GTFmnSdsVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 244/374] regulator: tps6287x: Force writing VSEL bit
-Date: Thu,  6 Jun 2024 16:03:43 +0200
-Message-ID: <20240606131659.991269820@linuxfoundation.org>
+Subject: [PATCH 6.6 552/744] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler
+Date: Thu,  6 Jun 2024 16:03:44 +0200
+Message-ID: <20240606131750.165433238@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 1ace99d7c7c4c801c0660246f741ff846a9b8e3c ]
+[ Upstream commit 8492bd91aa055907c67ef04f2b56f6dadd1f44bf ]
 
-The data-sheet for TPS6287x-Q1
-https://www.ti.com/lit/ds/symlink/tps62873-q1.pdf
-states at chapter 9.3.6.1 Output Voltage Range:
+When using a high speed clock with a low baud rate, the 4x prescaler is
+automatically selected if required. In that case, sc16is7xx_set_baud()
+properly configures the chip registers, but returns an incorrect baud
+rate by not taking into account the prescaler value. This incorrect baud
+rate is then fed to uart_update_timeout().
 
-"Note that every change to the VRANGE[1:0] bits must be followed by a
-write to the VSET register, even if the value of the VSET[7:0] bits does
-not change."
+For example, with an input clock of 80MHz, and a selected baud rate of 50,
+sc16is7xx_set_baud() will return 200 instead of 50.
 
-The current implementation of the driver uses the
-regulator_set_voltage_sel_pickable_regmap() helper which further uses
-regmap_update_bits() to write the VSET-register. The
-regmap_update_bits() will not access the hardware if the new register
-value is same as old. It is worth noting that this is true also when the
-register is marked volatile, which I can't say is wrong because
-'read-mnodify-write'-cycle with a volatile register is in any case
-something user should carefully consider.
+Fix this by first changing the prescaler variable to hold the selected
+prescaler value instead of the MCR bitfield. Then properly take into
+account the selected prescaler value in the return value computation.
 
-The 'range_applied_by_vsel'-flag in regulator desc was added to force
-the vsel register upodates by using regmap_write_bits(). This variant
-will always unconditionally write the bits to the hardware.
+Also add better documentation about the divisor value computation.
 
-It is worth noting that the vsel is now forced to be written to the
-hardware, whether the range was changed or not. This may cause a
-performance drop if users are wrtiting same voltage value repeteadly.
-
-It would be possible to read the range register to determine if it was
-changed, but this would be a performance issue for users who don't use
-reg cache for vsel.
-
-Always write the VSET register to the hardware regardless the cache.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: 7b0518fbf2be ("regulator: Add support for TI TPS6287x regulators")
-Link: https://msgid.link/r/ZktD50C5twF1EuKu@fedora
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20240430200431.4102923-1-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/tps6287x-regulator.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/sc16is7xx.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/regulator/tps6287x-regulator.c b/drivers/regulator/tps6287x-regulator.c
-index 9b7c3d77789e3..3c9d79e003e4b 100644
---- a/drivers/regulator/tps6287x-regulator.c
-+++ b/drivers/regulator/tps6287x-regulator.c
-@@ -115,6 +115,7 @@ static struct regulator_desc tps6287x_reg = {
- 	.vsel_mask = 0xFF,
- 	.vsel_range_reg = TPS6287X_CTRL2,
- 	.vsel_range_mask = TPS6287X_CTRL2_VRANGE,
-+	.range_applied_by_vsel = true,
- 	.ramp_reg = TPS6287X_CTRL1,
- 	.ramp_mask = TPS6287X_CTRL1_VRAMP,
- 	.ramp_delay_table = tps6287x_ramp_table,
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 26ab1f042f5b8..7a9924d9b294e 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -482,16 +482,28 @@ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
+ 	return reg == SC16IS7XX_RHR_REG;
+ }
+ 
++/*
++ * Configure programmable baud rate generator (divisor) according to the
++ * desired baud rate.
++ *
++ * From the datasheet, the divisor is computed according to:
++ *
++ *              XTAL1 input frequency
++ *             -----------------------
++ *                    prescaler
++ * divisor = ---------------------------
++ *            baud-rate x sampling-rate
++ */
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ {
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 	u8 lcr;
+-	u8 prescaler = 0;
++	unsigned int prescaler = 1;
+ 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
+ 
+ 	if (div >= BIT(16)) {
+-		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
+-		div /= 4;
++		prescaler = 4;
++		div /= prescaler;
+ 	}
+ 
+ 	/* In an amazing feat of design, the Enhanced Features Register shares
+@@ -528,9 +540,10 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 
+ 	mutex_unlock(&one->efr_lock);
+ 
++	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_CLKSEL_BIT,
+-			      prescaler);
++			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
+ 
+ 	/* Open the LCR divisors for configuration */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+@@ -545,7 +558,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	/* Put LCR back to the normal mode */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+ 
+-	return DIV_ROUND_CLOSEST(clk / 16, div);
++	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
+ }
+ 
+ static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
 -- 
 2.43.0
 
