@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-48551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F608FE97B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED548FECDE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01EFA1C24834
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 132A51F26C4A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B1F197A9E;
-	Thu,  6 Jun 2024 14:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8C419CCE8;
+	Thu,  6 Jun 2024 14:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqlJnHEN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adCq2GXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8160F198822;
-	Thu,  6 Jun 2024 14:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05281B3721;
+	Thu,  6 Jun 2024 14:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683029; cv=none; b=LvshYGNjISGsCIIz7MT1ZL0HOL2dq3ArzJsZuAMcMG+EV++XYoeTEwF5UTjCW6YBsunH7z4LQrf7mSqTloO9YUn5irqIhYphiPpVeuwjH9vlDCOaFqioORIBiMHS3A5aY2VA4BWTfvUhaN+18xfsD80/6vk1xEIlABNGMuDfc0I=
+	t=1717683418; cv=none; b=hI8B9TWMIlAT/atVIiLrILyQT/x0C41iJw0UAN6AvhWAS/VbSQwAMAMyVhoIl5Lx1Xd1EyEW2hbwhgwHN0LJuNzcej2dw/OTpDSOo9XJveqfdaboYxr6XmKCS1bTtHwpeZvIQBr+h9VFyJZp+2Q/Oc2L4Qrfq1iRJ4cIeNS18WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683029; c=relaxed/simple;
-	bh=orpu/kVRFNKMuIi1Og36fCp1yVFTSNZ9sBciQBJzQ90=;
+	s=arc-20240116; t=1717683418; c=relaxed/simple;
+	bh=i3HJyFDH9sUFh3AZYyOFVKmCMf2TzCZ/nENqErycD4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdvmX2gFToMy2tBRJKWDYkNF44kl+Y8lxpq2omRHaR+8kpVxsNw93hCy3Jvb8OdKzLOi7HC47p5MdNSmeBwmuU0RXE0OJu1h7B5vVWng9ceUoSHe5npf3uHIahfCn9HMVCP5R6Z2ekdHhIcfjLx+EKFtJbnsDOY/H6iv0QS0zzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqlJnHEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0AAC32781;
-	Thu,  6 Jun 2024 14:10:29 +0000 (UTC)
+	 MIME-Version; b=opPFEB8TVuMzrAV32q0rzhXJZkFBU7OR/hMHpcHOfevQba+xNgy8362ebzIpg7fDq85BnJu6NO6610hZ5Jc2A4XpDtrTtvurRobt2W/ikooXIqVpCWvpR9LYnzXyurEJeOkFVXiii0Ria7klaPPp8oQi9b0mMm4w9Inknd1dc8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adCq2GXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE65C4AF09;
+	Thu,  6 Jun 2024 14:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683029;
-	bh=orpu/kVRFNKMuIi1Og36fCp1yVFTSNZ9sBciQBJzQ90=;
+	s=korg; t=1717683418;
+	bh=i3HJyFDH9sUFh3AZYyOFVKmCMf2TzCZ/nENqErycD4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqlJnHENOYXR/wtu8jpNDu+4ePnMRJi2HVsxpXz8mNvbqAvq6R38HMZ/AMV4Guoiv
-	 gRcMNq4msLSWNw2JzzZDJN6BqxLPee/vs1tOAxaPJC/hcyAMqrJp5T/DxZ6TC2qtbr
-	 Vdfukn2uMCKC34qiajopgmanhGgTiauk1AO0I+Tw=
+	b=adCq2GXlaMQgY9zXwXPfruyIhrBKmvLs0crnDGWms45Hvk5n/3NedsYjD2rjPW+Gp
+	 5p4r09yLvmZyGPnlJ3/S8nnED5/awqPKEghG5yRSP3lj7SC1z9OhODVgxNDPl2Way4
+	 qSjnxCRoQVR/iJESbGfgw2z4ZeTBj1YGn4l3aCZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Zhengjun Xing <zhengjun.xing@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 251/374] selftests/net: use tc rule to filter the na packet
+Subject: [PATCH 6.1 301/473] perf test: Add sqrtloop test workload
 Date: Thu,  6 Jun 2024 16:03:50 +0200
-Message-ID: <20240606131700.240735854@linuxfoundation.org>
+Message-ID: <20240606131709.881555025@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,291 +72,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit ea63ac14292564eefc7dffe868ed354ff9ed6f4b ]
+[ Upstream commit 39281709a6e2301ac4c6ac7015c7793392ca2dfe ]
 
-Test arp_ndisc_untracked_subnets use tcpdump to filter the unsolicited
-and untracked na messages. It set -e before calling tcpdump. But if
-tcpdump filters 0 packet, it will return none zero, and cause the script
-to exit.
+The sqrtloop creates a child process to run an infinite loop calling
+sqrt() with rand().  This is needed for ARM SPE fork test.
 
-Instead of using slow tcpdump to capture packets, let's using tc rule
-to filter out the na message.
+  $ perf test -w sqrtloop
 
-At the same time, fix function setup_v6 which only needs one parameter.
-Move all the related helpers from forwarding lib.sh to net lib.sh.
+It can take an optional argument to specify how long it will run in
+seconds (default: 1).
 
-Fixes: 0ea7b0a454ca ("selftests: net: arp_ndisc_untracked_subnets: test for arp_accept and accept_untracked_na")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240517010327.2631319-1-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Committer notes:
+
+Explicitely ignored the sqrt() return to fix the build on systems where
+the compiler complains it isn't being used.
+
+And added a sqrtloop specific CFLAGS to disable optimizations to make
+this a bit more robust wrt dead code elimination.
+
+Doing that a -U_FORTIFY_SOURCE needs to be added, as -O0 is incompatible
+with it.
+
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Zhengjun Xing <zhengjun.xing@linux.intel.com>
+Link: https://lore.kernel.org/r/20221116233854.1596378-8-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 256ef072b384 ("perf tests: Make "test data symbol" more robust on Neoverse N1")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/arp_ndisc_untracked_subnets.sh        | 53 ++++++-----------
- tools/testing/selftests/net/forwarding/lib.sh | 58 -------------------
- tools/testing/selftests/net/lib.sh            | 58 +++++++++++++++++++
- 3 files changed, 75 insertions(+), 94 deletions(-)
+ tools/perf/tests/builtin-test.c       |  1 +
+ tools/perf/tests/tests.h              |  1 +
+ tools/perf/tests/workloads/Build      |  2 ++
+ tools/perf/tests/workloads/sqrtloop.c | 45 +++++++++++++++++++++++++++
+ 4 files changed, 49 insertions(+)
+ create mode 100644 tools/perf/tests/workloads/sqrtloop.c
 
-diff --git a/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh b/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
-index a40c0e9bd023c..eef5cbf6eecca 100755
---- a/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
-+++ b/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
-@@ -73,25 +73,19 @@ setup_v6() {
- 	# namespaces. veth0 is veth-router, veth1 is veth-host.
- 	# first, set up the inteface's link to the namespace
- 	# then, set the interface "up"
--	ip -6 -netns ${ROUTER_NS_V6} link add name ${ROUTER_INTF} \
--		type veth peer name ${HOST_INTF}
--
--	ip -6 -netns ${ROUTER_NS_V6} link set dev ${ROUTER_INTF} up
--	ip -6 -netns ${ROUTER_NS_V6} link set dev ${HOST_INTF} netns \
--		${HOST_NS_V6}
-+	ip -n ${ROUTER_NS_V6} link add name ${ROUTER_INTF} \
-+		type veth peer name ${HOST_INTF} netns ${HOST_NS_V6}
+diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
+index 0ed5ac452f6ee..9acb7a93eeb97 100644
+--- a/tools/perf/tests/builtin-test.c
++++ b/tools/perf/tests/builtin-test.c
+@@ -122,6 +122,7 @@ static struct test_workload *workloads[] = {
+ 	&workload__noploop,
+ 	&workload__thloop,
+ 	&workload__leafloop,
++	&workload__sqrtloop,
+ };
  
--	ip -6 -netns ${HOST_NS_V6} link set dev ${HOST_INTF} up
--	ip -6 -netns ${ROUTER_NS_V6} addr add \
--		${ROUTER_ADDR_V6}/${PREFIX_WIDTH_V6} dev ${ROUTER_INTF} nodad
-+	# Add tc rule to filter out host na message
-+	tc -n ${ROUTER_NS_V6} qdisc add dev ${ROUTER_INTF} clsact
-+	tc -n ${ROUTER_NS_V6} filter add dev ${ROUTER_INTF} \
-+		ingress protocol ipv6 pref 1 handle 101 \
-+		flower src_ip ${HOST_ADDR_V6} ip_proto icmpv6 type 136 skip_hw action pass
+ static int num_subtests(const struct test_suite *t)
+diff --git a/tools/perf/tests/tests.h b/tools/perf/tests/tests.h
+index 86804dd6452b7..18c40319e67c7 100644
+--- a/tools/perf/tests/tests.h
++++ b/tools/perf/tests/tests.h
+@@ -203,5 +203,6 @@ struct test_workload workload__##work = {	\
+ DECLARE_WORKLOAD(noploop);
+ DECLARE_WORKLOAD(thloop);
+ DECLARE_WORKLOAD(leafloop);
++DECLARE_WORKLOAD(sqrtloop);
  
- 	HOST_CONF=net.ipv6.conf.${HOST_INTF}
- 	ip netns exec ${HOST_NS_V6} sysctl -qw ${HOST_CONF}.ndisc_notify=1
- 	ip netns exec ${HOST_NS_V6} sysctl -qw ${HOST_CONF}.disable_ipv6=0
--	ip -6 -netns ${HOST_NS_V6} addr add ${HOST_ADDR_V6}/${PREFIX_WIDTH_V6} \
--		dev ${HOST_INTF}
--
- 	ROUTER_CONF=net.ipv6.conf.${ROUTER_INTF}
--
- 	ip netns exec ${ROUTER_NS_V6} sysctl -w \
- 		${ROUTER_CONF}.forwarding=1 >/dev/null 2>&1
- 	ip netns exec ${ROUTER_NS_V6} sysctl -w \
-@@ -99,6 +93,13 @@ setup_v6() {
- 	ip netns exec ${ROUTER_NS_V6} sysctl -w \
- 		${ROUTER_CONF}.accept_untracked_na=${accept_untracked_na} \
- 		>/dev/null 2>&1
+ #endif /* TESTS_H */
+diff --git a/tools/perf/tests/workloads/Build b/tools/perf/tests/workloads/Build
+index 03dc675a4a7c8..2312a338f01c0 100644
+--- a/tools/perf/tests/workloads/Build
++++ b/tools/perf/tests/workloads/Build
+@@ -3,5 +3,7 @@
+ perf-y += noploop.o
+ perf-y += thloop.o
+ perf-y += leafloop.o
++perf-y += sqrtloop.o
+ 
++CFLAGS_sqrtloop.o         = -g -O0 -fno-inline -U_FORTIFY_SOURCE
+ CFLAGS_leafloop.o         = -g -O0 -fno-inline -fno-omit-frame-pointer -U_FORTIFY_SOURCE
+diff --git a/tools/perf/tests/workloads/sqrtloop.c b/tools/perf/tests/workloads/sqrtloop.c
+new file mode 100644
+index 0000000000000..ccc94c6a6676a
+--- /dev/null
++++ b/tools/perf/tests/workloads/sqrtloop.c
+@@ -0,0 +1,45 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#include <math.h>
++#include <signal.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <linux/compiler.h>
++#include <sys/wait.h>
++#include "../tests.h"
 +
-+	ip -n ${ROUTER_NS_V6} link set dev ${ROUTER_INTF} up
-+	ip -n ${HOST_NS_V6} link set dev ${HOST_INTF} up
-+	ip -n ${ROUTER_NS_V6} addr add ${ROUTER_ADDR_V6}/${PREFIX_WIDTH_V6} \
-+		dev ${ROUTER_INTF} nodad
-+	ip -n ${HOST_NS_V6} addr add ${HOST_ADDR_V6}/${PREFIX_WIDTH_V6} \
-+		dev ${HOST_INTF}
- 	set +e
- }
- 
-@@ -162,26 +163,6 @@ arp_test_gratuitous_combinations() {
- 	arp_test_gratuitous 2 1
- }
- 
--cleanup_tcpdump() {
--	set -e
--	[[ ! -z  ${tcpdump_stdout} ]] && rm -f ${tcpdump_stdout}
--	[[ ! -z  ${tcpdump_stderr} ]] && rm -f ${tcpdump_stderr}
--	tcpdump_stdout=
--	tcpdump_stderr=
--	set +e
--}
--
--start_tcpdump() {
--	set -e
--	tcpdump_stdout=`mktemp`
--	tcpdump_stderr=`mktemp`
--	ip netns exec ${ROUTER_NS_V6} timeout 15s \
--		tcpdump --immediate-mode -tpni ${ROUTER_INTF} -c 1 \
--		"icmp6 && icmp6[0] == 136 && src ${HOST_ADDR_V6}" \
--		> ${tcpdump_stdout} 2> /dev/null
--	set +e
--}
--
- verify_ndisc() {
- 	local accept_untracked_na=$1
- 	local same_subnet=$2
-@@ -222,8 +203,9 @@ ndisc_test_untracked_advertisements() {
- 			HOST_ADDR_V6=2001:db8:abcd:0012::3
- 		fi
- 	fi
--	setup_v6 $1 $2
--	start_tcpdump
-+	setup_v6 $1
-+	slowwait_for_counter 15 1 \
-+		tc_rule_handle_stats_get "dev ${ROUTER_INTF} ingress" 101 ".packets" "-n ${ROUTER_NS_V6}"
- 
- 	if verify_ndisc $1 $2; then
- 		printf "    TEST: %-60s  [ OK ]\n" "${test_msg[*]}"
-@@ -231,7 +213,6 @@ ndisc_test_untracked_advertisements() {
- 		printf "    TEST: %-60s  [FAIL]\n" "${test_msg[*]}"
- 	fi
- 
--	cleanup_tcpdump
- 	cleanup_v6
- 	set +e
- }
-diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
-index 01322758255f7..e78f11140edd8 100644
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -38,14 +38,6 @@ fi
- 
- source "$net_forwarding_dir/../lib.sh"
- 
--# timeout in seconds
--slowwait()
--{
--	local timeout_sec=$1; shift
--
--	loopy_wait "sleep 0.1" "$((timeout_sec * 1000))" "$@"
--}
--
- ##############################################################################
- # Sanity checks
- 
-@@ -529,33 +521,6 @@ wait_for_trap()
- 	"$@" | grep -q trap
- }
- 
--until_counter_is()
--{
--	local expr=$1; shift
--	local current=$("$@")
--
--	echo $((current))
--	((current $expr))
--}
--
--busywait_for_counter()
--{
--	local timeout=$1; shift
--	local delta=$1; shift
--
--	local base=$("$@")
--	busywait "$timeout" until_counter_is ">= $((base + delta))" "$@"
--}
--
--slowwait_for_counter()
--{
--	local timeout=$1; shift
--	local delta=$1; shift
--
--	local base=$("$@")
--	slowwait "$timeout" until_counter_is ">= $((base + delta))" "$@"
--}
--
- setup_wait_dev()
- {
- 	local dev=$1; shift
-@@ -861,29 +826,6 @@ link_stats_rx_errors_get()
- 	link_stats_get $1 rx errors
- }
- 
--tc_rule_stats_get()
--{
--	local dev=$1; shift
--	local pref=$1; shift
--	local dir=$1; shift
--	local selector=${1:-.packets}; shift
--
--	tc -j -s filter show dev $dev ${dir:-ingress} pref $pref \
--	    | jq ".[1].options.actions[].stats$selector"
--}
--
--tc_rule_handle_stats_get()
--{
--	local id=$1; shift
--	local handle=$1; shift
--	local selector=${1:-.packets}; shift
--	local netns=${1:-""}; shift
--
--	tc $netns -j -s filter show $id \
--	    | jq ".[] | select(.options.handle == $handle) | \
--		  .options.actions[0].stats$selector"
--}
--
- ethtool_stats_get()
- {
- 	local dev=$1; shift
-diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-index 308c3b0bcf210..fb640fb9e8d32 100644
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -86,6 +86,41 @@ busywait()
- 	loopy_wait : "$timeout_ms" "$@"
- }
- 
-+# timeout in seconds
-+slowwait()
++static volatile sig_atomic_t done;
++
++static void sighandler(int sig __maybe_unused)
 +{
-+	local timeout_sec=$1; shift
-+
-+	loopy_wait "sleep 0.1" "$((timeout_sec * 1000))" "$@"
++	done = 1;
 +}
 +
-+until_counter_is()
++static int __sqrtloop(int sec)
 +{
-+	local expr=$1; shift
-+	local current=$("$@")
++	signal(SIGALRM, sighandler);
++	alarm(sec);
 +
-+	echo $((current))
-+	((current $expr))
++	while (!done)
++		(void)sqrt(rand());
++	return 0;
 +}
 +
-+busywait_for_counter()
++static int sqrtloop(int argc, const char **argv)
 +{
-+	local timeout=$1; shift
-+	local delta=$1; shift
++	int sec = 1;
 +
-+	local base=$("$@")
-+	busywait "$timeout" until_counter_is ">= $((base + delta))" "$@"
++	if (argc > 0)
++		sec = atoi(argv[0]);
++
++	switch (fork()) {
++	case 0:
++		return __sqrtloop(sec);
++	case -1:
++		return -1;
++	default:
++		wait(NULL);
++	}
++	return 0;
 +}
 +
-+slowwait_for_counter()
-+{
-+	local timeout=$1; shift
-+	local delta=$1; shift
-+
-+	local base=$("$@")
-+	slowwait "$timeout" until_counter_is ">= $((base + delta))" "$@"
-+}
-+
- cleanup_ns()
- {
- 	local ns=""
-@@ -145,3 +180,26 @@ setup_ns()
- 	done
- 	NS_LIST="$NS_LIST $ns_list"
- }
-+
-+tc_rule_stats_get()
-+{
-+	local dev=$1; shift
-+	local pref=$1; shift
-+	local dir=$1; shift
-+	local selector=${1:-.packets}; shift
-+
-+	tc -j -s filter show dev $dev ${dir:-ingress} pref $pref \
-+	    | jq ".[1].options.actions[].stats$selector"
-+}
-+
-+tc_rule_handle_stats_get()
-+{
-+	local id=$1; shift
-+	local handle=$1; shift
-+	local selector=${1:-.packets}; shift
-+	local netns=${1:-""}; shift
-+
-+	tc $netns -j -s filter show $id \
-+	    | jq ".[] | select(.options.handle == $handle) | \
-+		  .options.actions[0].stats$selector"
-+}
++DEFINE_WORKLOAD(sqrtloop);
 -- 
 2.43.0
 
