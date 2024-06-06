@@ -1,115 +1,101 @@
-Return-Path: <stable+bounces-49900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C84E8FEF50
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC4D8FEF52
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88F2C1C23A8D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3D591C2214E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1371CBE9A;
-	Thu,  6 Jun 2024 14:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C511CBE9D;
+	Thu,  6 Jun 2024 14:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5kFZhMR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GMYCgyd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE0F1A254F;
-	Thu,  6 Jun 2024 14:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40131A254F;
+	Thu,  6 Jun 2024 14:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683767; cv=none; b=aGfIP3XVLdlPvJudZ23NcK+Oi6Y4Wi1sWgZ70xe9OES4zYnoSz+wMZC1zkrzvdSgoW+mpXvs11qGInT6dhxLUVUKkSRdKGj+bw/w9mqHXoQtGEGUXqInPteHohJ/uJxkErvSipoJ8X0DikMwhiWHWma7PXfXzxBV3HQ/tMN9Cho=
+	t=1717683768; cv=none; b=dT8no/Ca7KFqB8ep1aPD8ZJdpHuB9MHout3p+72nBOTo9+CkM0sc17BjV94mWoCO93ZsRKMBZa5e9WVYde6+dLgk9uySw/NTx9f8o5PBMOOoEUJXzqk0QEXSYimrXtPVIK9u8z2Xj2OpyM1CUDnpprlF9ExAWE/V9Ymy5qGPGZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683767; c=relaxed/simple;
-	bh=sI/ffrj9UIFzdeacXAdfFyEWEpW2TlqyjrxOfKc8t1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RX/kGYQSqDEFnjhsjZvjkY6Va6N2rge3VhcRNv/8SJrwMdpkF4wOTfavWd4ykC+G45FSPDNMFDRvyI2CSWNekw1AMD+Vr2b7digSqbMW8MYHUaKvM8F3NYBEiyhz9EBfZ+ee0Hexv7Pk/9tq+CENnVS8/1IK3w6QMdX5opb6aw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5kFZhMR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB05EC2BD10;
-	Thu,  6 Jun 2024 14:22:46 +0000 (UTC)
+	s=arc-20240116; t=1717683768; c=relaxed/simple;
+	bh=1HNFiy1jpw/EjA2f0IjPfo/V03/2GnQ7OxSIg1zvXGs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rk3pn90d52bIwwdSWXygosegBu94Guz10/Rx6fj+sRXshVz28D5IZOq0EPCUWQhFRe1uViHcsADOCL5SRercWF4KPYXx8HW8FA8eryFDzWkcpAosR0fofAKfxSNol6U6rSqDFLpcy9dK4J8oz1AT90xj7uLWXyaDHvOGKT8J+NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GMYCgyd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA0EC32781;
+	Thu,  6 Jun 2024 14:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683766;
-	bh=sI/ffrj9UIFzdeacXAdfFyEWEpW2TlqyjrxOfKc8t1I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5kFZhMR0fK7zf4IgVeFQyQHzKfu1FPR7RB0DhcRkejUHfClKCUprFAFp3qS1avpA
-	 SoYrzQPcSsm8G2o/yOdoqAerRJTy7SVOH6U4k2HyktncPdNLWzBeWxWav3VPGZG6Pr
-	 5SnlM+XaP8l8wWE/jqZ/xFxhrf1pzLKLKkHEsAhI=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.6 744/744] platform/x86/intel-uncore-freq: Dont present root domain on error
-Date: Thu,  6 Jun 2024 16:06:56 +0200
-Message-ID: <20240606131756.337159958@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=korg; t=1717683767;
+	bh=1HNFiy1jpw/EjA2f0IjPfo/V03/2GnQ7OxSIg1zvXGs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=2GMYCgydJt4fBk0IgH4GLTOro5Hy+2EzGcmuP6j9wHW7x9w+193mzt80JzlsTrMUV
+	 OJGVyAEV7zwoX5ZFTwwy0D7Qf73xXnxXlmEYkq+I7g6lDMQdk+VbrC6eJMkfiiENh7
+	 OSt/OKebHO8S+zdjnsNPcSROoQhxRiMTBTNVHXlI=
+Date: Thu, 6 Jun 2024 16:07:22 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: Patch "arm64: fpsimd: Bring cond_yield asm macro in line with
+ new rules" has been added to the 6.6-stable tree
+Message-ID: <2024060607-lapped-crunching-4816@gregkh>
+References: <20240605231152.3112791-1-sashal@kernel.org>
+ <CAMj1kXHrpZzJvvi+4RaMVV5_tsEU62_EC-7MboHBbR1hTMgTcg@mail.gmail.com>
+ <2024060619-drank-unheard-bd84@gregkh>
+ <CAMj1kXGFZZT8XQaUdfH1FOaSzU+jp-_cBZa=i180Wx+Tm_3Snw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGFZZT8XQaUdfH1FOaSzU+jp-_cBZa=i180Wx+Tm_3Snw@mail.gmail.com>
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+On Thu, Jun 06, 2024 at 03:16:55PM +0200, Ard Biesheuvel wrote:
+> On Thu, 6 Jun 2024 at 15:14, Greg KH <greg@kroah.com> wrote:
+> >
+> > On Thu, Jun 06, 2024 at 02:42:09PM +0200, Ard Biesheuvel wrote:
+> > > On Thu, 6 Jun 2024 at 01:11, Sasha Levin <sashal@kernel.org> wrote:
+> > > >
+> > > > This is a note to let you know that I've just added the patch titled
+> > > >
+> > > >     arm64: fpsimd: Bring cond_yield asm macro in line with new rules
+> > > >
+> > > > to the 6.6-stable tree which can be found at:
+> > > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > > >
+> > > > The filename of the patch is:
+> > > >      arm64-fpsimd-bring-cond_yield-asm-macro-in-line-with.patch
+> > > > and it can be found in the queue-6.6 subdirectory.
+> > > >
+> > > > If you, or anyone else, feels it should not be added to the stable tree,
+> > > > please let <stable@vger.kernel.org> know about it.
+> > > >
+> > >
+> > > NAK
+> > >
+> > > None of these changes belong in v6.6 - please drop all of them.
+> > >
+> >
+> > Ah, I see why, it was to get e92bee9f861b ("arm64/fpsimd: Avoid
+> > erroneous elide of user state reload") to apply properly.  I'll drop
+> > that as well, can you provide a backported version instead?
+> >
+> 
+> No, I cannot, given that it fixes something that wasn't broken in v6.6
+> to begin with.
 
-------------------
+Ah, yeah, odd.  Sasha, why did your scripts pick this up?
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-
-commit db643cb7ebe524d17b4b13583dda03485d4a1bc0 upstream.
-
-If none of the clusters are added because of some error, fail to load
-driver without presenting root domain. In this case root domain will
-present invalid data.
-
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Fixes: 01c10f88c9b7 ("platform/x86/intel-uncore-freq: tpmi: Provide cluster level control")
-Cc: <stable@vger.kernel.org> # 6.5+
-Link: https://lore.kernel.org/r/20240415215210.2824868-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c |    7 +++++++
- 1 file changed, 7 insertions(+)
-
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -234,6 +234,7 @@ static int uncore_probe(struct auxiliary
- {
- 	struct intel_tpmi_plat_info *plat_info;
- 	struct tpmi_uncore_struct *tpmi_uncore;
-+	bool uncore_sysfs_added = false;
- 	int ret, i, pkg = 0;
- 	int num_resources;
- 
-@@ -359,9 +360,15 @@ static int uncore_probe(struct auxiliary
- 			}
- 			/* Point to next cluster offset */
- 			cluster_offset >>= UNCORE_MAX_CLUSTER_PER_DOMAIN;
-+			uncore_sysfs_added = true;
- 		}
- 	}
- 
-+	if (!uncore_sysfs_added) {
-+		ret = -ENODEV;
-+		goto remove_clusters;
-+	}
-+
- 	auxiliary_set_drvdata(auxdev, tpmi_uncore);
- 
- 	tpmi_uncore->root_cluster.root_domain = true;
-
-
+greg k-h
 
