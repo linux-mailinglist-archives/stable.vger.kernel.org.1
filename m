@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-49697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495EB8FEE78
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5633E8FEF3C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA4581F2498F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51B751C23D26
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7611C1C3730;
-	Thu,  6 Jun 2024 14:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FB21A2573;
+	Thu,  6 Jun 2024 14:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGFOvMa6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2O7HwDmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358E7197532;
-	Thu,  6 Jun 2024 14:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE981A256C;
+	Thu,  6 Jun 2024 14:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683664; cv=none; b=hPOPKvsJcw0mMi+iUPWfFpZoZBKE5SnXcRzMdAg7+/wmRx/BSoELWiOLtGIjUOO4NU6WyUedQC8EsK8y8Z8QbO+uwVR0gX3o++Q1LWi4Luqij5fE53Ef3zeAb5tiOmZ+gT02JV+LeKQQiM1tbP6ETdje/m1tle68Peu0Jk2GHvg=
+	t=1717683757; cv=none; b=kIXXL5z2mTyX4Sj28Hai5DBuZpe7LhhSAPKVs3urMppmsekSdF3FUG70eOT4OBP972J6xrXpPWuZ0+qbSImQU5yUu+x96Y+zyOiRsLumx3HuY4xppAC0F9J36LVIE2RT1tWYSS5lC8TOPIXYK7RJ4/2XgRl+OszOmZLkFrLP7FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683664; c=relaxed/simple;
-	bh=1hnuu5znUg7Jy9OwFfYYrwyGcDJ4BqJRBWZnxL2Jpvc=;
+	s=arc-20240116; t=1717683757; c=relaxed/simple;
+	bh=JBhFqxmx68kuPoNadAenZ6tIQNnAqYB4QcZLn4Lb+YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+igVgy2pVzzIVwsTtYrV3Hk5U6M1H7fdIhIu/IhDHXc3wK3XDf3vG+EqR8RAl0bq2y0+I4859Nwz7bMcZ/aJI3BI4LDKme2xATy39RwTtzvT6ugPEehZ+d+le4T4KayM5UKXqTjDogR1KlUR0oYZToCLptDoiSuOJtt1W85xPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGFOvMa6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D9DC2BD10;
-	Thu,  6 Jun 2024 14:21:04 +0000 (UTC)
+	 MIME-Version; b=OWZOG8TK8ePNIdP/cypDVRQFnza0ilHnM3Qwd64qbXPgXJ/WL91pKfqWmgfiTM8iUGJobf6W5s3KcGe20lBLGx2nBoPH6PANEh8c21QpqVuifuLjSzuv3CYUyiQx38GwANQlCdJV0q38Tm6VaddOMRxo9v8JnMyFkGrItxrhJXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2O7HwDmV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7D9C2BD10;
+	Thu,  6 Jun 2024 14:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683664;
-	bh=1hnuu5znUg7Jy9OwFfYYrwyGcDJ4BqJRBWZnxL2Jpvc=;
+	s=korg; t=1717683756;
+	bh=JBhFqxmx68kuPoNadAenZ6tIQNnAqYB4QcZLn4Lb+YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGFOvMa67vYVWu0RvIRhtBlIBTx9drHoPMB8V1gpk3ESBONy7c+XnC71fQYcWL+Qy
-	 SDPpidfMnQ7sWlLEiNMPWAaDxzLaOtfZUTun9LeHkwG4XMnlvD3EasC95gvabzV9Ka
-	 B0gvxFsoqBjbgbj9P8+Wg6A9ucR6dQmn4vxvcaN8=
+	b=2O7HwDmVAI6o1lqNnH1m73PU3nTgKPxNYbQYj2h6FsOi9XugZHD2g4fXd+rcySSqr
+	 7J6JRbgp5fX4WAZVl6DkmTg8uD5oz3InIB65hYoJ9t0Irv+/XEETYubh8Biqezf54+
+	 Oa4yn3kWWsAWLUaEBP03nJzBZSN5yrSSN8gFfU6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 473/473] ALSA: timer: Set lower bound of start tick time
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Gerald Loacker <gerald.loacker@wolfvision.net>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 730/744] drm/panel: sitronix-st7789v: fix timing for jt240mhqs_hwt_ek_e3 panel
 Date: Thu,  6 Jun 2024 16:06:42 +0200
-Message-ID: <20240606131715.316354845@linuxfoundation.org>
+Message-ID: <20240606131755.877139352@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Gerald Loacker <gerald.loacker@wolfvision.net>
 
-commit 4a63bd179fa8d3fcc44a0d9d71d941ddd62f0c4e upstream.
+[ Upstream commit 0e5895ff7fab0fc05ec17daf9a568368828fa6ea ]
 
-Currently ALSA timer doesn't have the lower limit of the start tick
-time, and it allows a very small size, e.g. 1 tick with 1ns resolution
-for hrtimer.  Such a situation may lead to an unexpected RCU stall,
-where  the callback repeatedly queuing the expire update, as reported
-by fuzzer.
+Flickering was observed when using partial mode. Moving the vsync to the
+same position as used by the default sitronix-st7789v timing resolves this
+issue.
 
-This patch introduces a sanity check of the timer start tick time, so
-that the system returns an error when a too small start size is set.
-As of this patch, the lower limit is hard-coded to 100us, which is
-small enough but can still work somehow.
-
-Reported-by: syzbot+43120c2af6ca2938cc38@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/000000000000fa00a1061740ab6d@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240514182745.4015-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ backport note: the error handling is changed, as the original commit
-  is based on the recent cleanup with guard() in commit beb45974dd49
-  -- tiwai ]
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0fbbe96bfa08 ("drm/panel: sitronix-st7789v: add jasonic jt240mhqs-hwt-ek-e3 support")
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Signed-off-by: Gerald Loacker <gerald.loacker@wolfvision.net>
+Link: https://lore.kernel.org/r/20240409-bugfix-jt240mhqs_hwt_ek_e3-timing-v2-1-e4821802443d@wolfvision.net
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240409-bugfix-jt240mhqs_hwt_ek_e3-timing-v2-1-e4821802443d@wolfvision.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/timer.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/panel/panel-sitronix-st7789v.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -553,6 +553,16 @@ static int snd_timer_start1(struct snd_t
- 		goto unlock;
- 	}
- 
-+	/* check the actual time for the start tick;
-+	 * bail out as error if it's way too low (< 100us)
-+	 */
-+	if (start) {
-+		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000) {
-+			result = -EINVAL;
-+			goto unlock;
-+		}
-+	}
-+
- 	if (start)
- 		timeri->ticks = timeri->cticks = ticks;
- 	else if (!timeri->cticks)
+diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7789v.c b/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
+index 88e80fe98112d..32e5c03480381 100644
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
+@@ -286,9 +286,9 @@ static const struct drm_display_mode jt240mhqs_hwt_ek_e3_mode = {
+ 	.hsync_end = 240 + 28 + 10,
+ 	.htotal = 240 + 28 + 10 + 10,
+ 	.vdisplay = 280,
+-	.vsync_start = 280 + 8,
+-	.vsync_end = 280 + 8 + 4,
+-	.vtotal = 280 + 8 + 4 + 4,
++	.vsync_start = 280 + 48,
++	.vsync_end = 280 + 48 + 4,
++	.vtotal = 280 + 48 + 4 + 4,
+ 	.width_mm = 43,
+ 	.height_mm = 37,
+ 	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
+-- 
+2.43.0
+
 
 
 
