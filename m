@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-49603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CF78FEDFD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559D18FEF19
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E3B11F21AA2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52E341C208BF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833F51BE864;
-	Thu,  6 Jun 2024 14:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF671C9EA3;
+	Thu,  6 Jun 2024 14:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBUWBKS3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iicHAYL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4068F19EEB8;
-	Thu,  6 Jun 2024 14:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAF01A254A;
+	Thu,  6 Jun 2024 14:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683548; cv=none; b=XWknk/d1IYth/qMclNwllzjIy/vvXskJA5WDAGRZKA5O9dDFGijHwrImavj+aNFpvO6jUeb5Y2yTV5HIXA9ige4wM532mOOUk/qlHkDcz2eRxvrB8M4agRkgmxfu/wEW3KoVmTt7/iMqYjbFNxQgjeJmppI4KKJi7EWjcbm1d3c=
+	t=1717683738; cv=none; b=ist6Knx0IVM+DRQP4ejGMJ0a9wInVxJrsJwWOJ1kUDIJVP2x6kAOfHxhFhi7QbkIxstKEedFIJzDOg99/dz6gufliE12+1AihjtxOnujVC+YNn0DHD43bVYIk0QnSzGa/c6Xcz/vk4V0y+8gSIoiBHLYAPBwVe6yEqsAlVZz7Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683548; c=relaxed/simple;
-	bh=I7YeMXC2IR6Li1a2/2ebjVp9rmYzNYJ22OorKvtoCYg=;
+	s=arc-20240116; t=1717683738; c=relaxed/simple;
+	bh=Aq1qXSRecOKzOEeoBfg460x6KRumEw2gAs5vpglmL+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxpMO0vkoRE8GcNFHG5wQPhgR7hT+mdXb937AMSVJ1rBC5aixSmUV5qHUQrtML6Z3RdoY9tnpmVcI2dYetZC5RVelpaoU8ATUGeXdS5YWfWDOGUM7k7oU5ocf6eG9oO2vhShkYPsONNwZCnVLIOaN02rrjN/sj2Vytj+TKhg+Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBUWBKS3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E03FC2BD10;
-	Thu,  6 Jun 2024 14:19:08 +0000 (UTC)
+	 MIME-Version; b=HFQ0viZgLsK3I5gZRJusm6/QnI7a5w3hObJnXFYjABB54Re4YI3RH7uAuUYJC37jnu64M7wHcwr+pE0RDSn1CLzAzRsRrMR1paC//tqOWal2KQKvVw7Dv9FheXM8FOt74ZgQS/3wxAhOqlKchwtWpwqN/jNW6dgif2yfBS2MXNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iicHAYL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF615C32782;
+	Thu,  6 Jun 2024 14:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683548;
-	bh=I7YeMXC2IR6Li1a2/2ebjVp9rmYzNYJ22OorKvtoCYg=;
+	s=korg; t=1717683737;
+	bh=Aq1qXSRecOKzOEeoBfg460x6KRumEw2gAs5vpglmL+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBUWBKS3LCBJpsJaFwRL3Eqv7o251ZBK+HS4ZlOcOnDVO5EcJKipksTVWl16mOiPe
-	 ycYosLQUpl6/v9Ps2M+XNs+3fcGa/QRB6hmr3e3kQwjBOIxGtT+NZhkhkmQLPr5k+v
-	 1hiVjGm0JUI6158Tf3e2vvGZqQ9t7aVnOuUEUekg=
+	b=iicHAYL55Mz5U7v8McYl6WmBhe+D/B/BT32pwO0/IRnHj7/dt5C4u1zjKOwclSXt0
+	 JaVNE1sOKew+p1B1XNX5IfS+adXYOR75ekFfuEYRXUrJcT7bE6KvCXXwgRXPhAZ9SW
+	 +N85BsV33oQ2qCRerw96I+Il3hvvkfaBAEl56JeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karim Ben Houcine <karim.benhoucine@landisgyr.com>,
-	Mathieu Othacehe <othacehe@gnu.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 437/473] net: phy: micrel: set soft_reset callback to genphy_soft_reset for KSZ8061
+Subject: [PATCH 6.6 694/744] ALSA: core: Remove debugfs at disconnection
 Date: Thu,  6 Jun 2024 16:06:06 +0200
-Message-ID: <20240606131714.181226320@linuxfoundation.org>
+Message-ID: <20240606131754.743532603@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +61,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Othacehe <othacehe@gnu.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 128d54fbcb14b8717ecf596d3dbded327b9980b3 ]
+[ Upstream commit 495000a38634e640e2fd02f7e4f1512ccc92d770 ]
 
-Following a similar reinstate for the KSZ8081 and KSZ9031.
+The card-specific debugfs entries are removed at the last stage of
+card free phase, and it's performed after synchronization of the
+closes of all opened fds.  This works fine for most cases, but it can
+be potentially problematic for a hotplug device like USB-audio.  Due
+to the nature of snd_card_free_when_closed(), the card free isn't
+called immediately after the driver removal for a hotplug device, but
+it's left until the last fd is closed.  It implies that the card
+debugfs entries also remain.  Meanwhile, when a new device is inserted
+before the last close and the very same card slot is assigned, the
+driver tries to create the card debugfs root again on the very same
+path.  This conflicts with the remaining entry, and results in the
+kernel warning such as:
+  debugfs: Directory 'card0' with parent 'sound' already present!
+with the missing debugfs entry afterwards.
 
-Older kernels would use the genphy_soft_reset if the PHY did not implement
-a .soft_reset.
+For avoiding such conflicts, remove debugfs entries at the device
+disconnection phase instead.  The jack kctl debugfs entries get
+removed in snd_jack_dev_disconnect() instead of each kctl
+private_free.
 
-The KSZ8061 errata described here:
-https://ww1.microchip.com/downloads/en/DeviceDoc/KSZ8061-Errata-DS80000688B.pdf
-and worked around with 232ba3a51c ("net: phy: Micrel KSZ8061: link failure after cable connect")
-is back again without this soft reset.
-
-Fixes: 6e2d85ec0559 ("net: phy: Stop with excessive soft reset")
-Tested-by: Karim Ben Houcine <karim.benhoucine@landisgyr.com>
-Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 2d670ea2bd53 ("ALSA: jack: implement software jack injection via debugfs")
+Link: https://lore.kernel.org/r/20240524151256.32521-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/core/init.c |  9 +++++----
+ sound/core/jack.c | 21 ++++++++++++++-------
+ 2 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 2cbb1d1830bbd..98c6d0caf8faf 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -3245,6 +3245,7 @@ static struct phy_driver ksphy_driver[] = {
- 	/* PHY_BASIC_FEATURES */
- 	.probe		= kszphy_probe,
- 	.config_init	= ksz8061_config_init,
-+	.soft_reset	= genphy_soft_reset,
- 	.config_intr	= kszphy_config_intr,
- 	.handle_interrupt = kszphy_handle_interrupt,
- 	.suspend	= kszphy_suspend,
+diff --git a/sound/core/init.c b/sound/core/init.c
+index d97b8af897ee4..b2b7e50ff4cc3 100644
+--- a/sound/core/init.c
++++ b/sound/core/init.c
+@@ -546,6 +546,11 @@ void snd_card_disconnect(struct snd_card *card)
+ 		synchronize_irq(card->sync_irq);
+ 
+ 	snd_info_card_disconnect(card);
++#ifdef CONFIG_SND_DEBUG
++	debugfs_remove(card->debugfs_root);
++	card->debugfs_root = NULL;
++#endif
++
+ 	if (card->registered) {
+ 		device_del(&card->card_dev);
+ 		card->registered = false;
+@@ -598,10 +603,6 @@ static int snd_card_do_free(struct snd_card *card)
+ 		dev_warn(card->dev, "unable to free card info\n");
+ 		/* Not fatal error */
+ 	}
+-#ifdef CONFIG_SND_DEBUG
+-	debugfs_remove(card->debugfs_root);
+-	card->debugfs_root = NULL;
+-#endif
+ 	if (card->release_completion)
+ 		complete(card->release_completion);
+ 	if (!card->managed)
+diff --git a/sound/core/jack.c b/sound/core/jack.c
+index e08b2c4fbd1a5..e4bcecdf89b7e 100644
+--- a/sound/core/jack.c
++++ b/sound/core/jack.c
+@@ -37,11 +37,15 @@ static const int jack_switch_types[SND_JACK_SWITCH_TYPES] = {
+ };
+ #endif /* CONFIG_SND_JACK_INPUT_DEV */
+ 
++static void snd_jack_remove_debugfs(struct snd_jack *jack);
++
+ static int snd_jack_dev_disconnect(struct snd_device *device)
+ {
+-#ifdef CONFIG_SND_JACK_INPUT_DEV
+ 	struct snd_jack *jack = device->device_data;
+ 
++	snd_jack_remove_debugfs(jack);
++
++#ifdef CONFIG_SND_JACK_INPUT_DEV
+ 	guard(mutex)(&jack->input_dev_lock);
+ 	if (!jack->input_dev)
+ 		return 0;
+@@ -381,10 +385,14 @@ static int snd_jack_debugfs_add_inject_node(struct snd_jack *jack,
+ 	return 0;
+ }
+ 
+-static void snd_jack_debugfs_clear_inject_node(struct snd_jack_kctl *jack_kctl)
++static void snd_jack_remove_debugfs(struct snd_jack *jack)
+ {
+-	debugfs_remove(jack_kctl->jack_debugfs_root);
+-	jack_kctl->jack_debugfs_root = NULL;
++	struct snd_jack_kctl *jack_kctl;
++
++	list_for_each_entry(jack_kctl, &jack->kctl_list, list) {
++		debugfs_remove(jack_kctl->jack_debugfs_root);
++		jack_kctl->jack_debugfs_root = NULL;
++	}
+ }
+ #else /* CONFIG_SND_JACK_INJECTION_DEBUG */
+ static int snd_jack_debugfs_add_inject_node(struct snd_jack *jack,
+@@ -393,7 +401,7 @@ static int snd_jack_debugfs_add_inject_node(struct snd_jack *jack,
+ 	return 0;
+ }
+ 
+-static void snd_jack_debugfs_clear_inject_node(struct snd_jack_kctl *jack_kctl)
++static void snd_jack_remove_debugfs(struct snd_jack *jack)
+ {
+ }
+ #endif /* CONFIG_SND_JACK_INJECTION_DEBUG */
+@@ -404,7 +412,6 @@ static void snd_jack_kctl_private_free(struct snd_kcontrol *kctl)
+ 
+ 	jack_kctl = kctl->private_data;
+ 	if (jack_kctl) {
+-		snd_jack_debugfs_clear_inject_node(jack_kctl);
+ 		list_del(&jack_kctl->list);
+ 		kfree(jack_kctl);
+ 	}
+@@ -497,8 +504,8 @@ int snd_jack_new(struct snd_card *card, const char *id, int type,
+ 		.dev_free = snd_jack_dev_free,
+ #ifdef CONFIG_SND_JACK_INPUT_DEV
+ 		.dev_register = snd_jack_dev_register,
+-		.dev_disconnect = snd_jack_dev_disconnect,
+ #endif /* CONFIG_SND_JACK_INPUT_DEV */
++		.dev_disconnect = snd_jack_dev_disconnect,
+ 	};
+ 
+ 	if (initial_kctl) {
 -- 
 2.43.0
 
