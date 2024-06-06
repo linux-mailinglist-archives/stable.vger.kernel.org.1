@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-48372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985BF8FE8B8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0038FE8BA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F7B2283E94
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A56C285174
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BE0197A93;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B872F196C63;
 	Thu,  6 Jun 2024 14:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCvVO5R4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZADZWaq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C5B196C72;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719B5197A98;
 	Thu,  6 Jun 2024 14:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682928; cv=none; b=mIYnC9kLxsnaNX2Yb0fpFxOaJsQ4aItLqDmntWf4Ch0DIpUmuxm8cPzsYq0NBlAinbOST7qaPHozkb+gCqEWZIWOpgY66v3gjHuFU66B8MxywFhoyZ2F8qlH0u4e1PXUQ2JocZndRmSLuCeK6h/ApybegPuFnISBKA3xaN99E6A=
+	t=1717682928; cv=none; b=QOT3+BRBjVWvfp3xWTx3zMQLseQLlXEuByB6cZjSHFaaHh+NHuC0vKMiomuezeaI3pMUsryzftYNdi3xU8REtKYDPg0clTJoJrm/Fx7tyQL66SY/6D9B+EU+mE+o0T+10C4xGg69shShSedAAWut+3TLyNdjWQjVl/rrNdHawcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717682928; c=relaxed/simple;
-	bh=prpWGQFYYVwxg+h2czJrDelcz5w53gEVPaqWoyOMAWo=;
+	bh=kdyH4egdLSDWpLbXwXCyseU76qaHFu8pNW/9xWUbusQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6uNY2p+tY+VHXk6fGkUameHK1DiWfqhBnZug1vfTBiHT0UiiFPgTL8veRuJmhmvvqNwE7GPa7FgFVFvtlznwQ81uNfBNVd14VRotXRcXILNCB3lLCi+j14acllHdhyQAfooW18hD5/ULQsXwlvNfb3saw6ledoygz1wDIlgynE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCvVO5R4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E79C32781;
-	Thu,  6 Jun 2024 14:08:47 +0000 (UTC)
+	 MIME-Version; b=Es8OOrrNpzRV/yl4e+8eunRNjgVej//Fxw/KVyhT0EG9Iw5Edhi/Bg5NcfikOSBM6mSq34PEeN+hX8yCWQfXv524hN1ka5fqR5RA9alsuKgbRUQHf1jTS+jshwD8ExOfWNl8/O3WW5VQ0/yYbye3vzg8APVhExO+cIl9qp/miX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZADZWaq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E02BC32782;
+	Thu,  6 Jun 2024 14:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682927;
-	bh=prpWGQFYYVwxg+h2czJrDelcz5w53gEVPaqWoyOMAWo=;
+	s=korg; t=1717682928;
+	bh=kdyH4egdLSDWpLbXwXCyseU76qaHFu8pNW/9xWUbusQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCvVO5R4su9YBqsox5rger7TIrY+05KwhDI29ZAuAdfss8SwzteOTn/cxRI1El9Om
-	 osT1IPHWKaKQWRuueqJPAlchpaBL4Cc9eCxeJy9S12+vuWnDANfrDfiPFKVoTqacT4
-	 4xqYmIX+P2zvE06eEEhbxX6q3e63s19aAL5lNk7M=
+	b=hZADZWaqh4pdDSpSBBfw+pV0xNzRy9GReVWuXleiJ8hR+QLpPIxT1WO/fLnYUOboC
+	 XcEeNScBjSjHG8JBd/4JOaWH66v8Tl6qVvUAl3j2vf+sOJVmL91bssx0R08/eo5roj
+	 xCNOkwf5UZNDo0RYYENcLdacHB5/Wj0AjeNUwM0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 072/374] ovl: remove upper umask handling from ovl_create_upper()
-Date: Thu,  6 Jun 2024 16:00:51 +0200
-Message-ID: <20240606131654.266014017@linuxfoundation.org>
+Subject: [PATCH 6.9 073/374] PCI: of_property: Return error for int_map allocation failure
+Date: Thu,  6 Jun 2024 16:00:52 +0200
+Message-ID: <20240606131654.308025622@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
 References: <20240606131651.683718371@linuxfoundation.org>
@@ -65,37 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 096802748ea1dea8b476938e0a8dc16f4bd2f1ad ]
+[ Upstream commit e6f7d27df5d208b50cae817a91d128fb434bb12c ]
 
-This is already done by vfs_prepare_mode() when creating the upper object
-by vfs_create(), vfs_mkdir() and vfs_mknod().
+Return -ENOMEM from of_pci_prop_intr_map() if kcalloc() fails to prevent a
+NULL pointer dereference in this case.
 
-No regressions have been observed in xfstests run with posix acls turned
-off for the upper filesystem.
-
-Fixes: 1639a49ccdce ("fs: move S_ISGID stripping into the vfs_*() helpers")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+Link: https://lore.kernel.org/r/20240303105729.78624-1-duoming@zju.edu.cn
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/dir.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/pci/of_property.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-index 0f8b4a719237c..02d89a285d0dc 100644
---- a/fs/overlayfs/dir.c
-+++ b/fs/overlayfs/dir.c
-@@ -327,9 +327,6 @@ static int ovl_create_upper(struct dentry *dentry, struct inode *inode,
- 	struct dentry *newdentry;
- 	int err;
+diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
+index c2c7334152bc0..03539e5053720 100644
+--- a/drivers/pci/of_property.c
++++ b/drivers/pci/of_property.c
+@@ -238,6 +238,8 @@ static int of_pci_prop_intr_map(struct pci_dev *pdev, struct of_changeset *ocs,
+ 		return 0;
  
--	if (!attr->hardlink && !IS_POSIXACL(udir))
--		attr->mode &= ~current_umask();
--
- 	inode_lock_nested(udir, I_MUTEX_PARENT);
- 	newdentry = ovl_create_real(ofs, udir,
- 				    ovl_lookup_upper(ofs, dentry->d_name.name,
+ 	int_map = kcalloc(map_sz, sizeof(u32), GFP_KERNEL);
++	if (!int_map)
++		return -ENOMEM;
+ 	mapp = int_map;
+ 
+ 	list_for_each_entry(child, &pdev->subordinate->devices, bus_list) {
 -- 
 2.43.0
 
