@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DE58FE8DD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3E498FEBCF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787921F22FCB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88F491F2967E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3625D196C89;
-	Thu,  6 Jun 2024 14:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4441ABE26;
+	Thu,  6 Jun 2024 14:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kw/jXtgO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pM25DfSR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0DA198E88;
-	Thu,  6 Jun 2024 14:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA148197537;
+	Thu,  6 Jun 2024 14:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682944; cv=none; b=dx33IxXl+dbiw4xF1Rd53Z5HeJPtk9FAagYgwgaKGuT+BuOiTcUQx7Z02vSbF5gtTopa5jDxXrXwZqi8I7sVLLZav9i83oCiD2FxDtmh5eZw7CzNfLsEuIzHr1xffQFn8LI8ccPcRp90fKIVd47+7+qZDPRxYpsMQCEZx4IT72I=
+	t=1717683297; cv=none; b=lkSch5xLDretFhg7kVs9ksiS7mED8DcEoZmwEfv6vsIjoWCAiZAHJrATs+BRsL4nSVEwNi3+N2MhxM0YdZ9j1Uxs5GEUuuQbzqtgczqzaLwxNKyRqrNyWlFcVAvzLNNbk13iyJI/H7w1Dx49mbSadwPhDyAwBUhdjqeCDRD0gFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682944; c=relaxed/simple;
-	bh=P2Bkh6YZyG6vwc+CRgX9z80hMUx4zGDmVIPwRMnA/vM=;
+	s=arc-20240116; t=1717683297; c=relaxed/simple;
+	bh=EFpBHNmvFDjRkMQOlaT+kDKy2PaKbzg7VSNCuXtfKO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1/Usay8WB4seQbNS1vj1jtdloTM/XIyWsCtP3dOICQUeai/GkA8qV7lsK7YrVN4m/jkVdARAc3FJXu9UfhysXeHxfBRCXW7TL8k4tp3+JyHycH1l67Ke/4ru3+VTzCPi6tvm5gg3cQYMfgVuKdxO/qNHHKjGms7P3+570VGt8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kw/jXtgO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F92C2BD10;
-	Thu,  6 Jun 2024 14:09:03 +0000 (UTC)
+	 MIME-Version; b=fITQYG5CPRH3XrUkyjVW4sLewXL7QV7fVjzzoDDZJ8e4wZKGQXhAgymJjejQiL+yVsCfQeNmHZl8fa/8beHQ/v7y4czn7Lf5/CKG5CYQ9ecwop7o19JYs7g0nAwXfglZVulR7+oCfVDxdClIa6L1e2RiTv4ysd926twOiFcCvHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pM25DfSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB3DC2BD10;
+	Thu,  6 Jun 2024 14:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682943;
-	bh=P2Bkh6YZyG6vwc+CRgX9z80hMUx4zGDmVIPwRMnA/vM=;
+	s=korg; t=1717683297;
+	bh=EFpBHNmvFDjRkMQOlaT+kDKy2PaKbzg7VSNCuXtfKO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kw/jXtgOCNZLRHeN+hG1tXaL5S34FvDkCbz4w8gdOH1G0Ldgs7CBGntsehjBaI3Cg
-	 ni2Hf8RiynNqnHymEram0w8OQKznLFc/VS1GoK0nUDxmDRfMYTN8q8X47wIaZdu4He
-	 +F7VgTF59Cf5ckRGkzJhUUDMsprykBtu3vzU4xM4=
+	b=pM25DfSRKHwA5tUn7SJwjz1lWVAGhqHrHNxQ1w+JJqwRl9Ml8/I4nXAu7P6M5qMCi
+	 gScdBgxHUIJZKFhhbwyyntMich81ytJYrpq8nvu02AMfbqu7oSpsD6XzJvaLWYaVSD
+	 uch0NPpUybUlDOtaVCk5BYbxHvXc4STO5fZRuxzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 094/374] extcon: max8997: select IRQ_DOMAIN instead of depending on it
+Subject: [PATCH 6.1 144/473] net: give more chances to rcu in netdev_wait_allrefs_any()
 Date: Thu,  6 Jun 2024 16:01:13 +0200
-Message-ID: <20240606131655.052347775@linuxfoundation.org>
+Message-ID: <20240606131704.699134428@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b1781d0a1458070d40134e4f3412ec9d70099bec ]
+[ Upstream commit cd42ba1c8ac9deb9032add6adf491110e7442040 ]
 
-IRQ_DOMAIN is a hidden (not user visible) symbol. Users cannot set
-it directly thru "make *config", so drivers should select it instead
-of depending on it if they need it.
-Relying on it being set for a dependency is risky.
+This came while reviewing commit c4e86b4363ac ("net: add two more
+call_rcu_hurry()").
 
-Consistently using "select" or "depends on" can also help reduce
-Kconfig circular dependency issues.
+Paolo asked if adding one synchronize_rcu() would help.
 
-Therefore, change EXTCON_MAX8997's use of "depends on" for
-IRQ_DOMAIN to "select".
+While synchronize_rcu() does not help, making sure to call
+rcu_barrier() before msleep(wait) is definitely helping
+to make sure lazy call_rcu() are completed.
 
-Link: https://lore.kernel.org/lkml/20240213060028.9744-1-rdunlap@infradead.org/
-Fixes: dca1a71e4108 ("extcon: Add support irq domain for MAX8997 muic")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Instead of waiting ~100 seconds in my tests, the ref_tracker
+splats occurs one time only, and netdev_wait_allrefs_any()
+latency is reduced to the strict minimum.
+
+Ideally we should audit our call_rcu() users to make sure
+no refcount (or cascading call_rcu()) is held too long,
+because rcu_barrier() is quite expensive.
+
+Fixes: 0e4be9e57e8c ("net: use exponential backoff in netdev_wait_allrefs")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/all/28bbf698-befb-42f6-b561-851c67f464aa@kernel.org/T/#m76d73ed6b03cd930778ac4d20a777f22a08d6824
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/Kconfig | 3 ++-
+ net/core/dev.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
-index 5f869eacd19ab..3da94b3822923 100644
---- a/drivers/extcon/Kconfig
-+++ b/drivers/extcon/Kconfig
-@@ -116,7 +116,8 @@ config EXTCON_MAX77843
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 65284eeec7de5..20d8b9195ef60 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -10300,8 +10300,9 @@ static struct net_device *netdev_wait_allrefs_any(struct list_head *list)
+ 			rebroadcast_time = jiffies;
+ 		}
  
- config EXTCON_MAX8997
- 	tristate "Maxim MAX8997 EXTCON Support"
--	depends on MFD_MAX8997 && IRQ_DOMAIN
-+	depends on MFD_MAX8997
-+	select IRQ_DOMAIN
- 	help
- 	  If you say yes here you get support for the MUIC device of
- 	  Maxim MAX8997 PMIC. The MAX8997 MUIC is a USB port accessory
++		rcu_barrier();
++
+ 		if (!wait) {
+-			rcu_barrier();
+ 			wait = WAIT_REFS_MIN_MSECS;
+ 		} else {
+ 			msleep(wait);
 -- 
 2.43.0
 
