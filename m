@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870EF8FE8DA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACA38FED26
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB8B28468B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56E9BB21FC4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0C1198E84;
-	Thu,  6 Jun 2024 14:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC51198E6C;
+	Thu,  6 Jun 2024 14:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYOTDkD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc+A4TjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1971974E3;
-	Thu,  6 Jun 2024 14:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99D41B4C59;
+	Thu,  6 Jun 2024 14:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682942; cv=none; b=spvCsoEeAVyQPvecTboCMKzZbvsel5ze+aKgpYPWCnxaBWFSEcmY8A+IAVhK0nXt3LCFWciyW9JIq0Sc65XUyBd3DVcJU0jAcsJFREZPnHEEiav1a2WB0CdUA4+MUKw+JCDEwZyv7EX+1PQI4fqTuC6jpOUp9BlkrE9dwa/sD+s=
+	t=1717683452; cv=none; b=EtqWdLM/7R2OZQO29YrsxjXNrrqI0DUSLtbblXmu7kekHtHbmzEiIzBOajVfZ9EE/pLyg/K4dJT/0njHRsYFct//lSyu3oHntjEVPUa4t9scS+9gGRVonr2aRnD4Dyy+wzPFmc4OV0mCZWu4lfBwImkxlW1sQSfVmkLigDPR2/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682942; c=relaxed/simple;
-	bh=nfdoEEE9qkPjzCQ76+GpLT2wXb445MwkV8EgUcm1f30=;
+	s=arc-20240116; t=1717683452; c=relaxed/simple;
+	bh=67LUeZhlmuRyEvzNGdQuuCXTdU1zktqynvBof4PQ7sM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShPCJc5L9kARNpIjzRXMwglgHY5rdyRv4/PeOhlAGe7gjGrjfQtSSIOsjdn98tZx7LE+5v4lh8F7VbkKtV2mCk1LE3WkZ6koTg0mLcxJDTgn1eQAoL+bsGn2yMf+HSSm63nZVMKdpNY5X1SrMX3y4MtHOWHeVEJCV3Jh5OoQ9HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYOTDkD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20382C32781;
-	Thu,  6 Jun 2024 14:09:02 +0000 (UTC)
+	 MIME-Version; b=gGwf+tCXVe+tKNUH7HLJ98qVZiuGrXSens5SN4HG7UTStIY6kUwwqT2cA5ayBWxajS/srhBLHzERa80EAhJIpnxZOTCw+sdncLpkLbKo8Qs+4VE1GdUdvVH4JdPXZANIhmL3jxd4iQwCBcqb73UX8N8LcM9SA7c0q4d8hsZmZUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc+A4TjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6701C32782;
+	Thu,  6 Jun 2024 14:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682942;
-	bh=nfdoEEE9qkPjzCQ76+GpLT2wXb445MwkV8EgUcm1f30=;
+	s=korg; t=1717683452;
+	bh=67LUeZhlmuRyEvzNGdQuuCXTdU1zktqynvBof4PQ7sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYOTDkD3gh5R/mh9BgfUjsvAzUMD95qDSOiCk6PIIi0j1NMdE+iDQaBFIU7HM1h6C
-	 krODk6O6AXWVz9LYnOuD1bVhuYGISCgaffCF6PEPcCJg07HV6zqcCidJUE8ekurJXZ
-	 ahu8oaCM7EKJtg2bZAe4L5a5B15AFMgF8TKQ+D3I=
+	b=Jc+A4TjNZiC0Hvh3mustekmvnAoGE9y7CR7Ip0GEW6GVyamN0RbGcOxLRNquesuye
+	 xsEpgdsffrDot04XhOR/8jtUmMxh0LHt62p5XEU6ZVzYPGGeD5Jzw95fPVTtBco51z
+	 X/koCRR1CuMp7dMzF7cLyX1bGgW4YA8aFoFux0lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 059/374] vfio/pci: fix potential memory leak in vfio_intx_enable()
-Date: Thu,  6 Jun 2024 16:00:38 +0200
-Message-ID: <20240606131653.824301380@linuxfoundation.org>
+Subject: [PATCH 6.6 367/744] of: module: add buffer overflow check in of_modalias()
+Date: Thu,  6 Jun 2024 16:00:39 +0200
+Message-ID: <20240606131744.256311060@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit 82b951e6fbd31d85ae7f4feb5f00ddd4c5d256e2 ]
+[ Upstream commit cf7385cb26ac4f0ee6c7385960525ad534323252 ]
 
-If vfio_irq_ctx_alloc() failed will lead to 'name' memory leak.
+In of_modalias(), if the buffer happens to be too small even for the 1st
+snprintf() call, the len parameter will become negative and str parameter
+(if not NULL initially) will point beyond the buffer's end. Add the buffer
+overflow check after the 1st snprintf() call and fix such check after the
+strlen() call (accounting for the terminating NUL char).
 
-Fixes: 18c198c96a81 ("vfio/pci: Create persistent INTx handler")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://lore.kernel.org/r/20240415015029.3699844-1-yebin10@huawei.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: bc575064d688 ("of/device: use of_property_for_each_string to parse compatible strings")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/bbfc6be0-c687-62b6-d015-5141b93f313e@omp.ru
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_intrs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/of/module.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index fb5392b749fff..e80c5d75b5419 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -277,8 +277,10 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
- 		return -ENOMEM;
+diff --git a/drivers/of/module.c b/drivers/of/module.c
+index f58e624953a20..780fd82a7ecc5 100644
+--- a/drivers/of/module.c
++++ b/drivers/of/module.c
+@@ -29,14 +29,15 @@ ssize_t of_modalias(const struct device_node *np, char *str, ssize_t len)
+ 	csize = snprintf(str, len, "of:N%pOFn%c%s", np, 'T',
+ 			 of_node_get_device_type(np));
+ 	tsize = csize;
++	if (csize >= len)
++		csize = len > 0 ? len - 1 : 0;
+ 	len -= csize;
+-	if (str)
+-		str += csize;
++	str += csize;
  
- 	ctx = vfio_irq_ctx_alloc(vdev, 0);
--	if (!ctx)
-+	if (!ctx) {
-+		kfree(name);
- 		return -ENOMEM;
-+	}
+ 	of_property_for_each_string(np, "compatible", p, compat) {
+ 		csize = strlen(compat) + 1;
+ 		tsize += csize;
+-		if (csize > len)
++		if (csize >= len)
+ 			continue;
  
- 	ctx->name = name;
- 	ctx->trigger = trigger;
+ 		csize = snprintf(str, len, "C%s", compat);
 -- 
 2.43.0
 
