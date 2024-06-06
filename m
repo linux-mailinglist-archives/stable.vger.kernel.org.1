@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-48973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131818FEB54
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B148FEB6A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274241C21AC9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E014A1C247A5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EA31A3BBA;
-	Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EBA1AB504;
+	Thu,  6 Jun 2024 14:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlLGz0nD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIuLMF/F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21669197A75;
-	Thu,  6 Jun 2024 14:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2339C196D9B;
+	Thu,  6 Jun 2024 14:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683238; cv=none; b=cpJxzJRtC+QQDUzJVUMzD62kPuH/GdmKacvfFYe7RhA6P8nNAm0P7hG9452guDOGLifAu76R5usEgljYPllqNJd0kAuigF3itC87Y3OpJJdSGu7Y+Kf3Hp/hujQvJ1DxB4/vs+ElipkFtfwtrH5EE4iWIn0a8xJyhvwPmuDRdhc=
+	t=1717683249; cv=none; b=TDjRo5B6zHDPIy8iGCDKKiAtaCG1RTSKe9GNwXeY0r+Fm3uWzyi1BpCDVo5TBoHDf1hHV69MspQvmpyb6+G9+hLXc91dIp8pxP7s4NLlbT6gi4PEnEZWs0wTBen69QsgsAhf+9Q8ps5grSnPw7ODLWJEj7mo7h2dqPPt/VjGWXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683238; c=relaxed/simple;
-	bh=1VwTZhfn9W1RDV+7Qho0wyi8ma4hl4ROxAi1iJlAea8=;
+	s=arc-20240116; t=1717683249; c=relaxed/simple;
+	bh=CAN4viD62BYdDL7AbFRFQ3QqueL74X/4dj82+uBqHGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wfz0YAGjl3QyI3YZtDusJRBKszgXuC5ie5CuGyrRpSE9LJHkb89vgPTnACgzvNEWy3LTRr3NBGg7iVz3RLT/vUv8hrrMxruYCRJ84xvKwNsabJIkOnBlCZ//Yhsj3pkHhvcSIXFooGHESWDWIfGC1kImud7rIGeZwNVJwLBC1KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlLGz0nD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B90C32781;
-	Thu,  6 Jun 2024 14:13:57 +0000 (UTC)
+	 MIME-Version; b=EHgsdr1mffwU/u/0AIxPsQ1lCl4KsPgFzr8IcOPjViVAa7nJrdlsJMcYxM3Wzc2xMBRUtD2twqxGJTsGA76ps/XxmmZStBg18n9zV9JZOLrR3eHCth+kw+gn2A494nyRX95gqbhdN5s02+/NHLxAPMY3ZkHUEFwMkAZf093UG3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIuLMF/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFF1C32781;
+	Thu,  6 Jun 2024 14:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683238;
-	bh=1VwTZhfn9W1RDV+7Qho0wyi8ma4hl4ROxAi1iJlAea8=;
+	s=korg; t=1717683249;
+	bh=CAN4viD62BYdDL7AbFRFQ3QqueL74X/4dj82+uBqHGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hlLGz0nDYOpcA96e9LtOGgAByrRSJb2hW/tKuwff0ATn3rLH1XgWgulG/eoO5UrcW
-	 +sYHi978TEUwUTR1kGCEpxMCOjzHY3mBdjlqmv38bnnG9LYGdNavXHc/M2fACBXhf6
-	 YE2YklyUkpuVdcEaug/PIXYAEa6hsiAkMH3RHmC8=
+	b=iIuLMF/FJoCUXouL0UnGZ06StZtLnlMk2sbtCQihtMzBnPqvKvt+z2J1oeFY5ixzN
+	 K42YgCfk67C0YNtR9BWMjrNs237WeYtyzYu4j/UidfJmizNvN3D1FOtsGgY8dRMo6+
+	 Y5y4tK9iz3rTPvkOi/asrnzVL95nS0N6M3XyGPCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stafford Horne <shorne@gmail.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/744] openrisc: traps: Dont send signals to kernel mode threads
-Date: Thu,  6 Jun 2024 15:57:26 +0200
-Message-ID: <20240606131738.009707660@linuxfoundation.org>
+Subject: [PATCH 6.6 175/744] cppc_cpufreq: Fix possible null pointer dereference
+Date: Thu,  6 Jun 2024 15:57:27 +0200
+Message-ID: <20240606131738.047282958@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -65,89 +66,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stafford Horne <shorne@gmail.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit c88cfb5cea5f8f9868ef02cc9ce9183a26dcf20f ]
+[ Upstream commit cf7de25878a1f4508c69dc9f6819c21ba177dbfe ]
 
-OpenRISC exception handling sends signals to user processes on floating
-point exceptions and trap instructions (for debugging) among others.
-There is a bug where the trap handling logic may send signals to kernel
-threads, we should not send these signals to kernel threads, if that
-happens we treat it as an error.
+cppc_cpufreq_get_rate() and hisi_cppc_cpufreq_get_rate() can be called from
+different places with various parameters. So cpufreq_cpu_get() can return
+null as 'policy' in some circumstances.
+Fix this bug by adding null return check.
 
-This patch adds conditions to die if the kernel receives these
-exceptions in kernel mode code.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 27267655c531 ("openrisc: Support floating point user api")
-Signed-off-by: Stafford Horne <shorne@gmail.com>
+Fixes: a28b2bfc099c ("cppc_cpufreq: replace per-cpu data array with a list")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/openrisc/kernel/traps.c | 48 ++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 19 deletions(-)
+ drivers/cpufreq/cppc_cpufreq.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/openrisc/kernel/traps.c b/arch/openrisc/kernel/traps.c
-index 9370888c9a7e3..90554a5558fbc 100644
---- a/arch/openrisc/kernel/traps.c
-+++ b/arch/openrisc/kernel/traps.c
-@@ -180,29 +180,39 @@ asmlinkage void unhandled_exception(struct pt_regs *regs, int ea, int vector)
- 
- asmlinkage void do_fpe_trap(struct pt_regs *regs, unsigned long address)
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index fe08ca419b3dc..1ba3943be8a3d 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -844,10 +844,15 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
  {
--	int code = FPE_FLTUNK;
--	unsigned long fpcsr = regs->fpcsr;
--
--	if (fpcsr & SPR_FPCSR_IVF)
--		code = FPE_FLTINV;
--	else if (fpcsr & SPR_FPCSR_OVF)
--		code = FPE_FLTOVF;
--	else if (fpcsr & SPR_FPCSR_UNF)
--		code = FPE_FLTUND;
--	else if (fpcsr & SPR_FPCSR_DZF)
--		code = FPE_FLTDIV;
--	else if (fpcsr & SPR_FPCSR_IXF)
--		code = FPE_FLTRES;
--
--	/* Clear all flags */
--	regs->fpcsr &= ~SPR_FPCSR_ALLF;
--
--	force_sig_fault(SIGFPE, code, (void __user *)regs->pc);
-+	if (user_mode(regs)) {
-+		int code = FPE_FLTUNK;
-+		unsigned long fpcsr = regs->fpcsr;
-+
-+		if (fpcsr & SPR_FPCSR_IVF)
-+			code = FPE_FLTINV;
-+		else if (fpcsr & SPR_FPCSR_OVF)
-+			code = FPE_FLTOVF;
-+		else if (fpcsr & SPR_FPCSR_UNF)
-+			code = FPE_FLTUND;
-+		else if (fpcsr & SPR_FPCSR_DZF)
-+			code = FPE_FLTDIV;
-+		else if (fpcsr & SPR_FPCSR_IXF)
-+			code = FPE_FLTRES;
-+
-+		/* Clear all flags */
-+		regs->fpcsr &= ~SPR_FPCSR_ALLF;
-+
-+		force_sig_fault(SIGFPE, code, (void __user *)regs->pc);
-+	} else {
-+		pr_emerg("KERNEL: Illegal fpe exception 0x%.8lx\n", regs->pc);
-+		die("Die:", regs, SIGFPE);
-+	}
- }
+ 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct cppc_cpudata *cpu_data = policy->driver_data;
++	struct cppc_cpudata *cpu_data;
+ 	u64 delivered_perf;
+ 	int ret;
  
- asmlinkage void do_trap(struct pt_regs *regs, unsigned long address)
++	if (!policy)
++		return -ENODEV;
++
++	cpu_data = policy->driver_data;
++
+ 	cpufreq_cpu_put(policy);
+ 
+ 	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
+@@ -927,10 +932,15 @@ static struct cpufreq_driver cppc_cpufreq_driver = {
+ static unsigned int hisi_cppc_cpufreq_get_rate(unsigned int cpu)
  {
--	force_sig_fault(SIGTRAP, TRAP_BRKPT, (void __user *)regs->pc);
-+	if (user_mode(regs)) {
-+		force_sig_fault(SIGTRAP, TRAP_BRKPT, (void __user *)regs->pc);
-+	} else {
-+		pr_emerg("KERNEL: Illegal trap exception 0x%.8lx\n", regs->pc);
-+		die("Die:", regs, SIGILL);
-+	}
- }
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct cppc_cpudata *cpu_data = policy->driver_data;
++	struct cppc_cpudata *cpu_data;
+ 	u64 desired_perf;
+ 	int ret;
  
- asmlinkage void do_unaligned_access(struct pt_regs *regs, unsigned long address)
++	if (!policy)
++		return -ENODEV;
++
++	cpu_data = policy->driver_data;
++
+ 	cpufreq_cpu_put(policy);
+ 
+ 	ret = cppc_get_desired_perf(cpu, &desired_perf);
 -- 
 2.43.0
 
