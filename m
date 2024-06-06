@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-48667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA4F8FE9FB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D9D8FEF04
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 802AF28666B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2BE41F2149C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E30019D08A;
-	Thu,  6 Jun 2024 14:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A688E1A1897;
+	Thu,  6 Jun 2024 14:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17QUd9GU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWwQ7amU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC4D1974EC;
-	Thu,  6 Jun 2024 14:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B921C95D3;
+	Thu,  6 Jun 2024 14:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683088; cv=none; b=dympGYgg3wjDTuRRNfKEF6xCsrKoDNNQddX253NjEd8IrPQjnEs2pPAfgp1NSeS5hHM94m7/YFDfCVrhHyMTFOUqZU84dd7JWaEAJeruyr7agJjhJAQbE2hAhbkcGAlI1zFmu445X13sK798/utAZRxtvFLctgsV003Cwvx9Uv8=
+	t=1717683727; cv=none; b=mcZ/ZTf+1GkC7vh0TEo/zpZjJDxAsfZAkaPoaAyW2gV0Zev69SI2X0pGE0R4XhR+luOFf8+kE6Re7ApGu7Iz2rUGzBuYrPVqb10NUjF7ei0ZEQPXvVgDrdjkgHWRkxvRyVWahQhchKozHh5cVpTji6UunsgxTcyfW0X0WveAZuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683088; c=relaxed/simple;
-	bh=r/zHN4gnLjcCEtVys50Z/Q4ttAVEkcoPKAgGWRONi2c=;
+	s=arc-20240116; t=1717683727; c=relaxed/simple;
+	bh=eMpnVSxVIZ594OS0VZJsSYouvSFuf84YAcr+HgZhq08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vn/EFhjfB2iFVwdLtUL5qwBt8vjaNvNphIImqMlECVvULw8MRPnd7fmhY+HXPQxlR4lomJWMY3Dcb2g5bMOvPc1FhLKxTAqbR8QOWs1qT60ldEWov4TVMk04e8GXblUpqAjSo8komS1G4fft5Ql701uOljZcWrbQ2IBGtkkSa+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17QUd9GU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2C5C32782;
-	Thu,  6 Jun 2024 14:11:27 +0000 (UTC)
+	 MIME-Version; b=dzJLcacUGE7WXpiWfCcQPgZ4xSrNP+bulNI4E7A/WagQ7kLasvnYf9Mf8nbOr7spyMhujSResNvIipeN08Eoyn2xeN21lQVhtNXDl4XO9ChX1LmheUvaHmfSHk2UlycfbbK5UuwDZY2AZCPCMg1kv4RlNQVQw7EwQrHMlQJTThM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWwQ7amU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45076C32781;
+	Thu,  6 Jun 2024 14:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683087;
-	bh=r/zHN4gnLjcCEtVys50Z/Q4ttAVEkcoPKAgGWRONi2c=;
+	s=korg; t=1717683727;
+	bh=eMpnVSxVIZ594OS0VZJsSYouvSFuf84YAcr+HgZhq08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17QUd9GU+hLFuwfz4aEHv7wKAUT3kPUKZYQ59o2hj0f3ImQLHPp2uiRB24hOoQbK9
-	 v86d4+vS7wfPSZPoG9SVncuanJJXlsXZckZzhbwmqPd55lgRM3LC/oy12zjluiQIA9
-	 JLwQ5Hk2K/3+snZ57VleGRztyp4ga8qv4j+KUHao=
+	b=OWwQ7amU0FSWVhac3jYUWUMqW7PxEWXEMmvnyqeIgze/LQQ8kVNtLVYI5c+AyUhZU
+	 rC3+A/v8GuYJlLqap5stQ1RqryUEpKESpFkkJI32ePEhs2DGmRZ+dcB6hrZRPLFG2J
+	 C+c7SBKh6bCBGqUOd5NceFnS6PZSqF7L/Y6zj+c4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carsten Tolkmit <ctolkmit@ennit.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.9 368/374] x86/topology: Handle bogus ACPI tables correctly
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 675/744] spi: Dont mark message DMA mapped when no transfer in it is
 Date: Thu,  6 Jun 2024 16:05:47 +0200
-Message-ID: <20240606131704.204411235@linuxfoundation.org>
+Message-ID: <20240606131754.141420699@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,141 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 9d22c96316ac59ed38e80920c698fed38717b91b upstream.
+[ Upstream commit 9f788ba457b45b0ce422943fcec9fa35c4587764 ]
 
-The ACPI specification clearly states how the processors should be
-enumerated in the MADT:
+There is no need to set the DMA mapped flag of the message if it has
+no mapped transfers. Moreover, it may give the code a chance to take
+the wrong paths, i.e. to exercise DMA related APIs on unmapped data.
+Make __spi_map_msg() to bail earlier on the above mentioned cases.
 
- "To ensure that the boot processor is supported post initialization,
-  two guidelines should be followed. The first is that OSPM should
-  initialize processors in the order that they appear in the MADT. The
-  second is that platform firmware should list the boot processor as the
-  first processor entry in the MADT.
-  ...
-  Failure of OSPM implementations and platform firmware to abide by
-  these guidelines can result in both unpredictable and non optimal
-  platform operation."
-
-The kernel relies on that ordering to detect the real BSP on crash kernels
-which is important to avoid sending a INIT IPI to it as that would cause a
-full machine reset.
-
-On a Dell XPS 16 9640 the BIOS ignores this rule and enumerates the CPUs in
-the wrong order. As a consequence the kernel falsely detects a crash kernel
-and disables the corresponding CPU.
-
-Prevent this by checking the IA32_APICBASE MSR for the BSP bit on the boot
-CPU. If that bit is set, then the MADT based BSP detection can be safely
-ignored. If the kernel detects a mismatch between the BSP bit and the first
-enumerated MADT entry then emit a firmware bug message.
-
-This obviously also has to be taken into account when the boot APIC ID and
-the first enumerated APIC ID match. If the boot CPU does not have the BSP
-bit set in the APICBASE MSR then there is no way for the boot CPU to
-determine which of the CPUs is the real BSP. Sending an INIT to the real
-BSP would reset the machine so the only sane way to deal with that is to
-limit the number of CPUs to one and emit a corresponding warning message.
-
-Fixes: 5c5682b9f87a ("x86/cpu: Detect real BSP on crash kernels")
-Reported-by: Carsten Tolkmit <ctolkmit@ennit.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Carsten Tolkmit <ctolkmit@ennit.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/87le48jycb.ffs@tglx
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218837
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://msgid.link/r/20240522171018.3362521-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/topology.c | 55 +++++++++++++++++++++++++++++++---
- 1 file changed, 51 insertions(+), 4 deletions(-)
+ drivers/spi/spi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index d17c9b71eb4a..621a151ccf7d 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -128,6 +128,9 @@ static void topo_set_cpuids(unsigned int cpu, u32 apic_id, u32 acpi_id)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 76383ddbd6a6f..da15c3f388d1f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1128,6 +1128,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 	else
+ 		rx_dev = ctlr->dev.parent;
  
- static __init bool check_for_real_bsp(u32 apic_id)
- {
-+	bool is_bsp = false, has_apic_base = boot_cpu_data.x86 >= 6;
-+	u64 msr;
-+
- 	/*
- 	 * There is no real good way to detect whether this a kdump()
- 	 * kernel, but except on the Voyager SMP monstrosity which is not
-@@ -144,17 +147,61 @@ static __init bool check_for_real_bsp(u32 apic_id)
- 	if (topo_info.real_bsp_apic_id != BAD_APICID)
- 		return false;
- 
--	if (apic_id == topo_info.boot_cpu_apic_id) {
--		topo_info.real_bsp_apic_id = apic_id;
--		return false;
-+	/*
-+	 * Check whether the enumeration order is broken by evaluating the
-+	 * BSP bit in the APICBASE MSR. If the CPU does not have the
-+	 * APICBASE MSR then the BSP detection is not possible and the
-+	 * kernel must rely on the firmware enumeration order.
-+	 */
-+	if (has_apic_base) {
-+		rdmsrl(MSR_IA32_APICBASE, msr);
-+		is_bsp = !!(msr & MSR_IA32_APICBASE_BSP);
++	ret = -ENOMSG;
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		/* The sync is done before each transfer. */
+ 		unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
+@@ -1157,6 +1158,9 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 			}
+ 		}
  	}
++	/* No transfer has been mapped, bail out with success */
++	if (ret)
++		return 0;
  
--	pr_warn("Boot CPU APIC ID not the first enumerated APIC ID: %x > %x\n",
-+	if (apic_id == topo_info.boot_cpu_apic_id) {
-+		/*
-+		 * If the boot CPU has the APIC BSP bit set then the
-+		 * firmware enumeration is agreeing. If the CPU does not
-+		 * have the APICBASE MSR then the only choice is to trust
-+		 * the enumeration order.
-+		 */
-+		if (is_bsp || !has_apic_base) {
-+			topo_info.real_bsp_apic_id = apic_id;
-+			return false;
-+		}
-+		/*
-+		 * If the boot APIC is enumerated first, but the APICBASE
-+		 * MSR does not have the BSP bit set, then there is no way
-+		 * to discover the real BSP here. Assume a crash kernel and
-+		 * limit the number of CPUs to 1 as an INIT to the real BSP
-+		 * would reset the machine.
-+		 */
-+		pr_warn("Enumerated BSP APIC %x is not marked in APICBASE MSR\n", apic_id);
-+		pr_warn("Assuming crash kernel. Limiting to one CPU to prevent machine INIT\n");
-+		set_nr_cpu_ids(1);
-+		goto fwbug;
-+	}
-+
-+	pr_warn("Boot CPU APIC ID not the first enumerated APIC ID: %x != %x\n",
- 		topo_info.boot_cpu_apic_id, apic_id);
-+
-+	if (is_bsp) {
-+		/*
-+		 * The boot CPU has the APIC BSP bit set. Use it and complain
-+		 * about the broken firmware enumeration.
-+		 */
-+		topo_info.real_bsp_apic_id = topo_info.boot_cpu_apic_id;
-+		goto fwbug;
-+	}
-+
- 	pr_warn("Crash kernel detected. Disabling real BSP to prevent machine INIT\n");
- 
- 	topo_info.real_bsp_apic_id = apic_id;
- 	return true;
-+
-+fwbug:
-+	pr_warn(FW_BUG "APIC enumeration order not specification compliant\n");
-+	return false;
- }
- 
- static unsigned int topo_unit_count(u32 lvlid, enum x86_topology_domains at_level,
+ 	ctlr->cur_rx_dma_dev = rx_dev;
+ 	ctlr->cur_tx_dma_dev = tx_dev;
 -- 
-2.45.2
+2.43.0
 
 
 
