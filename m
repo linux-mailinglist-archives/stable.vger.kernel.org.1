@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E33B8FEE90
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074798FED23
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9ABD1F24814
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EB871C21059
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0769D1A0DD4;
-	Thu,  6 Jun 2024 14:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE3B1B4C5A;
+	Thu,  6 Jun 2024 14:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hxi356GP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6Azz/hn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEF81991D3;
-	Thu,  6 Jun 2024 14:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CD21B4C59;
+	Thu,  6 Jun 2024 14:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683675; cv=none; b=m8w7CRzYAMMgcOkZtJ8YaKhc5tgALOICmPp2Wi3ws73hTgjy+7MeoQmF/7D2Mu9ZWkt7J5y0w3dqQ7j+VniEohPc66POFKZVKKhKjA3yqexnQ0FBJ2aMrVZJ+0KIIWJIRZyd2OlIN9BXZveoL3AEL9PSnwnirx03FkW0yJaDrCA=
+	t=1717683452; cv=none; b=ZrpEQNGSqqKa2vbgdXdE3HiNQqfVO2aYXf1QIW2lwY4o03ozBHQqEzG1S3kjFUXa/aCAwVn302QIbrnOtLPVjkcNxAvM5XhxI2FyD0Uf4oIJzKi9sdwLDoAWLseiKXvNiorWKt95IzphyjsqOYPvsmFL6ilHG0ZvRuVwUXaxhGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683675; c=relaxed/simple;
-	bh=luNr/GKZ9MKaH0dVGf3VgfYMU79PvWl2FUeMycOJE6s=;
+	s=arc-20240116; t=1717683452; c=relaxed/simple;
+	bh=w4HRekpgUkmOaoNoqffBl1QGSJ82ILc3NFH4SM71DRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Un9BdNesaB/D2kxpzmjaCw0N/ZiYsL3CgZw92AZbJjPJPrZvEm0BPNcLJX/OIhUWzQa1yUYUD5LfYRAM9XHtZJGVdf7yEJ7QQjY8h3vP6ZbDow2nhalXVb3GE8TcSeaFdbxHTH6p7ZMpnD+58O+de6RjQ8miNeDnU/O8TezirhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hxi356GP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9C3C32781;
-	Thu,  6 Jun 2024 14:21:15 +0000 (UTC)
+	 MIME-Version; b=F72+BOY83H1eNZEjfzJ4nyl+CN3o6Dq4jDWpzbKT3AFS7JRbZMsrQz0H7eyoouWsQK/khf9ooX01J2WKhiKUXhjXj9qtWytyCaCfzJFBaIecJHCFtTzTlKZcBepeNO8l6JTxyjHw2WZa/C2nv5E/yfTPWV+Uc9sGNC5a2B6Wghc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6Azz/hn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A46EC32781;
+	Thu,  6 Jun 2024 14:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683675;
-	bh=luNr/GKZ9MKaH0dVGf3VgfYMU79PvWl2FUeMycOJE6s=;
+	s=korg; t=1717683452;
+	bh=w4HRekpgUkmOaoNoqffBl1QGSJ82ILc3NFH4SM71DRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hxi356GPJrgLg2pmMwJuq+1D4rSmPuQiDZR7GI7t+dU/rvglQpLEdWyTwIRdpCO6r
-	 6BM5oNGRQ+gUzdrbRombDBe4K8GuYglGFzSxDvy8i7s3FyPxi3Erf2eipH3yW5ElTg
-	 2SpK1kjjHYvrXL1/3ryNK7BeJ6cQdsK+7h/ct9y0=
+	b=W6Azz/hnr6+YZHg1tzI9XiYZD+5ijbkTrbeC97Yfxllfk7UBcKWbvbj8oyVKXORBO
+	 IbdaxJaHiBSU9gTxFtd0/mRCIuRCZYEKZsX2vtS/m1+Y6KAGHX30wky7Z7vej4dn+o
+	 fEJ1UkJHEv1zJq+BGjfOKf2TeqcHsyiuP0Lr4E2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 564/744] mmc: sdhci_am654: Add ITAPDLYSEL in sdhci_j721e_4bit_set_clock
+Subject: [PATCH 6.1 307/473] f2fs: compress: fix to relocate check condition in f2fs_{release,reserve}_compress_blocks()
 Date: Thu,  6 Jun 2024 16:03:56 +0200
-Message-ID: <20240606131750.548682725@linuxfoundation.org>
+Message-ID: <20240606131710.088401320@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 9dff65bb5e09903c27d9cff947dff4d22b6ea6a1 ]
+[ Upstream commit 7c5dffb3d90c5921b91981cc663e02757d90526e ]
 
-Add ITAPDLYSEL to sdhci_j721e_4bit_set_clock function.
-This allows to set the correct ITAPDLY for timings that
-do not carry out tuning.
+Compress flag should be checked after inode lock held to avoid
+racing w/ f2fs_setflags_common(), fix it.
 
-Fixes: 1accbced1c32 ("mmc: sdhci_am654: Add Support for 4 bit IP on J721E")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240320223837.959900-7-jm@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/CAHJ8P3LdZXLc2rqeYjvymgYHr2+YLuJ0sLG9DdsJZmwO7deuhw@mail.gmail.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/f2fs/file.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index 888bfda0ebc0e..884d1b53180d7 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -320,6 +320,7 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	unsigned char timing = host->mmc->ios.timing;
- 	u32 otap_del_sel;
- 	u32 itap_del_ena;
-+	u32 itap_del_sel;
- 	u32 mask, val;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 9b325290d6a54..b321f0da1bd70 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3468,9 +3468,6 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
+ 	if (!f2fs_sb_has_compression(sbi))
+ 		return -EOPNOTSUPP;
  
- 	/* Setup DLL Output TAP delay */
-@@ -329,13 +330,18 @@ static void sdhci_j721e_4bit_set_clock(struct sdhci_host *host,
- 	val = (0x1 << OTAPDLYENA_SHIFT) |
- 	      (otap_del_sel << OTAPDLYSEL_SHIFT);
- 
-+	/* Setup Input TAP delay */
- 	itap_del_ena = sdhci_am654->itap_del_ena[timing];
-+	itap_del_sel = sdhci_am654->itap_del_sel[timing];
- 
--	mask |= ITAPDLYENA_MASK;
--	val |= (itap_del_ena << ITAPDLYENA_SHIFT);
-+	mask |= ITAPDLYENA_MASK | ITAPDLYSEL_MASK;
-+	val |= (itap_del_ena << ITAPDLYENA_SHIFT) |
-+	       (itap_del_sel << ITAPDLYSEL_SHIFT);
- 
-+	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK,
-+			   1 << ITAPCHGWIN_SHIFT);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, mask, val);
+-	if (!f2fs_compressed_file(inode))
+-		return -EINVAL;
 -
-+	regmap_update_bits(sdhci_am654->base, PHY_CTRL4, ITAPCHGWIN_MASK, 0);
- 	regmap_update_bits(sdhci_am654->base, PHY_CTRL5, CLKBUFSEL_MASK,
- 			   sdhci_am654->clkbuf_sel);
+ 	if (f2fs_readonly(sbi->sb))
+ 		return -EROFS;
  
+@@ -3489,7 +3486,8 @@ static int f2fs_release_compress_blocks(struct file *filp, unsigned long arg)
+ 		goto out;
+ 	}
+ 
+-	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++	if (!f2fs_compressed_file(inode) ||
++		is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+@@ -3650,9 +3648,6 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 	if (!f2fs_sb_has_compression(sbi))
+ 		return -EOPNOTSUPP;
+ 
+-	if (!f2fs_compressed_file(inode))
+-		return -EINVAL;
+-
+ 	if (f2fs_readonly(sbi->sb))
+ 		return -EROFS;
+ 
+@@ -3664,7 +3659,8 @@ static int f2fs_reserve_compress_blocks(struct file *filp, unsigned long arg)
+ 
+ 	inode_lock(inode);
+ 
+-	if (!is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
++	if (!f2fs_compressed_file(inode) ||
++		!is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
+ 		ret = -EINVAL;
+ 		goto unlock_inode;
+ 	}
 -- 
 2.43.0
 
