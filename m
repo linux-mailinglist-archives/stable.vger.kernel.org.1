@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A238FEBAC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED82B8FE8E2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377141C25354
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A065A1F24800
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1705B19A2A8;
-	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A689C198E95;
+	Thu,  6 Jun 2024 14:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOjYwGZj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjOd/m0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8E7197A8F;
-	Thu,  6 Jun 2024 14:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650E6198E93;
+	Thu,  6 Jun 2024 14:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683279; cv=none; b=beuNUoidNtJ8vfA4vzx08xx5SkxEvs5/yT99bURiEuV1/HiayWeOWZVOqOL0JzsMg/ynPo0V8oeEvEsFgvUiHw+mynS73QePR9sBWX+W6f5+qk6utjqpG0uTttz0mOXQiw6plWXaeYGb97Aa6e/WGm9bx3PL/wRFH7hrcnpemZ4=
+	t=1717682946; cv=none; b=FHAXyAnMaQ0+frqhlsd57jCrF8zb6E3R/6feKhcgly7/wAMje2cP3E7G42OXNzdaC+AZcey3/u1Ijz9HfwXzjd8aLmOHAWRIbNnDb505q0aMlsyX0OEu2rLfP6GdgvgPn05AyyerEA/hTx1UvfVTLzbHDdsxRNSbqWZi0gAk6TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683279; c=relaxed/simple;
-	bh=6AsYuOqF+r59VvyVxEonuJJuNEW9VrnMV9vznWPvWM0=;
+	s=arc-20240116; t=1717682946; c=relaxed/simple;
+	bh=7YzqRFmMqOHqmj1g8zhcmT7K8L4eMqHNWi1izyi5Wd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYfIBCfIwPLL+K4tGq5+deArSY6P20JW5qA4hv5ajpVOm2v7ilWdfktupnTi/yNwUXdcK2mtZvHtlTK4hnPTKgbPTj/1BcA1iYyS/tcMaz7zN7uYRheeE6tXSnisYRWTTYU4Jkcxbuj9CKKRD3GS8yp4d5xzlFPB1WCWyqE9ObU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOjYwGZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A952BC2BD10;
-	Thu,  6 Jun 2024 14:14:39 +0000 (UTC)
+	 MIME-Version; b=YIU84JeZFGEfyXiNTkGz4UGxsc1fFqQ+luQgCLSgE/QWtcwwLjqUCf1m20qLvhodyMHq+aVKgc44+9TP7MmXD6CbaF+A0S0b7P3Zx4RM5kgy+X4lEZ6dXpg51ZWOLQb6itP8wXZbctq3lZsD6vt6caubH261RbqOoIPw1e5aLOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjOd/m0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A58C2BD10;
+	Thu,  6 Jun 2024 14:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683279;
-	bh=6AsYuOqF+r59VvyVxEonuJJuNEW9VrnMV9vznWPvWM0=;
+	s=korg; t=1717682946;
+	bh=7YzqRFmMqOHqmj1g8zhcmT7K8L4eMqHNWi1izyi5Wd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOjYwGZjVn2BDCnYM2yFtwQFYU9tROIjSmWMMOnajuMZsf+Ce6Fl7OA314IiP9GEL
-	 ldOGonehCZIY303fXcYTl3fBEmp3v6PcpdcrP7y6xWqidQrAY6FTjsAiz8IGnOwagH
-	 7+Fz2y8RBWY9dmG1wBMgXBjIAQ7XyIU9vTkFWZzs=
+	b=JjOd/m0NpNGMm6yqcm8Iz484bRgCAbKOdH5PYKUdj9l2vwDX5aV8lvAddRXTr8r4g
+	 vUk4K9UTFssw1W8L4YDK0/ror44z0DLuhxc1Gr5EHGybWKqOpgd3BafjrFBuVXlDOh
+	 Ojshm1ehSUX8cOWv+4UOOvw0m0a5s8Vb3lRjpMK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/473] scsi: bfa: Ensure the copied buf is NUL terminated
+Subject: [PATCH 6.9 107/374] f2fs: compress: fix to update i_compr_blocks correctly
 Date: Thu,  6 Jun 2024 16:01:26 +0200
-Message-ID: <20240606131705.149856501@linuxfoundation.org>
+Message-ID: <20240606131655.510105282@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 13d0cecb4626fae67c00c84d3c7851f6b62f7df3 ]
+[ Upstream commit 186e7d71534df4589405925caca5597af7626c12 ]
 
-Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
-userspace to that buffer. Later, we use sscanf on this buffer but we don't
-ensure that the string is terminated inside the buffer, this can lead to
-OOB read when using sscanf. Fix this issue by using memdup_user_nul instead
-of memdup_user.
+Previously, we account reserved blocks and compressed blocks into
+@compr_blocks, then, f2fs_i_compr_blocks_update(,compr_blocks) will
+update i_compr_blocks incorrectly, fix it.
 
-Fixes: 9f30b674759b ("bfa: replace 2 kzalloc/copy_from_user by memdup_user")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-3-f1f1b53a10f4@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Meanwhile, for the case all blocks in cluster were reserved, fix to
+update dn->ofs_in_node correctly.
+
+Fixes: eb8fbaa53374 ("f2fs: compress: fix to check unreleased compressed cluster")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/bfa/bfad_debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/bfa/bfad_debugfs.c b/drivers/scsi/bfa/bfad_debugfs.c
-index 52db147d9979d..f6dd077d47c9a 100644
---- a/drivers/scsi/bfa/bfad_debugfs.c
-+++ b/drivers/scsi/bfa/bfad_debugfs.c
-@@ -250,7 +250,7 @@ bfad_debugfs_write_regrd(struct file *file, const char __user *buf,
- 	unsigned long flags;
- 	void *kern_buf;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 2566dc8a777de..34becfc142d80 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3645,7 +3645,8 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
  
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+ 	while (count) {
+ 		int compr_blocks = 0;
+-		blkcnt_t reserved;
++		blkcnt_t reserved = 0;
++		blkcnt_t to_reserved;
+ 		int ret;
  
-@@ -317,7 +317,7 @@ bfad_debugfs_write_regwr(struct file *file, const char __user *buf,
- 	unsigned long flags;
- 	void *kern_buf;
+ 		for (i = 0; i < cluster_size; i++) {
+@@ -3665,20 +3666,26 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
+ 			 * fails in release_compress_blocks(), so NEW_ADDR
+ 			 * is a possible case.
+ 			 */
+-			if (blkaddr == NEW_ADDR ||
+-				__is_valid_data_blkaddr(blkaddr)) {
++			if (blkaddr == NEW_ADDR) {
++				reserved++;
++				continue;
++			}
++			if (__is_valid_data_blkaddr(blkaddr)) {
+ 				compr_blocks++;
+ 				continue;
+ 			}
+ 		}
  
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+-		reserved = cluster_size - compr_blocks;
++		to_reserved = cluster_size - compr_blocks - reserved;
  
+ 		/* for the case all blocks in cluster were reserved */
+-		if (reserved == 1)
++		if (to_reserved == 1) {
++			dn->ofs_in_node += cluster_size;
+ 			goto next;
++		}
+ 
+-		ret = inc_valid_block_count(sbi, dn->inode, &reserved, false);
++		ret = inc_valid_block_count(sbi, dn->inode,
++						&to_reserved, false);
+ 		if (unlikely(ret))
+ 			return ret;
+ 
+@@ -3689,7 +3696,7 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
+ 
+ 		f2fs_i_compr_blocks_update(dn->inode, compr_blocks, true);
+ 
+-		*reserved_blocks += reserved;
++		*reserved_blocks += to_reserved;
+ next:
+ 		count -= cluster_size;
+ 	}
 -- 
 2.43.0
 
