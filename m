@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-48361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455808FE8AE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAF48FEB4E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73925B2451F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2390B2519C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE8D197A81;
-	Thu,  6 Jun 2024 14:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40AE1993B0;
+	Thu,  6 Jun 2024 14:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwgIw+Jl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3NaTXSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1F9196D8C;
-	Thu,  6 Jun 2024 14:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A295C1A3BAC;
+	Thu,  6 Jun 2024 14:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682922; cv=none; b=ev70WXp4twNxcRlol9ldDIOqQsSX1ywPrtUYzwG7GocNeR3/utPgD12fBakSxuvy4RHa/G6Ye6PuWEI5SoXkmkqeD7vAvKiBjAG+BajzoTLY3vQFWbiAg3rPv3Aopfa4YZqtg9hA/OKufKsbsbFV8k9yRQmyVoGOl+XUgSJplr4=
+	t=1717683234; cv=none; b=At/Pos3Uzuc14omoWJn9GS5lCdaMneVrQQtuEkgdpD08EeMo5qG5KLzLfjl0C0mFzcxjTtV7n+p9BS/673UQzQI/XJ/KCPkDvDFW1lk19jEpkseqL0WCKRVbgPlKY2l3RGFpygAZlOzf9rBIoeyPsO+yH0AUGLruqSRzzCjM9H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682922; c=relaxed/simple;
-	bh=XcPkhZ9oCYH89D/GuhIzJ6hm50cD4/lg9XHJwUbrAY8=;
+	s=arc-20240116; t=1717683234; c=relaxed/simple;
+	bh=7f7BclwGjDRQp2ucrTkGsUX2vlL4Swxkj0oclSt3ICw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b+buayek8KwI0Hp0YoOdv+InQTXXybCZ9KsicbxEYdPMcTKCYockGCplHt04ftHyJvA8+t/CsWE9D3vcy6GU/L+6/uo8J8mEZikZVls+C90+oXG5H7lOFcRONalMF1PUg+sAMOeDkA2ccqqIahKXFVj9g+JrRmjvANprGj4emBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwgIw+Jl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24986C2BD10;
-	Thu,  6 Jun 2024 14:08:42 +0000 (UTC)
+	 MIME-Version; b=PI3Jixu1/CsCj88RDSCWr1iUGm0GrT5ehU/dekjhkQ4boVR/jz4M2KbsMx4sU1xH+lDug7Gtau0FtXU92uXZbgSKWj2/ViDs8Y1vcCJP4Iv76eC0pXgfHq7+XMMLqxgJwAbCZnQn7ALnlxiCyE7BVsBHHzfP1npvZQlFPuirU6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3NaTXSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81693C2BD10;
+	Thu,  6 Jun 2024 14:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682922;
-	bh=XcPkhZ9oCYH89D/GuhIzJ6hm50cD4/lg9XHJwUbrAY8=;
+	s=korg; t=1717683234;
+	bh=7f7BclwGjDRQp2ucrTkGsUX2vlL4Swxkj0oclSt3ICw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwgIw+JlwIqFeFDh+pdvSj/r75pzbCTD7yduSS8YgQX5cf9yHZB2P8r2x/5R07gY1
-	 uA/HQlk47U8D2bt7cghvFpgAPfBz0QAVR+6TFTcPrTq9WjFDufv2A41Use7g0czyV2
-	 qvIbaAuJcvypqKHku7bmYtPwRlycbMs8zNMFrrFM=
+	b=l3NaTXSwJd8c6JmzjDKH2OtQSqIc7w6NRj/j3w8/AMApd9JJ987qvaBxGGCgvS/c6
+	 Xy7JxNI3h8K7DrTOAfqh2C8Tk77/9eYN9cIYvjxf8HUhHwmkJ1MLc2dnWZLCLNjek/
+	 1gK7LhGdLR9dOvRJNXHrvDKvv1aqO8udK82QCUPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 062/374] udf: Convert udf_expand_file_adinicb() to use a folio
+Subject: [PATCH 6.1 112/473] ACPI: LPSS: Advertise number of chip selects via property
 Date: Thu,  6 Jun 2024 16:00:41 +0200
-Message-ID: <20240606131653.931689628@linuxfoundation.org>
+Message-ID: <20240606131703.630985620@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit db6754090a4f99c67e05ae6b87343ba6e013531f ]
+[ Upstream commit 07b73ee599428b41d0240f2f7b31b524eba07dd0 ]
 
-Use the folio APIs throughout this function.
+Advertise number of chip selects via property for Intel Braswell.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 1eeceaec794e ("udf: Convert udf_expand_file_adinicb() to avoid kmap_atomic()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20240417150416.752929-4-willy@infradead.org>
+Fixes: 620c803f42de ("ACPI: LPSS: Provide an SSP type to the driver")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/inode.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/acpi/acpi_lpss.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index 2f831a3a91afe..bbf8918417fd8 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -341,7 +341,7 @@ const struct address_space_operations udf_aops = {
-  */
- int udf_expand_file_adinicb(struct inode *inode)
- {
--	struct page *page;
-+	struct folio *folio;
- 	struct udf_inode_info *iinfo = UDF_I(inode);
- 	int err;
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index 8b44743945c8b..52af775ac1f16 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -319,6 +319,7 @@ static const struct lpss_device_desc bsw_i2c_dev_desc = {
  
-@@ -357,12 +357,13 @@ int udf_expand_file_adinicb(struct inode *inode)
- 		return 0;
- 	}
+ static const struct property_entry bsw_spi_properties[] = {
+ 	PROPERTY_ENTRY_U32("intel,spi-pxa2xx-type", LPSS_BSW_SSP),
++	PROPERTY_ENTRY_U32("num-cs", 2),
+ 	{ }
+ };
  
--	page = find_or_create_page(inode->i_mapping, 0, GFP_KERNEL);
--	if (!page)
--		return -ENOMEM;
-+	folio = __filemap_get_folio(inode->i_mapping, 0,
-+			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, GFP_KERNEL);
-+	if (IS_ERR(folio))
-+		return PTR_ERR(folio);
- 
--	if (!PageUptodate(page))
--		udf_adinicb_readpage(page);
-+	if (!folio_test_uptodate(folio))
-+		udf_adinicb_readpage(&folio->page);
- 	down_write(&iinfo->i_data_sem);
- 	memset(iinfo->i_data + iinfo->i_lenEAttr, 0x00,
- 	       iinfo->i_lenAlloc);
-@@ -371,22 +372,22 @@ int udf_expand_file_adinicb(struct inode *inode)
- 		iinfo->i_alloc_type = ICBTAG_FLAG_AD_SHORT;
- 	else
- 		iinfo->i_alloc_type = ICBTAG_FLAG_AD_LONG;
--	set_page_dirty(page);
--	unlock_page(page);
-+	folio_mark_dirty(folio);
-+	folio_unlock(folio);
- 	up_write(&iinfo->i_data_sem);
- 	err = filemap_fdatawrite(inode->i_mapping);
- 	if (err) {
- 		/* Restore everything back so that we don't lose data... */
--		lock_page(page);
-+		folio_lock(folio);
- 		down_write(&iinfo->i_data_sem);
--		memcpy_to_page(page, 0, iinfo->i_data + iinfo->i_lenEAttr,
--			       inode->i_size);
--		unlock_page(page);
-+		memcpy_from_folio(iinfo->i_data + iinfo->i_lenEAttr,
-+				folio, 0, inode->i_size);
-+		folio_unlock(folio);
- 		iinfo->i_alloc_type = ICBTAG_FLAG_AD_IN_ICB;
- 		iinfo->i_lenAlloc = inode->i_size;
- 		up_write(&iinfo->i_data_sem);
- 	}
--	put_page(page);
-+	folio_put(folio);
- 	mark_inode_dirty(inode);
- 
- 	return err;
 -- 
 2.43.0
 
