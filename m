@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-49547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E77B8FEDBD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DB08FEC10
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F4551F21F96
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B82E0280CD5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66541BD4EF;
-	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE091AC440;
+	Thu,  6 Jun 2024 14:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H07Ys3pQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rg9K84jE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E2D1BD4E9;
-	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7301AC43F;
+	Thu,  6 Jun 2024 14:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683520; cv=none; b=Emu/uvzpjl0uJH0oUx/pAbltrA12gmLifln73z2nVcMA/MSLitb1eVvdgT/M2sCkLaMG3kZ7AiSrX+O6w7nU5oVXe2ouM1QjStgjk787X0EzMVb+K8LLD6FFiETpHqGGYZdRh9EWHbhu/VMYNt1SrTFbqZjpxFVMnnVpoCmvIw8=
+	t=1717683326; cv=none; b=AMDmxgIZCJG2dtJRjz+gMqbQiHANS8urVi4lqfCVrMSCAetKuMASLNTEcs6pYNnRMqLPd/eV1/S9jMYv0AEjlR1S1sSIHMyCokogdumMLiwDCfUFQQVjGyamW+UCRX9gmn9IrF/JxbuAH1af0rH8Tgli8L6c2KjjU0D16RCyCc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683520; c=relaxed/simple;
-	bh=k3JoYouU28J8KQdj9+7YAfoekFe1EL8jSnySqlHfWPg=;
+	s=arc-20240116; t=1717683326; c=relaxed/simple;
+	bh=nJ2ed6txgg92F2FITvX5Wj6mihdLLLd4xw6n3hvg9Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z1M1EsaTXJp9guuLohYFOxEWidEh06JOJ17+hmnnxogQZK16z0xe6KFoT0NF/yiBmr3ib8k0TBbTQPeT2rE+gOMG1TfiLkivId96mzexBZgyhOzSNQ0Adwqj+ht6ismPL4A1Yi+CVsFGH33oq9mq84zOCULSdJx8YayeoANzLRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H07Ys3pQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141A7C4AF08;
-	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
+	 MIME-Version; b=O2n31DG0FLbZUvHuf+IV/1k3J49ofeA8nv37ssE+MxKNMt8XppSIMfgEJAEMFkcmNB9VDx1SvWQm76l+lQ5XVY5xdibmv/sk5onzAIbISCgxJyVFMxhazDc+Iv2XQmP4tkJxB7r9gkOADZMuvpO5VVLExGG6BJuLN/yk+B+fnzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rg9K84jE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3904FC2BD10;
+	Thu,  6 Jun 2024 14:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683520;
-	bh=k3JoYouU28J8KQdj9+7YAfoekFe1EL8jSnySqlHfWPg=;
+	s=korg; t=1717683326;
+	bh=nJ2ed6txgg92F2FITvX5Wj6mihdLLLd4xw6n3hvg9Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H07Ys3pQhsrM6/KvC5fo/NxtSgzHRykHRIRdRKsGO4WLQnTOLVIQC9xo6PFK2fZi8
-	 2DZyuOG9Rgx36bOVqfP0gLkV0ojg4zZ5dfC4WgAkBYL9Ylo/YxfoldYGri3Z7NA7JJ
-	 2CdLpS1zEipy5ynqigCfD6yV9Uz2qZ4ygIvVBsE0=
+	b=Rg9K84jEP9vOYmeyZ55wzanx9G0NKE4dqcmkDHqy0hhA77oKqQQR3qD1a3vUocHlV
+	 sCLdgusgF/3577eTayLrxkaEcY3s70gcafSEFVBSxAn7PUMGSH4P1avNcyb/2UElL0
+	 VIol+gIJV9aC08pw+A4Th8l2dAM2Asiik0P96cfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 461/744] udf: Remove GFP_NOFS allocation in udf_expand_file_adinicb()
-Date: Thu,  6 Jun 2024 16:02:13 +0200
-Message-ID: <20240606131747.258243194@linuxfoundation.org>
+Subject: [PATCH 6.1 205/473] powerpc/fsl-soc: hide unused const variable
+Date: Thu,  6 Jun 2024 16:02:14 +0200
+Message-ID: <20240606131706.704105665@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 38f8af2a7191e5da21c557210d810c6d0d34f6c4 ]
+[ Upstream commit 01acaf3aa75e1641442cc23d8fe0a7bb4226efb1 ]
 
-udf_expand_file_adinicb() is called under inode->i_rwsem and
-mapping->invalidate_lock. i_rwsem is safe wrt fs reclaim,
-invalidate_lock on this inode is safe as well (we hold inode reference
-so reclaim will not touch it, furthermore even lockdep should not
-complain as invalidate_lock is acquired from udf_evict_inode() only when
-truncating inode which should not happen from fs reclaim).
+vmpic_msi_feature is only used conditionally, which triggers a rare
+-Werror=unused-const-variable= warning with gcc:
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Stable-dep-of: db6754090a4f ("udf: Convert udf_expand_file_adinicb() to use a folio")
+arch/powerpc/sysdev/fsl_msi.c:567:37: error: 'vmpic_msi_feature' defined but not used [-Werror=unused-const-variable=]
+  567 | static const struct fsl_msi_feature vmpic_msi_feature =
+
+Hide this one in the same #ifdef as the reference so we can turn on
+the warning by default.
+
+Fixes: 305bcf26128e ("powerpc/fsl-soc: use CONFIG_EPAPR_PARAVIRT for hcalls")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240403080702.3509288-2-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/sysdev/fsl_msi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index a17a6184cc39e..7f7610dddcba1 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -357,7 +357,7 @@ int udf_expand_file_adinicb(struct inode *inode)
- 		return 0;
- 	}
+diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
+index 73c2d70706c0a..e50445c2656ac 100644
+--- a/arch/powerpc/sysdev/fsl_msi.c
++++ b/arch/powerpc/sysdev/fsl_msi.c
+@@ -567,10 +567,12 @@ static const struct fsl_msi_feature ipic_msi_feature = {
+ 	.msiir_offset = 0x38,
+ };
  
--	page = find_or_create_page(inode->i_mapping, 0, GFP_NOFS);
-+	page = find_or_create_page(inode->i_mapping, 0, GFP_KERNEL);
- 	if (!page)
- 		return -ENOMEM;
++#ifdef CONFIG_EPAPR_PARAVIRT
+ static const struct fsl_msi_feature vmpic_msi_feature = {
+ 	.fsl_pic_ip = FSL_PIC_IP_VMPIC,
+ 	.msiir_offset = 0,
+ };
++#endif
  
+ static const struct of_device_id fsl_of_msi_ids[] = {
+ 	{
 -- 
 2.43.0
 
