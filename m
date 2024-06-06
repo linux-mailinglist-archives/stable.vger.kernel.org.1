@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-48409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C20A8FE8E5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9208FED52
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E24D21F239AA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D94281B8C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDC3198E9D;
-	Thu,  6 Jun 2024 14:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4691BA86C;
+	Thu,  6 Jun 2024 14:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCW6gNa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHKL3xjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0220198E9C;
-	Thu,  6 Jun 2024 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9FF19D078;
+	Thu,  6 Jun 2024 14:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682948; cv=none; b=PZoBfFEkIhOfdglXJUtJigiXZuC08ENUNNIK4M1CRFlHv9EPlc9eyavmLl1fxeDnxyDoOothNUGc7sQpso1+eORjSfl2QnS0FAj3btnueXjxWjtATsGr9jfyFohVHjG6Y6uokXTYuU06qWQ+yvE9qq5MQcNi0HF7qjsN2lisOWQ=
+	t=1717683474; cv=none; b=SSjKTa47XctEmbdaO5QBV4+EWdreNEaMHM2SMJBGv3tqHftvuSOzyb4/KYKmAFvvFvcyUV8i12XQBkrjCD7evW04jxjv7vF6eAWFKts9vPCkALmC4nd2bG0UaDIrg2GinP7a9mHVEoHUlk38XP92rpyQKc5GVUhjrgG/BYIq7ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682948; c=relaxed/simple;
-	bh=J/SMp1S8G4XySj1w5sn9WHnYtZv0vhREu2a+uX44flY=;
+	s=arc-20240116; t=1717683474; c=relaxed/simple;
+	bh=aVT+wJ2MiQyrDA4EcF3vUCStkfKoFBbPhVeA33TO6BQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ir+0RbowtksxjmUeco4A1EgiYDOXlFQW0Z6Izc2h/hi4uBN2gEz5R7Vk/hNuF38ZBj7sjhs7QZNNoPyUIbu9tQstb+XBF/2imE+JUtEsafwyG4k+ARwLUgi6GJ1uqCTGm4cDmlSDF0B4f1GvTgMrX8d9pevcYF23a5aeZQ8dfC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCW6gNa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06F2C32781;
-	Thu,  6 Jun 2024 14:09:07 +0000 (UTC)
+	 MIME-Version; b=q6PKGL48mgyxVlhMqfUolMBNyQ4W8lbVbYwkFI05lSFR6xA6nmXdIKkna5BShnZK6UQGJNSYxJYxdKoJCWDjG1Ox9n7LaQdvhgjiCUU9jz/hnWg41GHCFCtzvwzBkT0w9PSZ3LIjapJUWjfACXFooTpz1IrIQmzzN6KNnY3UZdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHKL3xjk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C78CC32781;
+	Thu,  6 Jun 2024 14:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682947;
-	bh=J/SMp1S8G4XySj1w5sn9WHnYtZv0vhREu2a+uX44flY=;
+	s=korg; t=1717683474;
+	bh=aVT+wJ2MiQyrDA4EcF3vUCStkfKoFBbPhVeA33TO6BQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCW6gNa1T0FsuWgOCMd2gEcvi8cqLV/s19gstCM6cT6z7Rllmk/0+U2WuvpKRhpbW
-	 +E/LwEEO9yCiSwqYkmGgFLdsHpFNiqvPetUSPc6A4tyuWNZVwsLDcJY1feuE7KsZRf
-	 d2LoCdTfquVkS8wI4bFovDx3KGR/Uj9Wy+ItM30A=
+	b=GHKL3xjkh1JPBQ2BuYmkmEFhRdi2vSoWW2Fxg83cH5PBZBXQgXsf7h5esnJIfB2Uf
+	 AsUaFzI5NckoCN1HWjIfxiZK6x3HO2MkiOq9bPeEx0xxtxxEPrYKDC3T0LgTgKOjyH
+	 fQsrHUW7rc9BINMah6pKrxxTB14U5lG9Am6psVtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 110/374] f2fs: fix to release node block count in error path of f2fs_new_node_page()
+Subject: [PATCH 6.6 417/744] serial: max3100: Fix bitwise types
 Date: Thu,  6 Jun 2024 16:01:29 +0200
-Message-ID: <20240606131655.605484455@linuxfoundation.org>
+Message-ID: <20240606131745.848621524@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 0fa4e57c1db263effd72d2149d4e21da0055c316 ]
+[ Upstream commit e60955dbecb97f080848a57524827e2db29c70fd ]
 
-It missed to call dec_valid_node_count() to release node block count
-in error path, fix it.
+Sparse is not happy about misuse of bitwise types:
 
-Fixes: 141170b759e0 ("f2fs: fix to avoid use f2fs_bug_on() in f2fs_new_node_page()")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+  .../max3100.c:194:13: warning: incorrect type in assignment (different base types)
+  .../max3100.c:194:13:    expected unsigned short [addressable] [usertype] etx
+  .../max3100.c:194:13:    got restricted __be16 [usertype]
+  .../max3100.c:202:15: warning: cast to restricted __be16
+
+Fix this by choosing proper types for the respective variables.
+
+Fixes: 7831d56b0a35 ("tty: MAX3100")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240402195306.269276-4-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/max3100.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index b3de6d6cdb021..7df5ad84cb5ea 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1319,6 +1319,7 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
- 	}
- 	if (unlikely(new_ni.blk_addr != NULL_ADDR)) {
- 		err = -EFSCORRUPTED;
-+		dec_valid_node_count(sbi, dn->inode, !ofs);
- 		set_sbi_flag(sbi, SBI_NEED_FSCK);
- 		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
- 		goto fail;
-@@ -1345,7 +1346,6 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
- 	if (ofs == 0)
- 		inc_valid_inode_count(sbi);
- 	return page;
--
- fail:
- 	clear_node_page_dirty(page);
- 	f2fs_put_page(page, 1);
+diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
+index b3e63b6a402e1..3d2b83d6ab51a 100644
+--- a/drivers/tty/serial/max3100.c
++++ b/drivers/tty/serial/max3100.c
+@@ -45,6 +45,9 @@
+ #include <linux/freezer.h>
+ #include <linux/tty.h>
+ #include <linux/tty_flip.h>
++#include <linux/types.h>
++
++#include <asm/unaligned.h>
+ 
+ #include <linux/serial_max3100.h>
+ 
+@@ -191,7 +194,7 @@ static void max3100_timeout(struct timer_list *t)
+ static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
+ {
+ 	struct spi_message message;
+-	u16 etx, erx;
++	__be16 etx, erx;
+ 	int status;
+ 	struct spi_transfer tran = {
+ 		.tx_buf = &etx,
 -- 
 2.43.0
 
