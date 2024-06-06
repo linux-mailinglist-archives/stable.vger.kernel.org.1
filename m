@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-49504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3328FED8A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 466888FE8FF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 470D0B220BF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9ECE1F24B7E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95492198E9D;
-	Thu,  6 Jun 2024 14:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10641990C8;
+	Thu,  6 Jun 2024 14:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiOWwGO7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slGb6Lh/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A4419DF6B;
-	Thu,  6 Jun 2024 14:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0AC196DBD;
+	Thu,  6 Jun 2024 14:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683498; cv=none; b=gJbvnPPqRcQ8xATv116m8HziPAovZN5ossgj+KTJsj0CbNSGrBPEd9UOm/zc+UZFa5IderWY7K2FOiuGldNgWLfBtxdHuHjmit3sumKu6seAS5KI5yOz9i0WO6E/juWsehFihIByFmB4ToCMQK6/AfM+ZWjMHiJmjF9YhLi/Vb0=
+	t=1717682965; cv=none; b=c906XMM6nyDDyqp0iYHJ5Tp7uF0n+2DDIcTfOD/8yBSEudMz+m+9eGzfZCzXJxO+E8Leq2gQvhibkkob+QVNk7YsGNOYtnx9TTYsJWgPQAUSiv1F2ptSf/itU4zkA4UQ/4774w4iOp8a4fGPR7vTqnyTUtD9fp3R6Aler2gRIfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683498; c=relaxed/simple;
-	bh=8QKRzpr5h4Op4t6AeqRjiWy9baNiahcAAxP9MPhfL4E=;
+	s=arc-20240116; t=1717682965; c=relaxed/simple;
+	bh=F/6xiXzz8i4lY2PxmgXn1KhjtrwgWn3E/KvrabuG9N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpTRcwpJX1Fbh9Ezh557Yi7NWnCEAIPBEyxr/b4x56HQo8Lgcw25awOKPvUNrvkjf12NtMJafy+xMbXM0HW64W4Qni6gQQ9V84iI+pfpBJLlzrf/gqriX4OeESodTPmjJFoorqtmCkjSOM6/HhNQjVNkhSI9A5RbJAbcLWNPaKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiOWwGO7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DD8C32781;
-	Thu,  6 Jun 2024 14:18:18 +0000 (UTC)
+	 MIME-Version; b=kzR0hELcx27l0VzobUGWaD16vdIMMC7/NU/nJuxRJQj4GWH5zg2k/4yXEkxC93NWYssNexu5u8pdIBdexGgnlFxSqRS+fMGVizo8SNr+vD4nMLNioWMBVmpuQTccmJlJ8RKGCCWlzmI8V1cl+YODiAGz3h80lddSBGfik1GwVQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slGb6Lh/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4A0C2BD10;
+	Thu,  6 Jun 2024 14:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683498;
-	bh=8QKRzpr5h4Op4t6AeqRjiWy9baNiahcAAxP9MPhfL4E=;
+	s=korg; t=1717682965;
+	bh=F/6xiXzz8i4lY2PxmgXn1KhjtrwgWn3E/KvrabuG9N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SiOWwGO7Wy+lpzeD81L4o/ZGUSmB23c8K0dYRzmn4BK5DU1v3BBwJsWbxxaH9Zh4v
-	 AcswwsBKcM3G+y3gQMu9LuzfCL1Opwp5tDuQESAjQEzypgEyai4PeWMC2c0eIyR328
-	 hR0isVbjqdv1AJ8OQ09DEk7q9HP5TN5xvQ0twDic=
+	b=slGb6Lh/Zb6vwRgzCuBjQAcZE/LMu4KPAGqqB21sxB0x2gmd1hr/S/mt91OZnSeGY
+	 RoLOes3vsAMpa+9dPtenfNWd3DxiPcmLS9MH/kUi9iNnJKJ/b5BbqYqQgzLV4JNo5R
+	 eKIjNRXriKDkUuafg7fdqD5n893reAoJdBZmXCsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 440/744] fs: move kiocb_start_write() into vfs_iocb_iter_write()
+Subject: [PATCH 6.9 133/374] s390/stacktrace: Improve detection of invalid instruction pointers
 Date: Thu,  6 Jun 2024 16:01:52 +0200
-Message-ID: <20240606131746.600659628@linuxfoundation.org>
+Message-ID: <20240606131656.357635533@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 6ae654392bb516a0baa47fed1f085d84e8cad739 ]
+[ Upstream commit cd58109283944ea8bdcd0a8211a86cbd2450716a ]
 
-In vfs code, sb_start_write() is usually called after the permission hook
-in rw_verify_area().  vfs_iocb_iter_write() is an exception to this rule,
-where kiocb_start_write() is called by its callers.
+Add basic checks to identify invalid instruction pointers when walking
+stack frames:
 
-Move kiocb_start_write() from the callers into vfs_iocb_iter_write()
-after the rw_verify_area() checks, to make them "start-write-safe".
+Instruction pointers must
 
-The semantics of vfs_iocb_iter_write() is changed, so that the caller is
-responsible for calling kiocb_end_write() on completion only if async
-iocb was queued.  The completion handlers of both callers were adapted
-to this semantic change.
+- have even addresses
+- be larger than mmap_min_addr
+- lower than the asce_limit of the process
 
-This is needed for fanotify "pre content" events.
+Alternatively it would also be possible to walk page tables similar to fast
+GUP and verify that the mapping of the corresponding page is executable,
+however that seems to be overkill.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Suggested-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://lore.kernel.org/r/20231122122715.2561213-14-amir73il@gmail.com
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 7c98f7cb8fda ("remove call_{read,write}_iter() functions")
+Fixes: aa44433ac4ee ("s390: add USER_STACKTRACE support")
+Reviewed-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/io.c  | 5 ++---
- fs/overlayfs/file.c | 8 ++++----
- fs/read_write.c     | 7 +++++++
- 3 files changed, 13 insertions(+), 7 deletions(-)
+ arch/s390/kernel/stacktrace.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
-index 009d23cd435b5..5857241c59181 100644
---- a/fs/cachefiles/io.c
-+++ b/fs/cachefiles/io.c
-@@ -259,7 +259,8 @@ static void cachefiles_write_complete(struct kiocb *iocb, long ret)
+diff --git a/arch/s390/kernel/stacktrace.c b/arch/s390/kernel/stacktrace.c
+index 1c9e3b7739a22..b4485b0c7f06b 100644
+--- a/arch/s390/kernel/stacktrace.c
++++ b/arch/s390/kernel/stacktrace.c
+@@ -77,6 +77,21 @@ static inline bool store_ip(stack_trace_consume_fn consume_entry, void *cookie,
+ 	return consume_entry(cookie, ip);
+ }
  
- 	_enter("%ld", ret);
- 
--	kiocb_end_write(iocb);
-+	if (ki->was_async)
-+		kiocb_end_write(iocb);
- 
- 	if (ret < 0)
- 		trace_cachefiles_io_error(object, inode, ret,
-@@ -319,8 +320,6 @@ int __cachefiles_write(struct cachefiles_object *object,
- 		ki->iocb.ki_complete = cachefiles_write_complete;
- 	atomic_long_add(ki->b_writing, &cache->b_writing);
- 
--	kiocb_start_write(&ki->iocb);
--
- 	get_file(ki->iocb.ki_filp);
- 	cachefiles_grab_object(object, cachefiles_obj_get_ioreq);
- 
-diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-index 9fd88579bfbfb..a1c64c2b8e204 100644
---- a/fs/overlayfs/file.c
-+++ b/fs/overlayfs/file.c
-@@ -295,10 +295,8 @@ static void ovl_aio_cleanup_handler(struct ovl_aio_req *aio_req)
- 	struct kiocb *iocb = &aio_req->iocb;
- 	struct kiocb *orig_iocb = aio_req->orig_iocb;
- 
--	if (iocb->ki_flags & IOCB_WRITE) {
--		kiocb_end_write(iocb);
-+	if (iocb->ki_flags & IOCB_WRITE)
- 		ovl_file_modified(orig_iocb->ki_filp);
--	}
- 
- 	orig_iocb->ki_pos = iocb->ki_pos;
- 	ovl_aio_put(aio_req);
-@@ -310,6 +308,9 @@ static void ovl_aio_rw_complete(struct kiocb *iocb, long res)
- 						   struct ovl_aio_req, iocb);
- 	struct kiocb *orig_iocb = aio_req->orig_iocb;
- 
-+	if (iocb->ki_flags & IOCB_WRITE)
-+		kiocb_end_write(iocb);
++static inline bool ip_invalid(unsigned long ip)
++{
++	/*
++	 * Perform some basic checks if an instruction address taken
++	 * from unreliable source is invalid.
++	 */
++	if (ip & 1)
++		return true;
++	if (ip < mmap_min_addr)
++		return true;
++	if (ip >= current->mm->context.asce_limit)
++		return true;
++	return false;
++}
 +
- 	ovl_aio_cleanup_handler(aio_req);
- 	orig_iocb->ki_complete(orig_iocb, res);
- }
-@@ -421,7 +422,6 @@ static ssize_t ovl_write_iter(struct kiocb *iocb, struct iov_iter *iter)
- 		aio_req->iocb.ki_flags = ifl;
- 		aio_req->iocb.ki_complete = ovl_aio_rw_complete;
- 		refcount_set(&aio_req->ref, 2);
--		kiocb_start_write(&aio_req->iocb);
- 		ret = vfs_iocb_iter_write(real.file, &aio_req->iocb, iter);
- 		ovl_aio_put(aio_req);
- 		if (ret != -EIOCBQUEUED)
-diff --git a/fs/read_write.c b/fs/read_write.c
-index 4771701c896ba..9a56949f3b8d1 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -865,6 +865,10 @@ static ssize_t do_iter_write(struct file *file, struct iov_iter *iter,
- 	return ret;
- }
+ void arch_stack_walk_user_common(stack_trace_consume_fn consume_entry, void *cookie,
+ 				 struct perf_callchain_entry_ctx *entry,
+ 				 const struct pt_regs *regs, bool perf)
+@@ -87,6 +102,8 @@ void arch_stack_walk_user_common(stack_trace_consume_fn consume_entry, void *coo
  
-+/*
-+ * Caller is responsible for calling kiocb_end_write() on completion
-+ * if async iocb was queued.
-+ */
- ssize_t vfs_iocb_iter_write(struct file *file, struct kiocb *iocb,
- 			    struct iov_iter *iter)
- {
-@@ -885,7 +889,10 @@ ssize_t vfs_iocb_iter_write(struct file *file, struct kiocb *iocb,
- 	if (ret < 0)
- 		return ret;
- 
-+	kiocb_start_write(iocb);
- 	ret = call_write_iter(file, iocb, iter);
-+	if (ret != -EIOCBQUEUED)
-+		kiocb_end_write(iocb);
- 	if (ret > 0)
- 		fsnotify_modify(file);
- 
+ 	if (is_compat_task())
+ 		return;
++	if (!current->mm)
++		return;
+ 	ip = instruction_pointer(regs);
+ 	if (!store_ip(consume_entry, cookie, entry, perf, ip))
+ 		return;
+@@ -101,15 +118,16 @@ void arch_stack_walk_user_common(stack_trace_consume_fn consume_entry, void *coo
+ 		sf = (void __user *)sp;
+ 		if (__get_user(ip, &sf->gprs[8]))
+ 			break;
+-		if (ip & 0x1) {
++		if (ip_invalid(ip)) {
+ 			/*
+ 			 * If the instruction address is invalid, and this
+ 			 * is the first stack frame, assume r14 has not
+ 			 * been written to the stack yet. Otherwise exit.
+ 			 */
+-			if (first && !(regs->gprs[14] & 0x1))
+-				ip = regs->gprs[14];
+-			else
++			if (!first)
++				break;
++			ip = regs->gprs[14];
++			if (ip_invalid(ip))
+ 				break;
+ 		}
+ 		if (!store_ip(consume_entry, cookie, entry, perf, ip))
 -- 
 2.43.0
 
