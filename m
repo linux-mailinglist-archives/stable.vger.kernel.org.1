@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58DE8FEDBF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258648FEC5F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 565F71F2220E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 397971C20C14
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79ABE1BD4F9;
-	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7F61B0125;
+	Thu,  6 Jun 2024 14:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nA6wGjeg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/1Na3tn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F8C1BD4ED;
-	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6DE1B0121;
+	Thu,  6 Jun 2024 14:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683521; cv=none; b=rFbSHncQf5Dtz0S0GAMvBQ3GJ2c6rwFp+fm7WtRsIjs4bQXq/C9Cz0d6tAC1uzvHxhDFzrvROdBU7UBB6NDXVjfpxHp1pqFVdlNueCIE5Nffc7tmGHk25oJCQ/sz9i38xUpXz8McrxMj8gIX5IMO41rvfraTBfmlLF4QqLMgPjc=
+	t=1717683360; cv=none; b=tSmVYR4CohdOGEz+aen0/mk/4T+aNXf4+SDQtRULhg0AgbhNZlH7JcmWHKY2G+CtA6Ij2nxCVkHY+3i+emMBZtByaAAsBffuqGR11Zh9iwDfV1mtBZ4J9sKv+rQIQQ12jcuPKOPiCdi1X3kR9vGYW2jyB1RQyIpKPK0YK/WuQLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683521; c=relaxed/simple;
-	bh=48GOCwA3acNuK6MfLJ6IXO9wgE7HKZr7fnKB9gUPY4g=;
+	s=arc-20240116; t=1717683360; c=relaxed/simple;
+	bh=0Y7wPDzg5HPLr1tVQXvl+9t8qHJ/fMy90r4ywgvWKEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cArzxjS8RTJK301OVvEYH3dbpD4TknlUPm8+FCW3lRE20DuejYsrR3nVKJLF73EHB/fAFaJpr3JuvxusGf3zvsUcOBi5mmp2HeSUNVQpZVRtcovY2jQlYJjgWo32fmX6lvds59rDN5YUiCI8OZLmDjWIUDCmGpiE2mjLdsG0FiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nA6wGjeg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167D7C4AF09;
-	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
+	 MIME-Version; b=D6QfQ3ALFL3BXYNpt262OkvFzZ0IqIePvO3tT3TJpVfW8mwiAWgkalMqQ4zUL7b+MGbwonJZaZ70O7sdiP+xLm7gP4/PTt+xxI0Av82KfdEgN9A+m9D0O23g9UTZ5eJVFPIXhoHYOZ+kFUYlWVhEQ4YdulG+SjsaGLyp31T+fPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/1Na3tn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE69EC2BD10;
+	Thu,  6 Jun 2024 14:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683521;
-	bh=48GOCwA3acNuK6MfLJ6IXO9wgE7HKZr7fnKB9gUPY4g=;
+	s=korg; t=1717683359;
+	bh=0Y7wPDzg5HPLr1tVQXvl+9t8qHJ/fMy90r4ywgvWKEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nA6wGjegOsibLVXENDv0NWpx1dlRAgcXJLGzbfRXPXqpRILyODqk0q/vIIEjNJs7x
-	 0hU2I+4BRLVfod50zur7L9dP0Th8aAhOsjenz3SAbkqDofNrQDiByAqQYoDQ7DJ4i/
-	 0ls43z54QD0RyM/PdDI0J2ZDgTKmNHhK++5LLa/Y=
+	b=k/1Na3tnf4Q004vIK0rKkUKQakB60sSXk3m3BziWdvPgnd0IKNTyNDQEeXOS7DTgI
+	 CmW8I2GstadyHARj5GvtOd7E2HiXU+0i6laLctcy7ALz3M9ju3n6CN1bMNh7FfDzKN
+	 sof34BRurSTP35zz6puL90RNVB+IWq5n2XHROark=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 462/744] udf: Convert udf_expand_file_adinicb() to use a folio
-Date: Thu,  6 Jun 2024 16:02:14 +0200
-Message-ID: <20240606131747.294526243@linuxfoundation.org>
+Subject: [PATCH 6.1 206/473] fbdev: sisfb: hide unused variables
+Date: Thu,  6 Jun 2024 16:02:15 +0200
+Message-ID: <20240606131706.736142629@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit db6754090a4f99c67e05ae6b87343ba6e013531f ]
+[ Upstream commit 688cf598665851b9e8cb5083ff1d208ce43d10ff ]
 
-Use the folio APIs throughout this function.
+Building with W=1 shows that a couple of variables in this driver are only
+used in certain configurations:
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 1eeceaec794e ("udf: Convert udf_expand_file_adinicb() to avoid kmap_atomic()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20240417150416.752929-4-willy@infradead.org>
+drivers/video/fbdev/sis/init301.c:239:28: error: 'SiS_Part2CLVX_6' defined but not used [-Werror=unused-const-variable=]
+  239 | static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:230:28: error: 'SiS_Part2CLVX_5' defined but not used [-Werror=unused-const-variable=]
+  230 | static const unsigned char SiS_Part2CLVX_5[] = {   /* 750p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:211:28: error: 'SiS_Part2CLVX_4' defined but not used [-Werror=unused-const-variable=]
+  211 | static const unsigned char SiS_Part2CLVX_4[] = {   /* PAL */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:192:28: error: 'SiS_Part2CLVX_3' defined but not used [-Werror=unused-const-variable=]
+  192 | static const unsigned char SiS_Part2CLVX_3[] = {  /* NTSC, 525i, 525p */
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:184:28: error: 'SiS_Part2CLVX_2' defined but not used [-Werror=unused-const-variable=]
+  184 | static const unsigned char SiS_Part2CLVX_2[] = {
+      |                            ^~~~~~~~~~~~~~~
+drivers/video/fbdev/sis/init301.c:176:28: error: 'SiS_Part2CLVX_1' defined but not used [-Werror=unused-const-variable=]
+  176 | static const unsigned char SiS_Part2CLVX_1[] = {
+      |                            ^~~~~~~~~~~~~~~
+
+This started showing up after the definitions were moved into the
+source file from the header, which was not flagged by the compiler.
+Move the definition into the appropriate #ifdef block that already
+exists next to them.
+
+Fixes: 5908986ef348 ("video: fbdev: sis: avoid mismatched prototypes")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/inode.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/video/fbdev/sis/init301.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index 7f7610dddcba1..1ff8c1f17f9e6 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -341,7 +341,7 @@ const struct address_space_operations udf_aops = {
-  */
- int udf_expand_file_adinicb(struct inode *inode)
- {
--	struct page *page;
-+	struct folio *folio;
- 	struct udf_inode_info *iinfo = UDF_I(inode);
- 	int err;
+diff --git a/drivers/video/fbdev/sis/init301.c b/drivers/video/fbdev/sis/init301.c
+index a8fb41f1a2580..09329072004f4 100644
+--- a/drivers/video/fbdev/sis/init301.c
++++ b/drivers/video/fbdev/sis/init301.c
+@@ -172,7 +172,7 @@ static const unsigned char SiS_HiTVGroup3_2[] = {
+ };
  
-@@ -357,12 +357,13 @@ int udf_expand_file_adinicb(struct inode *inode)
- 		return 0;
- 	}
+ /* 301C / 302ELV extended Part2 TV registers (4 tap scaler) */
+-
++#ifdef CONFIG_FB_SIS_315
+ static const unsigned char SiS_Part2CLVX_1[] = {
+     0x00,0x00,
+     0x00,0x20,0x00,0x00,0x7F,0x20,0x02,0x7F,0x7D,0x20,0x04,0x7F,0x7D,0x1F,0x06,0x7E,
+@@ -245,7 +245,6 @@ static const unsigned char SiS_Part2CLVX_6[] = {   /* 1080i */
+     0xFF,0xFF,
+ };
  
--	page = find_or_create_page(inode->i_mapping, 0, GFP_KERNEL);
--	if (!page)
--		return -ENOMEM;
-+	folio = __filemap_get_folio(inode->i_mapping, 0,
-+			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, GFP_KERNEL);
-+	if (IS_ERR(folio))
-+		return PTR_ERR(folio);
- 
--	if (!PageUptodate(page))
--		udf_adinicb_readpage(page);
-+	if (!folio_test_uptodate(folio))
-+		udf_adinicb_readpage(&folio->page);
- 	down_write(&iinfo->i_data_sem);
- 	memset(iinfo->i_data + iinfo->i_lenEAttr, 0x00,
- 	       iinfo->i_lenAlloc);
-@@ -371,22 +372,22 @@ int udf_expand_file_adinicb(struct inode *inode)
- 		iinfo->i_alloc_type = ICBTAG_FLAG_AD_SHORT;
- 	else
- 		iinfo->i_alloc_type = ICBTAG_FLAG_AD_LONG;
--	set_page_dirty(page);
--	unlock_page(page);
-+	folio_mark_dirty(folio);
-+	folio_unlock(folio);
- 	up_write(&iinfo->i_data_sem);
- 	err = filemap_fdatawrite(inode->i_mapping);
- 	if (err) {
- 		/* Restore everything back so that we don't lose data... */
--		lock_page(page);
-+		folio_lock(folio);
- 		down_write(&iinfo->i_data_sem);
--		memcpy_to_page(page, 0, iinfo->i_data + iinfo->i_lenEAttr,
--			       inode->i_size);
--		unlock_page(page);
-+		memcpy_from_folio(iinfo->i_data + iinfo->i_lenEAttr,
-+				folio, 0, inode->i_size);
-+		folio_unlock(folio);
- 		iinfo->i_alloc_type = ICBTAG_FLAG_AD_IN_ICB;
- 		iinfo->i_lenAlloc = inode->i_size;
- 		up_write(&iinfo->i_data_sem);
- 	}
--	put_page(page);
-+	folio_put(folio);
- 	mark_inode_dirty(inode);
- 
- 	return err;
+-#ifdef CONFIG_FB_SIS_315
+ /* 661 et al LCD data structure (2.03.00) */
+ static const unsigned char SiS_LCDStruct661[] = {
+     /* 1024x768 */
 -- 
 2.43.0
 
