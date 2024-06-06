@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-49273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21ADD8FEC9A
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A6E8FEC99
 	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D0ABB282BA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3179E1C244CE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2B01B14E7;
-	Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB1319B3D4;
+	Thu,  6 Jun 2024 14:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fW0OCL2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YXrin13"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDC01B14EC;
-	Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6EA19B3ED;
+	Thu,  6 Jun 2024 14:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683385; cv=none; b=SBshBA3Hq2N0fGV0xj34WyeDyrIQWOKAbdbZ0oYOnU8O0HkpP+BkCuFQRjTqGcK4VlYyTJWSYD0qMMtOFIn2YBmjulRYnUoVWYWsgJyA8YAwDVlMuFBokMmQtCZgrlCGB/Ea4cmeN/AK0gr6GYH30oN3uHQybpQ02w2RzTNZuZU=
+	t=1717683386; cv=none; b=cUdLvhblW0xrcROlhEL0PQnQ7gvboRfm6jO9G4d2kqY6J6LeU3O+8SiPjGxpk/LerKuz+83Gr245+8LiNPvGvGSSfeN9XEIkfRHgUNfas1ffSjKltDi1DY+QGrjJ7tuWOwlt4JnZAY9G944MX8V7Usyw0ZvtDbFLlGA7RKZ8pBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683385; c=relaxed/simple;
-	bh=3jOv82Q1QHh7fhO55O8llTNjmqlP7BDboAY9OwbCzYE=;
+	s=arc-20240116; t=1717683386; c=relaxed/simple;
+	bh=l6/4FXJWsOiE+gTPjW6itEkuZyQoqnbwrD5UfkQX6E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oKQH3lKrcb9xta9/4+c419ulIFAxQ1HU0DtsNYVGrBHusdXEfZH8jn0MJ5lenAIpgj9RD4u8o7PwHhIcrIXqSaKjKwQXAiKiyzfFv4N3SGd3ekl8Az2P0WJ0mGzpM1fGK1vEqxCJ7C9SQr4L0CIaNDj/+N6Fv+1A2R3m7ZoSdbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fW0OCL2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCC2C2BD10;
-	Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
+	 MIME-Version; b=ZxKRTsjAmmVeqX2RC49dMaPqktdBEnlq9KFVtMYFtxJ0woHPYwrOSSiaQIZq/UTRkfjHy3BdjGR0J9yiq8lKfM9+00VFKuPM/lMhDHqi/CamZAoEcL5YdoRs8mm91XhN1RemeJjBwvKy0z21Ofjb/6xsngORcfaPr0AGfiPOJ8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YXrin13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAC1C2BD10;
+	Thu,  6 Jun 2024 14:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683385;
-	bh=3jOv82Q1QHh7fhO55O8llTNjmqlP7BDboAY9OwbCzYE=;
+	s=korg; t=1717683386;
+	bh=l6/4FXJWsOiE+gTPjW6itEkuZyQoqnbwrD5UfkQX6E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fW0OCL2Dv5dJSHkUfvMrbiPNUh3gCLajkqRZkuPYJTd2XxfNuWG62OmBYo7E35n/5
-	 YH0cvQUjqqoRwvh260FxmZtl4SjL3ZqRIx2M0hzhxZyzMoKOyfkBGtRLLHYM01Q/bU
-	 2L0cW23S0Y7rXx2+eSVGKMcIBLL0J3Egwt3sYNKo=
+	b=2YXrin13W0WXaWkF8DxM5MbVVGo7+ToXK7EMoweNpV/IzDEeoWPjq238HbO+ayJob
+	 YhId84woheR51vtoO9+Y/2CD+mWsVkvHXvZLLs/1B2+te/xu0gjOW9QpmtJmPOVSXT
+	 A89Fvglpu6eylZtF291Oa1XC2qoshFuaJlkm8hkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 268/473] RDMA/IPoIB: Fix format truncation compilation errors
-Date: Thu,  6 Jun 2024 16:03:17 +0200
-Message-ID: <20240606131708.801376667@linuxfoundation.org>
+Subject: [PATCH 6.1 269/473] net: add pskb_may_pull_reason() helper
+Date: Thu,  6 Jun 2024 16:03:18 +0200
+Message-ID: <20240606131708.832299745@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -59,68 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 49ca2b2ef3d003402584c68ae7b3055ba72e750a ]
+[ Upstream commit 1fb2d41501f38192d8a19da585cd441cf8845697 ]
 
-Truncate the device name to store IPoIB VLAN name.
+pskb_may_pull() can fail for two different reasons.
 
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 allmodconfig
-[leonro@5b4e8fba4ddd kernel]$ make -s -j 20 W=1 drivers/infiniband/ulp/ipoib/
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c: In function ‘ipoib_vlan_add’:
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:52: error: ‘%04x’
-directive output may be truncated writing 4 bytes into a region of size
-between 0 and 15 [-Werror=format-truncation=]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                    ^~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:48: note: directive
-argument in the range [0, 65535]
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |                                                ^~~~~~~~~
-drivers/infiniband/ulp/ipoib/ipoib_vlan.c:187:9: note: ‘snprintf’ output
-between 6 and 21 bytes into a destination of size 16
-  187 |         snprintf(intf_name, sizeof(intf_name), "%s.%04x",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  188 |                  ppriv->dev->name, pkey);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/ulp/ipoib/ipoib_vlan.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
+Provide pskb_may_pull_reason() helper to distinguish
+between these reasons.
 
-Fixes: 9baa0b036410 ("IB/ipoib: Add rtnl_link_ops support")
-Link: https://lore.kernel.org/r/e9d3e1fef69df4c9beaf402cc3ac342bad680791.1715240029.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+It returns:
+
+SKB_NOT_DROPPED_YET           : Success
+SKB_DROP_REASON_PKT_TOO_SMALL : packet too small
+SKB_DROP_REASON_NOMEM         : skb->head could not be resized
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8bd67ebb50c0 ("net: bridge: xmit: make sure we have at least eth header len bytes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_vlan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/linux/skbuff.h | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-index 4bd161e86f8dd..562df2b3ef187 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_vlan.c
-@@ -184,8 +184,12 @@ int ipoib_vlan_add(struct net_device *pdev, unsigned short pkey)
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index cecd3b6bebb8b..2b54662048882 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2636,15 +2636,26 @@ void *skb_pull_data(struct sk_buff *skb, size_t len);
  
- 	ppriv = ipoib_priv(pdev);
+ void *__pskb_pull_tail(struct sk_buff *skb, int delta);
  
--	snprintf(intf_name, sizeof(intf_name), "%s.%04x",
--		 ppriv->dev->name, pkey);
-+	/* If you increase IFNAMSIZ, update snprintf below
-+	 * to allow longer names.
-+	 */
-+	BUILD_BUG_ON(IFNAMSIZ != 16);
-+	snprintf(intf_name, sizeof(intf_name), "%.10s.%04x", ppriv->dev->name,
-+		 pkey);
+-static inline bool pskb_may_pull(struct sk_buff *skb, unsigned int len)
++static inline enum skb_drop_reason
++pskb_may_pull_reason(struct sk_buff *skb, unsigned int len)
+ {
+ 	DEBUG_NET_WARN_ON_ONCE(len > INT_MAX);
  
- 	ndev = ipoib_intf_alloc(ppriv->ca, ppriv->port, intf_name);
- 	if (IS_ERR(ndev)) {
+ 	if (likely(len <= skb_headlen(skb)))
+-		return true;
++		return SKB_NOT_DROPPED_YET;
++
+ 	if (unlikely(len > skb->len))
+-		return false;
+-	return __pskb_pull_tail(skb, len - skb_headlen(skb)) != NULL;
++		return SKB_DROP_REASON_PKT_TOO_SMALL;
++
++	if (unlikely(!__pskb_pull_tail(skb, len - skb_headlen(skb))))
++		return SKB_DROP_REASON_NOMEM;
++
++	return SKB_NOT_DROPPED_YET;
++}
++
++static inline bool pskb_may_pull(struct sk_buff *skb, unsigned int len)
++{
++	return pskb_may_pull_reason(skb, len) == SKB_NOT_DROPPED_YET;
+ }
+ 
+ static inline void *pskb_pull(struct sk_buff *skb, unsigned int len)
 -- 
 2.43.0
 
