@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-48898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C118FEB06
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0D98FECA6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 446E0B24F4E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 304ABB24136
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13871A2C1D;
-	Thu,  6 Jun 2024 14:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3588D19B582;
+	Thu,  6 Jun 2024 14:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0MX3crq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG6Q9WKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7199319924D;
-	Thu,  6 Jun 2024 14:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ED819B580;
+	Thu,  6 Jun 2024 14:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683201; cv=none; b=mZZx173YVDP/qFYHpgnY9aPyH+ZO35SGdSEHKFr4/cUOIvYnN8iNcatqhLmxBwrBLhjYKm4Lh2KaKwdF2y2KiLo+Rt8mFhwA4dE6JMdhLDP9uFz7UGhcNZPieilwioeHufNenKCnHeY9ghLurlvk9V70MTSfp1GKyA6iL4j0B0o=
+	t=1717683392; cv=none; b=ZcN3EW3+rmQVx6G2DI08rd7Nblpg3wtgqRXi2ojZ1cL5E6uCRahJTPaGs5d/PWshMqMt8d490ZonPZH5Li5xBKwwCKe6crDOet/z/l5nTn40wWS34unTUsUHLt0wg8BlYJ7cPFz1A8FlTSflY7pIZN1sGC9l1y4uvO72lj39CZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683201; c=relaxed/simple;
-	bh=eBv/S98k1PZRBjtl+N/CCSfW3ZG2ni716wjdu5IsGqw=;
+	s=arc-20240116; t=1717683392; c=relaxed/simple;
+	bh=2PCQ0+LHajb7NCg8Rz0HR5zzGI3cvUN3+DfkTibFf94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j29DxkWyGwAGNW4rLh99t2Q0FShalrTKYuuZ/TlWHqyqRBQm33egd5A6IPY4yMsbpzwQXBv2LgCqYP/o4YN8oz65X7n2cfGjwsUTGBscqoj+KQJVqtxemy8VKkwgX19YR5iUYgYkVfti5BxdHjGGYhKCAU+fCQDVTFqcMRl4skU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0MX3crq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0A4C2BD10;
-	Thu,  6 Jun 2024 14:13:21 +0000 (UTC)
+	 MIME-Version; b=enI9StSOfN0NwJ5vfcKu4XPO2JPTtbXAxE5aHK+PCKqb/kwjjKzol0VqnEGuC+lv6eKdpBvmfJ1i6ywlHmuuLsstnZ7VEsxcmPVg6++rjyLIGsKKXL0PJhX/ZHWMR7o+bjRTKf6F4soSbH+gVhmnWg+S9dU8frez+VlpsBxyEOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG6Q9WKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D75C2BD10;
+	Thu,  6 Jun 2024 14:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683201;
-	bh=eBv/S98k1PZRBjtl+N/CCSfW3ZG2ni716wjdu5IsGqw=;
+	s=korg; t=1717683391;
+	bh=2PCQ0+LHajb7NCg8Rz0HR5zzGI3cvUN3+DfkTibFf94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k0MX3crq/InYUBiYEuP452IMyQiykXomRMxlRL0djgcaB/+eIzu2GYXRtBSrkQTXp
-	 +5jQ9IEldIm14HwSYLXxMgmeSraB/I5ZAKlk8STTLVO9ZrK0qSIhRww1DckBtdsxKL
-	 tGPxQYYWiRUA2lKZatm8h/Gff8hKJBfK1iwCC4XM=
+	b=WG6Q9WKSEXtCOukE7LVVNVw9AZLlhHJ4N7TZV9ssLcJNRcsvP4P32+AmG4JyNooDP
+	 lmW9uXxWHndyvpyESoloRrlNCFdlufiWzthhhGqTz+EUtrUlb/IFDdroDTfaHGkGbc
+	 08OynuLYrB1rAuZ7PaVdco0+wjDBgMAPvBXeAE1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/473] io_uring: use the right type for work_llist empty check
+Subject: [PATCH 6.6 336/744] RDMA/mlx5: Adding remote atomic access flag to updatable flags
 Date: Thu,  6 Jun 2024 16:00:08 +0200
-Message-ID: <20240606131702.525941056@linuxfoundation.org>
+Message-ID: <20240606131743.234829387@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit 22537c9f79417fed70b352d54d01d2586fee9521 ]
+[ Upstream commit 2ca7e93bc963d9ec2f5c24d117176851454967af ]
 
-io_task_work_pending() uses wq_list_empty() on ctx->work_llist, but it's
-not an io_wq_work_list, it's a struct llist_head. They both have
-->first as head-of-list, and it turns out the checks are identical. But
-be proper and use the right helper.
+Currently IB_ACCESS_REMOTE_ATOMIC is blocked from being updated via UMR
+although in some cases it should be possible. These cases are checked in
+mlx5r_umr_can_reconfig function.
 
-Fixes: dac6a0eae793 ("io_uring: ensure iopoll runs local task work as well")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: ef3642c4f54d ("RDMA/mlx5: Fix error unwinds for rereg_mr")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Link: https://lore.kernel.org/r/24dac73e2fa48cb806f33a932d97f3e402a5ea2c.1712140377.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/mr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/io_uring/io_uring.h b/io_uring/io_uring.h
-index 9e74f7968e059..0cafdefce02dc 100644
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -275,7 +275,7 @@ static inline int io_run_task_work(void)
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index e0629898c3c06..46847249b4677 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -1594,7 +1594,8 @@ static bool can_use_umr_rereg_access(struct mlx5_ib_dev *dev,
+ 	unsigned int diffs = current_access_flags ^ target_access_flags;
  
- static inline bool io_task_work_pending(struct io_ring_ctx *ctx)
- {
--	return task_work_pending(current) || !wq_list_empty(&ctx->work_llist);
-+	return task_work_pending(current) || !llist_empty(&ctx->work_llist);
- }
- 
- static inline int io_run_task_work_ctx(struct io_ring_ctx *ctx)
+ 	if (diffs & ~(IB_ACCESS_LOCAL_WRITE | IB_ACCESS_REMOTE_WRITE |
+-		      IB_ACCESS_REMOTE_READ | IB_ACCESS_RELAXED_ORDERING))
++		      IB_ACCESS_REMOTE_READ | IB_ACCESS_RELAXED_ORDERING |
++		      IB_ACCESS_REMOTE_ATOMIC))
+ 		return false;
+ 	return mlx5r_umr_can_reconfig(dev, current_access_flags,
+ 				      target_access_flags);
 -- 
 2.43.0
 
