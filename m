@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-49543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257038FEDB6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E89398FE9F5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDCBD2849AE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ECA41F270C1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BAE198E9C;
-	Thu,  6 Jun 2024 14:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA0C19D080;
+	Thu,  6 Jun 2024 14:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tv3SPyRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsFNslv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9D019E7CA;
-	Thu,  6 Jun 2024 14:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6F3198E79;
+	Thu,  6 Jun 2024 14:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683518; cv=none; b=MVSqd5KvvJ6QFxezG18952AM1KHz136zeF5wg0D9a01dlQnT6nrv9bQy99EKZOUHI7y0KI7u38ILrz1EEKYKwgoP9xxvBZlm8bUjMOv7Bgj33TaSPUpLG5Bfj25l3RwVfVvSQ+G47g62OTbZtTTnD25GwQitnhg7aqTdmaPvJ9g=
+	t=1717683085; cv=none; b=hmDymkvt8iU0xMdH0+jjcvF2oOGnyTEIl/gk/sq36L98dH+AJ8NDMgN75xSAU+GzI4cO9govAp6KxtHmEuHWT+UqY++GmaTb2cKQmjARRzVSvpDsw1WzeFtZjSnrL1LAPV92BrRt9/GXLF6PsTdEJhwJpFlFlPsC/IJwuIl21I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683518; c=relaxed/simple;
-	bh=BxSASIVusnqBgBk/YxsYH2FL8QuWGMEsq8qwNAJG7vA=;
+	s=arc-20240116; t=1717683085; c=relaxed/simple;
+	bh=hUMVfHj6OHYLxg7qTTg8x7GFuM/8v0Uak9TNQl/m/EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ii0uP0YdLyYO+49pvBNC79y5VmzoODFCGsteuVl+lwxz2Jb2SMFM2TqGOER6FiPyXsJU8e2mUmOEVNLaRo+x253cfAjvIg6rr2XVBcnHR19atTsI0d/DkuXag6fteRvPuZriDIrL9nhbEu/nKrXAX8/pj8tx9noZQV6I9PWFUwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tv3SPyRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19867C32781;
-	Thu,  6 Jun 2024 14:18:38 +0000 (UTC)
+	 MIME-Version; b=G+WJLH4o9BEKZNOGAKKuZBVx3uuTQadCTFjtkz3FptC9vO0uqJc/j//X4OgBKAXQ4Zad/h1c6Au3bY3aIj0SGBcC8nggCxlwyWSr+9vSyQ9V8vh4C3evjfHauICAoM18k5kvyc0WDb3cj0m6aoHMFdq7gXMY/hFYKW+ILTAwR58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsFNslv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDFAC2BD10;
+	Thu,  6 Jun 2024 14:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683518;
-	bh=BxSASIVusnqBgBk/YxsYH2FL8QuWGMEsq8qwNAJG7vA=;
+	s=korg; t=1717683085;
+	bh=hUMVfHj6OHYLxg7qTTg8x7GFuM/8v0Uak9TNQl/m/EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tv3SPyRpekL8+S6u9iUwjr2lZwJFp50EwI2cm3mZQRCMUGKJDIGRsrsg9zhdMyI3U
-	 UEkWX+rd0Thux53lvk6NXmhBOOs+E5znhBw59ztwQWxuszP6YEVEKknGRdq2l7Ve9C
-	 aNWbcXQfI/tVZz6v0xoz8NUcK56Dyr0/9DSkYrkA=
+	b=ZsFNslv/PxM0v+MIA6/ExkRsw//QO+LPMPTXRS432S6boHoVLT9EU6i2XCU8VM+y7
+	 8edk4W6Zkqc/JhhRzzDKsZuDCrL4LXud0QQNdf9m3oCCwzNeqqY7kjW0GqVgy1mv7k
+	 ouoxGEGW3JgMDsuhFER1Z0S4lLWQSzkPIkMBEjgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Krishneil Singh <krishneil.k.singh@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 370/473] drm/mediatek: dp: Move PHY registration to new function
+Subject: [PATCH 6.9 320/374] idpf: dont enable NAPI and interrupts prior to allocating Rx buffers
 Date: Thu,  6 Jun 2024 16:04:59 +0200
-Message-ID: <20240606131712.127568939@linuxfoundation.org>
+Message-ID: <20240606131702.591235001@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +67,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit 18ccc237cf646f93e25b802e5cca0788f4f48b39 ]
+[ Upstream commit d514c8b54209de7a95ab37259fe32c7406976bd9 ]
 
-In preparation for adding support for eDP, move the PHY registration
-code to a new mtk_dp_register_phy() function for better readability.
+Currently, idpf enables NAPI and interrupts prior to allocating Rx
+buffers.
+This may lead to frame loss (there are no buffers to place incoming
+frames) and even crashes on quick ifup-ifdown. Interrupts must be
+enabled only after all the resources are here and available.
+Split interrupt init into two phases: initialization and enabling,
+and perform the second only after the queues are fully initialized.
+Note that we can't just move interrupt initialization down the init
+process, as the queues must have correct a ::q_vector pointer set
+and NAPI already added in order to allocate buffers correctly.
+Also, during the deinit process, disable HW interrupts first and
+only then disable NAPI. Otherwise, there can be a HW event leading
+to napi_schedule(), but the NAPI will already be unavailable.
 
-This commit brings no functional changes.
-
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230725073234.55892-9-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Stable-dep-of: 8431fff9e0f3 ("drm/mediatek: dp: Fix mtk_dp_aux_transfer return value")
+Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
+Reported-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240523-net-2024-05-23-intel-net-fixes-v1-1-17a923e0bb5f@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 43 +++++++++++++++++++------------
- 1 file changed, 26 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c  |  1 +
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 12 +++++++-----
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h |  1 +
+ 3 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 519e23a2a017c..326a536e677cd 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2490,6 +2490,29 @@ static int mtk_dp_register_audio_driver(struct device *dev)
- 	return PTR_ERR_OR_ZERO(mtk_dp->audio_pdev);
- }
- 
-+static int mtk_dp_register_phy(struct mtk_dp *mtk_dp)
-+{
-+	struct device *dev = mtk_dp->dev;
-+
-+	mtk_dp->phy_dev = platform_device_register_data(dev, "mediatek-dp-phy",
-+							PLATFORM_DEVID_AUTO,
-+							&mtk_dp->regs,
-+							sizeof(struct regmap *));
-+	if (IS_ERR(mtk_dp->phy_dev))
-+		return dev_err_probe(dev, PTR_ERR(mtk_dp->phy_dev),
-+				     "Failed to create device mediatek-dp-phy\n");
-+
-+	mtk_dp_get_calibration_data(mtk_dp);
-+
-+	mtk_dp->phy = devm_phy_get(&mtk_dp->phy_dev->dev, "dp");
-+	if (IS_ERR(mtk_dp->phy)) {
-+		platform_device_unregister(mtk_dp->phy_dev);
-+		return dev_err_probe(dev, PTR_ERR(mtk_dp->phy), "Failed to get phy\n");
-+	}
-+
-+	return 0;
-+}
-+
- static int mtk_dp_probe(struct platform_device *pdev)
- {
- 	struct mtk_dp *mtk_dp;
-@@ -2547,23 +2570,9 @@ static int mtk_dp_probe(struct platform_device *pdev)
- 		}
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index 5d3532c27d57f..ae8a48c480708 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -1394,6 +1394,7 @@ static int idpf_vport_open(struct idpf_vport *vport, bool alloc_res)
  	}
  
--	mtk_dp->phy_dev = platform_device_register_data(dev, "mediatek-dp-phy",
--							PLATFORM_DEVID_AUTO,
--							&mtk_dp->regs,
--							sizeof(struct regmap *));
--	if (IS_ERR(mtk_dp->phy_dev))
--		return dev_err_probe(dev, PTR_ERR(mtk_dp->phy_dev),
--				     "Failed to create device mediatek-dp-phy\n");
--
--	mtk_dp_get_calibration_data(mtk_dp);
--
--	mtk_dp->phy = devm_phy_get(&mtk_dp->phy_dev->dev, "dp");
--
--	if (IS_ERR(mtk_dp->phy)) {
--		platform_device_unregister(mtk_dp->phy_dev);
--		return dev_err_probe(dev, PTR_ERR(mtk_dp->phy),
--				     "Failed to get phy\n");
--	}
-+	ret = mtk_dp_register_phy(mtk_dp);
-+	if (ret)
-+		return ret;
+ 	idpf_rx_init_buf_tail(vport);
++	idpf_vport_intr_ena(vport);
  
- 	mtk_dp->bridge.funcs = &mtk_dp_bridge_funcs;
- 	mtk_dp->bridge.of_node = dev->of_node;
+ 	err = idpf_send_config_queues_msg(vport);
+ 	if (err) {
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index f5bc4a2780745..7fc77ed9d1232 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3747,9 +3747,9 @@ static void idpf_vport_intr_ena_irq_all(struct idpf_vport *vport)
+  */
+ void idpf_vport_intr_deinit(struct idpf_vport *vport)
+ {
++	idpf_vport_intr_dis_irq_all(vport);
+ 	idpf_vport_intr_napi_dis_all(vport);
+ 	idpf_vport_intr_napi_del_all(vport);
+-	idpf_vport_intr_dis_irq_all(vport);
+ 	idpf_vport_intr_rel_irq(vport);
+ }
+ 
+@@ -4180,7 +4180,6 @@ int idpf_vport_intr_init(struct idpf_vport *vport)
+ 
+ 	idpf_vport_intr_map_vector_to_qs(vport);
+ 	idpf_vport_intr_napi_add_all(vport);
+-	idpf_vport_intr_napi_ena_all(vport);
+ 
+ 	err = vport->adapter->dev_ops.reg_ops.intr_reg_init(vport);
+ 	if (err)
+@@ -4194,17 +4193,20 @@ int idpf_vport_intr_init(struct idpf_vport *vport)
+ 	if (err)
+ 		goto unroll_vectors_alloc;
+ 
+-	idpf_vport_intr_ena_irq_all(vport);
+-
+ 	return 0;
+ 
+ unroll_vectors_alloc:
+-	idpf_vport_intr_napi_dis_all(vport);
+ 	idpf_vport_intr_napi_del_all(vport);
+ 
+ 	return err;
+ }
+ 
++void idpf_vport_intr_ena(struct idpf_vport *vport)
++{
++	idpf_vport_intr_napi_ena_all(vport);
++	idpf_vport_intr_ena_irq_all(vport);
++}
++
+ /**
+  * idpf_config_rss - Send virtchnl messages to configure RSS
+  * @vport: virtual port
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index df76493faa756..85a1466890d43 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -988,6 +988,7 @@ int idpf_vport_intr_alloc(struct idpf_vport *vport);
+ void idpf_vport_intr_update_itr_ena_irq(struct idpf_q_vector *q_vector);
+ void idpf_vport_intr_deinit(struct idpf_vport *vport);
+ int idpf_vport_intr_init(struct idpf_vport *vport);
++void idpf_vport_intr_ena(struct idpf_vport *vport);
+ enum pkt_hash_types idpf_ptype_to_htype(const struct idpf_rx_ptype_decoded *decoded);
+ int idpf_config_rss(struct idpf_vport *vport);
+ int idpf_init_rss(struct idpf_vport *vport);
 -- 
 2.43.0
 
