@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-48846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDF78FEAC9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E321A8FEACB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D92211C22D77
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 072C21C25AED
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256961A0DF1;
-	Thu,  6 Jun 2024 14:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B091A0DF7;
+	Thu,  6 Jun 2024 14:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gggrSR1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmDmR1wz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9132196D91;
-	Thu,  6 Jun 2024 14:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1658F1A0DF2;
+	Thu,  6 Jun 2024 14:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683175; cv=none; b=n38uf5839yw/oItgQP0W8b9TmOrtZszavLZWg/4ke4gwbLRgRsIM2TficN6e65eVUu9LFhoGgaE1P7Sa6IT+7ncJnpKrydifckgLnmkzPsW1CXzPJvSrL2LwtP2fOzHIgVc/N48UX3MoP5QHoSPJiaIm0vr+0waI8jQFaLC4WBw=
+	t=1717683177; cv=none; b=YXqGM7LXan+6C3USZ6T+ZPNZBc3IGnGjCl2qSVGND93qXq73Xp7HvNm6jQcvIkFwU8KosUJCOyb3zXQv12zq9RQ8LPjCKqrAj2CnWs1mCPM0Gdc6d+SRHBlhpNjcIlbdyAKW0M2mBX5c69dYys5K4x9POVccVakrYN9yoQYP8Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683175; c=relaxed/simple;
-	bh=be2jGWO2UYlif67mQ3JdUW6wYbcmyBPHl4PlYdP5AJ4=;
+	s=arc-20240116; t=1717683177; c=relaxed/simple;
+	bh=r/QiWUFvWisaNynEAtQwcgcQxDVPRjrnJLqqlfmbEkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Et2hFtfx1g8kpOL/HG7+1zrbH5pBx0/svh96uyFOD26K26dLkbHm6XxcDOqLP/u5f1YHYtKzNVPRHL1zjc9ozpDkGk9uSppKLZaqRK9wmB7MbYfM+Yu7AiYz5i0W8QpHeQtkdLBVt0/GzjFkzVb+YGykNoaS20YiLNYB2MPV15Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gggrSR1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B967FC2BD10;
-	Thu,  6 Jun 2024 14:12:55 +0000 (UTC)
+	 MIME-Version; b=Zlik4lZE88UoXlixkmmVsbZsEZeUcnDGQP1krH4pRWfPxW0MEnY26b7jbwzCn4wo42puxm9iZzQJrWFHu/M0iTrtq4QZj/GOOFmGl9hNHfj4goczKym2KONfvIr07ampwJrMjGMMffyeoxr/2f6x9JmHZPzO8vYBm0Lh35jTNUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmDmR1wz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7125C32781;
+	Thu,  6 Jun 2024 14:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683175;
-	bh=be2jGWO2UYlif67mQ3JdUW6wYbcmyBPHl4PlYdP5AJ4=;
+	s=korg; t=1717683176;
+	bh=r/QiWUFvWisaNynEAtQwcgcQxDVPRjrnJLqqlfmbEkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gggrSR1ulFd2eNXF01VGP38ETjeeSQUKsNEFSn5eD+sTidquVo58HbrRu83uNcKkz
-	 DVwEr6Rhdd+tvBB9A9e+d4aKMzwYyMN441o4uwfcZmvIFzX27+YTXhGUYGIcrt5NPV
-	 MSnRboMgCTHFsAjTJK6t25QoLlD2tU8liSIsuMGk=
+	b=gmDmR1wzU2GNRITKeXmqQkjiPwPLOy3X7hSFGc/VSEmCW+YtcU889yRkLVqzZJz5h
+	 HbZ/Mr2y4xW2+ZZVxl8FXjT9X8O4sWLcOvRL5qI5MyaC1B7XKeMovRdOLesMVPglGg
+	 69x93SNzF5mZo+T63+X5OTK6x3JOv5mbUgiVswSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Kees Cook <keescook@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/744] lkdtm: Disable CFI checking for perms functions
-Date: Thu,  6 Jun 2024 15:56:32 +0200
-Message-ID: <20240606131736.257905084@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Nigel Croxon <ncroxon@redhat.com>
+Subject: [PATCH 6.6 121/744] md: fix resync softlockup when bitmap size is less than array size
+Date: Thu,  6 Jun 2024 15:56:33 +0200
+Message-ID: <20240606131736.291501869@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,57 +67,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit fb28a8862dc4b5bf8e44578338f35d9c6c68339d ]
+[ Upstream commit f0e729af2eb6bee9eb58c4df1087f14ebaefe26b ]
 
-The EXEC_RODATA test plays a lot of tricks to live in the .rodata section,
-and once again ran into objtool's (completely reasonable) assumptions
-that executable code should live in an executable section. However, this
-manifested only under CONFIG_CFI_CLANG=y, as one of the .cfi_sites was
-pointing into the .rodata section.
+Is is reported that for dm-raid10, lvextend + lvchange --syncaction will
+trigger following softlockup:
 
-Since we're testing non-CFI execution properties in perms.c (and
-rodata.c), we can disable CFI for the involved functions, and remove the
-CFI arguments from rodata.c entirely.
+kernel:watchdog: BUG: soft lockup - CPU#3 stuck for 26s! [mdX_resync:6976]
+CPU: 7 PID: 3588 Comm: mdX_resync Kdump: loaded Not tainted 6.9.0-rc4-next-20240419 #1
+RIP: 0010:_raw_spin_unlock_irq+0x13/0x30
+Call Trace:
+ <TASK>
+ md_bitmap_start_sync+0x6b/0xf0
+ raid10_sync_request+0x25c/0x1b40 [raid10]
+ md_do_sync+0x64b/0x1020
+ md_thread+0xa7/0x170
+ kthread+0xcf/0x100
+ ret_from_fork+0x30/0x50
+ ret_from_fork_asm+0x1a/0x30
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202308301532.d7acf63e-oliver.sang@intel.com
-Fixes: 6342a20efbd8 ("objtool: Add elf_create_section_pair()")
-Link: https://lore.kernel.org/r/20240430234953.work.760-kees@kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+And the detailed process is as follows:
+
+md_do_sync
+ j = mddev->resync_min
+ while (j < max_sectors)
+  sectors = raid10_sync_request(mddev, j, &skipped)
+   if (!md_bitmap_start_sync(..., &sync_blocks))
+    // md_bitmap_start_sync set sync_blocks to 0
+    return sync_blocks + sectors_skippe;
+  // sectors = 0;
+  j += sectors;
+  // j never change
+
+Root cause is that commit 301867b1c168 ("md/raid10: check
+slab-out-of-bounds in md_bitmap_get_counter") return early from
+md_bitmap_get_counter(), without setting returned blocks.
+
+Fix this problem by always set returned blocks from
+md_bitmap_get_counter"(), as it used to be.
+
+Noted that this patch just fix the softlockup problem in kernel, the
+case that bitmap size doesn't match array size still need to be fixed.
+
+Fixes: 301867b1c168 ("md/raid10: check slab-out-of-bounds in md_bitmap_get_counter")
+Reported-and-tested-by: Nigel Croxon <ncroxon@redhat.com>
+Closes: https://lore.kernel.org/all/71ba5272-ab07-43ba-8232-d2da642acb4e@redhat.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240422065824.2516-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lkdtm/Makefile | 2 +-
- drivers/misc/lkdtm/perms.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/md-bitmap.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
-index 95ef971b5e1cb..b28701138b4bc 100644
---- a/drivers/misc/lkdtm/Makefile
-+++ b/drivers/misc/lkdtm/Makefile
-@@ -19,7 +19,7 @@ KASAN_SANITIZE_rodata.o			:= n
- KCSAN_SANITIZE_rodata.o			:= n
- KCOV_INSTRUMENT_rodata.o		:= n
- OBJECT_FILES_NON_STANDARD_rodata.o	:= y
--CFLAGS_REMOVE_rodata.o			+= $(CC_FLAGS_LTO) $(RETHUNK_CFLAGS)
-+CFLAGS_REMOVE_rodata.o			+= $(CC_FLAGS_LTO) $(RETHUNK_CFLAGS) $(CC_FLAGS_CFI)
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 42d4c38ba54d5..d9235ee7dcc46 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -1427,7 +1427,7 @@ __acquires(bitmap->lock)
+ 	sector_t chunk = offset >> bitmap->chunkshift;
+ 	unsigned long page = chunk >> PAGE_COUNTER_SHIFT;
+ 	unsigned long pageoff = (chunk & PAGE_COUNTER_MASK) << COUNTER_BYTE_SHIFT;
+-	sector_t csize;
++	sector_t csize = ((sector_t)1) << bitmap->chunkshift;
+ 	int err;
  
- OBJCOPYFLAGS :=
- OBJCOPYFLAGS_rodata_objcopy.o	:= \
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index b93404d656509..5b861dbff27e9 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -61,7 +61,7 @@ static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
- 	return fdesc;
- }
+ 	if (page >= bitmap->pages) {
+@@ -1436,6 +1436,7 @@ __acquires(bitmap->lock)
+ 		 * End-of-device while looking for a whole page or
+ 		 * user set a huge number to sysfs bitmap_set_bits.
+ 		 */
++		*blocks = csize - (offset & (csize - 1));
+ 		return NULL;
+ 	}
+ 	err = md_bitmap_checkpage(bitmap, page, create, 0);
+@@ -1444,8 +1445,7 @@ __acquires(bitmap->lock)
+ 	    bitmap->bp[page].map == NULL)
+ 		csize = ((sector_t)1) << (bitmap->chunkshift +
+ 					  PAGE_COUNTER_SHIFT);
+-	else
+-		csize = ((sector_t)1) << bitmap->chunkshift;
++
+ 	*blocks = csize - (offset & (csize - 1));
  
--static noinline void execute_location(void *dst, bool write)
-+static noinline __nocfi void execute_location(void *dst, bool write)
- {
- 	void (*func)(void);
- 	func_desc_t fdesc;
+ 	if (err < 0)
 -- 
 2.43.0
 
