@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-49468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473AE8FED5F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6878FE8EB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA97C1F21228
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F7DE1F24E4B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEBB196C85;
-	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164851974FE;
+	Thu,  6 Jun 2024 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvmFQ0VJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9iIeG83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F90119DF41;
-	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BDD196C8C;
+	Thu,  6 Jun 2024 14:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683480; cv=none; b=oXf24DrZxEN33G9o76V/NeYm60xwcC9p2wR3x4TGmZ6Y/lzzHdp4Sj7GVUdAmk/CShoz+Y8jLe43AVeah0MDe6c4S66/jVfu8gq0q239FQ0rQu1xSbphLUAu/8EIGGV9adRF0gyA2h4VVhg64dMo0PZyrGC5xvjdL1717yGffzQ=
+	t=1717682952; cv=none; b=DhKGBCP+Z2ZKyFfq+9OlLCyXcEzl+u8gT6SV06oBx9OSdUqhN8We172QK/RexVwvi2XzR7akIyh9jtSocUwYgD49Velahn82zoXF+9gI+nvArJH3MotnzcsfSkO5hP/Lt+N//N1T45OG0EknvVI/xN+5B8X+sCzXIi9Z529yWBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683480; c=relaxed/simple;
-	bh=4E3Dds+7XeMrIgQQ0ZqDZGv1vqtTp9W0r+gpcRlGF3Q=;
+	s=arc-20240116; t=1717682952; c=relaxed/simple;
+	bh=oKj8q/q/3ZMOjknCHwwpC6t5y9sBP7qKsBfEZJ8wXpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fd7hs0pPHSamdsT5oe6FY4VCUKPDdjUgXVQECI57Z/GsocJsn3kbqvBheaDHdkwIOAJ8jfiHPJ50kwx0OadxDXK/b0Sud8C1/MFH4uIzuQmf8pBvE8CgkbKDCJYq7Lra9fPPmNg+4TGgG4TVYtBVTyw/CvTSQa4ycN1S4v1wv30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvmFQ0VJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C916C2BD10;
-	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
+	 MIME-Version; b=h9mZxwpVBFs/m39r0LKg9lhAjDlT4AliyULDvpeF+c0Zri/kFHsQoJH73sNQ8Ra9b//JbGvXdvI2yUj4odwgcfvoQrce3ikigvEzevdzPVAvP2nVsceC68OnBX/IZgXf6oWqVaSBeb3tFk9RmMlIEK9WL4clvdGU/lxH0Glow9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9iIeG83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929E0C2BD10;
+	Thu,  6 Jun 2024 14:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683480;
-	bh=4E3Dds+7XeMrIgQQ0ZqDZGv1vqtTp9W0r+gpcRlGF3Q=;
+	s=korg; t=1717682952;
+	bh=oKj8q/q/3ZMOjknCHwwpC6t5y9sBP7qKsBfEZJ8wXpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RvmFQ0VJzhsQ6LikSm5bQAUxVhDI2nxy5P1JIJPPPdcjhVVORAueSvP7Euzz2qQuU
-	 d9gpIYRS8H78n1mvCXhv8jn9fJKWthEZdvKJgZX3m+8U5rWyHBnH97uFAix8eQfvds
-	 npiy/YYWQ89Lc3HFX8eeO5OuhjuP0MKrqlJocUuc=
+	b=Y9iIeG83CPLmABBKcvLOUOpJN3ns+NaiUM39oO6xxn707AYLTxNrJZEu4Y6guJ+Ep
+	 APJ56LEkxBMMlAxK4U8+9LyUieCJO+N/Nioy0a+Gzajs4SaaJI23XRROgtXf9HgzZ/
+	 2Bikj8H2sj8bBS6+t9KVAlAxsZbS8O/UHK5z2edA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 423/744] arm64: dts: meson: fix S4 power-controller node
+Subject: [PATCH 6.9 116/374] perf daemon: Fix file leak in daemon_session__control
 Date: Thu,  6 Jun 2024 16:01:35 +0200
-Message-ID: <20240606131746.038694452@linuxfoundation.org>
+Message-ID: <20240606131655.815556934@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +70,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 72907de9051dc2aa7b55c2a020e2872184ac17cd ]
+[ Upstream commit 09541603462c399c7408d50295db99b4b8042eaa ]
 
-The power-controller module works well by adding its parent
-node secure-monitor.
+The open() function returns -1 on error.
 
-Fixes: 085f7a298a14 ("arm64: dts: add support for S4 power domain controller")
-Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240412-fix-secpwr-s4-v2-1-3802fd936d77@amlogic.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+The 'control' and 'ack' file descriptors are both initialized with
+open() and further validated with 'if' statement.
+
+'if (!control)' would evaluate to 'true' if returned value on error were
+'0' but it is actually '-1'.
+
+Fixes: edcaa47958c7438b ("perf daemon: Add 'ping' command")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240510003424.2016914-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-s4.dtsi | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tools/perf/builtin-daemon.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-index 55ddea6dc9f8e..a781eabe21f04 100644
---- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-@@ -61,10 +61,15 @@ xtal: xtal-clk {
- 		#clock-cells = <0>;
- 	};
+diff --git a/tools/perf/builtin-daemon.c b/tools/perf/builtin-daemon.c
+index 83954af36753a..de76bbc50bfbc 100644
+--- a/tools/perf/builtin-daemon.c
++++ b/tools/perf/builtin-daemon.c
+@@ -523,7 +523,7 @@ static int daemon_session__control(struct daemon_session *session,
+ 		  session->base, SESSION_CONTROL);
  
--	pwrc: power-controller {
--		compatible = "amlogic,meson-s4-pwrc";
--		#power-domain-cells = <1>;
--		status = "okay";
-+	firmware {
-+		sm: secure-monitor {
-+			compatible = "amlogic,meson-gxbb-sm";
-+
-+			pwrc: power-controller {
-+				compatible = "amlogic,meson-s4-pwrc";
-+				#power-domain-cells = <1>;
-+			};
-+		};
- 	};
+ 	control = open(control_path, O_WRONLY|O_NONBLOCK);
+-	if (!control)
++	if (control < 0)
+ 		return -1;
  
- 	soc {
+ 	if (do_ack) {
+@@ -532,7 +532,7 @@ static int daemon_session__control(struct daemon_session *session,
+ 			  session->base, SESSION_ACK);
+ 
+ 		ack = open(ack_path, O_RDONLY, O_NONBLOCK);
+-		if (!ack) {
++		if (ack < 0) {
+ 			close(control);
+ 			return -1;
+ 		}
 -- 
 2.43.0
 
