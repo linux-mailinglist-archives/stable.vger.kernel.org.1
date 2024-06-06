@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-49178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337798FEC33
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582428FE918
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D7A11C245AC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E956E283FE3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFFD19AD6C;
-	Thu,  6 Jun 2024 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09562197543;
+	Thu,  6 Jun 2024 14:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xFeLSRf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnIiHlYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C32A19AD64;
-	Thu,  6 Jun 2024 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4E019753E;
+	Thu,  6 Jun 2024 14:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683340; cv=none; b=Vf2YQBNuaWDAHa7Q76hx6vfCdK/nKb7NdlKwRuPSOtSztq89feJKVQlzBEin+K1JEwTqvJoVJGLp+9E9+vTXtt4scrAFGRHoiAKCamgbQ/hmKhiX6ULWARd70vaJE7ljXVLG4cGOo4yKvI6aUvkDRtImlqySsxIRS8Gtiwq1gmw=
+	t=1717682978; cv=none; b=JzqmUfURU5jYZLidZMOqRp58lI4oXoSxHxFtXTIcdosKgDm0pwJEBKcQ+LO2Z6BkFZcJow0WzKaVzwxvBqSWna2sw6AuztCy4IA047DDn3LFIFulSCs4PPmxnGWR4lbOO4nTj1N1JRnP++1tq1iXR+KtRvtw0pfN9d6CkTixnLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683340; c=relaxed/simple;
-	bh=mBrN89M04+PKYScXzOnl/k2eBi14z6Z0i/qS5dGt1mw=;
+	s=arc-20240116; t=1717682978; c=relaxed/simple;
+	bh=Jk/pjefwXmnQ/sdbHcEbcpSPoJqY1ME1oUr0psUc7xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPZWBK5Xl60jeO4b7cD0EXYO5VNpKU/G12CFpX+kW/eLUks8ySDccG1QRvx8lLF0X93ZUKkvo+YE/W2VyqUQdyW4LqVU28kz/qdgLPzxzcxc5D+dBUaiYUicKfBYYYIV9pFVAG6PfvuJLarV0hsCIlAPsNAaR6iAYUASBG911fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xFeLSRf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02CCC32782;
-	Thu,  6 Jun 2024 14:15:39 +0000 (UTC)
+	 MIME-Version; b=U+OPuNMzud6MIu5HBQcOH0V1M5zvXGZnZh2xvUEuQzL3X9SkWZuC3SFR6Sg4AyBiJks5wVuj0mSZ/nvd00XF88lzd9l0dsW6eb/cBS+7x853Z3S/rXHYUkaEhXTrI5yKMY03QOZqfTdDQT0aMi+3G1HpCaN+32fKlpMsXcncB18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnIiHlYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEC4C2BD10;
+	Thu,  6 Jun 2024 14:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683339;
-	bh=mBrN89M04+PKYScXzOnl/k2eBi14z6Z0i/qS5dGt1mw=;
+	s=korg; t=1717682978;
+	bh=Jk/pjefwXmnQ/sdbHcEbcpSPoJqY1ME1oUr0psUc7xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1xFeLSRfJzI/zMpIJONf+D8qoo+UkE0d19mgupWJcSr0p0LlBjtxFKdTTjD9M7LJ9
-	 hBidIEX7LOliTFwKwQVrORNbQte+HZfLBH2miCB6XiCZ3IDpCSp0VhqKZRUkufv/KP
-	 Zej31WvCTzuh2xWJjPO+Gh+LIvXAv69H4y7yckF4=
+	b=lnIiHlYgHGRkoT/pifxPHWPa3nhQid+B9dJuwoRI/Bp3lbHLV7Smkx6l1d6BY6Z7G
+	 KdXS9O10y2PEneaB1R/Mo+9FAte0BZW4j7p3veAp/RsNS0e0aW1YK5XHGzJ36lk2EH
+	 OBhbGhpUV3iPcUq8VOdk/Ey+1ledt6ig1Jc6hqEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 208/473] ASoC: Intel: avs: Fix potential integer overflow
+Subject: [PATCH 6.9 158/374] media: v4l: Dont turn on privacy LED if streamon fails
 Date: Thu,  6 Jun 2024 16:02:17 +0200
-Message-ID: <20240606131706.803369046@linuxfoundation.org>
+Message-ID: <20240606131657.206455254@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit c7e832cabe635df47c2bf6df7801e97bf3045b1e ]
+[ Upstream commit f2bf6cd8f44781349620e30a0af8987fe9af008f ]
 
-While stream_tag for CLDMA on SKL-based platforms is always 1, function
-hda_cldma_setup() uses AZX_SD_CTL_STRM() macro which does:
-	stream_tag << 20
+Turn on the privacy LED only if streamon succeeds. This can be done after
+enabling streaming on the sensor.
 
-what combined with stream_tag type of 'unsigned int' generates a
-potential overflow issue. Update the field type to fix that.
-
-Fixes: 45864e49a05a ("ASoC: Intel: avs: Implement CLDMA transfer")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://msgid.link/r/20240405090929.1184068-8-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b6e10ff6c23d ("media: v4l2-core: Make the v4l2-core code enable/disable the privacy LED if present")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Umang Jain <umang.jain@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/cldma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-subdev.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/sound/soc/intel/avs/cldma.c b/sound/soc/intel/avs/cldma.c
-index d7a9390b5e483..585579840b646 100644
---- a/sound/soc/intel/avs/cldma.c
-+++ b/sound/soc/intel/avs/cldma.c
-@@ -35,7 +35,7 @@ struct hda_cldma {
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index 45836f0a2b0a7..19d20871afefa 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -412,15 +412,6 @@ static int call_s_stream(struct v4l2_subdev *sd, int enable)
+ 	if (WARN_ON(!!sd->enabled_streams == !!enable))
+ 		return 0;
  
- 	unsigned int buffer_size;
- 	unsigned int num_periods;
--	unsigned int stream_tag;
-+	unsigned char stream_tag;
- 	void __iomem *sd_addr;
+-#if IS_REACHABLE(CONFIG_LEDS_CLASS)
+-	if (!IS_ERR_OR_NULL(sd->privacy_led)) {
+-		if (enable)
+-			led_set_brightness(sd->privacy_led,
+-					   sd->privacy_led->max_brightness);
+-		else
+-			led_set_brightness(sd->privacy_led, 0);
+-	}
+-#endif
+ 	ret = sd->ops->video->s_stream(sd, enable);
  
- 	struct snd_dma_buffer dmab_data;
+ 	if (!enable && ret < 0) {
+@@ -428,9 +419,20 @@ static int call_s_stream(struct v4l2_subdev *sd, int enable)
+ 		ret = 0;
+ 	}
+ 
+-	if (!ret)
++	if (!ret) {
+ 		sd->enabled_streams = enable ? BIT(0) : 0;
+ 
++#if IS_REACHABLE(CONFIG_LEDS_CLASS)
++		if (!IS_ERR_OR_NULL(sd->privacy_led)) {
++			if (enable)
++				led_set_brightness(sd->privacy_led,
++						   sd->privacy_led->max_brightness);
++			else
++				led_set_brightness(sd->privacy_led, 0);
++		}
++#endif
++	}
++
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
