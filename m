@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-49759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B0E8FEEBB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86AF38FECEC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54AC1C257FB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2504A1F25B33
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DBE1C618C;
-	Thu,  6 Jun 2024 14:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D371B374F;
+	Thu,  6 Jun 2024 14:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs9Uo5O9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9N0lVuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B83197542;
-	Thu,  6 Jun 2024 14:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863B21B3749;
+	Thu,  6 Jun 2024 14:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683695; cv=none; b=NrEQ1bRr5rfBhCPJ1quBEmlBLlxPowUAIXKOy/okPBBtSvK9WrB2jac9yiz9eBks2hNqUBNNWWcz25hpU2Fb4iHMFuAnJoTrv+eS2j+3lwxLRvNUyIjKoAUgx+wPRL08EOHVbcHWN7kWdfSPq37ztDAUymi4fPwqEs1A2FWo478=
+	t=1717683425; cv=none; b=PeeogZ4HWK93NfjRmACxwf6bP/cai7Ph4znyVJGxsQdr1sDG6iO4jwhcRDmBBTZdXIbEsQUCxhNJKrE1iR/sGak1cy3baTg5/JGqRo61TsRv1PNDjHszYSmwcq57dAZvy1fofl/rJdcQnQZCZ39T9JCyWRfm3LWFUeyEWGr4MP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683695; c=relaxed/simple;
-	bh=RcZENCftesLMumIVRYOzihaquGfAAmUJ5Ao5eoe3UW0=;
+	s=arc-20240116; t=1717683425; c=relaxed/simple;
+	bh=u45LQQ2In0tINj+Gej515+pvuip0LU1mOE743K5jepo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wu2ftmdnkzL9Fu46Ov3uD/ItOHfPt+b+JDf2VscETbbAGRrcdv2rqbwxDxOEbPvE8JAYadZlrzX+WNMUrdum+qWSloFSkKkK/0wckpBeJEVPLJu6akgPU69tJOfnvCoENuTdfkaLq7q/4yItgeFtcHImXQhvmJ4b2gFAgvFT6xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs9Uo5O9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36B0C2BD10;
-	Thu,  6 Jun 2024 14:21:34 +0000 (UTC)
+	 MIME-Version; b=V/Ycmh3lOCsWNQszo/9kUOTa8UKptE4t0G0coRo8aKw5Ed6ynEAfHSE5NO7Ro6f8pA6yRXXegOUDtKhjWGjcAN7sfBpjVmZKP+car6kMLZUokbyI8eD6UhT0Npcd5ylH5rv6Tht6c87N++m00I4MwS5z9+sQhaqI6cLeNDAUHd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9N0lVuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669D7C2BD10;
+	Thu,  6 Jun 2024 14:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683694;
-	bh=RcZENCftesLMumIVRYOzihaquGfAAmUJ5Ao5eoe3UW0=;
+	s=korg; t=1717683425;
+	bh=u45LQQ2In0tINj+Gej515+pvuip0LU1mOE743K5jepo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cs9Uo5O94jqUtRR9Cwwc6O5zZzId6+uDZxLXb32dsuLn52kkrntzcGfVFweFnxhOc
-	 bM/H8qdqD5d5neyMVkK7ONvF5XSEXBMD1ZvClh1LZfcysSirSYQwhjoNmPAoB7NMQD
-	 7zdsBaAFsaF+WNytKqn4XdZVv8YdyUcskjh0KHn0=
+	b=T9N0lVuZ2Y9iFDS0Yzn87Hn9oriOr990H/gV1V5qXJpkP80TyV4Y9mUuC4yDszYev
+	 J4v76MS3F2NsL1tj6LVHk1Xm/qux1tEexjAFZgY/gv+CCH9SEsobtRoNLMG3JIoPRy
+	 FgzhnbXjbscH+gnw3XrwUICZOWItCKp3ks1htirA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 568/744] media: v4l: Dont turn on privacy LED if streamon fails
+Subject: [PATCH 6.1 311/473] f2fs: fix to check pinfile flag in f2fs_move_file_range()
 Date: Thu,  6 Jun 2024 16:04:00 +0200
-Message-ID: <20240606131750.672667650@linuxfoundation.org>
+Message-ID: <20240606131710.230071837@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit f2bf6cd8f44781349620e30a0af8987fe9af008f ]
+[ Upstream commit e07230da0500e0919a765037c5e81583b519be2c ]
 
-Turn on the privacy LED only if streamon succeeds. This can be done after
-enabling streaming on the sensor.
+ioctl(F2FS_IOC_MOVE_RANGE) can truncate or punch hole on pinned file,
+fix to disallow it.
 
-Fixes: b6e10ff6c23d ("media: v4l2-core: Make the v4l2-core code enable/disable the privacy LED if present")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Umang Jain <umang.jain@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 5fed0be8583f ("f2fs: do not allow partial truncation on pinned file")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ fs/f2fs/file.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index f481d1ca32abb..a32ef739eb449 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -371,15 +371,6 @@ static int call_s_stream(struct v4l2_subdev *sd, int enable)
- 	if (WARN_ON(!!sd->enabled_streams == !!enable))
- 		return 0;
- 
--#if IS_REACHABLE(CONFIG_LEDS_CLASS)
--	if (!IS_ERR_OR_NULL(sd->privacy_led)) {
--		if (enable)
--			led_set_brightness(sd->privacy_led,
--					   sd->privacy_led->max_brightness);
--		else
--			led_set_brightness(sd->privacy_led, 0);
--	}
--#endif
- 	ret = sd->ops->video->s_stream(sd, enable);
- 
- 	if (!enable && ret < 0) {
-@@ -387,9 +378,20 @@ static int call_s_stream(struct v4l2_subdev *sd, int enable)
- 		ret = 0;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 1a7ee769f9389..1c47c7cbcd6cd 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2816,7 +2816,8 @@ static int f2fs_move_file_range(struct file *file_in, loff_t pos_in,
+ 			goto out;
  	}
  
--	if (!ret)
-+	if (!ret) {
- 		sd->enabled_streams = enable ? BIT(0) : 0;
- 
-+#if IS_REACHABLE(CONFIG_LEDS_CLASS)
-+		if (!IS_ERR_OR_NULL(sd->privacy_led)) {
-+			if (enable)
-+				led_set_brightness(sd->privacy_led,
-+						   sd->privacy_led->max_brightness);
-+			else
-+				led_set_brightness(sd->privacy_led, 0);
-+		}
-+#endif
-+	}
-+
- 	return ret;
- }
- 
+-	if (f2fs_compressed_file(src) || f2fs_compressed_file(dst)) {
++	if (f2fs_compressed_file(src) || f2fs_compressed_file(dst) ||
++		f2fs_is_pinned_file(src) || f2fs_is_pinned_file(dst)) {
+ 		ret = -EOPNOTSUPP;
+ 		goto out_unlock;
+ 	}
 -- 
 2.43.0
 
