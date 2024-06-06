@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03918FEE60
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0203C8FEC56
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FD87B20B8F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96BDF1F299A1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0BA1C370D;
-	Thu,  6 Jun 2024 14:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DAA1B0113;
+	Thu,  6 Jun 2024 14:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwIjg1pA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCXJgH7Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFF11C370C;
-	Thu,  6 Jun 2024 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588BB1B0104;
+	Thu,  6 Jun 2024 14:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683651; cv=none; b=rs1Vn947Zimb7yTwk5fj/WvPejtpA4tjBnd3MUc4FV+7FmBJl7OLMiblj6y+1Ki2wewLZP5wq6dednfaFzDN+uQg5J0Uljuv0XjNsNKhlk2cBYwTtpKNBO6Ht9dG0bhbSaGED4sK4gznUII8n9TiPoew9A+/wfUi1u1JuqWUqJA=
+	t=1717683355; cv=none; b=pscP/as+qmPl/OU02XvlQIIrMIgtJo4msZ/aqfUA8WLqitjpSksJSYuxZSH4s298XxuudA4rIiF/R8yqoTh+hUcSH0S0uwVOhBIhrtPklSisa0mXd8ZtPCD+VqeZ3EmLQXN7477m4HE4FFMjrtWtSrMTYoFHOXjN+sr7uofvm9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683651; c=relaxed/simple;
-	bh=mV1ndGEHaJmnB6AVU/WKLlbpJozYlhvQ17eH3G9/Mek=;
+	s=arc-20240116; t=1717683355; c=relaxed/simple;
+	bh=zjYI4d2O2c9ntIgIiP/xhH4TJNTwF50UoG8MWs/TQG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UrbkbLlri4Zl2iS/weT6JM+YEhA4OqiY8cK1cUWEnVzjKOnlaNdslfd7F75e76GlppHR2CyOLxF0EfwJEr4Zx9r9UhgmV2MAuXZTYt4uZT8Ds1oATVMbTC2sKulYjDhY964rauHeqenRE4YGXaslAcjm0Z3PP7RtINASb6BP+cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwIjg1pA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAADC2BD10;
-	Thu,  6 Jun 2024 14:20:51 +0000 (UTC)
+	 MIME-Version; b=GYPSK1iPV1IqMm9rUqnGVvb/fUhepjkfAegz/0sfvcRVd9eQx8375NhxivwwO4o6EqDNfTfiHgvtILP3X9pN1FSWeVNCyIgBxKqbQ/+CR5+e2J0MA8KmMPvo+7dxHHCNYbuY54LGqoUFtUGnON3ZyUH6ImZaC+vhHvcQH0QfSsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCXJgH7Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AD3C32781;
+	Thu,  6 Jun 2024 14:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683651;
-	bh=mV1ndGEHaJmnB6AVU/WKLlbpJozYlhvQ17eH3G9/Mek=;
+	s=korg; t=1717683355;
+	bh=zjYI4d2O2c9ntIgIiP/xhH4TJNTwF50UoG8MWs/TQG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SwIjg1pA2suzayLEnUoEbRY524rCHOC4KJ3Ix29zHYC8ti1FR+XgQN+BkQwomy+cv
-	 35OndcnOp5ganRbGQLLWN22+iGyQEATb9h9rrbLm3up1JisR1rWHoE02bjehJWGANr
-	 j07QLIK375H3F4Ic/Z5UyURT98t1GJV6t0E+P4qw=
+	b=eCXJgH7YEquNSPfW7NgxPQ6oisXjhTUAzWMwKZi4M9eGQ5A4JFbSJ+ZpzHQccyebn
+	 x83ev2V6p/uA1ZHOeF93KBrTXQXetouBOOWCUCYJzqTqL99ugexzR8Vz1yW1uVWkl6
+	 OfHcbLNCaEX2ZmkWQmWrFX1ua3HbZYaWzuAB9CYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 493/744] i2c: synquacer: Fix an error handling path in synquacer_i2c_probe()
+Subject: [PATCH 6.1 236/473] RDMA/mlx5: Adding remote atomic access flag to updatable flags
 Date: Thu,  6 Jun 2024 16:02:45 +0200
-Message-ID: <20240606131748.256709334@linuxfoundation.org>
+Message-ID: <20240606131707.637726752@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit 55750148e5595bb85605e8fbb40b2759c2c4c2d7 ]
+[ Upstream commit 2ca7e93bc963d9ec2f5c24d117176851454967af ]
 
-If an error occurs after the clk_prepare_enable() call, it should be undone
-by a corresponding clk_disable_unprepare() call, as already done in the
-remove() function.
+Currently IB_ACCESS_REMOTE_ATOMIC is blocked from being updated via UMR
+although in some cases it should be possible. These cases are checked in
+mlx5r_umr_can_reconfig function.
 
-As devm_clk_get() is used, we can switch to devm_clk_get_enabled() to
-handle it automatically and fix the probe.
-
-Update the remove() function accordingly and remove the now useless
-clk_disable_unprepare() call.
-
-Fixes: 0d676a6c4390 ("i2c: add support for Socionext SynQuacer I2C controller")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: ef3642c4f54d ("RDMA/mlx5: Fix error unwinds for rereg_mr")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Link: https://lore.kernel.org/r/24dac73e2fa48cb806f33a932d97f3e402a5ea2c.1712140377.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-synquacer.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ drivers/infiniband/hw/mlx5/mr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-synquacer.c b/drivers/i2c/busses/i2c-synquacer.c
-index bbea521b05dda..a73f5bb9a1645 100644
---- a/drivers/i2c/busses/i2c-synquacer.c
-+++ b/drivers/i2c/busses/i2c-synquacer.c
-@@ -550,17 +550,13 @@ static int synquacer_i2c_probe(struct platform_device *pdev)
- 	device_property_read_u32(&pdev->dev, "socionext,pclk-rate",
- 				 &i2c->pclkrate);
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index 410cc5fd25239..b81b03aa2a629 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -1349,7 +1349,8 @@ static bool can_use_umr_rereg_access(struct mlx5_ib_dev *dev,
+ 	unsigned int diffs = current_access_flags ^ target_access_flags;
  
--	i2c->pclk = devm_clk_get(&pdev->dev, "pclk");
--	if (PTR_ERR(i2c->pclk) == -EPROBE_DEFER)
--		return -EPROBE_DEFER;
--	if (!IS_ERR_OR_NULL(i2c->pclk)) {
--		dev_dbg(&pdev->dev, "clock source %p\n", i2c->pclk);
--
--		ret = clk_prepare_enable(i2c->pclk);
--		if (ret)
--			return dev_err_probe(&pdev->dev, ret, "failed to enable clock\n");
--		i2c->pclkrate = clk_get_rate(i2c->pclk);
--	}
-+	i2c->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
-+	if (IS_ERR(i2c->pclk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(i2c->pclk),
-+				     "failed to get and enable clock\n");
-+
-+	dev_dbg(&pdev->dev, "clock source %p\n", i2c->pclk);
-+	i2c->pclkrate = clk_get_rate(i2c->pclk);
- 
- 	if (i2c->pclkrate < SYNQUACER_I2C_MIN_CLK_RATE ||
- 	    i2c->pclkrate > SYNQUACER_I2C_MAX_CLK_RATE)
-@@ -615,8 +611,6 @@ static void synquacer_i2c_remove(struct platform_device *pdev)
- 	struct synquacer_i2c *i2c = platform_get_drvdata(pdev);
- 
- 	i2c_del_adapter(&i2c->adapter);
--	if (!IS_ERR(i2c->pclk))
--		clk_disable_unprepare(i2c->pclk);
- };
- 
- static const struct of_device_id synquacer_i2c_dt_ids[] __maybe_unused = {
+ 	if (diffs & ~(IB_ACCESS_LOCAL_WRITE | IB_ACCESS_REMOTE_WRITE |
+-		      IB_ACCESS_REMOTE_READ | IB_ACCESS_RELAXED_ORDERING))
++		      IB_ACCESS_REMOTE_READ | IB_ACCESS_RELAXED_ORDERING |
++		      IB_ACCESS_REMOTE_ATOMIC))
+ 		return false;
+ 	return mlx5r_umr_can_reconfig(dev, current_access_flags,
+ 				      target_access_flags);
 -- 
 2.43.0
 
