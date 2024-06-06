@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E7D8FE935
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5608FEBF9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6527A1C23DAD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63D991C2405B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E791199380;
-	Thu,  6 Jun 2024 14:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E231AC25B;
+	Thu,  6 Jun 2024 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YkGfpLwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFgF9wuh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD0B19925A;
-	Thu,  6 Jun 2024 14:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A091A8827;
+	Thu,  6 Jun 2024 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682993; cv=none; b=T+SYpGkSTk3Ao+b41X3hCZ0LroIpbOWJ6+nsN2Fgzn+Uvwo0I2uWtrymSnOv0x0Yk3HznHA1eAb5ttUnxCPsFRjYIhffiA23w+8RU6v/5OTeXqpZ9WsLYCBhfvrJL7fMtKlgGhAXttyfpP0z+pqSfgruSVO3f6nS1QEKZa6UKy4=
+	t=1717683315; cv=none; b=K9ip5orpxI1HxEsCSuri6lKavGySpm24EvHNIhNBIpFelnCEHrQ7IuaYMZFU6bH7wEfPoQMxItcuxdbOBCpat9UNvIaYVOSrhJV9el73mk+6t3B4Hz11kRJ9VI7dCoLAlLCYTMySfDV3Jl1a4NExcwCTq8byO6Rm7LTU/tOCnJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682993; c=relaxed/simple;
-	bh=obTpoU3wKrgPjKAvLVBgqm9DVcAe3E3g3Tht6nqHTDA=;
+	s=arc-20240116; t=1717683315; c=relaxed/simple;
+	bh=JAp+PGZZg2Ze+KTEXkkc4riVSWj/oUgt3++K6gjRboU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WaUQ8JcvSLj58Y+vhR/MxzszuewZDRZkGRP9vgbvV0RWatB9JXhn9Za2Fen8I3MFRb6pT7ihDWFTNtuTxKghKSLnVRo+XKKMcLbx71dqxUrT8DWyzwMTIjMw6tATUzGfE4dJ4gnEcA4wJJIO6LkII8jEk2L6qvXJ3tFiXcmHfxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YkGfpLwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C36C32782;
-	Thu,  6 Jun 2024 14:09:52 +0000 (UTC)
+	 MIME-Version; b=dc7z1461wCzt7/l0a1zNg3nDK3i6XheAibUqfDOSt4Sq/UvDVTEVTswepzWHCuFIuyoUWKlfp7GcTwYT9Og1k86tfktxdz41/6tDMsD+rGwbOxzyafPv0dIrbEhV+SlZHj5E7bYiq8wd8+XbN/ahLjjSyrzx00JAxDgK7daHFik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFgF9wuh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A41C2BD10;
+	Thu,  6 Jun 2024 14:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682992;
-	bh=obTpoU3wKrgPjKAvLVBgqm9DVcAe3E3g3Tht6nqHTDA=;
+	s=korg; t=1717683315;
+	bh=JAp+PGZZg2Ze+KTEXkkc4riVSWj/oUgt3++K6gjRboU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YkGfpLwFhHDES1a0VdUTR6l/ZPgRLFPynZ3LsRp7x9hkAbmGjf0WN8CwdGzXKu4uQ
-	 8Aicr4YK71KCMlEXxVaGFfqELZ1CB/iXatn7wOydUnLCuyWw3qV8+o7N3SDKSnhpoA
-	 3X6zD4YUyXDVHjOILQMW86qsK8wxZJgtJH7uN1mU=
+	b=SFgF9wuh5QJN99Pfig2XOF+Q3oOlMyV/iwJC35WvyiRNKXDezy6lpUUwbEU9CyZo5
+	 83yAgevh6HEPcY2JadGqmE6y6NKpXO2287HnNjiHdYptYb93nRNDdpqWZZFr4mZP+w
+	 ndqxrGSGTlOxumM0Z3TkmTo6lKjA9M4JCLeBMQhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devyn Liu <liudingyuan@huawei.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 145/374] gpiolib: acpi: Fix failed in acpi_gpiochip_find() by adding parent node match
+Subject: [PATCH 6.1 195/473] drm/panel: atna33xc20: Fix unbalanced regulator in the case HPD doesnt assert
 Date: Thu,  6 Jun 2024 16:02:04 +0200
-Message-ID: <20240606131656.772785441@linuxfoundation.org>
+Message-ID: <20240606131706.395841959@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devyn Liu <liudingyuan@huawei.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit adbc49a5a8c6fcf7be154c2e30213bbf472940da ]
+[ Upstream commit 5e842d55bad7794823a50f24fd645b58f2ef93ab ]
 
-Previous patch modified the standard used by acpi_gpiochip_find()
-to match device nodes. Using the device node set in gc->gpiodev->d-
-ev instead of gc->parent.
+When the atna33xc20 driver was first written the resume code never
+returned an error. If there was a problem waiting for HPD it just
+printed a warning and moved on. This changed in response to review
+feedback [1] on a future patch but I accidentally didn't account for
+rolling back the regulator enable in the error cases. Do so now.
 
-However, there is a situation in gpio-dwapb where the GPIO device
-driver will set gc->fwnode for each port corresponding to a child
-node under a GPIO device, so gc->gpiodev->dev will be assigned the
-value of each child node in gpiochip_add_data().
+[1] https://lore.kernel.org/all/5f3cf3a6-1cc2-63e4-f76b-4ee686764705@linaro.org/
 
-gpio-dwapb.c:
-128,31 static int dwapb_gpio_add_port(struct dwapb_gpio *gpio,
-			       struct dwapb_port_property *pp,
-			       unsigned int offs);
-port->gc.fwnode = pp->fwnode;
-
-693,39 static int dwapb_gpio_probe;
-err = dwapb_gpio_add_port(gpio, &pdata->properties[i], i);
-
-When other drivers request GPIO pin resources through the GPIO device
-node provided by ACPI (corresponding to the parent node), the change
-of the matching object to gc->gpiodev->dev in acpi_gpiochip_find()
-only allows finding the value of each port (child node), resulting
-in a failed request.
-
-Reapply the condition of using gc->parent for match in acpi_gpio-
-chip_find() in the code can compatible with the problem of gpio-dwapb,
-and will not affect the two cases mentioned in the patch:
-1. There is no setting for gc->fwnode.
-2. The case that depends on using gc->fwnode for match.
-
-Fixes: 5062e4c14b75 ("gpiolib: acpi: use the fwnode in acpi_gpiochip_find()")
-Fixes: 067dbc1ea5ce ("gpiolib: acpi: Don't use GPIO chip fwnode in acpi_gpiochip_find()")
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Tested-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 3b5765df375c ("drm/panel: atna33xc20: Take advantage of wait_hpd_asserted() in struct drm_dp_aux")
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240313-homestarpanel-regulator-v1-1-b8e3a336da12@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ .../gpu/drm/panel/panel-samsung-atna33xc20.c  | 22 +++++++++++--------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 7f140df40f35b..c1e190d3ea244 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -128,7 +128,24 @@ static bool acpi_gpio_deferred_req_irqs_done;
+diff --git a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
+index 8fa15321c22f4..5b698514957cf 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
++++ b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
+@@ -109,19 +109,17 @@ static int atana33xc20_resume(struct device *dev)
+ 		if (hpd_asserted < 0)
+ 			ret = hpd_asserted;
  
- static int acpi_gpiochip_find(struct gpio_chip *gc, const void *data)
- {
--	return device_match_acpi_handle(&gc->gpiodev->dev, data);
-+	/* First check the actual GPIO device */
-+	if (device_match_acpi_handle(&gc->gpiodev->dev, data))
-+		return true;
+-		if (ret)
++		if (ret) {
+ 			dev_warn(dev, "Error waiting for HPD GPIO: %d\n", ret);
+-
+-		return ret;
+-	}
+-
+-	if (p->aux->wait_hpd_asserted) {
++			goto error;
++		}
++	} else if (p->aux->wait_hpd_asserted) {
+ 		ret = p->aux->wait_hpd_asserted(p->aux, HPD_MAX_US);
+ 
+-		if (ret)
++		if (ret) {
+ 			dev_warn(dev, "Controller error waiting for HPD: %d\n", ret);
+-
+-		return ret;
++			goto error;
++		}
+ 	}
+ 
+ 	/*
+@@ -133,6 +131,12 @@ static int atana33xc20_resume(struct device *dev)
+ 	 * right times.
+ 	 */
+ 	return 0;
 +
-+	/*
-+	 * When the ACPI device is artificially split to the banks of GPIOs,
-+	 * where each of them is represented by a separate GPIO device,
-+	 * the firmware node of the physical device may not be shared among
-+	 * the banks as they may require different values for the same property,
-+	 * e.g., number of GPIOs in a certain bank. In such case the ACPI handle
-+	 * of a GPIO device is NULL and can not be used. Hence we have to check
-+	 * the parent device to be sure that there is no match before bailing
-+	 * out.
-+	 */
-+	if (gc->parent)
-+		return device_match_acpi_handle(gc->parent, data);
++error:
++	drm_dp_dpcd_set_powered(p->aux, false);
++	regulator_disable(p->supply);
 +
-+	return false;
++	return ret;
  }
  
- /**
+ static int atana33xc20_disable(struct drm_panel *panel)
 -- 
 2.43.0
 
