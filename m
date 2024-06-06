@@ -1,86 +1,85 @@
-Return-Path: <stable+bounces-49908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E83D8FEFA1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:58:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BB08FF00E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 17:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD53F28BAA0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:58:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74971B29143
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7139198A3D;
-	Thu,  6 Jun 2024 14:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAB319B59C;
+	Thu,  6 Jun 2024 14:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PUqMdu9o"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gih88277"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2873B196DB8;
-	Thu,  6 Jun 2024 14:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014DB195FDA
+	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 14:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717684411; cv=none; b=bNIUS7fQLKVIGD/VA1wezc0wbLV3E+DX1oYi/xPj3jmlHIiNKm6JLbfTnSyR3VWpZApadFEzKRnA8uO2uqET0wW8SqeCLJKuiWyB63mMQ9DP/uAh+IcvIef3bnIu0BpLcjho5BAT+7Nyjw04U3kxWSUONnUYJXUmCZ/hieyaC4A=
+	t=1717684504; cv=none; b=UJDGczLUuRRBvfhb7UB6D/BK3AeVvJ45q5XsFpxd4U962zdDGLpovnb3HVcLBFs/yu8VgeahWtpZLb9jtpTRkm8GnRA0pzwQViltIJCDSOKsYb/6UFnZy9407TjQPnk06twvpJMHyd3jCdGkkFOV1Ud1wWLsw7bsaMnDgqr+k6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717684411; c=relaxed/simple;
-	bh=z2aMNW6speFYWYGfqOFRjJMnJn+QHJ2ChisVkcPa20s=;
+	s=arc-20240116; t=1717684504; c=relaxed/simple;
+	bh=h9ZaPrAmxAPQehpDzjStkeIg6YJXxVarWCaYU2WS9kQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iCbOiQfMUTIslLZDzPN5UNzeHQ7IcT6PEpBY73NdMxPJmNWJcyzaova6k9K8s6WrTlohaT136Z7Tc8hbwTsqjH4ayOA+jKrxjHDaHTn7yKwl1xn0rLk9/nihGYzY7cKAnS429CiZnLOx42idzclcHCJpcgAOUn7fq/Zca5VN9BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PUqMdu9o; arc=none smtp.client-ip=209.85.222.178
+	 To:Cc:Content-Type; b=VK6Dvdx9XWLGKywPh54WtIFXlnGa89UV/qeAD93/uesoaRJPCOTWb5Txq6ADF725R/hYHvbcQ61Nu8Z4I61ELNdYYSd1M4UU7b8fi7fUSt+lSYy4hjEHloBE+YVSIBjRRCZX3Mz7CgO9EzhPAfv9Qw8EH/4/Qbnp24Wy0vb3NJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gih88277; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-79517ff527dso60942885a.3;
-        Thu, 06 Jun 2024 07:33:29 -0700 (PDT)
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-79532ec4306so48080785a.1
+        for <stable@vger.kernel.org>; Thu, 06 Jun 2024 07:35:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717684409; x=1718289209; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717684502; x=1718289302; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aXy9ZshJzoipG0WEEKUipDjKLkHhQIDQe2ob1zDmxHs=;
-        b=PUqMdu9ohVKRriit8dWU1/I0vCfsGEExWvNq0WtTac1UaAIp0tMMI6fz9T3X5rAHa0
-         StM9hEqUAjLi54ATR53XKPCnVydqOYS9xPrx5+eWcFR/xf7a3VclMSWcLeGtIOqbtDHb
-         4VP+B+QnwMz9U4T/WLK8cGFivdySrwpkAzHW1O132jGFuiLJOKIHHfW5wL5A7AUkSFVP
-         9bIA23/dpQL6OQGH24jVbIys+NXUkPsTGNf/sVPyaKBbnrdSwQjAFRxrelvBu2oy9EFr
-         lwWZSCaBXO2ESB/fGg/jJpD2Bgl6rWtk1u29nq853eCXHQaLhx6taP4yt7IISGh2gVrw
-         PC+g==
+        bh=Fk/yBrg3lB0eIyTR1z2aQPbvwHEOsAf8ISJq44rsaRI=;
+        b=gih88277epJawk1SuxqwFyQOEfj9cx4y3SbIkBAoB+rVNE1Ra4ZvSW4rEoQAZIC5ou
+         uACMkeVNXpTewPsYvJuiH7nisl3gCS1355B5lnzmuV+c+H+gcIhaOyIHqTHpJdAe3cqG
+         AB0UthuivThFEkwcVqA38iVCdtXYbLDaSnql69q124o6jK+s/VDpy2Km7pnGfqzL08Rc
+         aDkrolynl69WDEi/OOUssGgVuc7EbPHydZG+iyrlT10uurpK0ee7AuoWgEKqPs7uW3Ly
+         XkJUW6Em23OwGQ4GgwoxopZKgc/ULKFkhWF8YKXn71xOypPqbylCLZEIa8qOmvSQjyL7
+         VJUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717684409; x=1718289209;
+        d=1e100.net; s=20230601; t=1717684502; x=1718289302;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aXy9ZshJzoipG0WEEKUipDjKLkHhQIDQe2ob1zDmxHs=;
-        b=HPi3QvVkVNvnsnctOXWDHP6qbuMqZFWZYd9WiiB0wErqU/hFOTvymZNMdOX4P9/JkJ
-         xO1EI7H6Wq6BNhtIE3DdwLG3TaqyVQ+8qXjDgu4pmFhj2UhxFdxM8UACEcBafiQHB7XF
-         8sXMEt0fQABHhsuRcildBaMYIQrfEyW4x0pnYSNW8A+fzI7TEkGNB5ChRXGhW6RgC2Au
-         xD9TaZarppIwy8rO59WgE99QEtL6cAnPUuzwVjKW0/P4TX1WkDeJ1deIoIOT0aqVz1bJ
-         gJnXz091CezkWYESOtX2zralJd5Djlja9RVBL1zf7UZoBOyi0M069xo5yWBWApqqY908
-         lBLw==
-X-Forwarded-Encrypted: i=1; AJvYcCUS1h+9hq06hxvsAwH4kIkUZpc+8/9hFQ7WKqosNGPp6thxGnmaRfBqBvQpocASnu7poQ/kbvAYCqWmBhuBXnsT21zKrtRi/ugwEpJ9tA==
-X-Gm-Message-State: AOJu0Yz7MWyK1w6zskrsancX6vGxpAB1Oh0L1I8ynra2gLLhblAlcJee
-	I9FWTBN2xO6Bo2bopP/BP2gTV8jrzk3KpymFV1Ld+v8ag7f+yA1GIMFi2ZWbgJ6e9Qg3i6YBUVB
-	8FS7buhJ+UFI9PW2eD0j0ftzuk/8=
-X-Google-Smtp-Source: AGHT+IFpV6/Vq+Jfe7DcjTtDFqCk4rpIxn8W10iRhdrmMEwY5BNQvOW6XzuVu7GZ3yutgR0wa9qPxyecGxcsX9KAaBY=
-X-Received: by 2002:ae9:f80f:0:b0:792:a92a:2c6 with SMTP id
- af79cd13be357-79523d4abf3mr543437685a.17.1717684408995; Thu, 06 Jun 2024
- 07:33:28 -0700 (PDT)
+        bh=Fk/yBrg3lB0eIyTR1z2aQPbvwHEOsAf8ISJq44rsaRI=;
+        b=XpI71b28bdoVqFeMTyN69L0lHUbBISaUVLIFRpszaegC9YeuNGEpH2avZzSBzy9VMG
+         PMCTP57QXKXdn5VB3WDGOC5Pxms59Z+pR7lZOjN/xRiyuc1qYQHkeFUusdOeKK2MSwFs
+         lk8qeU6AcF40ISioRhDeCg9ejSNTpDhjDpt+YdFLLKi5RGZJkLrkuKHrR787qrPVAhW/
+         blJO+2jdGfyYrIbh5a2utpKPjw9k6H+zi/nTCMwywumHwdvGSTU9frjXhEGeL/fOvkUv
+         etn+MsSbZUzl/zVVHrXaHZuESuaHR4QYFzKJOQH70VzdKYjX7tHgT3Tko+MY77BxHpcm
+         3kQg==
+X-Gm-Message-State: AOJu0Yzg+CCkg2b7eiYX4MKjertsBnncm40XtH4cthSioxnPte1PvhEp
+	Yr4Q6BlsYUmn7IcqMPscIiRGOMHvsCd8nXkHR+Exskhtn7FNXEMYal9XqL2wW+iy7pu/JFHh8f6
+	gfDUfbmsAqjQUiFisuRNpXtO6Rwg=
+X-Google-Smtp-Source: AGHT+IGialW1cgUFYrkwgo6znlv+dlJDrhpohenFUSsh7AtWMA1/F9Ae5x0lyonf7iHbyWTdszun78wPTkmnnYgf2WU=
+X-Received: by 2002:a05:620a:2005:b0:792:c683:1f48 with SMTP id
+ af79cd13be357-79523d4f6bamr611477785a.36.1717684501908; Thu, 06 Jun 2024
+ 07:35:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240606131732.440653204@linuxfoundation.org> <20240606131746.563882173@linuxfoundation.org>
-In-Reply-To: <20240606131746.563882173@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org> <20240606131746.600659628@linuxfoundation.org>
+In-Reply-To: <20240606131746.600659628@linuxfoundation.org>
 From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 6 Jun 2024 17:33:17 +0300
-Message-ID: <CAOQ4uxhL59Sz4akfk-DGQXYTRwLu4B1gPUgKOy0J_RehdzkVTg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 439/744] splice: remove permission hook from iter_file_splice_write()
+Date: Thu, 6 Jun 2024 17:34:50 +0300
+Message-ID: <CAOQ4uxifOH00rFOgOb50-XySScixowqa3YfrFLDDcsdfmtEMCQ@mail.gmail.com>
+Subject: Re: [PATCH 6.6 440/744] fs: move kiocb_start_write() into vfs_iocb_iter_write()
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, Jan Kara <jack@suse.cz>, 
 	Josef Bacik <josef@toxicpanda.com>, Christian Brauner <brauner@kernel.org>, 
-	Sasha Levin <sashal@kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
+	Sasha Levin <sashal@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -89,88 +88,145 @@ On Thu, Jun 6, 2024 at 5:18=E2=80=AFPM Greg Kroah-Hartman
 >
 > 6.6-stable review patch.  If anyone has any objections, please let me kno=
 w.
+>
 
 I have objections and I wrote them when Sasha posted the patch for review:
 
-https://lore.kernel.org/stable/CAOQ4uxgx7Qe=3D+Nn7LhPWAzFK3n=3DqsFC8U++U5XB=
-aLUiTA+EqLw@mail.gmail.com/
+https://lore.kernel.org/stable/CAOQ4uxg1Ce31UDDeb9ADYgEBvr582j4hqmJ-B72iAL+=
+2xsAYzw@mail.gmail.com/
 
 Where did this objection get lost?
 
 Thanks,
 Amir.
 
->
 > ------------------
 >
 > From: Amir Goldstein <amir73il@gmail.com>
 >
-> [ Upstream commit d53471ba6f7ae97a4e223539029528108b705af1 ]
+> [ Upstream commit 6ae654392bb516a0baa47fed1f085d84e8cad739 ]
 >
-> All the callers of ->splice_write(), (e.g. do_splice_direct() and
-> do_splice()) already check rw_verify_area() for the entire range
-> and perform all the other checks that are in vfs_write_iter().
+> In vfs code, sb_start_write() is usually called after the permission hook
+> in rw_verify_area().  vfs_iocb_iter_write() is an exception to this rule,
+> where kiocb_start_write() is called by its callers.
 >
-> Instead of creating another tiny helper for special caller, just
-> open-code it.
+> Move kiocb_start_write() from the callers into vfs_iocb_iter_write()
+> after the rw_verify_area() checks, to make them "start-write-safe".
+>
+> The semantics of vfs_iocb_iter_write() is changed, so that the caller is
+> responsible for calling kiocb_end_write() on completion only if async
+> iocb was queued.  The completion handlers of both callers were adapted
+> to this semantic change.
 >
 > This is needed for fanotify "pre content" events.
 >
 > Suggested-by: Jan Kara <jack@suse.cz>
-> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+> Suggested-by: Josef Bacik <josef@toxicpanda.com>
 > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> Link: https://lore.kernel.org/r/20231122122715.2561213-6-amir73il@gmail.c=
-om
+> Link: https://lore.kernel.org/r/20231122122715.2561213-14-amir73il@gmail.=
+com
+> Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+> Reviewed-by: Jan Kara <jack@suse.cz>
 > Signed-off-by: Christian Brauner <brauner@kernel.org>
 > Stable-dep-of: 7c98f7cb8fda ("remove call_{read,write}_iter() functions")
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  fs/splice.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
+>  fs/cachefiles/io.c  | 5 ++---
+>  fs/overlayfs/file.c | 8 ++++----
+>  fs/read_write.c     | 7 +++++++
+>  3 files changed, 13 insertions(+), 7 deletions(-)
 >
-> diff --git a/fs/splice.c b/fs/splice.c
-> index d983d375ff113..a8f97c5e8cf0e 100644
-> --- a/fs/splice.c
-> +++ b/fs/splice.c
-> @@ -673,10 +673,13 @@ iter_file_splice_write(struct pipe_inode_info *pipe=
-, struct file *out,
->                 .u.file =3D out,
->         };
->         int nbufs =3D pipe->max_usage;
-> -       struct bio_vec *array =3D kcalloc(nbufs, sizeof(struct bio_vec),
-> -                                       GFP_KERNEL);
-> +       struct bio_vec *array;
->         ssize_t ret;
+> diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
+> index 009d23cd435b5..5857241c59181 100644
+> --- a/fs/cachefiles/io.c
+> +++ b/fs/cachefiles/io.c
+> @@ -259,7 +259,8 @@ static void cachefiles_write_complete(struct kiocb *i=
+ocb, long ret)
 >
-> +       if (!out->f_op->write_iter)
-> +               return -EINVAL;
+>         _enter("%ld", ret);
+>
+> -       kiocb_end_write(iocb);
+> +       if (ki->was_async)
+> +               kiocb_end_write(iocb);
+>
+>         if (ret < 0)
+>                 trace_cachefiles_io_error(object, inode, ret,
+> @@ -319,8 +320,6 @@ int __cachefiles_write(struct cachefiles_object *obje=
+ct,
+>                 ki->iocb.ki_complete =3D cachefiles_write_complete;
+>         atomic_long_add(ki->b_writing, &cache->b_writing);
+>
+> -       kiocb_start_write(&ki->iocb);
+> -
+>         get_file(ki->iocb.ki_filp);
+>         cachefiles_grab_object(object, cachefiles_obj_get_ioreq);
+>
+> diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+> index 9fd88579bfbfb..a1c64c2b8e204 100644
+> --- a/fs/overlayfs/file.c
+> +++ b/fs/overlayfs/file.c
+> @@ -295,10 +295,8 @@ static void ovl_aio_cleanup_handler(struct ovl_aio_r=
+eq *aio_req)
+>         struct kiocb *iocb =3D &aio_req->iocb;
+>         struct kiocb *orig_iocb =3D aio_req->orig_iocb;
+>
+> -       if (iocb->ki_flags & IOCB_WRITE) {
+> -               kiocb_end_write(iocb);
+> +       if (iocb->ki_flags & IOCB_WRITE)
+>                 ovl_file_modified(orig_iocb->ki_filp);
+> -       }
+>
+>         orig_iocb->ki_pos =3D iocb->ki_pos;
+>         ovl_aio_put(aio_req);
+> @@ -310,6 +308,9 @@ static void ovl_aio_rw_complete(struct kiocb *iocb, l=
+ong res)
+>                                                    struct ovl_aio_req, io=
+cb);
+>         struct kiocb *orig_iocb =3D aio_req->orig_iocb;
+>
+> +       if (iocb->ki_flags & IOCB_WRITE)
+> +               kiocb_end_write(iocb);
 > +
-> +       array =3D kcalloc(nbufs, sizeof(struct bio_vec), GFP_KERNEL);
->         if (unlikely(!array))
->                 return -ENOMEM;
+>         ovl_aio_cleanup_handler(aio_req);
+>         orig_iocb->ki_complete(orig_iocb, res);
+>  }
+> @@ -421,7 +422,6 @@ static ssize_t ovl_write_iter(struct kiocb *iocb, str=
+uct iov_iter *iter)
+>                 aio_req->iocb.ki_flags =3D ifl;
+>                 aio_req->iocb.ki_complete =3D ovl_aio_rw_complete;
+>                 refcount_set(&aio_req->ref, 2);
+> -               kiocb_start_write(&aio_req->iocb);
+>                 ret =3D vfs_iocb_iter_write(real.file, &aio_req->iocb, it=
+er);
+>                 ovl_aio_put(aio_req);
+>                 if (ret !=3D -EIOCBQUEUED)
+> diff --git a/fs/read_write.c b/fs/read_write.c
+> index 4771701c896ba..9a56949f3b8d1 100644
+> --- a/fs/read_write.c
+> +++ b/fs/read_write.c
+> @@ -865,6 +865,10 @@ static ssize_t do_iter_write(struct file *file, stru=
+ct iov_iter *iter,
+>         return ret;
+>  }
 >
-> @@ -684,6 +687,7 @@ iter_file_splice_write(struct pipe_inode_info *pipe, =
-struct file *out,
+> +/*
+> + * Caller is responsible for calling kiocb_end_write() on completion
+> + * if async iocb was queued.
+> + */
+>  ssize_t vfs_iocb_iter_write(struct file *file, struct kiocb *iocb,
+>                             struct iov_iter *iter)
+>  {
+> @@ -885,7 +889,10 @@ ssize_t vfs_iocb_iter_write(struct file *file, struc=
+t kiocb *iocb,
+>         if (ret < 0)
+>                 return ret;
 >
->         splice_from_pipe_begin(&sd);
->         while (sd.total_len) {
-> +               struct kiocb kiocb;
->                 struct iov_iter from;
->                 unsigned int head, tail, mask;
->                 size_t left;
-> @@ -733,7 +737,10 @@ iter_file_splice_write(struct pipe_inode_info *pipe,=
- struct file *out,
->                 }
->
->                 iov_iter_bvec(&from, ITER_SOURCE, array, n, sd.total_len =
-- left);
-> -               ret =3D vfs_iter_write(out, &from, &sd.pos, 0);
-> +               init_sync_kiocb(&kiocb, out);
-> +               kiocb.ki_pos =3D sd.pos;
-> +               ret =3D call_write_iter(out, &kiocb, &from);
-> +               sd.pos =3D kiocb.ki_pos;
->                 if (ret <=3D 0)
->                         break;
+> +       kiocb_start_write(iocb);
+>         ret =3D call_write_iter(file, iocb, iter);
+> +       if (ret !=3D -EIOCBQUEUED)
+> +               kiocb_end_write(iocb);
+>         if (ret > 0)
+>                 fsnotify_modify(file);
 >
 > --
 > 2.43.0
