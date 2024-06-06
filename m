@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-49380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198DB8FED06
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B756A8FE9BC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFD362837D4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52629B243B6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB371B3F3B;
-	Thu,  6 Jun 2024 14:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BC819B3DC;
+	Thu,  6 Jun 2024 14:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxQ6dHDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzY1El9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DD71B3F39;
-	Thu,  6 Jun 2024 14:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB28198A28;
+	Thu,  6 Jun 2024 14:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683437; cv=none; b=tFvXeXtl1b2XpWwlLraDckFFYD1gF8CBvB1bF6fo7VGFcbDRO/2xp2BhtTrUQeW4Lp4uSXCB6f9FUlqrCi4zkFwzxhF4fBj4QlzyOInkvwBnCmJP+HaDN6n36HAo9y2lC0wyo8FdOgLdinsm52yZRFqDLq5exH3fppXB3XjCXUE=
+	t=1717683060; cv=none; b=Z/XU8i4VSZsZ70TVoy5r4TT75UR39E+ciXwjV2AZynbuZEYbM1A8Gxh6aK65Y4qjxXqZfq2x7LYX3NzoxvDmCXkzjFRcZ0MNRmVNh+9BHjOs4mSV0ocMTbp8N8RdLM1jRay5sYWwq3Hx2C8jaqz9un/lIflfvW3qNrcYYyj+8Hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683437; c=relaxed/simple;
-	bh=SPNaSpBQwS6iI1WiNeDylolad8aKFclZfTZD7VZdVB8=;
+	s=arc-20240116; t=1717683060; c=relaxed/simple;
+	bh=1HzS0F++32WkuxtGHnJ4eSbKnChQ5TfnGNikQGwEdrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLYRwaokDxvMcGRJvLXfPs8dSSXA/0y3C3aEe9GK76c9o3pUsciqauVy66xPhNmvOzbfl3/4jRBI3CMC6pO62CnejPPw5PBiX2gaFMD+mT6fv6iMOzMSoxXmYgyRjSqG2w1FPdJCddDayOFrOP7R+dXxDYULcBPqFxoOqtQ96/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxQ6dHDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB74C2BD10;
-	Thu,  6 Jun 2024 14:17:16 +0000 (UTC)
+	 MIME-Version; b=RMrSCnEai1JURblJh2M8AxbBsbNBAXe/pG7X3IHQ6UBklfKlurYNo0u6cC0tMcnT4JYX3HfMFAN/H/0EnxYhAKSkFZlEPL/rhJvd+AmUGoP4/FC4Uf4aLq2cQoYiliJUl4tq75c1ivs8p5puDc1EO7xuc4kyiVdk3hGdCHgbEO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzY1El9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5F6C4AF07;
+	Thu,  6 Jun 2024 14:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683437;
-	bh=SPNaSpBQwS6iI1WiNeDylolad8aKFclZfTZD7VZdVB8=;
+	s=korg; t=1717683060;
+	bh=1HzS0F++32WkuxtGHnJ4eSbKnChQ5TfnGNikQGwEdrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jxQ6dHDJNQRwxCauPcuFAQk1zwpPCV7x+Hj6Hv0bzQV3+oQJktO7rUD2t3nNKIxV3
-	 31R1Ii/tw3cIedrh7yitQZym322p9sFn+/QIaeVyF5m6B0pa391/Y/IzsnEmjbKewp
-	 4UVBXpqggbHEK488ZYzWvNA8u25+Gun1MbBK84j0=
+	b=QzY1El9b/+sJtCjwy69CmdNozIqpwCmWpNCRcDMQnGDpjTOcsiVr4OPEQEkjyFaU5
+	 z/IJb+6miLMv2zF8O066NiEGb5fey4R+8dcscZPiySoX3X74nXgL7QuxR4b5vF3Kba
+	 POXw1paFapgL2wooKWeWxA/Ct5LL+8/HI+ePeI+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 322/473] microblaze: Remove early printk call from cpuinfo-static.c
-Date: Thu,  6 Jun 2024 16:04:11 +0200
-Message-ID: <20240606131710.577934418@linuxfoundation.org>
+Subject: [PATCH 6.9 273/374] ice: Interpret .set_channels() input differently
+Date: Thu,  6 Jun 2024 16:04:12 +0200
+Message-ID: <20240606131701.044142884@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +67,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-[ Upstream commit 58d647506c92ccd3cfa0c453c68ddd14f40bf06f ]
+[ Upstream commit 05d6f442f31f901d27dbc64fd504a8ec7d5013de ]
 
-Early printk has been removed already that's why also remove calling it.
-Similar change has been done in cpuinfo-pvr-full.c by commit cfbd8d1979af
-("microblaze: Remove early printk setup").
+A bug occurs because a safety check guarding AF_XDP-related queues in
+ethnl_set_channels(), does not trigger. This happens, because kernel and
+ice driver interpret the ethtool command differently.
 
-Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/2f10db506be8188fa07b6ec331caca01af1b10f8.1712824039.git.michal.simek@amd.com
+How the bug occurs:
+1. ethtool -l <IFNAME> -> combined: 40
+2. Attach AF_XDP to queue 30
+3. ethtool -L <IFNAME> rx 15 tx 15
+   combined number is not specified, so command becomes {rx_count = 15,
+   tx_count = 15, combined_count = 40}.
+4. ethnl_set_channels checks, if there are any AF_XDP of queues from the
+   new (combined_count + rx_count) to the old one, so from 55 to 40, check
+   does not trigger.
+5. ice interprets `rx 15 tx 15` as 15 combined channels and deletes the
+   queue that AF_XDP is attached to.
+
+Interpret the command in a way that is more consistent with ethtool
+manual [0] (--show-channels and --set-channels).
+
+Considering that in the ice driver only the difference between RX and TX
+queues forms dedicated channels, change the correct way to set number of
+channels to:
+
+ethtool -L <IFNAME> combined 10 /* For symmetric queues */
+ethtool -L <IFNAME> combined 8 tx 2 rx 0 /* For asymmetric queues */
+
+[0] https://man7.org/linux/man-pages/man8/ethtool.8.html
+
+Fixes: 87324e747fde ("ice: Implement ethtool ops for channels")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/microblaze/kernel/cpu/cpuinfo-static.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/arch/microblaze/kernel/cpu/cpuinfo-static.c b/arch/microblaze/kernel/cpu/cpuinfo-static.c
-index 85dbda4a08a81..03da36dc6d9c9 100644
---- a/arch/microblaze/kernel/cpu/cpuinfo-static.c
-+++ b/arch/microblaze/kernel/cpu/cpuinfo-static.c
-@@ -18,7 +18,7 @@ static const char family_string[] = CONFIG_XILINX_MICROBLAZE0_FAMILY;
- static const char cpu_ver_string[] = CONFIG_XILINX_MICROBLAZE0_HW_VER;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 78b833b3e1d7e..62c8205fcebae 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3593,7 +3593,6 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
+ 	struct ice_pf *pf = vsi->back;
+ 	int new_rx = 0, new_tx = 0;
+ 	bool locked = false;
+-	u32 curr_combined;
+ 	int ret = 0;
  
- #define err_printk(x) \
--	early_printk("ERROR: Microblaze " x "-different for kernel and DTS\n");
-+	pr_err("ERROR: Microblaze " x "-different for kernel and DTS\n");
+ 	/* do not support changing channels in Safe Mode */
+@@ -3615,22 +3614,8 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
+ 		return -EOPNOTSUPP;
+ 	}
  
- void __init set_cpuinfo_static(struct cpuinfo *ci, struct device_node *cpu)
- {
+-	curr_combined = ice_get_combined_cnt(vsi);
+-
+-	/* these checks are for cases where user didn't specify a particular
+-	 * value on cmd line but we get non-zero value anyway via
+-	 * get_channels(); look at ethtool.c in ethtool repository (the user
+-	 * space part), particularly, do_schannels() routine
+-	 */
+-	if (ch->rx_count == vsi->num_rxq - curr_combined)
+-		ch->rx_count = 0;
+-	if (ch->tx_count == vsi->num_txq - curr_combined)
+-		ch->tx_count = 0;
+-	if (ch->combined_count == curr_combined)
+-		ch->combined_count = 0;
+-
+-	if (!(ch->combined_count || (ch->rx_count && ch->tx_count))) {
+-		netdev_err(dev, "Please specify at least 1 Rx and 1 Tx channel\n");
++	if (ch->rx_count && ch->tx_count) {
++		netdev_err(dev, "Dedicated RX or TX channels cannot be used simultaneously\n");
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.43.0
 
