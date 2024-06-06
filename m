@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-49185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3596C8FEC39
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5BE8FEC3C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27CE21C237AC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FC421F29919
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF40B19AD73;
-	Thu,  6 Jun 2024 14:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CD11AED3F;
+	Thu,  6 Jun 2024 14:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/rxV1i0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMT2mpq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2F1198A06;
-	Thu,  6 Jun 2024 14:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758351AED3E;
+	Thu,  6 Jun 2024 14:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683343; cv=none; b=h48OHXrCTnaAahJeQzuwNxeO2gSFs6Ee34Nhfdc7fnrs3I1IDTyzsLPhoSgAyn+gzcy2iED7tuHYgtcZP1xdZ5gg4kaMEtP8emLU8znHJ+tzO1MjkzKglmjU9zteyegz7stuBSwR+FKGX+6QrHrRUP8BGohZItGd5t6r0WxkMig=
+	t=1717683344; cv=none; b=Qtoj3yhC5K3qaH0P1u6BP1wq4Q08CA3u/IQSHNleLGlnmThZ5Fszgaht8CFEJLMn+TbWQEzt4dMqboyNfBc+S5HbE9pwLAPO74QRSSSq5YFfMyZmXl3mI4C11hqLS51na3rxLBWVXU0UbG13qVi4MSt9PBKrxFdRRNm1RyInsSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683343; c=relaxed/simple;
-	bh=N22RFA4pwrq7yI2EEo8CdkYv701tu+4HVGxmG6V1qa4=;
+	s=arc-20240116; t=1717683344; c=relaxed/simple;
+	bh=Il7tkWgSVvHWA+qWiP+emPYld1aB5XDyf8eGdwsV9iY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieKQBhKR9o5DeQyuAOR61s2bSRbwscml4V/8sFQBdzwLoDKYeOKqQiNqXuWu71i9uHrxpWsOamBOvt/0HiD+msXuNMQ4iHULynE5Ge8e6RYAQ6ci42rv5eOK/ksbp6twIBoBrWj61r0Acuv0SWqjCKkanYTeNDn7QviXbxURI5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/rxV1i0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACBBC32782;
-	Thu,  6 Jun 2024 14:15:43 +0000 (UTC)
+	 MIME-Version; b=Kx/3Wg6yxnAHFhsJvNpXYJxwki0U+ZOjsX/Ub456EzvyTRvYz22B8RIR9cioEWZS/3OjeRqIlr5viaoHKrD9a+Do8ZnYJ4fDTVd4sScXiPvtJOoXYZCLrMpxCO4i+zKy/6ixZleY4bIewrn/bzR98JWDXZdKmoYTbMRrKjrg8ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMT2mpq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56951C2BD10;
+	Thu,  6 Jun 2024 14:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683343;
-	bh=N22RFA4pwrq7yI2EEo8CdkYv701tu+4HVGxmG6V1qa4=;
+	s=korg; t=1717683344;
+	bh=Il7tkWgSVvHWA+qWiP+emPYld1aB5XDyf8eGdwsV9iY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/rxV1i0Ahyjr3EA4fMLmLc1gU96g1QnZl5xUMWOPkzueRHn6vX4qWHpCsS0A/kvS
-	 K2GV/0I+ML74x22Bwg9QaEu1/W/xt99+tGltOUG4mpsZP6mvo2YQ+hks0dY22gaSTn
-	 2h3edZeigjsiAoWX28AdtzCPiTTj/7B8SgzKmUkU=
+	b=SMT2mpq38HCCj8RXxf17LVJSLChT1MzPiwWBteoL2GuGgD1/Nm9ArbMYIg3AwrCSQ
+	 mXZQdfpM6u37lHlVNDEuzJT42Mvj7et5i2eMFCycfmw+zFst1vGHk0mqqZexa+zH5Q
+	 dvTQquLfaok+ZsWv21YB3YdviyLPxi8u5G7EQBrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 284/744] ASoC: mediatek: Assign dummy when codec not specified for a DAI link
-Date: Thu,  6 Jun 2024 15:59:16 +0200
-Message-ID: <20240606131741.517225578@linuxfoundation.org>
+Subject: [PATCH 6.6 285/744] fbdev: shmobile: fix snprintf truncation
+Date: Thu,  6 Jun 2024 15:59:17 +0200
+Message-ID: <20240606131741.545231542@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,43 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5f39231888c63f0a7708abc86b51b847476379d8 ]
+[ Upstream commit 26c8cfb9d1e4b252336d23dd5127a8cbed414a32 ]
 
-MediaTek sound card drivers are checking whether a DAI link is present
-and used on a board to assign the correct parameters and this is done
-by checking the codec DAI names at probe time.
+The name of the overlay does not fit into the fixed-length field:
 
-If no real codec is present, assign the dummy codec to the DAI link
-to avoid NULL pointer during string comparison.
+drivers/video/fbdev/sh_mobile_lcdcfb.c:1577:2: error: 'snprintf' will always be truncated; specified size is 16, but format string expands to at least 25
 
-Fixes: 4302187d955f ("ASoC: mediatek: common: add soundcard driver common code")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://msgid.link/r/20240313110147.1267793-5-angelogioacchino.delregno@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Make it short enough by changing the string.
+
+Fixes: c5deac3c9b22 ("fbdev: sh_mobile_lcdc: Implement overlays support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/common/mtk-soundcard-driver.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/sh_mobile_lcdcfb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/mediatek/common/mtk-soundcard-driver.c b/sound/soc/mediatek/common/mtk-soundcard-driver.c
-index a58e1e3674dec..000a086a8cf44 100644
---- a/sound/soc/mediatek/common/mtk-soundcard-driver.c
-+++ b/sound/soc/mediatek/common/mtk-soundcard-driver.c
-@@ -22,7 +22,11 @@ static int set_card_codec_info(struct snd_soc_card *card,
- 
- 	codec_node = of_get_child_by_name(sub_node, "codec");
- 	if (!codec_node) {
--		dev_dbg(dev, "%s no specified codec\n", dai_link->name);
-+		dev_dbg(dev, "%s no specified codec: setting dummy.\n", dai_link->name);
-+
-+		dai_link->codecs = &snd_soc_dummy_dlc;
-+		dai_link->num_codecs = 1;
-+		dai_link->dynamic = 1;
- 		return 0;
- 	}
- 
+diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+index 1364dafaadb1d..2a4794ec19473 100644
+--- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
++++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+@@ -1575,7 +1575,7 @@ sh_mobile_lcdc_overlay_fb_init(struct sh_mobile_lcdc_overlay *ovl)
+ 	 */
+ 	info->fix = sh_mobile_lcdc_overlay_fix;
+ 	snprintf(info->fix.id, sizeof(info->fix.id),
+-		 "SH Mobile LCDC Overlay %u", ovl->index);
++		 "SHMobile ovl %u", ovl->index);
+ 	info->fix.smem_start = ovl->dma_handle;
+ 	info->fix.smem_len = ovl->fb_size;
+ 	info->fix.line_length = ovl->pitch;
 -- 
 2.43.0
 
