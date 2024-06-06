@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-49840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4348FEF13
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE398FEDF3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 322F41C20B68
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66E212820AA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4071A188E;
-	Thu,  6 Jun 2024 14:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0832919EEB0;
+	Thu,  6 Jun 2024 14:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXA1LIb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5OdLkxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED2F1C95EE;
-	Thu,  6 Jun 2024 14:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD8A19E7FF;
+	Thu,  6 Jun 2024 14:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683735; cv=none; b=gUHhpy5iUzeBSUkoQaUaWsQQd2pQp16/uI6tluyN4MNPuiaTLsV0NyocA+o0z9oLRBalFDFmJu3TcdSifkTJxVTIfAvpvL5dZVYknkxBsEYurDN/kCiS6SM3sv/X0YSkFGvX7RHsLFe3/zRykgVsDXRlrMRwYiOrix8qsn8oTTM=
+	t=1717683543; cv=none; b=HIl+4nx96onm3wfr4OkIz/NUKzCXlelfwy3roUA1D2zl6AsyKzZSSx+HJVWpv+nnRhzYhlpI+YJMs6CSEwgZSuSxkA97EHtabmc5ivBXCzr9Yv2CY5cpX5lKoEIaVC6E3IvkF2M6v7ftWaV7Q6G7JV4jtIrwXiqq16H76mEs+ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683735; c=relaxed/simple;
-	bh=clENAgWiIKRyNj23xH7bsUzlSfVofRyA6WCf6uFIjvM=;
+	s=arc-20240116; t=1717683543; c=relaxed/simple;
+	bh=whXzKEwc2o5sTlzPC+innY/yOdNCFO+Hpk796URxpX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJ6olDeo/82AZKWuG23wVTH+3XA9ydHRh9zT1CUxgf+oHppeXbVmrRJBh0SbXXY9tQpwptWvKf1Kyrw+9ZBYGsrMfXAUgGM7xbRHxcVvPXhsKLSC5B337uSOaK8Jv0e7SZzETtywNJPpTETthUlRUnOqw7rpTUkk/OIcYz/HDs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXA1LIb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361FEC2BD10;
-	Thu,  6 Jun 2024 14:22:15 +0000 (UTC)
+	 MIME-Version; b=mARgvxANQYwQTn8hdlARK9RyKdZwoX15yD8ozn3gOdJe7QY0XpFKmhD6GC+Cuk4VlTy3hGdLGj6p4tN1kZccNZ/Vv5kRoS54y5MCW9mXXEVZrOhmzUOUEr3Zoz+mo8ukhaARJr2/XDKowJttEfLdrbcxiCI8CWytY4klYaKNBt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5OdLkxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C111C2BD10;
+	Thu,  6 Jun 2024 14:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683735;
-	bh=clENAgWiIKRyNj23xH7bsUzlSfVofRyA6WCf6uFIjvM=;
+	s=korg; t=1717683543;
+	bh=whXzKEwc2o5sTlzPC+innY/yOdNCFO+Hpk796URxpX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXA1LIb+DT3RMSHphuLXfdNoZDclkNBrNkIXVbn++AszHN1qkyHW2gmAAMIrtjzLl
-	 RMyv/06CE7SEOUTw9qwufsUNLh7Wvpmu8ve2NWZYY0TFjkzrnvVJ1FYLLUtoL8UjYn
-	 nnM7puHaMeSUJB1gj/HPIwTm+oziZalaxeyTqimw=
+	b=K5OdLkxq2ecZCOohGOIeawcvV04cGd7LVOSYOswqg0chgcsvyf3pQP14Mc19uKnZ8
+	 1Z+slc3DC2lwmNln7+a8F/CrhcjUSrr96O8XTN9ohqJEWAYjI1oyOYDnujC311chOc
+	 ObYBJ3sxwQqxghDOi7NF8s8Vw0rTS5JyoG79ucFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Baron <jbaron@akamai.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Boris Pismenny <borisp@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 690/744] net/mlx5e: Fix UDP GSO for encapsulated packets
+Subject: [PATCH 6.1 433/473] spi: Dont mark message DMA mapped when no transfer in it is
 Date: Thu,  6 Jun 2024 16:06:02 +0200
-Message-ID: <20240606131754.616615231@linuxfoundation.org>
+Message-ID: <20240606131714.060388623@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 83fea49f2711fc90c0d115b0ed04046b45155b65 ]
+[ Upstream commit 9f788ba457b45b0ce422943fcec9fa35c4587764 ]
 
-When the skb is encapsulated, adjust the inner UDP header instead of the
-outer one, and account for UDP header (instead of TCP) in the inline
-header size calculation.
+There is no need to set the DMA mapped flag of the message if it has
+no mapped transfers. Moreover, it may give the code a chance to take
+the wrong paths, i.e. to exercise DMA related APIs on unmapped data.
+Make __spi_map_msg() to bail earlier on the above mentioned cases.
 
-Fixes: 689adf0d4892 ("net/mlx5e: Add UDP GSO support")
-Reported-by: Jason Baron <jbaron@akamai.com>
-Closes: https://lore.kernel.org/netdev/c42961cb-50b9-4a9a-bd43-87fe48d88d29@akamai.com/
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Boris Pismenny <borisp@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 99adef310f68 ("spi: Provide core support for DMA mapping transfers")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://msgid.link/r/20240522171018.3362521-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h   | 8 +++++++-
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c           | 6 +++++-
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/spi/spi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
-index caa34b9c161e5..33e32584b07f5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
-@@ -102,8 +102,14 @@ static inline void
- mlx5e_udp_gso_handle_tx_skb(struct sk_buff *skb)
- {
- 	int payload_len = skb_shinfo(skb)->gso_size + sizeof(struct udphdr);
-+	struct udphdr *udphdr;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 1018feff468c9..50fe5aa450f84 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1147,6 +1147,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 	else
+ 		rx_dev = ctlr->dev.parent;
  
--	udp_hdr(skb)->len = htons(payload_len);
-+	if (skb->encapsulation)
-+		udphdr = (struct udphdr *)skb_inner_transport_header(skb);
-+	else
-+		udphdr = udp_hdr(skb);
-+
-+	udphdr->len = htons(payload_len);
- }
++	ret = -ENOMSG;
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		/* The sync is done before each transfer. */
+ 		unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
+@@ -1176,6 +1177,9 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 			}
+ 		}
+ 	}
++	/* No transfer has been mapped, bail out with success */
++	if (ret)
++		return 0;
  
- struct mlx5e_accel_tx_state {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-index 24cbd44dae93c..3001a52e1ac2e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-@@ -153,7 +153,11 @@ mlx5e_tx_get_gso_ihs(struct mlx5e_txqsq *sq, struct sk_buff *skb, int *hopbyhop)
- 
- 	*hopbyhop = 0;
- 	if (skb->encapsulation) {
--		ihs = skb_inner_tcp_all_headers(skb);
-+		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
-+			ihs = skb_inner_transport_offset(skb) +
-+			      sizeof(struct udphdr);
-+		else
-+			ihs = skb_inner_tcp_all_headers(skb);
- 		stats->tso_inner_packets++;
- 		stats->tso_inner_bytes += skb->len - ihs;
- 	} else {
+ 	ctlr->cur_rx_dma_dev = rx_dev;
+ 	ctlr->cur_tx_dma_dev = tx_dev;
 -- 
 2.43.0
 
