@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2123D8FED9C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7198FE9E7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B71811F2175E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 124E31C257A7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9665919E7C0;
-	Thu,  6 Jun 2024 14:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369C019D065;
+	Thu,  6 Jun 2024 14:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2acE/1TQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZUwD2Z8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550C919DF79;
-	Thu,  6 Jun 2024 14:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E748119CD1F;
+	Thu,  6 Jun 2024 14:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683506; cv=none; b=E4K6rU+kH3kbMJZX4AdNjB9cnGYZsjTf+Ma3dU8nnXjt2+0Z5MMdGV5sL5EzzMfvEqfEnVn8xk/a45+6a+l3R03zMY5hp15vWULw8aKXkGZhW9K5QbR0b70dvlUOSdeRg5V/T0yV6EYztNKEGM+rJ6hUger6WjQcSg0Y8efwxNw=
+	t=1717683078; cv=none; b=mIhtE48GCXq4KHpSklHNmLXn1chyUSxXUiNlbino8vzSoEFHwIfEspwZeWmCI76gVPWp0qiU8PUTTTtcivp+JA+3h9Bc1J1VJzhqpI8oXpS3K2eHwdAevQVPrMVWx8VcyASj29/d429upFMPkFdJ3+Z32tz13pjCChyJGpoea1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683506; c=relaxed/simple;
-	bh=PrgS+GP8Ssu9JqHGM8qzQ1bbKxs1xKKbU67kKPxAcKQ=;
+	s=arc-20240116; t=1717683078; c=relaxed/simple;
+	bh=JuULKSaMVKvRL7boeLYje8iQ4XWhUITij80ZT83B9is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njEE1NqsDgjZ5Wxg122dCh21j/b3DWX66eCOGDJKZ4Q6v59BaSH17cEe5HHb2IMwQrMgp+cDtG7C1uKvW/9inlouH/ou6h4BUioqJu4EgqvJTKRdusojCEKFUdP7dWVPQNlP1CcXvK0YkwEj/gW4EqkXlCtBjBnqhoPuy7wtNDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2acE/1TQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245D7C4AF09;
-	Thu,  6 Jun 2024 14:18:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mel+tIKPZ0ENmw0wIfwJLLeV9oPUqV8ptxXZtrwFJYspNutfdjGohGQLeqdz/L0JfcLqPaqmvn4zllYNzuP2o3MegLepO+F6UdJBVc63BEKkHHdd3yZZWqZFzzFYCV4RBgK5aiMubPxrtr1WZsB8wCREh6VH1UDeJ7eko7BD0oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZUwD2Z8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84D7C32786;
+	Thu,  6 Jun 2024 14:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683506;
-	bh=PrgS+GP8Ssu9JqHGM8qzQ1bbKxs1xKKbU67kKPxAcKQ=;
+	s=korg; t=1717683077;
+	bh=JuULKSaMVKvRL7boeLYje8iQ4XWhUITij80ZT83B9is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2acE/1TQW1g33wUu8porWbJQvuqz4YrgD8x4VWAAHUpqAt8Gl5s+ovTQ6MzZfMrL6
-	 aLk0LI7ATgN+IFIbsWRUl7s5z9spQHp3NpLfUAplpGvmhlp4a/CLJpKoX3VfjW8o/c
-	 cbl2pO7x4mLGqqSvgdEcD+kuxwKUOV+bBaakfyAM=
+	b=vZUwD2Z84yuTxos0EIm6Gvm0NfKnxAD2hR3UbwrJdXMNaaonku3GLrIRcxP7yZAyQ
+	 7dZY3n4/03V8NJIv7UHHV9cDYHjTnEOv3MFJU98BHoaHcaWp+TadGxXoYf8mfO2fvH
+	 CRIwTPepIJ3B3oODrVAEgXxasgmog3bsd/MYm9ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 395/473] null_blk: Fix the WARNING: modpost: missing MODULE_DESCRIPTION()
+Subject: [PATCH 6.9 345/374] drm/amdgpu: Adjust logic in amdgpu_device_partner_bandwidth()
 Date: Thu,  6 Jun 2024 16:05:24 +0200
-Message-ID: <20240606131712.889380321@linuxfoundation.org>
+Message-ID: <20240606131703.419123480@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 9e6727f824edcdb8fdd3e6e8a0862eb49546e1cd ]
+[ Upstream commit ba46b3bda296c4f82b061ac40b90f49d2a00a380 ]
 
-No functional changes intended.
+Use current speed/width on devices which don't support
+dynamic PCIe switching.
 
-Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20240506075538.6064-1-yanjun.zhu@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 466a7d115326 ("drm/amd: Use the first non-dGPU PCI device for BW limits")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3289
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index b7a26a12dc656..220cedda2ca7d 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2306,4 +2306,5 @@ module_init(null_init);
- module_exit(null_exit);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 7753a2e64d411..941d6e379b8a6 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5809,13 +5809,18 @@ static void amdgpu_device_partner_bandwidth(struct amdgpu_device *adev,
+ 	*speed = PCI_SPEED_UNKNOWN;
+ 	*width = PCIE_LNK_WIDTH_UNKNOWN;
  
- MODULE_AUTHOR("Jens Axboe <axboe@kernel.dk>");
-+MODULE_DESCRIPTION("multi queue aware block test driver");
- MODULE_LICENSE("GPL");
+-	while ((parent = pci_upstream_bridge(parent))) {
+-		/* skip upstream/downstream switches internal to dGPU*/
+-		if (parent->vendor == PCI_VENDOR_ID_ATI)
+-			continue;
+-		*speed = pcie_get_speed_cap(parent);
+-		*width = pcie_get_width_cap(parent);
+-		break;
++	if (amdgpu_device_pcie_dynamic_switching_supported(adev)) {
++		while ((parent = pci_upstream_bridge(parent))) {
++			/* skip upstream/downstream switches internal to dGPU*/
++			if (parent->vendor == PCI_VENDOR_ID_ATI)
++				continue;
++			*speed = pcie_get_speed_cap(parent);
++			*width = pcie_get_width_cap(parent);
++			break;
++		}
++	} else {
++		/* use the current speeds rather than max if switching is not supported */
++		pcie_bandwidth_available(adev->pdev, NULL, speed, width);
+ 	}
+ }
+ 
 -- 
 2.43.0
 
