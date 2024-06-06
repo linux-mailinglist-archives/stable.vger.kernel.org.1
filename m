@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9EF8FE9C0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F328FEEC6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88DA51C23D9A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E571BB2335E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA6119B3E3;
-	Thu,  6 Jun 2024 14:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D6E1991D2;
+	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDJHhB9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHYj8vC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D194F198A31;
-	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A7B1C68BF;
+	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683062; cv=none; b=fineOHaKJni3eu8VKMokUnf1VXord6sgLwy2e/m1eKXxIRki7tB/O519WE7uRyGvNB88dXsT+/T2d4wDET31J/TyIauNjq6oN+r9UdY7p7a/h1zxMXzDE3fb3za6kQffhMN+7OH/DOxLfhle78X5z6SZyMquyEqkpX9pvTCslh0=
+	t=1717683699; cv=none; b=LY3/PBZ6oQIHGYWqOe3cLsJwjbtjm6C2Rw1vrJz8ThW3UxC8givQA4zYEy6NKOmQBpbhxI6LNAsHjp16Hv8ESickuYwianMdlSJuCUIP+9rJjEhtJWGnZu9NrgawbITzigdIt9VU9KkEnWS3Ml5iIawcxRatvmQK9nuP3fDOI2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683062; c=relaxed/simple;
-	bh=+QFPghnXvEzqHpPqnp8E369ROVPcKtEoIxpo6kkCsi0=;
+	s=arc-20240116; t=1717683699; c=relaxed/simple;
+	bh=BdzbaNDxUCxl8bWzJJ3dMJoRx9rMBcxeQ2JigSJIaYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0zcgISbtECKY2qHpkVpQ9BeXice1KVctQemNf8geijL9AsHFFKCYS5+nmTLvdGorxx+HpThthbPa95btwUsXbHOn6p7rGDECABCvb+Fo/5CBqXwEMhENN4DxHrHE6b8J7iYIo3AvOiU5dfj/JgbVTCJh3Gtanf0zmuQWbQjxgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDJHhB9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DC9C4AF0E;
-	Thu,  6 Jun 2024 14:11:02 +0000 (UTC)
+	 MIME-Version; b=n+PUdqvn/xLQganvAAX3zE5+5EKius/da+JpVWmimK664vcMIts48dUrCmgdfI3QLotbyEURpULPSA9CNnTg+GKNhQ6rs3qAYm5esNMfOipL/cUkt2c7+ccM0P0IiwQfxPoI7r8ywwkKkcODm6wCbkM05600uadey6SuLD8AD/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHYj8vC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F0EC32781;
+	Thu,  6 Jun 2024 14:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683062;
-	bh=+QFPghnXvEzqHpPqnp8E369ROVPcKtEoIxpo6kkCsi0=;
+	s=korg; t=1717683699;
+	bh=BdzbaNDxUCxl8bWzJJ3dMJoRx9rMBcxeQ2JigSJIaYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDJHhB9RUgm6nUgmg99KxPyGPZEvoDoC8fn7xHYyT5yTdEJh3x6xPZVYUhyYOxmLp
-	 aFelX/BDzo2g89zf9XtHXGJ6YUHRx8GRf23XpvEUs0rnlKnhyG/aUYjq5PI3zyZ1/x
-	 dgX2A5CJ3GbNBnx8tGPUObtWFT10PYMRl9y+AZ+A=
+	b=gHYj8vC9uvDiC5+lvtT/W4SZs5yQwxJwZcnmxYcemm9hc9R4pvHJWn0hoxZ8P5dg8
+	 I3F35qUWGo2z2259yv5TcIOQMFcNRnLuq1DYyN6lZSOqu4r12iq8NVLwZ81c6ES3gc
+	 LDjo6yiSzYdFOO7Lh2JrFjY95v77X/NFCuF4arh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 313/374] net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM
+Subject: [PATCH 6.6 620/744] ALSA: hda: cs35l56: Initialize all ASP1 registers
 Date: Thu,  6 Jun 2024 16:04:52 +0200
-Message-ID: <20240606131702.349367429@linuxfoundation.org>
+Message-ID: <20240606131752.388654311@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 52a2f0608366a629d43dacd3191039c95fef74ba ]
+[ Upstream commit 856ce8982169acb31a25c5f2ecd2570ab8a6af46 ]
 
-LED Select (LED_SEL) bit in the LED General Purpose IO Configuration
-register is used to determine the functionality of external LED pins
-(Speed Indicator, Link and Activity Indicator, Full Duplex Link
-Indicator). The default value for this bit is 0 when no EEPROM is
-present. If a EEPROM is present, the default value is the value of the
-LED Select bit in the Configuration Flags of the EEPROM. A USB Reset or
-Lite Reset (LRST) will cause this bit to be restored to the image value
-last loaded from EEPROM, or to be set to 0 if no EEPROM is present.
+Add ASP1_FRAME_CONTROL1, ASP1_FRAME_CONTROL5 and the ASP1_TX?_INPUT
+registers to the sequence used to initialize the ASP configuration.
+Write this sequence to the cache and directly to the registers to
+ensure that they match.
 
-While configuring the dual purpose GPIO/LED pins to LED outputs in the
-LED General Purpose IO Configuration register, the LED_SEL bit is changed
-as 0 and resulting the configured value from the EEPROM is cleared. The
-issue is fixed by using read-modify-write approach.
+A system-specific firmware can patch these registers to values that are
+not the silicon default, so that the CS35L56 boots already in the
+configuration used by Windows or by "driverless" Windows setups such
+as factory tuning.
 
-Fixes: f293501c61c5 ("smsc95xx: configure LED outputs")
-Signed-off-by: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Woojung Huh <woojung.huh@microchip.com>
-Link: https://lore.kernel.org/r/20240523085314.167650-1-Parthiban.Veerasooran@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+These may not match how Linux is configuring the HDA codec. And anyway
+on Linux the ALSA controls are used to configure routing options.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
+Link: https://msgid.link/r/20240129162737.497-10-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: d344873c4cbd ("ALSA: hda: cs35l56: Fix lifetime of cs_dsp instance")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/smsc95xx.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ sound/pci/hda/cs35l56_hda.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index cbea246664795..8e82184be5e7d 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -879,7 +879,7 @@ static int smsc95xx_start_rx_path(struct usbnet *dev)
- static int smsc95xx_reset(struct usbnet *dev)
- {
- 	struct smsc95xx_priv *pdata = dev->driver_priv;
--	u32 read_buf, write_buf, burst_cap;
-+	u32 read_buf, burst_cap;
- 	int ret = 0, timeout;
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index 05b1412868fc0..e599b287f0961 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -29,14 +29,23 @@
+   *  ASP1_RX_WL = 24 bits per sample
+   *  ASP1_TX_WL = 24 bits per sample
+   *  ASP1_RXn_EN 1..3 and ASP1_TXn_EN 1..4 disabled
++  *
++  * Override any Windows-specific mixer settings applied by the firmware.
+   */
+ static const struct reg_sequence cs35l56_hda_dai_config[] = {
+ 	{ CS35L56_ASP1_CONTROL1,	0x00000021 },
+ 	{ CS35L56_ASP1_CONTROL2,	0x20200200 },
+ 	{ CS35L56_ASP1_CONTROL3,	0x00000003 },
++	{ CS35L56_ASP1_FRAME_CONTROL1,	0x03020100 },
++	{ CS35L56_ASP1_FRAME_CONTROL5,	0x00020100 },
+ 	{ CS35L56_ASP1_DATA_CONTROL5,	0x00000018 },
+ 	{ CS35L56_ASP1_DATA_CONTROL1,	0x00000018 },
+ 	{ CS35L56_ASP1_ENABLES1,	0x00000000 },
++	{ CS35L56_ASP1TX1_INPUT,	0x00000018 },
++	{ CS35L56_ASP1TX2_INPUT,	0x00000019 },
++	{ CS35L56_ASP1TX3_INPUT,	0x00000020 },
++	{ CS35L56_ASP1TX4_INPUT,	0x00000028 },
++
+ };
  
- 	netif_dbg(dev, ifup, dev->net, "entering smsc95xx_reset\n");
-@@ -1003,10 +1003,13 @@ static int smsc95xx_reset(struct usbnet *dev)
- 		return ret;
- 	netif_dbg(dev, ifup, dev->net, "ID_REV = 0x%08x\n", read_buf);
+ static void cs35l56_hda_play(struct cs35l56_hda *cs35l56)
+@@ -132,6 +141,10 @@ static int cs35l56_hda_runtime_resume(struct device *dev)
+ 		}
+ 	}
  
-+	ret = smsc95xx_read_reg(dev, LED_GPIO_CFG, &read_buf);
-+	if (ret < 0)
-+		return ret;
- 	/* Configure GPIO pins as LED outputs */
--	write_buf = LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
--		LED_GPIO_CFG_FDX_LED;
--	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, write_buf);
-+	read_buf |= LED_GPIO_CFG_SPD_LED | LED_GPIO_CFG_LNK_LED |
-+		    LED_GPIO_CFG_FDX_LED;
-+	ret = smsc95xx_write_reg(dev, LED_GPIO_CFG, read_buf);
- 	if (ret < 0)
- 		return ret;
++	ret = cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
++	if (ret)
++		goto err;
++
+ 	return 0;
  
+ err:
+@@ -969,6 +982,9 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int id)
+ 
+ 	regmap_multi_reg_write(cs35l56->base.regmap, cs35l56_hda_dai_config,
+ 			       ARRAY_SIZE(cs35l56_hda_dai_config));
++	ret = cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
++	if (ret)
++		goto err;
+ 
+ 	/*
+ 	 * By default only enable one ASP1TXn, where n=amplifier index,
 -- 
 2.43.0
 
