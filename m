@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-48708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FAD8FEA25
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2928FEA66
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B08441F247DF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8913B289E14
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F66C1990A9;
-	Thu,  6 Jun 2024 14:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AFF19FA82;
+	Thu,  6 Jun 2024 14:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMyoEn/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYjSJ/lH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BDE19E7E1;
-	Thu,  6 Jun 2024 14:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448F6197527;
+	Thu,  6 Jun 2024 14:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683108; cv=none; b=G5SXEECIoqerQd8XptySbJ/o7F3vacbfHh6+7DnUIHBYHahC/0KfAQ2ZTJFHX2djmUcbIJ9WfTN4IFBt3e+wI4EI1Ve7yAoKz865XrRO+slIbuUSr/DN8wf8NSZoyIyqaePjq1ioWi4oN0zZnq7xShGEEsD1+b9j2hXOO8y8XJ4=
+	t=1717683135; cv=none; b=FQO5RO5/cKjaCuDcT/V/GbuULrCGtDVt2K6r6NA0kNSuYAnFN+q5icwnfLOMJ57bsKnazZCG2LRra/xRdBSfZdF+vzIV9RD64o2wBatisSY5o69JJ9VH2WP+0EUb7akjgmK/I905LhAVo22JxOkGRifkBI9uQRWErhfZt2xNRE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683108; c=relaxed/simple;
-	bh=hNeUfJa6Xe+7vWr0Mi9l4Llh/CGw8iSrVXbLF2CXApI=;
+	s=arc-20240116; t=1717683135; c=relaxed/simple;
+	bh=rUM+9sPk0Ei61jOo3McePxfUteBhYm8T0m4xKcU3MDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCJ5+yYRoaWBcLHPzcFF6GrIa5zpcSI8zb+e5fzoiwKGJ+zQmQAirEX7k21OJc5ZtmsGam94V6LlhaYVVVONSQ4P1Do9podUiUDE6qqQjrXYLQd+raKveltniWG4AUWt4UeL2d7VFUF7JatFJmXjHQWpzOCROB46wiBoYZJHqYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMyoEn/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C328FC32781;
-	Thu,  6 Jun 2024 14:11:47 +0000 (UTC)
+	 MIME-Version; b=aKSAIOee4RXgcGOT8fH3IXzWcF6hTdCqhAZy+bsH+7Yu1EfYb461xPc1XPtkyM1ZZTvJ4I/pusfTG2IjLYmKDN9Xfbr9Gh2UqjeoIMElyrdtNaoWxPc+9kl6NM2xsgH0I8hkawUKSFvgyc+z5OU5P0lHoMLxfI+oxWFKRXrte6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYjSJ/lH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2328FC32781;
+	Thu,  6 Jun 2024 14:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683107;
-	bh=hNeUfJa6Xe+7vWr0Mi9l4Llh/CGw8iSrVXbLF2CXApI=;
+	s=korg; t=1717683135;
+	bh=rUM+9sPk0Ei61jOo3McePxfUteBhYm8T0m4xKcU3MDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMyoEn/yZSJhWatSZHniZI+Y1A2SXhKxcb20KAeqw/BHK7sL7FgHrzQG75z7Q7fdh
-	 HMOvs3WylukJoiIInqPXPspN2TT5lPFGzJ3tuWSS6hHMATVe5kGqmQAUvIUFNzv6wm
-	 +O8Z6NaKWXeTMHXWT/UfS+pJAC61kh4ELkaR5GNM=
+	b=eYjSJ/lHt2jqUyxv7xREzul1yvgYeJBNIZG77DN3UXmgN7Gv/lZArfBVuRptibmP0
+	 ZvpcMmuB5AtWnlx6TWVC25BC4zXBRyBenduzk+UxhVxJPzsT/cbcnlzbnoyIOcoALo
+	 ax9T9PqEeLj0pLnNJS7Iu+lgKkrVvEr5dz9Y5EY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	kernel test robot <oliver.sang@intel.com>,
+	Simo Sorce <simo@redhat.com>,
+	David Howells <dhowells@redhat.com>,
 	Eric Biggers <ebiggers@google.com>,
 	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.6 032/744] KEYS: asymmetric: Add missing dependency on CRYPTO_SIG
-Date: Thu,  6 Jun 2024 15:55:04 +0200
-Message-ID: <20240606131733.488130928@linuxfoundation.org>
+Subject: [PATCH 6.6 033/744] KEYS: asymmetric: Add missing dependencies of FIPS_SIGNATURE_SELFTEST
+Date: Thu,  6 Jun 2024 15:55:05 +0200
+Message-ID: <20240606131733.517274835@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,43 +70,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Biggers <ebiggers@google.com>
 
-commit dcaa86b904ea3761e62c849957dd0904e126bf4a upstream.
+commit 9d2fd8bdc12f403a5c35c971936a0e1d5cb5108e upstream.
 
-Make ASYMMETRIC_PUBLIC_KEY_SUBTYPE select CRYPTO_SIG to avoid build
-errors like the following, which were possible with
-CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y && CONFIG_CRYPTO_SIG=n:
+Since the signature self-test uses RSA and SHA-256, it must only be
+enabled when those algorithms are enabled.  Otherwise it fails and
+panics the kernel on boot-up.
 
-    ld: vmlinux.o: in function `public_key_verify_signature':
-    (.text+0x306280): undefined reference to `crypto_alloc_sig'
-    ld: (.text+0x306300): undefined reference to `crypto_sig_set_pubkey'
-    ld: (.text+0x306324): undefined reference to `crypto_sig_verify'
-    ld: (.text+0x30636c): undefined reference to `crypto_sig_set_privkey'
-
-Fixes: 63ba4d67594a ("KEYS: asymmetric: Use new crypto interface without scatterlists")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202404221528.51d75177-lkp@intel.com
+Fixes: 3cde3174eb91 ("certs: Add FIPS selftests")
 Cc: stable@vger.kernel.org
+Cc: Simo Sorce <simo@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/asymmetric_keys/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ crypto/asymmetric_keys/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
-index 59ec726b7c77..3f089abd6fc9 100644
 --- a/crypto/asymmetric_keys/Kconfig
 +++ b/crypto/asymmetric_keys/Kconfig
-@@ -15,6 +15,7 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
- 	select MPILIB
- 	select CRYPTO_HASH_INFO
- 	select CRYPTO_AKCIPHER
-+	select CRYPTO_SIG
- 	select CRYPTO_HASH
- 	help
- 	  This option provides support for asymmetric public key type handling.
--- 
-2.45.1
-
+@@ -86,5 +86,7 @@ config FIPS_SIGNATURE_SELFTEST
+ 	depends on ASYMMETRIC_KEY_TYPE
+ 	depends on PKCS7_MESSAGE_PARSER=X509_CERTIFICATE_PARSER
+ 	depends on X509_CERTIFICATE_PARSER
++	depends on CRYPTO_RSA
++	depends on CRYPTO_SHA256
+ 
+ endif # ASYMMETRIC_KEY_TYPE
 
 
 
