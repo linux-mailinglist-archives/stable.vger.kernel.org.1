@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24CA8FECA2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F068FE93B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74820B23DC5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56623284127
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D42F19B3F7;
-	Thu,  6 Jun 2024 14:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A11619938A;
+	Thu,  6 Jun 2024 14:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCVr61vv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Weq9Z4UX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF68198A35;
-	Thu,  6 Jun 2024 14:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC0D199386;
+	Thu,  6 Jun 2024 14:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683390; cv=none; b=jC9LBQvDLdIpgd5F3tEj4F5utPgpxST3qfx8kfLUJ1vle5gtKyyX497Q1+wJ5Z/25Tzs3ooZH5Q3DrxWELjn2mgp3YlaIDkKuZabzhWUa32bbvqwICuQrmOkSv6h0RRZ0KqqVthxKrZckJ2GBaVlY9b4LpO9ndqjMmxmtg08IOM=
+	t=1717682995; cv=none; b=ugdDF1DZLRbHaCuANeXKNO5wBv5KaHcPXOxVzm72ziuXtWOdnzLZLsrclLNioUyM6VqMmXFszgLCfgLXoZ/GWV6t5QcoAqIyI/TLFKCqVS8XYLmBiC2GTYLgv9Bp3vNnRJ8U2hyFmCINFEpCdtGkvcoAVKx5XUI456z5bzRIwD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683390; c=relaxed/simple;
-	bh=62cEcQcFOJHqZL/baAixI0rzR8EimnZdzqBM2eRkaAA=;
+	s=arc-20240116; t=1717682995; c=relaxed/simple;
+	bh=OEk1jluazL4O7lzSMrJrV2ydkS9DUx1s5H2lJQJFpLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngq4NOiAqoDDpe3Vhko8cKJx/6Vq63qrQc0jCcf33O6mz8w5G5lLA5m2Mx64tDYFweWklPisfdXktEZT9mUOf3Iw4YD35TCo1yiWZ3GNNOCG88ALEC5yzdCqJF4c8vN/fM2YiYm12h46+83gtN5aKC38WTkVtENSKxWMfBF5Y3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCVr61vv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC10DC2BD10;
-	Thu,  6 Jun 2024 14:16:29 +0000 (UTC)
+	 MIME-Version; b=bOVcULaIx3h3WmrxHliK9Ronc07ODfmKOO5n06FYVvnYB/HUs5Av8SYlcQe2sZXpc1oO9MG4SY+tVHAJqDO1UynhG8+TA4xlFuSLhIdafOx7kaPLkjMzETP9qkZO30HU0Qwsir9MTBiJjOLYTx7UVVXDnBoDXoVSGFrK5gCw5qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Weq9Z4UX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCEAC2BD10;
+	Thu,  6 Jun 2024 14:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683389;
-	bh=62cEcQcFOJHqZL/baAixI0rzR8EimnZdzqBM2eRkaAA=;
+	s=korg; t=1717682995;
+	bh=OEk1jluazL4O7lzSMrJrV2ydkS9DUx1s5H2lJQJFpLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZCVr61vvNgK7qInqZE/Bw8qLRlzyzJxogIGicUV5U/pu/idTjI8bTYPvZ4Yq4ojwG
-	 KeBl3lC8s6obdFHMjNb8bCMBktudX6WHYrezCCun/mGTxXJBTa9Mzv//bg1bqxrZKq
-	 6N1eTwjqGlZH9zCJfKRjpnFDiclCGsjUBr7t1xRE=
+	b=Weq9Z4UX6hGFTNOirA+t8looniBN4vtg6XuPgUHpQlUARkRu7Jbc4gXU0fy60jOse
+	 PjRxEnJqk458MoDz9TP2HR4HkF4IbhFpWWQmzvvxAtr170F1ZFua9URnkGY5hGnRXt
+	 TWGOBbYKWLCb5tpo3bDKzkjWYlqXn5/C+HrneFyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Popescu <catalin.popescu@leica-geosystems.com>,
-	Marek Vasut <marex@denx.de>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/473] clk: rs9: fix wrong default value for clock amplitude
+Subject: [PATCH 6.9 194/374] um: Fix the declaration of kasan_map_memory
 Date: Thu,  6 Jun 2024 16:02:53 +0200
-Message-ID: <20240606131707.910363295@linuxfoundation.org>
+Message-ID: <20240606131658.350089195@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 1758c68c81b8b881818fcebaaeb91055362a82f8 ]
+[ Upstream commit 6a85e34c4d07d2ec0c153067baff338ac0db55ca ]
 
-According to 9FGV0241, 9FGV0441 & 9FGV0841 datasheets, the default
-value for the clock amplitude is 0.8V, while the driver assumes 0.7V.
+Make it match its definition (size_t vs unsigned long). And declare
+it in a shared header to fix the -Wmissing-prototypes warning, as it
+is defined in the user code and called in the kernel code.
 
-Additionally, define constants for default values for both clock
-amplitude and spread spectrum and use them.
-
-Fixes: 892e0ddea1aa ("clk: rs9: Add Renesas 9-series PCIe clock generator driver")
-Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20240415140348.2887619-1-catalin.popescu@leica-geosystems.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 5b301409e8bc ("UML: add support for KASAN under x86_64")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-renesas-pcie.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/um/include/asm/kasan.h        | 1 -
+ arch/um/include/shared/kern_util.h | 2 ++
+ arch/um/os-Linux/mem.c             | 1 +
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-renesas-pcie.c b/drivers/clk/clk-renesas-pcie.c
-index 35b2519f16961..bba0e7c667dc1 100644
---- a/drivers/clk/clk-renesas-pcie.c
-+++ b/drivers/clk/clk-renesas-pcie.c
-@@ -24,10 +24,12 @@
- #define RS9_REG_SS_AMP_0V7			0x1
- #define RS9_REG_SS_AMP_0V8			0x2
- #define RS9_REG_SS_AMP_0V9			0x3
-+#define RS9_REG_SS_AMP_DEFAULT			RS9_REG_SS_AMP_0V8
- #define RS9_REG_SS_AMP_MASK			0x3
- #define RS9_REG_SS_SSC_100			0
- #define RS9_REG_SS_SSC_M025			(1 << 3)
- #define RS9_REG_SS_SSC_M050			(3 << 3)
-+#define RS9_REG_SS_SSC_DEFAULT			RS9_REG_SS_SSC_100
- #define RS9_REG_SS_SSC_MASK			(3 << 3)
- #define RS9_REG_SS_SSC_LOCK			BIT(5)
- #define RS9_REG_SR				0x2
-@@ -196,8 +198,8 @@ static int rs9_get_common_config(struct rs9_driver_data *rs9)
- 	int ret;
+diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
+index 0d6547f4ec85c..f97bb1f7b8514 100644
+--- a/arch/um/include/asm/kasan.h
++++ b/arch/um/include/asm/kasan.h
+@@ -24,7 +24,6 @@
  
- 	/* Set defaults */
--	rs9->pll_amplitude = RS9_REG_SS_AMP_0V7;
--	rs9->pll_ssc = RS9_REG_SS_SSC_100;
-+	rs9->pll_amplitude = RS9_REG_SS_AMP_DEFAULT;
-+	rs9->pll_ssc = RS9_REG_SS_SSC_DEFAULT;
+ #ifdef CONFIG_KASAN
+ void kasan_init(void);
+-void kasan_map_memory(void *start, unsigned long len);
+ extern int kasan_um_is_ready;
  
- 	/* Output clock amplitude */
- 	ret = of_property_read_u32(np, "renesas,out-amplitude-microvolt",
-@@ -238,13 +240,13 @@ static void rs9_update_config(struct rs9_driver_data *rs9)
- 	int i;
+ #ifdef CONFIG_STATIC_LINK
+diff --git a/arch/um/include/shared/kern_util.h b/arch/um/include/shared/kern_util.h
+index 789b83013f355..af8cdfc75897e 100644
+--- a/arch/um/include/shared/kern_util.h
++++ b/arch/um/include/shared/kern_util.h
+@@ -66,4 +66,6 @@ extern void fatal_sigsegv(void) __attribute__ ((noreturn));
  
- 	/* If amplitude is non-default, update it. */
--	if (rs9->pll_amplitude != RS9_REG_SS_AMP_0V7) {
-+	if (rs9->pll_amplitude != RS9_REG_SS_AMP_DEFAULT) {
- 		regmap_update_bits(rs9->regmap, RS9_REG_SS, RS9_REG_SS_AMP_MASK,
- 				   rs9->pll_amplitude);
- 	}
+ void um_idle_sleep(void);
  
- 	/* If SSC is non-default, update it. */
--	if (rs9->pll_ssc != RS9_REG_SS_SSC_100) {
-+	if (rs9->pll_ssc != RS9_REG_SS_SSC_DEFAULT) {
- 		regmap_update_bits(rs9->regmap, RS9_REG_SS, RS9_REG_SS_SSC_MASK,
- 				   rs9->pll_ssc);
- 	}
++void kasan_map_memory(void *start, size_t len);
++
+ #endif
+diff --git a/arch/um/os-Linux/mem.c b/arch/um/os-Linux/mem.c
+index 8530b2e086049..c6c9495b14321 100644
+--- a/arch/um/os-Linux/mem.c
++++ b/arch/um/os-Linux/mem.c
+@@ -15,6 +15,7 @@
+ #include <sys/vfs.h>
+ #include <linux/magic.h>
+ #include <init.h>
++#include <kern_util.h>
+ #include <os.h>
+ 
+ /*
 -- 
 2.43.0
 
