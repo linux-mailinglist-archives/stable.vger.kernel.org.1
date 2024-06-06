@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-48511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A78F8FE94D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15768FEE40
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BCBA283F64
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54AC21F23C23
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18363197A7B;
-	Thu,  6 Jun 2024 14:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B561A01CB;
+	Thu,  6 Jun 2024 14:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ssiw+Oku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Br8+odDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD74196D9B;
-	Thu,  6 Jun 2024 14:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A3D13B5B5;
+	Thu,  6 Jun 2024 14:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683004; cv=none; b=cgNt2/dDHLYB96bJIlk83G6fTIw4JG6WWxjVtQw6ohOEx3sF7tbkfxwIDM5nVB8jJRaKV6dX2/D5n1coEaYOPD+jXFC0pqLba3L0lI9xxbUG2pe6L5JzJbEJzyHvoMYbaNDyfCUtT8n5AhoFNzR2HD3Jsa3XxyEW/F1xbe7T9e4=
+	t=1717683637; cv=none; b=J8lzzvDV9NTSKoAGjys0IcSf6rMO6BeBBo1XaMYq3iq5Vim42PAHxqvctLDG+as0A5W89JXOC7qlkBP6lap9XUS2kejqmolVeoKllkxUa9TNbwn2ps9e6vEdbjUhQQgzH2bgFY1lS6hdJngb+QMng3onP8N/fn1H7m7OZvAkM+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683004; c=relaxed/simple;
-	bh=O6My57oRLoHZoSnvkU1CP8psroloR3wNvvYosbOj4pY=;
+	s=arc-20240116; t=1717683637; c=relaxed/simple;
+	bh=pveFQlVWUQ0RH3kXLZjRtBSla9xhJPjHstDPAyFyieA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmWiFh4vKgjhmOm3D0Kw/Kg5Wl+8CVE7/0gcF4I3BVPZgMHuNYRWjEcb1cx1+bW/Y02miMDTAVOneV+Q3jgrnW6Nd8re5spUD04vSLhtrbOiPZQ/OX1E7P+3KAO3xfbd0AbIW6N7wHQVS6GuBoKPOp4osrj48+ReXTSQYfPp9xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ssiw+Oku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ADDC2BD10;
-	Thu,  6 Jun 2024 14:10:04 +0000 (UTC)
+	 MIME-Version; b=ciOSwkQyoef3JxQslY9MBDVE9hWg9HSwtuzWvyQYD2Q1tiCrJBp2/26Nfc7EVSrsB2I9QMGGv18Wuh1OjthjXBh2cKI/b3nVytJDMkLir5Snev6U0Ly5OwqpOR3VfY9KRj0F4CJB0ove8xd5FYzj1pZRFRVA5ZaS/BI/1Q9wNTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Br8+odDd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA3BC2BD10;
+	Thu,  6 Jun 2024 14:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683004;
-	bh=O6My57oRLoHZoSnvkU1CP8psroloR3wNvvYosbOj4pY=;
+	s=korg; t=1717683637;
+	bh=pveFQlVWUQ0RH3kXLZjRtBSla9xhJPjHstDPAyFyieA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ssiw+OkuToXd0bKUaf+1GE5Z09zzXF82CCevIT5tnPe1aMq/vybj79ZR725U0x4el
-	 iDg48hemikPK3nLKTSst4J/SMgWEajz3YyHdaV6YI+h8QNBa1e1eRKhEpEIFHRF84W
-	 buwyA7lKMnjitgb/BgBS7XablesqOrJ5h2lf4DNo=
+	b=Br8+odDd56sL3LSGOpHNeMmikCxXr5Kwt0IoJxTknX4U4pgyF7kaOpMhQQOQ0tVoq
+	 taIt6BOQmPyaeuUliCX3zQHRfqn+uV+yWBSgkbC+5okuIDCh1sWJagohJD6xZHwVnO
+	 8q4EKDLBBxwh6RMZBEi0hzqfRol+OH6xv7uZxSMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Huai-Yuan Liu <qq810974084@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 184/374] media: mediatek: vcodec: fix possible unbalanced PM counter
+Subject: [PATCH 6.6 491/744] ppdev: Add an error check in register_device
 Date: Thu,  6 Jun 2024 16:02:43 +0200
-Message-ID: <20240606131658.034705080@linuxfoundation.org>
+Message-ID: <20240606131748.188220626@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Huai-Yuan Liu <qq810974084@gmail.com>
 
-[ Upstream commit c28d4921a1e3ce0a0374b7e9d68593be8802c42a ]
+[ Upstream commit fbf740aeb86a4fe82ad158d26d711f2f3be79b3e ]
 
-It is possible that mtk_vcodec_enc_pw_on fails, and in that scenario
-the PM counter is not incremented, and subsequent call to
-mtk_vcodec_enc_pw_off decrements the counter, leading to a PM imbalance.
-Fix by bailing out of venc_if_encode in the case when mtk_vcodec_enc_pw_on
-fails.
+In register_device, the return value of ida_simple_get is unchecked,
+in witch ida_simple_get will use an invalid index value.
 
-Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Encoder Driver")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+To address this issue, index should be checked after ida_simple_get. When
+the index value is abnormal, a warning message should be printed, the port
+should be dropped, and the value should be recorded.
+
+Fixes: 9a69645dde11 ("ppdev: fix registering same device name")
+Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
+Link: https://lore.kernel.org/r/20240412083840.234085-1-qq810974084@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c     | 4 +++-
- .../platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h     | 2 +-
- drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c | 5 ++++-
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/char/ppdev.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c
-index a22b7dfc656e1..1a2b14a3e219c 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.c
-@@ -58,13 +58,15 @@ int mtk_vcodec_init_enc_clk(struct mtk_vcodec_enc_dev *mtkdev)
- 	return 0;
- }
+diff --git a/drivers/char/ppdev.c b/drivers/char/ppdev.c
+index ee951b265213f..58e9dcc2a3087 100644
+--- a/drivers/char/ppdev.c
++++ b/drivers/char/ppdev.c
+@@ -296,28 +296,35 @@ static int register_device(int minor, struct pp_struct *pp)
+ 	if (!port) {
+ 		pr_warn("%s: no associated port!\n", name);
+ 		rc = -ENXIO;
+-		goto err;
++		goto err_free_name;
+ 	}
  
--void mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm)
-+int mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm)
- {
- 	int ret;
- 
- 	ret = pm_runtime_resume_and_get(pm->dev);
- 	if (ret)
- 		dev_err(pm->dev, "pm_runtime_resume_and_get fail: %d", ret);
+ 	index = ida_alloc(&ida_index, GFP_KERNEL);
++	if (index < 0) {
++		pr_warn("%s: failed to get index!\n", name);
++		rc = index;
++		goto err_put_port;
++	}
 +
-+	return ret;
- }
+ 	memset(&ppdev_cb, 0, sizeof(ppdev_cb));
+ 	ppdev_cb.irq_func = pp_irq;
+ 	ppdev_cb.flags = (pp->flags & PP_EXCL) ? PARPORT_FLAG_EXCL : 0;
+ 	ppdev_cb.private = pp;
+ 	pdev = parport_register_dev_model(port, name, &ppdev_cb, index);
+-	parport_put_port(port);
  
- void mtk_vcodec_enc_pw_off(struct mtk_vcodec_pm *pm)
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h
-index 157ea08ba9e36..2e28f25e36cc4 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_pm.h
-@@ -10,7 +10,7 @@
- #include "mtk_vcodec_enc_drv.h"
+ 	if (!pdev) {
+ 		pr_warn("%s: failed to register device!\n", name);
+ 		rc = -ENXIO;
+ 		ida_free(&ida_index, index);
+-		goto err;
++		goto err_put_port;
+ 	}
  
- int mtk_vcodec_init_enc_clk(struct mtk_vcodec_enc_dev *dev);
--void mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm);
-+int mtk_vcodec_enc_pw_on(struct mtk_vcodec_pm *pm);
- void mtk_vcodec_enc_pw_off(struct mtk_vcodec_pm *pm);
- void mtk_vcodec_enc_clock_on(struct mtk_vcodec_pm *pm);
- void mtk_vcodec_enc_clock_off(struct mtk_vcodec_pm *pm);
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c b/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c
-index c402a686f3cb2..e83747b8d69ab 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc_drv_if.c
-@@ -64,7 +64,9 @@ int venc_if_encode(struct mtk_vcodec_enc_ctx *ctx,
- 	ctx->dev->curr_ctx = ctx;
- 	spin_unlock_irqrestore(&ctx->dev->irqlock, flags);
- 
--	mtk_vcodec_enc_pw_on(&ctx->dev->pm);
-+	ret = mtk_vcodec_enc_pw_on(&ctx->dev->pm);
-+	if (ret)
-+		goto venc_if_encode_pw_on_err;
- 	mtk_vcodec_enc_clock_on(&ctx->dev->pm);
- 	ret = ctx->enc_if->encode(ctx->drv_handle, opt, frm_buf,
- 				  bs_buf, result);
-@@ -75,6 +77,7 @@ int venc_if_encode(struct mtk_vcodec_enc_ctx *ctx,
- 	ctx->dev->curr_ctx = NULL;
- 	spin_unlock_irqrestore(&ctx->dev->irqlock, flags);
- 
-+venc_if_encode_pw_on_err:
- 	mtk_venc_unlock(ctx);
- 	return ret;
+ 	pp->pdev = pdev;
+ 	pp->index = index;
+ 	dev_dbg(&pdev->dev, "registered pardevice\n");
+-err:
++err_put_port:
++	parport_put_port(port);
++err_free_name:
+ 	kfree(name);
+ 	return rc;
  }
 -- 
 2.43.0
