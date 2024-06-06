@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-48826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4D68FEAB4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9235F8FEC0C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 964A3B239AE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A041C22C27
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821DB1A0DD1;
-	Thu,  6 Jun 2024 14:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AE01AC439;
+	Thu,  6 Jun 2024 14:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqfV011g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8CqR8Lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AE71A0DCF;
-	Thu,  6 Jun 2024 14:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665F019884B;
+	Thu,  6 Jun 2024 14:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683166; cv=none; b=MaUDlJQs0gMwlKcAN/b9kRcVTbD4pqUGV0nMdoSNRgaoXNM9o3NVYMIytnSo/ghQsvNwRtrTgb+8f3+h4YmdBv301nnrGgu+3Hh1pExvkwd1SxVqBp+kC7ORy6coQAxNi9TJwam7Eh5NRGGJvEP58YrvDLFbyrSJ/GLEqRdnvpw=
+	t=1717683324; cv=none; b=m5X1XdRoivIlpbzYGsNc+8GeDhLK4vOA3RF0YK9AdvXFKGDRvor0R8SOCqExQWmoItlfXDcwbC2OVd6madCvd92EEzXBF0ZUdzdxprQ56PA8zK0J+LkSIw7wmBrFAkGT4TcMYx7DZOPKUOzKk1y004czK8adruHgsnszMeVttT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683166; c=relaxed/simple;
-	bh=pP5ondk5fPXQ7Sfx7dWAdice/3lP7HAVlfUyvkpSpPg=;
+	s=arc-20240116; t=1717683324; c=relaxed/simple;
+	bh=ectl5x+NUrTfmMJ20nPv3UQErxMvy+R4oZGGZXcbzEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1jQU/R2AHFR/UlvapQ6I2bOrI2zGUEc6arAjIrZvNIRN1A/40plQ2Xgx93SqyHXCg0gt2tnrxg3tn3LywnHgsfGyS8Nr3RTcLrOiJMXlNsXXshKX+Lo9oNYxwfdr2BWh904KCAQrti9rNAR+IgFU3SRnPvutTYxSjQw2hYd2dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqfV011g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE9FC2BD10;
-	Thu,  6 Jun 2024 14:12:46 +0000 (UTC)
+	 MIME-Version; b=a6wWTErf2GX/FFcJ/Ar3stVZS1jWMYGgBwLBH9F82gfu6m9o1t+Gl1aaqLAFtMhpEssSIMa1xOZuaJvhPP9/65DO6UCFf5IfjHZluQVDncHmbpulik5RVDsXRVkml+ef5zKp8T2nFzhF+U3Sy0ko32G+IBBTVvA5AwaPmezPY9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8CqR8Lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47593C2BD10;
+	Thu,  6 Jun 2024 14:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683166;
-	bh=pP5ondk5fPXQ7Sfx7dWAdice/3lP7HAVlfUyvkpSpPg=;
+	s=korg; t=1717683324;
+	bh=ectl5x+NUrTfmMJ20nPv3UQErxMvy+R4oZGGZXcbzEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqfV011gK+kL8nmIgG81Hfq/SgTZu41+HT/qei31gy7GaTRxL6OQ2Mnlm1otxVIfs
-	 xhtwQ4goK03yVJGxM/GQV5/w/l69mzSeLo8Odx5FJibJjkU4jEF8oBIHCvTCBW3eu/
-	 iORG0BjzkEEAPie1Gnd6vAFu+utQyqpo9RJ1ji7I=
+	b=A8CqR8LhyjF8SJriJmFCQ7LZaqpjmdwacO0PGuTS0RLqY/bJR+EhJFJC+pDUytSsx
+	 LaInrg7jxwQ6ylR0PT5/9/MAoDLLJZ8zvBUpXlNqg0QEKwtTJePNZ0qFU3v5p2UfDi
+	 n/9iGIVLDIG25VPazIxeD/YK1/CnP20gp0kE76bY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Pin-yen Lin <treapking@chromium.org>
-Subject: [PATCH 6.1 007/473] serial: 8520_mtk: Set RTS on shutdown for Rx in-band wakeup
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 264/744] Bluetooth: Remove usage of the deprecated ida_simple_xx() API
 Date: Thu,  6 Jun 2024 15:58:56 +0200
-Message-ID: <20240606131700.057132691@linuxfoundation.org>
+Message-ID: <20240606131740.861264341@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 4244f830a56058ee0670d80e7ac9fd7c982eb480 upstream.
+[ Upstream commit 9c16d0c8d93e3d2a95c5ed927b061f244db75579 ]
 
-When Rx in-band wakeup is enabled, set RTS to true in mtk8250_shutdown()
-so the connected device can still send message and trigger IRQ when the
-system is suspended.
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-Fixes: 18c9d4a3c249 ("serial: When UART is suspended, set RTS to false")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Link: https://lore.kernel.org/r/20240424130619.2924456-1-treapking@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that the upper limit of ida_simple_get() is exclusive, but the one of
+ida_alloc_max() is inclusive. So a -1 has been added when needed.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 84a4bb6548a2 ("Bluetooth: HCI: Remove HCI_AMP support")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_mtk.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_core.c | 9 +++++----
+ net/bluetooth/hci_sock.c | 4 ++--
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_mtk.c
-+++ b/drivers/tty/serial/8250/8250_mtk.c
-@@ -209,15 +209,19 @@ static int mtk8250_startup(struct uart_p
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index befe645d3f9bf..101ea9137dfef 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2609,10 +2609,11 @@ int hci_register_dev(struct hci_dev *hdev)
+ 	 */
+ 	switch (hdev->dev_type) {
+ 	case HCI_PRIMARY:
+-		id = ida_simple_get(&hci_index_ida, 0, HCI_MAX_ID, GFP_KERNEL);
++		id = ida_alloc_max(&hci_index_ida, HCI_MAX_ID - 1, GFP_KERNEL);
+ 		break;
+ 	case HCI_AMP:
+-		id = ida_simple_get(&hci_index_ida, 1, HCI_MAX_ID, GFP_KERNEL);
++		id = ida_alloc_range(&hci_index_ida, 1, HCI_MAX_ID - 1,
++				     GFP_KERNEL);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+@@ -2711,7 +2712,7 @@ int hci_register_dev(struct hci_dev *hdev)
+ 	destroy_workqueue(hdev->workqueue);
+ 	destroy_workqueue(hdev->req_workqueue);
+ err:
+-	ida_simple_remove(&hci_index_ida, hdev->id);
++	ida_free(&hci_index_ida, hdev->id);
  
- static void mtk8250_shutdown(struct uart_port *port)
- {
--#ifdef CONFIG_SERIAL_8250_DMA
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	struct mtk8250_data *data = port->private_data;
-+	int irq = data->rx_wakeup_irq;
+ 	return error;
+ }
+@@ -2793,7 +2794,7 @@ void hci_release_dev(struct hci_dev *hdev)
+ 	hci_dev_unlock(hdev);
  
-+#ifdef CONFIG_SERIAL_8250_DMA
- 	if (up->dma)
- 		data->rx_status = DMA_RX_SHUTDOWN;
- #endif
+ 	ida_destroy(&hdev->unset_handle_ida);
+-	ida_simple_remove(&hci_index_ida, hdev->id);
++	ida_free(&hci_index_ida, hdev->id);
+ 	kfree_skb(hdev->sent_cmd);
+ 	kfree_skb(hdev->req_skb);
+ 	kfree_skb(hdev->recv_event);
+diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
+index 3e7cd330d731a..4ee1b976678b2 100644
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -101,7 +101,7 @@ static bool hci_sock_gen_cookie(struct sock *sk)
+ 	int id = hci_pi(sk)->cookie;
  
--	return serial8250_do_shutdown(port);
-+	serial8250_do_shutdown(port);
-+
-+	if (irq >= 0)
-+		serial8250_do_set_mctrl(&up->port, TIOCM_RTS);
+ 	if (!id) {
+-		id = ida_simple_get(&sock_cookie_ida, 1, 0, GFP_KERNEL);
++		id = ida_alloc_min(&sock_cookie_ida, 1, GFP_KERNEL);
+ 		if (id < 0)
+ 			id = 0xffffffff;
+ 
+@@ -119,7 +119,7 @@ static void hci_sock_free_cookie(struct sock *sk)
+ 
+ 	if (id) {
+ 		hci_pi(sk)->cookie = 0xffffffff;
+-		ida_simple_remove(&sock_cookie_ida, id);
++		ida_free(&sock_cookie_ida, id);
+ 	}
  }
  
- static void mtk8250_disable_intrs(struct uart_8250_port *up, int mask)
+-- 
+2.43.0
+
 
 
 
