@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA138FEEB1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD1F8FE9A8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BEBC1F254BB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 672AD288A70
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56691ABE57;
-	Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2472119AD9B;
+	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4wYQjHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+o0gY7C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6439E19AD5A;
-	Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D797E19ADB6;
+	Thu,  6 Jun 2024 14:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683690; cv=none; b=Gi8WncxLhyf5wMRNJEU8wckChm4MLE8Os1X+nmHEckXPTbZgn2rNP4DRwVNk6usXYw1AO/fPawrQfLH/vlwz+VYycCnESxq72lEDaKO6ZRnRixtYCuhA/9CD+l4S2CzXYEh3BftWAgScbWMfP9yHbhXCBJ84ALG3Kv3PdXa82JU=
+	t=1717683051; cv=none; b=FsyuhWlDwn/HEGahdQMq9W9R7pKod5xupzeOKXWdktEQ/HXNDSSfhLfx/XBi4euEvkCfvBNpRTRArRm5xsUO45k+ExWZhjM4NyfkZwNPnTtVAB5G+y3Z3uxuMwqZi0119Fn50O5xAYm05Ma6Vd7nEwJBkCGQZoNmEr4LLR3u1Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683690; c=relaxed/simple;
-	bh=aV9etgWPi5D4r2Eboy9DgpMW91VsZI41hxWFm55njNM=;
+	s=arc-20240116; t=1717683051; c=relaxed/simple;
+	bh=IP6aCR9TaEUIytwK3Hn89HLj8WLj1TrUjw5FNasiwxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p4ZIGgMXAGQ11nPYJdo5rFQtvXKScn0Unc1XKxWhdL/bXalk/tMr1Vtb/+YZEb/7zDWqm+RqZjkEmyaDXyUaAX2mCjhhkZt9d/8EWWsBm/kfyrnLNOy8Yt16uqeAJcEKZO8WBfxo+TvbHL5WchPgGBR0wwqGqpXkmma4PAAz9vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4wYQjHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D13C2BD10;
-	Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
+	 MIME-Version; b=g/mGiTK6rh9TMHR347dvleUxRMQRMe4Shv4u3oMtWUc4/WASuTlanlSlx0GumWKo2x41lobNizQW0EM+WNvitWQtH68IvxmansshkpaZ/26/36XO4BB/xxnx1zrBjDzma3tLUOdpknj1XA8k9g+tSthZlWMePYTdTU7xuM604Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+o0gY7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84348C4AF16;
+	Thu,  6 Jun 2024 14:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683690;
-	bh=aV9etgWPi5D4r2Eboy9DgpMW91VsZI41hxWFm55njNM=;
+	s=korg; t=1717683051;
+	bh=IP6aCR9TaEUIytwK3Hn89HLj8WLj1TrUjw5FNasiwxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4wYQjHB7Ev9L9Ku41GBcKwq3MjR0oK+MfXNa2fLUyxhL88n8wdLRUxJDJniA6f1j
-	 6uppYUVnJ0iWK9cqWfiLAQYqUlAtZ8Rs10w24znqs4bkyjNgNiyR/qDMTb+SAkZSJW
-	 Lu3bAHmi1NJ2IwPac1dyxYbuCI36N0clE7PK/mTM=
+	b=e+o0gY7CpN73DOeGpC4AD1puV32nlWIqWpnlXjo40XGdSNby3Fx5JMj3rNsltNSB/
+	 TzSWJ8023NCxO01/jka62ixW8L8IEtI/4XBiv7lgzdaez5AqK8ZSOHyWEpAQxKPCRJ
+	 nKXOA5C73FUbl7kFyS2eZ8XKM6+IJP9pkH+Fa54c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongliang Mu <mudongliangabcd@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 599/744] media: flexcop-usb: fix sanity check of bNumEndpoints
+Subject: [PATCH 6.9 292/374] nvme-multipath: fix io accounting on failover
 Date: Thu,  6 Jun 2024 16:04:31 +0200
-Message-ID: <20240606131751.683576553@linuxfoundation.org>
+Message-ID: <20240606131701.661940902@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongliang Mu <mudongliangabcd@gmail.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit f62dc8f6bf82d1b307fc37d8d22cc79f67856c2f ]
+[ Upstream commit a2e4c5f5f68dbd206f132bc709b98dea64afc3b8 ]
 
-Commit d725d20e81c2 ("media: flexcop-usb: sanity checking of endpoint type
-") adds a sanity check for endpoint[1], but fails to modify the sanity
-check of bNumEndpoints.
+There are io stats accounting that needs to be handled, so don't call
+blk_mq_end_request() directly. Use the existing nvme_end_req() helper
+that already handles everything.
 
-Fix this by modifying the sanity check of bNumEndpoints to 2.
-
-Link: https://lore.kernel.org/linux-media/20220602055027.849014-1-dzm91@hust.edu.cn
-Fixes: d725d20e81c2 ("media: flexcop-usb: sanity checking of endpoint type")
-Signed-off-by: Dongliang Mu <mudongliangabcd@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: d4d957b53d91ee ("nvme-multipath: support io stats on the mpath device")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/b2c2/flexcop-usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c      | 2 +-
+ drivers/nvme/host/multipath.c | 3 ++-
+ drivers/nvme/host/nvme.h      | 1 +
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/b2c2/flexcop-usb.c b/drivers/media/usb/b2c2/flexcop-usb.c
-index 790787f0eba84..bcb24d8964981 100644
---- a/drivers/media/usb/b2c2/flexcop-usb.c
-+++ b/drivers/media/usb/b2c2/flexcop-usb.c
-@@ -515,7 +515,7 @@ static int flexcop_usb_init(struct flexcop_usb *fc_usb)
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 5008964f3ebe8..d513fd27589df 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -422,7 +422,7 @@ static inline void __nvme_end_req(struct request *req)
+ 		nvme_mpath_end_request(req);
+ }
  
- 	alt = fc_usb->uintf->cur_altsetting;
+-static inline void nvme_end_req(struct request *req)
++void nvme_end_req(struct request *req)
+ {
+ 	blk_status_t status = nvme_error_status(nvme_req(req)->status);
  
--	if (alt->desc.bNumEndpoints < 1)
-+	if (alt->desc.bNumEndpoints < 2)
- 		return -ENODEV;
- 	if (!usb_endpoint_is_isoc_in(&alt->endpoint[0].desc))
- 		return -ENODEV;
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index d16e976ae1a47..a4e46eb20be63 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -118,7 +118,8 @@ void nvme_failover_req(struct request *req)
+ 	blk_steal_bios(&ns->head->requeue_list, req);
+ 	spin_unlock_irqrestore(&ns->head->requeue_lock, flags);
+ 
+-	blk_mq_end_request(req, 0);
++	nvme_req(req)->status = 0;
++	nvme_end_req(req);
+ 	kblockd_schedule_work(&ns->head->requeue_work);
+ }
+ 
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 05532c2811774..d7bcc6d51e84e 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -767,6 +767,7 @@ static inline bool nvme_state_terminal(struct nvme_ctrl *ctrl)
+ 	}
+ }
+ 
++void nvme_end_req(struct request *req);
+ void nvme_complete_rq(struct request *req);
+ void nvme_complete_batch_req(struct request *req);
+ 
 -- 
 2.43.0
 
