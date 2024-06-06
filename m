@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-49560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4ED8FEDCB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FF78FE91A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 679221C22F18
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F89F1F23257
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57D11BD50C;
-	Thu,  6 Jun 2024 14:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2F2199224;
+	Thu,  6 Jun 2024 14:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6ur/tQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBRt7gM2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B481990AA;
-	Thu,  6 Jun 2024 14:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5C71991DF;
+	Thu,  6 Jun 2024 14:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683526; cv=none; b=TvDL+Pn0PXEeXz84jh3b3NXJ1DNtnUawHGZOxQIGUZMCF9VEpdYRTT7mcJgNX6hEyuaxUjuoFPyYX8/ooxkv9nC55w74CNx7umTUW8NSe0WoO66WKLdpokWPZeLrt9LyKd034V+5LisWtcMSu2PgpqXreKr2c4ORSVpzdRbWrPA=
+	t=1717682979; cv=none; b=uTq8naEkJURy/8o765axtu5LO5z+fOicyV5yZyO9XB52ZIYHJr2fB/Efvokd6zP9pBPk7YbsHIekqNGuFTwDNcGtw+eiKNUkh+p9dD1nhQycjgux6FGOJOMQyG7Oe5x9r4UwyoaEnNHMnmmfNPOBkpltWR1kLixDGgUsOtHmGlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683526; c=relaxed/simple;
-	bh=ggMbLLeG9lMe31+nWBgaMnw5Co1bYbVE8o5akJHtFBA=;
+	s=arc-20240116; t=1717682979; c=relaxed/simple;
+	bh=QgXaQBGhMC75bIXVqaYYrJlTotnmzDKWS9t7KvFR8Mw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTXhDXnuhmwW3T04zK51acaG3f7DirSSIXyfMLHS2ty/PE3wL5yGC/Wo8CHTPz64cYPldf/2U3GYfqozA/vNPK3AQc7x8ajb0GYlJJl/bU+5bKc4oFyXVIBUT/zgJY8QvVcgxepJosYwYOjXv7z8qMdW+kMkXiHTs+4Px69f4SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6ur/tQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740BAC32781;
-	Thu,  6 Jun 2024 14:18:46 +0000 (UTC)
+	 MIME-Version; b=ft1Mrjs8hvlDxAts9yqwxmDHXWvwIFkXqTaS65ywvqc5dlbyyQN7HjOTdw3rDaVWUZmboNQsFbG2uqqYYZXUTG7bucJyY6PhVMOqLHD6uX/0zNGq5Enlu3AAROypQG4AZLoiV/PVQPdntpkwJPStL0DgGsqkd6jggItkmnNzurw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBRt7gM2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC9BC32781;
+	Thu,  6 Jun 2024 14:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683526;
-	bh=ggMbLLeG9lMe31+nWBgaMnw5Co1bYbVE8o5akJHtFBA=;
+	s=korg; t=1717682979;
+	bh=QgXaQBGhMC75bIXVqaYYrJlTotnmzDKWS9t7KvFR8Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p6ur/tQVpHehZt0GowU3hdL+Ea+rcjnWYt4y5rYWhZkvSxyp7VmMvVNvXCkqanfdE
-	 mxDUFeaf3UGgGNpK6+Av64iUOc5f/DgXQRlziFbzgHolE5OMbeAwDWNRxVIyJtexrW
-	 fcShpd9TcTtERuieYdoh0kUcswW+BqvPYeuKU074=
+	b=RBRt7gM2PzEfpIvHYg7B0WQPqMnTExLBo1mEfu7sBA2BBjgO0Hgk0mPHreRjwDRAZ
+	 rjq1l8NLJCqlBsLZsxoCUYFtjjpkIJBePUhcbnDlM/QZi8Ikzwe13yZ7BtXWvd73Or
+	 O84bkRsLXf8RaBA4+fXQYtolsXFl4FTZ0SbnarXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 467/744] perf intel-pt: Fix unassigned instruction op (discovered by MemorySanitizer)
+Subject: [PATCH 6.9 160/374] media: ov2680: Allow probing if link-frequencies is absent
 Date: Thu,  6 Jun 2024 16:02:19 +0200
-Message-ID: <20240606131747.446326613@linuxfoundation.org>
+Message-ID: <20240606131657.270023847@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit e101a05f79fd4ee3e89d2f3fb716493c33a33708 ]
+[ Upstream commit fd2e66abd729dae5809dbb41c6c52a6931cfa6bb ]
 
-MemorySanitizer discovered instances where the instruction op value was
-not assigned.:
+Since commit 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint
+property verification") the ov2680 no longer probes on a imx7s-warp7:
 
-  WARNING: MemorySanitizer: use-of-uninitialized-value
-    #0 0x5581c00a76b3 in intel_pt_sample_flags tools/perf/util/intel-pt.c:1527:17
-  Uninitialized value was stored to memory at
-    #0 0x5581c005ddf8 in intel_pt_walk_insn tools/perf/util/intel-pt-decoder/intel-pt-decoder.c:1256:25
+ov2680 1-0036: error -EINVAL: supported link freq 330000000 not found
+ov2680 1-0036: probe with driver ov2680 failed with error -22
 
-The op value is used to set branch flags for branch instructions
-encountered when walking the code, so fix by setting op to
-INTEL_PT_OP_OTHER in other cases.
+As the 'link-frequencies' property is not mandatory, allow the probe
+to succeed by skipping the link-frequency verification when the
+property is absent.
 
-Fixes: 4c761d805bb2d2ea ("perf intel-pt: Fix intel_pt_fup_event() assumptions about setting state type")
-Reported-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Closes: https://lore.kernel.org/linux-perf-users/20240320162619.1272015-1-irogers@google.com/
-Link: https://lore.kernel.org/r/20240326083223.10883-1-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 63b0cd30b78e ("media: ov2680: Add bus-cfg / endpoint property verification")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 24034af644fc ("media: ov2680: Do not fail if data-lanes property is absent")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/intel-pt-decoder/intel-pt-decoder.c | 2 ++
- tools/perf/util/intel-pt.c                          | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/media/i2c/ov2680.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-index b450178e3420b..e733f6b1f7ac5 100644
---- a/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-+++ b/tools/perf/util/intel-pt-decoder/intel-pt-decoder.c
-@@ -1319,6 +1319,8 @@ static bool intel_pt_fup_event(struct intel_pt_decoder *decoder, bool no_tip)
- 	bool ret = false;
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 3e3b7c2b492cf..a857763c7984c 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -1123,18 +1123,23 @@ static int ov2680_parse_dt(struct ov2680_dev *sensor)
+ 		goto out_free_bus_cfg;
+ 	}
  
- 	decoder->state.type &= ~INTEL_PT_BRANCH;
-+	decoder->state.insn_op = INTEL_PT_OP_OTHER;
-+	decoder->state.insn_len = 0;
++	if (!bus_cfg.nr_of_link_frequencies) {
++		dev_warn(dev, "Consider passing 'link-frequencies' in DT\n");
++		goto skip_link_freq_validation;
++	}
++
+ 	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
+ 		if (bus_cfg.link_frequencies[i] == sensor->link_freq[0])
+ 			break;
  
- 	if (decoder->set_fup_cfe_ip || decoder->set_fup_cfe) {
- 		bool ip = decoder->set_fup_cfe_ip;
-diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
-index f38893e0b0369..4db9a098f5926 100644
---- a/tools/perf/util/intel-pt.c
-+++ b/tools/perf/util/intel-pt.c
-@@ -764,6 +764,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
+-	if (bus_cfg.nr_of_link_frequencies == 0 ||
+-	    bus_cfg.nr_of_link_frequencies == i) {
++	if (bus_cfg.nr_of_link_frequencies == i) {
+ 		ret = dev_err_probe(dev, -EINVAL,
+ 				    "supported link freq %lld not found\n",
+ 				    sensor->link_freq[0]);
+ 		goto out_free_bus_cfg;
+ 	}
  
- 	addr_location__init(&al);
- 	intel_pt_insn->length = 0;
-+	intel_pt_insn->op = INTEL_PT_OP_OTHER;
- 
- 	if (to_ip && *ip == to_ip)
- 		goto out_no_cache;
-@@ -898,6 +899,7 @@ static int intel_pt_walk_next_insn(struct intel_pt_insn *intel_pt_insn,
- 
- 			if (to_ip && *ip == to_ip) {
- 				intel_pt_insn->length = 0;
-+				intel_pt_insn->op = INTEL_PT_OP_OTHER;
- 				goto out_no_cache;
- 			}
- 
++skip_link_freq_validation:
+ 	ret = 0;
+ out_free_bus_cfg:
+ 	v4l2_fwnode_endpoint_free(&bus_cfg);
 -- 
 2.43.0
 
