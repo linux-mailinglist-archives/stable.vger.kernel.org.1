@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-48930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C706D8FEB26
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0398FEB2A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69ACD28A667
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59534B25C1E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848E21A2FB9;
-	Thu,  6 Jun 2024 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0BB1A2FBD;
+	Thu,  6 Jun 2024 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns4RrMWR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2BFZmRE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44192197A68;
-	Thu,  6 Jun 2024 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDB9197A68;
+	Thu,  6 Jun 2024 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683217; cv=none; b=Xpy0XQ/fTR9Gi8t/2UJ/XAZesdIrc8Hom195Vczgd0wjqp96YZA3snMu5TAxSHB04/ucKdBqZyXRF+Ad1kiQrUxCIHXwulf+CTv5QltQh+oitFljnRiq8FiQoQ08Y+5+uKPDiHYF02+2uV98Af0EI7MHlhsRUexSshUfu7nkt34=
+	t=1717683218; cv=none; b=iDwsMveq75k6XM5a3lt6b3JxEtbwSriUyElol3WIaoXu5ubmagPQuxYB9g3x4Qqk+9nbqjp2+N1MA2y3X6h3hmKBTAKBXytUjzWkYffmQmU87RpsWFUGuKNKR9d7+1Et47DKwdsBrUy8b8mlydF77rQuh7RGtuCw4gfmfdyKGSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683217; c=relaxed/simple;
-	bh=I+1eRgONyWmhFjkv/++x8J4Me5vRr+pVZ2leFgDUo90=;
+	s=arc-20240116; t=1717683218; c=relaxed/simple;
+	bh=oKCvuBnfzHPU8bmx0elSLGpiwblT3u8GLWnjKIUSSyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmznZo8+ddEZRxsywkWSF8dP+aitnjumCCKCmZgYvfH89rCTNlfJDXAvEs2aGhRfZcb4YeRX5LdLZG9k9Evmdi91wf08APEFtgzSCX/yVLA5ubkMQJMOv7op+hMqcjPkb3Wtfir5ZmIddeXniqfWyxmsXzm+4Bvj4MZbIFmYDMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns4RrMWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215E4C2BD10;
-	Thu,  6 Jun 2024 14:13:37 +0000 (UTC)
+	 MIME-Version; b=P1mIdLtmlLwqt5lPdavDcMNSmmc+eT/bfMdRGV2hqDyJ/bPN09ib6x49a43tYGsr6pOIlV2ActH2Eg214rSn8KQ7bWsRlsrte8WLxHFaWZOexP38tSGc/MLQW1RbZ1Ot4v+2Q+qecKkzsmUX0cjechoXMY+fvNe0TBskCOmepmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2BFZmRE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D79C2BD10;
+	Thu,  6 Jun 2024 14:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683217;
-	bh=I+1eRgONyWmhFjkv/++x8J4Me5vRr+pVZ2leFgDUo90=;
+	s=korg; t=1717683218;
+	bh=oKCvuBnfzHPU8bmx0elSLGpiwblT3u8GLWnjKIUSSyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ns4RrMWR5tycv90Pmm+l2qOJLRiCZwSPVBpPHcTzkZUfr2DBJSbW2lBzOvHT1gDop
-	 3+5WCQJU0ddJMn2wSVO5UjuTh2gyL5DunzcSSWhZoVnbuftLh3sB7kl7vFpjPlyLbb
-	 Q3HrpX9CSAHIwAauzoA81geFh7BIeD01ipLn8BCg=
+	b=t2BFZmREOYKvBpyj4GHoB2FkfIPd0YXzRKAWcWRqbg7ALEjkPh7g9/AjGP0pJrh4x
+	 YB6D53tswpmXnCqrdo96/FVCwrclf0PPlJqXpHbUIN/VIwc5P2csWP/4AGWSUv9k+o
+	 GgkrH/sq8pf46TavIN5LjaE2USeA2EOsWJlGfXEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/744] locking/atomic/x86: Correct the definition of __arch_try_cmpxchg128()
-Date: Thu,  6 Jun 2024 15:57:11 +0200
-Message-ID: <20240606131737.525713799@linuxfoundation.org>
+Subject: [PATCH 6.6 160/744] irqchip/alpine-msi: Fix off-by-one in allocation error path
+Date: Thu,  6 Jun 2024 15:57:12 +0200
+Message-ID: <20240606131737.555946733@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,38 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Zenghui Yu <yuzenghui@huawei.com>
 
-[ Upstream commit 929ad065ba2967be238dfdc0895b79fda62c7f16 ]
+[ Upstream commit ff3669a71afa06208de58d6bea1cc49d5e3fcbd1 ]
 
-Correct the definition of __arch_try_cmpxchg128(), introduced by:
+When alpine_msix_gic_domain_alloc() fails, there is an off-by-one in the
+number of interrupts to be freed.
 
-  b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
+Fix it by passing the number of successfully allocated interrupts, instead
+of the relative index of the last allocated one.
 
-Fixes: b23e139d0b66 ("arch: Introduce arch_{,try_}_cmpxchg128{,_local}()")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20240408091547.90111-2-ubizjak@gmail.com
+Fixes: 3841245e8498 ("irqchip/alpine-msi: Fix freeing of interrupts on allocation error path")
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240327142305.1048-1-yuzenghui@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/cmpxchg_64.h | 2 +-
+ drivers/irqchip/irq-alpine-msi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/cmpxchg_64.h b/arch/x86/include/asm/cmpxchg_64.h
-index 44b08b53ab32f..c1d6cd58f8094 100644
---- a/arch/x86/include/asm/cmpxchg_64.h
-+++ b/arch/x86/include/asm/cmpxchg_64.h
-@@ -62,7 +62,7 @@ static __always_inline u128 arch_cmpxchg128_local(volatile u128 *ptr, u128 old,
- 	asm volatile(_lock "cmpxchg16b %[ptr]"				\
- 		     CC_SET(e)						\
- 		     : CC_OUT(e) (ret),					\
--		       [ptr] "+m" (*ptr),				\
-+		       [ptr] "+m" (*(_ptr)),				\
- 		       "+a" (o.low), "+d" (o.high)			\
- 		     : "b" (n.low), "c" (n.high)			\
- 		     : "memory");					\
+diff --git a/drivers/irqchip/irq-alpine-msi.c b/drivers/irqchip/irq-alpine-msi.c
+index 9c8b1349ee17b..a1430ab60a8a3 100644
+--- a/drivers/irqchip/irq-alpine-msi.c
++++ b/drivers/irqchip/irq-alpine-msi.c
+@@ -165,7 +165,7 @@ static int alpine_msix_middle_domain_alloc(struct irq_domain *domain,
+ 	return 0;
+ 
+ err_sgi:
+-	irq_domain_free_irqs_parent(domain, virq, i - 1);
++	irq_domain_free_irqs_parent(domain, virq, i);
+ 	alpine_msix_free_sgi(priv, sgi, nr_irqs);
+ 	return err;
+ }
 -- 
 2.43.0
 
