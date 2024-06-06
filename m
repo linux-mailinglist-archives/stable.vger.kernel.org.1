@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-48452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696458FE912
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACAF8FEDBB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09E791F249C8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D3261C22B7F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC52B1991CF;
-	Thu,  6 Jun 2024 14:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815C91BD03C;
+	Thu,  6 Jun 2024 14:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3ejzOBl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5vsW4Cj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92AB197539;
-	Thu,  6 Jun 2024 14:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3361BD038;
+	Thu,  6 Jun 2024 14:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682975; cv=none; b=XW7N5IKc117q2gG359taKM+cT3H8oIzJkQVVRH/r0eiaeZv7xlKsEe1be4ug0IsVqi42MGYe8xeDLu9CGZssT8pW2k7hxuJhV2nRI+jnnS/um8wdpuibdcZr8+CthylISq6PWjdUXJncsNIMS2WzwFoCKYO0PNdkimVK1CUlCeY=
+	t=1717683519; cv=none; b=UOM+yx1jRO98BYRWvU7CFEikFsAUoOLzIU2MQCQUXtHH4ItQyveLnZgIcODMkm8dtw3mEiAsE1Lru00n5NwtB+zibjLS4gSmUuEJZAtYOrsK+C5pgq+GiXtHZ29VGQlQqnc5LKS8lud5Ep5PautZ128XFfbcRvceuhy55APZjOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682975; c=relaxed/simple;
-	bh=fMLltmphxMArrw0HJZI5K/sn47QGAy9aVPjTPb4oi2o=;
+	s=arc-20240116; t=1717683519; c=relaxed/simple;
+	bh=pn0R/chwunLWgb4Ss7jvH+32++wH2ctgXLCEEjI8hA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWzrTyOukel+B4dmSXFGQ7132ybguDMFZAlAIRdw2SJBVEF+lcB7YY9mz49LbvVB9wKR7HxniiZ/PQ8V4RrrV92zPLI5/L/Exd2D5mlCGzJqN5zsm5MZIFgkA3WF8lOwrdgY/n4OzvJ16ENYweIG8bE4fvuk+kelhrsU8VJaCKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3ejzOBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DBEC2BD10;
-	Thu,  6 Jun 2024 14:09:35 +0000 (UTC)
+	 MIME-Version; b=JRCQaH2i7R2u9uUQMP/fe7G/PEKC7Mc3vPUtrQmKXX0TdlcRjYJYo8FQ+9Y7MveAQER2oVKMR3F56cTczre6H8rQudIM72cfrh/6qOKK4mqHuU/6/aICgQ/kTJHRcvNeSHxuff7Mt9Ac3AryFYiCRicrnLUMrVHwyb5wgU5R0uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5vsW4Cj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5C1C2BD10;
+	Thu,  6 Jun 2024 14:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682975;
-	bh=fMLltmphxMArrw0HJZI5K/sn47QGAy9aVPjTPb4oi2o=;
+	s=korg; t=1717683519;
+	bh=pn0R/chwunLWgb4Ss7jvH+32++wH2ctgXLCEEjI8hA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3ejzOBl+42nsqNEGS2DKn/pvnwSOybYtYhVWAXdYlBuzAD5Uv2JXe7LvtJpYrnO/
-	 1WsuiqUwVEhQPZ1ACD1gH0h9B7nTBSLvemzsTEi94YpqP/jO8KDAFmmwWdV6EQ/0cO
-	 Og1KWDnqCIapVkqgpeCTBN/q1okAgDxOM8JTQnDI=
+	b=G5vsW4CjO+XWqRvEso7hOlgq+rZ615RHjY7F7i0Q+COknAbbDJhwJ87E6EeDJle7A
+	 8gITiveZG9dNpLu9EWMxNuFd7vxGXazeqozk6FORGBIdmEwkF6l2RIdPZe4KgdbR76
+	 9QYOWDlylu360Wl6VijCsJI1/+SiaQntxp9qNHjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Russ Weight <russ.weight@linux.dev>,
+	Marco Pagani <marpagan@redhat.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 153/374] x86/percpu: Unify arch_raw_cpu_ptr() defines
+Subject: [PATCH 6.6 460/744] fpga: region: add owner module and take its refcount
 Date: Thu,  6 Jun 2024 16:02:12 +0200
-Message-ID: <20240606131657.046821378@linuxfoundation.org>
+Message-ID: <20240606131747.224076496@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +64,212 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Marco Pagani <marpagan@redhat.com>
 
-[ Upstream commit 4e5b0e8003df05983b6dabcdde7ff447d53b49d7 ]
+[ Upstream commit b7c0e1ecee403a43abc89eb3e75672b01ff2ece9 ]
 
-When building a 32-bit vDSO for a 64-bit kernel, games are played with
-CONFIG_X86_64. {this,raw}_cpu_read_8() macros are conditionally defined
-on CONFIG_X86_64 and when CONFIG_X86_64 is undefined in fake_32bit_build.h
-various build failures in generic percpu header files can happen. To make
-things worse, the build of 32-bit vDSO for a 64-bit kernel grew dependency
-on arch_raw_cpu_ptr() macro and the build fails if arch_raw_cpu_ptr()
-macro is not defined.
+The current implementation of the fpga region assumes that the low-level
+module registers a driver for the parent device and uses its owner pointer
+to take the module's refcount. This approach is problematic since it can
+lead to a null pointer dereference while attempting to get the region
+during programming if the parent device does not have a driver.
 
-To mitigate these issues, x86 carefully defines arch_raw_cpu_ptr() to
-avoid any dependency on raw_cpu_read_8() and thus CONFIG_X86_64. W/o
-segment register support, the definition uses size-agnostic MOV asm
-mnemonic and hopes that _ptr argument won't ever be 64-bit size on
-32-bit targets (although newer GCCs warn for this situation with
-"unsupported size for integer register"), and w/ segment register
-support the definition uses size-agnostic __raw_cpu_read() macro.
+To address this problem, add a module owner pointer to the fpga_region
+struct and use it to take the module's refcount. Modify the functions for
+registering a region to take an additional owner module parameter and
+rename them to avoid conflicts. Use the old function names for helper
+macros that automatically set the module that registers the region as the
+owner. This ensures compatibility with existing low-level control modules
+and reduces the chances of registering a region without setting the owner.
 
-Fortunately, raw_cpu_read() is not used in 32-bit vDSO for a 64-bit kernel.
-However, we can't simply omit the definition of arch_raw_cpu_read(),
-since the build will fail when building vdso/vdso32/vclock_gettime.o.
+Also, update the documentation to keep it consistent with the new interface
+for registering an fpga region.
 
-The patch defines arch_raw_cpu_ptr to BUILD_BUG() when BUILD_VDSO32_64
-macro is defined. This way, we are sure that arch_raw_cpu_ptr() won't
-actually be used in 32-bit VDSO for a 64-bit kernel, but it is still
-defined to prevent build failure.
-
-Finally, we can unify arch_raw_cpu_ptr() between builds w/ and w/o
-x86 segment register support, substituting two tricky macro definitions
-with a straightforward implementation.
-
-There is no size difference and no difference in number of this_cpu_off
-accesses between patched and unpatched kernel when the kernel is built
-either w/ and w/o segment register support.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240322102730.209141-1-ubizjak@gmail.com
-Stable-dep-of: a55c1fdad5f6 ("x86/percpu: Use __force to cast from __percpu address space")
+Fixes: 0fa20cdfcc1f ("fpga: fpga-region: device tree control for FPGA")
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Xu Yilun <yilun.xu@intel.com>
+Reviewed-by: Russ Weight <russ.weight@linux.dev>
+Signed-off-by: Marco Pagani <marpagan@redhat.com>
+Acked-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20240419083601.77403-1-marpagan@redhat.com
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/percpu.h | 42 +++++++++++++++--------------------
- 1 file changed, 18 insertions(+), 24 deletions(-)
+ Documentation/driver-api/fpga/fpga-region.rst | 13 ++++++----
+ drivers/fpga/fpga-region.c                    | 24 +++++++++++--------
+ include/linux/fpga/fpga-region.h              | 13 +++++++---
+ 3 files changed, 32 insertions(+), 18 deletions(-)
 
-diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
-index b77bbb67e77b0..dbfde44d88a31 100644
---- a/arch/x86/include/asm/percpu.h
-+++ b/arch/x86/include/asm/percpu.h
-@@ -59,36 +59,30 @@
- #define __force_percpu_prefix	"%%"__stringify(__percpu_seg)":"
- #define __my_cpu_offset		this_cpu_read(this_cpu_off)
+diff --git a/Documentation/driver-api/fpga/fpga-region.rst b/Documentation/driver-api/fpga/fpga-region.rst
+index dc55d60a0b4a5..2d03b5fb76575 100644
+--- a/Documentation/driver-api/fpga/fpga-region.rst
++++ b/Documentation/driver-api/fpga/fpga-region.rst
+@@ -46,13 +46,16 @@ API to add a new FPGA region
+ ----------------------------
  
--#ifdef CONFIG_USE_X86_SEG_SUPPORT
--/*
-- * Efficient implementation for cases in which the compiler supports
-- * named address spaces.  Allows the compiler to perform additional
-- * optimizations that can save more instructions.
-- */
--#define arch_raw_cpu_ptr(ptr)					\
--({								\
--	unsigned long tcp_ptr__;				\
--	tcp_ptr__ = __raw_cpu_read(, this_cpu_off);		\
--								\
--	tcp_ptr__ += (__force unsigned long)(ptr);		\
--	(typeof(*(ptr)) __kernel __force *)tcp_ptr__;		\
--})
--#else /* CONFIG_USE_X86_SEG_SUPPORT */
-+#ifdef CONFIG_X86_64
-+#define __raw_my_cpu_offset	raw_cpu_read_8(this_cpu_off);
-+#else
-+#define __raw_my_cpu_offset	raw_cpu_read_4(this_cpu_off);
-+#endif
+ * struct fpga_region - The FPGA region struct
+-* struct fpga_region_info - Parameter structure for fpga_region_register_full()
+-* fpga_region_register_full() -  Create and register an FPGA region using the
++* struct fpga_region_info - Parameter structure for __fpga_region_register_full()
++* __fpga_region_register_full() -  Create and register an FPGA region using the
+   fpga_region_info structure to provide the full flexibility of options
+-* fpga_region_register() -  Create and register an FPGA region using standard
++* __fpga_region_register() -  Create and register an FPGA region using standard
+   arguments
+ * fpga_region_unregister() -  Unregister an FPGA region
+ 
++Helper macros ``fpga_region_register()`` and ``fpga_region_register_full()``
++automatically set the module that registers the FPGA region as the owner.
 +
- /*
-  * Compared to the generic __my_cpu_offset version, the following
-  * saves one instruction and avoids clobbering a temp register.
-+ *
-+ * arch_raw_cpu_ptr should not be used in 32-bit VDSO for a 64-bit
-+ * kernel, because games are played with CONFIG_X86_64 there and
-+ * sizeof(this_cpu_off) becames 4.
+ The FPGA region's probe function will need to get a reference to the FPGA
+ Manager it will be using to do the programming.  This usually would happen
+ during the region's probe function.
+@@ -82,10 +85,10 @@ following APIs to handle building or tearing down that list.
+    :functions: fpga_region_info
+ 
+ .. kernel-doc:: drivers/fpga/fpga-region.c
+-   :functions: fpga_region_register_full
++   :functions: __fpga_region_register_full
+ 
+ .. kernel-doc:: drivers/fpga/fpga-region.c
+-   :functions: fpga_region_register
++   :functions: __fpga_region_register
+ 
+ .. kernel-doc:: drivers/fpga/fpga-region.c
+    :functions: fpga_region_unregister
+diff --git a/drivers/fpga/fpga-region.c b/drivers/fpga/fpga-region.c
+index b364a929425ce..753cd142503e0 100644
+--- a/drivers/fpga/fpga-region.c
++++ b/drivers/fpga/fpga-region.c
+@@ -53,7 +53,7 @@ static struct fpga_region *fpga_region_get(struct fpga_region *region)
+ 	}
+ 
+ 	get_device(dev);
+-	if (!try_module_get(dev->parent->driver->owner)) {
++	if (!try_module_get(region->ops_owner)) {
+ 		put_device(dev);
+ 		mutex_unlock(&region->mutex);
+ 		return ERR_PTR(-ENODEV);
+@@ -75,7 +75,7 @@ static void fpga_region_put(struct fpga_region *region)
+ 
+ 	dev_dbg(dev, "put\n");
+ 
+-	module_put(dev->parent->driver->owner);
++	module_put(region->ops_owner);
+ 	put_device(dev);
+ 	mutex_unlock(&region->mutex);
+ }
+@@ -181,14 +181,16 @@ static struct attribute *fpga_region_attrs[] = {
+ ATTRIBUTE_GROUPS(fpga_region);
+ 
+ /**
+- * fpga_region_register_full - create and register an FPGA Region device
++ * __fpga_region_register_full - create and register an FPGA Region device
+  * @parent: device parent
+  * @info: parameters for FPGA Region
++ * @owner: module containing the get_bridges function
+  *
+  * Return: struct fpga_region or ERR_PTR()
   */
--#define arch_raw_cpu_ptr(ptr)					\
-+#ifndef BUILD_VDSO32_64
-+#define arch_raw_cpu_ptr(_ptr)					\
- ({								\
--	unsigned long tcp_ptr__;				\
--	asm ("mov " __percpu_arg(1) ", %0"			\
--	     : "=r" (tcp_ptr__)					\
--	     : "m" (__my_cpu_var(this_cpu_off)));		\
--								\
--	tcp_ptr__ += (unsigned long)(ptr);			\
--	(typeof(*(ptr)) __kernel __force *)tcp_ptr__;		\
-+	unsigned long tcp_ptr__ = __raw_my_cpu_offset;		\
-+	tcp_ptr__ += (unsigned long)(_ptr);			\
-+	(typeof(*(_ptr)) __kernel __force *)tcp_ptr__;		\
- })
--#endif /* CONFIG_USE_X86_SEG_SUPPORT */
-+#else
-+#define arch_raw_cpu_ptr(_ptr) ({ BUILD_BUG(); (typeof(_ptr))0; })
-+#endif
+ struct fpga_region *
+-fpga_region_register_full(struct device *parent, const struct fpga_region_info *info)
++__fpga_region_register_full(struct device *parent, const struct fpga_region_info *info,
++			    struct module *owner)
+ {
+ 	struct fpga_region *region;
+ 	int id, ret = 0;
+@@ -213,6 +215,7 @@ fpga_region_register_full(struct device *parent, const struct fpga_region_info *
+ 	region->compat_id = info->compat_id;
+ 	region->priv = info->priv;
+ 	region->get_bridges = info->get_bridges;
++	region->ops_owner = owner;
  
- #define PER_CPU_VAR(var)	%__percpu_seg:(var)__percpu_rel
+ 	mutex_init(&region->mutex);
+ 	INIT_LIST_HEAD(&region->bridge_list);
+@@ -241,13 +244,14 @@ fpga_region_register_full(struct device *parent, const struct fpga_region_info *
  
+ 	return ERR_PTR(ret);
+ }
+-EXPORT_SYMBOL_GPL(fpga_region_register_full);
++EXPORT_SYMBOL_GPL(__fpga_region_register_full);
+ 
+ /**
+- * fpga_region_register - create and register an FPGA Region device
++ * __fpga_region_register - create and register an FPGA Region device
+  * @parent: device parent
+  * @mgr: manager that programs this region
+  * @get_bridges: optional function to get bridges to a list
++ * @owner: module containing the get_bridges function
+  *
+  * This simple version of the register function should be sufficient for most users.
+  * The fpga_region_register_full() function is available for users that need to
+@@ -256,17 +260,17 @@ EXPORT_SYMBOL_GPL(fpga_region_register_full);
+  * Return: struct fpga_region or ERR_PTR()
+  */
+ struct fpga_region *
+-fpga_region_register(struct device *parent, struct fpga_manager *mgr,
+-		     int (*get_bridges)(struct fpga_region *))
++__fpga_region_register(struct device *parent, struct fpga_manager *mgr,
++		       int (*get_bridges)(struct fpga_region *), struct module *owner)
+ {
+ 	struct fpga_region_info info = { 0 };
+ 
+ 	info.mgr = mgr;
+ 	info.get_bridges = get_bridges;
+ 
+-	return fpga_region_register_full(parent, &info);
++	return __fpga_region_register_full(parent, &info, owner);
+ }
+-EXPORT_SYMBOL_GPL(fpga_region_register);
++EXPORT_SYMBOL_GPL(__fpga_region_register);
+ 
+ /**
+  * fpga_region_unregister - unregister an FPGA region
+diff --git a/include/linux/fpga/fpga-region.h b/include/linux/fpga/fpga-region.h
+index 9d4d32909340a..5fbc05fe70a6b 100644
+--- a/include/linux/fpga/fpga-region.h
++++ b/include/linux/fpga/fpga-region.h
+@@ -36,6 +36,7 @@ struct fpga_region_info {
+  * @mgr: FPGA manager
+  * @info: FPGA image info
+  * @compat_id: FPGA region id for compatibility check.
++ * @ops_owner: module containing the get_bridges function
+  * @priv: private data
+  * @get_bridges: optional function to get bridges to a list
+  */
+@@ -46,6 +47,7 @@ struct fpga_region {
+ 	struct fpga_manager *mgr;
+ 	struct fpga_image_info *info;
+ 	struct fpga_compat_id *compat_id;
++	struct module *ops_owner;
+ 	void *priv;
+ 	int (*get_bridges)(struct fpga_region *region);
+ };
+@@ -58,12 +60,17 @@ fpga_region_class_find(struct device *start, const void *data,
+ 
+ int fpga_region_program_fpga(struct fpga_region *region);
+ 
++#define fpga_region_register_full(parent, info) \
++	__fpga_region_register_full(parent, info, THIS_MODULE)
+ struct fpga_region *
+-fpga_region_register_full(struct device *parent, const struct fpga_region_info *info);
++__fpga_region_register_full(struct device *parent, const struct fpga_region_info *info,
++			    struct module *owner);
+ 
++#define fpga_region_register(parent, mgr, get_bridges) \
++	__fpga_region_register(parent, mgr, get_bridges, THIS_MODULE)
+ struct fpga_region *
+-fpga_region_register(struct device *parent, struct fpga_manager *mgr,
+-		     int (*get_bridges)(struct fpga_region *));
++__fpga_region_register(struct device *parent, struct fpga_manager *mgr,
++		       int (*get_bridges)(struct fpga_region *), struct module *owner);
+ void fpga_region_unregister(struct fpga_region *region);
+ 
+ #endif /* _FPGA_REGION_H */
 -- 
 2.43.0
 
