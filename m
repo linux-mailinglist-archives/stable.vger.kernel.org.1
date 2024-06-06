@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-48829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D628FEAB6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 618478FEC54
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1BD0B23802
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3DCAB27E1C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B591991D3;
-	Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C40519AD89;
+	Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6S7vh1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRDyy2Eu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B148B1991D4;
-	Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9AD19AD93;
+	Thu,  6 Jun 2024 14:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683167; cv=none; b=FVgOBpWYU89FunZAJPEFkykzTKXG170qHdqgoo8ZJju5zgK/boyswCdYI3vgoaaYPnwTVX8v3Qwm7PqLbnwWZ2YoLTtq6+b8CRiTdk3oV7M04nu22ub+AMmEu6+AGSbdmu6wO3+TBwQ+u6X6Olt1mHEOrjo+2lJhj3gbzd0zcTA=
+	t=1717683354; cv=none; b=OHztKXwHTeVPXNZMQlW+xihcR49ZDauPPVLdi5hAXPQ++2O9HP5cjAq36MC7be4z+piyCszaaO1xFjIKfJt7keb08Dt1t35YOi8Le/OQl+6XSgivbRaoBQR4bshHLHsD6I4GBI1hBSIBRLo+KxsIk5eyXXzJEbou++FB90zh42E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683167; c=relaxed/simple;
-	bh=B9xFp02fpkl3ejxthwxxJ3tljE6Mg6gVgtT0ExjdT+4=;
+	s=arc-20240116; t=1717683354; c=relaxed/simple;
+	bh=wo8hgLVWYcWWWnKzewFS43v2s54GX0IHHXxjRZ2h+2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=urGSDIfDU1royHPH/yLT+Sq98Drv+RPev5l12dWK2KHEhVRy6U3T385no07zIxlDMW+eYVK4BVVEhoELcgsr3hoMZfK4oHjxCwUXapAP7ySNvlaAO955E0dHZgqNcjfvEZBYnQ5l/WztOLxO/D5m5MA9icixISZ43WCVxNc1FD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6S7vh1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CFBC2BD10;
-	Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
+	 MIME-Version; b=l1N/gBt4t8gTWokuidwsw0Oy2cKUHXhCc0Hp+KPYHuvf6B/bwDPjDf/1vZ7W3G72ZTuvlSQW/6BS5DOzxDOQSYVZtx3jBru4987h73IhwspstmC56pi0hvMsCPqvmBup3bgz7ympAy0DETpwDr26Z/EO951UoudWjvlfEPVdgLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRDyy2Eu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF798C2BD10;
+	Thu,  6 Jun 2024 14:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683167;
-	bh=B9xFp02fpkl3ejxthwxxJ3tljE6Mg6gVgtT0ExjdT+4=;
+	s=korg; t=1717683353;
+	bh=wo8hgLVWYcWWWnKzewFS43v2s54GX0IHHXxjRZ2h+2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V6S7vh1iSPxih6XLy+Ee4hs9H7nXZ+4NOy2XjV9n24AM79XYzyqKPdAFwtdi3VT+5
-	 WddyKL3Pu5xJK4cbZB2joE7EHy3PP+Az6TYMtpqoyAO1s5LoPeUcvXLu5DT4i4kk70
-	 X/+UpPhsMoIfS19lwV92HNWBShm1UH/OCL7WVZJE=
+	b=wRDyy2EuHYrBXZfxUrsx10gU+Wl0JlTVDFAmfqbyH+D5L2SvSdu1ys9DPhimXLTVz
+	 84yhno+CxpKrMmvECo3ZbsQ7FSlxuysMs0KwWejQw4HVv0H8nCTomTqYXvGUjVcwKd
+	 T0SnbozWd9GbQ1V/7kHeKMVY9gMdU+JGOBXwtsWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Rander Wang <rander.wang@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/473] selftests: sud_test: return correct emulated syscall value on RISC-V
+Subject: [PATCH 6.6 294/744] ASoC: SOF: Intel: lnl: Correct rom_status_reg
 Date: Thu,  6 Jun 2024 15:59:26 +0200
-Message-ID: <20240606131701.118764950@linuxfoundation.org>
+Message-ID: <20240606131741.831884904@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 17c67ed752d6a456602b3dbb25c5ae4d3de5deab ]
+[ Upstream commit b852574c671a9983dd51c81582c8c5085f3dc382 ]
 
-Currently, the sud_test expects the emulated syscall to return the
-emulated syscall number. This assumption only works on architectures
-were the syscall calling convention use the same register for syscall
-number/syscall return value. This is not the case for RISC-V and thus
-the return value must be also emulated using the provided ucontext.
+ACE2 architecture changed the place where the ROM updates the status code
+from the shared SRAM window (and HFFLGP1QW0 in ACE1) to HFDSC register for
+the status and HFDEC (HFDSC + 4) for the error code.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lore.kernel.org/r/20231206134438.473166-1-cleger@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+The rom_status_reg is not used on LNL because it was wrongly assigned based
+on older platform convention (SRAM window) and it was giving inconsistent
+readings.
+
+Add new header file for lnl specific register definitions.
+
+Fixes: 64a63d9914a5 ("ASoC: SOF: Intel: LNL: Add support for Lunarlake platform")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Rander Wang <rander.wang@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Link: https://msgid.link/r/20240403105210.17949-4-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/syscall_user_dispatch/sud_test.c     | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ sound/soc/sof/intel/lnl.c |  3 ++-
+ sound/soc/sof/intel/lnl.h | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+ create mode 100644 sound/soc/sof/intel/lnl.h
 
-diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-index b5d592d4099e8..d975a67673299 100644
---- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-+++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-@@ -158,6 +158,20 @@ static void handle_sigsys(int sig, siginfo_t *info, void *ucontext)
+diff --git a/sound/soc/sof/intel/lnl.c b/sound/soc/sof/intel/lnl.c
+index db94b45e53af8..822f857723208 100644
+--- a/sound/soc/sof/intel/lnl.c
++++ b/sound/soc/sof/intel/lnl.c
+@@ -16,6 +16,7 @@
+ #include "hda-ipc.h"
+ #include "../sof-audio.h"
+ #include "mtl.h"
++#include "lnl.h"
+ #include <sound/hda-mlink.h>
  
- 	/* In preparation for sigreturn. */
- 	SYSCALL_DISPATCH_OFF(glob_sel);
+ /* LunarLake ops */
+@@ -172,7 +173,7 @@ const struct sof_intel_dsp_desc lnl_chip_info = {
+ 	.ipc_ack = MTL_DSP_REG_HFIPCXIDA,
+ 	.ipc_ack_mask = MTL_DSP_REG_HFIPCXIDA_DONE,
+ 	.ipc_ctl = MTL_DSP_REG_HFIPCXCTL,
+-	.rom_status_reg = MTL_DSP_ROM_STS,
++	.rom_status_reg = LNL_DSP_REG_HFDSC,
+ 	.rom_init_timeout = 300,
+ 	.ssp_count = MTL_SSP_COUNT,
+ 	.d0i3_offset = MTL_HDA_VS_D0I3C,
+diff --git a/sound/soc/sof/intel/lnl.h b/sound/soc/sof/intel/lnl.h
+new file mode 100644
+index 0000000000000..4f4734fe7e089
+--- /dev/null
++++ b/sound/soc/sof/intel/lnl.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause) */
++/*
++ * This file is provided under a dual BSD/GPLv2 license.  When using or
++ * redistributing this file, you may do so under either license.
++ *
++ * Copyright(c) 2024 Intel Corporation. All rights reserved.
++ */
 +
-+	/*
-+	 * The tests for argument handling assume that `syscall(x) == x`. This
-+	 * is a NOP on x86 because the syscall number is passed in %rax, which
-+	 * happens to also be the function ABI return register.  Other
-+	 * architectures may need to swizzle the arguments around.
-+	 */
-+#if defined(__riscv)
-+/* REG_A7 is not defined in libc headers */
-+# define REG_A7 (REG_A0 + 7)
++#ifndef __SOF_INTEL_LNL_H
++#define __SOF_INTEL_LNL_H
 +
-+	((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A0] =
-+			((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A7];
-+#endif
- }
- 
- TEST(dispatch_and_return)
++#define LNL_DSP_REG_HFDSC		0x160200 /* DSP core0 status */
++#define LNL_DSP_REG_HFDEC		0x160204 /* DSP core0 error */
++
++#endif /* __SOF_INTEL_LNL_H */
 -- 
 2.43.0
 
