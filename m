@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-49395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533CF8FED15
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A049C8FEB78
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6A4BB28D7C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 420BA2895FE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2436B1B4C3C;
-	Thu,  6 Jun 2024 14:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA34199EB0;
+	Thu,  6 Jun 2024 14:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KE3GySuN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+P3nkY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D757B19D061;
-	Thu,  6 Jun 2024 14:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61443199EA4;
+	Thu,  6 Jun 2024 14:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683444; cv=none; b=BmDEgoTdpaj8s2rvHgdj5NdRUDP1wvqRAmMOmWi6+DH+W6CmOxYSpmPXzP6cUPOZh3uhqaRQ0U208cIjstTZksx2xs0cPjeUZ20Q67v0PFJFErjbSA1wI7neTyzr9py/GKMgFZSiiKpbFsOYujxC1NOGQCqZ/bOFi2bYDSkZNYY=
+	t=1717683255; cv=none; b=kHGFfkjS5BIB4cjPpO0diNLQ6qccGQW86JnrnLf7f25I+ZfJg2+eK+bxRjZWt9lFxFF2USCF41pjnrXvrJbVtlye33b2ZE8TAw6gAPWhzZ5coz4zuDYMEVjmIo2RswPjkchpcjBhcZuCo2fJ8TuqBqn/6lykuYrSmeWhB5PSaYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683444; c=relaxed/simple;
-	bh=2lzZlFaoNiOFjjjio1sC92zVdGTcquG35rpYKMmzRrE=;
+	s=arc-20240116; t=1717683255; c=relaxed/simple;
+	bh=VidrXSh72vobvQ6X2rdq+NRMQwGb72UiJTFZtwQIqXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Td2bkBv6SvLGdMUgNHe/+U9S+oIHu/84je3v2yhxqsYq+HZLmlX6jac7jmtJq5OWSCjrv/COgIak0GtxxJpwYqg4k5LSSajznS7z0Gmkp5LqhhS9DfLZdfrLs+6hfwXjpviEXkscOUuN0oI2yyNz6kepYkwEfJcaOp+veVmggBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KE3GySuN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4FAC32781;
-	Thu,  6 Jun 2024 14:17:24 +0000 (UTC)
+	 MIME-Version; b=aVLoeX2DuE74S5gw3qSLwMwFf9ofjEgwZOPtCcC4qhRoRApyijfFv86wjnrm0QG1xivrGtFgNxIqMtxidkP3mimN0Vh1fwgW/htY0bKLrcNXd1ZL/jm8aqm4nT0/lCNSp3JhweZg3cFncsUSgAe2C8CBDpmLlg6I7EDafwmlYwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+P3nkY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4181BC2BD10;
+	Thu,  6 Jun 2024 14:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683444;
-	bh=2lzZlFaoNiOFjjjio1sC92zVdGTcquG35rpYKMmzRrE=;
+	s=korg; t=1717683255;
+	bh=VidrXSh72vobvQ6X2rdq+NRMQwGb72UiJTFZtwQIqXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KE3GySuNbh1s98xdcdWCfAC1n2nWJsjrV0aDRY/ZaaQOcXgUifoVAU9Snz5Es0lFa
-	 vkFM9ZjoYtDKx7T/hDaekBhJhm3og69m8TYQzm+UGp4bvxmDBM1N/tXq6oQJBS7GdK
-	 +c4wYn75hxsIhDZW908VBCal1jkEMrR9Wpx8CW+c=
+	b=Y+P3nkY5Gh7quNnufZEHjmr5SvAXrpDBnZQtv4AvnZkZinOnHRF/BZS/zxv+mmzNk
+	 pVGxsfEhF+rrLYvZZIzYdyfWvOt9vVGvECXlnjldcuJxNQbX02YOMlZv6yDZnNpkfn
+	 +kw8NTGoT4AN3P68vctO746ipgqvQb7VVHyojvps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qixin Liao <liaoqixin@huawei.com>,
-	Cheng Yu <serein.chengyu@huawei.com>,
-	Zhang Qiao <zhangqiao22@huawei.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 388/744] sched/core: Fix incorrect initialization of the burst parameter in cpu_max_write()
+Subject: [PATCH 6.1 131/473] thermal/drivers/tsens: Fix null pointer dereference
 Date: Thu,  6 Jun 2024 16:01:00 +0200
-Message-ID: <20240606131744.908977565@linuxfoundation.org>
+Message-ID: <20240606131704.257945586@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng Yu <serein.chengyu@huawei.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 49217ea147df7647cb89161b805c797487783fc0 ]
+[ Upstream commit d998ddc86a27c92140b9f7984ff41e3d1d07a48f ]
 
-In the cgroup v2 CPU subsystem, assuming we have a
-cgroup named 'test', and we set cpu.max and cpu.max.burst:
+compute_intercept_slope() is called from calibrate_8960() (in tsens-8960.c)
+as compute_intercept_slope(priv, p1, NULL, ONE_PT_CALIB) which lead to null
+pointer dereference (if DEBUG or DYNAMIC_DEBUG set).
+Fix this bug by adding null pointer check.
 
-    # echo 1000000 > /sys/fs/cgroup/test/cpu.max
-    # echo 1000000 > /sys/fs/cgroup/test/cpu.max.burst
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-then we check cpu.max and cpu.max.burst:
-
-    # cat /sys/fs/cgroup/test/cpu.max
-    1000000 100000
-    # cat /sys/fs/cgroup/test/cpu.max.burst
-    1000000
-
-Next we set cpu.max again and check cpu.max and
-cpu.max.burst:
-
-    # echo 2000000 > /sys/fs/cgroup/test/cpu.max
-    # cat /sys/fs/cgroup/test/cpu.max
-    2000000 100000
-
-    # cat /sys/fs/cgroup/test/cpu.max.burst
-    1000
-
-... we find that the cpu.max.burst value changed unexpectedly.
-
-In cpu_max_write(), the unit of the burst value returned
-by tg_get_cfs_burst() is microseconds, while in cpu_max_write(),
-the burst unit used for calculation should be nanoseconds,
-which leads to the bug.
-
-To fix it, get the burst value directly from tg->cfs_bandwidth.burst.
-
-Fixes: f4183717b370 ("sched/fair: Introduce the burstable CFS controller")
-Reported-by: Qixin Liao <liaoqixin@huawei.com>
-Signed-off-by: Cheng Yu <serein.chengyu@huawei.com>
-Signed-off-by: Zhang Qiao <zhangqiao22@huawei.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Tested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20240424132438.514720-1-serein.chengyu@huawei.com
+Fixes: dfc1193d4dbd ("thermal/drivers/tsens: Replace custom 8960 apis with generic apis")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20240411114021.12203-1-amishin@t-argos.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 2 +-
+ drivers/thermal/qcom/tsens.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 1f91e2c12731e..dcb30e304871a 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -11429,7 +11429,7 @@ static ssize_t cpu_max_write(struct kernfs_open_file *of,
- {
- 	struct task_group *tg = css_tg(of_css(of));
- 	u64 period = tg_get_cfs_period(tg);
--	u64 burst = tg_get_cfs_burst(tg);
-+	u64 burst = tg->cfs_bandwidth.burst;
- 	u64 quota;
- 	int ret;
+diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
+index 252c5ffdd1b66..fc58db60852a0 100644
+--- a/drivers/thermal/qcom/tsens.c
++++ b/drivers/thermal/qcom/tsens.c
+@@ -85,7 +85,7 @@ void compute_intercept_slope(struct tsens_priv *priv, u32 *p1,
+ 	for (i = 0; i < priv->num_sensors; i++) {
+ 		dev_dbg(priv->dev,
+ 			"%s: sensor%d - data_point1:%#x data_point2:%#x\n",
+-			__func__, i, p1[i], p2[i]);
++			__func__, i, p1[i], p2 ? p2[i] : 0);
  
+ 		if (!priv->sensor[i].slope)
+ 			priv->sensor[i].slope = SLOPE_DEFAULT;
 -- 
 2.43.0
 
