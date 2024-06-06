@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-48627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C1E8FE9D0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B21708FEED6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 850A51C249F0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F0DD287F9F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B06196DB8;
-	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0970197549;
+	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1wWnGP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IffV1sdh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8844198A39;
-	Thu,  6 Jun 2024 14:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02351C7D76;
+	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683068; cv=none; b=b/y5Ln+hyn4hOgoA41RipK5o4EDqs9CfMcX3nNQ4g2Z3D/Bzh6EaQaaJVUYgTsxYlYnzEdikl4p2dZHlXdDKuWEpFpI9GBq3V3hNVl5Y3b6oePKO7LCwH31A3RRs06Eiok/qIOOdzshUlaBiZcqhjcidIxk3GHEoCuT9cvXwzg0=
+	t=1717683707; cv=none; b=gsayFKSFUWFipHKQQ/Ci+04aYe8XBog8Yn1RwOefIeLVsnjfh9jMPidcfhqLn94fgxTuegsPWmSkJ1N0oaNwrvYoW1GqOuEL1qcXUnyzp+hZkSkwTzS6pHYkNQCcHJYCft1pnbiGH8iaybBjW6rbciL8+idFDTtG9g9uEqCIgMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683068; c=relaxed/simple;
-	bh=0BLPlyD9iKo2iVCtCvEBRcTgzakcx/qC8zcw7p9SoXE=;
+	s=arc-20240116; t=1717683707; c=relaxed/simple;
+	bh=tEBr8ClS1/wEOOgqvVXfuyyP+iNcb5s/u9D/DPAN8bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mXDHT/XavU2G06Lmmr8euGi1P4yRWML6X5PVsmotS0nS/FGV/CYM+etcxYJJQUJssM5QNEl/etmZ4PQQroZSiccAxgGPMqnTUJ/H1np3EuoemvDvGB/azZLqm4Iw12TP0fqjDIcrE83dCK2VzsG+BVEU9uDLkBDE//Lez9hud/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1wWnGP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDC9C32781;
-	Thu,  6 Jun 2024 14:11:08 +0000 (UTC)
+	 MIME-Version; b=SZhP1qnpQRreVVd36aiV59NoH1DsZfRYe/ZiPXFg3FL2MWus2YmI+Dq6j9X+1VMlfZ6EldtGv3VXXBhrQu45bud5bDBWDcQVloxDMsoSUbniFkWgzwHtfFkzMCVUQhcSxZP7SmDlv9xMn5vGXlPna1V9O78XH3rBpHaQpvUfzHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IffV1sdh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA3DC2BD10;
+	Thu,  6 Jun 2024 14:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683068;
-	bh=0BLPlyD9iKo2iVCtCvEBRcTgzakcx/qC8zcw7p9SoXE=;
+	s=korg; t=1717683707;
+	bh=tEBr8ClS1/wEOOgqvVXfuyyP+iNcb5s/u9D/DPAN8bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1wWnGP1tz7vuI7jcPIFsy2C6Lcv8tCihv6/kdPJREWkZVHFRNc7bF+ysmGP4PdIN
-	 EbtZ4E5Gfo14smYMHbEXpcmnvLqFUM6h++qoQioZ9iIyuBb2kwwuUPv5DEaXxxUjl4
-	 aEpkE9J9+uDkfhqrj9+z7TE99MGteV2lDD5BDB/I=
+	b=IffV1sdhy015GuqI0jesdwCibBY3sPSup0R5a4ma5Ntb/bRxQ/+M9rsZIZvT1ykMT
+	 QEaU5S89+8JDPPwllxOhAU9xY3odp6oUhUvVTIH1cwFp46/hNfn7vynbA2t1gKU1RQ
+	 vMGh8w5KzVSWCAjljC/45xhpF7rjZV4UwaNqQzpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Taehee Yoo <ap420073@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 328/374] drm/xe: Change pcode timeout to 50msec while polling again
+Subject: [PATCH 6.6 635/744] selftests: net: kill smcrouted in the cleanup logic in amt.sh
 Date: Thu,  6 Jun 2024 16:05:07 +0200
-Message-ID: <20240606131702.849269900@linuxfoundation.org>
+Message-ID: <20240606131752.849072366@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+From: Taehee Yoo <ap420073@gmail.com>
 
-[ Upstream commit 77b79df0268bee3ef38fd5e76e86a076ce02995d ]
+[ Upstream commit cc563e749810f5636451d4b833fbd689899ecdb9 ]
 
-Polling is initially attempted with timeout_base_ms enabled for
-preemption, and if it exceeds this timeframe, another attempt is made
-without preemption, allowing an additional 50 ms before timing out.
+The amt.sh requires smcrouted for multicasting routing.
+So, it starts smcrouted before forwarding tests.
+It must be stopped after all tests, but it isn't.
 
-v2
-- Rebase
+To fix this issue, it kills smcrouted in the cleanup logic.
 
-v3
-- Move warnings to separate patch (Lucas)
-
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Fixes: 7dc9b92dcfef ("drm/xe: Remove i915_utils dependency from xe_pcode.")
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240508152216.3263109-2-himal.prasad.ghimiray@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit c81858eb52266b3d6ba28ca4f62a198231a10cdc)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: c08e8baea78e ("selftests: add amt interface selftest script")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pcode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/amt.sh | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pcode.c b/drivers/gpu/drm/xe/xe_pcode.c
-index c674c87c7f40b..81f4ae2ea08f3 100644
---- a/drivers/gpu/drm/xe/xe_pcode.c
-+++ b/drivers/gpu/drm/xe/xe_pcode.c
-@@ -191,7 +191,7 @@ int xe_pcode_request(struct xe_gt *gt, u32 mbox, u32 request,
- 	drm_WARN_ON_ONCE(&gt_to_xe(gt)->drm, timeout_base_ms > 1);
- 	preempt_disable();
- 	ret = pcode_try_request(gt, mbox, request, reply_mask, reply, &status,
--				true, timeout_base_ms * 1000, true);
-+				true, 50 * 1000, true);
- 	preempt_enable();
+diff --git a/tools/testing/selftests/net/amt.sh b/tools/testing/selftests/net/amt.sh
+index 5175a42cbe8a2..7e7ed6c558da9 100755
+--- a/tools/testing/selftests/net/amt.sh
++++ b/tools/testing/selftests/net/amt.sh
+@@ -77,6 +77,7 @@ readonly LISTENER=$(mktemp -u listener-XXXXXXXX)
+ readonly GATEWAY=$(mktemp -u gateway-XXXXXXXX)
+ readonly RELAY=$(mktemp -u relay-XXXXXXXX)
+ readonly SOURCE=$(mktemp -u source-XXXXXXXX)
++readonly SMCROUTEDIR="$(mktemp -d)"
+ ERR=4
+ err=0
  
- out:
+@@ -85,6 +86,11 @@ exit_cleanup()
+ 	for ns in "$@"; do
+ 		ip netns delete "${ns}" 2>/dev/null || true
+ 	done
++	if [ -f "$SMCROUTEDIR/amt.pid" ]; then
++		smcpid=$(< $SMCROUTEDIR/amt.pid)
++		kill $smcpid
++	fi
++	rm -rf $SMCROUTEDIR
+ 
+ 	exit $ERR
+ }
+@@ -167,7 +173,7 @@ setup_iptables()
+ 
+ setup_mcast_routing()
+ {
+-	ip netns exec "${RELAY}" smcrouted
++	ip netns exec "${RELAY}" smcrouted -P $SMCROUTEDIR/amt.pid
+ 	ip netns exec "${RELAY}" smcroutectl a relay_src \
+ 		172.17.0.2 239.0.0.1 amtr
+ 	ip netns exec "${RELAY}" smcroutectl a relay_src \
 -- 
 2.43.0
 
