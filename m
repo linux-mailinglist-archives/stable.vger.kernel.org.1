@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-49785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA238FEED7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85298FE9D3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 877F21C25923
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E438288F77
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762181C7D97;
-	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DEB19B5B5;
+	Thu,  6 Jun 2024 14:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB2QqmGj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6e6YCVo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362941C7D76;
-	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80959195FDF;
+	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683708; cv=none; b=rGtX8MGB134Hyf8xSqk+3ZyIbU0wFkE3NC+IvMiZGRMlPtnzpABqNKZPVqs1RnYEke8Gdl832IHPS2AHxXorWwXjKXtkePbuj5q+jYMjphzRDjWRDmzO+gOSJwSLKkoRK4OulqkMO/pjbi7QOOEdPzpDazy6idBfWLG2/+O+Ymk=
+	t=1717683070; cv=none; b=UYrg58DpBk92YRzc2CgQxnPH7Ur+GeQ83kC4+GiXLFlzO5dPJcdKxrHjtCySWLiyT8gzXnu78u7SCuUHwuYw1doj8rFXwxoH3wXLs1P2CEK6gHYAsd0sf1iVCtma8c3v4U+dcMkojgXr+mD4f6Z+AScaKaN4ZdlWfSo/m0YIowc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683708; c=relaxed/simple;
-	bh=WPnsqHKzpuMjHZ/GreK6L8KoLHJncOK0vIKFbbddWiE=;
+	s=arc-20240116; t=1717683070; c=relaxed/simple;
+	bh=pOCwHl2jSmTW160loekKTXYQLnQH+lA8b6phRRT7QV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NkrRjOMk9GT/LCG7wK6yTRxV/+JSJ2SbtDERYEXsWlv5WZPOdSoLb5e8q5yU8BRoNJi87tzhCeXpOGgfrRegdeRkOQtsbEiC4A0l+6xTnbOLH27nDRrKRMzq8Xxc5p3yHW4W8bO9cUdQIOHC/SPBrW4sjknBc9PbbfowGSBXinY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB2QqmGj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A97AC2BD10;
-	Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SP8pYG3Oz8qdhi8HeQY8n6WZJqha+9/HOpMUa2UR5Kn7ZNau8FR9dbDdufss960WGmao2AjtaS8iQNYtUFmOQmAIWxIWb3GFq6j5aYHiQIdyexu+JCnedOefKLKZDvo+6he5x9tVG58s8XILNMRL6tkyA0Axgkkicnm/W7ZjkYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6e6YCVo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32252C4AF11;
+	Thu,  6 Jun 2024 14:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683708;
-	bh=WPnsqHKzpuMjHZ/GreK6L8KoLHJncOK0vIKFbbddWiE=;
+	s=korg; t=1717683069;
+	bh=pOCwHl2jSmTW160loekKTXYQLnQH+lA8b6phRRT7QV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lB2QqmGjKlieUsrtsXyBMsHsqILemRs8Brr1sFTQb9yNpBkpbhKljHdRf8h/BR+Bj
-	 WvLnMs6baXXS4mvb1Fq6ap8UrGlFijbFyn9rYHESqreSv9qKzGQ1kZSpiMjhcSk0uh
-	 3XJZDSPzvGPF6wN/19Z1HXMJM4JnX9cAFVq4lfds=
+	b=g6e6YCVo9kuMM6EHUEnJO2SgpgZGPKfveu8dTSwiK9U6gSrS+CDZvURR/Q7S18S93
+	 Xf2UdmZweyrnd2luweR7EyS0Ulre6Lja+7HhEW5XupiwzZB5CzxQ6oksrk2YNxyJev
+	 Q50bPnJ8RQ7isWmMGJ0EmW2Gq7mihEgkUmiQFVAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 636/744] nfc: nci: Fix uninit-value in nci_rx_work
+	Matt Roper <matthew.d.roper@intel.com>,
+	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Brian Welty <brian.welty@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 329/374] drm/xe: Only use reserved BCS instances for usm migrate exec queue
 Date: Thu,  6 Jun 2024 16:05:08 +0200
-Message-ID: <20240606131752.880603680@linuxfoundation.org>
+Message-ID: <20240606131702.881023303@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit e4a87abf588536d1cdfb128595e6e680af5cf3ed ]
+[ Upstream commit c8ea2c31f5ea437199b239d76ad5db27343edb0c ]
 
-syzbot reported the following uninit-value access issue [1]
+The GuC context scheduling queue is 2 entires deep, thus it is possible
+for a migration job to be stuck behind a fault if migration exec queue
+shares engines with user jobs. This can deadlock as the migrate exec
+queue is required to service page faults. Avoid deadlock by only using
+reserved BCS instances for usm migrate exec queue.
 
-nci_rx_work() parses received packet from ndev->rx_q. It should be
-validated header size, payload size and total packet size before
-processing the packet. If an invalid packet is detected, it should be
-silently discarded.
-
-Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
-Reported-and-tested-by: syzbot+d7b4dc6cd50410152534@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7b4dc6cd50410152534 [1]
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a043fbab7af5 ("drm/xe/pvc: Use fast copy engines as migrate engine on PVC")
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240415190453.696553-2-matthew.brost@intel.com
+Reviewed-by: Brian Welty <brian.welty@intel.com>
+(cherry picked from commit 04f4a70a183a688a60fe3882d6e4236ea02cfc67)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/core.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_migrate.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 5d708af0fcfd3..f350c5fb992ec 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1463,6 +1463,19 @@ int nci_core_ntf_packet(struct nci_dev *ndev, __u16 opcode,
- 				 ndev->ops->n_core_ops);
+diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+index 2ba4fb9511f63..aca519f5b85d9 100644
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -33,7 +33,6 @@
+ #include "xe_sync.h"
+ #include "xe_trace.h"
+ #include "xe_vm.h"
+-#include "xe_wa.h"
+ 
+ /**
+  * struct xe_migrate - migrate context.
+@@ -299,10 +298,6 @@ static int xe_migrate_prepare_vm(struct xe_tile *tile, struct xe_migrate *m,
  }
  
-+static bool nci_valid_size(struct sk_buff *skb)
-+{
-+	BUILD_BUG_ON(NCI_CTRL_HDR_SIZE != NCI_DATA_HDR_SIZE);
-+	unsigned int hdr_size = NCI_CTRL_HDR_SIZE;
-+
-+	if (skb->len < hdr_size ||
-+	    !nci_plen(skb->data) ||
-+	    skb->len < hdr_size + nci_plen(skb->data)) {
-+		return false;
-+	}
-+	return true;
-+}
-+
- /* ---- NCI TX Data worker thread ---- */
+ /*
+- * Due to workaround 16017236439, odd instance hardware copy engines are
+- * faster than even instance ones.
+- * This function returns the mask involving all fast copy engines and the
+- * reserved copy engine to be used as logical mask for migrate engine.
+  * Including the reserved copy engine is required to avoid deadlocks due to
+  * migrate jobs servicing the faults gets stuck behind the job that faulted.
+  */
+@@ -316,8 +311,7 @@ static u32 xe_migrate_usm_logical_mask(struct xe_gt *gt)
+ 		if (hwe->class != XE_ENGINE_CLASS_COPY)
+ 			continue;
  
- static void nci_tx_work(struct work_struct *work)
-@@ -1516,7 +1529,7 @@ static void nci_rx_work(struct work_struct *work)
- 		nfc_send_to_raw_sock(ndev->nfc_dev, skb,
- 				     RAW_PAYLOAD_NCI, NFC_DIRECTION_RX);
+-		if (!XE_WA(gt, 16017236439) ||
+-		    xe_gt_is_usm_hwe(gt, hwe) || hwe->instance & 1)
++		if (xe_gt_is_usm_hwe(gt, hwe))
+ 			logical_mask |= BIT(hwe->logical_instance);
+ 	}
  
--		if (!nci_plen(skb->data)) {
-+		if (!nci_valid_size(skb)) {
- 			kfree_skb(skb);
- 			kcov_remote_stop();
- 			break;
+@@ -368,6 +362,10 @@ struct xe_migrate *xe_migrate_init(struct xe_tile *tile)
+ 		if (!hwe || !logical_mask)
+ 			return ERR_PTR(-EINVAL);
+ 
++		/*
++		 * XXX: Currently only reserving 1 (likely slow) BCS instance on
++		 * PVC, may want to revisit if performance is needed.
++		 */
+ 		m->q = xe_exec_queue_create(xe, vm, logical_mask, 1, hwe,
+ 					    EXEC_QUEUE_FLAG_KERNEL |
+ 					    EXEC_QUEUE_FLAG_PERMANENT |
 -- 
 2.43.0
 
