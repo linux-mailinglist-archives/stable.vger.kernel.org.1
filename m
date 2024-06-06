@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-48657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3D68FE9F1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC5E8FEEF3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81C6B1C25EA1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 224891F2149C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFDC198843;
-	Thu,  6 Jun 2024 14:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3271C8FD3;
+	Thu,  6 Jun 2024 14:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfGaflmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Obd+40FA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA08198E7B;
-	Thu,  6 Jun 2024 14:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EED61A1886;
+	Thu,  6 Jun 2024 14:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683083; cv=none; b=Y6eJkrsUiit9EWqo2uuQdgea64G2ULfRpkRaGywZBPZlyh5Owky+r9t6wdJWEYWQK9EErMrlucHK6PtTVh0hKz34kTMY1u7B4S+h/AzvYZDsng7oKNL2kbYx/zn2155zsjk/+8MAQ8NMp3eR/D9qbXqFq28tp2awsUK/Nn6wJRk=
+	t=1717683720; cv=none; b=lhBS+YphB29bLnuKSPdMgG86KqycclbWvK12eluAuFLcfgE+OShrPnA7IHTJOiLzs9oPMjMcpBWx3MUD3RrhTkcwcTcvtRPeFxAfU5Mb7q3MH073NmU56CE6IvmJAU3SXN8CNk7ph260EYWUBxlliD+kHNn2rtwvWVCqWDzxY5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683083; c=relaxed/simple;
-	bh=0BZC4dkimIhTVAcS0X3AR3BYRIJK0dzUZFpQciz7AUQ=;
+	s=arc-20240116; t=1717683720; c=relaxed/simple;
+	bh=SsXyHRw16sdleyEB1Lh3XsI7RuPM90kvIKRFyssh7eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2SgNhLrN/4jWQBYcblqPIq4a5QwEh7WVWzatwMNNuWUEz1D8lPxKGcYFVJzsFvHN+i1P/H1YP5gGUyrC59+tJYsUKsyXE1QViI/KpDI1IPAK/ALZxRBntYAHo8qPsQKW8zkSdwPJ1BuHEkYja6jowYxjwdTdBnKm0w5DL+G3oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfGaflmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49931C2BD10;
-	Thu,  6 Jun 2024 14:11:23 +0000 (UTC)
+	 MIME-Version; b=pVoe2jmsunjNGokbo5HLH/wvIkyH6F58axt0m2MaYxkQzvle7I6Nbd7spFeo87C+xqbIhqNVD+mxbULLvYrJ2dZInUdCSdvBOIK4Gpof6AixMy01GiVwpwyPaMvHmBcsKyGdtrJ/EwdYLj39NnakkYiZ6M6BtNlIxHaXC8VNJ+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Obd+40FA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F91EC2BD10;
+	Thu,  6 Jun 2024 14:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683083;
-	bh=0BZC4dkimIhTVAcS0X3AR3BYRIJK0dzUZFpQciz7AUQ=;
+	s=korg; t=1717683720;
+	bh=SsXyHRw16sdleyEB1Lh3XsI7RuPM90kvIKRFyssh7eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WfGaflmEzE7rF2O+UN907ZBi2YkrNRXyOZzcSa7ekC3Xlvm94OiZ9rDWW0aUn0+sq
-	 xA82XUSzAhwRalmp92HHzeNRcE1L7WUQmoPP7+ch0NmPkATpdu0UAu6YAlQCWSscn0
-	 V8sbbMhQ7A2EBL4xj6f6AfXThPUMvwrRqigCtG2Y=
+	b=Obd+40FARKgrEdA9V3bB2G7bL0NltN+LcigvBuMipDSMJnU+kgk021nYE+qckWFJH
+	 z+Uyfq/3sL1b50qSa9qWiXcaYLmdvdY3xM8ude8ggm33v4nnUfzcWquoCWQ9Gtslx8
+	 aO9oPcuaN++GT/yWXpnMvkIERITWJ65o0khD6xYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Wei Fang <wei.fang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 355/374] ALSA: seq: Fix yet another spot for system message conversion
+Subject: [PATCH 6.6 662/744] net: fec: avoid lock evasion when reading pps_enable
 Date: Thu,  6 Jun 2024 16:05:34 +0200
-Message-ID: <20240606131703.764314382@linuxfoundation.org>
+Message-ID: <20240606131753.693092769@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 700fe6fd093d08c6da2bda8efe00479b0e617327 ]
+[ Upstream commit 3b1c92f8e5371700fada307cc8fd2c51fa7bc8c1 ]
 
-We fixed the incorrect UMP type for system messages in the recent
-commit, but it missed one place in system_ev_to_ump_midi1().
-Fix it now.
+The assignment of pps_enable is protected by tmreg_lock, but the read
+operation of pps_enable is not. So the Coverity tool reports a lock
+evasion warning which may cause data race to occur when running in a
+multithread environment. Although this issue is almost impossible to
+occur, we'd better fix it, at least it seems more logically reasonable,
+and it also prevents Coverity from continuing to issue warnings.
 
-Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
-Fixes: c2bb79613fed ("ALSA: seq: Fix incorrect UMP type for system messages")
-Link: https://lore.kernel.org/r/20240530101044.17524-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 278d24047891 ("net: fec: ptp: Enable PPS output based on ptp clock")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Link: https://lore.kernel.org/r/20240521023800.17102-1-wei.fang@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_convert.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/fec_ptp.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index f5d22dd008426..903a644b80e25 100644
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -729,6 +729,7 @@ static int system_ev_to_ump_midi1(const struct snd_seq_event *event,
- 				  union snd_ump_midi1_msg *data,
- 				  unsigned char status)
- {
-+	data->system.type = UMP_MSG_TYPE_SYSTEM; // override
- 	data->system.status = status;
- 	return 1;
- }
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 181d9bfbee220..e32f6724f5681 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -104,14 +104,13 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
+ 	struct timespec64 ts;
+ 	u64 ns;
+ 
+-	if (fep->pps_enable == enable)
+-		return 0;
+-
+-	fep->pps_channel = DEFAULT_PPS_CHANNEL;
+-	fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
+-
+ 	spin_lock_irqsave(&fep->tmreg_lock, flags);
+ 
++	if (fep->pps_enable == enable) {
++		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
++		return 0;
++	}
++
+ 	if (enable) {
+ 		/* clear capture or output compare interrupt status if have.
+ 		 */
+@@ -532,6 +531,9 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
+ 	int ret = 0;
+ 
+ 	if (rq->type == PTP_CLK_REQ_PPS) {
++		fep->pps_channel = DEFAULT_PPS_CHANNEL;
++		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
++
+ 		ret = fec_ptp_enable_pps(fep, on);
+ 
+ 		return ret;
 -- 
 2.43.0
 
