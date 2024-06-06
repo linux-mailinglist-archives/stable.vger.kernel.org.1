@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-48673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7242F8FEA01
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBE38FEF09
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FD191F24A89
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AAA31F2197E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402901974FB;
-	Thu,  6 Jun 2024 14:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74DD1C95E0;
+	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O85Dd2zw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FJfFYGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36371974F2;
-	Thu,  6 Jun 2024 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783E91A189B;
+	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683091; cv=none; b=JwtSaa2/IvqBasUSv5Gt+aTYcmy3r8JUHBJUQQiI7vmOa8ziKDq+hnS+knpjSRQkRFTYWvtVmI2tWVqxd6M3R5DPsAgArc5i8BiWH67SCqRTuNxcq2w/lDE2WWOccdki7/zzaHK25q+E/Uqv5i+Gyu8cbWeR9exjBDPioFjEnrg=
+	t=1717683730; cv=none; b=hwsMitI/aQK8nIZSaAOQ4wmBS4TCHjF/VQpGtB++LeiUMXUUZsFqM3IepPlKAe2MTAu2wNsm/pAllHMbx+LBP6pcosLU5eMnwf7AQ1PwKq6v1ismGdh7j0lZR6I8ZykPZ836EjZS1DkJA2QEyL1RiXRV6G5jcRfBxhU1wPBFwEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683091; c=relaxed/simple;
-	bh=SKshPOtNns6GVJEF6xYfdb+XqwyhHXkJVWVM24dekAc=;
+	s=arc-20240116; t=1717683730; c=relaxed/simple;
+	bh=Qfyv//P5+UoordB5HvfMWbpMYQewG88hcCUX1x2Ljac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rpJANjPUCeZD0l6ny9Ym71Uj1j2PJZZRVC4Y26zmJ4ZO7IQrpcgwZyQqs1jtA9I7T4QurwetHEAgiGnctrHRk81augUCZvB6SDY9fUsriJhrqVcgbobbso965vZt7drNgeHlIE4KwKY9aA1ObFZsny29jhZmQHnNddFp8VsmXf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O85Dd2zw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14B5C32781;
-	Thu,  6 Jun 2024 14:11:30 +0000 (UTC)
+	 MIME-Version; b=UDAzu+hjfA8z2oIbhXscclIL6xXsvIoV3M3iOoZ6R1EJydzC9/IEez/uwafbH0KnJZz5RZ8jVkyN+cEh67AtY4RIZIUaFkwZo3CmzwYHo5tOoV6s1k3SZdr5u5fXVxuLlRvrGowt6KCywRxh4OpJc6PLmgCLqOv1BxH+aSYfKwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FJfFYGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E8BC2BD10;
+	Thu,  6 Jun 2024 14:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683090;
-	bh=SKshPOtNns6GVJEF6xYfdb+XqwyhHXkJVWVM24dekAc=;
+	s=korg; t=1717683730;
+	bh=Qfyv//P5+UoordB5HvfMWbpMYQewG88hcCUX1x2Ljac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O85Dd2zwJ0AWFQqIxscyD+kVwUWwyBVIoFRB2gquGZtc2hqS8lUX+zayEZV1I8A1/
-	 TIa/+XLSB1xbOUw1CoQdG1BsihKzYSAR6d3018aryEqKlBJnbRg3vfHOLrJvJ8tQKa
-	 kR3Ek0e02qDLmzDweqVgkkO/ASXQfA40bg4iEbgc=
+	b=0FJfFYGxw8d3rF7dh7qR3BnDAqjOIgs8wJbf+G4JP0lH4OLokFpU4+Spr+xaM+uEx
+	 wULT1ygbxwVt7dKZ1cOe6bPdOKV44lS3nQmA8uRbMdAd/5CACKyxmdhgCI607v1VXg
+	 D9x6hMluzUigKe78AYoursvASh5iINvLuPUqlrzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.9 374/374] platform/x86/intel-uncore-freq: Dont present root domain on error
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 681/744] nvme-multipath: fix io accounting on failover
 Date: Thu,  6 Jun 2024 16:05:53 +0200
-Message-ID: <20240606131704.417598756@linuxfoundation.org>
+Message-ID: <20240606131754.330638525@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Keith Busch <kbusch@kernel.org>
 
-commit db643cb7ebe524d17b4b13583dda03485d4a1bc0 upstream.
+[ Upstream commit a2e4c5f5f68dbd206f132bc709b98dea64afc3b8 ]
 
-If none of the clusters are added because of some error, fail to load
-driver without presenting root domain. In this case root domain will
-present invalid data.
+There are io stats accounting that needs to be handled, so don't call
+blk_mq_end_request() directly. Use the existing nvme_end_req() helper
+that already handles everything.
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Fixes: 01c10f88c9b7 ("platform/x86/intel-uncore-freq: tpmi: Provide cluster level control")
-Cc: <stable@vger.kernel.org> # 6.5+
-Link: https://lore.kernel.org/r/20240415215210.2824868-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d4d957b53d91ee ("nvme-multipath: support io stats on the mpath device")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvme/host/core.c      | 2 +-
+ drivers/nvme/host/multipath.c | 3 ++-
+ drivers/nvme/host/nvme.h      | 1 +
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -240,6 +240,7 @@ static int uncore_probe(struct auxiliary
- 	bool read_blocked = 0, write_blocked = 0;
- 	struct intel_tpmi_plat_info *plat_info;
- 	struct tpmi_uncore_struct *tpmi_uncore;
-+	bool uncore_sysfs_added = false;
- 	int ret, i, pkg = 0;
- 	int num_resources;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 35eaa5c6c0c15..94a0916f9cb78 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -377,7 +377,7 @@ static inline void nvme_end_req_zoned(struct request *req)
+ 			le64_to_cpu(nvme_req(req)->result.u64));
+ }
  
-@@ -384,9 +385,15 @@ static int uncore_probe(struct auxiliary
- 			}
- 			/* Point to next cluster offset */
- 			cluster_offset >>= UNCORE_MAX_CLUSTER_PER_DOMAIN;
-+			uncore_sysfs_added = true;
- 		}
+-static inline void nvme_end_req(struct request *req)
++void nvme_end_req(struct request *req)
+ {
+ 	blk_status_t status = nvme_error_status(nvme_req(req)->status);
+ 
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index b39553b8378b5..3ac0cc22207dc 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -118,7 +118,8 @@ void nvme_failover_req(struct request *req)
+ 	blk_steal_bios(&ns->head->requeue_list, req);
+ 	spin_unlock_irqrestore(&ns->head->requeue_lock, flags);
+ 
+-	blk_mq_end_request(req, 0);
++	nvme_req(req)->status = 0;
++	nvme_end_req(req);
+ 	kblockd_schedule_work(&ns->head->requeue_work);
+ }
+ 
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 2c510c4e21c66..fd67240795e3a 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -761,6 +761,7 @@ static inline bool nvme_state_terminal(struct nvme_ctrl *ctrl)
  	}
+ }
  
-+	if (!uncore_sysfs_added) {
-+		ret = -ENODEV;
-+		goto remove_clusters;
-+	}
-+
- 	auxiliary_set_drvdata(auxdev, tpmi_uncore);
++void nvme_end_req(struct request *req);
+ void nvme_complete_rq(struct request *req);
+ void nvme_complete_batch_req(struct request *req);
  
- 	tpmi_uncore->root_cluster.root_domain = true;
+-- 
+2.43.0
+
 
 
 
