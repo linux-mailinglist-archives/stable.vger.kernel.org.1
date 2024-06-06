@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-49835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5694D8FEF11
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89FF8FEDE8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1D25B29BFE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EB8D1F215B7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8771A2543;
-	Thu,  6 Jun 2024 14:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF6A1BE849;
+	Thu,  6 Jun 2024 14:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niaDvOPM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Px7K2Qw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1F81C95E7;
-	Thu,  6 Jun 2024 14:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF371990B7;
+	Thu,  6 Jun 2024 14:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683732; cv=none; b=bDEgWedFd6DLYAhIQlrgTu6FXWsxlzPnJvTm3MQzojlxtOOPGo/zIdPDe3U8uzB7VyCGzRZkVm5FHu+vjuuIkbYor1dE+wHJ68UYdK0rTMKE4aeeVWG5j/NWm9Vk1aT0jo4oTM+C7/MWokUDvHdsxtclGiyZQCXw3p5gCUowHnU=
+	t=1717683538; cv=none; b=F50yzNklCSsPYo1s/Om8N2larBbObU+MddSK1rv6lPQC7hZt9G6lprvoUb+1zcCKvY1n8pls0MVVkgw+ECRrzEPTYOPllAO8tP7GFKqmXyxOelCiy+7czLlkMVSoNP6g9Ozsu159MlyGGovs+qDRXIJz1bwuB3flKPRMYyayXfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683732; c=relaxed/simple;
-	bh=YuFHx/DVXgIulbEEe2Hyeu42entjb4DDqOFCgR1QsyU=;
+	s=arc-20240116; t=1717683538; c=relaxed/simple;
+	bh=aiHRkJPqOrFFPVbjGrNX769v/TR445z2v6UGdcJyOIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YmUKIAwiS8aD9im0zng13eu7G8N8bJiD5H/L+xTL4fSSGtkYnM1zteEN7j4Wx4oWaVE/bftH8dnbAoRa7c7sM8nWMKUYf3uxTPKuOJZU4LvuhQoxtJP4SySCdP9bO8hhYciWITsUe3aY99xnEoaTA627UOs/7NuceYEpGBzZ9gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niaDvOPM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD87C32781;
-	Thu,  6 Jun 2024 14:22:12 +0000 (UTC)
+	 MIME-Version; b=VntCNgiPgumfzQxGhkhtdtVLRD1Xv9pPavREjLI+TITNDGnTwJqYukOzIOLfJM3q9jHv2JB8YyWNHDAGSb+44M1EjOkl7IiOGljgLjvbs1PR8GnXQEjawz23h0AUT7NSbV0BMR1tZNDq0ccNA4f133rI6Qp0mIZtUEbvcIXO+DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Px7K2Qw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197B1C2BD10;
+	Thu,  6 Jun 2024 14:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683732;
-	bh=YuFHx/DVXgIulbEEe2Hyeu42entjb4DDqOFCgR1QsyU=;
+	s=korg; t=1717683538;
+	bh=aiHRkJPqOrFFPVbjGrNX769v/TR445z2v6UGdcJyOIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=niaDvOPMQfCWFJ5dyvMUOpMhccRGRV+ihkQGr6jD5PKRIq5ncRIOU8vnvR1rAq3xZ
-	 2tK9cgcKBHKXP1IdD8m8/X5OdPpCcue+U8qnY1tqOKGoXzILA0EVyl5kgphAyCEPEZ
-	 OMRBTDb/JpCYYPhy7RUqvIUFlEqPibWm75pprelw=
+	b=1Px7K2Qw3olcgxIvZm3KUYxu6Z6rqdEC6YaaYDGkY4ar4Zi0f4CW6upI+GWVvb3t9
+	 NrwIdSLdWF2NP0NSRvUpbto0g8PYwgI+1OHD9gNcoMoyZlC9MeX6/f4pbtol5UW8aj
+	 iucezY+gN7rz9BAt0Yp4cZC8uLMHyQnP47jpzvzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Ryosuke Yasuoka <ryasuoka@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 685/744] net/mlx5: Lag, do bond only if slaves agree on roce state
+Subject: [PATCH 6.1 428/473] nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()
 Date: Thu,  6 Jun 2024 16:05:57 +0200
-Message-ID: <20240606131754.456183495@linuxfoundation.org>
+Message-ID: <20240606131713.904116813@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Ryosuke Yasuoka <ryasuoka@redhat.com>
 
-[ Upstream commit 51ef9305b8f40946d65c40368ffb4c14636d369a ]
+[ Upstream commit 6671e352497ca4bb07a96c48e03907065ff77d8a ]
 
-Currently, the driver does not enforce that lag bond slaves must have
-matching roce capabilities. Yet, in mlx5_do_bond(), the driver attempts
-to enable roce on all vports of the bond slaves, causing the following
-syndrome when one slave has no roce fw support:
+When nci_rx_work() receives a zero-length payload packet, it should not
+discard the packet and exit the loop. Instead, it should continue
+processing subsequent packets.
 
-mlx5_cmd_out_err:809:(pid 25427): MODIFY_NIC_VPORT_CONTEXT(0×755) op_mod(0×0)
-failed, status bad parameter(0×3), syndrome (0xc1f678), err(-22)
-
-Thus, create HW lag only if bond's slaves agree on roce state,
-either all slaves have roce support resulting in a roce lag bond,
-or none do, resulting in a raw eth bond.
-
-Fixes: 7907f23adc18 ("net/mlx5: Implement RoCE LAG feature")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240521153444.535399-1-ryasuoka@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ net/nfc/nci/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index 9b05061a759cc..dfc2ba6f780a2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -720,6 +720,7 @@ bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
- 	struct mlx5_core_dev *dev;
- 	u8 mode;
- #endif
-+	bool roce_support;
- 	int i;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index e4933246cd3ad..6196bb512dfc1 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1527,8 +1527,7 @@ static void nci_rx_work(struct work_struct *work)
  
- 	for (i = 0; i < ldev->ports; i++)
-@@ -746,6 +747,11 @@ bool mlx5_lag_check_prereq(struct mlx5_lag *ldev)
- 		if (mlx5_sriov_is_enabled(ldev->pf[i].dev))
- 			return false;
- #endif
-+	roce_support = mlx5_get_roce_state(ldev->pf[MLX5_LAG_P1].dev);
-+	for (i = 1; i < ldev->ports; i++)
-+		if (mlx5_get_roce_state(ldev->pf[i].dev) != roce_support)
-+			return false;
-+
- 	return true;
- }
+ 		if (!nci_valid_size(skb)) {
+ 			kfree_skb(skb);
+-			kcov_remote_stop();
+-			break;
++			continue;
+ 		}
  
-@@ -913,8 +919,10 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
- 		} else if (roce_lag) {
- 			dev0->priv.flags &= ~MLX5_PRIV_FLAGS_DISABLE_IB_ADEV;
- 			mlx5_rescan_drivers_locked(dev0);
--			for (i = 1; i < ldev->ports; i++)
--				mlx5_nic_vport_enable_roce(ldev->pf[i].dev);
-+			for (i = 1; i < ldev->ports; i++) {
-+				if (mlx5_get_roce_state(ldev->pf[i].dev))
-+					mlx5_nic_vport_enable_roce(ldev->pf[i].dev);
-+			}
- 		} else if (shared_fdb) {
- 			int i;
- 
+ 		/* Process frame */
 -- 
 2.43.0
 
