@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-49317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A298FECC5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6168FE96E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 595311C261FE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93C1D287D8D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDAD19B5A6;
-	Thu,  6 Jun 2024 14:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5470B19AA41;
+	Thu,  6 Jun 2024 14:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icHfkhrM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqLsXhvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE905198A3B;
-	Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A53196DA8;
+	Thu,  6 Jun 2024 14:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683407; cv=none; b=MSI6pNj4b6snzI0cb2QhNS6dl0VNLvTYaVS65UHg4yQTlQFovhjGBB+gZHR1rpLs7/cKOxPs8L9e+OxuJ52hgbTjDpBt0N242l1W6dJJ7isLzWe2UQMRxK03lZilTeSRYIkn84nYydbbuU8yH2P9t5aUF8odHst2w2ArFbYVYA4=
+	t=1717683020; cv=none; b=APU/KWC8y9iwum814LxBvW1ATFTZUXCQNNsQ62hLqlSAOb2hjKp2W7o5O/iKyLkayXRo5exF+Wqm75bng9fcB9EuiU9hiYp2L1ERKDEALl1qF4KXCgDFJYcbmTW89PXcW2PXjH+fEQ1moso6xWSS3L7Mj1uliIbuccOZ7hUdddY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683407; c=relaxed/simple;
-	bh=Qsj4TC1o2UUkiW/kLd6yGG3ZLm1OYSfwNkQBt3JNCEc=;
+	s=arc-20240116; t=1717683020; c=relaxed/simple;
+	bh=vYAodncs2chlTbGn39+JuzKStNRSYYY+He4Xn61N0hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDw015dGLr/cFRrryRqwmqf+/MG9Lb6IeYAIxUYOiB7RBgtAX0XX73cFC+lUavM11jnjV3EOHJKdwI0C6rRnP/f/QMDEaDPkGL+btdkUibBR8d/H+61nXboGR1k73yXyAn4KeQkxpWVInPF/IxSC2IfzWSWIrepXxoMbWA4BGeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icHfkhrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD195C4AF0A;
-	Thu,  6 Jun 2024 14:16:46 +0000 (UTC)
+	 MIME-Version; b=tKlN9sRa7bwFahXwC1za/NA5sAtFDRoILdL5vTX+c/1CHuZLrq/SCER9t9i00EwBG0aw6TnL01hglPzdjZsDoBEamKTJvTC+ZVH67tUeKh6iZ/JvdKghPmJG0szR/Od9GBH6mW0qjdCg8NtzYIMxC8vkJE9Zqsra6+r47TVlAAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqLsXhvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA663C32781;
+	Thu,  6 Jun 2024 14:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683406;
-	bh=Qsj4TC1o2UUkiW/kLd6yGG3ZLm1OYSfwNkQBt3JNCEc=;
+	s=korg; t=1717683020;
+	bh=vYAodncs2chlTbGn39+JuzKStNRSYYY+He4Xn61N0hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icHfkhrMe+8Yly8Ub7GFDxifXhS9pVsiCmszDhWD8fqzXI2U99LXIl9D0zvnOQPzm
-	 1kXZUKYRzubbEL2PhNZKpKpBdtavO8O0bvi8GLOvgEAxRdd/q0D5JZiAbxSzMg9A6x
-	 OWIrgxz9CezkmORsUS5tstGu5ebcX+FqfwOG+NFU=
+	b=bqLsXhvw3tGxf8sFaIcbG+EIxQD3zPdcZO7R4mjMB4k9D/tQ+Hr9pnTsrlD76cazU
+	 qgn2Ra3eETwVJU+Wl1vOMnhMnVruXlSfOysUngAUY1PsToc9w2OpkkcdBKO3i3mM8f
+	 p86aT6LFyeEtwrMmN3aQkfI/pki3hinewOh2mOLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Martin Kaiser <martin@kaiser.cx>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 290/473] serial: max3100: Lock port->lock when calling uart_handle_cts_change()
+Subject: [PATCH 6.9 240/374] nfs: keep server info for remounts
 Date: Thu,  6 Jun 2024 16:03:39 +0200
-Message-ID: <20240606131709.476003315@linuxfoundation.org>
+Message-ID: <20240606131659.864744099@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Martin Kaiser <martin@kaiser.cx>
 
-[ Upstream commit 77ab53371a2066fdf9b895246505f5ef5a4b5d47 ]
+[ Upstream commit b322bf9e983addedff0894c55e92d58f4d16d92a ]
 
-uart_handle_cts_change() has to be called with port lock taken,
-Since we run it in a separate work, the lock may not be taken at
-the time of running. Make sure that it's taken by explicitly doing
-that. Without it we got a splat:
+With newer kernels that use fs_context for nfs mounts, remounts fail with
+-EINVAL.
 
-  WARNING: CPU: 0 PID: 10 at drivers/tty/serial/serial_core.c:3491 uart_handle_cts_change+0xa6/0xb0
-  ...
-  Workqueue: max3100-0 max3100_work [max3100]
-  RIP: 0010:uart_handle_cts_change+0xa6/0xb0
-  ...
-   max3100_handlerx+0xc5/0x110 [max3100]
-   max3100_work+0x12a/0x340 [max3100]
+$ mount -t nfs -o nolock 10.0.0.1:/tmp/test /mnt/test/
+$ mount -t nfs -o remount /mnt/test/
+mount: mounting 10.0.0.1:/tmp/test on /mnt/test failed: Invalid argument
 
-Fixes: 7831d56b0a35 ("tty: MAX3100")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240402195306.269276-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For remounts, the nfs server address and port are populated by
+nfs_init_fs_context and later overwritten with 0x00 bytes by
+nfs23_parse_monolithic. The remount then fails as the server address is
+invalid.
+
+Fix this by not overwriting nfs server info in nfs23_parse_monolithic if
+we're doing a remount.
+
+Fixes: f2aedb713c28 ("NFS: Add fs_context support.")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max3100.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/nfs/fs_context.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
-index c69602f356fdc..1c4a2b1b1f690 100644
---- a/drivers/tty/serial/max3100.c
-+++ b/drivers/tty/serial/max3100.c
-@@ -213,7 +213,7 @@ static int max3100_sr(struct max3100_port *s, u16 tx, u16 *rx)
- 	return 0;
- }
+diff --git a/fs/nfs/fs_context.c b/fs/nfs/fs_context.c
+index d0a0956f8a134..cac1157be2c29 100644
+--- a/fs/nfs/fs_context.c
++++ b/fs/nfs/fs_context.c
+@@ -1112,9 +1112,12 @@ static int nfs23_parse_monolithic(struct fs_context *fc,
+ 		ctx->acdirmax	= data->acdirmax;
+ 		ctx->need_mount	= false;
  
--static int max3100_handlerx(struct max3100_port *s, u16 rx)
-+static int max3100_handlerx_unlocked(struct max3100_port *s, u16 rx)
- {
- 	unsigned int ch, flg, status = 0;
- 	int ret = 0, cts;
-@@ -253,6 +253,17 @@ static int max3100_handlerx(struct max3100_port *s, u16 rx)
- 	return ret;
- }
- 
-+static int max3100_handlerx(struct max3100_port *s, u16 rx)
-+{
-+	unsigned long flags;
-+	int ret;
+-		memcpy(sap, &data->addr, sizeof(data->addr));
+-		ctx->nfs_server.addrlen = sizeof(data->addr);
+-		ctx->nfs_server.port = ntohs(data->addr.sin_port);
++		if (!is_remount_fc(fc)) {
++			memcpy(sap, &data->addr, sizeof(data->addr));
++			ctx->nfs_server.addrlen = sizeof(data->addr);
++			ctx->nfs_server.port = ntohs(data->addr.sin_port);
++		}
 +
-+	uart_port_lock_irqsave(&s->port, &flags);
-+	ret = max3100_handlerx_unlocked(s, rx);
-+	uart_port_unlock_irqrestore(&s->port, flags);
-+	return ret;
-+}
-+
- static void max3100_work(struct work_struct *w)
- {
- 	struct max3100_port *s = container_of(w, struct max3100_port, work);
+ 		if (sap->ss_family != AF_INET ||
+ 		    !nfs_verify_server_address(sap))
+ 			goto out_no_address;
 -- 
 2.43.0
 
