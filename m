@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-49647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6746C8FEE44
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E65BF8FEF2D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0549282942
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0092B1C227B3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7CF1A0AE1;
-	Thu,  6 Jun 2024 14:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2968D1CB304;
+	Thu,  6 Jun 2024 14:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgZtwsfy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gu3J0NEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD281A0AE5;
-	Thu,  6 Jun 2024 14:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFE21A2557;
+	Thu,  6 Jun 2024 14:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683639; cv=none; b=mhhhA/ooCk8fsg3MyZfeu+gcZKnxn3gptFB+e0EYRc5DJVKHMbPQtjtz9NjSjlWwqDQL7iPOmsD+Sfc3Vi+8NvFXco2ucgbiRg+eHY2GfVMN41MzacOdgHQIhRcCSZaDiAXMEJFrFUOuUMB+McGwEmHL7imxZl0WzYWHX/EUR5A=
+	t=1717683750; cv=none; b=rJ3Q7ASc5ptLC+47hB4RhHoJ/f2ZTX184lF/i1JgHKRbBiVk8hokH/iTv/OYYMB1U9umfA3lSKGPD51k0ZLu3DpKQclcrAqJlNZRngirCYS7eojoiWwHexluKVu8RRjyBbhp/W2wfbG4b/NIsPSqBUDyC+EyNoq0CNIe+BqOyJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683639; c=relaxed/simple;
-	bh=TXd0TuzCp7RVjA7Ruc44Xv3b2yEYI16R69OTeCNZXxM=;
+	s=arc-20240116; t=1717683750; c=relaxed/simple;
+	bh=d71tUZe1DGxwDV9LGFE19EhSmwjngx0bYZI3wEDSnvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyVtZg/61cZRGIkHoUCQqheNgALoNXlFpULLJpxlgt+fJvQNNeQxJhmWsFZ9D43TDNA7pZwKT5qssYrbFG2j8dfellu+Rk7GTljwPn1M77m+r+hiLvN5kFj6AiKwxTRKl7AyeOnyUmit2Msj1qLRD4zn2wI1ovfZHwaeX9KNfxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgZtwsfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29EF7C4AF0C;
-	Thu,  6 Jun 2024 14:20:39 +0000 (UTC)
+	 MIME-Version; b=cJHKqFHrNTafhZ+4JpmaamwKmGUtLH0Ahd/rsafH5KjkmMKXlDjWEOSdF0JHgsnPH+T7D/03qpgVek7GZyWkiYmg7Q8xjQPhSMWP5fL0ISmtSTqft+40XWtLJzFw5b4U5MgihWpDLaIGltYYHoDZk1119Iqh2S2kghol1LrY978=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gu3J0NEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDA5C2BD10;
+	Thu,  6 Jun 2024 14:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683639;
-	bh=TXd0TuzCp7RVjA7Ruc44Xv3b2yEYI16R69OTeCNZXxM=;
+	s=korg; t=1717683749;
+	bh=d71tUZe1DGxwDV9LGFE19EhSmwjngx0bYZI3wEDSnvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fgZtwsfybK86Xsp8PWwlR498AGZWxU9F3Ofe6AuB5A3KCpFwi4eQmWHfxNIeHV1H1
-	 /J5awSY2IKJZvRqoaOGh1iAwDFQ+t5O0JUvmxw8RbVispC97jE5bfSNscUQP5G5ujA
-	 VqBq5PYU5HorCu1lK0gXs3pFMv9CNqRTwr+WjG9U=
+	b=Gu3J0NEBRtNynM62iF77CGgXizcg294EqyY1NEYibv6tQIsFKvQtPCatjYOF/Ei+W
+	 3IyqFAfwFnvTpuwOl7Kxm9dMhy1sAGE4KwkYS4P0oH8FQdqmLF6c6thBltKQcENDiA
+	 G5pYUCpxKPPgsAcdCmcP7z5Tjuc1Gg38BDRnUI/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 459/473] netfilter: tproxy: bail out if IP has been disabled on the device
-Date: Thu,  6 Jun 2024 16:06:28 +0200
-Message-ID: <20240606131714.858572282@linuxfoundation.org>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 717/744] kconfig: fix comparison to constant symbols, m, n
+Date: Thu,  6 Jun 2024 16:06:29 +0200
+Message-ID: <20240606131755.466903021@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 21a673bddc8fd4873c370caf9ae70ffc6d47e8d3 ]
+[ Upstream commit aabdc960a283ba78086b0bf66ee74326f49e218e ]
 
-syzbot reports:
-general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-[..]
-RIP: 0010:nf_tproxy_laddr4+0xb7/0x340 net/ipv4/netfilter/nf_tproxy_ipv4.c:62
-Call Trace:
- nft_tproxy_eval_v4 net/netfilter/nft_tproxy.c:56 [inline]
- nft_tproxy_eval+0xa9a/0x1a00 net/netfilter/nft_tproxy.c:168
+Currently, comparisons to 'm' or 'n' result in incorrect output.
 
-__in_dev_get_rcu() can return NULL, so check for this.
+[Test Code]
 
-Reported-and-tested-by: syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
-Fixes: cc6eb4338569 ("tproxy: use the interface primary IP address as a default value for --on-ip")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+    config MODULES
+            def_bool y
+            modules
+
+    config A
+            def_tristate m
+
+    config B
+            def_bool A > n
+
+CONFIG_B is unset, while CONFIG_B=y is expected.
+
+The reason for the issue is because Kconfig compares the tristate values
+as strings.
+
+Currently, the .type fields in the constant symbol definitions,
+symbol_{yes,mod,no} are unspecified, i.e., S_UNKNOWN.
+
+When expr_calc_value() evaluates 'A > n', it checks the types of 'A' and
+'n' to determine how to compare them.
+
+The left-hand side, 'A', is a tristate symbol with a value of 'm', which
+corresponds to a numeric value of 1. (Internally, 'y', 'm', and 'n' are
+represented as 2, 1, and 0, respectively.)
+
+The right-hand side, 'n', has an unknown type, so it is treated as the
+string "n" during the comparison.
+
+expr_calc_value() compares two values numerically only when both can
+have numeric values. Otherwise, they are compared as strings.
+
+    symbol    numeric value    ASCII code
+    -------------------------------------
+      y           2             0x79
+      m           1             0x6d
+      n           0             0x6e
+
+'m' is greater than 'n' if compared numerically (since 1 is greater
+than 0), but smaller than 'n' if compared as strings (since the ASCII
+code 0x6d is smaller than 0x6e).
+
+Specifying .type=S_TRISTATE for symbol_{yes,mod,no} fixes the above
+test code.
+
+Doing so, however, would cause a regression to the following test code.
+
+[Test Code 2]
+
+    config MODULES
+            def_bool n
+            modules
+
+    config A
+            def_tristate n
+
+    config B
+            def_bool A = m
+
+You would get CONFIG_B=y, while CONFIG_B should not be set.
+
+The reason is because sym_get_string_value() turns 'm' into 'n' when the
+module feature is disabled. Consequently, expr_calc_value() evaluates
+'A = n' instead of 'A = m'. This oddity has been hidden because the type
+of 'm' was previously S_UNKNOWN instead of S_TRISTATE.
+
+sym_get_string_value() should not tweak the string because the tristate
+value has already been correctly calculated. There is no reason to
+return the string "n" where its tristate value is mod.
+
+Fixes: 31847b67bec0 ("kconfig: allow use of relations other than (in)equality")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/nf_tproxy_ipv4.c | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/kconfig/symbol.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/netfilter/nf_tproxy_ipv4.c b/net/ipv4/netfilter/nf_tproxy_ipv4.c
-index 69e3317996043..73e66a088e25e 100644
---- a/net/ipv4/netfilter/nf_tproxy_ipv4.c
-+++ b/net/ipv4/netfilter/nf_tproxy_ipv4.c
-@@ -58,6 +58,8 @@ __be32 nf_tproxy_laddr4(struct sk_buff *skb, __be32 user_laddr, __be32 daddr)
+diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
+index a76925b46ce63..7b1df55b01767 100644
+--- a/scripts/kconfig/symbol.c
++++ b/scripts/kconfig/symbol.c
+@@ -13,18 +13,21 @@
  
- 	laddr = 0;
- 	indev = __in_dev_get_rcu(skb->dev);
-+	if (!indev)
-+		return daddr;
+ struct symbol symbol_yes = {
+ 	.name = "y",
++	.type = S_TRISTATE,
+ 	.curr = { "y", yes },
+ 	.flags = SYMBOL_CONST|SYMBOL_VALID,
+ };
  
- 	in_dev_for_each_ifa_rcu(ifa, indev) {
- 		if (ifa->ifa_flags & IFA_F_SECONDARY)
+ struct symbol symbol_mod = {
+ 	.name = "m",
++	.type = S_TRISTATE,
+ 	.curr = { "m", mod },
+ 	.flags = SYMBOL_CONST|SYMBOL_VALID,
+ };
+ 
+ struct symbol symbol_no = {
+ 	.name = "n",
++	.type = S_TRISTATE,
+ 	.curr = { "n", no },
+ 	.flags = SYMBOL_CONST|SYMBOL_VALID,
+ };
+@@ -775,8 +778,7 @@ const char *sym_get_string_value(struct symbol *sym)
+ 		case no:
+ 			return "n";
+ 		case mod:
+-			sym_calc_value(modules_sym);
+-			return (modules_sym->curr.tri == no) ? "n" : "m";
++			return "m";
+ 		case yes:
+ 			return "y";
+ 		}
 -- 
 2.43.0
 
