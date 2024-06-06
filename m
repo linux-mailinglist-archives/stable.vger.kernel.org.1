@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-49640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA418FEE3D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:43:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11BE8FEF2A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D9EB2827FE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:43:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A525B2802D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7901A01D8;
-	Thu,  6 Jun 2024 14:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C261C9EC9;
+	Thu,  6 Jun 2024 14:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXIHSY4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOutRQaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA18E1A01C7;
-	Thu,  6 Jun 2024 14:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D8F1A186B;
+	Thu,  6 Jun 2024 14:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683635; cv=none; b=YQQIqtEL4f1OKirHXPOaAVMGkfXOxes2mjtMA5NPR1oDCxOPLGO74T+DKTOG09y9LUk/eJDwRlZfmNbczxsEulEm95K+aqmD4gnuWuT/ZXuhEhPckLQZC3d0QKST9COYhymE1ASMsEuxbzF26jKmW28kr8kQy90BUs+ir+TyyD4=
+	t=1717683747; cv=none; b=VrGxA/bsx/UXgS9Uyld65F2VmqMfHEqGW1vA4pTfarY8TkdgA95ehvSsUivow+Fm2Pi+ohFGrdtchoFc04t2JL0Rrtk20Z/HO35hhLtrxhgB849a1oy+IXMkd/deZb/ri8vfyqURD+TI4IsVcQ4kMtec2hDsWRkBcciFqUizkzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683635; c=relaxed/simple;
-	bh=x8+jYjp3N6NEjlb8DIF+F1hySB7/g7XOjqgCiIxYV3k=;
+	s=arc-20240116; t=1717683747; c=relaxed/simple;
+	bh=Fzb9WOhf8YlhoDrUigfCIkgQBBffq2NfqVMY+sF6uAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yogp6nFpA48TYuDZsaS4V5aalkfampF4X/kcxV8+X5k1XEu7d/e/+OMJRzDdYv/SB73gwqn5q8Rm2FZgIBvlQUTzGGzB9ewVdNwDUGVuiT098/UxCDmlNo4y4kRzlWA57bPuOgD5MDR+PJe/iFLuXZUwy/GygtKzcX7o8pGekw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXIHSY4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C8E1C32781;
-	Thu,  6 Jun 2024 14:20:35 +0000 (UTC)
+	 MIME-Version; b=MIpixydSzo+FXKtsiz3/pCUZMTIBEMthfYaSGzAwi1e0w00ieHll/06n2bScZ/+fIzTbs7V/efpJTwGmH4dzw+dcqd/+lo/NDuGGi2cduPPx6qRU6G7eD+bT2LInAGoXnQxsxQt5QGb9JfbX8uAt0ry/bqraF4moYkUgXcfm1Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOutRQaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23ADFC2BD10;
+	Thu,  6 Jun 2024 14:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683635;
-	bh=x8+jYjp3N6NEjlb8DIF+F1hySB7/g7XOjqgCiIxYV3k=;
+	s=korg; t=1717683747;
+	bh=Fzb9WOhf8YlhoDrUigfCIkgQBBffq2NfqVMY+sF6uAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXIHSY4Th4SRDDC7pyWIJWKcjwBNOvO6zfJstKeJ3CQHK3v1FR0BYGUd1BSfQS5E8
-	 3kXZPfoHJy22h1FJW68LxQpeHFgnBVu3g2OswU6cAsa8VaGIaRYDSzuwbzWIzVHYKu
-	 VTPbO1sy1CUwtttWM4XbuYnYvCBazG38Bm8rfk+U=
+	b=tOutRQaCZG+8PwPfBE5wCItL5Fgcw3WANsHa2g5soxpeYF+5Xz2sEQUt1aAIbQLaR
+	 U9fJii2lyCLdRBCPQeDt1uEklWLTG6MX68EYVEciWRNy3QgpGhyUL5Mqcy8AYEgAw2
+	 7wIa84V/tJ+X7mSBOsIUtRR/FxP1zRywAFpTt5oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Florian Westphal <fw@strlen.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 456/473] netfilter: nft_payload: rebuild vlan header when needed
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 713/744] netfilter: tproxy: bail out if IP has been disabled on the device
 Date: Thu,  6 Jun 2024 16:06:25 +0200
-Message-ID: <20240606131714.763512209@linuxfoundation.org>
+Message-ID: <20240606131755.343360391@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit de6843be3082d416eaf2a00b72dad95c784ca980 ]
+[ Upstream commit 21a673bddc8fd4873c370caf9ae70ffc6d47e8d3 ]
 
-Skip rebuilding the vlan header when accessing destination and source
-mac address.
+syzbot reports:
+general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+[..]
+RIP: 0010:nf_tproxy_laddr4+0xb7/0x340 net/ipv4/netfilter/nf_tproxy_ipv4.c:62
+Call Trace:
+ nft_tproxy_eval_v4 net/netfilter/nft_tproxy.c:56 [inline]
+ nft_tproxy_eval+0xa9a/0x1a00 net/netfilter/nft_tproxy.c:168
 
+__in_dev_get_rcu() can return NULL, so check for this.
+
+Reported-and-tested-by: syzbot+b94a6818504ea90d7661@syzkaller.appspotmail.com
+Fixes: cc6eb4338569 ("tproxy: use the interface primary IP address as a default value for --on-ip")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 33c563ebf8d3 ("netfilter: nft_payload: skbuff vlan metadata mangle support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_payload.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/netfilter/nf_tproxy_ipv4.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index e36627a654244..74777a687eb5f 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -126,7 +126,8 @@ void nft_payload_eval(const struct nft_expr *expr,
- 		if (!skb_mac_header_was_set(skb) || skb_mac_header_len(skb) == 0)
- 			goto err;
+diff --git a/net/ipv4/netfilter/nf_tproxy_ipv4.c b/net/ipv4/netfilter/nf_tproxy_ipv4.c
+index 69e3317996043..73e66a088e25e 100644
+--- a/net/ipv4/netfilter/nf_tproxy_ipv4.c
++++ b/net/ipv4/netfilter/nf_tproxy_ipv4.c
+@@ -58,6 +58,8 @@ __be32 nf_tproxy_laddr4(struct sk_buff *skb, __be32 user_laddr, __be32 daddr)
  
--		if (skb_vlan_tag_present(skb)) {
-+		if (skb_vlan_tag_present(skb) &&
-+		    priv->offset >= offsetof(struct ethhdr, h_proto)) {
- 			if (!nft_payload_copy_vlan(dest, skb,
- 						   priv->offset, priv->len))
- 				goto err;
+ 	laddr = 0;
+ 	indev = __in_dev_get_rcu(skb->dev);
++	if (!indev)
++		return daddr;
+ 
+ 	in_dev_for_each_ifa_rcu(ifa, indev) {
+ 		if (ifa->ifa_flags & IFA_F_SECONDARY)
 -- 
 2.43.0
 
