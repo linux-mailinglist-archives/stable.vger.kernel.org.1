@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-49235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BADD8FEC71
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28D58FEE3E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 091BDB258E8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B88291C24523
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981AB19B3C4;
-	Thu,  6 Jun 2024 14:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91C71A0AE0;
+	Thu,  6 Jun 2024 14:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18HNBr/l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY/6iAZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572EF1B1402;
-	Thu,  6 Jun 2024 14:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CC91A01DA;
+	Thu,  6 Jun 2024 14:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683367; cv=none; b=lgelJKPkSCOz4jFACVF3iAap529AzDOPx79zwkqjxHVzolYlbAsPLKttYlC3NjyCaIAQSEhbyukf8J0DP8YwH3+9z9QyTaLLQ/mUn8LC1mZI1XABUNDuDgN++Z3rnQeBgaKUZE1/tsE+zYzP0A0hOLtsF/Y9odWIItMNqsX2O0k=
+	t=1717683636; cv=none; b=TlFoCa0Vb4Equ+H2yfCB2+IxpOKYkdh4ppK3Ar8r54au4idl3AYgPJih+JTNGSlI1WNzj383eoRHj6oSwRQRLzWlIjo+GZB2M3nCfga7uq6etyc3/hlzTUZOvpdI9FB8JiX1jDHerrGSsFp3u0G1ksfkJADEyZ5MiVTrHZecHH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683367; c=relaxed/simple;
-	bh=O6t+p78Oq7zx0Xj7uidvztq64+lsyIp9O5FxXh9iyrA=;
+	s=arc-20240116; t=1717683636; c=relaxed/simple;
+	bh=BedvyeTFZwaUcKmXmRt4iV4uGvr/r6HEtziwLdyI4aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m+icC06jHr6YkMTVvoD0Ay5hDq/V+YVMxfi/+Das12N6qp/GPENjyGEm3W6pPfq1RhEhu+u3a3N0w+F6m/TLDLYcR3hQA1RJKRpjbcIaM7/W4HTYCd65ahuXJq/S+rsFteEnqJPOUlkykKI2gGabUU1ih1MnPBvm36MXkXHu9bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18HNBr/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34048C32781;
-	Thu,  6 Jun 2024 14:16:07 +0000 (UTC)
+	 MIME-Version; b=kn02v/8+d5LVb6mIHkeLnEUjNBCbfiWQeJf3ZNcZ7iKMMFz5R2/0X5Ye3VObHROFk0x4fP9jtKJpBtkExRP8V8ZRIl6CcypoDE+puk+TFqCm1RdaBNgoAiJwnQ9wDT8+1/S6i4OSZqWFsTc785Ty2Bb4WPSn+6ZTNZUCHA4m874=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY/6iAZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1851FC2BD10;
+	Thu,  6 Jun 2024 14:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683367;
-	bh=O6t+p78Oq7zx0Xj7uidvztq64+lsyIp9O5FxXh9iyrA=;
+	s=korg; t=1717683636;
+	bh=BedvyeTFZwaUcKmXmRt4iV4uGvr/r6HEtziwLdyI4aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18HNBr/lV0AZHtynp+dKBa5+ZPpgfzubmEzbLL9CWn0pzjWK+LVeeWuX+vsdA6lV3
-	 Lr23cZ6Hpqes1Ke5fXCp13bSAKHU/CGW+xVWJQLDOEl/2Ll3UhBXvkFRH59mol4lJH
-	 GQwrZS/6PGXoiOBD5nk0OjMHDEsUTnoA9v54CQU8=
+	b=XY/6iAZNQ5tQj/mKdo+YyUuIo6yIZRPIPm5z8V/cv+eQr6RLOHx85RiBNiDg6AVGP
+	 8DIt8R7I1Sz0YmblycX6bxw7eliYl5VOT0fYfxi5P5q5ujNY2T4OCYW/MFlr6bE+oT
+	 ygrHLrbJ6W6j9WtUG+B9seWHVQwXQSqckHLuF85A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 251/473] lib/test_hmm.c: handle src_pfns and dst_pfns allocation failure
+Subject: [PATCH 6.6 508/744] perf report: Avoid SEGV in report__setup_sample_type()
 Date: Thu,  6 Jun 2024 16:03:00 +0200
-Message-ID: <20240606131708.280097665@linuxfoundation.org>
+Message-ID: <20240606131748.747506858@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +70,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit c2af060d1c18beaec56351cf9c9bcbbc5af341a3 ]
+[ Upstream commit 45b4f402a6b782352c4bafcff682bfb01da9ca05 ]
 
-The kcalloc() in dmirror_device_evict_chunk() will return null if the
-physical memory has run out.  As a result, if src_pfns or dst_pfns is
-dereferenced, the null pointer dereference bug will happen.
+In some cases evsel->name is lazily initialized in evsel__name(). If not
+initialized passing NULL to strstr() leads to a SEGV.
 
-Moreover, the device is going away.  If the kcalloc() fails, the pages
-mapping a chunk could not be evicted.  So add a __GFP_NOFAIL flag in
-kcalloc().
-
-Finally, as there is no need to have physically contiguous memory, Switch
-kcalloc() to kvcalloc() in order to avoid failing allocations.
-
-Link: https://lkml.kernel.org/r/20240312005905.9939-1-duoming@zju.edu.cn
-Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Cc: Jérôme Glisse <jglisse@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ccb17caecfbd542f ("perf report: Set PERF_SAMPLE_DATA_SRC bit for Arm SPE event")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linux.dev>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240508035301.1554434-4-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_hmm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/builtin-report.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 67e6f83fe0f82..be50a1fdba70b 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1232,8 +1232,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 	unsigned long *src_pfns;
- 	unsigned long *dst_pfns;
- 
--	src_pfns = kcalloc(npages, sizeof(*src_pfns), GFP_KERNEL);
--	dst_pfns = kcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL);
-+	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
- 
- 	migrate_device_range(src_pfns, start_pfn, npages);
- 	for (i = 0; i < npages; i++) {
-@@ -1256,8 +1256,8 @@ static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
- 	}
- 	migrate_device_pages(src_pfns, dst_pfns, npages);
- 	migrate_device_finalize(src_pfns, dst_pfns, npages);
--	kfree(src_pfns);
--	kfree(dst_pfns);
-+	kvfree(src_pfns);
-+	kvfree(dst_pfns);
- }
- 
- /* Removes free pages from the free list so they can't be re-allocated */
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 169c64e9a01a8..2a8889c6d7f97 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -426,7 +426,7 @@ static int report__setup_sample_type(struct report *rep)
+ 		 * compatibility, set the bit if it's an old perf data file.
+ 		 */
+ 		evlist__for_each_entry(session->evlist, evsel) {
+-			if (strstr(evsel->name, "arm_spe") &&
++			if (strstr(evsel__name(evsel), "arm_spe") &&
+ 				!(sample_type & PERF_SAMPLE_DATA_SRC)) {
+ 				evsel->core.attr.sample_type |= PERF_SAMPLE_DATA_SRC;
+ 				sample_type |= PERF_SAMPLE_DATA_SRC;
 -- 
 2.43.0
 
