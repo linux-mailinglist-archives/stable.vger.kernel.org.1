@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8390A8FED51
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C23278FE9BD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33384283965
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F81D1F26D9B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87D5198E84;
-	Thu,  6 Jun 2024 14:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8440F19B3E6;
+	Thu,  6 Jun 2024 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SI49vBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5BAAY6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C9319D078;
-	Thu,  6 Jun 2024 14:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F13919B3D4;
+	Thu,  6 Jun 2024 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683473; cv=none; b=lHOduV+Onwawo4sTMpbIjhwooTxHQvJaVhgCRlZNwb1h61t16Lfw7B8xHELXOTxw4D589w6VWA3xE2b6JO90oepa7nG0Ausy24EC/Hhb7C8kaldvvIObdlazKCgTIoYpZozmYu2cOkKzV1s/ffTWMveYZs0f6bOufNiRH5DNwss=
+	t=1717683061; cv=none; b=FDUWsxiOjFSZY7XWk6ACR3t9z04htsp9iqk0Fn0oI6dhicw0Fe2s5AiPnqXnB5DcfQSRVX2NI8GuQfEE6kSsWG3LRYanVabG9gwgPPjjDz519HJT0LO8hHmJEB7QLrIOOtrV9tnvs7SZRwOieY8Iz2HZuOfRhGMkq8EYMZHKrCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683473; c=relaxed/simple;
-	bh=fG3IKlSRsD6k5r5fI23a6wtxL5GIj5XUk0nJ4WXTGHo=;
+	s=arc-20240116; t=1717683061; c=relaxed/simple;
+	bh=sQR78fIzsJ5c17HliJ0aC0a4mo1JNwHSyoHR0dGX+WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JcNUWF1DCND2y9+Pzx6c5q6Y1GQaJgQuiu3Eaw486qLJeBGV3lkHt+/UmZi5IYN7581FwSXs2k8cxgTbkzSHRHURh5JbmcTbVf+ozkG3X66Uf+YwCltFB2MzllUQce0oMoj10L40LgmbcKzC/ympxE2sB6FKlS7LBI8FHlvM6Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SI49vBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852E7C32781;
-	Thu,  6 Jun 2024 14:17:53 +0000 (UTC)
+	 MIME-Version; b=ZwHWpz+771SdK2rfpFqCE5EDnK9ktqeyGF8p5S8jODn0pIISuW8viBZ+HFNVsXLFo60qu1YkhqpskAcv6DoGjk76+LHz/DFOwndQnjjhOHjMtEjE7SFwl8aMdHsBEAzBgN9A3G05THDxU5aApZVB285/l/YzUwaNkt5rHmwlPtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5BAAY6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C83EC4AF16;
+	Thu,  6 Jun 2024 14:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683473;
-	bh=fG3IKlSRsD6k5r5fI23a6wtxL5GIj5XUk0nJ4WXTGHo=;
+	s=korg; t=1717683061;
+	bh=sQR78fIzsJ5c17HliJ0aC0a4mo1JNwHSyoHR0dGX+WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SI49vBA3ZDt9gJUkP0DIp471CrdyACOSIBvk1+tLfoa2sHsUM/BlEA9SEWj5paCM
-	 xxCyptaY5qmomUpZAd6k4uCmS1bJcQmqCv/GzmLzbCnnmxqMMF0CS9CSX9aSxqTTDS
-	 PVYMNOFJeA/R24akNYhPY7qPGaHFc5Nxlz94nvik=
+	b=L5BAAY6ZkUQRwkpTtRiKOSEVXFWR9f/fvxY/We8PPAEJseUULU4WvA1OCNDk7Q4Q1
+	 bpeA7dfUUtTfbXBwkowpLEjLCTXj76gRqPrIi/7l+RJulF/vqPVjIpHiD+L+352Ay6
+	 I+ZHftAbwWPFenw74X3BHwlz2DDj0mu4IchDcfck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karel Balej <balejk@matfyz.cz>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 360/473] Input: ioc3kbd - add device table
+Subject: [PATCH 6.9 310/374] af_unix: Annotate data-race around unix_sk(sk)->addr.
 Date: Thu,  6 Jun 2024 16:04:49 +0200
-Message-ID: <20240606131711.815295941@linuxfoundation.org>
+Message-ID: <20240606131702.237833729@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karel Balej <balejk@matfyz.cz>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit d40e9edcf3eb925c259df9f9dd7319a4fcbc675b ]
+[ Upstream commit 97e1db06c7bb948da10ba85acad8030b56886593 ]
 
-Without the device table the driver will not auto-load when compiled as
-a module.
+Once unix_sk(sk)->addr is assigned under net->unx.table.locks and
+unix_sk(sk)->bindlock, *(unix_sk(sk)->addr) and unix_sk(sk)->path are
+fully set up, and unix_sk(sk)->addr is never changed.
 
-Fixes: 273db8f03509 ("Input: add IOC3 serio driver")
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
-Link: https://lore.kernel.org/r/20240313115832.8052-1-balejk@matfyz.cz
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+unix_getname() and unix_copy_addr() access the two fields locklessly,
+and commit ae3b564179bf ("missing barriers in some of unix_sock ->addr
+and ->path accesses") added smp_store_release() and smp_load_acquire()
+pairs.
+
+In other functions, we still read unix_sk(sk)->addr locklessly to check
+if the socket is bound, and KCSAN complains about it.  [0]
+
+Given these functions have no dependency for *(unix_sk(sk)->addr) and
+unix_sk(sk)->path, READ_ONCE() is enough to annotate the data-race.
+
+Note that it is safe to access unix_sk(sk)->addr locklessly if the socket
+is found in the hash table.  For example, the lockless read of otheru->addr
+in unix_stream_connect() is safe.
+
+Note also that newu->addr there is of the child socket that is still not
+accessible from userspace, and smp_store_release() publishes the address
+in case the socket is accept()ed and unix_getname() / unix_copy_addr()
+is called.
+
+[0]:
+BUG: KCSAN: data-race in unix_bind / unix_listen
+
+write (marked) to 0xffff88805f8d1840 of 8 bytes by task 13723 on cpu 0:
+ __unix_set_addr_hash net/unix/af_unix.c:329 [inline]
+ unix_bind_bsd net/unix/af_unix.c:1241 [inline]
+ unix_bind+0x881/0x1000 net/unix/af_unix.c:1319
+ __sys_bind+0x194/0x1e0 net/socket.c:1847
+ __do_sys_bind net/socket.c:1858 [inline]
+ __se_sys_bind net/socket.c:1856 [inline]
+ __x64_sys_bind+0x40/0x50 net/socket.c:1856
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x4f/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x46/0x4e
+
+read to 0xffff88805f8d1840 of 8 bytes by task 13724 on cpu 1:
+ unix_listen+0x72/0x180 net/unix/af_unix.c:734
+ __sys_listen+0xdc/0x160 net/socket.c:1881
+ __do_sys_listen net/socket.c:1890 [inline]
+ __se_sys_listen net/socket.c:1888 [inline]
+ __x64_sys_listen+0x2e/0x40 net/socket.c:1888
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x4f/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x46/0x4e
+
+value changed: 0x0000000000000000 -> 0xffff88807b5b1b40
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 13724 Comm: syz-executor.4 Not tainted 6.8.0-12822-gcd51db110a7e #12
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240522154002.77857-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/ioc3kbd.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/unix/af_unix.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/input/serio/ioc3kbd.c b/drivers/input/serio/ioc3kbd.c
-index 50552dc7b4f5e..676b0bda3d720 100644
---- a/drivers/input/serio/ioc3kbd.c
-+++ b/drivers/input/serio/ioc3kbd.c
-@@ -200,9 +200,16 @@ static void ioc3kbd_remove(struct platform_device *pdev)
- 	serio_unregister_port(d->aux);
- }
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 9bc879f3e34e6..6498e41e2ecf9 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -731,7 +731,7 @@ static int unix_listen(struct socket *sock, int backlog)
+ 	if (sock->type != SOCK_STREAM && sock->type != SOCK_SEQPACKET)
+ 		goto out;	/* Only stream/seqpacket sockets accept */
+ 	err = -EINVAL;
+-	if (!u->addr)
++	if (!READ_ONCE(u->addr))
+ 		goto out;	/* No listens on an unbound socket */
+ 	unix_state_lock(sk);
+ 	if (sk->sk_state != TCP_CLOSE && sk->sk_state != TCP_LISTEN)
+@@ -1369,7 +1369,7 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
  
-+static const struct platform_device_id ioc3kbd_id_table[] = {
-+	{ "ioc3-kbd", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(platform, ioc3kbd_id_table);
-+
- static struct platform_driver ioc3kbd_driver = {
- 	.probe          = ioc3kbd_probe,
- 	.remove_new     = ioc3kbd_remove,
-+	.id_table	= ioc3kbd_id_table,
- 	.driver = {
- 		.name = "ioc3-kbd",
- 	},
+ 		if ((test_bit(SOCK_PASSCRED, &sock->flags) ||
+ 		     test_bit(SOCK_PASSPIDFD, &sock->flags)) &&
+-		    !unix_sk(sk)->addr) {
++		    !READ_ONCE(unix_sk(sk)->addr)) {
+ 			err = unix_autobind(sk);
+ 			if (err)
+ 				goto out;
+@@ -1481,7 +1481,8 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		goto out;
+ 
+ 	if ((test_bit(SOCK_PASSCRED, &sock->flags) ||
+-	     test_bit(SOCK_PASSPIDFD, &sock->flags)) && !u->addr) {
++	     test_bit(SOCK_PASSPIDFD, &sock->flags)) &&
++	    !READ_ONCE(u->addr)) {
+ 		err = unix_autobind(sk);
+ 		if (err)
+ 			goto out;
+@@ -1997,7 +1998,8 @@ static int unix_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	}
+ 
+ 	if ((test_bit(SOCK_PASSCRED, &sock->flags) ||
+-	     test_bit(SOCK_PASSPIDFD, &sock->flags)) && !u->addr) {
++	     test_bit(SOCK_PASSPIDFD, &sock->flags)) &&
++	    !READ_ONCE(u->addr)) {
+ 		err = unix_autobind(sk);
+ 		if (err)
+ 			goto out;
 -- 
 2.43.0
 
