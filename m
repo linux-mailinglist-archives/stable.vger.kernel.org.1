@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-48415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F978FE8EC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5FD8FEBBF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20C4DB2194A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2373B2684D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1843A1990A5;
-	Thu,  6 Jun 2024 14:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D751ABCC9;
+	Thu,  6 Jun 2024 14:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hoqRtlu9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbtZZBxr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4D41974FE;
-	Thu,  6 Jun 2024 14:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1957719AA40;
+	Thu,  6 Jun 2024 14:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682951; cv=none; b=CDAlpeZkeD3BW0rNyDLpL1d7g4T7j6WzzZIk16EVn51BXpQAJ1jOlGXUaQuCHl7Ssy1ENYIL5XiyRey0lLqdgZ21jv2Xlsa1lrhHtfdY0+MbS2Z+o8P9RR6ecALPlGJ5U4kZDLoWODcVB1B6QcjTpogKD+d0QAP+BlGP/yWxxqM=
+	t=1717683289; cv=none; b=TQt332Dny74mzsaS+cqv9CRwQLpHdkyj8SMMJ/+szMDV4zmrDCdHWS0Qi4750WQchdxyQY10edp9QYsJt/CjOzo78utskuASxWcjlbEAL0KGPB1um41Ng8ZZmFIsQ98kcuSNXMmjESvSnSBQO6JND0PuZJrQMVyk3FpUJQ4cN9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682951; c=relaxed/simple;
-	bh=sbZL2tFMaXilo7/2mjASPKfh9IeFVJFOQxKaKFsdQeo=;
+	s=arc-20240116; t=1717683289; c=relaxed/simple;
+	bh=5NX8PTCyTjaZ71hf8uTaKej8E+hc1KOGYE6GktIZk3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSIiv9u1aVLR5sXnx5/vEeqhJXJkFu5Neh830Ep9ybVa5yvNMw7CHTrjZKJfO5N+EQc6p8ehCfSd+vhl5/bMJsPi7AG2tXtL7tYNO+/oawgTOU6FPIEfeS8Xj5xqFxmJTqjDka3fd3gUtW+otQWrsHo+RvB/WPIx9Q6H16l1Bys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hoqRtlu9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D511C32781;
-	Thu,  6 Jun 2024 14:09:11 +0000 (UTC)
+	 MIME-Version; b=qHCVRljRvAE/xa4m8ceqevOe4avBcPipDaRuxpFubvdCN54qYuIqnD0r8jAr1pjasjU57JhTf3c4eA4yBLaVI53rtL3EMb34OBgtaH6czB48ssD/Z+OA8vGfFuiuSYG/b80ctSQap8WgOI4KvRuKvnXKjAkfnMkbYBJWlSeKDFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbtZZBxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2C9C2BD10;
+	Thu,  6 Jun 2024 14:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682951;
-	bh=sbZL2tFMaXilo7/2mjASPKfh9IeFVJFOQxKaKFsdQeo=;
+	s=korg; t=1717683289;
+	bh=5NX8PTCyTjaZ71hf8uTaKej8E+hc1KOGYE6GktIZk3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hoqRtlu9kZ+eT/ITYeie01bFVgdrKSoinz6XKoNq6S1JpKQ6VZcbQ3YT3kCbBRpGJ
-	 cG/f0Y2paf4IXllIosjkl9o1yt+miZOJ2dSAKlfcW+oxlKRNiruWgfWUL3aDZ1oteZ
-	 kXSQndHgvpfqrMM7VFbprwNtUKBNgtlKArdTfOF8=
+	b=WbtZZBxrBuw+Ptl44LGHPfrq7IaF0aEQY8UOPkzusmeqcwqHbryVI1QysavjKKZtB
+	 CPeq9fY6GxPT3s5TS5dy5oAbbvrfQbymq/EWPEb6cHkClxcu3lGT0YddGlr9uTLPwp
+	 H4X1syWEUSAgKtt4gQUrX2oHIebP2O+QAxnGN6k8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 115/374] libsubcmd: Fix parse-options memory leak
+Subject: [PATCH 6.1 165/473] net: usb: sr9700: stop lying about skb->truesize
 Date: Thu,  6 Jun 2024 16:01:34 +0200
-Message-ID: <20240606131655.780401113@linuxfoundation.org>
+Message-ID: <20240606131705.402398243@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,63 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 230a7a71f92212e723fa435d4ca5922de33ec88a ]
+[ Upstream commit 05417aa9c0c038da2464a0c504b9d4f99814a23b ]
 
-If a usage string is built in parse_options_subcommand, also free it.
+Some usb drivers set small skb->truesize and break
+core networking stacks.
 
-Fixes: 901421a5bdf605d2 ("perf tools: Remove subcmd dependencies on strbuf")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240509052015.1914670-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+In this patch, I removed one of the skb->truesize override.
+
+I also replaced one skb_clone() by an allocation of a fresh
+and small skb, to get minimally sized skbs, like we did
+in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
+in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
+stop lying about skb->truesize")
+
+Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240506143939.3673865-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/subcmd/parse-options.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/usb/sr9700.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/tools/lib/subcmd/parse-options.c b/tools/lib/subcmd/parse-options.c
-index 9fa75943f2ed1..d943d78b787ed 100644
---- a/tools/lib/subcmd/parse-options.c
-+++ b/tools/lib/subcmd/parse-options.c
-@@ -633,11 +633,10 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
- 			const char *const subcommands[], const char *usagestr[], int flags)
- {
- 	struct parse_opt_ctx_t ctx;
-+	char *buf = NULL;
+diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
+index 3164451e1010c..0a662e42ed965 100644
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -421,19 +421,15 @@ static int sr9700_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			skb_pull(skb, 3);
+ 			skb->len = len;
+ 			skb_set_tail_pointer(skb, len);
+-			skb->truesize = len + sizeof(struct sk_buff);
+ 			return 2;
+ 		}
  
- 	/* build usage string if it's not provided */
- 	if (subcommands && !usagestr[0]) {
--		char *buf = NULL;
--
- 		astrcatf(&buf, "%s %s [<options>] {", subcmd_config.exec_name, argv[0]);
+-		/* skb_clone is used for address align */
+-		sr_skb = skb_clone(skb, GFP_ATOMIC);
++		sr_skb = netdev_alloc_skb_ip_align(dev->net, len);
+ 		if (!sr_skb)
+ 			return 0;
  
- 		for (int i = 0; subcommands[i]; i++) {
-@@ -679,7 +678,10 @@ int parse_options_subcommand(int argc, const char **argv, const struct option *o
- 			astrcatf(&error_buf, "unknown switch `%c'", *ctx.opt);
- 		usage_with_options(usagestr, options);
- 	}
--
-+	if (buf) {
-+		usagestr[0] = NULL;
-+		free(buf);
-+	}
- 	return parse_options_end(&ctx);
- }
+-		sr_skb->len = len;
+-		sr_skb->data = skb->data + 3;
+-		skb_set_tail_pointer(sr_skb, len);
+-		sr_skb->truesize = len + sizeof(struct sk_buff);
++		skb_put(sr_skb, len);
++		memcpy(sr_skb->data, skb->data + 3, len);
+ 		usbnet_skb_return(dev, sr_skb);
  
+ 		skb_pull(skb, len + SR_RX_OVERHEAD);
 -- 
 2.43.0
 
