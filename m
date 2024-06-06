@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-49848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74348FEF1C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 697AC8FE9EC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51B3D1F21C9C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A5241C25E92
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEA31C95F6;
-	Thu,  6 Jun 2024 14:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF481198A3C;
+	Thu,  6 Jun 2024 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyPeUlut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvBAWhAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D16319923B;
-	Thu,  6 Jun 2024 14:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD47198E72;
+	Thu,  6 Jun 2024 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683739; cv=none; b=qirDV8T0gipWDBWGb1A1/3YUQw/nnr8Z9Yjm/eUvvieuM9XxKhS+uhZH2T2R88uB5iTamV0LMFKh5dfrDptbOgSavEU+muwgJxr8IIUcIPlRXPs7Cn7tEqNkDJ+3Bo6uoU4Yek+pTQntsg+CruOhqN7W8StvfRGPYxkPcJsGR3w=
+	t=1717683080; cv=none; b=T2tP7F5ac1aSDEwA6oLDwTH2nxdT9RmVr/8SwboKLeG4FVqsWbFXzuv+6oxLSRWfkeO5fn2YheQZtJ1bhzlyUI4tAQ+zBRq9lQTCq/FW+OQhjgz7fcpAR2tfzhVAyAG+9TC4OarxpH8ul8+oAoQ1S0gqN4IvBokYu2D0zq1C810=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683739; c=relaxed/simple;
-	bh=VvqN5q/Gtyz2hgpqupIBHfUGANzi3Bhebwn8E/EUH6w=;
+	s=arc-20240116; t=1717683080; c=relaxed/simple;
+	bh=uY/LcTZpnYBKs5cJg6MTdoOrfFdB8o9U7wDF0IFMGps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPOF0YeE9BPmlSanPzzFeLk9S287/HybGvOUggEUxZYTkSZNLqL/2AK4kNmOU6ptqN44vpj5EEuJlZv9Lp1bXdk6LnI7UU72da2EJaD8ZKG2RUO19U0nvNDVDtjsrAwEn+OfJzd8jIKz57ZLei2d61kOKP4fcfns/ezcUnJr9Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyPeUlut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D71C32781;
-	Thu,  6 Jun 2024 14:22:19 +0000 (UTC)
+	 MIME-Version; b=g3arRvkuJIvZVwKqe7YI+rbZJ+efDGCu3Xs8v2PlWjpenFpem0J4Y/DEPtFyw+W5g/1H5nqCN6gTxGTcEWReGU3paGUN6m9ucD3gZ8tdP9kpSFrJ3XxO7ReoUqOXUXlYIptqHPc+/SBwGurEvB15b5ud9XtlqZF9K6feKEgWV7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvBAWhAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A030C32781;
+	Thu,  6 Jun 2024 14:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683739;
-	bh=VvqN5q/Gtyz2hgpqupIBHfUGANzi3Bhebwn8E/EUH6w=;
+	s=korg; t=1717683080;
+	bh=uY/LcTZpnYBKs5cJg6MTdoOrfFdB8o9U7wDF0IFMGps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QyPeUlutMycdyztDdJCWJ5mmQv9xaa8BrtB5S0JgIar05Tlaj/V6006ie+M7bzrZG
-	 fP/lNeEqdLvgyhdk1AbgOgg/XabeCnWbJ4SO06Ooi6PK2pR5p/a/jTOSUt/fu4KD9k
-	 PhcvOuNf+a1Vcr2K7pI40rqNFTMnPJildLEseZU4=
+	b=nvBAWhAfHRxqVvuN06itsEQRZCb9mUsFAxKwEtmIGA2Oa9eeleftyLYfkqIU3RgU2
+	 VUE+fBB0fleigJQlWv/zhSlnTHhvfjPAV0NqTfI78Z5JgaFLurKrDnix++ZvYlzLlH
+	 CBz5uI9Q5tcl3uDHJbcx6dlMEtmjwfO6kFo3j5VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Tristram Ha <tristram.ha@microchip.com>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>,
+	Jerry Ray <jerry.ray@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 657/744] i3c: master: svc: rename read_len as actual_len
+Subject: [PATCH 6.9 350/374] net: dsa: microchip: fix RGMII error in KSZ DSA driver
 Date: Thu,  6 Jun 2024 16:05:29 +0200
-Message-ID: <20240606131753.535678215@linuxfoundation.org>
+Message-ID: <20240606131703.592860429@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,144 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Tristram Ha <tristram.ha@microchip.com>
 
-[ Upstream commit 6fb61734a74eaa307a5b6a0bee770e736d8acf89 ]
+[ Upstream commit 278d65ccdadb5f0fa0ceaf7b9cc97b305cd72822 ]
 
-I3C transfer (SDR), target can early terminate read transfer.
-I3C transfer (HDR), target can end write transfer.
-I2C transfer, target can NACK write transfer.
+The driver should return RMII interface when XMII is running in RMII mode.
 
-'actual_len' is better name than 'read_len'.
-
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231201222532.2431484-5-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 7f3d633b460b ("i3c: master: svc: change ENXIO to EAGAIN when IBI occurs during start frame")
+Fixes: 0ab7f6bf1675 ("net: dsa: microchip: ksz9477: use common xmii function")
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Acked-by: Arun Ramadoss <arun.ramadoss@microchip.com>
+Acked-by: Jerry Ray <jerry.ray@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/1716932066-3342-1-git-send-email-Tristram.Ha@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index c395e52294140..d8d817858e000 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -134,7 +134,7 @@ struct svc_i3c_cmd {
- 	u8 *in;
- 	const void *out;
- 	unsigned int len;
--	unsigned int read_len;
-+	unsigned int actual_len;
- 	bool continued;
- };
- 
-@@ -1024,7 +1024,7 @@ static int svc_i3c_master_write(struct svc_i3c_master *master,
- static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 			       bool rnw, unsigned int xfer_type, u8 addr,
- 			       u8 *in, const u8 *out, unsigned int xfer_len,
--			       unsigned int *read_len, bool continued)
-+			       unsigned int *actual_len, bool continued)
- {
- 	u32 reg;
- 	int ret;
-@@ -1037,7 +1037,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 	       SVC_I3C_MCTRL_IBIRESP_NACK |
- 	       SVC_I3C_MCTRL_DIR(rnw) |
- 	       SVC_I3C_MCTRL_ADDR(addr) |
--	       SVC_I3C_MCTRL_RDTERM(*read_len),
-+	       SVC_I3C_MCTRL_RDTERM(*actual_len),
- 	       master->regs + SVC_I3C_MCTRL);
- 
- 	ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-@@ -1075,7 +1075,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 		goto emit_stop;
- 
- 	if (rnw)
--		*read_len = ret;
-+		*actual_len = ret;
- 
- 	ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
- 				 SVC_I3C_MSTATUS_COMPLETE(reg), 0, 1000);
-@@ -1157,7 +1157,7 @@ static void svc_i3c_master_start_xfer_locked(struct svc_i3c_master *master)
- 
- 		ret = svc_i3c_master_xfer(master, cmd->rnw, xfer->type,
- 					  cmd->addr, cmd->in, cmd->out,
--					  cmd->len, &cmd->read_len,
-+					  cmd->len, &cmd->actual_len,
- 					  cmd->continued);
- 		if (ret)
- 			break;
-@@ -1243,7 +1243,7 @@ static int svc_i3c_master_send_bdcast_ccc_cmd(struct svc_i3c_master *master,
- 	cmd->in = NULL;
- 	cmd->out = buf;
- 	cmd->len = xfer_len;
--	cmd->read_len = 0;
-+	cmd->actual_len = 0;
- 	cmd->continued = false;
- 
- 	mutex_lock(&master->lock);
-@@ -1263,7 +1263,7 @@ static int svc_i3c_master_send_direct_ccc_cmd(struct svc_i3c_master *master,
- 					      struct i3c_ccc_cmd *ccc)
- {
- 	unsigned int xfer_len = ccc->dests[0].payload.len;
--	unsigned int read_len = ccc->rnw ? xfer_len : 0;
-+	unsigned int actual_len = ccc->rnw ? xfer_len : 0;
- 	struct svc_i3c_xfer *xfer;
- 	struct svc_i3c_cmd *cmd;
- 	int ret;
-@@ -1281,7 +1281,7 @@ static int svc_i3c_master_send_direct_ccc_cmd(struct svc_i3c_master *master,
- 	cmd->in = NULL;
- 	cmd->out = &ccc->id;
- 	cmd->len = 1;
--	cmd->read_len = 0;
-+	cmd->actual_len = 0;
- 	cmd->continued = true;
- 
- 	/* Directed message */
-@@ -1291,7 +1291,7 @@ static int svc_i3c_master_send_direct_ccc_cmd(struct svc_i3c_master *master,
- 	cmd->in = ccc->rnw ? ccc->dests[0].payload.data : NULL;
- 	cmd->out = ccc->rnw ? NULL : ccc->dests[0].payload.data,
- 	cmd->len = xfer_len;
--	cmd->read_len = read_len;
-+	cmd->actual_len = actual_len;
- 	cmd->continued = false;
- 
- 	mutex_lock(&master->lock);
-@@ -1300,8 +1300,8 @@ static int svc_i3c_master_send_direct_ccc_cmd(struct svc_i3c_master *master,
- 		svc_i3c_master_dequeue_xfer(master, xfer);
- 	mutex_unlock(&master->lock);
- 
--	if (cmd->read_len != xfer_len)
--		ccc->dests[0].payload.len = cmd->read_len;
-+	if (cmd->actual_len != xfer_len)
-+		ccc->dests[0].payload.len = cmd->actual_len;
- 
- 	ret = xfer->ret;
- 	svc_i3c_master_free_xfer(xfer);
-@@ -1351,7 +1351,7 @@ static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
- 		cmd->in = xfers[i].rnw ? xfers[i].data.in : NULL;
- 		cmd->out = xfers[i].rnw ? NULL : xfers[i].data.out;
- 		cmd->len = xfers[i].len;
--		cmd->read_len = xfers[i].rnw ? xfers[i].len : 0;
-+		cmd->actual_len = xfers[i].rnw ? xfers[i].len : 0;
- 		cmd->continued = (i + 1) < nxfers;
- 	}
- 
-@@ -1391,7 +1391,7 @@ static int svc_i3c_master_i2c_xfers(struct i2c_dev_desc *dev,
- 		cmd->in = cmd->rnw ? xfers[i].buf : NULL;
- 		cmd->out = cmd->rnw ? NULL : xfers[i].buf;
- 		cmd->len = xfers[i].len;
--		cmd->read_len = cmd->rnw ? xfers[i].len : 0;
-+		cmd->actual_len = cmd->rnw ? xfers[i].len : 0;
- 		cmd->continued = (i + 1 < nxfers);
- 	}
- 
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 2b510f150dd88..2a5861a88d0e6 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -3050,7 +3050,7 @@ phy_interface_t ksz_get_xmii(struct ksz_device *dev, int port, bool gbit)
+ 		else
+ 			interface = PHY_INTERFACE_MODE_MII;
+ 	} else if (val == bitval[P_RMII_SEL]) {
+-		interface = PHY_INTERFACE_MODE_RGMII;
++		interface = PHY_INTERFACE_MODE_RMII;
+ 	} else {
+ 		interface = PHY_INTERFACE_MODE_RGMII;
+ 		if (data8 & P_RGMII_ID_EG_ENABLE)
 -- 
 2.43.0
 
