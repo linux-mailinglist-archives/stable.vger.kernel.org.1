@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06EAB8FEDE1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930C98FE923
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98DDF285250
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 927DB1C24828
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83271BE25B;
-	Thu,  6 Jun 2024 14:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8AB199231;
+	Thu,  6 Jun 2024 14:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F83qtKXs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zOMZiEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70651BE258;
-	Thu,  6 Jun 2024 14:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B96C196D8E;
+	Thu,  6 Jun 2024 14:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683535; cv=none; b=KTcrzjU2fd2wV/2mSWQO0yLe0QEtSsR4IQKAoa4f/BKW+/40sOXTl+S3bHtfiIlkeaVoNO7FKl5ceybakKS2VjG82kSW0nuF273gvei+HfhN+BvAvBUl0oMcWl0HkSCiGWN5h6dQqOakD90qfRMJBkkTiEAyixEn6Iipg72yPWI=
+	t=1717682984; cv=none; b=JKrJVVVmJ2QkSTVfOGAqzHwphlb6mckGyw+zHMkTA59nhGS02pg9+sC8TVPtGy5t5HXgUS3Qm04oZTRNaiPjbSkFNKcZ/etLadQl6D2tYZaGQSPAlU1bUP08A/UUrspXxLCs5ujGGPnC7t+JP0aU+78Nu/PZAsMFfJijQYZRNow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683535; c=relaxed/simple;
-	bh=qJXexJr/MIjvEZYnAvSjI32v/cvHJYGi0tP9N7PML78=;
+	s=arc-20240116; t=1717682984; c=relaxed/simple;
+	bh=djh8zsmRmDdsAL+1NnF+SG/NCn7q+ltNZom2ga5bMDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CSz14rulEJVBpRBOCI/w2E+QsXgPMRufcMtfNZE6PRfPoAPwQ19LECYyaxYRRXCVDoRFiSqD7d8bKcFJBIgqFM77Be0yoySEd3WZhcTpPbcjoJQXc7uqL5/PbChLGFOYms0aUGGfW0jSxHCCxWdPFDCeIJJIQn0Iy5pgWjZO+uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F83qtKXs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886AAC32781;
-	Thu,  6 Jun 2024 14:18:55 +0000 (UTC)
+	 MIME-Version; b=okqoQlbrG0XU1H38UrovhL0o9oYgRVr26kHwpaQ9u3uLzqJWHpq7qa0jOrjZcdwBnasjNfOBqU1EO1x12rwhKUyZhKWD86GzNIUK49BtStRyLNqXYkU7KZDD03MkrZkHKhP94n7axj0c32Xh1uWmgfWRIF+IfTr3QATMnSlUFi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zOMZiEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B1AC2BD10;
+	Thu,  6 Jun 2024 14:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683535;
-	bh=qJXexJr/MIjvEZYnAvSjI32v/cvHJYGi0tP9N7PML78=;
+	s=korg; t=1717682983;
+	bh=djh8zsmRmDdsAL+1NnF+SG/NCn7q+ltNZom2ga5bMDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F83qtKXsy101aKLWn7rO6936Ehlo+kg3jxWyVEnAqXHrV5AArbJY5pDDgRuBcVdt9
-	 u8TakHee51rVglLMSuzq8DVp52USCO0GKmZ0nvG24DKVVBHRXH2s5/iXs49AbTcrrk
-	 PI52lK31O+/7RIESrt7WN+wwfOgB1tcQ5daHuSyw=
+	b=1zOMZiEg3ihebnKVN7UaO3w5ysbycBOcDcn3PH4RoL81ELY+uMRq5R1FTz3WuIKES
+	 oG3e/fnsmOJASPIotPrVThN0GIuAKx1UxSeFuLKJlowFWAbfbYqADb8DkLImUJZlD6
+	 OrE4BSVqKlQ9adL2ID6qjb0vB/sXqeuN/PdQxFLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 475/744] VMCI: Fix an error handling path in vmci_guest_probe_device()
+Subject: [PATCH 6.9 168/374] um: Add winch to winch_handlers before registering winch IRQ
 Date: Thu,  6 Jun 2024 16:02:27 +0200
-Message-ID: <20240606131747.688193293@linuxfoundation.org>
+Message-ID: <20240606131657.523805069@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 73df3d6f2e9533e93a5039a33c40dd7216b81801 ]
+[ Upstream commit a0fbbd36c156b9f7b2276871d499c9943dfe5101 ]
 
-After a successful pci_iomap_range() call, pci_iounmap() should be called
-in the error handling path, as already done in the remove function.
+Registering a winch IRQ is racy, an interrupt may occur before the winch is
+added to the winch_handlers list.
 
-Add the missing call.
+If that happens, register_winch_irq() adds to that list a winch that is
+scheduled to be (or has already been) freed, causing a panic later in
+winch_cleanup().
 
-The corresponding call was added in the remove function in commit
-5ee109828e73 ("VMCI: dma dg: allocate send and receive buffers for DMA
-datagrams")
+Avoid the race by adding the winch to the winch_handlers list before
+registering the IRQ, and rolling back if um_request_irq() fails.
 
-Fixes: e283a0e8b7ea ("VMCI: dma dg: add MMIO access to registers")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Vishnu Dasa <vishnu.dasa@broadcom.com>
-Link: https://lore.kernel.org/r/a35bbc3876ae1da70e49dafde4435750e1477be3.1713961553.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 42a359e31a0e ("uml: SIGIO support cleanup")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/vmw_vmci/vmci_guest.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/um/drivers/line.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/misc/vmw_vmci/vmci_guest.c b/drivers/misc/vmw_vmci/vmci_guest.c
-index 4f8d962bb5b2a..1300ccab3d21b 100644
---- a/drivers/misc/vmw_vmci/vmci_guest.c
-+++ b/drivers/misc/vmw_vmci/vmci_guest.c
-@@ -625,7 +625,8 @@ static int vmci_guest_probe_device(struct pci_dev *pdev,
- 	if (!vmci_dev) {
- 		dev_err(&pdev->dev,
- 			"Can't allocate memory for VMCI device\n");
--		return -ENOMEM;
-+		error = -ENOMEM;
-+		goto err_unmap_mmio_base;
+diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
+index ffc5cb92fa367..d82bc3fdb86e7 100644
+--- a/arch/um/drivers/line.c
++++ b/arch/um/drivers/line.c
+@@ -676,24 +676,26 @@ void register_winch_irq(int fd, int tty_fd, int pid, struct tty_port *port,
+ 		goto cleanup;
  	}
  
- 	vmci_dev->dev = &pdev->dev;
-@@ -642,7 +643,8 @@ static int vmci_guest_probe_device(struct pci_dev *pdev,
- 		if (!vmci_dev->tx_buffer) {
- 			dev_err(&pdev->dev,
- 				"Can't allocate memory for datagram tx buffer\n");
--			return -ENOMEM;
-+			error = -ENOMEM;
-+			goto err_unmap_mmio_base;
- 		}
+-	*winch = ((struct winch) { .list  	= LIST_HEAD_INIT(winch->list),
+-				   .fd  	= fd,
++	*winch = ((struct winch) { .fd  	= fd,
+ 				   .tty_fd 	= tty_fd,
+ 				   .pid  	= pid,
+ 				   .port 	= port,
+ 				   .stack	= stack });
  
- 		vmci_dev->data_buffer = dma_alloc_coherent(&pdev->dev, VMCI_DMA_DG_BUFFER_SIZE,
-@@ -893,6 +895,10 @@ static int vmci_guest_probe_device(struct pci_dev *pdev,
- err_free_data_buffers:
- 	vmci_free_dg_buffers(vmci_dev);
- 
-+err_unmap_mmio_base:
-+	if (mmio_base != NULL)
-+		pci_iounmap(pdev, mmio_base);
++	spin_lock(&winch_handler_lock);
++	list_add(&winch->list, &winch_handlers);
++	spin_unlock(&winch_handler_lock);
 +
- 	/* The rest are managed resources and will be freed by PCI core */
- 	return error;
- }
+ 	if (um_request_irq(WINCH_IRQ, fd, IRQ_READ, winch_interrupt,
+ 			   IRQF_SHARED, "winch", winch) < 0) {
+ 		printk(KERN_ERR "register_winch_irq - failed to register "
+ 		       "IRQ\n");
++		spin_lock(&winch_handler_lock);
++		list_del(&winch->list);
++		spin_unlock(&winch_handler_lock);
+ 		goto out_free;
+ 	}
+ 
+-	spin_lock(&winch_handler_lock);
+-	list_add(&winch->list, &winch_handlers);
+-	spin_unlock(&winch_handler_lock);
+-
+ 	return;
+ 
+  out_free:
 -- 
 2.43.0
 
