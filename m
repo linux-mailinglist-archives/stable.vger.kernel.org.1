@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-49299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3AC8FECB3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4A28FE890
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 324DDB28565
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231A31C242A1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF1F19B599;
-	Thu,  6 Jun 2024 14:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1186E1974EF;
+	Thu,  6 Jun 2024 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgUsGXM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwvQ30g/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDE319B3F2;
-	Thu,  6 Jun 2024 14:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38B2196DBF;
+	Thu,  6 Jun 2024 14:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683398; cv=none; b=h4O5z0/wiQ0ZgKfvOnN82aUqz6clP9INa3+POPIhSpNREYCrLQmpisQWKQgxHDekvgs5KfxKygJd09Qy8bezmgMN7vcvo1ROEQgjEmT++yY//+Jm7cYDqy4l0Aux/gzMQsxFNTIOxjII2VKNu7SgPcumtcaIhiu46jdQExoQ8W8=
+	t=1717682908; cv=none; b=qF0SrPZt7utE6FWAP8nUdv8KotfloZBR4MLvRjECPsMwLHfaK7j8DqgMZUxhWu73TTj1P3eGMDTV9hH2J1VtZk5Nhjp9KcUF8xbEODHdFJS82ZYuLwHkaKHwG3AqSAPRrbDYCNeQAGTVFgErWkd++Cl7K3IPu1zdc4car9eHrAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683398; c=relaxed/simple;
-	bh=tYlpcMEo+j2ApdmiiWyAVP5HMNAvvAtWz60skTgOLQw=;
+	s=arc-20240116; t=1717682908; c=relaxed/simple;
+	bh=2AUWF9UElftPgnWR46nl5qC4XQNQ1BtYgVu7l6T4DVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QGCezPvom0KKh57jhDoM0WGzglR0dcmPWwiOLv8ezxXlitSLRE4Op+Bv+rAzWjsKSfMd7J+8yUg3JAT82MBL0Mnexb4ZTqeN6J1ZhZFZ+yJScl70R/+K9XMkzyFIGTbrzwb8K6xSeR5m7iWoguAKY9pvJ0XqWI9Y3bBIAp/mQXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgUsGXM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0C7C2BD10;
-	Thu,  6 Jun 2024 14:16:38 +0000 (UTC)
+	 MIME-Version; b=dPIfdYHlxXjYJrdV+lQURgNIsM+sOBYnymoaDHhxowKFWjRuplHZqYThgDR64X9RaW2nNL2S/kPAfcD9vs6Ghvh8P3ZVzNslGPO0QntMWiMovU9SPCRbT6AuPD8FUpi3wpmKTId1VwjCGUW89+nQwHySq71KuAerlcLUnd1ih4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwvQ30g/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9CDC4AF07;
+	Thu,  6 Jun 2024 14:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683398;
-	bh=tYlpcMEo+j2ApdmiiWyAVP5HMNAvvAtWz60skTgOLQw=;
+	s=korg; t=1717682908;
+	bh=2AUWF9UElftPgnWR46nl5qC4XQNQ1BtYgVu7l6T4DVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgUsGXM0wMiTJHt56/WKUP2SpLcNostQ2udelU93K6osGSBlgsp0BtzOB39DzWZt3
-	 /e0WSfhtwbJU2DGYuJUp432m6DbB0bcLXq+ExHRcydZgzCyhyVb6ELqPsMHR60LZ8C
-	 T1PFEWygk39cDto/IousgX29IZHmnmdzIDRYEOQ0=
+	b=rwvQ30g/+K+FhImbIAtYR+IUtgqk8Qg5b7qGRQUJ3OzvIpdMHY0Olfz/9NNAiVzl2
+	 MPDpK+3LKiWaY8626QE1pVucC6BAmLEAL7NgzRfOMuJdY2Id7rfRBPpRnwJiyiVdbq
+	 RdgIY4LDSGUVHxHpVz3hFZVj+JjsX+fC/vfEx5dA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Spoorthy S <spoorts2@in.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 342/744] RDMA/hns: Fix GMV table pagesize
+Subject: [PATCH 6.9 035/374] perf tests: Apply attributes to all events in object code reading test
 Date: Thu,  6 Jun 2024 16:00:14 +0200
-Message-ID: <20240606131743.440975211@linuxfoundation.org>
+Message-ID: <20240606131653.004764935@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +74,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit ee045493283403969591087bd405fa280103282a ]
+[ Upstream commit 2dade41a533f337447b945239b87ff31a8857890 ]
 
-GMV's BA table only supports 4K pages. Currently, PAGESIZE is used to
-calculate gmv_bt_num, which will cause an abnormal number of gmv_bt_num
-in a 64K OS.
+PERF_PMU_CAP_EXTENDED_HW_TYPE results in multiple events being opened on
+heterogeneous systems. Currently this test only sets its required
+attributes on the first event. Not disabling enable_on_exec on the other
+events causes the test to fail because the forked objdump processes are
+sampled. No tracking event is opened so Perf only knows about its own
+mappings causing the objdump samples to give the following error:
 
-Fixes: d6d91e46210f ("RDMA/hns: Add support for configuring GMV table")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240412091616.370789-8-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+  $ perf test -vvv "object code reading"
+
+  Reading object code for memory address: 0xffff9aaa55ec
+  thread__find_map failed
+  ---- end(-1) ----
+  24: Object code reading              : FAILED!
+
+Fixes: 251aa040244a3b17 ("perf parse-events: Wildcard most "numeric" events")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: James Clark <james.clark@arm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linux.dev>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Spoorthy S <spoorts2@in.ibm.com>
+Link: https://lore.kernel.org/r/20240410103458.813656-3-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/tests/code-reading.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index b4799c83282e2..2f88e7853abff 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -2088,7 +2088,7 @@ static void apply_func_caps(struct hns_roce_dev *hr_dev)
- 		caps->gid_table_len[0] = caps->gmv_bt_num *
- 					(HNS_HW_PAGE_SIZE / caps->gmv_entry_sz);
+diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-reading.c
+index 7a3a7bbbec714..29d2f3ee4e10f 100644
+--- a/tools/perf/tests/code-reading.c
++++ b/tools/perf/tests/code-reading.c
+@@ -637,11 +637,11 @@ static int do_test_code_reading(bool try_kcore)
  
--		caps->gmv_entry_num = caps->gmv_bt_num * (PAGE_SIZE /
-+		caps->gmv_entry_num = caps->gmv_bt_num * (HNS_HW_PAGE_SIZE /
- 							  caps->gmv_entry_sz);
- 	} else {
- 		u32 func_num = max_t(u32, 1, hr_dev->func_num);
+ 		evlist__config(evlist, &opts, NULL);
+ 
+-		evsel = evlist__first(evlist);
+-
+-		evsel->core.attr.comm = 1;
+-		evsel->core.attr.disabled = 1;
+-		evsel->core.attr.enable_on_exec = 0;
++		evlist__for_each_entry(evlist, evsel) {
++			evsel->core.attr.comm = 1;
++			evsel->core.attr.disabled = 1;
++			evsel->core.attr.enable_on_exec = 0;
++		}
+ 
+ 		ret = evlist__open(evlist);
+ 		if (ret < 0) {
 -- 
 2.43.0
 
