@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-48839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107A28FEAC2
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562268FEAC5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A51471F23042
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C7C11F24A14
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF39D1991DC;
-	Thu,  6 Jun 2024 14:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF711A0DED;
+	Thu,  6 Jun 2024 14:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3FB6IBw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZuDakru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02511A01AD;
-	Thu,  6 Jun 2024 14:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F631A0DEA;
+	Thu,  6 Jun 2024 14:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683172; cv=none; b=fJCx9dxv784lFYXBXGthzRfItuTAHm2ix4WctOmsvqcgiXH1cUpzLCsOqDMhsGSfbvnjchaH3MLI2sIGh6L8NHz7/nRMIYZQgzDFzWe0X+6t+tA/nuq0O3ypFatwT+XWoIqH+nUftTHGSWo3JYs2cR3bb8Ma2pTihMj2QQFm8fw=
+	t=1717683174; cv=none; b=tFcH+XbpWp/imx6NAWjojFY0mcE5TYyan0ePVELTCQfBH0LbO1HPELEOFSNbwgxwQoMADGaXKyYY6HODjbMlFbDlRDRWH4SLLo7Ls3ZiIMAmRLgAk+nhCO4YcMP+AuuEqLzb9qcy4SVfZcJs8RD/oPdY22K/p664npXU6Z8zFr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683172; c=relaxed/simple;
-	bh=XKrpJX1RMpfLzoq07XUZ5BYJUG0fI/19K2hqO3kgvVI=;
+	s=arc-20240116; t=1717683174; c=relaxed/simple;
+	bh=bXfKrkmVA0KnT/NF+KADiHOu4etp9CMHHMaStWuMIy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkK+3WkFBW6TpEfR1V5DXr0bhx/Lj3SEqKcmN1ishVocjEzfVNfIht6IsbP4NA7dVjpbHOc3asFal5rD70XlrYsrhHJFD4U2q7IYxwtrp2s1V4WQQxCiA2T1XAioD8sDCnTMX87adMRUv99vXv8EmN6ana01R16O0nmTk8TTX2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3FB6IBw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BE8C32781;
-	Thu,  6 Jun 2024 14:12:52 +0000 (UTC)
+	 MIME-Version; b=ZtLW0hNnhJk3FhdTuaKcYrX/e7AI7V5e62WBvsK6mkwJA6qri+pqLIJAg3pk90ltY0N0eu9456C/2kmKXffrrdHntqQHBgT05LcOtlfDSzjsyPgLGCPncxevYBd1pvz8DAE335q0SLEwvyWkum7II3PpZkIc5he02OOgSP7nUzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZuDakru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A82C4AF07;
+	Thu,  6 Jun 2024 14:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683172;
-	bh=XKrpJX1RMpfLzoq07XUZ5BYJUG0fI/19K2hqO3kgvVI=;
+	s=korg; t=1717683173;
+	bh=bXfKrkmVA0KnT/NF+KADiHOu4etp9CMHHMaStWuMIy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3FB6IBwGe0b/nXE4qbr3FmZedMLg0gYjmKKdxUlvlhf+Yz5zg2gvDw3kA9LTx3Ow
-	 MZiWCMxaF9B1zFaLkGWwcSMTpDxL4hZjwfZZ9Pv0cZ8AT+cb0lgLCU84TrLrXdRSGw
-	 wRHRRJhnNajzupMIgqnztKj0ak9FrKRC3mWz8pyA=
+	b=BZuDakruAArR/6zJj6Mvwf7gXnMXWLOm3OePMk6+WS7BTPyaQNTXt8YNDDze8UyvX
+	 iZZ9xJSmllZQiGdJdg04H3Wem/s+lhFlembGUdLWGVtnPWnKFUdoLVQPLQJmMiDJgi
+	 K6zOZxNPu89/8rTA78hUCQBQytRXldfrvwtNY29Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/744] null_blk: Fix missing mutex_destroy() at module removal
-Date: Thu,  6 Jun 2024 15:56:29 +0200
-Message-ID: <20240606131736.163307320@linuxfoundation.org>
+Subject: [PATCH 6.6 118/744] kunit/fortify: Fix mismatched kvalloc()/vfree() usage
+Date: Thu,  6 Jun 2024 15:56:30 +0200
+Message-ID: <20240606131736.197403565@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -66,35 +65,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 07d1b99825f40f9c0d93e6b99d79a08d0717bac1 ]
+[ Upstream commit 998b18072ceb0613629c256b409f4d299829c7ec ]
 
-When a mutex lock is not used any more, the function mutex_destroy
-should be called to mark the mutex lock uninitialized.
+The kv*() family of tests were accidentally freeing with vfree() instead
+of kvfree(). Use kvfree() instead.
 
-Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240425171635.4227-1-yanjun.zhu@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 9124a2640148 ("kunit/fortify: Validate __alloc_size attribute results")
+Link: https://lore.kernel.org/r/20240425230619.work.299-kees@kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/fortify_kunit.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 9544746de1683..cc4dcb951fd24 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2352,6 +2352,8 @@ static void __exit null_exit(void)
- 
- 	if (g_queue_mode == NULL_Q_MQ && shared_tags)
- 		blk_mq_free_tag_set(&tag_set);
-+
-+	mutex_destroy(&lock);
- }
- 
- module_init(null_init);
+diff --git a/lib/fortify_kunit.c b/lib/fortify_kunit.c
+index c8c33cbaae9ec..24f8d6fda2b3b 100644
+--- a/lib/fortify_kunit.c
++++ b/lib/fortify_kunit.c
+@@ -228,28 +228,28 @@ DEFINE_ALLOC_SIZE_TEST_PAIR(vmalloc)
+ 									\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvmalloc((alloc_pages) * PAGE_SIZE, gfp),		\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvmalloc_node((alloc_pages) * PAGE_SIZE, gfp, NUMA_NO_NODE), \
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvzalloc((alloc_pages) * PAGE_SIZE, gfp),		\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvzalloc_node((alloc_pages) * PAGE_SIZE, gfp, NUMA_NO_NODE), \
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvcalloc(1, (alloc_pages) * PAGE_SIZE, gfp),		\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvcalloc((alloc_pages) * PAGE_SIZE, 1, gfp),		\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvmalloc_array(1, (alloc_pages) * PAGE_SIZE, gfp),	\
+-		vfree(p));						\
++		kvfree(p));						\
+ 	checker((expected_pages) * PAGE_SIZE,				\
+ 		kvmalloc_array((alloc_pages) * PAGE_SIZE, 1, gfp),	\
+-		vfree(p));						\
++		kvfree(p));						\
+ 									\
+ 	prev_size = (expected_pages) * PAGE_SIZE;			\
+ 	orig = kvmalloc(prev_size, gfp);				\
 -- 
 2.43.0
 
