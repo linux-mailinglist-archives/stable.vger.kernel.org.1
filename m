@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-49706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045988FEE81
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0622E8FECD9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1715F1C250E6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7A11C26459
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311961A0DC2;
-	Thu,  6 Jun 2024 14:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A761B3723;
+	Thu,  6 Jun 2024 14:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvBt4zD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNMlYmNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FA5196D90;
-	Thu,  6 Jun 2024 14:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C791B3721;
+	Thu,  6 Jun 2024 14:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683669; cv=none; b=RrKOF0j47iGnVt43C1tnfgaWCZ+zZr1MHXEJzoSJVPrSlPvLI4dT++rqvXJMxH3GUaeYHT0IyROvZmvdOcmK2/RqXvy84IsnqB6zzWBH75HRS0Ei+LCcYxHY3sZ2+7BT9OFj84cpbBshc2m7tCrVGqMop5iJZW78luhdh7wsv6M=
+	t=1717683416; cv=none; b=nKcxZnaZ3s0Z3x5ZB0uASTn6MEoVIxRwLVNs8jZ4uDCxtScslxf4ZPVdTeZbx94jNPIun5pwJsTcB/siJG160HzuLpE1QGFNZGIip5cgf+M0/tg7aURae/HK5EVdl+JFput57K9UehiLB8zeVtis7BnNaOWW67nqT4kZcdClFKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683669; c=relaxed/simple;
-	bh=vJuqWGY3tdwAN+zYvbDEI7b4TbWMuOvbAldeXjuPQIc=;
+	s=arc-20240116; t=1717683416; c=relaxed/simple;
+	bh=YP+HriUesQzXRckLBcH9b7xYLXmtq8kxSYQiOsI8cSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btbx4+7Y+fKqARZ81BrTegnHqSzzIHBcTgp8PCW5EgIP/eiNepchH7Yf/t1lYVuZVxzDRm1IHpDFoUon/MysIu8gdrXT3KEPmhv0AUN0Bo5MKZxC58l+5WEOw9bGiNimQV06lEkZiEqeCUY2XYToMAoN8pZxXcmPoEns0A/rag0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvBt4zD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B4CC2BD10;
-	Thu,  6 Jun 2024 14:21:08 +0000 (UTC)
+	 MIME-Version; b=NOpjcRmnb+Ik+MPq+oEfvatHy71g5380HvmqjBIYavhu/lZcg4XEw0bhcupYih45UGyJhUmjzCFaHYKhfEwHv+Dr03ZpVs8qf5GoTcS0hxvTrd3poyzHdxTfEVvOPS20aWD4pWc/y/PGBf5znNE4Vruwz/Ikr86rEzhVkE5oVqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNMlYmNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CBAC32781;
+	Thu,  6 Jun 2024 14:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683668;
-	bh=vJuqWGY3tdwAN+zYvbDEI7b4TbWMuOvbAldeXjuPQIc=;
+	s=korg; t=1717683416;
+	bh=YP+HriUesQzXRckLBcH9b7xYLXmtq8kxSYQiOsI8cSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvBt4zD1PIoPsQSqCtCdvOMos6itbBURGuKE8ciE6xp/P0IE+iLB2oAybeGJp+y8v
-	 K882CsduTjqfd1KXLqHesCA5Le7hro4EHvR93BD6a5nXWSTqNtEzOVc1NVaZ4qA0hu
-	 9zs8QCeffxDsPrKXOvdmZCqFaj0Q8boHits7DuvU=
+	b=cNMlYmNSajMEgsRzynMiNPmVrzq9bA9AfWxlGsRqiBzWezKvXSr9f+Oz6l9Kp+Ppf
+	 g7bV/SbgHXbJ3WvvxeiWG6ww6lh7qwHvB+r47cwo+OxCqvtdIEMkohqWVVwIRRxdlb
+	 fSzi99FhP1y2VfdcEZ91EX2okxR6O4F6DyhGg/5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
+	German Gomez <german.gomez@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Zhengjun Xing <zhengjun.xing@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 556/744] eventfs: Have "events" directory get permissions from its parent
+Subject: [PATCH 6.1 299/473] perf test: Add thloop test workload
 Date: Thu,  6 Jun 2024 16:03:48 +0200
-Message-ID: <20240606131750.292084355@linuxfoundation.org>
+Message-ID: <20240606131709.798839939@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,135 +72,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit d57cf30c4c07837799edec949102b0adf58bae79 ]
+[ Upstream commit 69b352927885b17f03d3ee4ee38f580699af107a ]
 
-The events directory gets its permissions from the root inode. But this
-can cause an inconsistency if the instances directory changes its
-permissions, as the permissions of the created directories under it should
-inherit the permissions of the instances directory when directories under
-it are created.
+The thloop is similar to noploop but runs in two threads.  This is
+needed to verify perf record --per-thread to handle multi-threaded
+programs properly.
 
-Currently the behavior is:
+  $ perf test -w thloop
 
- # cd /sys/kernel/tracing
- # chgrp 1002 instances
- # mkdir instances/foo
- # ls -l instances/foo
-[..]
- -r--r-----  1 root lkp  0 May  1 18:55 buffer_total_size_kb
- -rw-r-----  1 root lkp  0 May  1 18:55 current_tracer
- -rw-r-----  1 root lkp  0 May  1 18:55 error_log
- drwxr-xr-x  1 root root 0 May  1 18:55 events
- --w-------  1 root lkp  0 May  1 18:55 free_buffer
- drwxr-x---  2 root lkp  0 May  1 18:55 options
- drwxr-x--- 10 root lkp  0 May  1 18:55 per_cpu
- -rw-r-----  1 root lkp  0 May  1 18:55 set_event
+It also takes an optional argument to specify runtime in seconds
+(default: 1).
 
-All the files and directories under "foo" has the "lkp" group except the
-"events" directory. That's because its getting its default value from the
-mount point instead of its parent.
-
-Have the "events" directory make its default value based on its parent's
-permissions. That now gives:
-
- # ls -l instances/foo
-[..]
- -rw-r-----  1 root lkp 0 May  1 21:16 buffer_subbuf_size_kb
- -r--r-----  1 root lkp 0 May  1 21:16 buffer_total_size_kb
- -rw-r-----  1 root lkp 0 May  1 21:16 current_tracer
- -rw-r-----  1 root lkp 0 May  1 21:16 error_log
- drwxr-xr-x  1 root lkp 0 May  1 21:16 events
- --w-------  1 root lkp 0 May  1 21:16 free_buffer
- drwxr-x---  2 root lkp 0 May  1 21:16 options
- drwxr-x--- 10 root lkp 0 May  1 21:16 per_cpu
- -rw-r-----  1 root lkp 0 May  1 21:16 set_event
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200906.161887248@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Zhengjun Xing <zhengjun.xing@linux.intel.com>
+Link: https://lore.kernel.org/r/20221116233854.1596378-4-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 256ef072b384 ("perf tests: Make "test data symbol" more robust on Neoverse N1")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ tools/perf/tests/builtin-test.c     |  1 +
+ tools/perf/tests/tests.h            |  1 +
+ tools/perf/tests/workloads/Build    |  1 +
+ tools/perf/tests/workloads/thloop.c | 53 +++++++++++++++++++++++++++++
+ 4 files changed, 56 insertions(+)
+ create mode 100644 tools/perf/tests/workloads/thloop.c
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index fd111e10f04e4..3b785f4ca95e4 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -37,6 +37,7 @@ static DEFINE_MUTEX(eventfs_mutex);
+diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-test.c
+index ce641ccfcf814..161f38476e77b 100644
+--- a/tools/perf/tests/builtin-test.c
++++ b/tools/perf/tests/builtin-test.c
+@@ -120,6 +120,7 @@ static struct test_suite **tests[] = {
  
- struct eventfs_root_inode {
- 	struct eventfs_inode		ei;
-+	struct inode			*parent_inode;
- 	struct dentry			*events_dir;
+ static struct test_workload *workloads[] = {
+ 	&workload__noploop,
++	&workload__thloop,
  };
  
-@@ -226,12 +227,23 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
+ static int num_subtests(const struct test_suite *t)
+diff --git a/tools/perf/tests/tests.h b/tools/perf/tests/tests.h
+index d315d0d6fc977..e6edfeeadaeba 100644
+--- a/tools/perf/tests/tests.h
++++ b/tools/perf/tests/tests.h
+@@ -201,5 +201,6 @@ struct test_workload workload__##work = {	\
  
- static void update_events_attr(struct eventfs_inode *ei, struct super_block *sb)
- {
--	struct inode *root;
-+	struct eventfs_root_inode *rei;
-+	struct inode *parent;
+ /* The list of test workloads */
+ DECLARE_WORKLOAD(noploop);
++DECLARE_WORKLOAD(thloop);
+ 
+ #endif /* TESTS_H */
+diff --git a/tools/perf/tests/workloads/Build b/tools/perf/tests/workloads/Build
+index f98e968d4633a..b8964b1099c0e 100644
+--- a/tools/perf/tests/workloads/Build
++++ b/tools/perf/tests/workloads/Build
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ perf-y += noploop.o
++perf-y += thloop.o
+diff --git a/tools/perf/tests/workloads/thloop.c b/tools/perf/tests/workloads/thloop.c
+new file mode 100644
+index 0000000000000..29193b75717ef
+--- /dev/null
++++ b/tools/perf/tests/workloads/thloop.c
+@@ -0,0 +1,53 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#include <pthread.h>
++#include <stdlib.h>
++#include <signal.h>
++#include <unistd.h>
++#include <linux/compiler.h>
++#include "../tests.h"
 +
-+	rei = get_root_inode(ei);
++static volatile sig_atomic_t done;
++static volatile unsigned count;
 +
-+	/* Use the parent inode permissions unless root set its permissions */
-+	parent = rei->parent_inode;
- 
--	/* Get the tracefs root inode. */
--	root = d_inode(sb->s_root);
--	ei->attr.uid = root->i_uid;
--	ei->attr.gid = root->i_gid;
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_UID)
-+		ei->attr.uid = rei->ei.attr.uid;
-+	else
-+		ei->attr.uid = parent->i_uid;
++/* We want to check this symbol in perf report */
++noinline void test_loop(void);
 +
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_GID)
-+		ei->attr.gid = rei->ei.attr.gid;
-+	else
-+		ei->attr.gid = parent->i_gid;
- }
- 
- static void set_top_events_ownership(struct inode *inode)
-@@ -810,6 +822,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	// Note: we have a ref to the dentry from tracefs_start_creating()
- 	rei = get_root_inode(ei);
- 	rei->events_dir = dentry;
-+	rei->parent_inode = d_inode(dentry->d_sb->s_root);
- 
- 	ei->entries = entries;
- 	ei->nr_entries = size;
-@@ -819,10 +832,15 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	uid = d_inode(dentry->d_parent)->i_uid;
- 	gid = d_inode(dentry->d_parent)->i_gid;
- 
--	/* This is used as the default ownership of the files and directories */
- 	ei->attr.uid = uid;
- 	ei->attr.gid = gid;
- 
-+	/*
-+	 * When the "events" directory is created, it takes on the
-+	 * permissions of its parent. But can be reset on remount.
-+	 */
-+	ei->attr.mode |= EVENTFS_SAVE_UID | EVENTFS_SAVE_GID;
++static void sighandler(int sig __maybe_unused)
++{
++	done = 1;
++}
 +
- 	INIT_LIST_HEAD(&ei->children);
- 	INIT_LIST_HEAD(&ei->list);
- 
++noinline void test_loop(void)
++{
++	while (!done)
++		count++;
++}
++
++static void *thfunc(void *arg)
++{
++	void (*loop_fn)(void) = arg;
++
++	loop_fn();
++	return NULL;
++}
++
++static int thloop(int argc, const char **argv)
++{
++	int sec = 1;
++	pthread_t th;
++
++	if (argc > 0)
++		sec = atoi(argv[0]);
++
++	signal(SIGINT, sighandler);
++	signal(SIGALRM, sighandler);
++	alarm(sec);
++
++	pthread_create(&th, NULL, thfunc, test_loop);
++	test_loop();
++	pthread_join(th, NULL);
++
++	return 0;
++}
++
++DEFINE_WORKLOAD(thloop);
 -- 
 2.43.0
 
