@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 166B88FEC52
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 351568FEE57
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC2DA1F2993A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6791283B67
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA7D1B010F;
-	Thu,  6 Jun 2024 14:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A611C3700;
+	Thu,  6 Jun 2024 14:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USMTc1FC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXKLXG2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D09C1B010C;
-	Thu,  6 Jun 2024 14:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407591C2309;
+	Thu,  6 Jun 2024 14:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683353; cv=none; b=t/ILxPIL393UmtzmVV3FQRL3o/KkNvm2FfAPQLLK183+oImqKaqvJi5pfAjyNTO0uuMfCprNlnGtxd+dA0LmHbbvkVezlFzHrulT3W8MQT6B123NAfx7zOgmX5kVMq7i3a9P5mQxg6FCnc/92Ufz6S9wKlajrlELaAq+UNBqk5U=
+	t=1717683648; cv=none; b=F72JUZMr4UFNEzO6OG+vyS7sJXV9TyB/5CEBiPciBb0s3+ymneGqqu3u6EIAp9WYbFlHKPoxf4r0sC9mjALFD//Mg65KtoZhz9BSjiz7s7B7FZcziHNXN1brsJ7EDvxy0zCq4n/CMF3RaU4xoSRxTqt2NfcC4U2fC8iOlh1yQYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683353; c=relaxed/simple;
-	bh=8GLKkCHKpHcAawcufsYHcZL4nLzVz/qiql5nx1k9ILE=;
+	s=arc-20240116; t=1717683648; c=relaxed/simple;
+	bh=xRX22CkQzUzzsGd4wkyvmw9pEzqmxlNvpFBQViUmEOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jl4/XdKHaS1DrC13a4zCoBM53BXwLMSSwqy10EKGTBh5xhAgJ58FOc6cyqQbC9jv2UsZzeas9tl0wUvrRwo49vxkHbLg0uFrCmnS7q0MR+jeY6opXjQESfSOLWvD2KsaiAe4zJ0FHSUFyiy1PCFkIJgRAtMA7Ax8fd46YLZ50SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USMTc1FC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEC2C2BD10;
-	Thu,  6 Jun 2024 14:15:53 +0000 (UTC)
+	 MIME-Version; b=TvRh+A9q+WMclaTWhcVUc/qsUYDRYpMh14Cj0sA+fIUssNgbZ99Xk5E12l/23+J1dzjCIzO6sFwv5hc54rGMb93NlE2tZuyNxMJOsuE8arBtGvkk+wvszFxuiZxuIfgNEorQZ7HUM5kMoZDUndJwcnAeMBiqg/eLPUXLZyiZolE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXKLXG2W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE37C32781;
+	Thu,  6 Jun 2024 14:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683353;
-	bh=8GLKkCHKpHcAawcufsYHcZL4nLzVz/qiql5nx1k9ILE=;
+	s=korg; t=1717683648;
+	bh=xRX22CkQzUzzsGd4wkyvmw9pEzqmxlNvpFBQViUmEOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USMTc1FC2IeY4+b/r/u9IuojKIyp/O82/SpzAilba7BnzOk2L0J0WmGb/s3+o7jtE
-	 iMlSsHqmqdwOL9iMMbcSc5WirQlmLTq5oKOFUNipjIxwI+f1SrO48gS7QbrVLUiiSF
-	 URkk9uIRGlKGSTBVn8bkwCOq51OZDQrgmAFMwpWM=
+	b=zXKLXG2WkGz0L8EJYTeS8gFCBUhniSlaTw+0oR94UWPM17o0P2ftHWnktRsWzxh7J
+	 bAbwZx7srnhXOoIYjhDYkwGIvBGfCasR7pMCaw7yfKkmo4EF3epX9VfQO0RQPLKAEb
+	 ZuLec9oZW9a/O13WJvTGydQLJDH+S1Z3AsCWcR4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Sai Pavan Boddu <sai.pavan.boddu@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 234/473] drm/rockchip: vop2: Do not divide height twice for YUV
-Date: Thu,  6 Jun 2024 16:02:43 +0200
-Message-ID: <20240606131707.571986563@linuxfoundation.org>
+Subject: [PATCH 6.6 492/744] i2c: cadence: Avoid fifo clear after start
+Date: Thu,  6 Jun 2024 16:02:44 +0200
+Message-ID: <20240606131748.224396198@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Detlev Casanova <detlev.casanova@collabora.com>
+From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 
-[ Upstream commit e80c219f52861e756181d7f88b0d341116daac2b ]
+[ Upstream commit c2e55b449de7298a751ed0256251019d302af453 ]
 
-For the cbcr format, gt2 and gt4 are computed again after src_h has been
-divided by vsub.
+The Driver unintentionally programs ctrl reg to clear the fifo, which
+happens after the start of transaction. Previously, this was not an issue
+as it involved read-modified-write. However, this issue breaks i2c reads
+on QEMU, as i2c-read is executed before guest starts programming control
+register.
 
-As src_h as already been divided by 2 before, introduce cbcr_src_h and
-cbcr_src_w to keep a copy of those values to be used for cbcr gt2 and
-gt4 computation.
-
-This fixes yuv planes being unaligned vertically when down scaling to
-1080 pixels from 2160.
-
-Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Acked-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240414182706.655270-1-detlev.casanova@collabora.com
+Fixes: ff0cf7bca630 ("i2c: cadence: Remove unnecessary register reads")
+Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 22 +++++++++++---------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/i2c/busses/i2c-cadence.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index b233f52675dc4..a72642bb9cc60 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -607,6 +607,8 @@ static void vop2_setup_scale(struct vop2 *vop2, const struct vop2_win *win,
- 	const struct drm_format_info *info;
- 	u16 hor_scl_mode, ver_scl_mode;
- 	u16 hscl_filter_mode, vscl_filter_mode;
-+	uint16_t cbcr_src_w = src_w;
-+	uint16_t cbcr_src_h = src_h;
- 	u8 gt2 = 0;
- 	u8 gt4 = 0;
- 	u32 val;
-@@ -664,27 +666,27 @@ static void vop2_setup_scale(struct vop2 *vop2, const struct vop2_win *win,
- 	vop2_win_write(win, VOP2_WIN_YRGB_VSCL_FILTER_MODE, vscl_filter_mode);
+diff --git a/drivers/i2c/busses/i2c-cadence.c b/drivers/i2c/busses/i2c-cadence.c
+index de3f58b60dce5..6f7d753a8197c 100644
+--- a/drivers/i2c/busses/i2c-cadence.c
++++ b/drivers/i2c/busses/i2c-cadence.c
+@@ -633,6 +633,7 @@ static void cdns_i2c_mrecv(struct cdns_i2c *id)
  
- 	if (info->is_yuv) {
--		src_w /= info->hsub;
--		src_h /= info->vsub;
-+		cbcr_src_w /= info->hsub;
-+		cbcr_src_h /= info->vsub;
- 
- 		gt4 = 0;
- 		gt2 = 0;
- 
--		if (src_h >= (4 * dst_h)) {
-+		if (cbcr_src_h >= (4 * dst_h)) {
- 			gt4 = 1;
--			src_h >>= 2;
--		} else if (src_h >= (2 * dst_h)) {
-+			cbcr_src_h >>= 2;
-+		} else if (cbcr_src_h >= (2 * dst_h)) {
- 			gt2 = 1;
--			src_h >>= 1;
-+			cbcr_src_h >>= 1;
- 		}
- 
--		hor_scl_mode = scl_get_scl_mode(src_w, dst_w);
--		ver_scl_mode = scl_get_scl_mode(src_h, dst_h);
-+		hor_scl_mode = scl_get_scl_mode(cbcr_src_w, dst_w);
-+		ver_scl_mode = scl_get_scl_mode(cbcr_src_h, dst_h);
- 
--		val = vop2_scale_factor(src_w, dst_w);
-+		val = vop2_scale_factor(cbcr_src_w, dst_w);
- 		vop2_win_write(win, VOP2_WIN_SCALE_CBCR_X, val);
- 
--		val = vop2_scale_factor(src_h, dst_h);
-+		val = vop2_scale_factor(cbcr_src_h, dst_h);
- 		vop2_win_write(win, VOP2_WIN_SCALE_CBCR_Y, val);
- 
- 		vop2_win_write(win, VOP2_WIN_VSD_CBCR_GT4, gt4);
+ 	if (hold_clear) {
+ 		ctrl_reg &= ~CDNS_I2C_CR_HOLD;
++		ctrl_reg &= ~CDNS_I2C_CR_CLR_FIFO;
+ 		/*
+ 		 * In case of Xilinx Zynq SOC, clear the HOLD bit before transfer size
+ 		 * register reaches '0'. This is an IP bug which causes transfer size
 -- 
 2.43.0
 
