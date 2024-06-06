@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4107D8FEEA0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBC28FED18
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55DED1C254D3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A8C5282B17
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0831C6161;
-	Thu,  6 Jun 2024 14:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506C11B4C42;
+	Thu,  6 Jun 2024 14:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOFYixwK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ml5IM6x1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5231C6163;
-	Thu,  6 Jun 2024 14:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB6F1B4C40;
+	Thu,  6 Jun 2024 14:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683683; cv=none; b=m+HBEz+8b7SlnVq0cmzEfmKjxL5QvC0KAI7trcWoUaqSSBIe+zdqto46PszNEAU16n9ydAie87AMp3Yr3+qFrQ9+/DJY9IzPOuzyfIc22v58GKLR7mv70DxASD/olSuGGylmh5Mr81q5URv5NO1XPyc2GRpAFyVdTMqXnVTk+jI=
+	t=1717683446; cv=none; b=pF0egPY3VOGiXsT+XloiLPcuUPJTOLa+XlI09dY+iRLTg9AxKk1OPmRalV5vE7YF7IOtN2hI12ZDTEKvziSrCh8qiSCLpNY69wp5+vIy4WeLeJjxXYMhlNWoFs2nMXyz7r+3Q1JFLzD6SZIQB3mWIqH3CACz4ftbt7bWqk1tVdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683683; c=relaxed/simple;
-	bh=poqKtsmatTtFZi+U+9I7kJ/w7infTaVFjH1K9Ifg/1I=;
+	s=arc-20240116; t=1717683446; c=relaxed/simple;
+	bh=RxxCfO+OXqtz+nxdAhc11dGmTo+YT0iFXGShEmJfCU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTl8l8W8Ud9fPWfQixC8bJ4v9gRCRoqMUHrL/sbpcbpFlb856TpCdvrppCiCDqP6qX1dfCpy4tpXLK+gXMl4bidKtduX28Y1OT9VZN69/Yd288XdMJmFyK1lOHl4TcvHj8ZPjhg2mpA4wWvdD/Qh3qbAfnBc5gErGvIvmbyd4n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOFYixwK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895CDC32786;
-	Thu,  6 Jun 2024 14:21:23 +0000 (UTC)
+	 MIME-Version; b=DaKbHUZmJ5IHTjvEv66MazFkq0tVO5/ZAG1Pr2RGvGVxenPptWWg9tRxb7mf6H1zC1RoKfMg0vBTLMcxM0wrPOKT58/K6M9LYWQf4QQHULbY6CfAeJcUeQKbcGFjH7lb9Je4tw3iEwv5Bl+GWVyhHsHI/0FGlI+TypAIRCXBZu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ml5IM6x1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB676C2BD10;
+	Thu,  6 Jun 2024 14:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683683;
-	bh=poqKtsmatTtFZi+U+9I7kJ/w7infTaVFjH1K9Ifg/1I=;
+	s=korg; t=1717683445;
+	bh=RxxCfO+OXqtz+nxdAhc11dGmTo+YT0iFXGShEmJfCU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOFYixwKFTWeU2RN5ojY1Q++pi2LY6VGaRrx0jcrOJOHSafL1wzJN8OZA5ms+FvhQ
-	 WP51eMVAgYkjXJikjPlvnIxgq0VUKMtJ+DeSraMZl3jIJ2Voohmrqqc3sz1rypMgrd
-	 KqhLJAPVnWz+6c271eyLOv1YH1gDOyRT+bEEefIk=
+	b=Ml5IM6x1p9Rt+EnRqoWdQ991GhXzm6JCaISkGzXyWgEsSy6h+lJL6QjEgryvfNQC3
+	 JuicMkIb2eewTfFFTXwlqXgy/pk7+QR34IokG+yR5r/iCatC4kZO/6RhryugGO2Li3
+	 S73PYfFe1a3FWRSZ1TzxtiECEJrzw2/lb8oXBaII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Chris Wulff <chris.wulff@biamp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 587/744] drm/msm/dpu: Add callback function pointer check before its call
+Subject: [PATCH 6.1 330/473] usb: gadget: u_audio: Clear uac pointer when freed.
 Date: Thu,  6 Jun 2024 16:04:19 +0200
-Message-ID: <20240606131751.294543749@linuxfoundation.org>
+Message-ID: <20240606131710.843874981@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Chris Wulff <Chris.Wulff@biamp.com>
 
-[ Upstream commit 530f272053a5e72243a9cb07bb1296af6c346002 ]
+[ Upstream commit a2cf936ebef291ef7395172b9e2f624779fb6dc0 ]
 
-In dpu_core_irq_callback_handler() callback function pointer is compared to NULL,
-but then callback function is unconditionally called by this pointer.
-Fix this bug by adding conditional return.
+This prevents use of a stale pointer if functions are called after
+g_cleanup that shouldn't be. This doesn't fix any races, but converts
+a possibly silent kernel memory corruption into an obvious NULL pointer
+dereference report.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c929ac60b3ed ("drm/msm/dpu: allow just single IRQ callback")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/588237/
-Link: https://lore.kernel.org/r/20240408085523.12231-1-amishin@t-argos.ru
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: eb9fecb9e69b ("usb: gadget: f_uac2: split out audio core")
+Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
+Link: https://lore.kernel.org/stable/CO1PR17MB54194226DA08BFC9EBD8C163E1172%40CO1PR17MB5419.namprd17.prod.outlook.com
+Link: https://lore.kernel.org/r/CO1PR17MB54194226DA08BFC9EBD8C163E1172@CO1PR17MB5419.namprd17.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/u_audio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-index c413e9917d7eb..41f7c86bc2db9 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-@@ -221,9 +221,11 @@ static void dpu_core_irq_callback_handler(struct dpu_kms *dpu_kms, int irq_idx)
+diff --git a/drivers/usb/gadget/function/u_audio.c b/drivers/usb/gadget/function/u_audio.c
+index c8e8154c59f50..ec1dceb087293 100644
+--- a/drivers/usb/gadget/function/u_audio.c
++++ b/drivers/usb/gadget/function/u_audio.c
+@@ -1419,6 +1419,8 @@ void g_audio_cleanup(struct g_audio *g_audio)
+ 		return;
  
- 	VERB("IRQ=[%d, %d]\n", DPU_IRQ_REG(irq_idx), DPU_IRQ_BIT(irq_idx));
- 
--	if (!irq_entry->cb)
-+	if (!irq_entry->cb) {
- 		DRM_ERROR("no registered cb, IRQ=[%d, %d]\n",
- 			  DPU_IRQ_REG(irq_idx), DPU_IRQ_BIT(irq_idx));
-+		return;
-+	}
- 
- 	atomic_inc(&irq_entry->count);
- 
+ 	uac = g_audio->uac;
++	g_audio->uac = NULL;
++
+ 	card = uac->card;
+ 	if (card)
+ 		snd_card_free_when_closed(card);
 -- 
 2.43.0
 
