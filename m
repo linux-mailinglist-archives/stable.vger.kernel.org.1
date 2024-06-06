@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277508FEC77
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529D88FE877
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1307B1C24047
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8D771F2332F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CB91B140E;
-	Thu,  6 Jun 2024 14:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781A8196C85;
+	Thu,  6 Jun 2024 14:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUWhITVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMb63b1k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33DA19B3C6;
-	Thu,  6 Jun 2024 14:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FF6196434;
+	Thu,  6 Jun 2024 14:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683370; cv=none; b=L8Ll2cBHPf8k55o1QTq9X3mKDOuasg6ATfzGHv+4HSoY+ggdy8L12+J620+4XG1KRcCQFKOpZ5L7wce7QzE5/I/8q7oOHusSmXPJiWsZ6BkEWpkdnW9g4yLsftvfgtFBQBqQIYSKHy5LtQMyiz7Lnbn4L6QFa7hxIvGigtdgkUw=
+	t=1717682897; cv=none; b=LD/QHp6bqSr7ahApuhMyEhO4JEGWUnQpkFVZCERoV5zwZRfopLf0RAYMXHboCT+TwXEazlnwNUDJlDmb307Tswzh9hZPoca/U8cndXw32ZG61o+JcZ7K9hPOOjzE7CI8JWlPuuT5CCSvJR2fKpPSqBY67ifCnivumzvjN3ScXUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683370; c=relaxed/simple;
-	bh=huy62X8ZSEMy8IJbxSKpesklIn4e/aSvlQVhgRI/wng=;
+	s=arc-20240116; t=1717682897; c=relaxed/simple;
+	bh=uaj1zIvfl8wEk0tyoefNK2XNDfpbPWyQ+Ov7EKqo704=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aRWOs2PkUSP53jV6yeI/4SIiN2MhBHwrnD0PzkYZ9fb3vXAF9LZcNPgB19R49cG54gPszvoVWawxebLf4Bj/RfD3053yeuMwsvDMTGBFzziwj4NgRg09M5ipHXoPe98EhTpU3w+p1rwc5xFtRWK7DC4H3RSdjBU0XFTSkrUTyXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUWhITVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82037C2BD10;
-	Thu,  6 Jun 2024 14:16:10 +0000 (UTC)
+	 MIME-Version; b=ZB7ds1ubGZsKkkYs09zmn0Rcz5KffQVllsPHJyHbw5rAh6p1eSnvhUNTXcV2LwrM7NQo5Y4qk+sTE8YHLzdzrANZ04rcLwWW3XN8MMZ37BSxv8W0/2S23k0mX7roWZkd3AKQixT+C+MKSzHY2JJI+U9D/lRRgfzFUuzVekVGo/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMb63b1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C244CC32781;
+	Thu,  6 Jun 2024 14:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683370;
-	bh=huy62X8ZSEMy8IJbxSKpesklIn4e/aSvlQVhgRI/wng=;
+	s=korg; t=1717682896;
+	bh=uaj1zIvfl8wEk0tyoefNK2XNDfpbPWyQ+Ov7EKqo704=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUWhITVDunZWFmkohUIcEUmgzRyLNSs1fb4vFRIgE25tgtqzJwFtsRoTiDteyrCOl
-	 /f4AmxE0B58+ubEg5TsTJmW/f5L8CrJ/oXv6JfU+zCRjnXmKx1Fnn6MDVZSdJqsSeH
-	 6hvNlhcFgxjcW7Bw8mBUDsFsYcHHtjUrnFR8W7Tk=
+	b=yMb63b1k3rHkr04SjyXFfZFJrkxZirfbyi4a1L5bgHANPfgvml8RuOgaYxrg4cMgk
+	 2LekFvOmgyVT1VyMNK8HymmFh1lfAKtzV4UXK3zdgrH/1uNJT4aLxhGMKm6A0QBw1L
+	 uUR6q92gyWnom4pLbU2RuFUvbRCg+6rSdYW1IuA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 312/744] media: i2c: et8ek8: Dont strip remove function when driver is builtin
+Subject: [PATCH 6.9 005/374] iio: core: Leave private pointer NULL when no private data supplied
 Date: Thu,  6 Jun 2024 15:59:44 +0200
-Message-ID: <20240606131742.416699399@linuxfoundation.org>
+Message-ID: <20240606131651.895384522@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 545b215736c5c4b354e182d99c578a472ac9bfce ]
+[ Upstream commit f0245ab389330cbc1d187e358a5b890d9f5383db ]
 
-Using __exit for the remove function results in the remove callback
-being discarded with CONFIG_VIDEO_ET8EK8=y. When such a device gets
-unbound (e.g. using sysfs or hotplug), the driver is just removed
-without the cleanup being performed. This results in resource leaks. Fix
-it by compiling in the remove callback unconditionally.
+In iio_device_alloc() when size of the private data is 0,
+the private pointer is calculated to point behind the valid data.
+Leave it NULL when no private data supplied.
 
-This also fixes a W=1 modpost warning:
-
-	WARNING: modpost: drivers/media/i2c/et8ek8/et8ek8: section mismatch in reference: et8ek8_i2c_driver+0x10 (section: .data) -> et8ek8_remove (section: .exit.text)
-
-Fixes: c5254e72b8ed ("[media] media: Driver for Toshiba et8ek8 5MP sensor")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 6d4ebd565d15 ("iio: core: wrap IIO device into an iio_dev_opaque object")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20240304140650.977784-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/et8ek8/et8ek8_driver.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/industrialio-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/et8ek8/et8ek8_driver.c b/drivers/media/i2c/et8ek8/et8ek8_driver.c
-index d6fc843f9368e..0d6f0f8506f76 100644
---- a/drivers/media/i2c/et8ek8/et8ek8_driver.c
-+++ b/drivers/media/i2c/et8ek8/et8ek8_driver.c
-@@ -1460,7 +1460,7 @@ static int et8ek8_probe(struct i2c_client *client)
- 	return ret;
- }
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 4302093b92c75..8684ba246969b 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1654,8 +1654,10 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 		return NULL;
  
--static void __exit et8ek8_remove(struct i2c_client *client)
-+static void et8ek8_remove(struct i2c_client *client)
- {
- 	struct v4l2_subdev *subdev = i2c_get_clientdata(client);
- 	struct et8ek8_sensor *sensor = to_et8ek8_sensor(subdev);
-@@ -1502,7 +1502,7 @@ static struct i2c_driver et8ek8_i2c_driver = {
- 		.of_match_table	= et8ek8_of_table,
- 	},
- 	.probe		= et8ek8_probe,
--	.remove		= __exit_p(et8ek8_remove),
-+	.remove		= et8ek8_remove,
- 	.id_table	= et8ek8_id_table,
- };
+ 	indio_dev = &iio_dev_opaque->indio_dev;
+-	indio_dev->priv = (char *)iio_dev_opaque +
+-		ALIGN(sizeof(struct iio_dev_opaque), IIO_DMA_MINALIGN);
++
++	if (sizeof_priv)
++		indio_dev->priv = (char *)iio_dev_opaque +
++			ALIGN(sizeof(*iio_dev_opaque), IIO_DMA_MINALIGN);
  
+ 	indio_dev->dev.parent = parent;
+ 	indio_dev->dev.type = &iio_device_type;
 -- 
 2.43.0
 
