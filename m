@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-49681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601768FEE66
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB138FE968
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67F021C251DD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12E4F1F23D68
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0691C371D;
-	Thu,  6 Jun 2024 14:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCA619A2B3;
+	Thu,  6 Jun 2024 14:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQOOw1wh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF92vaJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E401A0B06;
-	Thu,  6 Jun 2024 14:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF7119A2A7;
+	Thu,  6 Jun 2024 14:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683656; cv=none; b=lrwmFscTWVxgjk8ToqwLIlrMRJbk3iCTyk0elMUPXd8CpPCJDoh1Wh+8HNWm4u7/M802rWswXcLiTKEkmK0ZSnf1bNYQXpGDTp32vGz9ZfH7lhE7rtOuM1rwFxZ+B+LhpkscRaFFULJl4nyLt1lp3UX6zQoTghipZrWpUen2xYo=
+	t=1717683016; cv=none; b=DDBITisMsv4g0NjUmNz1jyUhwnD2ZYB0LZU5B4wK3evuTFUyEisHxDBZ7bwa+YfbKcDLrlEPkk99FfhYDbDVla4jRG0L0mX52Owm2O8qrfQHksjvMghXoLyr9OJqc3oRHUt62byFy6cBGl+M9ynkEnDSn0DX4vVqLEF2hohjjtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683656; c=relaxed/simple;
-	bh=6bHSZyQSm1aNeZB5vY9BH2oKPSKCAUBvII9H4s3V1NU=;
+	s=arc-20240116; t=1717683016; c=relaxed/simple;
+	bh=GkllS0O51hHRP7YI9PqwSTia7AsI13fENTq/cJJX6v8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1vV2gYlQLyhB8hFlhCjpx0PUsnq4dpfONhhy9XicQQr+0TCws0jZ47wmt1wUbs+3b16IxRyFK853xg9LAGP8J41ONk+jvBuTMYJ4DlSTS7C1zZ4Ff98Shghook2PMRTxyEh4t7TbOo4rgZvrb2n6zQoaI8J95SYkHR2x4/didQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQOOw1wh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27150C2BD10;
-	Thu,  6 Jun 2024 14:20:56 +0000 (UTC)
+	 MIME-Version; b=n8H1z3RXhOmgicCB8D58L2xD2p4aT1496Me92q6SHZCCksOf6R9CNkt7swgu5aAQAv51eBCxHQBlSJMlEgPcTBwkBE7wYpNfV8PnyaktW8moKeTmc6tUddjNX90S7d+s6tVk0xWBj1SZgPHbeY8EfDmRRfwzpe5kLN6jBaSZUdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF92vaJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFC2C32781;
+	Thu,  6 Jun 2024 14:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683656;
-	bh=6bHSZyQSm1aNeZB5vY9BH2oKPSKCAUBvII9H4s3V1NU=;
+	s=korg; t=1717683016;
+	bh=GkllS0O51hHRP7YI9PqwSTia7AsI13fENTq/cJJX6v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQOOw1whEC+vAEMVJWiAGiI2qolv0wSlAI7/go/i5oGJ1jEGMQep1rHyGQmxSemdM
-	 +CLCe3IIttgvmyrR7rjXuwnVa2XaC6sVk9AYVHeadf1K8Wp9OfPwBw8oWDggZL8ZAj
-	 CCe2qbzj3ueZCV31RljWj/HnmGyyqWfa7vVy/VIw=
+	b=pF92vaJkOGI3AGTyv7757zjqIckcpm1Rcf0sXcmgAonF6yYboTmzLLVDf6hgO0pde
+	 EvVk4+4+HdXiebJ9ihT+lOHdSLIl8pBfB+8Y01/o8LH7hVRVT9n/DnxNtkHFdLM3je
+	 RmQtCYQSZO65eJEd7BvNSfRw1vWc/eJa+bgjRqKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Tejun Heo <tj@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 533/744] s390/vdso64: filter out munaligned-symbols flag for vdso
+Subject: [PATCH 6.9 226/374] blk-cgroup: fix list corruption from reorder of WRITE ->lqueued
 Date: Thu,  6 Jun 2024 16:03:25 +0200
-Message-ID: <20240606131749.547183363@linuxfoundation.org>
+Message-ID: <20240606131659.373989414@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 8192a1b3807510d0ed5be1f8988c08f8d41cced9 ]
+[ Upstream commit d0aac2363549e12cc79b8e285f13d5a9f42fd08e ]
 
-Gcc recently implemented an optimization [1] for loading symbols without
-explicit alignment, aligning with the IBM Z ELF ABI. This ABI mandates
-symbols to reside on a 2-byte boundary, enabling the use of the larl
-instruction. However, kernel linker scripts may still generate unaligned
-symbols. To address this, a new -munaligned-symbols option has been
-introduced [2] in recent gcc versions.
+__blkcg_rstat_flush() can be run anytime, especially when blk_cgroup_bio_start
+is being executed.
 
-[1] https://gcc.gnu.org/pipermail/gcc-patches/2023-June/622872.html
-[2] https://gcc.gnu.org/pipermail/gcc-patches/2023-August/625986.html
+If WRITE of `->lqueued` is re-ordered with READ of 'bisc->lnode.next' in
+the loop of __blkcg_rstat_flush(), `next_bisc` can be assigned with one
+stat instance being added in blk_cgroup_bio_start(), then the local
+list in __blkcg_rstat_flush() could be corrupted.
 
-However, when -munaligned-symbols  is used in vdso code, it leads to the
-following compilation error:
-`.data.rel.ro.local' referenced in section `.text' of
-arch/s390/kernel/vdso64/vdso64_generic.o: defined in discarded section
-`.data.rel.ro.local' of arch/s390/kernel/vdso64/vdso64_generic.o
+Fix the issue by adding one barrier.
 
-vdso linker script discards .data section to make it lightweight.
-However, -munaligned-symbols in vdso object files references literal
-pool and accesses _vdso_data. Hence, compile vdso code without
--munaligned-symbols.  This means in the future, vdso code should deal
-with alignment of newly introduced unaligned linker symbols.
-
-Acked-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240219132734.22881-2-sumanthk@linux.ibm.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Stable-dep-of: 10f705253651 ("s390/vdso: Generate unwind information for C modules")
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240515013157.443672-3-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vdso64/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ block/blk-cgroup.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
-index 11f798e6cfea7..aa410a0a141cc 100644
---- a/arch/s390/kernel/vdso64/Makefile
-+++ b/arch/s390/kernel/vdso64/Makefile
-@@ -25,6 +25,7 @@ KBUILD_AFLAGS_64 += -m64
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 86752b1652b5b..b36ba1d40ba1d 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -1036,6 +1036,16 @@ static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu)
+ 		struct blkg_iostat cur;
+ 		unsigned int seq;
  
- KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
- KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
-+KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
- KBUILD_CFLAGS_64 += -m64 -fPIC -fno-common -fno-builtin
- ldflags-y := -shared -soname=linux-vdso64.so.1 \
- 	     --hash-style=both --build-id=sha1 -T
++		/*
++		 * Order assignment of `next_bisc` from `bisc->lnode.next` in
++		 * llist_for_each_entry_safe and clearing `bisc->lqueued` for
++		 * avoiding to assign `next_bisc` with new next pointer added
++		 * in blk_cgroup_bio_start() in case of re-ordering.
++		 *
++		 * The pair barrier is implied in llist_add() in blk_cgroup_bio_start().
++		 */
++		smp_mb();
++
+ 		WRITE_ONCE(bisc->lqueued, false);
+ 
+ 		/* fetch the current per-cpu values */
 -- 
 2.43.0
 
