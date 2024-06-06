@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-49209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0188FEC55
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1399B8FEAC3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39AD728286D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4A262869AE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9961B0108;
-	Thu,  6 Jun 2024 14:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7425C1A0DEB;
+	Thu,  6 Jun 2024 14:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cq/HxYCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eibXeZv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF04D1B0112;
-	Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D701A01AD;
+	Thu,  6 Jun 2024 14:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683354; cv=none; b=B4fY5Fq1TEcW+RMgYW630uZgK6QNM+YnntAP/bBqHfbEdu1MUwhdgjrlgenTAWZdUU8kjCPLuAy8v7NFWSmsAXp6cK9biv4HkNSBJyHghvweN0iFIXoJaoGNMH3vSnI+pkP59nzgL04T1A6xlCgSRpYntoxOIlHJ3YJs6/Xw19I=
+	t=1717683173; cv=none; b=qULw4arO4KIbR63ahBgmo2td2u9TIUuGd3ewb/CkwTExypXKhRdBawFLXwiBWsqcZ7R38ks5HJFUWCKRTKEPRLED21GiLyOaiAsIJPBW9ORLgSM/3GZY5LYrL1npxjemEpiHnWdzIyQgkEGEoDIGDj3f5S6fPQnTg2h1sn/CNXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683354; c=relaxed/simple;
-	bh=TvLqWJ92wVTozJkUgxMQwO+4ghNB0EEB+klfAER45n8=;
+	s=arc-20240116; t=1717683173; c=relaxed/simple;
+	bh=vuy3jwbK7GVBZZPyePvdNsDtFMwNnzJtLLYYJcPMhk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qGYpaAVOky3tA6t3z41xKJKuZ2CqFfb/gPoQU/TwtDnimQ5ACnJ9ss9gBs69mxeLda1/nTEp8gcrJahp7oHB6xenplexSANM27pNjedJNV1pFnnYEIP1P842RCX7hgPfLxPEx3RiIdX0xUW/oLocPs3W/hhmD2ygqe1sAijF77s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cq/HxYCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC037C32781;
-	Thu,  6 Jun 2024 14:15:54 +0000 (UTC)
+	 MIME-Version; b=COczzK29gdwsXYMeEI1jycZDJNYPenJwmDvNo4pou/wjyML8AH3cep0q58TI3qai398Xjk8BsMEZaTTBCv4kovtvp8XK7vVBL3fty9MwJAeea8JmBD9LTjdv4xunRmVZ9nnrfmpNRgDCn30UNpDoYkN7tnxf9LnEFnGYFeQ6Pk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eibXeZv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE11C32786;
+	Thu,  6 Jun 2024 14:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683354;
-	bh=TvLqWJ92wVTozJkUgxMQwO+4ghNB0EEB+klfAER45n8=;
+	s=korg; t=1717683172;
+	bh=vuy3jwbK7GVBZZPyePvdNsDtFMwNnzJtLLYYJcPMhk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cq/HxYCW8JYz8wDG2boxV2AvsjYTFQ8eYBWtU78tuyC4Hz6KddFAAA+pnRDMsv3sN
-	 HUzXFqsKq4/Ww1V9nNGG8tDseFrVOmO9u4j8O/A4SHqeDV2amXyrJZetldtkohfVZw
-	 2wiLf6z7EXmkcya7s2iyH/seMxEo3IIv8Pe46ako=
+	b=eibXeZv8ddZmlB+HHCjynUcLCUHUrhRvIWg1LZfMTsBth8JZZCoSzAqtG8mjfZ9jp
+	 PMGxHs28DYlRu4IqMmcvFRxG4B2PtHOLJyxDtr5qkr9Ovvi7/sTfIk7i9w9PJKB/fS
+	 zqckpvxtSaqtD/wkPEAP62qz/FL6wyE0Ry+OM3b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Yong Zhi <yong.zhi@intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Phil Auld <pauld@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 295/744] ASoC: SOF: Intel: mtl: call dsp dump when boot retry fails
+Subject: [PATCH 6.1 038/473] sched/isolation: Fix boot crash when maxcpus < first housekeeping CPU
 Date: Thu,  6 Jun 2024 15:59:27 +0200
-Message-ID: <20240606131741.858271286@linuxfoundation.org>
+Message-ID: <20240606131701.147856658@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong Zhi <yong.zhi@intel.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit d5070d0c10326e09276c34568b9a19fb9a727b6e ]
+[ Upstream commit 257bf89d84121280904800acd25cc2c444c717ae ]
 
-Call snd_sof_dsp_dbg_dump() with the same flags/dump_msg
-as used in function hda_loader.c/cl_dsp_init().
+housekeeping_setup() checks cpumask_intersects(present, online) to ensure
+that the kernel will have at least one housekeeping CPU after smp_init(),
+but this doesn't work if the maxcpus= kernel parameter limits the number of
+processors available after bootup.
 
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Yong Zhi <yong.zhi@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://lore.kernel.org/r/20231127105235.30071-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 26187f44aabd ("ASoC: SOF: Intel: mtl: Disable interrupts when firmware boot failed")
+For example, a kernel with "maxcpus=2 nohz_full=0-2" parameters crashes at
+boot time on a virtual machine with 4 CPUs.
+
+Change housekeeping_setup() to use cpumask_first_and() and check that the
+returned CPU number is valid and less than setup_max_cpus.
+
+Another corner case is "nohz_full=0" on a machine with a single CPU or with
+the maxcpus=1 kernel argument. In this case non_housekeeping_mask is empty
+and tick_nohz_full_setup() makes no sense. And indeed, the kernel hits the
+WARN_ON(tick_nohz_full_running) in tick_sched_do_timer().
+
+And how should the kernel interpret the "nohz_full=" parameter? It should
+be silently ignored, but currently cpulist_parse() happily returns the
+empty cpumask and this leads to the same problem.
+
+Change housekeeping_setup() to check cpumask_empty(non_housekeeping_mask)
+and do nothing in this case.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20240413141746.GA10008@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/mtl.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ kernel/sched/isolation.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/intel/mtl.c b/sound/soc/sof/intel/mtl.c
-index 834eb31cd9332..19709588aa5c2 100644
---- a/sound/soc/sof/intel/mtl.c
-+++ b/sound/soc/sof/intel/mtl.c
-@@ -437,7 +437,8 @@ int mtl_dsp_cl_init(struct snd_sof_dev *sdev, int stream_tag, bool imr_boot)
- 	struct sof_intel_hda_dev *hda = sdev->pdata->hw_pdata;
- 	const struct sof_intel_dsp_desc *chip = hda->desc;
- 	unsigned int status;
--	u32 ipc_hdr;
-+	u32 ipc_hdr, flags;
-+	char *dump_msg;
- 	int ret;
+diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+index 373d42c707bc5..82e2f7fc7c267 100644
+--- a/kernel/sched/isolation.c
++++ b/kernel/sched/isolation.c
+@@ -109,6 +109,7 @@ static void __init housekeeping_setup_type(enum hk_type type,
+ static int __init housekeeping_setup(char *str, unsigned long flags)
+ {
+ 	cpumask_var_t non_housekeeping_mask, housekeeping_staging;
++	unsigned int first_cpu;
+ 	int err = 0;
  
- 	/* step 1: purge FW request */
-@@ -490,8 +491,18 @@ int mtl_dsp_cl_init(struct snd_sof_dev *sdev, int stream_tag, bool imr_boot)
- 	return 0;
+ 	if ((flags & HK_FLAG_TICK) && !(housekeeping.flags & HK_FLAG_TICK)) {
+@@ -129,7 +130,8 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
+ 	cpumask_andnot(housekeeping_staging,
+ 		       cpu_possible_mask, non_housekeeping_mask);
  
- err:
--	snd_sof_dsp_dbg_dump(sdev, "MTL DSP init fail", 0);
-+	flags = SOF_DBG_DUMP_PCI | SOF_DBG_DUMP_MBOX | SOF_DBG_DUMP_OPTIONAL;
-+
-+	/* after max boot attempts make sure that the dump is printed */
-+	if (hda->boot_iteration == HDA_FW_BOOT_ATTEMPTS)
-+		flags &= ~SOF_DBG_DUMP_OPTIONAL;
-+
-+	dump_msg = kasprintf(GFP_KERNEL, "Boot iteration failed: %d/%d",
-+			     hda->boot_iteration, HDA_FW_BOOT_ATTEMPTS);
-+	snd_sof_dsp_dbg_dump(sdev, dump_msg, flags);
- 	mtl_dsp_core_power_down(sdev, SOF_DSP_PRIMARY_CORE);
-+
-+	kfree(dump_msg);
- 	return ret;
- }
+-	if (!cpumask_intersects(cpu_present_mask, housekeeping_staging)) {
++	first_cpu = cpumask_first_and(cpu_present_mask, housekeeping_staging);
++	if (first_cpu >= nr_cpu_ids || first_cpu >= setup_max_cpus) {
+ 		__cpumask_set_cpu(smp_processor_id(), housekeeping_staging);
+ 		__cpumask_clear_cpu(smp_processor_id(), non_housekeeping_mask);
+ 		if (!housekeeping.flags) {
+@@ -138,6 +140,9 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
+ 		}
+ 	}
  
++	if (cpumask_empty(non_housekeeping_mask))
++		goto free_housekeeping_staging;
++
+ 	if (!housekeeping.flags) {
+ 		/* First setup call ("nohz_full=" or "isolcpus=") */
+ 		enum hk_type type;
 -- 
 2.43.0
 
