@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-49572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156EA8FEDDA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA918FEDDE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A453E1F2221E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0459EB29B1B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F9319E7EE;
-	Thu,  6 Jun 2024 14:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010341BE250;
+	Thu,  6 Jun 2024 14:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0iA81aA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vekCo3+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B481BE23E;
-	Thu,  6 Jun 2024 14:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D691BE24C;
+	Thu,  6 Jun 2024 14:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683532; cv=none; b=gBsLQ4Opt5Doz165kOee0CLaLSORLzPeOQkViIju20Mw2kbhQRylk1FFOrOcBp2/4/n6E7XMmx/1hTT/6hNvXXOQtFSQF8R4TOdPEH2MfdE0338ATTMdoRO+EfRhRr6h07eQdtTNCrggv2WSg4qcmSBD/1QI73zqkCY/8AuP5pY=
+	t=1717683533; cv=none; b=moNvBP0sE1zhtIiqR5DaIdLGd+g+dSOvnDR4DoOQtC3MzdCAS+iX7Qm/FDDmGDPWbm7UkyMHwgHpAJGsSf1PNboagOnEC+IlkIlkSWNA6KSzNymceUBU7x3irIVPI0DY50MJIbdgLwXTGt5CABvo9mRbnccMDajqZvThRp8y7Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683532; c=relaxed/simple;
-	bh=dbfR+DrFDqzcg0arbaT6ejrQqUeCn1kMTYAGVfAYIkI=;
+	s=arc-20240116; t=1717683533; c=relaxed/simple;
+	bh=bM4wWM0jyErvR4Kwcs5E1enjsWVAzqF7bQbHHlutHFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CXzO8p+AWaSQpm8mL+eOebpwk/iOB1BepzLrvyrZZVA0/tfF9H5n7Pu+WiD4t6d1GCYe7/APvPIu2x7tZWrprhgVX+MUdk6Jr5Hz9qhGyUq4Y2z+Uw+zzgF2w5J53EWXIi+S0ABAHY/cR4OiVgLu4EO/c8KsG3lqMozOSgSMXXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0iA81aA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E02FC2BD10;
-	Thu,  6 Jun 2024 14:18:52 +0000 (UTC)
+	 MIME-Version; b=VvSgbUUT77aL8BOFAdwqKs9DoZvzzSe/PT/13NMLVwq5GGMoP3Xb8tZ8xl/n7AePTgOo32BG25KJcjHi9bUqEhxcv5wIe4sWgyGITODlBENJXtx1nPBT7SE3F72fbCxyaHdjLraoChT40JmaP0IDe3kxoOQHNAz+ne9tgmhGtYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vekCo3+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92912C2BD10;
+	Thu,  6 Jun 2024 14:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683532;
-	bh=dbfR+DrFDqzcg0arbaT6ejrQqUeCn1kMTYAGVfAYIkI=;
+	s=korg; t=1717683533;
+	bh=bM4wWM0jyErvR4Kwcs5E1enjsWVAzqF7bQbHHlutHFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0iA81aASa4i9lJ+Lkep2NSSex9xZogycZlybNw7GMDuLga4lnj9f7BnD+VrKHObC
-	 CbizXNfRlIpjOTqJvilZWS9ITWhldEMQloJnuZbPW8efL5DexefOn5W7ptpt3CxaV8
-	 R5pYxXU/VzlmJZFpEGJzv6BZ0s3lm/gaBteGxL2M=
+	b=vekCo3+CuusJvHB+sNV8P1nzvsJUvZBJHdm+K1b81P9rbsxsBCWQzkASxF7P0YHNL
+	 p0oULrQyJ4OU3VO4a8a6uKD99GhSRuPzEieTioqAWPgbPb9ZxZXXE3uJsOEjW3ReQY
+	 ejjA6cuqYMR5W/vhXAndRaU4OGHmnMtC2ERYdfiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yewon Choi <woni9911@gmail.com>,
-	"Dae R. Jeong" <threeearcat@gmail.com>,
+	Jason Xing <kernelxing@tencent.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 423/473] tls: fix missing memory barrier in tls_init
-Date: Thu,  6 Jun 2024 16:05:52 +0200
-Message-ID: <20240606131713.750392383@linuxfoundation.org>
+Subject: [PATCH 6.1 424/473] tcp: remove 64 KByte limit for initial tp->rcv_wnd value
+Date: Thu,  6 Jun 2024 16:05:53 +0200
+Message-ID: <20240606131713.776768718@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
 References: <20240606131659.786180261@linuxfoundation.org>
@@ -67,71 +68,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dae R. Jeong <threeearcat@gmail.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit 91e61dd7a0af660408e87372d8330ceb218be302 ]
+[ Upstream commit 378979e94e953c2070acb4f0e0c98d29260bd09d ]
 
-In tls_init(), a write memory barrier is missing, and store-store
-reordering may cause NULL dereference in tls_{setsockopt,getsockopt}.
+Recently, we had some servers upgraded to the latest kernel and noticed
+the indicator from the user side showed worse results than before. It is
+caused by the limitation of tp->rcv_wnd.
 
-CPU0                               CPU1
------                              -----
-// In tls_init()
-// In tls_ctx_create()
-ctx = kzalloc()
-ctx->sk_proto = READ_ONCE(sk->sk_prot) -(1)
+In 2018 commit a337531b942b ("tcp: up initial rmem to 128KB and SYN rwin
+to around 64KB") limited the initial value of tp->rcv_wnd to 65535, most
+CDN teams would not benefit from this change because they cannot have a
+large window to receive a big packet, which will be slowed down especially
+in long RTT. Small rcv_wnd means slow transfer speed, to some extent. It's
+the side effect for the latency/time-sensitive users.
 
-// In update_sk_prot()
-WRITE_ONCE(sk->sk_prot, tls_prots)     -(2)
+To avoid future confusion, current change doesn't affect the initial
+receive window on the wire in a SYN or SYN+ACK packet which are set within
+65535 bytes according to RFC 7323 also due to the limit in
+__tcp_transmit_skb():
 
-                                   // In sock_common_setsockopt()
-                                   READ_ONCE(sk->sk_prot)->setsockopt()
+    th->window      = htons(min(tp->rcv_wnd, 65535U));
 
-                                   // In tls_{setsockopt,getsockopt}()
-                                   ctx->sk_proto->setsockopt()    -(3)
+In one word, __tcp_transmit_skb() already ensures that constraint is
+respected, no matter how large tp->rcv_wnd is. The change doesn't violate
+RFC.
 
-In the above scenario, when (1) and (2) are reordered, (3) can observe
-the NULL value of ctx->sk_proto, causing NULL dereference.
+Let me provide one example if with or without the patch:
+Before:
+client   --- SYN: rwindow=65535 ---> server
+client   <--- SYN+ACK: rwindow=65535 ----  server
+client   --- ACK: rwindow=65536 ---> server
+Note: for the last ACK, the calculation is 512 << 7.
 
-To fix it, we rely on rcu_assign_pointer() which implies the release
-barrier semantic. By moving rcu_assign_pointer() after ctx->sk_proto is
-initialized, we can ensure that ctx->sk_proto are visible when
-changing sk->sk_prot.
+After:
+client   --- SYN: rwindow=65535 ---> server
+client   <--- SYN+ACK: rwindow=65535 ----  server
+client   --- ACK: rwindow=175232 ---> server
+Note: I use the following command to make it work:
+ip route change default via [ip] dev eth0 metric 100 initrwnd 120
+For the last ACK, the calculation is 1369 << 7.
 
-Fixes: d5bee7374b68 ("net/tls: Annotate access to sk_prot with READ_ONCE/WRITE_ONCE")
-Signed-off-by: Yewon Choi <woni9911@gmail.com>
-Signed-off-by: Dae R. Jeong <threeearcat@gmail.com>
-Link: https://lore.kernel.org/netdev/ZU4OJG56g2V9z_H7@dragonet/T/
-Link: https://lore.kernel.org/r/Zkx4vjSFp0mfpjQ2@libra05
+When we apply such a patch, having a large rcv_wnd if the user tweak this
+knob can help transfer data more rapidly and save some rtts.
+
+Fixes: a337531b942b ("tcp: up initial rmem to 128KB and SYN rwin to around 64KB")
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20240521134220.12510-1-kerneljasonxing@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_main.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index 6b7189a520af7..75cd20c0e3fdb 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -910,9 +910,17 @@ struct tls_context *tls_ctx_create(struct sock *sk)
- 		return NULL;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 15f814c1e1693..05bd4b73287d7 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -229,7 +229,7 @@ void tcp_select_initial_window(const struct sock *sk, int __space, __u32 mss,
+ 	if (READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_workaround_signed_windows))
+ 		(*rcv_wnd) = min(space, MAX_TCP_WINDOW);
+ 	else
+-		(*rcv_wnd) = min_t(u32, space, U16_MAX);
++		(*rcv_wnd) = space;
  
- 	mutex_init(&ctx->tx_lock);
--	rcu_assign_pointer(icsk->icsk_ulp_data, ctx);
- 	ctx->sk_proto = READ_ONCE(sk->sk_prot);
- 	ctx->sk = sk;
-+	/* Release semantic of rcu_assign_pointer() ensures that
-+	 * ctx->sk_proto is visible before changing sk->sk_prot in
-+	 * update_sk_prot(), and prevents reading uninitialized value in
-+	 * tls_{getsockopt, setsockopt}. Note that we do not need a
-+	 * read barrier in tls_{getsockopt,setsockopt} as there is an
-+	 * address dependency between sk->sk_proto->{getsockopt,setsockopt}
-+	 * and ctx->sk_proto.
-+	 */
-+	rcu_assign_pointer(icsk->icsk_ulp_data, ctx);
- 	return ctx;
- }
- 
+ 	if (init_rcv_wnd)
+ 		*rcv_wnd = min(*rcv_wnd, init_rcv_wnd * mss);
 -- 
 2.43.0
 
