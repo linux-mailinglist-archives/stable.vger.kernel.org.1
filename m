@@ -1,58 +1,68 @@
-Return-Path: <stable+bounces-49334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4C78FECD6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1898FE8AA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 001D2283BBD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E877284D3B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46067198E65;
-	Thu,  6 Jun 2024 14:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F5E197A77;
+	Thu,  6 Jun 2024 14:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qadzEJw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBfFREdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C2619FA9F;
-	Thu,  6 Jun 2024 14:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E06196D8C;
+	Thu,  6 Jun 2024 14:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683415; cv=none; b=EKMR1rwwDYqYdlf7z+Cl3UiG0/AL6uZAVJQnQkVxvQ6ogEmNIX+hn0hkz5oSTVTX+UpPmVFLQSSj559RoIOoupTx73C6QB14YN9F1BUbzv17CUvO0Ayw88XbXFsYq6LB9or5bFKIJ7fHFeJ4kxvjOcp3/1x1qgfQsqyl97ZAQec=
+	t=1717682920; cv=none; b=set8mCAqvsZXOd/C9j4S3KjpJjSqN9ScpuRqYkQ//pjNSmE/gh1BSnDzyX8kJFSTvsRoHLospi9CYiKcG1lF8F4ugWiC0BUdZyat+WKSvzqZEXpN4i3j/QYvXCf7wvVGr0APzzPHc7aXrC1UL05rdSlEdmxke0u/qItkoT1305Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683415; c=relaxed/simple;
-	bh=jr2oO1+nC5ruaHV1Ruk3RCeCAbUgD/AZ+MZFAxBFF/0=;
+	s=arc-20240116; t=1717682920; c=relaxed/simple;
+	bh=HKzUL7aHnbZ13mO6lNmw8nteaKbGJrnxXBMJNAJ+eKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaY8VGQY0vJB/IkyW6bbAX37AN3lVqrkch6W8sg9r2g9r2UQ5xVepesNzeedoYFOFtVUzlJq1TB0925pGgvgFCD2z06HXyehpHmKarBiP9CME9q6VExWw8JyhvpMNC66pmzYEPTj2LXaVRRww55qbXcWH2ZJufrN9wL38L+L3RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qadzEJw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7271C2BD10;
-	Thu,  6 Jun 2024 14:16:54 +0000 (UTC)
+	 MIME-Version; b=c0SrJ9PpI+hXKfWkpHgbQK1LwwWaKVlO2cyMETs9+C888ivhzC/s3EY0mB9ED0Eex+Am0gv033qKVFhU8kSRLkzHJ5TngsXQkZp2uYkBU/luFkw7m0pRXezKapZBICkvear+zyn+AW0shxlanb3N2mWtDuLd6y5APLUnzXlBls0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBfFREdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FA3C32781;
+	Thu,  6 Jun 2024 14:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683414;
-	bh=jr2oO1+nC5ruaHV1Ruk3RCeCAbUgD/AZ+MZFAxBFF/0=;
+	s=korg; t=1717682920;
+	bh=HKzUL7aHnbZ13mO6lNmw8nteaKbGJrnxXBMJNAJ+eKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qadzEJw1sRrg/tKGzUaw0AKDkaSFbxHeWt3zlVUkkOet2frgvYRSU5Wcp4pfOULKc
-	 nVSdSIXd8pCRp+65JMEZxBQVS9xUlFeI9DxlyCytltCsFXbfagAoX0JxjHpJNZu2jb
-	 YYpVEgWU9iSbOAPTAhlIyZ7A2t91q2sVkImkpl5I=
+	b=XBfFREdvAgJ9T6f3fhcpRltEXCjIqhwuPGh6TlO8eFYJJCZhlnKMJaml0sIvkTbWn
+	 jtLgucpTIPZ1eDHzUxxfsemWsk4gwS3MnBZA59d43jBKPSTBBy2UMXNGWHHQv45iCN
+	 1pSaaJam3f1Te0gHBeCLBppRaFcn5y0Tl0zifUYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Marc Gonzalez <mgonzalez@freebox.fr>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Song Liu <song@kernel.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 358/744] clk: qcom: mmcc-msm8998: fix venus clock issue
+Subject: [PATCH 6.9 051/374] perf docs: Document bpf event modifier
 Date: Thu,  6 Jun 2024 16:00:30 +0200
-Message-ID: <20240606131743.960130232@linuxfoundation.org>
+Message-ID: <20240606131653.537196703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +74,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Gonzalez <mgonzalez@freebox.fr>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit e20ae5ae9f0c843aded4f06f3d1cab7384789e92 ]
+[ Upstream commit eb4d27cf9aef3e6c9bcaf8fa1a1cadc2433d847b ]
 
-Right now, msm8998 video decoder (venus) is non-functional:
+Document that 'b' is used as a modifier to make an event use a BPF
+counter.
 
-$ time mpv --hwdec=v4l2m2m-copy --vd-lavc-software-fallback=no --vo=null --no-audio --untimed --length=30 --quiet demo-480.webm
- (+) Video --vid=1 (*) (vp9 854x480 29.970fps)
-     Audio --aid=1 --alang=eng (*) (opus 2ch 48000Hz)
-[ffmpeg/video] vp9_v4l2m2m: output VIDIOC_REQBUFS failed: Connection timed out
-[ffmpeg/video] vp9_v4l2m2m: no v4l2 output context's buffers
-[ffmpeg/video] vp9_v4l2m2m: can't configure decoder
-Could not open codec.
-Software decoding fallback is disabled.
-Exiting... (Quit)
-
-Bryan O'Donoghue suggested the proper fix:
-- Set required register offsets in venus GDSC structs.
-- Set HW_CTRL flag.
-
-$ time mpv --hwdec=v4l2m2m-copy --vd-lavc-software-fallback=no --vo=null --no-audio --untimed --length=30 --quiet demo-480.webm
- (+) Video --vid=1 (*) (vp9 854x480 29.970fps)
-     Audio --aid=1 --alang=eng (*) (opus 2ch 48000Hz)
-[ffmpeg/video] vp9_v4l2m2m: VIDIOC_G_FMT ioctl
-[ffmpeg/video] vp9_v4l2m2m: VIDIOC_G_FMT ioctl
-...
-Using hardware decoding (v4l2m2m-copy).
-VO: [null] 854x480 nv12
-Exiting... (End of file)
-real	0m3.315s
-user	0m1.277s
-sys	0m0.453s
-
-NOTES:
-
-GDSC = Globally Distributed Switch Controller
-
-Use same code as mmcc-msm8996 with:
-s/venus_gdsc/video_top_gdsc/
-s/venus_core0_gdsc/video_subcore0_gdsc/
-s/venus_core1_gdsc/video_subcore1_gdsc/
-
-https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/include/dt-bindings/clock/msm-clocks-hwio-8996.h
-https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/include/dt-bindings/clock/msm-clocks-hwio-8998.h
-
-0x1024 = MMSS_VIDEO GDSCR (undocumented)
-0x1028 = MMSS_VIDEO_CORE_CBCR
-0x1030 = MMSS_VIDEO_AHB_CBCR
-0x1034 = MMSS_VIDEO_AXI_CBCR
-0x1038 = MMSS_VIDEO_MAXI_CBCR
-0x1040 = MMSS_VIDEO_SUBCORE0 GDSCR (undocumented)
-0x1044 = MMSS_VIDEO_SUBCORE1 GDSCR (undocumented)
-0x1048 = MMSS_VIDEO_SUBCORE0_CBCR
-0x104c = MMSS_VIDEO_SUBCORE1_CBCR
-
-Fixes: d14b15b5931c2b ("clk: qcom: Add MSM8998 Multimedia Clock Controller (MMCC) driver")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://lore.kernel.org/r/ff4e2e34-a677-4c39-8c29-83655c5512ae@freebox.fr
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 01bd8efcec444468 ("perf stat: Introduce ':b' modifier")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Song Liu <song@kernel.org>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240416170014.985191-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-msm8998.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/perf/Documentation/perf-list.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
-index 1180e48c687ac..275fb3b71ede4 100644
---- a/drivers/clk/qcom/mmcc-msm8998.c
-+++ b/drivers/clk/qcom/mmcc-msm8998.c
-@@ -2535,6 +2535,8 @@ static struct clk_branch vmem_ahb_clk = {
+diff --git a/tools/perf/Documentation/perf-list.txt b/tools/perf/Documentation/perf-list.txt
+index 3b12595193c9f..6bf2468f59d31 100644
+--- a/tools/perf/Documentation/perf-list.txt
++++ b/tools/perf/Documentation/perf-list.txt
+@@ -71,6 +71,7 @@ counted. The following modifiers exist:
+  D - pin the event to the PMU
+  W - group is weak and will fallback to non-group if not schedulable,
+  e - group or event are exclusive and do not share the PMU
++ b - use BPF aggregration (see perf stat --bpf-counters)
  
- static struct gdsc video_top_gdsc = {
- 	.gdscr = 0x1024,
-+	.cxcs = (unsigned int []){ 0x1028, 0x1034, 0x1038 },
-+	.cxc_count = 3,
- 	.pd = {
- 		.name = "video_top",
- 	},
-@@ -2543,20 +2545,26 @@ static struct gdsc video_top_gdsc = {
- 
- static struct gdsc video_subcore0_gdsc = {
- 	.gdscr = 0x1040,
-+	.cxcs = (unsigned int []){ 0x1048 },
-+	.cxc_count = 1,
- 	.pd = {
- 		.name = "video_subcore0",
- 	},
- 	.parent = &video_top_gdsc.pd,
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = HW_CTRL,
- };
- 
- static struct gdsc video_subcore1_gdsc = {
- 	.gdscr = 0x1044,
-+	.cxcs = (unsigned int []){ 0x104c },
-+	.cxc_count = 1,
- 	.pd = {
- 		.name = "video_subcore1",
- 	},
- 	.parent = &video_top_gdsc.pd,
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = HW_CTRL,
- };
- 
- static struct gdsc mdss_gdsc = {
+ The 'p' modifier can be used for specifying how precise the instruction
+ address should be. The 'p' modifier can be specified multiple times:
 -- 
 2.43.0
 
