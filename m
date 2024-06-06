@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-48991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D6B8FEB66
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905918FEB69
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39A5C1F28495
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03CBEB25559
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E66E1A3BDC;
-	Thu,  6 Jun 2024 14:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A94196434;
+	Thu,  6 Jun 2024 14:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01niisFV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgxyQoC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5AB1993A0;
-	Thu,  6 Jun 2024 14:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1979B1A3BDD;
+	Thu,  6 Jun 2024 14:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683247; cv=none; b=Gx1c9QJx7eTflyTqXjQXfSgxdHRvz4hVRma5cfeANMKkxqyjhgRpVbMVIPwpWXTeFK16we0masa9i1cW6gLVZJWRFAejVwIKLfwkXsiuDy/cjtEB6yhZ3EgrxuYtq6Jxy7Iw7VVrF3KbOTZcIIVmohHDahTd9q6peqZDGHzCHwg=
+	t=1717683248; cv=none; b=VGqLHGVpmUVQNK90sItJ1owvilxs1M0F9MYyaYXRq0a4dgxgNcxCZtTvTJHvGdO0xsB1lyFsjP1w9N9EvS5Pp4Ti75F9YS3HhJyna3oQOZVmAOyhxvrOsnCiTI+p4b0lt0wm9oCh2iEUQGRXCbWv7bBsjNQc4ffIjQu5uw4RQXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683247; c=relaxed/simple;
-	bh=sbsy61RUZSdPjQq78JzmecTR1wr8rUFcdA6eBS4Ntg4=;
+	s=arc-20240116; t=1717683248; c=relaxed/simple;
+	bh=D6hikiBbCYdSF/eCDZhFoC4rQP0B0OfwUjYZEecgUNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/7RshXt+YWQmUUByJLxle1XGigtvnG0l65KgLwigO9MnyQU+j3Kp5/P9kRQUhyO9uRtmDa7d62QPiw3gBDNwNgBQiLqKbsvj8CL1fR9kzn4EUG5TQ9bBEH4EQwgH0de//DEQf53uvLOMvId8ZbspBT3I+em+7o0SZ3LwEh9TBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01niisFV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E057EC2BD10;
-	Thu,  6 Jun 2024 14:14:06 +0000 (UTC)
+	 MIME-Version; b=tgd7BPAXS+Ocjd6ASQ9NEalUAW0BMxMwEJK0F1Ck1bH7lP/GwSKHaqizVNyxVXuIrn03t+i2DF1MzRZCqRVuNGUGGOIj2n85zPJLThGZaJO2SgBeHbQ8fdNVXrKxxCGQ1KI8gbC0qATwCr/ZiXp8+m7V/Ce/4+ys7rkmhUJLNpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgxyQoC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B8AC2BD10;
+	Thu,  6 Jun 2024 14:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683246;
-	bh=sbsy61RUZSdPjQq78JzmecTR1wr8rUFcdA6eBS4Ntg4=;
+	s=korg; t=1717683248;
+	bh=D6hikiBbCYdSF/eCDZhFoC4rQP0B0OfwUjYZEecgUNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=01niisFVV1OFj8OpoNCRixwucr7OVkfC6A8KZR7CC5x9U+VH7a10JcJFnCXX9Jme4
-	 nB5YE6c4TXkERCu5iLq/Hx11jpqUXW7Bo7Uyjydy3QIhUHlojN3Ua6+tJGbyEwwqkM
-	 jePPgWYSP3ZFTMbOXpueB9v1jrniijsDFw4gxlQQ=
+	b=VgxyQoC82SXeUPrSYaWBRKCp29Xykd0Bo1ySx4uRbWRMu4EAtWZsF0buvxoPuqH8L
+	 cvVdC96ZwzLtwOB/jhSF1+W8x204mdL5TWny4kfjbEr+hxYP37EVzi+v7MShgP5SiL
+	 bivPbNMXZmopshBPrlVspcpTJNEeQ5ox2zDA1A1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andreas Gruenbacher <agruenba@redhat.com>,
-	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/744] gfs2: Fix potential glock use-after-free on unmount
-Date: Thu,  6 Jun 2024 15:57:43 +0200
-Message-ID: <20240606131738.563198785@linuxfoundation.org>
+Subject: [PATCH 6.6 192/744] gfs2: Mark withdraws as unlikely
+Date: Thu,  6 Jun 2024 15:57:44 +0200
+Message-ID: <20240606131738.596784324@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,223 +67,177 @@ Content-Transfer-Encoding: 8bit
 
 From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit d98779e687726d8f8860f1c54b5687eec5f63a73 ]
+[ Upstream commit 015af1af44003fff797f8632e940824c07d282bf ]
 
-When a DLM lockspace is released and there ares still locks in that
-lockspace, DLM will unlock those locks automatically.  Commit
-fb6791d100d1b started exploiting this behavior to speed up filesystem
-unmount: gfs2 would simply free glocks it didn't want to unlock and then
-release the lockspace.  This didn't take the bast callbacks for
-asynchronous lock contention notifications into account, which remain
-active until until a lock is unlocked or its lockspace is released.
+Mark the gfs2_withdrawn(), gfs2_withdrawing(), and
+gfs2_withdraw_in_prog() inline functions as likely to return %false.
+This allows to get rid of likely() and unlikely() annotations at the
+call sites of those functions.
 
-To prevent those callbacks from accessing deallocated objects, put the
-glocks that should not be unlocked on the sd_dead_glocks list, release
-the lockspace, and only then free those glocks.
-
-As an additional measure, ignore unexpected ast and bast callbacks if
-the receiving glock is dead.
-
-Fixes: fb6791d100d1b ("GFS2: skip dlm_unlock calls in unmount")
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: David Teigland <teigland@redhat.com>
+Stable-dep-of: 9947a06d29c0 ("gfs2: do_xmote fixes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c      | 35 ++++++++++++++++++++++++++++++++---
- fs/gfs2/glock.h      |  1 +
- fs/gfs2/incore.h     |  1 +
- fs/gfs2/lock_dlm.c   | 32 ++++++++++++++++++++++----------
- fs/gfs2/ops_fstype.c |  1 +
- fs/gfs2/super.c      |  3 ---
- 6 files changed, 57 insertions(+), 16 deletions(-)
+ fs/gfs2/aops.c       |  2 +-
+ fs/gfs2/file.c       |  2 +-
+ fs/gfs2/glock.c      |  4 ++--
+ fs/gfs2/meta_io.c    |  6 +++---
+ fs/gfs2/ops_fstype.c |  2 +-
+ fs/gfs2/super.c      |  2 +-
+ fs/gfs2/trans.c      |  2 +-
+ fs/gfs2/util.h       | 10 +++++-----
+ 8 files changed, 15 insertions(+), 15 deletions(-)
 
+diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
+index 48dc35caa60b4..b8404ce301b3c 100644
+--- a/fs/gfs2/aops.c
++++ b/fs/gfs2/aops.c
+@@ -464,7 +464,7 @@ static int gfs2_read_folio(struct file *file, struct folio *folio)
+ 		error = mpage_read_folio(folio, gfs2_block_map);
+ 	}
+ 
+-	if (unlikely(gfs2_withdrawn(sdp)))
++	if (gfs2_withdrawn(sdp))
+ 		return -EIO;
+ 
+ 	return error;
+diff --git a/fs/gfs2/file.c b/fs/gfs2/file.c
+index f2700477a3001..1dc7fe805d2f1 100644
+--- a/fs/gfs2/file.c
++++ b/fs/gfs2/file.c
+@@ -1436,7 +1436,7 @@ static int gfs2_lock(struct file *file, int cmd, struct file_lock *fl)
+ 
+ 	if (!(fl->fl_flags & FL_POSIX))
+ 		return -ENOLCK;
+-	if (unlikely(gfs2_withdrawn(sdp))) {
++	if (gfs2_withdrawn(sdp)) {
+ 		if (fl->fl_type == F_UNLCK)
+ 			locks_lock_file_wait(file, fl);
+ 		return -EIO;
 diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index a2a1935e2eede..c195244d21dfd 100644
+index c195244d21dfd..42de9db983a8b 100644
 --- a/fs/gfs2/glock.c
 +++ b/fs/gfs2/glock.c
-@@ -166,18 +166,45 @@ static bool glock_blocked_by_withdraw(struct gfs2_glock *gl)
- 	return true;
- }
- 
--void gfs2_glock_free(struct gfs2_glock *gl)
-+static void __gfs2_glock_free(struct gfs2_glock *gl)
+@@ -156,7 +156,7 @@ static bool glock_blocked_by_withdraw(struct gfs2_glock *gl)
  {
--	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
--
- 	rhashtable_remove_fast(&gl_hash_table, &gl->gl_node, ht_parms);
- 	smp_mb();
- 	wake_up_glock(gl);
- 	call_rcu(&gl->gl_rcu, gfs2_glock_dealloc);
-+}
-+
-+void gfs2_glock_free(struct gfs2_glock *gl) {
-+	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
-+
-+	__gfs2_glock_free(gl);
- 	if (atomic_dec_and_test(&sdp->sd_glock_disposal))
- 		wake_up(&sdp->sd_kill_wait);
- }
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
  
-+void gfs2_glock_free_later(struct gfs2_glock *gl) {
-+	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
-+
-+	spin_lock(&lru_lock);
-+	list_add(&gl->gl_lru, &sdp->sd_dead_glocks);
-+	spin_unlock(&lru_lock);
-+	if (atomic_dec_and_test(&sdp->sd_glock_disposal))
-+		wake_up(&sdp->sd_kill_wait);
-+}
-+
-+static void gfs2_free_dead_glocks(struct gfs2_sbd *sdp)
-+{
-+	struct list_head *list = &sdp->sd_dead_glocks;
-+
-+	while(!list_empty(list)) {
-+		struct gfs2_glock *gl;
-+
-+		gl = list_first_entry(list, struct gfs2_glock, gl_lru);
-+		list_del_init(&gl->gl_lru);
-+		__gfs2_glock_free(gl);
-+	}
-+}
-+
- /**
-  * gfs2_glock_hold() - increment reference count on glock
-  * @gl: The glock to hold
-@@ -2194,6 +2221,8 @@ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp)
- 	wait_event_timeout(sdp->sd_kill_wait,
- 			   atomic_read(&sdp->sd_glock_disposal) == 0,
- 			   HZ * 600);
-+	gfs2_lm_unmount(sdp);
-+	gfs2_free_dead_glocks(sdp);
- 	glock_hash_walk(dump_glock_func, sdp);
- }
+-	if (likely(!gfs2_withdrawn(sdp)))
++	if (!gfs2_withdrawn(sdp))
+ 		return false;
+ 	if (gl->gl_ops->go_flags & GLOF_NONDISK)
+ 		return false;
+@@ -783,7 +783,7 @@ __acquires(&gl->gl_lockref.lock)
+ 	 * gfs2_gl_hash_clear calls clear_glock) and recovery is complete
+ 	 * then it's okay to tell dlm to unlock it.
+ 	 */
+-	if (unlikely(sdp->sd_log_error && !gfs2_withdrawn(sdp)))
++	if (unlikely(sdp->sd_log_error) && !gfs2_withdrawn(sdp))
+ 		gfs2_withdraw_delayed(sdp);
+ 	if (glock_blocked_by_withdraw(gl) &&
+ 	    (target != LM_ST_UNLOCKED ||
+diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
+index 924361fa510b1..50c2ecbba7ca7 100644
+--- a/fs/gfs2/meta_io.c
++++ b/fs/gfs2/meta_io.c
+@@ -257,7 +257,7 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
+ 	struct buffer_head *bh, *bhs[2];
+ 	int num = 0;
  
-diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
-index 7a11d5d4de496..f7ee9ca948eee 100644
---- a/fs/gfs2/glock.h
-+++ b/fs/gfs2/glock.h
-@@ -266,6 +266,7 @@ void gfs2_gl_dq_holders(struct gfs2_sbd *sdp);
- void gfs2_glock_thaw(struct gfs2_sbd *sdp);
- void gfs2_glock_add_to_lru(struct gfs2_glock *gl);
- void gfs2_glock_free(struct gfs2_glock *gl);
-+void gfs2_glock_free_later(struct gfs2_glock *gl);
- 
- int __init gfs2_glock_init(void);
- void gfs2_glock_exit(void);
-diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
-index 95a334d64da2a..60abd7050c998 100644
---- a/fs/gfs2/incore.h
-+++ b/fs/gfs2/incore.h
-@@ -838,6 +838,7 @@ struct gfs2_sbd {
- 	/* For quiescing the filesystem */
- 	struct gfs2_holder sd_freeze_gh;
- 	struct mutex sd_freeze_mutex;
-+	struct list_head sd_dead_glocks;
- 
- 	char sd_fsname[GFS2_FSNAME_LEN + 3 * sizeof(int) + 2];
- 	char sd_table_name[GFS2_FSNAME_LEN];
-diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-index 59ab18c798890..0bde45fb49630 100644
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -121,6 +121,11 @@ static void gdlm_ast(void *arg)
- 	struct gfs2_glock *gl = arg;
- 	unsigned ret = gl->gl_state;
- 
-+	/* If the glock is dead, we only react to a dlm_unlock() reply. */
-+	if (__lockref_is_dead(&gl->gl_lockref) &&
-+	    gl->gl_lksb.sb_status != -DLM_EUNLOCK)
-+		return;
-+
- 	gfs2_update_reply_times(gl);
- 	BUG_ON(gl->gl_lksb.sb_flags & DLM_SBF_DEMOTED);
- 
-@@ -171,6 +176,9 @@ static void gdlm_bast(void *arg, int mode)
- {
- 	struct gfs2_glock *gl = arg;
- 
-+	if (__lockref_is_dead(&gl->gl_lockref))
-+		return;
-+
- 	switch (mode) {
- 	case DLM_LOCK_EX:
- 		gfs2_glock_cb(gl, LM_ST_UNLOCKED);
-@@ -291,8 +299,12 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 	struct lm_lockstruct *ls = &sdp->sd_lockstruct;
- 	int error;
- 
--	if (gl->gl_lksb.sb_lkid == 0)
--		goto out_free;
-+	BUG_ON(!__lockref_is_dead(&gl->gl_lockref));
-+
-+	if (gl->gl_lksb.sb_lkid == 0) {
-+		gfs2_glock_free(gl);
-+		return;
-+	}
- 
- 	clear_bit(GLF_BLOCKING, &gl->gl_flags);
- 	gfs2_glstats_inc(gl, GFS2_LKS_DCOUNT);
-@@ -300,13 +312,17 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 	gfs2_update_request_times(gl);
- 
- 	/* don't want to call dlm if we've unmounted the lock protocol */
--	if (test_bit(DFL_UNMOUNT, &ls->ls_recover_flags))
--		goto out_free;
-+	if (test_bit(DFL_UNMOUNT, &ls->ls_recover_flags)) {
-+		gfs2_glock_free(gl);
-+		return;
-+	}
- 	/* don't want to skip dlm_unlock writing the lvb when lock has one */
- 
- 	if (test_bit(SDF_SKIP_DLM_UNLOCK, &sdp->sd_flags) &&
--	    !gl->gl_lksb.sb_lvbptr)
--		goto out_free;
-+	    !gl->gl_lksb.sb_lvbptr) {
-+		gfs2_glock_free_later(gl);
-+		return;
-+	}
- 
- again:
- 	error = dlm_unlock(ls->ls_dlm, gl->gl_lksb.sb_lkid, DLM_LKF_VALBLK,
-@@ -321,10 +337,6 @@ static void gdlm_put_lock(struct gfs2_glock *gl)
- 		       gl->gl_name.ln_type,
- 		       (unsigned long long)gl->gl_name.ln_number, error);
+-	if (unlikely(gfs2_withdrawn(sdp)) && !gfs2_withdraw_in_prog(sdp)) {
++	if (gfs2_withdrawn(sdp) && !gfs2_withdraw_in_prog(sdp)) {
+ 		*bhp = NULL;
+ 		return -EIO;
  	}
--	return;
--
--out_free:
--	gfs2_glock_free(gl);
- }
+@@ -315,7 +315,7 @@ int gfs2_meta_read(struct gfs2_glock *gl, u64 blkno, int flags,
  
- static void gdlm_cancel(struct gfs2_glock *gl)
+ int gfs2_meta_wait(struct gfs2_sbd *sdp, struct buffer_head *bh)
+ {
+-	if (unlikely(gfs2_withdrawn(sdp)) && !gfs2_withdraw_in_prog(sdp))
++	if (gfs2_withdrawn(sdp) && !gfs2_withdraw_in_prog(sdp))
+ 		return -EIO;
+ 
+ 	wait_on_buffer(bh);
+@@ -326,7 +326,7 @@ int gfs2_meta_wait(struct gfs2_sbd *sdp, struct buffer_head *bh)
+ 			gfs2_io_error_bh_wd(sdp, bh);
+ 		return -EIO;
+ 	}
+-	if (unlikely(gfs2_withdrawn(sdp)) && !gfs2_withdraw_in_prog(sdp))
++	if (gfs2_withdrawn(sdp) && !gfs2_withdraw_in_prog(sdp))
+ 		return -EIO;
+ 
+ 	return 0;
 diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index 547e279f5f9e6..fc7bc1e59748f 100644
+index fc7bc1e59748f..be7df57bd5c86 100644
 --- a/fs/gfs2/ops_fstype.c
 +++ b/fs/gfs2/ops_fstype.c
-@@ -136,6 +136,7 @@ static struct gfs2_sbd *init_sbd(struct super_block *sb)
- 	atomic_set(&sdp->sd_log_in_flight, 0);
- 	init_waitqueue_head(&sdp->sd_log_flush_wait);
- 	mutex_init(&sdp->sd_freeze_mutex);
-+	INIT_LIST_HEAD(&sdp->sd_dead_glocks);
- 
- 	return sdp;
+@@ -1075,7 +1075,7 @@ static int gfs2_lm_mount(struct gfs2_sbd *sdp, int silent)
+ void gfs2_lm_unmount(struct gfs2_sbd *sdp)
+ {
+ 	const struct lm_lockops *lm = sdp->sd_lockstruct.ls_ops;
+-	if (likely(!gfs2_withdrawn(sdp)) && lm->lm_unmount)
++	if (!gfs2_withdrawn(sdp) && lm->lm_unmount)
+ 		lm->lm_unmount(sdp);
+ }
  
 diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index ab095198b627f..2b47a4119591f 100644
+index 2b47a4119591f..1afcca5292d55 100644
 --- a/fs/gfs2/super.c
 +++ b/fs/gfs2/super.c
-@@ -646,10 +646,7 @@ static void gfs2_put_super(struct super_block *sb)
- 	gfs2_gl_hash_clear(sdp);
- 	truncate_inode_pages_final(&sdp->sd_aspace);
- 	gfs2_delete_debugfs_file(sdp);
--	/*  Unmount the locking protocol  */
--	gfs2_lm_unmount(sdp);
+@@ -499,7 +499,7 @@ static void gfs2_dirty_inode(struct inode *inode, int flags)
+ 		return;
+ 	}
  
--	/*  At this point, we're through participating in the lockspace  */
- 	gfs2_sys_fs_del(sdp);
- 	free_sbd(sdp);
+-	if (unlikely(gfs2_withdrawn(sdp)))
++	if (gfs2_withdrawn(sdp))
+ 		return;
+ 	if (!gfs2_glock_is_locked_by_me(ip->i_gl)) {
+ 		ret = gfs2_glock_nq_init(ip->i_gl, LM_ST_EXCLUSIVE, 0, &gh);
+diff --git a/fs/gfs2/trans.c b/fs/gfs2/trans.c
+index 7e835be7032d0..1487fbb62d842 100644
+--- a/fs/gfs2/trans.c
++++ b/fs/gfs2/trans.c
+@@ -268,7 +268,7 @@ void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh)
+ 		       (unsigned long long)bd->bd_bh->b_blocknr);
+ 		BUG();
+ 	}
+-	if (unlikely(gfs2_withdrawn(sdp))) {
++	if (gfs2_withdrawn(sdp)) {
+ 		fs_info(sdp, "GFS2:adding buf while withdrawn! 0x%llx\n",
+ 			(unsigned long long)bd->bd_bh->b_blocknr);
+ 		goto out_unlock;
+diff --git a/fs/gfs2/util.h b/fs/gfs2/util.h
+index 11c9d59b68896..76acf0b398149 100644
+--- a/fs/gfs2/util.h
++++ b/fs/gfs2/util.h
+@@ -203,8 +203,8 @@ static inline void gfs2_withdraw_delayed(struct gfs2_sbd *sdp)
+  */
+ static inline bool gfs2_withdrawn(struct gfs2_sbd *sdp)
+ {
+-	return test_bit(SDF_WITHDRAWN, &sdp->sd_flags) ||
+-		test_bit(SDF_WITHDRAWING, &sdp->sd_flags);
++	return unlikely(test_bit(SDF_WITHDRAWN, &sdp->sd_flags) ||
++			test_bit(SDF_WITHDRAWING, &sdp->sd_flags));
  }
+ 
+ /**
+@@ -213,13 +213,13 @@ static inline bool gfs2_withdrawn(struct gfs2_sbd *sdp)
+  */
+ static inline bool gfs2_withdrawing(struct gfs2_sbd *sdp)
+ {
+-	return test_bit(SDF_WITHDRAWING, &sdp->sd_flags) &&
+-	       !test_bit(SDF_WITHDRAWN, &sdp->sd_flags);
++	return unlikely(test_bit(SDF_WITHDRAWING, &sdp->sd_flags) &&
++			!test_bit(SDF_WITHDRAWN, &sdp->sd_flags));
+ }
+ 
+ static inline bool gfs2_withdraw_in_prog(struct gfs2_sbd *sdp)
+ {
+-	return test_bit(SDF_WITHDRAW_IN_PROG, &sdp->sd_flags);
++	return unlikely(test_bit(SDF_WITHDRAW_IN_PROG, &sdp->sd_flags));
+ }
+ 
+ #define gfs2_tune_get(sdp, field) \
 -- 
 2.43.0
 
