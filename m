@@ -1,50 +1,54 @@
-Return-Path: <stable+bounces-48299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3848FE735
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:10:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130168FE73A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 15:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE631B247B4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 13:10:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395C61C24BC7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 13:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77745195F19;
-	Thu,  6 Jun 2024 13:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D955195F06;
+	Thu,  6 Jun 2024 13:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sK3hwm/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bREvbPD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3656E195993
-	for <stable@vger.kernel.org>; Thu,  6 Jun 2024 13:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A7D13A86B;
+	Thu,  6 Jun 2024 13:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717679409; cv=none; b=JzIIN4n9/0jm4EcbKPKQgfhcfF+ZTSSu6f7H0jLV+SEI6Ct/QaY6UR/QNWR3iwHIaiII+NNl2FnNYRSvHOpQuMDqZaa956e/LttaoQfrRgn2LlPgHc5j84EYfQLIwEzP9QdrNtppgK8GYzfzXo1NtjUks3U66ju5W91OTt9Hpjo=
+	t=1717679442; cv=none; b=A6nuwqVUDP4wBoaMhheruXxnQ+Xz6xjlL74ZhlG0N2d2su8ha4abERiwu4ArZuC+dLFzSJTtiY5UXfuUEtNhNxVBRk0FywfqE0EBX9kRrWMxVV+FIVZzKe5EqRyR6mayMGwwTG9BZAU0Osm47epCQjkj6gLr4k5fGumLs76Ht/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717679409; c=relaxed/simple;
-	bh=L/QL55K/uqmeyQ8qEUE2S0k9LP8l2TtqV3DDUE3Diww=;
+	s=arc-20240116; t=1717679442; c=relaxed/simple;
+	bh=G5jTyKlv2GHxHDkqCrJpysPcPEYqIitI0lZtBhTrfic=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X1K9yXx60a3CreYsCkE9dJjO/ieZLcD+h5YK9IUYIFKbaGrXDMYTlpgPwmkVulNkJJO8tEl0xVyRD3Y9usIL0nLhHIOvbyj1geXaLc5QzmvaMrz2Kg8a7BQbaM5JNvSx9k7j0Gak5iAadraGA1arGTRP4QWSslc3iHefW0a/d3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sK3hwm/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB78DC2BD10;
-	Thu,  6 Jun 2024 13:10:08 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=FkrCDuEE00JfL72oMiH+S3S4n2NcViU209vgZsMoViNYFS0yua56JAI/HtLvcE0/NkEAQpCJfUhaQo6SpOLToIejpyrz+QEuUrXX64s4iO5Q/zTm8O0QZXYCmUUbFGpIWaGQTVctSKrxPJli4OyUWMyQ8a0JVm5iNW1kwpuXDdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bREvbPD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79ADC2BD10;
+	Thu,  6 Jun 2024 13:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717679408;
-	bh=L/QL55K/uqmeyQ8qEUE2S0k9LP8l2TtqV3DDUE3Diww=;
+	s=korg; t=1717679441;
+	bh=G5jTyKlv2GHxHDkqCrJpysPcPEYqIitI0lZtBhTrfic=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sK3hwm/VZ+8Ti5SU9i4xx2Tldk64hH+J1eqDGfRy6h+OFwHDrXebTs4q+6fHwO+KG
-	 wYQhUS0qjDX0wejATCYZkNfeKzc4RVgV4TMFcUBcWMvE41JARLSd/zpunS/QqDSF+A
-	 NS1pBuANRz09gNuHu9SpfFKvUQJ2Z2qb2oNYVmi4=
-Date: Thu, 6 Jun 2024 15:10:08 +0200
+	b=bREvbPD9x6IGw2Lfp3OJ+txA0FIl5IqCJWT2BPixvogHBqiWjUJGdJPZgpeUOGBgl
+	 hYQyaGgEpU19cBPzyGsY+LYiQKOxCJCE9wEeXxb3qFIwiK7g6bSxbJ1i5RcsM4Bg1/
+	 cE9fUnr5FA3kZ+fbDhafhJ4R9Qvz3i4x7rRR4TXw=
+Date: Thu, 6 Jun 2024 15:10:41 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Ard Biesheuvel <ardb@kernel.org>
-Cc: "# 3.4.x" <stable@vger.kernel.org>
-Subject: Re: backport request
-Message-ID: <2024060602-reacquire-nineteen-57aa@gregkh>
-References: <CAMj1kXE3OuzR3kcyn_3pr4M3=QaV4Dqj=X6StUnRk9gM-1MQaw@mail.gmail.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: Patch "arm64: fpsimd: Drop unneeded 'busy' flag" has been added
+ to the 6.6-stable tree
+Message-ID: <2024060623-endorphin-gallstone-bf81@gregkh>
+References: <20240530191110.24847-1-sashal@kernel.org>
+ <CAMj1kXH7rfoV_rsxHrwgY5++OuqTXHYdN_Zje4+HxTeQiwx1NA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,17 +57,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXE3OuzR3kcyn_3pr4M3=QaV4Dqj=X6StUnRk9gM-1MQaw@mail.gmail.com>
+In-Reply-To: <CAMj1kXH7rfoV_rsxHrwgY5++OuqTXHYdN_Zje4+HxTeQiwx1NA@mail.gmail.com>
 
-On Wed, May 29, 2024 at 10:50:04AM +0200, Ard Biesheuvel wrote:
-> Please consider commit
+On Fri, May 31, 2024 at 08:16:56AM +0200, Ard Biesheuvel wrote:
+> On Thu, 30 May 2024 at 21:11, Sasha Levin <sashal@kernel.org> wrote:
+> >
+> > This is a note to let you know that I've just added the patch titled
+> >
+> >     arm64: fpsimd: Drop unneeded 'busy' flag
+> >
+> > to the 6.6-stable tree
 > 
-> 15aa8fb852f995dd
-> x86/efistub: Omit physical KASLR when memory reservations exist
-> 
-> for backporting to v6.1 and later.
+> Why?
 
-Now queued up,t hanks.
+Because:
+
+> >     Stable-dep-of: b8995a184170 ("Revert "arm64: fpsimd: Implement lazy restore for kernel mode FPSIMD"")
+
+It's needed for the revert?
+
+thanks,
 
 greg k-h
 
