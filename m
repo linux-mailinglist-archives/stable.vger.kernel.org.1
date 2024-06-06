@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-49553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EB58FEDC4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 337798FEC33
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 033631C22D84
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D7A11C245AC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D5319E7E5;
-	Thu,  6 Jun 2024 14:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFFD19AD6C;
+	Thu,  6 Jun 2024 14:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBUUy6id"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xFeLSRf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186881BD501;
-	Thu,  6 Jun 2024 14:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C32A19AD64;
+	Thu,  6 Jun 2024 14:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683523; cv=none; b=eS6LfCtSCwK2juIp6lF5uAiZZmcyJ7K9U2eJjmvFeHJHmxvQ8icbsZlOF3Y8bxM2MTleJNd+cOkr/jzRg5cNsVfvsZAiOrG+bScyHYox/CUrzPnVhCWZKLhS495OMQHOeePj2HWwEDLPTIDdjBJwgphwr7Dgju8FVwf5KIn1AF0=
+	t=1717683340; cv=none; b=Vf2YQBNuaWDAHa7Q76hx6vfCdK/nKb7NdlKwRuPSOtSztq89feJKVQlzBEin+K1JEwTqvJoVJGLp+9E9+vTXtt4scrAFGRHoiAKCamgbQ/hmKhiX6ULWARd70vaJE7ljXVLG4cGOo4yKvI6aUvkDRtImlqySsxIRS8Gtiwq1gmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683523; c=relaxed/simple;
-	bh=4hT7IC9fOEhwpe5bcOlD6nWlisBdRg74Vu7xFZBfHo4=;
+	s=arc-20240116; t=1717683340; c=relaxed/simple;
+	bh=mBrN89M04+PKYScXzOnl/k2eBi14z6Z0i/qS5dGt1mw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0BYd+KGeeZWIIMvxuWL6nfdnazC6YDfVNpA1gmH3/6JsJLHIspLeFzjUhA24NT3+AYd/YSE7UIpmigK9Ekq4DIZE0hw8psg9gYAEPrMldXNJwqUwLLkcHAfWDzx0wBhzAy8pTsrplpJ0cuZieWmL/XOG89UxJIS0dDCw65Ezp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBUUy6id; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A28C4AF07;
-	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
+	 MIME-Version; b=lPZWBK5Xl60jeO4b7cD0EXYO5VNpKU/G12CFpX+kW/eLUks8ySDccG1QRvx8lLF0X93ZUKkvo+YE/W2VyqUQdyW4LqVU28kz/qdgLPzxzcxc5D+dBUaiYUicKfBYYYIV9pFVAG6PfvuJLarV0hsCIlAPsNAaR6iAYUASBG911fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xFeLSRf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02CCC32782;
+	Thu,  6 Jun 2024 14:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683523;
-	bh=4hT7IC9fOEhwpe5bcOlD6nWlisBdRg74Vu7xFZBfHo4=;
+	s=korg; t=1717683339;
+	bh=mBrN89M04+PKYScXzOnl/k2eBi14z6Z0i/qS5dGt1mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBUUy6idCieQn5L9nu4tHal38QqDlAFD3MKdVUPQgxBo7rRu99W6BtybD5HQRSr/A
-	 tCT+jjGlyzCJZc8OCa5Pj9qCAALzKIAUWUlzHJ9gnXLqzhgpStaVdOfT4xunSu/2m3
-	 wOPLJaF2W6tP7HREf/H74ABpBfkeBQbb9OputIeQ=
+	b=1xFeLSRfJzI/zMpIJONf+D8qoo+UkE0d19mgupWJcSr0p0LlBjtxFKdTTjD9M7LJ9
+	 hBidIEX7LOliTFwKwQVrORNbQte+HZfLBH2miCB6XiCZ3IDpCSp0VhqKZRUkufv/KP
+	 Zej31WvCTzuh2xWJjPO+Gh+LIvXAv69H4y7yckF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 464/744] microblaze: Remove gcc flag for non existing early_printk.c file
-Date: Thu,  6 Jun 2024 16:02:16 +0200
-Message-ID: <20240606131747.354529095@linuxfoundation.org>
+Subject: [PATCH 6.1 208/473] ASoC: Intel: avs: Fix potential integer overflow
+Date: Thu,  6 Jun 2024 16:02:17 +0200
+Message-ID: <20240606131706.803369046@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit edc66cf0c4164aa3daf6cc55e970bb94383a6a57 ]
+[ Upstream commit c7e832cabe635df47c2bf6df7801e97bf3045b1e ]
 
-early_printk support for removed long time ago but compilation flag for
-ftrace still points to already removed file that's why remove that line
-too.
+While stream_tag for CLDMA on SKL-based platforms is always 1, function
+hda_cldma_setup() uses AZX_SD_CTL_STRM() macro which does:
+	stream_tag << 20
 
-Fixes: 96f0e6fcc9ad ("microblaze: remove redundant early_printk support")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/5493467419cd2510a32854e2807bcd263de981a0.1712823702.git.michal.simek@amd.com
+what combined with stream_tag type of 'unsigned int' generates a
+potential overflow issue. Update the field type to fix that.
+
+Fixes: 45864e49a05a ("ASoC: Intel: avs: Implement CLDMA transfer")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://msgid.link/r/20240405090929.1184068-8-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/microblaze/kernel/Makefile | 1 -
- 1 file changed, 1 deletion(-)
+ sound/soc/intel/avs/cldma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/microblaze/kernel/Makefile b/arch/microblaze/kernel/Makefile
-index 4393bee64eaf8..85c4d29ef43e9 100644
---- a/arch/microblaze/kernel/Makefile
-+++ b/arch/microblaze/kernel/Makefile
-@@ -7,7 +7,6 @@ ifdef CONFIG_FUNCTION_TRACER
- # Do not trace early boot code and low level code
- CFLAGS_REMOVE_timer.o = -pg
- CFLAGS_REMOVE_intc.o = -pg
--CFLAGS_REMOVE_early_printk.o = -pg
- CFLAGS_REMOVE_ftrace.o = -pg
- CFLAGS_REMOVE_process.o = -pg
- endif
+diff --git a/sound/soc/intel/avs/cldma.c b/sound/soc/intel/avs/cldma.c
+index d7a9390b5e483..585579840b646 100644
+--- a/sound/soc/intel/avs/cldma.c
++++ b/sound/soc/intel/avs/cldma.c
+@@ -35,7 +35,7 @@ struct hda_cldma {
+ 
+ 	unsigned int buffer_size;
+ 	unsigned int num_periods;
+-	unsigned int stream_tag;
++	unsigned char stream_tag;
+ 	void __iomem *sd_addr;
+ 
+ 	struct snd_dma_buffer dmab_data;
 -- 
 2.43.0
 
