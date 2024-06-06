@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-49063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6B08FEBB4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77708FEBB5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB4571C251B3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51548281353
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B10C1ABCB7;
-	Thu,  6 Jun 2024 14:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFE91ABCBB;
+	Thu,  6 Jun 2024 14:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tRXogX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0zFOJBL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB3C197A8F;
-	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C631ABCB8;
+	Thu,  6 Jun 2024 14:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683284; cv=none; b=lel5bMUdqhV+5OWr7C5J8g5xLGUOKrc0fnnln1q5MFhZOz8XPlvC/dO6+cuhWgf1hO9EQ72tL8u0Yg718CF8+wVZfVDZHnAuvBZI8S1BYqMbA10IFwMBadHB5AaRQv4BgbbIFCT9w6aDvtfqGKZGXT/TT35c/v1j3ZnIIFNbbm8=
+	t=1717683285; cv=none; b=MgmHZZ0e4xqNdK4U1hjrTO7a6QCYBByMdNP612isDoJ4SavcRjKZein8sEuJmaN9kDhtX3fnW0vAvbma6aNDVr7dycieG2JWHEFHsB9+Qhx97NPGWoDUs4lqLWMO0LWSUswgiyUU6P6p8l8v80WZOYoi4XVRrBsKu4ZyODiM7yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683284; c=relaxed/simple;
-	bh=ZA/tkY6vVjQ70nU5ngZQs5iMYMsMOApoMcFs7yfhn1M=;
+	s=arc-20240116; t=1717683285; c=relaxed/simple;
+	bh=pJZFQJxSUcu1hvCR+4uaaW2+/J/bnPO18Ok0h3jU8x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWRW8Y+xCKxxGFj7hZ5BrewU9S5ThGngQe83dk99QIeB/lCJaagOa1qMcRxQLAeq0n7KAVBWKCXc6HqVkZ7X5fFJHlZzu9mofT1WyQzt/EZDP2Z1oqr3P/tXI9wqRfkvAvomgCUQ/BjyL0GtFT3saygETIzhDBLy710aI5cqUic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tRXogX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9414C2BD10;
-	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
+	 MIME-Version; b=jsIMdmpL+Pz7r74kZQlj6K1Vkfvd3zzi8yM6EbyJFsBpEiPJmFjSWl68Ni5VJsLWrcVU1wRYlTPrBQbI1Z6XGhOk407frMyMxtA90CLQQRB/2gTw5A2NczKpJYV6xS78oXYWMA4+MSOypIj2T8x0ADjyvjYIsL8BsZXiIxHnURM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0zFOJBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6366C2BD10;
+	Thu,  6 Jun 2024 14:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683283;
-	bh=ZA/tkY6vVjQ70nU5ngZQs5iMYMsMOApoMcFs7yfhn1M=;
+	s=korg; t=1717683284;
+	bh=pJZFQJxSUcu1hvCR+4uaaW2+/J/bnPO18Ok0h3jU8x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tRXogX3TEHlx3mxsylLSSLNpcwsT9WpBIHLYMt0Z2N/v5DXArEpq0EoLEu7QumYQ
-	 QK2O7JOBeubvOLAHcRIPfajUsLznahH/NmrHVuBs3TasjS9P5VcLgFDsPARQMCZJaF
-	 XavbNt+6CbVwnadmS0Tomz/LgudBn7w65OmvBjgM=
+	b=c0zFOJBLNeeiM6tFhdpb3fNO8RUuLNBfuBkV1LkTObbiRKwj4Ja0216N8uL0qWvID
+	 hMl9ywaT8SE4zv7rdYpycffzKyrIfXIJBtv1CYqk2fgc6g2GW4HePOSxZoJ2P9ViZA
+	 uB3Z6bNmTxMWNlUvTcThSzQypEkabe+HLJ01rGO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/744] HID: intel-ish-hid: ipc: Add check for pci_alloc_irq_vectors
-Date: Thu,  6 Jun 2024 15:58:17 +0200
-Message-ID: <20240606131739.614417963@linuxfoundation.org>
+Subject: [PATCH 6.6 226/744] scsi: bfa: Ensure the copied buf is NUL terminated
+Date: Thu,  6 Jun 2024 15:58:18 +0200
+Message-ID: <20240606131739.648745943@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,38 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 6baa4524027fd64d7ca524e1717c88c91a354b93 ]
+[ Upstream commit 13d0cecb4626fae67c00c84d3c7851f6b62f7df3 ]
 
-Add a check for the return value of pci_alloc_irq_vectors() and return
-error if it fails.
+Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
+userspace to that buffer. Later, we use sscanf on this buffer but we don't
+ensure that the string is terminated inside the buffer, this can lead to
+OOB read when using sscanf. Fix this issue by using memdup_user_nul instead
+of memdup_user.
 
-[jkosina@suse.com: reworded changelog based on Srinivas' suggestion]
-Fixes: 74fbc7d371d9 ("HID: intel-ish-hid: add MSI interrupt support")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 9f30b674759b ("bfa: replace 2 kzalloc/copy_from_user by memdup_user")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-3-f1f1b53a10f4@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/pci-ish.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/bfa/bfad_debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-index 710fda5f19e1c..916d427163ca2 100644
---- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-+++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-@@ -216,6 +216,11 @@ static int ish_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/drivers/scsi/bfa/bfad_debugfs.c b/drivers/scsi/bfa/bfad_debugfs.c
+index 52db147d9979d..f6dd077d47c9a 100644
+--- a/drivers/scsi/bfa/bfad_debugfs.c
++++ b/drivers/scsi/bfa/bfad_debugfs.c
+@@ -250,7 +250,7 @@ bfad_debugfs_write_regrd(struct file *file, const char __user *buf,
+ 	unsigned long flags;
+ 	void *kern_buf;
  
- 	/* request and enable interrupt */
- 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
-+	if (ret < 0) {
-+		dev_err(dev, "ISH: Failed to allocate IRQ vectors\n");
-+		return ret;
-+	}
-+
- 	if (!pdev->msi_enabled && !pdev->msix_enabled)
- 		irq_flag = IRQF_SHARED;
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
+ 
+@@ -317,7 +317,7 @@ bfad_debugfs_write_regwr(struct file *file, const char __user *buf,
+ 	unsigned long flags;
+ 	void *kern_buf;
+ 
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
  
 -- 
 2.43.0
