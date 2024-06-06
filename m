@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-49175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDA98FEC2F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:30:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A21E88FEDE7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E54C5B27BCA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:30:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AD3F1F22BF9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06761AD9D2;
-	Thu,  6 Jun 2024 14:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C2519E7FD;
+	Thu,  6 Jun 2024 14:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyiIW2ra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5hXl5Td"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3171AD9E2;
-	Thu,  6 Jun 2024 14:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13C619E7FF;
+	Thu,  6 Jun 2024 14:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683338; cv=none; b=Pec20THhdUylGbZRurt/otCmdi9OqSsp4WOw9DKW26V/NMvT7G8PCoyB+qgoD1bqEjVlqjIFEEipWh2+caJka5w1nUw6wwTmnNZoH+EvIq88F5WmNlhHeBNjxK2DmFHS//Oto4oMfTDB6jG/Wz3zG6fgl3LMX51FnYkFWwbp7iY=
+	t=1717683537; cv=none; b=Y3g/gVQ3UnKm99qFu2q2l3pl2zHywJg5yO7q6ffPmEI7vUx0DWG2j7x6xrKS9XLkaZz6ud5z5NGkqfDoFRbGmndv6VRfgdw6RWrJc3hZALOK90aAHd5Xta87vi+yoB0RZLETxgXLpwumr7J80+YDQDHa8568KFWVkYRUROlcfzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683338; c=relaxed/simple;
-	bh=8XR7IMj23Lr4pKDGRtMtmkyv9XNsErYmUjd/uP2Vesg=;
+	s=arc-20240116; t=1717683537; c=relaxed/simple;
+	bh=cyCNYShjL/IWzimCKIPhICp4PysmCtE9ZTYXOmJGuDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cthLWOH7lDv6+MryDsXkA+7elTE+LU2YO7tmppZvzd0Ao1904si4aBlS/xFzse+ag0/5f5hMRPWKaPdtJGBY6LZCKR5rbZqDM0xwREBeG1yOyFbObkeGwFCmfwwSMvcmNEiNnaCeXr4GthdX+je4z1mZjMzPJnYO6ask2HFDjV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyiIW2ra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E53FC2BD10;
-	Thu,  6 Jun 2024 14:15:38 +0000 (UTC)
+	 MIME-Version; b=BIh5FM4OsRUed07oek3tcXoWfJ0rUrSZmzbJpHALU4eXGB57DrCB59tlOx4S/NAE9lE7hOtk1UcivKmfkqNSYA9jUcLwpSCOlm7HLTf10EGMXAjHhpwNT7G7WWNwMy62i7lNmsHmGNXmVDexoD2ohx2x9wrQwgHwzje7gAQGWZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5hXl5Td; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB88C2BD10;
+	Thu,  6 Jun 2024 14:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683338;
-	bh=8XR7IMj23Lr4pKDGRtMtmkyv9XNsErYmUjd/uP2Vesg=;
+	s=korg; t=1717683537;
+	bh=cyCNYShjL/IWzimCKIPhICp4PysmCtE9ZTYXOmJGuDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NyiIW2raA1Yl6zdnQeRqTbkSUnXPtmMfQSA5oMXBJ3sU+Ux7BLKKstzqKAo8PL7lx
-	 aZXQ5FD+znzT/eJVYFrUTw/qRdEMa2mGAj8ZuNDUlULUKBPf0T0ehg2fJuFgrPUt7W
-	 hCxejPMuRCu7UbH6fBRgUmofcdgZvQfFqYklOdY8=
+	b=P5hXl5TdRpwvNcjnUybgu4L40XqLJoTN8MkExH1cquCHqPLvqZcw9sy/NMO+3UUpz
+	 AArCXj23+4O3nbSHm+1dr9RUeXwgSAYfcJ+D1CrIawepAtWKi206aqabz0oLhOb9zX
+	 qMRyCNKdqq1NbrB9yCVIV7V7+8nBzWCfDU3ugm90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sam Sun <samsun1006219@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 220/473] media: atomisp: ssh_css: Fix a null-pointer dereference in load_video_binaries
+Subject: [PATCH 6.6 477/744] xfs: fix log recovery buffer allocation for the legacy h_size fixup
 Date: Thu,  6 Jun 2024 16:02:29 +0200
-Message-ID: <20240606131707.166220027@linuxfoundation.org>
+Message-ID: <20240606131747.759795247@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 3b621e9e9e148c0928ab109ac3d4b81487469acb ]
+[ Upstream commit 45cf976008ddef4a9c9a30310c9b4fb2a9a6602a ]
 
-The allocation failure of mycs->yuv_scaler_binary in load_video_binaries()
-is followed with a dereference of mycs->yuv_scaler_binary after the
-following call chain:
+Commit a70f9fe52daa ("xfs: detect and handle invalid iclog size set by
+mkfs") added a fixup for incorrect h_size values used for the initial
+umount record in old xfsprogs versions.  Later commit 0c771b99d6c9
+("xfs: clean up calculation of LR header blocks") cleaned up the log
+reover buffer calculation, but stoped using the fixed up h_size value
+to size the log recovery buffer, which can lead to an out of bounds
+access when the incorrect h_size does not come from the old mkfs
+tool, but a fuzzer.
 
-sh_css_pipe_load_binaries()
-  |-> load_video_binaries(mycs->yuv_scaler_binary == NULL)
-  |
-  |-> sh_css_pipe_unload_binaries()
-        |-> unload_video_binaries()
+Fix this by open coding xlog_logrec_hblks and taking the fixed h_size
+into account for this calculation.
 
-In unload_video_binaries(), it calls to ia_css_binary_unload with argument
-&pipe->pipe_settings.video.yuv_scaler_binary[i], which refers to the
-same memory slot as mycs->yuv_scaler_binary. Thus, a null-pointer
-dereference is triggered.
-
-Link: https://lore.kernel.org/r/20240118151303.3828292-1-alexious@zju.edu.cn
-
-Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 0c771b99d6c9 ("xfs: clean up calculation of LR header blocks")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/atomisp/pci/sh_css.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/xfs/xfs_log_recover.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/staging/media/atomisp/pci/sh_css.c b/drivers/staging/media/atomisp/pci/sh_css.c
-index da96aaffebc19..738c0d634ea90 100644
---- a/drivers/staging/media/atomisp/pci/sh_css.c
-+++ b/drivers/staging/media/atomisp/pci/sh_css.c
-@@ -4972,6 +4972,7 @@ static int load_video_binaries(struct ia_css_pipe *pipe)
- 						  sizeof(struct ia_css_binary),
- 						  GFP_KERNEL);
- 		if (!mycs->yuv_scaler_binary) {
-+			mycs->num_yuv_scaler = 0;
- 			err = -ENOMEM;
- 			return err;
+diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
+index f3fcd58349c16..d6cb097f63729 100644
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2965,7 +2965,7 @@ xlog_do_recovery_pass(
+ 	int			error = 0, h_size, h_len;
+ 	int			error2 = 0;
+ 	int			bblks, split_bblks;
+-	int			hblks, split_hblks, wrapped_hblks;
++	int			hblks = 1, split_hblks, wrapped_hblks;
+ 	int			i;
+ 	struct hlist_head	rhash[XLOG_RHASH_SIZE];
+ 	LIST_HEAD		(buffer_list);
+@@ -3021,14 +3021,22 @@ xlog_do_recovery_pass(
+ 		if (error)
+ 			goto bread_err1;
+ 
+-		hblks = xlog_logrec_hblks(log, rhead);
+-		if (hblks != 1) {
+-			kvfree(hbp);
+-			hbp = xlog_alloc_buffer(log, hblks);
++		/*
++		 * This open codes xlog_logrec_hblks so that we can reuse the
++		 * fixed up h_size value calculated above.  Without that we'd
++		 * still allocate the buffer based on the incorrect on-disk
++		 * size.
++		 */
++		if (h_size > XLOG_HEADER_CYCLE_SIZE &&
++		    (rhead->h_version & cpu_to_be32(XLOG_VERSION_2))) {
++			hblks = DIV_ROUND_UP(h_size, XLOG_HEADER_CYCLE_SIZE);
++			if (hblks > 1) {
++				kvfree(hbp);
++				hbp = xlog_alloc_buffer(log, hblks);
++			}
  		}
+ 	} else {
+ 		ASSERT(log->l_sectBBsize == 1);
+-		hblks = 1;
+ 		hbp = xlog_alloc_buffer(log, 1);
+ 		h_size = XLOG_BIG_RECORD_BSIZE;
+ 	}
 -- 
 2.43.0
 
