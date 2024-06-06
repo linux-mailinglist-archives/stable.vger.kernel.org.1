@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C9638FEEED
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D59D8FED4F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6D751F21DC8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF07C283464
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E231A1882;
-	Thu,  6 Jun 2024 14:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0283E19D093;
+	Thu,  6 Jun 2024 14:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvxxLumE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLv3ZOVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972D01A1881;
-	Thu,  6 Jun 2024 14:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EDB1BA860;
+	Thu,  6 Jun 2024 14:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683718; cv=none; b=B3i4QZkJR+43Mbxhz2celhp5ccB60O6y/rQu9csItFPbpkaUkC9urUSu1+cYp4hLNgwbM5xECsYo2SkB8PVoSJkPtqAwHJhT/sKBPMLWvng8+a9kjyk+x7TnncaReu8Fcpz67axkjZpmMjmEuCXYod00I7wTKrGpBW2ZLnHrAUI=
+	t=1717683472; cv=none; b=AADFfhF2zdf189eTln3dyIuPgthKAu4N72l029luVq8zODAlLu8f4isCQgdWO7bNODN+RUpIxvwPBaCgULdqYBuU8uy9nMWc0nA7LSNP6b987XwcgSvIatL7DN9YfeMDunJg/2aeLAiYMywf2YKIjnPsTfyL1BXd+/nnaHssGz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683718; c=relaxed/simple;
-	bh=9m3N7kYPcco0AkmI97ufBy1oOWl4tgKpdlHP25xHosQ=;
+	s=arc-20240116; t=1717683472; c=relaxed/simple;
+	bh=Ci+pKSfK7v6MTD8zAG3VMz237mp/0BaMmfBl/sggkDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fn6Cmd7FGdeAxQRF2XetZQs5IjxTrM11A2yhJOv0RtxIZTGyCnRCKTAnDWJ+MZRjsZkP36CumPiI7YR3yU3BmdZceCe9EL2PiQJpu2yjSkQiZsN/jRClNmq9m9hgr5k7BGQRklsmOL8mf+CW1l1ND1BdwigeQgoJC7p1NdhWuVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvxxLumE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1DAC2BD10;
-	Thu,  6 Jun 2024 14:21:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OE69aQG/ItU0jXa4WvrybYlwEbr1aEpT6uuDfepMfhBishun2KRTcyZ3dg7+1Vl++B4QUz1rfhb6OYAGE/u7dHtbVZaHTZVqWkWrY1zFZGiP0Aq80UuvHwz6SBBU54jgio4hZ3TnOgWf5gMqnx0ZpYjD2rmnqW3SY8OrkQeMu5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLv3ZOVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D3FC2BD10;
+	Thu,  6 Jun 2024 14:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683718;
-	bh=9m3N7kYPcco0AkmI97ufBy1oOWl4tgKpdlHP25xHosQ=;
+	s=korg; t=1717683472;
+	bh=Ci+pKSfK7v6MTD8zAG3VMz237mp/0BaMmfBl/sggkDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvxxLumEpUowBj7BgVUI5jfwr2IviP3tAEdv3jjv2UPo6pw9pUSq+3PGstBY7HHBY
-	 louzIQ9qdloSlc8PLsLPFEp6vuNdtIAsd5xOdGbhClSsl1fp6zFUepSMxl+3joqVJw
-	 SkQgHA6ODrYbB/4eyBbeURlS1DutjbKMK7oZNnQY=
+	b=nLv3ZOVFAlbR3IBu4AHU1fzI74Mt8R4Ch4hUoMkhRlYlBQLBYukOXaWa6FDpqEyyV
+	 7km+A2wXZ/AewC1kke6L5O7R6dUsU/HOzzFaPDiJB5hv9TX1/xrp/YD6eHh3+5k9tN
+	 2yrYmx4331esDO13Xr+1R9E8wg/BY8eMcXgTed8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 616/744] null_blk: Fix the WARNING: modpost: missing MODULE_DESCRIPTION()
+Subject: [PATCH 6.1 359/473] Input: ioc3kbd - convert to platform remove callback returning void
 Date: Thu,  6 Jun 2024 16:04:48 +0200
-Message-ID: <20240606131752.262626510@linuxfoundation.org>
+Message-ID: <20240606131711.781974379@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 9e6727f824edcdb8fdd3e6e8a0862eb49546e1cd ]
+[ Upstream commit 150e792dee9ca8416f3d375e48f2f4d7f701fc6b ]
 
-No functional changes intended.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new() which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-Fixes: f2298c0403b0 ("null_blk: multi queue aware block test driver")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20240506075538.6064-1-yanjun.zhu@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20230920125829.1478827-37-u.kleine-koenig@pengutronix.de
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Stable-dep-of: d40e9edcf3eb ("Input: ioc3kbd - add device table")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/serio/ioc3kbd.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index cc4dcb951fd24..561706fc2cd8e 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2360,4 +2360,5 @@ module_init(null_init);
- module_exit(null_exit);
+diff --git a/drivers/input/serio/ioc3kbd.c b/drivers/input/serio/ioc3kbd.c
+index d51bfe912db5b..50552dc7b4f5e 100644
+--- a/drivers/input/serio/ioc3kbd.c
++++ b/drivers/input/serio/ioc3kbd.c
+@@ -190,7 +190,7 @@ static int ioc3kbd_probe(struct platform_device *pdev)
+ 	return 0;
+ }
  
- MODULE_AUTHOR("Jens Axboe <axboe@kernel.dk>");
-+MODULE_DESCRIPTION("multi queue aware block test driver");
- MODULE_LICENSE("GPL");
+-static int ioc3kbd_remove(struct platform_device *pdev)
++static void ioc3kbd_remove(struct platform_device *pdev)
+ {
+ 	struct ioc3kbd_data *d = platform_get_drvdata(pdev);
+ 
+@@ -198,13 +198,11 @@ static int ioc3kbd_remove(struct platform_device *pdev)
+ 
+ 	serio_unregister_port(d->kbd);
+ 	serio_unregister_port(d->aux);
+-
+-	return 0;
+ }
+ 
+ static struct platform_driver ioc3kbd_driver = {
+ 	.probe          = ioc3kbd_probe,
+-	.remove         = ioc3kbd_remove,
++	.remove_new     = ioc3kbd_remove,
+ 	.driver = {
+ 		.name = "ioc3-kbd",
+ 	},
 -- 
 2.43.0
 
