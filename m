@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-48616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA278FE9C1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C20E8FEE99
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 748861C25D2D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D4661C222E3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849E719B3EC;
-	Thu,  6 Jun 2024 14:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFD91C53B2;
+	Thu,  6 Jun 2024 14:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2S7v7/HR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBfQeY2s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4273519B3EF;
-	Thu,  6 Jun 2024 14:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9ED1C53B1;
+	Thu,  6 Jun 2024 14:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683063; cv=none; b=EQGMC6dJi0B7gRS8kOb/zh+2fwba7T66r/Ca4xGjuMBvRMyGcfUX6WmpKqw0UTksfjbIluosgmyFTHaDwIWE5EwSSAyA0EgWGM1JOQijNsTB0AbCj5OiNYpe0S4+RsVj2kaAWEHT1tyOsS4PbVWJc7IH4ErLarm6hPKkEGO61T4=
+	t=1717683680; cv=none; b=GrQDP4fNlq9dP6/llqVur/uZMdcogBntY3SV2a8et0jWTe8Tsj4f/St/dZpSlaeOHVb8RSgAQj0fdqHS/0x3/jYjKECebD3z0G0DmHpyudU0YOkrDLVOPSBfZWfQ11MHywCv99zn6j5vHAhr81w3iSE4ER8x8Mbtt2M9H4G7p1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683063; c=relaxed/simple;
-	bh=7zud4JNfLUuM3WQIll6vT/5XtlTb7h7RpT2HcrW7r0Y=;
+	s=arc-20240116; t=1717683680; c=relaxed/simple;
+	bh=QR6pzWgVXzndOv4aNkF3gS7HnBZFaWxcuFP3uT5cY94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mc/JUroxymXXgFxv8tvfHqsdgnVwMMpFNzv/mpIuDUDjQM2fDR9fFd7NGLbeyGM19M9dNH/isy7ZJuBV/jdPBR34fK7zBikYFQSnbb/WJjeosFJBdiW1/G9h4/WiT7sF0Mg8VTTVUGx2lizm9Kkr4U/JuceeDINv6DMsrUj14LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2S7v7/HR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFD2C4AF11;
-	Thu,  6 Jun 2024 14:11:03 +0000 (UTC)
+	 MIME-Version; b=g6CdBrv/bvIiBMJfmuxG/90UUOQfagvlq09n6+3/uqajwdjJs7/6nFH4zE/BFr3ODaw51AHTlK4krpVNQoAJG3PyQ0FqVs21Gaje4JvemxVHIVXlGCLSR6Llj2NbK5wmiWc4e4JntRcYAERv/JBOaNicsx0cqF7JhsV5RlR/gBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBfQeY2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D416C2BD10;
+	Thu,  6 Jun 2024 14:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683063;
-	bh=7zud4JNfLUuM3WQIll6vT/5XtlTb7h7RpT2HcrW7r0Y=;
+	s=korg; t=1717683680;
+	bh=QR6pzWgVXzndOv4aNkF3gS7HnBZFaWxcuFP3uT5cY94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2S7v7/HRX7IabIeHtH20mpmed9vY7nTu+x+TclopVI6O5RLV1ZoUHQapmLj/big4S
-	 Jo/RsH2wnMtQhvSY/qcyz7X6mOFJCv+eZH2882dKmWF8t75af3PqGXZI+cuPP32mpo
-	 k9Xb96pMF7uuYyIh1gsJGyhPrbMeWkr5NPQM2Bpc=
+	b=oBfQeY2sNi4DowJfXp+cCyV83/SXIk167jochvII1syhlibCASPHPEDolA7XyErok
+	 st0nHjX8J9WY8zaWrAysMwPMe7lkiO/PPIe4ov3Cwrw16dLrbLHaJKCLrnYGYFjEfj
+	 iriJc6OzKB9yVOjYrVlhP2D5jmzvHPY5kTFUZHeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Igor Bagnucki <igor.bagnucki@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Krishneil Singh <krishneil.k.singh@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 274/374] idpf: Interpret .set_channels() input differently
+Subject: [PATCH 6.6 581/744] fs/ntfs3: Use variable length array instead of fixed size
 Date: Thu,  6 Jun 2024 16:04:13 +0200
-Message-ID: <20240606131701.081572830@linuxfoundation.org>
+Message-ID: <20240606131751.095282046@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,108 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 5e7695e0219bf6acb96081af3ba0ca08b1829656 ]
+[ Upstream commit 1997cdc3e727526aa5d84b32f7cbb3f56459b7ef ]
 
-Unlike ice, idpf does not check, if user has requested at least 1 combined
-channel. Instead, it relies on a check in the core code. Unfortunately, the
-check does not trigger for us because of the hacky .set_channels()
-interpretation logic that is not consistent with the core code.
+Should fix smatch warning:
+	ntfs_set_label() error: __builtin_memcpy() 'uni->name' too small (20 vs 256)
 
-This naturally leads to user being able to trigger a crash with an invalid
-input. This is how:
-
-1. ethtool -l <IFNAME> -> combined: 40
-2. ethtool -L <IFNAME> rx 0 tx 0
-   combined number is not specified, so command becomes {rx_count = 0,
-   tx_count = 0, combined_count = 40}.
-3. ethnl_set_channels checks, if there is at least 1 RX and 1 TX channel,
-   comparing (combined_count + rx_count) and (combined_count + tx_count)
-   to zero. Obviously, (40 + 0) is greater than zero, so the core code
-   deems the input OK.
-4. idpf interprets `rx 0 tx 0` as 0 channels and tries to proceed with such
-   configuration.
-
-The issue has to be solved fundamentally, as current logic is also known to
-cause AF_XDP problems in ice [0].
-
-Interpret the command in a way that is more consistent with ethtool
-manual [1] (--show-channels and --set-channels) and new ice logic.
-
-Considering that in the idpf driver only the difference between RX and TX
-queues forms dedicated channels, change the correct way to set number of
-channels to:
-
-ethtool -L <IFNAME> combined 10 /* For symmetric queues */
-ethtool -L <IFNAME> combined 8 tx 2 rx 0 /* For asymmetric queues */
-
-[0] https://lore.kernel.org/netdev/20240418095857.2827-1-larysa.zaremba@intel.com/
-[1] https://man7.org/linux/man-pages/man8/ethtool.8.html
-
-Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Igor Bagnucki <igor.bagnucki@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4534a70b7056f ("fs/ntfs3: Add headers and misc files")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202401091421.3RJ24Mn3-lkp@intel.com/
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/intel/idpf/idpf_ethtool.c    | 21 ++++++-------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ fs/ntfs3/ntfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index 6972d728431cb..1885ba618981d 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -222,14 +222,19 @@ static int idpf_set_channels(struct net_device *netdev,
- 			     struct ethtool_channels *ch)
- {
- 	struct idpf_vport_config *vport_config;
--	u16 combined, num_txq, num_rxq;
- 	unsigned int num_req_tx_q;
- 	unsigned int num_req_rx_q;
- 	struct idpf_vport *vport;
-+	u16 num_txq, num_rxq;
- 	struct device *dev;
- 	int err = 0;
- 	u16 idx;
+diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
+index f61f5b3adb03a..b70288cc5f6fa 100644
+--- a/fs/ntfs3/ntfs.h
++++ b/fs/ntfs3/ntfs.h
+@@ -59,7 +59,7 @@ struct GUID {
+ struct cpu_str {
+ 	u8 len;
+ 	u8 unused;
+-	u16 name[10];
++	u16 name[];
+ };
  
-+	if (ch->rx_count && ch->tx_count) {
-+		netdev_err(netdev, "Dedicated RX or TX channels cannot be used simultaneously\n");
-+		return -EINVAL;
-+	}
-+
- 	idpf_vport_ctrl_lock(netdev);
- 	vport = idpf_netdev_to_vport(netdev);
- 
-@@ -239,20 +244,6 @@ static int idpf_set_channels(struct net_device *netdev,
- 	num_txq = vport_config->user_config.num_req_tx_qs;
- 	num_rxq = vport_config->user_config.num_req_rx_qs;
- 
--	combined = min(num_txq, num_rxq);
--
--	/* these checks are for cases where user didn't specify a particular
--	 * value on cmd line but we get non-zero value anyway via
--	 * get_channels(); look at ethtool.c in ethtool repository (the user
--	 * space part), particularly, do_schannels() routine
--	 */
--	if (ch->combined_count == combined)
--		ch->combined_count = 0;
--	if (ch->combined_count && ch->rx_count == num_rxq - combined)
--		ch->rx_count = 0;
--	if (ch->combined_count && ch->tx_count == num_txq - combined)
--		ch->tx_count = 0;
--
- 	num_req_tx_q = ch->combined_count + ch->tx_count;
- 	num_req_rx_q = ch->combined_count + ch->rx_count;
- 
+ struct le_str {
 -- 
 2.43.0
 
