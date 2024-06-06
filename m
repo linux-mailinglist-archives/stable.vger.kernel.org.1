@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-48644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E7F8FE9E4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363A98FED60
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3E131C25E36
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 547A61F2188E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3894119CD17;
-	Thu,  6 Jun 2024 14:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DECA1BA889;
+	Thu,  6 Jun 2024 14:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8lhU+9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NA6FA03F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC34119CD14;
-	Thu,  6 Jun 2024 14:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15071BA874;
+	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683077; cv=none; b=mBWKzzZ/TNJnWxhUBQpANbP/vZDKBOP0cDljZM2ji7zpmozAWmQr6cuKCedj640dk6DRRCHE8RIs9/ytKY/fMxLVpXB1FqszowYpps/tnSJtS2ays0P2YqhCTO75A86D2K+lFbKydlBrzMaKP6EjuvahePfQRPGzh+mGYULeuEY=
+	t=1717683481; cv=none; b=bIiqdad7Ua0m7XfdLXL5947FknBuC8zK0AgsjOVWFeNZUf+o/NgUpgWntU9FZVv9vo/JwGnt3KkjF/jO9b+8UpgAEXE4VlbTBpOqnCimy7YmfQj9+2cOZCo//TGP3sCrKiYrQqwDwKM+qfM7i6RkYE9qfP7kHZwyfst9TYxSTGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683077; c=relaxed/simple;
-	bh=0aVMY43aLepXRALzUaskbXdxxO9NSg40xzOY8Lv+XwA=;
+	s=arc-20240116; t=1717683481; c=relaxed/simple;
+	bh=76JM6Uzf8BjV17p8saz58Lryn17HXoihSFihPt0Zk6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0lh/BL9vpbgBEBlcNRjg1Va0JXux+p/aBTI4/x/8CeQ3ht+V+EW+3LeFwCJyAP8veDNZI6HO62IOWw/XDCjRKdplq90P+n1dwh08T6029cd62DREckd/kFQ/p3WMt/tG0jqiafJNB+nEWXBlPMK6iwv54ufM4qEWk46C8S3QCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8lhU+9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C929DC4AF10;
-	Thu,  6 Jun 2024 14:11:16 +0000 (UTC)
+	 MIME-Version; b=eF4CPuTInQF/ituMhEKZrRyB1eCwzNhl4RKnnapvRtZkMXhnEvGe9d7gHkRhTYx8CF//lCuvoIr1dDSy7cAj9Fp9ltkGmyyKC71CzrEnsdAcktLcAJOW64vU4A0BSXGS4xcNrne13+CAVjSo3yPdDqnghC18RBN6wUOozCkcpeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NA6FA03F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D133AC2BD10;
+	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683076;
-	bh=0aVMY43aLepXRALzUaskbXdxxO9NSg40xzOY8Lv+XwA=;
+	s=korg; t=1717683480;
+	bh=76JM6Uzf8BjV17p8saz58Lryn17HXoihSFihPt0Zk6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8lhU+9giJLwMSeh4jvmjaf5vaPEXz0FVSH7NqaRNHfijdpADYSoS5hileHjAtZa0
-	 deL4K3Tn/Hp5gdEIQx5DHj3uRGfJ/b3dn4SzuPSzoHeLgeH8RHFokrD5MKgCHTqwFF
-	 H9vs9ZrBlyKKnkfHqd7UUxhMqx9bthBrxneY5VH4=
+	b=NA6FA03Fw1Uj7f7CrEwvj+tjojetgz8GVxDDCilR10+5tl64f5BSWvbGJ0r4gLCPo
+	 vRQZk0Lw9xVRuAqgMrH9mT00pUesrtsZiD1ofQkvJ29PSD6JLBhSbySGOatFOFBEFZ
+	 mHMY7X6jS5Ea369iW38klTdKTYL8ay+C21WIU9Rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Yamen Safadi <ysafadi@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fenglin Wu <quic_fenglinw@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 317/374] ipv4: Fix address dump when IPv4 is disabled on an interface
+Subject: [PATCH 6.1 367/473] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
 Date: Thu,  6 Jun 2024 16:04:56 +0200
-Message-ID: <20240606131702.490983545@linuxfoundation.org>
+Message-ID: <20240606131712.036860265@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Fenglin Wu <quic_fenglinw@quicinc.com>
 
-[ Upstream commit 7b05ab85e28f615e70520d24c075249b4512044e ]
+[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
 
-Cited commit started returning an error when user space requests to dump
-the interface's IPv4 addresses and IPv4 is disabled on the interface.
-Restore the previous behavior and do not return an error.
+The output voltage is inclusive hence the max level calculation is
+off-by-one-step. Correct it.
 
-Before cited commit:
+iWhile we are at it also add a define for the step size instead of
+using the magic value.
 
- # ip address show dev dummy1
- 10: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-     link/ether e2:40:68:98:d0:18 brd ff:ff:ff:ff:ff:ff
-     inet6 fe80::e040:68ff:fe98:d018/64 scope link proto kernel_ll
-        valid_lft forever preferred_lft forever
- # ip link set dev dummy1 mtu 67
- # ip address show dev dummy1
- 10: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 67 qdisc noqueue state UNKNOWN group default qlen 1000
-     link/ether e2:40:68:98:d0:18 brd ff:ff:ff:ff:ff:ff
-
-After cited commit:
-
- # ip address show dev dummy1
- 10: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-     link/ether 32:2d:69:f2:9c:99 brd ff:ff:ff:ff:ff:ff
-     inet6 fe80::302d:69ff:fef2:9c99/64 scope link proto kernel_ll
-        valid_lft forever preferred_lft forever
- # ip link set dev dummy1 mtu 67
- # ip address show dev dummy1
- RTNETLINK answers: No such device
- Dump terminated
-
-With this patch:
-
- # ip address show dev dummy1
- 10: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
-     link/ether de:17:56:bb:57:c0 brd ff:ff:ff:ff:ff:ff
-     inet6 fe80::dc17:56ff:febb:57c0/64 scope link proto kernel_ll
-        valid_lft forever preferred_lft forever
- # ip link set dev dummy1 mtu 67
- # ip address show dev dummy1
- 10: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 67 qdisc noqueue state UNKNOWN group default qlen 1000
-     link/ether de:17:56:bb:57:c0 brd ff:ff:ff:ff:ff:ff
-
-I fixed the exact same issue for IPv6 in commit c04f7dfe6ec2 ("ipv6: Fix
-address dump when IPv6 is disabled on an interface"), but noted [1] that
-I am not doing the change for IPv4 because I am not aware of a way to
-disable IPv4 on an interface other than unregistering it. I clearly
-missed the above case.
-
-[1] https://lore.kernel.org/netdev/20240321173042.2151756-1-idosch@nvidia.com/
-
-Fixes: cdb2f80f1c10 ("inet: use xa_array iterator to implement inet_dump_ifaddr()")
-Reported-by: Carolina Jubran <cjubran@nvidia.com>
-Reported-by: Yamen Safadi <ysafadi@nvidia.com>
-Tested-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240523110257.334315-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
+Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 7e45c34c8340a..ee5fbc19b85fc 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -1882,10 +1882,11 @@ static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
- 			goto done;
+diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
+index 53ad25eaf1a28..8bfe5c7b1244c 100644
+--- a/drivers/input/misc/pm8xxx-vibrator.c
++++ b/drivers/input/misc/pm8xxx-vibrator.c
+@@ -14,7 +14,8 @@
  
- 		if (fillargs.ifindex) {
--			err = -ENODEV;
- 			dev = dev_get_by_index_rcu(tgt_net, fillargs.ifindex);
--			if (!dev)
-+			if (!dev) {
-+				err = -ENODEV;
- 				goto done;
-+			}
- 			in_dev = __in_dev_get_rcu(dev);
- 			if (!in_dev)
- 				goto done;
+ #define VIB_MAX_LEVEL_mV	(3100)
+ #define VIB_MIN_LEVEL_mV	(1200)
+-#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
++#define VIB_PER_STEP_mV		(100)
++#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
+ 
+ #define MAX_FF_SPEED		0xff
+ 
+@@ -118,10 +119,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
+ 		vib->active = true;
+ 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
+ 						VIB_MIN_LEVEL_mV;
+-		vib->level /= 100;
++		vib->level /= VIB_PER_STEP_mV;
+ 	} else {
+ 		vib->active = false;
+-		vib->level = VIB_MIN_LEVEL_mV / 100;
++		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
+ 	}
+ 
+ 	pm8xxx_vib_set(vib, vib->active);
 -- 
 2.43.0
 
