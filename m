@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-48693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68F38FEA15
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3CDC8FEA17
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DBB81F250F3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A0772893D1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F167719DF63;
-	Thu,  6 Jun 2024 14:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03267198E9D;
+	Thu,  6 Jun 2024 14:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjiDzxZn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdGgoGAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B11198E9B;
-	Thu,  6 Jun 2024 14:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C6B1974FA;
+	Thu,  6 Jun 2024 14:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683100; cv=none; b=jhECSia3AXobfkBSkWdKrF3E41s1Vin5ik319mkKuNDmAfdO87HyzuAUVlkO2EW62V20kiefAnqCvN+GH675xFPS0loRpJR46MrZ3kmIKfuf+0VQm0n9sC60W8jmDJmr0vcY0PvregxNJFmfOK4vNJrfidb4y5UawKcbmbiFaQk=
+	t=1717683101; cv=none; b=FqEuuqL1sMIfFZb4Wcznd7UFrRtrUTuB76w23J70aTTxRr/89Y/PcMqYmSHfCeLnuEkLzVcqaR00lCOPJfJYxze7RXEAKSwExMHXijoY/PpD24kcE/3daDgFI/flH6lxG+Y6qtJr0DrFcU6zYFugpG63ZufNbEMv4mR7X/vECxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683100; c=relaxed/simple;
-	bh=TOkp5TwGiVzJYncO2KV1tERPuF0G8iC9XeWTxXxkzE0=;
+	s=arc-20240116; t=1717683101; c=relaxed/simple;
+	bh=qRn3Uq7cxDlCTlntKqBguRDTdtjW4UVTzS3SGMoXnh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ebf5Q31GramM4may758tOmxPrEYD6jDtHaqtdpPTPOSVFjF7+91kjlew75Mwh4nV4XJNHHjU6tHAW7lw47ILFQiqHT0DidJIyj1Zmb1ULZUJTpKehheouyd7Gm4wxBb4eP57t0/Bdy6EtRQtiV26AHxwnaL2DDLWQOPtiuLK+us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjiDzxZn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9257CC32781;
-	Thu,  6 Jun 2024 14:11:40 +0000 (UTC)
+	 MIME-Version; b=SxDF2TYg6aJNgGvMfj96e6XK8SuvOnVPU3y77FzmQg1KRb3ID1D7uVieBcLtq1liNl8CC1nxMZtUaGn5vPeZF1XImchJ+LlENdMSZ2Z+pLZk0erlDdXlexn5HbxGnVkmIH/kZSi0ztMzKIk1WxIYDA/FRVbhZFcLrdWlcL2d9uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdGgoGAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C34C2BD10;
+	Thu,  6 Jun 2024 14:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683100;
-	bh=TOkp5TwGiVzJYncO2KV1tERPuF0G8iC9XeWTxXxkzE0=;
+	s=korg; t=1717683101;
+	bh=qRn3Uq7cxDlCTlntKqBguRDTdtjW4UVTzS3SGMoXnh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjiDzxZnkdAdEd4Hft/S1S+T+Y6L5MXBqJ1RnqwwTcqSyVj7cwUes0zokYLMqeRcD
-	 rp6S2EDCiNaqByz7sJjbGNIRAxF2PQkK9uHL11h+zXH4XyXqpyuXSR4mUiYKhw8E00
-	 Xi4e9Dd9SnkHMvKageaVT95bz4wz9G6lhl9O24K0=
+	b=zdGgoGAah9UdciWxY+YHOsV4HYMxB0AbABPjuGQNWvjNdbDK4hLRVVi/tOcjMraX+
+	 d8eDzOLSIgxfrWXRv6uUTmSGYrP6EG4JKE68mCQuWL6SOyg7hQOw8wFnSYOXNYbnw9
+	 stPzkQKlPxuDMXYSXME33Wrnf/B8bNaQuvCp1Q1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 019/744] net: smc91x: Fix m68k kernel compilation for ColdFire CPU
-Date: Thu,  6 Jun 2024 15:54:51 +0200
-Message-ID: <20240606131733.059473842@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	"Bai, Shuangpeng" <sjb7183@psu.edu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 020/744] nilfs2: fix use-after-free of timer for log writer thread
+Date: Thu,  6 Jun 2024 15:54:52 +0200
+Message-ID: <20240606131733.085916097@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -60,62 +60,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 5eefb477d21a26183bc3499aeefa991198315a2d upstream.
+commit f5d4e04634c9cf68bdf23de08ada0bb92e8befe7 upstream.
 
-Compiling the m68k kernel with support for the ColdFire CPU family fails
-with the following error:
+Patch series "nilfs2: fix log writer related issues".
 
-In file included from drivers/net/ethernet/smsc/smc91x.c:80:
-drivers/net/ethernet/smsc/smc91x.c: In function ‘smc_reset’:
-drivers/net/ethernet/smsc/smc91x.h:160:40: error: implicit declaration of function ‘_swapw’; did you mean ‘swap’? [-Werror=implicit-function-declaration]
-  160 | #define SMC_outw(lp, v, a, r)   writew(_swapw(v), (a) + (r))
-      |                                        ^~~~~~
-drivers/net/ethernet/smsc/smc91x.h:904:25: note: in expansion of macro ‘SMC_outw’
-  904 |                         SMC_outw(lp, x, ioaddr, BANK_SELECT);           \
-      |                         ^~~~~~~~
-drivers/net/ethernet/smsc/smc91x.c:250:9: note: in expansion of macro ‘SMC_SELECT_BANK’
-  250 |         SMC_SELECT_BANK(lp, 2);
-      |         ^~~~~~~~~~~~~~~
-cc1: some warnings being treated as errors
+This bug fix series covers three nilfs2 log writer-related issues,
+including a timer use-after-free issue and potential deadlock issue on
+unmount, and a potential freeze issue in event synchronization found
+during their analysis.  Details are described in each commit log.
 
-The function _swapw() was removed in commit d97cf70af097 ("m68k: use
-asm-generic/io.h for non-MMU io access functions"), but is still used in
-drivers/net/ethernet/smsc/smc91x.h.
 
-Use ioread16be() and iowrite16be() to resolve the error.
+This patch (of 3):
 
-Cc: stable@vger.kernel.org
-Fixes: d97cf70af097 ("m68k: use asm-generic/io.h for non-MMU io access functions")
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240510113054.186648-2-thorsten.blum@toblux.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+A use-after-free issue has been reported regarding the timer sc_timer on
+the nilfs_sc_info structure.
+
+The problem is that even though it is used to wake up a sleeping log
+writer thread, sc_timer is not shut down until the nilfs_sc_info structure
+is about to be freed, and is used regardless of the thread's lifetime.
+
+Fix this issue by limiting the use of sc_timer only while the log writer
+thread is alive.
+
+Link: https://lkml.kernel.org/r/20240520132621.4054-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240520132621.4054-2-konishi.ryusuke@gmail.com
+Fixes: fdce895ea5dd ("nilfs2: change sc_timer from a pointer to an embedded one in struct nilfs_sc_info")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: "Bai, Shuangpeng" <sjb7183@psu.edu>
+Closes: https://groups.google.com/g/syzkaller/c/MK_LYqtt8ko/m/8rgdWeseAwAJ
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/smsc/smc91x.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nilfs2/segment.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/smsc/smc91x.h
-+++ b/drivers/net/ethernet/smsc/smc91x.h
-@@ -175,8 +175,8 @@ static inline void mcf_outsw(void *a, un
- 		writew(*wp++, a);
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2161,8 +2161,10 @@ static void nilfs_segctor_start_timer(st
+ {
+ 	spin_lock(&sci->sc_state_lock);
+ 	if (!(sci->sc_state & NILFS_SEGCTOR_COMMIT)) {
+-		sci->sc_timer.expires = jiffies + sci->sc_interval;
+-		add_timer(&sci->sc_timer);
++		if (sci->sc_task) {
++			sci->sc_timer.expires = jiffies + sci->sc_interval;
++			add_timer(&sci->sc_timer);
++		}
+ 		sci->sc_state |= NILFS_SEGCTOR_COMMIT;
+ 	}
+ 	spin_unlock(&sci->sc_state_lock);
+@@ -2363,10 +2365,21 @@ int nilfs_construct_dsync_segment(struct
+  */
+ static void nilfs_segctor_accept(struct nilfs_sc_info *sci)
+ {
++	bool thread_is_alive;
++
+ 	spin_lock(&sci->sc_state_lock);
+ 	sci->sc_seq_accepted = sci->sc_seq_request;
++	thread_is_alive = (bool)sci->sc_task;
+ 	spin_unlock(&sci->sc_state_lock);
+-	del_timer_sync(&sci->sc_timer);
++
++	/*
++	 * This function does not race with the log writer thread's
++	 * termination.  Therefore, deleting sc_timer, which should not be
++	 * done after the log writer thread exits, can be done safely outside
++	 * the area protected by sc_state_lock.
++	 */
++	if (thread_is_alive)
++		del_timer_sync(&sci->sc_timer);
  }
  
--#define SMC_inw(a, r)		_swapw(readw((a) + (r)))
--#define SMC_outw(lp, v, a, r)	writew(_swapw(v), (a) + (r))
-+#define SMC_inw(a, r)		ioread16be((a) + (r))
-+#define SMC_outw(lp, v, a, r)	iowrite16be(v, (a) + (r))
- #define SMC_insw(a, r, p, l)	mcf_insw(a + r, p, l)
- #define SMC_outsw(a, r, p, l)	mcf_outsw(a + r, p, l)
+ /**
+@@ -2392,7 +2405,7 @@ static void nilfs_segctor_notify(struct
+ 			sci->sc_flush_request &= ~FLUSH_DAT_BIT;
+ 
+ 		/* re-enable timer if checkpoint creation was not done */
+-		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) &&
++		if ((sci->sc_state & NILFS_SEGCTOR_COMMIT) && sci->sc_task &&
+ 		    time_before(jiffies, sci->sc_timer.expires))
+ 			add_timer(&sci->sc_timer);
+ 	}
+@@ -2582,6 +2595,7 @@ static int nilfs_segctor_thread(void *ar
+ 	int timeout = 0;
+ 
+ 	sci->sc_timer_task = current;
++	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
+ 
+ 	/* start sync. */
+ 	sci->sc_task = current;
+@@ -2648,6 +2662,7 @@ static int nilfs_segctor_thread(void *ar
+  end_thread:
+ 	/* end sync. */
+ 	sci->sc_task = NULL;
++	timer_shutdown_sync(&sci->sc_timer);
+ 	wake_up(&sci->sc_wait_task); /* for nilfs_segctor_kill_thread() */
+ 	spin_unlock(&sci->sc_state_lock);
+ 	return 0;
+@@ -2711,7 +2726,6 @@ static struct nilfs_sc_info *nilfs_segct
+ 	INIT_LIST_HEAD(&sci->sc_gc_inodes);
+ 	INIT_LIST_HEAD(&sci->sc_iput_queue);
+ 	INIT_WORK(&sci->sc_iput_work, nilfs_iput_work_func);
+-	timer_setup(&sci->sc_timer, nilfs_construction_timeout, 0);
+ 
+ 	sci->sc_interval = HZ * NILFS_SC_DEFAULT_TIMEOUT;
+ 	sci->sc_mjcp_freq = HZ * NILFS_SC_DEFAULT_SR_FREQ;
+@@ -2790,7 +2804,6 @@ static void nilfs_segctor_destroy(struct
+ 
+ 	down_write(&nilfs->ns_segctor_sem);
+ 
+-	timer_shutdown_sync(&sci->sc_timer);
+ 	kfree(sci);
+ }
  
 
 
