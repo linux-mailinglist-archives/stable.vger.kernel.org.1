@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-48351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2878FE8A0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648E58FECD2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 662112819EE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76C461C26354
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5C219753E;
-	Thu,  6 Jun 2024 14:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F83319B5BC;
+	Thu,  6 Jun 2024 14:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVBhg3Zk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KF3cxZq8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D0D197534;
-	Thu,  6 Jun 2024 14:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F99D198A3B;
+	Thu,  6 Jun 2024 14:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682917; cv=none; b=qnQFLd7+cDq34KkDtR+dTAH6jkJRlyV+vs3HCFnNJM1dehvh1VAnxlyFmK+ReJqTJJykDyipsjm6q+Z4CiCckawJfUyPKYiyvPqxQV00y3SnU0sa5N3HYxveYnm4ogUSuc9rm2kZVrn0iDNsmVhvg78Z5JDXro8zyUZB/vQ3kd0=
+	t=1717683413; cv=none; b=g/Oepx9Aq/KE8vxC/D5frRBCRzIElzz952ukZJ898YgcytdSbukUybmKDinj4BKWKOt8csUnWac6J91aV3AmoCT8iTz/I2b1v+DzeFKMPXUyucXMW5fc1UDHuLfClQFN5Ap5OzSSobOGPUPmcpNRob+MYm7CaSxTEnww6VL+28Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682917; c=relaxed/simple;
-	bh=gwBxuAl9XIkvDtF0BsEAr+TUf8kHo5riTQFuFZ/JSvY=;
+	s=arc-20240116; t=1717683413; c=relaxed/simple;
+	bh=NHbqShrA9YmZOhrnCjL0eDaqxCfjo6gi0s8Qcu1ygSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9IlFuVE5BveXPXtofvLHVQwkVKLDPMIxYT+2PQfxjc9lT+ZZgryIwzFEYxnr66SAvbnO6yiYHoqGct8eybLysOSFiksRLBGcf4c9OqWirnPfOgF0bJBtwmBngUsV/vrV8CJUY+07HKxQyWAa31r/MAZohb85vlFADuTXYahH8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVBhg3Zk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CFEC2BD10;
-	Thu,  6 Jun 2024 14:08:37 +0000 (UTC)
+	 MIME-Version; b=A1nNzq5Aq3ARJk4iThH8aeZEeqNh4saCD9jLdAxvMmdNlLH4kU4zeUN3v4mH+uUudRZY1ZrpoGDyAJH1xQ0ZwjW7d1yDzq1vfXbZTKoVzejlbGRluJqLOImgPhMswd1p1KAFSwU49VsyVBrQQ15kFtkxsSVqPp5jP7gtgo7gF88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KF3cxZq8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDBBC2BD10;
+	Thu,  6 Jun 2024 14:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682917;
-	bh=gwBxuAl9XIkvDtF0BsEAr+TUf8kHo5riTQFuFZ/JSvY=;
+	s=korg; t=1717683413;
+	bh=NHbqShrA9YmZOhrnCjL0eDaqxCfjo6gi0s8Qcu1ygSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVBhg3ZktcEeOYyMg3lI/0HzlGFkPkEiEwiJaR49lvwWi1lydP6lp+f29/xAYerdC
-	 nLkUPnyrRdnu9+qima359zv/47qlkjLJnoP8ZAPUEn+1kgpmzgrb5wMCIIbX8cmJl7
-	 10JAjY465d1iKnZ7pZNZjBRd/VcChePEjAtqH2JY=
+	b=KF3cxZq83a/3n90rbFmCUmq11kzM2pQSQxyTtSn4NVQvNfNauGUWgMuDkscCZm9YG
+	 GZZl31hFyjk9E+O2f45J24Pty9ywA+I9TNEcmMmcYMQsmcr3WXNe5uN4XL2ow86u6e
+	 BA9lU4cQcpYj+rBSPNHY75fJHX0AddRns0J0Vrv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	coresight@lists.linaro.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 049/374] coresight: etm4x: Fix unbalanced pm_runtime_enable()
+Subject: [PATCH 6.6 356/744] clk: qcom: dispcc-sm6350: fix DisplayPort clocks
 Date: Thu,  6 Jun 2024 16:00:28 +0200
-Message-ID: <20240606131653.457872907@linuxfoundation.org>
+Message-ID: <20240606131743.899681053@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,67 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit caa41c47dab7e1054f587e592ab21296e3a6781c ]
+[ Upstream commit 1113501cfb46d5c0eb960f0a8a9f6c0f91dc6fb6 ]
 
-There is an unbalanced pm_runtime_enable() in etm4_probe_platform_dev()
-when etm4_probe() fails. This problem can be observed via the coresight
-etm4 module's (load -> unload -> load) sequence when etm4_probe() fails
-in etm4_probe_platform_dev().
+On SM6350 DisplayPort link clocks use frequency tables inherited from
+the vendor kernel, it is not applicable in the upstream kernel. Drop
+frequency tables and use clk_byte2_ops for those clocks.
 
-[   63.379943] coresight-etm4x 7040000.etm: Unbalanced pm_runtime_enable!
-[   63.393630] coresight-etm4x 7140000.etm: Unbalanced pm_runtime_enable!
-[   63.407455] coresight-etm4x 7240000.etm: Unbalanced pm_runtime_enable!
-[   63.420983] coresight-etm4x 7340000.etm: Unbalanced pm_runtime_enable!
-[   63.420999] coresight-etm4x 7440000.etm: Unbalanced pm_runtime_enable!
-[   63.441209] coresight-etm4x 7540000.etm: Unbalanced pm_runtime_enable!
-[   63.454689] coresight-etm4x 7640000.etm: Unbalanced pm_runtime_enable!
-[   63.474982] coresight-etm4x 7740000.etm: Unbalanced pm_runtime_enable!
+This fixes frequency selection in the OPP core (which otherwise attempts
+to use invalid 810 KHz as DP link rate), also fixing the following
+message:
+msm-dp-display ae90000.displayport-controller: _opp_config_clk_single: failed to set clock rate: -22
 
-This fixes the above problem - with an explicit pm_runtime_disable() call
-when etm4_probe() fails during etm4_probe_platform_dev().
-
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Hanjun Guo <guohanjun@huawei.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: James Clark <james.clark@arm.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: linux-acpi@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: coresight@lists.linaro.org
-Fixes: 5214b563588e ("coresight: etm4x: Add support for sysreg only devices")
-Reviewed-by: James Clark <james.clark@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20240314055843.2625883-2-anshuman.khandual@arm.com
+Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240424-dispcc-dp-clocks-v2-2-b44038f3fa96@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/dispcc-sm6350.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index c2ca4a02dfce1..06a9b94b8c13e 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -2213,6 +2213,9 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
- 	ret = etm4_probe(&pdev->dev);
+diff --git a/drivers/clk/qcom/dispcc-sm6350.c b/drivers/clk/qcom/dispcc-sm6350.c
+index ea6f54ed846ec..441f042f5ea45 100644
+--- a/drivers/clk/qcom/dispcc-sm6350.c
++++ b/drivers/clk/qcom/dispcc-sm6350.c
+@@ -221,26 +221,17 @@ static struct clk_rcg2 disp_cc_mdss_dp_crypto_clk_src = {
+ 	},
+ };
  
- 	pm_runtime_put(&pdev->dev);
-+	if (ret)
-+		pm_runtime_disable(&pdev->dev);
-+
- 	return ret;
- }
+-static const struct freq_tbl ftbl_disp_cc_mdss_dp_link_clk_src[] = {
+-	F(162000, P_DP_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	F(270000, P_DP_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	F(540000, P_DP_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	F(810000, P_DP_PHY_PLL_LINK_CLK, 1, 0, 0),
+-	{ }
+-};
+-
+ static struct clk_rcg2 disp_cc_mdss_dp_link_clk_src = {
+ 	.cmd_rcgr = 0x10f8,
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = disp_cc_parent_map_0,
+-	.freq_tbl = ftbl_disp_cc_mdss_dp_link_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "disp_cc_mdss_dp_link_clk_src",
+ 		.parent_data = disp_cc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT | CLK_GET_RATE_NOCACHE,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_byte2_ops,
+ 	},
+ };
  
 -- 
 2.43.0
