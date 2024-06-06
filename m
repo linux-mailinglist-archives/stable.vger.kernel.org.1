@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-49257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680618FEC89
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 950588FEAE4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:22:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8257B23DBD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20604B24712
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4F2198A2C;
-	Thu,  6 Jun 2024 14:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D67A1A188D;
+	Thu,  6 Jun 2024 14:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C23veXZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miRrwrgv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7BF196DAB;
-	Thu,  6 Jun 2024 14:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0F61A187A;
+	Thu,  6 Jun 2024 14:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683377; cv=none; b=JIewLAz0C4kNQHaL0Mksn+VTUVp+lAk+Ix+wEl+/16SFN1aYZPhZj8JKDoVxKtGRuUZum606HMlJapvJ9AL/ULuxq7RknuUJR8Z0GExSQeyQTaZU4FAncSsXGTVCbHipT6ZrHMBVd+UBRy2fbP6KJBtJGlMK8OcSIMCKrRZGTT8=
+	t=1717683188; cv=none; b=tIISLYDZg6fzlz5SejOaZL+sS7LyJldM8u9MUinFeDfOufOxSrWwIKVn/4Se3RijFoDlmfzNZRY1Ay9bI45pvvCCjbz1K7mgJARP+wi5oE5HibaWdsKq5O5OLmO0P3fKn/ZWV3batytpBPuftWn7J77lew/pa3hpYR6VBnmiDv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683377; c=relaxed/simple;
-	bh=IVFzU9tsVgJmaEH+mymawBnpWmY/Gcv/W+hF+iY4OOo=;
+	s=arc-20240116; t=1717683188; c=relaxed/simple;
+	bh=vorI8YKbZFJG3nubjsASGYz4aNgE35jPCE5e47K5wVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fjzOeY/tXXfTw9yfbpxCZWkHYyC22NQTp+LBdkS7kZ1pX61hFIsbvrtJhLEnz7UR9mjdh9LQQz4sZQ2uy46sNjlNf4qt+xEWaQ+4+d7nrO0oYJWHjMRVJiVe7RUlDnjo2nbEPaQzmfwwKs+M93zSkJZbEZPx2x2NbEygpPeqeTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C23veXZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE8FC32786;
-	Thu,  6 Jun 2024 14:16:17 +0000 (UTC)
+	 MIME-Version; b=nnd0yXn8X6j4tJtcR9hdDWmjykKu7ufdKMpm2SfQQmpKI/zcaid7Btc+z7PVO8s4w+I6WvPqhsFFkdYzhgBm58FKNWoW1AWN3L8UbRUoqyK5jf2WUi1znPpD1BBsYZwefs5jU+VsxAd65gmFe96MBtQjMnKxMjuZX278x6NHP4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miRrwrgv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94FBC2BD10;
+	Thu,  6 Jun 2024 14:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683377;
-	bh=IVFzU9tsVgJmaEH+mymawBnpWmY/Gcv/W+hF+iY4OOo=;
+	s=korg; t=1717683187;
+	bh=vorI8YKbZFJG3nubjsASGYz4aNgE35jPCE5e47K5wVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C23veXZA7Nj3sYS4tFgxNvuYThuM2pJE1irsssGuX+Q4FIOvpG/5bguZDyKA9f3oY
-	 FT1Up9HXr9ykM83oIkPNGaih6NYLYM8PUn0LJyrbRhP3vVtliLVxtDyh7M6QoBsnuT
-	 lGGXv8k278RPGley3VRuf6dw1RB31lUPlzrnUePM=
+	b=miRrwrgv8h6+jkt3fLRNWGXE+64kC7fOY3JpzkRb2glhQGOeHygCBPRgwLZLAWCex
+	 Z8jaC5DgpO9GmTF7l4veAPF2uIjpqa7o317VEIKlKmDWIe3skQ5VYqvskPOihE+JTL
+	 BENx7+O6UrCQZ4juv9o8T+ngndUEZ4m/l+HJz1Tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 319/744] drm/bridge: anx7625: Dont log an error when DSI host cant be found
+Subject: [PATCH 6.1 062/473] nvmet-tcp: fix possible memory leak when tearing down a controller
 Date: Thu,  6 Jun 2024 15:59:51 +0200
-Message-ID: <20240606131742.659779858@linuxfoundation.org>
+Message-ID: <20240606131701.945251727@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit ef4a9204d594fe959cdbc7418273caf4001535c8 ]
+[ Upstream commit 6825bdde44340c5a9121f6d6fa25cc885bd9e821 ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+When we teardown the controller, we wait for pending I/Os to complete
+(sq->ref on all queues to drop to zero) and then we go over the commands,
+and free their command buffers in case they are still fetching data from
+the host (e.g. processing nvme writes) and have yet to take a reference
+on the sq.
 
-Fixes: 269332997a16 ("drm/bridge: anx7625: Return -EPROBE_DEFER if the dsi host was not found")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-1-619a28148e5c@collabora.com
+However, we may miss the case where commands have failed before executing
+and are queued for sending a response, but will never occur because the
+queue socket is already down. In this case we may miss deallocating command
+buffers.
+
+Solve this by freeing all commands buffers as nvmet_tcp_free_cmd_buffers is
+idempotent anyways.
+
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/nvme/target/tcp.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 29d91493b101a..4ee5614a26236 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -2076,10 +2076,8 @@ static int anx7625_setup_dsi_device(struct anx7625_data *ctx)
- 	};
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 3480768274699..5556f55880411 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -297,6 +297,7 @@ static int nvmet_tcp_check_ddgst(struct nvmet_tcp_queue *queue, void *pdu)
+ 	return 0;
+ }
  
- 	host = of_find_mipi_dsi_host_by_node(ctx->pdata.mipi_host_node);
--	if (!host) {
--		DRM_DEV_ERROR(dev, "fail to find dsi host.\n");
--		return -EPROBE_DEFER;
++/* If cmd buffers are NULL, no operation is performed */
+ static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
+ {
+ 	kfree(cmd->iov);
+@@ -1437,13 +1438,9 @@ static void nvmet_tcp_free_cmd_data_in_buffers(struct nvmet_tcp_queue *queue)
+ 	struct nvmet_tcp_cmd *cmd = queue->cmds;
+ 	int i;
+ 
+-	for (i = 0; i < queue->nr_cmds; i++, cmd++) {
+-		if (nvmet_tcp_need_data_in(cmd))
+-			nvmet_tcp_free_cmd_buffers(cmd);
 -	}
-+	if (!host)
-+		return dev_err_probe(dev, -EPROBE_DEFER, "fail to find dsi host.\n");
+-
+-	if (!queue->nr_cmds && nvmet_tcp_need_data_in(&queue->connect))
+-		nvmet_tcp_free_cmd_buffers(&queue->connect);
++	for (i = 0; i < queue->nr_cmds; i++, cmd++)
++		nvmet_tcp_free_cmd_buffers(cmd);
++	nvmet_tcp_free_cmd_buffers(&queue->connect);
+ }
  
- 	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
- 	if (IS_ERR(dsi)) {
+ static void nvmet_tcp_release_queue_work(struct work_struct *w)
 -- 
 2.43.0
 
