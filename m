@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-48924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5218FEB1E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F8B8FECBF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E8AE1C2572C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3870B1F261C7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598EE1A2FAF;
-	Thu,  6 Jun 2024 14:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D571B29B5;
+	Thu,  6 Jun 2024 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyU0rQm1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCbh+/5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E60199386;
-	Thu,  6 Jun 2024 14:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8383119B5A2;
+	Thu,  6 Jun 2024 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683214; cv=none; b=cwt8DdpP0b05i4X3Ul9BJ4DgrCwPdUi+d2mL+sNqo9Vttqa2n7OmzxnPjoofUCFXtlPwjAvwda/0Tyqa4JeW/3mzT6MU0U/xdmATQOfhlKNc55uKDEzFNPskS4DX5hbclCrzqAK1+gO/OeKj7XaNth13mKOvIVPkMpfWFNaDgqg=
+	t=1717683404; cv=none; b=NmgfjuWfnzFxS/4+ahDWSLv7ORg4M2B2ZBfVM0+Z/ov4pZ69j4QyUempjOJJoar8QM8ErjKJrpQV8E4bD/T+CYjhaVgr9p7Fc8G4WPifzc2sIqLyZtZZj0No/m6B17Xh5qdXFAZ35pNSAeWtiSxcyrVuww2rnFjBjTUqc7laOQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683214; c=relaxed/simple;
-	bh=pc4TepDZRifszbojm5BKJOcmwLI4MaT4+/vIh+5KqQ8=;
+	s=arc-20240116; t=1717683404; c=relaxed/simple;
+	bh=LOJbocu3arC/7K6raiMdN4qO81QQn/qYyw9IdAxdH6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pw6TDwna811vVoVugDgMHYiRxTPIf+jGPFvKGhM30vVM1edGRBEZJfEoXx3IReljFFyePWxtmsAyB404j04AeuaadEi0Hm60M8dtWGrWqe+oBrNXYGUedTj0G1ne4Tp5Wfxp5GhP2fdTAU0OpBo3LyfKoy6mCXYyeJCAQ6fg+N4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyU0rQm1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8672C32782;
-	Thu,  6 Jun 2024 14:13:33 +0000 (UTC)
+	 MIME-Version; b=rxjAJOjFlUKPu/XHBLdOQhEdsht6jSOjS5zvDFYT6UBR6Re64JL5MbJfqCKoxr/Q/i41qfOoU3sdNyid7rKmHwmZ1ytA8wBUdODRjER3sO36lVgnJKBZGGbKiegeswheJK8244uSKWYkhlXdiWh5MpX1ugr28GxJEqyR9tsqBBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCbh+/5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DB0C4AF08;
+	Thu,  6 Jun 2024 14:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683214;
-	bh=pc4TepDZRifszbojm5BKJOcmwLI4MaT4+/vIh+5KqQ8=;
+	s=korg; t=1717683404;
+	bh=LOJbocu3arC/7K6raiMdN4qO81QQn/qYyw9IdAxdH6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyU0rQm1jdq5Yl4QPs+5Vh2bfh29F23yTYltq0vz5QQd3MJqaQNJvJoMGNp1idzTv
-	 jnhRvzekh1r0MbFKah1JTuPhblRJzxq8O/o91MMKyvcIXXNBfFzp3e2snv2tAGFxLZ
-	 +QmjWyzhxWu6PQ9dMLU/VAInQ5aiEg1KUt61cAhU=
+	b=mCbh+/5Ms0I9+45UnAYDoCbwGbrvM57BvA8OjZp6KNA7DkiloGynaC5s8SiNbz8Y+
+	 syqDrPvomnLq4LeDuR+eNnAFXGxVGh6F3MM7Y2aNUvMmWJm1+F/f4r3ouWc/JRq4Cp
+	 db1ky3hWznBdhBtXlJi9bqvLaTTSjwJ3TPsLHwVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Kalle Valo <kvalo@kernel.org>,
+	Bob Pearson <rpearsonhpe@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/473] wifi: brcmfmac: pcie: handle randbuf allocation failure
+Subject: [PATCH 6.6 348/744] RDMA/rxe: Fix seg fault in rxe_comp_queue_pkt
 Date: Thu,  6 Jun 2024 16:00:20 +0200
-Message-ID: <20240606131702.920586186@linuxfoundation.org>
+Message-ID: <20240606131743.625843229@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit 316f790ebcf94bdf59f794b7cdea4068dc676d4c ]
+[ Upstream commit 2b23b6097303ed0ba5f4bc036a1c07b6027af5c6 ]
 
-The kzalloc() in brcmf_pcie_download_fw_nvram() will return null
-if the physical memory has run out. As a result, if we use
-get_random_bytes() to generate random bytes in the randbuf, the
-null pointer dereference bug will happen.
+In rxe_comp_queue_pkt() an incoming response packet skb is enqueued to the
+resp_pkts queue and then a decision is made whether to run the completer
+task inline or schedule it. Finally the skb is dereferenced to bump a 'hw'
+performance counter. This is wrong because if the completer task is
+already running in a separate thread it may have already processed the skb
+and freed it which can cause a seg fault.  This has been observed
+infrequently in testing at high scale.
 
-In order to prevent allocation failure, this patch adds a separate
-function using buffer on kernel stack to generate random bytes in
-the randbuf, which could prevent the kernel stack from overflow.
+This patch fixes this by changing the order of enqueuing the packet until
+after the counter is accessed.
 
-Fixes: 91918ce88d9f ("wifi: brcmfmac: pcie: Provide a buffer of random bytes to the device")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240306140437.18177-1-duoming@zju.edu.cn
+Link: https://lore.kernel.org/r/20240329145513.35381-4-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Fixes: 0b1e5b99a48b ("IB/rxe: Add port protocol stats")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_comp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index 3b1277a8bd617..99cc41135473a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -1640,6 +1640,15 @@ struct brcmf_random_seed_footer {
- #define BRCMF_RANDOM_SEED_MAGIC		0xfeedc0de
- #define BRCMF_RANDOM_SEED_LENGTH	0x100
+diff --git a/drivers/infiniband/sw/rxe/rxe_comp.c b/drivers/infiniband/sw/rxe/rxe_comp.c
+index d0bdc2d8adc82..acd2172bf092b 100644
+--- a/drivers/infiniband/sw/rxe/rxe_comp.c
++++ b/drivers/infiniband/sw/rxe/rxe_comp.c
+@@ -131,12 +131,12 @@ void rxe_comp_queue_pkt(struct rxe_qp *qp, struct sk_buff *skb)
+ {
+ 	int must_sched;
  
-+static noinline_for_stack void
-+brcmf_pcie_provide_random_bytes(struct brcmf_pciedev_info *devinfo, u32 address)
-+{
-+	u8 randbuf[BRCMF_RANDOM_SEED_LENGTH];
+-	skb_queue_tail(&qp->resp_pkts, skb);
+-
+-	must_sched = skb_queue_len(&qp->resp_pkts) > 1;
++	must_sched = skb_queue_len(&qp->resp_pkts) > 0;
+ 	if (must_sched != 0)
+ 		rxe_counter_inc(SKB_TO_PKT(skb)->rxe, RXE_CNT_COMPLETER_SCHED);
+ 
++	skb_queue_tail(&qp->resp_pkts, skb);
 +
-+	get_random_bytes(randbuf, BRCMF_RANDOM_SEED_LENGTH);
-+	memcpy_toio(devinfo->tcm + address, randbuf, BRCMF_RANDOM_SEED_LENGTH);
-+}
-+
- static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 					const struct firmware *fw, void *nvram,
- 					u32 nvram_len)
-@@ -1682,7 +1691,6 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 				.length = cpu_to_le32(rand_len),
- 				.magic = cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
- 			};
--			void *randbuf;
- 
- 			/* Some Apple chips/firmwares expect a buffer of random
- 			 * data to be present before NVRAM
-@@ -1694,10 +1702,7 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 				    sizeof(footer));
- 
- 			address -= rand_len;
--			randbuf = kzalloc(rand_len, GFP_KERNEL);
--			get_random_bytes(randbuf, rand_len);
--			memcpy_toio(devinfo->tcm + address, randbuf, rand_len);
--			kfree(randbuf);
-+			brcmf_pcie_provide_random_bytes(devinfo, address);
- 		}
- 	} else {
- 		brcmf_dbg(PCIE, "No matching NVRAM file found %s\n",
+ 	if (must_sched)
+ 		rxe_sched_task(&qp->comp.task);
+ 	else
 -- 
 2.43.0
 
