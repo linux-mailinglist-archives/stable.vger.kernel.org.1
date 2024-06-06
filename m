@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C61B8FEEDB
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC258FED7F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13404288719
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0C591F2119F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81D61C7D9F;
-	Thu,  6 Jun 2024 14:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DF21BB6BF;
+	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1Y1uf8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSeIuqlt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C661A186C;
-	Thu,  6 Jun 2024 14:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD0D19DF62;
+	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683710; cv=none; b=qpZBWcMKHTzf8nJC8CSw62cUkQh5f3k0x7Hl8tehHOsaMu60eDfPzOfAzxDqjiYu82qmumznzDZ305/HDmIJ27DhRNAoVyJBGwewW0cdHH9PSvOPgoEDEpQZ7+UpgRHGOdQV1998rnS197xgGPO239O0dM/aH2P13a0sUSpCOJU=
+	t=1717683493; cv=none; b=U+jvc8ZUFEZcKO+oAlIEC/Z11TKborCRK5cGAuJIQrtz5wdW3uXC6fZan/VW9jbT21VV3D7oL799slNIviJkgvovvOyMAOe/tDhCBC3EHjZ1V2tDNmjYrcv70vVjwNDsPhZmUvvQWtAglnoEpSfdmrKK1q74DE66aPArXySvSa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683710; c=relaxed/simple;
-	bh=xG59/KK5G5sRmxUess8kGaCv16aNOydmlRxn2fjpf3k=;
+	s=arc-20240116; t=1717683493; c=relaxed/simple;
+	bh=W2SwFBLySb02PC18EHJQaUeBhRSzZ5jXR9o+y69KMQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpE1IYRuk9cZrbVXZ5wERoruusbrbYUor+0paXh9Nz6c59f3jE7nrNxFqB/+Qwr1Nf70BunHFrjto5m4M24zJm+ZqBCIaSM4JwX62XO6EjrT85TERGnGF/TuclD1VWoMYIWQ0hIyEz/yrEizkcKHXLGNTRbSzYsvYJH+Sw6eGiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1Y1uf8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77061C2BD10;
-	Thu,  6 Jun 2024 14:21:50 +0000 (UTC)
+	 MIME-Version; b=IjtUvQSNa6MVSnexUfSxzMTxjAGwUs/EvJaSIWl9RI7Hc0QE554siWSK4Xe89WX7Wr3KuABnCo9elKh0auX7GjKACG4QFeFHZPkOjIUs0MXFBNaXXLu/0fXDVASW0NpPSDE3SzM34d4l5lFT8HoIz7U0xPXtrKDWbyYnFF82SB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSeIuqlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C059C32786;
+	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683710;
-	bh=xG59/KK5G5sRmxUess8kGaCv16aNOydmlRxn2fjpf3k=;
+	s=korg; t=1717683493;
+	bh=W2SwFBLySb02PC18EHJQaUeBhRSzZ5jXR9o+y69KMQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1Y1uf8TXwBOKCqDlRh0lZGha/HizYdX4OdKf4MQWlTAbgA9H1ioqb/BwKcl17xe2
-	 8ZjHVbgGi+ks3+HOGwJJoo7/wD7RFqiVt4qC3z+npNcqHzf/sza0fJu/jG/fmIqVJg
-	 RbyAPQfaEwSjIgAIArXkIS+fUeqvcwghpCM/VaYQ=
+	b=QSeIuqltA0jSVoqcx0u927LNClZlCdRoTW1KxQMisEj+9P+8dIvpw47GPxmuVRupK
+	 RUQd7GDdCsu/IsaE/L4Ey2t8Zy76a0270hzoXLVJyZtp8KkwefYQgFJrw1v1+tXXh3
+	 l/QeE6+q0/+ZtR6gfZx/0fY1alnQNN6EKref6IhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaiser <martin@kaiser.cx>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 640/744] nfs: keep server info for remounts
+Subject: [PATCH 6.1 383/473] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
 Date: Thu,  6 Jun 2024 16:05:12 +0200
-Message-ID: <20240606131753.002785673@linuxfoundation.org>
+Message-ID: <20240606131712.517152856@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-[ Upstream commit b322bf9e983addedff0894c55e92d58f4d16d92a ]
+[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
 
-With newer kernels that use fs_context for nfs mounts, remounts fail with
--EINVAL.
+Couple of Minor fixes:
 
-$ mount -t nfs -o nolock 10.0.0.1:/tmp/test /mnt/test/
-$ mount -t nfs -o remount /mnt/test/
-mount: mounting 10.0.0.1:/tmp/test on /mnt/test failed: Invalid argument
+- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
+parse_ppp_data
 
-For remounts, the nfs server address and port are populated by
-nfs_init_fs_context and later overwritten with 0x00 bytes by
-nfs23_parse_monolithic. The remount then fails as the server address is
-invalid.
+- If hcall fails, values set should be at-least zero. It shouldn't be
+uninitialized values. Fix that for h_get_mpp and h_get_ppp
 
-Fix this by not overwriting nfs server info in nfs23_parse_monolithic if
-we're doing a remount.
-
-Fixes: f2aedb713c28 ("NFS: Add fs_context support.")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/fs_context.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/hvcall.h        | 2 +-
+ arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
+ arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfs/fs_context.c b/fs/nfs/fs_context.c
-index 853e8d609bb3b..41126d6dcd760 100644
---- a/fs/nfs/fs_context.c
-+++ b/fs/nfs/fs_context.c
-@@ -1111,9 +1111,12 @@ static int nfs23_parse_monolithic(struct fs_context *fc,
- 		ctx->acdirmax	= data->acdirmax;
- 		ctx->need_mount	= false;
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 95fd7f9485d55..47bc10cdb70b5 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -539,7 +539,7 @@ struct hvcall_mpp_data {
+ 	unsigned long backing_mem;
+ };
  
--		memcpy(sap, &data->addr, sizeof(data->addr));
--		ctx->nfs_server.addrlen = sizeof(data->addr);
--		ctx->nfs_server.port = ntohs(data->addr.sin_port);
-+		if (!is_remount_fc(fc)) {
-+			memcpy(sap, &data->addr, sizeof(data->addr));
-+			ctx->nfs_server.addrlen = sizeof(data->addr);
-+			ctx->nfs_server.port = ntohs(data->addr.sin_port);
-+		}
-+
- 		if (sap->ss_family != AF_INET ||
- 		    !nfs_verify_server_address(sap))
- 			goto out_no_address;
+-int h_get_mpp(struct hvcall_mpp_data *);
++long h_get_mpp(struct hvcall_mpp_data *mpp_data);
+ 
+ struct hvcall_mpp_x_data {
+ 	unsigned long coalesced_bytes;
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 5186d65d772e2..29d235b02f062 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -1904,10 +1904,10 @@ notrace void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
+  * h_get_mpp
+  * H_GET_MPP hcall returns info in 7 parms
+  */
+-int h_get_mpp(struct hvcall_mpp_data *mpp_data)
++long h_get_mpp(struct hvcall_mpp_data *mpp_data)
+ {
+-	int rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
+ 
+ 	rc = plpar_hcall9(H_GET_MPP, retbuf);
+ 
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index ca10a3682c46e..a3f5debd834b2 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -112,8 +112,8 @@ struct hvcall_ppp_data {
+  */
+ static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
+ {
+-	unsigned long rc;
+-	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	long rc;
+ 
+ 	rc = plpar_hcall9(H_GET_PPP, retbuf);
+ 
+@@ -192,7 +192,7 @@ static void parse_ppp_data(struct seq_file *m)
+ 	struct hvcall_ppp_data ppp_data;
+ 	struct device_node *root;
+ 	const __be32 *perf_level;
+-	int rc;
++	long rc;
+ 
+ 	rc = h_get_ppp(&ppp_data);
+ 	if (rc)
 -- 
 2.43.0
 
