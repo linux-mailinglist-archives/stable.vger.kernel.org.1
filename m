@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-49449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5153B8FED4C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A238FEBAC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79F4A1C23575
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377141C25354
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DF31BA866;
-	Thu,  6 Jun 2024 14:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1705B19A2A8;
+	Thu,  6 Jun 2024 14:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpMfYdAI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOjYwGZj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F16198E85;
-	Thu,  6 Jun 2024 14:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8E7197A8F;
+	Thu,  6 Jun 2024 14:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683471; cv=none; b=Z95fhCFYQ+DHHlde7RAKeyP4Ews2gOstG7dCB7BN3GOh5gQkxkpENZwDHIDplE0cyZw2zc48nuW26n8l2ipDlRZNfzzjv9NrtUMz5Ckbd1wEdS1SBxauEQDzKXQvhQygRvqQwzZ5+0TuTkkFrfy6uumU9agKoqCzy/EAy3jp4gI=
+	t=1717683279; cv=none; b=beuNUoidNtJ8vfA4vzx08xx5SkxEvs5/yT99bURiEuV1/HiayWeOWZVOqOL0JzsMg/ynPo0V8oeEvEsFgvUiHw+mynS73QePR9sBWX+W6f5+qk6utjqpG0uTttz0mOXQiw6plWXaeYGb97Aa6e/WGm9bx3PL/wRFH7hrcnpemZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683471; c=relaxed/simple;
-	bh=iqBvnF9VSSXCeXP7s3ghWVAfxwnpaoKO8E+LHqQW6FQ=;
+	s=arc-20240116; t=1717683279; c=relaxed/simple;
+	bh=6AsYuOqF+r59VvyVxEonuJJuNEW9VrnMV9vznWPvWM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ey9EmtYVl+WqCXL90A/BOezPDPO0uKxVfa7LCJoyyVkky4zPTiR5mrjtXR5nmDSnb2ckVIAJ9yMNNo4zC3H9AS19zeCJx9r/+nF/BxraFB5nmtsWqS/KTZXn3rx5Qm08U31GubKHUBSm+B0FjUt0AIlXySsLiJwwqAOLnCLVvbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpMfYdAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43013C2BD10;
-	Thu,  6 Jun 2024 14:17:51 +0000 (UTC)
+	 MIME-Version; b=oYfIBCfIwPLL+K4tGq5+deArSY6P20JW5qA4hv5ajpVOm2v7ilWdfktupnTi/yNwUXdcK2mtZvHtlTK4hnPTKgbPTj/1BcA1iYyS/tcMaz7zN7uYRheeE6tXSnisYRWTTYU4Jkcxbuj9CKKRD3GS8yp4d5xzlFPB1WCWyqE9ObU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOjYwGZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A952BC2BD10;
+	Thu,  6 Jun 2024 14:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683471;
-	bh=iqBvnF9VSSXCeXP7s3ghWVAfxwnpaoKO8E+LHqQW6FQ=;
+	s=korg; t=1717683279;
+	bh=6AsYuOqF+r59VvyVxEonuJJuNEW9VrnMV9vznWPvWM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpMfYdAIqrRC7emb988KJFbxKr3xHd4E2+G0zEQ+xDgvbE9dZ6pBfN5obSCCLoHJG
-	 aWUfmCVL2fuqWtBfsA2lI9b0WWgzQN8p+yx+BqPfwcCZoJg99dMaOTYnXFd4+1/hoN
-	 vy7fq4H7JbgQuHabB7HSV3++dbOX5QHoB7nWZDZY=
+	b=GOjYwGZjVn2BDCnYM2yFtwQFYU9tROIjSmWMMOnajuMZsf+Ce6Fl7OA314IiP9GEL
+	 ldOGonehCZIY303fXcYTl3fBEmp3v6PcpdcrP7y6xWqidQrAY6FTjsAiz8IGnOwagH
+	 7+Fz2y8RBWY9dmG1wBMgXBjIAQ7XyIU9vTkFWZzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 414/744] perf annotate: Fix annotation_calc_lines() to pass correct address to get_srcline()
+Subject: [PATCH 6.1 157/473] scsi: bfa: Ensure the copied buf is NUL terminated
 Date: Thu,  6 Jun 2024 16:01:26 +0200
-Message-ID: <20240606131745.756393236@linuxfoundation.org>
+Message-ID: <20240606131705.149856501@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,82 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit aaf494cf483a1a835c44e942861429b30a00cab0 ]
+[ Upstream commit 13d0cecb4626fae67c00c84d3c7851f6b62f7df3 ]
 
-It should pass a proper address (i.e. suitable for objdump or addr2line)
-to get_srcline() in order to work correctly.  It used to pass an address
-with map__rip_2objdump() as the second argument but later it's changed
-to use notes->start.  It's ok in normal cases but it can be changed when
-annotate_opts.full_addr is set.  So let's convert the address directly
-instead of using the notes->start.
+Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
+userspace to that buffer. Later, we use sscanf on this buffer but we don't
+ensure that the string is terminated inside the buffer, this can lead to
+OOB read when using sscanf. Fix this issue by using memdup_user_nul instead
+of memdup_user.
 
-Also the last argument is an IP to print symbol offset if requested.  So
-it should pass symbol-relative address.
-
-Fixes: 7d18a824b5e57ddd ("perf annotate: Toggle full address <-> offset display")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240404175716.1225482-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 9f30b674759b ("bfa: replace 2 kzalloc/copy_from_user by memdup_user")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-3-f1f1b53a10f4@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/annotate.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/scsi/bfa/bfad_debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index 5fa4831631140..83da2bceb5959 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -2906,7 +2906,7 @@ void annotation__toggle_full_addr(struct annotation *notes, struct map_symbol *m
- 	annotation__update_column_widths(notes);
- }
+diff --git a/drivers/scsi/bfa/bfad_debugfs.c b/drivers/scsi/bfa/bfad_debugfs.c
+index 52db147d9979d..f6dd077d47c9a 100644
+--- a/drivers/scsi/bfa/bfad_debugfs.c
++++ b/drivers/scsi/bfa/bfad_debugfs.c
+@@ -250,7 +250,7 @@ bfad_debugfs_write_regrd(struct file *file, const char __user *buf,
+ 	unsigned long flags;
+ 	void *kern_buf;
  
--static void annotation__calc_lines(struct annotation *notes, struct map *map,
-+static void annotation__calc_lines(struct annotation *notes, struct map_symbol *ms,
- 				   struct rb_root *root)
- {
- 	struct annotation_line *al;
-@@ -2914,6 +2914,7 @@ static void annotation__calc_lines(struct annotation *notes, struct map *map,
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
  
- 	list_for_each_entry(al, &notes->src->source, node) {
- 		double percent_max = 0.0;
-+		u64 addr;
- 		int i;
+@@ -317,7 +317,7 @@ bfad_debugfs_write_regwr(struct file *file, const char __user *buf,
+ 	unsigned long flags;
+ 	void *kern_buf;
  
- 		for (i = 0; i < al->data_nr; i++) {
-@@ -2929,8 +2930,9 @@ static void annotation__calc_lines(struct annotation *notes, struct map *map,
- 		if (percent_max <= 0.5)
- 			continue;
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
  
--		al->path = get_srcline(map__dso(map), notes->start + al->offset, NULL,
--				       false, true, notes->start + al->offset);
-+		addr = map__rip_2objdump(ms->map, ms->sym->start);
-+		al->path = get_srcline(map__dso(ms->map), addr + al->offset, NULL,
-+				       false, true, ms->sym->start + al->offset);
- 		insert_source_line(&tmp_root, al);
- 	}
- 
-@@ -2941,7 +2943,7 @@ static void symbol__calc_lines(struct map_symbol *ms, struct rb_root *root)
- {
- 	struct annotation *notes = symbol__annotation(ms->sym);
- 
--	annotation__calc_lines(notes, ms->map, root);
-+	annotation__calc_lines(notes, ms, root);
- }
- 
- int symbol__tty_annotate2(struct map_symbol *ms, struct evsel *evsel)
 -- 
 2.43.0
 
