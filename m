@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B7E8FED16
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02028FEB7C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BEBA1F2455F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F27671C247A5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E44198E73;
-	Thu,  6 Jun 2024 14:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0542199EB4;
+	Thu,  6 Jun 2024 14:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1btvGEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJ9N5hnc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9725A198E70;
-	Thu,  6 Jun 2024 14:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A371AB51C;
+	Thu,  6 Jun 2024 14:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683445; cv=none; b=pdS1Yk1ML6B+UPvO0VJuvQ0IPiSoc7Yt6zxPGK6t/pLJssH9t/J++PhzIszfpwD4yeqA0RL5PcqArCfhnYc6UMd54mG1/DuTVgBv2UKX4sWzGLkJsUqXVh5lWIZJLj6bQCyqnSQdykYnZGpIx2Lz+GiCxRsxov9chhSSF1hFMZk=
+	t=1717683257; cv=none; b=UydTfa8TCOhjs252lHwAxqJQL2reSIAv8wC5K0f4Zm5blwJ6v7Mb2qWBDLQVGA9IXc1gMPhC1aI8LMctpW53fDZ0xy6cTZmKtQGQUNmPIUHLfYlU5Y27blYN0YHx38t4b3Yvx8iVXDvupaEWk4q5OFvsBVrtDkP87TX9xE44KPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683445; c=relaxed/simple;
-	bh=g4asM2f2VTEZaFRCRTQ8rQTmUNDSrIiAj/9ziJCM5mc=;
+	s=arc-20240116; t=1717683257; c=relaxed/simple;
+	bh=AxsdZ22BOHfUpYza+cranvNRez9Yoell06OzK6w6QR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBrEAx+cqKu4ijuk3mO8PAazoFDTIzoOrGAK3BA6YGBt7ka70F1vtGhzvqfUOKYUDClXtIqbmypvCABPIP0kp7BjpP4RmtHR6gbnPE8zTHjsYdv+KnZrKpv1uE4KjYs6ZhQfz2TOGhIlMiJX0r1ifWV5QdZ1/NBODs7zlEwW8dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1btvGEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6801EC4AF07;
-	Thu,  6 Jun 2024 14:17:25 +0000 (UTC)
+	 MIME-Version; b=ZrWGZdCA3mjdB2ca13VsG2VIBo2Slbvixt3uDpNqtg1RL7QiB2Jv6D6yVkE1MQTwTCg5BShoRFdTNZQi5gaaeNqIIOK18rx5s8C9mUOx7IxP+nczfAoGGidL3LD3nrA2tFU0OG4OkvmoigpN3I6CoYKCQ1yQtI5Fcl8pwhcCZ4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJ9N5hnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343E6C2BD10;
+	Thu,  6 Jun 2024 14:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683445;
-	bh=g4asM2f2VTEZaFRCRTQ8rQTmUNDSrIiAj/9ziJCM5mc=;
+	s=korg; t=1717683257;
+	bh=AxsdZ22BOHfUpYza+cranvNRez9Yoell06OzK6w6QR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1btvGEFBHuYyzxUckVH5xeFx65D+6UI/2ObI99eb+osOqqxeLlZQEHzUd5dAbCBc
-	 dP9CkXkmYb1RqtY9KUgIcDkRU8kY5MbgEm69lo59+uxpYVWKC27mgwuDHasVvybHLe
-	 zhKIDvqz4mlY6XtQBp7zvIsYOVzmzcUravfe6eTo=
+	b=EJ9N5hncwUe+WI/g9nfEOLaFbxmns0E/NQxOBZdbbJEtVFYO6IKSF8xte1H05qe+8
+	 bHHMimR67dO9oRVRocPKGNzAGfnabc62ZteRv7sG/n9Nwq3ZR39lyF4qkp2SB5yHBZ
+	 uWuDT1fHWb8werG6Rk1v1QeWC73zucYYNKAgAgEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 389/744] net: wangxun: fix to change Rx features
-Date: Thu,  6 Jun 2024 16:01:01 +0200
-Message-ID: <20240606131744.942617277@linuxfoundation.org>
+Subject: [PATCH 6.1 133/473] selftests/bpf: Fix a fd leak in error paths in open_netns
+Date: Thu,  6 Jun 2024 16:01:02 +0200
+Message-ID: <20240606131704.326260710@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 68067f065ee730c7c67b361c3c81808d25d5a90b ]
+[ Upstream commit 151f7442436658ee84076681d8f52e987fe147ea ]
 
-Fix the issue where some Rx features cannot be changed.
+As Martin mentioned in review comment, there is an existing bug that
+orig_netns_fd will be leaked in the later "goto fail;" case after
+open("/proc/self/ns/net") in open_netns() in network_helpers.c. This
+patch adds "close(token->orig_netns_fd);" before "free(token);" to
+fix it.
 
-When using ethtool -K to turn off rx offload, it returns error and
-displays "Could not change any device features". And netdev->features
-is not assigned a new value to actually configure the hardware.
-
-Fixes: 6dbedcffcf54 ("net: libwx: Implement xx_set_features ops")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a30338840fa5 ("selftests/bpf: Move open_netns() and close_netns() into network_helpers.c")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Link: https://lore.kernel.org/r/a104040b47c3c34c67f3f125cdfdde244a870d3c.1713868264.git.tanggeliang@kylinos.cn
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_lib.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/network_helpers.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index be434c833c69c..e9310d9ca67c9 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -2646,12 +2646,14 @@ int wx_set_features(struct net_device *netdev, netdev_features_t features)
- 	else
- 		wr32m(wx, WX_RDB_RA_CTL, WX_RDB_RA_CTL_RSS_EN, 0);
+diff --git a/tools/testing/selftests/bpf/network_helpers.c b/tools/testing/selftests/bpf/network_helpers.c
+index 1fa4672380a92..9448d075bce20 100644
+--- a/tools/testing/selftests/bpf/network_helpers.c
++++ b/tools/testing/selftests/bpf/network_helpers.c
+@@ -459,6 +459,8 @@ struct nstoken *open_netns(const char *name)
  
-+	netdev->features = features;
-+
- 	if (changed &
- 	    (NETIF_F_HW_VLAN_CTAG_RX |
- 	     NETIF_F_HW_VLAN_STAG_RX))
- 		wx_set_rx_mode(netdev);
- 
--	return 1;
-+	return 0;
+ 	return token;
+ fail:
++	if (token->orig_netns_fd != -1)
++		close(token->orig_netns_fd);
+ 	free(token);
+ 	return NULL;
  }
- EXPORT_SYMBOL(wx_set_features);
- 
 -- 
 2.43.0
 
