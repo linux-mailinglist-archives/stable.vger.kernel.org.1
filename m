@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-49608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6808FEE04
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A70A8FEA02
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 213E31F22D9B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B835C28860E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F190819EEB6;
-	Thu,  6 Jun 2024 14:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54D3198E8B;
+	Thu,  6 Jun 2024 14:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8pifr0Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9QFS0Ar"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16A01BF8E3;
-	Thu,  6 Jun 2024 14:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859031974F2;
+	Thu,  6 Jun 2024 14:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683550; cv=none; b=sGvKiTRth6D1fou3fhsyrVQDkg3TU2LKc2k/iveIDAgX3Nhb31zgIsxfJYhMyIxxc7vst45e+anEvd1T4odOXn7rG8tlcc81eWwfcbSqMW03h/ur4hIR9VZaFBUHxGZMrEO9iywS2MwCFtl2UrnNe1lTAEq8SDjkMYdK0g31n5A=
+	t=1717683091; cv=none; b=UgpVrNCc2IKs+B3zNtzrcDvl6VTU6KKWIEguDNOHJSSq8vBwB9WihQn8fgqSWnWKHmjzjHghykZiMG5u+j/Sl7/e9hzfHGWepBBzFsEji6wFlTJG2QAhrXhMoUXHoETRhHkZJlJCz0sfV6Uz9spVDcvjemkfedgscanYb/hSsgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683550; c=relaxed/simple;
-	bh=veog3liX6MYXDc1qlFJSdHQzwRGbpSgFgeypt36pEj8=;
+	s=arc-20240116; t=1717683091; c=relaxed/simple;
+	bh=3stbjyUfOoQAGrE3xtrvbHNUEDzv1EOKzLdr0b4Qjlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EyPNQXAWu7mRUGFYYlO12mLFknqX0yBDE/RB/4U4azVCFi+OO4wjGOUkKPPyTMnNHnhIPHwnXPF/1wfcDw0LrGa27kv1V6X+zst3Axq6fknXOu8VOyzHpi/plCh+z9jV12kl2+OpWJB4FWelsVlT2tJVQJxxpjuetVCfgC6lAwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8pifr0Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92107C2BD10;
-	Thu,  6 Jun 2024 14:19:10 +0000 (UTC)
+	 MIME-Version; b=Y9wr/LkZstYuPVQhtl2HdOupN7gyoiT4X8aR+7sZW3rICuTVy17RGPCeNq9chIokefQQA1SIUS4Z0gqu2Kz8dn5t1+BNWU/pCVgQoYlPA+kiOF3NJ4McNSUV/V7HlaXk6CttQsp4Ah3zf/dru8qt0VbOjCH8QCkT3bK004sNxxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9QFS0Ar; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F6AC32782;
+	Thu,  6 Jun 2024 14:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683550;
-	bh=veog3liX6MYXDc1qlFJSdHQzwRGbpSgFgeypt36pEj8=;
+	s=korg; t=1717683091;
+	bh=3stbjyUfOoQAGrE3xtrvbHNUEDzv1EOKzLdr0b4Qjlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h8pifr0QFsMPqxHLUcmMI5v9zB8IPrU5aeEL7TfVLBaH/2PYmqwtCLyBWkp+giKXO
-	 w2cvmINt0iaxo7YvRFjSlrg4Om77dAkNJ3FCNB55cKHmu5pojkRhPsdP6ewtLAiBv8
-	 XA0WMGnWYb4DvLxwDNXPz6VgyllGeq94WVeyfxc4=
+	b=Q9QFS0Ar2JzdhXCgexSJdD7c3m/cZkcQeCXly01YtTFmiyS8K1hbVy1VOTfq1GqfA
+	 IDxL638fDSp6JKPnP7fmv61m+ICiIB2nLNtwu6nWXz2EPTjPjEnTCrnLa9US/fdsas
+	 Ng0EiVl5nOZ6bkix+hzs9a8ZyFYosChh1GgACF5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi.grimberg@vastdata.com>,
-	Dan Aloni <dan.aloni@vastdata.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Gerald Loacker <gerald.loacker@wolfvision.net>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 410/473] rpcrdma: fix handling for RDMA_CM_EVENT_DEVICE_REMOVAL
+Subject: [PATCH 6.9 360/374] drm/panel: sitronix-st7789v: fix display size for jt240mhqs_hwt_ek_e3 panel
 Date: Thu,  6 Jun 2024 16:05:39 +0200
-Message-ID: <20240606131713.353947129@linuxfoundation.org>
+Message-ID: <20240606131703.943104045@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Aloni <dan.aloni@vastdata.com>
+From: Gerald Loacker <gerald.loacker@wolfvision.net>
 
-[ Upstream commit 4836da219781ec510c4c0303df901aa643507a7a ]
+[ Upstream commit b62c150c3bae72ac1910dcc588f360159eb0744a ]
 
-Under the scenario of IB device bonding, when bringing down one of the
-ports, or all ports, we saw xprtrdma entering a non-recoverable state
-where it is not even possible to complete the disconnect and shut it
-down the mount, requiring a reboot. Following debug, we saw that
-transport connect never ended after receiving the
-RDMA_CM_EVENT_DEVICE_REMOVAL callback.
+This is a portrait mode display. Change the dimensions accordingly.
 
-The DEVICE_REMOVAL callback is irrespective of whether the CM_ID is
-connected, and ESTABLISHED may not have happened. So need to work with
-each of these states accordingly.
-
-Fixes: 2acc5cae2923 ('xprtrdma: Prevent dereferencing r_xprt->rx_ep after it is freed')
-Cc: Sagi Grimberg <sagi.grimberg@vastdata.com>
-Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 0fbbe96bfa08 ("drm/panel: sitronix-st7789v: add jasonic jt240mhqs-hwt-ek-e3 support")
+Signed-off-by: Gerald Loacker <gerald.loacker@wolfvision.net>
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://lore.kernel.org/r/20240409-bugfix-jt240mhqs_hwt_ek_e3-timing-v2-3-e4821802443d@wolfvision.net
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240409-bugfix-jt240mhqs_hwt_ek_e3-timing-v2-3-e4821802443d@wolfvision.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/verbs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-sitronix-st7789v.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
-index 28c0771c4e8c3..4f71627ba39ce 100644
---- a/net/sunrpc/xprtrdma/verbs.c
-+++ b/net/sunrpc/xprtrdma/verbs.c
-@@ -244,7 +244,11 @@ rpcrdma_cm_event_handler(struct rdma_cm_id *id, struct rdma_cm_event *event)
- 	case RDMA_CM_EVENT_DEVICE_REMOVAL:
- 		pr_info("rpcrdma: removing device %s for %pISpc\n",
- 			ep->re_id->device->name, sap);
--		fallthrough;
-+		switch (xchg(&ep->re_connect_status, -ENODEV)) {
-+		case 0: goto wake_connect_worker;
-+		case 1: goto disconnected;
-+		}
-+		return 0;
- 	case RDMA_CM_EVENT_ADDR_CHANGE:
- 		ep->re_connect_status = -ENODEV;
- 		goto disconnected;
+diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7789v.c b/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
+index c7e3f1280404d..e8f385b9c6182 100644
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
+@@ -289,8 +289,8 @@ static const struct drm_display_mode jt240mhqs_hwt_ek_e3_mode = {
+ 	.vsync_start = 280 + 48,
+ 	.vsync_end = 280 + 48 + 4,
+ 	.vtotal = 280 + 48 + 4 + 4,
+-	.width_mm = 43,
+-	.height_mm = 37,
++	.width_mm = 37,
++	.height_mm = 43,
+ 	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
+ };
+ 
 -- 
 2.43.0
 
