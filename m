@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADDC8FEC82
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD878FEADE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8B9284A9F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A35286705
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93EB1A0DE7;
-	Thu,  6 Jun 2024 14:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E46196D8E;
+	Thu,  6 Jun 2024 14:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZPUalOQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZNU7Em2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D391B1424;
-	Thu,  6 Jun 2024 14:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237D91A186B;
+	Thu,  6 Jun 2024 14:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683375; cv=none; b=OmqC51S3/OwE1VFxbIi+3/mfVOzQQZYFw/kpeigoEWlQhpdwkammOwJUqU3fJxElVv3s99ctmbzxRW1X6e4oW2f05kQ4dqy5ry3NjzkGlRerLsohrTYmRUnWnOhy/zrmCNG8HNkMtahYFChkMZekLDnjhST5s0cG7xQX3bfPCX4=
+	t=1717683186; cv=none; b=Ay1f/Dq4egKLMkXrvv/eQTLpZYwCmgv7/SvAKwpOULTmyVfVWpdOpMBSYWBsyZudb73P4A5ovgvlBzvDK14cNssD7xlHrBXbj9NBhQKYnjG2uYhp1BFZB5XGUGsykY1u62/WY0STMVofBwiA83B06iL0Jazn48+qmig7LV/zgrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683375; c=relaxed/simple;
-	bh=dgAkcLoUdeIt93pButdZC5GXFVhIC4PnyqbOp06AQPg=;
+	s=arc-20240116; t=1717683186; c=relaxed/simple;
+	bh=I6ErbXwUcXhcutZ07j0WwRY+YGXNGSdyH0vEDMY8W3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9JLSelerNSFR+eXfRtIfglrU7/h0rYq2sQcfxtoMORs8x8foldCGBfk37UXdsiP+9WqPh8eaLAlULAsrjOVvngagy/Lp9RCBm3R51cmrwz4GD9RrL4HA/fleryzgFKiKyrP5zQ2fm8bPCD2whr/boBS0XwO1hjmRGxbqIbMDdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZPUalOQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B504C32781;
-	Thu,  6 Jun 2024 14:16:15 +0000 (UTC)
+	 MIME-Version; b=eztrkbw/g2+zDSG00ZKWJpOt7M89KQdUs/L//O58Dsc9rHWita/woN36+XMHhIWiWvBxy2hYab7JLc9e/OjH8eddO4rgtsvwqIG0etyfATr3DW0GByhHbcO+VBGYXj8TNZRQW4061WU2998r5bSFPNeDqQ3j0WJaRY3UOOga5z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZNU7Em2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22DBC2BD10;
+	Thu,  6 Jun 2024 14:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683375;
-	bh=dgAkcLoUdeIt93pButdZC5GXFVhIC4PnyqbOp06AQPg=;
+	s=korg; t=1717683186;
+	bh=I6ErbXwUcXhcutZ07j0WwRY+YGXNGSdyH0vEDMY8W3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZPUalOQ6UIj4w4uYMXAQTFKGUwez3iuUr4qQSrcASAT89UoNmaXC/XZDe3/c+Vb2
-	 8bEeF0rc5XHvhbsVU5TdDd0d1s79/vafbkoP2R3btfvFpFxNfuSy2EgEqCMiNeRTiX
-	 S3AJoSFsSDuhUOr7TBzrfPA7oucXlZx4ZYZZYdB0=
+	b=xZNU7Em2AlGJEmUYuEEZD0kSPMCvIjJdN3OdajbqGjXjRv0onLimFr9W+faOhsiDz
+	 vwmxxRjk2pOdh6a9+lNiFYgfITuO1J0ce9pOMahdvXEgxtgcSCbPtabCBkildUfVnO
+	 g6mUd2mN9IESSiO0F9g8c08aBaTUGT51aC3Y95rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Maxime Ripard <mripard@kernel.org>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 317/744] drm: vc4: Fix possible null pointer dereference
+Subject: [PATCH 6.1 060/473] nvmet-auth: return the error code to the nvmet_auth_host_hash() callers
 Date: Thu,  6 Jun 2024 15:59:49 +0200
-Message-ID: <20240606131742.594212042@linuxfoundation.org>
+Message-ID: <20240606131701.872650749@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit c534b63bede6cb987c2946ed4d0b0013a52c5ba7 ]
+[ Upstream commit 46b8f9f74f6d500871985e22eb19560b21f3bc81 ]
 
-In vc4_hdmi_audio_init() of_get_address() may return
-NULL which is later dereferenced. Fix this bug by adding NULL check.
+If the nvmet_auth_host_hash() function fails, the error code should
+be returned to its callers.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: bb7d78568814 ("drm/vc4: Add HDMI audio support")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240409075622.11783-1-amishin@t-argos.ru
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/target/auth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 4626fe9aac563..643754fa6a8ad 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -2729,6 +2729,8 @@ static int vc4_hdmi_audio_init(struct vc4_hdmi *vc4_hdmi)
- 		index = 1;
+diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
+index 4dcddcf95279b..1f7d492c4dc26 100644
+--- a/drivers/nvme/target/auth.c
++++ b/drivers/nvme/target/auth.c
+@@ -368,7 +368,7 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
+ 	kfree_sensitive(host_response);
+ out_free_tfm:
+ 	crypto_free_shash(shash_tfm);
+-	return 0;
++	return ret;
+ }
  
- 	addr = of_get_address(dev->of_node, index, NULL, NULL);
-+	if (!addr)
-+		return -EINVAL;
- 
- 	vc4_hdmi->audio.dma_data.addr = be32_to_cpup(addr) + mai_data->offset;
- 	vc4_hdmi->audio.dma_data.addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+ int nvmet_auth_ctrl_hash(struct nvmet_req *req, u8 *response,
 -- 
 2.43.0
 
