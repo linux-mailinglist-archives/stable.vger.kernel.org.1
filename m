@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-49551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D268FEDC1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C968FE917
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E3BD1C22D84
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD0561F25AD3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D851BD4EB;
-	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB221991D9;
+	Thu,  6 Jun 2024 14:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oODbcTOv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrfIFgev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D9419E7E3;
-	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2DB19753E;
+	Thu,  6 Jun 2024 14:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683522; cv=none; b=BQVfUAi30RHi9eIgGKpBzwwALJcSMu9XTPJV1aBAXJxrsYAtKMn21K5JMl6hwOJr9k9Wtky9lhnjnYg1n/2tceIprA6t/C3hUFoNRlPnmVoFjtxlq2PsWehRRCRyA2716YQ4gXdiF2buRPkS9pYu78ROrAQCrglV25jrSo7yD8g=
+	t=1717682978; cv=none; b=PkfWPnEhMGKuOrd240AuA1ufK6DgP3ChD/I/JFnwb/nuIoFjuq1RwYzCOEtXFyA9jHnJilOtAAh1HDls41dvRcYEajOslv0mz/EAZ0UJ5Qr9PUJdLSmmvKBYASKif4DQA0ZUImX90I5dDL7DrTVl3FwtnyHTX6UaLj8TxsiYX/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683522; c=relaxed/simple;
-	bh=yrmvln2ageEiyDq+JGbJoUrWQ/BSXm2ZPgaO1i4jLJw=;
+	s=arc-20240116; t=1717682978; c=relaxed/simple;
+	bh=f8aPqcGHKzh+zX3CS5lX5SaJPDEzvbsZBdlKe97aRsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YB4UnNgDxT8knTXZE+v45pGg68MLdgkebzI9qkWVR7Mds2oOe6RxTHH8AWrzF4vkWacQXRKOvTHsKLTjHT9F0XUrxBgFMitWhHyky86vvypVpzhsjYpUtlkOFzv5L8Sngx++fo6mKA2Cxk46BjFCP3D3uZhSMbht2nch9OG02hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oODbcTOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0472FC32781;
-	Thu,  6 Jun 2024 14:18:42 +0000 (UTC)
+	 MIME-Version; b=o6w832Ms1Akc6MFBD+LLzC+w6bJkzr2aTDUs2PhvoTmEPkDtIWI7LsicsSPLxudTL/xnm7259LJHvNCtduqrrnBo06UAoLMA1c6BRdjF+PKHG1sqvxWoO63wVIDtYLQ+dYpI+wr7xOjo6/VUjlUdODSdfRLRoEOQUiimb+jBaU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrfIFgev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF97C2BD10;
+	Thu,  6 Jun 2024 14:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683522;
-	bh=yrmvln2ageEiyDq+JGbJoUrWQ/BSXm2ZPgaO1i4jLJw=;
+	s=korg; t=1717682978;
+	bh=f8aPqcGHKzh+zX3CS5lX5SaJPDEzvbsZBdlKe97aRsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oODbcTOvEhi1/d8Ckpb4KAXmF+iCANbeC3Vqhlx/z7NNxrQSCi3XN8Z3Ha/g+mZxr
-	 3vmZEr5wKXOlwc5IeiQTC1HFIlS6Xd7xYdYF9bC3AV+Wt/IH2AIq9VrQOCOEtlkPRI
-	 QojGB8WYqpf7aSFjfJp+RRQ0A+r5+tAYpPZIDxkk=
+	b=LrfIFgevwQNIgYEQ16TVUssCBHr+vQYjlzqE76Xft7/P771HzYhliIFCbEntGsaDj
+	 IzBYNLG7LBFKZHThS9VjbBwEFOIrjZh5i5lVC5164inhkwS926E1b3AZlqL3iDNLeX
+	 J/29I7aNp1I0iu3xt+0xTfRk/GBSuA7tU+Dnfs9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Jai Luthra <j-luthra@ti.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 463/744] xfs: require XFS_SB_FEAT_INCOMPAT_LOG_XATTRS for attr log intent item recovery
-Date: Thu,  6 Jun 2024 16:02:15 +0200
-Message-ID: <20240606131747.322385394@linuxfoundation.org>
+Subject: [PATCH 6.9 157/374] media: ti: j721e-csi2rx: Fix races while restarting DMA
+Date: Thu,  6 Jun 2024 16:02:16 +0200
+Message-ID: <20240606131657.174201785@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit 8ef1d96a985e4dc07ffbd71bd7fc5604a80cc644 ]
+[ Upstream commit ad79c9ecea5baa7b4f19677e4b1c881ed89b0c3b ]
 
-The XFS_SB_FEAT_INCOMPAT_LOG_XATTRS feature bit protects a filesystem
-from old kernels that do not know how to recover extended attribute log
-intent items.  Make this check mandatory instead of a debugging assert.
+After the frame is submitted to DMA, it may happen that the submitted
+list is not updated soon enough, and the DMA callback is triggered
+before that.
 
-Fixes: fd920008784ea ("xfs: Set up infrastructure for log attribute replay")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+This can lead to kernel crashes, so move everything in a single
+lock/unlock section to prevent such races.
+
+Fixes: b4a3d877dc92 ("media: ti: Add CSI2RX support for J721E")
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_attr_item.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/xfs/xfs_attr_item.c b/fs/xfs/xfs_attr_item.c
-index 82775e9537df8..ebf656aaf3012 100644
---- a/fs/xfs/xfs_attr_item.c
-+++ b/fs/xfs/xfs_attr_item.c
-@@ -510,6 +510,9 @@ xfs_attri_validate(
- 	unsigned int			op = attrp->alfi_op_flags &
- 					     XFS_ATTRI_OP_FLAGS_TYPE_MASK;
+diff --git a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+index 6da83d0cffaae..22442fce76078 100644
+--- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
++++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+@@ -786,15 +786,14 @@ static void ti_csi2rx_buffer_queue(struct vb2_buffer *vb)
+ 			dev_warn(csi->dev,
+ 				 "Failed to drain DMA. Next frame might be bogus\n");
  
-+	if (!xfs_sb_version_haslogxattrs(&mp->m_sb))
-+		return false;
-+
- 	if (attrp->__pad != 0)
- 		return false;
- 
-@@ -602,8 +605,6 @@ xfs_attri_item_recover(
- 	args->op_flags = XFS_DA_OP_RECOVERY | XFS_DA_OP_OKNOENT |
- 			 XFS_DA_OP_LOGGED;
- 
--	ASSERT(xfs_sb_version_haslogxattrs(&mp->m_sb));
--
- 	switch (attr->xattri_op_flags) {
- 	case XFS_ATTRI_OP_FLAGS_SET:
- 	case XFS_ATTRI_OP_FLAGS_REPLACE:
++		spin_lock_irqsave(&dma->lock, flags);
+ 		ret = ti_csi2rx_start_dma(csi, buf);
+ 		if (ret) {
+-			dev_err(csi->dev, "Failed to start DMA: %d\n", ret);
+-			spin_lock_irqsave(&dma->lock, flags);
+ 			vb2_buffer_done(&buf->vb.vb2_buf, VB2_BUF_STATE_ERROR);
+ 			dma->state = TI_CSI2RX_DMA_IDLE;
+ 			spin_unlock_irqrestore(&dma->lock, flags);
++			dev_err(csi->dev, "Failed to start DMA: %d\n", ret);
+ 		} else {
+-			spin_lock_irqsave(&dma->lock, flags);
+ 			list_add_tail(&buf->list, &dma->submitted);
+ 			spin_unlock_irqrestore(&dma->lock, flags);
+ 		}
 -- 
 2.43.0
 
