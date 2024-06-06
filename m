@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38E58FEB45
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F4C8FECDD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26D741C25030
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C511AB289AC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2E51A38FE;
-	Thu,  6 Jun 2024 14:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CDD198E66;
+	Thu,  6 Jun 2024 14:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyRtiLZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNrittlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBEB1A38F6;
-	Thu,  6 Jun 2024 14:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34361198A3B;
+	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683231; cv=none; b=P3lff0B+2xcdFma+orT8stuYe/t7Ftw8gHV0SLO+HRQUfiDfguUKrKlC/bugjMjcjJ1HcrQ4KbzTjmWZV4Y+f7sAoHWLgTf648vsmNpZ9SmmYeyAm856FoQ21vI6QnPYrL7f6qNIqK1K3gyx+uGlFezXyWauJ9mG7KcqGZG1VtA=
+	t=1717683418; cv=none; b=bKDebsFbi3h0pIKbczsCVCXplRR8+OMotWr/4XPbnx0nSab1A6Qb5MRCVixSBi3AEUNM9i54B1Cm2gRWwwTPPd9t469ks3I7u6lBVGpVDH2ZnMUiiOzeCbx84pxYcO3dGscey24xt5rRXOQaDRP05lwFXdgIK5cM2GmQgNCod2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683231; c=relaxed/simple;
-	bh=rdZDgFXI551dOFodu8rAiz00ZHp3dm2RFAHkomEVXZo=;
+	s=arc-20240116; t=1717683418; c=relaxed/simple;
+	bh=wbIlyP2+BSeg9oEGMRTL2LQnAX8H9OHMI/Bc2P1COug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smGXFOJEbt1yk0/RMKSxZab573odnk0asno1LwHWRlkaRVjznCbdEOFxOGqE6NM2oZ+/JU31iNMaM2DPWwLblOVcwhIKKaz+DEhh73WYkIMwbIYsAUrw/rakKJYF81JCe2cqk9dlh+R1tBUoV8Da5zZ4KcW2YoEMKtkvkfOOyq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyRtiLZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A82BC32781;
-	Thu,  6 Jun 2024 14:13:51 +0000 (UTC)
+	 MIME-Version; b=qk7IWFqW4wd08yDf2ftqe3UI6hcvrO3rfZ+kDUstvlkPdWN5+Sr2m1+H8j4X+XgQbkNuHbMX3YRTkRCKCcPr+iykWC2eKg4AnEZ1tJcDvUq8YwewcZnwiQ6sbPgAYAm60yQE52V2W6+vWKdojzjWsTtSsMbpYLAbb+SPhujP/aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNrittlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA76C32786;
+	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683231;
-	bh=rdZDgFXI551dOFodu8rAiz00ZHp3dm2RFAHkomEVXZo=;
+	s=korg; t=1717683417;
+	bh=wbIlyP2+BSeg9oEGMRTL2LQnAX8H9OHMI/Bc2P1COug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TyRtiLZSq20ATibG0qFzrW+wS2OxW8/xf4KIuDiyx5HtiDgnWcJWQwNYnf2iS95B+
-	 RsZVNUxMOvAmcHiQASw3iN4ZHd0Fc+izSJJO18l7MNezP5zmlHsRxW+qqFWmCszDBC
-	 g5gSa3wZA6v9mbTHRPsyiWb5WXmXKkCMPTm4Budw=
+	b=CNrittlzWcy7SzlZHwEQbnKVWq53dD0YRKpF/panvuhB8yvsoN6nLHiYKKv6w8crQ
+	 tmeRsGOwF+ouBBXwiFOudz6HUCwQ8dN+y11m4Zdb8ebyytQ2PPgXbPh7Yf1vmjKoah
+	 /xX2H6WQsvCsbxzpN0MT/IMsjGdCnsvOsbBl66pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Jaewon Kim <jaewon02.kim@samsung.com>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/473] s390/cio: fix tracepoint subchannel type field
+Subject: [PATCH 6.6 334/744] clk: samsung: exynosautov9: fix wrong pll clock id value
 Date: Thu,  6 Jun 2024 16:00:06 +0200
-Message-ID: <20240606131702.460974807@linuxfoundation.org>
+Message-ID: <20240606131743.170536400@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Jaewon Kim <jaewon02.kim@samsung.com>
 
-[ Upstream commit 8692a24d0fae19f674d51726d179ad04ba95d958 ]
+[ Upstream commit 04ee3a0b44e3d18cf6b0c712d14b98624877fd26 ]
 
-The subchannel-type field "st" of s390_cio_stsch and s390_cio_msch
-tracepoints is incorrectly filled with the subchannel-enabled SCHIB
-value "ena". Fix this by assigning the correct value.
+All PLL id values of CMU_TOP were incorrectly set to FOUT_SHARED0_PLL.
+It modified to the correct PLL clock id value.
 
-Fixes: d1de8633d96a ("s390 cio: Rewrite trace point class s390_class_schib")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 6587c62f69dc ("clk: samsung: add top clock support for Exynos Auto v9 SoC")
+Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
+Link: https://lore.kernel.org/r/20240328091000.17660-1-jaewon02.kim@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/samsung/clk-exynosautov9.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/s390/cio/trace.h b/drivers/s390/cio/trace.h
-index 86993de253451..a4c5c6736b310 100644
---- a/drivers/s390/cio/trace.h
-+++ b/drivers/s390/cio/trace.h
-@@ -50,7 +50,7 @@ DECLARE_EVENT_CLASS(s390_class_schib,
- 		__entry->devno = schib->pmcw.dev;
- 		__entry->schib = *schib;
- 		__entry->pmcw_ena = schib->pmcw.ena;
--		__entry->pmcw_st = schib->pmcw.ena;
-+		__entry->pmcw_st = schib->pmcw.st;
- 		__entry->pmcw_dnv = schib->pmcw.dnv;
- 		__entry->pmcw_dev = schib->pmcw.dev;
- 		__entry->pmcw_lpm = schib->pmcw.lpm;
+diff --git a/drivers/clk/samsung/clk-exynosautov9.c b/drivers/clk/samsung/clk-exynosautov9.c
+index e9c06eb93e666..f04bacacab2cb 100644
+--- a/drivers/clk/samsung/clk-exynosautov9.c
++++ b/drivers/clk/samsung/clk-exynosautov9.c
+@@ -352,13 +352,13 @@ static const struct samsung_pll_clock top_pll_clks[] __initconst = {
+ 	/* CMU_TOP_PURECLKCOMP */
+ 	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared0_pll", "oscclk",
+ 	    PLL_LOCKTIME_PLL_SHARED0, PLL_CON3_PLL_SHARED0, NULL),
+-	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared1_pll", "oscclk",
++	PLL(pll_0822x, FOUT_SHARED1_PLL, "fout_shared1_pll", "oscclk",
+ 	    PLL_LOCKTIME_PLL_SHARED1, PLL_CON3_PLL_SHARED1, NULL),
+-	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared2_pll", "oscclk",
++	PLL(pll_0822x, FOUT_SHARED2_PLL, "fout_shared2_pll", "oscclk",
+ 	    PLL_LOCKTIME_PLL_SHARED2, PLL_CON3_PLL_SHARED2, NULL),
+-	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared3_pll", "oscclk",
++	PLL(pll_0822x, FOUT_SHARED3_PLL, "fout_shared3_pll", "oscclk",
+ 	    PLL_LOCKTIME_PLL_SHARED3, PLL_CON3_PLL_SHARED3, NULL),
+-	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared4_pll", "oscclk",
++	PLL(pll_0822x, FOUT_SHARED4_PLL, "fout_shared4_pll", "oscclk",
+ 	    PLL_LOCKTIME_PLL_SHARED4, PLL_CON3_PLL_SHARED4, NULL),
+ };
+ 
 -- 
 2.43.0
 
