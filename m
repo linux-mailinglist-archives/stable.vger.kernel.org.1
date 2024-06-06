@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72D68FEB08
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:23:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC3D8FE88C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44FF1289FC3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:23:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276AA1C243E0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B273019925B;
-	Thu,  6 Jun 2024 14:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC9B1974FA;
+	Thu,  6 Jun 2024 14:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRN65ZFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSmy2tgG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C26197536;
-	Thu,  6 Jun 2024 14:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D193C196C85;
+	Thu,  6 Jun 2024 14:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683203; cv=none; b=HbTane2qIa3vt1CPREgpODflode+sbBSyCVFN6XCDI62ey/W0tKCa+jPp880ous4XZwZ+IZoPL8jensCgj7yULNvG8KHD9Pr4Hu3PIwFvF0TQzMhCDOlyMfdMokAfQhdSoEDZnbu5sP0fTJxks9gx80Wj0m0zhbA37RA+S1BMT4=
+	t=1717682906; cv=none; b=CwDQzWvPJ/rkynconkKNYHP+ZHOf6Bmb7zJlRzzZNhJ2qQsBKjW3jJ4GeayVDNj6V2GGkKHCEFs7X3JJ5uG2MNgD8aASIaMrjGQzS0TpDQClrwRVELuhoIB1Mvw2TOdzJ/DYpSPjLQv/KgKKVrT5Hyz5iEqjNvidhVLA8js7m8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683203; c=relaxed/simple;
-	bh=9bPftBou+8FBJaXuEZbsMEv9EKjF1tSci4DsM8bpGRM=;
+	s=arc-20240116; t=1717682906; c=relaxed/simple;
+	bh=kVQFQqKft6+PWWeUIjK8HwzP8S78pXkHoaRm7wOohEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qMNauCHZEQ8eAU3CHxvC7RCihJ6aeQploMwlwpa4sx+tGQR5LlawfNPfkc68UMfSPgGnfARfHz4HjRjgrNuXTayfoDrVSDlVjUAze44kM3STCsqFNJWzW6BSOQ04AjEzcTRjo2dO5kRn8lGsbcDwNsqTiJ7Z8Oasy3XPCaZKOCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRN65ZFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA8CC32781;
-	Thu,  6 Jun 2024 14:13:23 +0000 (UTC)
+	 MIME-Version; b=hdcoMEV29OmJjqGA+xl6NkCYBxtNUul4H28JLZbQ8euqtXWzJh30Zuq5ae0m3AA3KSBWCg+OpzmGQsKoh6AIvvm5fGdDsFNHG1h+gw5RxTjJslQ38ceyY0Bus75m7IUccK/r++uOQLbluJpL7MIlCy8k2vwUlhdVm3VoiXk4CbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSmy2tgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD51AC2BD10;
+	Thu,  6 Jun 2024 14:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683203;
-	bh=9bPftBou+8FBJaXuEZbsMEv9EKjF1tSci4DsM8bpGRM=;
+	s=korg; t=1717682906;
+	bh=kVQFQqKft6+PWWeUIjK8HwzP8S78pXkHoaRm7wOohEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRN65ZFJaPnGOvJPJy1j++1KR9I1j8y5aM0mJg64Zc7xuf3L+ugUIg9fGuSFhfKGB
-	 LKWe35fa6SP2GKLsFdCgEwyRJqJ1iFJq0+ubgl1ztDshuO7syz3wDbx7rqQusURRsP
-	 NxDQY0VYwxBSO3OZbrmecmSoLL/Jeg7i08T+ztjg=
+	b=MSmy2tgGzFUOLbWpTluqijUGgwnOu73rYdTfc+OTuBg3i6LloTnWLpL/mTGIUVdBV
+	 g7fBRe2x7JmE/THc2lZcnguSmZoNApAfzt18t4bY0vegOK5t57mGfaJawseMUmU43K
+	 RRj+nxHf2tTsyjlb7xa8E4aoLvQu292r7UnM3kFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/473] rcu: Fix buffer overflow in print_cpu_stall_info()
+Subject: [PATCH 6.9 031/374] module: dont ignore sysfs_create_link() failures
 Date: Thu,  6 Jun 2024 16:00:10 +0200
-Message-ID: <20240606131702.593860085@linuxfoundation.org>
+Message-ID: <20240606131652.868487330@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 3758f7d9917bd7ef0482c4184c0ad673b4c4e069 ]
+[ Upstream commit 85d2b0aa170351380be39fe4ff7973df1427fe76 ]
 
-The rcuc-starvation output from print_cpu_stall_info() might overflow the
-buffer if there is a huge difference in jiffies difference.  The situation
-might seem improbable, but computers sometimes get very confused about
-time, which can result in full-sized integers, and, in this case,
-buffer overflow.
+The sysfs_create_link() return code is marked as __must_check, but the
+module_add_driver() function tries hard to not care, by assigning the
+return code to a variable. When building with 'make W=1', gcc still
+warns because this variable is only assigned but not used:
 
-Also, the unsigned jiffies difference is printed using %ld, which is
-normally for signed integers.  This is intentional for debugging purposes,
-but it is not obvious from the code.
+drivers/base/module.c: In function 'module_add_driver':
+drivers/base/module.c:36:6: warning: variable 'no_warn' set but not used [-Wunused-but-set-variable]
 
-This commit therefore changes sprintf() to snprintf() and adds a
-clarifying comment about intention of %ld format.
+Rework the code to properly unwind and return the error code to the
+caller. My reading of the original code was that it tries to
+not fail when the links already exist, so keep ignoring -EEXIST
+errors.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 245a62982502 ("rcu: Dump rcuc kthread status for CPUs not reporting quiescent state")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Fixes: e17e0f51aeea ("Driver core: show drivers in /sys/module/")
+See-also: 4a7fb6363f2d ("add __must_check to device management code")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Link: https://lore.kernel.org/r/20240408080616.3911573-1-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_stall.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/base.h   |  9 ++++++---
+ drivers/base/bus.c    |  9 ++++++++-
+ drivers/base/module.c | 42 +++++++++++++++++++++++++++++++-----------
+ 3 files changed, 45 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
-index 7d15b5b5a235a..11a82404a6cee 100644
---- a/kernel/rcu/tree_stall.h
-+++ b/kernel/rcu/tree_stall.h
-@@ -474,7 +474,8 @@ static void print_cpu_stall_info(int cpu)
- 			rcu_dynticks_in_eqs(rcu_dynticks_snap(cpu));
- 	rcuc_starved = rcu_is_rcuc_kthread_starving(rdp, &j);
- 	if (rcuc_starved)
--		sprintf(buf, " rcuc=%ld jiffies(starved)", j);
-+		// Print signed value, as negative values indicate a probable bug.
-+		snprintf(buf, sizeof(buf), " rcuc=%ld jiffies(starved)", j);
- 	pr_err("\t%d-%c%c%c%c: (%lu %s) idle=%04x/%ld/%#lx softirq=%u/%u fqs=%ld%s%s\n",
- 	       cpu,
- 	       "O."[!!cpu_online(cpu)],
+diff --git a/drivers/base/base.h b/drivers/base/base.h
+index 0738ccad08b2e..db4f910e8e36e 100644
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -192,11 +192,14 @@ extern struct kset *devices_kset;
+ void devices_kset_move_last(struct device *dev);
+ 
+ #if defined(CONFIG_MODULES) && defined(CONFIG_SYSFS)
+-void module_add_driver(struct module *mod, struct device_driver *drv);
++int module_add_driver(struct module *mod, struct device_driver *drv);
+ void module_remove_driver(struct device_driver *drv);
+ #else
+-static inline void module_add_driver(struct module *mod,
+-				     struct device_driver *drv) { }
++static inline int module_add_driver(struct module *mod,
++				    struct device_driver *drv)
++{
++	return 0;
++}
+ static inline void module_remove_driver(struct device_driver *drv) { }
+ #endif
+ 
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index daee55c9b2d9e..ffea0728b8b2f 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -674,7 +674,12 @@ int bus_add_driver(struct device_driver *drv)
+ 		if (error)
+ 			goto out_del_list;
+ 	}
+-	module_add_driver(drv->owner, drv);
++	error = module_add_driver(drv->owner, drv);
++	if (error) {
++		printk(KERN_ERR "%s: failed to create module links for %s\n",
++			__func__, drv->name);
++		goto out_detach;
++	}
+ 
+ 	error = driver_create_file(drv, &driver_attr_uevent);
+ 	if (error) {
+@@ -699,6 +704,8 @@ int bus_add_driver(struct device_driver *drv)
+ 
+ 	return 0;
+ 
++out_detach:
++	driver_detach(drv);
+ out_del_list:
+ 	klist_del(&priv->knode_bus);
+ out_unregister:
+diff --git a/drivers/base/module.c b/drivers/base/module.c
+index 46ad4d636731d..a1b55da07127d 100644
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -30,14 +30,14 @@ static void module_create_drivers_dir(struct module_kobject *mk)
+ 	mutex_unlock(&drivers_dir_mutex);
+ }
+ 
+-void module_add_driver(struct module *mod, struct device_driver *drv)
++int module_add_driver(struct module *mod, struct device_driver *drv)
+ {
+ 	char *driver_name;
+-	int no_warn;
+ 	struct module_kobject *mk = NULL;
++	int ret;
+ 
+ 	if (!drv)
+-		return;
++		return 0;
+ 
+ 	if (mod)
+ 		mk = &mod->mkobj;
+@@ -56,17 +56,37 @@ void module_add_driver(struct module *mod, struct device_driver *drv)
+ 	}
+ 
+ 	if (!mk)
+-		return;
++		return 0;
++
++	ret = sysfs_create_link(&drv->p->kobj, &mk->kobj, "module");
++	if (ret)
++		return ret;
+ 
+-	/* Don't check return codes; these calls are idempotent */
+-	no_warn = sysfs_create_link(&drv->p->kobj, &mk->kobj, "module");
+ 	driver_name = make_driver_name(drv);
+-	if (driver_name) {
+-		module_create_drivers_dir(mk);
+-		no_warn = sysfs_create_link(mk->drivers_dir, &drv->p->kobj,
+-					    driver_name);
+-		kfree(driver_name);
++	if (!driver_name) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	module_create_drivers_dir(mk);
++	if (!mk->drivers_dir) {
++		ret = -EINVAL;
++		goto out;
+ 	}
++
++	ret = sysfs_create_link(mk->drivers_dir, &drv->p->kobj, driver_name);
++	if (ret)
++		goto out;
++
++	kfree(driver_name);
++
++	return 0;
++out:
++	sysfs_remove_link(&drv->p->kobj, "module");
++	sysfs_remove_link(mk->drivers_dir, driver_name);
++	kfree(driver_name);
++
++	return ret;
+ }
+ 
+ void module_remove_driver(struct device_driver *drv)
 -- 
 2.43.0
 
