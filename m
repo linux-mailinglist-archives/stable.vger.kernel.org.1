@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-48405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17928FE8E1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F214E8FEBA9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6145C1F242B5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 915321F29134
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A7F198E92;
-	Thu,  6 Jun 2024 14:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCAD1ABCA5;
+	Thu,  6 Jun 2024 14:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1MSpbeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQmQYjdm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABDF197500;
-	Thu,  6 Jun 2024 14:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF685197A8F;
+	Thu,  6 Jun 2024 14:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682946; cv=none; b=IK/+aRpMNKD2b2p9WpcWKUtnv5CIvQlnDggqhxhHYwq71YlivqD4DhLmNVwOESIYXdERwmd0dYyXfk8KZc47hw/7S86J6ONPR4k6Fmg0hkWVXNw2KEmLWnaKaA4wtwHRMBg6k47yylFwqRCIgiSLBtx6graexHsvjkpylR3jJqM=
+	t=1717683278; cv=none; b=VzAePgAxS7LJreObbYibNt/BFDaJ3XYyQktpEGbbOyDxACOM3JOHj5++ePPj/RovZtLa6nqzH722iypdRdKOccUcUoPiLv3dPnVcZldXPvCdvZSD8PmUk00VjxaFlzamylHkLqXNFAxajydm2jm5JpVMAMypTOTt/QH/lsBPmQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682946; c=relaxed/simple;
-	bh=23+oSholP9RC5FIeIzCnaOf+/Gskm/IemT7IovcpNMY=;
+	s=arc-20240116; t=1717683278; c=relaxed/simple;
+	bh=1Zuje2bv6RLoqafkPF0+iOnpbV9Mcg/GrRwK/RIVGSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Es7EdjHqKq+ry2r2rNDNmVLGI7U4HBl+L81T6hBxbcCRVNPkCnN572Qb6NKGJXXk99ko4vIVNFnjLmptrH8PMPHdbX7bs5jvwZD6rnJXyrxDupGj+lHhvpsXGakBZv2LS6GOSdz8f12wk4aqta4poFhHuZG70hiNwK39jfIL2AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1MSpbeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF543C32781;
-	Thu,  6 Jun 2024 14:09:05 +0000 (UTC)
+	 MIME-Version; b=Mq51z3hPG0N7GGHFAf5Maq6vgOnSGWbxci5qtdVxgc6RXCOnAI+xGRuaV45vI9G2DXESqGP216xV5fYDjitDYd/cdsDsmHAMNaoeD2VD98MiUFh6kL2Mucehj1WVNp2pEV2q1OluZp4IZLMuoSqQ12JdjR0Y6v7/gJie1jcWLo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQmQYjdm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9848BC32781;
+	Thu,  6 Jun 2024 14:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682945;
-	bh=23+oSholP9RC5FIeIzCnaOf+/Gskm/IemT7IovcpNMY=;
+	s=korg; t=1717683278;
+	bh=1Zuje2bv6RLoqafkPF0+iOnpbV9Mcg/GrRwK/RIVGSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1MSpbeBRf/DT7rvwmka3JTAS9nelCaI8r58ckrEkjclgpuoFZ7bCmJA3mVfeZdCS
-	 Vi9tfF9rl3MZ0vY3yh4pYmhpD6DFFmlJhXLlTMt+dlnS7uHz5KERr7LF6IeFRrs+h2
-	 qmTtMZXp1yzZz5BmXAi9bT8l+eDVlqEoNaUaz5Fc=
+	b=MQmQYjdmjyOd8IQc9vtniPdjRf1xRAbbvK0sLAkc2Prvmzq0n+M/ymPVc3ls2uKvW
+	 kXZXVA58k1KrrgHGM/JjYNQhdlbKpvTVZgOIhG4GGdDyZhNh3r/Z6IOncInSExbELb
+	 0BOH92AZbc7Mu5JNWn45EOKkoUJQyobU+3SORdTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 106/374] perf symbols: Fix ownership of string in dso__load_vmlinux()
+Subject: [PATCH 6.1 156/473] HID: intel-ish-hid: ipc: Add check for pci_alloc_irq_vectors
 Date: Thu,  6 Jun 2024 16:01:25 +0200
-Message-ID: <20240606131655.472918519@linuxfoundation.org>
+Message-ID: <20240606131705.117408051@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,93 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 25626e19ae6df34f336f235b6b3dbd1b566d2738 ]
+[ Upstream commit 6baa4524027fd64d7ca524e1717c88c91a354b93 ]
 
-The linked commit updated dso__load_vmlinux() to call
-dso__set_long_name() before loading the symbols. Loading the symbols may
-not succeed but dso__set_long_name() takes ownership of the string. The
-two callers of this function free the string themselves on failure
-cases, resulting in the following error:
+Add a check for the return value of pci_alloc_irq_vectors() and return
+error if it fails.
 
-  $ perf record -- ls
-  $ perf report
-
-  free(): double free detected in tcache 2
-
-Fix it by always taking ownership of the string, even on failure. This
-means the string is either freed at the very first early exit condition,
-or later when the dso is deleted or the long name is replaced. Now no
-special return value is needed to signify that the caller needs to
-free the string.
-
-Fixes: e59fea47f83e8a9a ("perf symbols: Fix DSO kernel load and symbol process to correctly map DSO to its long_name, type and adjust_symbols")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240507141210.195939-5-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+[jkosina@suse.com: reworded changelog based on Srinivas' suggestion]
+Fixes: 74fbc7d371d9 ("HID: intel-ish-hid: add MSI interrupt support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index a1ca1b8156fe5..68dbeae8d2bf6 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1973,6 +1973,10 @@ int dso__load(struct dso *dso, struct map *map)
- 	return ret;
- }
+diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+index 710fda5f19e1c..916d427163ca2 100644
+--- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
++++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+@@ -216,6 +216,11 @@ static int ish_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
-+/*
-+ * Always takes ownership of vmlinux when vmlinux_allocated == true, even if
-+ * it returns an error.
-+ */
- int dso__load_vmlinux(struct dso *dso, struct map *map,
- 		      const char *vmlinux, bool vmlinux_allocated)
- {
-@@ -1991,8 +1995,11 @@ int dso__load_vmlinux(struct dso *dso, struct map *map,
- 	else
- 		symtab_type = DSO_BINARY_TYPE__VMLINUX;
- 
--	if (symsrc__init(&ss, dso, symfs_vmlinux, symtab_type))
-+	if (symsrc__init(&ss, dso, symfs_vmlinux, symtab_type)) {
-+		if (vmlinux_allocated)
-+			free((char *) vmlinux);
- 		return -1;
+ 	/* request and enable interrupt */
+ 	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0) {
++		dev_err(dev, "ISH: Failed to allocate IRQ vectors\n");
++		return ret;
 +	}
++
+ 	if (!pdev->msi_enabled && !pdev->msix_enabled)
+ 		irq_flag = IRQF_SHARED;
  
- 	/*
- 	 * dso__load_sym() may copy 'dso' which will result in the copies having
-@@ -2035,7 +2042,6 @@ int dso__load_vmlinux_path(struct dso *dso, struct map *map)
- 		err = dso__load_vmlinux(dso, map, filename, true);
- 		if (err > 0)
- 			goto out;
--		free(filename);
- 	}
- out:
- 	return err;
-@@ -2187,7 +2193,6 @@ static int dso__load_kernel_sym(struct dso *dso, struct map *map)
- 		err = dso__load_vmlinux(dso, map, filename, true);
- 		if (err > 0)
- 			return err;
--		free(filename);
- 	}
- 
- 	if (!symbol_conf.ignore_vmlinux && vmlinux_path != NULL) {
 -- 
 2.43.0
 
