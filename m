@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AA78FED39
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CBD58FEB9B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CADB1C2239A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F01321F28CBA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D261B581C;
-	Thu,  6 Jun 2024 14:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8E31AB8F2;
+	Thu,  6 Jun 2024 14:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoTy5vHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXc6ELK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A271974EB;
-	Thu,  6 Jun 2024 14:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AECB196DA5;
+	Thu,  6 Jun 2024 14:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683462; cv=none; b=TK+CnoNJGJGpe4jRxn2K2A5QxV2DBChDwNFfSVQKNiJC8c8FKM31+sC5xagXoFH2G6QNBLxt9QISwV0EgEQaG9U2nmhj9nolRewAS1NH1FKEOJpBbX/U9KjK/tqFiK6/B+ELd31XHR4V09s1NCEhV75P5iQheEV1HocccDJe9NU=
+	t=1717683272; cv=none; b=t0rGav1roael9rgmGh6C8wk3bRPdaGdDRuX6jjKJGqUpGcatmu68XWkwlP+odvf+MLCW8+0BvEIvPQAW6euR7A/ny1hZYRQcX6aWZ4CNe/ASkNetlhWa9MO2MrLGizEemoDnjw0Rb+EiRFacN2jY8egWtjYppD/aIgJ6gP+Vhhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683462; c=relaxed/simple;
-	bh=Nfx3rUFm+xBy9mP3yWtbEVdfRnqVETlaqNt2E32hICc=;
+	s=arc-20240116; t=1717683272; c=relaxed/simple;
+	bh=kqk8tVBk5mjC6O6/uWPlDmELs9VGZQaBeSWy3mdADc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jx+MFL6TKdHrpcXi+keBYDQus5ONJi9aHy7qTRKr5I+ad3SOLv3j87TXKLHMbWqrNnScrDWYQEFmZo1vD09/a0qoLRmCmJyi9lR1foZHGe7xY/mUHfL51f9NgWsuVcKcsQ0ciQRWMXY3ccqD59BHMUkmkF9A1UazQtJKx+4pRD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoTy5vHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89E1C2BD10;
-	Thu,  6 Jun 2024 14:17:41 +0000 (UTC)
+	 MIME-Version; b=LoC3f+HbuFItjhiAj1lWgamM1aYw4NJp5ECo24r+8jOJpC2GRiFJ8XQ0xc7Fb2d7qToozQaCgwHVjUbPj1ViNuSbVpbFx/HL6O5UVLXFq+F+bLkWNaqLb3h3FYLsxmlyQXXQ20oagZ2S/+F4k5XZe+Rw5z+spsKyxpOEydnibB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXc6ELK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCBBC2BD10;
+	Thu,  6 Jun 2024 14:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683461;
-	bh=Nfx3rUFm+xBy9mP3yWtbEVdfRnqVETlaqNt2E32hICc=;
+	s=korg; t=1717683272;
+	bh=kqk8tVBk5mjC6O6/uWPlDmELs9VGZQaBeSWy3mdADc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DoTy5vHeifUPXnrVZUQXgQ7N0Lok5MFbr2Ff04amIswaua7s00h84+gCAx+v0I2t4
-	 /8niarIlurpsygKDQ13/N0UWjlHtFOmZ6MDDjXxB73tlEUiZyJ3tiyhLVHXngmCJ/k
-	 bW19MKMTSy46WCwdvG2n7n30BZ9A2DPl8GaXufjo=
+	b=oXc6ELK6InwazmOqzJWk3MYiXA5w7vK6y8BJO7mk37/YS9+bj2l2PeYwfOa7ZAHVK
+	 6xNHga2uDwwGxt7p2Bri/MmTTV4LPDer94XQeNCih6Z/doUxAFDRrCSiYq+YhnjZcf
+	 S3R/LcLRnaW9jLwltnyndr9fsiB0lnybb9TK26PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jean Delvare <jdelvare@suse.de>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 406/744] firmware: dmi-id: add a release callback function
-Date: Thu,  6 Jun 2024 16:01:18 +0200
-Message-ID: <20240606131745.484694189@linuxfoundation.org>
+Subject: [PATCH 6.1 150/473] wifi: mt76: mt7603: add wpdma tx eof flag for PSE client reset
+Date: Thu,  6 Jun 2024 16:01:19 +0200
+Message-ID: <20240606131704.913504454@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit cf770af5645a41a753c55a053fa1237105b0964a ]
+[ Upstream commit 21de5f72260b4246e2415bc900c18139bc52ea80 ]
 
-dmi_class uses kfree() as the .release function, but that now causes
-a warning with clang-16 as it violates control flow integrity (KCFI)
-rules:
+This flag is needed for the PSE client reset. Fixes watchdog reset issues.
 
-drivers/firmware/dmi-id.c:174:17: error: cast from 'void (*)(const void *)' to 'void (*)(struct device *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-  174 |         .dev_release = (void(*)(struct device *)) kfree,
-
-Add an explicit function to call kfree() instead.
-
-Fixes: 4f5c791a850e ("DMI-based module autoloading")
-Link: https://lore.kernel.org/lkml/20240213100238.456912-1-arnd@kernel.org/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Fixes: c677dda16523 ("wifi: mt76: mt7603: improve watchdog reset reliablity")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/dmi-id.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/dmi-id.c b/drivers/firmware/dmi-id.c
-index 5f3a3e913d28f..d19c78a78ae3a 100644
---- a/drivers/firmware/dmi-id.c
-+++ b/drivers/firmware/dmi-id.c
-@@ -169,9 +169,14 @@ static int dmi_dev_uevent(const struct device *dev, struct kobj_uevent_env *env)
- 	return 0;
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 2980e1234d13f..082ac1afc515a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1382,6 +1382,7 @@ void mt7603_pse_client_reset(struct mt7603_dev *dev)
+ 		   MT_CLIENT_RESET_TX_R_E_2_S);
  
-+static void dmi_dev_release(struct device *dev)
-+{
-+	kfree(dev);
-+}
-+
- static struct class dmi_class = {
- 	.name = "dmi",
--	.dev_release = (void(*)(struct device *)) kfree,
-+	.dev_release = dmi_dev_release,
- 	.dev_uevent = dmi_dev_uevent,
- };
- 
+ 	/* Start PSE client TX abort */
++	mt76_set(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_FORCE_TX_EOF);
+ 	mt76_set(dev, addr, MT_CLIENT_RESET_TX_R_E_1);
+ 	mt76_poll_msec(dev, addr, MT_CLIENT_RESET_TX_R_E_1_S,
+ 		       MT_CLIENT_RESET_TX_R_E_1_S, 500);
 -- 
 2.43.0
 
