@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4678FEE61
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64AF98FEF3A
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5930E2832C4
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17ED21F218DF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953161C3711;
-	Thu,  6 Jun 2024 14:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0EE1CB31D;
+	Thu,  6 Jun 2024 14:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6NZeN0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWXONfg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FCC1991C5;
-	Thu,  6 Jun 2024 14:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C3D1A256C;
+	Thu,  6 Jun 2024 14:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683653; cv=none; b=gO3otPRUH9/xlUt95PGUmfP2UfOgSv7X0xbinGNHDOx4AM2WD1xK523Le6LCIvcoFu9juT4+7MWKwWe9WtV3mqyQ5UZEXx2EAQ22p5deFt6uaqoPYlBQ0IaPWC/z74vYztA9bd4QCLD9gOGcsE1kctC84cB4la+ycfyDaLEBZlo=
+	t=1717683756; cv=none; b=cWqw5KNTTR8PY9im0/z4T2YiIzsVCc3KP7osXeZr3AlbUnA9fzSu31O9PxJ51tT9TiIo33baaP3QHocVFFSPQSteSB1fx314sgIJrrzWmtOm8OZvky0ZhxhlXOFNH12tf5OHseTgM8u6oEYSXfduyInhBCxUfS9DY/8ObLA8KpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683653; c=relaxed/simple;
-	bh=WZsxwi++ZO4bOFsSYxXjqiL0JZtOTKPpdHtPOHODqpo=;
+	s=arc-20240116; t=1717683756; c=relaxed/simple;
+	bh=+tEoGdcY96TJibO7dTnRy1YPlDlbDAbXdq+z0NN/zME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e98pFvGiaWX6IT3N9oc2r7W7JznhVoyjpErr+i+KweeWPpdyeC51V6ulTBUzmtMcv173ahKNDhkSFG5haDu3yAr1tPPPUpgTUV27C4sNDZsBx4VEfVUid926trQf2tEEMho5NJnQvLRkeq72OcGxrKzW2G+ipiYeGxu7uIlLLo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6NZeN0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D17C2BD10;
-	Thu,  6 Jun 2024 14:20:53 +0000 (UTC)
+	 MIME-Version; b=T2BtiqrroN7ypEt6Y6iQ18loVZ4oSzA7YOs0N4u10YJBA6+/63vfFpjSr8frGQNc6E3UuXQVnGkSdvTo1GB0y/422R+RJ3NRgAf6FuTUfwUNzja6ztB4FOUqUcR943Z28ZEkWWeDeazvvQtlCQWEmSyhmxU3ijF1AW4wMWW07GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWXONfg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9C1C2BD10;
+	Thu,  6 Jun 2024 14:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683653;
-	bh=WZsxwi++ZO4bOFsSYxXjqiL0JZtOTKPpdHtPOHODqpo=;
+	s=korg; t=1717683755;
+	bh=+tEoGdcY96TJibO7dTnRy1YPlDlbDAbXdq+z0NN/zME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6NZeN0wRwSz0U17ajzamsEZXqihuUK9hdMWJLugZacU+0hLO6qR/mJ1WwGgnf5Kw
-	 /Bn3qDasX/SqPNZhSShRiS4pezayznDMt42lrjgSPPxZmsxcBcNAd3dcRyOK9KnJ78
-	 f9QvcpvXfoLbrMZJaI8d8dmT3t8s2AqJOuOJK/oM=
+	b=MWXONfg6517SdHOMNMONVCZb9C1J6CSKe9CwkSC8//fOSQn26a1dOa97R6p8ZEhJb
+	 7S85kw3zcmYXooLYhBXwTE0ypTp6Jw0UyCDhg+h/du4S9Yqqk5CG2pIobCg/KEvGDg
+	 SB4+Y4Yx7GCJIQ5pCdxRoTc2Lbh81zDdYnLX7tpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Ruehl <chris.ruehl@gtsys.com.hk>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 471/473] hwmon: (shtc1) Fix property misspelling
+Subject: [PATCH 6.6 728/744] powerpc/pseries/lparcfg: drop error message from guest name lookup
 Date: Thu,  6 Jun 2024 16:06:40 +0200
-Message-ID: <20240606131715.251779906@linuxfoundation.org>
+Message-ID: <20240606131755.818389790@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit 52a2c70c3ec555e670a34dd1ab958986451d2dd2 ]
+[ Upstream commit 12870ae3818e39ea65bf710f645972277b634f72 ]
 
-The property name is "sensirion,low-precision", not
-"sensicon,low-precision".
+It's not an error or exceptional situation when the hosting
+environment does not expose a name for the LP/guest via RTAS or the
+device tree. This happens with qemu when run without the '-name'
+option. The message also lacks a newline. Remove it.
 
-Cc: Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Fixes: be7373b60df5 ("hwmon: shtc1: add support for device tree bindings")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Fixes: eddaa9a40275 ("powerpc/pseries: read the lpar name from the firmware")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240524-lparcfg-updates-v2-1-62e2e9d28724@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/shtc1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/lparcfg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/shtc1.c b/drivers/hwmon/shtc1.c
-index 18546ebc8e9f7..0365643029aee 100644
---- a/drivers/hwmon/shtc1.c
-+++ b/drivers/hwmon/shtc1.c
-@@ -238,7 +238,7 @@ static int shtc1_probe(struct i2c_client *client)
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index f04bfea1a97bd..11d5208817b9d 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -357,8 +357,8 @@ static int read_dt_lpar_name(struct seq_file *m)
  
- 	if (np) {
- 		data->setup.blocking_io = of_property_read_bool(np, "sensirion,blocking-io");
--		data->setup.high_precision = !of_property_read_bool(np, "sensicon,low-precision");
-+		data->setup.high_precision = !of_property_read_bool(np, "sensirion,low-precision");
- 	} else {
- 		if (client->dev.platform_data)
- 			data->setup = *(struct shtc1_platform_data *)dev->platform_data;
+ static void read_lpar_name(struct seq_file *m)
+ {
+-	if (read_rtas_lpar_name(m) && read_dt_lpar_name(m))
+-		pr_err_once("Error can't get the LPAR name");
++	if (read_rtas_lpar_name(m))
++		read_dt_lpar_name(m);
+ }
+ 
+ #define SPLPAR_MAXLENGTH 1026*(sizeof(char))
 -- 
 2.43.0
 
