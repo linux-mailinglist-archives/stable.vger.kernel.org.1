@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-48859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57168FEAD8
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A568FEAD7
 	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CC2DB240AE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 620921C25989
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73455199230;
-	Thu,  6 Jun 2024 14:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB1D1A186E;
+	Thu,  6 Jun 2024 14:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzEZX77+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lz7c6PBE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335A7199227;
-	Thu,  6 Jun 2024 14:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAD7199227;
+	Thu,  6 Jun 2024 14:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683182; cv=none; b=rG/Im36B7KfJvG7B9FM2wRVILtX7tUW2LCrsxA4dFTfWhq0RGnFUjZSCbM430hvhd/DkJLyuGIxeBhAC16LNoF9qFMQPS/7k/ELbtERnqwy46j55BMbC7VN/ZhTTs5FTde4pUrWR4lt8cm0OW0UedOcf3E75f8r5vHq3EX8WwKk=
+	t=1717683183; cv=none; b=YWpvI3JUJ5hGbSULcENBlRluBIpXyymI/rw2qRrl7avxm6H4phyzKrCI6bL7+f3FfmGDnGoLJV2Xy+i5apG6srvdmupzz4Xd6902m4fqzjnGT5kSivJzB6MljK/KkM3vfu8g+0yXc5Saz2KJQqixDu80T20Za7UQcWRhVV6vY+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683182; c=relaxed/simple;
-	bh=XHFp7PpfIFs41Lro0sYsSFWP4xTNETEo4+ZcZjFSjo0=;
+	s=arc-20240116; t=1717683183; c=relaxed/simple;
+	bh=E01z3fhCHeitaRIUKpI6cnZYtWVB1y/aOj2SRCu+eIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InCVS+y1s7qwy7ToUbJj21a+iXHFz1XmZDiPoQxP0ye/x12GcjNjnhfac3YfAL0cTbg651Mh93a5SDvZjWbEQZCmnK32NIUFPzZ1axVEi9MGLeTyy7XmPH8C6vlbiA2kKagtpZrK6Q/TBvrM9CWahV2xxNRBWWAFufLJd5dl3e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzEZX77+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F41AC32781;
-	Thu,  6 Jun 2024 14:13:02 +0000 (UTC)
+	 MIME-Version; b=d+iMsEGyARvxwL2UtfCIGXoQIU1aIqJ/H4avrkBf3fcWIMuXzqfmgrekdDe2haODVVk0xZmUh3bHJuZmzzEVgAZak/LGT4GL82h0kdPAC0gLOylEWyxkY41VlgkacqNKX7pyLiqM6Mjn96ToOai6bP8XC7WfiQQcpSJRkFYpXGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lz7c6PBE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16197C2BD10;
+	Thu,  6 Jun 2024 14:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683182;
-	bh=XHFp7PpfIFs41Lro0sYsSFWP4xTNETEo4+ZcZjFSjo0=;
+	s=korg; t=1717683183;
+	bh=E01z3fhCHeitaRIUKpI6cnZYtWVB1y/aOj2SRCu+eIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzEZX77+8TCN4/ONwZorELcHF4S3Xoii41ts8o5iXDij/Wa3X/9KUiYrfk4S6JfBN
-	 y9U31cXvpfB9qxMlPYIYbnOf4r83+b2yOIdME1qrg8elw31h9y346HF/UXlmrWkWcP
-	 4MJEmRvlT5ICLUy9GL3ct+9N5lwZ0dE2IcBzHSnY=
+	b=Lz7c6PBEydlyDNzbNUfv+wrS8gzomc08tyN2XVGCX8eALeEZo/TqVrwe53Fkffw6p
+	 7VzzMafzqOGDmvDT2nyEWr7znP/jtbRxfBFUvkGLb0GJr6o9wEMheWr5+jb/1WJnjC
+	 peJScLpR2LC9IysP+U7IyVa68mVrHzIxUhS7tGMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Prestwood <prestwoj@gmail.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/744] wifi: ath10k: poll service ready message before failing
-Date: Thu,  6 Jun 2024 15:56:38 +0200
-Message-ID: <20240606131736.461698808@linuxfoundation.org>
+Subject: [PATCH 6.6 127/744] wifi: brcmfmac: pcie: handle randbuf allocation failure
+Date: Thu,  6 Jun 2024 15:56:39 +0200
+Message-ID: <20240606131736.496598363@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,79 +67,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit e57b7d62a1b2f496caf0beba81cec3c90fad80d5 ]
+[ Upstream commit 316f790ebcf94bdf59f794b7cdea4068dc676d4c ]
 
-Currently host relies on CE interrupts to get notified that
-the service ready message is ready. This results in timeout
-issue if the interrupt is not fired, due to some unknown
-reasons. See below logs:
+The kzalloc() in brcmf_pcie_download_fw_nvram() will return null
+if the physical memory has run out. As a result, if we use
+get_random_bytes() to generate random bytes in the randbuf, the
+null pointer dereference bug will happen.
 
-[76321.937866] ath10k_pci 0000:02:00.0: wmi service ready event not received
-...
-[76322.016738] ath10k_pci 0000:02:00.0: Could not init core: -110
+In order to prevent allocation failure, this patch adds a separate
+function using buffer on kernel stack to generate random bytes in
+the randbuf, which could prevent the kernel stack from overflow.
 
-And finally it causes WLAN interface bring up failure.
-
-Change to give it one more chance here by polling CE rings,
-before failing directly.
-
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00157-QCARMSWPZ-1
-
-Fixes: 5e3dd157d7e7 ("ath10k: mac80211 driver for Qualcomm Atheros 802.11ac CQA98xx devices")
-Reported-by: James Prestwood <prestwoj@gmail.com>
-Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
-Link: https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240227030409.89702-1-quic_bqiang@quicinc.com
+Fixes: 91918ce88d9f ("wifi: brcmfmac: pcie: Provide a buffer of random bytes to the device")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240306140437.18177-1-duoming@zju.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 05fa7d4c0e1ab..ee08a4c668f7a 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1762,12 +1762,32 @@ void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index 80220685f5e45..a43af82691401 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -1675,6 +1675,15 @@ struct brcmf_random_seed_footer {
+ #define BRCMF_RANDOM_SEED_MAGIC		0xfeedc0de
+ #define BRCMF_RANDOM_SEED_LENGTH	0x100
  
- int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
- {
--	unsigned long time_left;
-+	unsigned long time_left, i;
++static noinline_for_stack void
++brcmf_pcie_provide_random_bytes(struct brcmf_pciedev_info *devinfo, u32 address)
++{
++	u8 randbuf[BRCMF_RANDOM_SEED_LENGTH];
++
++	get_random_bytes(randbuf, BRCMF_RANDOM_SEED_LENGTH);
++	memcpy_toio(devinfo->tcm + address, randbuf, BRCMF_RANDOM_SEED_LENGTH);
++}
++
+ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 					const struct firmware *fw, void *nvram,
+ 					u32 nvram_len)
+@@ -1717,7 +1726,6 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 				.length = cpu_to_le32(rand_len),
+ 				.magic = cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
+ 			};
+-			void *randbuf;
  
- 	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
- 						WMI_SERVICE_READY_TIMEOUT_HZ);
--	if (!time_left)
--		return -ETIMEDOUT;
-+	if (!time_left) {
-+		/* Sometimes the PCI HIF doesn't receive interrupt
-+		 * for the service ready message even if the buffer
-+		 * was completed. PCIe sniffer shows that it's
-+		 * because the corresponding CE ring doesn't fires
-+		 * it. Workaround here by polling CE rings once.
-+		 */
-+		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
-+
-+		for (i = 0; i < CE_COUNT; i++)
-+			ath10k_hif_send_complete_check(ar, i, 1);
-+
-+		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
-+							WMI_SERVICE_READY_TIMEOUT_HZ);
-+		if (!time_left) {
-+			ath10k_warn(ar, "polling timed out\n");
-+			return -ETIMEDOUT;
-+		}
-+
-+		ath10k_warn(ar, "service ready completion received, continuing normally\n");
-+	}
-+
- 	return 0;
- }
+ 			/* Some Apple chips/firmwares expect a buffer of random
+ 			 * data to be present before NVRAM
+@@ -1729,10 +1737,7 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 				    sizeof(footer));
  
+ 			address -= rand_len;
+-			randbuf = kzalloc(rand_len, GFP_KERNEL);
+-			get_random_bytes(randbuf, rand_len);
+-			memcpy_toio(devinfo->tcm + address, randbuf, rand_len);
+-			kfree(randbuf);
++			brcmf_pcie_provide_random_bytes(devinfo, address);
+ 		}
+ 	} else {
+ 		brcmf_dbg(PCIE, "No matching NVRAM file found %s\n",
 -- 
 2.43.0
 
