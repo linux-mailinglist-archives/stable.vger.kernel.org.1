@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-49364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9024E8FECF6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0098FEB5B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00E2528714E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:34:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF133B25315
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DCD198A3F;
-	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607781A3BC6;
+	Thu,  6 Jun 2024 14:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfOB1vce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zMIiU0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A301B3F0E;
-	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC5F196D8C;
+	Thu,  6 Jun 2024 14:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683429; cv=none; b=LUYQVNIzEE64VGAw8sFrSAMOqAmMpBLF7PQ1kzOUMIIrRG902NFHCBi8Z/z1Nm9b3P0ycrkyp49N8qglMCMLe+ZNuJ8F0/M90f5DPrwAQeK5NzoEp8EtOwU7vHhRvUXdAFEKg8/5Hm3c84GXdc32gTpWoxmJTeGmMINtUAS9z34=
+	t=1717683241; cv=none; b=CHG6e9iMJl08NW3R3+aOcQXnHSYZUuYPZARidhjC52RufCIQqUPs4DdAuPg3lIs90PDVkH0jDwICBLgVEs46d8GvT32w7LG5kwPg7FG7lYznBhF/TGSGBZUV7J5umoAZVNxCmGAtqnIgq0yo0xfoRV8liM7UzZfEOD38rqs6XJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683429; c=relaxed/simple;
-	bh=K8OBQC1OUCr/GwGN4rtmP50qRV+7BeVWKkk6kNmGtS4=;
+	s=arc-20240116; t=1717683241; c=relaxed/simple;
+	bh=4JMXDTxMIHGogg4oNFkSoafb4b7Kx9TJM04XPSoz42c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sL/hJHxi4bz6BzGgpKBJNWc50hlxjjsRgDvMqmKTOXrl/vioEFHKT0VrxLI7U8xulqFxq8r1agsOEe4Eq0C6rCUzgo3tfDFuurF8zNRYld69v9jqX7bo36HBECrfxhGR3blqvgBRVjJ2B3pVmswf66eF/yfYPQRjxHWrdV5q2mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfOB1vce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FDFC2BD10;
-	Thu,  6 Jun 2024 14:17:09 +0000 (UTC)
+	 MIME-Version; b=ESlWKsWEfvARoiqTWNZhiGUi3toyB83Axa0sg0piHRJpRaRp4BzC51B5tFk0MvzXko7XSGmv1CrQ/2z+KKoRapa/QAW1iQTFqzUhj+DjGYS/kBadI/9BEPYp3q9bL92YuOQZ1am7kbqOAS8B5O5fNQoOJKlJojWJe57NIp+AX8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zMIiU0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F313DC2BD10;
+	Thu,  6 Jun 2024 14:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683429;
-	bh=K8OBQC1OUCr/GwGN4rtmP50qRV+7BeVWKkk6kNmGtS4=;
+	s=korg; t=1717683241;
+	bh=4JMXDTxMIHGogg4oNFkSoafb4b7Kx9TJM04XPSoz42c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfOB1vceUU0S6LnRb3RFJ5J2kOmbZ56WtinJcvYzbDvLHiD21hCQHlTrFLePlf91c
-	 vvVQYZ0yqjnXhfo73cvOiw3wsiODMyYq9Hcoh1qaJ72y2YBJ6+QoInltfgHkiVx2XU
-	 4SBlmrhdl2qkZN2bjxYNCosmJiFMwgjuGFMcohos=
+	b=0zMIiU0wcf1eLzCtyXm57W4c0/lmiJ2fgEZqjJJrQdGLiDhWuMaXeK0gTZEeCmSxJ
+	 A9rJZqxXLluG7BCt5DroJZUuAKKcv/V8GFAp2+ze7PwrHAsSYvMckcjJXKG3Q81q3s
+	 J0vxcExE/6CBkRx2znPyEStk+MKDFQkXK2uh+1Qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Liaw <edliaw@google.com>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 374/744] selftests/kcmp: remove unused open mode
-Date: Thu,  6 Jun 2024 16:00:46 +0200
-Message-ID: <20240606131744.474829089@linuxfoundation.org>
+Subject: [PATCH 6.1 118/473] x86/boot/64: Clear most of CR4 in startup_64(), except PAE, MCE and LA57
+Date: Thu,  6 Jun 2024 16:00:47 +0200
+Message-ID: <20240606131703.841457054@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Liaw <edliaw@google.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit eb59a58113717df04b8a8229befd8ab1e5dbf86e ]
+[ Upstream commit a0025f587c685e5ff842fb0194036f2ca0b6eaf4 ]
 
-Android bionic warns that open modes are ignored if O_CREAT or O_TMPFILE
-aren't specified.  The permissions for the file are set above:
+The early 64-bit boot code must be entered with a 1:1 mapping of the
+bootable image, but it cannot operate without a 1:1 mapping of all the
+assets in memory that it accesses, and therefore, it creates such
+mappings for all known assets upfront, and additional ones on demand
+when a page fault happens on a memory address.
 
-	fd1 = open(kpath, O_RDWR | O_CREAT | O_TRUNC, 0644);
+These mappings are created with the global bit G set, as the flags used
+to create page table descriptors are based on __PAGE_KERNEL_LARGE_EXEC
+defined by the core kernel, even though the context where these mappings
+are used is very different.
 
-Link: https://lkml.kernel.org/r/20240429234610.191144-1-edliaw@google.com
-Fixes: d97b46a64674 ("syscalls, x86: add __NR_kcmp syscall")
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This means that the TLB maintenance carried out by the decompressor is
+not sufficient if it is entered with CR4.PGE enabled, which has been
+observed to happen with the stage0 bootloader of project Oak. While this
+is a dubious practice if no global mappings are being used to begin
+with, the decompressor is clearly at fault here for creating global
+mappings and not performing the appropriate TLB maintenance.
+
+Since commit:
+
+  f97b67a773cd84b ("x86/decompressor: Only call the trampoline when changing paging levels")
+
+CR4 is no longer modified by the decompressor if no change in the number
+of paging levels is needed. Before that, CR4 would always be set to a
+consistent value with PGE cleared.
+
+So let's reinstate a simplified version of the original logic to put CR4
+into a known state, and preserve the PAE, MCE and LA57 bits, none of
+which can be modified freely at this point (PAE and LA57 cannot be
+changed while running in long mode, and MCE cannot be cleared when
+running under some hypervisors).
+
+This effectively clears PGE and works around the project Oak bug.
+
+Fixes: f97b67a773cd84b ("x86/decompressor: Only call the trampoline when ...")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20240410151354.506098-2-ardb+git@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kcmp/kcmp_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/compressed/head_64.S | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/kcmp/kcmp_test.c b/tools/testing/selftests/kcmp/kcmp_test.c
-index 25110c7c0b3ed..d7a8e321bb16b 100644
---- a/tools/testing/selftests/kcmp/kcmp_test.c
-+++ b/tools/testing/selftests/kcmp/kcmp_test.c
-@@ -91,7 +91,7 @@ int main(int argc, char **argv)
- 		ksft_print_header();
- 		ksft_set_plan(3);
+diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
+index 0d7aef10b19ad..6bc70385314cb 100644
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -390,6 +390,11 @@ SYM_CODE_START(startup_64)
+ 	call	sev_enable
+ #endif
  
--		fd2 = open(kpath, O_RDWR, 0644);
-+		fd2 = open(kpath, O_RDWR);
- 		if (fd2 < 0) {
- 			perror("Can't open file");
- 			ksft_exit_fail();
++	/* Preserve only the CR4 bits that must be preserved, and clear the rest */
++	movq	%cr4, %rax
++	andl	$(X86_CR4_PAE | X86_CR4_MCE | X86_CR4_LA57), %eax
++	movq	%rax, %cr4
++
+ 	/*
+ 	 * configure_5level_paging() updates the number of paging levels using
+ 	 * a trampoline in 32-bit addressable memory if the current number does
 -- 
 2.43.0
 
