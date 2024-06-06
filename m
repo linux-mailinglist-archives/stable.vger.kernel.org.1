@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01DB8FEF2C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 679628FEE07
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A783288BC9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A4AA1F22CDB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928C21A2566;
-	Thu,  6 Jun 2024 14:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D841BF8FD;
+	Thu,  6 Jun 2024 14:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2ozHs/s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcsAn6FX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515FD1A255D;
-	Thu,  6 Jun 2024 14:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47AF19EEC0;
+	Thu,  6 Jun 2024 14:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683749; cv=none; b=i62ZyYn6A3k9YIU+puST/lg1diHPRaoIZKj4VwrUJQ3Nd07QwZm19rJHt/LAfwf3eP8ACyYFQse4YAeed/+MCnOCkdI0IwBjEhordxGnfIg/S9l4Rg1RXiAZja8TYRKl/ZBsqcNr6ykbbiMS3pMXSHiF6666NPmlMIQsAdhsODk=
+	t=1717683552; cv=none; b=ZVU7TqlcBDmF9+eyaTdk5ycMgBneBMsyUG88UPIg2NieoKvxkq3aIXGXsyMO2lDadNDTvP4Q5vF5wjVn3Oe7+0ttkIfA4wZnuG/vit5kwUKhYAOsJeMHGI/wp85+S0gQ9CQR9afLivjVSCOEebWgPzWMdYvQhfBqCWta8g9J99Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683749; c=relaxed/simple;
-	bh=CJcEr8fiR++Vdmou8s2N3gcNsRFdYp3GVxoMMawYRRY=;
+	s=arc-20240116; t=1717683552; c=relaxed/simple;
+	bh=wZQfoSTo92hZNzfnhaQqZ5PvZUV33KFSVdToclpM9gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnLtrhckjI6WRaTGWlnkdwpA/pOLJc0s7ZStpH7ON+9Cru0AH0LL6iUjJO4Ek25i5x+07/6LR4EnViIrXHIwZKuv4UaECaKl6WzbqCxH4kIeN5n3BNvDx439nzwywTU6EXSplOeZ1ZEDw46VBNQQgKXT8l338Em25BoLwqy119A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2ozHs/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F306C2BD10;
-	Thu,  6 Jun 2024 14:22:29 +0000 (UTC)
+	 MIME-Version; b=VHV38a3ImvTTShG4FM7/SRmuVE7saCCiGPQFVIazy0k3ukbcxHUJGt5Or8caAsLVLBjMCr6ApJLTsU2jD/2sZ6RIEv5ImH1uGjrG720hcK0Z25xMeJbe04OC0UDE4TddeLJncpmr3YDNTAsw+uPJnUOCncsOE+M3xMetKfs6bPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcsAn6FX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFF9C2BD10;
+	Thu,  6 Jun 2024 14:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683749;
-	bh=CJcEr8fiR++Vdmou8s2N3gcNsRFdYp3GVxoMMawYRRY=;
+	s=korg; t=1717683552;
+	bh=wZQfoSTo92hZNzfnhaQqZ5PvZUV33KFSVdToclpM9gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2ozHs/sxSE7rN+swqI2T+MNBmTZ6Djpva5WXKUw2TJJArW7+p4ngjmjRQVVktGTn
-	 TjUFHam29V9WELGn7oyZIs2NNblHGuYm+t88z5agBkgdRIgqGmP/wFWkFM456kSGuV
-	 Yug1CVhKRqoYbu8M4QfVK9fKYdn0JDLmhQsbjvC0=
+	b=IcsAn6FXyJusStU7vJ2WD3GXFMoq2oOXRGb2wT3kfRx9LqNwdp5C9sYuWD6bamBfj
+	 2tJMjohhYY1KAHH8AAM3OAvYHYcWmCJAHGY4Zg0k2DPVO/XM4pXcNt2fDqrLROo9Ho
+	 oBc+qdQWXQK09xdHLgkaK+5IPXZ2Ke1ARUB+4OIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 699/744] Octeontx2-pf: Free send queue buffers incase of leaf to inner
-Date: Thu,  6 Jun 2024 16:06:11 +0200
-Message-ID: <20240606131754.899038610@linuxfoundation.org>
+Subject: [PATCH 6.1 443/473] bpf: Fix potential integer overflow in resolve_btfids
+Date: Thu,  6 Jun 2024 16:06:12 +0200
+Message-ID: <20240606131714.367514251@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Friedrich Vock <friedrich.vock@gmx.de>
 
-[ Upstream commit 1684842147677a1279bcff95f8adb6de9a656e30 ]
+[ Upstream commit 44382b3ed6b2787710c8ade06c0e97f5970a47c8 ]
 
-There are two type of classes. "Leaf classes" that are  the
-bottom of the class hierarchy. "Inner classes" that are neither
-the root class nor leaf classes. QoS rules can only specify leaf
-classes as targets for traffic.
+err is a 32-bit integer, but elf_update returns an off_t, which is 64-bit
+at least on 64-bit platforms. If symbols_patch is called on a binary between
+2-4GB in size, the result will be negative when cast to a 32-bit integer,
+which the code assumes means an error occurred. This can wrongly trigger
+build failures when building very large kernel images.
 
-			 Root
-		        /  \
-		       /    \
-                      1      2
-                             /\
-                            /  \
-                           4    5
-               classes 1,4 and 5 are leaf classes.
-               class 2 is a inner class.
-
-When a leaf class made as inner, or vice versa, resources associated
-with send queue (send queue buffers and transmit schedulers) are not
-getting freed.
-
-Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Link: https://lore.kernel.org/r/20240523073626.4114-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: fbbb68de80a4 ("bpf: Add resolve_btfids tool to resolve BTF IDs in ELF object")
+Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240514070931.199694-1-friedrich.vock@gmx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/bpf/resolve_btfids/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 1723e9912ae07..6cddb4da85b71 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -1407,7 +1407,10 @@ static int otx2_qos_leaf_to_inner(struct otx2_nic *pfvf, u16 classid,
- 	otx2_qos_read_txschq_cfg(pfvf, node, old_cfg);
+diff --git a/tools/bpf/resolve_btfids/main.c b/tools/bpf/resolve_btfids/main.c
+index ef0764d6891e4..82bffa7cf8659 100644
+--- a/tools/bpf/resolve_btfids/main.c
++++ b/tools/bpf/resolve_btfids/main.c
+@@ -728,7 +728,7 @@ static int sets_patch(struct object *obj)
  
- 	/* delete the txschq nodes allocated for this node */
-+	otx2_qos_disable_sq(pfvf, qid);
-+	otx2_qos_free_hw_node_schq(pfvf, node);
- 	otx2_qos_free_sw_node_schq(pfvf, node);
-+	pfvf->qos.qid_to_sqmap[qid] = OTX2_QOS_INVALID_SQ;
+ static int symbols_patch(struct object *obj)
+ {
+-	int err;
++	off_t err;
  
- 	/* mark this node as htb inner node */
- 	WRITE_ONCE(node->qid, OTX2_QOS_QID_INNER);
-@@ -1554,6 +1557,7 @@ static int otx2_qos_leaf_del_last(struct otx2_nic *pfvf, u16 classid, bool force
- 		dwrr_del_node = true;
- 
- 	/* destroy the leaf node */
-+	otx2_qos_disable_sq(pfvf, qid);
- 	otx2_qos_destroy_node(pfvf, node);
- 	pfvf->qos.qid_to_sqmap[qid] = OTX2_QOS_INVALID_SQ;
- 
+ 	if (__symbols_patch(obj, &obj->structs)  ||
+ 	    __symbols_patch(obj, &obj->unions)   ||
 -- 
 2.43.0
 
