@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-49390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9B18FED10
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:35:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66E78FE8C6
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AC0E1F23085
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:35:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BBEE1F24B25
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617741B4C2B;
-	Thu,  6 Jun 2024 14:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117F519885D;
+	Thu,  6 Jun 2024 14:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPorjUCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efql1g4K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210BB19CD15;
-	Thu,  6 Jun 2024 14:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3DE196DB1;
+	Thu,  6 Jun 2024 14:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683442; cv=none; b=BF8MGQpUvZCVDD/8tYp0hOKR3Wy24ktvBRxj5DdUk5jiI6SAqzpWc0tR8Mi3toDVWMWD8dUmg08LctcFDpH2opCPa4i+nQjVck8CYG6eUnX4eYGNEFmLCgY4vMPVz3uYH7N3GdK8IEnpk01PX3EeaO0GKiAyqV36aavGiF3HXAM=
+	t=1717682932; cv=none; b=mGWkokK6ect2OYHVbCKot7n3fbHTZToc6Y+W/6Ppy2q4p7upD3/Nw6oNQepEHaPuOhmy8ZSn5rZtu7MnmIVWm92JS9PyXwWb7/98abnikFcpH2yVdBGKEt7EueFAfTjNgjFN4pKpO6CoYJmyYLIv8RMAAFMaJo9VEcfEUSlBoWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683442; c=relaxed/simple;
-	bh=pw2h2HMhCGuI0WylZH27GZBbWzZ9k8HKyUhCNzun5yM=;
+	s=arc-20240116; t=1717682932; c=relaxed/simple;
+	bh=zndD0tINat8XcwFvE0qvdWon7OiJwV2kTuuGaXlOG+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+8zgOafzZ+BVSWqll84MRjMr9/7uNOk3LQ1Z+z+vMWd2fgk5sblZvKRlnr8O3zfHDeyfyAOMSfOXKT5FA6C9qaykKHLl1kx9KlZiXkB/KTAqRn0xJzXHJiLeYg+0bBVhBrR4KiiYLQ7XlfMFBR5N+VBLOBxWFiyY2dVnCQM3T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPorjUCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30EBC2BD10;
-	Thu,  6 Jun 2024 14:17:21 +0000 (UTC)
+	 MIME-Version; b=rUQoL/iNfs61MiDRQfKAZMdmYZZz6q3079wV0S6TjeNpFmQ4swjf/B5Y3VkgPJd2cyTE6RLkG1UVzgbZJVCz3iVYpEdxNzO1l6E+LClx4caJCSEhB2pU2m4nKNNmCvDdib029UpP2vWsr0zr1c36uzIrA5lYoogAyz3GT8W7b2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efql1g4K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3CFC2BD10;
+	Thu,  6 Jun 2024 14:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683442;
-	bh=pw2h2HMhCGuI0WylZH27GZBbWzZ9k8HKyUhCNzun5yM=;
+	s=korg; t=1717682932;
+	bh=zndD0tINat8XcwFvE0qvdWon7OiJwV2kTuuGaXlOG+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPorjUCJwiQ0O4tEnZCGI4H7akxWAC4eYM0WJXY/eg/NbGShDxj564PRiSU/4CbGB
-	 PSgE6PJIl4SJJjgXiCV1NQWC9WHcPwgfDaD+4/+a33/5U852bpybu/YTmZzQodCSuE
-	 xW63Llnbr3oEBaifOZZ6tGGbMdMjuGhpiEYnVj0Y=
+	b=efql1g4KQMZRFqY/cu1IY4IaODw/K+ouWt9WWQeIfh3r81hf9RH6vYyH3zMdFajUo
+	 k6OvruCXvXfSq3+DPv4lrWn8k1clVlg/M9RQ1Xh2mTqL1vYwBo5P65+FCqOURkOwO9
+	 DRShTyh6bhvF48HkloS2erdlF2W44H3c59+HUChY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neil Horman <nhorman@tuxdriver.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 386/744] af_packet: do not call packet_read_pending() from tpacket_destruct_skb()
-Date: Thu,  6 Jun 2024 16:00:58 +0200
-Message-ID: <20240606131744.846127612@linuxfoundation.org>
+Subject: [PATCH 6.9 080/374] watchdog: sa1100: Fix PTR_ERR_OR_ZERO() vs NULL check in sa1100dog_probe()
+Date: Thu,  6 Jun 2024 16:00:59 +0200
+Message-ID: <20240606131654.535155018@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 581073f626e387d3e7eed55c48c8495584ead7ba ]
+[ Upstream commit 413bf4e857fd79617524d5dcd35f463e9aa2dd41 ]
 
-trafgen performance considerably sank on hosts with many cores
-after the blamed commit.
+devm_ioremap() doesn't return error pointers, it returns NULL on error.
+Update the check accordingly.
 
-packet_read_pending() is very expensive, and calling it
-in af_packet fast path defeats Daniel intent in commit
-b013840810c2 ("packet: use percpu mmap tx frame pending refcount")
-
-tpacket_destruct_skb() makes room for one packet, we can immediately
-wakeup a producer, no need to completely drain the tx ring.
-
-Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Neil Horman <nhorman@tuxdriver.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240515163358.4105915-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e86bd43bcfc5 ("watchdog: sa1100: use platform device registration")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240426075808.1582678-1-nichen@iscas.ac.cn
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/watchdog/sa1100_wdt.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index f017d7d33da39..ff1ddf544e179 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2528,8 +2528,7 @@ static void tpacket_destruct_skb(struct sk_buff *skb)
- 		ts = __packet_set_timestamp(po, ph, skb);
- 		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
+diff --git a/drivers/watchdog/sa1100_wdt.c b/drivers/watchdog/sa1100_wdt.c
+index 5d2df008b92a5..34a917221e316 100644
+--- a/drivers/watchdog/sa1100_wdt.c
++++ b/drivers/watchdog/sa1100_wdt.c
+@@ -191,9 +191,8 @@ static int sa1100dog_probe(struct platform_device *pdev)
+ 	if (!res)
+ 		return -ENXIO;
+ 	reg_base = devm_ioremap(&pdev->dev, res->start, resource_size(res));
+-	ret = PTR_ERR_OR_ZERO(reg_base);
+-	if (ret)
+-		return ret;
++	if (!reg_base)
++		return -ENOMEM;
  
--		if (!packet_read_pending(&po->tx_ring))
--			complete(&po->skb_completion);
-+		complete(&po->skb_completion);
- 	}
- 
- 	sock_wfree(skb);
+ 	clk = clk_get(NULL, "OSTIMER0");
+ 	if (IS_ERR(clk)) {
 -- 
 2.43.0
 
