@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-49770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D4D8FEEC8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9307F8FED5E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C791C25ABE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9F731C22B25
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6DB1C7D6F;
-	Thu,  6 Jun 2024 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484E01BA886;
+	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMQe/im+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEtw7zDr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE141C6893;
-	Thu,  6 Jun 2024 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F8019DF41;
+	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683700; cv=none; b=lpEn5lenhg7ei882muGsynrMW4RSDORQU+owUR5chSMQ+N78B0kHCaTiWvoCYHK1RGJK1rLokJ/feTD6sI+NZPtx+JAUHhi5NIc2t0V4H0FO7xh5ok8+F1hh8e4fLe7BjhwjKcl1etsTAX07FkCHINR+ZtgyjGteeZd4AmTYd54=
+	t=1717683480; cv=none; b=JstJlWbQkqa7KDWiDfym6dE4XvRx1p72Iy7zGyC8ZdRJLlQIVW88mwvnrZuyZyWCu1luQMZuYtVvMMwb9PaGNLGin2ljYtF7hS2FmriseXGmQcAWTzs0eUVJo9PStnF5Q/8WW+a3vlUcmq4+GnyG7LcyQwtqcTpgM5BByXt1yKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683700; c=relaxed/simple;
-	bh=EKvlSGNJOgBL1vVCuXQgn3l1a2H12GoaMwTP7SrzAQU=;
+	s=arc-20240116; t=1717683480; c=relaxed/simple;
+	bh=p1WvVu5hleUW/lAu3IZCDiWqCRNQvpb5MSBJTWUNe28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgQZBS39vXvO2ftgnBL6hRlC1CxBziLAoMj2OA09kKrR/+esFnX11ELmkTAOrH/kuUW5sEhIww2IOgBx0geLiNz99ChnphyYNcPpid/UjZcGAxKR/UVv88cGQumTMhhNrGcfP6fscZg/XLlf5FNM+C88IxCb3tv52Jjbb+k2DYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMQe/im+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80089C32786;
-	Thu,  6 Jun 2024 14:21:40 +0000 (UTC)
+	 MIME-Version; b=dlLH/gbpHMZaUji1iTuZ2aLX68xb6d9WyWAnnh18/JPhIFytIp44r/ZMbzde2rQ9lbv0ueJKro1OMJqZ9EOACgSqN56XoA4g6cMPlcl9Nj/e1w4TKdSVMYtrwvQb6pKz6VAnwNcQq90nX1EinRhx2skow2GBFsqLakVxin3qFsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEtw7zDr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D658BC2BD10;
+	Thu,  6 Jun 2024 14:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683700;
-	bh=EKvlSGNJOgBL1vVCuXQgn3l1a2H12GoaMwTP7SrzAQU=;
+	s=korg; t=1717683479;
+	bh=p1WvVu5hleUW/lAu3IZCDiWqCRNQvpb5MSBJTWUNe28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fMQe/im+43uq9F0wz9+SNjFcGzHHAZtKy+S+lestEl0986rvYOcdWqXOrNjbIdUQP
-	 KSOsB458/Jz9/DR+h2CLFCl+Mg2mRF0BPTPTGcqJggw4xoyP1q39AncR426mPBi/H0
-	 n4QAOTvcr1/AAK1WyQUx+g1U0V0dAOqnYZqLGlus=
+	b=kEtw7zDr3BejZ9KbLaozU0ySfvjgYexii2PLRmYELVpfcu7EdcevencSsfYINZ3pC
+	 rFlfKD+N6qtlqmiVGiictSVg3ZbHImBOCuCMPkQV1C3oOccBmxVxQxTdJaImtFtfAY
+	 18iJCrl+mqYqFxKWyhFqlZ8/clAzVlLvG+4baZQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
+	Judith Mendez <jm@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 622/744] ASoC: mediatek: mt8192: fix register configuration for tdm
-Date: Thu,  6 Jun 2024 16:04:54 +0200
-Message-ID: <20240606131752.445742977@linuxfoundation.org>
+Subject: [PATCH 6.1 366/473] mmc: sdhci_am654: Fix ITAPDLY for HS400 timing
+Date: Thu,  6 Jun 2024 16:04:55 +0200
+Message-ID: <20240606131712.010038510@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit a85ed162f0efcfdd664954414a05d1d560cc95dc ]
+[ Upstream commit d3182932bb070e7518411fd165e023f82afd7d25 ]
 
-For DSP_A, data is a BCK cycle behind LRCK trigger edge. For DSP_B, this
-delay doesn't exist. Fix the delay configuration to match the standard.
+While STRB is currently used for DATA and CRC responses, the CMD
+responses from the device to the host still require ITAPDLY for
+HS400 timing.
 
-Fixes: 52fcd65414abfc ("ASoC: mediatek: mt8192: support tdm in platform driver")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240509-8192-tdm-v1-1-530b54645763@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Currently what is stored for HS400 is the ITAPDLY from High Speed
+mode which is incorrect. The ITAPDLY for HS400 speed mode should
+be the same as ITAPDLY as HS200 timing after tuning is executed.
+Add the functionality to save ITAPDLY from HS200 tuning and save
+as HS400 ITAPDLY.
+
+Fixes: a161c45f2979 ("mmc: sdhci_am654: Enable DLL only for some speed modes")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240320223837.959900-8-jm@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8192/mt8192-dai-tdm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci_am654.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
-index 9ce06821c7d0f..49440db370af0 100644
---- a/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
-+++ b/sound/soc/mediatek/mt8192/mt8192-dai-tdm.c
-@@ -566,10 +566,10 @@ static int mtk_dai_tdm_hw_params(struct snd_pcm_substream *substream,
- 		tdm_con |= 1 << DELAY_DATA_SFT;
- 		tdm_con |= get_tdm_lrck_width(format) << LRCK_TDM_WIDTH_SFT;
- 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_A) {
--		tdm_con |= 0 << DELAY_DATA_SFT;
-+		tdm_con |= 1 << DELAY_DATA_SFT;
- 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
- 	} else if (tdm_priv->tdm_out_mode == TDM_OUT_DSP_B) {
--		tdm_con |= 1 << DELAY_DATA_SFT;
-+		tdm_con |= 0 << DELAY_DATA_SFT;
- 		tdm_con |= 0 << LRCK_TDM_WIDTH_SFT;
- 	}
+diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+index c20ec525c9bf8..52d6cc07e38cc 100644
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -300,6 +300,12 @@ static void sdhci_am654_set_clock(struct sdhci_host *host, unsigned int clock)
+ 	if (timing > MMC_TIMING_UHS_SDR25 && clock >= CLOCK_TOO_SLOW_HZ) {
+ 		sdhci_am654_setup_dll(host, clock);
+ 		sdhci_am654->dll_enable = true;
++
++		if (timing == MMC_TIMING_MMC_HS400) {
++			sdhci_am654->itap_del_ena[timing] = 0x1;
++			sdhci_am654->itap_del_sel[timing] = sdhci_am654->itap_del_sel[timing - 1];
++		}
++
+ 		sdhci_am654_write_itapdly(sdhci_am654, sdhci_am654->itap_del_sel[timing],
+ 					  sdhci_am654->itap_del_ena[timing]);
+ 	} else {
+@@ -530,6 +536,9 @@ static int sdhci_am654_platform_execute_tuning(struct sdhci_host *host,
+ 
+ 	sdhci_am654_write_itapdly(sdhci_am654, itap, sdhci_am654->itap_del_ena[timing]);
+ 
++	/* Save ITAPDLY */
++	sdhci_am654->itap_del_sel[timing] = itap;
++
+ 	return 0;
+ }
  
 -- 
 2.43.0
