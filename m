@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-49685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF688FEE6B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CC88FECAD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA4BE1F246DA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F98E287671
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDDC1C3723;
-	Thu,  6 Jun 2024 14:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B4C19B58F;
+	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBmI9hWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnOyk6V3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9C51991C4;
-	Thu,  6 Jun 2024 14:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5707A198A35;
+	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683658; cv=none; b=k7ujSRtyGZwIEFE/H/NI+KdZy08D44apkKZi44IuPV8MiQwrdaBY1HH1cYf5URUD/WgkqvE1GSy9NZ0z22qQcb3TzhjKC8ALisjcwuhl2XwSShZe+HVj0fnZLeXMadgBpmqKUwwtmK7AWYPEuUTWYD4Y/bNmtvezKf2B71UUdnw=
+	t=1717683396; cv=none; b=Nmeuuio3FS331eUqHHfj0JMKCnvuuPVsNuKrWhIl2fgtE3lU7oOwC0X59d6VDGmCPwZL7XD6ggE2LlN1rx7MCodt+cqrAKlIbTlWscGCNruqSZg2yy9mDCcV/3Lmloa7yU0htAwnaO08COjAIrkssE9KO6BCz5MzcokrWYeBpDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683658; c=relaxed/simple;
-	bh=tW0XCU/oTRi9tVlOBkuOtchp2sNVQwm8BzoiSjgrv4U=;
+	s=arc-20240116; t=1717683396; c=relaxed/simple;
+	bh=XWbiNX+If1tAe2mpZw0K0UJOBYT/Y4unW+sDbA9OkWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q771TYPFbpuwsZxPFrsZLo0eOeOcnEXBeLTiVM3hK6MYgk8/Ogofqqkqh4QK0y09e7dVcYCrO5jSXsKF6Anuec3mCpDe6BYkvzAHhu1kBPeRorOyJLtmqTCucyVC7wnnsVdSiXuDbn10mKR7mMNlYCeX+clxy6zYOoyHNKx6kzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBmI9hWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E236C2BD10;
-	Thu,  6 Jun 2024 14:20:58 +0000 (UTC)
+	 MIME-Version; b=geW0xUi79FPk5Nte262CIYhSB8EgA+GuzZcCzvFaAy28ia2k20bgSp5qARKWNJvez2Qd/n28+c97fKQKKMX9Z4h7FDh86I28CZ2Fya30bDgTUjaY4NlrGoXgvhzi425o5fTtMnwUEQgf7K8ORIQXpawC1y/VcpR4Dfp+ZGB04cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnOyk6V3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FD0C2BD10;
+	Thu,  6 Jun 2024 14:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683658;
-	bh=tW0XCU/oTRi9tVlOBkuOtchp2sNVQwm8BzoiSjgrv4U=;
+	s=korg; t=1717683396;
+	bh=XWbiNX+If1tAe2mpZw0K0UJOBYT/Y4unW+sDbA9OkWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fBmI9hWKM7X/6kx7Ml+QLNZyv9XFFA00KqF7IU2PfrnZVowKUHfZ2Uf28bAZzZTyC
-	 0kmV4/XSk0F47UZ+JoPqObiiHb2wO3r1fXse+9jtecbYPUgkcTYd+kBEJvbKlv7lXc
-	 ZWl3kNnYmPYPMmVoYC28+zTABT71Hnc+oLrXPF3k=
+	b=TnOyk6V3FWFqBab0YssA7/kWZoSM8B3RqD1d/PUp57XWG/SkNMETMLymg+ytzNINh
+	 k0BvK5PFWTWV0HmR+kqOte1yUfA3CmMJHQhihjDtP9E7TpvsjAOvwLAgd7KeAhkPOI
+	 F6iqLl3RhcbkCYpyv3nexRuLLS/7FK0iCAyHYh/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 537/744] s390/vdso: Create .build-id links for unstripped vdso files
+Subject: [PATCH 6.1 280/473] perf probe: Add missing libgen.h header needed for using basename()
 Date: Thu,  6 Jun 2024 16:03:29 +0200
-Message-ID: <20240606131749.686154879@linuxfoundation.org>
+Message-ID: <20240606131709.164107708@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Remus <jremus@linux.ibm.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit fc2f5f10f9bc5e58d38e9fda7dae107ac04a799f ]
+[ Upstream commit 581037151910126a7934e369e4b6ac70eda9a703 ]
 
-Citing Andy Lutomirski from commit dda1e95cee38 ("x86/vdso: Create
-.build-id links for unstripped vdso files"):
+This prototype is obtained indirectly, by luck, from some other header
+in probe-event.c in most systems, but recently exploded on alpine:edge:
 
-"With this change, doing 'make vdso_install' and telling gdb:
+   8    13.39 alpine:edge                   : FAIL gcc version 13.2.1 20240309 (Alpine 13.2.1_git20240309)
+    util/probe-event.c: In function 'convert_exec_to_group':
+    util/probe-event.c:225:16: error: implicit declaration of function 'basename' [-Werror=implicit-function-declaration]
+      225 |         ptr1 = basename(exec_copy);
+          |                ^~~~~~~~
+    util/probe-event.c:225:14: error: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+      225 |         ptr1 = basename(exec_copy);
+          |              ^
+    cc1: all warnings being treated as errors
+    make[3]: *** [/git/perf-6.8.0/tools/build/Makefile.build:158: util] Error 2
 
-set debug-file-directory /lib/modules/KVER/vdso
+Fix it by adding the libgen.h header where basename() is prototyped.
 
-will enable vdso debugging with symbols.  This is useful for
-testing, but kernel RPM builds will probably want to manually delete
-these symlinks or otherwise do something sensible when they strip
-the vdso/*.so files."
-
-Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: fb7345bbf7fad9bf ("perf probe: Support basic dwarf-based operations on uprobe events")
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/lkml/
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.vdsoinst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/probe-event.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/Makefile.vdsoinst b/scripts/Makefile.vdsoinst
-index c477d17b0aa5b..a81ca735003e4 100644
---- a/scripts/Makefile.vdsoinst
-+++ b/scripts/Makefile.vdsoinst
-@@ -21,7 +21,7 @@ $$(dest): $$(src) FORCE
- 	$$(call cmd,install)
- 
- # Some architectures create .build-id symlinks
--ifneq ($(filter arm sparc x86, $(SRCARCH)),)
-+ifneq ($(filter arm s390 sparc x86, $(SRCARCH)),)
- link := $(install-dir)/.build-id/$$(shell $(READELF) -n $$(src) | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p').debug
- 
- __default: $$(link)
+diff --git a/tools/perf/util/probe-event.c b/tools/perf/util/probe-event.c
+index 0c24bc7afbca2..66ff8420ce2b0 100644
+--- a/tools/perf/util/probe-event.c
++++ b/tools/perf/util/probe-event.c
+@@ -11,6 +11,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <errno.h>
++#include <libgen.h>
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <stdlib.h>
 -- 
 2.43.0
 
