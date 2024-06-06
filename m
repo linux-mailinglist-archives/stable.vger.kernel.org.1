@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-49340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F4C8FECDD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 938618FECE2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C511AB289AC
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9800A1C2659C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CDD198E66;
-	Thu,  6 Jun 2024 14:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839601B3736;
+	Thu,  6 Jun 2024 14:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNrittlz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIqgwK37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34361198A3B;
-	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435001B3737;
+	Thu,  6 Jun 2024 14:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683418; cv=none; b=bKDebsFbi3h0pIKbczsCVCXplRR8+OMotWr/4XPbnx0nSab1A6Qb5MRCVixSBi3AEUNM9i54B1Cm2gRWwwTPPd9t469ks3I7u6lBVGpVDH2ZnMUiiOzeCbx84pxYcO3dGscey24xt5rRXOQaDRP05lwFXdgIK5cM2GmQgNCod2Q=
+	t=1717683421; cv=none; b=MRYRtj82by9qhori7vpolg1iV3Ri3VDSQRmFikwm9LA59NVLD/6xTuzIYuSgL7brITT6L/+jepE+v1cszRLMFvQfKFe5EV6DLHlptozJ2lukojVLt1Z+8RDk/prgMaA2Eta4Hvxmj3haN337ae+XjLoqb++SRvow47sMGM8Oerw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683418; c=relaxed/simple;
-	bh=wbIlyP2+BSeg9oEGMRTL2LQnAX8H9OHMI/Bc2P1COug=;
+	s=arc-20240116; t=1717683421; c=relaxed/simple;
+	bh=PN8SJ4IFAlas/WT6JiOMdGLd3UXdLq0w+QcnYpx2T9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qk7IWFqW4wd08yDf2ftqe3UI6hcvrO3rfZ+kDUstvlkPdWN5+Sr2m1+H8j4X+XgQbkNuHbMX3YRTkRCKCcPr+iykWC2eKg4AnEZ1tJcDvUq8YwewcZnwiQ6sbPgAYAm60yQE52V2W6+vWKdojzjWsTtSsMbpYLAbb+SPhujP/aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNrittlz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA76C32786;
-	Thu,  6 Jun 2024 14:16:57 +0000 (UTC)
+	 MIME-Version; b=Na6Ldg4bjBkSaLI7eKKG16SnTzJWiQyNqSwcslm7737XDAv9BLRO2ty+kOyKrGtIfMUvjk6JGRIG/s5a2e5gCu81lGr4c187s5CiKXSnlBER8JvA9cor4xK7UaoyL0t3ElOyy6BAd2vpswIi7ecXa3/RzzMNWimGHFuGQhvCPzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIqgwK37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239C2C32782;
+	Thu,  6 Jun 2024 14:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683417;
-	bh=wbIlyP2+BSeg9oEGMRTL2LQnAX8H9OHMI/Bc2P1COug=;
+	s=korg; t=1717683421;
+	bh=PN8SJ4IFAlas/WT6JiOMdGLd3UXdLq0w+QcnYpx2T9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNrittlzWcy7SzlZHwEQbnKVWq53dD0YRKpF/panvuhB8yvsoN6nLHiYKKv6w8crQ
-	 tmeRsGOwF+ouBBXwiFOudz6HUCwQ8dN+y11m4Zdb8ebyytQ2PPgXbPh7Yf1vmjKoah
-	 /xX2H6WQsvCsbxzpN0MT/IMsjGdCnsvOsbBl66pg=
+	b=tIqgwK37oeGGQsvcifU3f1JfwTlEbTT4lVzVfegpLBF3gy0JqJI5iDzRJkZrthpHT
+	 x/AmwssWFjCf4t/EPqxTQGdCKPN9h1upImxbNyIcetv+c3fVSF9baFaB+lQjjVhGF5
+	 CmePCNZ93ljypZW5EdgFbFX7sOCiV7Hcc61DJNNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaewon Kim <jaewon02.kim@samsung.com>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 334/744] clk: samsung: exynosautov9: fix wrong pll clock id value
-Date: Thu,  6 Jun 2024 16:00:06 +0200
-Message-ID: <20240606131743.170536400@linuxfoundation.org>
+Subject: [PATCH 6.6 335/744] RDMA/mlx5: Uncacheable mkey has neither rb_key or cache_ent
+Date: Thu,  6 Jun 2024 16:00:07 +0200
+Message-ID: <20240606131743.205485550@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -67,45 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jaewon Kim <jaewon02.kim@samsung.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit 04ee3a0b44e3d18cf6b0c712d14b98624877fd26 ]
+[ Upstream commit 0611a8e8b475fc5230b9a24d29c8397aaab20b63 ]
 
-All PLL id values of CMU_TOP were incorrectly set to FOUT_SHARED0_PLL.
-It modified to the correct PLL clock id value.
+As some mkeys can't be modified with UMR due to some UMR limitations,
+like the size of translation that can be updated, not all user mkeys can
+be cached.
 
-Fixes: 6587c62f69dc ("clk: samsung: add top clock support for Exynos Auto v9 SoC")
-Signed-off-by: Jaewon Kim <jaewon02.kim@samsung.com>
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Link: https://lore.kernel.org/r/20240328091000.17660-1-jaewon02.kim@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: dd1b913fb0d0 ("RDMA/mlx5: Cache all user cacheable mkeys on dereg MR flow")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Link: https://lore.kernel.org/r/f2742dd934ed73b2d32c66afb8e91b823063880c.1712140377.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/samsung/clk-exynosautov9.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/samsung/clk-exynosautov9.c b/drivers/clk/samsung/clk-exynosautov9.c
-index e9c06eb93e666..f04bacacab2cb 100644
---- a/drivers/clk/samsung/clk-exynosautov9.c
-+++ b/drivers/clk/samsung/clk-exynosautov9.c
-@@ -352,13 +352,13 @@ static const struct samsung_pll_clock top_pll_clks[] __initconst = {
- 	/* CMU_TOP_PURECLKCOMP */
- 	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared0_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED0, PLL_CON3_PLL_SHARED0, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared1_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED1_PLL, "fout_shared1_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED1, PLL_CON3_PLL_SHARED1, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared2_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED2_PLL, "fout_shared2_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED2, PLL_CON3_PLL_SHARED2, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared3_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED3_PLL, "fout_shared3_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED3, PLL_CON3_PLL_SHARED3, NULL),
--	PLL(pll_0822x, FOUT_SHARED0_PLL, "fout_shared4_pll", "oscclk",
-+	PLL(pll_0822x, FOUT_SHARED4_PLL, "fout_shared4_pll", "oscclk",
- 	    PLL_LOCKTIME_PLL_SHARED4, PLL_CON3_PLL_SHARED4, NULL),
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 16713baf0d060..6a57af8fa231b 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -643,7 +643,7 @@ struct mlx5_ib_mkey {
+ 	unsigned int ndescs;
+ 	struct wait_queue_head wait;
+ 	refcount_t usecount;
+-	/* User Mkey must hold either a rb_key or a cache_ent. */
++	/* Cacheable user Mkey must hold either a rb_key or a cache_ent. */
+ 	struct mlx5r_cache_rb_key rb_key;
+ 	struct mlx5_cache_ent *cache_ent;
  };
- 
 -- 
 2.43.0
 
