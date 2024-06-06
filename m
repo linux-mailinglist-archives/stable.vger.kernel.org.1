@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-48566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBC18FE98A
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E065F8FEE69
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70E95287E9B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCA0E1C21816
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F30719AD40;
-	Thu,  6 Jun 2024 14:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325751C3721;
+	Thu,  6 Jun 2024 14:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EC3hVEvM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsqGlsLg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27D519AA7C;
-	Thu,  6 Jun 2024 14:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D001991C4;
+	Thu,  6 Jun 2024 14:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683037; cv=none; b=iCv0w7FElIoaPJqkao3UWgwk1BDYpHlJH/tc1JWQc9V2nMYOgAX2jEZoQB5TO54+dq8NqnNmcZw4bOevuLUy9s+i6n8r0PI+RhUO4mquUjFFo8n2hJYnsYJVi+qSyx+g2Zi0kx3qfuuEhikARPXIM+ruIrzcOad7qAgKIsRRNKk=
+	t=1717683658; cv=none; b=BQRIVZcWqYZzew1/IQkj4r79HAmsbM1Xl0jj8vHWl4PeWwdeYIWRKKK06Kz+ZPCP3uZcWmNAPLL0p+BhPeY+sNiw18MnDX1CRf5MPz3Mwr1c9fvt3ISxb+wN1gzIZGFEUfYG+F8RSIC02QgBAJc2ib1qdAmDQ1ROuUUMiVIrJrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683037; c=relaxed/simple;
-	bh=A2mndkHkOgejhf2ltnjNagnsJQ8cXP9UW8EFYT6XdkU=;
+	s=arc-20240116; t=1717683658; c=relaxed/simple;
+	bh=MfG3CCbDI+aFougpW9xDRaR7OKHX78PdHsavigCTzKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eK3hFkBg44fRfwR7xjWVHwbAd+1NUTCxahMZFVtGx7Op1EOeTQ16gIZQ86e7mEgKCnIGmk6yCMkPzewu/FaZr+uCL/fQELVh6y6sMQLGunqq5ejHDHEQshuKpaiI65aZBiq5Ihp1crvBo2qSYJwDR/vxoEfdKUHIiZjfpFNedEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EC3hVEvM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F3BC4AF55;
-	Thu,  6 Jun 2024 14:10:36 +0000 (UTC)
+	 MIME-Version; b=HTJwUbow9GTR80hxOKwNTsNVbGCUt7asc4WNsCbQ4JyEynAs5CgZmPyMCh7lEXYOq6HaFe1aeWVtjBPUF8MDbOd13QxrSA7fafRUmvIrc93aH1Nfa4I2xzmXMUwtcx0jGS/zPLPRElg7wHWKXfjLtZiOiZtgv0FlR4j3qGeQR70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsqGlsLg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BCFC2BD10;
+	Thu,  6 Jun 2024 14:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683036;
-	bh=A2mndkHkOgejhf2ltnjNagnsJQ8cXP9UW8EFYT6XdkU=;
+	s=korg; t=1717683657;
+	bh=MfG3CCbDI+aFougpW9xDRaR7OKHX78PdHsavigCTzKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EC3hVEvMy0+2684lulPWFkRsZmbh5peC2H9CgWlmM2SquBx2cxLYPD+qlPbjwXIjD
-	 mBdyGEkQoShbMgkFQJwrNQu8+aSXTlP80VnH8LJJ2WEx+JuWQXy/OY3lb/W8orF+TA
-	 yHJgHAl4U3cAwcMYXbDYkZ7oikzaFFo5dwAOrnHI=
+	b=qsqGlsLg6wnTp8yEV8FHy/Yg/IvWft/qnaBqsjPMRbqiVweD2NheIZuGF9fRYaPML
+	 6WzVmxf6doWqTy4eKr5yyGqb3JQ2XQQmfqyXtxg/DVL76mgqkOKSQLhEL8MMPGImVO
+	 8HZEQgPXLT7WzbqL0sYAloKS93OHlV4PjHPNqiuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 229/374] xen/x86: add extra pages to unpopulated-alloc if available
+Subject: [PATCH 6.6 536/744] kbuild: fix build ID symlinks to installed debug VDSO files
 Date: Thu,  6 Jun 2024 16:03:28 +0200
-Message-ID: <20240606131659.474316689@linuxfoundation.org>
+Message-ID: <20240606131749.651782202@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit a6aa4eb994ee9ced905743817c5de8451d26b911 ]
+[ Upstream commit c1a8627164dbe8b92958aea10c7c0848105a3d7f ]
 
-Commit 262fc47ac174 ('xen/balloon: don't use PV mode extra memory for zone
-device allocations') removed the addition of the extra memory ranges to the
-unpopulated range allocator, using those only for the balloon driver.
+Commit 56769ba4b297 ("kbuild: unify vdso_install rules") accidentally
+dropped the '.debug' suffix from the build ID symlinks.
 
-This forces the unpopulated allocator to attach hotplug ranges even when spare
-memory (as part of the extra memory ranges) is available.  Furthermore, on PVH
-domains it defeats the purpose of commit 38620fc4e893 ('x86/xen: attempt to
-inflate the memory balloon on PVH'), as extra memory ranges would only be
-used to map foreign memory if the kernel is built without XEN_UNPOPULATED_ALLOC
-support.
-
-Fix this by adding a helpers that adds the extra memory ranges to the list of
-unpopulated pages, and zeroes the ranges so they are not also consumed by the
-balloon driver.
-
-This should have been part of 38620fc4e893, hence the fixes tag.
-
-Note the current logic relies on unpopulated_init() (and hence
-arch_xen_unpopulated_init()) always being called ahead of balloon_init(), so
-that the extra memory regions are consumed by arch_xen_unpopulated_init().
-
-Fixes: 38620fc4e893 ('x86/xen: attempt to inflate the memory balloon on PVH')
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20240429155053.72509-1-roger.pau@citrix.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: 56769ba4b297 ("kbuild: unify vdso_install rules")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: fc2f5f10f9bc ("s390/vdso: Create .build-id links for unstripped vdso files")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/enlighten.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ scripts/Makefile.vdsoinst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-index a01ca255b0c64..b88722dfc4f86 100644
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -382,3 +382,36 @@ void __init xen_add_extra_mem(unsigned long start_pfn, unsigned long n_pfns)
+diff --git a/scripts/Makefile.vdsoinst b/scripts/Makefile.vdsoinst
+index 1022d9fdd976d..c477d17b0aa5b 100644
+--- a/scripts/Makefile.vdsoinst
++++ b/scripts/Makefile.vdsoinst
+@@ -22,7 +22,7 @@ $$(dest): $$(src) FORCE
  
- 	memblock_reserve(PFN_PHYS(start_pfn), PFN_PHYS(n_pfns));
- }
-+
-+#ifdef CONFIG_XEN_UNPOPULATED_ALLOC
-+int __init arch_xen_unpopulated_init(struct resource **res)
-+{
-+	unsigned int i;
-+
-+	if (!xen_domain())
-+		return -ENODEV;
-+
-+	/* Must be set strictly before calling xen_free_unpopulated_pages(). */
-+	*res = &iomem_resource;
-+
-+	/*
-+	 * Initialize with pages from the extra memory regions (see
-+	 * arch/x86/xen/setup.c).
-+	 */
-+	for (i = 0; i < XEN_EXTRA_MEM_MAX_REGIONS; i++) {
-+		unsigned int j;
-+
-+		for (j = 0; j < xen_extra_mem[i].n_pfns; j++) {
-+			struct page *pg =
-+				pfn_to_page(xen_extra_mem[i].start_pfn + j);
-+
-+			xen_free_unpopulated_pages(1, &pg);
-+		}
-+
-+		/* Zero so region is not also added to the balloon driver. */
-+		xen_extra_mem[i].n_pfns = 0;
-+	}
-+
-+	return 0;
-+}
-+#endif
+ # Some architectures create .build-id symlinks
+ ifneq ($(filter arm sparc x86, $(SRCARCH)),)
+-link := $(install-dir)/.build-id/$$(shell $(READELF) -n $$(src) | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p')
++link := $(install-dir)/.build-id/$$(shell $(READELF) -n $$(src) | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p').debug
+ 
+ __default: $$(link)
+ $$(link): $$(dest) FORCE
 -- 
 2.43.0
 
