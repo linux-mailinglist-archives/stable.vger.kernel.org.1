@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BF68FE948
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48EAD8FEC7E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8BB728442D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D89BBB27F9D
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3541993A7;
-	Thu,  6 Jun 2024 14:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87C5195FC4;
+	Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJ8uf2j8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmttYEFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF17197A69;
-	Thu,  6 Jun 2024 14:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833D819AD5C;
+	Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683002; cv=none; b=D7N8fh5dFjQf084ebRu+VuKVt5/KgOEsYn//On+8bujnLNCtD9FmNGFNiAmh+vFS6x9yIKCl2YHJd8wBTbp/ILpsqpcTcHT1G9Fd3rKOcr4sZ2NLI+Vt8HZR/VjuFCZ17uRh2RPow8kCQ1kcPbsP2Yv9ZPgtAmrdsU8BvapLiIY=
+	t=1717683372; cv=none; b=tcN19HhhzBDD7VSud2VQQtitP6UkJJ+B/CTp1fX/uc8YpJm8nsGM5HyJ9Z3k5mRC8+crHPGwtx/jRBMRFV6DP0GafBGeCB0QIF36C4adq7/dhkSKI/I1gbT9Jdqw0QkZfeKhmMzux9J2nx3YALdmqJE+Q6PolxoYINV0V/Dl/wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683002; c=relaxed/simple;
-	bh=GgYvffRzY1j9NQ1BAEmH1F9tGV1hceW6drMMzcvG15g=;
+	s=arc-20240116; t=1717683372; c=relaxed/simple;
+	bh=hP35jpauiAoknMKuEchWRr/hxt58931RxZMGhpO1Ao4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJYxR6eGUFG1y5gEHcSx6SKqGcK7YpU0TjkgqNdHifzEqHQiiAY7bSw/CpSA88PKfhf/LJr4UsyKnuR5Zp0+86/nm1sj+coRrWQKH+orI6c5196oUIaOFGPfauPCHs2BYYtk/5WKDQgfRlsa3Cdja7uXQ58phh3quKZGlXFPAwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJ8uf2j8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3D1C2BD10;
-	Thu,  6 Jun 2024 14:10:02 +0000 (UTC)
+	 MIME-Version; b=V/n/fMk/cQrX7uolqiv/9poNtSSJUZTZkeMoyKvmHBaUEeYy4drlehXqy9229ZCBcaPllSVPVEsNGXUOyAm0bhHdEe58M3u1p0lp123JSXTrgn46e49pSc1faKbW9MS76QQwgDc75nok/lyE30E0qLLJLAPC9FBL++c5QuOtkbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmttYEFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591AAC32786;
+	Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683002;
-	bh=GgYvffRzY1j9NQ1BAEmH1F9tGV1hceW6drMMzcvG15g=;
+	s=korg; t=1717683372;
+	bh=hP35jpauiAoknMKuEchWRr/hxt58931RxZMGhpO1Ao4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJ8uf2j8qw2sijXwrhREp5t7Q7cmM57ZStM/l0pduvW7+wXyYoRlFMhxom94qSueo
-	 NyeV+eiIgTDqt+H3t+fne0ldzgPwjic8R6jjSlTNiYDqQrU0bAJzk/rc9lDe77d6ke
-	 qboBqkM8OR0dytpOne2DXM1ytWQgcyiuPLgnoIHU=
+	b=lmttYEFa1yvYStT/4ZYsYftYT42wpMKAeykygfvak/jGVoyljyMQorwyAN85AswFA
+	 wD3w4HRyZ1KTY4GXNpc0OXzzJUc4vW9ZUbikAGTaTb4TQU//iwqF9KeYBOtUjyAn5i
+	 OxpUyplwrrT9TZzeD3cf7qNsIMxv3b2SGgeMWDCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zan Dobersek <zdobersek@igalia.com>,
-	Rob Clark <robdclark@chromium.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 206/374] drm/msm/adreno: fix CP cycles stat retrieval on a7xx
+Subject: [PATCH 6.1 256/473] x86/insn: Add VEX versions of VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS
 Date: Thu,  6 Jun 2024 16:03:05 +0200
-Message-ID: <20240606131658.723635193@linuxfoundation.org>
+Message-ID: <20240606131708.430229388@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zan Dobersek <zdobersek@igalia.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 328660262df89ab64031059909d763f7a8af9570 ]
+[ Upstream commit b8000264348979b60dbe479255570a40e1b3a097 ]
 
-a7xx_submit() should use the a7xx variant of the RBBM_PERFCTR_CP register
-for retrieving the CP cycles value before and after the submitted command
-stream execution.
+The x86 instruction decoder is used not only for decoding kernel
+instructions. It is also used by perf uprobes (user space probes) and by
+perf tools Intel Processor Trace decoding. Consequently, it needs to
+support instructions executed by user space also.
 
-Signed-off-by: Zan Dobersek <zdobersek@igalia.com>
-Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
-Patchwork: https://patchwork.freedesktop.org/patch/588445/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Intel Architecture Instruction Set Extensions and Future Features manual
+number 319433-044 of May 2021, documented VEX versions of instructions
+VPDPBUSD, VPDPBUSDS, VPDPWSSD and VPDPWSSDS, but the opcode map has them
+listed as EVEX only.
+
+Remove EVEX-only (ev) annotation from instructions VPDPBUSD, VPDPBUSDS,
+VPDPWSSD and VPDPWSSDS, which allows them to be decoded with either a VEX
+or EVEX prefix.
+
+Fixes: 0153d98f2dd6 ("x86/insn: Add misc instructions to x86 instruction decoder")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240502105853.5338-4-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/lib/x86-opcode-map.txt       | 8 ++++----
+ tools/arch/x86/lib/x86-opcode-map.txt | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index cf0b1de1c0712..441dfebb36386 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -284,7 +284,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 
- 	a6xx_set_pagetable(a6xx_gpu, ring, submit->queue->ctx);
- 
--	get_stats_counter(ring, REG_A6XX_RBBM_PERFCTR_CP(0),
-+	get_stats_counter(ring, REG_A7XX_RBBM_PERFCTR_CP(0),
- 		rbmemptr_stats(ring, index, cpcycles_start));
- 	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_COUNTER,
- 		rbmemptr_stats(ring, index, alwayson_start));
-@@ -330,7 +330,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	OUT_PKT7(ring, CP_SET_MARKER, 1);
- 	OUT_RING(ring, 0x00e); /* IB1LIST end */
- 
--	get_stats_counter(ring, REG_A6XX_RBBM_PERFCTR_CP(0),
-+	get_stats_counter(ring, REG_A7XX_RBBM_PERFCTR_CP(0),
- 		rbmemptr_stats(ring, index, cpcycles_end));
- 	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_COUNTER,
- 		rbmemptr_stats(ring, index, alwayson_end));
+diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
+index d94bc4e3e5849..8eaf140172c58 100644
+--- a/arch/x86/lib/x86-opcode-map.txt
++++ b/arch/x86/lib/x86-opcode-map.txt
+@@ -698,10 +698,10 @@ AVXcode: 2
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+ 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
+-50: vpdpbusd Vx,Hx,Wx (66),(ev)
+-51: vpdpbusds Vx,Hx,Wx (66),(ev)
+-52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
+-53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
++50: vpdpbusd Vx,Hx,Wx (66)
++51: vpdpbusds Vx,Hx,Wx (66)
++52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
++53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
+ 54: vpopcntb/w Vx,Wx (66),(ev)
+ 55: vpopcntd/q Vx,Wx (66),(ev)
+ 58: vpbroadcastd Vx,Wx (66),(v)
+diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
+index d94bc4e3e5849..8eaf140172c58 100644
+--- a/tools/arch/x86/lib/x86-opcode-map.txt
++++ b/tools/arch/x86/lib/x86-opcode-map.txt
+@@ -698,10 +698,10 @@ AVXcode: 2
+ 4d: vrcp14ss/d Vsd,Hpd,Wsd (66),(ev)
+ 4e: vrsqrt14ps/d Vpd,Wpd (66),(ev)
+ 4f: vrsqrt14ss/d Vsd,Hsd,Wsd (66),(ev)
+-50: vpdpbusd Vx,Hx,Wx (66),(ev)
+-51: vpdpbusds Vx,Hx,Wx (66),(ev)
+-52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66),(ev) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
+-53: vpdpwssds Vx,Hx,Wx (66),(ev) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
++50: vpdpbusd Vx,Hx,Wx (66)
++51: vpdpbusds Vx,Hx,Wx (66)
++52: vdpbf16ps Vx,Hx,Wx (F3),(ev) | vpdpwssd Vx,Hx,Wx (66) | vp4dpwssd Vdqq,Hdqq,Wdq (F2),(ev)
++53: vpdpwssds Vx,Hx,Wx (66) | vp4dpwssds Vdqq,Hdqq,Wdq (F2),(ev)
+ 54: vpopcntb/w Vx,Wx (66),(ev)
+ 55: vpopcntd/q Vx,Wx (66),(ev)
+ 58: vpbroadcastd Vx,Wx (66),(v)
 -- 
 2.43.0
 
