@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-48817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11F58FEAA9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 521B38FEAAC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3A028957C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05A7D1F24DBD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2295E197532;
-	Thu,  6 Jun 2024 14:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963211991CF;
+	Thu,  6 Jun 2024 14:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miO2UJYy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaigrUz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E571991C1;
-	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560692233B;
+	Thu,  6 Jun 2024 14:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683161; cv=none; b=LXFhye5ITWV3gsjpUA4ibBNHerLjv0Wqk98YsfiBfxpyHO++VSez+qCnvUGiLw3dQoJCFFw2IwcZpHAc7E2Rzze7RYuaPdp7nwdI7C2UU6EpcBBLe5d3InnzTXO5WKTZqbcusEGDZ0dzbc5sHyE4GcxxbMfo4gxyD4hGN4loTz8=
+	t=1717683163; cv=none; b=gqr9sbeBhE+Citkw3/9dIi6govPkYsibpqHlt0s47A/q5kK6AMDsRQKcCYCjsjgafwk3xODbpPmF7XtWnK7n6XmteMdp8Fq1xhQut21on/wzoHXf/PGAN/9IoKRkkBzqZGM23QW1Ei0z5qOyDAU2MmxLCvDZm8rHyVcgIPhzaoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683161; c=relaxed/simple;
-	bh=R/Mdd7Kl4ew6HznYWAYcZl9Vu8FKrb1lCFcqx8uMggI=;
+	s=arc-20240116; t=1717683163; c=relaxed/simple;
+	bh=ZVsWEtoFJ8HDIamHypFMPVEfXFlCsbJHZlAzUR/5yOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juI/S12Szw6uubxa8FfhPLfE4yqMTuI2hS15MAVGwtXdjG7teo/POUCTZGUPyWzrgeB0i7OYNJTl5r6er9ojvSPeSZDEeAY14SMoqFO/N9uIrC0UDUJuiqf32Cz0lQ+wI2ksMNch04FT5X+RbqR/KrSE+MBN3EEdYYqmlu0wGRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miO2UJYy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2838C32781;
-	Thu,  6 Jun 2024 14:12:41 +0000 (UTC)
+	 MIME-Version; b=J/a8fXlQIvB0iNOHkPKjyveogGfUFrh6pdqpjLsG43/jGDTxzEqxp/ht0cl9ZRZD59/sE8WqsNbrVbicbmw3NBZfLxlxjJOkT06gHqiOf0GwADrL38cUzKsginkopcsKYzvE8mvjg9l2gHNdjVKBe+25+giF/D2n0AhtCqnh8Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaigrUz7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D37C2BD10;
+	Thu,  6 Jun 2024 14:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683161;
-	bh=R/Mdd7Kl4ew6HznYWAYcZl9Vu8FKrb1lCFcqx8uMggI=;
+	s=korg; t=1717683163;
+	bh=ZVsWEtoFJ8HDIamHypFMPVEfXFlCsbJHZlAzUR/5yOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=miO2UJYyMeafVVZMT0VjITgY757EjEcBG8iYtiep9srOrQj+F6gWSAeJSBIorhDWc
-	 nxBHUph+eerUcP4si8v3tQ6PlHBGXvsYZOcdWkjsDtWQeSMkSqVRx2FIKJOkwV7ogx
-	 8T72Q/S2wgTWsArpVXlUWLrqY9ItYz0X98VenHCo=
+	b=IaigrUz7UtOZ7O2rS3Drd3Ew23TfCqGzF8nxs70tySzKqV/YjYyjl01NTeeSPlMa1
+	 chm4UPtsg8w2hY6FVGr9N0ioudKQUmlAhkZDkff89D/pNBlO4UcPwVH/uI1VOy+Y1w
+	 4mLmcpRaa/KvJlRwsMen+KMRucL4MOkG4YYUwqN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/744] rcu-tasks: Fix show_rcu_tasks_trace_gp_kthread buffer overflow
-Date: Thu,  6 Jun 2024 15:56:18 +0200
-Message-ID: <20240606131735.790546221@linuxfoundation.org>
+Subject: [PATCH 6.6 107/744] rcu: Fix buffer overflow in print_cpu_stall_info()
+Date: Thu,  6 Jun 2024 15:56:19 +0200
+Message-ID: <20240606131735.825798135@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -70,41 +70,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit cc5645fddb0ce28492b15520306d092730dffa48 ]
+[ Upstream commit 3758f7d9917bd7ef0482c4184c0ad673b4c4e069 ]
 
-There is a possibility of buffer overflow in
-show_rcu_tasks_trace_gp_kthread() if counters, passed
-to sprintf() are huge. Counter numbers, needed for this
-are unrealistically high, but buffer overflow is still
-possible.
+The rcuc-starvation output from print_cpu_stall_info() might overflow the
+buffer if there is a huge difference in jiffies difference.  The situation
+might seem improbable, but computers sometimes get very confused about
+time, which can result in full-sized integers, and, in this case,
+buffer overflow.
 
-Use snprintf() with buffer size instead of sprintf().
+Also, the unsigned jiffies difference is printed using %ld, which is
+normally for signed integers.  This is intentional for debugging purposes,
+but it is not obvious from the code.
+
+This commit therefore changes sprintf() to snprintf() and adds a
+clarifying comment about intention of %ld format.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: edf3775f0ad6 ("rcu-tasks: Add count for idle tasks on offline CPUs")
+Fixes: 245a62982502 ("rcu: Dump rcuc kthread status for CPUs not reporting quiescent state")
 Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
 Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tasks.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rcu/tree_stall.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 65e000ca332cc..305e960c08ac5 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -1938,7 +1938,7 @@ void show_rcu_tasks_trace_gp_kthread(void)
- {
- 	char buf[64];
- 
--	sprintf(buf, "N%lu h:%lu/%lu/%lu",
-+	snprintf(buf, sizeof(buf), "N%lu h:%lu/%lu/%lu",
- 		data_race(n_trc_holdouts),
- 		data_race(n_heavy_reader_ofl_updates),
- 		data_race(n_heavy_reader_updates),
+diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+index e09f4f624261e..11a1fac3a5898 100644
+--- a/kernel/rcu/tree_stall.h
++++ b/kernel/rcu/tree_stall.h
+@@ -503,7 +503,8 @@ static void print_cpu_stall_info(int cpu)
+ 			rcu_dynticks_in_eqs(rcu_dynticks_snap(cpu));
+ 	rcuc_starved = rcu_is_rcuc_kthread_starving(rdp, &j);
+ 	if (rcuc_starved)
+-		sprintf(buf, " rcuc=%ld jiffies(starved)", j);
++		// Print signed value, as negative values indicate a probable bug.
++		snprintf(buf, sizeof(buf), " rcuc=%ld jiffies(starved)", j);
+ 	pr_err("\t%d-%c%c%c%c: (%lu %s) idle=%04x/%ld/%#lx softirq=%u/%u fqs=%ld%s%s\n",
+ 	       cpu,
+ 	       "O."[!!cpu_online(cpu)],
 -- 
 2.43.0
 
