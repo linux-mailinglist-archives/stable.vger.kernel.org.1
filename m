@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-49080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57EB28FEBC5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B3B8FEBC8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0F0CB269F0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA9C91C251E2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA42D19AA47;
-	Thu,  6 Jun 2024 14:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347871ABCDA;
+	Thu,  6 Jun 2024 14:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmmLVqPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MarV953L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692A31ABCC4;
-	Thu,  6 Jun 2024 14:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84D8197A93;
+	Thu,  6 Jun 2024 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683292; cv=none; b=srRzb2fRIz2/p+LiOAi9GvN5i/Ii7spqQPiviLIYs4hOx3tsXZyFBCx77nMAa+SFaTUqrc769W12XIkvw7qEHsfxR6CJwkJHLGoivvNYrzOh4vZ+knokOBi0KXAqvVrDEVS0rg2rqrd6U+qhj2PFSaRWOnfYEDREybucBJRmHO8=
+	t=1717683294; cv=none; b=MYJEnhnA2nZSbyCpio8PY1r0Huti7zLB3YPVh6tH824Ir4JgBVBTcKE9VtxXq+CW/5TaF21F12wQ/JpsY+6gL+cHgALIzfoAgEP/EY/KxV/0CSig/lsHo+r/1Dw+zfj2p6w6ucEPxsDLvRkduogjgRtpJ+UloTi32BEmCMVopIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683292; c=relaxed/simple;
-	bh=pzQAreO9kdvwU+P6GdEY8uq+tkqGffmPa6F0ck7WqZ4=;
+	s=arc-20240116; t=1717683294; c=relaxed/simple;
+	bh=x61NJ8eaemQXqxSMh0qoMOXw7NE7CMWYnB1BVkmwFu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJKAK1IdmT35f4gXZ++kKGjao0eGFv8bGUy2LGUVs+IYiRVU/ufLVenU5Btezz04gsbfxP92d3EjVVQWf4e32hJWLBCFMG+Br8KljRZGz++THsGMaztkPrM+5f4gz/T4+kQhKTV1QhgjKYvRJl0+R6uS82ITLF33RCkrWYZG6Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmmLVqPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49630C2BD10;
-	Thu,  6 Jun 2024 14:14:52 +0000 (UTC)
+	 MIME-Version; b=rlRBcj+EGyhQ6j088wzsXDsRVVTaBj/WXM8sG3wcWanQRFOgOsywm6I/fpMh1ME1YDr5qBbmXxH3dJrrGbGWVemag9ruIjvductT21rW9kpGlwcRU+dxsn835VhHB+dFmhgiQOStEdM0FJUU2Qwe0AXfXpVb8sB68d/Cdkj09RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MarV953L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C465DC2BD10;
+	Thu,  6 Jun 2024 14:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683292;
-	bh=pzQAreO9kdvwU+P6GdEY8uq+tkqGffmPa6F0ck7WqZ4=;
+	s=korg; t=1717683293;
+	bh=x61NJ8eaemQXqxSMh0qoMOXw7NE7CMWYnB1BVkmwFu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmmLVqPleSjofVUCo1XxwZ1tepfYaN2ipvVqVYOMRPw1PVvSA73wv7ipGg6jns0YG
-	 HiWrMelrZae0V2vTGobO5okOptKkik8xVbIpsWNimcZIZuprxy6r5ypIMfgTyhcEHP
-	 Z3+svSxFJAjUqcZi7PQCjkPMAwGhaNQaj/m78JIs=
+	b=MarV953L+wOZ7Z09vaXQ9thG6lR8Tkvrn1tEejXk9j+t+siwOgkTCsA/DShWG97gZ
+	 1qxnIZRDjFpgGx8WJNMFG/9Gx62pHeGretyXmXeo2qboJE/gvdAAP9vl5QbtP6riOP
+	 vXiJHrBwciKIblOyUoXdK1aEEW8j/qo+hSXMI5ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 233/744] usb: aqc111: stop lying about skb->truesize
-Date: Thu,  6 Jun 2024 15:58:25 +0200
-Message-ID: <20240606131739.860951183@linuxfoundation.org>
+Subject: [PATCH 6.6 234/744] net: usb: sr9700: stop lying about skb->truesize
+Date: Thu,  6 Jun 2024 15:58:26 +0200
+Message-ID: <20240606131739.895062793@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,51 +68,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9aad6e45c4e7d16b2bb7c3794154b828fb4384b4 ]
+[ Upstream commit 05417aa9c0c038da2464a0c504b9d4f99814a23b ]
 
-Some usb drivers try to set small skb->truesize and break
+Some usb drivers set small skb->truesize and break
 core networking stacks.
 
-I replace one skb_clone() by an allocation of a fresh
+In this patch, I removed one of the skb->truesize override.
+
+I also replaced one skb_clone() by an allocation of a fresh
 and small skb, to get minimally sized skbs, like we did
 in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
 in rx path") and 4ce62d5b2f7a ("net: usb: ax88179_178a:
 stop lying about skb->truesize")
 
-Fixes: 361459cd9642 ("net: usb: aqc111: Implement RX data path")
+Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240506135546.3641185-1-edumazet@google.com
+Link: https://lore.kernel.org/r/20240506143939.3673865-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/usb/sr9700.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 7b8afa589a53c..284375f662f1e 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1141,17 +1141,15 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			continue;
+diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
+index 3164451e1010c..0a662e42ed965 100644
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -421,19 +421,15 @@ static int sr9700_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			skb_pull(skb, 3);
+ 			skb->len = len;
+ 			skb_set_tail_pointer(skb, len);
+-			skb->truesize = len + sizeof(struct sk_buff);
+ 			return 2;
  		}
  
--		/* Clone SKB */
--		new_skb = skb_clone(skb, GFP_ATOMIC);
-+		new_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
+-		/* skb_clone is used for address align */
+-		sr_skb = skb_clone(skb, GFP_ATOMIC);
++		sr_skb = netdev_alloc_skb_ip_align(dev->net, len);
+ 		if (!sr_skb)
+ 			return 0;
  
- 		if (!new_skb)
- 			goto err;
+-		sr_skb->len = len;
+-		sr_skb->data = skb->data + 3;
+-		skb_set_tail_pointer(sr_skb, len);
+-		sr_skb->truesize = len + sizeof(struct sk_buff);
++		skb_put(sr_skb, len);
++		memcpy(sr_skb->data, skb->data + 3, len);
+ 		usbnet_skb_return(dev, sr_skb);
  
--		new_skb->len = pkt_len;
-+		skb_put(new_skb, pkt_len);
-+		memcpy(new_skb->data, skb->data, pkt_len);
- 		skb_pull(new_skb, AQ_RX_HW_PAD);
--		skb_set_tail_pointer(new_skb, new_skb->len);
- 
--		new_skb->truesize = SKB_TRUESIZE(new_skb->len);
- 		if (aqc111_data->rx_checksum)
- 			aqc111_rx_checksum(new_skb, pkt_desc);
- 
+ 		skb_pull(skb, len + SR_RX_OVERHEAD);
 -- 
 2.43.0
 
