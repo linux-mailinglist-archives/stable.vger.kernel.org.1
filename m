@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EEB8FEAB5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C17C88FEABE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89A6289C7D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 477EAB23904
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD831991D9;
-	Thu,  6 Jun 2024 14:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA19195998;
+	Thu,  6 Jun 2024 14:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcowRdBD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpBD4ycZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C77F1A0DD7;
-	Thu,  6 Jun 2024 14:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9A819753F;
+	Thu,  6 Jun 2024 14:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683168; cv=none; b=nP8jexmjfp5zaCBYfRSQf7yO82RDO/cX6c5gjH/r5dB3afXekxKyx6BuDDrtO9KZb1XjFG0Bqs8c0p18B1vubJlWowshfA7ZZ2Vi7U1u1PX7t177ZpVg+eAnTwgCR9Zd2SaMP9hNV1yyJXNVRdsAUZKVvd5cgYBAcK724fbteRQ=
+	t=1717683170; cv=none; b=W9DQLemNLRDYydmiecIHJjcD4ziEJRSEMoaVwAMIg8nMkMgFjaJAJT5aXfA+6JiZW2uNJvtNsKlA3mIT1vM+fQ2QcZU16tCPogla8K7ZXpyWdW+Y7Ul8PaPk1FxXIgOHQaObHJywr9BbZ1PbaARRHaVtK9KhjiikbAG1M4a7ezs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683168; c=relaxed/simple;
-	bh=Pm+HdvO571aKd8ku0p31bBbAw8S2KI6glZC38l8LRzg=;
+	s=arc-20240116; t=1717683170; c=relaxed/simple;
+	bh=24tsOvnpnkjplcRYE+cFk5K0OL6cVl9XKApnT9OcDnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VC3J7MQ9TpiAhm2u9If0WQFQ3Sq07aRKWkQ6Bwz5FFILh7VrctQNC+Ip0yepOLTTnqTcBa/0Jp5Z3CqY36VsVpRh0ailM16280hj3abR0IWK5OnBnp8DnyT3rNAv0xypkRsGmclQdF/tMPZVRkrekgOwISLCe/8a7OavfaWqEmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcowRdBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FF7C2BD10;
-	Thu,  6 Jun 2024 14:12:48 +0000 (UTC)
+	 MIME-Version; b=BxoOb2OnIugOEWC0BRNrGrn265TZZTqunPlU4t7Z7xdKBPtwG4ztCvQE5Pfau/GiMnBnTqHSaqDng2ETwBcG9CuSvBYpLrrMDCK6BM/0xItns0WrO91SXQLhcHdG25si0fgICJPD/TNTAQckmrqSUPjBCsvt0BiOF6d0H9FwEeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpBD4ycZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B29C4AF09;
+	Thu,  6 Jun 2024 14:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683168;
-	bh=Pm+HdvO571aKd8ku0p31bBbAw8S2KI6glZC38l8LRzg=;
+	s=korg; t=1717683169;
+	bh=24tsOvnpnkjplcRYE+cFk5K0OL6cVl9XKApnT9OcDnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcowRdBDVY7aL0JpvTqODp++13OdV2b5gL5fX0gZey7bv6PdXoKns+EXoGyUOWdO4
-	 L4L9G4eedzNIgvAcPMQ5Ko5wYoucJ635BUiqmi5nd/K+aMqDdOF8sh4alRqJfeNgqL
-	 sBy+52uBK5uxwkj5glf24bYpCV3uKvdRrkm9RGRk=
+	b=ZpBD4ycZ6SGnqt1k6yIY0lmgFVd6FSPFQLRtj+1iFypK5KjWTFbPp4sudlYmQQ8JH
+	 AP4xIRXXM8uVwsIIORV1umqr6IaHHCBiBAunbStWsq5MYFhMYObfDO4qbDBvBwhuP5
+	 pw+gVHH51r1iZ0TWNnV5dbgwiHMefo5FAbAsYm0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Andrew Halaney <ahalaney@redhat.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Mukesh Ojha <quic_mojha@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	Xilin Wu <wuxilin123@gmail.com>
-Subject: [PATCH 6.6 113/744] soc: qcom: pmic_glink: dont traverse clients list without a lock
-Date: Thu,  6 Jun 2024 15:56:25 +0200
-Message-ID: <20240606131736.025855488@linuxfoundation.org>
+Subject: [PATCH 6.6 114/744] soc: qcom: pmic_glink: notify clients about the current state
+Date: Thu,  6 Jun 2024 15:56:26 +0200
+Message-ID: <20240606131736.057521045@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -71,52 +71,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 635ce0db89567ba62f64b79e8c6664ba3eff6516 ]
+[ Upstream commit d6cbce2cd354c9a37a558f290a8f1dfd20584f99 ]
 
-Take the client_lock before traversing the clients list at the
-pmic_glink_state_notify_clients() function. This is required to keep the
-list traversal safe from concurrent modification.
+In case the client is registered after the pmic-glink recived a response
+from the Protection Domain mapper, it is going to miss the notification
+about the state. Notify clients about the current state upon
+registration.
 
 Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
 Tested-by: Xilin Wu <wuxilin123@gmail.com> # on QCS8550 AYN Odin 2
-Link: https://lore.kernel.org/r/20240403-pmic-glink-fix-clients-v2-1-aed4e02baacc@linaro.org
+Link: https://lore.kernel.org/r/20240403-pmic-glink-fix-clients-v2-2-aed4e02baacc@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pmic_glink.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/soc/qcom/pmic_glink.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
-index d5a4e71633ed6..c6dca5278e61b 100644
+index c6dca5278e61b..062ff7b12de6a 100644
 --- a/drivers/soc/qcom/pmic_glink.c
 +++ b/drivers/soc/qcom/pmic_glink.c
-@@ -118,10 +118,12 @@ static int pmic_glink_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
+@@ -86,9 +86,14 @@ struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
+ 	client->pdr_notify = pdr;
+ 	client->priv = priv;
  
- 	hdr = data;
++	mutex_lock(&pg->state_lock);
+ 	mutex_lock(&pg->client_lock);
++
+ 	list_add(&client->node, &pg->clients);
++	client->pdr_notify(client->priv, pg->client_state);
++
+ 	mutex_unlock(&pg->client_lock);
++	mutex_unlock(&pg->state_lock);
  
-+	mutex_lock(&pg->client_lock);
- 	list_for_each_entry(client, &pg->clients, node) {
- 		if (client->id == le32_to_cpu(hdr->owner))
- 			client->cb(data, len, client->priv);
- 	}
-+	mutex_unlock(&pg->client_lock);
+ 	devres_add(dev, client);
  
- 	return 0;
- }
-@@ -171,8 +173,10 @@ static void pmic_glink_state_notify_clients(struct pmic_glink *pg)
- 	}
- 
- 	if (new_state != pg->client_state) {
-+		mutex_lock(&pg->client_lock);
- 		list_for_each_entry(client, &pg->clients, node)
- 			client->pdr_notify(client->priv, new_state);
-+		mutex_unlock(&pg->client_lock);
- 		pg->client_state = new_state;
- 	}
- }
 -- 
 2.43.0
 
