@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-48574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C198FE992
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:15:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7AF8FEE72
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B98621C24F6F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:15:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3738EB276A7
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323CE19AD57;
-	Thu,  6 Jun 2024 14:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24D21C3728;
+	Thu,  6 Jun 2024 14:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5IhAJY7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHRSI+lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59DB198853;
-	Thu,  6 Jun 2024 14:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AAA1C3720;
+	Thu,  6 Jun 2024 14:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683041; cv=none; b=uDISP8+lxZYaJHsNGg2KmhjqXCskacw08CA7u91g9qAgVx/ljSB3KyWDo67adXO2vw4sjhsf1FM9125yoeATR9huuQQGkKTFDE4HZ4D68VLfK966BMT8PK7D6+YY+ZKl3VNNvm3ItzEVWVIKOkx70E2Yzp7i0sS2zWPM42+uX5w=
+	t=1717683660; cv=none; b=ai9LQEEOtZUGh6FTl7c/gHicnmz0dvSb21YQgDebGShnivvtp5G9fD+P+ZPIKlASehSeqvtmzRbQoLPnnmjnP+DKv50rqoqXCGTgkEm1kKxjVLXY5ROr91H0swdhubcR8fVYgxwIJsAr16m3nuBrnBU+QXqE9aFa6kzc+uz5AZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683041; c=relaxed/simple;
-	bh=UBWvpjzpNhhUBxwZJpwa5FQpmATKS5PxxvYXuFUzvGc=;
+	s=arc-20240116; t=1717683660; c=relaxed/simple;
+	bh=C4g69rAi3xEbxaaC8j54M6d2nacCW7H/8n1dxbZxF0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZK6bY7ySlgDk7bUP9nMlAvRKbalD1BCwiDZIms2N54uQ3rZ4uJl0oy9/yQwDN/XUq6Fn25Mt3P+zXWapok0zNR0XCekNENmo4Tt7nTKPYn9qXcE6iG9TrNicXvAykkNILNy2EBMC6WH3YdhNe6nf9wzMFalB8Uursm8PE7Ej04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5IhAJY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8B5C4AF07;
-	Thu,  6 Jun 2024 14:10:40 +0000 (UTC)
+	 MIME-Version; b=g1NJ3iiLHaioVshqnx/gAVsYFLK31t35DxFM9h0EetVK7iTfqs0q+5LGQEK9w/2bIyykLoaqMb1C05EaXiipQbKzewEu6e+8GbLEtSvYMKqh3phmDeSM8cXWJfh2uo1dPyyws9z6SUkasUOHfv34cuSrsAdymMMziTri0Ek9G8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHRSI+lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41735C4AF07;
+	Thu,  6 Jun 2024 14:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683040;
-	bh=UBWvpjzpNhhUBxwZJpwa5FQpmATKS5PxxvYXuFUzvGc=;
+	s=korg; t=1717683660;
+	bh=C4g69rAi3xEbxaaC8j54M6d2nacCW7H/8n1dxbZxF0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5IhAJY7guDLkKHUgo/XlibW44OJAYsnvHgE3xin4Vg4Inzdw8hD4rwP6E7VixkQ8
-	 8sFTomjqJHLctOIAAAQatEy8ki4fLX8zXJtguqxUXjRmXO/PFXXkAWKjNTMJZYpXRm
-	 ykgKfDcbPH3cIPUoFpUMmwieciNjMsLIoLbGyAF4=
+	b=lHRSI+lhEHLALn2/NHv+eP76LWGomzpRuE56czreeGg0BvD8Kh2SaygtrRqv7hr6t
+	 s+nHYNeZYYMBNb6pWCeHOX7C6eKjUmDKMNPeZou7CIcu2gdfXJrtnyL/9smNUwJjvm
+	 8+KJpdpnW1b9RZFsrdtjpJaqPW2yXdwSyjCZDgFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Langstaff <stephenlangstaff1@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 233/374] net: Always descend into dsa/ folder with CONFIG_NET_DSA enabled
+Subject: [PATCH 6.6 540/744] s390/ipl: Fix incorrect initialization of nvme dump block
 Date: Thu,  6 Jun 2024 16:03:32 +0200
-Message-ID: <20240606131659.622418548@linuxfoundation.org>
+Message-ID: <20240606131749.773469716@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Alexander Egorenkov <egorenar@linux.ibm.com>
 
-[ Upstream commit b1fa60ec252fba39130107074becd12d0b3f83ec ]
+[ Upstream commit 7faacaeaf6ce12fae78751de5ad869d8f1e1cd7a ]
 
-Stephen reported that he was unable to get the dsa_loop driver to get
-probed, and the reason ended up being because he had CONFIG_FIXED_PHY=y
-in his kernel configuration. As Masahiro explained it:
+Initialize the correct fields of the nvme dump block.
+This bug had not been detected before because first, the fcp and nvme fields
+of struct ipl_parameter_block are part of the same union and, therefore,
+overlap in memory and second, they are identical in structure and size.
 
-  "obj-m += dsa/" means everything under dsa/ must be modular.
-
-  If there is a built-in object under dsa/ with CONFIG_NET_DSA=m,
-  you cannot do  "obj-$(CONFIG_NET_DSA) += dsa/".
-
-  You need to change it back to "obj-y += dsa/".
-
-This was the case here whereby CONFIG_NET_DSA=m, and so the
-obj-$(CONFIG_FIXED_PHY) += dsa_loop_bdinfo.o rule is not executed and
-the DSA loop mdio_board info structure is not registered with the
-kernel, and eventually the device is simply not found.
-
-To preserve the intention of the original commit of limiting the amount
-of folder descending, conditionally descend into drivers/net/dsa when
-CONFIG_NET_DSA is enabled.
-
-Fixes: 227d72063fcc ("dsa: simplify Kconfig symbols and dependencies")
-Reported-by: Stephen Langstaff <stephenlangstaff1@gmail.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: d70e38cb1dee ("s390: nvme dump support")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/s390/kernel/ipl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 7cab36f94782e..db55ffdb5792d 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -48,7 +48,9 @@ obj-$(CONFIG_MHI_NET) += mhi_net.o
- obj-$(CONFIG_ARCNET) += arcnet/
- obj-$(CONFIG_CAIF) += caif/
- obj-$(CONFIG_CAN) += can/
--obj-$(CONFIG_NET_DSA) += dsa/
-+ifdef CONFIG_NET_DSA
-+obj-y += dsa/
-+endif
- obj-$(CONFIG_ETHERNET) += ethernet/
- obj-$(CONFIG_FDDI) += fddi/
- obj-$(CONFIG_HIPPI) += hippi/
+diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
+index 14365773aac79..a3d3cb39b021a 100644
+--- a/arch/s390/kernel/ipl.c
++++ b/arch/s390/kernel/ipl.c
+@@ -1858,9 +1858,9 @@ static int __init dump_nvme_init(void)
+ 	}
+ 	dump_block_nvme->hdr.len = IPL_BP_NVME_LEN;
+ 	dump_block_nvme->hdr.version = IPL_PARM_BLOCK_VERSION;
+-	dump_block_nvme->fcp.len = IPL_BP0_NVME_LEN;
+-	dump_block_nvme->fcp.pbt = IPL_PBT_NVME;
+-	dump_block_nvme->fcp.opt = IPL_PB0_NVME_OPT_DUMP;
++	dump_block_nvme->nvme.len = IPL_BP0_NVME_LEN;
++	dump_block_nvme->nvme.pbt = IPL_PBT_NVME;
++	dump_block_nvme->nvme.opt = IPL_PB0_NVME_OPT_DUMP;
+ 	dump_capabilities |= DUMP_TYPE_NVME;
+ 	return 0;
+ }
 -- 
 2.43.0
 
