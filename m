@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-49272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD8E8FEC96
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DBA8FE87E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CF3F286480
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60B701F24321
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FEB19B3E6;
-	Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809A9196C98;
+	Thu,  6 Jun 2024 14:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVoriWe8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0mYaoXe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147941B14E7;
-	Thu,  6 Jun 2024 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACAE196D8C;
+	Thu,  6 Jun 2024 14:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683385; cv=none; b=QzTGh3A9bmd0UBO16jlYYwrAKBCmLVw1nVc92iO0rmA9ofPQAg7gv7UMkID/pTHDMmU0pdZix/ypTNmfSszMa3QMsPGuZeMTKh7jku3Zk93N+zSrSa2njAwYM1j8acAzR7sTR0hjkRqN0jKDltTGFcnYDu7S23M8iHYFwinIDSo=
+	t=1717682900; cv=none; b=YDSx7iEojzIxUbw98dt/oThgKBnPSVku8hKmQsDfSbkmfWuVWXZY6myNPyOpO3y3Lv8abvRUDSIQLySpUN7hsfXdRe/zLLxk5Q24UDKJjZd7louwZlPsg9Qba7fJWOUACJgaksn1vJvw5I6993Ri7BQ1669oYjWNyCydovakvHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683385; c=relaxed/simple;
-	bh=GAU+hJ8KZZxU14Cvusjj9zOkQ+y/xWlCUll4PbAr9iA=;
+	s=arc-20240116; t=1717682900; c=relaxed/simple;
+	bh=BNbQ22zU+S2BMz+oRoh8MxfFysXu6Sua76aw8WlxTBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lORBVqMzztMoA0h6OKFRAfV2zivJdIpEKJqw4eBiYlXIRC0vgNO+jxnI+jcDyyGQeNFpT2M9VCkKflD6hTQEL2hR1uRB6LhbdSGKHTn7Ems2TFo+d9frELaZpdbgTvT2UmK2QnbEK9UNqtXMc0jLunTjO1HGltKD8Q1xmPFfeX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVoriWe8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A04C32781;
-	Thu,  6 Jun 2024 14:16:24 +0000 (UTC)
+	 MIME-Version; b=pdlKr1nwkFRCEPaSmbzgGqoH/G36+XxStFcesaUxRAhj3k9l2UAdHnEy8e0no/0ny4WyeyBBRG5tAAuCxUPj65nxn2qTi35AudwdVLDk2+wXISdCRjbH8c7aqaSlks9hITalCSxVNqjj8JEjDd0/fqUlfG/qtfR1+d1jB+AGw8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0mYaoXe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C18DC32781;
+	Thu,  6 Jun 2024 14:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683385;
-	bh=GAU+hJ8KZZxU14Cvusjj9zOkQ+y/xWlCUll4PbAr9iA=;
+	s=korg; t=1717682900;
+	bh=BNbQ22zU+S2BMz+oRoh8MxfFysXu6Sua76aw8WlxTBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVoriWe82bfoDLrMx8q3u3/Sw6JiaiOQ4j8q2N0eHTmUZqTGQtXkEBdX0bS4dOotB
-	 f5WddjhiYa6EHaobMzqrt5CSX0TOxqGq4bgrlOF921vtQRVRJOmM6ZUDboHSm5E0nK
-	 uI0Fs8NZILqOuKG58BhDVgOqaeab7OOh3fqtrzbU=
+	b=z0mYaoXe0uF5CrBn5eSuk3G/FsMuRoys2p+AkI69Qc5Bzp9k935OaOaNW9wD4TDmI
+	 5XwXTA2tk15O4HXWIRog4hZ/ciUkJQCQOdTwZL5+jvcHGII18ILDpdB8mThBPOk2j3
+	 oeNGLEM4U5j1iiGEulFFNKn7xKrcMlR7Au+OS/pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 326/744] drm/panel: novatek-nt35950: Dont log an error when DSI host cant be found
+Subject: [PATCH 6.9 019/374] perf stat: Do not fail on metrics on s390 z/VM systems
 Date: Thu,  6 Jun 2024 15:59:58 +0200
-Message-ID: <20240606131742.892791271@linuxfoundation.org>
+Message-ID: <20240606131652.422647602@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +66,180 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 5ff5505b9a2d827cae3f95dceba258c963138175 ]
+[ Upstream commit c2f3d7dfc7373d53286f2a5c882d3397a5070adc ]
 
-Given that failing to find a DSI host causes the driver to defer probe,
-make use of dev_err_probe() to log the reason. This makes the defer
-probe reason available and avoids alerting userspace about something
-that is not necessarily an error.
+On s390 z/VM virtual machines command 'perf list' also displays metrics:
 
-Fixes: 623a3531e9cf ("drm/panel: Add driver for Novatek NT35950 DSI DriverIC panels")
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240415-anx7625-defer-log-no-dsi-host-v3-8-619a28148e5c@collabora.com
+  # perf list | grep -A 20 'Metric Groups:'
+  Metric Groups:
+
+  No_group:
+   cpi
+        [Cycles per Instruction]
+   est_cpi
+        [Estimated Instruction Complexity CPI infinite Level 1]
+   finite_cpi
+        [Cycles per Instructions from Finite cache/memory]
+   l1mp
+        [Level One Miss per 100 Instructions]
+   l2p
+        [Percentage sourced from Level 2 cache]
+   l3p
+        [Percentage sourced from Level 3 on same chip cache]
+   l4lp
+        [Percentage sourced from Level 4 Local cache on same book]
+   l4rp
+        [Percentage sourced from Level 4 Remote cache on different book]
+   memp
+        [Percentage sourced from memory]
+   ....
+  #
+
+The command
+
+  # perf stat -M cpi -- true
+  event syntax error: '{CPU_CYCLES/metric-id=CPU_CYCLES/.....'
+                        \___ Bad event or PMU
+
+  Unable to find PMU or event on a PMU of 'CPU_CYCLES'
+
+   event syntax error: '{CPU_CYCLES/metric-id=CPU_CYCLES/...'
+                        \___ Cannot find PMU `CPU_CYCLES'.
+                             Missing kernel support?
+ #
+
+fails. 'perf stat' should not fail on metrics when the referenced CPU
+Counter Measurement PMU is not available.
+
+Output after:
+
+  # perf stat -M est_cpi -- sleep 1
+
+  Performance counter stats for 'sleep 1':
+
+     1,000,887,494 ns   duration_time   #     0.00 est_cpi
+
+       1.000887494 seconds time elapsed
+
+       0.000143000 seconds user
+       0.000662000 seconds sys
+
+ #
+
+Fixes: 7f76b31130680fb3 ("perf list: Add IBM z16 event description for s390")
+Suggested-by: Ian Rogers <irogers@google.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240404064806.1362876-2-tmricht@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-novatek-nt35950.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .../arch/s390/cf_z16/transaction.json         | 28 +++++++++----------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35950.c b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-index 412ca84d05811..4be5013330ec2 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-@@ -565,10 +565,8 @@ static int nt35950_probe(struct mipi_dsi_device *dsi)
- 		}
- 		dsi_r_host = of_find_mipi_dsi_host_by_node(dsi_r);
- 		of_node_put(dsi_r);
--		if (!dsi_r_host) {
--			dev_err(dev, "Cannot get secondary DSI host\n");
--			return -EPROBE_DEFER;
--		}
-+		if (!dsi_r_host)
-+			return dev_err_probe(dev, -EPROBE_DEFER, "Cannot get secondary DSI host\n");
- 
- 		nt->dsi[1] = mipi_dsi_device_register_full(dsi_r_host, info);
- 		if (!nt->dsi[1]) {
+diff --git a/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json b/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
+index ec2ff78e2b5f2..3ab1d3a6638c4 100644
+--- a/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
++++ b/tools/perf/pmu-events/arch/s390/cf_z16/transaction.json
+@@ -2,71 +2,71 @@
+   {
+     "BriefDescription": "Transaction count",
+     "MetricName": "transaction",
+-    "MetricExpr": "TX_C_TEND + TX_NC_TEND + TX_NC_TABORT + TX_C_TABORT_SPECIAL + TX_C_TABORT_NO_SPECIAL"
++    "MetricExpr": "TX_C_TEND + TX_NC_TEND + TX_NC_TABORT + TX_C_TABORT_SPECIAL + TX_C_TABORT_NO_SPECIAL if has_event(TX_C_TEND) else 0"
+   },
+   {
+     "BriefDescription": "Cycles per Instruction",
+     "MetricName": "cpi",
+-    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS"
++    "MetricExpr": "CPU_CYCLES / INSTRUCTIONS if has_event(INSTRUCTIONS) else 0"
+   },
+   {
+     "BriefDescription": "Problem State Instruction Ratio",
+     "MetricName": "prbstate",
+-    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100"
++    "MetricExpr": "(PROBLEM_STATE_INSTRUCTIONS / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
+   },
+   {
+     "BriefDescription": "Level One Miss per 100 Instructions",
+     "MetricName": "l1mp",
+-    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100"
++    "MetricExpr": "((L1I_DIR_WRITES + L1D_DIR_WRITES) / INSTRUCTIONS) * 100 if has_event(INSTRUCTIONS) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from Level 2 cache",
+     "MetricName": "l2p",
+-    "MetricExpr": "((DCW_REQ + DCW_REQ_IV + ICW_REQ + ICW_REQ_IV) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_REQ + DCW_REQ_IV + ICW_REQ + ICW_REQ_IV) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_REQ) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from Level 3 on same chip cache",
+     "MetricName": "l3p",
+-    "MetricExpr": "((DCW_REQ_CHIP_HIT + DCW_ON_CHIP + DCW_ON_CHIP_IV + DCW_ON_CHIP_CHIP_HIT + ICW_REQ_CHIP_HIT + ICW_ON_CHIP + ICW_ON_CHIP_IV + ICW_ON_CHIP_CHIP_HIT) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_REQ_CHIP_HIT + DCW_ON_CHIP + DCW_ON_CHIP_IV + DCW_ON_CHIP_CHIP_HIT + ICW_REQ_CHIP_HIT + ICW_ON_CHIP + ICW_ON_CHIP_IV + ICW_ON_CHIP_CHIP_HIT) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_REQ_CHIP_HIT) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from Level 4 Local cache on same book",
+     "MetricName": "l4lp",
+-    "MetricExpr": "((DCW_REQ_DRAWER_HIT + DCW_ON_CHIP_DRAWER_HIT + DCW_ON_MODULE + DCW_ON_DRAWER + IDCW_ON_MODULE_IV + IDCW_ON_MODULE_CHIP_HIT + IDCW_ON_MODULE_DRAWER_HIT + IDCW_ON_DRAWER_IV + IDCW_ON_DRAWER_CHIP_HIT + IDCW_ON_DRAWER_DRAWER_HIT + ICW_REQ_DRAWER_HIT + ICW_ON_CHIP_DRAWER_HIT + ICW_ON_MODULE + ICW_ON_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_REQ_DRAWER_HIT + DCW_ON_CHIP_DRAWER_HIT + DCW_ON_MODULE + DCW_ON_DRAWER + IDCW_ON_MODULE_IV + IDCW_ON_MODULE_CHIP_HIT + IDCW_ON_MODULE_DRAWER_HIT + IDCW_ON_DRAWER_IV + IDCW_ON_DRAWER_CHIP_HIT + IDCW_ON_DRAWER_DRAWER_HIT + ICW_REQ_DRAWER_HIT + ICW_ON_CHIP_DRAWER_HIT + ICW_ON_MODULE + ICW_ON_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_REQ_DRAWER_HIT) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from Level 4 Remote cache on different book",
+     "MetricName": "l4rp",
+-    "MetricExpr": "((DCW_OFF_DRAWER + IDCW_OFF_DRAWER_IV + IDCW_OFF_DRAWER_CHIP_HIT + IDCW_OFF_DRAWER_DRAWER_HIT + ICW_OFF_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_OFF_DRAWER + IDCW_OFF_DRAWER_IV + IDCW_OFF_DRAWER_CHIP_HIT + IDCW_OFF_DRAWER_DRAWER_HIT + ICW_OFF_DRAWER) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_OFF_DRAWER) else 0"
+   },
+   {
+     "BriefDescription": "Percentage sourced from memory",
+     "MetricName": "memp",
+-    "MetricExpr": "((DCW_ON_CHIP_MEMORY + DCW_ON_MODULE_MEMORY + DCW_ON_DRAWER_MEMORY + DCW_OFF_DRAWER_MEMORY + ICW_ON_CHIP_MEMORY + ICW_ON_MODULE_MEMORY + ICW_ON_DRAWER_MEMORY + ICW_OFF_DRAWER_MEMORY) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100"
++    "MetricExpr": "((DCW_ON_CHIP_MEMORY + DCW_ON_MODULE_MEMORY + DCW_ON_DRAWER_MEMORY + DCW_OFF_DRAWER_MEMORY + ICW_ON_CHIP_MEMORY + ICW_ON_MODULE_MEMORY + ICW_ON_DRAWER_MEMORY + ICW_OFF_DRAWER_MEMORY) / (L1I_DIR_WRITES + L1D_DIR_WRITES)) * 100 if has_event(DCW_ON_CHIP_MEMORY) else 0"
+   },
+   {
+     "BriefDescription": "Cycles per Instructions from Finite cache/memory",
+     "MetricName": "finite_cpi",
+-    "MetricExpr": "L1C_TLB2_MISSES / INSTRUCTIONS"
++    "MetricExpr": "L1C_TLB2_MISSES / INSTRUCTIONS if has_event(L1C_TLB2_MISSES) else 0"
+   },
+   {
+     "BriefDescription": "Estimated Instruction Complexity CPI infinite Level 1",
+     "MetricName": "est_cpi",
+-    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS)"
++    "MetricExpr": "(CPU_CYCLES / INSTRUCTIONS) - (L1C_TLB2_MISSES / INSTRUCTIONS) if has_event(INSTRUCTIONS) else 0"
+   },
+   {
+     "BriefDescription": "Estimated Sourcing Cycles per Level 1 Miss",
+     "MetricName": "scpl1m",
+-    "MetricExpr": "L1C_TLB2_MISSES / (L1I_DIR_WRITES + L1D_DIR_WRITES)"
++    "MetricExpr": "L1C_TLB2_MISSES / (L1I_DIR_WRITES + L1D_DIR_WRITES) if has_event(L1C_TLB2_MISSES) else 0"
+   },
+   {
+     "BriefDescription": "Estimated TLB CPU percentage of Total CPU",
+     "MetricName": "tlb_percent",
+-    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / CPU_CYCLES) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES)) * 100"
++    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / CPU_CYCLES) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES)) * 100 if has_event(CPU_CYCLES) else 0"
+   },
+   {
+     "BriefDescription": "Estimated Cycles per TLB Miss",
+     "MetricName": "tlb_miss",
+-    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / (DTLB2_WRITES + ITLB2_WRITES)) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES))"
++    "MetricExpr": "((DTLB2_MISSES + ITLB2_MISSES) / (DTLB2_WRITES + ITLB2_WRITES)) * (L1C_TLB2_MISSES / (L1I_PENALTY_CYCLES + L1D_PENALTY_CYCLES)) if has_event(DTLB2_MISSES) else 0"
+   }
+ ]
 -- 
 2.43.0
 
