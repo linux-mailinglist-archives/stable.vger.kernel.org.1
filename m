@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-48780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C7D8FEA7E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2318FEA82
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:20:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E690C1F24DBD
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AC7CB21888
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E74E1991A9;
-	Thu,  6 Jun 2024 14:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7A71A01C4;
+	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kl0zEXrd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERmNEkZj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CECB1A01AF;
-	Thu,  6 Jun 2024 14:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA551990DC;
+	Thu,  6 Jun 2024 14:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683144; cv=none; b=W+vFikD0u0H0K6N+jTxf3RC03TCvczu57f5Xmqxg2L9Yt0k2mD45bkDb7d+iT41/DT7Nt0Deatf9g4GEXuYKja2FFcnt9t4uucfXOA/YPz6RL+ADPtmEE9Ec/rUn5T0pLJCE3SKqNrXMa6l0UxA97z7Jt87axvQYa3OWkqb30kY=
+	t=1717683145; cv=none; b=JcN/nkzs0daiCSf4rFAs02SysFDcwMGAvlgZa3IfWh8Sfxq7C2tWKvN7AptGcXJaGKLx+CrAR1BIUxqz5/MY5qyAn6IXxNaq3baqxsA1O2mn8CZ8lBwHzC/tYLnl8kRQtGIfWVprAuSyYvwwwoBEYSF8wLXO6xQvHmGb34rM89g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683144; c=relaxed/simple;
-	bh=G00kfkXVatdP9cWYZ8ju7tGm4JnS/SkCDA+UiMKxjlg=;
+	s=arc-20240116; t=1717683145; c=relaxed/simple;
+	bh=HllS7wGNt/7tOi6mZeR8wZZA8VacO8tYzpp7SJNyJ/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gazk0qZmKw4MYY2wYgQyqwltnGVzFBReryWRmqRm0QHVLrHcb/BJcfgvhJ8/MOBDpVzVYTJBEz7MsMhkhF/FpYdV59I/6nbCnC6HUL4AUaWoFIPtfy4eaCdX6CvO7HNPtay3vxXz10fl941vdsLk/NgqoCsii2/RPLGYZMyNIu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kl0zEXrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0F4C2BD10;
-	Thu,  6 Jun 2024 14:12:23 +0000 (UTC)
+	 MIME-Version; b=YSDJhU2IWU+eHWcHTI0MVQRakqPjIya6cqUn1V3wX5ebYKd7ULky2xrppZ1WQboO5R/rg40AU0SyyJMOMYzHzZ1smaoHjzb4WjgZ3wvYZ6dmnwkh7gHiubmgQuSXlA3ZplI59DrB9E+bfoeMgQQJmjfjqN3p32jR2qUiA85ljy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERmNEkZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EC7C2BD10;
+	Thu,  6 Jun 2024 14:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683143;
-	bh=G00kfkXVatdP9cWYZ8ju7tGm4JnS/SkCDA+UiMKxjlg=;
+	s=korg; t=1717683144;
+	bh=HllS7wGNt/7tOi6mZeR8wZZA8VacO8tYzpp7SJNyJ/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kl0zEXrdj32YCWaCLKjPS31fibpSGt8+/QWZ654cSxj6vvgzO7Ld7+aCSTj/GEJFU
-	 tIEXOuEEm96ctnZcgbPZXVfxv/8ETM1BMD1UZo4ImPNMoOkcwXLXudYuRhaUROSMGv
-	 JsduSsRCiFBRktdqgOXwHCAwxXd62AHf3/WpgyYE=
+	b=ERmNEkZjiTjrH93hGGJy74twg0355ISAA9R9o50TyZa1GdkGgaIvzz0wuBvYwp09J
+	 AoGemVoTJI7kDJDIa30IdPQtfD1a9qvNnQ9g/cAr36VkzhUtv51VrKImAzL1O4VHaA
+	 kkaGRpmnCPup0iadSD3IH1aIS/jAn7o4dWEDFvxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jirong Feng <jirong.feng@easystack.cn>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/744] nvmet: fix nvme status code when namespace is disabled
-Date: Thu,  6 Jun 2024 15:56:01 +0200
-Message-ID: <20240606131735.260835704@linuxfoundation.org>
+Subject: [PATCH 6.6 090/744] epoll: be better about file lifetimes
+Date: Thu,  6 Jun 2024 15:56:02 +0200
+Message-ID: <20240606131735.288954742@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
 References: <20240606131732.440653204@linuxfoundation.org>
@@ -68,92 +67,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 505363957fad35f7aed9a2b0d8dad73451a80fb5 ]
+[ Upstream commit 4efaa5acf0a1d2b5947f98abb3acf8bfd966422b ]
 
-If the user disabled a nvmet namespace, it is removed from the subsystem
-namespaces list. When nvmet processes a command directed to an nsid that
-was disabled, it cannot differentiate between a nsid that is disabled
-vs. a non-existent namespace, and resorts to return NVME_SC_INVALID_NS
-with the dnr bit set.
+epoll can call out to vfs_poll() with a file pointer that may race with
+the last 'fput()'. That would make f_count go down to zero, and while
+the ep->mtx locking means that the resulting file pointer tear-down will
+be blocked until the poll returns, it means that f_count is already
+dead, and any use of it won't actually get a reference to the file any
+more: it's dead regardless.
 
-This translates to a non-retryable status for the host, which translates
-to a user error. We should expect disabled namespaces to not cause an
-I/O error in a multipath environment.
+Make sure we have a valid ref on the file pointer before we call down to
+vfs_poll() from the epoll routines.
 
-Address this by searching a configfs item for the namespace nvmet failed
-to find, and if we found one, conclude that the namespace is disabled
-(perhaps temporarily). Return NVME_SC_INTERNAL_PATH_ERROR in this case
-and keep DNR bit cleared.
-
-Reported-by: Jirong Feng <jirong.feng@easystack.cn>
-Tested-by: Jirong Feng <jirong.feng@easystack.cn>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/lkml/0000000000002d631f0615918f1e@google.com/
+Reported-by: syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/configfs.c | 13 +++++++++++++
- drivers/nvme/target/core.c     |  5 ++++-
- drivers/nvme/target/nvmet.h    |  1 +
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ fs/eventpoll.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
-index 01b2a3d1a5e6c..3670a1103863b 100644
---- a/drivers/nvme/target/configfs.c
-+++ b/drivers/nvme/target/configfs.c
-@@ -616,6 +616,19 @@ static struct configfs_attribute *nvmet_ns_attrs[] = {
- 	NULL,
- };
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 1d9a71a0c4c16..0ed73bc7d4652 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -876,6 +876,34 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
+ 	return res;
+ }
  
-+bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid)
++/*
++ * The ffd.file pointer may be in the process of being torn down due to
++ * being closed, but we may not have finished eventpoll_release() yet.
++ *
++ * Normally, even with the atomic_long_inc_not_zero, the file may have
++ * been free'd and then gotten re-allocated to something else (since
++ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
++ *
++ * But for epoll, users hold the ep->mtx mutex, and as such any file in
++ * the process of being free'd will block in eventpoll_release_file()
++ * and thus the underlying file allocation will not be free'd, and the
++ * file re-use cannot happen.
++ *
++ * For the same reason we can avoid a rcu_read_lock() around the
++ * operation - 'ffd.file' cannot go away even if the refcount has
++ * reached zero (but we must still not call out to ->poll() functions
++ * etc).
++ */
++static struct file *epi_fget(const struct epitem *epi)
 +{
-+	struct config_item *ns_item;
-+	char name[4] = {};
++	struct file *file;
 +
-+	if (sprintf(name, "%u", nsid) <= 0)
-+		return false;
-+	mutex_lock(&subsys->namespaces_group.cg_subsys->su_mutex);
-+	ns_item = config_group_find_item(&subsys->namespaces_group, name);
-+	mutex_unlock(&subsys->namespaces_group.cg_subsys->su_mutex);
-+	return ns_item != NULL;
++	file = epi->ffd.file;
++	if (!atomic_long_inc_not_zero(&file->f_count))
++		file = NULL;
++	return file;
 +}
 +
- static void nvmet_ns_release(struct config_item *item)
+ /*
+  * Differs from ep_eventpoll_poll() in that internal callers already have
+  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
+@@ -884,14 +912,22 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
+ static __poll_t ep_item_poll(const struct epitem *epi, poll_table *pt,
+ 				 int depth)
  {
- 	struct nvmet_ns *ns = to_nvmet_ns(item);
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 3935165048e74..ce7e945cb4f7e 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -425,10 +425,13 @@ void nvmet_stop_keep_alive_timer(struct nvmet_ctrl *ctrl)
- u16 nvmet_req_find_ns(struct nvmet_req *req)
- {
- 	u32 nsid = le32_to_cpu(req->cmd->common.nsid);
-+	struct nvmet_subsys *subsys = nvmet_req_subsys(req);
+-	struct file *file = epi->ffd.file;
++	struct file *file = epi_fget(epi);
+ 	__poll_t res;
  
--	req->ns = xa_load(&nvmet_req_subsys(req)->namespaces, nsid);
-+	req->ns = xa_load(&subsys->namespaces, nsid);
- 	if (unlikely(!req->ns)) {
- 		req->error_loc = offsetof(struct nvme_common_command, nsid);
-+		if (nvmet_subsys_nsid_exists(subsys, nsid))
-+			return NVME_SC_INTERNAL_PATH_ERROR;
- 		return NVME_SC_INVALID_NS | NVME_SC_DNR;
- 	}
++	/*
++	 * We could return EPOLLERR | EPOLLHUP or something, but let's
++	 * treat this more as "file doesn't exist, poll didn't happen".
++	 */
++	if (!file)
++		return 0;
++
+ 	pt->_key = epi->event.events;
+ 	if (!is_file_epoll(file))
+ 		res = vfs_poll(file, pt);
+ 	else
+ 		res = __ep_eventpoll_poll(file, pt, depth);
++	fput(file);
+ 	return res & epi->event.events;
+ }
  
-diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
-index 8cfd60f3b5648..15b00ed7be16a 100644
---- a/drivers/nvme/target/nvmet.h
-+++ b/drivers/nvme/target/nvmet.h
-@@ -530,6 +530,7 @@ void nvmet_subsys_disc_changed(struct nvmet_subsys *subsys,
- 		struct nvmet_host *host);
- void nvmet_add_async_event(struct nvmet_ctrl *ctrl, u8 event_type,
- 		u8 event_info, u8 log_page);
-+bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid);
- 
- #define NVMET_QUEUE_SIZE	1024
- #define NVMET_NR_QUEUES		128
 -- 
 2.43.0
 
