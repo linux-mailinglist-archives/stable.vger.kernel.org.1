@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-49649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A968FEE46
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:44:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DCA8FEF2F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCA5E1C216F0
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:44:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B32CA2865E1
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A2D1C224B;
-	Thu,  6 Jun 2024 14:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B6C168C10;
+	Thu,  6 Jun 2024 14:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtreMkys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doDYO/3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512251C2246;
-	Thu,  6 Jun 2024 14:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514751CB308;
+	Thu,  6 Jun 2024 14:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683640; cv=none; b=bXfQONhGw+ScH3D9QcgBPAjHBcnx8RbYpXt7wjBDdI5nQQ3kcqhNKoC55maHluXGmFGzr8JlTdCY1eooS3JCdKf0iUb/HMRcN8fhQsFZ7xFck8h6dWHdFhlUEoOVVc+VVubA88VViTeYGTuX2W4/RGZD/BMQC0X8P7a6a+24EdQ=
+	t=1717683750; cv=none; b=gzzPE99TTWlq1dDlap4/DaTgCVDVgmaKhjvXzc5oEJZfpwOyMCVcNh3XqwI/owSAr6SeFKN1n/wCfNcU+nOxGErqoEJVnwpXtJkhy45B3isSA1YxbSW9Is+KHgrmIDnBh6ld0lMwJ08HS94HbA+KB6zx2El8bR2Jqhtnusqz/9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683640; c=relaxed/simple;
-	bh=Wn+X8f8BUlGn7Zegdm+H6c0ua2f2trgbTPmEdNavBPI=;
+	s=arc-20240116; t=1717683750; c=relaxed/simple;
+	bh=aM8umIuD/cjPvluhTMrha4krKGE4IWKeep4CkFzz6vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pr6xwY1MoTfdUWfBiMJMbgdXUt2xmpKnOU18cfyANz1kDcH0oWF+A3v3iFh9PC9lY1J7dFD5UiZhvfaRHJUatUU5JCPwMtz4dKvIBWmkBS4a3n7Q6LNN3MtbpVp3JTlVlDHI/yQNOsj2gIBkwW4En8hHSf7vxfY83EahUYY/PYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtreMkys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28068C2BD10;
-	Thu,  6 Jun 2024 14:20:40 +0000 (UTC)
+	 MIME-Version; b=S9puRHJiRaQ4Uf6OtoFaBENW+TdG6vMAlQJCLJXG1XZm8hRN/eSZEhEfNpb75MUr+k0dkbz3wE3GuhDTrCMVHURQiWQ6MXjU9CQxOUwZtXwtwHd5Q2kJxCM4Vow6pSWpC0zDALOgFN4NtJ8c49Avw9ocIjOrMY7/r3tz2zw6YZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doDYO/3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A69CC2BD10;
+	Thu,  6 Jun 2024 14:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683640;
-	bh=Wn+X8f8BUlGn7Zegdm+H6c0ua2f2trgbTPmEdNavBPI=;
+	s=korg; t=1717683750;
+	bh=aM8umIuD/cjPvluhTMrha4krKGE4IWKeep4CkFzz6vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtreMkysdnROwkObWNIPSx1BRda8o8wWfPNkAnMvZym/yAtN+K/WBiNwTmLXkyN+t
-	 LE9U2/COghu8iHuwPHumrmQlXIhXWUdcjPlUFtAc5uAXFANJLvu+JlAarb3BhD9tfr
-	 Y5MB29s9Xu0yGu+nhXiXuyevLYZk2p9ZxGO2t46M=
+	b=doDYO/3Lu+FOhBjnO3DM+TtrJnahvocrk/vwhnQtRv93Sy2XwTcfv1WbHW2rfird2
+	 lLdLrgmEbqln/EZ+fatCGvRQhPj9K3N/B9WV8IshLR2qFaLA5AU2F4sSiCuoArJ8Rq
+	 Egxcfc4UsVzGEzD+PdiCxcULuejb5s7IWBXXUQ8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Garver <eric@garver.life>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Julia Filipchuk <julia.filipchuk@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 460/473] netfilter: nft_fib: allow from forward/input without iif selector
-Date: Thu,  6 Jun 2024 16:06:29 +0200
-Message-ID: <20240606131714.892965660@linuxfoundation.org>
+Subject: [PATCH 6.6 718/744] drm/i915/guc: avoid FIELD_PREP warning
+Date: Thu,  6 Jun 2024 16:06:30 +0200
+Message-ID: <20240606131755.496805522@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Garver <eric@garver.life>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e8ded22ef0f4831279c363c264cd41cd9d59ca9e ]
+[ Upstream commit d4f36db62396b73bed383c0b6e48d36278cafa78 ]
 
-This removes the restriction of needing iif selector in the
-forward/input hooks for fib lookups when requested result is
-oif/oifname.
+With gcc-7 and earlier, there are lots of warnings like
 
-Removing this restriction allows "loose" lookups from the forward hooks.
+In file included from <command-line>:0:0:
+In function '__guc_context_policy_add_priority.isra.66',
+    inlined from '__guc_context_set_prio.isra.67' at drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c:3292:3,
+    inlined from 'guc_context_set_prio' at drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c:3320:2:
+include/linux/compiler_types.h:399:38: error: call to '__compiletime_assert_631' declared with attribute error: FIELD_PREP: mask is not constant
+  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+                                      ^
+...
+drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c:2422:3: note: in expansion of macro 'FIELD_PREP'
+   FIELD_PREP(GUC_KLV_0_KEY, GUC_CONTEXT_POLICIES_KLV_ID_##id) | \
+   ^~~~~~~~~~
 
-Fixes: be8be04e5ddb ("netfilter: nft_fib: reverse path filter for policy-based routing on iif")
-Signed-off-by: Eric Garver <eric@garver.life>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Make sure that GUC_KLV_0_KEY is an unsigned value to avoid the warning.
+
+Fixes: 77b6f79df66e ("drm/i915/guc: Update to GuC version 69.0.3")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: Julia Filipchuk <julia.filipchuk@intel.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240430164809.482131-1-julia.filipchuk@intel.com
+(cherry picked from commit 364e039827ef628c650c21c1afe1c54d9c3296d9)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_fib.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_fib.c b/net/netfilter/nft_fib.c
-index 5748415f74d0b..0f17ace972276 100644
---- a/net/netfilter/nft_fib.c
-+++ b/net/netfilter/nft_fib.c
-@@ -34,11 +34,9 @@ int nft_fib_validate(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 	switch (priv->result) {
- 	case NFT_FIB_RESULT_OIF:
- 	case NFT_FIB_RESULT_OIFNAME:
--		hooks = (1 << NF_INET_PRE_ROUTING);
--		if (priv->flags & NFTA_FIB_F_IIF) {
--			hooks |= (1 << NF_INET_LOCAL_IN) |
--				 (1 << NF_INET_FORWARD);
--		}
-+		hooks = (1 << NF_INET_PRE_ROUTING) |
-+			(1 << NF_INET_LOCAL_IN) |
-+			(1 << NF_INET_FORWARD);
- 		break;
- 	case NFT_FIB_RESULT_ADDRTYPE:
- 		if (priv->flags & NFTA_FIB_F_IIF)
+diff --git a/drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h b/drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h
+index 58012edd4eb0e..4f4f53c42a9c5 100644
+--- a/drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h
++++ b/drivers/gpu/drm/i915/gt/uc/abi/guc_klvs_abi.h
+@@ -29,9 +29,9 @@
+  */
+ 
+ #define GUC_KLV_LEN_MIN				1u
+-#define GUC_KLV_0_KEY				(0xffff << 16)
+-#define GUC_KLV_0_LEN				(0xffff << 0)
+-#define GUC_KLV_n_VALUE				(0xffffffff << 0)
++#define GUC_KLV_0_KEY				(0xffffu << 16)
++#define GUC_KLV_0_LEN				(0xffffu << 0)
++#define GUC_KLV_n_VALUE				(0xffffffffu << 0)
+ 
+ /**
+  * DOC: GuC Self Config KLVs
 -- 
 2.43.0
 
