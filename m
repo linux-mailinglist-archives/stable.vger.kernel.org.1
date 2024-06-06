@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-48593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A088FE9A9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B628FEEB3
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB7111C25F07
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3CE21F251EC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA7D19ADB6;
-	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFC71AED39;
+	Thu,  6 Jun 2024 14:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mk7lEjij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCD/VEC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3BB198A16;
-	Thu,  6 Jun 2024 14:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B14819AD8B;
+	Thu,  6 Jun 2024 14:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683052; cv=none; b=UyE0MvmqE/DcoRq+rlDuYouSt64aq94b+OvxJT7I8g/tfRRta+mREHCwJ0j9EBWx2BaUs++IV6kaNhXOdcpWhjC/aFKQcuMbfpL0T6LyYT+QW2lBeOhP+1VPTZHdIVaokhQwrUJuKwurMVPxyFa/5rGdIB3Q/9SmOgh+UcQtjBc=
+	t=1717683691; cv=none; b=cWuB7LXjju2GQFvr+ubiP6WY0rQGPFh0AMH5y0QQzchKPfkp87jIDw76p1nAAoLO2qxtBcRUQ83fU+enmI4ZartUBjyzFu3F83WeJUmtt0AT0duNgsMl6eFPdGhik9L/OS2+fIvxAKVzVuHTHVAdDYCZWfai+/YY6nI+5LsuEyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683052; c=relaxed/simple;
-	bh=sQ3cMM86IKeaGdDnND1eHZfDUBiKsjBekt4ksrtrFPc=;
+	s=arc-20240116; t=1717683691; c=relaxed/simple;
+	bh=iHlMk+IZuONKm0L47hSgbPg5vTEmKSMWZ9bepgsRg7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9Pb+IZgDfBpdZFuq2FpNuxTUdVf5jex4DfM+nbzEUJkfleBfcxxTeBSNob46SQvwS9i7SSqKiiS7Z+uUz4aT3EGMs6nIDCdw77Zu2XzmfNfxFEGd4O5T7dKtGpi6r2JVay0AqdvztWJzuk++m6BWBCJbNv0lhPNolosb9l/WEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mk7lEjij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32F6C4AF19;
-	Thu,  6 Jun 2024 14:10:51 +0000 (UTC)
+	 MIME-Version; b=Nh+7/WeJNDUERPERDE6+pXkCiF5ZHEIU6q6LJPSYn78lyZYQAMrtv+4JrCmPFf2I3BCR+FXiYkMXV736msyRsTWTwwT57EjIhosydlJP0lNPrqLJkwWZVIHk/h+XQTtyLDuItzBIvg0Cv6UFNSg+5BA2VeiiJ/r0GaGU6mmueCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCD/VEC6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F4DC2BD10;
+	Thu,  6 Jun 2024 14:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683052;
-	bh=sQ3cMM86IKeaGdDnND1eHZfDUBiKsjBekt4ksrtrFPc=;
+	s=korg; t=1717683691;
+	bh=iHlMk+IZuONKm0L47hSgbPg5vTEmKSMWZ9bepgsRg7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mk7lEjij7Jy/2lw/DDg6+JccYFaiZNY6R3J8Hzepzgd9IgIyfFUGBPdavnKETl/6X
-	 FPM9w25aHjYewJaF7+FYMa8wH6zfIwrKhCu3jd5znYC8l1JPzOmuuxfp2O0z+K0v6w
-	 zOy0nUQb9Cn2A4R3KtFaO+X/pGHCpyBefjpOc9/k=
+	b=nCD/VEC6UGDzBrEkfdFqrFoDYc3x8H24wTGx5B8AVLj3v3kCGruTR12Unsr0FQTn7
+	 2JyvzT/QFSdYc3RnF9Oz02yJDSFvUh8DQLFUxNKIDmBcZQfgQAnBpgFcgH0vOqD4Z/
+	 o0ojL2Wn+zR5bpuM+FUYAonEbnZ4zMeAom54SDKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 293/374] nvmet: fix ns enable/disable possible hang
-Date: Thu,  6 Jun 2024 16:04:32 +0200
-Message-ID: <20240606131701.693141828@linuxfoundation.org>
+Subject: [PATCH 6.6 601/744] um: Fix the -Wmissing-prototypes warning for __switch_mm
+Date: Thu,  6 Jun 2024 16:04:33 +0200
+Message-ID: <20240606131751.755852025@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit f97914e35fd98b2b18fb8a092e0a0799f73afdfe ]
+[ Upstream commit 2cbade17b18c0f0fd9963f26c9fc9b057eb1cb3a ]
 
-When disabling an nvmet namespace, there is a period where the
-subsys->lock is released, as the ns disable waits for backend IO to
-complete, and the ns percpu ref to be properly killed. The original
-intent was to avoid taking the subsystem lock for a prolong period as
-other processes may need to acquire it (for example new incoming
-connections).
+The __switch_mm function is defined in the user code, and is called
+by the kernel code. It should be declared in a shared header.
 
-However, it opens up a window where another process may come in and
-enable the ns, (re)intiailizing the ns percpu_ref, causing the disable
-sequence to hang.
-
-Solve this by taking the global nvmet_config_sem over the entire configfs
-enable/disable sequence.
-
-Fixes: a07b4970f464 ("nvmet: add a generic NVMe target")
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 4dc706c2f292 ("um: take um_mmu.h to asm/mmu.h, clean asm/mmu_context.h a bit")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/configfs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/um/include/asm/mmu.h           | 2 --
+ arch/um/include/shared/skas/mm_id.h | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
-index 7fda69395c1ef..dfdff6aba6953 100644
---- a/drivers/nvme/target/configfs.c
-+++ b/drivers/nvme/target/configfs.c
-@@ -676,10 +676,18 @@ static ssize_t nvmet_ns_enable_store(struct config_item *item,
- 	if (kstrtobool(page, &enable))
- 		return -EINVAL;
+diff --git a/arch/um/include/asm/mmu.h b/arch/um/include/asm/mmu.h
+index 5b072aba5b658..a7cb380c0b5c0 100644
+--- a/arch/um/include/asm/mmu.h
++++ b/arch/um/include/asm/mmu.h
+@@ -15,8 +15,6 @@ typedef struct mm_context {
+ 	struct page *stub_pages[2];
+ } mm_context_t;
  
-+	/*
-+	 * take a global nvmet_config_sem because the disable routine has a
-+	 * window where it releases the subsys-lock, giving a chance to
-+	 * a parallel enable to concurrently execute causing the disable to
-+	 * have a misaccounting of the ns percpu_ref.
-+	 */
-+	down_write(&nvmet_config_sem);
- 	if (enable)
- 		ret = nvmet_ns_enable(ns);
- 	else
- 		nvmet_ns_disable(ns);
-+	up_write(&nvmet_config_sem);
+-extern void __switch_mm(struct mm_id * mm_idp);
+-
+ /* Avoid tangled inclusion with asm/ldt.h */
+ extern long init_new_ldt(struct mm_context *to_mm, struct mm_context *from_mm);
+ extern void free_ldt(struct mm_context *mm);
+diff --git a/arch/um/include/shared/skas/mm_id.h b/arch/um/include/shared/skas/mm_id.h
+index e82e203f5f419..92dbf727e3842 100644
+--- a/arch/um/include/shared/skas/mm_id.h
++++ b/arch/um/include/shared/skas/mm_id.h
+@@ -15,4 +15,6 @@ struct mm_id {
+ 	int kill;
+ };
  
- 	return ret ? ret : count;
- }
++void __switch_mm(struct mm_id *mm_idp);
++
+ #endif
 -- 
 2.43.0
 
