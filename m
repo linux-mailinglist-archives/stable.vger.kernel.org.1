@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-48609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DF28FE9BA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5DD8FEEEF
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DB4E1C242A1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCE62B285D8
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1064E19B3DE;
-	Thu,  6 Jun 2024 14:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBD91C8FAA;
+	Thu,  6 Jun 2024 14:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDXdd0kg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShSEYXlq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C471C19B3D5;
-	Thu,  6 Jun 2024 14:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6111C8FA0;
+	Thu,  6 Jun 2024 14:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683059; cv=none; b=K4gVkSM7Te5tG6C/G+6c3Z3EQMNdCdd7H37g403SF/565rxq/qWSk8T+F93WTioc+s/BX1vq3xZmyf88tX2aq0l3WtdM7Ol5jG9kaaAAcQi9DKs8i8q6e2jNe8zZj+Ptg9+GPNloFit3Yfl4OS3jN0fGc4svbY4I27Q3J7FHEYc=
+	t=1717683718; cv=none; b=VsKoT/XbsYMkiwARpcxZa00RrTi8HoyV7A5fECUoQI+Ds6rXRzSHD40R+ymNlMrMlrCw8xV+KDJm2Oo+SzUWk9h4JZScQSItrU3UyTPWJcEhOIrsbj7njfRAakL+Dq4N6zOUVz2qd4BWe6q8bNv8RS1xvp+dhrStxgwhiPPYYXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683059; c=relaxed/simple;
-	bh=ztxZiGa1FT4jSrlF2VCYJHX9+En/iUp6bRuhh2ULhJI=;
+	s=arc-20240116; t=1717683718; c=relaxed/simple;
+	bh=vf0fp0y+PF6ys44toNb1BsjFPtpGQ19XGNKhbkvp87w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTl/Bd5vKlTM5ZXZIJFZsHgH8Iz2zlh0FNlzWZfvmzbwHkSOUTjJFuI6BzhfdaxMdlSCD/mHCjIQPZvkxqOIFIykmnpQAJ5ZvVpJBY0cXbwbGbV6OEgGzlsgaswLc3Ms58sh9X6bgqukmciyRGrHUsG3ZFFswFNCwKweR7+UGTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDXdd0kg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D11C4AF14;
-	Thu,  6 Jun 2024 14:10:59 +0000 (UTC)
+	 MIME-Version; b=t1bYiVgFVJRhxnPhv+q8Xy70rnc+881aXtg3buE8jkU7hjMtWfduMzGFgvuNHCaCl5OCfLUFdIT4zJUvitFDWktEjQMexDVAARIKS44TP4/wGXEXyiTcNUtYLbg6gYGjabVmcmE79fxZKH8ZSUEDmwFPvmcIQt/Rd//gmCi870Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShSEYXlq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA44C32781;
+	Thu,  6 Jun 2024 14:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683059;
-	bh=ztxZiGa1FT4jSrlF2VCYJHX9+En/iUp6bRuhh2ULhJI=;
+	s=korg; t=1717683717;
+	bh=vf0fp0y+PF6ys44toNb1BsjFPtpGQ19XGNKhbkvp87w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qDXdd0kgyaE0ADMoQJ1zWVS20ZZ3PdeL+8fqGYbBymklb2kV18VBQAAG5PEMzBGeh
-	 yhAg8GyHE2AEla0PJ3bwTJmxJZUK2VRLCL93IXR4DVPfAydYOrLopxa9Q3bhTyIybc
-	 LlL9fR2aro8r/9tT59SHGIf+iIX+lgswmOtxgYWI=
+	b=ShSEYXlqWg4Db2P6rdSXevLOtY71YgzNA4CT1QGkLaw0h05Coxwtdp7zK0v0V0HFH
+	 6hGtsqVbkgt+zzuarL+60XjnZBLd5M2QlE/fZ/AhVNz9uVjB43VIR/y523wNtRPeP1
+	 x8eSwMmK/l8i1di6cNCXC4f4KCH4Z0movV8c8KJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 308/374] ALSA: hda/realtek: Adjust G814JZR to use SPI init for amp
+Subject: [PATCH 6.6 615/744] ASoC: tas2781: Fix a warning reported by robot kernel test
 Date: Thu,  6 Jun 2024 16:04:47 +0200
-Message-ID: <20240606131702.169940801@linuxfoundation.org>
+Message-ID: <20240606131752.228323254@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit 2be46155d792d629e8fe3188c2cde176833afe36 ]
+[ Upstream commit 1ae14f3520b1a0ad144610a3f592c81a3e81cd1b ]
 
-The 2024 ASUS ROG G814J model is much the same as the 2023 model
-and the 2023 16" version. We can use the same Cirrus Amp quirk.
+Fix a warning reported by robot kernel test that 'fw_entry' in function
+'tas2781_load_calibration' is used uninitialized with compiler
+sh4-linux-gcc (GCC) 13.2.0, an update of copyright and a correction of the
+comments.
 
-Fixes: 811dd426a9b1 ("ALSA: hda/realtek: Add quirks for Asus ROG 2024 laptops using CS35L41")
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20240526091032.114545-1-luke@ljones.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: ef3bcde75d06 ("ASoc: tas2781: Add tas2781 driver")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://lore.kernel.org/r/20240505122346.1326-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/tas2781-fmwlib.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index d8caa2be63c8b..1a1ca7caaff07 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10294,7 +10294,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
+diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
+index 61b05629a9a9c..a7ae4005d83f4 100644
+--- a/sound/soc/codecs/tas2781-fmwlib.c
++++ b/sound/soc/codecs/tas2781-fmwlib.c
+@@ -1,8 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0
+ //
+-// tasdevice-fmw.c -- TASDEVICE firmware support
++// tas2781-fmwlib.c -- TASDEVICE firmware support
+ //
+-// Copyright 2023 Texas Instruments, Inc.
++// Copyright 2023 - 2024 Texas Instruments, Inc.
+ //
+ // Author: Shenghao Ding <shenghao-ding@ti.com>
+ 
+@@ -1908,7 +1908,7 @@ int tas2781_load_calibration(void *context, char *file_name,
+ {
+ 	struct tasdevice_priv *tas_priv = (struct tasdevice_priv *)context;
+ 	struct tasdevice *tasdev = &(tas_priv->tasdevice[i]);
+-	const struct firmware *fw_entry;
++	const struct firmware *fw_entry = NULL;
+ 	struct tasdevice_fw *tas_fmw;
+ 	struct firmware fmw;
+ 	int offset = 0;
 -- 
 2.43.0
 
