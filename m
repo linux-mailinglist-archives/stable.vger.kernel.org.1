@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-48527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA5C8FE961
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A3A8FEE08
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C150287D6C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B38C3B2686C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B6619A288;
-	Thu,  6 Jun 2024 14:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C1119EEBD;
+	Thu,  6 Jun 2024 14:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/0EXepG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eACpN+m2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A6619A287;
-	Thu,  6 Jun 2024 14:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388DA1BE87E;
+	Thu,  6 Jun 2024 14:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683013; cv=none; b=nU03Px8uPvFXYViEzhDpQBtbs7Fa6eyJH6ks2FtUKs0aLk9Aa0kJdd4CSOyCt4c3Dq7jTXOTM+ztdBDQ/HSPo/Z2WOf2SW5I2DDRnNYmCoHXSRlNhRfD4xQbOPJKzcRay/DDQAATKZgWBtz7yoQJKDrOtLv66P2ZEfntDlSuTDk=
+	t=1717683552; cv=none; b=kilic2545cKg7Vtl1/dI9IQyu7KATIVdYaHsSl6/6yTE0ElYsrj+TcqUzwycykQwg6ttlHqJ5VLJYMM4Ixjr8ThRGQ2KxqcqwoVi5R95nNBdiCeznLOV/ko6rT94Z3afkMCRyeK92s23KvhoxHTTVLKVsA6jaf68gY9syXydgKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683013; c=relaxed/simple;
-	bh=er+zm+9XVCMqYBreHw9mFxIEEc4VGM1Pch6rnyxHsh8=;
+	s=arc-20240116; t=1717683552; c=relaxed/simple;
+	bh=gpqPPmPd9vD4rG4HqDS8e/q+xo1GsoIABuS6yMPtJaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fsB1q4zBNy4SUyPvdZyR0pVq9mO4+hbY05nl0Q3ZLifMcZ0jOdMOiC/ABNhBX+tIcvrunTnBM5myz/ng8bYZZ5Z+vDGO0S6q4K/52/GnUeiUJjiosgq7XxrA/AsACr1oS3jCL69uEnFvnDivT1S1z2KJAwUsCMpxdi3bc/wQaKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/0EXepG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE18C4AF0D;
-	Thu,  6 Jun 2024 14:10:12 +0000 (UTC)
+	 MIME-Version; b=Mo3eA8K+KA9bZrXiGt2jquLSj33TejmLa1HA6oRWkUFS3z0QmzsHkYiEMD47KexIWQviiOgO3GfvBTzlluehhS7uJeIn2Pm4AVRCh65wA/XLPVyR/G5ZzZlRvMGe2Wf2FpbgxVBHn9AmV58GWhlCKxU498z8FhheewYgoU+zL5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eACpN+m2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154B7C32782;
+	Thu,  6 Jun 2024 14:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683012;
-	bh=er+zm+9XVCMqYBreHw9mFxIEEc4VGM1Pch6rnyxHsh8=;
+	s=korg; t=1717683552;
+	bh=gpqPPmPd9vD4rG4HqDS8e/q+xo1GsoIABuS6yMPtJaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/0EXepGJwDqhoS8lfuvbNg+h/pKeDmOZv8gTy4J8sWYRYFJQYW13WMi1fP0H3EfF
-	 ttTw/pQq53MV4+7uOfXHoWQF8X9ez+5BkSJ6144TNsAB/6MivLJUQlX7CpAl0RByVA
-	 vvjz8V98oAqHTbJn7Jp8wmCJjN4uaH5NwZfVWSWc=
+	b=eACpN+m2CPvuKf4NVcDD87o5hjR0KksXyC1qZS2RAQtYZ4XeF0RKJG1mmOHoLc6j7
+	 orEQb6jpAb5mBSWlgiTfTZ5XOO+c5qubUWLmrvxyx78KPQX3hc7onGlbWVZFNU0X4f
+	 NepmKU4ow+YV5fZIowRvYrL4T+CUqxSh4B8i1s34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	He Zhe <zhe.he@windriver.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 186/374] tools/arch/x86/intel_sdsi: Fix meter_show display
-Date: Thu,  6 Jun 2024 16:02:45 +0200
-Message-ID: <20240606131658.102033332@linuxfoundation.org>
+Subject: [PATCH 6.6 494/744] perf bench internals inject-build-id: Fix trap divide when collecting just one DSO
+Date: Thu,  6 Jun 2024 16:02:46 +0200
+Message-ID: <20240606131748.294469021@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +66,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David E. Box <david.e.box@linux.intel.com>
+From: He Zhe <zhe.he@windriver.com>
 
-[ Upstream commit 76f2bc17428c890754d11aa6aea14b332ba130c5 ]
+[ Upstream commit d9180e23fbfa3875424d3a6b28b71b072862a52a ]
 
-Fixes sdsi_meter_cert_show() to correctly decode and display the meter
-certificate output. Adds and displays a missing version field, displays the
-ASCII name of the signature, and fixes the print alignment.
+'perf bench internals inject-build-id' suffers from the following error when
+only one DSO is collected.
 
-Fixes: 7fdc03a7370f ("tools/arch/x86: intel_sdsi: Add support for reading meter certificates")
-Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240411025856.2782476-7-david.e.box@linux.intel.com
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+  # perf bench internals inject-build-id -v
+    Collected 1 DSOs
+  traps: internals-injec[2305] trap divide error
+  ip:557566ba6394 sp:7ffd4de97fe0 error:0 in perf[557566b2a000+23d000]
+    Build-id injection benchmark
+    Iteration #1
+  Floating point exception
+
+This patch removes the unnecessary minus one from the divisor which also
+corrects the randomization range.
+
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 0bf02a0d80427f26 ("perf bench: Add build-id injection benchmark")
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240507065026.2652929-1-zhe.he@windriver.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/arch/x86/intel_sdsi/intel_sdsi.c | 29 +++++++++++++++++---------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ tools/perf/bench/inject-buildid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/arch/x86/intel_sdsi/intel_sdsi.c b/tools/arch/x86/intel_sdsi/intel_sdsi.c
-index 7eaffcbff788c..ae29214da1029 100644
---- a/tools/arch/x86/intel_sdsi/intel_sdsi.c
-+++ b/tools/arch/x86/intel_sdsi/intel_sdsi.c
-@@ -153,11 +153,12 @@ struct bundle_encoding {
- };
- 
- struct meter_certificate {
--	uint32_t block_signature;
--	uint32_t counter_unit;
-+	uint32_t signature;
-+	uint32_t version;
- 	uint64_t ppin;
-+	uint32_t counter_unit;
- 	uint32_t bundle_length;
--	uint32_t reserved;
-+	uint64_t reserved;
- 	uint32_t mmrc_encoding;
- 	uint32_t mmrc_counter;
- };
-@@ -338,6 +339,7 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
- 	uint32_t count = 0;
- 	FILE *cert_ptr;
- 	int ret, size;
-+	char name[4];
- 
- 	ret = sdsi_update_registers(s);
- 	if (ret)
-@@ -379,12 +381,19 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
- 	printf("\n");
- 	printf("Meter certificate for device %s\n", s->dev_name);
- 	printf("\n");
--	printf("Block Signature:       0x%x\n", mc->block_signature);
--	printf("Count Unit:            %dms\n", mc->counter_unit);
--	printf("PPIN:                  0x%lx\n", mc->ppin);
--	printf("Feature Bundle Length: %d\n", mc->bundle_length);
--	printf("MMRC encoding:         %d\n", mc->mmrc_encoding);
--	printf("MMRC counter:          %d\n", mc->mmrc_counter);
-+
-+	get_feature(mc->signature, name);
-+	printf("Signature:                    %.4s\n", name);
-+
-+	printf("Version:                      %d\n", mc->version);
-+	printf("Count Unit:                   %dms\n", mc->counter_unit);
-+	printf("PPIN:                         0x%lx\n", mc->ppin);
-+	printf("Feature Bundle Length:        %d\n", mc->bundle_length);
-+
-+	get_feature(mc->mmrc_encoding, name);
-+	printf("MMRC encoding:                %.4s\n", name);
-+
-+	printf("MMRC counter:                 %d\n", mc->mmrc_counter);
- 	if (mc->bundle_length % 8) {
- 		fprintf(stderr, "Invalid bundle length\n");
+diff --git a/tools/perf/bench/inject-buildid.c b/tools/perf/bench/inject-buildid.c
+index 49331743c7439..a759eb2328bea 100644
+--- a/tools/perf/bench/inject-buildid.c
++++ b/tools/perf/bench/inject-buildid.c
+@@ -362,7 +362,7 @@ static int inject_build_id(struct bench_data *data, u64 *max_rss)
  		return -1;
-@@ -398,7 +407,7 @@ static int sdsi_meter_cert_show(struct sdsi_dev *s)
  
- 	bec = (void *)(mc) + sizeof(mc);
- 
--	printf("Number of Feature Counters:          %d\n", mc->bundle_length / 8);
-+	printf("Number of Feature Counters:   %ld\n", BUNDLE_COUNT(mc->bundle_length));
- 	while (count++ < mc->bundle_length / 8) {
- 		char feature[5];
+ 	for (i = 0; i < nr_mmaps; i++) {
+-		int idx = rand() % (nr_dsos - 1);
++		int idx = rand() % nr_dsos;
+ 		struct bench_dso *dso = &dsos[idx];
+ 		u64 timestamp = rand() % 1000000;
  
 -- 
 2.43.0
