@@ -1,175 +1,332 @@
-Return-Path: <stable+bounces-48254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EBE8FDC9D
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 04:16:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA7C8FDCA2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 04:17:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 047CF2868CF
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:16:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1DD42878B0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 02:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C853C17C6B;
-	Thu,  6 Jun 2024 02:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E621401B;
+	Thu,  6 Jun 2024 02:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HP+iem6i"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="glx4BWXU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DE18BE8;
-	Thu,  6 Jun 2024 02:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4DC179A7;
+	Thu,  6 Jun 2024 02:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717640158; cv=none; b=j0Tfcx7gENrFX2pURMYARHtYNW02syNtQtXQfiTDbKiScXrp9YWyhLPHdJ/GFTftppfoG6K0ovYQulccP8JUt1X+rU41dzujHQ0CHtsTbp3aHpGe3cfVnxNy6zvp/jxR6dbyvMbg7FeMVp4AYQhN+6LTXsbZBvee6I5VIXfveX8=
+	t=1717640239; cv=none; b=eY0MGgXLYBjxfzSBLvz4ost31nS8/KZscTEp8BRWI7ZJmcX7ovFEku5+6rRcFiQqQxyEUexhARbuEoDCgB8UEyDtWe1TKt6bVakLYREjyjgwg5FaEhd38aDVrxUk/m6kEXk9vBRRXo/dArpdvdvEVwi04b8mvLAMHUtQEEstmWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717640158; c=relaxed/simple;
-	bh=6YiCaeGRIRC6Mza9FWAyFiww/A1swV00WkMpYxit8Hs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WEDTyJ717u1yYs1oG3JuJUmJybXUZ/XP62OGm3LCRcMDkSZUc3vBm7aIn1iXzzdV81ybYNypmcVQR22Bqvsga8frCj9o18rwzXNQwx35iLnrUny9HSiDxH/GlQWM0kai5JrOfE6Wg8i4veXSqlOJgqqlpU6hsGfYR2Ipip8c39A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HP+iem6i; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-24ca0876a83so201059fac.2;
-        Wed, 05 Jun 2024 19:15:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717640156; x=1718244956; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZmL6mA1X24mzn6/BlM9GrDNbWk2sLMyybrXWqmNiVrg=;
-        b=HP+iem6iBhthbMgZbV0vGN96iVltwnHrSInIk/chhvSxFrme+6MTcTVeO4N87XqGpA
-         nyFQshKrgnxYYWaEjFbkqSYWZLwCcIq8MiUlkv42tKfvobxhMwr7/4x6K/OMaMy/BUF/
-         vfsnmTB4KzjKPr05XGGoosckJ5a6huibYQEbroxSi8bpoJnqQSm706kwoM7c7v0E4ZDC
-         3PbJ7vsZ5Ftp63oqdQSBaBv+DHWutefG70jDgGEJUuDudp870DI0s81fM+PzeNzQbyl8
-         UlCJhcaaGgkvJWE9tpRY8vWSgDqrzwm2JrSC7tJ+nqJcaLdJhMaki7n7CjgCk3sCzBZ2
-         ZLOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717640156; x=1718244956;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZmL6mA1X24mzn6/BlM9GrDNbWk2sLMyybrXWqmNiVrg=;
-        b=NDKKvuKfYBkwi4ZtXujZmpXYxuTClBKv5FjxEmfwySvGVpA9xATRDC5rvpRm5oE5zR
-         Nln6mw05G/KcyJl//3aUIXPRUTGNJQvDDusWVaGZYUn4vBdycV6KRkxoSdvLVT9cwNfw
-         kkBVRhS2R4CLhruIep/+/EjqHycBiNPV9loTgKRjnd4EDUWJJr7kpQTnQY6p3I5dkJ3F
-         TM0Fd/1hh00PEB8KzYpbDr0kRwNTjP/mVrOxbB2touc6fLw2H92URHLjCz8/R4+L4zpW
-         zdU6tVk8f3M8VZ/nSdjY8h+Sx684ij7STdgt51BCMrazYxpUDZ5xopDsrYV0dVMZJEmi
-         q75A==
-X-Forwarded-Encrypted: i=1; AJvYcCW5ZFJZJzv2buApcBzkKDLAtjE616xIaxTDLpXxE/EA1WWsYJenXDwWShC9aas4rzgryAPTRASm4I4W897XgQJ0Rmo0mefP+2CrmR39qSrES4cERgQMHmLVXiyj2clj91/VW/FahWcTFaeymaQYS6etsbb7t9jX89MeaUjVzsUTi4VGpgKNKw63YDviKmU/s3J0TLTvxNuuS5BKSQxE
-X-Gm-Message-State: AOJu0YyYDs0lXjZu6JPiybWU6uK+0i5FYLN6sTEYW3AxCLsClxWQIkRE
-	3F8HURZrEwS/Sa03PIONub4lnJOQLVvxHNcqNL8Q/UBngJXct0MC
-X-Google-Smtp-Source: AGHT+IGRRDe4RyIMQgWMV2KX+qTPdrx8+5e3bTbCxproVRCUXYs8LDSdfxXHHE5esmuVCbKLoHpKCQ==
-X-Received: by 2002:a05:6870:1711:b0:24f:d5fa:615e with SMTP id 586e51a60fabf-251227360b0mr4746485fac.27.1717640156084;
-        Wed, 05 Jun 2024 19:15:56 -0700 (PDT)
-Received: from Laptop-X1 ([2409:8a02:782b:80e0:aaca:87fa:f402:cc0f])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-703fd494fc0sm166701b3a.127.2024.06.05.19.15.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jun 2024 19:15:55 -0700 (PDT)
-Date: Thu, 6 Jun 2024 10:15:50 +0800
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Petr Machata <petrm@nvidia.com>,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Geliang Tang <geliang@kernel.org>
-Subject: Re: [PATCH net 2/3] selftests: net: lib: avoid error removing empty
- netns name
-Message-ID: <ZmEb1q_gCHvKhzib@Laptop-X1>
-References: <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-0-b3afadd368c9@kernel.org>
- <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-2-b3afadd368c9@kernel.org>
+	s=arc-20240116; t=1717640239; c=relaxed/simple;
+	bh=8T5lplvemHv2ktDWDHZOSYiQnQQhhBFKWHMtoKSeFA0=;
+	h=Date:To:From:Subject:Message-Id; b=vGq7Dz863UOLN8BIoX8XDYjVr/pNMY/SfyNzdd47pIVINhQqGwB49RquNEN3BLZqMe9Yg3ZNNZ3qzZOotbtYJcSo+WuGR5JEKO4/FDNnfHoWkg61wRR7BC8Iw0oXIIudgJvBpnh3n+cVxKG/Xvx2tOYrHpeKNKj+iha3juHh+LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=glx4BWXU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C97C4AF13;
+	Thu,  6 Jun 2024 02:17:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1717640239;
+	bh=8T5lplvemHv2ktDWDHZOSYiQnQQhhBFKWHMtoKSeFA0=;
+	h=Date:To:From:Subject:From;
+	b=glx4BWXU54wsOL4EYkvDwpQWYw+cJW+ECEjyXagHOWLjAx+065Ozg0NC5n2Rw7RwW
+	 XyiNh2gf3RoI42Zus21iRT6tqe0D9fU6TP0wNIO4K0KABHXEdbDbNufWF7k7MIWEj0
+	 qRzBohEb5kMCo6/YQ0vMoYkEarbft7iDK2FAuTyU=
+Date: Wed, 05 Jun 2024 19:17:18 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,heming.zhao@suse.com,ghe@suse.com,gechangwei@live.cn,joseph.qi@linux.alibaba.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [folded-merged] ocfs2-fix-null-pointer-dereference-in-ocfs2_abort_trigger-v2.patch removed from -mm tree
+Message-Id: <20240606021719.04C97C4AF13@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-2-b3afadd368c9@kernel.org>
 
-On Wed, Jun 05, 2024 at 11:21:17AM +0200, Matthieu Baerts (NGI0) wrote:
-> If there is an error to create the first netns with 'setup_ns()',
-> 'cleanup_ns()' will be called with an empty string as first parameter.
-> 
-> The consequences is that 'cleanup_ns()' will try to delete an invalid
-> netns, and wait 20 seconds if the netns list is empty.
-> 
-> Instead of just checking if the name is not empty, convert the string
-> separated by spaces to an array. Manipulating the array is cleaner, and
-> calling 'cleanup_ns()' with an empty array will be a no-op.
-> 
-> Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
-> Cc: stable@vger.kernel.org
-> Acked-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> ---
->  tools/testing/selftests/net/lib.sh | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-> index a422e10d3d3a..e2f51102d7e1 100644
-> --- a/tools/testing/selftests/net/lib.sh
-> +++ b/tools/testing/selftests/net/lib.sh
-> @@ -15,7 +15,7 @@ ksft_xfail=2
->  ksft_skip=4
->  
->  # namespace list created by setup_ns
-> -NS_LIST=""
-> +NS_LIST=()
->  
->  ##############################################################################
->  # Helpers
-> @@ -137,6 +137,7 @@ cleanup_ns()
->  	fi
->  
->  	for ns in "$@"; do
-> +		[ -z "${ns}" ] && continue
->  		ip netns delete "${ns}" &> /dev/null
->  		if ! busywait $BUSYWAIT_TIMEOUT ip netns list \| grep -vq "^$ns$" &> /dev/null; then
->  			echo "Warn: Failed to remove namespace $ns"
-> @@ -150,7 +151,7 @@ cleanup_ns()
->  
->  cleanup_all_ns()
->  {
-> -	cleanup_ns $NS_LIST
-> +	cleanup_ns "${NS_LIST[@]}"
->  }
->  
->  # setup netns with given names as prefix. e.g
-> @@ -159,7 +160,7 @@ setup_ns()
->  {
->  	local ns=""
->  	local ns_name=""
-> -	local ns_list=""
-> +	local ns_list=()
->  	local ns_exist=
->  	for ns_name in "$@"; do
->  		# Some test may setup/remove same netns multi times
-> @@ -175,13 +176,13 @@ setup_ns()
->  
->  		if ! ip netns add "$ns"; then
->  			echo "Failed to create namespace $ns_name"
-> -			cleanup_ns "$ns_list"
-> +			cleanup_ns "${ns_list[@]}"
->  			return $ksft_skip
->  		fi
->  		ip -n "$ns" link set lo up
-> -		! $ns_exist && ns_list="$ns_list $ns"
-> +		! $ns_exist && ns_list+=("$ns")
->  	done
-> -	NS_LIST="$NS_LIST $ns_list"
-> +	NS_LIST+=("${ns_list[@]}")
->  }
->  
->  tc_rule_stats_get()
-> 
-> -- 
-> 2.43.0
-> 
 
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+The quilt patch titled
+     Subject: ocfs2: fix NULL pointer dereference in ocfs2_abort_trigger()
+has been removed from the -mm tree.  Its filename was
+     ocfs2-fix-null-pointer-dereference-in-ocfs2_abort_trigger-v2.patch
+
+This patch was dropped because it was folded into ocfs2-fix-null-pointer-dereference-in-ocfs2_abort_trigger.patch
+
+------------------------------------------------------
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+Subject: ocfs2: fix NULL pointer dereference in ocfs2_abort_trigger()
+Date: Sun, 2 Jun 2024 19:20:45 +0800
+
+Link: https://lkml.kernel.org/r/20240602112045.1112708-1-joseph.qi@linux.alibaba.com
+Fixes: 8887b94d9322 ("ocfs2: stop using bdev->bd_super for journal error logging")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/journal.c |  111 +++++++++++++++++--------------------------
+ fs/ocfs2/ocfs2.h   |   27 ++++++++++
+ fs/ocfs2/super.c   |    4 +
+ 3 files changed, 74 insertions(+), 68 deletions(-)
+
+--- a/fs/ocfs2/journal.c~ocfs2-fix-null-pointer-dereference-in-ocfs2_abort_trigger-v2
++++ a/fs/ocfs2/journal.c
+@@ -479,28 +479,6 @@ bail:
+ 	return status;
+ }
+ 
+-
+-struct ocfs2_triggers {
+-	struct jbd2_buffer_trigger_type	ot_triggers;
+-	int				ot_offset;
+-	struct super_block		*sb;
+-};
+-
+-enum ocfs2_journal_trigger_type {
+-	OCFS2_JTR_DI,
+-	OCFS2_JTR_EB,
+-	OCFS2_JTR_RB,
+-	OCFS2_JTR_GD,
+-	OCFS2_JTR_DB,
+-	OCFS2_JTR_XB,
+-	OCFS2_JTR_DQ,
+-	OCFS2_JTR_DR,
+-	OCFS2_JTR_DL,
+-	OCFS2_JTR_NONE  /* This must be the last entry */
+-};
+-
+-#define OCFS2_JOURNAL_TRIGGER_COUNT OCFS2_JTR_NONE
+-
+ static inline struct ocfs2_triggers *to_ocfs2_trigger(struct jbd2_buffer_trigger_type *triggers)
+ {
+ 	return container_of(triggers, struct ocfs2_triggers, ot_triggers);
+@@ -626,6 +604,15 @@ static void ocfs2_setup_csum_triggers(st
+ 	ot->sb = sb;
+ }
+ 
++void ocfs2_initialize_journal_triggers(struct super_block *sb,
++				       struct ocfs2_triggers triggers[])
++{
++	enum ocfs2_journal_trigger_type type;
++
++	for (type = OCFS2_JTR_DI; type < OCFS2_JOURNAL_TRIGGER_COUNT; type++)
++		ocfs2_setup_csum_triggers(sb, type, &triggers[type]);
++}
++
+ static int __ocfs2_journal_access(handle_t *handle,
+ 				  struct ocfs2_caching_info *ci,
+ 				  struct buffer_head *bh,
+@@ -706,101 +693,91 @@ static int __ocfs2_journal_access(handle
+ int ocfs2_journal_access_di(handle_t *handle, struct ocfs2_caching_info *ci,
+ 			    struct buffer_head *bh, int type)
+ {
+-	struct ocfs2_triggers di_triggers;
++	struct ocfs2_super *osb = OCFS2_SB(ocfs2_metadata_cache_get_super(ci));
+ 
+-	ocfs2_setup_csum_triggers(ocfs2_metadata_cache_get_super(ci),
+-				 OCFS2_JTR_DI, &di_triggers);
+-
+-	return __ocfs2_journal_access(handle, ci, bh, &di_triggers, type);
++	return __ocfs2_journal_access(handle, ci, bh,
++				      &osb->s_journal_triggers[OCFS2_JTR_DI],
++				      type);
+ }
+ 
+ int ocfs2_journal_access_eb(handle_t *handle, struct ocfs2_caching_info *ci,
+ 			    struct buffer_head *bh, int type)
+ {
+-	struct ocfs2_triggers eb_triggers;
++	struct ocfs2_super *osb = OCFS2_SB(ocfs2_metadata_cache_get_super(ci));
+ 
+-	ocfs2_setup_csum_triggers(ocfs2_metadata_cache_get_super(ci),
+-				 OCFS2_JTR_EB, &eb_triggers);
+-
+-	return __ocfs2_journal_access(handle, ci, bh, &eb_triggers, type);
++	return __ocfs2_journal_access(handle, ci, bh,
++				      &osb->s_journal_triggers[OCFS2_JTR_EB],
++				      type);
+ }
+ 
+ int ocfs2_journal_access_rb(handle_t *handle, struct ocfs2_caching_info *ci,
+ 			    struct buffer_head *bh, int type)
+ {
+-	struct ocfs2_triggers rb_triggers;
+-
+-	ocfs2_setup_csum_triggers(ocfs2_metadata_cache_get_super(ci),
+-				 OCFS2_JTR_RB, &rb_triggers);
++	struct ocfs2_super *osb = OCFS2_SB(ocfs2_metadata_cache_get_super(ci));
+ 
+-	return __ocfs2_journal_access(handle, ci, bh, &rb_triggers,
++	return __ocfs2_journal_access(handle, ci, bh,
++				      &osb->s_journal_triggers[OCFS2_JTR_RB],
+ 				      type);
+ }
+ 
+ int ocfs2_journal_access_gd(handle_t *handle, struct ocfs2_caching_info *ci,
+ 			    struct buffer_head *bh, int type)
+ {
+-	struct ocfs2_triggers gd_triggers;
++	struct ocfs2_super *osb = OCFS2_SB(ocfs2_metadata_cache_get_super(ci));
+ 
+-	ocfs2_setup_csum_triggers(ocfs2_metadata_cache_get_super(ci),
+-				 OCFS2_JTR_GD, &gd_triggers);
+-
+-	return __ocfs2_journal_access(handle, ci, bh, &gd_triggers, type);
++	return __ocfs2_journal_access(handle, ci, bh,
++				     &osb->s_journal_triggers[OCFS2_JTR_GD],
++				     type);
+ }
+ 
+ int ocfs2_journal_access_db(handle_t *handle, struct ocfs2_caching_info *ci,
+ 			    struct buffer_head *bh, int type)
+ {
+-	struct ocfs2_triggers db_triggers;
+-
+-	ocfs2_setup_csum_triggers(ocfs2_metadata_cache_get_super(ci),
+-				 OCFS2_JTR_DB, &db_triggers);
++	struct ocfs2_super *osb = OCFS2_SB(ocfs2_metadata_cache_get_super(ci));
+ 
+-	return __ocfs2_journal_access(handle, ci, bh, &db_triggers, type);
++	return __ocfs2_journal_access(handle, ci, bh,
++				     &osb->s_journal_triggers[OCFS2_JTR_DB],
++				     type);
+ }
+ 
+ int ocfs2_journal_access_xb(handle_t *handle, struct ocfs2_caching_info *ci,
+ 			    struct buffer_head *bh, int type)
+ {
+-	struct ocfs2_triggers xb_triggers;
++	struct ocfs2_super *osb = OCFS2_SB(ocfs2_metadata_cache_get_super(ci));
+ 
+-	ocfs2_setup_csum_triggers(ocfs2_metadata_cache_get_super(ci),
+-				 OCFS2_JTR_XB, &xb_triggers);
+-
+-	return __ocfs2_journal_access(handle, ci, bh, &xb_triggers, type);
++	return __ocfs2_journal_access(handle, ci, bh,
++				     &osb->s_journal_triggers[OCFS2_JTR_XB],
++				     type);
+ }
+ 
+ int ocfs2_journal_access_dq(handle_t *handle, struct ocfs2_caching_info *ci,
+ 			    struct buffer_head *bh, int type)
+ {
+-	struct ocfs2_triggers dq_triggers;
+-
+-	ocfs2_setup_csum_triggers(ocfs2_metadata_cache_get_super(ci),
+-				 OCFS2_JTR_DQ, &dq_triggers);
++	struct ocfs2_super *osb = OCFS2_SB(ocfs2_metadata_cache_get_super(ci));
+ 
+-	return __ocfs2_journal_access(handle, ci, bh, &dq_triggers, type);
++	return __ocfs2_journal_access(handle, ci, bh,
++				     &osb->s_journal_triggers[OCFS2_JTR_DQ],
++				     type);
+ }
+ 
+ int ocfs2_journal_access_dr(handle_t *handle, struct ocfs2_caching_info *ci,
+ 			    struct buffer_head *bh, int type)
+ {
+-	struct ocfs2_triggers dr_triggers;
++	struct ocfs2_super *osb = OCFS2_SB(ocfs2_metadata_cache_get_super(ci));
+ 
+-	ocfs2_setup_csum_triggers(ocfs2_metadata_cache_get_super(ci),
+-				 OCFS2_JTR_DR, &dr_triggers);
+-
+-	return __ocfs2_journal_access(handle, ci, bh, &dr_triggers, type);
++	return __ocfs2_journal_access(handle, ci, bh,
++				     &osb->s_journal_triggers[OCFS2_JTR_DR],
++				     type);
+ }
+ 
+ int ocfs2_journal_access_dl(handle_t *handle, struct ocfs2_caching_info *ci,
+ 			    struct buffer_head *bh, int type)
+ {
+-	struct ocfs2_triggers dl_triggers;
+-
+-	ocfs2_setup_csum_triggers(ocfs2_metadata_cache_get_super(ci),
+-				 OCFS2_JTR_DL, &dl_triggers);
++	struct ocfs2_super *osb = OCFS2_SB(ocfs2_metadata_cache_get_super(ci));
+ 
+-	return __ocfs2_journal_access(handle, ci, bh, &dl_triggers, type);
++	return __ocfs2_journal_access(handle, ci, bh,
++				     &osb->s_journal_triggers[OCFS2_JTR_DL],
++				     type);
+ }
+ 
+ int ocfs2_journal_access(handle_t *handle, struct ocfs2_caching_info *ci,
+--- a/fs/ocfs2/ocfs2.h~ocfs2-fix-null-pointer-dereference-in-ocfs2_abort_trigger-v2
++++ a/fs/ocfs2/ocfs2.h
+@@ -284,6 +284,30 @@ enum ocfs2_mount_options
+ #define OCFS2_OSB_ERROR_FS	0x0004
+ #define OCFS2_DEFAULT_ATIME_QUANTUM	60
+ 
++struct ocfs2_triggers {
++	struct jbd2_buffer_trigger_type	ot_triggers;
++	int				ot_offset;
++	struct super_block		*sb;
++};
++
++enum ocfs2_journal_trigger_type {
++	OCFS2_JTR_DI,
++	OCFS2_JTR_EB,
++	OCFS2_JTR_RB,
++	OCFS2_JTR_GD,
++	OCFS2_JTR_DB,
++	OCFS2_JTR_XB,
++	OCFS2_JTR_DQ,
++	OCFS2_JTR_DR,
++	OCFS2_JTR_DL,
++	OCFS2_JTR_NONE  /* This must be the last entry */
++};
++
++#define OCFS2_JOURNAL_TRIGGER_COUNT OCFS2_JTR_NONE
++
++void ocfs2_initialize_journal_triggers(struct super_block *sb,
++				       struct ocfs2_triggers triggers[]);
++
+ struct ocfs2_journal;
+ struct ocfs2_slot_info;
+ struct ocfs2_recovery_map;
+@@ -351,6 +375,9 @@ struct ocfs2_super
+ 	struct ocfs2_journal *journal;
+ 	unsigned long osb_commit_interval;
+ 
++	/* Journal triggers for checksum */
++	struct ocfs2_triggers s_journal_triggers[OCFS2_JOURNAL_TRIGGER_COUNT];
++
+ 	struct delayed_work		la_enable_wq;
+ 
+ 	/*
+--- a/fs/ocfs2/super.c~ocfs2-fix-null-pointer-dereference-in-ocfs2_abort_trigger-v2
++++ a/fs/ocfs2/super.c
+@@ -1075,9 +1075,11 @@ static int ocfs2_fill_super(struct super
+ 	debugfs_create_file("fs_state", S_IFREG|S_IRUSR, osb->osb_debug_root,
+ 			    osb, &ocfs2_osb_debug_fops);
+ 
+-	if (ocfs2_meta_ecc(osb))
++	if (ocfs2_meta_ecc(osb)) {
++		ocfs2_initialize_journal_triggers(sb, osb->s_journal_triggers);
+ 		ocfs2_blockcheck_stats_debugfs_install( &osb->osb_ecc_stats,
+ 							osb->osb_debug_root);
++	}
+ 
+ 	status = ocfs2_mount_volume(sb);
+ 	if (status < 0)
+_
+
+Patches currently in -mm which might be from joseph.qi@linux.alibaba.com are
+
+ocfs2-fix-null-pointer-dereference-in-ocfs2_journal_dirty.patch
+ocfs2-fix-null-pointer-dereference-in-ocfs2_abort_trigger.patch
+
 
