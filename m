@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-48676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258698FEA04
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AECA8FEDC0
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A63288018
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE720283C57
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B854B1974F2;
-	Thu,  6 Jun 2024 14:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E302D1BD4E0;
+	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6WcxOVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ2k9iEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779F919D09B;
-	Thu,  6 Jun 2024 14:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17E31BD4FB;
+	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683092; cv=none; b=ArCJ2/7r7Bc6MZlDdkshSwuTrVqwtCG+AlUBu7iPpco6K6xwju3jJfOt/IRC14phcZQeV18jOrCbtMWyX/j0mt7nuDHgiVCqrsCTNFQeT3V3R3/mMjbA5GA/YJrWO4UhsAHmqHHXfo6X5aoszGFrCSrRyGg23TxDF5ZqoVuB3d8=
+	t=1717683521; cv=none; b=nveTA5H72JVU2OSDRXoudY68+Jm2t8/p6xDaDQpGUP/6CGBdK9wjnSRjh9XMd23dFBZ5kwTmjh0QjqNC6PQCR9C+nUSxu10YRNuBB6LbktTyXkP2CofKUMAnRppF0v0vYv8X6fE5Vn1EHk9IlU+9xfIwtR+9GEESoUFx5VEFMpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683092; c=relaxed/simple;
-	bh=DVwEGmtqJbxKTm/eM5Cq9rE6WlA8C4QY6Gaka2t8vs4=;
+	s=arc-20240116; t=1717683521; c=relaxed/simple;
+	bh=+xEf3WcETjUq4Hk3EL555e9tQbRWmLHD8jTFVKm3sao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWYTFXQb5uh5UV/aLYRP6pBgPCLRhzeAk0FJBPeVmLgkBa89HYiDyj4Iq5RztWczJzCvLrN/zlFhYC+03XSmZDCEWSu1tfaX7h0YY9ICdApKLmhEl01SaU+bI6c7G9CRr9OLvUR4b/Msay1O7w0J1kX1uWItT5Z6ZfcM5uaWX/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6WcxOVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57184C32781;
-	Thu,  6 Jun 2024 14:11:32 +0000 (UTC)
+	 MIME-Version; b=H+UmFO6sbrXd2qVsW+wTuNShLUCCWCZh6FMXrD9qI17lYKe6Xx6o6lpqFvLzt1ZN7JMCFHIs1gpcFA+A4MYf0Oald69YR1eaZseXOfEKThN3i8gphsZgakIjN3YElmE62He95TjEpExw0aP7mJPQpQHwtSZmI6389X8z3Y3ZBb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ2k9iEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CEFC32781;
+	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683092;
-	bh=DVwEGmtqJbxKTm/eM5Cq9rE6WlA8C4QY6Gaka2t8vs4=;
+	s=korg; t=1717683521;
+	bh=+xEf3WcETjUq4Hk3EL555e9tQbRWmLHD8jTFVKm3sao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C6WcxOVJ8Ml8Ojxez1KOzdQowdaH1DZTCka4DA54nPBgc2jhII6wcutPfxx9uI9iA
-	 zZau+fi9iV7f1vlgwFCsWrkK4t3jgsZ2O7u1WcrcEr3aAxGOfO5Hf15+Vw52O75LYx
-	 EXgncVwbVtW4JlIF8VGLnatWxZc82T6vcStq36+A=
+	b=HQ2k9iEnNly4Y3ARPN81MUYHt6uj5Bnd7fXmfNKuK3T6CFDi7MpG3CeFWQlx8opZJ
+	 8WqBUpoLymVVAcyZ1PyBwSc1sbVX2aDtyp2OLiGKr6d7hbA7rUYVk9OEkWAVIApV4+
+	 c9eZSF3GnrzcF0k5A9YVQrJ89tk1nJDu6lRcPtf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Ruehl <chris.ruehl@gtsys.com.hk>,
-	Guenter Roeck <linux@roeck-us.net>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Yue Sun <samsun1006219@gmail.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 362/374] hwmon: (shtc1) Fix property misspelling
-Date: Thu,  6 Jun 2024 16:05:41 +0200
-Message-ID: <20240606131704.008980534@linuxfoundation.org>
+Subject: [PATCH 6.1 413/473] tcp: Fix shift-out-of-bounds in dctcp_update_alpha().
+Date: Thu,  6 Jun 2024 16:05:42 +0200
+Message-ID: <20240606131713.446237225@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +66,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 52a2c70c3ec555e670a34dd1ab958986451d2dd2 ]
+[ Upstream commit 3ebc46ca8675de6378e3f8f40768e180bb8afa66 ]
 
-The property name is "sensirion,low-precision", not
-"sensicon,low-precision".
+In dctcp_update_alpha(), we use a module parameter dctcp_shift_g
+as follows:
 
-Cc: Chris Ruehl <chris.ruehl@gtsys.com.hk>
-Fixes: be7373b60df5 ("hwmon: shtc1: add support for device tree bindings")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+  alpha -= min_not_zero(alpha, alpha >> dctcp_shift_g);
+  ...
+  delivered_ce <<= (10 - dctcp_shift_g);
+
+It seems syzkaller started fuzzing module parameters and triggered
+shift-out-of-bounds [0] by setting 100 to dctcp_shift_g:
+
+  memcpy((void*)0x20000080,
+         "/sys/module/tcp_dctcp/parameters/dctcp_shift_g\000", 47);
+  res = syscall(__NR_openat, /*fd=*/0xffffffffffffff9cul, /*file=*/0x20000080ul,
+                /*flags=*/2ul, /*mode=*/0ul);
+  memcpy((void*)0x20000000, "100\000", 4);
+  syscall(__NR_write, /*fd=*/r[0], /*val=*/0x20000000ul, /*len=*/4ul);
+
+Let's limit the max value of dctcp_shift_g by param_set_uint_minmax().
+
+With this patch:
+
+  # echo 10 > /sys/module/tcp_dctcp/parameters/dctcp_shift_g
+  # cat /sys/module/tcp_dctcp/parameters/dctcp_shift_g
+  10
+  # echo 11 > /sys/module/tcp_dctcp/parameters/dctcp_shift_g
+  -bash: echo: write error: Invalid argument
+
+[0]:
+UBSAN: shift-out-of-bounds in net/ipv4/tcp_dctcp.c:143:12
+shift exponent 100 is too large for 32-bit type 'u32' (aka 'unsigned int')
+CPU: 0 PID: 8083 Comm: syz-executor345 Not tainted 6.9.0-05151-g1b294a1f3561 #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x201/0x300 lib/dump_stack.c:114
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_shift_out_of_bounds+0x346/0x3a0 lib/ubsan.c:468
+ dctcp_update_alpha+0x540/0x570 net/ipv4/tcp_dctcp.c:143
+ tcp_in_ack_event net/ipv4/tcp_input.c:3802 [inline]
+ tcp_ack+0x17b1/0x3bc0 net/ipv4/tcp_input.c:3948
+ tcp_rcv_state_process+0x57a/0x2290 net/ipv4/tcp_input.c:6711
+ tcp_v4_do_rcv+0x764/0xc40 net/ipv4/tcp_ipv4.c:1937
+ sk_backlog_rcv include/net/sock.h:1106 [inline]
+ __release_sock+0x20f/0x350 net/core/sock.c:2983
+ release_sock+0x61/0x1f0 net/core/sock.c:3549
+ mptcp_subflow_shutdown+0x3d0/0x620 net/mptcp/protocol.c:2907
+ mptcp_check_send_data_fin+0x225/0x410 net/mptcp/protocol.c:2976
+ __mptcp_close+0x238/0xad0 net/mptcp/protocol.c:3072
+ mptcp_close+0x2a/0x1a0 net/mptcp/protocol.c:3127
+ inet_release+0x190/0x1f0 net/ipv4/af_inet.c:437
+ __sock_release net/socket.c:659 [inline]
+ sock_close+0xc0/0x240 net/socket.c:1421
+ __fput+0x41b/0x890 fs/file_table.c:422
+ task_work_run+0x23b/0x300 kernel/task_work.c:180
+ exit_task_work include/linux/task_work.h:38 [inline]
+ do_exit+0x9c8/0x2540 kernel/exit.c:878
+ do_group_exit+0x201/0x2b0 kernel/exit.c:1027
+ __do_sys_exit_group kernel/exit.c:1038 [inline]
+ __se_sys_exit_group kernel/exit.c:1036 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1036
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xe4/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x67/0x6f
+RIP: 0033:0x7f6c2b5005b6
+Code: Unable to access opcode bytes at 0x7f6c2b50058c.
+RSP: 002b:00007ffe883eb948 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 00007f6c2b5862f0 RCX: 00007f6c2b5005b6
+RDX: 0000000000000001 RSI: 000000000000003c RDI: 0000000000000001
+RBP: 0000000000000001 R08: 00000000000000e7 R09: ffffffffffffffc0
+R10: 0000000000000006 R11: 0000000000000246 R12: 00007f6c2b5862f0
+R13: 0000000000000001 R14: 0000000000000000 R15: 0000000000000001
+ </TASK>
+
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Reported-by: Yue Sun <samsun1006219@gmail.com>
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAEkJfYNJM=cw-8x7_Vmj1J6uYVCWMbbvD=EFmDPVBGpTsqOxEA@mail.gmail.com/
+Fixes: e3118e8359bb ("net: tcp: add DCTCP congestion control algorithm")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240517091626.32772-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/shtc1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_dctcp.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/shtc1.c b/drivers/hwmon/shtc1.c
-index 1f96e94967ee8..439dd3dba5fc8 100644
---- a/drivers/hwmon/shtc1.c
-+++ b/drivers/hwmon/shtc1.c
-@@ -238,7 +238,7 @@ static int shtc1_probe(struct i2c_client *client)
+diff --git a/net/ipv4/tcp_dctcp.c b/net/ipv4/tcp_dctcp.c
+index 2a6c0dd665a4c..863aab1860556 100644
+--- a/net/ipv4/tcp_dctcp.c
++++ b/net/ipv4/tcp_dctcp.c
+@@ -57,7 +57,18 @@ struct dctcp {
+ };
  
- 	if (np) {
- 		data->setup.blocking_io = of_property_read_bool(np, "sensirion,blocking-io");
--		data->setup.high_precision = !of_property_read_bool(np, "sensicon,low-precision");
-+		data->setup.high_precision = !of_property_read_bool(np, "sensirion,low-precision");
- 	} else {
- 		if (client->dev.platform_data)
- 			data->setup = *(struct shtc1_platform_data *)dev->platform_data;
+ static unsigned int dctcp_shift_g __read_mostly = 4; /* g = 1/2^4 */
+-module_param(dctcp_shift_g, uint, 0644);
++
++static int dctcp_shift_g_set(const char *val, const struct kernel_param *kp)
++{
++	return param_set_uint_minmax(val, kp, 0, 10);
++}
++
++static const struct kernel_param_ops dctcp_shift_g_ops = {
++	.set = dctcp_shift_g_set,
++	.get = param_get_uint,
++};
++
++module_param_cb(dctcp_shift_g, &dctcp_shift_g_ops, &dctcp_shift_g, 0644);
+ MODULE_PARM_DESC(dctcp_shift_g, "parameter g for updating dctcp_alpha");
+ 
+ static unsigned int dctcp_alpha_on_init __read_mostly = DCTCP_MAX_ALPHA;
 -- 
 2.43.0
 
