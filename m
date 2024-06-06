@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-48533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEB138FE968
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885568FECA4
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12E4F1F23D68
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34F15287014
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCA619A2B3;
-	Thu,  6 Jun 2024 14:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84A21B1506;
+	Thu,  6 Jun 2024 14:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF92vaJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSq4x2hZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF7119A2A7;
-	Thu,  6 Jun 2024 14:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656BA1B1502;
+	Thu,  6 Jun 2024 14:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683016; cv=none; b=DDBITisMsv4g0NjUmNz1jyUhwnD2ZYB0LZU5B4wK3evuTFUyEisHxDBZ7bwa+YfbKcDLrlEPkk99FfhYDbDVla4jRG0L0mX52Owm2O8qrfQHksjvMghXoLyr9OJqc3oRHUt62byFy6cBGl+M9ynkEnDSn0DX4vVqLEF2hohjjtY=
+	t=1717683392; cv=none; b=G/T1OiZlbSKTMtsdJXb4line25YngnOHCqxdoH/dVwmd2+TLi3NH1vH7PyRDAsykel6QgO3U7/01FzHV/uXOd1SYI1rE+0NoiXglcgE28fgjjVSCp6D1LxmMpvSoP4UgpnkBJBHTQETM78AKWPj5zPibW3iPVJz75K97sD/YCvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683016; c=relaxed/simple;
-	bh=GkllS0O51hHRP7YI9PqwSTia7AsI13fENTq/cJJX6v8=;
+	s=arc-20240116; t=1717683392; c=relaxed/simple;
+	bh=45UbRsISMaV09RMC3+Xz/djimmGW02z7FgkhMU+O8io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8H1z3RXhOmgicCB8D58L2xD2p4aT1496Me92q6SHZCCksOf6R9CNkt7swgu5aAQAv51eBCxHQBlSJMlEgPcTBwkBE7wYpNfV8PnyaktW8moKeTmc6tUddjNX90S7d+s6tVk0xWBj1SZgPHbeY8EfDmRRfwzpe5kLN6jBaSZUdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF92vaJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFC2C32781;
-	Thu,  6 Jun 2024 14:10:16 +0000 (UTC)
+	 MIME-Version; b=swfQxNnuxG6ZbHxlQQUbygSpt//cStl8JzvmA9E60aT/KYh7EpAJKq5QFmCv3h4nV+/4qc+LvMdHiRbVf7Nb6edLWSxjED/NLAECkqNPZnsDTfjvMpu+478O9qGw9it4X3F254Ax7i9r+dpLjRE1F8aCYBqyG8k6je3JliZaSOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSq4x2hZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46CDCC32782;
+	Thu,  6 Jun 2024 14:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683016;
-	bh=GkllS0O51hHRP7YI9PqwSTia7AsI13fENTq/cJJX6v8=;
+	s=korg; t=1717683392;
+	bh=45UbRsISMaV09RMC3+Xz/djimmGW02z7FgkhMU+O8io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pF92vaJkOGI3AGTyv7757zjqIckcpm1Rcf0sXcmgAonF6yYboTmzLLVDf6hgO0pde
-	 EvVk4+4+HdXiebJ9ihT+lOHdSLIl8pBfB+8Y01/o8LH7hVRVT9n/DnxNtkHFdLM3je
-	 RmQtCYQSZO65eJEd7BvNSfRw1vWc/eJa+bgjRqKg=
+	b=qSq4x2hZ//VPPW9R7Ptuk5nRUWYS6YIuPJ5dv3nzrYvJsLLXR5K2s3Lfvr99NSIQG
+	 2y84Fn+cx9uRAv+i7w5r+4tke6DyaW4y20KMCETptp4hDUiOH1jGThV65/jdkUTzqF
+	 eVzNQTdt9DqTaBdsEIVBI3Butfjifr+JuzvuoQyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Vitalii Bursov <vitaly@bursov.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Valentin Schneider <vschneid@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 226/374] blk-cgroup: fix list corruption from reorder of WRITE ->lqueued
+Subject: [PATCH 6.1 276/473] sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level
 Date: Thu,  6 Jun 2024 16:03:25 +0200
-Message-ID: <20240606131659.373989414@linuxfoundation.org>
+Message-ID: <20240606131709.035688387@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Vitalii Bursov <vitaly@bursov.com>
 
-[ Upstream commit d0aac2363549e12cc79b8e285f13d5a9f42fd08e ]
+[ Upstream commit a1fd0b9d751f840df23ef0e75b691fc00cfd4743 ]
 
-__blkcg_rstat_flush() can be run anytime, especially when blk_cgroup_bio_start
-is being executed.
+Change relax_domain_level checks so that it would be possible
+to include or exclude all domains from newidle balancing.
 
-If WRITE of `->lqueued` is re-ordered with READ of 'bisc->lnode.next' in
-the loop of __blkcg_rstat_flush(), `next_bisc` can be assigned with one
-stat instance being added in blk_cgroup_bio_start(), then the local
-list in __blkcg_rstat_flush() could be corrupted.
+This matches the behavior described in the documentation:
 
-Fix the issue by adding one barrier.
+  -1   no request. use system default or follow request of others.
+   0   no search.
+   1   search siblings (hyperthreads in a core).
 
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240515013157.443672-3-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+"2" enables levels 0 and 1, level_max excludes the last (level_max)
+level, and level_max+1 includes all levels.
+
+Fixes: 1d3504fcf560 ("sched, cpuset: customize sched domains, core")
+Signed-off-by: Vitalii Bursov <vitaly@bursov.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Link: https://lore.kernel.org/r/bd6de28e80073c79466ec6401cdeae78f0d4423d.1714488502.git.vitaly@bursov.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-cgroup.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ kernel/cgroup/cpuset.c  | 2 +-
+ kernel/sched/topology.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 86752b1652b5b..b36ba1d40ba1d 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1036,6 +1036,16 @@ static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu)
- 		struct blkg_iostat cur;
- 		unsigned int seq;
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 79e6a5d4c29a1..01f5a019e0f54 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2185,7 +2185,7 @@ bool current_cpuset_is_being_rebound(void)
+ static int update_relax_domain_level(struct cpuset *cs, s64 val)
+ {
+ #ifdef CONFIG_SMP
+-	if (val < -1 || val >= sched_domain_level_max)
++	if (val < -1 || val > sched_domain_level_max + 1)
+ 		return -EINVAL;
+ #endif
  
-+		/*
-+		 * Order assignment of `next_bisc` from `bisc->lnode.next` in
-+		 * llist_for_each_entry_safe and clearing `bisc->lqueued` for
-+		 * avoiding to assign `next_bisc` with new next pointer added
-+		 * in blk_cgroup_bio_start() in case of re-ordering.
-+		 *
-+		 * The pair barrier is implied in llist_add() in blk_cgroup_bio_start().
-+		 */
-+		smp_mb();
-+
- 		WRITE_ONCE(bisc->lqueued, false);
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 8739c2a5a54ea..d404b5d2d842e 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1436,7 +1436,7 @@ static void set_domain_attribute(struct sched_domain *sd,
+ 	} else
+ 		request = attr->relax_domain_level;
  
- 		/* fetch the current per-cpu values */
+-	if (sd->level > request) {
++	if (sd->level >= request) {
+ 		/* Turn off idle balance on this domain: */
+ 		sd->flags &= ~(SD_BALANCE_WAKE|SD_BALANCE_NEWIDLE);
+ 	}
 -- 
 2.43.0
 
