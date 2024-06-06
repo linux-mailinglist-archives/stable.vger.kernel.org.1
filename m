@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-49600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771458FEDF9
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FA28FE92E
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BBB91F227C7
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CBEA1C25F53
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180EF19EEA2;
-	Thu,  6 Jun 2024 14:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3052119924E;
+	Thu,  6 Jun 2024 14:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4TYD6gT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDamwTA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AD719EEB3;
-	Thu,  6 Jun 2024 14:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C35197550;
+	Thu,  6 Jun 2024 14:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683546; cv=none; b=mLtcYsKOQpPW4frC5facDO40+2VfOBHafixAnUrXGNaVk5aBtE7olWGt1z+DGm5yRLqO41zsfM/6kLpLOj/YOLtURTz4OdFg0MhmrAqfnSEmFiBPG/SFLj4IoFr81lU1iaNMz2w8rMcofOG58vEHvhnheU43PnkCNrJe/+WRb4A=
+	t=1717682990; cv=none; b=FmLS4zlEsiybMN1RXfePivgMC3o9i46rYJQOPqEf8p6VKdSwLeXd1MgMC6wi3cS7vnlcXMJu4kxBVs8izZnk5/qx310byj2b8lRU8ORRkn7Kknd1NWml/dT7gxIjf0LzcSV4b4Eg1ZcAJmduChgsXAHPHJQmo9YcevJN0s01ZyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683546; c=relaxed/simple;
-	bh=Gxvhj/Te6+XYlovXdHhjx7c8V311ge2hIZITbqxMo6g=;
+	s=arc-20240116; t=1717682990; c=relaxed/simple;
+	bh=rJwXTpL2zM3/6N6/aMgSX8bljOzqKaIRAKYImDBiDTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SA5TfChhsxlOTc0fjfPSzx6B3xejEnrqjz21guTGBGYwAUWgSmhqKG5DNfqF0hkJTlYu+7tL4E1WIhT5+waPJS+9sAYq54we5IT2POvzOy/Og0fMLifl8uCNPpYXzIMo13yAQ0mVutKsNIy3hB9CQXxTIuWD7B+GAI/nwAY4pxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4TYD6gT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE61C2BD10;
-	Thu,  6 Jun 2024 14:19:06 +0000 (UTC)
+	 MIME-Version; b=ayB4hD0y1TA8k7fbITumjSjqrEHQvzS7ULZeh6z4Ioo8VKpj8rttuUOZA4e+ZY+aJMEo0SpF//14+vZX9PEHQuMS6gFb4KOSTl5rxP6H6olXfHIiMUmIVCRUTr23Asm5YwdAdRQFqFsYZSQmQe6kFyNybo360GwzwxO+/VJ1R9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDamwTA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24BBC32782;
+	Thu,  6 Jun 2024 14:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683546;
-	bh=Gxvhj/Te6+XYlovXdHhjx7c8V311ge2hIZITbqxMo6g=;
+	s=korg; t=1717682989;
+	bh=rJwXTpL2zM3/6N6/aMgSX8bljOzqKaIRAKYImDBiDTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4TYD6gThrIvbO5ZSABtqtr2PwulhGQvB6ePlDwQejxzWeZE0zeMrN8NpyzPRiQsj
-	 yVLrWYyCBx9zYItgFKMGDdQ4zYXCE+1m22mLXlzygHvjiA0Sxcs8shSHOi3jhPq1RL
-	 38mipm0JkQoCEwIr1KtMz2fISyBMMlVw95Y79hKg=
+	b=vDamwTA5NFC3wx9r+rggxSTaq+7hxhzKNNVM7c+DKrulEX0nt/QujsC/9FHagmNMM
+	 kt+cHZgNDHAbiatJrdIMy8LO/DoKdQVp0gherDErCD9W2Yxns3AFqi6NsMfsjPN9bq
+	 Ve4DrIvWCRHJtVPBsH3iYC4OPyRb16mSWItWpVE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 485/744] dt-bindings: phy: qcom,usb-snps-femto-v2: use correct fallback for sc8180x
-Date: Thu,  6 Jun 2024 16:02:37 +0200
-Message-ID: <20240606131748.018583963@linuxfoundation.org>
+Subject: [PATCH 6.9 179/374] string: Prepare to merge strscpy_kunit.c into string_kunit.c
+Date: Thu,  6 Jun 2024 16:02:38 +0200
+Message-ID: <20240606131657.874109744@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 960b3f023d3bda0efd6e573a0647227d1115d266 ]
+[ Upstream commit b03442f761aae4bbb093a281ad2205bc346188f5 ]
 
-The qcom,sc8180x-usb-hs-phy device uses qcom,usb-snps-hs-7nm-phy
-fallback. Correct the schema for this platform.
+In preparation for moving the strscpy_kunit.c tests into string_kunit.c,
+rename "tc" to "strscpy_check" for better readability.
 
-Fixes: 9160fb7c39a1 ("dt-bindings: phy: qcom,usb-snps-femto-v2: use fallback compatibles")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-3-f1fd15c33fb3@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Tested-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+Link: https://lore.kernel.org/r/20240419140155.3028912-1-keescook@chromium.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Stable-dep-of: 5bb288c4abc2 ("scsi: mptfusion: Avoid possible run-time warning with long manufacturer strings")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/phy/qcom,usb-snps-femto-v2.yaml       | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ lib/strscpy_kunit.c | 51 +++++++++++++++++++++++----------------------
+ 1 file changed, 26 insertions(+), 25 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/phy/qcom,usb-snps-femto-v2.yaml b/Documentation/devicetree/bindings/phy/qcom,usb-snps-femto-v2.yaml
-index 0f200e3f97a9a..fce7f8a19e9c0 100644
---- a/Documentation/devicetree/bindings/phy/qcom,usb-snps-femto-v2.yaml
-+++ b/Documentation/devicetree/bindings/phy/qcom,usb-snps-femto-v2.yaml
-@@ -15,9 +15,6 @@ description: |
- properties:
-   compatible:
-     oneOf:
--      - enum:
--          - qcom,sc8180x-usb-hs-phy
--          - qcom,usb-snps-femto-v2-phy
-       - items:
-           - enum:
-               - qcom,sa8775p-usb-hs-phy
-@@ -26,6 +23,7 @@ properties:
-       - items:
-           - enum:
-               - qcom,sc7280-usb-hs-phy
-+              - qcom,sc8180x-usb-hs-phy
-               - qcom,sdx55-usb-hs-phy
-               - qcom,sdx65-usb-hs-phy
-               - qcom,sm6375-usb-hs-phy
+diff --git a/lib/strscpy_kunit.c b/lib/strscpy_kunit.c
+index a6b6344354ed5..b6d1d93a88832 100644
+--- a/lib/strscpy_kunit.c
++++ b/lib/strscpy_kunit.c
+@@ -8,22 +8,23 @@
+ #include <kunit/test.h>
+ #include <linux/string.h>
+ 
+-/*
+- * tc() - Run a specific test case.
++/**
++ * strscpy_check() - Run a specific test case.
++ * @test: KUnit test context pointer
+  * @src: Source string, argument to strscpy_pad()
+  * @count: Size of destination buffer, argument to strscpy_pad()
+  * @expected: Expected return value from call to strscpy_pad()
+- * @terminator: 1 if there should be a terminating null byte 0 otherwise.
+  * @chars: Number of characters from the src string expected to be
+  *         written to the dst buffer.
++ * @terminator: 1 if there should be a terminating null byte 0 otherwise.
+  * @pad: Number of pad characters expected (in the tail of dst buffer).
+  *       (@pad does not include the null terminator byte.)
+  *
+  * Calls strscpy_pad() and verifies the return value and state of the
+  * destination buffer after the call returns.
+  */
+-static void tc(struct kunit *test, char *src, int count, int expected,
+-	       int chars, int terminator, int pad)
++static void strscpy_check(struct kunit *test, char *src, int count,
++			  int expected, int chars, int terminator, int pad)
+ {
+ 	int nr_bytes_poison;
+ 	int max_expected;
+@@ -79,12 +80,12 @@ static void tc(struct kunit *test, char *src, int count, int expected,
+ 	}
+ }
+ 
+-static void strscpy_test(struct kunit *test)
++static void test_strscpy(struct kunit *test)
+ {
+ 	char dest[8];
+ 
+ 	/*
+-	 * tc() uses a destination buffer of size 6 and needs at
++	 * strscpy_check() uses a destination buffer of size 6 and needs at
+ 	 * least 2 characters spare (one for null and one to check for
+ 	 * overflow).  This means we should only call tc() with
+ 	 * strings up to a maximum of 4 characters long and 'count'
+@@ -92,27 +93,27 @@ static void strscpy_test(struct kunit *test)
+ 	 * the buffer size in tc().
+ 	 */
+ 
+-	/* tc(test, src, count, expected, chars, terminator, pad) */
+-	tc(test, "a", 0, -E2BIG, 0, 0, 0);
+-	tc(test, "",  0, -E2BIG, 0, 0, 0);
++	/* strscpy_check(test, src, count, expected, chars, terminator, pad) */
++	strscpy_check(test, "a", 0, -E2BIG, 0, 0, 0);
++	strscpy_check(test, "",  0, -E2BIG, 0, 0, 0);
+ 
+-	tc(test, "a", 1, -E2BIG, 0, 1, 0);
+-	tc(test, "",  1, 0,	 0, 1, 0);
++	strscpy_check(test, "a", 1, -E2BIG, 0, 1, 0);
++	strscpy_check(test, "",  1, 0,	 0, 1, 0);
+ 
+-	tc(test, "ab", 2, -E2BIG, 1, 1, 0);
+-	tc(test, "a",  2, 1,	  1, 1, 0);
+-	tc(test, "",   2, 0,	  0, 1, 1);
++	strscpy_check(test, "ab", 2, -E2BIG, 1, 1, 0);
++	strscpy_check(test, "a",  2, 1,	  1, 1, 0);
++	strscpy_check(test, "",   2, 0,	  0, 1, 1);
+ 
+-	tc(test, "abc", 3, -E2BIG, 2, 1, 0);
+-	tc(test, "ab",  3, 2,	   2, 1, 0);
+-	tc(test, "a",   3, 1,	   1, 1, 1);
+-	tc(test, "",    3, 0,	   0, 1, 2);
++	strscpy_check(test, "abc", 3, -E2BIG, 2, 1, 0);
++	strscpy_check(test, "ab",  3, 2,	   2, 1, 0);
++	strscpy_check(test, "a",   3, 1,	   1, 1, 1);
++	strscpy_check(test, "",    3, 0,	   0, 1, 2);
+ 
+-	tc(test, "abcd", 4, -E2BIG, 3, 1, 0);
+-	tc(test, "abc",  4, 3,	    3, 1, 0);
+-	tc(test, "ab",   4, 2,	    2, 1, 1);
+-	tc(test, "a",    4, 1,	    1, 1, 2);
+-	tc(test, "",     4, 0,	    0, 1, 3);
++	strscpy_check(test, "abcd", 4, -E2BIG, 3, 1, 0);
++	strscpy_check(test, "abc",  4, 3,	    3, 1, 0);
++	strscpy_check(test, "ab",   4, 2,	    2, 1, 1);
++	strscpy_check(test, "a",    4, 1,	    1, 1, 2);
++	strscpy_check(test, "",     4, 0,	    0, 1, 3);
+ 
+ 	/* Compile-time-known source strings. */
+ 	KUNIT_EXPECT_EQ(test, strscpy(dest, "", ARRAY_SIZE(dest)), 0);
+@@ -127,7 +128,7 @@ static void strscpy_test(struct kunit *test)
+ }
+ 
+ static struct kunit_case strscpy_test_cases[] = {
+-	KUNIT_CASE(strscpy_test),
++	KUNIT_CASE(test_strscpy),
+ 	{}
+ };
+ 
 -- 
 2.43.0
 
