@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-48541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E297D8FE970
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:14:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5A98FECCC
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C88128813C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:14:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF2A9282FAA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A40197A91;
-	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D4719B5B1;
+	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0KzzzFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFDP1nf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39491196DA8;
-	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B461B29C8;
+	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683021; cv=none; b=XTzZ6oN7ZarDfizGfhVR1Dji6Hk1BU7+1VpF00UgShiZdQBIG2hjwnXW/TmycCp8yMVfpsHDKWU23ag3X3USz2GuaJ+ODz63DUaIK5Oy4d9yOqoEySeHxfn463d52vsXpGMgbbM3+pS17M9p6AI4vdHc2LE57Gpb6oZPPSh7Hj4=
+	t=1717683410; cv=none; b=TAoiRL8TZRrdIg+Ffviv8oaOsfJyjTQ09Lq5jw4AJCDxdmr+sZRhRIcO/78fv39JqWswJd8VR1HqX7JmpOs+HoAbe7eljokXj/MJCv+tB0Tz6DbKd6SFodFHaKXQD0GxK7H3khVng5FiUO8KdmifGDJoFk8BCQN0T107waldvgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683021; c=relaxed/simple;
-	bh=5AwBnkkR9j2/aX5Rt5fu+Atsut4cCSipkkmY2THQMGo=;
+	s=arc-20240116; t=1717683410; c=relaxed/simple;
+	bh=B2GYHS9eY3iJuovRbU+WY9AbqHlusL3gWMI+jxRXGbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuR1T3nGzeCLR6/psr7D3szC4k4PANrl5Yfrpfoga6UanHfWoZNH+gr+/5p74q/1Z6za1VAqEfchNvT1ArCOJ//XD1YE/gOqEf6RDhY/pHUWrO26+0LkrXLGVgWcZB1b//hgPDbFBC326LFQC5jNpNIGK7tnUCWgQLAGPM7Vapo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0KzzzFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156C7C32781;
-	Thu,  6 Jun 2024 14:10:21 +0000 (UTC)
+	 MIME-Version; b=oWYFA0ixlJWBXp/47IObF3Io3UQiy3R1yqX5upSm1X5X4LS2jzYKm2eiz0zeNt8wJT0it++6KgJGUJu+ncff9Y1ia4LVWnHQDVVPO88HNS/zNOOjqHeSln28LEI7uHQ6HJQxR0W7xynNUVu76gdRMciXw8wqxcEzF+6t46f6RKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFDP1nf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25944C2BD10;
+	Thu,  6 Jun 2024 14:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683021;
-	bh=5AwBnkkR9j2/aX5Rt5fu+Atsut4cCSipkkmY2THQMGo=;
+	s=korg; t=1717683410;
+	bh=B2GYHS9eY3iJuovRbU+WY9AbqHlusL3gWMI+jxRXGbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u0KzzzFQm8TUZZPRV6WAlA5mJjQHmDA945nH+nh/FdxBw+MgN8LutTelTGMZNf439
-	 PO7y80hQixeymAcQEe0hg0KM6qJhF2BDwA5RMx8SzsKwhE7pZzXo0ik8Yh1ighxNfD
-	 SupEu2O9FkSODLljMvvgjSsdgWX+C+qcoD/Rao14=
+	b=pFDP1nf/S6+u4cF+ccnxoyuhzMmkv+dZw0PTUwdjZR3CbgLJTIPob5fq7esBt3UD8
+	 3jmCn+oKZAHxgpiN6tgbUpqnvxp8B73KfvZH6h2jrCARbvkNtDoriUynjalHTtq4X2
+	 FOqa/7+bmzCoMAGMIcZRoHPRQjQOsIPstlVHnxrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi.grimberg@vastdata.com>,
-	Dan Aloni <dan.aloni@vastdata.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 242/374] rpcrdma: fix handling for RDMA_CM_EVENT_DEVICE_REMOVAL
-Date: Thu,  6 Jun 2024 16:03:41 +0200
-Message-ID: <20240606131659.926784211@linuxfoundation.org>
+Subject: [PATCH 6.1 293/473] greybus: arche-ctrl: move device table to its right location
+Date: Thu,  6 Jun 2024 16:03:42 +0200
+Message-ID: <20240606131709.564965645@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Aloni <dan.aloni@vastdata.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4836da219781ec510c4c0303df901aa643507a7a ]
+[ Upstream commit 6a0b8c0da8d8d418cde6894a104cf74e6098ddfa ]
 
-Under the scenario of IB device bonding, when bringing down one of the
-ports, or all ports, we saw xprtrdma entering a non-recoverable state
-where it is not even possible to complete the disconnect and shut it
-down the mount, requiring a reboot. Following debug, we saw that
-transport connect never ended after receiving the
-RDMA_CM_EVENT_DEVICE_REMOVAL callback.
+The arche-ctrl has two platform drivers and three of_device_id tables,
+but one table is only used for the the module loader, while the other
+two seem to be associated with their drivers.
 
-The DEVICE_REMOVAL callback is irrespective of whether the CM_ID is
-connected, and ESTABLISHED may not have happened. So need to work with
-each of these states accordingly.
+This leads to a W=1 warning when the driver is built-in:
 
-Fixes: 2acc5cae2923 ('xprtrdma: Prevent dereferencing r_xprt->rx_ep after it is freed')
-Cc: Sagi Grimberg <sagi.grimberg@vastdata.com>
-Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+drivers/staging/greybus/arche-platform.c:623:34: error: 'arche_combined_id' defined but not used [-Werror=unused-const-variable=]
+  623 | static const struct of_device_id arche_combined_id[] = {
+
+Drop the extra table and register both tables that are actually
+used as the ones for the module loader instead.
+
+Fixes: 7b62b61c752a ("greybus: arche-ctrl: Don't expose driver internals to arche-platform driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240403080702.3509288-18-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/verbs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/staging/greybus/arche-apb-ctrl.c | 1 +
+ drivers/staging/greybus/arche-platform.c | 9 +--------
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
-index 4f8d7efa469f0..432557a553e7e 100644
---- a/net/sunrpc/xprtrdma/verbs.c
-+++ b/net/sunrpc/xprtrdma/verbs.c
-@@ -244,7 +244,11 @@ rpcrdma_cm_event_handler(struct rdma_cm_id *id, struct rdma_cm_event *event)
- 	case RDMA_CM_EVENT_DEVICE_REMOVAL:
- 		pr_info("rpcrdma: removing device %s for %pISpc\n",
- 			ep->re_id->device->name, sap);
--		fallthrough;
-+		switch (xchg(&ep->re_connect_status, -ENODEV)) {
-+		case 0: goto wake_connect_worker;
-+		case 1: goto disconnected;
-+		}
-+		return 0;
- 	case RDMA_CM_EVENT_ADDR_CHANGE:
- 		ep->re_connect_status = -ENODEV;
- 		goto disconnected;
+diff --git a/drivers/staging/greybus/arche-apb-ctrl.c b/drivers/staging/greybus/arche-apb-ctrl.c
+index 45afa208d0044..4f9403f3d0cdd 100644
+--- a/drivers/staging/greybus/arche-apb-ctrl.c
++++ b/drivers/staging/greybus/arche-apb-ctrl.c
+@@ -468,6 +468,7 @@ static const struct of_device_id arche_apb_ctrl_of_match[] = {
+ 	{ .compatible = "usbffff,2", },
+ 	{ },
+ };
++MODULE_DEVICE_TABLE(of, arche_apb_ctrl_of_match);
+ 
+ static struct platform_driver arche_apb_ctrl_device_driver = {
+ 	.probe		= arche_apb_ctrl_probe,
+diff --git a/drivers/staging/greybus/arche-platform.c b/drivers/staging/greybus/arche-platform.c
+index fcbd5f71eff27..4850bc64d3fd7 100644
+--- a/drivers/staging/greybus/arche-platform.c
++++ b/drivers/staging/greybus/arche-platform.c
+@@ -620,14 +620,7 @@ static const struct of_device_id arche_platform_of_match[] = {
+ 	{ .compatible = "google,arche-platform", },
+ 	{ },
+ };
+-
+-static const struct of_device_id arche_combined_id[] = {
+-	/* Use PID/VID of SVC device */
+-	{ .compatible = "google,arche-platform", },
+-	{ .compatible = "usbffff,2", },
+-	{ },
+-};
+-MODULE_DEVICE_TABLE(of, arche_combined_id);
++MODULE_DEVICE_TABLE(of, arche_platform_of_match);
+ 
+ static struct platform_driver arche_platform_device_driver = {
+ 	.probe		= arche_platform_probe,
 -- 
 2.43.0
 
