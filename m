@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-48756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07D98FEA5F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:19:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E225C8FEC03
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7532B1F22366
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:19:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D64171C24443
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA61B19FA69;
-	Thu,  6 Jun 2024 14:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C608819AA74;
+	Thu,  6 Jun 2024 14:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AG//CEWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uU8EjUcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7983C19750E;
-	Thu,  6 Jun 2024 14:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8616119AA78;
+	Thu,  6 Jun 2024 14:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683132; cv=none; b=JBHC7Nelef8deU1YupOZO6jpaZsa5FM1rytmswCuaduKYydYdr0k1tlwG6q21XcM+oUbsC4TnJ6tFbJLRz+etwmITga01tFud4ucHxhXhyeqPyL3IMpFfb48kZyswW8Vtcvggsrq2ZDlUm0SuW0j+EzvpTo1PrQuhdGhx/8l1qI=
+	t=1717683320; cv=none; b=F1nozT7q2zuFf96wPRgYMZI6kqD6BHrptJQOl3ebu4y8RoM+B/IGTF0ePZKjdaeNNnl4GQUGUBZboxofidy99en5CMUf+AjH0DwAGBguVbFLkrAXJnZH17qKv7mGTdndxw+n2JRa+TW266jr4jRN4Z+S91/8ixQo9RjZ5jgwDO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683132; c=relaxed/simple;
-	bh=XCK++zJcWdGnoedSXfj8wi9ar+wOlyR/9DzIoIpCWIA=;
+	s=arc-20240116; t=1717683320; c=relaxed/simple;
+	bh=s98C1BIOCyNXNIVBvWBxpXfEPZHaZlGIL0jtPM2O54c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkWWW2p4hmDiTo9T2D+BvhnxJK0w9soAtjYCNNBvRsY3CGTzrV8/0+mR5WIRC5zrFWvemx+vH7uuWHgMKad4LKr5lAwfeLflDK+OCBt7hmugLKTh90kBBGXAV8PULA1NJ/ENxFGi8UNB9nfgCZa2Ccap4e01niu0mp4o6XKAFKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AG//CEWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D3EC2BD10;
-	Thu,  6 Jun 2024 14:12:12 +0000 (UTC)
+	 MIME-Version; b=jhpwFivUL3xm9t7R6B+aNsPqe0Ccd32WoAC04BBVuX8Gd3SmdrNhBwRUxaGjy2H6WcRk7I1LWhBa41uwwcv4HGDcz4Uc2D1EvUWL4vTuBFV7hlfRcULNEvTGOzXfJPdAV6HRTA2tokz6OsNfV8iufQaiudKzcdtLRdtloNU/Qzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uU8EjUcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D65C2BD10;
+	Thu,  6 Jun 2024 14:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683132;
-	bh=XCK++zJcWdGnoedSXfj8wi9ar+wOlyR/9DzIoIpCWIA=;
+	s=korg; t=1717683320;
+	bh=s98C1BIOCyNXNIVBvWBxpXfEPZHaZlGIL0jtPM2O54c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AG//CEWJ4AsZhPATQfGIRSssf8Lj1IGmgrRbTbSBcBdNkODzTM5o/dkoOpf0FmQ79
-	 yUfhEQzqggF5J9wkXk2TuRqeEWZn0qAIliBZl99yS/ug/vR5L5EFSFel6YUpgi+Jxi
-	 p0Yk+NA/zoj6DDcJU1Y5LLkwgesFf/Kb5NW0EZzo=
+	b=uU8EjUcKEyPrte3SSRhGJ2ZPNP7tJtmhi6KVvGwVMQ1I4pCt2C2VK13EXuCEN04JG
+	 /gTTJoRPiZnlIjdbjrhxwDssieaAmHgArmTkORCZPJiQxrBGRNRkTLEbE1jCLZKnkD
+	 0UxJDs5LNeOghKv3AK/VxH9vvgc87VSerdKW6x0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	j51569436@gmail.com,
-	Daniel Starke <daniel.starke@siemens.com>
-Subject: [PATCH 6.1 003/473] tty: n_gsm: fix possible out-of-bounds in gsm0_receive()
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 260/744] net: micrel: Fix receiving the timestamp in the frame for lan8841
 Date: Thu,  6 Jun 2024 15:58:52 +0200
-Message-ID: <20240606131659.920595506@linuxfoundation.org>
+Message-ID: <20240606131740.743319111@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Starke <daniel.starke@siemens.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-commit 47388e807f85948eefc403a8a5fdc5b406a65d5a upstream.
+[ Upstream commit aea27a92a41dae14843f92c79e9e42d8f570105c ]
 
-Assuming the following:
-- side A configures the n_gsm in basic option mode
-- side B sends the header of a basic option mode frame with data length 1
-- side A switches to advanced option mode
-- side B sends 2 data bytes which exceeds gsm->len
-  Reason: gsm->len is not used in advanced option mode.
-- side A switches to basic option mode
-- side B keeps sending until gsm0_receive() writes past gsm->buf
-  Reason: Neither gsm->state nor gsm->len have been reset after
-  reconfiguration.
+The blamed commit started to use the ptp workqueue to get the second
+part of the timestamp. And when the port was set down, then this
+workqueue is stopped. But if the config option NETWORK_PHY_TIMESTAMPING
+is not enabled, then the ptp_clock is not initialized so then it would
+crash when it would try to access the delayed work.
+So then basically by setting up and then down the port, it would crash.
+The fix consists in checking if the ptp_clock is initialized and only
+then cancel the delayed work.
 
-Fix this by changing gsm->count to gsm->len comparison from equal to less
-than. Also add upper limit checks against the constant MAX_MRU in
-gsm0_receive() and gsm1_receive() to harden against memory corruption of
-gsm->len and gsm->mru.
-
-All other checks remain as we still need to limit the data according to the
-user configuration and actual payload size.
-
-Reported-by: j51569436@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218708
-Tested-by: j51569436@gmail.com
-Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20240424054842.7741-1-daniel.starke@siemens.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cc7554954848 ("net: micrel: Change to receive timestamp in the frame for lan8841")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/phy/micrel.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -2325,7 +2325,10 @@ static void gsm0_receive(struct gsm_mux
- 		break;
- 	case GSM_DATA:		/* Data */
- 		gsm->buf[gsm->count++] = c;
--		if (gsm->count == gsm->len) {
-+		if (gsm->count >= MAX_MRU) {
-+			gsm->bad_size++;
-+			gsm->state = GSM_SEARCH;
-+		} else if (gsm->count >= gsm->len) {
- 			/* Calculate final FCS for UI frames over all data */
- 			if ((gsm->control & ~PF) != UIH) {
- 				gsm->fcs = gsm_fcs_add_block(gsm->fcs, gsm->buf,
-@@ -2438,7 +2441,7 @@ static void gsm1_receive(struct gsm_mux
- 		gsm->state = GSM_DATA;
- 		break;
- 	case GSM_DATA:		/* Data */
--		if (gsm->count > gsm->mru) {	/* Allow one for the FCS */
-+		if (gsm->count > gsm->mru || gsm->count > MAX_MRU) {	/* Allow one for the FCS */
- 			gsm->state = GSM_OVERRUN;
- 			gsm->bad_size++;
- 		} else
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index cbd98ea4a84af..538a5f59d7a73 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -4612,7 +4612,8 @@ static int lan8841_suspend(struct phy_device *phydev)
+ 	struct kszphy_priv *priv = phydev->priv;
+ 	struct kszphy_ptp_priv *ptp_priv = &priv->ptp_priv;
+ 
+-	ptp_cancel_worker_sync(ptp_priv->ptp_clock);
++	if (ptp_priv->ptp_clock)
++		ptp_cancel_worker_sync(ptp_priv->ptp_clock);
+ 
+ 	return genphy_suspend(phydev);
+ }
+-- 
+2.43.0
+
 
 
 
