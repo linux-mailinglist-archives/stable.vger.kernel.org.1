@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C84D8FED50
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D10B8FEBB2
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352391C22A5E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F6941C250E9
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BC21BA867;
-	Thu,  6 Jun 2024 14:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6031ABCB4;
+	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wl2ZmFn+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkERkC7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFA51BA860;
-	Thu,  6 Jun 2024 14:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C575197A8F;
+	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683473; cv=none; b=ZkaF/OTUS5Z6zwdKgqXfqkdzrmYAe8CDMfC8su4jWTs+l7mTJMr4F3vHwKaNloX3WsUMQX4b1a01FjIaZjTLfL3thAOmY9N9ZxvidfVg69kuHUqnhynMLsN3RJ4mfpYtNKAt+1GAmzQXCFW75tWOYkFuQU0cZJZhyLqtw9JCZqY=
+	t=1717683283; cv=none; b=HJWWlQF5po+fl3Aesg/9WSM8kI9RTvCYUp0sSpprrpQkh7GQ04ZAsQMmDvWMNR3ycLC0rjD6Z8hmIpUs1BCnjG04eTe6yIRgzeY6UCE9DvgryfIFjNVibFdne6xmtiC/7dwVHs+GqiQ7ssNv3cXZ+i+XGBMXdEZZDLmqLjxdDKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683473; c=relaxed/simple;
-	bh=/4ThQOyO2gBJdQVIhzCOJO5MDISBjrUjsHOPx0FB0HI=;
+	s=arc-20240116; t=1717683283; c=relaxed/simple;
+	bh=aLHlcXT1K6KMsiQJA1+7P400xZkXn9uBzP2zTq3M9Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B96rnPj/b7CiGXiFxmEKezvltu4wj7LW5Z6HPsTYsrNyDov13eefo8+9AWApV+ehPkcY43bRYMChtA1lX64ElnN4QKKhrBhd/f/rpw3cK+xezghIGAnpqXXklqlpmJSQJVo56bsJvMGR2nKxNutALWwoZw/TAjlzmP/cVJ/aZSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wl2ZmFn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20954C2BD10;
-	Thu,  6 Jun 2024 14:17:53 +0000 (UTC)
+	 MIME-Version; b=b1JL9k5Z8p0eT4GueFeCQ5MWFPb463hMGywGvRnVQlp1oYKd5GOc3nQWAANliEkanBaTBSrd6yp2s9KXW85uI5opyWdDVc7uPK2D1kNSSLcnFhp+ojCNwNcGrIZ4FuJjp1OnrIPvOtSF4cW1qhyibLrcYaY3qVMMXjNbW0QN2Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkERkC7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429BEC32781;
+	Thu,  6 Jun 2024 14:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683473;
-	bh=/4ThQOyO2gBJdQVIhzCOJO5MDISBjrUjsHOPx0FB0HI=;
+	s=korg; t=1717683283;
+	bh=aLHlcXT1K6KMsiQJA1+7P400xZkXn9uBzP2zTq3M9Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wl2ZmFn+LEI9MLdr2/gYfOBaP0LkVq7nj9v5j5Fx4eMVhLKaCtoXkz9qhLrBL3iJ6
-	 DtLYJhx2y3wHFmoCaiBU1f7ffBOdMPuqqo1qtYjgKYBRBNsi/X0Rl0o9hrVVpV445J
-	 Ls/00NXzDKdnPKXyVew6HEjJNTGBCjn0gh1Y6jYs=
+	b=fkERkC7OoYwfm7piH1WMKDLMsi7lSv52TiUTDRmney1q8ygRB5hdV0KqAF4ZOPm+4
+	 7f8nF3HxeqS8dVVN3W9BsVB9fsUpX0x/ApIt4d7qfu/cQRc3+61aO0ET87BoPcT8LZ
+	 KYXkN+2tnDhbfGTeBjrDDoQ/KzVFdZZmfsel+UUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 416/744] serial: max3100: Update uart_driver_registered on driver removal
-Date: Thu,  6 Jun 2024 16:01:28 +0200
-Message-ID: <20240606131745.816736500@linuxfoundation.org>
+Subject: [PATCH 6.1 160/473] kernel/numa.c: Move logging out of numa.h
+Date: Thu,  6 Jun 2024 16:01:29 +0200
+Message-ID: <20240606131705.245824038@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +59,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-[ Upstream commit 712a1fcb38dc7cac6da63ee79a88708fbf9c45ec ]
+[ Upstream commit d7a73e3f089204aee3393687e23fd45a22657b08 ]
 
-The removal of the last MAX3100 device triggers the removal of
-the driver. However, code doesn't update the respective global
-variable and after insmod — rmmod — insmod cycle the kernel
-oopses:
+Moving these stub functions to a .c file means we can kill a sched.h
+dependency on printk.h.
 
-  max3100 spi-PRP0001:01: max3100_probe: adding port 0
-  BUG: kernel NULL pointer dereference, address: 0000000000000408
-  ...
-  RIP: 0010:serial_core_register_port+0xa0/0x840
-  ...
-   max3100_probe+0x1b6/0x280 [max3100]
-   spi_probe+0x8d/0xb0
-
-Update the actual state so next time UART driver will be registered
-again.
-
-Hugo also noticed, that the error path in the probe also affected
-by having the variable set, and not cleared. Instead of clearing it
-move the assignment after the successfull uart_register_driver() call.
-
-Fixes: 7831d56b0a35 ("tty: MAX3100")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240402195306.269276-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Stable-dep-of: f9f67e5adc8d ("x86/numa: Fix SRAT lookup of CFMWS ranges with numa_fill_memblks()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max3100.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/numa.h | 19 ++++++-------------
+ kernel/Makefile      |  1 +
+ kernel/numa.c        | 26 ++++++++++++++++++++++++++
+ 3 files changed, 33 insertions(+), 13 deletions(-)
+ create mode 100644 kernel/numa.c
 
-diff --git a/drivers/tty/serial/max3100.c b/drivers/tty/serial/max3100.c
-index 45022f2909f0a..b3e63b6a402e1 100644
---- a/drivers/tty/serial/max3100.c
-+++ b/drivers/tty/serial/max3100.c
-@@ -749,13 +749,14 @@ static int max3100_probe(struct spi_device *spi)
- 	mutex_lock(&max3100s_lock);
+diff --git a/include/linux/numa.h b/include/linux/numa.h
+index 0f512c0aba54b..8fc218a55be4e 100644
+--- a/include/linux/numa.h
++++ b/include/linux/numa.h
+@@ -1,6 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef _LINUX_NUMA_H
+ #define _LINUX_NUMA_H
++#include <linux/init.h>
+ #include <linux/types.h>
  
- 	if (!uart_driver_registered) {
--		uart_driver_registered = 1;
- 		retval = uart_register_driver(&max3100_uart_driver);
- 		if (retval) {
- 			printk(KERN_ERR "Couldn't register max3100 uart driver\n");
- 			mutex_unlock(&max3100s_lock);
- 			return retval;
- 		}
+ #ifdef CONFIG_NODES_SHIFT
+@@ -22,34 +23,26 @@
+ #endif
+ 
+ #ifdef CONFIG_NUMA
+-#include <linux/printk.h>
+ #include <asm/sparsemem.h>
+ 
+ /* Generic implementation available */
+ int numa_map_to_online_node(int node);
+ 
+ #ifndef memory_add_physaddr_to_nid
+-static inline int memory_add_physaddr_to_nid(u64 start)
+-{
+-	pr_info_once("Unknown online node for memory at 0x%llx, assuming node 0\n",
+-			start);
+-	return 0;
+-}
++int memory_add_physaddr_to_nid(u64 start);
+ #endif
 +
-+		uart_driver_registered = 1;
- 	}
- 
- 	for (i = 0; i < MAX_MAX3100; i++)
-@@ -841,6 +842,7 @@ static void max3100_remove(struct spi_device *spi)
- 		}
- 	pr_debug("removing max3100 driver\n");
- 	uart_unregister_driver(&max3100_uart_driver);
-+	uart_driver_registered = 0;
- 
- 	mutex_unlock(&max3100s_lock);
+ #ifndef phys_to_target_node
+-static inline int phys_to_target_node(u64 start)
+-{
+-	pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
+-			start);
+-	return 0;
+-}
++int phys_to_target_node(u64 start);
+ #endif
++
+ #ifndef numa_fill_memblks
+ static inline int __init numa_fill_memblks(u64 start, u64 end)
+ {
+ 	return NUMA_NO_MEMBLK;
  }
+ #endif
++
+ #else /* !CONFIG_NUMA */
+ static inline int numa_map_to_online_node(int node)
+ {
+diff --git a/kernel/Makefile b/kernel/Makefile
+index ebc692242b68b..c90ee75eb8043 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -112,6 +112,7 @@ obj-$(CONFIG_SHADOW_CALL_STACK) += scs.o
+ obj-$(CONFIG_HAVE_STATIC_CALL) += static_call.o
+ obj-$(CONFIG_HAVE_STATIC_CALL_INLINE) += static_call_inline.o
+ obj-$(CONFIG_CFI_CLANG) += cfi.o
++obj-$(CONFIG_NUMA) += numa.o
+ 
+ obj-$(CONFIG_PERF_EVENTS) += events/
+ 
+diff --git a/kernel/numa.c b/kernel/numa.c
+new file mode 100644
+index 0000000000000..67ca6b8585c06
+--- /dev/null
++++ b/kernel/numa.c
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#include <linux/printk.h>
++#include <linux/numa.h>
++
++/* Stub functions: */
++
++#ifndef memory_add_physaddr_to_nid
++int memory_add_physaddr_to_nid(u64 start)
++{
++	pr_info_once("Unknown online node for memory at 0x%llx, assuming node 0\n",
++			start);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
++#endif
++
++#ifndef phys_to_target_node
++int phys_to_target_node(u64 start)
++{
++	pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
++			start);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(phys_to_target_node);
++#endif
 -- 
 2.43.0
 
