@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-49548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FB38FEDBE
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E11D8FEEFD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE9CC1F21CEA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98A7EB29C5C
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0232419E7DC;
-	Thu,  6 Jun 2024 14:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DADC1A188F;
+	Thu,  6 Jun 2024 14:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHuq3B8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhGQWRrE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF62A1BD4ED;
-	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14F21C95C7;
+	Thu,  6 Jun 2024 14:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683520; cv=none; b=da6ob8o7yYoxoKmDaIw/7lvyNOWR6FGzeH94yzgxGCXYOcdKzve4NH2v0l3772NAYnduhJVuYu5TOf7Q4jaMvnioXPA/Y3trXWJ08QEpe2oEtYpRxpLv/p4PumFcG0d/umGAjs3093jqjsp2aK5p5VIHiuJ4kQMrreDS0+iLFPM=
+	t=1717683724; cv=none; b=oxbVsYU92F51Bfeq7kRi8DmXEFWh6dYORp/9cBhwW0UWsdcytA670cZERcvEw/jXRBGlrk+T8U9mfOLoPSo24wFz60V6hI0wioGJFHdX1Ko0yHRIAbVPoRB/klXilm2uSxeq2JMoeg2huzCY1jOLX7X/yF6N2HhPl53xlymogTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683520; c=relaxed/simple;
-	bh=Xevk4ezTq1Zy0L0FxkJbZvALOsmcJXonRHMcSaZrteE=;
+	s=arc-20240116; t=1717683724; c=relaxed/simple;
+	bh=z5DnGC5MevEgvxGCsEwbKsQLsGGwvLZyOjd1dlgbF5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BovaV8EQ7TOIQl/npkUN5Ft3FtMjOQsXyll9+PFC+S1OJQGPgo0aiR0itxq0scuIkkyoaMO4z0YhrJfrHTtOZfmcv+57FzIS9JeIIwJWSutcxq916O8ok5G2XM77+JOFDu4jAgIahgnnXN8QvAWDTNClPnkLsCsWw9lDHEFNnJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHuq3B8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCFFC2BD10;
-	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
+	 MIME-Version; b=KQjeJFrAcp3+KCb/NltEpBsYF/xQINsZIpyVxJH9RALins7//rPrvTZKEihK44zasRAzI9bo4fWtoxmlV9C0SsDF1p/bL9+RAW9NxaxHC/0Iu8qgkBx4Na89LFBV1Kv5ao/arQY6zXqfQNNsS7Sk6ep5NWrGg/FdMeQSwQKl0BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhGQWRrE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D029CC2BD10;
+	Thu,  6 Jun 2024 14:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683520;
-	bh=Xevk4ezTq1Zy0L0FxkJbZvALOsmcJXonRHMcSaZrteE=;
+	s=korg; t=1717683723;
+	bh=z5DnGC5MevEgvxGCsEwbKsQLsGGwvLZyOjd1dlgbF5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IHuq3B8MIEYAhpabKYeWsdfq36gC64VkjziQLwUvAdg1z8Fc5ZCl5081JcZsShFjm
-	 ul7V5ZRSokGxaF7qdGpU+VfYgNxxxy5vF7nrK6lAvd4WT7bGx/55bMsHu5okWgs907
-	 Map88OxDpwxDgjCna+dIOUjeo8Hi+voZ3R3oUYGM=
+	b=ZhGQWRrEz/Ao2IUVgTLVQrrXlCR5P2A3tUxQlwOSqkBvV9Op8HgOS2r+o+OG+dJcF
+	 Bs5mzkUXRlZ8mgIwjkAOGb48Ehfsuj2Y4CQrcOi1iSQ+8IhX8pyUvnUml7X7pojk5f
+	 sa1Omv33gU4yeHeBEX6zsMsZp3SyF+lx0ePTHaJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Erhard Furtner <erhard_f@mailbox.org>,
+	Nico Pache <npache@redhat.com>,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Daniel Axtens <dja@axtens.net>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 412/473] ipv6: sr: fix memleak in seg6_hmac_init_algo
+Subject: [PATCH 6.6 669/744] kasan, fortify: properly rename memintrinsics
 Date: Thu,  6 Jun 2024 16:05:41 +0200
-Message-ID: <20240606131713.411468313@linuxfoundation.org>
+Message-ID: <20240606131753.937736398@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +69,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-[ Upstream commit efb9f4f19f8e37fde43dfecebc80292d179f56c6 ]
+[ Upstream commit 2e577732e8d28b9183df701fb90cb7943aa4ed16 ]
 
-seg6_hmac_init_algo returns without cleaning up the previous allocations
-if one fails, so it's going to leak all that memory and the crypto tfms.
+After commit 69d4c0d32186 ("entry, kasan, x86: Disallow overriding mem*()
+functions") and the follow-up fixes, with CONFIG_FORTIFY_SOURCE enabled,
+even though the compiler instruments meminstrinsics by generating calls to
+__asan/__hwasan_ prefixed functions, FORTIFY_SOURCE still uses
+uninstrumented memset/memmove/memcpy as the underlying functions.
 
-Update seg6_hmac_exit to only free the memory when allocated, so we can
-reuse the code directly.
+As a result, KASAN cannot detect bad accesses in memset/memmove/memcpy.
+This also makes KASAN tests corrupt kernel memory and cause crashes.
 
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Closes: https://lore.kernel.org/netdev/Zj3bh-gE7eT6V6aH@hog/
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/20240517005435.2600277-1-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To fix this, use __asan_/__hwasan_memset/memmove/memcpy as the underlying
+functions whenever appropriate.  Do this only for the instrumented code
+(as indicated by __SANITIZE_ADDRESS__).
+
+Link: https://lkml.kernel.org/r/20240517130118.759301-1-andrey.konovalov@linux.dev
+Fixes: 69d4c0d32186 ("entry, kasan, x86: Disallow overriding mem*() functions")
+Fixes: 51287dcb00cc ("kasan: emit different calls for instrumentable memintrinsics")
+Fixes: 36be5cba99f6 ("kasan: treat meminstrinsic as builtins in uninstrumented files")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Reported-by: Nico Pache <npache@redhat.com>
+Closes: https://lore.kernel.org/all/20240501144156.17e65021@outsider.home/
+Reviewed-by: Marco Elver <elver@google.com>
+Tested-by: Nico Pache <npache@redhat.com>
+Acked-by: Nico Pache <npache@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Daniel Axtens <dja@axtens.net>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_hmac.c | 42 ++++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
+ include/linux/fortify-string.h | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index d43c50a7310d6..3c3800223e0e0 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -354,6 +354,7 @@ static int seg6_hmac_init_algo(void)
- 	struct crypto_shash *tfm;
- 	struct shash_desc *shash;
- 	int i, alg_count, cpu;
-+	int ret = -ENOMEM;
+diff --git a/include/linux/fortify-string.h b/include/linux/fortify-string.h
+index da51a83b28293..f7e1895367fa1 100644
+--- a/include/linux/fortify-string.h
++++ b/include/linux/fortify-string.h
+@@ -31,17 +31,30 @@ void __write_overflow_field(size_t avail, size_t wanted) __compiletime_warning("
+ 	__ret;							\
+ })
  
- 	alg_count = ARRAY_SIZE(hmac_algos);
- 
-@@ -364,12 +365,14 @@ static int seg6_hmac_init_algo(void)
- 		algo = &hmac_algos[i];
- 		algo->tfms = alloc_percpu(struct crypto_shash *);
- 		if (!algo->tfms)
--			return -ENOMEM;
-+			goto error_out;
- 
- 		for_each_possible_cpu(cpu) {
- 			tfm = crypto_alloc_shash(algo->name, 0, 0);
--			if (IS_ERR(tfm))
--				return PTR_ERR(tfm);
-+			if (IS_ERR(tfm)) {
-+				ret = PTR_ERR(tfm);
-+				goto error_out;
-+			}
- 			p_tfm = per_cpu_ptr(algo->tfms, cpu);
- 			*p_tfm = tfm;
- 		}
-@@ -381,18 +384,22 @@ static int seg6_hmac_init_algo(void)
- 
- 		algo->shashs = alloc_percpu(struct shash_desc *);
- 		if (!algo->shashs)
--			return -ENOMEM;
-+			goto error_out;
- 
- 		for_each_possible_cpu(cpu) {
- 			shash = kzalloc_node(shsize, GFP_KERNEL,
- 					     cpu_to_node(cpu));
- 			if (!shash)
--				return -ENOMEM;
-+				goto error_out;
- 			*per_cpu_ptr(algo->shashs, cpu) = shash;
- 		}
- 	}
- 
- 	return 0;
+-#if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
++#if defined(__SANITIZE_ADDRESS__)
 +
-+error_out:
-+	seg6_hmac_exit();
-+	return ret;
- }
- 
- int __init seg6_hmac_init(void)
-@@ -410,22 +417,29 @@ int __net_init seg6_hmac_net_init(struct net *net)
- void seg6_hmac_exit(void)
- {
- 	struct seg6_hmac_algo *algo = NULL;
-+	struct crypto_shash *tfm;
-+	struct shash_desc *shash;
- 	int i, alg_count, cpu;
- 
- 	alg_count = ARRAY_SIZE(hmac_algos);
- 	for (i = 0; i < alg_count; i++) {
- 		algo = &hmac_algos[i];
--		for_each_possible_cpu(cpu) {
--			struct crypto_shash *tfm;
--			struct shash_desc *shash;
- 
--			shash = *per_cpu_ptr(algo->shashs, cpu);
--			kfree(shash);
--			tfm = *per_cpu_ptr(algo->tfms, cpu);
--			crypto_free_shash(tfm);
-+		if (algo->shashs) {
-+			for_each_possible_cpu(cpu) {
-+				shash = *per_cpu_ptr(algo->shashs, cpu);
-+				kfree(shash);
-+			}
-+			free_percpu(algo->shashs);
-+		}
++#if !defined(CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX) && !defined(CONFIG_GENERIC_ENTRY)
++extern void *__underlying_memset(void *p, int c, __kernel_size_t size) __RENAME(memset);
++extern void *__underlying_memmove(void *p, const void *q, __kernel_size_t size) __RENAME(memmove);
++extern void *__underlying_memcpy(void *p, const void *q, __kernel_size_t size) __RENAME(memcpy);
++#elif defined(CONFIG_KASAN_GENERIC)
++extern void *__underlying_memset(void *p, int c, __kernel_size_t size) __RENAME(__asan_memset);
++extern void *__underlying_memmove(void *p, const void *q, __kernel_size_t size) __RENAME(__asan_memmove);
++extern void *__underlying_memcpy(void *p, const void *q, __kernel_size_t size) __RENAME(__asan_memcpy);
++#else /* CONFIG_KASAN_SW_TAGS */
++extern void *__underlying_memset(void *p, int c, __kernel_size_t size) __RENAME(__hwasan_memset);
++extern void *__underlying_memmove(void *p, const void *q, __kernel_size_t size) __RENAME(__hwasan_memmove);
++extern void *__underlying_memcpy(void *p, const void *q, __kernel_size_t size) __RENAME(__hwasan_memcpy);
++#endif
 +
-+		if (algo->tfms) {
-+			for_each_possible_cpu(cpu) {
-+				tfm = *per_cpu_ptr(algo->tfms, cpu);
-+				crypto_free_shash(tfm);
-+			}
-+			free_percpu(algo->tfms);
- 		}
--		free_percpu(algo->tfms);
--		free_percpu(algo->shashs);
- 	}
- }
- EXPORT_SYMBOL(seg6_hmac_exit);
+ extern void *__underlying_memchr(const void *p, int c, __kernel_size_t size) __RENAME(memchr);
+ extern int __underlying_memcmp(const void *p, const void *q, __kernel_size_t size) __RENAME(memcmp);
+-extern void *__underlying_memcpy(void *p, const void *q, __kernel_size_t size) __RENAME(memcpy);
+-extern void *__underlying_memmove(void *p, const void *q, __kernel_size_t size) __RENAME(memmove);
+-extern void *__underlying_memset(void *p, int c, __kernel_size_t size) __RENAME(memset);
+ extern char *__underlying_strcat(char *p, const char *q) __RENAME(strcat);
+ extern char *__underlying_strcpy(char *p, const char *q) __RENAME(strcpy);
+ extern __kernel_size_t __underlying_strlen(const char *p) __RENAME(strlen);
+ extern char *__underlying_strncat(char *p, const char *q, __kernel_size_t count) __RENAME(strncat);
+ extern char *__underlying_strncpy(char *p, const char *q, __kernel_size_t size) __RENAME(strncpy);
++
+ #else
+ 
+ #if defined(__SANITIZE_MEMORY__)
+@@ -66,6 +79,7 @@ extern char *__underlying_strncpy(char *p, const char *q, __kernel_size_t size)
+ #define __underlying_strlen	__builtin_strlen
+ #define __underlying_strncat	__builtin_strncat
+ #define __underlying_strncpy	__builtin_strncpy
++
+ #endif
+ 
+ /**
 -- 
 2.43.0
 
