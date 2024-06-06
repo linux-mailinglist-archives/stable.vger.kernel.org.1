@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-49093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF52F8FEBD3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8AB8FE8FB
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFB88B26D6F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:27:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7957B21E66
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251AA19AA54;
-	Thu,  6 Jun 2024 14:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A796196D80;
+	Thu,  6 Jun 2024 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkweFthS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiZjWgM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41AE1ABE2B;
-	Thu,  6 Jun 2024 14:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAFF1990BE;
+	Thu,  6 Jun 2024 14:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683298; cv=none; b=IWH77OUWHyM206q4biFDMlSdHfKcqDHanGSqgr7RhyxeXdDd4L7bHhB3/1nlw7r72B6iW0h5vCyq4HqeyTHCBCHUnRu8bMCWv9zi7Tkt4uwuwBLvvDXr3OKrKIYk4qRFjREj4YKOk1hoPMzKAfYvbDv6qKPxhj+tYchyVm2FQHs=
+	t=1717682962; cv=none; b=uOTIws1BjB9ON5/n0ux/TmWxrlpoE6tj84q1EM7GlbWeeAcj6354FALOL+HP9roJhd+GuBsqmrU4I3RCmes+bYegY7zTTBsfuq2yO3sFtzShn4uqmfBV+q0Uzemxxw41kwALBX/NuSM8KmGisFsqySeNH4hEOqQLm6rJK/+pCiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683298; c=relaxed/simple;
-	bh=/h92jvqZiOX9G8mjRyMVGSuZxyPbVZ2jRLbAeNb38sM=;
+	s=arc-20240116; t=1717682962; c=relaxed/simple;
+	bh=Eb89jDtLApkHrEbZh0rGByGsHX+4RI4HNpvpOp0s8vU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/Jb9NCYVUWIUYcRVRJIazuPZNy9NTfoBSKxBoPkA/d5i8X5P3L2Xi+Cb0XR6QiZPRzNufVpgtmXYZw7K9YYs2AtzpkyKKLu+uQjVan43+ad/8YzWn68z8Atxux1BC2VG/SJXBHNUbvMYIs2SUzA6GAJNmEViAlJ47pF8hf7mVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkweFthS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F35C2BD10;
-	Thu,  6 Jun 2024 14:14:58 +0000 (UTC)
+	 MIME-Version; b=itsXjV8ZdiDn34wEcSE4+X3M85e4Ip7nEmFQTC1nObCY1/3dYLvJhed18CsgQfyPqp/4LR4Dt6a88/tkqI5QDvIkNdE5tGoVJXVoMqAWkqmPmnXN8irzwsZJdFr+5wSMse5m1y8dG3ca/XfWeIgfYXoAiSuElTBmWuMfTdTb31Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiZjWgM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D41C32782;
+	Thu,  6 Jun 2024 14:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683298;
-	bh=/h92jvqZiOX9G8mjRyMVGSuZxyPbVZ2jRLbAeNb38sM=;
+	s=korg; t=1717682961;
+	bh=Eb89jDtLApkHrEbZh0rGByGsHX+4RI4HNpvpOp0s8vU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkweFthSaRuYggFpqP6FNWbUx3/lJWOAZGosMl7K3yTq6bIcXqXMZjDw28yAyycHI
-	 PZUuJfOMhGrdLHMp/Xvnu7rf2xqvq6++taXZDV2A239dzzPhVI6Br72eSezTpUkBJp
-	 OkCorPjuS4sq/TR6W78LseMl4y8s2IQfRla1qxos=
+	b=tiZjWgM5g3/4mvJZXtshp8uLXCqOSvEX1GeiuwxjUn2zwhUrRB9gCAShHf+tUZEVS
+	 Ro2s8lkb94bykeJgdJstFruBu8E2IY7X44/Md2kVRS3evSALDT2UbfldTCC886EGDC
+	 pWxmOTR7pJtTeyCZ8VYOmfyJWg/aHh9eDhRczrIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akiva Goldberger <agoldberger@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/473] net/mlx5: Discard command completions in internal error
+Subject: [PATCH 6.9 129/374] s390/vdso: Use standard stack frame layout
 Date: Thu,  6 Jun 2024 16:01:48 +0200
-Message-ID: <20240606131705.845295978@linuxfoundation.org>
+Message-ID: <20240606131656.224283396@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akiva Goldberger <agoldberger@nvidia.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit db9b31aa9bc56ff0d15b78f7e827d61c4a096e40 ]
+[ Upstream commit 185445c7c137822ad856aae91a41e199370cb534 ]
 
-Fix use after free when FW completion arrives while device is in
-internal error state. Avoid calling completion handler in this case,
-since the device will flush the command interface and trigger all
-completions manually.
+By default user space is compiled with standard stack frame layout and not
+with the packed stack layout. The vdso code however inherited the
+-mpacked-stack compiler option from the kernel. Remove this option to make
+sure the vdso is compiled with standard stack frame layout.
 
-Kernel log:
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-...
-RIP: 0010:refcount_warn_saturate+0xd8/0xe0
-...
-Call Trace:
-<IRQ>
-? __warn+0x79/0x120
-? refcount_warn_saturate+0xd8/0xe0
-? report_bug+0x17c/0x190
-? handle_bug+0x3c/0x60
-? exc_invalid_op+0x14/0x70
-? asm_exc_invalid_op+0x16/0x20
-? refcount_warn_saturate+0xd8/0xe0
-cmd_ent_put+0x13b/0x160 [mlx5_core]
-mlx5_cmd_comp_handler+0x5f9/0x670 [mlx5_core]
-cmd_comp_notifier+0x1f/0x30 [mlx5_core]
-notifier_call_chain+0x35/0xb0
-atomic_notifier_call_chain+0x16/0x20
-mlx5_eq_async_int+0xf6/0x290 [mlx5_core]
-notifier_call_chain+0x35/0xb0
-atomic_notifier_call_chain+0x16/0x20
-irq_int_handler+0x19/0x30 [mlx5_core]
-__handle_irq_event_percpu+0x4b/0x160
-handle_irq_event+0x2e/0x80
-handle_edge_irq+0x98/0x230
-__common_interrupt+0x3b/0xa0
-common_interrupt+0x7b/0xa0
-</IRQ>
-<TASK>
-asm_common_interrupt+0x22/0x40
+This makes sure that the stack frame backchain location for vdso generated
+stack frames is the same like for calling code (if compiled with default
+options). This allows to manually walk stack frames without DWARF
+information, like the kernel is doing it e.g. with arch_stack_walk_user().
 
-Fixes: 51d138c2610a ("net/mlx5: Fix health error state handling")
-Signed-off-by: Akiva Goldberger <agoldberger@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240509112951.590184-6-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
+Reviewed-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/s390/kernel/vdso32/Makefile | 1 +
+ arch/s390/kernel/vdso64/Makefile | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index 946923b9404fc..465d2adbf3c00 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1632,6 +1632,9 @@ static int cmd_comp_notifier(struct notifier_block *nb,
- 	dev = container_of(cmd, struct mlx5_core_dev, cmd);
- 	eqe = data;
+diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
+index 9090c0e5de254..4800d80decee6 100644
+--- a/arch/s390/kernel/vdso32/Makefile
++++ b/arch/s390/kernel/vdso32/Makefile
+@@ -19,6 +19,7 @@ KBUILD_AFLAGS_32 := $(filter-out -m64,$(KBUILD_AFLAGS))
+ KBUILD_AFLAGS_32 += -m31 -s
  
-+	if (dev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
-+		return NOTIFY_DONE;
-+
- 	mlx5_cmd_comp_handler(dev, be32_to_cpu(eqe->data.cmd.vector), false);
+ KBUILD_CFLAGS_32 := $(filter-out -m64,$(KBUILD_CFLAGS))
++KBUILD_CFLAGS_32 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS))
+ KBUILD_CFLAGS_32 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_32))
+ KBUILD_CFLAGS_32 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_32))
+ KBUILD_CFLAGS_32 += -m31 -fPIC -shared -fno-common -fno-builtin -fasynchronous-unwind-tables
+diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
+index a44f51de1f1ea..2f2e4e997030c 100644
+--- a/arch/s390/kernel/vdso64/Makefile
++++ b/arch/s390/kernel/vdso64/Makefile
+@@ -24,6 +24,7 @@ KBUILD_AFLAGS_64 := $(filter-out -m64,$(KBUILD_AFLAGS))
+ KBUILD_AFLAGS_64 += -m64
  
- 	return NOTIFY_OK;
+ KBUILD_CFLAGS_64 := $(filter-out -m64,$(KBUILD_CFLAGS))
++KBUILD_CFLAGS_64 := $(filter-out -mpacked-stack,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 := $(filter-out -mno-pic-data-is-text-relative,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 := $(filter-out -munaligned-symbols,$(KBUILD_CFLAGS_64))
+ KBUILD_CFLAGS_64 := $(filter-out -fno-asynchronous-unwind-tables,$(KBUILD_CFLAGS_64))
 -- 
 2.43.0
 
