@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-49587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455E48FEDED
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:40:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AA78FEF10
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C46BBB25B82
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:40:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89545287389
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7810F196C99;
-	Thu,  6 Jun 2024 14:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228601C95EB;
+	Thu,  6 Jun 2024 14:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuAQOIDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bwm9/H4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374E21BE851;
-	Thu,  6 Jun 2024 14:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D576A1C95E2;
+	Thu,  6 Jun 2024 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683540; cv=none; b=DoqDrEOEsqD1Jkk+LF/0I+xVznpTam9gfuPGcjYqRlE92VmvYrRjsNEcnmRbo2CmyYor+M3hfgEgttuK+fsDbGNwz3ZkJzV3XkgQz9oQgfspbJv7PJo8dJvxQgrUtu1OD8U8VIfjlfJp3wdSf0xWsHiXzlxKKJQnDRsDEfDWi4Q=
+	t=1717683733; cv=none; b=Npv0xoKRCOLDOyZAbd81rNZdoutGHoxLkVVpjWvi61zNS4MTTWaWNFI3ypYzxTJhSlpU7jo17A2kdlFyFPSd025YsmH0MokNnmpiWoGh5IM1j4gMs4fsHZkOWnFuV49EY39DeLdChzCDs4DjpIlmAP6qH94TITXaSt0eDSWdSZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683540; c=relaxed/simple;
-	bh=ds6SyrObH7l0wH3WOrF71qv/UtM+j+TAziYL3wQmrbY=;
+	s=arc-20240116; t=1717683733; c=relaxed/simple;
+	bh=We5U7r9KzFKQ76wwzxSRoisoiFKBy2Roscf7HCueZ7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHU+AWaoXiZS86hDIndnZgZQu75AngNSobJBnNKUXF1TSdCIul7MBiUQPDxHe1M7JGMxBZjOQBFoxYwDkJRy//FZhzs6FyyiIsidnfnh6oHT15cZt8gHzRRnb5wL76ZFiCXperihNA1tjSAshDs1iObNa1IBSGSZSdTkBiSTeZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuAQOIDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1592CC32786;
-	Thu,  6 Jun 2024 14:19:00 +0000 (UTC)
+	 MIME-Version; b=t9NWQnI5ktc5FtXCMMhNsmq+FhhmUdSm9nzSELouHKhlYQhcERBlX7MQlAsRi6AMraGB4b1BFBnbHRCiR6M9eZ+Spe5QltQtWMiaTjHlvHUxb5GjkhVMXb0T10MU+SlUj1Z0ILFsZ+/Iym5lOdXnpaZn3gQiCPzXlBQgaJ7jP10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bwm9/H4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9694C2BD10;
+	Thu,  6 Jun 2024 14:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683540;
-	bh=ds6SyrObH7l0wH3WOrF71qv/UtM+j+TAziYL3wQmrbY=;
+	s=korg; t=1717683733;
+	bh=We5U7r9KzFKQ76wwzxSRoisoiFKBy2Roscf7HCueZ7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuAQOIDDvqnJe6lMoCSrE3EnTX/DB4B0dqAKWR3B0QxG84Jgzc9qi+Q5CbPDSRbAe
-	 q0WmWawmZH0pFZznMfskCMNJ3Wgue4Mddgzt0bMJC8qI1Ol0uzkqk/o2rHkZCwYqWZ
-	 rmy8QyDDXKoqkbXqW30DIU77HCMXHkSR6O0JKPKA=
+	b=Bwm9/H4LivH2CBbLuKBwOVj3KghIvGXLbXG3oofl2HQ3gdmz4ztyCZOK2/5aONdYU
+	 d9QhiAGgKYJCsgK5W/uivGKF1UvyJAEAy/rdmKDc/H/189ssl/riVdH5Jb15TWj6C7
+	 Kvv5H8cK55hHQdvV8TUHJvvCuLN8fGUag6A8+BM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 430/473] ice: Interpret .set_channels() input differently
+Subject: [PATCH 6.6 687/744] net/mlx5: Use mlx5_ipsec_rx_status_destroy to correctly delete status rules
 Date: Thu,  6 Jun 2024 16:05:59 +0200
-Message-ID: <20240606131713.963198274@linuxfoundation.org>
+Message-ID: <20240606131754.522824838@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,92 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 05d6f442f31f901d27dbc64fd504a8ec7d5013de ]
+[ Upstream commit 16d66a4fa81da07bc4ed19f4e53b87263c2f8d38 ]
 
-A bug occurs because a safety check guarding AF_XDP-related queues in
-ethnl_set_channels(), does not trigger. This happens, because kernel and
-ice driver interpret the ethtool command differently.
+rx_create no longer allocates a modify_hdr instance that needs to be
+cleaned up. The mlx5_modify_header_dealloc call will lead to a NULL pointer
+dereference. A leak in the rules also previously occurred since there are
+now two rules populated related to status.
 
-How the bug occurs:
-1. ethtool -l <IFNAME> -> combined: 40
-2. Attach AF_XDP to queue 30
-3. ethtool -L <IFNAME> rx 15 tx 15
-   combined number is not specified, so command becomes {rx_count = 15,
-   tx_count = 15, combined_count = 40}.
-4. ethnl_set_channels checks, if there are any AF_XDP of queues from the
-   new (combined_count + rx_count) to the old one, so from 55 to 40, check
-   does not trigger.
-5. ice interprets `rx 15 tx 15` as 15 combined channels and deletes the
-   queue that AF_XDP is attached to.
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 109907067 P4D 109907067 PUD 116890067 PMD 0
+  Oops: 0000 [#1] SMP
+  CPU: 1 PID: 484 Comm: ip Not tainted 6.9.0-rc2-rrameshbabu+ #254
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+  RIP: 0010:mlx5_modify_header_dealloc+0xd/0x70
+  <snip>
+  Call Trace:
+   <TASK>
+   ? show_regs+0x60/0x70
+   ? __die+0x24/0x70
+   ? page_fault_oops+0x15f/0x430
+   ? free_to_partial_list.constprop.0+0x79/0x150
+   ? do_user_addr_fault+0x2c9/0x5c0
+   ? exc_page_fault+0x63/0x110
+   ? asm_exc_page_fault+0x27/0x30
+   ? mlx5_modify_header_dealloc+0xd/0x70
+   rx_create+0x374/0x590
+   rx_add_rule+0x3ad/0x500
+   ? rx_add_rule+0x3ad/0x500
+   ? mlx5_cmd_exec+0x2c/0x40
+   ? mlx5_create_ipsec_obj+0xd6/0x200
+   mlx5e_accel_ipsec_fs_add_rule+0x31/0xf0
+   mlx5e_xfrm_add_state+0x426/0xc00
+  <snip>
 
-Interpret the command in a way that is more consistent with ethtool
-manual [0] (--show-channels and --set-channels).
-
-Considering that in the ice driver only the difference between RX and TX
-queues forms dedicated channels, change the correct way to set number of
-channels to:
-
-ethtool -L <IFNAME> combined 10 /* For symmetric queues */
-ethtool -L <IFNAME> combined 8 tx 2 rx 0 /* For asymmetric queues */
-
-[0] https://man7.org/linux/man-pages/man8/ethtool.8.html
-
-Fixes: 87324e747fde ("ice: Implement ethtool ops for channels")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 94af50c0a9bb ("net/mlx5e: Unify esw and normal IPsec status table creation/destruction")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 02eb78df2378e..a163e7717a534 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3473,7 +3473,6 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
- 	struct ice_pf *pf = vsi->back;
- 	int new_rx = 0, new_tx = 0;
- 	bool locked = false;
--	u32 curr_combined;
- 	int ret = 0;
- 
- 	/* do not support changing channels in Safe Mode */
-@@ -3495,22 +3494,8 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
- 		return -EOPNOTSUPP;
- 	}
- 
--	curr_combined = ice_get_combined_cnt(vsi);
--
--	/* these checks are for cases where user didn't specify a particular
--	 * value on cmd line but we get non-zero value anyway via
--	 * get_channels(); look at ethtool.c in ethtool repository (the user
--	 * space part), particularly, do_schannels() routine
--	 */
--	if (ch->rx_count == vsi->num_rxq - curr_combined)
--		ch->rx_count = 0;
--	if (ch->tx_count == vsi->num_txq - curr_combined)
--		ch->tx_count = 0;
--	if (ch->combined_count == curr_combined)
--		ch->combined_count = 0;
--
--	if (!(ch->combined_count || (ch->rx_count && ch->tx_count))) {
--		netdev_err(dev, "Please specify at least 1 Rx and 1 Tx channel\n");
-+	if (ch->rx_count && ch->tx_count) {
-+		netdev_err(dev, "Dedicated RX or TX channels cannot be used simultaneously\n");
- 		return -EINVAL;
- 	}
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+index 81e6aa6434cf2..61288066830d9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+@@ -512,8 +512,7 @@ static int rx_create(struct mlx5_core_dev *mdev, struct mlx5e_ipsec *ipsec,
+ err_fs_ft:
+ 	if (rx->allow_tunnel_mode)
+ 		mlx5_eswitch_unblock_encap(mdev);
+-	mlx5_del_flow_rules(rx->status.rule);
+-	mlx5_modify_header_dealloc(mdev, rx->status.modify_hdr);
++	mlx5_ipsec_rx_status_destroy(ipsec, rx);
+ err_add:
+ 	mlx5_destroy_flow_table(rx->ft.status);
+ err_fs_ft_status:
 -- 
 2.43.0
 
