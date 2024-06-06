@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-48453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277708FE913
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E77B8FEDBD
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E7941C25473
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F4551F21F96
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1CA1991D1;
-	Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66541BD4EF;
+	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJo7mENd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H07Ys3pQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2854F196C9F;
-	Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E2D1BD4E9;
+	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682976; cv=none; b=ndKEtWqgHqa3VT6sZmSGcj4n3D5H6UIIxJarTiP9ukS0xJIVRsTbuNLn45ee0vr4Fq2KTRsMmthjtSAdoQVbEYGLilWwmmCmJOFu0j28JxlmHCxk3EaOd3tZ7KcIBDG/mL+SQFf+Sy7YIx4D0bPrZ2GUtqygBKb9TZciz57TpNs=
+	t=1717683520; cv=none; b=Emu/uvzpjl0uJH0oUx/pAbltrA12gmLifln73z2nVcMA/MSLitb1eVvdgT/M2sCkLaMG3kZ7AiSrX+O6w7nU5oVXe2ouM1QjStgjk787X0EzMVb+K8LLD6FFiETpHqGGYZdRh9EWHbhu/VMYNt1SrTFbqZjpxFVMnnVpoCmvIw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682976; c=relaxed/simple;
-	bh=sw28r/rB/YIOgw0NLCO8Du+ORUpv9vQ/tB0KC7VwiFc=;
+	s=arc-20240116; t=1717683520; c=relaxed/simple;
+	bh=k3JoYouU28J8KQdj9+7YAfoekFe1EL8jSnySqlHfWPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M06kOSakzmye6iWXGMVC/Ry86NQSlaZbh6R+bkeUoxJGAqtQh0e9/UMJy7yDYAqAVLBkEmbzCeiDNt2Ux8oRyga7if43VQejC92j531EVP3PgmmtuUDCzXPRFRemSDdJvQhB8PH10H79icqLc/l1K+x35wMXhDhGsDKO0aHFb2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJo7mENd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087BDC2BD10;
-	Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
+	 MIME-Version; b=Z1M1EsaTXJp9guuLohYFOxEWidEh06JOJ17+hmnnxogQZK16z0xe6KFoT0NF/yiBmr3ib8k0TBbTQPeT2rE+gOMG1TfiLkivId96mzexBZgyhOzSNQ0Adwqj+ht6ismPL4A1Yi+CVsFGH33oq9mq84zOCULSdJx8YayeoANzLRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H07Ys3pQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141A7C4AF08;
+	Thu,  6 Jun 2024 14:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682976;
-	bh=sw28r/rB/YIOgw0NLCO8Du+ORUpv9vQ/tB0KC7VwiFc=;
+	s=korg; t=1717683520;
+	bh=k3JoYouU28J8KQdj9+7YAfoekFe1EL8jSnySqlHfWPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJo7mENdoXWROhvPS7LNz24p7OeY2PB5EG4zrny+tXLBK+uTfZZjgKhc8awuFVNlb
-	 Z+waLtT8Ncop2FUI46PQ3rsKGCijXmcUfI+lkZ1aBWeOrYB2UjRSVN7Mo8g1tNdwlM
-	 +S1UrEgp+qXtscFjvISyqmEyPDbVwgV3OWvOxu34=
+	b=H07Ys3pQhsrM6/KvC5fo/NxtSgzHRykHRIRdRKsGO4WLQnTOLVIQC9xo6PFK2fZi8
+	 2DZyuOG9Rgx36bOVqfP0gLkV0ojg4zZ5dfC4WgAkBYL9Ylo/YxfoldYGri3Z7NA7JJ
+	 2CdLpS1zEipy5ynqigCfD6yV9Uz2qZ4ygIvVBsE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlemagne Lasse <charlemagnelasse@gmail.com>,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 154/374] x86/percpu: Use __force to cast from __percpu address space
+Subject: [PATCH 6.6 461/744] udf: Remove GFP_NOFS allocation in udf_expand_file_adinicb()
 Date: Thu,  6 Jun 2024 16:02:13 +0200
-Message-ID: <20240606131657.074546439@linuxfoundation.org>
+Message-ID: <20240606131747.258243194@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit a55c1fdad5f61b4bfe42319694b23671a758cb28 ]
+[ Upstream commit 38f8af2a7191e5da21c557210d810c6d0d34f6c4 ]
 
-Fix Sparse warning when casting from __percpu address space by using
-__force in the cast. x86 named address spaces are not considered to
-be subspaces of the generic (flat) address space, so explicit casts
-are required to convert pointers between these address spaces and the
-generic address space (the application should cast to uintptr_t and
-apply the segment base offset). The cast to uintptr_t removes
-__percpu address space tag and Sparse reports:
+udf_expand_file_adinicb() is called under inode->i_rwsem and
+mapping->invalidate_lock. i_rwsem is safe wrt fs reclaim,
+invalidate_lock on this inode is safe as well (we hold inode reference
+so reclaim will not touch it, furthermore even lockdep should not
+complain as invalidate_lock is acquired from udf_evict_inode() only when
+truncating inode which should not happen from fs reclaim).
 
-  warning: cast removes address space '__percpu' of expression
-
-Use __force to inform Sparse that the cast is intentional.
-
-Fixes: 9a462b9eafa6 ("x86/percpu: Use compiler segment prefix qualifier")
-Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240402175058.52649-1-ubizjak@gmail.com
-
-Closes: https://lore.kernel.org/lkml/CAFGhKbzev7W4aHwhFPWwMZQEHenVgZUj7=aunFieVqZg3mt14A@mail.gmail.com/
+Signed-off-by: Jan Kara <jack@suse.cz>
+Stable-dep-of: db6754090a4f ("udf: Convert udf_expand_file_adinicb() to use a folio")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/percpu.h | 2 +-
+ fs/udf/inode.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
-index dbfde44d88a31..ce5111cec36e2 100644
---- a/arch/x86/include/asm/percpu.h
-+++ b/arch/x86/include/asm/percpu.h
-@@ -77,7 +77,7 @@
- #define arch_raw_cpu_ptr(_ptr)					\
- ({								\
- 	unsigned long tcp_ptr__ = __raw_my_cpu_offset;		\
--	tcp_ptr__ += (unsigned long)(_ptr);			\
-+	tcp_ptr__ += (__force unsigned long)(_ptr);		\
- 	(typeof(*(_ptr)) __kernel __force *)tcp_ptr__;		\
- })
- #else
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index a17a6184cc39e..7f7610dddcba1 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -357,7 +357,7 @@ int udf_expand_file_adinicb(struct inode *inode)
+ 		return 0;
+ 	}
+ 
+-	page = find_or_create_page(inode->i_mapping, 0, GFP_NOFS);
++	page = find_or_create_page(inode->i_mapping, 0, GFP_KERNEL);
+ 	if (!page)
+ 		return -ENOMEM;
+ 
 -- 
 2.43.0
 
