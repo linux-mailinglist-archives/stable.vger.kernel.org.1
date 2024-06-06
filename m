@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-49797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BA38FEEE6
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:47:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 651398FED90
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EB341F24966
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:47:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D92CDB26169
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505B51C8A0B;
-	Thu,  6 Jun 2024 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFDA1BC060;
+	Thu,  6 Jun 2024 14:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBYF2zMT"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BEb7sq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D93A1C8A00;
-	Thu,  6 Jun 2024 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE341BBBFC;
+	Thu,  6 Jun 2024 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683714; cv=none; b=bFN67kdzw++2XF29FOOxVAb/hUZuaagUPMu02xGxqpvpYamtkXyGjNilYzUyTVAfqL+9W5yXpbhRu8KOkVVTZDShb6mxhkpY1lGZr+txwO7nxpXZyJO4nLK3h4e5pPWJcn+TCARnsSnseMJ36edjEP9UdugcDR/wbVnzFKSFHUM=
+	t=1717683500; cv=none; b=T6ANpWGHNVUIoJS1AU8J4ksLCuiXGlJoRcTU/FKxKZgbq9XtACdbrN1I7LNQUy4yYnjh0Kn5yU+CGAqCSVNkA02A27xozRXhUD31JUvTpSFQuOf7wklRbfiYwNmfyTttkXw/cgk9xThMd9ycfTtcWb2uPkQZ4brwyE/4xgOAVoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683714; c=relaxed/simple;
-	bh=jCQgsKEd6HYv/EmLo4n+jTVBECBhEgy8i58BcgPQSxM=;
+	s=arc-20240116; t=1717683500; c=relaxed/simple;
+	bh=b0lzL7/uh9m84eARrXgyjFjwaB0m3EAe9fFd8QC8g0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FY6V8qa/IooJhT4ziYpDm1Ke/Soj2rSIeX3cs+TtK78L2VCKm6BH70LRRD4dEddqkJq8Q0i6k50LM9+MdHlGYRJdcnckHfMpXin+aqVCV8+nAqx88pbYD3ScuLIR3YUmTHD8db32v/unwMBIXACxL+BhlFBjsth3G7BTxpdgtQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBYF2zMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EE9C2BD10;
-	Thu,  6 Jun 2024 14:21:53 +0000 (UTC)
+	 MIME-Version; b=SadjnFDt6Apz0Vbo2KsW9UPSYwQdg0g0p1b6SKOFBX8tIvWTv29lG3QDHHg2jC4uuSi40TuaRdiFeNosUCgnYGydWaoc9pq8Jx3ghteW8kJGc4rvjwDLUenuFLFlHg9Brc33oRX9WC3s9Qil13b286ihHSMZLYZwY2Y1Qu+dITA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BEb7sq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9870BC2BD10;
+	Thu,  6 Jun 2024 14:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683713;
-	bh=jCQgsKEd6HYv/EmLo4n+jTVBECBhEgy8i58BcgPQSxM=;
+	s=korg; t=1717683500;
+	bh=b0lzL7/uh9m84eARrXgyjFjwaB0m3EAe9fFd8QC8g0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBYF2zMTWGha+PP7E5WVnHwBeuN5wsb0XP6kaEu4XFrYq9RYx7ry9n0wM4w/wEqvI
-	 H/nqszk7yKIQszoWIru78WUj10Z8UyppLQbXI7GTCqmSopjU9RSuVG0yT6KKLI5zS7
-	 W0FmFHb6SrzpS+stjeWDt7g4vI//kpItAsJ+s4LA=
+	b=1BEb7sq/SuAz+Yfo5EWLSvh5jUXppBnvrqP7SlOcblSZaqpPtSKHt+BNoIkT3idUx
+	 yzA/dDkl2YpdqIkZJaB7CZctfYJXN1C0e1tx0R+6H5LR/szBwRFDS0hw7a1Ung3ptf
+	 Nek27xnZPftkFnKMhZhBAQZxINBtp3axuiS6G/c0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Neha Malcom Francis <n-francis@ti.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 647/744] regulator: tps6594-regulator: Correct multi-phase configuration
+	patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Yang, Chenyuan" <cy54@illinois.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, Yang@web.codeaurora.org
+Subject: [PATCH 6.1 390/473] media: cec: core: avoid recursive cec_claim_log_addrs
 Date: Thu,  6 Jun 2024 16:05:19 +0200
-Message-ID: <20240606131753.218667762@linuxfoundation.org>
+Message-ID: <20240606131712.740529358@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
-References: <20240606131732.440653204@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neha Malcom Francis <n-francis@ti.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 74b38cd77d3eb63c6d0ad9cf2ae59812ae54d3ee ]
+[ Upstream commit 47c82aac10a6954d68f29f10d9758d016e8e5af1 ]
 
-According to the TPS6594 PMIC Manual (linked) 8.3.2.1.4 Multi-Phase BUCK
-Regulator Configurations section, the PMIC ignores all the other bucks'
-except the primary buck's regulator registers. This is BUCK1 for
-configurations BUCK12, BUCK123 and BUCK1234 while it is BUCK3 for
-BUCK34. Correct the registers mapped for these configurations
-accordingly.
+Keep track if cec_claim_log_addrs() is running, and return -EBUSY
+if it is when calling CEC_ADAP_S_LOG_ADDRS.
 
-Fixes: f17ccc5deb4d ("regulator: tps6594-regulator: Add driver for TI TPS6594 regulators")
-Link: https://www.ti.com/lit/gpn/tps6594-q1
-Signed-off-by: Neha Malcom Francis <n-francis@ti.com>
-Link: https://msgid.link/r/20240521094758.2190331-1-n-francis@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This prevents a case where cec_claim_log_addrs() could be called
+while it was still in progress.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Yang, Chenyuan <cy54@illinois.edu>
+Closes: https://lore.kernel.org/linux-media/PH7PR11MB57688E64ADE4FE82E658D86DA09EA@PH7PR11MB5768.namprd11.prod.outlook.com/
+Fixes: ca684386e6e2 ("[media] cec: add HDMI CEC framework (api)")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/tps6594-regulator.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/media/cec/core/cec-adap.c | 6 +++++-
+ drivers/media/cec/core/cec-api.c  | 2 +-
+ include/media/cec.h               | 1 +
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/tps6594-regulator.c b/drivers/regulator/tps6594-regulator.c
-index b7f0c87797577..5fad61785e72f 100644
---- a/drivers/regulator/tps6594-regulator.c
-+++ b/drivers/regulator/tps6594-regulator.c
-@@ -287,30 +287,30 @@ static struct tps6594_regulator_irq_type *tps6594_ldos_irq_types[] = {
- static const struct regulator_desc multi_regs[] = {
- 	TPS6594_REGULATOR("BUCK12", "buck12", TPS6594_BUCK_1,
- 			  REGULATOR_VOLTAGE, tps6594_bucks_ops, TPS6594_MASK_BUCKS_VSET,
--			  TPS6594_REG_BUCKX_VOUT_1(1),
-+			  TPS6594_REG_BUCKX_VOUT_1(0),
- 			  TPS6594_MASK_BUCKS_VSET,
--			  TPS6594_REG_BUCKX_CTRL(1),
-+			  TPS6594_REG_BUCKX_CTRL(0),
- 			  TPS6594_BIT_BUCK_EN, 0, 0, bucks_ranges,
- 			  4, 4000, 0, NULL, 0, 0),
- 	TPS6594_REGULATOR("BUCK34", "buck34", TPS6594_BUCK_3,
- 			  REGULATOR_VOLTAGE, tps6594_bucks_ops, TPS6594_MASK_BUCKS_VSET,
--			  TPS6594_REG_BUCKX_VOUT_1(3),
-+			  TPS6594_REG_BUCKX_VOUT_1(2),
- 			  TPS6594_MASK_BUCKS_VSET,
--			  TPS6594_REG_BUCKX_CTRL(3),
-+			  TPS6594_REG_BUCKX_CTRL(2),
- 			  TPS6594_BIT_BUCK_EN, 0, 0, bucks_ranges,
- 			  4, 0, 0, NULL, 0, 0),
- 	TPS6594_REGULATOR("BUCK123", "buck123", TPS6594_BUCK_1,
- 			  REGULATOR_VOLTAGE, tps6594_bucks_ops, TPS6594_MASK_BUCKS_VSET,
--			  TPS6594_REG_BUCKX_VOUT_1(1),
-+			  TPS6594_REG_BUCKX_VOUT_1(0),
- 			  TPS6594_MASK_BUCKS_VSET,
--			  TPS6594_REG_BUCKX_CTRL(1),
-+			  TPS6594_REG_BUCKX_CTRL(0),
- 			  TPS6594_BIT_BUCK_EN, 0, 0, bucks_ranges,
- 			  4, 4000, 0, NULL, 0, 0),
- 	TPS6594_REGULATOR("BUCK1234", "buck1234", TPS6594_BUCK_1,
- 			  REGULATOR_VOLTAGE, tps6594_bucks_ops, TPS6594_MASK_BUCKS_VSET,
--			  TPS6594_REG_BUCKX_VOUT_1(1),
-+			  TPS6594_REG_BUCKX_VOUT_1(0),
- 			  TPS6594_MASK_BUCKS_VSET,
--			  TPS6594_REG_BUCKX_CTRL(1),
-+			  TPS6594_REG_BUCKX_CTRL(0),
- 			  TPS6594_BIT_BUCK_EN, 0, 0, bucks_ranges,
- 			  4, 4000, 0, NULL, 0, 0),
- };
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index 6f6c7437b61bc..28e3f0091155d 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -1544,9 +1544,12 @@ static int cec_config_thread_func(void *arg)
+  */
+ static void cec_claim_log_addrs(struct cec_adapter *adap, bool block)
+ {
+-	if (WARN_ON(adap->is_configuring || adap->is_configured))
++	if (WARN_ON(adap->is_claiming_log_addrs ||
++		    adap->is_configuring || adap->is_configured))
+ 		return;
+ 
++	adap->is_claiming_log_addrs = true;
++
+ 	init_completion(&adap->config_completion);
+ 
+ 	/* Ready to kick off the thread */
+@@ -1561,6 +1564,7 @@ static void cec_claim_log_addrs(struct cec_adapter *adap, bool block)
+ 		wait_for_completion(&adap->config_completion);
+ 		mutex_lock(&adap->lock);
+ 	}
++	adap->is_claiming_log_addrs = false;
+ }
+ 
+ /*
+diff --git a/drivers/media/cec/core/cec-api.c b/drivers/media/cec/core/cec-api.c
+index d64bb716f9c68..3ef9153443044 100644
+--- a/drivers/media/cec/core/cec-api.c
++++ b/drivers/media/cec/core/cec-api.c
+@@ -178,7 +178,7 @@ static long cec_adap_s_log_addrs(struct cec_adapter *adap, struct cec_fh *fh,
+ 			   CEC_LOG_ADDRS_FL_ALLOW_RC_PASSTHRU |
+ 			   CEC_LOG_ADDRS_FL_CDC_ONLY;
+ 	mutex_lock(&adap->lock);
+-	if (!adap->is_configuring &&
++	if (!adap->is_claiming_log_addrs && !adap->is_configuring &&
+ 	    (!log_addrs.num_log_addrs || !adap->is_configured) &&
+ 	    !cec_is_busy(adap, fh)) {
+ 		err = __cec_s_log_addrs(adap, &log_addrs, block);
+diff --git a/include/media/cec.h b/include/media/cec.h
+index 9c007f83569aa..ffd17371302ca 100644
+--- a/include/media/cec.h
++++ b/include/media/cec.h
+@@ -247,6 +247,7 @@ struct cec_adapter {
+ 	u16 phys_addr;
+ 	bool needs_hpd;
+ 	bool is_enabled;
++	bool is_claiming_log_addrs;
+ 	bool is_configuring;
+ 	bool must_reconfigure;
+ 	bool is_configured;
 -- 
 2.43.0
 
