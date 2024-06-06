@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-49494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC258FED7F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7EE8FE9D5
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0C591F2119F
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9403A28952F
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DF21BB6BF;
-	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF7C19B5BC;
+	Thu,  6 Jun 2024 14:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSeIuqlt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTMmwtD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD0D19DF62;
-	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3892619B5BB;
+	Thu,  6 Jun 2024 14:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683493; cv=none; b=U+jvc8ZUFEZcKO+oAlIEC/Z11TKborCRK5cGAuJIQrtz5wdW3uXC6fZan/VW9jbT21VV3D7oL799slNIviJkgvovvOyMAOe/tDhCBC3EHjZ1V2tDNmjYrcv70vVjwNDsPhZmUvvQWtAglnoEpSfdmrKK1q74DE66aPArXySvSa8=
+	t=1717683071; cv=none; b=lNlkjMWKR7L0mcmV2sLUpu19lXXvnbJ/jzyCeDFi1isnISqYQvOuK4UT4DBY/1SbRkDtCStFdKggY6FHN/DPcSG+7R/+sIIUby5b0wK8kFNsyqfLZiEEnZA3vzNzUZyQ5DZd5nOoz1gTN80QptS0yi8wMWwytykQ1U/2IEhheCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683493; c=relaxed/simple;
-	bh=W2SwFBLySb02PC18EHJQaUeBhRSzZ5jXR9o+y69KMQU=;
+	s=arc-20240116; t=1717683071; c=relaxed/simple;
+	bh=ypdF/gJnRtOTj5kcklSFX+QalW/r8veraK8GY8+96PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IjtUvQSNa6MVSnexUfSxzMTxjAGwUs/EvJaSIWl9RI7Hc0QE554siWSK4Xe89WX7Wr3KuABnCo9elKh0auX7GjKACG4QFeFHZPkOjIUs0MXFBNaXXLu/0fXDVASW0NpPSDE3SzM34d4l5lFT8HoIz7U0xPXtrKDWbyYnFF82SB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSeIuqlt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C059C32786;
-	Thu,  6 Jun 2024 14:18:13 +0000 (UTC)
+	 MIME-Version; b=n4d/T5wx+LdaWQ3TRDcJNGeO56JlF6MRt+bDXTNcoqs0MOjO/qdTLh0op341MERQNcYb2KUIG3cTrybE86gcaY8TYC0nwrTTudEhbBxu54uVXbLC4S3IP+6lSCWjUlAWQikH0UW5Ru6D1hw9gx+Ig4R3eiCefIJJ+hnoZLLcf2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTMmwtD1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17370C4AF0E;
+	Thu,  6 Jun 2024 14:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683493;
-	bh=W2SwFBLySb02PC18EHJQaUeBhRSzZ5jXR9o+y69KMQU=;
+	s=korg; t=1717683071;
+	bh=ypdF/gJnRtOTj5kcklSFX+QalW/r8veraK8GY8+96PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSeIuqltA0jSVoqcx0u927LNClZlCdRoTW1KxQMisEj+9P+8dIvpw47GPxmuVRupK
-	 RUQd7GDdCsu/IsaE/L4Ey2t8Zy76a0270hzoXLVJyZtp8KkwefYQgFJrw1v1+tXXh3
-	 l/QeE6+q0/+ZtR6gfZx/0fY1alnQNN6EKref6IhA=
+	b=GTMmwtD1JVSjFyTz4WelTdP7C4riUVnyCJixp557kixKbH/TFDWtAlXxpnZ3n1fQe
+	 N0nm39iusJYb5KPNUFSnEA6azc0Seo3PAUHGr4hXI3s+i9wlFIo/g4I/Vy4t96rSgv
+	 vB0xsW2nOkt0e5G9lW6X3RaVnGFd68bsCtC4Seqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 383/473] powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
+Subject: [PATCH 6.9 333/374] block: stack max_user_sectors
 Date: Thu,  6 Jun 2024 16:05:12 +0200
-Message-ID: <20240606131712.517152856@linuxfoundation.org>
+Message-ID: <20240606131703.010109029@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 6d4341638516bf97b9a34947e0bd95035a8230a5 ]
+[ Upstream commit e528bede6f4e6822afdf0fa80be46ea9199f0911 ]
 
-Couple of Minor fixes:
+The max_user_sectors is one of the three factors determining the actual
+max_sectors limit for READ/WRITE requests.  Because of that it needs to
+be stacked at least for the device mapper multi-path case where requests
+are directly inserted on the lower device.  For SCSI disks this is
+important because the sd driver actually sets it's own advisory limit
+that is lower than max_hw_sectors based on the block limits VPD page.
+While this is a bit odd an unusual, the same effect can happen if a
+user or udev script tweaks the value manually.
 
-- hcall return values are long. Fix that for h_get_mpp, h_get_ppp and
-parse_ppp_data
-
-- If hcall fails, values set should be at-least zero. It shouldn't be
-uninitialized values. Fix that for h_get_mpp and h_get_ppp
-
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240412092047.455483-3-sshegde@linux.ibm.com
+Fixes: 4f563a64732d ("block: add a max_user_discard_sectors queue limit")
+Reported-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20240523182618.602003-3-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/hvcall.h        | 2 +-
- arch/powerpc/platforms/pseries/lpar.c    | 6 +++---
- arch/powerpc/platforms/pseries/lparcfg.c | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ block/blk-settings.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index 95fd7f9485d55..47bc10cdb70b5 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -539,7 +539,7 @@ struct hvcall_mpp_data {
- 	unsigned long backing_mem;
- };
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 9d6033e01f2e1..15319b217bf3f 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -751,6 +751,8 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 	unsigned int top, bottom, alignment, ret = 0;
  
--int h_get_mpp(struct hvcall_mpp_data *);
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data);
- 
- struct hvcall_mpp_x_data {
- 	unsigned long coalesced_bytes;
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 5186d65d772e2..29d235b02f062 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -1904,10 +1904,10 @@ notrace void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf)
-  * h_get_mpp
-  * H_GET_MPP hcall returns info in 7 parms
-  */
--int h_get_mpp(struct hvcall_mpp_data *mpp_data)
-+long h_get_mpp(struct hvcall_mpp_data *mpp_data)
- {
--	int rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
- 
- 	rc = plpar_hcall9(H_GET_MPP, retbuf);
- 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index ca10a3682c46e..a3f5debd834b2 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -112,8 +112,8 @@ struct hvcall_ppp_data {
-  */
- static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
- {
--	unsigned long rc;
--	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE];
-+	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-+	long rc;
- 
- 	rc = plpar_hcall9(H_GET_PPP, retbuf);
- 
-@@ -192,7 +192,7 @@ static void parse_ppp_data(struct seq_file *m)
- 	struct hvcall_ppp_data ppp_data;
- 	struct device_node *root;
- 	const __be32 *perf_level;
--	int rc;
-+	long rc;
- 
- 	rc = h_get_ppp(&ppp_data);
- 	if (rc)
+ 	t->max_sectors = min_not_zero(t->max_sectors, b->max_sectors);
++	t->max_user_sectors = min_not_zero(t->max_user_sectors,
++			b->max_user_sectors);
+ 	t->max_hw_sectors = min_not_zero(t->max_hw_sectors, b->max_hw_sectors);
+ 	t->max_dev_sectors = min_not_zero(t->max_dev_sectors, b->max_dev_sectors);
+ 	t->max_write_zeroes_sectors = min(t->max_write_zeroes_sectors,
 -- 
 2.43.0
 
