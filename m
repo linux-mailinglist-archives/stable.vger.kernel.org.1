@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-49469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363A98FED60
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:36:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3254D8FEECA
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 547A61F2188E
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:36:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5B2285036
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DECA1BA889;
-	Thu,  6 Jun 2024 14:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5111C7D77;
+	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NA6FA03F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQXM8Ids"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15071BA874;
-	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995A7199229;
+	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683481; cv=none; b=bIiqdad7Ua0m7XfdLXL5947FknBuC8zK0AgsjOVWFeNZUf+o/NgUpgWntU9FZVv9vo/JwGnt3KkjF/jO9b+8UpgAEXE4VlbTBpOqnCimy7YmfQj9+2cOZCo//TGP3sCrKiYrQqwDwKM+qfM7i6RkYE9qfP7kHZwyfst9TYxSTGQ=
+	t=1717683701; cv=none; b=gimph8fq7gxamNY4q8oZC4gmacutBgkmmf1kK/BuT2kfK7iKmOowo1/U207V+4IA+3GFobowR6XJdtQg2pbGvX4kR/5KMbjnBG0PALEZ7EucpJj0aNcuFBc/YOLXdeE3mfl67VIaKpKnr0W8Z1zvjCfrevhaQil1ZNuOBQTo9fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683481; c=relaxed/simple;
-	bh=76JM6Uzf8BjV17p8saz58Lryn17HXoihSFihPt0Zk6s=;
+	s=arc-20240116; t=1717683701; c=relaxed/simple;
+	bh=2xPfXcKSNZKsmx3LbuyQLV3V8vuwqe7FNGz9fngatZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eF4CPuTInQF/ituMhEKZrRyB1eCwzNhl4RKnnapvRtZkMXhnEvGe9d7gHkRhTYx8CF//lCuvoIr1dDSy7cAj9Fp9ltkGmyyKC71CzrEnsdAcktLcAJOW64vU4A0BSXGS4xcNrne13+CAVjSo3yPdDqnghC18RBN6wUOozCkcpeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NA6FA03F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D133AC2BD10;
-	Thu,  6 Jun 2024 14:18:00 +0000 (UTC)
+	 MIME-Version; b=i4dXS0DzJcf9NqPbHPWlJhq5+qg6Sf58ver3pUJmrdolrexa93u6BoMQ8n1M2HnTHWdq+Nk4LD+MppdNaj1kyuXQewur546qBl48bVEfyD9qnnSPI4q21hQsVTveMkjvDpq8+GHzd1ZVHHfgmUxecQpTwVR7SbAHvatDaKNNNlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQXM8Ids; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79262C2BD10;
+	Thu,  6 Jun 2024 14:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683480;
-	bh=76JM6Uzf8BjV17p8saz58Lryn17HXoihSFihPt0Zk6s=;
+	s=korg; t=1717683701;
+	bh=2xPfXcKSNZKsmx3LbuyQLV3V8vuwqe7FNGz9fngatZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NA6FA03Fw1Uj7f7CrEwvj+tjojetgz8GVxDDCilR10+5tl64f5BSWvbGJ0r4gLCPo
-	 vRQZk0Lw9xVRuAqgMrH9mT00pUesrtsZiD1ofQkvJ29PSD6JLBhSbySGOatFOFBEFZ
-	 mHMY7X6jS5Ea369iW38klTdKTYL8ay+C21WIU9Rc=
+	b=TQXM8IdsjVUld1a/SZcBJQhtUW7B3t3b8/2e+a2zzm2S5SddPIgTzme91N0PSCGaG
+	 KOIbYI0cZ1+FSsv5S9io7I0yAftMUvtvwnGRHy8qZAuEHivzVPjnxRdBuv5jCDSEOT
+	 1WqMoanwf1aXZLoNHb1bEtSAtapztY1H0PwTepU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fenglin Wu <quic_fenglinw@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Faith Ekstrand <faith.ekstrand@collabora.com>,
+	Dave Airlie <airlied@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 367/473] Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
+Subject: [PATCH 6.6 624/744] nouveau: add an ioctl to report vram usage
 Date: Thu,  6 Jun 2024 16:04:56 +0200
-Message-ID: <20240606131712.036860265@linuxfoundation.org>
+Message-ID: <20240606131752.511479498@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenglin Wu <quic_fenglinw@quicinc.com>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 48c0687a322d54ac7e7a685c0b6db78d78f593af ]
+[ Upstream commit 72fa02fdf83306c52bc1eede28359e3fa32a151a ]
 
-The output voltage is inclusive hence the max level calculation is
-off-by-one-step. Correct it.
+This reports the currently used vram allocations.
 
-iWhile we are at it also add a define for the step size instead of
-using the magic value.
+userspace using this has been proposed for nvk, but
+it's a rather trivial uapi addition.
 
-Fixes: 11205bb63e5c ("Input: add support for pm8xxx based vibrator driver")
-Signed-off-by: Fenglin Wu <quic_fenglinw@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240412-pm8xxx-vibrator-new-design-v10-1-0ec0ad133866@quicinc.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Faith Ekstrand <faith.ekstrand@collabora.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Stable-dep-of: aed9a1a4f710 ("drm/nouveau: use tile_mode and pte_kind for VM_BIND bo allocations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/pm8xxx-vibrator.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_abi16.c | 5 +++++
+ include/uapi/drm/nouveau_drm.h          | 7 +++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/input/misc/pm8xxx-vibrator.c b/drivers/input/misc/pm8xxx-vibrator.c
-index 53ad25eaf1a28..8bfe5c7b1244c 100644
---- a/drivers/input/misc/pm8xxx-vibrator.c
-+++ b/drivers/input/misc/pm8xxx-vibrator.c
-@@ -14,7 +14,8 @@
+diff --git a/drivers/gpu/drm/nouveau/nouveau_abi16.c b/drivers/gpu/drm/nouveau/nouveau_abi16.c
+index d05bd0ecea2b5..0fbc9c841666e 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_abi16.c
++++ b/drivers/gpu/drm/nouveau/nouveau_abi16.c
+@@ -272,6 +272,11 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
+ 	case NOUVEAU_GETPARAM_VRAM_BAR_SIZE:
+ 		getparam->value = nvkm_device->func->resource_size(nvkm_device, 1);
+ 		break;
++	case NOUVEAU_GETPARAM_VRAM_USED: {
++		struct ttm_resource_manager *vram_mgr = ttm_manager_type(&drm->ttm.bdev, TTM_PL_VRAM);
++		getparam->value = (u64)ttm_resource_manager_usage(vram_mgr) << PAGE_SHIFT;
++		break;
++	}
+ 	default:
+ 		NV_PRINTK(dbg, cli, "unknown parameter %lld\n", getparam->param);
+ 		return -EINVAL;
+diff --git a/include/uapi/drm/nouveau_drm.h b/include/uapi/drm/nouveau_drm.h
+index 10a917639d8d3..77d7ff0d5b110 100644
+--- a/include/uapi/drm/nouveau_drm.h
++++ b/include/uapi/drm/nouveau_drm.h
+@@ -61,6 +61,13 @@ extern "C" {
+  */
+ #define NOUVEAU_GETPARAM_VRAM_BAR_SIZE 18
  
- #define VIB_MAX_LEVEL_mV	(3100)
- #define VIB_MIN_LEVEL_mV	(1200)
--#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV)
-+#define VIB_PER_STEP_mV		(100)
-+#define VIB_MAX_LEVELS		(VIB_MAX_LEVEL_mV - VIB_MIN_LEVEL_mV + VIB_PER_STEP_mV)
- 
- #define MAX_FF_SPEED		0xff
- 
-@@ -118,10 +119,10 @@ static void pm8xxx_work_handler(struct work_struct *work)
- 		vib->active = true;
- 		vib->level = ((VIB_MAX_LEVELS * vib->speed) / MAX_FF_SPEED) +
- 						VIB_MIN_LEVEL_mV;
--		vib->level /= 100;
-+		vib->level /= VIB_PER_STEP_mV;
- 	} else {
- 		vib->active = false;
--		vib->level = VIB_MIN_LEVEL_mV / 100;
-+		vib->level = VIB_MIN_LEVEL_mV / VIB_PER_STEP_mV;
- 	}
- 
- 	pm8xxx_vib_set(vib, vib->active);
++/*
++ * NOUVEAU_GETPARAM_VRAM_USED
++ *
++ * Get remaining VRAM size.
++ */
++#define NOUVEAU_GETPARAM_VRAM_USED 19
++
+ struct drm_nouveau_getparam {
+ 	__u64 param;
+ 	__u64 value;
 -- 
 2.43.0
 
