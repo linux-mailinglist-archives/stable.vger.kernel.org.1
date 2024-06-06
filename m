@@ -1,70 +1,66 @@
-Return-Path: <stable+bounces-48425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8428FE8F5
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:12:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940B08FED71
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332481F2437C
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:12:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18426B25393
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52251990C3;
-	Thu,  6 Jun 2024 14:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE881BB684;
+	Thu,  6 Jun 2024 14:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCOmK5KV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaYaeZLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650A019750E;
-	Thu,  6 Jun 2024 14:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C997198E92;
+	Thu,  6 Jun 2024 14:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682959; cv=none; b=CBuS7hN2kSchrc7Bomku/O+8GWx1r1PTQ7HF2TJOWROMbV7/PBkI7uByI9+eVLnPezlHbMJf7IGUsrmPgjK9GjUcxyeClzGIXHH8Gzy5yJJgjVHbmA5xGy1P71+8JBGLw084goSCgH5rjs99HRYn2ruZYRDNz3bHFtHFP/3sgSg=
+	t=1717683488; cv=none; b=AzEvbW2kYS+RNxxTjL1aSiTqJm4TMeDcvLcpP5H2HjIjCbDYAcS2o/gUkrmkfOi3jBNEBOkF8nb5JHqOqN0BlRlBBqUfPvzni2nMPuJLW0EKxoDhd4KjWeR/3uaqRZx0+AKGkAxCV7sED16Vmw8tWHupQYvEpJsShKQrteCdCAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682959; c=relaxed/simple;
-	bh=JHq7ywA1T1xfF7Snz3z++dS3Y/yQzo4Q/gwTY54bbNY=;
+	s=arc-20240116; t=1717683488; c=relaxed/simple;
+	bh=9gUXLYPIfX2i1FXnLQ3YLUX9R/VLBpC/QWXmaGCq7sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbCQUEW2PfzlvmYEq4QdqU26V5bHh2gWSgMa7NgCMiofpgFA58A/Q4MJBgWAAxnst4vSbwle94/LHbfW5Dx0HsQQSGGfsbWZWwbpP9iPJ+YMIXS7MDBpkXIyIoaPvO/UxlMEDMja4XQwbD5Rux9P/APhP1iVCgriir5nJ6Cx4SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCOmK5KV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3735FC32786;
-	Thu,  6 Jun 2024 14:09:19 +0000 (UTC)
+	 MIME-Version; b=IlQ1/waS48AzieYJKs8lru2YDy8qvzA1/R5GeszU1J3h/Ka5oKnho3sWqS9O9uTe4ni5kJ/iEGU4xtkb+UjWPED2jUa9LIv26BZZLDD8vp/Cv98SzDdSzBofrH+WM4bN39o5opNy84nB4OhcgZKgMqzRAy1RqWW2o6C84Yv5y3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaYaeZLr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F51DC2BD10;
+	Thu,  6 Jun 2024 14:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682959;
-	bh=JHq7ywA1T1xfF7Snz3z++dS3Y/yQzo4Q/gwTY54bbNY=;
+	s=korg; t=1717683488;
+	bh=9gUXLYPIfX2i1FXnLQ3YLUX9R/VLBpC/QWXmaGCq7sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCOmK5KVHcwrxpzrfMZmAWZMbVzlALk903kvtwM+tUSmdQbvP1wParqhxuLWas79W
-	 YY1pbpzhFVHxYN0c7P3mjxgbsZh4bhOSNy0RuTJWvlqQAekq3m1tk1ay+rizUqFf/q
-	 4vchtrCUX8/dp0tLpemeGpMr8HrHhN21XT0IIc7c=
+	b=oaYaeZLrVDHFKRxViL7Yp2dCLZhPc+hyqUq49NY7hTTTej6RD21bmaF78xvRC1DrE
+	 Z6BcpurQa/qoovVvHhyBnpONUyEC5T+U6iiSozlrPACwBKYxEODVNAA6rEHiY00r8n
+	 SwbXlwo19rYp0CsbpTLASILe39mc8fIGP9wuyo+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
 	Ian Rogers <irogers@google.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jing Zhang <renyu.zj@linux.alibaba.com>,
 	Jiri Olsa <jolsa@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andrei Vagin <avagin@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Kees Kook <keescook@chromium.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 124/374] perf pmu: Assume sysfs events are always the same case
+Subject: [PATCH 6.6 431/744] perf bench uprobe: Remove lib64 from libc.so.6 binary path
 Date: Thu,  6 Jun 2024 16:01:43 +0200
-Message-ID: <20240606131656.063466115@linuxfoundation.org>
+Message-ID: <20240606131746.291336842@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,128 +72,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 7b6dd7a923281a7ccb980a0f768d6926721eb3cc ]
+[ Upstream commit 459fee7b508231cd4622b3bd94aaa85e8e16b888 ]
 
-Perf event names aren't case sensitive. For sysfs events the entire
-directory of events is read then iterated comparing names in a case
-insensitive way, most often to see if an event is present.
+bpf_program__attach_uprobe_opts will search LD_LIBRARY_PATH and so
+specifying `/lib64` is unnecessary and causes failures for libc.so.6
+paths like `/lib/x86_64-linux-gnu/libc.so.6`.
 
-Consider:
-
-  $ perf stat -e inst_retired.any true
-
-The event inst_retired.any may be present in any PMU, so every PMU's
-sysfs events are loaded and then searched with strcasecmp to see if
-any match. This event is only present on the cpu PMU as a JSON event
-so a lot of events were loaded from sysfs unnecessarily just to prove
-an event didn't exist there.
-
-This change avoids loading all the events by assuming sysfs event
-names are always either lower or uppercase. It uses file exists and
-only loads the events when the desired event is present.
-
-For the example above, the number of openat calls measured by 'perf
-trace' on a tigerlake laptop goes from 325 down to 255. The reduction
-will be larger for machines with many PMUs, particularly replicated
-uncore PMUs.
-
-Ensure pmu_aliases_parse() is called before all uses of the aliases
-list, but remove some "pmu->sysfs_aliases_loaded" tests as they are now
-part of the function.
-
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Fixes: 7b47623b8cae8149 ("perf bench uprobe trace_printk: Add entry attaching an BPF program that does a trace_printk")
 Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Andrei Vagin <avagin@google.com>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jing Zhang <renyu.zj@linux.alibaba.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Kees Kook <keescook@chromium.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240502213507.2339733-7-irogers@google.com
+Link: https://lore.kernel.org/r/20240406040911.1603801-1-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: d9c5f5f94c2d ("perf pmu: Count sys and cpuid JSON events separately")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmu.c | 31 ++++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+ tools/perf/bench/uprobe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 8695b47491f0a..feab54606a995 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -425,9 +425,30 @@ static struct perf_pmu_alias *perf_pmu__find_alias(struct perf_pmu *pmu,
- {
- 	struct perf_pmu_alias *alias;
- 
--	if (load && !pmu->sysfs_aliases_loaded)
--		pmu_aliases_parse(pmu);
-+	if (load && !pmu->sysfs_aliases_loaded) {
-+		bool has_sysfs_event;
-+		char event_file_name[FILENAME_MAX + 8];
- 
-+		/*
-+		 * Test if alias/event 'name' exists in the PMU's sysfs/events
-+		 * directory. If not skip parsing the sysfs aliases. Sysfs event
-+		 * name must be all lower or all upper case.
-+		 */
-+		scnprintf(event_file_name, sizeof(event_file_name), "events/%s", name);
-+		for (size_t i = 7, n = 7 + strlen(name); i < n; i++)
-+			event_file_name[i] = tolower(event_file_name[i]);
-+
-+		has_sysfs_event = perf_pmu__file_exists(pmu, event_file_name);
-+		if (!has_sysfs_event) {
-+			for (size_t i = 7, n = 7 + strlen(name); i < n; i++)
-+				event_file_name[i] = toupper(event_file_name[i]);
-+
-+			has_sysfs_event = perf_pmu__file_exists(pmu, event_file_name);
-+		}
-+		if (has_sysfs_event)
-+			pmu_aliases_parse(pmu);
-+
-+	}
- 	list_for_each_entry(alias, &pmu->aliases, list) {
- 		if (!strcasecmp(alias->name, name))
- 			return alias;
-@@ -1632,9 +1653,7 @@ size_t perf_pmu__num_events(struct perf_pmu *pmu)
- {
- 	size_t nr;
- 
--	if (!pmu->sysfs_aliases_loaded)
--		pmu_aliases_parse(pmu);
--
-+	pmu_aliases_parse(pmu);
- 	nr = pmu->sysfs_aliases;
- 
- 	if (pmu->cpu_aliases_added)
-@@ -1693,6 +1712,7 @@ int perf_pmu__for_each_event(struct perf_pmu *pmu, bool skip_duplicate_pmus,
- 	struct strbuf sb;
- 
- 	strbuf_init(&sb, /*hint=*/ 0);
-+	pmu_aliases_parse(pmu);
- 	pmu_add_cpu_aliases(pmu);
- 	list_for_each_entry(event, &pmu->aliases, list) {
- 		size_t buf_used;
-@@ -2093,6 +2113,7 @@ const char *perf_pmu__name_from_config(struct perf_pmu *pmu, u64 config)
- 	if (!pmu)
- 		return NULL;
- 
-+	pmu_aliases_parse(pmu);
- 	pmu_add_cpu_aliases(pmu);
- 	list_for_each_entry(event, &pmu->aliases, list) {
- 		struct perf_event_attr attr = {.config = 0,};
+diff --git a/tools/perf/bench/uprobe.c b/tools/perf/bench/uprobe.c
+index 914c0817fe8ad..e8e0afa13f049 100644
+--- a/tools/perf/bench/uprobe.c
++++ b/tools/perf/bench/uprobe.c
+@@ -47,7 +47,7 @@ static const char * const bench_uprobe_usage[] = {
+ #define bench_uprobe__attach_uprobe(prog) \
+ 	skel->links.prog = bpf_program__attach_uprobe_opts(/*prog=*/skel->progs.prog, \
+ 							   /*pid=*/-1, \
+-							   /*binary_path=*/"/lib64/libc.so.6", \
++							   /*binary_path=*/"libc.so.6", \
+ 							   /*func_offset=*/0, \
+ 							   /*opts=*/&uprobe_opts); \
+ 	if (!skel->links.prog) { \
 -- 
 2.43.0
 
