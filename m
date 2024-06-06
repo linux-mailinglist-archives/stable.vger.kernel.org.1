@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-49559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DB18FEDCA
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:39:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1138B8FEA09
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 011BB1C23DB1
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:39:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F31BE1C25C81
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607F81BD50A;
-	Thu,  6 Jun 2024 14:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F501974E1;
+	Thu,  6 Jun 2024 14:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Asb7Cvwt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvwdxvNm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE8D1990AA;
-	Thu,  6 Jun 2024 14:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9ECF19D09B;
+	Thu,  6 Jun 2024 14:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683526; cv=none; b=kIi4gr83wZ3UHgdPEHVn1jp2vJ/R+IKnWAZrKIqcmdiZ1kOeYXAuV5YNusf2Lc9fxOWHggLHBDjghCqsQesh003U3l4RRqN/EZPKwNJVKrKrYsP4RXeOKv9VzLY4Ivd+z2dicrfgPJVlOuZ5sK7rxCW+A4I4kC3K1D5cGRbHAn4=
+	t=1717683094; cv=none; b=ln3HQKY89jwqpUodLYYn2glo1vRKjGz973/dg0UKJJB9pfs5tX2jDBtpRWuh3NMzje4L3BXqz5Mw8YvjH8jvuCB82vWfh8QLslxYesqgsSZ31c/EZA4p0MrBL7wbH4FFay4X4LsRgTIA7sxevpXa+dA7zfVHzVvBMcJWriWA3uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683526; c=relaxed/simple;
-	bh=hCaXcCo0LwFXi2gIucAdH+pSd0MTNJM5C1YQLWgjiP0=;
+	s=arc-20240116; t=1717683094; c=relaxed/simple;
+	bh=jct6SWgEW2ocNHceU2bEe+inWKy1BWRMNJ/3RbNHWoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b5WhX1ugf+7TSMLrOoTm/6D5dbZkpPoKNiVBY3mQx5sgKqxGQYSjBOSjZCR0BOKoZlo+p98QmkvIpltAOE3u2EuECINrErLWchPWRHT+/LncoZ+i6aZ9fHnRy6ZGRSFRYHKq21MH1tMkXVsGMF6JWAgBNpQlGGdqzHalKZ6VHQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Asb7Cvwt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14FAC4AF09;
-	Thu,  6 Jun 2024 14:18:45 +0000 (UTC)
+	 MIME-Version; b=Szb1dzhI/JrckM6A0NEH/xFyjhbUrjoJ5iQWyn4ReqL1Evv2fGE8agxpfWeOr2aCRiwB9k/tBZhMMcWmgLHuCgE3JUaGP403JfUtCqKTibnidW8lMu2b9Yf1hYCHFHE60Pim3yxqC3H3mJZFwWRg760abnTjyXP0CnllsWpxEQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvwdxvNm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B557CC2BD10;
+	Thu,  6 Jun 2024 14:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683526;
-	bh=hCaXcCo0LwFXi2gIucAdH+pSd0MTNJM5C1YQLWgjiP0=;
+	s=korg; t=1717683094;
+	bh=jct6SWgEW2ocNHceU2bEe+inWKy1BWRMNJ/3RbNHWoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Asb7CvwtKVjYoSNLSFsoiSoIkSMmTcKSvJGl3+thAHVKuGbOCTdxDbEB9hSa5v/Hh
-	 dw9hBOSUqZSREZHHbZtkbUAg9b/ekva++b4Eu/CGO0GwOi9KWZKNDP0geISrT1ABMQ
-	 ZjdMDQX5OxTrZvVp2VCRbWiKRqLNNw0exEnnHMVk=
+	b=MvwdxvNmRv/1Er+bpM3tRlAGsUlP2F2d7CdML9CCji4GYCAOJ+mF6tNHuHkt6QKl7
+	 h+Q9508u0lxEbDJhTCYbU+LD7iZhBN4sGwDfgVaym4KTiixMPjKgnKm8qV4rkS3WHl
+	 HQkhKToH2GWS3k/mCVDpHSELhx5uTiDLvNB7c29w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 417/473] rv: Update rv_en(dis)able_monitor doc to match kernel-doc
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.9 367/374] efi: libstub: only free priv.runtime_map when allocated
 Date: Thu,  6 Jun 2024 16:05:46 +0200
-Message-ID: <20240606131713.571851741@linuxfoundation.org>
+Message-ID: <20240606131704.174267952@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit 1e8b7b3dbb3103d577a586ca72bc329f7b67120b ]
+commit 4b2543f7e1e6b91cfc8dd1696e3cdf01c3ac8974 upstream.
 
-The patch updates the function documentation comment for
-rv_en(dis)able_monitor to adhere to the kernel-doc specification.
+priv.runtime_map is only allocated when efi_novamap is not set.
+Otherwise, it is an uninitialized value.  In the error path, it is freed
+unconditionally.  Avoid passing an uninitialized value to free_pool.
+Free priv.runtime_map only when it was allocated.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240520054239.61784-1-yang.lee@linux.alibaba.com
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-Fixes: 102227b970a15 ("rv: Add Runtime Verification (RV) interface")
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f80d26043af9 ("efi: libstub: avoid efi_get_memory_map() for allocating the virt map")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/rv/rv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/firmware/efi/libstub/fdt.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/rv/rv.c b/kernel/trace/rv/rv.c
-index 6c97cc2d754aa..d0d49b910474f 100644
---- a/kernel/trace/rv/rv.c
-+++ b/kernel/trace/rv/rv.c
-@@ -245,6 +245,7 @@ static int __rv_disable_monitor(struct rv_monitor_def *mdef, bool sync)
+--- a/drivers/firmware/efi/libstub/fdt.c
++++ b/drivers/firmware/efi/libstub/fdt.c
+@@ -335,8 +335,8 @@ fail_free_new_fdt:
  
- /**
-  * rv_disable_monitor - disable a given runtime monitor
-+ * @mdef: Pointer to the monitor definition structure.
-  *
-  * Returns 0 on success.
-  */
-@@ -256,6 +257,7 @@ int rv_disable_monitor(struct rv_monitor_def *mdef)
+ fail:
+ 	efi_free(fdt_size, fdt_addr);
+-
+-	efi_bs_call(free_pool, priv.runtime_map);
++	if (!efi_novamap)
++		efi_bs_call(free_pool, priv.runtime_map);
  
- /**
-  * rv_enable_monitor - enable a given runtime monitor
-+ * @mdef: Pointer to the monitor definition structure.
-  *
-  * Returns 0 on success, error otherwise.
-  */
--- 
-2.43.0
-
+ 	return EFI_LOAD_ERROR;
+ }
 
 
 
