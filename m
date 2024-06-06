@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-48383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-49010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945528FE8C8
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:10:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8814B8FEB7B
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:25:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 989EF1C2458B
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:10:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23DB9B26040
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7C9198A0F;
-	Thu,  6 Jun 2024 14:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BCC1AB51D;
+	Thu,  6 Jun 2024 14:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/IbfjGK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MONJbGPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FD9196C6F;
-	Thu,  6 Jun 2024 14:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63668199E8E;
+	Thu,  6 Jun 2024 14:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682933; cv=none; b=a+n3U+PkVTnPz76BI6pwKOg9wuBGwX/nRGx7e/c1if4yNbgIoEnBls1HwlceupPQGlECyfOIlw6nlAnk+f+HbyTSb/BxV6nsGS49gwsXgbJey5DX3qPr8//sXXhywJ23F6RhynfJb0tCqM1+9xRBcJHbNSdd88B9UA8F2RKLegg=
+	t=1717683256; cv=none; b=Ae/umwUuJ+xAjtjvQuowzFhlDSCy/MvukPXV1Ufxjz3gYblr1+/TY/rsOh89jMt7KVbUMfIKzl7CebieFJGLaseGDRlCF+JRtnHB24BaoAissjh2aBhuy9WOzwOGqHy1vLN7pvQ/+j8HDXfgChH67rHc8zG2yceUWImpijUZXSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682933; c=relaxed/simple;
-	bh=u5ZxTNX9FnUd7erFcSrmKNgne4v/c8cEu0dR3BE8MmQ=;
+	s=arc-20240116; t=1717683256; c=relaxed/simple;
+	bh=ZgooElYuAEY8MiVZdIHNhTbJnUBOiR5QAuGH2y6rk0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmRfIOGWF6rcQteeaW1lMplivhYhyHTzZxr8kvGVD5kLsP/XimV+gCVeekgTiBULd9GwZ4Y+N9/PF/uOSrQCV8OHJ9/rVImZIp+gF+TUZ12CrqC/TJ1DlbM/chDYkk7I8pTL/Wisg/PBLsOHvfJ0MC7Y7gY54Hp+P5KhNEEXWRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/IbfjGK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3C4C2BD10;
-	Thu,  6 Jun 2024 14:08:53 +0000 (UTC)
+	 MIME-Version; b=uZhj1gcK+CfIHKwPsjTc4QWrXLy/Mplv7zi59dGeOnbg6s6NobDIo6xRCU0/csfa5T3Iydt4Bhl6BIzsZlMkfsUJ7KK568Ygdz2p5HguRGC6ntCBSrCR6FUoxHogiCShz7OJeJU3Us01L78+oDi4ZMOB7tqVxBr9zdA2TUFqJx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MONJbGPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394F1C2BD10;
+	Thu,  6 Jun 2024 14:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682933;
-	bh=u5ZxTNX9FnUd7erFcSrmKNgne4v/c8cEu0dR3BE8MmQ=;
+	s=korg; t=1717683256;
+	bh=ZgooElYuAEY8MiVZdIHNhTbJnUBOiR5QAuGH2y6rk0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/IbfjGKYQljyamdJapSj8iH3zPh5TzOAIBNzqVF7VUc7cigl64pzAywv5xEhfzeU
-	 AdTPcCMJfN8dj/EN75C45oXlGDnslOwr2XTwggTTeCbNP6bYTrafjpMFrydDpz9R68
-	 Tya+Wwb7CM7tG2/F4n27p2287VvD79+2vmyPVadI=
+	b=MONJbGPonz3nfmuHkwQPo/BK+VXXXBI4gxe4ykej1FtFSWnxnB1Qk+HhjwPtOmbgm
+	 DZU1OFGrP95DE821TJr+En1R6F5ftR5AHLBMQVIp1C26FcdO183WLnUG1gttBCPyKv
+	 QqtdyNckbB7x9i0Oz9U07bwHLwmIP+KiAq7ZyYzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 082/374] dt-bindings: phy: qcom,sc8280xp-qmp-ufs-phy: fix msm899[68] power-domains
+Subject: [PATCH 6.1 132/473] wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
 Date: Thu,  6 Jun 2024 16:01:01 +0200
-Message-ID: <20240606131654.610406466@linuxfoundation.org>
+Message-ID: <20240606131704.291566025@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
+References: <20240606131659.786180261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 59e377a124dc9039d9554d823b1cb4942bcee9a0 ]
+[ Upstream commit c511a9c12674d246916bb16c479d496b76983193 ]
 
-The Qualcomm MSM8996 and MSM8998 platforms don't have separate power
-domain for the UFS PHY. Replace required:power-domains with the
-conditional schema.
+Clang Static Checker (scan-build) warns:
 
-Fixes: dc5cb63592bd ("dt-bindings: phy: migrate QMP UFS PHY bindings to qcom,sc8280xp-qmp-ufs-phy.yaml")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-2-f1fd15c33fb3@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
+Value stored to 'ret' is never read.
+
+Return 'ret' rather than 'count' when 'ret' stores an error code.
+
+Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240422034243.938962-1-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml  | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/debugfs_sta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml
-index 91a6cc38ff7ff..c4c4fb38c51a9 100644
---- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml
-+++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml
-@@ -71,7 +71,6 @@ required:
-   - reg
-   - clocks
-   - clock-names
--  - power-domains
-   - resets
-   - reset-names
-   - vdda-phy-supply
-@@ -127,6 +126,21 @@ allOf:
-             - const: ref
-             - const: qref
+diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+index 87a3365330ff8..5598cf706daab 100644
+--- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
++++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+@@ -438,7 +438,7 @@ ath10k_dbg_sta_write_peer_debug_trigger(struct file *file,
+ 	}
+ out:
+ 	mutex_unlock(&ar->conf_mutex);
+-	return count;
++	return ret ?: count;
+ }
  
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - qcom,msm8996-qmp-ufs-phy
-+              - qcom,msm8998-qmp-ufs-phy
-+    then:
-+      properties:
-+        power-domains:
-+          false
-+    else:
-+      required:
-+        - power-domains
-+
- additionalProperties: false
- 
- examples:
+ static const struct file_operations fops_peer_debug_trigger = {
 -- 
 2.43.0
 
