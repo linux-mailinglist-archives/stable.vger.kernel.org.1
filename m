@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-49046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-48402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C916E8FEBA3
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB6A8FE8DE
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 16:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66F901F28F76
-	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A74651F24800
+	for <lists+stable@lfdr.de>; Thu,  6 Jun 2024 14:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B4319A29E;
-	Thu,  6 Jun 2024 14:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE341974F7;
+	Thu,  6 Jun 2024 14:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFLDyBYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/7KXbxz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690081AB8FD;
-	Thu,  6 Jun 2024 14:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2FC1974F3;
+	Thu,  6 Jun 2024 14:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683275; cv=none; b=orsgQ/2ry/91WDZ565350/ug0MXN8YotAYY+D18GKF6zL+7fM8ZyHeDG3SBEqQ3RLAR+0CKuvhLY13ZqqR+NaDqhBHaZsjwwLmLPUDpBX0CCMcEGzYpL8POtlvHkv42wTaa+fCL/nqAACu72NA4hLKzKX4rvM5fx3jsN3+9cQ0w=
+	t=1717682944; cv=none; b=dAV8Q92N5s2xaC5Akzlr0VCB1rsB8RZ5JADt2YflbIt98r4S/3nkDc0T42nN4v8M2qUwVmQAu8rOb6BoLJPEN0bRkBbwUH8CbYAz0tgzllgwMuCjaurhBEbi5tmMSYvgjzK/8+KInxbOV3ZwdwbF0Z8MsqGeykkPhwmkGW4evRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683275; c=relaxed/simple;
-	bh=bb9MF6s0C2JeuDIA0vFLuNWIkimJD30VvluyvBdbM3Y=;
+	s=arc-20240116; t=1717682944; c=relaxed/simple;
+	bh=vYgYAwLgR4nu9TwTVle8QAURdA/Z8r9dUctVVEM9MPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VsAdvGFFwnbU6QgIX4csZlnKD3KRjFLCXVkVu7TKQSsOJBjx1pBQweMUf4M2Z07yistYKkOXHVMAJ3Wdy17YkSYHf/KRWYSOsEuaSRG8LZfq1VoOuAJBVqQrfnMFUabBWNvotp8Ivc2Q385o08Aalwx9CBkMmebLED4iKeNMKy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFLDyBYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A40C2BD10;
-	Thu,  6 Jun 2024 14:14:35 +0000 (UTC)
+	 MIME-Version; b=MMFT3s2oeHEX9BkN/GO3iHBgvOakjc2h8sB/V2+FwbNw3gSZZtwTXdgpcF5puxqhZ7oOkFN+HFd4nufbO08ByHrtQ5ZkLt3Sw/SHYCXugTOsoyQv2hk72Ns4vbUKvqxA5qK5BIpvLKUNkbnGgtFIwNzXFaGEkaa+Z+Uok6BaNkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/7KXbxz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57253C32782;
+	Thu,  6 Jun 2024 14:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683275;
-	bh=bb9MF6s0C2JeuDIA0vFLuNWIkimJD30VvluyvBdbM3Y=;
+	s=korg; t=1717682944;
+	bh=vYgYAwLgR4nu9TwTVle8QAURdA/Z8r9dUctVVEM9MPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFLDyBYAdKAVuovCHv2csq33jDpu3hv7xWXoyRPQbXrrV9JlAnp3UhIhcQoQ1iPFf
-	 PxNmhVfQQ2Nb6cLsYVaDMSTUZJnQ5AZok4eFamrft3oI76H2IjaBXnWVC+E+8tt2cV
-	 jEQAWNNrdqkGBP01SnqDmj79rUvLfqgP9PLkx4oc=
+	b=y/7KXbxzuw0XsZzgtiyOtaVrPCLVZzv5y+y13IbVzOUvP0qRFKqRbKZmDwWdW2Mv8
+	 J0kdEHxyH8QBLhCXIfIriEWb4ncZ6s/KtZhwXMuV4xUDM+lU7sk9VuzU9D/f/tb50i
+	 e4QCSMXFRLToBHCm3si3RBpHRId9V63cg6mokFEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Leo Yan <leo.yan@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/473] selftests/resctrl: fix clang build failure: use LOCAL_HDRS
+Subject: [PATCH 6.9 103/374] perf dwarf-aux: Fix build with HAVE_DWARF_CFI_SUPPORT
 Date: Thu,  6 Jun 2024 16:01:22 +0200
-Message-ID: <20240606131705.012919597@linuxfoundation.org>
+Message-ID: <20240606131655.375756782@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
+In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
+References: <20240606131651.683718371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +70,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit d8171aa4ca72f1a67bf3c14c59441d63c1d2585f ]
+[ Upstream commit c9d492378faec5c1fb8ea1534c620f7320bbb23a ]
 
-First of all, in order to build with clang at all, one must first apply
-Valentin Obst's build fix for LLVM [1]. Once that is done, then when
-building with clang, via:
+check_allowed_ops() is used from both HAVE_DWARF_GETLOCATIONS_SUPPORT
+and HAVE_DWARF_CFI_SUPPORT sections, so move it into the right place so
+that it's available when either are defined. This shows up when doing
+a static cross compile for arm64:
 
-    make LLVM=1 -C tools/testing/selftests
+  $ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- LDFLAGS="-static" \
+    EXTRA_PERFLIBS="-lexpat"
 
-...the following error occurs:
+  util/dwarf-aux.c:1723:6: error: implicit declaration of function 'check_allowed_ops'
 
-   clang: error: cannot specify -o when generating multiple output files
-
-This is because clang, unlike gcc, won't accept invocations of this
-form:
-
-    clang file1.c header2.h
-
-Fix this by using selftests/lib.mk facilities for tracking local header
-file dependencies: add them to LOCAL_HDRS, leaving only the .c files to
-be passed to the compiler.
-
-[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
-
-Fixes: 8e289f454289 ("selftests/resctrl: Add resctrl.h into build deps")
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 55442cc2f22d0727 ("perf dwarf-aux: Check allowed DWARF Ops")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: James Clark <james.clark@arm.com>
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linux.dev>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240508141458.439017-1-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/util/dwarf-aux.c | 56 ++++++++++++++++++-------------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
-index 2deac2031de9e..021863f86053a 100644
---- a/tools/testing/selftests/resctrl/Makefile
-+++ b/tools/testing/selftests/resctrl/Makefile
-@@ -5,6 +5,8 @@ CFLAGS += $(KHDR_INCLUDES)
- 
- TEST_GEN_PROGS := resctrl_tests
- 
-+LOCAL_HDRS += $(wildcard *.h)
+diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
+index ff1874ae0832e..f93e57e2fc42e 100644
+--- a/tools/perf/util/dwarf-aux.c
++++ b/tools/perf/util/dwarf-aux.c
+@@ -1168,6 +1168,34 @@ static int offset_from_dwarf_op(Dwarf_Op *op)
+ 	}
+ 	return -1;
+ }
 +
- include ../lib.mk
++static bool check_allowed_ops(Dwarf_Op *ops, size_t nops)
++{
++	/* The first op is checked separately */
++	ops++;
++	nops--;
++
++	/*
++	 * It needs to make sure if the location expression matches to the given
++	 * register and offset exactly.  Thus it rejects any complex expressions
++	 * and only allows a few of selected operators that doesn't change the
++	 * location.
++	 */
++	while (nops) {
++		switch (ops->atom) {
++		case DW_OP_stack_value:
++		case DW_OP_deref_size:
++		case DW_OP_deref:
++		case DW_OP_piece:
++			break;
++		default:
++			return false;
++		}
++		ops++;
++		nops--;
++	}
++	return true;
++}
+ #endif /* HAVE_DWARF_GETLOCATIONS_SUPPORT || HAVE_DWARF_CFI_SUPPORT */
  
--$(OUTPUT)/resctrl_tests: $(wildcard *.[ch])
-+$(OUTPUT)/resctrl_tests: $(wildcard *.c)
+ #ifdef HAVE_DWARF_GETLOCATIONS_SUPPORT
+@@ -1345,34 +1373,6 @@ static bool match_var_offset(Dwarf_Die *die_mem, struct find_var_data *data,
+ 	return true;
+ }
+ 
+-static bool check_allowed_ops(Dwarf_Op *ops, size_t nops)
+-{
+-	/* The first op is checked separately */
+-	ops++;
+-	nops--;
+-
+-	/*
+-	 * It needs to make sure if the location expression matches to the given
+-	 * register and offset exactly.  Thus it rejects any complex expressions
+-	 * and only allows a few of selected operators that doesn't change the
+-	 * location.
+-	 */
+-	while (nops) {
+-		switch (ops->atom) {
+-		case DW_OP_stack_value:
+-		case DW_OP_deref_size:
+-		case DW_OP_deref:
+-		case DW_OP_piece:
+-			break;
+-		default:
+-			return false;
+-		}
+-		ops++;
+-		nops--;
+-	}
+-	return true;
+-}
+-
+ /* Only checks direct child DIEs in the given scope. */
+ static int __die_find_var_reg_cb(Dwarf_Die *die_mem, void *arg)
+ {
 -- 
 2.43.0
 
